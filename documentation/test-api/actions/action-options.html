@@ -4,6 +4,7 @@
   <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
@@ -11,7 +12,7 @@
 
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
-
+  
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
   <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/test-api/actions/action-options.html" />
@@ -24,6 +25,7 @@
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="http://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/highlight.min.js"></script>
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
   <script>
       document.addEventListener('DOMContentLoaded', function (e) {
           hljs.initHighlightingOnLoad();
@@ -111,9 +113,9 @@
     <script src="/testcafe/scripts/mobile-detect.min.js" type="text/javascript"></script>
 
     <script>
-        var MIN_BODY_WIDTH = 1000;
-        var FOOTER_HEIGHT  = 63;
-        var HEADER_HEIGHT  = 102;
+        var MIN_BODY_WIDTH = 1215;
+        var FOOTER_HEIGHT  = 113;
+        var HEADER_HEIGHT  = 126;
 
         var nav            = null;
         var article        = null;
@@ -220,8 +222,8 @@
     </script>
   
     <script>
-        function initHeader(siteHeader, contentWrapper, docTopMenu, article) {
-            var MIN_BODY_WIDTH = 1000;
+        function initHeader(siteHeader, contentWrapper, docTopMenu, article, gs) {
+            var MIN_BODY_WIDTH = 1215;
 
             function updateHeader() {
                 var bodyMinimized = document.body.clientWidth === MIN_BODY_WIDTH;
@@ -238,6 +240,9 @@
 
                 if(article)
                     article.style.marginTop = bodyMinimized ? '21px' : '72px';
+ 
+                if(gs)
+                    gs.style.paddingTop = bodyMinimized ? '21px' : '72px';
             }
 
             updateHeader();
@@ -249,9 +254,10 @@
             var siteHeader     = document.querySelector('.site-header');
             var docTopMenu     = document.querySelector('.doc-top-nav');
             var article        = document.querySelector('.doc');
+            var gs             = document.querySelector('.gs');
 
             if(siteHeader) 
-                initHeader(siteHeader, contentWrapper, docTopMenu, article);
+                initHeader(siteHeader, contentWrapper, docTopMenu, article, gs);
         });
     </script>
 </head>
@@ -260,64 +266,118 @@
   <body>
     <div class="page-content-wrapper">
 
-      <header class="site-header minimized">
+      <header class="site-header fixed">
   <div class="site-header-content">
     <a class="site-logo" href="/testcafe/"></a>
     <nav class="site-nav">
         
           
-          <a class="page-link active" href="/testcafe/documentation/getting-started/">Documentation</a>
-          <span class="page-link-separator">|</span>
+          <div class="site-nav-tab active">
+            <a class="page-link" href="/testcafe/documentation/getting-started/">Documentation</a>
+          </div>
         
           
-          <a class="page-link " href="https://github.com/DevExpress/testcafe">GitHub</a>
-          <span class="page-link-separator">|</span>
+          <div class="site-nav-tab ">
+            <a class="page-link" href="https://github.com/DevExpress/testcafe" target="_blank">GitHub</a>
+          </div>
         
           
-          <a class="page-link " href="/testcafe/faq/">FAQ</a>
-          <span class="page-link-separator">|</span>
+          <div class="site-nav-tab ">
+            <a class="page-link" href="/testcafe/faq/">FAQ</a>
+          </div>
         
           
-          <a class="page-link " href="/testcafe/blog/">Blog</a>
-          <span class="page-link-separator">|</span>
+          <div class="site-nav-tab ">
+            <a class="page-link" href="/testcafe/publications/">Publications</a>
+          </div>
         
           
-          <a class="page-link " href="https://github.com/DevExpress/testcafe/issues">Issues</a>
-          <span class="page-link-separator">|</span>
+          <div class="site-nav-tab ">
+            <a class="page-link" href="/testcafe/blog/">Release Notes</a>
+          </div>
         
           
-          <a class="page-link " href="https://testcafe-discuss.devexpress.com/">Discuss</a>
-          <span class="page-link-separator">|</span>
+          <div class="site-nav-tab ">
+            <a class="page-link" href="https://github.com/DevExpress/testcafe/issues" target="_blank">Issues</a>
+          </div>
         
           
-          <a class="page-link " href="https://twitter.com/dxtestcafe">Twitter</a>
-          <span class="page-link-separator">|</span>
+          <div class="site-nav-tab ">
+            <a class="page-link" href="https://testcafe-discuss.devexpress.com/" target="_blank">Forum</a>
+          </div>
         
-      <input type="text" placeholder="Search" id="search"/>
-    </nav>
-
+      <a id="twitter-button" href="https://twitter.com/dxtestcafe" target="_blank"></a>
+      <div id="search-icon"></div>
+      <div class="star-button">
+        <a class="github-button" href="https://github.com/DevExpress/testcafe" data-size="large" data-count-href="/DevExpress/testcafe/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star DevExpress/testcafe on GitHub"><span style="color:#ffffff">Star</span></a>
+      </div>
+      <div id="search-panel" class="hidden">
+          <input type="text" placeholder="Search query" id="search"/>
+          <div id="close-search"></div>
+      </div>
+      </nav>
   </div>
 </header>
+
+<script>
+  function has(parentEl, el)  {
+    var descendants = parentEl.getElementsByTagName('*');
+    
+    for(i = 0; i < descendants.length; i++) 
+        if(descendants[i] === el) return true;
+
+    return false;
+  }
+
+  function closeSearchBox(e) {
+      var clickOutsideSearchBox = searchPanel !== e.target && !has(searchPanel, e.target);
+
+      if(clickOutsideSearchBox && !searchPanel.className.includes('hidden')) 
+          searchPanel.className += ' hidden';
+  }
+
+  var searchButton      = document.querySelector('#search-icon');
+  var searchPanel       = document.querySelector('#search-panel');
+  var closeSearchButton = document.querySelector('#close-search');
+
+  searchButton.addEventListener('click', function () {
+      searchPanel.className = searchPanel.className.replace(/hidden/,'');
+  });
+  
+  closeSearchButton.addEventListener('click', function () {
+      searchPanel.className += ' hidden';
+  });
+
+  window.addEventListener('mousedown', closeSearchBox);        
+  window.addEventListener('touchstart', closeSearchBox);
+</script>
 
 
   <div class="doc-top-nav">
     <div class="doc-top-nav-content">
-    
-      <a class="" href="/testcafe/documentation/getting-started/">Getting Started</a>
-      <span class="page-link-separator level-2">|</span>
-    
-      <a class="" href="/testcafe/documentation/using-testcafe/">Using TestCafe</a>
-      <span class="page-link-separator level-2">|</span>
-    
-      <a class="active" href="/testcafe/documentation/test-api/">Test API</a>
-      <span class="page-link-separator level-2">|</span>
-    
-      <a class="" href="/testcafe/documentation/extending-testcafe/">Extending TestCafe</a>
-      <span class="page-link-separator level-2">|</span>
-    
-      <a class="" href="/testcafe/documentation/recipes/">Recipes</a>
-      <span class="page-link-separator level-2">|</span>
-    
+      <div class="doc-top-nav-wrapper">
+        
+          <div class="doc-top-nav-tab " >
+            <a href="/testcafe/documentation/getting-started/">Getting Started</a>      
+          </div>
+        
+          <div class="doc-top-nav-tab " >
+            <a href="/testcafe/documentation/using-testcafe/">Using TestCafe</a>      
+          </div>
+        
+          <div class="doc-top-nav-tab active" >
+            <a href="/testcafe/documentation/test-api/">Test API</a>      
+          </div>
+        
+          <div class="doc-top-nav-tab " >
+            <a href="/testcafe/documentation/extending-testcafe/">Extending TestCafe</a>      
+          </div>
+        
+          <div class="doc-top-nav-tab " >
+            <a href="/testcafe/documentation/recipes/">Recipes</a>      
+          </div>
+        
+      </div>
     </div>
   </div>
 
@@ -337,8 +397,6 @@
 		<div class="doc-nav-content">
 			<ul>
 				<li>
-				
-<a href="/testcafe/documentation/test-api/"  >TEST API</a>
 				<ul>
 
     <li>
@@ -652,6 +710,13 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/test-api/accessing-console-messages.html"  >Accessing Console Messages</a>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/test-api/a-z.html"  >A-Z Index</a>
 		
     </li>
@@ -681,6 +746,7 @@
 <ul>
 <li><a href="#basic-action-options">Basic Action Options</a></li>
 <li><a href="#mouse-action-options">Mouse Action Options</a></li>
+<li><a href="#dragtoelement-action-options">DragToElement Action Options</a></li>
 <li><a href="#click-action-options">Click Action Options</a></li>
 <li><a href="#typing-action-options">Typing Action Options</a></li>
 </ul>
@@ -766,8 +832,7 @@
 </tr>
 </tbody></table>
 
-<p>Mouse action options are used in the <a href="drag-element.html#drag-an-element-by-an-offset">t.drag</a>,
-<a href="drag-element.html#drag-an-element-onto-another-one">t.dragToElement</a> and <a href="hover.html">t.hover</a> actions.</p>
+<p>Mouse action options are used in the <a href="drag-element.html#drag-an-element-by-an-offset">t.drag</a> and <a href="hover.html">t.hover</a> actions.</p>
 
 <p><strong>Example</strong></p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
@@ -782,6 +847,80 @@
         <span class="p">.</span><span class="nx">drag</span><span class="p">(</span><span class="nx">sliderHandle</span><span class="p">,</span> <span class="mi">360</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">{</span>
             <span class="na">offsetX</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
             <span class="na">offsetY</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+            <span class="na">modifiers</span><span class="p">:</span> <span class="p">{</span>
+                <span class="na">shift</span><span class="p">:</span> <span class="kc">true</span>
+            <span class="p">}</span>
+        <span class="p">});</span>
+<span class="p">});</span>
+</code></pre></div><h2><a class="anchor" name="dragtoelement-action-options"></a>DragToElement Action Options <a class="permalink" href="#dragtoelement-action-options">#</a></h2>
+<p>Provides additional parameters for the <code>t.dragToElement</code> action.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="p">{</span>
+    <span class="nl">modifiers</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nl">ctrl</span><span class="p">:</span> <span class="nb">Boolean</span><span class="p">,</span>
+        <span class="nx">alt</span><span class="err">:</span> <span class="nb">Boolean</span><span class="p">,</span>
+        <span class="nx">shift</span><span class="err">:</span> <span class="nb">Boolean</span><span class="p">,</span>
+        <span class="nx">meta</span><span class="err">:</span> <span class="nb">Boolean</span>
+    <span class="p">},</span>
+
+    <span class="nx">offsetX</span><span class="err">:</span> <span class="nb">Number</span><span class="p">,</span>
+    <span class="nx">offsetY</span><span class="err">:</span> <span class="nb">Number</span><span class="p">,</span>
+    <span class="nx">destinationOffsetX</span><span class="err">:</span> <span class="nb">Number</span><span class="p">,</span>
+    <span class="nx">destinationOffsetY</span><span class="err">:</span> <span class="nb">Number</span><span class="p">,</span>
+    <span class="nx">speed</span><span class="err">:</span> <span class="nb">Number</span>
+<span class="p">}</span>
+</code></pre></div>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>ctrl</code>, <code>alt</code>, <code>shift</code>, <code>meta</code></td>
+<td>Boolean</td>
+<td>Indicate which modifier keys are to be pressed during the drag action.</td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>offsetX</code>, <code>offsetY</code></td>
+<td>Number</td>
+<td>Mouse pointer coordinates that define a point where dragging is started. If an offset is a positive integer, coordinates are calculated relative to the top-left corner of the target element. If an offset is a negative integer, they are calculated relative to the bottom-right corner.</td>
+<td>The center of the target element.</td>
+</tr>
+<tr>
+<td><code>destinationOffsetX</code>, <code>destinationOffsetY</code></td>
+<td>Number</td>
+<td>Mouse pointer coordinates that define a point where dragging is finished. If an offset is a positive integer, coordinates are calculated relative to the top-left corner of the destination element. If an offset is a negative integer, they are calculated relative to the bottom-right corner.</td>
+<td>The center of the destination element.</td>
+</tr>
+<tr>
+<td><code>speed</code></td>
+<td>Number</td>
+<td>The speed of action emulation. Defines how fast TestCafe performs the action when running tests. A value between <code>1</code> (the maximum speed) and <code>0.01</code> (the minimum speed). If test speed is also specified in the <a href="../../using-testcafe/command-line-interface.html#--speed-factor">CLI</a> or <a href="../../using-testcafe/programming-interface/runner.html#run">programmatically</a>, the action speed setting overrides test speed.</td>
+<td><code>1</code></td>
+</tr>
+</tbody></table>
+
+<p>DragToElement options are used in the <a href="drag-element.html#drag-an-element-onto-another-one">t.dragToElement</a> action.</p>
+
+<p><strong>Example</strong></p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+
+<span class="kr">const</span> <span class="nx">fileIcon</span>      <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'.file-icon'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">directoryPane</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'.directory'</span><span class="p">);</span>
+
+<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">Fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">https</span><span class="err">:</span><span class="c1">//example.com/`;</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My Test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">await</span> <span class="nx">t</span>
+        <span class="p">.</span><span class="nx">dragToElement</span><span class="p">(</span><span class="nx">fileIcon</span><span class="p">,</span> <span class="nx">directoryPane</span><span class="p">,</span> <span class="p">{</span>
+            <span class="na">offsetX</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+            <span class="na">offsetY</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+            <span class="na">destinationOffsetX</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+            <span class="na">destinationOffsetY</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>
             <span class="na">modifiers</span><span class="p">:</span> <span class="p">{</span>
                 <span class="na">shift</span><span class="p">:</span> <span class="kc">true</span>
             <span class="p">}</span>
@@ -973,20 +1112,20 @@
     <div class="site-footer-content">
         <div class="footer-col-1">
             <p><strong>TestCafe</strong>: Automated browser testing for the modern web development stack<br/>
-            Copyright © 1998-2017 Developer Express Inc.</p>
+            Copyright © 2012-2017 Developer Express Inc.</p>
         </div>
     </div>
 </footer>
 
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.js"></script>
-    <script type="text/javascript"> docsearch({
+     <script type="text/javascript"> docsearch({
           apiKey: '938fb7894c0af8c01af3e2b4c53d4bdd',
           indexName: 'testcafe',
           inputSelector: '#search',
           debug: false // Set debug to true if you want to inspect the dropdown
       });
-    </script>
+    </script> 
 
   </body>
 

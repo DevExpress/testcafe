@@ -5,9 +5,196 @@
     <description></description>
     <link>http://devexpress.github.io/testcafe/</link>
     <atom:link href="http://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 29 Sep 2017 16:49:14 +0300</pubDate>
-    <lastBuildDate>Fri, 29 Sep 2017 16:49:14 +0300</lastBuildDate>
+    <pubDate>Tue, 10 Oct 2017 19:20:40 +0300</pubDate>
+    <lastBuildDate>Tue, 10 Oct 2017 19:20:40 +0300</lastBuildDate>
     <generator>Jekyll v3.5.0</generator>
+    
+      <item>
+        <title>TestCafe v0.18.0 Released - Angular Selectors, Using Multiple Reporters, etc</title>
+        <description>&lt;h1&gt;TestCafe v0.18.0 Released: Angular Selectors, Using Multiple Reporters, etc&lt;/h1&gt;
+&lt;p&gt;With this release, we have prepared a bunch of useful things. We have put finishing touches on Angular selectors to let you address page elements on Angular websites using the component tree. We have also made it possible to output reports to multiple channels (like console + file). Read on to learn about more things we have for you.&lt;/p&gt;
+
+&lt;!--more--&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; name=&quot;enhancements&quot;&gt;&lt;/a&gt;Enhancements &lt;a class=&quot;permalink&quot; href=&quot;#enhancements&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; name=&quot;angular-selectors-testcafe-angular-selectors&quot;&gt;&lt;/a&gt;⚙ Angular Selectors (&lt;a href=&quot;https://github.com/DevExpress/testcafe-angular-selectors&quot;&gt;testcafe-angular-selectors&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#angular-selectors-testcafe-angular-selectors&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;In addition to AngularJS selectors we shipped earlier, we have prepared selectors for Angular 2+ websites.&lt;/p&gt;
+
+&lt;p&gt;They are included in the same &lt;code&gt;testcafe-angular-selectors&lt;/code&gt; module.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;npm install testcafe-angular-selectors
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;You can use Angular 2+ selectors as regular TestCafe selectors. When creating such a selector, provide the component name to the &lt;code&gt;AngularSelector&lt;/code&gt; constructor. You can pass nested component names as well.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kr&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;AngularSelector&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'testcafe-angular-selectors'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;listItemComponent&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;AngularSelector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'list list-item'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Note that before starting a test, you need to wait until the component tree is loaded. Use the &lt;code&gt;waitForAngular&lt;/code&gt; function for this.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kr&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;AngularSelector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;waitForAngular&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'testcafe-angular-selectors'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;App&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;tests&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;page&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//angular-app-url`&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;beforeEach&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;waitForAngular&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'test'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;firstListItem&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;AngularSelector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'list list-item'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;For details, see &lt;a href=&quot;https://github.com/DevExpress/testcafe-angular-selectors/blob/master/angular-selector.md&quot;&gt;Angular Selector Extentions&lt;/a&gt;.&lt;/p&gt;
+&lt;h3&gt;&lt;a class=&quot;anchor&quot; name=&quot;testing-in-headless-firefox&quot;&gt;&lt;/a&gt;⚙ Testing in headless Firefox &lt;a class=&quot;permalink&quot; href=&quot;#testing-in-headless-firefox&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;In addition to Chrome headless, we have added support for testing in &lt;a href=&quot;https://developer.mozilla.org/en-US/Firefox/Headless_mode&quot;&gt;headless&lt;/a&gt; Firefox (version 56+).&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe firefox:headless tests/sample-fixture.js
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'tests/sample-fixture.js'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;browsers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'firefox:headless'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; name=&quot;outputting-test-results-to-multiple-channels-1412&quot;&gt;&lt;/a&gt;⚙ Outputting test results to multiple channels (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1412&quot;&gt;#1412&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#outputting-test-results-to-multiple-channels-1412&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;If you need a report to be printed in the console and saved to a &lt;code&gt;.json&lt;/code&gt; file,
+you can now do this by specifying multiple reporters when running tests.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe all tests/sample-fixture.js -r spec,json:report.json
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;stream&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;createWriteStream&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'report.json'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'tests/sample-fixture.js'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;browsers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'chrome'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;reporter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'spec'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;reporter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'json'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;stream&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;failedCount&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;stream&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;end&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; name=&quot;entering-the-debug-mode-when-a-test-fails-1608&quot;&gt;&lt;/a&gt;⚙ Entering the debug mode when a test fails (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1608&quot;&gt;#1608&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#entering-the-debug-mode-when-a-test-fails-1608&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;TestCafe can now automatically switch to the debug mode whenever a test fails. Test execution will be paused, so that you can explore the tested page to determine the cause of the fail.&lt;/p&gt;
+
+&lt;p&gt;To enable this behavior, use the &lt;code&gt;--debug-on-fail&lt;/code&gt; flag in the command line or the &lt;code&gt;debugOnFail&lt;/code&gt; option in the API.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe chrome tests/fixture.js --debug-on-fail
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;debugOnFail&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; name=&quot;interacting-with-the-tested-page-in-debug-mode-1848&quot;&gt;&lt;/a&gt;⚙ Interacting with the tested page in debug mode (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1848&quot;&gt;#1848&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#interacting-with-the-tested-page-in-debug-mode-1848&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;When debugging your tests, you can now interact with the tested page. Click the &lt;strong&gt;Unlock page&lt;/strong&gt; button in the page footer to enable interaction.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../images/unlock-page-button.png&quot; alt=&quot;Unlock page button&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;After that, you can do anything with the webpage. This gives you additional powers to detect problems in your tests.&lt;/p&gt;
+
+&lt;p&gt;Click &lt;strong&gt;Resume&lt;/strong&gt; to continue running the test or click &lt;strong&gt;Next Step&lt;/strong&gt; to step over.&lt;/p&gt;
+&lt;h3&gt;&lt;a class=&quot;anchor&quot; name=&quot;chrome-and-firefox-are-opened-with-clean-profiles-by-default-1623&quot;&gt;&lt;/a&gt;⚙ Chrome and Firefox are opened with clean profiles by default (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1623&quot;&gt;#1623&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#chrome-and-firefox-are-opened-with-clean-profiles-by-default-1623&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;TestCafe now opens Chrome and Firefox with empty profiles to eliminate the influence of profile settings and extensions on test running.&lt;/p&gt;
+
+&lt;p&gt;However, you can &lt;strong&gt;return to the previous behavior&lt;/strong&gt; by using the &lt;code&gt;:userProfile&lt;/code&gt; browser option.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe firefox:userProfile tests/test.js
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'tests/fixture1.js'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;browsers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'firefox:userProfile'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; name=&quot;customizable-timeout-to-wait-for-the-windowload-event-1645&quot;&gt;&lt;/a&gt;⚙ Customizable timeout to wait for the &lt;code&gt;window.load&lt;/code&gt; event (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1645&quot;&gt;#1645&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#customizable-timeout-to-wait-for-the-windowload-event-1645&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Previously, TestCafe started a test when the &lt;code&gt;DOMContentLoaded&lt;/code&gt; event was raised. However, there are many pages that execute some kind of initialization code on the &lt;code&gt;window.load&lt;/code&gt; event (which is raised after &lt;code&gt;DOMContentLoaded&lt;/code&gt; because it waits for all stylesheets, images and subframes to load). In this instance, you need to wait for the &lt;code&gt;window.load&lt;/code&gt; event to fire before running tests.&lt;/p&gt;
+
+&lt;p&gt;With this release, TestCafe waits for the &lt;code&gt;window.load&lt;/code&gt; event for &lt;code&gt;3&lt;/code&gt; seconds.
+We have also added a &lt;code&gt;pageLoadTimeout&lt;/code&gt; setting that allows you to customize this interval.
+You can set it to &lt;code&gt;0&lt;/code&gt; to skip waiting for &lt;code&gt;window.load&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;The following examples show how to use the &lt;code&gt;pageLoadTimeout&lt;/code&gt; setting from the command line and API.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe chrome test.js --page-load-timeout 0
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;pageLoadTimeout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;You can also use the &lt;code&gt;setPageLoadTimeout&lt;/code&gt; method in test API to set the timeout for an individual test.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Page&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;load&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;timeout&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;page&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//devexpress.github.io/testcafe/example/`;&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Page&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;load&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;timeout&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;setPageLoadTimeout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;navigateTo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'http://devexpress.github.io/testcafe/'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; name=&quot;access-messages-output-by-the-tested-app-to-the-browser-console-1738&quot;&gt;&lt;/a&gt;⚙ Access messages output by the tested app to the browser console (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1738&quot;&gt;#1738&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#access-messages-output-by-the-tested-app-to-the-browser-console-1738&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;You can now obtain messages that the tested app outputs to the browser console. This is useful if your application or the framework it uses posts errors, warnings or other informative messages into the console.&lt;/p&gt;
+
+&lt;p&gt;Use the &lt;code&gt;t.getBrowserConsoleMessages&lt;/code&gt; method that returns the following object.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Cannot access the 'db' database. Wrong credentials.&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'...'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// error messages&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;warn&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'The setTimeout property is deprecated'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'...'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;                &lt;span class=&quot;c1&quot;&gt;// warning messages&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'[09:12:08] Logged in'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'[09:25:43] Changes saved'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'...'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;      &lt;span class=&quot;c1&quot;&gt;// log messages&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;info&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'The application was updated since your last visit.'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'...'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;// info messages&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Note that this method returns only messages posted via the &lt;code&gt;console.error&lt;/code&gt;, &lt;code&gt;console.warn&lt;/code&gt;, &lt;code&gt;console.log&lt;/code&gt; and &lt;code&gt;console.info&lt;/code&gt; methods. Messages output by the browser (like when an unhandled exception occurs on the page) will not be returned.&lt;/p&gt;
+
+&lt;p&gt;For instance, consider the React&amp;#39;s typechecking feature, &lt;a href=&quot;https://reactjs.org/docs/typechecking-with-proptypes.html&quot;&gt;PropTypes&lt;/a&gt;. You can use it to check that you assign valid values to the component&amp;#39;s props. If a &lt;code&gt;PropTypes&lt;/code&gt; rule is violated, React posts an error into the JavaScript console.&lt;/p&gt;
+
+&lt;p&gt;The following example shows how to check the React prop types for errors using the &lt;code&gt;t.getBrowserConsoleMessages&lt;/code&gt; method.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// check-prop-types.js&lt;/span&gt;
+&lt;span class=&quot;kr&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'testcafe'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kr&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;default&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;error&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;getBrowserConsoleMessages&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+
+    &lt;span class=&quot;nx&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;notOk&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// test.js&lt;/span&gt;
+&lt;span class=&quot;kr&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'testcafe'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kr&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;checkPropTypes&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'./check-prop-types'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;react&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;example&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;page&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//localhost:8080/`  // https://github.com/mzabriskie/react-example&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;afterEach&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;checkPropTypes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'test'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;typeText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'.form-control'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'devexpress'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;click&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'button'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;withText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Go'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;click&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'h4'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;withText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Organizations'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; name=&quot;defining-drag-end-point-on-the-destination-element-982&quot;&gt;&lt;/a&gt;⚙ Defining drag end point on the destination element (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/982&quot;&gt;#982&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#defining-drag-end-point-on-the-destination-element-982&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;The &lt;code&gt;t.dragToElement&lt;/code&gt; action can now drop a dragged element at any point inside the destination element.
+You can specify the target point using the &lt;code&gt;destinationOffsetX&lt;/code&gt; and &lt;code&gt;destinationOffsetY&lt;/code&gt; options.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kr&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'testcafe'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fileIcon&lt;/span&gt;      &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'.file-icon'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;directoryPane&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'.directory'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;My&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Fixture&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;page&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;https&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//example.com/`;&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'My Test'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;dragToElement&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;fileIcon&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;directoryPane&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;na&quot;&gt;offsetX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+            &lt;span class=&quot;na&quot;&gt;offsetY&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+            &lt;span class=&quot;na&quot;&gt;destinationOffsetX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+            &lt;span class=&quot;na&quot;&gt;destinationOffsetY&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;50&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+            &lt;span class=&quot;na&quot;&gt;modifiers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;na&quot;&gt;shift&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; name=&quot;testcafe-exits-gracefully-when-the-process-is-interrupted-1378&quot;&gt;&lt;/a&gt;⚙ TestCafe exits gracefully when the process is interrupted (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1378&quot;&gt;#1378&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#testcafe-exits-gracefully-when-the-process-is-interrupted-1378&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Previously, TestCafe left browsers open when you exited the process by pressing &lt;code&gt;Ctrl+C&lt;/code&gt; in the terminal.
+Now TestCafe exits gracefully closing all browsers opened for testing.&lt;/p&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; name=&quot;bug-fixes&quot;&gt;&lt;/a&gt;Bug Fixes &lt;a class=&quot;permalink&quot; href=&quot;#bug-fixes&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Tests no longer hang in Nightmare (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1493&quot;&gt;#1493&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;The &lt;code&gt;focus&lt;/code&gt; event is now raised when clicking links with &lt;code&gt;tabIndex=&amp;quot;0&amp;quot;&lt;/code&gt; (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1803&quot;&gt;#1803&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Headless Chrome processes no longer hang after test runs (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1826&quot;&gt;#1826&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;setFilesToUpload&lt;/code&gt; no longer throws a &lt;code&gt;RangeError&lt;/code&gt; on websites that use Angular (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1731&quot;&gt;#1731&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Fixed a bug where an &lt;code&gt;iframe&lt;/code&gt; got wrong origin (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1753&quot;&gt;#1753&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;document.open&lt;/code&gt; now doesn&amp;#39;t throw an error if &lt;code&gt;document.defaultView&lt;/code&gt; is &lt;code&gt;null&lt;/code&gt; (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1272&quot;&gt;testcafe-hammerhead/#1272&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;No error is thrown when the handler passed to &lt;code&gt;addEventListener&lt;/code&gt; is &lt;code&gt;undefined&lt;/code&gt; (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1251&quot;&gt;testcafe-hammerhead/#1251&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;An error is no longer raised if the processed element is not extendible (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1300&quot;&gt;testcafe-hammerhead/#1300&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Fixed a bug where an &lt;code&gt;onclick&lt;/code&gt; handler did not work after click on a &lt;code&gt;Submit&lt;/code&gt; button (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1291&quot;&gt;testcafe-hammerhead/#1291&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Images with &lt;code&gt;style = background-image: url(&amp;quot;img.png&amp;quot;);&lt;/code&gt; are now loaded correctly (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1212&quot;&gt;testcafe-hammerhead/#1212&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Documents can now contain two &lt;code&gt;ShadowUI&lt;/code&gt; roots (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1246&quot;&gt;testcafe-hammerhead/#1246&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;HTML in an overridden &lt;code&gt;document.write&lt;/code&gt; function is now processed correctly (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1311&quot;&gt;testcafe-hammerhead/#1311&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Elements processing now works for a &lt;code&gt;documentFragment&lt;/code&gt; as it is added to the DOM (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1334&quot;&gt;testcafe-hammerhead/#1334&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Mon, 09 Oct 2017 00:00:00 +0300</pubDate>
+        <link>http://devexpress.github.io/testcafe/blog/testcafe-v0-18-0-released.html</link>
+        <guid isPermaLink="true">http://devexpress.github.io/testcafe/blog/testcafe-v0-18-0-released.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>TestCafe v0.18.0-alpha1 Released - Testing in headless Firefox</title>
@@ -1142,54 +1329,6 @@ this speed may seem too fast. In this instance, use the new &lt;code&gt;speed&lt
         <pubDate>Tue, 08 Nov 2016 00:00:00 +0300</pubDate>
         <link>http://devexpress.github.io/testcafe/blog/testcafe-v0-10-0-released.html</link>
         <guid isPermaLink="true">http://devexpress.github.io/testcafe/blog/testcafe-v0-10-0-released.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Introducing TestCafe Testing Framework</title>
-        <description>&lt;h1&gt;Introducing TestCafe – Open Source Testing Framework&lt;/h1&gt;
-&lt;p&gt;We are happy to announce that DevExpress has released the core library of TestCafe – our automated in-browser
-testing tool – as an open-source framework for node.js. Now everyone in the open-source community can benefit
-from the technologies we developed for the commercial version.&lt;/p&gt;
-
-&lt;!--more--&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; name=&quot;the-problem&quot;&gt;&lt;/a&gt;The Problem &lt;a class=&quot;permalink&quot; href=&quot;#the-problem&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;If you are a front-end web developer who uses node.js tools
-then you know how difficult it is to set up automated in-browser testing for your web app.&lt;/p&gt;
-
-&lt;p&gt;To begin with, even installing a testing framework can be challenging.
-Most existing frameworks require Selenium, which brings JDK and browser plugins with it.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://imgs.xkcd.com/comics/will_it_work.png&quot; alt=&quot;Will It Work comic by xkcd&quot;&gt;&lt;br&gt;
-(Credit to xkcd: &lt;a href=&quot;http://xkcd.com/1742/&quot;&gt;http://xkcd.com/1742/&lt;/a&gt;)&lt;/p&gt;
-
-&lt;p&gt;Before you can launch your first test, you also need to set up a test harness,
-which means dealing with configuration files. Then you&amp;#39;ll discover that some parts of the
-harness – such as reporting – might be missing and you need to install them separately.
-The likelihood to get functional testing in your web app will go down.&lt;/p&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; name=&quot;the-solution&quot;&gt;&lt;/a&gt;The Solution &lt;a class=&quot;permalink&quot; href=&quot;#the-solution&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;The TestCafe framework simply allows you to skip the hassles mentioned above:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Pure node.js - TestCafe doesn&amp;#39;t use Selenium and doesn&amp;#39;t need plugins
-to run tests in real browsers. It&amp;#39;s built on top of node.js so it integrates
-and works great with modern development tools&lt;/li&gt;
-&lt;li&gt;No additional setup or configuration - TestCafe is all set to run
-tests right after &lt;code&gt;npm install&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;Complete test harness - With a single launch command, TestCafe
-starts the browsers, runs tests, gathers the results and generates the reports&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Learn more about TestCafe – take a look at the &lt;a href=&quot;https://devexpress.github.io/testcafe/#features&quot;&gt;feature list&lt;/a&gt;
-and the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/getting-started/&quot;&gt;getting started&lt;/a&gt; section.
-If you want to hack with us, visit our &lt;a href=&quot;https://github.com/DevExpress/testcafe&quot;&gt;GitHub page&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Try TestCafe now and tell us what you think on our &lt;a href=&quot;https://testcafe-discuss.devexpress.com/&quot;&gt;discussion board&lt;/a&gt;.&lt;/p&gt;
-</description>
-        <pubDate>Mon, 17 Oct 2016 00:00:00 +0300</pubDate>
-        <link>http://devexpress.github.io/testcafe/blog/introducing-testcafe-open-source-testing-framework.html</link>
-        <guid isPermaLink="true">http://devexpress.github.io/testcafe/blog/introducing-testcafe-open-source-testing-framework.html</guid>
         
         
       </item>

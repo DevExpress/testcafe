@@ -4,18 +4,19 @@
   <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <title>Automated browser testing for the modern web development stack | TestCafe</title>
+  <title>A node.js tool to automate end-to-end web testing | TestCafe</title>
 
   <meta name="description" content="TestCafe is a simple and powerful framework for testing websites and apps. It allows you to easily create, maintain and execute automated web tests across browsers, operating systems and devices.">
   <meta name="viewport" content="width=device-width">
-
+  
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
   <meta property="og:url" content="http://devexpress.github.io/testcafe/" />
-  <meta property="og:title" content="Automated browser testing for the modern web development stack | TestCafe" />
+  <meta property="og:title" content="A node.js tool to automate end-to-end web testing | TestCafe" />
 
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
@@ -24,6 +25,7 @@
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="http://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/highlight.min.js"></script>
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
   <script>
       document.addEventListener('DOMContentLoaded', function (e) {
           hljs.initHighlightingOnLoad();
@@ -108,12 +110,10 @@
     <script defer type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.3.min.js"></script>
     <script defer type="text/javascript" src="https://cdn3.devexpress.com/jslib/17.1.4/js/dx.all.js"></script>
     <script defer src="scripts/gallery.js" type="text/javascript"></script>
+    <script defer src="scripts/landing-page.js" type="text/javascript"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn3.devexpress.com/jslib/17.1.4/css/dx.common.css" />
     <link rel="stylesheet" type="text/css" href="https://cdn3.devexpress.com/jslib/17.1.4/css/dx.ios7.default.css" />
     <link href="css/gallery.css" type="text/css" rel="stylesheet">
-
-    <!--GitHub Star button-->
-    <script async defer src="https://buttons.github.io/buttons.js"></script>
   
 
   
@@ -125,8 +125,8 @@
     </script>
   
     <script>
-        function initHeader(siteHeader, contentWrapper, docTopMenu, article) {
-            var MIN_BODY_WIDTH = 1000;
+        function initHeader(siteHeader, contentWrapper, docTopMenu, article, gs) {
+            var MIN_BODY_WIDTH = 1215;
 
             function updateHeader() {
                 var bodyMinimized = document.body.clientWidth === MIN_BODY_WIDTH;
@@ -150,6 +150,9 @@
 
                 if(article)
                     article.style.marginTop = bodyMinimized ? '21px' : '72px';
+ 
+                if(gs)
+                    gs.style.paddingTop = bodyMinimized ? '21px' : '72px';
             }
 
             updateHeader();
@@ -161,9 +164,10 @@
             var siteHeader     = document.querySelector('.site-header');
             var docTopMenu     = document.querySelector('.doc-top-nav');
             var article        = document.querySelector('.doc');
+            var gs             = document.querySelector('.gs');
 
             if(siteHeader) 
-                initHeader(siteHeader, contentWrapper, docTopMenu, article);
+                initHeader(siteHeader, contentWrapper, docTopMenu, article, gs);
         });
     </script>
 </head>
@@ -172,44 +176,91 @@
   <body>
     <div class="page-content-wrapper">
 
-      <header class="site-header animated">
+      <header class="site-header ">
   <div class="site-header-content">
     <a class="site-logo" href="/testcafe/"></a>
     <nav class="site-nav">
         
           
-          <a class="page-link " href="/testcafe/documentation/getting-started/">Documentation</a>
-          <span class="page-link-separator">|</span>
+          <div class="site-nav-tab ">
+            <a class="page-link" href="/testcafe/documentation/getting-started/">Documentation</a>
+          </div>
         
           
-          <a class="page-link " href="https://github.com/DevExpress/testcafe">GitHub</a>
-          <span class="page-link-separator">|</span>
+          <div class="site-nav-tab ">
+            <a class="page-link" href="https://github.com/DevExpress/testcafe" target="_blank">GitHub</a>
+          </div>
         
           
-          <a class="page-link " href="/testcafe/faq/">FAQ</a>
-          <span class="page-link-separator">|</span>
+          <div class="site-nav-tab ">
+            <a class="page-link" href="/testcafe/faq/">FAQ</a>
+          </div>
         
           
-          <a class="page-link " href="/testcafe/blog/">Blog</a>
-          <span class="page-link-separator">|</span>
+          <div class="site-nav-tab ">
+            <a class="page-link" href="/testcafe/publications/">Publications</a>
+          </div>
         
           
-          <a class="page-link " href="https://github.com/DevExpress/testcafe/issues">Issues</a>
-          <span class="page-link-separator">|</span>
+          <div class="site-nav-tab ">
+            <a class="page-link" href="/testcafe/blog/">Release Notes</a>
+          </div>
         
           
-          <a class="page-link " href="https://testcafe-discuss.devexpress.com/">Discuss</a>
-          <span class="page-link-separator">|</span>
+          <div class="site-nav-tab ">
+            <a class="page-link" href="https://github.com/DevExpress/testcafe/issues" target="_blank">Issues</a>
+          </div>
         
           
-          <a class="page-link " href="https://twitter.com/dxtestcafe">Twitter</a>
-          <span class="page-link-separator">|</span>
+          <div class="site-nav-tab ">
+            <a class="page-link" href="https://testcafe-discuss.devexpress.com/" target="_blank">Forum</a>
+          </div>
         
-      <input type="text" placeholder="Search" id="search"/>
-    </nav>
-
+      <a id="twitter-button" href="https://twitter.com/dxtestcafe" target="_blank"></a>
+      <div id="search-icon"></div>
+      <div class="star-button">
+        <a class="github-button" href="https://github.com/DevExpress/testcafe" data-size="large" data-count-href="/DevExpress/testcafe/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star DevExpress/testcafe on GitHub"><span style="color:#ffffff">Star</span></a>
+      </div>
+      <div id="search-panel" class="hidden">
+          <input type="text" placeholder="Search query" id="search"/>
+          <div id="close-search"></div>
+      </div>
+      </nav>
   </div>
 </header>
+
+<script>
+  function has(parentEl, el)  {
+    var descendants = parentEl.getElementsByTagName('*');
+    
+    for(i = 0; i < descendants.length; i++) 
+        if(descendants[i] === el) return true;
+
+    return false;
+  }
+
+  function closeSearchBox(e) {
+      var clickOutsideSearchBox = searchPanel !== e.target && !has(searchPanel, e.target);
+
+      if(clickOutsideSearchBox && !searchPanel.className.includes('hidden')) 
+          searchPanel.className += ' hidden';
+  }
+
+  var searchButton      = document.querySelector('#search-icon');
+  var searchPanel       = document.querySelector('#search-panel');
+  var closeSearchButton = document.querySelector('#close-search');
+
+  searchButton.addEventListener('click', function () {
+      searchPanel.className = searchPanel.className.replace(/hidden/,'');
+  });
+  
+  closeSearchButton.addEventListener('click', function () {
+      searchPanel.className += ' hidden';
+  });
+
+  window.addEventListener('mousedown', closeSearchBox);        
+  window.addEventListener('touchstart', closeSearchBox);
+</script>
 
 
 
@@ -217,180 +268,160 @@
       <main>
     <form id="main-form" action="#">
     <div class="banner">
-        <div class="header">
-        Automated browser testing<br/>for the modern web development stack
-        </div>
-        <div class="slogan">
-        TestCafe is a pure node.js end-to-end solution for testing web apps. It takes care of all the stages: starting browsers, running tests, gathering test results and generating reports. TestCafe doesn’t need browser plugins - it works in all popular modern browsers out-of-the-box.
-        </div>
-        <div class="animation">
-            <img src="images/install-and-run-test.gif" />
-        </div>
-        <div class="white-button-container">
-        <a href="documentation/getting-started/" class="white-button">Get Started</a>
-        </div>
-        <div class="star-button">
-            <a class="github-button" href="https://github.com/DevExpress/testcafe" data-style="mega" data-count-href="/DevExpress/testcafe/stargazers" data-count-api="/repos/DevExpress/testcafe#stargazers_count" data-count-aria-label="# stargazers on GitHub" aria-label="Star DevExpress/testcafe on GitHub"><span style="color:#ffffff">Star</span></a>
-        </div>
-    </div>
-    <div class="main-content">
-        <a class="anchor" name="features"></a>
-        <div class="feature">
-            <span class="name">
-                Easy Install
-            </span>
-            <div class="description">
-                <p>Everything is included in a single module installed with one command.</p>
-                <div class="command">npm install -g testcafe</div>
-                <p>No native parts to compile, no browsers plugins to install.</p>
+        <div class="banner-content">
+            <div class="banner-text">
+                <div class="title">
+                A node.js tool to automate<br/>end-to-end web testing
+                </div>
+                <div class="slogan">
+                Write tests in JS or TypeScript, run them and view results
+                </div>
+                <a href="/testcafe/documentation/getting-started/">
+                    <div class="get-started-button">
+                        Get Started
+                    </div>
+                </a>
             </div>
-        </div>
-        <div class="feature">
-            <span class="name">
-                Complete Test Harness
-            </span>
-            <div class="description">
-                <p>TestCafe automatically starts browsers, runs tests and gathers results. You only type a single command to begin testing.</p>
-                <div class="command">testcafe chrome,firefox tests/</div>
-                <p>When testing is finished, TestCafe aggregates test results from different browsers and outputs them into one comprehensive report.</p>
+            <div class="banner-image">
+                <img src="/testcafe/images/landing-page/banner-image.png" />
             </div>
-        </div>
-        <div class="feature">
-            <span class="name">
-                Write Test Code in Modern JavaScript and TypeScript
-            </span>
-            <div class="description">
-                <p>TestCafe allows you to write tests using <a href="documentation/test-api/typescript-support.html">TypeScript</a> or JavaScript (with its modern features like <code>async/await</code>).</p>
-                <p><a href="documentation/test-api">Test API</a> consists of over two dozen methods that can emulate all actions one could possibly do with a webpage. Chained syntax allows for code that is easy to write and read.</p>
-                <pre><code class="javascript">fixture `Example page`
-    .page `https://devexpress.github.io/testcafe/example`;
-
-test('Emulate user actions and perform a verification', async t => {
-    await t
-        .setNativeDialogHandler(() => true)
-        .click('#populate')
-        .click('#submit-button');
-
-    const location = await t.eval(() => window.location);
-
-    await t.expect(location.pathname).eql('/testcafe/example/thank-you.html');
-});</code></pre>
-                <p>By using TypeScript to write your TestCafe tests, you get the advantages of strongly-typed languages such as: rich coding assistance, painless scalability, check-as-you-type code verification, and much more.</p>
-                <p>To make debugging easier, TestCafe automatically generates source maps. To debug your test code, start a debugging session in an IDE that supports source maps.</p>
-            </div>
-        </div>
-		<div class="feature">
-            <span class="name">
-                Flexible Selector System
-            </span>
-            <div class="description">
-                <p>TestCafe supports a flexible selector system that provides API with rich capabilities for writing test scripts.</p>
-                <p>You can access webpage elements in different ways using <a href="documentation/test-api/selecting-page-elements/selectors.html">selectors</a>. For example, you can use one of the following selector types:
-                    <ul>
-                        <li>CSS selector</li>
-                        <li>Text</li>
-                        <li>DOM hierarchy</li>
-                        <li>or use any custom logic</li>
-                    </ul>
-                </p>
-                <p>The selector API provides methods that can be combined together, thus providing you with a flexible functional-style selector mechanism.
-                <pre><code class="javascript">const macOSInput = Selector('.column').find('label').withText('MacOS').child('input');</code></pre>
-                </p>
-                <p>Check our <a href="https://github.com/DevExpress/testcafe/blob/master/examples/basic">example</a> that demonstrates how to create tests using
-                declarative <a href="http://martinfowler.com/bliki/PageObject.html">Page Objects</a> built with TestCafe selectors.</p>
+            <div class="values">
+                <div class="value-container">
+                    <div class="value value-1">
+                        <p>Works on all popular environments</p>
+                        <div class="description">
+                            <p>TestCafe runs on Windows, MacOS, and Linux. It supports desktop, mobile, remote and cloud <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browser-support.html">browsers</a> (UI or headless).</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="value-container">
+                    <div class="value value-2">
+                        <p>1 minute to set up</p>
+                        <div class="description">
+                            <p>You <a href="https://devexpress.github.io/testcafe/faq/#i-have-heard-that-testcafe-does-not-use-selenium-how-does-it-operate">do not need WebDriver</a> or any other testing software. Install TestCafe with one command, and you are ready to test.</p>
+                            <code class="install-example"><p>npm install -g testcafe</p></code>
+                        </div>
+                    </div>
+                </div>
+                <div class="value-container">
+                    <div class="value value-3">
+                        <p>Free and open source</p>
+                        <div class="description">
+                            <p>TestCafe is free to use under the <a href="https://github.com/DevExpress/testcafe/blob/master/LICENSE" target="_blank">MIT license</a>. Plugins provide custom reports, integration with other tools, launching tests from IDE, etc. You can use the plugins made by the GitHub community or make your own.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-        <div class="feature">
-            <span class="name">
-                Smart Assertions
-            </span>
-            <div class="description">
-                <p>TestCafe provides a full-featured set of <a href="documentation/test-api/assertions/assertion-api.html">built-in assertions</a>, so you do not need to reference additional libraries. The <a href="documentation/test-api/assertions/index.html#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a> allows you to create stable, fast and reliable tests that do not depend on page response time.</p>
-
-                <pre><code class="javascript">import { Selector } from 'testcafe';
-
-fixture `Example page`
-    .page `http://devexpress.github.io/testcafe/example/`;
-
-test('Check property of element', async t => {
-    const developerNameInput = Selector('#developer-name');
-
-    await t
-        .expect(developerNameInput.value).eql('', 'input is empty')
-        .typeText(developerNameInput, 'Peter Parker')
-        .expect(developerNameInput.value).contains('Peter', 'input contains text "Peter"');
-});</code></pre>
-            </div>
-        </div>
-        <div class="feature">
-            <span class="name">
-                No Extra Coding
-            </span>
-            <div class="description">
-                <p>Write tests without boilerplate code.</p>
-                <ul>
-                    <li>TestCafe automatically waits for page loads and XHRs to complete, as well as for DOM elements to become visible. You do not need to write custom code for that.</li>
-                    <li>Test runs are isolated, which means that they do not share cookies, local or session storages. There is nothing to clean up between test runs.</li>
-                </ul>
-            </div>
-       </div>
-        <div class="feature">
-            <span class="name">
-                Descriptive Reports
-            </span>
-            <div class="description">
-                <p>TestCafe automatically generates full-detailed reports that provide a test run summary and comprehensive information about errors. Automatic page screenshots, fancy call sites and call stacks free of TestCafe internals allow you to easily detect error causes.</p>
-                <p>Use one of <a href="documentation/using-testcafe/common-concepts/reporters.html">built-in reporters</a> to output test results or <a href="documentation/extending-testcafe/reporter-plugin/">create your own one</a> to produce custom reports.</p>
-            </div>
-            <div class="gallery-container">
-            <div id="gallery"></div>
-            </div>
-        </div>
-        <div class="feature">
-            <span class="name">
-                Straightforward Continuous Integration
-            </span>
-            <div class="description">
-                <p>TestCafe is easy to set up on popular Continuous Integration platforms as it allows you to test against various browsers: local, remote, cloud (e.g. <a href="https://devexpress.github.io/testcafe/documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.html">Sauce Labs</a>) or headless (e.g. <a href="https://github.com/ryx/testcafe-browser-provider-nightmare">Nightmare</a>).
-                You can also create a custom <a href="documentation/extending-testcafe/browser-provider-plugin">browser provider</a> to add support for a browser or a cloud platform of your choice.</p>
-            </div>
-        </div>
-        <div class="feature">
-            <span class="name">
-                Actively Developing Ecosystem
-            </span>
-            <div class="description">
-                <p>To ensure that TestCafe is easy to use with various tools, from IDEs to task runners, our core team - with help from the community - developed an ecosystem of plugins for these tools. Many are already available, more are yet to come. For a complete list, see
-                <a href="https://github.com/DevExpress/testcafe/#plugins">TestCafe Ecosystem</a>.</p>
-            </div>
-        </div>
-        <div class="feature">
-            <span class="name">
-                Other Useful Features
-            </span>
-            <div class="description">
-                <ul>
-                    <li>Automatic screenshots of the tested page taken <a href="documentation/using-testcafe/command-line-interface.html#-s---screenshots-on-fails">whenever the test fails</a> or <a href="documentation/test-api/actions/take-screenshot.html">triggered from test code</a>.</li>
-                    <li><a href="documentation/test-api/actions/upload.html">File upload</a> support.</li>
-                    <li>Detecting JavaScript errors on the tested page.</li>
-                    <li><a href="documentation/test-api/handling-native-dialogs.html">Handling native browser dialogs</a> (i.e., alert, confirm, prompt, beforeunload ) using custom logic whenever they are invoked during a test run.</li>
-                    <li><a href="documentation/test-api/actions/resize-window.html">Resizing the browser window</a> during test execution.</li>
-                    <li><a href="documentation/using-testcafe/command-line-interface.html#--speed-factor">Adjusting the speed</a> of test execution.</li>
-                </ul>
-            </div>
-        </div>
-        <div class="feature">
-            <span class="name">
-                More to Come…
-            </span>
-            <div class="description">
-                <p>We plan to introduce other outstanding features so that you can test apps with even more efficiency. Meanwhile, you can help us improve TestCafe by voting for features on our <a href="https://github.com/DevExpress/testcafe/milestone/10">road map </a> or sharing your own ideas and code in our <a href="https://github.com/DevExpress/testcafe">GitHub repository</a>.</p>
-            </div>
-        </div>
-        <div class="blue-button-container">
-        <a href="documentation/getting-started/" class="blue-button">Get Started</a>
         </div>
     </div>
+    <div class="how-it-works-section">
+        <div class="how-it-works-wrapper">
+            <div class="how-it-works-content">
+                <h1>How it works</h1>
+                <div class="gallery-wrapper">
+                    <div id="main-gallery"></div>
+                    <div class="gallery-background"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+        <div class="features-section">
+            <div class="features-content">
+                <a class="anchor" name="features"></a>
+                <div class="features-header">
+                    Features
+                </div>
+                <div class="features-subheader">
+                    So what can I do with it?
+                </div>
+                <div class="features">
+                    <div class="row row-1">
+                        <div class="feature-container">
+                            <div class="feature feature-1">
+                                <p>Create stable tests<br/>(and no manual timeouts)</p>
+                                <div class="description">
+                                    <p>TestCafe automatically waits for page loads and XHRs before the test starts and after each action. It also features smart test actions and <a href="https://devexpress.github.io/testcafe/documentation/test-api/assertions/">assertions</a> that wait for page elements to appear. You can change the maximum wait time. If elements load faster, tests skip the timeout and continue.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="feature-container">
+                            <div class="feature feature-2">
+                                <p>Write in latest JS<br/>or TypeScript</p>
+                                <div class="description">
+                                    <p>TestCafe supports the latest JavaScript features, including ES2017 (for example, async/await). You can also use <a href="https://devexpress.github.io/testcafe/documentation/test-api/typescript-support.html">TypeScript</a> if you prefer a strongly typed language.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="feature-container">
+                            <div class="feature feature-3">
+                                <p>Detect JS errors<br/>in your code</p>
+                                <div class="description">
+                                    <p>TestCafe reports JS errors that it finds on the webpage. Tests automatically fail because of that. However, you can disable this.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-2">
+                        <div class="feature-container">
+                            <div class="feature feature-4">
+                                <p>Launch<br/>concurrent tests</p>
+                                <div class="description">
+                                    <p>TestCafe can open multiple instances of the same browser to run parallel tests which decreases test execution time.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="feature-container">
+                            <div class="feature feature-5">
+                                <p>Build readable tests with<br/>PageObject</p>
+                                <div class="description">
+                                    <p>The TestCafe's <a href="https://devexpress.github.io/testcafe/documentation/test-api/">Test API</a> includes a high-level selector library, assertions, etc. You can combine them to implement readable tests with the <a id="page-object-link">PageObject pattern</a>.</p>
+                                    <code class="page-object-example"><p>const el = Selector('.column').find('label')<br/>           .withText('MacOS').child('input');</p></code>
+                                </div>
+                                <div id="page-object-popover">
+                                        With this pattern, the tested page is represented by a JavaScript object. Elements in tests are accessed through the object's interface. Even if page markup changes, the page object's interface remains the same. And you won't have to rewrite the tests.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="feature-container">
+                            <div class="feature feature-6">
+                                <p>Include tests in continuous<br/>integration system</p>
+                                <div class="description">
+                                    <p>You can run TestCafe from a console, and its reports can be viewed in a CI system's interface (TeamCity, Jenkins, Travis & etc.)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tweets-section">
+            <div class="tweets-content">
+                <div id="do-you-like">
+                    <p>Do you like TestCafe?</p>
+                </div>
+                <div id="tweet-why">
+                    <p><a href="https://twitter.com/intent/tweet?text=I%20%F0%9F%92%99%20%23TestCafe%20because" target="_blank">Tweet why</a> to help others decide</p>
+                </div>
+            </div>
+        </div>
+        <div class="follow-section">
+            <div class="follow-content">
+                <div class="twitter">
+                    <div class="header">
+                        <p>Follow us on <a href="https://twitter.com/DXTestCafe" target="_blank">Twitter</a></p>
+                    </div>
+                    <div class="subheader">
+                        <p>We post TestCafe news and updates, several times a week.</p>
+                    </div>
+                </div>
+                <div class="separator">
+                    <img src="/testcafe/images/landing-page/follow-section-separator.png"/>
+                </div>
+                <div class="github">
+                    <p>And don't forget<br/>to vote for new features on <a href="https://github.com/DevExpress/testcafe/issues" target="_blank">GitHub</a>.</p>
+                </div>
+            </div>
+        </div>
     </form>
 </main>
 
@@ -402,20 +433,20 @@ test('Check property of element', async t => {
     <div class="site-footer-content">
         <div class="footer-col-1">
             <p><strong>TestCafe</strong>: Automated browser testing for the modern web development stack<br/>
-            Copyright © 1998-2017 Developer Express Inc.</p>
+            Copyright © 2012-2017 Developer Express Inc.</p>
         </div>
     </div>
 </footer>
 
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.js"></script>
-    <script type="text/javascript"> docsearch({
+     <script type="text/javascript"> docsearch({
           apiKey: '938fb7894c0af8c01af3e2b4c53d4bdd',
           indexName: 'testcafe',
           inputSelector: '#search',
           debug: false // Set debug to true if you want to inspect the dropdown
       });
-    </script>
+    </script> 
 
   </body>
 
