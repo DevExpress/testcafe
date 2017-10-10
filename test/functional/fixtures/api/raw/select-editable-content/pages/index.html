@@ -2,15 +2,16 @@
 <html>
 <head>
     <title>Select editable content</title>
+    <script src="../../../../../is-touch-device.js"></script>
 </head>
 <div id="div1" contenteditable="true">div<p id="p1">with</p>contenteditable<p id="p2">attribute</p></div>
 <div id="div2" contenteditable="true">invisible<p id="p3" style="display: none;">3</p>div<p id="p4">4</p></div>
 <div id="div3"><p id="p5">5</p>div<p id="p6">6</p></div>
 <div id="div4" contenteditable="true"><p id="p7">7</p></div>
 <script>
-    var hasTouchEvents = "ontouchstart" in window;
+    var touchDevice = isTouchDevice();
 
-    document.getElementById('div1').addEventListener(hasTouchEvents ? 'touchend' : 'mouseup', function () {
+    document.getElementById('div1').addEventListener(touchDevice ? 'touchend' : 'mouseup', function () {
         var selection = window.getSelection();
         var startNode = this.childNodes[1].childNodes[0];
         var endNode   = this.childNodes[3].childNodes[0];
