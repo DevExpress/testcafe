@@ -136,25 +136,7 @@ Use the `t.getBrowserConsoleMessages` method that returns the following object.
 
 Note that this method returns only messages posted via the `console.error`, `console.warn`, `console.log` and `console.info` methods. Messages output by the browser (like when an unhandled exception occurs on the page) will not be returned.
 
-For instance, consider the React's typechecking feature, [PropTypes](https://reactjs.org/docs/typechecking-with-proptypes.html). You can use it to check that you assign valid values to the component's props.
-
-```jsx
-import PropTypes from 'prop-types';
-
-class Greeting extends React.Component {
-  render() {
-    return (
-      <h1>Hello, {this.props.name}</h1>
-    );
-  }
-}
-
-Greeting.propTypes = {
-  name: PropTypes.string
-};
-```
-
-If a `PropTypes` rule is violated, React posts an error into the JavaScript console.
+For instance, consider the React's typechecking feature, [PropTypes](https://reactjs.org/docs/typechecking-with-proptypes.html). You can use it to check that you assign valid values to the component's props. If a `PropTypes` rule is violated, React posts an error into the JavaScript console.
 
 The following example shows how to check the React prop types for errors using the `t.getBrowserConsoleMessages` method.
 
