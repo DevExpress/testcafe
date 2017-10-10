@@ -6,7 +6,7 @@ checked: true
 ---
 # Accessing Console Messages
 
-The tested web application may output log, warning, error and information messages into the browser console. TestCafe allows you to access them from test code using the `t.getBrowserConsoleMessages` method.
+The tested web application or a framework it uses may output log, warning, error and information messages into the browser console. TestCafe allows you to access them from test code using the `t.getBrowserConsoleMessages` method.
 
 ```text
 t.getBrowserConsoleMessages()
@@ -22,6 +22,8 @@ Field | Type | Description
 `info` | Array of String | Information messages printed in the console.
 
 Note that this method returns only messages posted via the `console.error`, `console.warn`, `console.log` and `console.info` methods. Messages output by the browser (like when an unhandled exception occurs on the page) will not be returned.
+
+For instance, consider the React's typechecking feature, [PropTypes](https://reactjs.org/docs/typechecking-with-proptypes.html). You can use it to check that you assign valid values to the component's props. If a PropTypes rule is violated, React posts an error into the JavaScript console.
 
 The following example shows how to check the React prop types for errors using the `t.getBrowserConsoleMessages` method.
 
