@@ -6,7 +6,7 @@
 
 #### :gear: Testing in headless Firefox
 
-We have added support for Firefox running in the [headless mode](https://developer.mozilla.org/en-US/Firefox/Headless_mode) (version 56+).
+In addition to Chrome headless, we have added support for testing in [headless](https://developer.mozilla.org/en-US/Firefox/Headless_mode) Firefox (version 56+).
 
 ```sh
 testcafe firefox:headless tests/sample-fixture.js
@@ -24,11 +24,11 @@ runner
 
 #### :gear: Outputting test results to multiple channels ([#1412](https://github.com/DevExpress/testcafe/issues/1412))
 
-If you need a report to be printed in the console, saved to a `.json` file and transmitted to a Slack channel,
+If you need a report to be printed in the console and saved to a `.json` file,
 you can now do this by specifying multiple reporters when running tests.
 
 ```sh
-testcafe all tests/sample-fixture.js -r spec,json:report.json,slack
+testcafe all tests/sample-fixture.js -r spec,json:report.json
 ```
 
 ```js
@@ -39,7 +39,6 @@ runner
     .browsers('chrome')
     .reporter('spec')
     .reporter('json', stream)
-    .reporter('slack')
     .run()
     .then(failedCount => {
         stream.end();
@@ -59,6 +58,10 @@ testcafe chrome tests/fixture.js --debug-on-fail
 ```js
 runner.run({ debugOnFail: true });
 ```
+
+#### :gear: Interacting with the tested page in debug mode ([#1848](https://github.com/DevExpress/testcafe/issues/1848))
+
+
 
 #### :gear: Browsers are opened with clean profiles by default ([#1623](https://github.com/DevExpress/testcafe/issues/1623))
 
