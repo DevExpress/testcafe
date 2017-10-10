@@ -451,7 +451,14 @@ gulp.task('put-in-navigation', ['fetch-assets-repo'], function () {
         .pipe(gulp.dest('site/src/_data'));
 });
 
-gulp.task('prepare-website', ['put-in-articles', 'put-in-navigation', 'put-in-posts', 'lint-docs']);
+gulp.task('put-in-publications', ['fetch-assets-repo'], function () {
+    return gulp
+        .src('docs/publications/**/*')
+        .pipe(gulp.dest('site/src/_data'));
+});
+
+
+gulp.task('prepare-website', ['put-in-articles', 'put-in-navigation', 'put-in-posts', 'put-in-publications', 'lint-docs']);
 
 function buildWebsite (mode, cb) {
     var options = mode ? { stdio: 'inherit', env: { JEKYLL_ENV: mode } } : { stdio: 'inherit' };
