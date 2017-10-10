@@ -246,6 +246,8 @@ runner.reporter('minimal');
 const stream = fs.createWriteStream('report.xml');
 
 runner
+    .src('tests/sample-fixture.js')
+    .browsers('chrome')
     .reporter('xunit', stream)
     .run()
     .then(failedCount => {
@@ -259,6 +261,8 @@ runner
 const stream = fs.createWriteStream('report.json');
 
 runner
+    .src('tests/sample-fixture.js')
+    .browsers('chrome')
     .reporter('json', stream)
     .reporter('list')
     .run()
