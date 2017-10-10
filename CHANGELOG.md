@@ -61,11 +61,17 @@ runner.run({ debugOnFail: true });
 
 #### :gear: Interacting with the tested page in debug mode ([#1848](https://github.com/DevExpress/testcafe/issues/1848))
 
+When debugging your tests, you can now interact with the tested page. Click the **Unlock page** button in the page footer to enable interaction.
 
+![Unlock page button](docs/articles/images/unlock-page-button.png)
 
-#### :gear: Browsers are opened with clean profiles by default ([#1623](https://github.com/DevExpress/testcafe/issues/1623))
+After that, you can do anything with the webpage. This gives you additional powers to detect problems in your tests.
 
-TestCafe now opens browsers with empty profiles to eliminate the undesirable influence of profile settings and extensions on test running.
+Click **Resume** to continue running the test.
+
+#### :gear: Chrome and Firefox are opened with clean profiles by default ([#1623](https://github.com/DevExpress/testcafe/issues/1623))
+
+TestCafe now opens Chrome and Firefox with empty profiles to eliminate the influence of profile settings and extensions on test running.
 
 However, you can **return to the previous behavior** by using the `:userProfile` browser option.
 
@@ -196,11 +202,8 @@ Now TestCafe exits gracefully closing all browsers opened for testing.
 * Tests no longer hang in Nightmare ([#1493](https://github.com/DevExpress/testcafe/issues/1493))
 * The `focus` event is now raised when clicking links with `tabIndex="0"` ([#1803](https://github.com/DevExpress/testcafe/issues/1803))
 * Headless Chrome processes no longer hang after test runs ([#1826](https://github.com/DevExpress/testcafe/issues/1826))
-* Tests with the `resizeWindow` action no longer fail in headless Firefox ([#1825](https://github.com/DevExpress/testcafe/issues/1825))
-* Tests now run correctly in headless Firefox and regular Chrome on Linux ([#1824](https://github.com/DevExpress/testcafe/issues/1824))
 * `setFilesToUpload` no longer throws a `RangeError` on websites that use Angular ([#1731](https://github.com/DevExpress/testcafe/issues/1731))
 * Fixed a bug where an `iframe` got wrong origin ([#1753](https://github.com/DevExpress/testcafe/issues/1753))
-* Fixed a bug where it was impossible to click an element under the TestCafe panel ([#1846](https://github.com/DevExpress/testcafe/issues/1846))
 * `document.open` now doesn't throw an error if `document.defaultView` is `null` ([testcafe-hammerhead/#1272](https://github.com/DevExpress/testcafe-hammerhead/issues/1272))
 * No error is thrown when the handler passed to `addEventListener` is `undefined` ([testcafe-hammerhead/#1251](https://github.com/DevExpress/testcafe-hammerhead/issues/1251))
 * An error is no longer raised if the processed element is not extendible ([testcafe-hammerhead/#1300](https://github.com/DevExpress/testcafe-hammerhead/issues/1300))
