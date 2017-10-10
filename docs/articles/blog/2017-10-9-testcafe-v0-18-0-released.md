@@ -5,7 +5,7 @@ permalink: /blog/:title.html
 ---
 # TestCafe v0.18.0 Released: Angular Selectors, Using Multiple Reporters, etc
 
-With this release, we have prepared a bunch of useful things. We put finishing touches on Angular selectors to let you address page elements on Angular websites using the component tree. We also made it possible to output reports to multiple channels (like console + file). Read on to learn about more things we have for you.
+With this release, we have prepared a bunch of useful things. We have put finishing touches on Angular selectors to let you address page elements on Angular websites using the component tree. We have also made it possible to output reports to multiple channels (like console + file). Read on to learn about more things we have for you.
 
 <!--more-->
 
@@ -106,7 +106,7 @@ runner.run({ debugOnFail: true });
 
 When debugging your tests, you can now interact with the tested page. Click the **Unlock page** button in the page footer to enable interaction.
 
-![Unlock page button](docs/articles/images/unlock-page-button.png)
+![Unlock page button](../images/unlock-page-button.png)
 
 After that, you can do anything with the webpage. This gives you additional powers to detect problems in your tests.
 
