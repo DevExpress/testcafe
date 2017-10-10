@@ -59,10 +59,7 @@ testcafe firefox:headless tests/sample-fixture.js
 runner
     .src('tests/sample-fixture.js')
     .browsers('firefox:headless')
-    .run()
-    .then(failedCount => {
-        // ...
-    });
+    .run();
 ```
 
 ### ⚙ Outputting test results to multiple channels ([#1412](https://github.com/DevExpress/testcafe/issues/1412))
