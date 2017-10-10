@@ -387,30 +387,51 @@
                     display: inline-block;
                     margin: 7px 0 0 21px;
 
-                    .unlock-page-container {
-                        &.locked {
-                            border: 1px solid #36B6E5;
-                            .rounded-corners(3px);
+                    border: 1px solid #38A3D5;
+                    .rounded-corners(3px);
+                    position: relative;
+                    top: 3px;
 
+                    .unlock-page-container {
+                        padding: 0 17px 1px 8px;
+                        height: 27px;
+
+                        &.locked {
+                            background-color: #38A3D5;
                             cursor: pointer;
 
                             .unlock-icon {
                                 cursor: pointer;
+                                background-position: -54px -64px;
                             }
 
                             span {
                                 cursor: pointer;
+                                color: #ffffff;
+                                margin-left: 24px;
+                            }
+
+                            .icon-separator {
+                                background-color: #333333;
                             }
                         }
 
                         &.unlocked {
-                            border-left: 1px solid rgba(66, 173, 223, 0.5);
-                            border-top: 1px solid transparent;
-                        }
+                            padding-right: 10px;
 
-                        position: relative;
-                        top: 3px;
-                        padding: 0 14px 1px;
+                            .unlock-icon {
+                                background-position: -69px -64px;
+                            }
+
+                            .icon-separator {
+                                background-color: #38A3D5;
+                            }
+
+                            span {
+                                color: #38A3D5;
+                                margin-left: 18px;
+                            }
+                        }
 
                         .unlock-icon {
                             .sprite-icon();
@@ -418,16 +439,21 @@
                             display: inline-block;
                             width: 12px;
                             height: 16px;
-                            background-position: -54px -64px;
+                        }
+
+                        .icon-separator {
+                            position: absolute;
+                            cursor: pointer;
+                            width: 1px;
+                            height: 30px;
+                            top: -1px;
+                            left: 29px;
                         }
 
                         span {
                             position: relative;
                             top: -3px;
-                            margin-left: 10px;
-
                             font-size: 13px;
-                            color: #36B6E5;
                         }
                     }
                 }
@@ -531,22 +557,6 @@
 
             .progress-bar.determinate .value {
                 background-color: #df5679;
-            }
-
-            .unlock-page-container {
-                &.locked {
-                    border: 1px solid #df5679 !important;
-                }
-
-                border-left: 1px solid rgba(223, 86, 121, 0.5) !important;;
-
-                span {
-                    color: #df5679 !important;;
-                }
-
-                .unlock-icon {
-                    background-position: -69px -64px !important;
-                }
             }
         }
 
