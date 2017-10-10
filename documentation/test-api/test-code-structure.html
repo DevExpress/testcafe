@@ -4,6 +4,7 @@
   <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
@@ -11,7 +12,7 @@
 
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
-
+  
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
   <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html" />
@@ -24,6 +25,7 @@
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="http://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/highlight.min.js"></script>
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
   <script>
       document.addEventListener('DOMContentLoaded', function (e) {
           hljs.initHighlightingOnLoad();
@@ -111,9 +113,9 @@
     <script src="/testcafe/scripts/mobile-detect.min.js" type="text/javascript"></script>
 
     <script>
-        var MIN_BODY_WIDTH = 1000;
-        var FOOTER_HEIGHT  = 63;
-        var HEADER_HEIGHT  = 102;
+        var MIN_BODY_WIDTH = 1215;
+        var FOOTER_HEIGHT  = 113;
+        var HEADER_HEIGHT  = 126;
 
         var nav            = null;
         var article        = null;
@@ -220,8 +222,8 @@
     </script>
   
     <script>
-        function initHeader(siteHeader, contentWrapper, docTopMenu, article) {
-            var MIN_BODY_WIDTH = 1000;
+        function initHeader(siteHeader, contentWrapper, docTopMenu, article, gs) {
+            var MIN_BODY_WIDTH = 1215;
 
             function updateHeader() {
                 var bodyMinimized = document.body.clientWidth === MIN_BODY_WIDTH;
@@ -238,6 +240,9 @@
 
                 if(article)
                     article.style.marginTop = bodyMinimized ? '21px' : '72px';
+ 
+                if(gs)
+                    gs.style.paddingTop = bodyMinimized ? '21px' : '72px';
             }
 
             updateHeader();
@@ -249,9 +254,10 @@
             var siteHeader     = document.querySelector('.site-header');
             var docTopMenu     = document.querySelector('.doc-top-nav');
             var article        = document.querySelector('.doc');
+            var gs             = document.querySelector('.gs');
 
             if(siteHeader) 
-                initHeader(siteHeader, contentWrapper, docTopMenu, article);
+                initHeader(siteHeader, contentWrapper, docTopMenu, article, gs);
         });
     </script>
 </head>
@@ -260,64 +266,118 @@
   <body>
     <div class="page-content-wrapper">
 
-      <header class="site-header minimized">
+      <header class="site-header fixed">
   <div class="site-header-content">
     <a class="site-logo" href="/testcafe/"></a>
     <nav class="site-nav">
         
           
-          <a class="page-link active" href="/testcafe/documentation/getting-started/">Documentation</a>
-          <span class="page-link-separator">|</span>
+          <div class="site-nav-tab active">
+            <a class="page-link" href="/testcafe/documentation/getting-started/">Documentation</a>
+          </div>
         
           
-          <a class="page-link " href="https://github.com/DevExpress/testcafe">GitHub</a>
-          <span class="page-link-separator">|</span>
+          <div class="site-nav-tab ">
+            <a class="page-link" href="https://github.com/DevExpress/testcafe" target="_blank">GitHub</a>
+          </div>
         
           
-          <a class="page-link " href="/testcafe/faq/">FAQ</a>
-          <span class="page-link-separator">|</span>
+          <div class="site-nav-tab ">
+            <a class="page-link" href="/testcafe/faq/">FAQ</a>
+          </div>
         
           
-          <a class="page-link " href="/testcafe/blog/">Blog</a>
-          <span class="page-link-separator">|</span>
+          <div class="site-nav-tab ">
+            <a class="page-link" href="/testcafe/publications/">Publications</a>
+          </div>
         
           
-          <a class="page-link " href="https://github.com/DevExpress/testcafe/issues">Issues</a>
-          <span class="page-link-separator">|</span>
+          <div class="site-nav-tab ">
+            <a class="page-link" href="/testcafe/blog/">Release Notes</a>
+          </div>
         
           
-          <a class="page-link " href="https://testcafe-discuss.devexpress.com/">Discuss</a>
-          <span class="page-link-separator">|</span>
+          <div class="site-nav-tab ">
+            <a class="page-link" href="https://github.com/DevExpress/testcafe/issues" target="_blank">Issues</a>
+          </div>
         
           
-          <a class="page-link " href="https://twitter.com/dxtestcafe">Twitter</a>
-          <span class="page-link-separator">|</span>
+          <div class="site-nav-tab ">
+            <a class="page-link" href="https://testcafe-discuss.devexpress.com/" target="_blank">Forum</a>
+          </div>
         
-      <input type="text" placeholder="Search" id="search"/>
-    </nav>
-
+      <a id="twitter-button" href="https://twitter.com/dxtestcafe" target="_blank"></a>
+      <div id="search-icon"></div>
+      <div class="star-button">
+        <a class="github-button" href="https://github.com/DevExpress/testcafe" data-size="large" data-count-href="/DevExpress/testcafe/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star DevExpress/testcafe on GitHub"><span style="color:#ffffff">Star</span></a>
+      </div>
+      <div id="search-panel" class="hidden">
+          <input type="text" placeholder="Search query" id="search"/>
+          <div id="close-search"></div>
+      </div>
+      </nav>
   </div>
 </header>
+
+<script>
+  function has(parentEl, el)  {
+    var descendants = parentEl.getElementsByTagName('*');
+    
+    for(i = 0; i < descendants.length; i++) 
+        if(descendants[i] === el) return true;
+
+    return false;
+  }
+
+  function closeSearchBox(e) {
+      var clickOutsideSearchBox = searchPanel !== e.target && !has(searchPanel, e.target);
+
+      if(clickOutsideSearchBox && !searchPanel.className.includes('hidden')) 
+          searchPanel.className += ' hidden';
+  }
+
+  var searchButton      = document.querySelector('#search-icon');
+  var searchPanel       = document.querySelector('#search-panel');
+  var closeSearchButton = document.querySelector('#close-search');
+
+  searchButton.addEventListener('click', function () {
+      searchPanel.className = searchPanel.className.replace(/hidden/,'');
+  });
+  
+  closeSearchButton.addEventListener('click', function () {
+      searchPanel.className += ' hidden';
+  });
+
+  window.addEventListener('mousedown', closeSearchBox);        
+  window.addEventListener('touchstart', closeSearchBox);
+</script>
 
 
   <div class="doc-top-nav">
     <div class="doc-top-nav-content">
-    
-      <a class="" href="/testcafe/documentation/getting-started/">Getting Started</a>
-      <span class="page-link-separator level-2">|</span>
-    
-      <a class="" href="/testcafe/documentation/using-testcafe/">Using TestCafe</a>
-      <span class="page-link-separator level-2">|</span>
-    
-      <a class="active" href="/testcafe/documentation/test-api/">Test API</a>
-      <span class="page-link-separator level-2">|</span>
-    
-      <a class="" href="/testcafe/documentation/extending-testcafe/">Extending TestCafe</a>
-      <span class="page-link-separator level-2">|</span>
-    
-      <a class="" href="/testcafe/documentation/recipes/">Recipes</a>
-      <span class="page-link-separator level-2">|</span>
-    
+      <div class="doc-top-nav-wrapper">
+        
+          <div class="doc-top-nav-tab " >
+            <a href="/testcafe/documentation/getting-started/">Getting Started</a>      
+          </div>
+        
+          <div class="doc-top-nav-tab " >
+            <a href="/testcafe/documentation/using-testcafe/">Using TestCafe</a>      
+          </div>
+        
+          <div class="doc-top-nav-tab active" >
+            <a href="/testcafe/documentation/test-api/">Test API</a>      
+          </div>
+        
+          <div class="doc-top-nav-tab " >
+            <a href="/testcafe/documentation/extending-testcafe/">Extending TestCafe</a>      
+          </div>
+        
+          <div class="doc-top-nav-tab " >
+            <a href="/testcafe/documentation/recipes/">Recipes</a>      
+          </div>
+        
+      </div>
     </div>
   </div>
 
@@ -337,8 +397,6 @@
 		<div class="doc-nav-content">
 			<ul>
 				<li>
-				
-<a href="/testcafe/documentation/test-api/"  >TEST API</a>
 				<ul>
 
     <li>
@@ -652,6 +710,13 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/test-api/accessing-console-messages.html"  >Accessing Console Messages</a>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/test-api/a-z.html"  >A-Z Index</a>
 		
     </li>
@@ -685,6 +750,7 @@
 <ul>
 <li><a href="#test-controller">Test Controller</a></li>
 <li><a href="#setting-test-speed">Setting Test Speed</a></li>
+<li><a href="#setting-page-load-timeout">Setting Page Load Timeout</a></li>
 </ul></li>
 <li><a href="#specifying-the-start-webpage">Specifying the Start Webpage</a></li>
 <li><a href="#initialization-and-clean-up">Initialization and Clean-Up</a>
@@ -871,7 +937,41 @@ to slow the test down.</p>
         <span class="p">.</span><span class="nx">setTestSpeed</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">,</span> <span class="s1">' Parker'</span><span class="p">);</span>
 <span class="p">});</span>
-</code></pre></div><h2><a class="anchor" name="specifying-the-start-webpage"></a>Specifying the Start Webpage <a class="permalink" href="#specifying-the-start-webpage">#</a></h2>
+</code></pre></div><h3><a class="anchor" name="setting-page-load-timeout"></a>Setting Page Load Timeout <a class="permalink" href="#setting-page-load-timeout">#</a></h3>
+<p>Page load timeout defines the amount of time passed after the <code>DOMContentLoaded</code> event, within which the <code>window.load</code> event should be raised.</p>
+
+<p>After the timeout passes or the <code>window.load</code> event is raised (whichever happens first), TestCafe starts the test.</p>
+
+<p>To specify the page load timeout in test code, use the <code>t.setPageLoadTimeout</code> method.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">t.setPageLoadTimeout( duration )
+</code></pre></div>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>duration</code></td>
+<td>Number</td>
+<td>Page load timeout, in milliseconds. <code>0</code> to skip waiting for the <code>window.load</code> event.</td>
+</tr>
+</tbody></table>
+
+<p>You can also set the page load timeout when launching tests via the <a href="../using-testcafe/command-line-interface.html#--page-load-timeout-ms">command line</a> or <a href="../using-testcafe/programming-interface/runner.html#run">API</a>.</p>
+
+<p><strong>Example</strong></p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">Page</span> <span class="nx">load</span> <span class="nx">timeout</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`;</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="err">`</span><span class="nx">Page</span> <span class="nx">load</span> <span class="nx">timeout</span><span class="err">`</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">await</span> <span class="nx">t</span>
+        <span class="p">.</span><span class="nx">setPageLoadTimeout</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">navigateTo</span><span class="p">(</span><span class="s1">'http://devexpress.github.io/testcafe/'</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div><blockquote><div class="blockquote-content"><p>Note that the <code>DOMContentLoaded</code> event is raised after the HTML document is loaded and parsed, while <code>window.load</code> is raised after all stylesheets, images and subframes are loaded. That is why <code>window.load</code> is fired after the <code>DOMContentLoaded</code> event with a certain delay.</p>
+</div></blockquote><h2><a class="anchor" name="specifying-the-start-webpage"></a>Specifying the Start Webpage <a class="permalink" href="#specifying-the-start-webpage">#</a></h2>
 <p>You can specify a webpage at which all tests in a fixture start.
 To do this, use the <code>fixture.page</code> function.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">fixture.page( url )
@@ -1140,20 +1240,20 @@ Use the <code>fixture.skip</code> and <code>test.skip</code> methods for this.</
     <div class="site-footer-content">
         <div class="footer-col-1">
             <p><strong>TestCafe</strong>: Automated browser testing for the modern web development stack<br/>
-            Copyright © 1998-2017 Developer Express Inc.</p>
+            Copyright © 2012-2017 Developer Express Inc.</p>
         </div>
     </div>
 </footer>
 
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.js"></script>
-    <script type="text/javascript"> docsearch({
+     <script type="text/javascript"> docsearch({
           apiKey: '938fb7894c0af8c01af3e2b4c53d4bdd',
           indexName: 'testcafe',
           inputSelector: '#search',
           debug: false // Set debug to true if you want to inspect the dropdown
       });
-    </script>
+    </script> 
 
   </body>
 

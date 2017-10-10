@@ -4,6 +4,7 @@
   <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
@@ -11,7 +12,7 @@
 
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
-
+  
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
   <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html" />
@@ -24,6 +25,7 @@
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="http://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/highlight.min.js"></script>
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
   <script>
       document.addEventListener('DOMContentLoaded', function (e) {
           hljs.initHighlightingOnLoad();
@@ -111,9 +113,9 @@
     <script src="/testcafe/scripts/mobile-detect.min.js" type="text/javascript"></script>
 
     <script>
-        var MIN_BODY_WIDTH = 1000;
-        var FOOTER_HEIGHT  = 63;
-        var HEADER_HEIGHT  = 102;
+        var MIN_BODY_WIDTH = 1215;
+        var FOOTER_HEIGHT  = 113;
+        var HEADER_HEIGHT  = 126;
 
         var nav            = null;
         var article        = null;
@@ -220,8 +222,8 @@
     </script>
   
     <script>
-        function initHeader(siteHeader, contentWrapper, docTopMenu, article) {
-            var MIN_BODY_WIDTH = 1000;
+        function initHeader(siteHeader, contentWrapper, docTopMenu, article, gs) {
+            var MIN_BODY_WIDTH = 1215;
 
             function updateHeader() {
                 var bodyMinimized = document.body.clientWidth === MIN_BODY_WIDTH;
@@ -238,6 +240,9 @@
 
                 if(article)
                     article.style.marginTop = bodyMinimized ? '21px' : '72px';
+ 
+                if(gs)
+                    gs.style.paddingTop = bodyMinimized ? '21px' : '72px';
             }
 
             updateHeader();
@@ -249,9 +254,10 @@
             var siteHeader     = document.querySelector('.site-header');
             var docTopMenu     = document.querySelector('.doc-top-nav');
             var article        = document.querySelector('.doc');
+            var gs             = document.querySelector('.gs');
 
             if(siteHeader) 
-                initHeader(siteHeader, contentWrapper, docTopMenu, article);
+                initHeader(siteHeader, contentWrapper, docTopMenu, article, gs);
         });
     </script>
 </head>
@@ -260,64 +266,118 @@
   <body>
     <div class="page-content-wrapper">
 
-      <header class="site-header minimized">
+      <header class="site-header fixed">
   <div class="site-header-content">
     <a class="site-logo" href="/testcafe/"></a>
     <nav class="site-nav">
         
           
-          <a class="page-link active" href="/testcafe/documentation/getting-started/">Documentation</a>
-          <span class="page-link-separator">|</span>
+          <div class="site-nav-tab active">
+            <a class="page-link" href="/testcafe/documentation/getting-started/">Documentation</a>
+          </div>
         
           
-          <a class="page-link " href="https://github.com/DevExpress/testcafe">GitHub</a>
-          <span class="page-link-separator">|</span>
+          <div class="site-nav-tab ">
+            <a class="page-link" href="https://github.com/DevExpress/testcafe" target="_blank">GitHub</a>
+          </div>
         
           
-          <a class="page-link " href="/testcafe/faq/">FAQ</a>
-          <span class="page-link-separator">|</span>
+          <div class="site-nav-tab ">
+            <a class="page-link" href="/testcafe/faq/">FAQ</a>
+          </div>
         
           
-          <a class="page-link " href="/testcafe/blog/">Blog</a>
-          <span class="page-link-separator">|</span>
+          <div class="site-nav-tab ">
+            <a class="page-link" href="/testcafe/publications/">Publications</a>
+          </div>
         
           
-          <a class="page-link " href="https://github.com/DevExpress/testcafe/issues">Issues</a>
-          <span class="page-link-separator">|</span>
+          <div class="site-nav-tab ">
+            <a class="page-link" href="/testcafe/blog/">Release Notes</a>
+          </div>
         
           
-          <a class="page-link " href="https://testcafe-discuss.devexpress.com/">Discuss</a>
-          <span class="page-link-separator">|</span>
+          <div class="site-nav-tab ">
+            <a class="page-link" href="https://github.com/DevExpress/testcafe/issues" target="_blank">Issues</a>
+          </div>
         
           
-          <a class="page-link " href="https://twitter.com/dxtestcafe">Twitter</a>
-          <span class="page-link-separator">|</span>
+          <div class="site-nav-tab ">
+            <a class="page-link" href="https://testcafe-discuss.devexpress.com/" target="_blank">Forum</a>
+          </div>
         
-      <input type="text" placeholder="Search" id="search"/>
-    </nav>
-
+      <a id="twitter-button" href="https://twitter.com/dxtestcafe" target="_blank"></a>
+      <div id="search-icon"></div>
+      <div class="star-button">
+        <a class="github-button" href="https://github.com/DevExpress/testcafe" data-size="large" data-count-href="/DevExpress/testcafe/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star DevExpress/testcafe on GitHub"><span style="color:#ffffff">Star</span></a>
+      </div>
+      <div id="search-panel" class="hidden">
+          <input type="text" placeholder="Search query" id="search"/>
+          <div id="close-search"></div>
+      </div>
+      </nav>
   </div>
 </header>
+
+<script>
+  function has(parentEl, el)  {
+    var descendants = parentEl.getElementsByTagName('*');
+    
+    for(i = 0; i < descendants.length; i++) 
+        if(descendants[i] === el) return true;
+
+    return false;
+  }
+
+  function closeSearchBox(e) {
+      var clickOutsideSearchBox = searchPanel !== e.target && !has(searchPanel, e.target);
+
+      if(clickOutsideSearchBox && !searchPanel.className.includes('hidden')) 
+          searchPanel.className += ' hidden';
+  }
+
+  var searchButton      = document.querySelector('#search-icon');
+  var searchPanel       = document.querySelector('#search-panel');
+  var closeSearchButton = document.querySelector('#close-search');
+
+  searchButton.addEventListener('click', function () {
+      searchPanel.className = searchPanel.className.replace(/hidden/,'');
+  });
+  
+  closeSearchButton.addEventListener('click', function () {
+      searchPanel.className += ' hidden';
+  });
+
+  window.addEventListener('mousedown', closeSearchBox);        
+  window.addEventListener('touchstart', closeSearchBox);
+</script>
 
 
   <div class="doc-top-nav">
     <div class="doc-top-nav-content">
-    
-      <a class="" href="/testcafe/documentation/getting-started/">Getting Started</a>
-      <span class="page-link-separator level-2">|</span>
-    
-      <a class="active" href="/testcafe/documentation/using-testcafe/">Using TestCafe</a>
-      <span class="page-link-separator level-2">|</span>
-    
-      <a class="" href="/testcafe/documentation/test-api/">Test API</a>
-      <span class="page-link-separator level-2">|</span>
-    
-      <a class="" href="/testcafe/documentation/extending-testcafe/">Extending TestCafe</a>
-      <span class="page-link-separator level-2">|</span>
-    
-      <a class="" href="/testcafe/documentation/recipes/">Recipes</a>
-      <span class="page-link-separator level-2">|</span>
-    
+      <div class="doc-top-nav-wrapper">
+        
+          <div class="doc-top-nav-tab " >
+            <a href="/testcafe/documentation/getting-started/">Getting Started</a>      
+          </div>
+        
+          <div class="doc-top-nav-tab active" >
+            <a href="/testcafe/documentation/using-testcafe/">Using TestCafe</a>      
+          </div>
+        
+          <div class="doc-top-nav-tab " >
+            <a href="/testcafe/documentation/test-api/">Test API</a>      
+          </div>
+        
+          <div class="doc-top-nav-tab " >
+            <a href="/testcafe/documentation/extending-testcafe/">Extending TestCafe</a>      
+          </div>
+        
+          <div class="doc-top-nav-tab " >
+            <a href="/testcafe/documentation/recipes/">Recipes</a>      
+          </div>
+        
+      </div>
     </div>
   </div>
 
@@ -334,8 +394,6 @@
 		<div class="doc-nav-content">
 			<ul>
 				<li>
-				
-<a href="/testcafe/documentation/using-testcafe/"  >USING TESTCAFE</a>
 				<ul>
 
     <li>
@@ -401,7 +459,39 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/using-testcafe/common-concepts/browser-support.html"  >Browser Support</a>
+<a href="/testcafe/documentation/using-testcafe/common-concepts/browsers/"  >Browsers</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/common-concepts/browsers/browser-support.html"  >Browser Support</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/common-concepts/browsers/testing-in-headless-mode.html"  >Testing in Headless Mode</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/common-concepts/browsers/using-chrome-device-emulation.html"  >Using Chrome Device Emulation</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/common-concepts/browsers/user-profiles.html"  >User Profiles</a>
+		
+    </li>
+
+</ul>
 		
     </li>
 
@@ -451,12 +541,10 @@
 <li><a href="#browser-list">Browser List</a>
 
 <ul>
-<li><a href="#local-browsers">Local Browsers</a>
-
-<ul>
-<li><a href="#using-chrome-specific-features">Using Chrome-specific Features</a></li>
-</ul></li>
+<li><a href="#local-browsers">Local Browsers</a></li>
 <li><a href="#portable-browsers">Portable Browsers</a></li>
+<li><a href="#testing-in-headless-mode">Testing in Headless Mode</a></li>
+<li><a href="#using-chrome-device-emulation">Using Chrome Device Emulation</a></li>
 <li><a href="#remote-browsers">Remote Browsers</a></li>
 <li><a href="#browsers-accessed-through-browser-provider-plugins">Browsers Accessed Through Browser Provider Plugins</a></li>
 <li><a href="#starting-browser-with-arguments">Starting browser with arguments</a></li>
@@ -468,7 +556,7 @@
 <li><a href="#-h---help">-h, --help</a></li>
 <li><a href="#-v---version">-v, --version</a></li>
 <li><a href="#-b---list-browsers">-b, --list-browsers</a></li>
-<li><a href="#-r-name---reporter-name">-r &lt;name&gt;, --reporter &lt;name&gt;</a></li>
+<li><a href="#-r-namefile---reporter-namefile">-r &lt;name[:file],[...]&gt;, --reporter &lt;name[:file],[...]&gt;</a></li>
 <li><a href="#-s-path---screenshots-path">-s &lt;path&gt;, --screenshots &lt;path&gt;</a></li>
 <li><a href="#-s---screenshots-on-fails">-S, --screenshots-on-fails</a></li>
 <li><a href="#-q---quarantine-mode">-q, --quarantine-mode</a></li>
@@ -480,9 +568,11 @@
 <li><a href="#-f-pattern---fixture-grep-pattern">-F &lt;pattern&gt;, --fixture-grep &lt;pattern&gt;</a></li>
 <li><a href="#-a-command---app-command">-a &lt;command&gt;, --app &lt;command&gt;</a></li>
 <li><a href="#-d---debug-mode">-d, --debug-mode</a></li>
+<li><a href="#--debug-on-fail">--debug-on-fail</a></li>
 <li><a href="#--app-init-delay-ms">--app-init-delay &lt;ms&gt;</a></li>
 <li><a href="#--selector-timeout-ms">--selector-timeout &lt;ms&gt;</a></li>
 <li><a href="#--assertion-timeout-ms">--assertion-timeout &lt;ms&gt;</a></li>
+<li><a href="#--page-load-timeout-ms">--page-load-timeout &lt;ms&gt;</a></li>
 <li><a href="#--proxy-host">--proxy &lt;host&gt;</a></li>
 <li><a href="#--ports-port1port2">--ports &lt;port1,port2&gt;</a></li>
 <li><a href="#--hostname-name">--hostname &lt;name&gt;</a></li>
@@ -499,7 +589,7 @@ where tests are not guaranteed to execute correctly.</p>
 <p>The <code>browser-list-comma-separated</code> argument specifies the list of browsers (separated by commas) where tests will be run.</p>
 <blockquote><div class="blockquote-content"><p>You are free to specify different types of browsers in one command call.</p>
 </div></blockquote><h3><a class="anchor" name="local-browsers"></a>Local Browsers <a class="permalink" href="#local-browsers">#</a></h3>
-<p>You can specify <a href="common-concepts/browser-support.html#locally-installed-browsers">locally installed browsers</a> by using browser aliases or paths (with the <code>path:</code> prefix).
+<p>You can specify <a href="common-concepts//browsers/browser-support.html#locally-installed-browsers">locally installed browsers</a> by using browser aliases or paths (with the <code>path:</code> prefix).
 The list of all the available browsers can be obtained by calling the <a href="#-b---list-browsers">--list-browsers</a> command.</p>
 
 <p>The following example demonstrates how to run a test in several browsers.
@@ -508,24 +598,21 @@ The browsers are specified differently: one by using an alias, the other by usin
 </code></pre></div>
 <p>To run tests against <strong>all installed browsers</strong>, use the <code>all</code> alias.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe all tests/sample-fixture.js
-</code></pre></div><h4><a class="anchor" name="using-chrome-specific-features"></a>Using Chrome-specific Features <a class="permalink" href="#using-chrome-specific-features">#</a></h4>
-<p>TestCafe provides the following Chrome-specific features:</p>
-
-<ul>
-<li><a href="common-concepts/browser-support.html#running-tests-in-headless-mode">Running Tests in Headless Mode</a></li>
-<li><a href="common-concepts/browser-support.html#running-tests-in-the-device-emulation-mode">Running Tests in the Device Emulation Mode</a></li>
-</ul>
-
-<p>To run tests in headless mode use the <code>:headless</code> postfix:</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"chrome:headless"</span> tests/sample-fixture.js
-</code></pre></div>
-<p>To run tests in the device emulation mode specify <code>emulation:</code> and <a href="common-concepts/browser-support.html#available-chrome-options">device parameters</a>:</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"chrome:emulation:device=iphone 6"</span> tests/sample-fixture.js
 </code></pre></div><h3><a class="anchor" name="portable-browsers"></a>Portable Browsers <a class="permalink" href="#portable-browsers">#</a></h3>
-<p>You can specify <a href="common-concepts/browser-support.html#portable-browsers">portable browsers</a> by using paths to the browser&#39;s executable file (with the <code>path:</code> prefix), for example:</p>
+<p>You can specify <a href="common-concepts/browsers/browser-support.html#portable-browsers">portable browsers</a> by using paths to the browser&#39;s executable file (with the <code>path:</code> prefix), for example:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe path:d:<span class="se">\f</span>irefoxportable<span class="se">\f</span>irefoxportable.exe tests/sample-fixture.js
-</code></pre></div><h3><a class="anchor" name="remote-browsers"></a>Remote Browsers <a class="permalink" href="#remote-browsers">#</a></h3>
-<p>To run tests in a <a href="common-concepts/browser-support.html#browsers-on-remote-devices">browser on a remote device</a>, specify <code>remote</code> as a browser alias.</p>
+</code></pre></div><h3><a class="anchor" name="testing-in-headless-mode"></a>Testing in Headless Mode <a class="permalink" href="#testing-in-headless-mode">#</a></h3>
+<p>To run tests in the headless mode in Google Chrome or Firefox, use the <code>:headless</code> postfix:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"firefox:headless"</span> tests/sample-fixture.js
+</code></pre></div>
+<p>For details, see <a href="common-concepts/browsers/testing-in-headless-mode.html">Testing in Headless Mode</a>.</p>
+<h3><a class="anchor" name="using-chrome-device-emulation"></a>Using Chrome Device Emulation <a class="permalink" href="#using-chrome-device-emulation">#</a></h3>
+<p>To run tests in Chrome device emulation mode, specify <code>:emulation</code> and <a href="common-concepts/browsers/using-chrome-device-emulation.html#emulator-parameters">device parameters</a>.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"chrome:emulation:device=iphone 6"</span> tests/sample-fixture.js
+</code></pre></div>
+<p>To learn more, see <a href="common-concepts/browsers/using-chrome-device-emulation.html">Using Chrome Device Emulation</a></p>
+<h3><a class="anchor" name="remote-browsers"></a>Remote Browsers <a class="permalink" href="#remote-browsers">#</a></h3>
+<p>To run tests in a <a href="common-concepts/browsers/browser-support.html#browsers-on-remote-devices">browser on a remote device</a>, specify <code>remote</code> as a browser alias.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe remote tests/sample-fixture.js
 </code></pre></div>
 <p>If you want to connect multiple browsers, specify <code>remote:</code> and the number of browsers. For example, if you need to use three remote browsers, specify <code>remote:3</code>.</p>
@@ -539,7 +626,7 @@ specify the total number of instances of all browsers after the <code>remote:</c
 Scan the QR-codes by using the device on which you are going to test your application.
 As a result, the browsers will be connected to TestCafe and tests will start.</p>
 <h3><a class="anchor" name="browsers-accessed-through-browser-provider-plugins"></a>Browsers Accessed Through Browser Provider Plugins <a class="permalink" href="#browsers-accessed-through-browser-provider-plugins">#</a></h3>
-<p>To run tests in <a href="common-concepts/browser-support.html#browsers-in-cloud-testing-services">cloud browsers</a> or <a href="common-concepts/browser-support.html#nonconventional-browsers">other browsers</a> accessed through a <a href="../extending-testcafe/browser-provider-plugin/">browser provider plugin</a>,
+<p>To run tests in <a href="common-concepts/browsers/browser-support.html#browsers-in-cloud-testing-services">cloud browsers</a> or <a href="common-concepts/browsers/browser-support.html#nonconventional-browsers">other browsers</a> accessed through a <a href="../extending-testcafe/browser-provider-plugin/">browser provider plugin</a>,
 specify a browser alias that consists of the <code>{browser-provider-name}</code> prefix and the name of a browser itself (the latter can be omitted); for example, <code>saucelabs:Chrome@52.0:Windows 8.1</code>.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"saucelabs:Chrome@52.0:Windows 8.1"</span> tests/sample-fixture.js
 </code></pre></div><h3><a class="anchor" name="starting-browser-with-arguments"></a>Starting browser with arguments <a class="permalink" href="#starting-browser-with-arguments">#</a></h3>
@@ -551,7 +638,7 @@ specify a browser alias that consists of the <code>{browser-provider-name}</code
 <p>On <code>Unix</code> shells like <code>bash</code>, <code>zsh</code>, <code>csh</code> (on macOS, Linux, Windows Subsystem for Linux) and Windows PowerShell, prefer single quotation marks.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s1">'chrome --start-fullscreen'</span> tests/sample-fixture.js
 </code></pre></div>
-<p>You can also specify arguments for portable browsers. If a path to a browser contains spaces, the path should be surrounded with backticks:</p>
+<p>You can also specify arguments for portable browsers. If a path to a browser contains spaces, the path should be surrounded with backticks.</p>
 
 <p>For Unix shells and Windows PowerShell:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s1">'path:`/Users/TestCafe/Apps/Google Chrome.app` --start-fullscreen'</span> tests/sample-fixture.js
@@ -581,9 +668,9 @@ For example, this command runs tests from files that match <code>tests/*page*</c
 <p>Displays the TestCafe version.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe --version
 </code></pre></div><h3><a class="anchor" name="-b---list-browsers"></a>-b, --list-browsers <a class="permalink" href="#-b---list-browsers">#</a></h3>
-<p>Lists aliases of the <a href="common-concepts/browser-support.html#locally-installed-browsers">local browsers</a> available on your computer.</p>
+<p>Lists aliases of the <a href="common-concepts/browsers/browser-support.html#locally-installed-browsers">local browsers</a> available on your computer.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe --list-browsers
-</code></pre></div><h3><a class="anchor" name="-r-name---reporter-name"></a>-r &lt;name&gt;, --reporter &lt;name&gt; <a class="permalink" href="#-r-name---reporter-name">#</a></h3>
+</code></pre></div><h3><a class="anchor" name="-r-namefile---reporter-namefile"></a>-r &lt;name[:file],[...]&gt;, --reporter &lt;name[:file],[...]&gt; <a class="permalink" href="#-r-namefile---reporter-namefile">#</a></h3>
 <p>Specifies the name of a <a href="common-concepts/reporters.html">built-in</a> or <a href="../extending-testcafe/reporter-plugin/">custom reporter</a> that will be used to generate test reports.</p>
 
 <p>The following command runs tests in all available browsers and generates a report in the xunit format.</p>
@@ -594,10 +681,14 @@ For example, this command runs tests from files that match <code>tests/*page*</c
 </code></pre></div>
 <p>The generated test report will be displayed in the command prompt window.</p>
 
-<p>If you need to save the report to an external file, you can redirect the command output stream to the file
-by using the &gt; redirection operator and specifying the report file path.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe all tests/sample-fixture.js &gt; tests/test-results.txt
-</code></pre></div><h3><a class="anchor" name="-s-path---screenshots-path"></a>-s &lt;path&gt;, --screenshots &lt;path&gt; <a class="permalink" href="#-s-path---screenshots-path">#</a></h3>
+<p>If you need to save the report to an external file, specify the file path after the report name.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe all tests/sample-fixture.js -r json:report.json
+</code></pre></div>
+<p>You can also use multiple reporters in a single test run. List them separated by commas.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe all tests/sample-fixture.js -r spec,xunit:report.xml
+</code></pre></div>
+<p>Note that only one reporter can write to <code>stdout</code>. All other reporters must output to files.</p>
+<h3><a class="anchor" name="-s-path---screenshots-path"></a>-s &lt;path&gt;, --screenshots &lt;path&gt; <a class="permalink" href="#-s-path---screenshots-path">#</a></h3>
 <p>Enables screenshot capturing and specifies the directory path
 to save screenshots to.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe all tests/sample-fixture.js -s screenshots
@@ -670,7 +761,15 @@ Tests will run concurrently against this pool, i.e. each test will run in the fi
 <p><img src="../../images/debugging/client-debugging-footer.png" alt="Debugging status bar"></p>
 <blockquote><div class="blockquote-content"><p>If the test you run in the debugging mode contains a <a href="../test-api/test-code-structure.html#test-hooks">test hook</a>,
 it will be paused within this hook before the first action.</p>
-</div></blockquote><h3><a class="anchor" name="--app-init-delay-ms"></a>--app-init-delay &lt;ms&gt; <a class="permalink" href="#--app-init-delay-ms">#</a></h3>
+</div></blockquote>
+<p>You can also use the <strong>Unlock page</strong> switch in the footer to unlock the tested page and interact with its elements.</p>
+<h3><a class="anchor" name="--debug-on-fail"></a>--debug-on-fail <a class="permalink" href="#--debug-on-fail">#</a></h3>
+<p>Specifies whether to automatically enter the <a href="#-d---debug-mode">debug mode</a> when a test fails.</p>
+
+<p>If this option is enabled, TestCafe pauses the test at the moment it fails. This allows you to explore the tested page and determine the cause of the fail.</p>
+
+<p>When you are done, click the <strong>Finish</strong> button in the footer to end test execution.</p>
+<h3><a class="anchor" name="--app-init-delay-ms"></a>--app-init-delay &lt;ms&gt; <a class="permalink" href="#--app-init-delay-ms">#</a></h3>
 <p>Specifies the amount of time, in milliseconds, allowed for an application launched using the <a href="#-a-command---app-command">--app</a> option to initialize.</p>
 
 <p>TestCafe waits for the specified time before it starts running tests.</p>
@@ -691,6 +790,16 @@ See <a href="../test-api/assertions/#smart-assertion-query-mechanism">Smart Asse
 
 <p><strong>Default value</strong>: <code>3000</code></p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe ie my-tests --assertion-timeout 10000
+</code></pre></div><h3><a class="anchor" name="--page-load-timeout-ms"></a>--page-load-timeout &lt;ms&gt; <a class="permalink" href="#--page-load-timeout-ms">#</a></h3>
+<p>Specifies the amount of time, in milliseconds, passed after the <code>DOMContentLoaded</code> event, within which TestCafe waits for the <code>window.load</code> event to fire.</p>
+
+<p>After the timeout passes or the <code>window.load</code> event is raised (whichever happens first), TestCafe starts the test.</p>
+<blockquote><div class="blockquote-content"><p>Note that the <code>DOMContentLoaded</code> event is raised after the HTML document is loaded and parsed, while <code>window.load</code> is raised after all stylesheets, images and subframes are loaded. That is why <code>window.load</code> is fired after the <code>DOMContentLoaded</code> event with a certain delay.</p>
+</div></blockquote>
+<p><strong>Default value</strong>: <code>3000</code></p>
+
+<p>You can set the page load timeout to <code>0</code> to skip waiting for the <code>window.load</code> event.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe ie my-tests --page-load-timeout 0
 </code></pre></div><h3><a class="anchor" name="--proxy-host"></a>--proxy &lt;host&gt; <a class="permalink" href="#--proxy-host">#</a></h3>
 <p>Specifies the proxy server used in your local network to access the Internet.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests/<span class="k">**</span>/<span class="k">*</span>.js --proxy proxy.corp.mycompany.com
@@ -767,20 +876,20 @@ to slow the test down.</p>
     <div class="site-footer-content">
         <div class="footer-col-1">
             <p><strong>TestCafe</strong>: Automated browser testing for the modern web development stack<br/>
-            Copyright © 1998-2017 Developer Express Inc.</p>
+            Copyright © 2012-2017 Developer Express Inc.</p>
         </div>
     </div>
 </footer>
 
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.js"></script>
-    <script type="text/javascript"> docsearch({
+     <script type="text/javascript"> docsearch({
           apiKey: '938fb7894c0af8c01af3e2b4c53d4bdd',
           indexName: 'testcafe',
           inputSelector: '#search',
           debug: false // Set debug to true if you want to inspect the dropdown
       });
-    </script>
+    </script> 
 
   </body>
 

@@ -4,6 +4,7 @@
   <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
@@ -11,7 +12,7 @@
 
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
-
+  
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
   <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/extending-testcafe/browser-provider-plugin/" />
@@ -24,6 +25,7 @@
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="http://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/highlight.min.js"></script>
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
   <script>
       document.addEventListener('DOMContentLoaded', function (e) {
           hljs.initHighlightingOnLoad();
@@ -111,9 +113,9 @@
     <script src="/testcafe/scripts/mobile-detect.min.js" type="text/javascript"></script>
 
     <script>
-        var MIN_BODY_WIDTH = 1000;
-        var FOOTER_HEIGHT  = 63;
-        var HEADER_HEIGHT  = 102;
+        var MIN_BODY_WIDTH = 1215;
+        var FOOTER_HEIGHT  = 113;
+        var HEADER_HEIGHT  = 126;
 
         var nav            = null;
         var article        = null;
@@ -220,8 +222,8 @@
     </script>
   
     <script>
-        function initHeader(siteHeader, contentWrapper, docTopMenu, article) {
-            var MIN_BODY_WIDTH = 1000;
+        function initHeader(siteHeader, contentWrapper, docTopMenu, article, gs) {
+            var MIN_BODY_WIDTH = 1215;
 
             function updateHeader() {
                 var bodyMinimized = document.body.clientWidth === MIN_BODY_WIDTH;
@@ -238,6 +240,9 @@
 
                 if(article)
                     article.style.marginTop = bodyMinimized ? '21px' : '72px';
+ 
+                if(gs)
+                    gs.style.paddingTop = bodyMinimized ? '21px' : '72px';
             }
 
             updateHeader();
@@ -249,9 +254,10 @@
             var siteHeader     = document.querySelector('.site-header');
             var docTopMenu     = document.querySelector('.doc-top-nav');
             var article        = document.querySelector('.doc');
+            var gs             = document.querySelector('.gs');
 
             if(siteHeader) 
-                initHeader(siteHeader, contentWrapper, docTopMenu, article);
+                initHeader(siteHeader, contentWrapper, docTopMenu, article, gs);
         });
     </script>
 </head>
@@ -260,64 +266,118 @@
   <body>
     <div class="page-content-wrapper">
 
-      <header class="site-header minimized">
+      <header class="site-header fixed">
   <div class="site-header-content">
     <a class="site-logo" href="/testcafe/"></a>
     <nav class="site-nav">
         
           
-          <a class="page-link active" href="/testcafe/documentation/getting-started/">Documentation</a>
-          <span class="page-link-separator">|</span>
+          <div class="site-nav-tab active">
+            <a class="page-link" href="/testcafe/documentation/getting-started/">Documentation</a>
+          </div>
         
           
-          <a class="page-link " href="https://github.com/DevExpress/testcafe">GitHub</a>
-          <span class="page-link-separator">|</span>
+          <div class="site-nav-tab ">
+            <a class="page-link" href="https://github.com/DevExpress/testcafe" target="_blank">GitHub</a>
+          </div>
         
           
-          <a class="page-link " href="/testcafe/faq/">FAQ</a>
-          <span class="page-link-separator">|</span>
+          <div class="site-nav-tab ">
+            <a class="page-link" href="/testcafe/faq/">FAQ</a>
+          </div>
         
           
-          <a class="page-link " href="/testcafe/blog/">Blog</a>
-          <span class="page-link-separator">|</span>
+          <div class="site-nav-tab ">
+            <a class="page-link" href="/testcafe/publications/">Publications</a>
+          </div>
         
           
-          <a class="page-link " href="https://github.com/DevExpress/testcafe/issues">Issues</a>
-          <span class="page-link-separator">|</span>
+          <div class="site-nav-tab ">
+            <a class="page-link" href="/testcafe/blog/">Release Notes</a>
+          </div>
         
           
-          <a class="page-link " href="https://testcafe-discuss.devexpress.com/">Discuss</a>
-          <span class="page-link-separator">|</span>
+          <div class="site-nav-tab ">
+            <a class="page-link" href="https://github.com/DevExpress/testcafe/issues" target="_blank">Issues</a>
+          </div>
         
           
-          <a class="page-link " href="https://twitter.com/dxtestcafe">Twitter</a>
-          <span class="page-link-separator">|</span>
+          <div class="site-nav-tab ">
+            <a class="page-link" href="https://testcafe-discuss.devexpress.com/" target="_blank">Forum</a>
+          </div>
         
-      <input type="text" placeholder="Search" id="search"/>
-    </nav>
-
+      <a id="twitter-button" href="https://twitter.com/dxtestcafe" target="_blank"></a>
+      <div id="search-icon"></div>
+      <div class="star-button">
+        <a class="github-button" href="https://github.com/DevExpress/testcafe" data-size="large" data-count-href="/DevExpress/testcafe/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star DevExpress/testcafe on GitHub"><span style="color:#ffffff">Star</span></a>
+      </div>
+      <div id="search-panel" class="hidden">
+          <input type="text" placeholder="Search query" id="search"/>
+          <div id="close-search"></div>
+      </div>
+      </nav>
   </div>
 </header>
+
+<script>
+  function has(parentEl, el)  {
+    var descendants = parentEl.getElementsByTagName('*');
+    
+    for(i = 0; i < descendants.length; i++) 
+        if(descendants[i] === el) return true;
+
+    return false;
+  }
+
+  function closeSearchBox(e) {
+      var clickOutsideSearchBox = searchPanel !== e.target && !has(searchPanel, e.target);
+
+      if(clickOutsideSearchBox && !searchPanel.className.includes('hidden')) 
+          searchPanel.className += ' hidden';
+  }
+
+  var searchButton      = document.querySelector('#search-icon');
+  var searchPanel       = document.querySelector('#search-panel');
+  var closeSearchButton = document.querySelector('#close-search');
+
+  searchButton.addEventListener('click', function () {
+      searchPanel.className = searchPanel.className.replace(/hidden/,'');
+  });
+  
+  closeSearchButton.addEventListener('click', function () {
+      searchPanel.className += ' hidden';
+  });
+
+  window.addEventListener('mousedown', closeSearchBox);        
+  window.addEventListener('touchstart', closeSearchBox);
+</script>
 
 
   <div class="doc-top-nav">
     <div class="doc-top-nav-content">
-    
-      <a class="" href="/testcafe/documentation/getting-started/">Getting Started</a>
-      <span class="page-link-separator level-2">|</span>
-    
-      <a class="" href="/testcafe/documentation/using-testcafe/">Using TestCafe</a>
-      <span class="page-link-separator level-2">|</span>
-    
-      <a class="" href="/testcafe/documentation/test-api/">Test API</a>
-      <span class="page-link-separator level-2">|</span>
-    
-      <a class="active" href="/testcafe/documentation/extending-testcafe/">Extending TestCafe</a>
-      <span class="page-link-separator level-2">|</span>
-    
-      <a class="" href="/testcafe/documentation/recipes/">Recipes</a>
-      <span class="page-link-separator level-2">|</span>
-    
+      <div class="doc-top-nav-wrapper">
+        
+          <div class="doc-top-nav-tab " >
+            <a href="/testcafe/documentation/getting-started/">Getting Started</a>      
+          </div>
+        
+          <div class="doc-top-nav-tab " >
+            <a href="/testcafe/documentation/using-testcafe/">Using TestCafe</a>      
+          </div>
+        
+          <div class="doc-top-nav-tab " >
+            <a href="/testcafe/documentation/test-api/">Test API</a>      
+          </div>
+        
+          <div class="doc-top-nav-tab active" >
+            <a href="/testcafe/documentation/extending-testcafe/">Extending TestCafe</a>      
+          </div>
+        
+          <div class="doc-top-nav-tab " >
+            <a href="/testcafe/documentation/recipes/">Recipes</a>      
+          </div>
+        
+      </div>
     </div>
   </div>
 
@@ -340,8 +400,6 @@
 		<div class="doc-nav-content">
 			<ul>
 				<li>
-				
-<a href="/testcafe/documentation/extending-testcafe/"  >EXTENDING TESTCAFE</a>
 				<ul>
 
     <li>
@@ -404,7 +462,7 @@
 		<div class="post-content">
 
 			<h1>Browser Provider Plugin</h1>
-<p>TestCafe supports testing in a number of popular browsers (see <a href="../../using-testcafe/common-concepts/browser-support.html">Browser Support</a>).
+<p>TestCafe supports testing in a number of popular browsers (see <a href="../../using-testcafe/common-concepts/browsers/browser-support.html">Browser Support</a>).
 If you need to use a different browser (for example, a browser from a cloud service), you can create a <strong>custom browser provider plugin</strong>.
 The provider should expose methods for performing common actions on the browser windows during testing: opening and closing it, taking screenshot, etc.</p>
 
@@ -630,20 +688,20 @@ The alias consists of the browser provider name and the name of the browser itse
     <div class="site-footer-content">
         <div class="footer-col-1">
             <p><strong>TestCafe</strong>: Automated browser testing for the modern web development stack<br/>
-            Copyright © 1998-2017 Developer Express Inc.</p>
+            Copyright © 2012-2017 Developer Express Inc.</p>
         </div>
     </div>
 </footer>
 
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.js"></script>
-    <script type="text/javascript"> docsearch({
+     <script type="text/javascript"> docsearch({
           apiKey: '938fb7894c0af8c01af3e2b4c53d4bdd',
           indexName: 'testcafe',
           inputSelector: '#search',
           debug: false // Set debug to true if you want to inspect the dropdown
       });
-    </script>
+    </script> 
 
   </body>
 
