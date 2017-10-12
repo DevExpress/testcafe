@@ -97,8 +97,8 @@ export default class Driver {
 
         this.customCommandHandlers = {};
 
-        this.contextStorage       = null;
-        this.nativeDialogsTracker = null;
+        this.contextStorage       = new ContextStorage(window, this.testRunId);
+        this.nativeDialogsTracker = new NativeDialogTracker(this.contextStorage, this.dialogHandler);
 
         this.childDriverLinks      = [];
         this.activeChildDriverLink = null;
@@ -587,9 +587,6 @@ export default class Driver {
     }
 
     start () {
-        this.contextStorage       = new ContextStorage(window, this.testRunId);
-        this.nativeDialogsTracker = new NativeDialogTracker(this.contextStorage, this.dialogHandler);
-
         if (!this.speed)
             this.speed = this.initialSpeed;
 
