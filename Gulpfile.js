@@ -93,10 +93,11 @@ var CLIENT_TESTS_DESKTOP_BROWSERS = [
         platform:    'OS X 10.11',
         browserName: 'chrome'
     },
-    {
-        platform:    'OS X 10.11',
-        browserName: 'firefox'
-    }
+    // NOTE: Firefox shows some survey that blocks test execution: https://support.mozilla.org/en-US/questions/1179497
+    // {
+    //     platform:    'OS X 10.11',
+    //     browserName: 'firefox'
+    // }
 ];
 
 var CLIENT_TESTS_OLD_BROWSERS = [
