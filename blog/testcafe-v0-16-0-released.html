@@ -277,14 +277,14 @@
 <p><a href="https://developers.google.com/web/updates/2017/04/headless-chrome">Headless mode</a> allows you to run tests in Chrome without any visible UI shell. To run tests in headless mode, use the <code>:headless</code> postfix:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"chrome:headless"</span> tests/sample-fixture.js
 </code></pre></div>
-<p>Device emulation mode allows you to check how your tests works on mobile devices via Chrome&#39;s built-in <a href="https://developers.google.com/web/tools/chrome-devtools/device-mode/">device emulator</a>. To run tests in device emulation mode, specify <code>emulation:</code> and <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browser-support.html#available-chrome-options">device parameters</a>:</p>
+<p>Device emulation mode allows you to check how your tests works on mobile devices via Chrome&#39;s built-in <a href="https://developers.google.com/web/tools/chrome-devtools/device-mode/">device emulator</a>. To run tests in device emulation mode, specify <code>emulation:</code> and <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browsers/using-chrome-device-emulation.html#emulator-parameters">device parameters</a>:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"chrome:emulation:device=iphone 6"</span> tests/sample-fixture.js
 </code></pre></div>
-<p>For details, see <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browser-support.html#using-chrome-specific-features">Using Chrome-specific Features</a>.</p>
+<p>For details, see <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browsers/using-chrome-device-emulation.html">Using Chrome-specific Features</a>.</p>
 <h3><a class="anchor" name="support-html5-drag-and-drop-897"></a>⚙ Support HTML5 Drag and Drop (<a href="https://github.com/DevExpress/testcafe/issues/897">#897</a>) <a class="permalink" href="#support-html5-drag-and-drop-897">#</a></h3>
 <p>Starting with this release, TestCafe supports HTML5 drag and drop, so you can test elements with the <code>draggable</code> <a href="http://w3c.github.io/html/editing.html#the-draggable-attribute">attribute</a>.</p>
 <h3><a class="anchor" name="fixed-url-for-opening-remote-browsers-1476"></a>⚙ Fixed URL for opening remote browsers (<a href="https://github.com/DevExpress/testcafe/issues/1476">#1476</a>) <a class="permalink" href="#fixed-url-for-opening-remote-browsers-1476">#</a></h3>
-<p>We have simplified the format of links that TestCafe generates when you <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browser-support.html#browsers-on-remote-devices">run tests on remote browsers</a>.</p>
+<p>We have simplified the format of links that TestCafe generates when you <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browsers/browser-support.html#browsers-on-remote-devices">run tests on remote browsers</a>.</p>
 
 <p>Now, you have no need to type a unique link for each test run, all the links became constant. So, it is easier now to run tests on a remote device repeatedly: you can run them by navigating a link from your browser history.</p>
 <h2><a class="anchor" name="bug-fixes"></a>Bug Fixes <a class="permalink" href="#bug-fixes">#</a></h2>
@@ -346,11 +346,21 @@
 
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.js"></script>
-     <script type="text/javascript"> docsearch({
+     <script type="text/javascript"> var search = docsearch({
           apiKey: '938fb7894c0af8c01af3e2b4c53d4bdd',
           indexName: 'testcafe',
           inputSelector: '#search',
           debug: false // Set debug to true if you want to inspect the dropdown
+      });
+
+      search.autocomplete.on('autocomplete:opened', function(e) {
+          var searchInput = document.querySelector('#search');
+          var dropdown    = document.querySelector('.ds-dropdown-menu');
+          
+          if(searchInput && dropdown) {
+              dropdown.style.maxWidth = "none";
+              dropdown.style.width = searchInput.offsetWidth + "px";
+          }
       });
     </script> 
 

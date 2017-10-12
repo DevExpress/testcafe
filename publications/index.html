@@ -349,7 +349,7 @@
             <div class="post-date">
                 Tutorial
             </div>
-            <div class="post-title"><a href="http://mherman.org/blog/2017/05/11/developing-microservices-node-react-docker/#.WX8QAojyjb0" target="_blank">Developing Microservices - Node, React, and Docker</a></div>
+            <div class="post-title"><a href="http://mherman.org/blog/2017/05/11/developing-microservices-node-react-docker/" target="_blank">Developing Microservices - Node, React, and Docker</a></div>
             <div class="post-extract">
                 <p>In this post you will learn how to quickly spin up a reproducible development environment with Docker to manage a number of Node.js microservices.</p>
             </div>
@@ -414,7 +414,7 @@
             <div class="post-date">
                 Review
             </div>
-            <div class="post-title"><a href="http://mherman.org/blog/2017/03/19/functional-testing-with-testcafe/#.WX8PsIjyjb0" target="_blank">Functional Testing With TestCafe</a></div>
+            <div class="post-title"><a href="http://mherman.org/blog/2017/03/19/functional-testing-with-testcafe/" target="_blank">Functional Testing With TestCafe</a></div>
             <div class="post-extract">
                 <p>Today we are going to dive into the world of functional web testing with TestCafe. Unlike the majority of other end-to-end (e2e) testing tools, TestCafe is not dependent on Selenium or WebDriver. Instead...</p>
             </div>
@@ -572,11 +572,21 @@
 
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.js"></script>
-     <script type="text/javascript"> docsearch({
+     <script type="text/javascript"> var search = docsearch({
           apiKey: '938fb7894c0af8c01af3e2b4c53d4bdd',
           indexName: 'testcafe',
           inputSelector: '#search',
           debug: false // Set debug to true if you want to inspect the dropdown
+      });
+
+      search.autocomplete.on('autocomplete:opened', function(e) {
+          var searchInput = document.querySelector('#search');
+          var dropdown    = document.querySelector('.ds-dropdown-menu');
+          
+          if(searchInput && dropdown) {
+              dropdown.style.maxWidth = "none";
+              dropdown.style.width = searchInput.offsetWidth + "px";
+          }
       });
     </script> 
 
