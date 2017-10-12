@@ -5,8 +5,8 @@
     <description></description>
     <link>http://devexpress.github.io/testcafe/</link>
     <atom:link href="http://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 11 Oct 2017 17:12:12 +0300</pubDate>
-    <lastBuildDate>Wed, 11 Oct 2017 17:12:12 +0300</lastBuildDate>
+    <pubDate>Thu, 12 Oct 2017 14:20:09 +0300</pubDate>
+    <lastBuildDate>Thu, 12 Oct 2017 14:20:09 +0300</lastBuildDate>
     <generator>Jekyll v3.5.0</generator>
     
       <item>
@@ -338,14 +338,14 @@ Now automatic waiting is much smarter and chances that you need to wait manually
 &lt;p&gt;&lt;a href=&quot;https://developers.google.com/web/updates/2017/04/headless-chrome&quot;&gt;Headless mode&lt;/a&gt; allows you to run tests in Chrome without any visible UI shell. To run tests in headless mode, use the &lt;code&gt;:headless&lt;/code&gt; postfix:&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe &lt;span class=&quot;s2&quot;&gt;&quot;chrome:headless&quot;&lt;/span&gt; tests/sample-fixture.js
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Device emulation mode allows you to check how your tests works on mobile devices via Chrome&amp;#39;s built-in &lt;a href=&quot;https://developers.google.com/web/tools/chrome-devtools/device-mode/&quot;&gt;device emulator&lt;/a&gt;. To run tests in device emulation mode, specify &lt;code&gt;emulation:&lt;/code&gt; and &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browser-support.html#available-chrome-options&quot;&gt;device parameters&lt;/a&gt;:&lt;/p&gt;
+&lt;p&gt;Device emulation mode allows you to check how your tests works on mobile devices via Chrome&amp;#39;s built-in &lt;a href=&quot;https://developers.google.com/web/tools/chrome-devtools/device-mode/&quot;&gt;device emulator&lt;/a&gt;. To run tests in device emulation mode, specify &lt;code&gt;emulation:&lt;/code&gt; and &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browsers/using-chrome-device-emulation.html#emulator-parameters&quot;&gt;device parameters&lt;/a&gt;:&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe &lt;span class=&quot;s2&quot;&gt;&quot;chrome:emulation:device=iphone 6&quot;&lt;/span&gt; tests/sample-fixture.js
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;For details, see &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browser-support.html#using-chrome-specific-features&quot;&gt;Using Chrome-specific Features&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;For details, see &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browsers/using-chrome-device-emulation.html&quot;&gt;Using Chrome-specific Features&lt;/a&gt;.&lt;/p&gt;
 &lt;h3&gt;&lt;a class=&quot;anchor&quot; name=&quot;support-html5-drag-and-drop-897&quot;&gt;&lt;/a&gt;⚙ Support HTML5 Drag and Drop (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/897&quot;&gt;#897&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#support-html5-drag-and-drop-897&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;Starting with this release, TestCafe supports HTML5 drag and drop, so you can test elements with the &lt;code&gt;draggable&lt;/code&gt; &lt;a href=&quot;http://w3c.github.io/html/editing.html#the-draggable-attribute&quot;&gt;attribute&lt;/a&gt;.&lt;/p&gt;
 &lt;h3&gt;&lt;a class=&quot;anchor&quot; name=&quot;fixed-url-for-opening-remote-browsers-1476&quot;&gt;&lt;/a&gt;⚙ Fixed URL for opening remote browsers (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1476&quot;&gt;#1476&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#fixed-url-for-opening-remote-browsers-1476&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;We have simplified the format of links that TestCafe generates when you &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browser-support.html#browsers-on-remote-devices&quot;&gt;run tests on remote browsers&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;We have simplified the format of links that TestCafe generates when you &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browsers/browser-support.html#browsers-on-remote-devices&quot;&gt;run tests on remote browsers&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;Now, you have no need to type a unique link for each test run, all the links became constant. So, it is easier now to run tests on a remote device repeatedly: you can run them by navigating a link from your browser history.&lt;/p&gt;
 &lt;h2&gt;&lt;a class=&quot;anchor&quot; name=&quot;bug-fixes&quot;&gt;&lt;/a&gt;Bug Fixes &lt;a class=&quot;permalink&quot; href=&quot;#bug-fixes&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;

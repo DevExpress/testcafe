@@ -624,11 +624,21 @@ You can do this by using the
 
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.js"></script>
-     <script type="text/javascript"> docsearch({
+     <script type="text/javascript"> var search = docsearch({
           apiKey: '938fb7894c0af8c01af3e2b4c53d4bdd',
           indexName: 'testcafe',
           inputSelector: '#search',
           debug: false // Set debug to true if you want to inspect the dropdown
+      });
+
+      search.autocomplete.on('autocomplete:opened', function(e) {
+          var searchInput = document.querySelector('#search');
+          var dropdown    = document.querySelector('.ds-dropdown-menu');
+          
+          if(searchInput && dropdown) {
+              dropdown.style.maxWidth = "none";
+              dropdown.style.width = searchInput.offsetWidth + "px";
+          }
       });
     </script> 
 
