@@ -2,6 +2,7 @@ var expect            = require('chai').expect;
 var path              = require('path');
 var fs                = require('fs');
 var tmp               = require('tmp');
+var find              = require('lodash').find;
 var CliArgumentParser = require('../../lib/cli/argument-parser');
 
 describe('CLI argument parser', function () {
@@ -348,6 +349,46 @@ describe('CLI argument parser', function () {
                 expect(parser.opts.proxy).to.be.ok;
                 expect(parser.opts.debugOnFail).to.be.ok;
             });
+    });
+
+    it('Should has static CLI', function () {
+        var WARNING          = 'IMPORTANT: Please be sure what you want to change CLI if this test is failing!';
+        var EXPECTED_OPTIONS = [
+            { long: '--version', short: '-v' },
+            { long: '--list-browsers', short: '-b' },
+            { long: '--reporter', short: '-r' },
+            { long: '--screenshots', short: '-s' },
+            { long: '--screenshots-on-fails', short: '-S' },
+            { long: '--quarantine-mode', short: '-q' },
+            { long: '--debug-mode', short: '-d' },
+            { long: '--skip-js-errors', short: '-e' },
+            { long: '--test', short: '-t' },
+            { long: '--test-grep', short: '-T' },
+            { long: '--fixture', short: '-f' },
+            { long: '--fixture-grep', short: '-F' },
+            { long: '--app', short: '-a' },
+            { long: '--concurrency', short: '-c' },
+            { long: '--debug-on-fail' },
+            { long: '--app-init-delay' },
+            { long: '--selector-timeout' },
+            { long: '--assertion-timeout' },
+            { long: '--page-load-timeout' },
+            { long: '--speed' },
+            { long: '--ports' },
+            { long: '--hostname' },
+            { long: '--proxy' },
+            { long: '--qr-code' },
+            { long: '--color' },
+            { long: '--no-color' }
+        ];
+
+        var parser  = new CliArgumentParser('');
+        var options = parser.program.options;
+
+        expect(options.length).eql(EXPECTED_OPTIONS.length, WARNING);
+
+        for (var i = 0; i < EXPECTED_OPTIONS.length; i++)
+            expect(find(options, EXPECTED_OPTIONS[i])).not.eql(void 0, WARNING);
     });
 });
 

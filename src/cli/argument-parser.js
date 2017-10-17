@@ -87,7 +87,7 @@ export default class CLIArgumentParser {
             .description(CLIArgumentParser._getDescription())
 
             .option('-b, --list-browsers [provider]', 'output the aliases for local browsers or browsers available through the specified browser provider')
-            .option('-r, --reporters <name[:outputFile][,...]>', 'specify the reporters and optionally files where reports are saved')
+            .option('-r, --reporter <name[:outputFile][,...]>', 'specify the reporters and optionally files where reports are saved')
             .option('-s, --screenshots <path>', 'enable screenshot capturing and specify the path to save the screenshots to')
             .option('-S, --screenshots-on-fails', 'take a screenshot whenever a test fails')
             .option('-q, --quarantine-mode', 'enable the quarantine mode')
@@ -210,12 +210,12 @@ export default class CLIArgumentParser {
     }
 
     async _parseReporters () {
-        if (!this.opts.reporters) {
+        if (!this.opts.reporter) {
             this.opts.reporters = [];
             return;
         }
 
-        const reporters = this.opts.reporters.split(',');
+        const reporters = this.opts.reporter.split(',');
 
         this.opts.reporters = reporters.map(reporter => {
             const separatorIndex = reporter.indexOf(':');
