@@ -2,11 +2,11 @@
 
 ## v0.18.1 (2017-10-17): a recovery release following v0.18.0
 
-### Bug fix ([#1881](https://github.com/DevExpress/testcafe/issues/1881))
+### --reporter flag name fixed ([#1881](https://github.com/DevExpress/testcafe/issues/1881))
 
 In v0.18.0, we have accidentally changed the [--reporter](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-r-namefile---reporter-namefile) CLI flag to `--reporters`. In this recovery release, we roll back to the previous flag name.
 
-### Bug Fix ([#1874](https://github.com/DevExpress/testcafe/issues/1874))
+### Compatibility with RequireJS restored ([#1874](https://github.com/DevExpress/testcafe/issues/1874))
 
 Changes in v0.18.0 made TestCafe incompatible with [RequireJS](http://requirejs.org). It is fixed in this recovery release.
 
