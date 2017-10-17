@@ -2,7 +2,6 @@
 // WARNING: this file is used by both the client and the server.
 // Do not use any browser or node-specific API!
 // -------------------------------------------------------------
-import { assignIn } from 'lodash';
 import Assignable from '../utils/assignable';
 
 
@@ -39,8 +38,12 @@ export default class BrowserConsoleMessages extends Assignable {
     }
 
     getCopy () {
-        const { log, info, warn, error } = this;
+        var copy = {};
+        var properties = this._getAssignableProperties();
 
-        return assignIn({}, { log, info, warn, error });
+        for (const property of properties)
+            copy[property.name] = this[property.name].slice();
+
+        return copy;
     }
 }
