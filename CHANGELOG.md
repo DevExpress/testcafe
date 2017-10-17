@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.18.1 (2017-10-17): a recovery release following v0.18.0
+
+### Bug fix ([#1881](https://github.com/DevExpress/testcafe/issues/1881))
+
+In v0.18.0, we have accidentally changed the [--reporter](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-r-namefile---reporter-namefile) CLI flag to `--reporters`. In this recovery release, we roll back to the previous flag name.
+
+We apologize for any inconvenience.
+
 ## v0.18.0 (2017-10-10)
 
 ### Enhancements
