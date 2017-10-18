@@ -2,6 +2,7 @@ import hammerhead from './deps/hammerhead';
 import Driver from './driver';
 import IframeDriver from './iframe-driver';
 import ScriptExecutionBarrier from './script-execution-barrier';
+import embeddingUtils from './embedding-utils';
 
 
 hammerhead.nativeMethods.objectDefineProperty.call(window, window, '%testCafeDriver%', {
@@ -23,6 +24,13 @@ hammerhead.nativeMethods.objectDefineProperty.call(window, window, '%ScriptExecu
     configurable: false,
     writable:     false,
     value:        ScriptExecutionBarrier
+});
+
+hammerhead.nativeMethods.objectDefineProperty.call(window, window, '%testCafeEmbeddingUtils%', {
+    enumerable:   false,
+    configurable: false,
+    writable:     false,
+    value:        embeddingUtils
 });
 
 /* eslint-disable no-undef */
