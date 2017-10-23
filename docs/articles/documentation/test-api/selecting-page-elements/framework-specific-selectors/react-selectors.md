@@ -51,7 +51,7 @@ const itemsCount       = ReactSelector('TodoApp div span');
 
 Warning: if you specify a DOM element’s tag name, React selectors search for the element among the component’s children without looking into nested components. For instance, for the JSX above the `ReactSelector('TodoApp div')` selector will be equal to `Selector('.todo-app > div')`.
 
-Selectors returned by `ReactSelector( selector )` are recognized as TestCafe selectors. You can combine them with regular selectors and filter with `.withText`, `.nth`, `.find` and [other](selectors.md#filter-dom-nodes) functions. To search for elements within a component, you can use the following combined approach.
+Selectors returned by `ReactSelector( selector )` are recognized as TestCafe selectors. You can combine them with regular selectors and filter with `.withText`, `.nth`, `.find` and [other](../selectors.md#filter-dom-nodes) functions. To search for elements within a component, you can use the following combined approach.
 
 ```js
 import ReactSelector from 'testcafe-react-selectors';
@@ -80,11 +80,11 @@ test('Add new task', async t => {
 
 ### Obtaining Component's Props and State
 
-As an alternative to TestCafe [node state properties](dom-node-state.md), you can obtain state or props of a ReactJS component.
+As an alternative to TestCafe [node state properties](../dom-node-state.md), you can obtain state or props of a ReactJS component.
 
 To obtain component properties and state, use the React selector's `.getReact()` method.
 
-The `.getReact()` method returns a [client function](../obtaining-data-from-the-client.md). This function resolves to an object that contains component's properties (excluding properties of its children) and state.
+The `.getReact()` method returns a [client function](../../obtaining-data-from-the-client.md). This function resolves to an object that contains component's properties (excluding properties of its children) and state.
 
 ```js
 const reactComponent      = ReactSelector('MyComponent');
