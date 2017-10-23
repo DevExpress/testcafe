@@ -68,32 +68,7 @@ import VueSelector from 'testcafe-vue-selectors';
 const todoItem = VueSelector('todo-list todo-item');
 ```
 
-You can combine Vue selectors with testcafe `Selector` filter functions like `.find`, `.withText`, `.nth` and [other](../selectors.md#functional-style-selectors).
-
-```js
-import VueSelector from 'testcafe-vue-selectors';
-
-var itemsCount = VueSelector().find('.items-count span');
-```
-
-Let's use the API described above to add a task to a Todo list and check that the number of items changed.
-
-```js
-import VueSelector from 'testcafe-vue-selectors';
-
-fixture `TODO list test`
-    .page('http://localhost:1337');
-
-test('Add new task', async t => {
-    const todoTextInput = VueSelector('todo-input');
-    const todoItem      = VueSelector('todo-list todo-item');
-
-    await t
-        .typeText(todoTextInput, 'My Item')
-        .pressKey('enter')
-        .expect(todoItem.count).eql(3);
-});
-```
+To learn more, see the [repository documentation](https://github.com/DevExpress/testcafe-vue-selectors/blob/master/README.md#usage).
 
 #### Obtaining component's props, computed and state
 
@@ -116,59 +91,4 @@ const vueComponentState = await vueComponent.getVue();
 // }
 ```
 
-The returned client function can be passed to assertions activating the [Smart Assertion Query mechanism](../../assertions/README.md#smart-assertion-query-mechanism).
-
-**Example**
-
-```js
-import VueSelector from 'testcafe-vue-selector';
-
-fixture `TODO list test`
-    .page('http://localhost:1337');
-
-test('Check list item', async t => {
-    const todoItem    = VueSelector('todo-item');
-    const todoItemVue = await todoItem.getVue();
-
-    await t
-        .expect(todoItemVue.props.priority).eql('High')
-        .expect(todoItemVue.state.isActive).eql(false)
-        .expect(todoItemVue.computed.text).eql('Item 1');
-});
-```
-
-As an alternative, the `.getVue()` method can take a function that returns the required property, state or computed property. This function acts as a filter. Its argument is an object returned by `.getVue()`, i.e. `{ props: ..., state: ..., computed: ...}`.
-
-```js
-VueSelector('component').getVue(({ props, state, computed }) => {...});
-```
-
-**Example**
-
-```js
-import VueSelector from 'testcafe-vue-selectors';
-
-fixture `TODO list test`
-    .page('http://localhost:1337');
-
-test('Check list item', async t => {
-    const todoItem = VueSelector('todo-item');
-
-    await t
-        .expect(todoItem.getVue(({ props }) => props.priority)).eql('High')
-        .expect(todoItem.getVue(({ state }) => state.isActive)).eql(false)
-        .expect(todoItem.getVue(({ computed }) => computed.text)).eql('Item 1');
-});
-```
-
-The `.getVue()` method can be called for the `VueSelector` or the snapshot this selector returns.
-
-## Limitations
-
-`testcafe-vue-selectors` support Vue starting with version 2.
-
-Only props, state and computed parts of a Vue component are available.
-
-To check if a component can be found, use the [vue-dev-tools](https://chrome.google.com/webstore/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd) extension for Google Chrome.
-
-Pages with multiple Vue root nodes are not supported.
+To learn more, see the [repository documentation](https://github.com/DevExpress/testcafe-vue-selectors/blob/master/README.md#obtaining-components-props-computed-and-state).

@@ -49,34 +49,7 @@ const itemsCountStatus = ReactSelector('TodoApp div');
 const itemsCount       = ReactSelector('TodoApp div span');
 ```
 
-Warning: if you specify a DOM element’s tag name, React selectors search for the element among the component’s children without looking into nested components. For instance, for the JSX above the `ReactSelector('TodoApp div')` selector will be equal to `Selector('.todo-app > div')`.
-
-Selectors returned by `ReactSelector( selector )` are recognized as TestCafe selectors. You can combine them with regular selectors and filter with `.withText`, `.nth`, `.find` and [other](../selectors.md#filter-dom-nodes) functions. To search for elements within a component, you can use the following combined approach.
-
-```js
-import ReactSelector from 'testcafe-react-selectors';
-
-var itemsCount = ReactSelector('TodoApp').find('.items-count span');
-```
-
-Let’s use the API described above to add a task to a Todo list and check that the number of items changed.
-
-```js
-import ReactSelector from 'testcafe-react-selectors';
-
-fixture `TODO list test`
-    .page('http://localhost:1337');
-
-test('Add new task', async t => {
-    const todoTextInput = ReactSelector('TodoInput');
-    const todoItem      = ReactSelector('TodoList TodoItem');
-
-    await t
-        .typeText(todoTextInput, 'My Item')
-        .pressKey('enter')
-        .expect(todoItem.count).eql(3);
-});
-```
+To learn more, see the [repository documentation](https://github.com/DevExpress/testcafe-react-selectors/blob/master/README.md#create-selectors-for-reactjs-components).
 
 ### Obtaining Component's Props and State
 
@@ -98,74 +71,4 @@ const reactComponentState = await reactComponent.getReact();
 // }
 ```
 
-The returned client function can be passed to assertions activating the Smart Assertion Query mechanism.
-
-**Example**
-
-```js
-import ReactSelector from 'testcafe-react-selectors';
-
-fixture `TODO list test`
-    .page('http://localhost:1337');
-
-test('Check list item', async t => {
-    const el         = ReactSelector('TodoList');
-    const component  = await el.getReact();
-
-    await t.expect(component.props.priority).eql('High');
-    await t.expect(component.state.isActive).eql(false);
-});
-```
-
-As an alternative, the `.getReact()` method can take a function that returns the required property or state. This function acts as a filter. Its argument is an object returned by `.getReact()`, i.e. `{ props: ..., state: ...}`.
-
-```js
-ReactSelector('Component').getReact(({ props, state }) => {...})
-```
-
-**Example**
-
-```js
-import ReactSelector from 'testcafe-react-selectors';
-
-fixture `TODO list test`
-    .page('http://localhost:1337');
-
-test('Check list item', async t => {
-    const el = ReactSelector('TodoList');
-
-    await t
-        .expect(el.getReact(({ props }) => props.priority)).eql('High')
-        .expect(el.getReact(({ state }) => state.isActive)).eql(false);
-});
-```
-
-The `.getReact()` method can be called for the `ReactSelector` or the snapshot this selector returns.
-
-### Limitations
-
-* `testcafe-react-selectors` support ReactJS starting with version 15. To check if a component can be found, use the [react-dev-tools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi) extension.
-
-* Search for a component starts from the root React component, so selectors like `ReactSelector('body MyComponent')` will return `null`.
-
-* ReactSelectors need class names to select components on the page. Code minification usually does not keep the original class names. So you should either use non-minified code or configure the minificator to keep class names.
-
-  For `babel-minify`, add the following options to the configuration:
-
-  ```js
-  { keepClassName: true, keepFnName: true }
-  ```
-
-  In `UglifyJS`, use the following configuration:
-
-  ```js
-  {
-      compress: {
-          keep_fnames: true
-      },
-
-      mangle: {
-          keep_fnames: true
-      }
-  }
-  ```
+To learn more, see the [repository documentation](https://github.com/DevExpress/testcafe-react-selectors/blob/master/README.md#obtaining-components-props-and-state).

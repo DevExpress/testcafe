@@ -45,85 +45,7 @@ See more examples in the [plugin repository](https://github.com/DevExpress/testc
 
 ### API
 
-#### byBinding
-
-Find elements by text binding. Does a partial match, so any elements bound to variables containing the input string will be returned.
-
-```js
-AngularJSSelector.byBinding(bindingDescriptor, parentSelector)
-```
-
-Parameter                   | Description
---------------------------- | -----------
-bindingDescriptor                 |  The JavaScript expression to which the element's `textContent` is bound.
-parentSelector&#160;*(optional)*  | A TestCafe [selector](../selectors.md). If specified, TestCafe will search for the target element among the descendants of the element identified by this selector.
-
-> We don't support deprecated syntax `AngularJSSelector.byBinding('{{person.name}}')`
-
-#### byExactBinding
-
-Find elements by exact binding.
-
-```js
-AngularJSSelector.byExactBinding(bindingDescriptor, parentSelector)
-```
-
-Parameter                   | Description
---------------------------- | -----------
-bindingDescriptor                 |  The JavaScript expression to which the element's `textContent` is bound.
-parentSelector&#160;*(optional)*  | A TestCafe [selector](../selectors.md). If specified, TestCafe will search for the target element among the descendants of the element identified by this selector.
-
-#### byModel
-
-Find elements by 'ng-model' expression
-
-```js
-AngularJSSelector.byModel(model, parentSelector)
-```
-
-Parameter                   | Description
---------------------------- | -----------
-model                             | The JavaScript expression used to bind a property on the scope to an input, select, textarea (or a custom form control).
-parentSelector&#160;*(optional)*  | A TestCafe [selector](../selectors.md). If specified, TestCafe will search for the target element among the descendants of the element identified by this selector.
-
-#### byOptions
-
-Find elements by 'ng-options' expression.
-
-```js
-AngularJSSelector.byOptions(optionsDescriptor, parentSelector)
-```
-
-Parameter                   | Description
---------------------------- | -----------
-optionsDescriptor                 | The JavaScript expression used to generate a list of `<option>` elements for the `<select>` element.
-parentSelector&#160;*(optional)*  | A TestCafe [selector](../selectors.md). If specified, TestCafe will search for the target element among the descendants of the element identified by this selector.
-
-#### byRepeater
-
-Find elements by repeater. Does a partial match, so any elements bound to variables containing the input string will be returned.
-
-```js
-AngularJSSelector.byRepeater(repeatDescriptor, parentSelector)
-```
-
-Parameter                   | Description
---------------------------- | -----------
-repeatDescriptor                  | The JavaScript expression used to instantiate a template.
-parentSelector&#160;*(optional)*  | A TestCafe [selector](../selectors.md). If specified, TestCafe will search for the target element among the descendants of the element identified by this selector.
-
-#### byExactRepeat
-
-Find elements by exact repeater.
-
-```js
-AngularJSSelector.byExactRepeater(repeatDescriptor, parentSelector)
-```
-
-Parameter                   | Description
---------------------------- | -----------
-repeatDescriptor                  | The JavaScript expression used to instantiate a template.
-parentSelector&#160;*(optional)*  | A TestCafe [selector](../selectors.md). If specified, TestCafe will search for the target element among the descendants of the element identified by this selector.
+To learn about the API, see the [angularJS-selector.md](https://github.com/DevExpress/testcafe-angular-selectors/blob/master/angularJS-selector.md) file in the plugin repository.
 
 ## Angular (v2+) Selectors
 
@@ -199,15 +121,7 @@ import { AngularSelector } from 'testcafe-angular-selectors';
 const listItemComponent = AngularSelector('list list-item');
 ```
 
-You can combine Angular selectors with TestCafe's Selector filter functions like `.find`, `.withText`, `.nth` and [others](../selectors.md#functional-style-selectors).
-
-```js
-import { AngularSelector } from 'testcafe-anugular-selectors';
-
-const myAppTitle = AngularSelector().find('h1');
-```
-
-See more examples in the [plugin repository](https://github.com/DevExpress/testcafe-angular-selectors/blob/master/test/angular-selector-test.js).
+To learn more, refer to the [plugin repository](https://github.com/DevExpress/testcafe-angular-selectors/blob/master/angular-selector.md#create-selectors-for-angular-components).
 
 ### Obtaining Component's State
 
@@ -216,8 +130,6 @@ As an alternative to [DOM Node State properties](../dom-node-state.md), you can 
 To obtain the component state, use the Angular selector's `.getAngular()` method.
 
 The `.getAngular()` method returns a [client function](../../obtaining-data-from-the-client.md). This function resolves to an object that contains component's state.
-
-The returned client function can be passed to assertions activating the [Smart Assertion Query mechanism](../../assertions/README.md#smart-assertion-query-mechanism).
 
 ```js
 import { AngularSelector } from 'testcafe-angular-selectors';
@@ -228,13 +140,4 @@ const listAngular = await list.getAngular();
 await t.expect(listAngular.testProp).eql(1);
 ```
 
-As an alternative, the `.getAngular()` method can take a function that returns the required state property.
-This function acts as a filter. Its argument is an object returned by `.getAngular()`, i.e. `{ state: ...}`.
-
-```js
-import { AngularSelector } from 'testcafe-angular-selectors';
-
-const list = AngularSelector('list');
-...
-await t.expect(list.getAngular(({ state }) => state.testProp)).eql(1);
-```
+To learn more, see the [plugin repository](https://github.com/DevExpress/testcafe-angular-selectors/blob/master/angular-selector.md#obtaining-components-state).
