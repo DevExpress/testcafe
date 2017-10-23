@@ -25,7 +25,7 @@
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="http://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/highlight.min.js"></script>
-  <script async defer src="https://buttons.github.io/buttons.js"></script>
+  <script defer src="https://buttons.github.io/buttons.js"></script>
   <script>
       document.addEventListener('DOMContentLoaded', function (e) {
           hljs.initHighlightingOnLoad();
@@ -248,10 +248,12 @@
 
   var searchButton      = document.querySelector('#search-icon');
   var searchPanel       = document.querySelector('#search-panel');
+  var searchInput       = document.querySelector('#search');
   var closeSearchButton = document.querySelector('#close-search');
 
   searchButton.addEventListener('click', function () {
       searchPanel.className = searchPanel.className.replace(/hidden/,'');
+      searchInput.focus();      
   });
   
   closeSearchButton.addEventListener('click', function () {

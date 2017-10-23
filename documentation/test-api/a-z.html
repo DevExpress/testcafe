@@ -25,7 +25,7 @@
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="http://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/highlight.min.js"></script>
-  <script async defer src="https://buttons.github.io/buttons.js"></script>
+  <script defer src="https://buttons.github.io/buttons.js"></script>
   <script>
       document.addEventListener('DOMContentLoaded', function (e) {
           hljs.initHighlightingOnLoad();
@@ -107,6 +107,12 @@
 
   
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/css/perfect-scrollbar.min.css">
+    <style>
+        .ps-container > .ps-scrollbar-x-rail,
+        .ps-container > .ps-scrollbar-y-rail {
+            opacity: 0.6;
+        }
+    </style>
     <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/js/perfect-scrollbar.min.js"></script>
     <script defer type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.3.min.js"></script>
     <script defer src="/testcafe/scripts/widget.js" type="text/javascript"></script>
@@ -338,10 +344,12 @@
 
   var searchButton      = document.querySelector('#search-icon');
   var searchPanel       = document.querySelector('#search-panel');
+  var searchInput       = document.querySelector('#search');
   var closeSearchButton = document.querySelector('#close-search');
 
   searchButton.addEventListener('click', function () {
       searchPanel.className = searchPanel.className.replace(/hidden/,'');
+      searchInput.focus();      
   });
   
   closeSearchButton.addEventListener('click', function () {
@@ -845,6 +853,7 @@
 <li><a href="actions/select-text.html#select-textarea-content">selectTextAreaContent</a></li>
 <li><a href="actions/upload.html#populate-file-upload-input">setFilesToUpload</a></li>
 <li><a href="handling-native-dialogs.html#dialog-handler">setNativeDialogHandler</a></li>
+<li><a href="test-code-structure.html#setting-page-load-timeout">setPageLoadTimeout</a></li>
 <li><a href="test-code-structure.html#setting-test-speed">setTestSpeed</a></li>
 <li><a href="working-with-iframes.html#switching-to-an-iframe">switchToIframe</a></li>
 <li><a href="working-with-iframes.html#switching-back-to-the-main-window">switchToMainWindow</a></li>
