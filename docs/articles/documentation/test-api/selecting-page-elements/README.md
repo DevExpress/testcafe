@@ -20,3 +20,4 @@ use it in actions and assertions.
 * [Selectors](selectors.md)
 * [Selector Options](selector-options.md)
 * [DOM Node State](dom-node-state.md)
+* [Framework-Specific Selectors](framework-specific-selectors/README.md)
