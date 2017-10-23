@@ -45,9 +45,6 @@
 <lastmod>2017-10-10T00:00:00+03:00</lastmod>
 </url>
 <url>
-<loc>http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/framework-specific-selectors/</loc>
-</url>
-<url>
 <loc>http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/</loc>
 </url>
 <url>
@@ -105,13 +102,7 @@
 <loc>http://devexpress.github.io/testcafe/documentation/test-api/actions/action-options.html</loc>
 </url>
 <url>
-<loc>http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/framework-specific-selectors/angular-selectors.html</loc>
-</url>
-<url>
 <loc>http://devexpress.github.io/testcafe/documentation/test-api/assertions/assertion-api.html</loc>
-</url>
-<url>
-<loc>http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/framework-specific-selectors/aurelia-selectors.html</loc>
 </url>
 <url>
 <loc>http://devexpress.github.io/testcafe/documentation/extending-testcafe/browser-provider-plugin/browser-provider-methods.html</loc>
@@ -192,9 +183,6 @@
 <loc>http://devexpress.github.io/testcafe/documentation/test-api/actions/press-key.html</loc>
 </url>
 <url>
-<loc>http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/framework-specific-selectors/react-selectors.html</loc>
-</url>
-<url>
 <loc>http://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html</loc>
 </url>
 <url>
@@ -271,9 +259,6 @@
 </url>
 <url>
 <loc>http://devexpress.github.io/testcafe/documentation/recipes/using-testcafe-with-gulp.html</loc>
-</url>
-<url>
-<loc>http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/framework-specific-selectors/vue-selectors.html</loc>
 </url>
 <url>
 <loc>http://devexpress.github.io/testcafe/documentation/test-api/waiting-for-page-elements-to-appear.html</loc>
