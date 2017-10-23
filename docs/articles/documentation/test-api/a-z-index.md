@@ -85,6 +85,7 @@ This topic lists test API members in alphabetical order.
     * [selectTextAreaContent](actions/select-text.md#select-textarea-content)
     * [setFilesToUpload](actions/upload.md#populate-file-upload-input)
     * [setNativeDialogHandler](handling-native-dialogs.md#dialog-handler)
+    * [setPageLoadTimeout](test-code-structure.md#setting-page-load-timeout)
     * [setTestSpeed](test-code-structure.md#setting-test-speed)
     * [switchToIframe](working-with-iframes.md#switching-to-an-iframe)
     * [switchToMainWindow](working-with-iframes.md#switching-back-to-the-main-window)
