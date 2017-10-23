@@ -259,12 +259,17 @@ function createDerivativeSelectorWithFilter (getSelector, SelectorBuilder, selec
         filterNodes: filterNodes
     };
 
+    var { boundTestRun, timeout, visibilityCheck } = collectionModeSelectorBuilder.options;
+
     dependencies = assign(dependencies, additionalDependencies);
 
     var builder = new SelectorBuilder(selectorFn, {
         dependencies,
         customDOMProperties,
-        customMethods
+        customMethods,
+        boundTestRun,
+        timeout,
+        visibilityCheck
     }, { instantiation: 'Selector' });
 
     return builder.getFunction();

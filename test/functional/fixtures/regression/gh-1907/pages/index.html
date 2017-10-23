@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>gh-1907</title>
+    </head>
+    <body>
+        <div></div>
+        <div id="div">div
+            <div id="child">child</div>
+        </div>
+        <div></div>
+
+        <div id="delay" style="display: none;">Appears after delay</div>
+        <div id="hidden" style="display: none">Hidden</div>
+
+        <script>
+            window.setTimeout(function (){
+                document.querySelector('#delay').style.display = 'block';
+            }, 1000);
+        </script>
+    </body>
+</html>
