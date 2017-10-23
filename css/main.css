@@ -334,7 +334,9 @@ html, body {
   height: 113px;
   background-color: white;
   position: relative;
-  z-index: 1; }
+  z-index: 1;
+  border-top: 1px solid #e6e6e6;
+  box-sizing: border-box; }
 
 .push {
   height: 113px; }
@@ -349,7 +351,8 @@ html, body {
   width: 350px;
   vertical-align: top;
   font-size: 13px;
-  background-color: #ffffff; }
+  background-color: #ffffff;
+  margin: 10px 0; }
   .doc-nav ul {
     list-style-type: none;
     margin-left: 0px; }
@@ -386,7 +389,7 @@ html, body {
     color: #2fa4cf; }
 
 .doc-nav-content {
-  margin: 27px 0 7px 0;
+  margin-top: 17px;
   border-right: 1px solid #e6e6e6;
   padding-right: 20px; }
   .doc-nav-content > ul {
