@@ -46,6 +46,7 @@ export default class IframeDriver extends Driver {
 
                         this.readyPromise.then(() => {
                             this.speed = msg.testSpeed;
+
                             this.parentDriverLink.confirmMessageReceived(msg.id);
                             this._onCommand(msg.command);
                         });
