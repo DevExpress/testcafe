@@ -20,7 +20,7 @@ export default class ChildDriverLink {
         this.driverWindow              = driverWindow;
         this.driverIframe              = domUtils.findIframeByWindow(driverWindow);
         this.driverId                  = driverId;
-        this.iframeAvailabilityTimeout = null;
+        this.iframeAvailabilityTimeout = 0;
     }
 
     set availabilityTimeout (val) {
