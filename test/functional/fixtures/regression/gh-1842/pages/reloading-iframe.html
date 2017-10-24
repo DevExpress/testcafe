@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GH-1842 reloading iframe</title>
+</head>
+<body>
+<h1>GH-1842 reloading iframe</h1>
+<script>
+    window.setTimeout(function () {
+        if (!window.top.iframeReloads)
+            window.top.iframeReloads = 0;
+
+        if (window.top.iframeReloads < 3) {
+            window.top.iframeReloads++;
+            document.location.href = document.location.href;
+        }
+    }, 0);
+</script>
+</body>
+</html>

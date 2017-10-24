@@ -1,6 +1,10 @@
 import { Promise, eventSandbox, nativeMethods } from '../deps/hammerhead';
 import { domUtils, delay, waitFor, positionUtils } from '../deps/testcafe-core';
-import { CurrentIframeIsNotLoadedError, CurrentIframeNotFoundError, CurrentIframeIsInvisibleError } from '../../../errors/test-run';
+import {
+    CurrentIframeIsNotLoadedError,
+    CurrentIframeNotFoundError,
+    CurrentIframeIsInvisibleError
+} from '../../../errors/test-run';
 import sendMessageToDriver from './send-message-to-driver';
 import { ExecuteCommandMessage, ConfirmationMessage, TYPE as MESSAGE_TYPE } from './messages';
 import DriverStatus from '../status';
@@ -12,11 +16,15 @@ const WAIT_IFRAME_RESPONSE_DELAY      = 500;
 
 
 export default class ChildDriverLink {
-    constructor (driverWindow, driverId, iframeAvailabilityTimeout) {
+    constructor (driverWindow, driverId) {
         this.driverWindow              = driverWindow;
         this.driverIframe              = domUtils.findIframeByWindow(driverWindow);
         this.driverId                  = driverId;
-        this.iframeAvailabilityTimeout = iframeAvailabilityTimeout;
+        this.iframeAvailabilityTimeout = 0;
+    }
+
+    set availabilityTimeout (val) {
+        this.iframeAvailabilityTimeout = val;
     }
 
     _ensureIframe () {
@@ -83,7 +91,7 @@ export default class ChildDriverLink {
                 var msg = new ExecuteCommandMessage(command, testSpeed);
 
                 return Promise.all([
-                    sendMessageToDriver(msg, this.driverWindow, this.timeout, CurrentIframeIsNotLoadedError),
+                    sendMessageToDriver(msg, this.driverWindow, this.iframeAvailabilityTimeout, CurrentIframeIsNotLoadedError),
                     this._waitForCommandResult()
                 ]);
             })
