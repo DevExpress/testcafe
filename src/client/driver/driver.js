@@ -298,26 +298,30 @@ export default class Driver {
         this._onReady(status);
     }
 
-    _ensureChildDriverLink (iframeWindow, ErrorCtor) {
+    _ensureChildDriverLink (iframeWindow, ErrorCtor, selectorTimeout) {
         // NOTE: a child driver should establish connection with the parent when it's loaded.
         // Here we are waiting while the appropriate child driver do this if it didn't do yet.
-        return waitFor(() => this._getChildDriverLinkByWindow(iframeWindow), CHECK_IFRAME_DRIVER_LINK_DELAY, this.selectorTimeout)
+        return waitFor(() => this._getChildDriverLinkByWindow(iframeWindow), CHECK_IFRAME_DRIVER_LINK_DELAY, selectorTimeout)
             .catch(() => {
                 throw new ErrorCtor();
             });
     }
 
     _switchToIframe (selector, iframeErrorCtors) {
-        return getExecuteSelectorResult(selector, this.selectorTimeout, null,
+        var hasSpecificTimeout     = typeof selector.timeout === 'number';
+        var commandSelectorTimeout = hasSpecificTimeout ? selector.timeout : this.selectorTimeout;
+
+        return getExecuteSelectorResult(selector, commandSelectorTimeout, null,
             () => new iframeErrorCtors.NotFoundError(), () => iframeErrorCtors.IsInvisibleError(), this.statusBar)
             .then(iframe => {
                 if (!domUtils.isIframeElement(iframe))
                     throw new ActionElementNotIframeError();
 
-                return this._ensureChildDriverLink(iframe.contentWindow, iframeErrorCtors.NotLoadedError);
+                return this._ensureChildDriverLink(iframe.contentWindow, iframeErrorCtors.NotLoadedError, commandSelectorTimeout);
             })
             .then(childDriverLink => {
-                this.activeChildDriverLink = childDriverLink;
+                childDriverLink.availabilityTimeout = commandSelectorTimeout;
+                this.activeChildDriverLink          = childDriverLink;
                 this.contextStorage.setItem(ACTIVE_IFRAME_SELECTOR, selector);
             });
     }

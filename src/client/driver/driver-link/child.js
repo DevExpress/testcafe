@@ -12,11 +12,15 @@ const WAIT_IFRAME_RESPONSE_DELAY      = 500;
 
 
 export default class ChildDriverLink {
-    constructor (driverWindow, driverId, iframeAvailabilityTimeout) {
-        this.driverWindow              = driverWindow;
-        this.driverIframe              = domUtils.findIframeByWindow(driverWindow);
-        this.driverId                  = driverId;
-        this.iframeAvailabilityTimeout = iframeAvailabilityTimeout;
+    constructor (driverWindow, driverId) {
+        this.driverWindow = driverWindow;
+        this.driverIframe = domUtils.findIframeByWindow(driverWindow);
+        this.driverId = driverId;
+        this.iframeAvailabilityTimeout = null;
+    }
+
+    set availabilityTimeout (val) {
+        this.iframeAvailabilityTimeout = val;
     }
 
     _ensureIframe () {
@@ -83,7 +87,7 @@ export default class ChildDriverLink {
                 var msg = new ExecuteCommandMessage(command, testSpeed);
 
                 return Promise.all([
-                    sendMessageToDriver(msg, this.driverWindow, this.timeout, CurrentIframeIsNotLoadedError),
+                    sendMessageToDriver(msg, this.driverWindow, this.iframeAvailabilityTimeout, CurrentIframeIsNotLoadedError),
                     this._waitForCommandResult()
                 ]);
             })

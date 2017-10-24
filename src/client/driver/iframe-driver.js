@@ -23,6 +23,10 @@ export default class IframeDriver extends Driver {
         // NOTE: do nothing because hammerhead sends js error to the top window directly
     }
 
+    _onConsoleMessage () {
+        // NOTE: do nothing because hammerhead sends console messages to the top window directly
+    }
+
     // Messaging between drivers
     _initParentDriverListening () {
         eventSandbox.message.on(eventSandbox.message.SERVICE_MSG_RECEIVED_EVENT, e => {
@@ -39,10 +43,12 @@ export default class IframeDriver extends Driver {
                             return;
 
                         this.lastParentDriverMessageId = msg.id;
-                        this.speed                     = msg.testSpeed;
 
-                        this.parentDriverLink.confirmMessageReceived(msg.id);
-                        this._onCommand(msg.command);
+                        this.readyPromise.then(() => {
+                            this.speed = msg.testSpeed;
+                            this.parentDriverLink.confirmMessageReceived(msg.id);
+                            this._onCommand(msg.command);
+                        });
                     }
 
                     if (msg.type === MESSAGE_TYPE.setNativeDialogHandler) {
