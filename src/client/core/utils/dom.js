@@ -325,19 +325,6 @@ export function getElementIndexInParent (parent, child) {
 
 }
 
-export function setUnselectableAttributeRecursive (el) {
-    if (isElementNode(el))
-        el.setAttribute('unselectable', 'on');
-
-    var child = el.firstChild;
-
-    while (child) {
-        setUnselectableAttributeRecursive(child);
-
-        child = child.nextSibling;
-    }
-}
-
 export function isTheSameNode (node1, node2) {
     //NOTE: Mozilla has not isSameNode method
     if (node1 && node2 && node1.isSameNode)
