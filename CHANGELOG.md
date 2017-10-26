@@ -3,7 +3,7 @@
 ## v0.18.2 (2017-10-26)
 
 ### Bug Fixes
-* Screenshots are now captured correctly when using High DPI monitor configurations on Windows [#1896](https://github.com/DevExpress/testcafe/issues/1896)
+* Screenshots are now captured correctly when using High DPI monitor configurations on Windows ([#1896](https://github.com/DevExpress/testcafe/issues/1896))
 * Fixed the `Cannot read property 'getItem' of null` error which is raised when a console message was printed in an iframe before it's loaded completely ([#1875](https://github.com/DevExpress/testcafe/issues/1875))
 * Fixed the `Content iframe did not load` error which is raised if an iframe reloaded during the `switchToIframe` command execution ([#1842](https://github.com/DevExpress/testcafe/issues/1842))
 * Selector options are now passed to all derivative selectors ([#1907](https://github.com/DevExpress/testcafe/issues/1907))
