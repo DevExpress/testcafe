@@ -8,7 +8,7 @@
 * Fixed the `Content iframe did not load` error which is raised if an iframe reloaded during the `switchToIframe` command execution ([#1842](https://github.com/DevExpress/testcafe/issues/1842))
 * Selector options are now passed to all derivative selectors ([#1907](https://github.com/DevExpress/testcafe/issues/1907))
 * Fixed a memory leak in IE related to live node collections proxying ([testcafe-hammerhead/#1262](https://github.com/DevExpress/testcafe-hammerhead/issues/1262))
-* `DocumentFramgent` nodes now are correctly processed ([testcafe-hammerhead/#1334](https://github.com/DevExpress/testcafe-hammerhead/issues/1334))
+* `DocumentFragment` nodes now are correctly processed ([testcafe-hammerhead/#1334](https://github.com/DevExpress/testcafe-hammerhead/issues/1334))
 
 ## v0.18.1 (2017-10-17): a recovery release following v0.18.0
 
