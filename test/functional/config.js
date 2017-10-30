@@ -40,13 +40,12 @@ testingEnvironments[testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers] = {
             name:      'chrome',
             alias:     'chrome-osx'
         },
-        // NOTE: Firefox shows some survey that blocks test execution: https://support.mozilla.org/en-US/questions/1179497
-        // {
-        //     os:        'OS X',
-        //     osVersion: 'Sierra',
-        //     name:      'firefox',
-        //     alias:     'firefox-osx'
-        // },
+        {
+            os:        'OS X',
+            osVersion: 'Sierra',
+            name:      'firefox',
+            alias:     'firefox-osx'
+        },
         {
             os:        'Windows',
             osVersion: '10',
