@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.18.3 (2017-11-03)
+
+### Bug Fixes
+* Readonly instrumented DOM properties are now set correctly for plain objects ([testcafe-hammerhead/#1351](https://github.com/DevExpress/testcafe-hammerhead/issues/1351)).
+* The `HTMLElement.style` property is proxied on the client side now ([testcafe-hammerhead/#1348](https://github.com/DevExpress/testcafe-hammerhead/issues/1348)).
+* The `Refresh` response header is proxied now ([testcafe-hammerhead/#1354](https://github.com/DevExpress/testcafe-hammerhead/issues/1354])).
+
+
 ## v0.18.2 (2017-10-26)
 
 ### Bug Fixes
