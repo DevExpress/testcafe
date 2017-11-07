@@ -57,14 +57,14 @@ $(document).ready(function () {
                 mouseOver2Raised = true;
             });
 
-            var firstHover = new HoverAutomation($el1[0], new MouseOptions());
+            var firstHover = new HoverAutomation($el1[0], new MouseOptions({ offsetX: 5, offsetY: 5 }));
 
             firstHover
                 .run()
                 .then(function () {
                     ok(mouseOver1Raised);
 
-                    var secondHover = new HoverAutomation($el2[0], new MouseOptions());
+                    var secondHover = new HoverAutomation($el2[0], new MouseOptions({ offsetX: 5, offsetY: 5 }));
 
                     return secondHover.run();
                 })
@@ -146,7 +146,7 @@ $(document).ready(function () {
                 $el[0].onmspointerover = pointerHandler;
             }
 
-            var hover = new HoverAutomation($el[0], new MouseOptions());
+            var hover = new HoverAutomation($el[0], new MouseOptions({ offsetX: 5, offsetY: 5 }));
 
             hover
                 .run()
