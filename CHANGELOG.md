@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.18.3 (2017-11-03)
+## v0.18.3 (2017-11-08)
 
 ### Bug Fixes
 * Readonly instrumented DOM properties are now set correctly for plain objects ([testcafe-hammerhead/#1351](https://github.com/DevExpress/testcafe-hammerhead/issues/1351)).
