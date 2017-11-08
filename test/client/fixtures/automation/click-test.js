@@ -148,7 +148,7 @@ $(document).ready(function () {
                     moved = true;
                 });
 
-            var click = new ClickAutomation($el[0], new ClickOptions());
+            var click = new ClickAutomation($el[0], new ClickOptions({ offsetX: 5, offsetY: 5 }));
 
             click
                 .run()
