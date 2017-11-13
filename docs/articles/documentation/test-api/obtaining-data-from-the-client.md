@@ -55,7 +55,7 @@ In this instance, the client function will complete only when this Promise resol
 ```js
 import { ClientFunction } from 'testcafe';
 
-сonst performAsyncOperation = ClientFunction(() => {
+const performAsyncOperation = ClientFunction(() => {
     return Promise(resolve => {
         window.setTimeout(resolve, 500); // some async operations
     });
