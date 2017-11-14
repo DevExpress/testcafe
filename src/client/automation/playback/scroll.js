@@ -25,7 +25,7 @@ messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
         var offsetY         = e.message.offsetY;
         var maxScrollMargin = e.message.maxScrollMargin;
 
-        var scroll          = new ScrollAutomation(element, { offsetX, offsetY });
+        var scroll = new ScrollAutomation(element, { offsetX, offsetY });
 
         scroll.maxScrollMargin = maxScrollMargin;
 
@@ -48,12 +48,15 @@ export default class ScrollAutomation {
         top  = Math.max(top, 0);
 
         if (domUtils.isHtmlElement(element)) {
-            styleUtils.setScrollLeft(document.body, left);
-            styleUtils.setScrollTop(document.body, top);
-        }
+            var doc = domUtils.findDocument(element);
 
-        styleUtils.setScrollLeft(element, left);
-        styleUtils.setScrollTop(element, top);
+            styleUtils.setScrollLeft(doc, left);
+            styleUtils.setScrollTop(doc, top);
+        }
+        else {
+            styleUtils.setScrollLeft(element, left);
+            styleUtils.setScrollTop(element, top);
+        }
     }
 
     _getScrollToPoint (elementDimensions, { x, y }) {
