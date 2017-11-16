@@ -74,6 +74,8 @@
       url: /documentation/test-api/selecting-page-elements/selector-options.md
     - name: DOM Node State
       url: /documentation/test-api/selecting-page-elements/dom-node-state.md
+    - name: Framework-Specific Selectors
+      url: /documentation/test-api/selecting-page-elements/framework-specific-selectors.md
   - name: Actions
     url: /documentation/test-api/actions/README.md
     content:

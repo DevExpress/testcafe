@@ -35,6 +35,7 @@
     * [Selectors](articles/documentation/test-api/selecting-page-elements/selectors.md)
     * [Selector Options](articles/documentation/test-api/selecting-page-elements/selector-options.md)
     * [DOM Node State](articles/documentation/test-api/selecting-page-elements/dom-node-state.md)
+    * [Framework-Specific Selectors](articles/documentation/test-api/selecting-page-elements/framework-specific-selectors.md)
   * [Actions](articles/documentation/test-api/actions/README.md)
     * [Click](articles/documentation/test-api/actions/click.md)
     * [Double Click](articles/documentation/test-api/actions/double-click.md)
