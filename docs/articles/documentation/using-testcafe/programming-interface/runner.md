@@ -149,8 +149,10 @@ runner.browsers('chrome:headless');
 
 #### Specifying the Path to the Browser Executable
 
+Use the `path:` prefix. If the path contains spaces, surround it with backticks.
+
 ```js
-runner.browsers('C:\\Program Files\\Internet Explorer\\iexplore.exe');
+runner.browsers('path:`C:\\Program Files\\Internet Explorer\\iexplore.exe`');
 ```
 
 #### Specifying the Path with Command Line Parameters

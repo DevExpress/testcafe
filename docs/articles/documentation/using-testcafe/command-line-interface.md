@@ -84,6 +84,20 @@ You can specify [portable browsers](common-concepts/browsers/browser-support.md#
 testcafe path:d:\firefoxportable\firefoxportable.exe tests/sample-fixture.js
 ```
 
+If the path contains spaces, surround it with backticks and additionally surround the whole parameter including the keyword in quotation marks.
+
+On Windows `cmd.exe`, the default command prompt, use double quotation marks.
+
+```sh
+testcafe "path:`C:\Program Files (x86)\Firefox Portable\firefox.exe`" tests/sample-fixture.js
+```
+
+On `Unix` shells like `bash`, `zsh`, `csh` (on macOS, Linux, Windows Subsystem for Linux) and Windows PowerShell, prefer single quotation marks.
+
+```sh
+testcafe 'path:`C:\Program Files (x86)\Firefox Portable\firefox.exe`' tests/sample-fixture.js
+```
+
 ### Testing in Headless Mode
 
 To run tests in the headless mode in Google Chrome or Firefox, use the `:headless` postfix:
