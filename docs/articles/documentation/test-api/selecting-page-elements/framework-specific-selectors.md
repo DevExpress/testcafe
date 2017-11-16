@@ -124,7 +124,8 @@ fixture `TestFixture`
     .page('http://todomvc.com/examples/aurelia/');
 
 test('add new item', async t => {
-    await t.typeText(AureliaSelector.byValueBind('newTodoTitle'), 'new item')
+    await t
+        .typeText(AureliaSelector.byValueBind('newTodoTitle'), 'new item')
         .pressKey('enter')
         .expect(AureliaSelector.byShowBind('items.length').exists).ok();
 });
