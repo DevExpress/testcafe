@@ -5,27 +5,30 @@
 ### Enhancements
 
 #### :gear: WebSockets support ([testcafe-hammerhead/#911](https://github.com/DevExpress/testcafe-hammerhead/issues/911))
-TestCafe now provides full-featured WebSockets support (`wss` and `ws` protocols, request authentication, etc.). 
+
+TestCafe now provides full-featured WebSockets support (`wss` and `ws` protocols, request authentication, etc.).
 
 ### Bug Fixes
+
 * TestCafe can now click on elements that are located under the Status bar and have the `transition` css property specified ([#1934](https://github.com/DevExpress/testcafe/issues/1934))
 * Added support for pages with the `rest` and `default parameter` instructions ([testcafe-hammerhead/#1336](https://github.com/DevExpress/testcafe-hammerhead/issues/1336))
 * Pages with several `base` tags are supported now ([testcafe-hammerhead/#1349](https://github.com/DevExpress/testcafe-hammerhead/issues/1349))
 * Redirects from cross-domain to same-domain pages are processed now ([#1922](https://github.com/DevExpress/testcafe/issues/1922))
-* Contenteditable custom elements are correctly recognized now ([testcafe-hammerhead/#1366](https://github.com/DevExpress/testcafe-hammerhead/issues/1366)) 
+* Contenteditable custom elements are correctly recognized now ([testcafe-hammerhead/#1366](https://github.com/DevExpress/testcafe-hammerhead/issues/1366))
 * Internal headers for `fetch` requests are set correctly now ([testcafe-hammerhead/#1360](https://github.com/DevExpress/testcafe-hammerhead/issues/1360))
 
 ## v0.18.3 (2017-11-08)
 
 ### Bug Fixes
+
 * Readonly instrumented DOM properties are now set correctly for plain objects ([testcafe-hammerhead/#1351](https://github.com/DevExpress/testcafe-hammerhead/issues/1351)).
 * The `HTMLElement.style` property is proxied on the client side now ([testcafe-hammerhead/#1348](https://github.com/DevExpress/testcafe-hammerhead/issues/1348)).
 * The `Refresh` response header is proxied now ([testcafe-hammerhead/#1354](https://github.com/DevExpress/testcafe-hammerhead/issues/1354])).
 
-
 ## v0.18.2 (2017-10-26)
 
 ### Bug Fixes
+
 * Screenshots are now captured correctly when using High DPI monitor configurations on Windows ([#1896](https://github.com/DevExpress/testcafe/issues/1896))
 * Fixed the `Cannot read property 'getItem' of null` error which is raised when a console message was printed in an iframe before it's loaded completely ([#1875](https://github.com/DevExpress/testcafe/issues/1875))
 * Fixed the `Content iframe did not load` error which is raised if an iframe reloaded during the `switchToIframe` command execution ([#1842](https://github.com/DevExpress/testcafe/issues/1842))
