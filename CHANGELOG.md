@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.18.4 (2017-11-16)
+## v0.18.4 (2017-11-17)
 
 ### Enhancements
 
@@ -11,7 +11,7 @@ TestCafe now provides full-featured WebSockets support (`wss` and `ws` protocols
 * TestCafe can now click on elements that are located under the Status bar and have the `transition` css property specified ([#1934](https://github.com/DevExpress/testcafe/issues/1934))
 * Added support for pages with the `rest` and `default parameter` instructions ([testcafe-hammerhead/#1336](https://github.com/DevExpress/testcafe-hammerhead/issues/1336))
 * Pages with several `base` tags are supported now ([testcafe-hammerhead/#1349](https://github.com/DevExpress/testcafe-hammerhead/issues/1349))
-* Redirects from cross-domain to same-domain pages are processed now ([testcafe-hammerhead/#1363](https://github.com/DevExpress/testcafe-hammerhead/issues/1363))
+* Redirects from cross-domain to same-domain pages are processed now ([#1922](https://github.com/DevExpress/testcafe-hammerhead/issues/1363))
 * Contenteditable custom elements are correctly recognized now ([testcafe-hammerhead/#1366](https://github.com/DevExpress/testcafe-hammerhead/issues/1366)) 
 * Internal headers for `fetch` requests are set correctly now ([testcafe-hammerhead/#1360](https://github.com/DevExpress/testcafe-hammerhead/issues/1360))
 
