@@ -609,6 +609,14 @@ The browsers are specified differently: one by using an alias, the other by usin
 </code></pre></div><h3><a class="anchor" name="portable-browsers"></a>Portable Browsers <a class="permalink" href="#portable-browsers">#</a></h3>
 <p>You can specify <a href="common-concepts/browsers/browser-support.html#portable-browsers">portable browsers</a> by using paths to the browser&#39;s executable file (with the <code>path:</code> prefix), for example:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe path:d:<span class="se">\f</span>irefoxportable<span class="se">\f</span>irefoxportable.exe tests/sample-fixture.js
+</code></pre></div>
+<p>If the path contains spaces, surround it with backticks and additionally surround the whole parameter including the keyword in quotation marks.</p>
+
+<p>On Windows <code>cmd.exe</code>, the default command prompt, use double quotation marks.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"path:</span><span class="sb">`</span>C:<span class="se">\P</span>rogram Files <span class="o">(</span>x86<span class="o">)</span><span class="se">\F</span>irefox Portable<span class="se">\f</span>irefox.exe<span class="sb">`</span><span class="s2">"</span> tests/sample-fixture.js
+</code></pre></div>
+<p>On <code>Unix</code> shells like <code>bash</code>, <code>zsh</code>, <code>csh</code> (on macOS, Linux, Windows Subsystem for Linux) and Windows PowerShell, prefer single quotation marks.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s1">'path:`C:\Program Files (x86)\Firefox Portable\firefox.exe`'</span> tests/sample-fixture.js
 </code></pre></div><h3><a class="anchor" name="testing-in-headless-mode"></a>Testing in Headless Mode <a class="permalink" href="#testing-in-headless-mode">#</a></h3>
 <p>To run tests in the headless mode in Google Chrome or Firefox, use the <code>:headless</code> postfix:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"firefox:headless"</span> tests/sample-fixture.js
