@@ -524,6 +524,13 @@
 		
     </li>
 
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/framework-specific-selectors.html"  >Framework-Specific Selectors</a>
+		
+    </li>
+
 </ul>
 		
     </li>
@@ -1424,7 +1431,7 @@
 <span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="kr">const</span> <span class="nx">getLocation</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">href</span><span class="p">.</span><span class="nx">toString</span><span class="p">());</span>
 
-    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">getLocation</span><span class="p">()).</span><span class="nx">match</span><span class="p">(</span><span class="s1">'/\.com/'</span><span class="p">);</span>
+    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">getLocation</span><span class="p">()).</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\.</span><span class="sr">com/</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div><h2><a class="anchor" name="not-match"></a>Not Match <a class="permalink" href="#not-match">#</a></h2>
 <p>Asserts that <code>actual</code> does not match the <code>re</code> regular expression.</p>
@@ -1468,7 +1475,7 @@
 <span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="kr">const</span> <span class="nx">getLocation</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">href</span><span class="p">.</span><span class="nx">toString</span><span class="p">());</span>
 
-    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">getLocation</span><span class="p">()).</span><span class="nx">notMatch</span><span class="p">(</span><span class="s1">'/\.co\.uk/'</span><span class="p">);</span>
+    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">getLocation</span><span class="p">()).</span><span class="nx">notMatch</span><span class="p">(</span><span class="sr">/</span><span class="se">\.</span><span class="sr">co</span><span class="se">\.</span><span class="sr">uk/</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div>
 
