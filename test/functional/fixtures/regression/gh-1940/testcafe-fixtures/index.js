@@ -7,9 +7,9 @@ const getWindowWidth  = ClientFunction(() => window.innerWidth);
 const getWindowHeight = ClientFunction(() => window.innerHeight);
 const getUserAgent    = ClientFunction(() => navigator.userAgent.toString());
 
-const removeBodyMargin = ClientFunction(() => {
+/*const removeBodyMargin = ClientFunction(() => {
     document.body.style.margin = 0;
-});
+});*/
 
 fixture `GH-1940 - Should scroll to element when body has scroll`
     .beforeEach(async t => {
@@ -51,14 +51,15 @@ for (const testCase of testCases) {
         .page(testCase.page)
         (testCase.name, async t => {
             await t
+                .setTestSpeed(0.5)
                 .click('#aim-bottom')
                 .click('#aim-top');
 
-            await removeBodyMargin();
+           /* await removeBodyMargin();
 
             await t
                 .click('#aim-bottom')
-                .click('#aim-top');
+                .click('#aim-top');*/
         });
 }
 
