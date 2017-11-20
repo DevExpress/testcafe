@@ -23,6 +23,8 @@ export var setScrollLeft        = hammerhead.utils.style.setScrollLeft;
 export var setScrollTop         = hammerhead.utils.style.setScrollTop;
 export var get                  = hammerhead.utils.style.get;
 
+const SCROLLABLE_OVERFLOW_STYLE_RE = /auto|scroll/i;
+
 var getAncestors = function (node) {
     var ancestors = [];
 
@@ -63,38 +65,70 @@ export function getScrollableParents (element) {
         parentsArray.concat(iFrameParents);
     }
 
-    return filter(parentsArray, el => !domUtils.isBodyElement(el) && hasScroll(el));
+    return filter(parentsArray, hasScroll);
 }
 
-export function hasScroll (el) {
-    var scrollRegEx            = /auto|scroll/i;
+function hasBodyScroll (el) {
     var overflowX              = get(el, 'overflowX');
     var overflowY              = get(el, 'overflowY');
-    var scrollableHorizontally = scrollRegEx.test(overflowX);
-    var scrollableVertically   = scrollRegEx.test(overflowY);
-    var isHtmlElement          = /html/i.test(el.tagName);
-    var body                   = isHtmlElement ? el.getElementsByTagName('body')[0] : null;
+    var scrollableHorizontally = SCROLLABLE_OVERFLOW_STYLE_RE.test(overflowX);
+    var scrollableVertically   = SCROLLABLE_OVERFLOW_STYLE_RE.test(overflowY);
+
+    var documentElement = domUtils.findDocument(el).documentElement;
+
+    return (scrollableHorizontally || scrollableVertically) &&
+           el.scrollHeight > documentElement.scrollHeight;
+}
+
+function hasHTMLElementScroll (el) {
+    var overflowX = get(el, 'overflowX');
+    var overflowY = get(el, 'overflowY');
+    //T174562 - wrong scrolling in iframes without src and others iframes
+    var body      = el.getElementsByTagName('body')[0];
 
     //T303226
-    if (isHtmlElement && overflowX === 'hidden' && overflowY === 'hidden')
+    if (overflowX === 'hidden' && overflowY === 'hidden')
         return false;
 
-    if (!isHtmlElement && !scrollableHorizontally && !scrollableVertically)
-        return false;
-
-    var hasHorizontalScroll = (scrollableVertically || isHtmlElement) && el.scrollHeight > el.clientHeight;
-    var hasVerticalScroll = (scrollableHorizontally || isHtmlElement) && el.scrollWidth > el.clientWidth;
+    var hasHorizontalScroll = el.scrollHeight > el.clientHeight;
+    var hasVerticalScroll   = el.scrollWidth > el.clientWidth;
 
     if (hasHorizontalScroll || hasVerticalScroll)
         return true;
 
-    //T174562 - wrong scrolling in iframes without src and others iframes
-    if (isHtmlElement && body) {
+    if (body) {
+        if (hasBodyScroll(body))
+            return false;
+
         var clientWidth  = Math.min(el.clientWidth, body.clientWidth);
         var clientHeight = Math.min(el.clientHeight, body.clientHeight);
 
         return body.scrollHeight > clientHeight || body.scrollWidth > clientWidth;
     }
+
+    return false;
+}
+
+export function hasScroll (el) {
+    var overflowX              = get(el, 'overflowX');
+    var overflowY              = get(el, 'overflowY');
+    var scrollableHorizontally = SCROLLABLE_OVERFLOW_STYLE_RE.test(overflowX);
+    var scrollableVertically   = SCROLLABLE_OVERFLOW_STYLE_RE.test(overflowY);
+
+    if (domUtils.isBodyElement(el))
+        return hasBodyScroll(el);
+
+    if (domUtils.isHtmlElement(el))
+        return hasHTMLElementScroll(el);
+
+    if (!scrollableHorizontally && !scrollableVertically)
+        return false;
+
+    var hasHorizontalScroll = scrollableVertically && el.scrollHeight > el.clientHeight;
+    var hasVerticalScroll   = scrollableHorizontally && el.scrollWidth > el.clientWidth;
+
+    if (hasHorizontalScroll || hasVerticalScroll)
+        return true;
 
     return false;
 }

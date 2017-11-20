@@ -8,6 +8,12 @@ environment:
   GULP_TASK: "test-functional-local"
   NODEJS_VERSION: "stable"
 
+init:
+- ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+
+on_finish:
+  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+
 install:
 - ps: >-
     Install-Product node $env:NODEJS_VERSION
