@@ -22,7 +22,7 @@ Go to the **Build** section, find a step that builds you application and add a n
 In the **Command** box, type the following.
 
 ```sh
-npm install -g testcafe
+npm install testcafe
 ```
 
 ![npm install Command](../../images/jenkins/npm-install-command.png)
