@@ -7,7 +7,7 @@ permalink: /documentation/recipes/integrating-testcafe-with-jenkins-ci-system.ht
 
 TestCafe has an extensive command line interface that allows it to fit well in any popular continuous integration system.
 
-This topic shows how you can run TestCafe tests from Jenkins.
+This topic shows how you can integrate TestCafe tests into project build process in Jenkins.
 
 ## Step 1 - Adding a Command to Install TestCafe
 
