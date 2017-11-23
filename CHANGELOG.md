@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.18.5 (2017-11-23): Security Update
+
+### Vulnerability Fix ([testcafe-legacy-api/#26](https://github.com/DevExpress/testcafe-legacy-api/issues/26))
+
+We have fixed a vulnerability related to the dependency on [uglify-js v1.x](https://github.com/mishoo/UglifyJS). We used it in our [testcafe-legacy-api](https://github.com/DevExpress/testcafe-legacy-api/) module that provides backward compatibility with old API from the paid TestCafe version.
+
+Thus, this vulnerability affected only those who run old tests created with the commercial version of TestCafe in the new open-source TestCafe.
+
 ## v0.18.4 (2017-11-17)
 
 ### Enhancements
