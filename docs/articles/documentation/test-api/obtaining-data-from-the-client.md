@@ -187,7 +187,7 @@ you will have to manually bind this function to the test controller.
 Use the [boundTestRun](#optionsboundtestrun) option for this.
 
 ```js
-import { fs } from 'fs';
+import fs from 'fs';
 import { ClientFunction } from 'testcafe';
 
 fixture `My fixture`
