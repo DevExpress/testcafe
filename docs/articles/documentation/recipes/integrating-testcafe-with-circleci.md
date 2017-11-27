@@ -37,7 +37,24 @@ In the **Language** section, select *Node*.
 
 ## Step 2 - Configuring the Build
 
-Create a `.circleci` folder in the `ci-integration-demo` repository fork and add a `config.yml` file there. CircleCI will suggest you to use the following content.
+Create a `.circleci` directory in the `ci-integration-demo` repository fork and add a `config.yml` file there.
+
+Use the content CircleCI provides by default with two changes:
+
+* Since you are going to perform browser testing, you need a virtual machine image that has all popular browsers pre-installed. So use the following image
+
+    ```yml
+    - image: circleci/node:7.10-browsers
+    ```
+
+* Add a step that imports test results to the end of the YAML. The results will be displayed in the **Test Summary** section.
+
+    ```yml
+    - store_test_results:
+        path: /tmp/test-results
+    ```
+
+The resulting YAML will look as follows.
 
 ```yml
 # Javascript Node CircleCI 2.0 configuration file
@@ -49,7 +66,7 @@ jobs:
   build:
     docker:
       # specify the version you desire here
-      - image: circleci/node:7.10
+      - image: circleci/node:7.10-browsers
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -77,24 +94,12 @@ jobs:
 
       # run tests!
       - run: yarn test
+
+      - store_test_results:
+          path: /tmp/test-results
 ```
 
-Copy and paste this YAML and make two changes.
-
-* Since you are going to perform browser testing, you need a virtual machine image that has all popular browsers pre-installed. So use the following image
-
-    ```yml
-    - image: circleci/node:7.10-browsers
-    ```
-
-* Add a step that imports test results to the end of the YAML. The results will be displayed in the **Test Summary** section.
-
-    ```yml
-    - store_test_results:
-        path: /tmp/test-results
-    ```
-
-Create a `package.json` file in the repository root directory. Provide a command to run tests and add TestCafe as a dependency.
+Next, create a `package.json` file in the repository root directory. Provide a command to run tests and add TestCafe as a dependency.
 
 ```json
 {
