@@ -218,7 +218,7 @@ The [dependencies parameter](../obtaining-data-from-the-client.md#optionsdepende
 you to pass objects to the `filterFn` client-side scope where they appear as variables.
 
 ```js
-const isNodeOk = ClientFunction((node, idx) => { /*...*/ });
+const isNodeOk = (node, idx) => { /*...*/ };
 
 Selector('ul').filter((node, idx) => {
     return isNodeOk(node, idx);
@@ -278,7 +278,7 @@ The [dependencies parameter](../obtaining-data-from-the-client.md#optionsdepende
 you to pass objects to the `filterFn` client-side scope where they appear as variables.
 
 ```js
-const isNodeOk = ClientFunction((node, idx, originNode) => { /*...*/ });
+const isNodeOk = (node, idx, originNode) => { /*...*/ };
 
 Selector('ul').find((node, idx, originNode) => {
     return isNodeOk(node, idx, originNode);
@@ -314,7 +314,7 @@ The [dependencies parameter](../obtaining-data-from-the-client.md#optionsdepende
 you to pass objects to the `filterFn` client-side scope where they appear as variables.
 
 ```js
-const isNodeOk = ClientFunction((node, idx, originNode) => { /*...*/ });
+const isNodeOk = (node, idx, originNode) => { /*...*/ };
 
 Selector('ul').parent((node, idx, originNode) => {
     return isNodeOk(node, idx, originNode);
@@ -350,7 +350,7 @@ The [dependencies parameter](../obtaining-data-from-the-client.md#optionsdepende
 you to pass objects to the `filterFn` client-side scope where they appear as variables.
 
 ```js
-const isNodeOk = ClientFunction((node, idx, originNode) => { /*...*/ });
+const isNodeOk = (node, idx, originNode) => { /*...*/ };
 
 Selector('ul').child((node, idx, originNode) => {
     return isNodeOk(node, idx, originNode);
@@ -386,7 +386,7 @@ The [dependencies parameter](../obtaining-data-from-the-client.md#optionsdepende
 you to pass objects to the `filterFn` client-side scope where they appear as variables.
 
 ```js
-const isNodeOk = ClientFunction((node, idx, originNode) => { /*...*/ });
+const isNodeOk = (node, idx, originNode) => { /*...*/ };
 
 Selector('ul').sibling((node, idx, originNode) => {
     return isNodeOk(node, idx, originNode);
@@ -422,7 +422,7 @@ The [dependencies parameter](../obtaining-data-from-the-client.md#optionsdepende
 you to pass objects to the `filterFn` client-side scope where they appear as variables.
 
 ```js
-const isNodeOk = ClientFunction((node, idx, originNode) => { /*...*/ });
+const isNodeOk = (node, idx, originNode) => { /*...*/ };
 
 Selector('ul').nextSibling((node, idx, originNode) => {
     return isNodeOk(node, idx, originNode);
@@ -458,7 +458,7 @@ The [dependencies parameter](../obtaining-data-from-the-client.md#optionsdepende
 you to pass objects to the `filterFn` client-side scope where they appear as variables.
 
 ```js
-const isNodeOk = ClientFunction((node, idx, originNode) => { /*...*/ });
+const isNodeOk = (node, idx, originNode) => { /*...*/ };
 
 Selector('ul').prevSibling((node, idx, originNode) => {
     return isNodeOk(node, idx, originNode);
