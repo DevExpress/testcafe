@@ -7,6 +7,10 @@ permalink: /documentation/recipes/integrating-testcafe-with-appveyor.html
 
 This topic describes how to integrate TestCafe tests into an AppVeyor project's build process.
 
+## Prerequisites
+
+In this tutorial, we will take tests from a GitHub repository: [ci-integration-demo](https://github.com/VasilyStrelyaev/ci-integration-demo). Fork this repository before we start.
+
 ## Step 1 - Create an AppVeyor Project
 
 If you are using AppVeyor for the first time, you will begin with an empty account without any projects.
@@ -17,7 +21,7 @@ To create a project, click **NEW PROJECT**.
 
 AppVeyor will ask you to specify a repository to create a project for. In this tutorial, we will use a GitHub repository, so click **GitHub** and authorize.
 
-You will see a list of repositories associated with your account. Find the project you need to test and click **ADD**.
+You will see a list of repositories associated with your account. Find `ci-integration-demo` and click **ADD**.
 
 ![Adding a GitHub project](../../images/appveyor/add-project.png)
 
@@ -37,7 +41,13 @@ Click **Save**.
 
 Now configure AppVeyor to install TestCafe before running tests.
 
-To this end, go to the **Environment** settings category and find the **Install script** section. Select PowerShell (**PS**) and enter a command that installs TestCafe - `npm install -g testcafe`.
+To this end, go to the **Environment** settings category and find the **Install script** section. Select PowerShell (**PS**) and enter a command that installs TestCafe.
+
+```sh
+npm install -g testcafe testcafe-reporter-xunit
+```
+
+This command installs the main `testcafe` module and a plugin used to output reports in the xUnit format.
 
 ![Install TestCafe](../../images/appveyor/add-install-script.png)
 
@@ -47,18 +57,31 @@ Next, specify how tests should be triggered. Go to the **Tests** category and ch
 
 ![Choose to use a script to run tests](../../images/appveyor/choose-to-use-script.png)
 
-Select **PS** as a shell type and enter a command to run tests.
+Select **PS** as a shell type and enter the following code.
 
 ```sh
-testcafe chrome:headless tests/**/*
+testcafe chrome:headless tests/**/* -r xunit:.\TestsResults.xml
+
+$wc = New-Object 'System.Net.WebClient'
+$wc.UploadFile("https://ci.appveyor.com/api/testresults/junit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\TestsResults.xml))
 ```
 
-This command starts tests from the `tests` directory in the headless Chrome.
+The first command starts tests from the `tests` directory in the headless Chrome and saves the result to the `TestsResults.xml` file in xUnit.
+
+The next two lines upload test run reports to AppVeyor so that you could view them in the UI.
 
 ![Enter test run commands](../../images/appveyor/enter-commands.png)
 
-## Step 3 - Trigger the build
+Click **Save**.
+
+## Step 3 - Trigger the Build
 
 Return to the project page and click **NEW BUILD** to trigger the AppVeyor build.
 
 ![Start a new build](../../images/appveyor/trigger-build.png)
+
+## Step 4 - View Test Results
+
+When testing is done, you can go back to **LATEST BUILD** and click the **TESTS** button to view the results.
+
+![Viewing Test Results](../../images/appveyor/test-results.png)
