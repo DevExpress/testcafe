@@ -5,11 +5,13 @@ permalink: /documentation/recipes/integrating-testcafe-with-circleci.html
 ---
 # Integrating TestCafe with CircelCI
 
-This topic describes how to integrate TestCafe tests into a CircelCI project's build process.
+This topic describes how to integrate TestCafe tests into a [CircelCI](https://circleci.com/) project's build process.
 
 ## Prerequisites
 
-In this tutorial, we will take tests from a GitHub repository: [ci-integration-demo](https://github.com/VasilyStrelyaev/ci-integration-demo). Fork this repository before we start.
+In this tutorial, we will fetch tests from a GitHub repository: [ci-integration-demo](https://github.com/VasilyStrelyaev/ci-integration-demo). Fork this repository before we start.
+
+> If you use a different version control system, make sure CircleCI supports it. To learn which systems it supports, refer to the [First Steps](https://circleci.com/docs/2.0/first-steps/) document.
 
 ## Step 1 - Create a New CircleCI Project
 
