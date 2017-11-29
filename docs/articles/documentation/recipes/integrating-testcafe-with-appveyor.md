@@ -5,11 +5,14 @@ permalink: /documentation/recipes/integrating-testcafe-with-appveyor.html
 ---
 # Integrating TestCafe with AppVeyor
 
-This topic describes how to integrate TestCafe tests into an AppVeyor project's build process.
+This topic describes how to integrate TestCafe tests into an [AppVeyor](https://www.appveyor.com/) project's build process.
 
 ## Prerequisites
 
-In this tutorial, we will take tests from a GitHub repository: [ci-integration-demo](https://github.com/VasilyStrelyaev/ci-integration-demo). Fork this repository before we start.
+In this tutorial, we will fetch tests from a GitHub repository: [ci-integration-demo](https://github.com/VasilyStrelyaev/ci-integration-demo). Fork this repository before we start.
+
+> If you use a different version control system, make sure that AppVeyor supports your platform.
+> The list of supported platforms is available after you click the *NEW PROJECT* button.
 
 ## Step 1 - Create an AppVeyor Project
 
