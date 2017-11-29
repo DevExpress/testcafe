@@ -423,10 +423,10 @@ export default class Driver {
             })));
     }
 
-    _onPrepareBrowserManipulationCommand () {
+    _onPrepareBrowserManipulationCommand (command) {
         this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, true);
 
-        prepareBrowserManipulation()
+        prepareBrowserManipulation(command)
             .then(driverStatus => {
                 this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, false);
                 return this._onReady(driverStatus);
@@ -513,7 +513,7 @@ export default class Driver {
             this._onSetBreakpointCommand(command.isTestError);
 
         else if (command.type === COMMAND_TYPE.prepareBrowserManipulation)
-            this._onPrepareBrowserManipulationCommand();
+            this._onPrepareBrowserManipulationCommand(command);
 
         else if (command.type === COMMAND_TYPE.switchToMainWindow)
             this._onSwitchToMainWindowCommand(command);

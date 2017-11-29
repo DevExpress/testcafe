@@ -40,6 +40,11 @@ export function isBrowserManipulationCommand (command) {
            command.type === TYPE.maximizeWindow;
 }
 
+export function isScreenshotCommand (command) {
+    return command.type === TYPE.takeScreenshot ||
+               command.type === TYPE.takeScreenshotOnFail;
+}
+
 function isRejectablePrepareBrowserManipulationCommand (command) {
     return command.type === TYPE.prepareBrowserManipulation &&
            (command.manipulationCommandType === TYPE.resizeWindow ||

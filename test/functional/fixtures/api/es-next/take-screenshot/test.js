@@ -86,6 +86,14 @@ describe('[API] t.takeScreenshot()', function () {
                     expect(assertionHelper.checkScreenshotsCreated(false, 2, null, 3)).eql(true);
                 });
         });
+
+        it('Should crop screenshots to a page viewport area', function () {
+            return runTests('./testcafe-fixtures/take-screenshot.js', 'Should crop screenshots',
+                { setScreenshotPath: true })
+                .then(function () {
+                    expect(assertionHelper.checkScreenshotsCropped(false, 'custom')).eql(true);
+                });
+        });
     }
 });
 

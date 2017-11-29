@@ -58,7 +58,7 @@ export default class BrowserManipulationQueue {
             return await capture();
         }
         catch (err) {
-            this.warningLog.addWarning(WARNING_MESSAGE.screenshotError, err.message);
+            this.warningLog.addWarning(WARNING_MESSAGE.screenshotError, err.stack);
             return null;
         }
     }
@@ -69,15 +69,21 @@ export default class BrowserManipulationQueue {
         switch (command.type) {
             case COMMAND_TYPE.takeScreenshot:
                 return await this._takeScreenshot(() => this.screenshotCapturer.captureAction({
-                    customPath: command.path,
-                    pageWidth:  driverMsg.innerWidth,
-                    pageHeight: driverMsg.innerHeight
+                    customPath:         command.path,
+                    pageWidth:          driverMsg.innerWidth,
+                    pageHeight:         driverMsg.innerHeight,
+                    documentWidth:      driverMsg.documentWidth,
+                    documentHeight:     driverMsg.documentHeight,
+                    screenshotMarkSeed: driverMsg.screenshotMarkSeed
                 }));
 
             case COMMAND_TYPE.takeScreenshotOnFail:
                 return await this._takeScreenshot(() => this.screenshotCapturer.captureError({
-                    pageWidth:  driverMsg.innerWidth,
-                    pageHeight: driverMsg.innerHeight
+                    pageWidth:          driverMsg.innerWidth,
+                    pageHeight:         driverMsg.innerHeight,
+                    documentWidth:      driverMsg.documentWidth,
+                    documentHeight:     driverMsg.documentHeight,
+                    screenshotMarkSeed: driverMsg.screenshotMarkSeed
                 }));
 
             case COMMAND_TYPE.resizeWindow:
