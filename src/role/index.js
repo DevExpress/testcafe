@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events';
-import shortId from 'shortid';
+import nanoid from 'nanoid';
 import PHASE from './phase';
 import { assertType, is } from '../errors/runtime/type-assertions';
 import wrapTestFunction from '../api/wrap-test-function';
@@ -16,7 +16,7 @@ class Role extends EventEmitter {
 
         this[roleMarker] = true;
 
-        this.id    = shortId.generate();
+        this.id    = nanoid(7);
         this.phase = loginPage ? PHASE.uninitialized : PHASE.initialized;
 
         this.loginPage = loginPage;
