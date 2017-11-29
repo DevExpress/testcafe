@@ -1,6 +1,7 @@
 import { join as joinPath, dirname } from 'path';
 import sanitizeFilename from 'sanitize-filename';
 import { generateThumbnail } from 'testcafe-browser-tools';
+import cropScreenshot from './crop';
 import { ensureDir } from '../utils/promisified-functions';
 
 
@@ -65,7 +66,7 @@ export default class Capturer {
         await this.provider.takeScreenshot(this.browserId, filePath, pageWidth, pageHeight);
     }
 
-    async _capture (forError, pageWidth, pageHeight, customScreenshotPath) {
+    async _capture (forError, pageWidth, pageHeight, documentWidth, documentHeight, screenshotMarkSeed, customScreenshotPath) {
         if (!this.enabled)
             return null;
 
@@ -76,6 +77,8 @@ export default class Capturer {
         var screenshotPath = this._getSreenshotPath(fileName, customScreenshotPath);
 
         await this._takeScreenshot(screenshotPath, pageWidth, pageHeight);
+
+        await cropScreenshot(screenshotPath, screenshotMarkSeed, Math.min(documentWidth, pageWidth), Math.min(documentHeight, pageHeight));
 
         await generateThumbnail(screenshotPath);
 
@@ -91,12 +94,12 @@ export default class Capturer {
     }
 
 
-    async captureAction ({ pageWidth, pageHeight, customPath }) {
-        return await this._capture(false, pageWidth, pageHeight, customPath);
+    async captureAction ({ pageWidth, pageHeight, customPath, documentWidth, documentHeight, screenshotMarkSeed }) {
+        return await this._capture(false, pageWidth, pageHeight, documentWidth, documentHeight, screenshotMarkSeed, customPath);
     }
 
-    async captureError ({ pageWidth, pageHeight }) {
-        return await this._capture(true, pageWidth, pageHeight);
+    async captureError ({ pageWidth, pageHeight, documentWidth, documentHeight, screenshotMarkSeed }) {
+        return await this._capture(true, pageWidth, pageHeight, documentWidth, documentHeight, screenshotMarkSeed);
     }
 }
 

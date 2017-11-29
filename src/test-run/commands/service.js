@@ -2,9 +2,11 @@ import TYPE from './type';
 
 // Commands
 export class PrepareBrowserManipulationCommand {
-    constructor (manipulationCommandType) {
+    constructor (manipulationCommandType, screenshotMarkData, screenshotMarkSeed) {
         this.type                    = TYPE.prepareBrowserManipulation;
         this.manipulationCommandType = manipulationCommandType;
+        this.screenshotMarkData      = screenshotMarkData;
+        this.screenshotMarkSeed      = screenshotMarkSeed;
     }
 }
 

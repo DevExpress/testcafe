@@ -1,6 +1,7 @@
 import hammerhead from './../deps/hammerhead';
 import testCafeCore from './../deps/testcafe-core';
 import ProgressBar from './progress-bar';
+import uiRoot from '../ui-root';
 import MESSAGES from './messages';
 
 
@@ -243,7 +244,7 @@ export default class StatusBar extends serviceUtils.EventEmitter {
         this.progressBar.indeterminateIndicator.start();
         this.progressBar.show();
 
-        shadowUI.getRoot().appendChild(this.statusBar);
+        uiRoot.element().appendChild(this.statusBar);
 
         this._recalculateSizes();
         this._bindHandlers();

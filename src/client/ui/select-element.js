@@ -2,6 +2,7 @@
 // draw our custom option list to emulate this.
 import hammerhead from './deps/hammerhead';
 import testCafeCore from './deps/testcafe-core';
+import uiRoot from './ui-root';
 
 var shadowUI         = hammerhead.shadowUI;
 var browserUtils     = hammerhead.utils.browser;
@@ -145,7 +146,7 @@ export function expandOptionList (select) {
     curSelectEl = select;
 
     optionList = document.createElement('div');
-    shadowUI.getRoot().appendChild(optionList);
+    uiRoot.element().appendChild(optionList);
     shadowUI.addClass(optionList, OPTION_LIST_CLASS);
 
     createChildren(selectChildren, optionList);
