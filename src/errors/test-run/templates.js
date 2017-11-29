@@ -244,6 +244,10 @@ export default {
         Unable to resize the window because the specified size exceeds the screen size. On macOS, a window cannot be larger than the screen.
     `),
 
+    [TYPE.invalidElementScreenshotDimensionsError]: err => markup(err, `
+        Unable to capture an image of the element, because resulting image dimensions are zero or negative.
+    `),
+
     [TYPE.roleSwitchInRoleInitializerError]: err => markup(err, `
         Role cannot be switched while another role is being initialized.
     `),

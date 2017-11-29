@@ -10,6 +10,7 @@ var TypeAutomation     = testCafeAutomation.Type;
 var PressAutomation    = testCafeAutomation.Press;
 var TypeOptions        = testCafeAutomation.get('../../test-run/commands/options').TypeOptions;
 
+testCafeCore.scrollController.init();
 testCafeCore.preventRealEvents();
 
 $(document).ready(function () {

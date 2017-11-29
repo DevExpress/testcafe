@@ -1,6 +1,7 @@
 import TYPE from './type';
 import Assignable from '../../utils/assignable';
-import { ResizeToFitDeviceOptions } from './options';
+import { ElementScreenshotOptions, ResizeToFitDeviceOptions } from './options';
+import { initSelector } from './validations/initializers';
 
 import {
     positiveIntegerArgument,
@@ -9,13 +10,33 @@ import {
     actionOptions
 } from './validations/argument';
 
+import generateScreenshotMark from '../../screenshots/generate-mark';
+
 
 function initResizeToFitDeviceOptions (name, val) {
     return new ResizeToFitDeviceOptions(val, true);
 }
 
+function initElementScreenshotOptions (name, val) {
+    return new ElementScreenshotOptions(val, true);
+}
+
 // Commands
-export class TakeScreenshotCommand extends Assignable {
+class TakeScreenshotBaseCommand extends Assignable {
+    constructor (obj) {
+        super(obj);
+
+        Object.assign(this, generateScreenshotMark());
+
+        this._assignFrom(obj, true);
+    }
+
+    _getAssignableProperties () {
+        return [];
+    }
+}
+
+export class TakeScreenshotCommand extends TakeScreenshotBaseCommand {
     constructor (obj) {
         super(obj);
 
@@ -26,14 +47,35 @@ export class TakeScreenshotCommand extends Assignable {
     }
 
     _getAssignableProperties () {
-        return [
+        return super._getAssignableProperties().concat([
             { name: 'path', type: nonEmptyStringArgument }
-        ];
+        ]);
     }
 }
 
-export class TakeScreenshotOnFailCommand {
+export class TakeElementScreenshotCommand extends TakeScreenshotCommand {
+    constructor (obj) {
+        super(obj);
+
+        this.type     = TYPE.takeElementScreenshot;
+        this.selector = null;
+        this.options  = null;
+
+        this._assignFrom(obj, true);
+    }
+
+    _getAssignableProperties () {
+        return super._getAssignableProperties().concat([
+            { name: 'selector', init: initSelector, required: true },
+            { name: 'options', init: initElementScreenshotOptions, required: true }
+        ]);
+    }
+}
+
+export class TakeScreenshotOnFailCommand extends TakeScreenshotBaseCommand {
     constructor () {
+        super();
+
         this.type = TYPE.takeScreenshotOnFail;
     }
 }

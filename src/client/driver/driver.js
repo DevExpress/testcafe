@@ -6,6 +6,7 @@ import {
     domUtils,
     preventRealEvents,
     disableRealEventsPreventing,
+    scrollController,
     waitFor,
     browser
 } from './deps/testcafe-core';
@@ -14,6 +15,7 @@ import { StatusBar } from './deps/testcafe-ui';
 import TEST_RUN_MESSAGES from '../../test-run/client-messages';
 import COMMAND_TYPE from '../../test-run/commands/type';
 import {
+    isBrowserManipulationCommand,
     isCommandRejectableByPageError,
     isExecutableInTopWindowOnly
 } from '../../test-run/commands/utils';
@@ -38,8 +40,8 @@ import DriverStatus from './status';
 import generateId from './generate-id';
 import ChildDriverLink from './driver-link/child';
 
-import prepareBrowserManipulation from './command-executors/prepare-browser-manipulation';
 import executeActionCommand from './command-executors/execute-action';
+import executeManipulationCommand from './command-executors/execute-browser-manipulation';
 import executeNavigateToCommand from './command-executors/execute-navigate-to';
 import {
     getResult as getExecuteSelectorResult,
@@ -115,6 +117,7 @@ export default class Driver {
         this._initChildDriverListening();
 
         pageUnloadBarrier.init();
+        scrollController.init();
         preventRealEvents();
 
         hammerhead.on(hammerhead.EVENTS.uncaughtJsError, err => this._onJsError(err));
@@ -424,10 +427,10 @@ export default class Driver {
             })));
     }
 
-    _onPrepareBrowserManipulationCommand () {
+    _onBrowserManipulationCommand (command) {
         this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, true);
 
-        prepareBrowserManipulation()
+        executeManipulationCommand(command, this.selectorTimeout, this.statusBar)
             .then(driverStatus => {
                 this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, false);
                 return this._onReady(driverStatus);
@@ -513,14 +516,14 @@ export default class Driver {
         else if (command.type === COMMAND_TYPE.setBreakpoint)
             this._onSetBreakpointCommand(command.isTestError);
 
-        else if (command.type === COMMAND_TYPE.prepareBrowserManipulation)
-            this._onPrepareBrowserManipulationCommand();
-
         else if (command.type === COMMAND_TYPE.switchToMainWindow)
             this._onSwitchToMainWindowCommand(command);
 
         else if (command.type === COMMAND_TYPE.switchToIframe)
             this._onSwitchToIframeCommand(command);
+
+        else if (isBrowserManipulationCommand(command))
+            this._onBrowserManipulationCommand(command);
 
         else if (command.type === COMMAND_TYPE.executeClientFunction)
             this._onExecuteClientFunctionCommand(command);

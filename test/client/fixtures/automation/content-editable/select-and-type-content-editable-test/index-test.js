@@ -14,6 +14,7 @@ var PressAutomation      = testCafeAutomation.Press;
 
 var TypeOptions = testCafeAutomation.get('../../test-run/commands/options').TypeOptions;
 
+testCafeCore.scrollController.init();
 testCafeCore.preventRealEvents();
 
 

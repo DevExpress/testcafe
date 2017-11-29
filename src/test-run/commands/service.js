@@ -1,13 +1,6 @@
 import TYPE from './type';
 
 // Commands
-export class PrepareBrowserManipulationCommand {
-    constructor (manipulationCommandType) {
-        this.type                    = TYPE.prepareBrowserManipulation;
-        this.manipulationCommandType = manipulationCommandType;
-    }
-}
-
 export class ShowAssertionRetriesStatusCommand {
     constructor (timeout) {
         this.type    = TYPE.showAssertionRetriesStatus;

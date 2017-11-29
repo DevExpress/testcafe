@@ -1,11 +1,6 @@
 import { ClientFunction } from 'testcafe';
-import { parse } from 'useragent';
+import { saveWindowState, restoreWindowState } from '../../../../window-helpers';
 
-const initialWindowSize = {};
-
-const getWindowWidth  = ClientFunction(() => window.innerWidth);
-const getWindowHeight = ClientFunction(() => window.innerHeight);
-const getUserAgent    = ClientFunction(() => navigator.userAgent.toString());
 
 const removeBodyMargin = ClientFunction(() => {
     document.body.style.margin = 0;
@@ -13,22 +8,12 @@ const removeBodyMargin = ClientFunction(() => {
 
 fixture `GH-1940 - Should scroll to element when body has scroll`
     .beforeEach(async t => {
-        const ua       = await getUserAgent();
-        const parsedUA = parse(ua);
-
-        initialWindowSize[parsedUA.family] = {
-            width:  await getWindowWidth(),
-            height: await getWindowHeight()
-        };
+        await saveWindowState(t);
 
         await t.resizeWindow(700, 400);
     })
     .afterEach(async t => {
-        const ua       = await getUserAgent();
-        const parsedUA = parse(ua);
-        const size     = initialWindowSize[parsedUA.family];
-
-        await t.resizeWindow(size.width, size.height);
+        await restoreWindowState(t);
     });
 
 const testCases = [

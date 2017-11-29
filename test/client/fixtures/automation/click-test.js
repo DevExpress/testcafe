@@ -10,6 +10,7 @@ var getOffsetOptions   = testCafeAutomation.getOffsetOptions;
 var ClickAutomation    = testCafeAutomation.Click;
 var ClickOptions       = testCafeAutomation.get('../../test-run/commands/options').ClickOptions;
 
+testCafeCore.scrollController.init();
 testCafeCore.preventRealEvents();
 
 $(document).ready(function () {

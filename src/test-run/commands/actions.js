@@ -4,6 +4,7 @@ import ClientFunctionBuilder from '../../client-functions/client-function-builde
 import functionBuilderSymbol from '../../client-functions/builder-symbol';
 import Assignable from '../../utils/assignable';
 import { ActionOptions, ClickOptions, MouseOptions, TypeOptions, DragToElementOptions } from './options';
+import { initSelector } from './validations/initializers';
 
 import {
     actionOptions,
@@ -17,32 +18,11 @@ import {
     actionRoleArgument
 } from './validations/argument';
 
-import { ActionSelectorError, SetNativeDialogHandlerCodeWrongTypeError } from '../../errors/test-run';
-import { APIError } from '../../errors/runtime';
-import { ExecuteClientFunctionCommand, ExecuteSelectorCommand } from './observation';
-import { executeJsExpression } from '../execute-js-expression';
-import { isJSExpression } from './utils';
+import { SetNativeDialogHandlerCodeWrongTypeError } from '../../errors/test-run';
+import { ExecuteClientFunctionCommand } from './observation';
+
 
 // Initializers
-function initSelector (name, val, skipVisibilityCheck) {
-    if (val instanceof ExecuteSelectorCommand)
-        return val;
-
-    try {
-        if (isJSExpression(val))
-            val = executeJsExpression(val.value, skipVisibilityCheck);
-
-        var builder = new SelectorBuilder(val, { visibilityCheck: !skipVisibilityCheck }, { instantiation: 'Selector' });
-
-        return builder.getCommand([]);
-    }
-    catch (err) {
-        var msg = err.constructor === APIError ? err.rawMessage : err.message;
-
-        throw new ActionSelectorError(name, msg);
-    }
-}
-
 function initActionOptions (name, val) {
     return new ActionOptions(val, true);
 }

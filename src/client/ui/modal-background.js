@@ -1,11 +1,6 @@
-import hammerhead from './deps/hammerhead';
-import testCafeCore from './deps/testcafe-core';
-
-var shadowUI      = hammerhead.shadowUI;
-var nativeMethods = hammerhead.nativeMethods;
-
-var eventUtils = testCafeCore.eventUtils;
-var styleUtils = testCafeCore.styleUtils;
+import { shadowUI, nativeMethods } from './deps/hammerhead';
+import { styleUtils, eventUtils } from './deps/testcafe-core';
+import uiRoot from './ui-root';
 
 
 //Const
@@ -25,7 +20,7 @@ var initialized    = false;
 
 //Markup
 function createBackground () {
-    var root = shadowUI.getRoot();
+    var root = uiRoot.element();
 
     backgroundDiv = document.createElement('div');
     root.appendChild(backgroundDiv);

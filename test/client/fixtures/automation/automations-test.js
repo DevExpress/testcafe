@@ -7,6 +7,7 @@ var domUtils      = testCafeCore.get('./utils/dom');
 var textSelection = testCafeCore.get('./utils/text-selection');
 var position      = testCafeCore.get('./utils/position');
 
+testCafeCore.scrollController.init();
 testCafeCore.preventRealEvents();
 
 var testCafeAutomation     = window.getTestCafeModule('testCafeAutomation');

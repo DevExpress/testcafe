@@ -1,6 +1,6 @@
 import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
-import { OffsetOptions, MoveOptions } from '../../../../test-run/commands/options';
+import { ScrollOptions, MoveOptions } from '../../../../test-run/commands/options';
 import ScrollAutomation from '../scroll';
 import cursor from '../../cursor';
 
@@ -364,7 +364,7 @@ export default class MoveAutomation {
         if (this.skipScrolling)
             return Promise.resolve();
 
-        var scrollOptions    = new OffsetOptions({ offsetX: this.offsetX, offsetY: this.offsetY }, false);
+        var scrollOptions    = new ScrollOptions({ offsetX: this.offsetX, offsetY: this.offsetY }, false);
         var scrollAutomation = new ScrollAutomation(this.element, scrollOptions);
 
         return scrollAutomation.run();

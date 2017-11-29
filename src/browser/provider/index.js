@@ -95,11 +95,9 @@ export default class BrowserProvider {
     }
 
     async _resizeLocalBrowserWindow (browserId, width, height, currentWidth, currentHeight) {
-        if (this.resizeCorrections[browserId]) {
+        if (this.resizeCorrections[browserId] && await browserTools.isMaximized(this.windowDescriptors[browserId])) {
             width -= this.resizeCorrections[browserId].width;
             height -= this.resizeCorrections[browserId].height;
-
-            delete this.resizeCorrections[browserId];
         }
 
         await browserTools.resize(this.windowDescriptors[browserId], currentWidth, currentHeight, width, height);

@@ -1,4 +1,5 @@
 import hammerhead from './deps/hammerhead';
+import ScrollAutomation from './playback/scroll';
 import ClickAutomation from './playback/click';
 import SelectChildClickAutomation from './playback/click/select-child';
 import DblClickAutomation from './playback/dblclick';
@@ -23,6 +24,7 @@ import ERROR_TYPES from './errors';
 import cursor from './cursor';
 
 
+exports.Scroll                = ScrollAutomation;
 exports.Click                 = ClickAutomation;
 exports.SelectChildClick      = SelectChildClickAutomation;
 exports.DblClick              = DblClickAutomation;

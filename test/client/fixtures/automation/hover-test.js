@@ -9,6 +9,7 @@ var MouseOptions       = testCafeAutomation.get('../../test-run/commands/options
 var testCafeCore = window.getTestCafeModule('testCafeCore');
 var position     = testCafeCore.get('./utils/position');
 
+testCafeCore.scrollController.init();
 testCafeCore.preventRealEvents();
 
 

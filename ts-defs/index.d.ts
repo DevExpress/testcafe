@@ -714,6 +714,13 @@ interface KeyModifiers {
     meta?: boolean
 }
 
+interface CropOptions {
+    left?: number;
+    right?: number;
+    top?: number;
+    bottom?: number;
+}
+
 interface ActionOptions {
     /**
      * The speed of action emulation. Defines how fast TestCafe performs the action when running tests.
@@ -721,6 +728,13 @@ interface ActionOptions {
      * programmatically, the action speed setting overrides test speed. Default is 1.
      */
     speed?: number;
+}
+
+interface TakeElementScreenshotOptions extends ActionOptions {
+    crop?: CropOptions;
+    includeMargins?: boolean;
+    scrollTargetX?: number;
+    scrollTargetY?: number;
 }
 
 interface MouseActionOptions extends ActionOptions {
@@ -974,10 +988,22 @@ interface TestController {
     /**
      * Takes a screenshot of the tested page.
      *
-     * @param path - relative path to the folder where screenshots should be saved. Resolved from the screenshot
-     * directory specified by using the `runner.screenshots` API method or the `screenshots-path` command line option.
+     * @param path - relative path to the screenshot file. Resolved from the screenshot directory specified by
+     * using the `runner.screenshots` API method or the `screenshots-path` command line option.
+     * If path doesn't have .png extension, it will be added automatically.
      */
     takeScreenshot(path?: string): TestControllerPromise;
+    /**
+     * Takes a screenshot of the specified element.
+     *
+     * @param selector - Identifies the element for screenshot capturing.
+     * @param path - relative path to the screenshot file. Resolved from the screenshot  directory specified by
+     * using the `runner.screenshots` API method or the `screenshots-path` command line option.
+     * If path doesn't have .png extension, it will be added automatically.
+     */
+    takeElementScreenshot(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
+                          path?:    string,
+                          options?: TakeElementScreenshotOptions): TestControllerPromise
     /**
      * Sets the browser window size.
      *
@@ -985,6 +1011,7 @@ interface TestController {
      * @param height - The new height, in pixels.
      */
     resizeWindow(width: number, height: number): TestControllerPromise;
+
     /**
      * Fits the browser window into a particular device.
      *

@@ -16,6 +16,7 @@ var PressAutomation      = testCafeAutomation.Press;
 var ClickOptions = testCafeAutomation.get('../../test-run/commands/options').ClickOptions;
 var TypeOptions  = testCafeAutomation.get('../../test-run/commands/options').TypeOptions;
 
+testCafeCore.scrollController.init();
 testCafeCore.preventRealEvents();
 
 $(document).ready(function () {

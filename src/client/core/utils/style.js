@@ -161,3 +161,20 @@ export function set (el, style, value) {
     }
 }
 
+function getViewportDimension (windowDimension, documentDimension, bodyDimension) {
+    if (documentDimension > windowDimension)
+        return bodyDimension;
+
+    if (bodyDimension > windowDimension)
+        return documentDimension;
+
+    return Math.max(bodyDimension, documentDimension);
+}
+
+export function getViewportDimensions () {
+    return {
+        width:  getViewportDimension(window.innerWidth, document.documentElement.clientWidth, document.body.clientWidth),
+        height: getViewportDimension(window.innerHeight, document.documentElement.clientHeight, document.body.clientHeight)
+    };
+}
+

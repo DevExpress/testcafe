@@ -1,11 +1,11 @@
 // NOTE: to preserve callsites, add new tests AFTER the existing ones
 import { ClientFunction } from 'testcafe';
 import { expect } from 'chai';
-import { parse } from 'useragent';
+import { saveWindowState, restoreWindowState } from '../../../../../window-helpers';
+
 
 const getWindowWidth  = ClientFunction(() => window.innerWidth);
 const getWindowHeight = ClientFunction(() => window.innerHeight);
-const getUserAgent    = ClientFunction(() => navigator.userAgent.toString());
 
 const setWindowOnresizeHandler = ClientFunction(() => {
     window.onresize = function () {
@@ -20,29 +20,15 @@ const resetWindowOnresizeHandler = ClientFunction(() => {
 
 const iPhoneSize = { width: 480, height: 320 };
 
-var initialWindowSize = {};
-
-
 fixture `Resize the window`
     .page `http://localhost:3000/fixtures/api/es-next/resize-window/pages/index.html`
-    .beforeEach(async () => {
-        var ua       = await getUserAgent();
-        var parsedUA = parse(ua);
-
-        initialWindowSize[parsedUA.family] = {
-            width:  await getWindowWidth(),
-            height: await getWindowHeight()
-        };
+    .beforeEach(async t => {
+        await saveWindowState(t);
     })
     .afterEach(async t => {
-        var ua       = await getUserAgent();
-        var parsedUA = parse(ua);
-        var size     = initialWindowSize[parsedUA.family];
-
         await resetWindowOnresizeHandler();
 
-        await t
-            .resizeWindow(size.width, size.height);
+        await restoreWindowState(t);
     });
 
 test('Resize the window', async t => {

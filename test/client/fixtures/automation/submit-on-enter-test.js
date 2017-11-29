@@ -7,6 +7,7 @@ var parseKeySequence  = testCafeCore.get('./utils/parse-key-sequence');
 var testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
 var PressAutomation    = testCafeAutomation.Press;
 
+testCafeCore.scrollController.init();
 testCafeCore.preventRealEvents();
 
 

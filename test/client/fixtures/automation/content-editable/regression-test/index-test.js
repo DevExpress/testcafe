@@ -8,6 +8,7 @@ var testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
 var TypeOptions        = testCafeAutomation.get('../../test-run/commands/options').TypeOptions;
 var TypeAutomation     = testCafeAutomation.Type;
 
+testCafeCore.scrollController.init();
 testCafeCore.preventRealEvents();
 
 $(document).ready(function () {

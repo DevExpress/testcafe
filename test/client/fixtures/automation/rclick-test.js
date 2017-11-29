@@ -4,6 +4,7 @@ var ClickOptions       = testCafeAutomation.get('../../test-run/commands/options
 
 var testCafeCore = window.getTestCafeModule('testCafeCore');
 
+testCafeCore.scrollController.init();
 testCafeCore.preventRealEvents();
 
 var hammerhead   = window.getTestCafeModule('hammerhead');

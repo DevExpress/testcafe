@@ -55,6 +55,7 @@ var UncaughtErrorInNativeDialogHandler                = require('../../lib/error
 var SetNativeDialogHandlerCodeWrongTypeError          = require('../../lib/errors/test-run').SetNativeDialogHandlerCodeWrongTypeError;
 var CantObtainInfoForElementSpecifiedBySelectorError  = require('../../lib/errors/test-run').CantObtainInfoForElementSpecifiedBySelectorError;
 var WindowDimensionsOverflowError                     = require('../../lib/errors/test-run').WindowDimensionsOverflowError;
+var InvalidElementScreenshotDimensionsError           = require('../../lib/errors/test-run').InvalidElementScreenshotDimensionsError;
 var SetTestSpeedArgumentError                         = require('../../lib/errors/test-run').SetTestSpeedArgumentError;
 var RoleSwitchInRoleInitializerError                  = require('../../lib/errors/test-run').RoleSwitchInRoleInitializerError;
 var ActionRoleArgumentError                           = require('../../lib/errors/test-run').ActionRoleArgumentError;
@@ -308,6 +309,10 @@ describe('Error formatting', function () {
 
         it('Should format "windowDimensionsOverflowError"', function () {
             assertErrorMessage('window-dimensions-overflow-error', new WindowDimensionsOverflowError());
+        });
+
+        it('Should format "InvalidElementScreenshotDimensionsError"', function () {
+            assertErrorMessage('invalid-element-screenshot-dimensions-error', new InvalidElementScreenshotDimensionsError());
         });
 
         it('Should format "setTestSpeedArgumentError"', function () {

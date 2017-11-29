@@ -59,6 +59,59 @@ export class OffsetOptions extends ActionOptions {
     }
 }
 
+export class ScrollOptions extends OffsetOptions {
+    constructor (obj, validate) {
+        super();
+
+        this.scrollToCenter           = false;
+        this.disableParentFrameScroll = false;
+
+        this._assignFrom(obj, validate);
+    }
+
+    _getAssignableProperties () {
+        return super._getAssignableProperties().concat([
+            { name: 'scrollToCenter', type: booleanOption },
+            { name: 'disableParentFrameScroll', type: booleanOption }
+        ]);
+    }
+}
+
+// Element Screenshot
+export class ElementScreenshotOptions extends ActionOptions {
+    constructor (obj, validate) {
+        super();
+
+        this.scrollTargetX   = null;
+        this.scrollTargetY   = null;
+        this.includeMargins  = false;
+        this.includeBorders  = true;
+        this.includePaddings = true;
+
+        this.crop = {
+            left:   null,
+            right:  null,
+            top:    null,
+            bottom: null
+        };
+
+        this._assignFrom(obj, validate);
+    }
+
+    _getAssignableProperties () {
+        return super._getAssignableProperties().concat([
+            { name: 'scrollTargetX', type: integerOption },
+            { name: 'scrollTargetY', type: integerOption },
+            { name: 'crop.left', type: integerOption },
+            { name: 'crop.right', type: integerOption },
+            { name: 'crop.top', type: integerOption },
+            { name: 'crop.bottom', type: integerOption },
+            { name: 'includeMargins', type: booleanOption },
+            { name: 'includeBorders', type: booleanOption },
+            { name: 'includePaddings', type: booleanOption }
+        ]);
+    }
+}
 
 // Mouse
 export class MouseOptions extends OffsetOptions {

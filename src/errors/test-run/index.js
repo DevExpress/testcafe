@@ -363,6 +363,14 @@ export class WindowDimensionsOverflowError extends TestRunErrorBase {
     }
 }
 
+export class InvalidElementScreenshotDimensionsError extends TestRunErrorBase {
+    constructor (callsite) {
+        super(TYPE.invalidElementScreenshotDimensionsError);
+
+        this.callsite = callsite;
+    }
+}
+
 export class RoleSwitchInRoleInitializerError extends TestRunErrorBase {
     constructor (callsite) {
         super(TYPE.roleSwitchInRoleInitializerError);

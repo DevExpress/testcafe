@@ -1,3 +1,4 @@
+var path            = require('path');
 var expect          = require('chai').expect;
 var config          = require('../../../../config.js');
 var assertionHelper = require('../../../../assertion-helper.js');
@@ -84,6 +85,230 @@ describe('[API] t.takeScreenshot()', function () {
                 .catch(function () {
                     expect(SCREENSHOT_PATH_MESSAGE_RE.test(testReport.screenshotPath)).eql(true);
                     expect(assertionHelper.checkScreenshotsCreated(false, 2, null, 3)).eql(true);
+                });
+        });
+
+        it('Should crop screenshots to a page viewport area', function () {
+            return runTests('./testcafe-fixtures/take-screenshot.js', 'Should crop screenshots',
+                { setScreenshotPath: true })
+                .then(function () {
+                    return assertionHelper.checkScreenshotsCropped(false, 'custom');
+                })
+                .then(function (result) {
+                    expect(result).eql(true);
+                });
+        });
+    }
+});
+
+describe('[API] t.takeElementScreenshot()', function () {
+    if (config.useLocalBrowsers) {
+        afterEach(assertionHelper.removeScreenshotDir);
+
+        it('Should take screenshot of an element', function () {
+            return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Element',
+                { setScreenshotPath: true })
+                .then(function () {
+                    return assertionHelper.isScreenshotsEqual('custom', path.join(__dirname, './data/element.png'));
+                })
+                .then(function (result) {
+                    expect(result).eql(true);
+                });
+        });
+
+        it('Should create warning if screenshotPath is not specified even if a custom path is specified', function () {
+            return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Element')
+                .then(function () {
+                    expect(assertionHelper.isScreenshotDirExists()).eql(false);
+                    expect(testReport.warnings).eql([
+                        'Was unable to take screenshots because the screenshot directory is not specified. To specify it, ' +
+                        'use the "-s" or "--screenshots" command line option or the "screenshots" method of the ' +
+                        'test runner in case you are using API.'
+                    ]);
+                });
+        });
+
+        it('Should validate selector argument', function () {
+            return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Incorrect action selector argument', {
+                shouldFail: true,
+                only:       'chrome'
+            })
+                .catch(function (errs) {
+                    expect(errs[0]).to.contains(
+                        'Action "selector" argument error:  Selector is expected to be initialized with a ' +
+                        'function, CSS selector string, another Selector, node snapshot or a Promise returned ' +
+                        'by a Selector, but number was passed.'
+                    );
+
+                    expect(errs[0]).to.contains(
+                        ' 28 |test(\'Incorrect action selector argument\', async t => {' +
+                        ' > 29 |    await t.takeElementScreenshot(1, \'custom/\' + t.ctx.parsedUA.family + \'.png\');' +
+                        ' 30 |});'
+                    );
+                });
+        });
+
+        it('Should validate path argument', function () {
+            return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Incorrect action path argument', {
+                shouldFail: true,
+                only:       'chrome'
+            })
+                .catch(function (errs) {
+                    expect(errs[0]).to.contains('The "path" argument is expected to be a non-empty string, but it was number.');
+                    expect(errs[0]).to.contains(
+                        ' 32 |test(\'Incorrect action path argument\', async t => {' +
+                        ' > 33 |    await t.takeElementScreenshot(\'table\', 1);' +
+                        ' 34 |});'
+                    );
+                });
+        });
+
+        it('Should take screenshot of an element with margins', function () {
+            return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Element with margins',
+                { setScreenshotPath: true })
+                .then(function () {
+                    return assertionHelper.isScreenshotsEqual('custom', path.join(__dirname, './data/element-with-margins.png'));
+                })
+                .then(function (result) {
+                    expect(result).eql(true);
+                });
+        });
+
+        it('Should perform top-left crop', function () {
+            return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Top-left',
+                { setScreenshotPath: true })
+                .then(function () {
+                    return assertionHelper.isScreenshotsEqual('custom', path.join(__dirname, './data/top-left.png'));
+                })
+                .then(function (result) {
+                    expect(result).eql(true);
+                });
+        });
+
+        it('Should perform top-left crop by default', function () {
+            return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Default crop',
+                { setScreenshotPath: true })
+                .then(function () {
+                    return assertionHelper.isScreenshotsEqual('custom', path.join(__dirname, './data/top-left.png'));
+                })
+                .then(function (result) {
+                    expect(result).eql(true);
+                });
+        });
+
+        it('Should perform top-right crop', function () {
+            return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Top-right',
+                { setScreenshotPath: true })
+                .then(function () {
+                    return assertionHelper.isScreenshotsEqual('custom', path.join(__dirname, './data/top-right.png'));
+                })
+                .then(function (result) {
+                    expect(result).eql(true);
+                });
+        });
+
+
+        it('Should perform bottom-left crop', function () {
+            return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Bottom-left',
+                { setScreenshotPath: true })
+                .then(function () {
+                    return assertionHelper.isScreenshotsEqual('custom', path.join(__dirname, './data/bottom-left.png'));
+                })
+                .then(function (result) {
+                    expect(result).eql(true);
+                });
+        });
+
+
+        it('Should perform bottom-right crop', function () {
+            return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Bottom-right',
+                { setScreenshotPath: true })
+                .then(function () {
+                    return assertionHelper.isScreenshotsEqual('custom', path.join(__dirname, './data/bottom-right.png'));
+                })
+                .then(function (result) {
+                    expect(result).eql(true);
+                });
+        });
+
+        it('Should throw an error if element dimensions are invalid', function () {
+            return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Invalid dimensions', {
+                setScreenshotPath: true,
+                shouldFail:        true,
+                only:              'chrome'
+            })
+                .catch(function (errs) {
+                    expect(errs[0]).to.contains('Unable to capture an image of the element, because resulting image dimensions are zero or negative.');
+                    expect(errs[0]).to.contains(
+                        ' 36 |test(\'Invalid dimensions\', async t => {' +
+                        ' > 37 |    await t.takeElementScreenshot(\'table\', \'custom/\' + t.ctx.parsedUA.family + \'.png\', { crop: { left: 50, right: -50 } });' +
+                        ' 38 |});'
+                    );
+                });
+        });
+
+        it('Should throw an error if the element is invisible', function () {
+            return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Invisible element', {
+                setScreenshotPath: true,
+                shouldFail:        true,
+                only:              'chrome'
+            })
+                .catch(function (errs) {
+                    expect(errs[0]).to.contains('The element that matches the specified selector is not visible.');
+                    expect(errs[0]).to.contains(
+                        ' 42 |        .click(\'#hide\')' +
+                        ' > 43 |        .takeElementScreenshot(\'table\', \'custom/\' + t.ctx.parsedUA.family + \'.png\');' +
+                        ' 44 |});'
+                    );
+                });
+        });
+
+        it('Should throw an error if the element doesn\'t exist', function () {
+            return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Non-existent element', {
+                setScreenshotPath: true,
+                shouldFail:        true,
+                only:              'chrome'
+            })
+                .catch(function (errs) {
+                    expect(errs[0]).to.contains('The specified selector does not match any element in the DOM tree.');
+                    expect(errs[0]).to.contains(
+                        ' 48 |        .click(\'#remove\')' +
+                        ' > 49 |        .takeElementScreenshot(\'table\', \'custom/\' + t.ctx.parsedUA.family + \'.png\');' +
+                        ' 50 |});'
+                    );
+                });
+        });
+
+        it('Should capture screenshot of the element inside a same-domain iframe', function () {
+            return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Same-domain iframe',
+                { setScreenshotPath: true })
+                .then(function () {
+                    return assertionHelper.isScreenshotsEqual('custom', path.join(__dirname, './data/element.png'));
+                })
+                .then(function (result) {
+                    expect(result).eql(true);
+                });
+        });
+
+        it('Should capture screenshot of the element inside a nested iframe', function () {
+            return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Nested iframes',
+                { setScreenshotPath: true })
+                .then(function () {
+                    return assertionHelper.isScreenshotsEqual('custom', path.join(__dirname, './data/element.png'));
+                })
+                .then(function (result) {
+                    expect(result).eql(true);
+                });
+        });
+
+        it('Should capture screenshot of the element inside a cross-domain iframe', function () {
+            return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Cross-domain iframe',
+                { setScreenshotPath: true })
+                .then(function () {
+                    return assertionHelper.isScreenshotsEqual('custom', path.join(__dirname, './data/element.png'));
+                })
+                .then(function (result) {
+                    expect(result).eql(true);
                 });
         });
     }

@@ -7,6 +7,7 @@ var testCafeCore = window.getTestCafeModule('testCafeCore');
 var testCafeAutomation   = window.getTestCafeModule('testCafeAutomation');
 var SelectTextAutomation = testCafeAutomation.SelectText;
 
+testCafeCore.scrollController.init();
 testCafeCore.preventRealEvents();
 
 var domUtils      = testCafeCore.get('./utils/dom');

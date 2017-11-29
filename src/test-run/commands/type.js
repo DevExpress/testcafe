@@ -22,6 +22,7 @@ export default {
     executeClientFunction:      'execute-client-function',
     executeSelector:            'execute-selector',
     takeScreenshot:             'take-screenshot',
+    takeElementScreenshot:      'take-element-screenshot',
     takeScreenshotOnFail:       'take-screenshot-on-fail',
     prepareBrowserManipulation: 'prepare-browser-manipulation',
     showAssertionRetriesStatus: 'show-assertion-retries-status',

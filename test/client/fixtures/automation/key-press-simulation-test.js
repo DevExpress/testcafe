@@ -6,6 +6,7 @@ var eventUtils        = testCafeCore.get('./utils/event');
 var parseKeySequence  = testCafeCore.get('./utils/parse-key-sequence');
 var KEY_MAPS          = testCafeCore.get('./utils/key-maps');
 
+testCafeCore.scrollController.init();
 testCafeCore.preventRealEvents();
 
 var testCafeAutomation = window.getTestCafeModule('testCafeAutomation');

@@ -6,6 +6,7 @@ var shadowUI         = hammerhead.shadowUI;
 var testCafeCore     = window.getTestCafeModule('testCafeCore');
 var parseKeySequence = testCafeCore.get('./utils/parse-key-sequence');
 
+testCafeCore.scrollController.init();
 testCafeCore.preventRealEvents();
 
 var testCafeAutomation         = window.getTestCafeModule('testCafeAutomation');

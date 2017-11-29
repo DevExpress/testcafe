@@ -17,6 +17,7 @@ var PressAutomation = testCafeAutomation.Press;
 var parseKeySequence = testCafeCore.get('./utils/parse-key-sequence');
 var getOffsetOptions = testCafeAutomation.getOffsetOptions;
 
+testCafeCore.scrollController.init();
 testCafeCore.preventRealEvents();
 
 var input1                           = null;

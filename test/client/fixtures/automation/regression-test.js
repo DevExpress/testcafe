@@ -23,6 +23,7 @@ var SelectTextAutomation = testCafeAutomation.SelectText;
 var PressAutomation      = testCafeAutomation.Press;
 var getOffsetOptions     = testCafeAutomation.getOffsetOptions;
 
+testCafeCore.scrollController.init();
 testCafeCore.preventRealEvents();
 
 $(document).ready(function () {

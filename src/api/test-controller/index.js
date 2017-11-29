@@ -32,12 +32,14 @@ import {
 
 import {
     TakeScreenshotCommand,
+    TakeElementScreenshotCommand,
     ResizeWindowCommand,
     ResizeWindowToFitDeviceCommand,
     MaximizeWindowCommand
 } from '../../test-run/commands/browser-manipulation';
 
 import { WaitCommand, DebugCommand } from '../../test-run/commands/observation';
+
 
 export default class TestController {
     constructor (testRun) {
@@ -196,6 +198,21 @@ export default class TestController {
 
     _takeScreenshot$ (path) {
         return this._enqueueCommand('takeScreenshot', TakeScreenshotCommand, { path });
+    }
+
+    _takeElementScreenshot$ (selector, ...args) {
+        var commandArgs = { selector };
+
+        if (args[1]) {
+            commandArgs.path    = args[0];
+            commandArgs.options = args[1];
+        }
+        else if (typeof args[0] === 'object')
+            commandArgs.options = args[0];
+        else
+            commandArgs.path = args[0];
+
+        return this._enqueueCommand('takeElementScreenshot', TakeElementScreenshotCommand, commandArgs);
     }
 
     _resizeWindow$ (width, height) {
