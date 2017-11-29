@@ -7,7 +7,7 @@ permalink: /documentation/recipes/integrating-testcafe-with-team-city-ci-system.
 
 TestCafe is easy to set up with most modern CI systems.
 
-This topic describes how to use TestCafe with TeamCity.
+This topic describes how to use TestCafe with [TeamCity](http://www.jetbrains.com/teamcity/).
 
 ## Prerequisites
 
@@ -19,7 +19,9 @@ This topic describes how to use TestCafe with TeamCity.
 
     The `testcafe-reporter-teamcity` plugin enables TestCafe to output test run results in the TeamCity format. The reports will be presented in the TeamCity UI allowing you to analyze the results with its built-in features.
 
-* We will take test code from a GitHub repository: [ci-integration-demo](https://github.com/VasilyStrelyaev/ci-integration-demo). Fork it before starting.
+* We will fetch test code from a GitHub repository: [ci-integration-demo](https://github.com/VasilyStrelyaev/ci-integration-demo). Fork it before starting.
+  
+    If you use a different version control system, make sure TeamCity supports it. You can find a list of supported VCS in the [TeamCity documentation](http://confluence.jetbrains.com/display/TCD10/TeamCity+Documentation).
 
 ## Adding a Build Step that Runs TestCafe
 
