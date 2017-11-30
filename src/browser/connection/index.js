@@ -5,7 +5,7 @@ import { pull as remove } from 'lodash';
 import { parse as parseUserAgent } from 'useragent';
 import { readSync as read } from 'read-file-relative';
 import promisifyEvent from 'promisify-event';
-import shortId from 'shortid';
+import nanoid from 'nanoid';
 import COMMAND from './command';
 import STATUS from './status';
 import { GeneralError } from '../../errors/runtime';
@@ -64,7 +64,7 @@ export default class BrowserConnection extends EventEmitter {
     }
 
     static _generateId () {
-        return shortId.generate();
+        return nanoid(7);
     }
 
     _runBrowser () {
