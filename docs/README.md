@@ -72,6 +72,7 @@
 * [RECIPES](articles/documentation/recipes/README.md)
   * [Debugging with Chrome Developer Tools](articles/documentation/recipes/debugging-with-chrome-dev-tools.md)
   * [Debugging with Visual Studio Code](articles/documentation/recipes/debugging-with-visual-studio-code.md)
+  * [Integrating TestCafe with AppVeyor](articles/documentation/recipes/integrating-testcafe-with-appveyor.md)
   * [Integrating TestCafe with Jenkins CI System](articles/documentation/recipes/integrating-testcafe-with-jenkins-ci-system.md)
   * [Finding Code Issues with Flow Type Checker](articles/documentation/recipes/finding-code-issues-with-flow-type-checker.md)
   * [Running Tests in Firefox and Chrome Using Travis CI](articles/documentation/recipes/running-tests-in-firefox-and-chrome-using-travis-ci.md)

@@ -60,7 +60,7 @@ The `browser-list-comma-separated` argument specifies the list of browsers (sepa
 
 ### Local Browsers
 
-You can specify [locally installed browsers](common-concepts//browsers/browser-support.md#locally-installed-browsers) by using browser aliases or paths (with the `path:` prefix).
+You can specify [locally installed browsers](common-concepts/browsers/browser-support.md#locally-installed-browsers) by using browser aliases or paths (with the `path:` prefix).
 The list of all the available browsers can be obtained by calling the [--list-browsers](#-b---list-browsers) command.
 
 The following example demonstrates how to run a test in several browsers.
