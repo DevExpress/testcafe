@@ -1,7 +1,7 @@
 ---
 layout: docs
 title: Running Tests in Firefox and Chrome Using Travis CI
-permalink: /documentation/recipes/running-tests-in-firefox-and-chrome-using-travis-ci.html
+permalink: /documentation/recipes/integrating-testcafe-with-ci-systems/travis.html
 ---
 # Running Tests in Firefox and Chrome Using Travis CI
 
@@ -20,18 +20,18 @@ Suppose you have a GitHub project for which you need to automatically run tests 
 
 ## Step 1 - Install TestCafe and create tests
 
-Install TestCafe [locally](../using-testcafe/installing-testcafe.md#locally) in your project and [create tests](../getting-started/README.md#creating-a-test).
+Install TestCafe [locally](../../using-testcafe/installing-testcafe.md#locally) in your project and [create tests](../../getting-started/README.md#creating-a-test).
 
 ## Step 2 - Enable Travis for your project
 
 1. [Sign in to Travis CI](https://travis-ci.org/auth) with your GitHub account. Travis CI will synchronize your repositories from GitHub. You can see them on your [profile page](https://travis-ci.org/profile).
 2. Enable Travis CI for a repository you want to build by flicking the switch on.
 
-     ![Enable Travis for a repository](../../images/travis-step-2-2.png)
+     ![Enable Travis for a repository](../../../images/travis-step-2-2.png)
 
      By default, Travic CI runs builds on pushes and pull requests. You can manage this behavior in your repository's settings.
 
-     ![Enable builds](../../images/travis-step-2-4.png)
+     ![Enable builds](../../../images/travis-step-2-4.png)
 
 3. Add a `.travis.yml` configuration file to the root of your project. This file contains parameters and commands that instruct Travis CI how to execute your builds. For more information, see [Customizing the Build](https://docs.travis-ci.com/user/customizing-the-build).
 
@@ -85,7 +85,7 @@ To tell npm how to run your tests, add the `test` script to the project's packag
 }
 ```
 
-For more information on how to configure a test run using a `testcafe` command, see [Command Line Interface](../using-testcafe/command-line-interface.md).
+For more information on how to configure a test run using a `testcafe` command, see [Command Line Interface](../../using-testcafe/command-line-interface.md).
 
 **Note:** If your app requires starting a custom web server, use the `--app` TestCafe option to specify a command that starts your server.
 This command will be automatically executed before running tests. After tests are finished, TestCafe will stop the app server.

@@ -1,7 +1,7 @@
 ---
 layout: docs
 title: Integrating TestCafe with TeamCity CI System
-permalink: /documentation/recipes/integrating-testcafe-with-team-city-ci-system.html
+permalink: /documentation/recipes/integrating-testcafe-with-ci-systems/teamcity.html
 ---
 # Integrating TestCafe with TeamCity CI System
 
@@ -29,15 +29,15 @@ Create a new build configuration or open an existing one as described in the [Te
 
 Click the **Edit Configuration Settings** link.
 
-![Click Edit Configuration Settings](../../images/teamcity/edit-configuration.png)
+![Click Edit Configuration Settings](../../../images/teamcity/edit-configuration.png)
 
 In the configuration settings, add a build step that runs TestCafe. First, select **Build Steps** from the left menu.
 
-![Click Build Steps](../../images/teamcity/configure-build-steps.png)
+![Click Build Steps](../../../images/teamcity/configure-build-steps.png)
 
 This opens the **Build Steps** page. On this page, click the **Add build step** button.
 
-![Click Add Build Step](../../images/teamcity/add-build-step.png)
+![Click Add Build Step](../../../images/teamcity/add-build-step.png)
 
 The **New build step** page will be opened. Configure this step to run TestCafe using the command line.
 
@@ -45,7 +45,7 @@ In the **Runer type** field, select *Command Line*. Optionally, specify a name f
 
 Parameters used in this example specify Google Chrome as the target browser, `tests` as the folder that contains test fixtures and TeamCity reporter as a plugin used to output test run reports.
 
-![Create New Build Step](../../images/teamcity/create-new-build-step.png)
+![Create New Build Step](../../../images/teamcity/create-new-build-step.png)
 
 Click **Save**.
 
@@ -55,29 +55,29 @@ First, you will need to create a connection with GitHub.com.
 
 Open project settings and click **Connections**.
 
-![Open Connections Page](../../images/teamcity/configure-connections.png)
+![Open Connections Page](../../../images/teamcity/configure-connections.png)
 
 On the **Connections** page, click **Add Connection**.
 
-![Adding a Connection](../../images/teamcity/add-connection.png)
+![Adding a Connection](../../../images/teamcity/add-connection.png)
 
 The **Add Connection** dialog will be invoked.
 
 Select *GitHub.com* as the **Connection type** and click **Register TeamCity** to set up OAuth authentication with GitHub.
 
-![Registering the Connection](../../images/teamcity/add-connection-register.png)
+![Registering the Connection](../../../images/teamcity/add-connection-register.png)
 
 You will be redirected to GitHub. In the **Register a new OAuth application** dialog, specify the application name, homepage URL and authorization callback URL as they are provided by TeamCity and click **Register application**.
 
-![Registering OAuth Application on GitHub](../../images/teamcity/add-connection-register-github.png)
+![Registering OAuth Application on GitHub](../../../images/teamcity/add-connection-register-github.png)
 
 A page with client application ID and secret will open.
 
-![OAuth Credentials](../../images/teamcity/add-connection-register-credentials.png)
+![OAuth Credentials](../../../images/teamcity/add-connection-register-credentials.png)
 
 Copy and paste them to TeamCity and click **Save**.
 
-![Saving the Connection](../../images/teamcity/add-connection-finish-register.png)
+![Saving the Connection](../../../images/teamcity/add-connection-finish-register.png)
 
 Now the connection is created.
 
@@ -85,23 +85,23 @@ Next, attach a VCS root to the build configuration.
 
 Go to the configuration parameters and click **Version Control Settings**.
 
-![Version Control Menu Item](../../images/teamcity/configuration-vcs.png)
+![Version Control Menu Item](../../../images/teamcity/configuration-vcs.png)
 
 On the **VCS Roots** page, click **Attach VCS root**.
 
-![Attaching VCS Root](../../images/teamcity/attach-vcs-root.png)
+![Attaching VCS Root](../../../images/teamcity/attach-vcs-root.png)
 
 Select **Git** as the **Type of VCS**. Enter the **Root name**.
 
-![Specifying VCS Type and Root Name](../../images/teamcity/attach-vcs-root-p2.png)
+![Specifying VCS Type and Root Name](../../../images/teamcity/attach-vcs-root-p2.png)
 
 In the **Fetch URL** field, click the GitHub logo. A drop-down list of GitHub repos associated with your account will open. Select `ci-integration-demo`.
 
-![Select a GitHub Repo](../../images/teamcity/attach-vcs-root-repo.png)
+![Select a GitHub Repo](../../../images/teamcity/attach-vcs-root-repo.png)
 
 In the **Authentication Settings** section, select *Password* as the **Authentication Method**, enter your credentials and click **Create**.
 
-![Providing Credentials](../../images/teamcity/attach-vcs-root-p3.png)
+![Providing Credentials](../../../images/teamcity/attach-vcs-root-p3.png)
 
 Now the TeamCity build configuration will fetch tests from the `ci-integration-demo` repo each time it runs.
 
@@ -109,10 +109,10 @@ Now the TeamCity build configuration will fetch tests from the `ci-integration-d
 
 Now you can run the build using the **Run** button.
 
-![Run a Build](../../images/teamcity/run-build.png)
+![Run a Build](../../../images/teamcity/run-build.png)
 
 ## Viewing Test Results
 
 Open the **Overview** tab and see which tests failed and why.
 
-![Test Results](../../images/teamcity/test-results.png)
+![Test Results](../../../images/teamcity/test-results.png)
