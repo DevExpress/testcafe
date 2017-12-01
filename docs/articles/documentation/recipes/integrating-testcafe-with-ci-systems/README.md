@@ -1,7 +1,7 @@
 ---
 layout: docs
 title: Integrating TestCafe with CI Systems
-permalink: /documentation/recipes/integrating-testCafe-with-ci-systems/
+permalink: /documentation/recipes/integrating-testcafe-with-ci-systems/
 ---
 # Integrating TestCafe with CI Systems
 
