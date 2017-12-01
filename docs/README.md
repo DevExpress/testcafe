@@ -74,6 +74,7 @@
   * [Debugging with Visual Studio Code](articles/documentation/recipes/debugging-with-visual-studio-code.md)
   * [Integrating TestCafe with AppVeyor](articles/documentation/recipes/integrating-testcafe-with-appveyor.md)
   * [Finding Code Issues with Flow Type Checker](articles/documentation/recipes/finding-code-issues-with-flow-type-checker.md)
+  * [Integrating TestCafe with TeamCity CI System](articles/documentation/recipes/integrating-testcafe-with-team-city-ci-system.md)
   * [Running Tests in Firefox and Chrome Using Travis CI](articles/documentation/recipes/running-tests-in-firefox-and-chrome-using-travis-ci.md)
   * [Running Tests Using Travis CI and Sauce Labs](articles/documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.md)
   * [Testing &lt;select&gt; Elements](articles/documentation/recipes/testing-select-elements.md)

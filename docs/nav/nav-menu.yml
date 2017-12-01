@@ -161,6 +161,8 @@
       url: /documentation/recipes/integrating-testcafe-with-appveyor.md
     - name: Finding Code Issues with Flow Type Checker
       url: /documentation/recipes/finding-code-issues-with-flow-type-checker.md
+    - name: Integrating TestCafe with TeamCity CI System
+      url: /documentation/recipes/integrating-testcafe-with-team-city-ci-system.md
     - name: Running Tests in Firefox and Chrome Using Travis CI
       url: /documentation/recipes/running-tests-in-firefox-and-chrome-using-travis-ci.md
     - name: Running Tests Using Travis CI and Sauce Labs
