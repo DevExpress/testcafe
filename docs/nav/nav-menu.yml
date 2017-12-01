@@ -159,6 +159,8 @@
       url: /documentation/recipes/debugging-with-visual-studio-code.md
     - name: Integrating TestCafe with AppVeyor
       url: /documentation/recipes/integrating-testcafe-with-appveyor.md
+    - name: Integrating TestCafe with Jenkins CI System
+      url: /documentation/recipes/integrating-testcafe-with-jenkins-ci-system.md
     - name: Finding Code Issues with Flow Type Checker
       url: /documentation/recipes/finding-code-issues-with-flow-type-checker.md
     - name: Integrating TestCafe with TeamCity CI System
