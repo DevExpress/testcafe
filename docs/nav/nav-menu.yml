@@ -157,18 +157,21 @@
       url: /documentation/recipes/debugging-with-chrome-dev-tools.md
     - name: Debugging with Visual Studio Code
       url: /documentation/recipes/debugging-with-visual-studio-code.md
-    - name: Integrating TestCafe with AppVeyor
-      url: /documentation/recipes/integrating-testcafe-with-appveyor.md
-    - name: Integrating TestCafe with CircleCI
-      url: /documentation/recipes/integrating-testcafe-with-circleci.md
-    - name: Integrating TestCafe with Jenkins CI System
-      url: /documentation/recipes/integrating-testcafe-with-jenkins-ci-system.md
-    - name: Integrating TestCafe with TeamCity CI System
-      url: /documentation/recipes/integrating-testcafe-with-team-city-ci-system.md
+    - name: Integrating TestCafe with CI Systems
+      url: /documentation/recipes/integrating-testcafe-with-ci-systems/README.md
+      content:
+      - name: AppVeyor
+        url: /documentation/recipes/integrating-testcafe-with-ci-systems/appveyor.md
+      - name: CircleCI
+        url: /documentation/recipes/integrating-testcafe-with-ci-systems/circleci.md
+      - name: Jenkins
+        url: /documentation/recipes/integrating-testcafe-with-ci-systems/jenkins.md
+      - name: TeamCity
+        url: /documentation/recipes/integrating-testcafe-with-ci-systems/teamcity.md
+      - name: Travis
+        url: /documentation/recipes/integrating-testcafe-with-ci-systems/travis.md
     - name: Finding Code Issues with Flow Type Checker
       url: /documentation/recipes/finding-code-issues-with-flow-type-checker.md
-    - name: Running Tests in Firefox and Chrome Using Travis CI
-      url: /documentation/recipes/running-tests-in-firefox-and-chrome-using-travis-ci.md
     - name: Running Tests Using Travis CI and Sauce Labs
       url: /documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.md
     - name: Testing &lt;select&gt; Elements 

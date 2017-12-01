@@ -1,7 +1,7 @@
 ---
 layout: docs
 title: Integrating TestCafe with AppVeyor
-permalink: /documentation/recipes/integrating-testcafe-with-appveyor.html
+permalink: /documentation/recipes/integrating-testcafe-with-ci-systems/appveyor.html
 ---
 # Integrating TestCafe with AppVeyor
 
@@ -20,13 +20,13 @@ If you are using AppVeyor for the first time, you will begin with an empty accou
 
 To create a project, click **NEW PROJECT**.
 
-![Creating a new project](../../images/appveyor/new-project.png)
+![Creating a new project](../../../images/appveyor/new-project.png)
 
 AppVeyor will ask you to specify a repository to create a project for. In this tutorial, we will use a GitHub repository, so click **GitHub** and authorize.
 
 You will see a list of repositories associated with your account. Find `ci-integration-demo` and click **ADD**.
 
-![Adding a GitHub project](../../images/appveyor/add-project.png)
+![Adding a GitHub project](../../../images/appveyor/add-project.png)
 
 A new AppVeyor project is created.
 
@@ -34,11 +34,11 @@ A new AppVeyor project is created.
 
 On the new project's page, open the **SETTINGS** menu.
 
-![Open the Settings Menu](../../images/appveyor/open-settings.png)
+![Open the Settings Menu](../../../images/appveyor/open-settings.png)
 
 If you are starting from a fresh project that has nothing to build yet, go to the **Build** settings category and disable building by pushing **OFF**.
 
-![Disable building](../../images/appveyor/disable-build.png)
+![Disable building](../../../images/appveyor/disable-build.png)
 
 Click **Save**.
 
@@ -52,13 +52,13 @@ npm install -g testcafe testcafe-reporter-xunit
 
 This command installs the main `testcafe` module and a plugin used to output reports in the xUnit format.
 
-![Install TestCafe](../../images/appveyor/add-install-script.png)
+![Install TestCafe](../../../images/appveyor/add-install-script.png)
 
 Click **Save**.
 
 Next, specify how tests should be triggered. Go to the **Tests** category and choose to use a custom script to run tests.
 
-![Choose to use a script to run tests](../../images/appveyor/choose-to-use-script.png)
+![Choose to use a script to run tests](../../../images/appveyor/choose-to-use-script.png)
 
 Select **PS** as a shell type and enter the following code.
 
@@ -73,7 +73,7 @@ The first command starts tests from the `tests` directory in the headless Chrome
 
 The next two lines upload test run reports to AppVeyor so that you could view them in the UI.
 
-![Enter test run commands](../../images/appveyor/enter-commands.png)
+![Enter test run commands](../../../images/appveyor/enter-commands.png)
 
 Click **Save**.
 
@@ -81,10 +81,10 @@ Click **Save**.
 
 Return to the project page and click **NEW BUILD** to trigger the AppVeyor build.
 
-![Start a new build](../../images/appveyor/trigger-build.png)
+![Start a new build](../../../images/appveyor/trigger-build.png)
 
 ## Step 4 - View Test Results
 
 When testing is done, you can go back to **LATEST BUILD** and click the **TESTS** button to view the results.
 
-![Viewing Test Results](../../images/appveyor/test-results.png)
+![Viewing Test Results](../../../images/appveyor/test-results.png)
