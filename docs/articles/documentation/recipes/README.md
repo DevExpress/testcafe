@@ -11,6 +11,7 @@ This section provides examples and recipes of how to use TestCafe in different s
 * [Debugging with Visual Studio Code](debugging-with-visual-studio-code.md)
 * [Integrating TestCafe with Jenkins CI System](integrating-testcafe-with-jenkins-ci-system.md)
 * [Finding Code Issues with Flow Type Checker](finding-code-issues-with-flow-type-checker.md)
+* [Integrating TestCafe with AppVeyor](integrating-testcafe-with-appveyor.md)
 * [Running Tests in Firefox and Chrome Using Travis CI](running-tests-in-firefox-and-chrome-using-travis-ci.md)
 * [Running Tests Using Travis CI and Sauce Labs](running-tests-using-travis-ci-and-sauce-labs.md)
 * [Testing \<select\> Elements](testing-select-elements.md)
