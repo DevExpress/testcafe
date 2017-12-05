@@ -30,8 +30,8 @@ export default class ReporterPluginHost {
         this.viewportWidth = getViewportWidth(this[stream]);
 
         this.symbols = OS.win ?
-                       { ok: '√', err: '×' } :
-                       { ok: '✓', err: '✖' };
+            { ok: '√', err: '×' } :
+            { ok: '✓', err: '✖' };
 
         assignIn(this, plugin);
 

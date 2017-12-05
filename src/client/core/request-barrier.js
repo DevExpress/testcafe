@@ -20,13 +20,13 @@ export default class RequestBarrier extends EventEmitter {
 
         this.delays = {
             requestsCollection: delays.requestsCollection === void 0 ?
-                                REQUESTS_COLLECTION_DELAY_DEFAULT : delays.requestsCollection,
+                REQUESTS_COLLECTION_DELAY_DEFAULT : delays.requestsCollection,
 
             additionalRequestsCollection: delays.additionalRequestsCollection === void 0 ?
-                                          REQUESTS_COLLECTION_DELAY_DEFAULT : delays.additionalRequestsCollection,
+                REQUESTS_COLLECTION_DELAY_DEFAULT : delays.additionalRequestsCollection,
 
             pageInitialRequestsCollection: delays.pageInitialRequestsCollection === void 0 ?
-                                           REQUESTS_COLLECTION_DELAY_DEFAULT : delays.pageInitialRequestsCollection
+                REQUESTS_COLLECTION_DELAY_DEFAULT : delays.pageInitialRequestsCollection
         };
 
         this.collectingReqs = true;

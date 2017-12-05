@@ -169,7 +169,7 @@ $(document).ready(function () {
         });
 
         asyncTest('T233907 - TestRunning waits cancelled xhrs', function () {
-            var timeout          = 300;  //NOTE: equals to REQUESTS_COLLECTION_DELAY
+            var timeout          = 300; //NOTE: equals to REQUESTS_COLLECTION_DELAY
             var barrierCompleted = false;
 
             expect(1);

@@ -40,8 +40,8 @@ function getLineIndentInTextarea (textarea) {
     var inverseSelection = textSelection.hasInverseSelection(textarea);
 
     var cursorPosition = inverseSelection ?
-                         textSelection.getSelectionStart(textarea) :
-                         textSelection.getSelectionEnd(textarea);
+        textSelection.getSelectionStart(textarea) :
+        textSelection.getSelectionEnd(textarea);
 
     if (!textarea.value || !cursorPosition)
         return 0;
@@ -334,7 +334,7 @@ function home (element, withSelection) {
         var referencePosition = null;
 
         var isSingleLineSelection = !domUtils.isTextAreaElement(element) ? true :
-                                    domUtils.getTextareaLineNumberByPosition(element, startPos) ===
+            domUtils.getTextareaLineNumberByPosition(element, startPos) ===
                                     domUtils.getTextareaLineNumberByPosition(element, endPos);
 
         if (isSingleLineSelection)
@@ -371,7 +371,7 @@ function end (element, withSelection) {
         var referencePosition = null;
 
         var isSingleLineSelection = !domUtils.isTextAreaElement(element) ? true :
-                                    domUtils.getTextareaLineNumberByPosition(element, startPos) ===
+            domUtils.getTextareaLineNumberByPosition(element, startPos) ===
                                     domUtils.getTextareaLineNumberByPosition(element, endPos);
 
 

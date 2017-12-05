@@ -54,7 +54,7 @@ export default class DragAutomationBase extends VisibleElementAutomation {
         return new Promise(resolve => {
             // NOTE: If the target element is a child of a contentEditable element, we need to call focus for its parent
             var elementForFocus = domUtils.isContentEditableElement(this.element) ?
-                                  contentEditable.findContentEditableParent(this.element) : eventArgs.element;
+                contentEditable.findContentEditableParent(this.element) : eventArgs.element;
 
             focusBlurSandbox.focus(elementForFocus, resolve, false, true);
         });

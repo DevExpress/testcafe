@@ -9,7 +9,7 @@ const getElementById = Selector(id => document.getElementById(id));
 const isIEFunction = ClientFunction(() => {
     var userAgent = window.navigator.userAgent;
     var appName   = window.navigator.appName;
-    var isIE11Re  = new RegExp('Trident/.*rv:([0-9]{1,}[\.0-9]{0,})');
+    var isIE11Re  = new RegExp('Trident/.*rv:([0-9]{1,}[.0-9]{0,})');
 
     return appName === 'Microsoft Internet Explorer' ||
            appName === 'Netscape' && isIE11Re.exec(userAgent) !== null;
@@ -175,7 +175,7 @@ test('`innerText` element snapshot property', async t => {
     // NOTE: we have to use regexp because the innerText field
     // returns a little bit different values in IE9 and other browsers
     var expectedTextRe = isIE ? /^Hey\nyo test {2}42 test {2}'hey hey'; \.someClass \{ \}/ :
-                         /^Hey\nyo test {1,2}test( \u0000)?/;
+        /^Hey\nyo test {1,2}test( \u0000)?/;
 
     await t.expect(expectedTextRe.test(innerText.trim())).ok();
 });

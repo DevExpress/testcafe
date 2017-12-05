@@ -38,8 +38,8 @@ export default function processTestFnError (err) {
         var callsite = isAssertionError ? getCallsiteForError(err, isAssertionErrorCallsiteFrame) : getCallsiteForError(err);
 
         return isAssertionError ?
-               new ExternalAssertionLibraryError(err, callsite) :
-               new UncaughtErrorInTestCode(err, callsite);
+            new ExternalAssertionLibraryError(err, callsite) :
+            new UncaughtErrorInTestCode(err, callsite);
     }
 
     return new UncaughtNonErrorObjectInTestCode(err);

@@ -18,7 +18,7 @@ export default function (keyString) {
     var charBeforeLast  = keyString.charAt(keyStringLength - 2);
 
     // NOTE: trim last connecting '+'
-    if (keyStringLength > 1 && lastChar === '+' && !/[\+ ]/.test(charBeforeLast))
+    if (keyStringLength > 1 && lastChar === '+' && !/[+ ]/.test(charBeforeLast))
         keyString = keyString.substring(0, keyString.length - 1);
 
     var combinations = keyString.split(' ');

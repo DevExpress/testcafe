@@ -20,7 +20,7 @@ export default class AssertionExecutor extends EventEmitter {
         var fn = getFn(this.command);
 
         this.fn = this.command.actual instanceof ClientFunctionResultPromise ?
-                  this._wrapFunction(fn) : fn;
+            this._wrapFunction(fn) : fn;
     }
 
     _getTimeLeft () {

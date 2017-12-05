@@ -58,7 +58,7 @@ $(document).ready(function () {
     asyncTest('Should wait for timeout for a possible page redirect', function () {
         var pageUnloadBarrierResolved = false;
 
-        iframe.contentWindow.location = '/xhr-test/600';    // delay should be greater then page load barrier timeout
+        iframe.contentWindow.location = '/xhr-test/600'; // delay should be greater then page load barrier timeout
 
         waitIframeBeforeUnLoad()
             .then(function () {

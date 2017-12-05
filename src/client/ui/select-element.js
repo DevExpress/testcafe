@@ -161,7 +161,7 @@ export function expandOptionList (select) {
         minWidth:   styleUtils.getWidth(curSelectEl) + 'px',
         left:       positionUtils.getOffsetPosition(curSelectEl).left + 'px',
         height:     domUtils.getSelectVisibleChildren(select).length > MAX_OPTION_LIST_LENGTH ?
-                    styleUtils.getOptionHeight(select) * MAX_OPTION_LIST_LENGTH : ''
+            styleUtils.getOptionHeight(select) * MAX_OPTION_LIST_LENGTH : ''
     });
 
     var selectTopPosition     = positionUtils.getOffsetPosition(curSelectEl).top;
@@ -195,7 +195,7 @@ export function isOptionListExpanded (select) {
 export function getEmulatedChildElement (element) {
     var isGroup      = domUtils.getTagName(element) === 'optgroup';
     var elementIndex = isGroup ? domUtils.getElementIndexInParent(curSelectEl, element) :
-                       domUtils.getElementIndexInParent(curSelectEl, element);
+        domUtils.getElementIndexInParent(curSelectEl, element);
 
     if (!isGroup)
         return options[elementIndex];

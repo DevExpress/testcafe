@@ -5,8 +5,8 @@ const MAX_KEY_ACTION_STEP_DELAY   = 200;
 // We use an exponential function to calculate the cursor
 // speed according to general test speed
 // cursorSpeed = (maxSpeed * k) ^ speed / k
-const MAX_CURSOR_SPEED   = 100;   // pixes/ms
-const MAX_DRAGGING_SPEED = 4;   // pixes/ms
+const MAX_CURSOR_SPEED   = 100; // pixels/ms
+const MAX_DRAGGING_SPEED = 4; // pixels/ms
 const CURSOR_FACTOR      = 4;
 
 

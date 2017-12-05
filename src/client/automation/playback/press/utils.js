@@ -63,7 +63,7 @@ export function getDeepActiveElement (currentDocument) {
         try {
             activeElementInIframe = getDeepActiveElement(activeElement.contentDocument);
         }
-            /*eslint-disable no-empty */
+        /*eslint-disable no-empty */
         catch (e) {
         }
         /*eslint-enable no-empty */

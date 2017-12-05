@@ -102,7 +102,7 @@ test('End element selector returns text node', async t => {
 const isIEFunction = ClientFunction(() => {
     var userAgent = window.navigator.userAgent;
     var appName   = window.navigator.appName;
-    var isIE11Re  = new RegExp('Trident/.*rv:([0-9]{1,}[\.0-9]{0,})');
+    var isIE11Re  = new RegExp('Trident/.*rv:([0-9]{1,}[.0-9]{0,})');
     var isMSEdge  = /Edge/.test(navigator.userAgent);
 
     return appName === 'Microsoft Internet Explorer' ||

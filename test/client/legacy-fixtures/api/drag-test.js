@@ -164,7 +164,7 @@ $(document).ready(function () {
         currentSourceIndex               = err.__sourceIndex;
     });
 
-//tests
+    //tests
     QUnit.testStart(function () {
         actionTargetWaitingCounter = 0;
         actionRunCounter           = 0;

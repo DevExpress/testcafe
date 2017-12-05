@@ -17,12 +17,12 @@ test('Check "...fromPoint" functions', async t => {
     await t.click('#div');
 
     const {
-              caretPositionFromPointSupported,
-              caretRangeFromPointSupported,
-              elementFromPointId,
-              caretPositionFromPointData,
-              caretRangeFromPointData
-          } = await getDataFromClient();
+        caretPositionFromPointSupported,
+        caretRangeFromPointSupported,
+        elementFromPointId,
+        caretPositionFromPointData,
+        caretRangeFromPointData
+    } = await getDataFromClient();
 
     await t.expect(elementFromPointId).eql('div');
 

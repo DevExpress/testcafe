@@ -6,8 +6,8 @@ var errorInEachBrowserContains = require('../../assertion-helper.js').errorInEac
 
 function checkQuarantineTestRuns (quarantineState) {
     var browsers = quarantineState === 'failed-quarantine' ?
-                   quarantineModeTracker.browsersFailingQuarantine :
-                   quarantineModeTracker.browsersPassingQuarantine;
+        quarantineModeTracker.browsersFailingQuarantine :
+        quarantineModeTracker.browsersPassingQuarantine;
 
     var browserAgents = Object.keys(browsers);
 

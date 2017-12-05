@@ -9,10 +9,10 @@ const page = new Page();
 // Tests
 test('Text typing basics', async t => {
     await t
-        .typeText(page.nameInput, 'Peter')                      // Type name
-        .typeText(page.nameInput, 'Paker', { replace: true })   // Replace with last name
-        .typeText(page.nameInput, 'r', { caretPos: 2 })         // Correct last name
-        .expect(page.nameInput.value).eql('Parker');            // Check result
+        .typeText(page.nameInput, 'Peter') // Type name
+        .typeText(page.nameInput, 'Paker', { replace: true }) // Replace with last name
+        .typeText(page.nameInput, 'r', { caretPos: 2 }) // Correct last name
+        .expect(page.nameInput.value).eql('Parker'); // Check result
 });
 
 
@@ -27,12 +27,12 @@ test('Click an array of labels and then check their states', async t => {
 
 test('Dealing with text using keyboard', async t => {
     await t
-        .typeText(page.nameInput, 'Peter Parker')           // Type name
-        .click(page.nameInput, { caretPos: 5 })             // Move caret position
-        .pressKey('backspace')                              // Erase a character
-        .expect(page.nameInput.value).eql('Pete Parker')    // Check result
-        .pressKey('home right . delete delete delete')      // Pick even shorter form for name
-        .expect(page.nameInput.value).eql('P. Parker');     // Check result
+        .typeText(page.nameInput, 'Peter Parker') // Type name
+        .click(page.nameInput, { caretPos: 5 }) // Move caret position
+        .pressKey('backspace') // Erase a character
+        .expect(page.nameInput.value).eql('Pete Parker') // Check result
+        .pressKey('home right . delete delete delete') // Pick even shorter form for name
+        .expect(page.nameInput.value).eql('P. Parker'); // Check result
 });
 
 
@@ -51,7 +51,7 @@ test('Dealing with text using selection', async t => {
         .typeText(page.nameInput, 'Test Cafe')
         .selectText(page.nameInput, 7, 1)
         .pressKey('delete')
-        .expect(page.nameInput.value).eql('Tfe');   // Check result
+        .expect(page.nameInput.value).eql('Tfe'); // Check result
 });
 
 

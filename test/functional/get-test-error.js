@@ -15,7 +15,7 @@ function normalizeError (err, userAgents) {
         .map(function (str) {
             str = str.trim();
 
-            return str.replace(/^Browser\:.+$/, '[[user-agent]]');
+            return str.replace(/^Browser:.+$/, '[[user-agent]]');
         })
         .filter(function (str, idx) {
             // NOTE: remove user agent from legacy API errors

@@ -16,8 +16,8 @@ export default class Assertion {
         }
 
         var timeout = options.timeout === void 0 ?
-                      this.testController.testRun.opts.assertionTimeout :
-                      options.timeout;
+            this.testController.testRun.opts.assertionTimeout :
+            options.timeout;
 
         return this.testController._enqueueCommand(apiMethodName, AssertionCommand, {
             assertionType: apiMethodName,

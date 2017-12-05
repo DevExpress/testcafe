@@ -19,9 +19,7 @@ function sendXHR (url, createXHR, method = 'GET', data = null) {
         xhr.onreadystatechange = () => {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200)
-                    /*eslint-disable no-restricted-globals*/
-                    resolve(xhr.responseText ? JSON.parse(xhr.responseText) : '');
-                    /*eslint-enable no-restricted-globals*/
+                    resolve(xhr.responseText ? JSON.parse(xhr.responseText) : ''); //eslint-disable-line no-restricted-globals
                 else
                     reject('disconnected');
             }

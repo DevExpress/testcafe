@@ -9,8 +9,8 @@ export default class TestRunDebugLog {
 
     static _addEntry (logger, data) {
         var entry = data ?
-                    indentString(`\n${JSON.stringify(data, null, 2)}\n`, ' ', 4) :
-                    '';
+            indentString(`\n${JSON.stringify(data, null, 2)}\n`, ' ', 4) :
+            '';
 
         logger(entry);
     }

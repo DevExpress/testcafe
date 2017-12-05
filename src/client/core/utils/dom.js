@@ -290,8 +290,8 @@ export function blocksImplicitSubmission (el) {
 
 export function isEditableElement (el, checkEditingAllowed) {
     return checkEditingAllowed ?
-           isTextEditableElementAndEditingAllowed(el) || isContentEditableElement(el) :
-           isTextEditableElement(el) || isContentEditableElement(el);
+        isTextEditableElementAndEditingAllowed(el) || isContentEditableElement(el) :
+        isTextEditableElement(el) || isContentEditableElement(el);
 }
 
 export function isElementContainsNode (parentElement, childNode) {

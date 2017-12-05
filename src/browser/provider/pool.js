@@ -55,8 +55,8 @@ export default {
 
     async _getInfoForAllBrowserNames (provider, providerName) {
         var allBrowserNames = provider.isMultiBrowser ?
-                              await provider.getBrowserList() :
-                              [];
+            await provider.getBrowserList() :
+            [];
 
         if (!allBrowserNames.length)
             return { provider, providerName, browserName: '' };

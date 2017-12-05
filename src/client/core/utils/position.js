@@ -125,10 +125,10 @@ export function getClientDimensions (target) {
     }
 
     var rightScrollbarWidth = isHtmlElement || styleUtils.getInnerWidth(target) === target.clientWidth ?
-                              0 : domUtils.getScrollbarSize();
+        0 : domUtils.getScrollbarSize();
 
     var bottomScrollbarHeight = isHtmlElement || styleUtils.getInnerHeight(target) === target.clientHeight ?
-                                0 : domUtils.getScrollbarSize();
+        0 : domUtils.getScrollbarSize();
 
     return {
         width:  elementWidth,
@@ -189,7 +189,7 @@ export function getEventAbsoluteCoordinates (ev) {
 
 export function getEventPageCoordinates (ev) {
     var curCoordObject = /^touch/.test(ev.type) && ev.targetTouches ?
-                         ev.targetTouches[0] || ev.changedTouches[0] : ev;
+        ev.targetTouches[0] || ev.changedTouches[0] : ev;
 
     var bothPageCoordinatesAreZero      = curCoordObject.pageX === 0 && curCoordObject.pageY === 0;
     var notBothClientCoordinatesAreZero = curCoordObject.clientX !== 0 || curCoordObject.clientY !== 0;

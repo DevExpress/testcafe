@@ -54,8 +54,8 @@ export default class Capturer {
             return joinPath(this.baseScreenshotsPath, Capturer._correctFilePath(customPath));
 
         var screenshotPath = this.quarantineAttemptNum !== null ?
-                             joinPath(this.screenshotsPath, `run-${this.quarantineAttemptNum}`) :
-                             this.screenshotsPath;
+            joinPath(this.screenshotsPath, `run-${this.quarantineAttemptNum}`) :
+            this.screenshotsPath;
 
         return joinPath(screenshotPath, this.userAgentName, fileName);
     }
