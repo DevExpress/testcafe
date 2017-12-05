@@ -137,7 +137,6 @@
     "gulp": "^3.9.0",
     "gulp-babel": "^6.1.1",
     "gulp-eslint": "^4.0.0",
-    "gulp-filter": "^3.0.1",
     "gulp-gh-pages": "^0.5.4",
     "gulp-git": "^1.6.0",
     "gulp-if": "^2.0.0",

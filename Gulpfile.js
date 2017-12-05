@@ -2,7 +2,6 @@ var babel                = require('babel-core');
 var gulp                 = require('gulp');
 var gulpBabel            = require('gulp-babel');
 var less                 = require('gulp-less');
-var filter               = require('gulp-filter');
 var globby               = require('globby');
 var qunitHarness         = require('gulp-qunit-harness');
 var mocha                = require('gulp-mocha');
@@ -198,8 +197,6 @@ gulp.task('client-scripts', ['client-scripts-bundle'], function () {
 });
 
 gulp.task('client-scripts-bundle', ['clean'], function () {
-    var filterBrowserIdlePage = filter('browser/idle-page/index.js', { restore: true });
-
     return gulp
         .src([
             'src/client/core/index.js',
@@ -228,9 +225,7 @@ gulp.task('client-scripts-bundle', ['clean'], function () {
                 return { code: transformed.code.replace(/^('|")use strict('|");?/, '') };
             }
         }))
-        .pipe(filterBrowserIdlePage)
         .pipe(gulpif(!util.env.dev, uglify()))
-        .pipe(filterBrowserIdlePage.restore)
         .pipe(gulp.dest('lib'));
 });
 
