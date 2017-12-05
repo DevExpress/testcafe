@@ -1,5 +1,14 @@
 [
     {
+        "type": "Mention",
+        "title": "Why End-to-End Testing is Important for Your Team",
+        "excerpt": "At Hubba, our business needs are always evolving and the development speed needs to catch up with it. One of the ways to keep the team moving forward without breaking everything is End-to-end Testing (E2E).",
+        "author": "Phong Huynh",
+        "date": "2017-12-4",
+        "publisher": "medium.freecodecamp.org",
+        "url": "https://medium.freecodecamp.org/why-end-to-end-testing-is-important-for-your-team-cb7eb0ec1504"
+    },
+    {
         "type": "Tutorial",
         "title": "E2E Testing Angular Applications with TestCafe",
         "excerpt": "TestCafe is a free and open source Node.js tool for testing web applications. One of its main perks is that it takes about a minute to setup and to start testing (and it doesn’t use WebDriver).",
