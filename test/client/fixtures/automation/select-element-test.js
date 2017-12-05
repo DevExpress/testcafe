@@ -416,8 +416,8 @@ $(document).ready(function () {
         };
 
         var clickAutomation = /opt/i.test(el.tagName) ?
-                              new SelectChildClickAutomation(el, clickOptions) :
-                              new ClickAutomation(el, clickOptions);
+            new SelectChildClickAutomation(el, clickOptions) :
+            new ClickAutomation(el, clickOptions);
 
         clickAutomation
             .run()

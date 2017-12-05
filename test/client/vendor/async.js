@@ -8,12 +8,12 @@
     var root = this,
         previous_async = root.async;
 
-    if (typeof module !== 'undefined' && module.exports) {
+    if (typeof module !== 'undefined' && module.exports)
         module.exports = async;
-    }
-    else {
+
+    else
         root.async = async;
-    }
+
 
     async.noConflict = function () {
         root.async = previous_async;
@@ -23,19 +23,20 @@
     //// cross-browser compatiblity functions ////
 
     var _forEach = function (arr, iterator) {
-        if (arr.forEach) {
+        if (arr.forEach)
             return arr.forEach(iterator);
-        }
-        for (var i = 0; i < arr.length; i += 1) {
+
+        for (var i = 0; i < arr.length; i += 1)
             iterator(arr[i], i, arr);
-        }
+
     };
 
     var _map = function (arr, iterator) {
-        if (arr.map) {
+        if (arr.map)
             return arr.map(iterator);
-        }
+
         var results = [];
+
         _forEach(arr, function (x, i, a) {
             results.push(iterator(x, i, a));
         });
@@ -43,9 +44,9 @@
     };
 
     var _reduce = function (arr, iterator, memo) {
-        if (arr.reduce) {
+        if (arr.reduce)
             return arr.reduce(iterator, memo);
-        }
+
         _forEach(arr, function (x, i, a) {
             memo = iterator(memo, x, i, a);
         });
@@ -53,14 +54,15 @@
     };
 
     var _keys = function (obj) {
-        if (Object.keys) {
+        if (Object.keys)
             return Object.keys(obj);
-        }
+
         var keys = [];
+
         for (var k in obj) {
-            if (obj.hasOwnProperty(k)) {
+            if (obj.hasOwnProperty(k))
                 keys.push(k);
-            }
+
         }
         return keys;
     };
@@ -68,22 +70,23 @@
     //// exported async module functions ////
 
     //// nextTick implementation with browser-compatible fallback ////
-    if (typeof process === 'undefined' || !(process.nextTick)) {
+    if (typeof process === 'undefined' || !process.nextTick) {
         async.nextTick = function (fn) {
             setTimeout(fn, 0);
         };
     }
-    else {
+    else
         async.nextTick = process.nextTick;
-    }
+
 
     async.forEach = function (arr, iterator, callback) {
         callback = callback || function () {
         };
-        if (!arr.length) {
+        if (!arr.length)
             return callback();
-        }
+
         var completed = 0;
+
         _forEach(arr, function (x) {
             iterator(x, function (err) {
                 if (err) {
@@ -93,9 +96,9 @@
                 }
                 else {
                     completed += 1;
-                    if (completed === arr.length) {
+                    if (completed === arr.length)
                         callback();
-                    }
+
                 }
             });
         });
@@ -104,9 +107,9 @@
     async.forEachSeries = function (arr, iterator, callback) {
         callback = callback || function () {
         };
-        if (!arr.length) {
+        if (!arr.length)
             return callback();
-        }
+
         var completed = 0;
         var iterate = function () {
             iterator(arr[completed], function (err) {
@@ -117,32 +120,33 @@
                 }
                 else {
                     completed += 1;
-                    if (completed === arr.length) {
+                    if (completed === arr.length)
                         callback();
-                    }
-                    else {
+
+                    else
                         iterate();
-                    }
+
                 }
             });
         };
+
         iterate();
     };
 
     async.forEachLimit = function (arr, limit, iterator, callback) {
         callback = callback || function () {
         };
-        if (!arr.length || limit <= 0) {
+        if (!arr.length || limit <= 0)
             return callback();
-        }
+
         var completed = 0;
         var started = 0;
         var running = 0;
 
-        (function replenish() {
-            if (completed === arr.length) {
+        (function replenish () {
+            if (completed === arr.length)
                 return callback();
-            }
+
 
             while (running < limit && started < arr.length) {
                 iterator(arr[started], function (err) {
@@ -154,12 +158,12 @@
                     else {
                         completed += 1;
                         running -= 1;
-                        if (completed === arr.length) {
+                        if (completed === arr.length)
                             callback();
-                        }
-                        else {
+
+                        else
                             replenish();
-                        }
+
                     }
                 });
                 started += 1;
@@ -172,12 +176,14 @@
     var doParallel = function (fn) {
         return function () {
             var args = Array.prototype.slice.call(arguments);
+
             return fn.apply(null, [async.forEach].concat(args));
         };
     };
     var doSeries = function (fn) {
         return function () {
             var args = Array.prototype.slice.call(arguments);
+
             return fn.apply(null, [async.forEachSeries].concat(args));
         };
     };
@@ -185,8 +191,9 @@
 
     var _asyncMap = function (eachfn, arr, iterator, callback) {
         var results = [];
+
         arr = _map(arr, function (x, i) {
-            return {index: i, value: x};
+            return { index: i, value: x };
         });
         eachfn(arr, function (x, callback) {
             iterator(x.value, function (err, v) {
@@ -197,6 +204,7 @@
             callback(err, results);
         });
     };
+
     async.map = doParallel(_asyncMap);
     async.mapSeries = doSeries(_asyncMap);
 
@@ -219,9 +227,10 @@
     async.foldl = async.reduce;
 
     async.reduceRight = function (arr, memo, iterator, callback) {
-        var reversed = _map(arr,function (x) {
+        var reversed = _map(arr, function (x) {
             return x;
         }).reverse();
+
         async.reduce(reversed, memo, iterator, callback);
     };
     // foldr alias
@@ -229,14 +238,15 @@
 
     var _filter = function (eachfn, arr, iterator, callback) {
         var results = [];
+
         arr = _map(arr, function (x, i) {
-            return {index: i, value: x};
+            return { index: i, value: x };
         });
         eachfn(arr, function (x, callback) {
             iterator(x.value, function (v) {
-                if (v) {
+                if (v)
                     results.push(x);
-                }
+
                 callback();
             });
         }, function (err) {
@@ -247,6 +257,7 @@
             }));
         });
     };
+
     async.filter = doParallel(_filter);
     async.filterSeries = doSeries(_filter);
     // select alias
@@ -255,14 +266,15 @@
 
     var _reject = function (eachfn, arr, iterator, callback) {
         var results = [];
+
         arr = _map(arr, function (x, i) {
-            return {index: i, value: x};
+            return { index: i, value: x };
         });
         eachfn(arr, function (x, callback) {
             iterator(x.value, function (v) {
-                if (!v) {
+                if (!v)
                     results.push(x);
-                }
+
                 callback();
             });
         }, function (err) {
@@ -273,6 +285,7 @@
             }));
         });
     };
+
     async.reject = doParallel(_reject);
     async.rejectSeries = doSeries(_reject);
 
@@ -284,14 +297,15 @@
                     main_callback = function () {
                     };
                 }
-                else {
+                else
                     callback();
-                }
+
             });
         }, function (err) {
             main_callback();
         });
     };
+
     async.detect = doParallel(_detect);
     async.detectSeries = doSeries(_detect);
 
@@ -332,26 +346,28 @@
     async.sortBy = function (arr, iterator, callback) {
         async.map(arr, function (x, callback) {
             iterator(x, function (err, criteria) {
-                if (err) {
+                if (err)
                     callback(err);
-                }
-                else {
-                    callback(null, {value: x, criteria: criteria});
-                }
+
+                else
+                    callback(null, { value: x, criteria: criteria });
+
             });
         }, function (err, results) {
-            if (err) {
+            if (err)
                 return callback(err);
-            }
-            else {
-                var fn = function (left, right) {
-                    var a = left.criteria, b = right.criteria;
-                    return a < b ? -1 : a > b ? 1 : 0;
-                };
-                callback(null, _map(results.sort(fn), function (x) {
-                    return x.value;
-                }));
-            }
+
+
+            var fn = function (left, right) {
+                var a = left.criteria, b = right.criteria;
+
+                return a < b ? -1 : a > b ? 1 : 0;
+            };
+
+            callback(null, _map(results.sort(fn), function (x) {
+                return x.value;
+            }));
+
         });
     };
 
@@ -359,9 +375,10 @@
         callback = callback || function () {
         };
         var keys = _keys(tasks);
-        if (!keys.length) {
+
+        if (!keys.length)
             return callback(null);
-        }
+
 
         var results = {};
 
@@ -392,7 +409,7 @@
         });
 
         _forEach(keys, function (k) {
-            var task = (tasks[k] instanceof Function) ? [tasks[k]] : tasks[k];
+            var task = tasks[k] instanceof Function ? [tasks[k]] : tasks[k];
             var taskCallback = function (err) {
                 if (err) {
                     callback(err);
@@ -402,9 +419,10 @@
                 }
                 else {
                     var args = Array.prototype.slice.call(arguments, 1);
-                    if (args.length <= 1) {
+
+                    if (args.length <= 1)
                         args = args[0];
-                    }
+
                     results[k] = args;
                     taskComplete();
                 }
@@ -412,12 +430,13 @@
             var requires = task.slice(0, Math.abs(task.length - 1)) || [];
             var ready = function () {
                 return _reduce(requires, function (a, x) {
-                    return (a && results.hasOwnProperty(x));
+                    return a && results.hasOwnProperty(x);
                 }, true);
             };
-            if (ready()) {
+
+            if (ready())
                 task[task.length - 1](taskCallback, results);
-            }
+
             else {
                 var listener = function () {
                     if (ready()) {
@@ -425,6 +444,7 @@
                         task[task.length - 1](taskCallback, results);
                     }
                 };
+
                 addListener(listener);
             }
         });
@@ -433,9 +453,9 @@
     async.waterfall = function (tasks, callback) {
         callback = callback || function () {
         };
-        if (!tasks.length) {
+        if (!tasks.length)
             return callback();
-        }
+
         var wrapIterator = function (iterator) {
             return function (err) {
                 if (err) {
@@ -446,18 +466,20 @@
                 else {
                     var args = Array.prototype.slice.call(arguments, 1);
                     var next = iterator.next();
-                    if (next) {
+
+                    if (next)
                         args.push(wrapIterator(next));
-                    }
-                    else {
+
+                    else
                         args.push(callback);
-                    }
+
                     async.nextTick(function () {
                         iterator.apply(null, args);
                     });
                 }
             };
         };
+
         wrapIterator(async.iterator(tasks))();
     };
 
@@ -469,9 +491,10 @@
                 if (fn) {
                     fn(function (err) {
                         var args = Array.prototype.slice.call(arguments, 1);
-                        if (args.length <= 1) {
+
+                        if (args.length <= 1)
                             args = args[0];
-                        }
+
                         callback.call(null, err, args);
                     });
                 }
@@ -479,12 +502,14 @@
         }
         else {
             var results = {};
+
             async.forEach(_keys(tasks), function (k, callback) {
                 tasks[k](function (err) {
                     var args = Array.prototype.slice.call(arguments, 1);
-                    if (args.length <= 1) {
+
+                    if (args.length <= 1)
                         args = args[0];
-                    }
+
                     results[k] = args;
                     callback(err);
                 });
@@ -502,9 +527,10 @@
                 if (fn) {
                     fn(function (err) {
                         var args = Array.prototype.slice.call(arguments, 1);
-                        if (args.length <= 1) {
+
+                        if (args.length <= 1)
                             args = args[0];
-                        }
+
                         callback.call(null, err, args);
                     });
                 }
@@ -512,12 +538,14 @@
         }
         else {
             var results = {};
+
             async.forEachSeries(_keys(tasks), function (k, callback) {
                 tasks[k](function (err) {
                     var args = Array.prototype.slice.call(arguments, 1);
-                    if (args.length <= 1) {
+
+                    if (args.length <= 1)
                         args = args[0];
-                    }
+
                     results[k] = args;
                     callback(err);
                 });
@@ -530,21 +558,24 @@
     async.iterator = function (tasks) {
         var makeCallback = function (index) {
             var fn = function () {
-                if (tasks.length) {
+                if (tasks.length)
                     tasks[index].apply(null, arguments);
-                }
+
                 return fn.next();
             };
+
             fn.next = function () {
-                return (index < tasks.length - 1) ? makeCallback(index + 1) : null;
+                return index < tasks.length - 1 ? makeCallback(index + 1) : null;
             };
             return fn;
         };
+
         return makeCallback(0);
     };
 
     async.apply = function (fn) {
         var args = Array.prototype.slice.call(arguments, 1);
+
         return function () {
             return fn.apply(
                 null, args.concat(Array.prototype.slice.call(arguments))
@@ -554,6 +585,7 @@
 
     var _concat = function (eachfn, arr, fn, callback) {
         var r = [];
+
         eachfn(arr, function (x, cb) {
             fn(x, function (err, y) {
                 r = r.concat(y || []);
@@ -563,70 +595,72 @@
             callback(err, r);
         });
     };
+
     async.concat = doParallel(_concat);
     async.concatSeries = doSeries(_concat);
 
     async.whilst = function (test, iterator, callback) {
         if (test()) {
             iterator(function (err) {
-                if (err) {
+                if (err)
                     return callback(err);
-                }
+
                 async.whilst(test, iterator, callback);
             });
         }
-        else {
+        else
             callback();
-        }
+
     };
 
     async.until = function (test, iterator, callback) {
         if (!test()) {
             iterator(function (err) {
-                if (err) {
+                if (err)
                     return callback(err);
-                }
+
                 async.until(test, iterator, callback);
             });
         }
-        else {
+        else
             callback();
-        }
+
     };
 
     async.commands = function (worker, concurrency) {
         var workers = 0;
         var q = {
-            tasks: [],
+            tasks:       [],
             concurrency: concurrency,
-            saturated: null,
-            empty: null,
-            drain: null,
-            push: function (data, callback) {
-                if (data.constructor !== Array) {
+            saturated:   null,
+            empty:       null,
+            drain:       null,
+            push:        function (data, callback) {
+                if (data.constructor !== Array)
                     data = [data];
-                }
+
                 _forEach(data, function (task) {
                     q.tasks.push({
-                        data: task,
+                        data:     task,
                         callback: typeof callback === 'function' ? callback : null
                     });
-                    if (q.saturated && q.tasks.length == concurrency) {
+                    if (q.saturated && q.tasks.length == concurrency)
                         q.saturated();
-                    }
+
                     async.nextTick(q.process);
                 });
             },
             process: function () {
                 if (workers < q.concurrency && q.tasks.length) {
                     var task = q.tasks.shift();
+
                     if (q.empty && q.tasks.length == 0) q.empty();
                     workers += 1;
                     worker(task.data, function () {
                         workers -= 1;
-                        if (task.callback) {
+                        if (task.callback)
                             task.callback.apply(task, arguments);
-                        }
+
                         if (q.drain && q.tasks.length + workers == 0) q.drain();
                         q.process();
                     });
@@ -639,19 +673,22 @@
                 return workers;
             }
         };
+
         return q;
     };
 
     var _console_fn = function (name) {
         return function (fn) {
             var args = Array.prototype.slice.call(arguments, 1);
+
             fn.apply(null, args.concat([function (err) {
                 var args = Array.prototype.slice.call(arguments, 1);
+
                 if (typeof console !== 'undefined') {
                     if (err) {
-                        if (console.error) {
+                        if (console.error)
                             console.error(err);
-                        }
+
                     }
                     else if (console[name]) {
                         _forEach(args, function (x) {
@@ -662,6 +699,7 @@
             }]));
         };
     };
+
     async.log = _console_fn('log');
     async.dir = _console_fn('dir');
     /*async.info = _console_fn('info');
@@ -671,6 +709,7 @@
     async.memoize = function (fn, hasher) {
         var memo = {};
         var queues = {};
+
         hasher = hasher || function (x) {
             return x;
         };
@@ -678,24 +717,27 @@
             var args = Array.prototype.slice.call(arguments);
             var callback = args.pop();
             var key = hasher.apply(null, args);
-            if (key in memo) {
+
+            if (key in memo)
                 callback.apply(null, memo[key]);
-            }
-            else if (key in queues) {
+
+            else if (key in queues)
                 queues[key].push(callback);
-            }
+
             else {
                 queues[key] = [callback];
                 fn.apply(null, args.concat([function () {
                     memo[key] = arguments;
                     var q = queues[key];
+
                     delete queues[key];
-                    for (var i = 0, l = q.length; i < l; i++) {
+                    for (var i = 0, l = q.length; i < l; i++)
                         q[i].apply(null, arguments);
-                    }
+
                 }]));
             }
         };
+
         memoized.unmemoized = fn;
         return memoized;
     };
@@ -703,7 +745,7 @@
     async.unmemoize = function (fn) {
         return function () {
             return (fn.unmemoized || fn).apply(null, arguments);
-        }
+        };
     };
 
 }());

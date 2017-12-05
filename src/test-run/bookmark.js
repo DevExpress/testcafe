@@ -66,8 +66,8 @@ export default class TestRunBookmark {
     async _restoreWorkingFrame () {
         if (this.testRun.activeIframeSelector !== this.iframeSelector) {
             var switchWorkingFrameCommand = this.iframeSelector ?
-                                            new SwitchToIframeCommand({ selector: this.iframeSelector }) :
-                                            new SwitchToMainWindowCommand();
+                new SwitchToIframeCommand({ selector: this.iframeSelector }) :
+                new SwitchToMainWindowCommand();
 
             try {
                 await this.testRun.executeCommand(switchWorkingFrameCommand);

@@ -231,8 +231,8 @@ before(function () {
                         var taskReport = JSON.parse(report);
                         var errorDescr = getTestError(taskReport, actualBrowsers);
                         var testReport = taskReport.fixtures.length === 1 ?
-                                         taskReport.fixtures[0].tests[0] :
-                                         taskReport;
+                            taskReport.fixtures[0].tests[0] :
+                            taskReport;
 
                         testReport.warnings = taskReport.warnings;
 

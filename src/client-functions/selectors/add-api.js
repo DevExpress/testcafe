@@ -396,8 +396,8 @@ function addHierarchicalSelectors (obj, getSelector, SelectorBuilder) {
             return expandSelectorResults(selector, node => {
                 if (typeof filter === 'string') {
                     return typeof node.querySelectorAll === 'function' ?
-                           node.querySelectorAll(filter) :
-                           null;
+                        node.querySelectorAll(filter) :
+                        null;
                 }
 
                 var results = [];

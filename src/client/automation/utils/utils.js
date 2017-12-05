@@ -69,7 +69,7 @@ export function focusAndSetSelection (element, simulateFocus, caretPos) {
             var curActiveElement    = curDocument.activeElement;
             var isActiveElementBody = domUtils.isBodyElement(curActiveElement);
             var focusableParent     = domUtils.isBodyElement(elementForFocus) ?
-                                      elementForFocus : domUtils.getFocusableParent(elementForFocus);
+                elementForFocus : domUtils.getFocusableParent(elementForFocus);
 
             // NOTE: we should not call focus or blur if action element is
             // not focusable and is child of active element (gh-889)

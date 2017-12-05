@@ -306,7 +306,7 @@ export default function executeAction (command, globalSelectorTimeout, statusBar
                         }
 
                         throw err.message === AUTOMATION_ERROR_TYPES.elementIsInvisibleError ?
-                              new ActionElementIsInvisibleError() : err;
+                            new ActionElementIsInvisibleError() : err;
                     }
 
                     return delay(CHECK_ELEMENT_IN_AUTOMATIONS_INTERVAL).then(() => runRecursively(true));

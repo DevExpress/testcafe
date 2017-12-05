@@ -13,7 +13,7 @@ function initAssertionOptions (name, val) {
     return new AssertionOptions(val, true);
 }
 
- //Initializers
+//Initializers
 function initAssertionParameter (name, val, skipVisibilityCheck) {
     try {
         if (isJSExpression(val))

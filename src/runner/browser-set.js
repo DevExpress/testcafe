@@ -108,8 +108,8 @@ export default class BrowserSet extends EventEmitter {
         bc.removeListener('error', this.browserErrorHandler);
 
         var appropriateStateSwitch = !bc.permanent ?
-                                     BrowserSet._closeConnection(bc) :
-                                     BrowserSet._waitIdle(bc);
+            BrowserSet._closeConnection(bc) :
+            BrowserSet._waitIdle(bc);
 
         var release = timeLimit(appropriateStateSwitch, this.RELEASE_TIMEOUT).then(() => remove(this.pendingReleases, release));
 

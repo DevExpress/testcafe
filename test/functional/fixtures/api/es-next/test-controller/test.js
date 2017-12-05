@@ -46,7 +46,7 @@ describe('[API] TestController', function () {
             })
                 .catch(function (errs) {
                     expect(errs[0]).to.contains(missingAwaitErrMsg);
-                    expect(errs[0]).to.contains("> 28 |    t.click(\'#page2-btn1\');");
+                    expect(errs[0]).to.contains('> 28 |    t.click(\'#page2-btn1\');');
                 });
         });
 

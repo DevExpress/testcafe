@@ -39,8 +39,8 @@ module.exports = function (app) {
     app.get('/wrap-responseText-test/:isJSON', function (req, res) {
         var isJSON       = req.params.isJSON === 'json';
         var responseText = isJSON ?
-                           '{tag: "a", location: "location", attribute: {src: "example.com"}}' :
-                           '<a href="example.com"><img src="img.png"></a>';
+            '{tag: "a", location: "location", attribute: {src: "example.com"}}' :
+            '<a href="example.com"><img src="img.png"></a>';
 
         res.send(responseText);
     });

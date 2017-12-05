@@ -139,8 +139,8 @@ export default class NativeDialogTracker {
 
         ['alert', 'confirm', 'prompt'].forEach(dialogType => {
             window[dialogType] = this.dialogHandler ?
-                                 this._createDialogHandler(dialogType) :
-                                 () => this._defaultDialogHandler(dialogType);
+                this._createDialogHandler(dialogType) :
+                () => this._defaultDialogHandler(dialogType);
         });
     }
 

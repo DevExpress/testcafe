@@ -7,7 +7,7 @@ describe('[Legacy API] act.click()', function () {
             .catch(function (errs) {
                 var expectedError = [
                     'Error at step "1.Click on invisible element":',
-                    'A target element \<input id="input"\> of the click action is not visible.',
+                    'A target element <input id="input"> of the click action is not visible.',
                     'If this element should appear when you are hovering over another',
                     'element, make sure that you properly recorded the hover action.'
                 ].join(' ');
@@ -22,7 +22,7 @@ describe('[Legacy API] act.click()', function () {
             .catch(function (errs) {
                 var expectedError = [
                     'Error at step "1.Click on invisible element":',
-                    'A target element \<input id="input"\> of the click action is not visible.',
+                    'A target element <input id="input"> of the click action is not visible.',
                     'If this element should appear when you are hovering over another',
                     'element, make sure that you properly recorded the hover action.'
                 ].join(' ');

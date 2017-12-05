@@ -134,7 +134,7 @@ export default class MoveAutomation {
         var cursorPosition              = cursor.position;
 
         var intersectionPoint = positionUtils.isInRectangle(cursorPosition, iframeRectangle) ? cursorPosition :
-                                getLineRectIntersection(cursorPosition, iframePointRelativeToParent, iframeRectangle);
+            getLineRectIntersection(cursorPosition, iframePointRelativeToParent, iframeRectangle);
 
         var intersectionRelatedToIframe = {
             x: intersectionPoint.x - iframeRectangle.left,

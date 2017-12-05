@@ -79,7 +79,7 @@ export function assertType (types, callsiteName, what, value) {
 
     if (!pass) {
         throw callsiteName ?
-              new APIError(callsiteName, MESSAGE.invalidValueType, what, expectedTypeMsg, actualMsg) :
-              new GeneralError(MESSAGE.invalidValueType, what, expectedTypeMsg, actualMsg);
+            new APIError(callsiteName, MESSAGE.invalidValueType, what, expectedTypeMsg, actualMsg) :
+            new GeneralError(MESSAGE.invalidValueType, what, expectedTypeMsg, actualMsg);
     }
 }

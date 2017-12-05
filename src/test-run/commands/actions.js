@@ -78,8 +78,8 @@ function initDialogHandler (name, val) {
         throw new SetNativeDialogHandlerCodeWrongTypeError(isSelector ? 'Selector' : functionType);
 
     builder = builder instanceof ClientFunctionBuilder ?
-              fn.with(options)[functionBuilderSymbol] :
-              new ClientFunctionBuilder(fn, options, { instantiation: methodName, execution: methodName });
+        fn.with(options)[functionBuilderSymbol] :
+        new ClientFunctionBuilder(fn, options, { instantiation: methodName, execution: methodName });
 
     return builder.getCommand([]);
 

@@ -58,7 +58,7 @@ export default class KeyPressSimulator {
                              (!browserUtils.isWebKit || shouldTypeInWebKit);
             }
         }
-            /*eslint-disable no-empty */
+        /*eslint-disable no-empty */
         catch (err) {
         }
         /*eslint-disable no-empty */

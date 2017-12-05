@@ -14,7 +14,7 @@ function getSelectTextAreaContentArguments (element, argumentsObject) {
     var startPos        = !argumentsObject.startPos ? 0 : Math.min(argumentsObject.startPos, startLineLength);
 
     var endLineIndex = argumentsObject.endLine === void 0 || argumentsObject.endLine === null ?
-                       lastLineIndex : Math.min(argumentsObject.endLine, lastLineIndex);
+        lastLineIndex : Math.min(argumentsObject.endLine, lastLineIndex);
 
     var endLineLength = linesArray[endLineIndex] ? linesArray[endLineIndex].length : 0;
     var endPos        = argumentsObject.endPos === void 0 ||

@@ -134,7 +134,7 @@ export default class SelectBaseAutomation extends VisibleElementAutomation {
         return new Promise(resolve => {
             // NOTE: If the target element is a child of a contentEditable element, we need to call focus for its parent
             var elementForFocus = domUtils.isContentEditableElement(this.element) ?
-                                  contentEditable.findContentEditableParent(this.element) : this.element;
+                contentEditable.findContentEditableParent(this.element) : this.element;
 
             focusBlurSandbox.focus(elementForFocus, resolve, false, true);
         });

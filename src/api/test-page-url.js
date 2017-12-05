@@ -3,12 +3,12 @@ import OS from 'os-family';
 import { APIError } from '../errors/runtime';
 import MESSAGE from '../errors/runtime/message';
 
-const PROTOCOL_RE           = /^([\w-]+?)(?=\:\/\/)/;
+const PROTOCOL_RE           = /^([\w-]+?)(?=:\/\/)/;
 const SUPPORTED_PROTOCOL_RE = /^(https?|file):/;
 const IMPLICIT_PROTOCOL_RE  = /^\/\//;
-const ABSOLUTE_PATH_RE      = /^\/[^\/]/;
-const WIN_ABSOLUTE_PATH_RE  = /^\w:(\/|\\)/;
-const RELATIVE_PATH_RE      = /^\.\.?(\/|\\)/;
+const ABSOLUTE_PATH_RE      = /^\/[^/]/;
+const WIN_ABSOLUTE_PATH_RE  = /^\w:[/\\]/;
+const RELATIVE_PATH_RE      = /^\.\.?[/\\]/;
 
 
 function isAbsolutePath (url) {
