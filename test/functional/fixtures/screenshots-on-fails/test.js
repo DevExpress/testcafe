@@ -117,7 +117,10 @@ if (config.useLocalBrowsers) {
                 { shouldFail: true, screenshotsOnFails: true, setScreenshotPath: true })
                 .catch(function (errs) {
                     assertionHelper.errorInEachBrowserContainsRegExp(errs, ERROR_SCREENSHOT_PATH_RE, 0);
-                    expect(assertionHelper.checkScreenshotsCropped(true)).eql(true);
+                    return assertionHelper.checkScreenshotsCropped(true);
+                })
+                .then(function (result) {
+                    expect(result).eql(true);
                 });
         });
     });

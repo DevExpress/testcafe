@@ -1,5 +1,6 @@
 import Promise from 'pinkie';
 import browserTools from 'testcafe-browser-tools';
+import browserTools2 from '@belym.a.2105/testcafe-browser-tools';
 import OS from 'os-family';
 import delay from '../../utils/delay';
 import { GET_TITLE_SCRIPT, GET_WINDOW_DIMENSIONS_INFO_SCRIPT } from './utils/client-functions';
@@ -106,7 +107,7 @@ export default class BrowserProvider {
     }
 
     async _takeLocalBrowserScreenshot (browserId, screenshotPath) {
-        await browserTools.screenshot(this.windowDescriptors[browserId], screenshotPath);
+        await browserTools2.screenshot(this.windowDescriptors[browserId], screenshotPath);
     }
 
     async _canResizeLocalBrowserWindowToDimensions (browserId, width, height) {

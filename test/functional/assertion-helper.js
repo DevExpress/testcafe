@@ -1,6 +1,7 @@
 var expect = require('chai').expect;
 var path   = require('path');
 var fs     = require('fs');
+var Promise = require('pinkie');
 var del    = require('del');
 var pngjs  = require('pngjs');
 var config = require('./config.js');
@@ -46,13 +47,25 @@ function getScreenshotFilesCount (dir, customPath) {
     return results;
 }
 
-function checkScreenshotFileCropped (filePath) {
-    var buf = fs.readFileSync(filePath);
-    var png = pngjs.PNG.sync.read(buf);
+function readPng (filePath) {
+    return new Promise(function (resolve) {
+        var png = new pngjs.PNG();
 
-    return hasPixel(png, RED_PIXEL, 0, 0) &&
-           hasPixel(png, RED_PIXEL, 49, 49) &&
-           hasPixel(png, GREEN_PIXEL, 50, 50);
+        png.once('parsed', function () {
+            resolve(png);
+        });
+
+        fs.createReadStream(filePath).pipe(png);
+    });
+}
+
+function checkScreenshotFileCropped (filePath) {
+    return readPng(filePath)
+        .then(function (png) {
+            return hasPixel(png, RED_PIXEL, 0, 0) &&
+                   hasPixel(png, RED_PIXEL, 49, 49) &&
+                   hasPixel(png, GREEN_PIXEL, 50, 50);
+        });
 }
 
 function isDirExists (folderPath) {
@@ -243,14 +256,22 @@ exports.checkScreenshotsCropped = function checkScreenshotsCreated (forError, cu
     if (list.length < config.browsers.length)
         return false;
 
-    var result = 0;
-
-    list.forEach(function (filePath) {
-        if (filePath.match(CUSTOM_SCREENSHOT_FILE_NAME_RE) && checkScreenshotFileCropped(filePath))
-            result++;
+    list = list.filter(function (filePath) {
+        return filePath.match(CUSTOM_SCREENSHOT_FILE_NAME_RE);
     });
 
-    return result === expectedScreenshotsCount;
+    return Promise
+        .all(list.map(function (filePath) {
+            return checkScreenshotFileCropped(filePath);
+        }))
+        .then(function (checkResults) {
+            var actualScreenshotsCount = 0;
+
+            for (var i = 0; i < checkResults.length; i++)
+                actualScreenshotsCount += checkResults[i] ? 1 : 0;
+
+            return actualScreenshotsCount === expectedScreenshotsCount;
+        });
 };
 
 exports.removeScreenshotDir = function () {

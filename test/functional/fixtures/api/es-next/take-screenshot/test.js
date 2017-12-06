@@ -91,7 +91,10 @@ describe('[API] t.takeScreenshot()', function () {
             return runTests('./testcafe-fixtures/take-screenshot.js', 'Should crop screenshots',
                 { setScreenshotPath: true })
                 .then(function () {
-                    expect(assertionHelper.checkScreenshotsCropped(false, 'custom')).eql(true);
+                    return assertionHelper.checkScreenshotsCropped(false, 'custom');
+                })
+                .then(function (result) {
+                    expect(result).eql(true);
                 });
         });
     }
