@@ -11,4 +11,4 @@
      ```
 
 2. Create a new GitHub repository and copy the sample files from *examples/running-tests-using-travis-and-saucelabs* to your repository.
-3. Go through steps described in the [Running Tests Using Travis CI and Sauce Labs](http://devexpress.github.io/testcafe/documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.html/) topic.
+3. Go through steps described in the [Running Tests Using Travis CI and Sauce Labs](http://devexpress.github.io/testcafe/documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.html) topic.
