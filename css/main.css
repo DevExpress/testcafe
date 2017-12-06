@@ -19,7 +19,7 @@ hr {
  * Basic styling
  */
 body {
-  font: normal 14px/1.5 "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
+  font: normal 14px/1.5 "Segoe UI", Frutiger, "Frutiger Linotype", Roboto, "Noto Sans", "Helvetica Neue", Arial, sans-serif;
   color: #111;
   background-color: #ffffff; }
 

@@ -24,6 +24,7 @@
   <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="http://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/highlight.min.js"></script>
   <script defer src="https://buttons.github.io/buttons.js"></script>
   <script>
@@ -1032,7 +1033,7 @@ The selector provides methods to filter DOM nodes by their index, text, attribut
 </code></pre></div>
 <p>The <a href="../obtaining-data-from-the-client.html#optionsdependencies">dependencies parameter</a> allows
 you to pass objects to the <code>filterFn</code> client-side scope where they appear as variables.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">isNodeOk</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">((</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/*...*/</span> <span class="p">});</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">isNodeOk</span> <span class="o">=</span> <span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/*...*/</span> <span class="p">};</span>
 
 <span class="nx">Selector</span><span class="p">(</span><span class="s1">'ul'</span><span class="p">).</span><span class="nx">filter</span><span class="p">((</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">isNodeOk</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">);</span>
@@ -1104,7 +1105,7 @@ you to pass objects to the <code>filterFn</code> client-side scope where they ap
 </code></pre></div>
 <p>The <a href="../obtaining-data-from-the-client.html#optionsdependencies">dependencies parameter</a> allows
 you to pass objects to the <code>filterFn</code> client-side scope where they appear as variables.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">isNodeOk</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">((</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">,</span> <span class="nx">originNode</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/*...*/</span> <span class="p">});</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">isNodeOk</span> <span class="o">=</span> <span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">,</span> <span class="nx">originNode</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/*...*/</span> <span class="p">};</span>
 
 <span class="nx">Selector</span><span class="p">(</span><span class="s1">'ul'</span><span class="p">).</span><span class="nx">find</span><span class="p">((</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">,</span> <span class="nx">originNode</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">isNodeOk</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">,</span> <span class="nx">originNode</span><span class="p">);</span>
@@ -1163,7 +1164,7 @@ you to pass objects to the <code>filterFn</code> client-side scope where they ap
 </code></pre></div>
 <p>The <a href="../obtaining-data-from-the-client.html#optionsdependencies">dependencies parameter</a> allows
 you to pass objects to the <code>filterFn</code> client-side scope where they appear as variables.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">isNodeOk</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">((</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">,</span> <span class="nx">originNode</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/*...*/</span> <span class="p">});</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">isNodeOk</span> <span class="o">=</span> <span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">,</span> <span class="nx">originNode</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/*...*/</span> <span class="p">};</span>
 
 <span class="nx">Selector</span><span class="p">(</span><span class="s1">'ul'</span><span class="p">).</span><span class="nx">parent</span><span class="p">((</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">,</span> <span class="nx">originNode</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">isNodeOk</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">,</span> <span class="nx">originNode</span><span class="p">);</span>
@@ -1222,7 +1223,7 @@ you to pass objects to the <code>filterFn</code> client-side scope where they ap
 </code></pre></div>
 <p>The <a href="../obtaining-data-from-the-client.html#optionsdependencies">dependencies parameter</a> allows
 you to pass objects to the <code>filterFn</code> client-side scope where they appear as variables.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">isNodeOk</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">((</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">,</span> <span class="nx">originNode</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/*...*/</span> <span class="p">});</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">isNodeOk</span> <span class="o">=</span> <span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">,</span> <span class="nx">originNode</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/*...*/</span> <span class="p">};</span>
 
 <span class="nx">Selector</span><span class="p">(</span><span class="s1">'ul'</span><span class="p">).</span><span class="nx">child</span><span class="p">((</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">,</span> <span class="nx">originNode</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">isNodeOk</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">,</span> <span class="nx">originNode</span><span class="p">);</span>
@@ -1281,7 +1282,7 @@ you to pass objects to the <code>filterFn</code> client-side scope where they ap
 </code></pre></div>
 <p>The <a href="../obtaining-data-from-the-client.html#optionsdependencies">dependencies parameter</a> allows
 you to pass objects to the <code>filterFn</code> client-side scope where they appear as variables.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">isNodeOk</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">((</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">,</span> <span class="nx">originNode</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/*...*/</span> <span class="p">});</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">isNodeOk</span> <span class="o">=</span> <span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">,</span> <span class="nx">originNode</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/*...*/</span> <span class="p">};</span>
 
 <span class="nx">Selector</span><span class="p">(</span><span class="s1">'ul'</span><span class="p">).</span><span class="nx">sibling</span><span class="p">((</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">,</span> <span class="nx">originNode</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">isNodeOk</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">,</span> <span class="nx">originNode</span><span class="p">);</span>
@@ -1340,7 +1341,7 @@ you to pass objects to the <code>filterFn</code> client-side scope where they ap
 </code></pre></div>
 <p>The <a href="../obtaining-data-from-the-client.html#optionsdependencies">dependencies parameter</a> allows
 you to pass objects to the <code>filterFn</code> client-side scope where they appear as variables.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">isNodeOk</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">((</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">,</span> <span class="nx">originNode</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/*...*/</span> <span class="p">});</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">isNodeOk</span> <span class="o">=</span> <span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">,</span> <span class="nx">originNode</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/*...*/</span> <span class="p">};</span>
 
 <span class="nx">Selector</span><span class="p">(</span><span class="s1">'ul'</span><span class="p">).</span><span class="nx">nextSibling</span><span class="p">((</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">,</span> <span class="nx">originNode</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">isNodeOk</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">,</span> <span class="nx">originNode</span><span class="p">);</span>
@@ -1399,7 +1400,7 @@ you to pass objects to the <code>filterFn</code> client-side scope where they ap
 </code></pre></div>
 <p>The <a href="../obtaining-data-from-the-client.html#optionsdependencies">dependencies parameter</a> allows
 you to pass objects to the <code>filterFn</code> client-side scope where they appear as variables.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">isNodeOk</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">((</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">,</span> <span class="nx">originNode</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/*...*/</span> <span class="p">});</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">isNodeOk</span> <span class="o">=</span> <span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">,</span> <span class="nx">originNode</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/*...*/</span> <span class="p">};</span>
 
 <span class="nx">Selector</span><span class="p">(</span><span class="s1">'ul'</span><span class="p">).</span><span class="nx">prevSibling</span><span class="p">((</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">,</span> <span class="nx">originNode</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">isNodeOk</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">,</span> <span class="nx">originNode</span><span class="p">);</span>
