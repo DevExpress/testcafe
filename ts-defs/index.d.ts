@@ -977,6 +977,7 @@ interface TestController {
      * @param height - The new height, in pixels.
      */
     resizeWindow(width: number, height: number): TestControllerPromise;
+
     /**
      * Fits the browser window into a particular device.
      *

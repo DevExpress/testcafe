@@ -11,7 +11,7 @@ describe('[API] t.takeScreenshot()', function () {
     if (config.useLocalBrowsers) {
         afterEach(assertionHelper.removeScreenshotDir);
 
-        it.only('Should take a screenshot', function () {
+        it('Should take a screenshot', function () {
             return runTests('./testcafe-fixtures/take-screenshot.js', 'Take a screenshot', { setScreenshotPath: true })
                 .then(function () {
                     expect(SCREENSHOT_PATH_MESSAGE_RE.test(testReport.screenshotPath)).eql(true);
