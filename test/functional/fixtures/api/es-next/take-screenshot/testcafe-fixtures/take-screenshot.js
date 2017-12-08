@@ -1,5 +1,6 @@
 import { ClientFunction } from 'testcafe';
 import { parse } from 'useragent';
+import { saveWindowState, restoreWindowState } from '../../../../../window-helpers';
 
 
 // NOTE: to preserve callsites, add new tests AFTER the existing ones
@@ -41,6 +42,12 @@ test('Take a screenshot in quarantine mode', async t => {
 
 test
     .page('../pages/crop.html')
+    .before(async t => {
+        await saveWindowState(t);
+
+        await t.maximizeWindow();
+    })
+    .after(t => restoreWindowState(t))
     ('Should crop screenshots', async t => {
         const ua       = await getUserAgent();
         const parsedUA = parse(ua);

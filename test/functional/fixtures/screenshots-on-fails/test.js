@@ -113,7 +113,7 @@ if (config.useLocalBrowsers) {
         });
 
         it('Should crop screenshots to a page viewport area', function () {
-            return runTests('./testcafe-fixtures/fail-in-before-each.js', 'Crop screenshots',
+            return runTests('./testcafe-fixtures/screenshots-on-fails.js', 'Crop screenshots',
                 { shouldFail: true, screenshotsOnFails: true, setScreenshotPath: true })
                 .catch(function (errs) {
                     assertionHelper.errorInEachBrowserContainsRegExp(errs, ERROR_SCREENSHOT_PATH_RE, 0);

@@ -10,6 +10,10 @@ environment:
 
 install:
 - ps: >-
+    iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/set-screenresolution.ps1'))
+
+    Set-ScreenResolution 1920 1080
+
     Install-Product node $env:NODEJS_VERSION
 
     choco install GoogleChrome

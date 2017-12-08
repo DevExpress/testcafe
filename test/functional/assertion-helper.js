@@ -62,9 +62,14 @@ function readPng (filePath) {
 function checkScreenshotFileCropped (filePath) {
     return readPng(filePath)
         .then(function (png) {
-            return hasPixel(png, RED_PIXEL, 0, 0) &&
-                   hasPixel(png, RED_PIXEL, 49, 49) &&
-                   hasPixel(png, GREEN_PIXEL, 50, 50);
+            var width  = png.width;
+            var height = png.height;
+
+            // NOTE: sometimes an appearing dialog can cover an edge of the browser. Try to check all edges
+            return hasPixel(png, RED_PIXEL, 0, 0) && hasPixel(png, RED_PIXEL, 49, 49) && hasPixel(png, GREEN_PIXEL, 50, 50) ||
+                   hasPixel(png, RED_PIXEL, width - 1, height - 1) && hasPixel(png, RED_PIXEL, width - 50, height - 50) && hasPixel(png, GREEN_PIXEL, width - 51, height - 51) ||
+                   hasPixel(png, RED_PIXEL, width - 1, 0) && hasPixel(png, RED_PIXEL, width - 50, 49) && hasPixel(png, GREEN_PIXEL, width - 51, 50) ||
+                   hasPixel(png, RED_PIXEL, 0, height - 1) && hasPixel(png, RED_PIXEL, 49, height - 50) && hasPixel(png, GREEN_PIXEL, 50, height - 51);
         });
 }
 
