@@ -452,8 +452,11 @@ parameters);</li>
 to switch to the appropriate <code>&lt;iframe&gt;</code>).</li>
 </ul>
 
-<p>Also, try running the test at full screen. If it passes, then your webpage hides the target element
-when it is resized to smaller dimensions.</p>
+<p>Also, try running the test at full screen.
+Use the <a href="../documentation/test-api/actions/resize-window.html#maximizing-the-window">t.maximizeWindow</a>
+and <a href="../documentation/test-api/actions/resize-window.html#setting-the-window-size">t.resizeWindow</a> actions
+to control the browser window size. If the test passes, it means your webpage hides
+the target element when the window is resized to smaller dimensions.</p>
 
 <p>Finally, try updating TestCafe to the latest version to see if the problem persists.</p>
 
