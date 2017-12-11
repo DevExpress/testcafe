@@ -35,3 +35,6 @@ test_script:
     start /D "C:\Program Files (x86)\Mozilla Firefox" firefox.exe -new-window https://google.com
 
     npm test
+
+on_finish:
+- ps: Get-ChildItem .\___test-screenshots___\custom\*.png | % { Push-AppveyorArtifact $_.FullName -FileName $_.Name }
