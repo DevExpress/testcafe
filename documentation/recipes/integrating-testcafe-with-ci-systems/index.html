@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <title>Integrating TestCafe with CI Systems | TestCafe</title>
+
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
+  
+  <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/recipes/integrating-testcafe-with-ci-systems/" />
+  <meta property="og:title" content="Integrating TestCafe with CI Systems | TestCafe" />
+
+  <link rel="shortcut icon" href="/testcafe/favicon.ico">
+  <link rel="stylesheet" href="/testcafe/css/main.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
+  <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/recipes/integrating-testcafe-with-ci-systems/">
+  <link rel="alternate" type="application/rss+xml" title="TestCafe" href="http://devexpress.github.io/testcafe/feed.xml">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/highlight.min.js"></script>
+  <script defer src="https://buttons.github.io/buttons.js"></script>
+  <script>
+      document.addEventListener('DOMContentLoaded', function (e) {
+          hljs.initHighlightingOnLoad();
+      });
+  </script>
+
+  
+  <script>
+    // Google Analytics
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-83678642-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+
+  
+  
+  
+
+  <script>
+    (function () {
+        var VISIT_DAY = {
+            first: 1,
+            second: 2,
+            more: 3
+        };
+
+        var isLandingPage = false;
+        var isGettingStarted = false;
+        var isDocumentation = true;
+
+        function updateVisitDay () {
+            var FIRST_VISIT_DAY_ITEM_NAME = 'first-visit-day';
+            var SECOND_VISIT_DAY_ITEM_NAME = 'second-visit-day';
+            var DIFFERENT_VISITS_DELAY = 12 * 60 * 60 * 1000; 
+            
+            // TODO: ignore old visits
+            var now = Date.now();
+            var firstVisit = window.localStorage.getItem(FIRST_VISIT_DAY_ITEM_NAME);
+            var secondVisit = window.localStorage.getItem(SECOND_VISIT_DAY_ITEM_NAME);
+
+            if(!firstVisit) {
+                window.localStorage.setItem(FIRST_VISIT_DAY_ITEM_NAME, now);
+                return VISIT_DAY.first;
+            }
+
+            firstVisit = parseInt(firstVisit);
+
+            if(!secondVisit) {
+                if(!isLandingPage && now - firstVisit >=DIFFERENT_VISITS_DELAY) {
+                    window.localStorage.setItem(SECOND_VISIT_DAY_ITEM_NAME, now);
+                    return VISIT_DAY.second;
+                }
+
+                return VISIT_DAY.first;
+            }
+            
+            secondVisit = parseInt(secondVisit);
+
+            return now - secondVisit >= DIFFERENT_VISITS_DELAY ? VISIT_DAY.more : VISIT_DAY.second;
+        }
+
+        window.needShowShareWidget = function () {
+            if(!isDocumentation || isGettingStarted)
+                return false;
+
+            var visitDay = updateVisitDay();
+
+            return visitDay === VISIT_DAY.more;
+        };
+    })();
+  </script>
+
+  
+
+  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/css/perfect-scrollbar.min.css">
+    <style>
+        .ps-container > .ps-scrollbar-x-rail,
+        .ps-container > .ps-scrollbar-y-rail {
+            opacity: 0.6;
+        }
+    </style>
+    <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/js/perfect-scrollbar.min.js"></script>
+    <script defer type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.3.min.js"></script>
+    <script defer src="/testcafe/scripts/widget.js" type="text/javascript"></script>
+    <script src="/testcafe/scripts/mobile-detect.min.js" type="text/javascript"></script>
+
+    <script>
+        var MIN_BODY_WIDTH = 1230;
+        var FOOTER_HEIGHT  = 113;
+        var HEADER_HEIGHT  = 126;
+
+        var nav            = null;
+        var article        = null;
+        var md             = new MobileDetect(window.navigator.userAgent);
+        var isMobileDevice = !!md.mobile();
+
+        function setNavTopPosition () {
+            var isMobileZoomed = isMobileDevice && window.innerWidth !== document.body.scrollWidth;
+            var top            = null;
+
+            if(isMobileDevice) {
+                top = window.pageYOffset >= HEADER_HEIGHT ? window.pageYOffset - HEADER_HEIGHT + 'px' : '0';
+
+                if (nav.style.paddingTop !== top) {
+                    nav.style.paddingTop = top;
+                    Ps.update(nav);
+                }
+
+                return;
+            }
+
+            if (document.body.clientWidth > MIN_BODY_WIDTH) {
+                if (nav.style.top !== HEADER_HEIGHT + 'px') {
+                    nav.style.top = HEADER_HEIGHT + 'px';
+                    Ps.update(nav);
+                }
+            }
+            else if(!isMobileZoomed) {
+                top = window.pageYOffset <= HEADER_HEIGHT ? HEADER_HEIGHT - window.pageYOffset + 'px' : '0';
+
+                if (nav.style.top !== top) {
+                    nav.style.top = top;
+                    Ps.update(nav);
+                }
+            }
+        }
+
+        function setNavBottomPosition () {
+            var footerVisibleHeight = FOOTER_HEIGHT - document.body.scrollHeight + window.pageYOffset +
+                                      document.body.clientHeight;
+
+            if (footerVisibleHeight > 0) {
+                if (nav.style.bottom !== footerVisibleHeight + 'px') {
+                    nav.style.bottom = footerVisibleHeight + 'px';
+                    Ps.update(nav);
+                }
+            }
+            else if (nav.style.bottom !== '0') {
+                nav.style.bottom = '0';
+                Ps.update(nav);
+            }
+        }
+
+        function updatePosition () {
+            if (isMobileDevice)
+                changeBodyHeight();
+            else
+                nav.style.marginLeft = '-' + window.pageXOffset + 'px';
+
+            setNavBottomPosition();
+            setNavTopPosition();
+        }
+
+        function changeBodyHeight () {
+            if (document.body.style.height !== window.innerHeight + 'px')
+                document.body.style.height = window.innerHeight + 'px';
+        }
+
+        function initScrollBar() {
+            Ps.initialize(nav);
+
+            window.addEventListener('resize', function () {
+                Ps.update(nav);
+            });
+        }
+
+        function initNav() {
+            if(isMobileDevice) {
+                nav.style.position = 'relative';
+                nav.style.float = 'left';
+                nav.style.top = '0px';
+
+                article.style.marginTop = '0px';
+                article.style.paddingTop = '22px';
+            }
+
+            initScrollBar();
+            updatePosition();
+            window.addEventListener('scroll', updatePosition);
+            window.addEventListener('resize', updatePosition);
+
+            if(isMobileDevice) {
+                nav.style.height = window.innerHeight + 'px';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function (e) {
+            nav     = document.querySelector('.doc-nav');
+            article = document.querySelector('.doc');
+
+            if(nav)
+                initNav(nav);
+        });
+    </script>
+  
+    <script>
+        function initHeader(siteHeader, contentWrapper, docTopMenu, article, gs) {
+            var MIN_BODY_WIDTH = 1230;
+
+            function updateHeader() {
+                var bodyMinimized = document.body.clientWidth === MIN_BODY_WIDTH;
+
+                
+
+                siteHeader.style.position = bodyMinimized ? 'static' : '';
+
+                if(docTopMenu)
+                    docTopMenu.style.position = bodyMinimized ? 'static' : '';
+
+                if(contentWrapper)
+                    contentWrapper.style.paddingTop = bodyMinimized ? '0' : '';
+
+                if(article)
+                    article.style.marginTop = bodyMinimized ? '21px' : '72px';
+ 
+                if(gs)
+                    gs.style.paddingTop = bodyMinimized ? '21px' : '72px';
+            }
+
+            updateHeader();
+            window.addEventListener('scroll', updateHeader);
+            window.addEventListener('resize', updateHeader);
+        }
+        document.addEventListener('DOMContentLoaded', function (e) {
+            var contentWrapper = document.querySelector('.container');
+            var siteHeader     = document.querySelector('.site-header');
+            var docTopMenu     = document.querySelector('.doc-top-nav');
+            var article        = document.querySelector('.doc');
+            var gs             = document.querySelector('.gs');
+
+            if(siteHeader) 
+                initHeader(siteHeader, contentWrapper, docTopMenu, article, gs);
+        });
+    </script>
+</head>
+
+
+  <body>
+    <div class="page-content-wrapper">
+
+      <header class="site-header fixed">
+  <div class="site-header-content">
+    <a class="site-logo" href="/testcafe/"></a>
+    <nav class="site-nav">
+        
+          
+          <div class="site-nav-tab active">
+            <a class="page-link" href="/testcafe/documentation/getting-started/">Documentation</a>
+          </div>
+        
+          
+          <div class="site-nav-tab ">
+            <a class="page-link" href="https://github.com/DevExpress/testcafe" target="_blank">GitHub</a>
+          </div>
+        
+          
+          <div class="site-nav-tab ">
+            <a class="page-link" href="/testcafe/faq/">FAQ</a>
+          </div>
+        
+          
+          <div class="site-nav-tab ">
+            <a class="page-link" href="/testcafe/publications/">Publications</a>
+          </div>
+        
+          
+          <div class="site-nav-tab ">
+            <a class="page-link" href="/testcafe/blog/">Release Notes</a>
+          </div>
+        
+          
+          <div class="site-nav-tab ">
+            <a class="page-link" href="https://github.com/DevExpress/testcafe/issues" target="_blank">Issues</a>
+          </div>
+        
+          
+          <div class="site-nav-tab ">
+            <a class="page-link" href="https://testcafe-discuss.devexpress.com/" target="_blank">Forum</a>
+          </div>
+        
+      <a id="twitter-button" href="https://twitter.com/dxtestcafe" target="_blank"></a>
+      <div id="search-icon"></div>
+      <div class="star-button">
+        <a class="github-button" href="https://github.com/DevExpress/testcafe" data-size="large" data-count-href="/DevExpress/testcafe/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star DevExpress/testcafe on GitHub"><span style="color:#ffffff">Star</span></a>
+      </div>
+      <div id="search-panel" class="hidden">
+          <input type="text" placeholder="Search query" id="search"/>
+          <div id="close-search"></div>
+      </div>
+      </nav>
+  </div>
+</header>
+
+<script>
+  function has(parentEl, el)  {
+    var descendants = parentEl.getElementsByTagName('*');
+    
+    for(i = 0; i < descendants.length; i++) 
+        if(descendants[i] === el) return true;
+
+    return false;
+  }
+
+  function closeSearchBox(e) {
+      var clickOutsideSearchBox = searchPanel !== e.target && !has(searchPanel, e.target);
+
+      if(clickOutsideSearchBox && !searchPanel.className.includes('hidden')) 
+          searchPanel.className += ' hidden';
+  }
+
+  var searchButton      = document.querySelector('#search-icon');
+  var searchPanel       = document.querySelector('#search-panel');
+  var searchInput       = document.querySelector('#search');
+  var closeSearchButton = document.querySelector('#close-search');
+
+  searchButton.addEventListener('click', function () {
+      searchPanel.className = searchPanel.className.replace(/hidden/,'');
+      searchInput.focus();      
+  });
+  
+  closeSearchButton.addEventListener('click', function () {
+      searchPanel.className += ' hidden';
+  });
+
+  window.addEventListener('mousedown', closeSearchBox);        
+  window.addEventListener('touchstart', closeSearchBox);
+</script>
+
+
+  <div class="doc-top-nav">
+    <div class="doc-top-nav-content">
+      <div class="doc-top-nav-wrapper">
+        
+          <div class="doc-top-nav-tab " >
+            <a href="/testcafe/documentation/getting-started/">Getting Started</a>      
+          </div>
+        
+          <div class="doc-top-nav-tab " >
+            <a href="/testcafe/documentation/using-testcafe/">Using TestCafe</a>      
+          </div>
+        
+          <div class="doc-top-nav-tab " >
+            <a href="/testcafe/documentation/test-api/">Test API</a>      
+          </div>
+        
+          <div class="doc-top-nav-tab " >
+            <a href="/testcafe/documentation/extending-testcafe/">Extending TestCafe</a>      
+          </div>
+        
+          <div class="doc-top-nav-tab active" >
+            <a href="/testcafe/documentation/recipes/">Recipes</a>      
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+
+
+      <div class="container">
+    
+	
+	
+
+	
+	
+
+	
+	
+
+	
+	
+
+	
+	
+	<nav class="doc-nav">	
+		<div class="doc-nav-content">
+			<ul>
+				<li>
+				<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/debugging-with-chrome-dev-tools.html"  >Debugging with Chrome Developer Tools</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/debugging-with-visual-studio-code.html"  >Debugging with Visual Studio Code</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/integrating-testcafe-with-ci-systems/" class="active" >Integrating TestCafe with CI Systems</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/integrating-testcafe-with-ci-systems/appveyor.html"  >AppVeyor</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/integrating-testcafe-with-ci-systems/circleci.html"  >CircleCI</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/integrating-testcafe-with-ci-systems/jenkins.html"  >Jenkins</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/integrating-testcafe-with-ci-systems/teamcity.html"  >TeamCity</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/integrating-testcafe-with-ci-systems/travis.html"  >Travis</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/finding-code-issues-with-flow-type-checker.html"  >Finding Code Issues with Flow Type Checker</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.html"  >Running Tests Using Travis CI and Sauce Labs</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/testing-select-elements.html"  >Testing &lt;select&gt; Elements</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/test-static-html-pages.html"  >Test Static HTML Pages</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/testing-on-remote-computers-and-mobile-devices.html"  >Testing on Remote Computers and Mobile Devices</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/using-page-model.html"  >Using Page Model</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/using-testcafe-with-grunt.html"  >Using TestCafe with Grunt</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/using-testcafe-with-gulp.html"  >Using TestCafe with Gulp</a>
+		
+    </li>
+
+</ul>
+				</li>
+			</ul>
+		</div>
+	</nav>
+	
+	
+
+
+<main>
+	<article class="doc">
+		<div class="post-content">
+
+			<h1>Integrating TestCafe with CI Systems</h1>
+<p>This section describes how to integrate TestCafe into build process on popular continuous integration systems.</p>
+
+<ul>
+<li><a href="appveyor.html">AppVeyor</a></li>
+<li><a href="circleci.html">CircleCI</a></li>
+<li><a href="jenkins.html">Jenkins</a></li>
+<li><a href="teamcity.html">TeamCity</a></li>
+<li><a href="travis.html">Travis</a></li>
+</ul>
+
+
+		</div>
+		<div class="widget-container hidden">
+			<div id="share-button">
+				<div id="graph-icon">
+					<img src="/testcafe/images/icon-share.svg"/>
+				</div>
+				<p>TELL<br/>YOUR<br/>FRIENDS</p>
+			</div>
+			<div class="widget-panel">
+				<div id="tweet">
+					<a href="https://twitter.com/intent/tweet?text=Check%20out%20%23TestCafe%20-%20a%20free%20node.js%20tool%20for%20e2e%20testing%20https%3A%2F%2Fdevexpress.github.io%2Ftestcafe%2F"
+					onclick="return !window.open(this.href, 'Twitter', 'width=690,height=450')"
+					target="_blank">
+						<img src="/testcafe/images/icon-tweet.svg"/>
+					</a>
+				</div>
+				<div id="facebook">
+					<a href="https://www.facebook.com/sharer/sharer.php?u=https://devexpress.github.io/testcafe/"
+					onclick="return !window.open(this.href, 'Facebook', 'width=500,height=500')"
+					target="_blank">
+						<image src="/testcafe/images/icon-facebook.svg"/>
+					</a>
+				</div>
+				<div id="collapse">
+					<img src="/testcafe/images/icon-close.svg"/>
+				</div>
+			</div>
+		</div>
+	</article>
+</main>
+</div>
+
+      <div class="push"></div>
+    </div>
+
+    <footer class="site-footer">
+    <div class="site-footer-content">
+        <div class="footer-col-1">
+            <p><strong>TestCafe</strong>: Automated browser testing for the modern web development stack<br/>
+            Copyright © 2012-2017 Developer Express Inc.</p>
+        </div>
+    </div>
+</footer>
+
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.js"></script>
+     <script type="text/javascript"> var search = docsearch({
+          apiKey: '938fb7894c0af8c01af3e2b4c53d4bdd',
+          indexName: 'testcafe',
+          inputSelector: '#search',
+          debug: false // Set debug to true if you want to inspect the dropdown
+      });
+
+      search.autocomplete.on('autocomplete:opened', function(e) {
+          var searchInput = document.querySelector('#search');
+          var dropdown    = document.querySelector('.ds-dropdown-menu');
+          
+          if(searchInput && dropdown) {
+              dropdown.style.maxWidth = "none";
+              dropdown.style.width = searchInput.offsetWidth + "px";
+          }
+      });
+    </script> 
+
+  </body>
+
+</html>

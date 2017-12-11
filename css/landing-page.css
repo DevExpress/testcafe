@@ -1,12 +1,8 @@
 .site-header, body, html {
-  min-width: 1150px; }
+  min-width: 1230px; }
 
 @media (max-width: 1490px) {
   .page-object-example {
-    display: none; } }
-
-@media (max-width: 1190px) {
-  .install-example {
     display: none; } }
 
 .banner {
@@ -112,7 +108,7 @@
 
 .how-it-works-section {
   padding: 0 100px;
-  min-width: calc(1150px - 140px);
+  min-width: calc(1230px - 140px);
   height: 827px;
   -webkit-box-sizing: content-box;
   -moz-box-sizing: content-box;
@@ -325,4 +321,4 @@ code {
   .site-header .site-header-content {
     padding-left: 70px;
     padding-right: 70px;
-    min-width: calc(1150px - 140px); } }
+    min-width: calc(1230px - 140px); } }

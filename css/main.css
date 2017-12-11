@@ -19,7 +19,7 @@ hr {
  * Basic styling
  */
 body {
-  font: normal 14px/1.5 "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
+  font: normal 14px/1.5 "Segoe UI", Frutiger, "Frutiger Linotype", Roboto, "Noto Sans", "Helvetica Neue", Arial, sans-serif;
   color: #111;
   background-color: #ffffff; }
 
@@ -182,7 +182,7 @@ table > tbody > tr > td {
   height: 75px;
   width: 100%;
   z-index: 1;
-  min-width: 1215px; }
+  min-width: 1230px; }
   .site-header .site-header-content {
     max-width: 1500px;
     margin: auto; }
@@ -251,13 +251,13 @@ table > tbody > tr > td {
   outline: none;
   height: 40px;
   width: 840px; }
-  @media (max-width: 1300px) {
+  @media (max-width: 1310px) {
     #search {
       width: 770px; } }
 
 .site-header-content {
   padding: 0 100px;
-  min-width: calc(1215px - 200px); }
+  min-width: calc(1230px - 200px); }
 
 .site-nav {
   line-height: 50px;
@@ -269,7 +269,7 @@ table > tbody > tr > td {
     display: inline-block;
     line-height: 1.5;
     padding: 5px 15px 7px; }
-    @media (max-width: 1300px) {
+    @media (max-width: 1310px) {
       .site-nav .site-nav-tab {
         padding-left: 10px;
         padding-right: 10px; } }
@@ -311,7 +311,7 @@ table > tbody > tr > td {
 
 html, body {
   height: 100%;
-  min-width: 1215px; }
+  min-width: 1230px; }
 
 .page-content-wrapper {
   min-height: 100%;

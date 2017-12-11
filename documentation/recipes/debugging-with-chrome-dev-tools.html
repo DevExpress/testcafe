@@ -24,6 +24,7 @@
   <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/recipes/debugging-with-chrome-dev-tools.html">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="http://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/highlight.min.js"></script>
   <script defer src="https://buttons.github.io/buttons.js"></script>
   <script>
@@ -119,7 +120,7 @@
     <script src="/testcafe/scripts/mobile-detect.min.js" type="text/javascript"></script>
 
     <script>
-        var MIN_BODY_WIDTH = 1215;
+        var MIN_BODY_WIDTH = 1230;
         var FOOTER_HEIGHT  = 113;
         var HEADER_HEIGHT  = 126;
 
@@ -229,7 +230,7 @@
   
     <script>
         function initHeader(siteHeader, contentWrapper, docTopMenu, article, gs) {
-            var MIN_BODY_WIDTH = 1215;
+            var MIN_BODY_WIDTH = 1230;
 
             function updateHeader() {
                 var bodyMinimized = document.body.clientWidth === MIN_BODY_WIDTH;
@@ -430,14 +431,53 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/recipes/finding-code-issues-with-flow-type-checker.html"  >Finding Code Issues with Flow Type Checker</a>
+<a href="/testcafe/documentation/recipes/integrating-testcafe-with-ci-systems/"  >Integrating TestCafe with CI Systems</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/integrating-testcafe-with-ci-systems/appveyor.html"  >AppVeyor</a>
 		
     </li>
 
     <li>
 		    
 		
-<a href="/testcafe/documentation/recipes/running-tests-in-firefox-and-chrome-using-travis-ci.html"  >Running Tests in Firefox and Chrome Using Travis CI</a>
+<a href="/testcafe/documentation/recipes/integrating-testcafe-with-ci-systems/circleci.html"  >CircleCI</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/integrating-testcafe-with-ci-systems/jenkins.html"  >Jenkins</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/integrating-testcafe-with-ci-systems/teamcity.html"  >TeamCity</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/integrating-testcafe-with-ci-systems/travis.html"  >Travis</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/finding-code-issues-with-flow-type-checker.html"  >Finding Code Issues with Flow Type Checker</a>
 		
     </li>
 
@@ -506,9 +546,11 @@
 			<h1>Debugging with Chrome Developer Tools</h1>
 <p>Starting with version 6.3.0, Node.js allows you to debug applications in Chrome Developer Tools.
 If you have Chrome and an appropriate version of Node.js installed on your machine,
-you can debug TestCafe test code.
-To do this, add the <code>--inspect</code> and <code>--debug-brk</code> flags to the test run command.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe --inspect --debug-brk chrome ./tests
+you can debug TestCafe test code.</p>
+<blockquote><div class="blockquote-content"><p>This topic describes steps that apply to Node.js v8 and newer.</p>
+</div></blockquote>
+<p>First, run TestCafe in the Node.js debugging mode. To do this, add the <code>--inspect-brk</code> flag to the test run command.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe --inspect-brk chrome ./tests
 </code></pre></div>
 <p>Put the <code>debugger</code> keyword in test code where you want to stop.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
@@ -517,18 +559,19 @@ To do this, add the <code>--inspect</code> and <code>--debug-brk</code> flags to
 <span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="kr">debugger</span><span class="p">;</span>
     <span class="nx">await</span> <span class="nx">t</span>
+        <span class="p">.</span><span class="nx">setNativeDialogHandler</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">);</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#populate'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div>
-<p>After the test run command is executed, a debugging URL will appear in the console.</p>
+<p>Navigate to <code>chrome://inspect</code> in Google Chrome. In the <strong>Remote Target</strong> section, find the Node.js debugger and click <strong>Inspect</strong>.</p>
 
-<p><img src="../../images/debugging/server-debugging-console.png" alt="Console with a debugging URL"></p>
+<p><img src="../../images/chrome-dev-tools/chrome-inspect.png" alt="Inspect Page in Google Chrome"></p>
 
-<p>Open this URL in a new Chrome instance. Chrome will invoke its Developer Tools and the debugger will stop test execution at the first line.
-Click the &#39;Resume script execution&#39; button or press F5 to continue. After that, text execution will pause at the <code>debugger</code> keyword allowing you to debug test code.</p>
+<p>Chrome will invoke its Developer Tools and the debugger will stop test execution at the first line.
+Click the <strong>Resume script execution</strong> button or press F5 to continue. After that, text execution will pause at the <code>debugger</code> keyword allowing you to debug test code.</p>
 
-<p><img src="../../images/debugging/server-debugging-chrome.png" alt="Chrome Developer Tools"></p>
+<p><img src="../../images/chrome-dev-tools/chrome-dev-tools.png" alt="Debugging in Chrome Dev Tools"></p>
 
 
 		</div>

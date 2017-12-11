@@ -24,6 +24,7 @@
   <link rel="canonical" href="http://devexpress.github.io/testcafe/faq/">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="http://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/highlight.min.js"></script>
   <script defer src="https://buttons.github.io/buttons.js"></script>
   <script>
@@ -115,7 +116,7 @@
   
     <script>
         function initHeader(siteHeader, contentWrapper, docTopMenu, article, gs) {
-            var MIN_BODY_WIDTH = 1215;
+            var MIN_BODY_WIDTH = 1230;
 
             function updateHeader() {
                 var bodyMinimized = document.body.clientWidth === MIN_BODY_WIDTH;
@@ -451,8 +452,11 @@ parameters);</li>
 to switch to the appropriate <code>&lt;iframe&gt;</code>).</li>
 </ul>
 
-<p>Also, try running the test at full screen. If it passes, then your webpage hides the target element
-when it is resized to smaller dimensions.</p>
+<p>Also, try running the test at full screen.
+Use the <a href="../documentation/test-api/actions/resize-window.html#maximizing-the-window">t.maximizeWindow</a>
+and <a href="../documentation/test-api/actions/resize-window.html#setting-the-window-size">t.resizeWindow</a> actions
+to control the browser window size. If the test passes, it means your webpage hides
+the target element when the window is resized to smaller dimensions.</p>
 
 <p>Finally, try updating TestCafe to the latest version to see if the problem persists.</p>
 
