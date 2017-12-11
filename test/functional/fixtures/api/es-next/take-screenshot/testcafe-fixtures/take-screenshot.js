@@ -52,5 +52,7 @@ test
         const ua       = await getUserAgent();
         const parsedUA = parse(ua);
 
-        await t.takeScreenshot('custom/' + parsedUA.family + '.png');
+        await t
+            .click('div')
+            .takeScreenshot('custom/' + parsedUA.family + '.png');
     });

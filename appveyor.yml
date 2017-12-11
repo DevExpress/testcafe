@@ -10,9 +10,7 @@ environment:
 
 install:
 - ps: >-
-    $screen_resolution = "1920x1080"
-
-    iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-desktop.ps1'))
+    iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/set-screenresolution.ps1'))
 
     Set-ScreenResolution 1920 1080
 
