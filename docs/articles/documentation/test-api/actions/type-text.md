@@ -38,3 +38,19 @@ test('Type and Replace', async t => {
         .expect(nameInput.value).eql('Parker');
 });
 ```
+
+## Typing Into DateTime, Color and Range Inputs
+
+There are certain types of HTML5 inputs, like `DateTime`, `Color` or `Range`, that require entering values in a specific format.
+
+The following table lists value formats expected by these inputs.
+
+Input type | Pattern            | Example
+---------- | ------------------ | ------------
+Date       | `yyyy-mm-dd`       | `'2017-12-23'`
+Week       | `yyyy-Www`         | `'2017-W03'`
+Month      | `yyyy-mm`          | `'2017-08'`
+DateTime   | `yyyy-mm-ddThh:mm` | `'2017-11-03T05:00'`
+Time       | `hh:mm`            | `'15:30'`
+Color      | `#rrggbb`          | `'#003000'`
+Range      | `n`                | `'45'`
