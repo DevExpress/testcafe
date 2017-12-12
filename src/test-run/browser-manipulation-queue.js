@@ -67,6 +67,7 @@ export default class BrowserManipulationQueue {
         var command = this.commands.shift();
 
         switch (command.type) {
+            case COMMAND_TYPE.takeElementScreenshot:
             case COMMAND_TYPE.takeScreenshot:
                 return await this._takeScreenshot(() => this.screenshotCapturer.captureAction({
                     customPath:         command.path,
@@ -74,7 +75,9 @@ export default class BrowserManipulationQueue {
                     pageHeight:         driverMsg.innerHeight,
                     documentWidth:      driverMsg.documentWidth,
                     documentHeight:     driverMsg.documentHeight,
-                    screenshotMarkSeed: driverMsg.screenshotMarkSeed
+                    elementRect:        driverMsg.elementRect,
+                    cropDimensions:     driverMsg.cropDimensions,
+                    screenshotMarkSeed: command.options.screenshotMarkSeed
                 }));
 
             case COMMAND_TYPE.takeScreenshotOnFail:
@@ -83,7 +86,7 @@ export default class BrowserManipulationQueue {
                     pageHeight:         driverMsg.innerHeight,
                     documentWidth:      driverMsg.documentWidth,
                     documentHeight:     driverMsg.documentHeight,
-                    screenshotMarkSeed: driverMsg.screenshotMarkSeed
+                    screenshotMarkSeed: command.options.screenshotMarkSeed
                 }));
 
             case COMMAND_TYPE.resizeWindow:

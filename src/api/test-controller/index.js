@@ -32,6 +32,7 @@ import {
 
 import {
     TakeScreenshotCommand,
+    TakeElementScreenshotCommand,
     ResizeWindowCommand,
     ResizeWindowToFitDeviceCommand,
     MaximizeWindowCommand
@@ -196,6 +197,17 @@ export default class TestController {
 
     _takeScreenshot$ (path) {
         return this._enqueueCommand('takeScreenshot', TakeScreenshotCommand, { path });
+    }
+
+    _takeElementScreenshot$ (selector, ...args) {
+        var kvargs = {};
+
+        if (typeof args[0] === 'string')
+            kvargs.path = args.shift();
+
+        kvargs.options = args.shift();
+
+        return this._enqueueCommand('takeElementScreenshot', TakeElementScreenshotCommand, Object.assign({ selector }, kvargs));
     }
 
     _resizeWindow$ (width, height) {

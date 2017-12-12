@@ -59,6 +59,34 @@ export class OffsetOptions extends ActionOptions {
     }
 }
 
+// Element Screenshot
+export class ElementScreenshotsOptions extends OffsetOptions {
+    constructor (obj, validate) {
+        super();
+
+        this.cropX = null;
+        this.cropY = null;
+        this.cropWidth = null;
+        this.cropHeight = null;
+
+        this._assignFrom(obj, validate);
+
+        if ((this.cropX || this.cropX === 0) && this.cropWidth)
+            this.offsetX = Math.floor(this.cropX + this.cropWidth / 2);
+
+        if ((this.cropY || this.cropY === 0) && this.cropHeight)
+            this.offsetY = Math.floor(this.cropY + this.cropHeight / 2);
+    }
+
+    _getAssignableProperties () {
+        return super._getAssignableProperties().concat([
+            { name: 'cropX', type: integerOption },
+            { name: 'cropY', type: integerOption },
+            { name: 'cropWidth', type: integerOption },
+            { name: 'cropHeight', type: integerOption },
+        ]);
+    }
+}
 
 // Mouse
 export class MouseOptions extends OffsetOptions {

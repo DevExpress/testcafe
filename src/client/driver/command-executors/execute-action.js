@@ -9,12 +9,15 @@ import {
     NODE_TYPE_DESCRIPTIONS
 } from '../deps/testcafe-core';
 
+import prepareBrowserManipulation from './prepare-browser-manipulation';
+
 import ScriptExecutionBarrier from '../script-execution-barrier';
 
 import {
     ERROR_TYPES as AUTOMATION_ERROR_TYPES,
     calculateSelectTextArguments,
     getOffsetOptions,
+    Scroll as ScrollAutomation,
     Click as ClickAutomation,
     SelectChildClick as SelectChildClickAutomation,
     RClick as RClickAutomation,
@@ -203,6 +206,9 @@ function createAutomation (elements, command) {
         case COMMAND_TYPE.doubleClick :
             return new DblClickAutomation(elements[0], command.options);
 
+        case COMMAND_TYPE.takeElementScreenshot:
+            return new ScrollAutomation(elements[0], command.options);
+
         case COMMAND_TYPE.hover :
             return new HoverAutomation(elements[0], command.options);
 
@@ -293,7 +299,16 @@ export default function executeAction (command, globalSelectorTimeout, statusBar
                         resolveStartPromise();
                     }
 
-                    return automation.run(strictElementCheck);
+                    return automation
+                        .run(strictElementCheck)
+                        .then(() => {
+                            if (command.type === COMMAND_TYPE.takeElementScreenshot) {
+                                return delay(500)
+                                    .then(() => prepareBrowserManipulation(command, elements[0]));
+                            }
+
+                            return {};
+                        });
                 })
                 .catch(err => {
                     var timeoutExpired = Date.now() - startTime >= commandSelectorTimeout;

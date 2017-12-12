@@ -34,6 +34,7 @@ export function canSetDebuggerBreakpointBeforeCommand (command) {
 
 export function isBrowserManipulationCommand (command) {
     return command.type === TYPE.takeScreenshot ||
+           command.type === TYPE.takeElementScreenshot ||
            command.type === TYPE.takeScreenshotOnFail ||
            command.type === TYPE.resizeWindow ||
            command.type === TYPE.resizeWindowToFitDevice ||

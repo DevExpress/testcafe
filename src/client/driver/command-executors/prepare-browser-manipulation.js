@@ -7,7 +7,7 @@ import DriverStatus from '../status';
 
 const POSSIBLE_RESIZE_ERROR_DELAY = 100;
 
-export default function prepareBrowserManipulation (command) {
+export default function prepareBrowserManipulation (command, element) {
     var result = null;
 
     var message = {
@@ -19,19 +19,29 @@ export default function prepareBrowserManipulation (command) {
         disableResending: true
     };
 
+    if (element) {
+        var { top, left, bottom, right } = element.getBoundingClientRect();
+
+        message.elementRect = { top, left, bottom, right };
+
+        var { cropX, cropY, cropWidth, cropHeight, offsetX, offsetY } = command.options;
+
+        message.cropDimensions = { cropX, cropY, cropWidth, cropHeight, offsetX, offsetY };
+    }
+
     hideUI();
 
-    if (command.screenshotMarkData) {
-        showScreenshotMark(command.screenshotMarkData);
-        message.screenshotMarkSeed = command.screenshotMarkSeed;
-    }
+    var { screenshotMarkData } = command.options || {};
+
+    if (screenshotMarkData)
+        showScreenshotMark(screenshotMarkData);
 
     return transport
         .queuedAsyncServiceMsg(message)
         .then(res => {
             result = res;
 
-            if (command.screenshotMarkData)
+            if (screenshotMarkData)
                 hideScreenshotMark();
 
             showUI();
