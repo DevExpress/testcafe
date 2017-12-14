@@ -315,6 +315,9 @@ $(document).ready(function () {
                     .then(function (response) {
                         return response.text();
                     })
+                    .then(function (text) {
+                        ok(false, text);
+                    })
                     .catch(function () {
                         requestIsFailed = true;
                     });
