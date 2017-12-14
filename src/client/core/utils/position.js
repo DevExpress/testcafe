@@ -96,7 +96,7 @@ export function getClientDimensions (target) {
     var elementWidth        = isHtmlElement ? target.clientWidth : elementRect.width;
     var isCompatMode        = target.ownerDocument.compatMode === 'BackCompat';
 
-    if (isHtmlElement && body && (typeof isIFrameWithoutSrc === 'boolean' && isIFrameWithoutSrc || isCompatMode) ) {
+    if (isHtmlElement && body && (typeof isIFrameWithoutSrc === 'boolean' && isIFrameWithoutSrc || isCompatMode)) {
         elementHeight = body.clientHeight;
         elementWidth  = body.clientWidth;
     }
@@ -125,10 +125,10 @@ export function getClientDimensions (target) {
     }
 
     var rightScrollbarWidth = isHtmlElement || styleUtils.getInnerWidth(target) === target.clientWidth ?
-        0 : domUtils.getScrollbarSize();
+                              0 : domUtils.getScrollbarSize();
 
     var bottomScrollbarHeight = isHtmlElement || styleUtils.getInnerHeight(target) === target.clientHeight ?
-        0 : domUtils.getScrollbarSize();
+                                0 : domUtils.getScrollbarSize();
 
     return {
         width:  elementWidth,
@@ -189,7 +189,7 @@ export function getEventAbsoluteCoordinates (ev) {
 
 export function getEventPageCoordinates (ev) {
     var curCoordObject = /^touch/.test(ev.type) && ev.targetTouches ?
-        ev.targetTouches[0] || ev.changedTouches[0] : ev;
+                         ev.targetTouches[0] || ev.changedTouches[0] : ev;
 
     var bothPageCoordinatesAreZero      = curCoordObject.pageX === 0 && curCoordObject.pageY === 0;
     var notBothClientCoordinatesAreZero = curCoordObject.clientX !== 0 || curCoordObject.clientY !== 0;
@@ -299,10 +299,15 @@ export function getElementClientRectangle (el) {
 
 export function calcRelativePosition (dimensions, toDimensions) {
     return {
-        left:   dimensions.left - (toDimensions.left + toDimensions.border.left),
-        right:  toDimensions.right - toDimensions.border.right - toDimensions.scrollbar.right - dimensions.right,
-        top:    dimensions.top - (toDimensions.top + toDimensions.border.top),
-        bottom: toDimensions.bottom - toDimensions.border.bottom - toDimensions.scrollbar.bottom - dimensions.bottom
+        left: Math.ceil(dimensions.left - (toDimensions.left + toDimensions.border.left)),
+
+        right: Math.floor(toDimensions.right - toDimensions.border.right - toDimensions.scrollbar.right -
+                          dimensions.right),
+
+        top: Math.ceil(dimensions.top - (toDimensions.top + toDimensions.border.top)),
+
+        bottom: Math.floor(toDimensions.bottom - toDimensions.border.bottom - toDimensions.scrollbar.bottom -
+                           dimensions.bottom)
     };
 }
 

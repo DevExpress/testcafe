@@ -5,6 +5,7 @@ var nativeMethods    = hammerhead.nativeMethods;
 
 var testCafeCore     = window.getTestCafeModule('testCafeCore');
 var eventUtils       = testCafeCore.get('./utils/event');
+var positionUtils    = testCafeCore.get('./utils/position');
 var textSelection    = testCafeCore.get('./utils/text-selection');
 var parseKeySequence = testCafeCore.get('./utils/parse-key-sequence');
 
@@ -1052,4 +1053,65 @@ $(document).ready(function () {
                 });
         });
     }
+
+    test('Scrolling works wrong in specific scenario in IE (gh-2002)', function () {
+        var mockParentDimension = {
+            top:    0,
+            bottom: 782,
+            height: 782,
+            left:   0,
+            right:  1423,
+            width:  1423,
+
+            border: {
+                top:    0,
+                right:  0,
+                bottom: 0,
+                left:   0
+            },
+
+            scroll: {
+                left: 0,
+                top:  255
+            },
+
+            scrollbar: {
+                bottom: 0,
+                right:  0
+            }
+        };
+
+        var mockChildDimension = {
+            top:    3.91999983787566,
+            bottom: 777.91999983787566,
+            height: 774,
+            left:   571.5,
+            right:  991.5,
+            width:  420,
+
+            border: {
+                top:    2,
+                right:  2,
+                bottom: 2,
+                left:   2
+            },
+
+            scroll: {
+                left: 0,
+                top:  0
+            },
+
+            scrollbar: {
+                bottom: 0,
+                right:  0
+            }
+        };
+
+        deepEqual(positionUtils.calcRelativePosition(mockChildDimension, mockParentDimension), {
+            top:    4,
+            right:  431,
+            bottom: 4,
+            left:   572
+        });
+    });
 });
