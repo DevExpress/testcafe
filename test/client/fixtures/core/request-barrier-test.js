@@ -311,7 +311,7 @@ $(document).ready(function () {
 
                 var requestBarrier = new RequestBarrier();
 
-                fetch('/respond-500')
+                fetch('/close-request')
                     .then(function (response) {
                         return response.text();
                     })

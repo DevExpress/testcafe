@@ -62,8 +62,7 @@ module.exports = function (app) {
         });
     });
 
-    app.get('/respond-500', function (req, res) {
-        res.statusCode = 500;
-        res.send('Server error');
+    app.get('/close-request', function (req) {
+        req.destroy();
     });
 };
