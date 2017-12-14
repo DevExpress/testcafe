@@ -6,30 +6,22 @@ import embeddingUtils from './embedding-utils';
 
 
 hammerhead.nativeMethods.objectDefineProperty.call(window, window, '%testCafeDriver%', {
-    enumerable:   false,
-    configurable: false,
-    writable:     false,
+    configurable: true,
     value:        Driver
 });
 
 hammerhead.nativeMethods.objectDefineProperty.call(window, window, '%testCafeIframeDriver%', {
-    enumerable:   false,
-    configurable: false,
-    writable:     false,
+    configurable: true,
     value:        IframeDriver
 });
 
 hammerhead.nativeMethods.objectDefineProperty.call(window, window, '%ScriptExecutionBarrier%', {
-    enumerable:   false,
-    configurable: false,
-    writable:     false,
+    configurable: true,
     value:        ScriptExecutionBarrier
 });
 
 hammerhead.nativeMethods.objectDefineProperty.call(window, window, '%testCafeEmbeddingUtils%', {
-    enumerable:   false,
-    configurable: false,
-    writable:     false,
+    configurable: true,
     value:        embeddingUtils
 });
 

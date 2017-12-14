@@ -59,9 +59,7 @@ exports.show = function (showTopRoot) {
 };
 
 hammerhead.nativeMethods.objectDefineProperty.call(window, window, '%testCafeUI%', {
-    enumerable:   false,
-    configurable: false,
-    writable:     false,
+    configurable: true,
     value:        exports
 });
 
