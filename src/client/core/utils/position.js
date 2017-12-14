@@ -124,11 +124,11 @@ export function getClientDimensions (target) {
         }
     }
 
-    var rightScrollbarWidth = isHtmlElement || styleUtils.getInnerWidth(target) === target.clientWidth ?
-                              0 : domUtils.getScrollbarSize();
+    const hasRightScrollbar   = !isHtmlElement && styleUtils.getInnerWidth(target) !== target.clientWidth;
+    const rightScrollbarWidth = hasRightScrollbar ? domUtils.getScrollbarSize() : 0;
 
-    var bottomScrollbarHeight = isHtmlElement || styleUtils.getInnerHeight(target) === target.clientHeight ?
-                                0 : domUtils.getScrollbarSize();
+    const hasBottomScrollbar    = !isHtmlElement && styleUtils.getInnerHeight(target) !== target.clientHeight;
+    const bottomScrollbarHeight = hasBottomScrollbar ? domUtils.getScrollbarSize() : 0;
 
     return {
         width:  elementWidth,
@@ -188,8 +188,7 @@ export function getEventAbsoluteCoordinates (ev) {
 }
 
 export function getEventPageCoordinates (ev) {
-    var curCoordObject = /^touch/.test(ev.type) && ev.targetTouches ?
-                         ev.targetTouches[0] || ev.changedTouches[0] : ev;
+    var curCoordObject = /^touch/.test(ev.type) && ev.targetTouches ? ev.targetTouches[0] || ev.changedTouches[0] : ev;
 
     var bothPageCoordinatesAreZero      = curCoordObject.pageX === 0 && curCoordObject.pageY === 0;
     var notBothClientCoordinatesAreZero = curCoordObject.clientX !== 0 || curCoordObject.clientY !== 0;
