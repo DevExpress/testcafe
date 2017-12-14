@@ -59,5 +59,6 @@ hammerhead.nativeMethods.objectDefineProperty.call(window, window, '%testCafeSel
         }
 
         return getNodeByIndex(filtered, options.index || 0);
-    }
+    },
+    configurable: true
 });

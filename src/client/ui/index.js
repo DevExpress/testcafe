@@ -60,7 +60,7 @@ exports.show = function (showTopRoot) {
 
 hammerhead.nativeMethods.objectDefineProperty.call(window, window, '%testCafeUI%', {
     enumerable:   false,
-    configurable: false,
+    configurable: true,
     writable:     false,
     value:        exports
 });

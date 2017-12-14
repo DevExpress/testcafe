@@ -8,4 +8,11 @@
     });
 
     driver.start();
+
+    Object.defineProperty(window, '%testCafeDriverInstance%', {
+        enumerable:   false,
+        configurable: true,
+        writable:     false,
+        value:        driver
+    });
 })();

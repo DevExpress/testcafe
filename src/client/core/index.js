@@ -58,7 +58,7 @@ exports.get = require;
 
 hammerhead.nativeMethods.objectDefineProperty.call(window, window, '%testCafeCore%', {
     enumerable:   false,
-    configurable: false,
+    configurable: true,
     writable:     false,
     value:        exports
 });
