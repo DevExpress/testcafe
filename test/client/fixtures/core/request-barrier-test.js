@@ -316,6 +316,11 @@ $(document).ready(function () {
                         return response.text();
                     })
                     .then(function (text) {
+                        // NOTE: The SauceLab use the Squid proxy server that send an error message
+                        // when request is crashed. Therefore request does not crash on our side.
+                        if (text.indexOf('Zero Size Reply') !== -1)
+                            throw new Error();
+
                         ok(false, text);
                     })
                     .catch(function () {
