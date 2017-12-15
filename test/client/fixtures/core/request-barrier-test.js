@@ -316,8 +316,9 @@ $(document).ready(function () {
                         return response.text();
                     })
                     .then(function (text) {
-                        // NOTE: The SauceLab use the Squid proxy server that send an error message
-                        // when request is crashed. Therefore request does not crash on our side.
+                        // NOTE: On the SauceLab, requests from browser to a destination server is passed via Squid proxy.
+                        // If destination server aborts a request then Squid respond with service error web page.
+                        // In this case we should manually raise an error.
                         if (text.indexOf('Zero Size Reply') !== -1)
                             throw new Error();
 
