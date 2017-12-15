@@ -319,7 +319,7 @@ $(document).ready(function () {
                         // NOTE: On the SauceLab, requests from browser to a destination server is passed via Squid proxy.
                         // If destination server aborts a request then Squid respond with service error web page.
                         // In this case we should manually raise an error.
-                        if (text.indexOf('Zero Size Reply') !== -1)
+                        if (text.indexOf('Zero Sized Reply') !== -1)
                             throw new Error();
 
                         ok(false, text);
