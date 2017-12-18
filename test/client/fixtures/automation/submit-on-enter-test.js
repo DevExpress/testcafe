@@ -34,7 +34,7 @@ $(document).ready(function () {
     function isInputValueValid ($el) {
         var el = $el[0];
 
-        return browserUtils.isSafari || !el.validity || el.validity.valid;
+        return el.validity.valid;
     }
 
     function runPressAutomation (keys, callback) {

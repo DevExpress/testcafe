@@ -163,7 +163,7 @@ function submitFormOnEnterPressInInput (form, inputElement) {
         // NOTE: the form is submitted on enter press if there is only one input of the following types on it
         //  and this input is focused (http://www.w3.org/TR/html5/forms.html#implicit-submission)
         if (textInputs.length === 1 && textInputs[0] === inputElement) {
-            var isInputValid = browserUtils.isSafari || !inputElement.validity || inputElement.validity.valid;
+            var isInputValid = inputElement.validity.valid;
 
             if (isInputValid && eventSimulator.submit(form))
                 form.submit();
