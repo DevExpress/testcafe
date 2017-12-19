@@ -1263,33 +1263,35 @@ $(document).ready(function () {
     }
 
     module('regression');
-    asyncTest('B237794 - Select options list doesn\'t close after dblclick in Chrome and Opera (dblclick)', function () {
-        var select = createSelect();
+    if (!browserUtils.isSafari || browserUtils.version !== 11) {
+        asyncTest('B237794 - Select options list doesn\'t close after dblclick in Chrome and Opera (dblclick)', function () {
+            var select = createSelect();
 
-        equal(shadowUI.select('.' + OPTION_LIST_CLASS).length, 0);
-
-        runDblClickAutomation(select, {}, function () {
-            equal(select, document.activeElement);
-            notEqual($(shadowUI.select('.' + OPTION_LIST_CLASS)).is(':visible'), true);
             equal(shadowUI.select('.' + OPTION_LIST_CLASS).length, 0);
-            equal(select.selectedIndex, 0);
-            startNext();
+
+            runDblClickAutomation(select, {}, function () {
+                equal(select, document.activeElement);
+                notEqual($(shadowUI.select('.' + OPTION_LIST_CLASS)).is(':visible'), true);
+                equal(shadowUI.select('.' + OPTION_LIST_CLASS).length, 0);
+                equal(select.selectedIndex, 0);
+                startNext();
+            });
         });
-    });
 
-    asyncTest('B237794 - Select options list doesn\'t close after dblclick in Chrome and Opera (dblclick)', function () {
-        var select = createSelect();
+        asyncTest('B237794 - Select options list doesn\'t close after dblclick in Chrome and Opera (dblclick)', function () {
+            var select = createSelect();
 
-        equal(shadowUI.select('.' + OPTION_LIST_CLASS).length, 0);
-
-        runDblClickAutomation(select, {}, function () {
-            equal(select, document.activeElement);
-            notEqual($(shadowUI.select('.' + OPTION_LIST_CLASS)).is(':visible'), true);
             equal(shadowUI.select('.' + OPTION_LIST_CLASS).length, 0);
-            equal(select.selectedIndex, 0);
-            startNext();
+
+            runDblClickAutomation(select, {}, function () {
+                equal(select, document.activeElement);
+                notEqual($(shadowUI.select('.' + OPTION_LIST_CLASS)).is(':visible'), true);
+                equal(shadowUI.select('.' + OPTION_LIST_CLASS).length, 0);
+                equal(select.selectedIndex, 0);
+                startNext();
+            });
         });
-    });
+    }
 
     asyncTest('B237794 - Select options list doesn\'t close after dblclick in Chrome and Opera (two successive clicks)', function () {
         var select = createSelect();
