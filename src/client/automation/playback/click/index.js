@@ -82,7 +82,7 @@ export default class ClickAutomation extends VisibleElementAutomation {
                 // NOTE: In WebKit and IE, the mousedown event opens the select element's dropdown;
                 // therefore, we should prevent mousedown and hide the dropdown (B236416).
                 var needCloseSelectDropDown = (browserUtils.isWebKit || browserUtils.isIE) &&
-                                              domUtils.isSelectElement(this.element);
+                                              domUtils.isSelectElement(this.mouseDownElement);
 
                 if (needCloseSelectDropDown)
                     this._bindMousedownHandler();
