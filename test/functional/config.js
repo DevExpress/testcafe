@@ -67,8 +67,8 @@ testingEnvironments[testingEnvironmentNames.mobileBrowsers] = {
         {
             //realMobile: true,
             os:        'android',
-            osVersion: '7.1',
-            device:    'Google Pixel',
+            osVersion: '6.0',
+            device:    'Nexus 6',
             name:      'Android',
             alias:     'android'
         },
