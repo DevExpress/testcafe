@@ -66,11 +66,11 @@ testingEnvironments[testingEnvironmentNames.mobileBrowsers] = {
     browsers: [
         {
             //realMobile: true,
-            os:         'android',
-            osVersion:  '7.1',
-            device:     'Google Pixel',
-            name:       'Android',
-            alias:      'android'
+            os:        'android',
+            osVersion: '7.1',
+            device:    'Google Pixel',
+            name:      'Android',
+            alias:     'android'
         },
         {
             os:        'ios',
