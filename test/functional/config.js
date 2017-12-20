@@ -65,12 +65,12 @@ testingEnvironments[testingEnvironmentNames.mobileBrowsers] = {
 
     browsers: [
         {
-            //realMobile: true,
-            os:        'android',
-            osVersion: '6.0',
-            device:    'Nexus 6',
-            name:      'Android',
-            alias:     'android'
+            realMobile: true,
+            os:         'android',
+            osVersion:  '6.0',
+            device:     'Nexus 6',
+            name:       'Android',
+            alias:      'android'
         },
         {
             os:        'ios',
