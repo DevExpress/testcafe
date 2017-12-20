@@ -67,8 +67,8 @@ testingEnvironments[testingEnvironmentNames.mobileBrowsers] = {
         {
             realMobile: true,
             os:         'android',
-            osVersion:  '6.0',
-            device:     'Nexus 6',
+            osVersion:  '7.0',
+            device:     'Samsung Galaxy S8',
             name:       'Android',
             alias:      'android'
         },
