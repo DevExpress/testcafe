@@ -7,7 +7,7 @@ import { writeFile, ensureDir } from '../../../../utils/promisified-functions';
 
 var commonTempProfile = null;
 
-async function createTempUserDir () {
+async function createTempUserDir (proxyHostName) {
     tmp.setGracefulCleanup();
 
     const tempDir        = tmp.dirSync({ unsafeCleanup: true });
@@ -21,6 +21,16 @@ async function createTempUserDir () {
                 currentDockState: '"undocked"',
                 lastDockState:    '"bottom"'
             }
+        },
+
+        profile: {
+            'content_settings': {
+                exceptions: {
+                    'automatic_downloads': {
+                        [proxyHostName]: { setting: 1 }
+                    }
+                }
+            }
         }
     };
 
@@ -30,13 +40,13 @@ async function createTempUserDir () {
     return tempDir;
 }
 
-async function getTempProfileDir (config) {
+async function getTempProfileDir (proxyHostName, config) {
 
     var tempProfile            = commonTempProfile;
     var shouldUseCommonProfile = !config.headless && !config.emulation;
 
     if (!shouldUseCommonProfile || !commonTempProfile)
-        tempProfile = await createTempUserDir();
+        tempProfile = await createTempUserDir(proxyHostName);
 
     if (shouldUseCommonProfile && !commonTempProfile)
         commonTempProfile = tempProfile;
@@ -44,10 +54,10 @@ async function getTempProfileDir (config) {
     return tempProfile;
 }
 
-export default async function (configString) {
-    var config          = getConfig(configString);
-    var tempProfileDir = !config.userProfile ? await getTempProfileDir(config) : null;
-    var cdpPort         = config.headless || config.emulation ? config.cdpPort || await getFreePort() : null;
+export default async function (proxyHostName, configString) {
+    var config         = getConfig(configString);
+    var tempProfileDir = !config.userProfile ? await getTempProfileDir(proxyHostName, config) : null;
+    var cdpPort        = config.headless || config.emulation ? config.cdpPort || await getFreePort() : null;
 
     return { config, cdpPort, tempProfileDir };
 }

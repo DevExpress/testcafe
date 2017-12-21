@@ -1,4 +1,5 @@
 import OS from 'os-family';
+import { parse as parseUrl } from 'url';
 import getRuntimeInfo from './runtime-info';
 import getConfig from './config';
 import { start as startLocalChrome, stop as stopLocalChrome } from './local-chrome';
@@ -12,7 +13,7 @@ export default {
     isMultiBrowser: false,
 
     async openBrowser (browserId, pageUrl, configString) {
-        var runtimeInfo = await getRuntimeInfo(configString);
+        var runtimeInfo = await getRuntimeInfo(parseUrl(pageUrl).hostname, configString);
         var browserName = this.providerName.replace(':', '');
 
         runtimeInfo.browserId   = browserId;
