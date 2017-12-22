@@ -311,9 +311,18 @@ $(document).ready(function () {
 
                 var requestBarrier = new RequestBarrier();
 
-                fetch('/respond-500')
+                fetch('/close-request')
                     .then(function (response) {
                         return response.text();
+                    })
+                    .then(function (text) {
+                        // NOTE: On the SauceLab, requests from browser to a destination server is passed via Squid proxy.
+                        // If destination server aborts a request then Squid respond with service error web page.
+                        // In this case we should manually raise an error.
+                        if (text.indexOf('Zero Sized Reply') !== -1)
+                            throw new Error();
+
+                        ok(false, text);
                     })
                     .catch(function () {
                         requestIsFailed = true;

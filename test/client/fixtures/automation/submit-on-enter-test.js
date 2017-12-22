@@ -34,7 +34,7 @@ $(document).ready(function () {
     function isInputValueValid ($el) {
         var el = $el[0];
 
-        return browserUtils.isSafari || !el.validity || el.validity.valid;
+        return el.validity.valid;
     }
 
     function runPressAutomation (keys, callback) {
@@ -302,6 +302,7 @@ $(document).ready(function () {
         var inputKeyupHandlerExecuted    = false;
         var inputKeypressHandlerExecuted = false;
         var submitFunctionCalled         = false;
+        var needToPreventEvent           = browserUtils.isFirefox || browserUtils.isSafari && browserUtils.version > 9;
 
         $input.bind('keydown', function () {
             inputKeydownHandlerExecuted = true;
@@ -325,13 +326,13 @@ $(document).ready(function () {
 
         $form[0].addEventListener('submit', function (e) {
             submitHandlerExecuted = true;
-            if (browserUtils.isFirefox)
+            if (needToPreventEvent)
                 e.preventDefault();
         });
 
-        //submit event dispatching leads to form submit in FireFox
-        //in other browsers we call submit function after submit event dispatched (if there are no submit buttons on form)
-        if (!browserUtils.isFirefox) {
+        // NOTE: submit event dispatching leads to form submit in FireFox and Safari version 10 or higher
+        // in other browsers we call submit function after submit event dispatched (if there are no submit buttons on form)
+        if (!needToPreventEvent) {
             $form[0].submit = function () {
                 submitFunctionCalled = true;
             };
@@ -344,7 +345,7 @@ $(document).ready(function () {
             ok(inputKeydownHandlerExecuted, 'input keydown handler executed');
             ok(inputKeypressHandlerExecuted, 'input keydown handler executed');
             ok(inputKeyupHandlerExecuted, 'input keydown handler executed');
-            if (!browserUtils.isFirefox)
+            if (!needToPreventEvent)
                 ok(submitFunctionCalled, 'submit function called');
 
             start();

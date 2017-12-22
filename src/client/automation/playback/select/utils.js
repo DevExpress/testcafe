@@ -85,7 +85,8 @@ function getSelectionRectangle (element, position) {
         var range = document.createRange(); //B254723
 
         range.setStart(fakeDiv.firstChild, Math.min(position, element.value.length));
-        range.setEnd(fakeDiv.firstChild, Math.min(position, element.value.length));
+        // NOTE: The range.getClientRects function returns wrong result if range length is 0 in Safari 11
+        range.setEnd(fakeDiv.firstChild, Math.min(position + 1, element.value.length + 1));
 
         if (domUtils.isTextAreaElement(element)) {
             rect = range.getBoundingClientRect();
@@ -137,7 +138,7 @@ function createFakeDiv (element) {
         height:   element.scrollHeight + 'px'
     });
 
-    fakeDiv.textContent = !element.value.length ? ' ' : element.value;
+    fakeDiv.textContent = element.value + ' ';
 
     body.appendChild(fakeDiv);
 

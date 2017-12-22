@@ -63,15 +63,15 @@ testingEnvironments[testingEnvironmentNames.mobileBrowsers] = {
         accessKey: process.env.BROWSER_STACK_ACCESS_KEY
     },
 
+    // NOTE: Android tests are temporary disabled due to ERR_CONNECTION_REFUSED on Browserstack
     browsers: [
-        {
-            realMobile: true,
-            os:         'android',
-            osVersion:  '7.1',
-            device:     'Google Pixel',
-            name:       'Android',
-            alias:      'android'
-        },
+        // {
+        //     os:         'android',
+        //     osVersion:  '7.1',
+        //     device:     'Google Pixel',
+        //     name:       'Android Browser',
+        //     alias:      'android'
+        // },
         {
             os:        'ios',
             osVersion: '10.0',

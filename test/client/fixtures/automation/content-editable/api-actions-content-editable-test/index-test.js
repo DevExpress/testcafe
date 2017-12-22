@@ -20,6 +20,11 @@ var parseKeySequence  = testCafeCore.get('./utils/parse-key-sequence');
 testCafeCore.preventRealEvents();
 
 $(document).ready(function () {
+    // NOTE: https://github.com/DevExpress/testcafe/issues/2008
+    // Remove this condition when the issue will be fixed.
+    if (browserUtils.isSafari && browserUtils.version === 11)
+        return;
+
     var $el     = null;
     var $parent = null;
 
