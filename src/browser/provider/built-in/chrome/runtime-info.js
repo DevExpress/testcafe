@@ -35,6 +35,10 @@ async function createTempUserDir (proxyHostName) {
             },
 
             'password_manager_enabled': false
+        },
+
+        'translate': {
+            'enabled': false
         }
     };
 
