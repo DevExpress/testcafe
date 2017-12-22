@@ -16,21 +16,25 @@ async function createTempUserDir (proxyHostName) {
     await ensureDir(profileDirName);
 
     const preferences = {
-        devtools: {
-            preferences: {
-                currentDockState: '"undocked"',
-                lastDockState:    '"bottom"'
+        'credentials_enable_service': false,
+
+        'devtools': {
+            'preferences': {
+                'currentDockState': '"undocked"',
+                'lastDockState':    '"bottom"'
             }
         },
 
-        profile: {
+        'profile': {
             'content_settings': {
-                exceptions: {
+                'exceptions': {
                     'automatic_downloads': {
                         [proxyHostName]: { setting: 1 }
                     }
                 }
-            }
+            },
+
+            'password_manager_enabled': false
         }
     };
 
