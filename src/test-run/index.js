@@ -23,6 +23,7 @@ import TestRunBookmark from './bookmark';
 import ClientFunctionBuilder from '../client-functions/client-function-builder';
 import ReporterPluginHost from '../reporter/plugin-host';
 import BrowserConsoleMessages from './browser-console-messages';
+import generateScreenshotMark from '../screenshots/generate-mark';
 
 import { TakeScreenshotOnFailCommand } from './commands/browser-manipulation';
 import { SetNativeDialogHandlerCommand, SetTestSpeedCommand, SetPageLoadTimeoutCommand } from './commands/actions';
@@ -38,6 +39,7 @@ import {
 } from './commands/service';
 
 import {
+    isScreenshotCommand,
     isCommandRejectableByPageError,
     isBrowserManipulationCommand,
     isServiceCommand,
@@ -268,7 +270,10 @@ export default class TestRun extends Session {
 
     _enqueueBrowserManipulation (command, callsite) {
         this.browserManipulationQueue.push(command);
-        return this.executeCommand(new PrepareBrowserManipulationCommand(command.type), callsite);
+
+        var { markData, markSeed } = isScreenshotCommand(command) ? generateScreenshotMark() : {};
+
+        return this.executeCommand(new PrepareBrowserManipulationCommand(command.type, markData, markSeed), callsite);
     }
 
     async _enqueueBrowserConsoleMessagesCommand (command, callsite) {

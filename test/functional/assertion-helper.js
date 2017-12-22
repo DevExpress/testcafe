@@ -1,7 +1,9 @@
 var expect = require('chai').expect;
 var path   = require('path');
 var fs     = require('fs');
+var Promise = require('pinkie');
 var del    = require('del');
+var pngjs  = require('pngjs');
 var config = require('./config.js');
 
 
@@ -13,7 +15,18 @@ const SCREENSHOT_FILE_NAME_RE        = /\\\d+.png$/;
 const CUSTOM_SCREENSHOT_FILE_NAME_RE = /\.png$/;
 const TEST_DIR_NAME_RE               = /test-\d+/;
 const RUN_DIR_NAME_RE                = /run-\d+/;
+const GREEN_PIXEL                    = [0, 255, 0, 255];
+const RED_PIXEL                      = [255, 0, 0, 255];
 
+
+function hasPixel (png, pixel, x, y) {
+    const baseIndex = (png.width * y + x) * 4;
+
+    return png.data[baseIndex] === pixel[0] &&
+           png.data[baseIndex + 1] === pixel[1] &&
+           png.data[baseIndex + 2] === pixel[2] &&
+           png.data[baseIndex + 3] === pixel[3];
+}
 
 function getScreenshotFilesCount (dir, customPath) {
     var results          = 0;
@@ -32,6 +45,27 @@ function getScreenshotFilesCount (dir, customPath) {
             results++;
     });
     return results;
+}
+
+function readPng (filePath) {
+    return new Promise(function (resolve) {
+        var png = new pngjs.PNG();
+
+        png.once('parsed', function () {
+            resolve(png);
+        });
+
+        fs.createReadStream(filePath).pipe(png);
+    });
+}
+
+function checkScreenshotFileCropped (filePath) {
+    return readPng(filePath)
+        .then(function (png) {
+            return hasPixel(png, RED_PIXEL, 0, 0) &&
+                   hasPixel(png, RED_PIXEL, 49, 49) &&
+                   hasPixel(png, GREEN_PIXEL, 50, 50);
+        });
 }
 
 function isDirExists (folderPath) {
@@ -174,6 +208,70 @@ exports.checkScreenshotsCreated = function checkScreenshotsCreated (forError, co
         dirPath = path.join(basePath, dir);
         return checkTestDir(dirPath, forError, expectedSubDirCount, expectedScreenshotCount);
     });
+};
+
+exports.checkScreenshotsCropped = function checkScreenshotsCreated (forError, customPath) {
+    const expectedScreenshotsCount = config.browsers.length;
+
+    if (!isDirExists(SCREENSHOTS_PATH))
+        return false;
+
+    var taskDirs = fs.readdirSync(SCREENSHOTS_PATH);
+
+    if (!taskDirs || !taskDirs[0] || taskDirs.length !== 1)
+        return false;
+
+    var taskDirPath = path.join(SCREENSHOTS_PATH, taskDirs[0]);
+    var list        = [];
+
+    if (forError) {
+        var testDirs = fs.readdirSync(taskDirPath);
+
+        if (!testDirs || !testDirs[0] || testDirs.length !== 1)
+            return false;
+
+        var testDirPath = path.join(taskDirPath, testDirs[0]);
+        var browserDirs = fs.readdirSync(testDirPath);
+
+        browserDirs.forEach(function (browserDir) {
+            var errorDirPath    = path.join(testDirPath, browserDir, 'errors');
+            var screenshotFiles = fs.readdirSync(errorDirPath);
+
+            var screenshotPaths = screenshotFiles.map(function (screenshotFile) {
+                return path.join(errorDirPath, screenshotFile);
+            });
+
+            list = list.concat(screenshotPaths);
+        });
+    }
+    else {
+        if (taskDirPath.indexOf(customPath) < 0)
+            return false;
+
+        list = fs.readdirSync(taskDirPath).map(function (screenshotFile) {
+            return path.join(taskDirPath, screenshotFile);
+        });
+    }
+
+    if (list.length < config.browsers.length)
+        return false;
+
+    list = list.filter(function (filePath) {
+        return filePath.match(CUSTOM_SCREENSHOT_FILE_NAME_RE);
+    });
+
+    return Promise
+        .all(list.map(function (filePath) {
+            return checkScreenshotFileCropped(filePath);
+        }))
+        .then(function (checkResults) {
+            var actualScreenshotsCount = 0;
+
+            for (var i = 0; i < checkResults.length; i++)
+                actualScreenshotsCount += checkResults[i] ? 1 : 0;
+
+            return actualScreenshotsCount === expectedScreenshotsCount;
+        });
 };
 
 exports.removeScreenshotDir = function () {
