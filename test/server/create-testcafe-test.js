@@ -10,8 +10,8 @@ describe('TestCafe factory function', function () {
     var testCafe = null;
     var server   = null;
 
-    function getTestCafe (hostname, port1, port2) {
-        return createTestCafe(hostname, port1, port2)
+    function getTestCafe (hostname, port1, port2, protocol) {
+        return createTestCafe(hostname, port1, port2, protocol)
             .then(function (tc) {
                 testCafe = tc;
             });
@@ -54,6 +54,21 @@ describe('TestCafe factory function', function () {
                 var port  = parseInt(bcUrl.port, 10);
 
                 expect(bcUrl.hostname).eql('localhost');
+                expect(port).eql(1338);
+            });
+    });
+
+    it('Should accept custom ports, hostname and protocol', function () {
+        return getTestCafe('localhost', 1338, 1339, 'https')
+            .then(function () {
+                return testCafe.createBrowserConnection();
+            })
+            .then(function (bc) {
+                var bcUrl = url.parse(bc.url);
+                var port  = parseInt(bcUrl.port, 10);
+
+                expect(bcUrl.hostname).eql('localhost');
+                expect(bcUrl.protocol).eql('https:');
                 expect(port).eql(1338);
             });
     });
