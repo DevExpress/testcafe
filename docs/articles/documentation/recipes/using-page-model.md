@@ -65,7 +65,7 @@ while tests remain focused on the behavior.
     This class will contain the Page Model, so name the file `page-model.js`.
 
 2. Add the `Developer Name` input element to the model. To do this,
-  introduce the `nameInput` property and assign a [selector](../test-api/selecting-page-elements/selectors.md) to it.
+  introduce the `nameInput` property and assign a [selector](../test-api/selecting-page-elements/selectors/README.md) to it.
 
     ```js
     import { Selector } from 'testcafe';

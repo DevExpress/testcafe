@@ -21,7 +21,7 @@ This topic contains the following sections.
 ## Assertion Structure
 
 TestCafe assertions start with the `expect` method exposed by [test controller](../test-code-structure.html#test-controller).
-This method accepts the actual value. You can pass a value, a [Selector's DOM node state property](../selecting-page-elements/selectors.md#define-assertion-actual-value)
+This method accepts the actual value. You can pass a value, a [Selector's DOM node state property](../selecting-page-elements/selectors/using-selectors.md#define-assertion-actual-value)
 or a [client function](../obtaining-data-from-the-client.md) promise.
 TestCafe automatically waits for node state properties to obtain a value and for client functions to execute.
 See [Smart Assertion Query Mechanism](#smart-assertion-query-mechanism) for details.
@@ -77,7 +77,7 @@ To perform asynchronous functional tests, an additional timeout as usually added
 To stabilize such tests, you need to add a timeout that will guarantee that the required changes are successfully applied.
 Adding such timeouts can increase the test running time because of extra waiting.
 
-If the TestCafe assertion receives a [Selector's DOM node state property](../selecting-page-elements/selectors.md#define-assertion-actual-value)
+If the TestCafe assertion receives a [Selector's DOM node state property](../selecting-page-elements/selectors/using-selectors.md#define-assertion-actual-value)
 or a [client function](../obtaining-data-from-the-client.md) promise
 as an actual value, TestCafe uses the smart assertion query mechanism:
 if an assertion did not pass, the test does not fail immediately. The assertion retries to pass multiple times and
@@ -132,7 +132,7 @@ if you run TestCafe from the command line.
 **Type**: Number
 
 The amount of time, in milliseconds, allowed for an assertion to pass before the test fails if
-[a selector property](../selecting-page-elements/selectors.md#define-assertion-actual-value)
+[a selector property](../selecting-page-elements/selectors/using-selectors.md#define-assertion-actual-value)
 or a [client function](../obtaining-data-from-the-client.md) promise was used in assertion.
 
 **Default value**: timeout is specified by using the [runner.run](../../using-testcafe/programming-interface/runner.md#run) API method

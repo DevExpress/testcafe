@@ -17,7 +17,6 @@ To address these scenarios, TestCafe introduces the *selector* functions.
 A Selector identifies a webpage element in the test and allow to get its state and
 use it in actions and assertions.
 
-* [Selectors](selectors.md)
-* [Selector Options](selector-options.md)
+* [Selectors](selectors/README.md)
 * [DOM Node State](dom-node-state.md)
 * [Framework-Specific Selectors](framework-specific-selectors.md)

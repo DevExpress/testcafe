@@ -54,7 +54,7 @@ test(`Select an option from the drop-down menu`, async t => {
 });
 ```
 
-First, you need a [selector](../test-api/selecting-page-elements/selectors.md) that picks the `<select>` element.
+First, you need a [selector](../test-api/selecting-page-elements/selectors/README.md) that picks the `<select>` element.
 
 ```js
 const citySelect = Selector('#city');
@@ -67,14 +67,14 @@ await t.click(citySelect);
 ```
 
 Next, write code that selects `London` from the drop-down list. To this end, introduce a selector that identifies options.
-This selector uses the [find](../test-api/selecting-page-elements/selectors.md#find) function to locate `<option>` elements inside `<select>`.
+This selector uses the [find](../test-api/selecting-page-elements/selectors/functional-style-selectors.md#find) function to locate `<option>` elements inside `<select>`.
 
 ```js
 const cityOption = citySelect.find('option');
 ```
 
-To find the `London` value, use the selector's filter methods that include [withText](../test-api/selecting-page-elements/selectors.md#withtext), [nth](../test-api/selecting-page-elements/selectors.md#nth) and
-[withAttribute](../test-api/selecting-page-elements/selectors.md#withattribute).
+To find the `London` value, use the selector's filter methods that include [withText](../test-api/selecting-page-elements/selectors/functional-style-selectors.md#withtext), [nth](../test-api/selecting-page-elements/selectors/functional-style-selectors.md#nth) and
+[withAttribute](../test-api/selecting-page-elements/selectors/functional-style-selectors.md#withattribute).
 Then pass this selector to the `click` method.
 
 ```js

@@ -8,7 +8,7 @@ permalink: /documentation/test-api/waiting-for-page-elements-to-appear.html
 TestCafe has a built-in automatic waiting mechanism, so that it does not need dedicated API to wait for page elements to appear.
 
 This topic describes how the automatic waiting mechanism works with [test actions](actions/README.md),
-[assertions](assertions/README.md) and [selectors](selecting-page-elements/selectors.md).
+[assertions](assertions/README.md) and [selectors](selecting-page-elements/selectors/README.md).
 
 ## Waiting for Action Target Elements
 
@@ -30,7 +30,7 @@ test('My test', async t => {
 });
 ```
 
-TestCafe tries to evaluate the specified selector multiple times within the [timeout](selecting-page-elements/selectors.md#selector-timeout).
+TestCafe tries to evaluate the specified selector multiple times within the [timeout](selecting-page-elements/selectors/using-selectors.md#selector-timeout).
 If the element does not appear, the test will fail.
 
 ## Waiting for Elements When Evaluating Selectors
@@ -52,7 +52,7 @@ test('My test', async t => {
 });
 ```
 
-TestCafe keeps trying to evaluate the selector until the element appears in the DOM or the [timeout](selecting-page-elements/selectors.md#selector-timeout) passes.
+TestCafe keeps trying to evaluate the selector until the element appears in the DOM or the [timeout](selecting-page-elements/selectors/using-selectors.md#selector-timeout) passes.
 
 You can additionally require that TestCafe should wait for an element to become visible.
 Use the [visibilityCheck](selecting-page-elements/selector-options.md#optionsvisibilitycheck) selector option for this.
@@ -75,14 +75,14 @@ test('My test', async t => {
 ## Waiting for Assertions to Pass
 
 TestCafe assertions feature the [Smart Assertion Query Mechanism](assertions/README.md#smart-assertion-query-mechanism).
-This mechanism is activated when you pass a [selector property](selecting-page-elements/selectors.md#obtain-element-state)
+This mechanism is activated when you pass a [selector property](selecting-page-elements/selectors/using-selectors.md#obtain-element-state)
 or a [client function](obtaining-data-from-the-client.md) as an actual value. In this instance, TestCafe keeps recalculating the actual
 value until it matches the expected value or the [assertion timeout](assertions/README.md#optionstimeout) passes.
 
 Note that the Smart Assertion Query Mechanism does not wait for page elements to appear.
 If you need to wait for an element before executing an assertion,
-add another assertion that checks the selector's [count](selecting-page-elements/selectors.md#check-if-an-element-exists)
-or [exists](selecting-page-elements/selectors.md#check-if-an-element-exists) property.
+add another assertion that checks the selector's [count](selecting-page-elements/selectors/using-selectors.md#check-if-an-element-exists)
+or [exists](selecting-page-elements/selectors/using-selectors.md#check-if-an-element-exists) property.
 
 ```js
 import { Selector } from 'testcafe';
