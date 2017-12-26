@@ -23,7 +23,7 @@ You can also overwrite the options you have specified before.
 If you need to call a selector from a Node.js callback, assign the current
 [test controller](../../test-code-structure.md#test-controller) to the `boundTestRun` option.
 
-For details, see [Calling Selectors from Node.js Callbacks](tips-and-limitations.md#calling-selectors-from-nodejs-callbacks).
+For details, see [Calling Selectors from Node.js Callbacks](edge-cases-and-limitations.md#calling-selectors-from-nodejs-callbacks).
 
 ## options.timeout
 

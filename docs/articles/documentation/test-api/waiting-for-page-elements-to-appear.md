@@ -55,7 +55,7 @@ test('My test', async t => {
 TestCafe keeps trying to evaluate the selector until the element appears in the DOM or the [timeout](selecting-page-elements/selectors/using-selectors.md#selector-timeout) passes.
 
 You can additionally require that TestCafe should wait for an element to become visible.
-Use the [visibilityCheck](selecting-page-elements/selector-options.md#optionsvisibilitycheck) selector option for this.
+Use the [visibilityCheck](selecting-page-elements/selectors/selector-options.md#optionsvisibilitycheck) selector option for this.
 
 ```js
 import { Selector } from 'testcafe';
