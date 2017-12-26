@@ -1,7 +1,7 @@
 ---
 layout: docs
 title: Selectors
-permalink: /documentation/test-api/selecting-page-elements/selectors.html
+permalink: /documentation/test-api/selecting-page-elements/selectors/
 checked: false
 ---
 # Selectors
