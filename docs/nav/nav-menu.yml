@@ -73,10 +73,10 @@
       content:
       - name: Creating Selectors
         url: /documentation/test-api/selecting-page-elements/selectors/creating-selectors.md
-      - name: Functional-Style Selectors
-        url: /documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.md
       - name: Using Selectors
         url: /documentation/test-api/selecting-page-elements/selectors/using-selectors.md
+      - name: Functional-Style Selectors
+        url: /documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.md
       - name: Selector Options
         url: /documentation/test-api/selecting-page-elements/selectors/selector-options.md
       - name: Extending Selectors
