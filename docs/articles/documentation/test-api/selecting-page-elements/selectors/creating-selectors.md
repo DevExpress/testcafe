@@ -64,7 +64,7 @@ You can initialize a selector with any of these objects.
 
     // This selector is created based on the previous selector and inherits
     // its initializer, but overwrites the `visibilityCheck` parameter.
-    Selector(cta-button, { visibilityCheck: false });
+    Selector(cta-button, { visibilityCheck: true });
     ```
 
 * A [DOM Node Snapshot](using-selectors.md#dom-node-snapshot) returned by selector execution.
