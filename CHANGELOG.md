@@ -8,6 +8,7 @@
 
 ### Bug Fixes
 
+* In Chrome, disabled showing the 'Save password' prompt after typing text in the input of the `password` type ([#1913](https://github.com/DevExpress/testcafe/issues/1913))
 * Now TestCafe correctly scrolls a page to an element when this page has scrollbars ([#1955](https://github.com/DevExpress/testcafe/pull/1955))
 * Fixed the 'Cannot redefine property %testCafeCore%' script error ([#1996](https://github.com/DevExpress/testcafe/issues/1996))
 * TestCafe now rounds off dimension values when it calculates scrolling ([#2004](https://github.com/DevExpress/testcafe/pull/2004))
