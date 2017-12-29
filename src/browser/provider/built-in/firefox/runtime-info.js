@@ -20,6 +20,8 @@ async function generatePrefs (profileDir, port) {
         'user_pref("app.update.auto", false);',
         'user_pref("app.update.mode", 0);',
         'user_pref("app.update.service.enabled", false);',
+        'user_pref("browser.shell.checkDefaultBrowser", false);',
+        'user_pref("browser.usedOnWindows10", true);',
         'user_pref("browser.rights.3.shown", true);',
         'user_pref("browser.startup.homepage_override.mstone","ignore");',
         'user_pref("browser.tabs.warnOnCloseOtherTabs", false);',
