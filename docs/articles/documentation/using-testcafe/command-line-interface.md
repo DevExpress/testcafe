@@ -416,8 +416,8 @@ testcafe chrome my-tests --app 'node server.js' --app-init-delay 4000
 
 ### --selector-timeout \<ms\>
 
-Specifies the amount of time, in milliseconds, within which [selectors](../test-api/selecting-page-elements/selectors.md) make
-attempts to obtain a node to be returned. See [Selector Timeout](../test-api/selecting-page-elements/selectors.md#selector-timeout).
+Specifies the amount of time, in milliseconds, within which [selectors](../test-api/selecting-page-elements/selectors/README.md) make
+attempts to obtain a node to be returned. See [Selector Timeout](../test-api/selecting-page-elements/selectors/using-selectors.md#selector-timeout).
 
 **Default value**: `10000`
 
@@ -428,7 +428,7 @@ testcafe ie my-tests --selector-timeout 500000
 ### --assertion-timeout \<ms\>
 
 Specifies the amount of time, in milliseconds, within which TestCafe makes attempts to successfully execute an [assertion](../test-api/assertions/README.md)
-if a [selector property](../test-api/selecting-page-elements/selectors.md#define-assertion-actual-value)
+if a [selector property](../test-api/selecting-page-elements/selectors/using-selectors.md#define-assertion-actual-value)
 or a [client function](../test-api/obtaining-data-from-the-client.md) was passed as an actual value.
 See [Smart Assertion Query Mechanism](../test-api/assertions/README.md#smart-assertion-query-mechanism).
 

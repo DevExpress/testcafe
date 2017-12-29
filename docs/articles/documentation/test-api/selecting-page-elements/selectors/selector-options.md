@@ -1,12 +1,12 @@
 ---
 layout: docs
 title: Selector Options
-permalink: /documentation/test-api/selecting-page-elements/selector-options.html
+permalink: /documentation/test-api/selecting-page-elements/selectors/selector-options.html
 checked: true
 ---
 # Selector Options
 
-You can pass the following options to the [Selector constructor](selectors.md#creating-selectors).
+You can pass the following options to the [Selector constructor](creating-selectors.md).
 
 * [options.boundTestRun](#optionsboundtestrun)
 * [options.timeout](#optionstimeout)
@@ -21,9 +21,9 @@ You can also overwrite the options you have specified before.
 **Type**: Object
 
 If you need to call a selector from a Node.js callback, assign the current
-[test controller](../test-code-structure.md#test-controller) to the `boundTestRun` option.
+[test controller](../../test-code-structure.md#test-controller) to the `boundTestRun` option.
 
-For details, see [Calling Selectors from Node.js Callbacks](selectors.md#calling-selectors-from-nodejs-callbacks).
+For details, see [Calling Selectors from Node.js Callbacks](edge-cases-and-limitations.md#calling-selectors-from-nodejs-callbacks).
 
 ## options.timeout
 
@@ -33,8 +33,8 @@ The amount of time, in milliseconds, allowed for an element returned by the sele
 
 If the [visibilityCheck](#optionsvisibilitycheck) option is enabled, the element then must become visible within the `timeout`.
 
-**Default value**: timeout specified by using the [runner.run](../../using-testcafe/programming-interface/runner.md#run) API method
-or the [selector-timeout](../../using-testcafe/command-line-interface.md#--selector-timeout-ms) command line option.
+**Default value**: timeout specified by using the [runner.run](../../../using-testcafe/programming-interface/runner.md#run) API method
+or the [selector-timeout](../../../using-testcafe/command-line-interface.md#--selector-timeout-ms) command line option.
 
 ## options.visibilityCheck
 

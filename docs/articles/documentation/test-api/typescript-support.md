@@ -35,8 +35,8 @@ In this case, your IDE will not be able to find the TestCafe declaration file an
 Now, you can write tests in the same manner as in JavaScript.
 When you run a test Testcafe will output if there are any compilation errors.
 
-> The [extending selectors](./selecting-page-elements/selectors.md#extending-selectors)
+> The [extending selectors](./selecting-page-elements/selectors/extending-selectors.md)
 > in TypeScript differs from extending selectors in JavaScript. Refer to the
-> [Custom Properties](./selecting-page-elements/selectors.md#custom-properties)
-> and [Custom Methods](./selecting-page-elements/selectors.md#custom-methods)
+> [Custom Properties](./selecting-page-elements/selectors/extending-selectors.md#custom-properties)
+> and [Custom Methods](./selecting-page-elements/selectors/extending-selectors.md#custom-methods)
 > sections to learn how to extend selectors in TypeScript.

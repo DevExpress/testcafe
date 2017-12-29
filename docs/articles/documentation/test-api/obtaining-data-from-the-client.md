@@ -36,7 +36,7 @@ Parameter              | Type     | Description
 `fn`                   | Function | A function to be executed on the client side.
 `options`&#160;*(optional)* | Object   | See [Options](#options).
 
-> Important! Client functions cannot return DOM nodes. Use [selectors](selecting-page-elements/selectors.md) for this.
+> Important! Client functions cannot return DOM nodes. Use [selectors](selecting-page-elements/selectors/README.md) for this.
 
 The following example shows how to create a client function.
 
@@ -93,7 +93,7 @@ Contains functions, variables or objects used by the client function internally.
 Properties of the `dependencies` object will be added to the client function's scope as variables.
 
 The following sample demonstrates a client function (`getArticleHeaderHTML`) that
-calls a [selector](selecting-page-elements/selectors.md) (`articleHeader`) internally.
+calls a [selector](selecting-page-elements/selectors/README.md) (`articleHeader`) internally.
 This selector is passed to `getArticleHeaderHTML` as a dependency.
 
 ```js
@@ -106,7 +106,7 @@ const getArticleHeaderHTML = ClientFunction(() => articleHeader().innerHTML, {
 });
 ```
 
-> When a client function calls a [selector](selecting-page-elements/selectors.md) internally,
+> When a client function calls a [selector](selecting-page-elements/selectors/README.md) internally,
 > the selector does not wait for the element to appear in the DOM
 > but is executed at once, like a client function.
 

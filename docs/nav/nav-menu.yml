@@ -69,9 +69,20 @@
     url: /documentation/test-api/selecting-page-elements/README.md
     content:
     - name: Selectors
-      url: /documentation/test-api/selecting-page-elements/selectors.md
-    - name: Selector Options
-      url: /documentation/test-api/selecting-page-elements/selector-options.md
+      url: /documentation/test-api/selecting-page-elements/selectors/README.md
+      content:
+      - name: Creating Selectors
+        url: /documentation/test-api/selecting-page-elements/selectors/creating-selectors.md
+      - name: Using Selectors
+        url: /documentation/test-api/selecting-page-elements/selectors/using-selectors.md
+      - name: Functional-Style Selectors
+        url: /documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.md
+      - name: Selector Options
+        url: /documentation/test-api/selecting-page-elements/selectors/selector-options.md
+      - name: Extending Selectors
+        url: /documentation/test-api/selecting-page-elements/selectors/extending-selectors.md
+      - name: Edge Cases and Limitations
+        url: /documentation/test-api/selecting-page-elements/selectors/edge-cases-and-limitations.md
     - name: DOM Node State
       url: /documentation/test-api/selecting-page-elements/dom-node-state.md
     - name: Framework-Specific Selectors
