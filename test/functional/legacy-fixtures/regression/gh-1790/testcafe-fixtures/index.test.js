@@ -2,7 +2,7 @@
 '@page ./index.html';
 
 '@test'['gh-1790'] = {
-    '1.TypeText': function () {
+    '1.Type text': function () {
         act.type('#input', 'text');
     }
 };
