@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>gh-1999</title>
+</head>
+<body>
+
+<input id="targetRecreate" value="input" style="visibility: hidden;"/>
+<input id="targetRemove" value="input" style="visibility: hidden;"/>
+
+<script>
+
+    function inputRecreate() {
+        const input = document.getElementById('targetRecreate');
+        const parent = input.parentNode;
+
+        parent.removeChild(input);
+
+        const newInput = document.createElement('input');
+
+        newInput.id = 'targetRecreate';
+        newInput.value = 'new input recreate';
+
+        document.body.appendChild(newInput);
+    }
+    
+    function  inputRemove() {
+        const input = document.getElementById('targetRemove');
+        const parent = input.parentNode;
+
+        parent.removeChild(input);
+    }
+
+    window.setTimeout(function () {
+        inputRecreate();
+        inputRemove();
+    }, 500);
+
+</script>
+</body>
+</html>
