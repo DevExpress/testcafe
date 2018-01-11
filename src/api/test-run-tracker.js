@@ -4,19 +4,6 @@ import BabelPromise from 'babel-runtime/core-js/promise';
 const TRACKING_MARK_RE = /^\$\$testcafe_test_run\$\$(\S+)\$\$$/;
 const STACK_CAPACITY   = 5000;
 
-// Utils
-// NOTE: testRunId may contain '-' which is not allowed in function names.
-// But it's guaranteed that it will never contain '$'
-// (see: https://github.com/dylang/shortid#charactersstring)
-// So we use '$' to encode '-'.
-function encodeTestRunId (testRunId) {
-    return testRunId.replace(/-/g, '$');
-}
-
-function decodeTestRunId (testRunId) {
-    return testRunId.replace(/\$/g, '-');
-}
-
 // Tracker
 export default {
     enabled: false,
@@ -74,7 +61,7 @@ export default {
 
     addTrackingMarkerToFunction (testRunId, fn) {
         var markerFactoryBody = `
-            return function $$testcafe_test_run$$${encodeTestRunId(testRunId)}$$ () {
+            return function $$testcafe_test_run$$${testRunId}$$ () {
                 switch (arguments.length) {
                     case 0: return fn.call(this);
                     case 1: return fn.call(this, arguments[0]);
@@ -102,7 +89,7 @@ export default {
             var match  = fnName && fnName.match(TRACKING_MARK_RE);
 
             if (match)
-                return decodeTestRunId(match[1]);
+                return match[1];
         }
 
         return null;
