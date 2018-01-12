@@ -1,6 +1,13 @@
+import OS from 'os-family';
+import Promise from 'pinkie';
 import browserTools from 'testcafe-browser-tools';
 import killBrowserProcess from '../../utils/kill-browser-process';
+import delay from '../../../../utils/delay';
 
+
+const MACOS_PROCESS_THROTTLING = 500;
+
+var throttlingPromise = Promise.resolve();
 
 function buildChromeArgs (config, cdpPort, platformArgs, profileDir) {
     return []
@@ -20,7 +27,13 @@ export async function start (pageUrl, { browserName, config, cdpPort, tempProfil
 
     chromeOpenParameters.cmd = buildChromeArgs(config, cdpPort, chromeOpenParameters.cmd, tempProfileDir);
 
-    await browserTools.open(chromeOpenParameters, pageUrl);
+    var currentThrottlingPromise = throttlingPromise;
+
+    if (OS.mac)
+        throttlingPromise = throttlingPromise.then(() => delay(MACOS_PROCESS_THROTTLING));
+
+    await currentThrottlingPromise
+        .then(() => browserTools.open(chromeOpenParameters, pageUrl));
 }
 
 export async function stop ({ browserId }) {
