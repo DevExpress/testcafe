@@ -49,34 +49,26 @@ export default class SelectorExecutor extends ClientFunctionExecutor {
         ]);
     }
 
-    _checkElement (el, startTime, condition, createTimeoutError, reCheck) {
-        if (condition(el))
-            return el;
-
-        var isTimeout = new Date() - startTime >= this.timeout;
-
-        if (isTimeout) {
-            if (createTimeoutError)
-                throw createTimeoutError();
-
-            return null;
-        }
-
-        return delay(CHECK_ELEMENT_DELAY).then(reCheck);
-    }
-
-    _ensureExists (args, startTime) {
-        var reCheck = () => this._ensureExists(args, startTime);
-
+    _validateElement (args, startTime) {
         return Promise.resolve()
             .then(() => this.fn.apply(window, args))
-            .then(el => this._checkElement(el, startTime, exists, this.createNotFoundError, reCheck));
-    }
+            .then(el => {
+                const isElementExists    = exists(el);
+                const isElementVisible   = !this.command.visibilityCheck || visible(el);
+                const createTimeoutError = !isElementExists ? this.createNotFoundError : this.createIsInvisibleError;
+                const isTimeout          = new Date() - startTime >= this.timeout;
 
-    _ensureVisible (el, startTime) {
-        var reCheck = () => this._ensureVisible(el, startTime);
+                if (isElementExists && isElementVisible)
+                    return el;
 
-        return this._checkElement(el, startTime, visible, this.createIsInvisibleError, reCheck);
+                if (!isTimeout)
+                    return delay(CHECK_ELEMENT_DELAY).then(() => this._validateElement(args, startTime));
+
+                if (createTimeoutError)
+                    throw createTimeoutError();
+
+                return null;
+            });
     }
 
     _executeFn (args) {
@@ -88,13 +80,7 @@ export default class SelectorExecutor extends ClientFunctionExecutor {
         var element   = null;
 
         return this
-            ._ensureExists(args, startTime)
-            .then(el => {
-                if (el && this.command.visibilityCheck)
-                    return this._ensureVisible(el, startTime);
-
-                return el;
-            })
+            ._validateElement(args, startTime)
             .catch(err => {
                 error = err;
             })
