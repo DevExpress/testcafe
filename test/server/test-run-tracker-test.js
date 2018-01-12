@@ -9,7 +9,7 @@ describe('Test run tracker', function () {
     function runTest (testName) {
         var src         = 'test/server/data/test-run-tracking/' + testName;
         var compiler    = new Compiler([src]);
-        var testRunMock = { id: 'dB_J4h-H' };
+        var testRunMock = { id: 'dB_J4h0H' };
         var expected    = fill(Array(3), testRunMock.id);
 
         return compiler.getTests()
