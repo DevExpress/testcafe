@@ -53,17 +53,20 @@ export default class SelectorExecutor extends ClientFunctionExecutor {
         return Promise.resolve()
             .then(() => this.fn.apply(window, args))
             .then(el => {
-                const isElementExists = exists(el);
-                const isElementVisible = !this.command.visibilityCheck || visible(el);
-                const createTimeoutError  = !isElementExists ? this.createNotFoundError : this.createIsInvisibleError;
-                const isTimeout = new Date() - startTime >= this.timeout;
+                const isElementExists    = exists(el);
+                const isElementVisible   = !this.command.visibilityCheck || visible(el);
+                const createTimeoutError = !isElementExists ? this.createNotFoundError : this.createIsInvisibleError;
+                const isTimeout          = new Date() - startTime >= this.timeout;
 
                 if (isElementExists && isElementVisible)
                     return el;
+
                 if (!isTimeout)
                     return delay(CHECK_ELEMENT_DELAY).then(() => this._validateElement(args, startTime));
+
                 if (createTimeoutError)
                     throw createTimeoutError();
+
                 return null;
             });
     }
