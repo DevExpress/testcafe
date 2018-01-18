@@ -107,7 +107,7 @@ export default class TestRunBookmark {
             var preserveUrl = this.role.opts.preserveUrl;
             var url = preserveUrl ? this.role.url : this.url;
 
-            await this._restorePage(url, storages);
+            await this._restorePage(url, JSON.stringify(storages));
 
             if (!preserveUrl)
                 await this._restoreWorkingFrame();

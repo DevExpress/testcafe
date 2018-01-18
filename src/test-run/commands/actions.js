@@ -10,6 +10,7 @@ import {
     integerArgument,
     positiveIntegerArgument,
     nonEmptyStringArgument,
+    nullableStringArgument,
     urlArgument,
     stringOrStringArrayArgument,
     setSpeedArgument,
@@ -332,7 +333,7 @@ export class NavigateToCommand extends Assignable {
     _getAssignableProperties () {
         return [
             { name: 'url', type: urlArgument, required: true },
-            { name: 'storages' }
+            { name: 'storages', type: nullableStringArgument }
         ];
     }
 }

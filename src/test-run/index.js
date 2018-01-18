@@ -374,7 +374,7 @@ export default class TestRun extends Session {
         const command = this.currentDriverTask.command;
 
         if (command.type === COMMAND_TYPE.navigateTo && command.storages)
-            this.useStateSnapshot({ storages: command.storages });
+            this.useStateSnapshot({ storages: JSON.parse(command.storages) });
 
         return command;
     }

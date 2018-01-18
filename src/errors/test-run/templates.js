@@ -113,6 +113,10 @@ export default {
         The "${err.argumentName}" argument is expected to be a non-empty string, but it was ${err.actualValue}.
     `),
 
+    [TYPE.actionNullableStringArgumentError]: err => markup(err, `
+        The "${err.argumentName}" argument is expected to be a a null or a string, but it was ${err.actualValue}.
+    `),
+
     [TYPE.actionStringOrStringArrayArgumentError]: err => markup(err, `
         The "${err.argumentName}" argument is expected to be a non-empty string or a string array, but it was ${err.actualValue}.
     `),
