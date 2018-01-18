@@ -759,10 +759,7 @@ describe('Test run commands', function () {
             var commandObj = {
                 type:     TYPE.navigateTo,
                 url:      'localhost',
-                storages: {
-                    localStorage:   '[[],[]]',
-                    sessionStorage: '[[],[]]'
-                }
+                storages: 'storages'
             };
 
             var command = createCommand(commandObj);
@@ -770,10 +767,7 @@ describe('Test run commands', function () {
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.navigateTo,
                 url:      'localhost',
-                storages: {
-                    localStorage:   '[[],[]]',
-                    sessionStorage: '[[],[]]'
-                }
+                storages: 'storages'
             });
         });
 
