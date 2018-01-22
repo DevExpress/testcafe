@@ -8,20 +8,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <title>Upload | TestCafe</title>
+  <title>Selectors | TestCafe</title>
 
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
   
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/test-api/actions/upload.html" />
-  <meta property="og:title" content="Upload | TestCafe" />
+  <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/" />
+  <meta property="og:title" content="Selectors | TestCafe" />
 
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
-  <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/test-api/actions/upload.html">
+  <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="http://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
@@ -507,7 +507,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/"  >Selectors</a>
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/" class="active" >Selectors</a>
 		
 			<ul>
 
@@ -655,7 +655,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/actions/upload.html" class="active" >Upload</a>
+<a href="/testcafe/documentation/test-api/actions/upload.html"  >Upload</a>
 		
     </li>
 
@@ -795,89 +795,48 @@
 	<article class="doc">
 		<div class="post-content">
 
-			<h1>Upload</h1>
-<p>Use the following actions to work with file upload input elements.</p>
-
-<ul>
-<li><a href="#populate-file-upload-input">Populate File Upload Input</a></li>
-<li><a href="#clear-file-upload-input">Clear File Upload Input</a></li>
-</ul>
-<h2><a class="anchor" name="populate-file-upload-input"></a>Populate File Upload Input <a class="permalink" href="#populate-file-upload-input">#</a></h2>
-<p>Populates the specified file upload input with file paths.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">t.setFilesToUpload( selector, filePath )
-</code></pre></div>
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><code>selector</code></td>
-<td>Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise</td>
-<td>Identifies the input field to which file paths are written. See <a href=".#selecting-target-elements">Selecting Target Elements</a>.</td>
-</tr>
-<tr>
-<td><code>filePath</code></td>
-<td>String &#124; Array</td>
-<td>The path to the uploaded file, or several such paths. Relative paths resolve from the folder with the test file.</td>
-</tr>
-</tbody></table>
-
-<p>The following example illustrates how to use the <code>t.setFilesToUpload</code> action.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//www.example.com/`;</span>
-
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Uploading'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
-        <span class="p">.</span><span class="nx">setFilesToUpload</span><span class="p">(</span><span class="s1">'#upload-input'</span><span class="p">,</span> <span class="p">[</span>
-            <span class="s1">'./uploads/1.jpg'</span><span class="p">,</span>
-            <span class="s1">'./uploads/2.jpg'</span><span class="p">,</span>
-            <span class="s1">'./uploads/3.jpg'</span>
-        <span class="p">])</span>
-        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#upload-button'</span><span class="p">);</span>
-<span class="p">});</span>
-</code></pre></div>
-<p>The <code>t.setFilesToUpload</code> action removes all file paths from the input before populating it with new ones.</p>
-<blockquote><div class="blockquote-content"><p>If an error occurs while uploading files, the test will fail.</p>
-</div></blockquote><h2><a class="anchor" name="clear-file-upload-input"></a>Clear File Upload Input <a class="permalink" href="#clear-file-upload-input">#</a></h2>
-<p>Removes all file paths from the specified file upload input.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">t.clearUpload( selector )
-</code></pre></div>
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><code>selector</code></td>
-<td>Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise</td>
-<td>Identifies the input field that needs to be cleared. See <a href=".#selecting-target-elements">Selecting Target Elements</a>.</td>
-</tr>
-</tbody></table>
-
-<p>The example below shows how to use the <code>t.clearUpload</code> action.</p>
+			<h1>Selectors</h1>
+<p>A selector is a function that identifies a webpage element in the test.
+The selector API provides methods and properties to select elements on the page and get their state.
+You can use selectors to <a href="using-selectors.html#obtain-element-state">inspect elements state on the page</a>, define <a href="using-selectors.html#define-action-targets">action targets</a> and
+<a href="using-selectors.html#define-assertion-actual-value">assertion actual values</a>.</p>
+<blockquote class="important"><div class="blockquote-content"><p>Do not modify the tested webpage within selectors.
+To interact with the page, use <a href="../../actions/">test actions</a>.</p>
+</div></blockquote><h2><a class="anchor" name="quick-start"></a>Quick Start <a class="permalink" href="#quick-start">#</a></h2>
+<p>Import the <a href="creating-selectors.html">Selector</a> constructor from the <code>testcafe</code> module. Call this constructor and pass a CSS selector string as an argument.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">uploadBtn</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#upload-button'</span><span class="p">);</span>
-
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//www.example.com/`;</span>
-
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Trying to upload with no files specified'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
-        <span class="p">.</span><span class="nx">setFilesToUpload</span><span class="p">(</span><span class="s1">'#upload-input'</span><span class="p">,</span> <span class="p">[</span>
-            <span class="s1">'./uploads/1.jpg'</span><span class="p">,</span>
-            <span class="s1">'./uploads/2.jpg'</span><span class="p">,</span>
-            <span class="s1">'./uploads/3.jpg'</span>
-        <span class="p">])</span>
-        <span class="p">.</span><span class="nx">clearUpload</span><span class="p">(</span><span class="s1">'#upload-input'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">uploadBtn</span><span class="p">.</span><span class="nx">visible</span><span class="p">).</span><span class="nx">notOk</span><span class="p">();</span>
-<span class="p">});</span>
+<span class="kr">const</span> <span class="nx">article</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'.article-content'</span><span class="p">);</span>
 </code></pre></div>
+<p>The <code>article</code> constant now stores a selector that identifies an element with the <code>article-content</code> class.</p>
+
+<p>You can use this selector to take <a href="../../actions/">actions</a> on this element.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">article</span><span class="p">);</span>
+</code></pre></div>
+<p>Or use it in <a href="../../assertions/">assertions</a>.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">article</span><span class="p">.</span><span class="nx">scrollHeight</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="mi">1800</span><span class="p">);</span>
+</code></pre></div>
+<p>You can write a selector that matches several page elements and then <a href="functional-style-selectors.html#filter-dom-nodes">filter them</a> by text, attribute, etc.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">windowsRadioButton</span>  <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'.radio-button'</span><span class="p">).</span><span class="nx">withText</span><span class="p">(</span><span class="s1">'Windows'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">selectedRadioButton</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'.radio-button'</span><span class="p">).</span><span class="nx">withAttribute</span><span class="p">(</span><span class="s1">'selected'</span><span class="p">);</span>
+</code></pre></div>
+<p>If you need to find a specific element in the DOM tree, you can
+<a href="functional-style-selectors.html#search-for-elements-in-the-dom-hierarchy">search for it</a> using the selector API.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">buttonWrapper</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'.article-content'</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">'#share-button'</span><span class="p">).</span><span class="nx">parent</span><span class="p">();</span>
+</code></pre></div>
+<p>For more information about selectors, see the detailed topics in this section.</p>
+
+<ul>
+<li><a href="creating-selectors.html">Creating Selectors</a></li>
+<li><a href="using-selectors.html">Using Selectors</a></li>
+<li><a href="functional-style-selectors.html">Functional-Style Selectors</a></li>
+<li><a href="selector-options.html">Selector Options</a></li>
+<li><a href="extending-selectors.html">Extending Selectors</a></li>
+<li><a href="edge-cases-and-limitations.html">Edge Cases and Limitations</a></li>
+</ul>
+
+<p>Note that you can use <a href="../../obtaining-data-from-the-client.html">client functions</a> to obtain page information that does not relate to elements&#39; state.</p>
+
 
 		</div>
 		<div class="widget-container hidden">

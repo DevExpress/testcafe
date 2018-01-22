@@ -507,14 +507,53 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors.html"  >Selectors</a>
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/"  >Selectors</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/creating-selectors.html"  >Creating Selectors</a>
 		
     </li>
 
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/selecting-page-elements/selector-options.html"  >Selector Options</a>
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/using-selectors.html"  >Using Selectors</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html"  >Functional-Style Selectors</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/selector-options.html"  >Selector Options</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/extending-selectors.html"  >Extending Selectors</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/edge-cases-and-limitations.html"  >Edge Cases and Limitations</a>
+		
+    </li>
+
+</ul>
 		
     </li>
 
@@ -775,7 +814,7 @@ See <a href="assertion-api.html">Assertion API</a>.</p>
 </ul>
 <h2><a class="anchor" name="assertion-structure"></a>Assertion Structure <a class="permalink" href="#assertion-structure">#</a></h2>
 <p>TestCafe assertions start with the <code>expect</code> method exposed by <a href="../test-code-structure.html#test-controller">test controller</a>.
-This method accepts the actual value. You can pass a value, a <a href="../selecting-page-elements/selectors.html#define-assertion-actual-value">Selector&#39;s DOM node state property</a>
+This method accepts the actual value. You can pass a value, a <a href="../selecting-page-elements/selectors/using-selectors.html#define-assertion-actual-value">Selector&#39;s DOM node state property</a>
 or a <a href="../obtaining-data-from-the-client.html">client function</a> promise.
 TestCafe automatically waits for node state properties to obtain a value and for client functions to execute.
 See <a href="#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a> for details.</p>
@@ -823,7 +862,7 @@ we can get an indefinite result:</p>
 <p>To stabilize such tests, you need to add a timeout that will guarantee that the required changes are successfully applied.
 Adding such timeouts can increase the test running time because of extra waiting.</p>
 
-<p>If the TestCafe assertion receives a <a href="../selecting-page-elements/selectors.html#define-assertion-actual-value">Selector&#39;s DOM node state property</a>
+<p>If the TestCafe assertion receives a <a href="../selecting-page-elements/selectors/using-selectors.html#define-assertion-actual-value">Selector&#39;s DOM node state property</a>
 or a <a href="../obtaining-data-from-the-client.html">client function</a> promise
 as an actual value, TestCafe uses the smart assertion query mechanism:
 if an assertion did not pass, the test does not fail immediately. The assertion retries to pass multiple times and
@@ -868,7 +907,7 @@ if you run TestCafe from the command line.</p>
 <p><strong>Type</strong>: Number</p>
 
 <p>The amount of time, in milliseconds, allowed for an assertion to pass before the test fails if
-<a href="../selecting-page-elements/selectors.html#define-assertion-actual-value">a selector property</a>
+<a href="../selecting-page-elements/selectors/using-selectors.html#define-assertion-actual-value">a selector property</a>
 or a <a href="../obtaining-data-from-the-client.html">client function</a> promise was used in assertion.</p>
 
 <p><strong>Default value</strong>: timeout is specified by using the <a href="../../using-testcafe/programming-interface/runner.html#run">runner.run</a> API method
@@ -917,7 +956,7 @@ In this case, you should care about the amount of time required to complete asyn
     <div class="site-footer-content">
         <div class="footer-col-1">
             <p><strong>TestCafe</strong>: Automated browser testing for the modern web development stack<br/>
-            Copyright © 2012-2017 Developer Express Inc.</p>
+            Copyright © 2012-2018 Developer Express Inc.</p>
         </div>
     </div>
 </footer>

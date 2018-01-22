@@ -507,14 +507,53 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors.html"  >Selectors</a>
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/"  >Selectors</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/creating-selectors.html"  >Creating Selectors</a>
 		
     </li>
 
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/selecting-page-elements/selector-options.html"  >Selector Options</a>
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/using-selectors.html"  >Using Selectors</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html"  >Functional-Style Selectors</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/selector-options.html"  >Selector Options</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/extending-selectors.html"  >Extending Selectors</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/edge-cases-and-limitations.html"  >Edge Cases and Limitations</a>
+		
+    </li>
+
+</ul>
 		
     </li>
 
@@ -799,7 +838,7 @@ To interact with the page, use <a href="actions/">test actions</a>.</p>
 <td>See <a href="#options">Options</a>.</td>
 </tr>
 </tbody></table>
-<blockquote class="important"><div class="blockquote-content"><p>Client functions cannot return DOM nodes. Use <a href="selecting-page-elements/selectors.html">selectors</a> for this.</p>
+<blockquote class="important"><div class="blockquote-content"><p>Client functions cannot return DOM nodes. Use <a href="selecting-page-elements/selectors/">selectors</a> for this.</p>
 </div></blockquote>
 <p>The following example shows how to create a client function.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
@@ -839,7 +878,7 @@ In this instance, the client function will complete only when this Promise resol
 Properties of the <code>dependencies</code> object will be added to the client function&#39;s scope as variables.</p>
 
 <p>The following sample demonstrates a client function (<code>getArticleHeaderHTML</code>) that
-calls a <a href="selecting-page-elements/selectors.html">selector</a> (<code>articleHeader</code>) internally.
+calls a <a href="selecting-page-elements/selectors/">selector</a> (<code>articleHeader</code>) internally.
 This selector is passed to <code>getArticleHeaderHTML</code> as a dependency.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span><span class="p">,</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
@@ -848,7 +887,7 @@ This selector is passed to <code>getArticleHeaderHTML</code> as a dependency.</p
 <span class="kr">const</span> <span class="nx">getArticleHeaderHTML</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nx">articleHeader</span><span class="p">().</span><span class="nx">innerHTML</span><span class="p">,</span> <span class="p">{</span>
      <span class="na">dependencies</span><span class="p">:</span> <span class="p">{</span> <span class="nx">articleHeader</span> <span class="p">}</span>
 <span class="p">});</span>
-</code></pre></div><blockquote><div class="blockquote-content"><p>When a client function calls a <a href="selecting-page-elements/selectors.html">selector</a> internally,
+</code></pre></div><blockquote><div class="blockquote-content"><p>When a client function calls a <a href="selecting-page-elements/selectors/">selector</a> internally,
 the selector does not wait for the element to appear in the DOM
 but is executed at once, like a client function.</p>
 </div></blockquote><h3><a class="anchor" name="optionsboundtestrun"></a>options.boundTestRun <a class="permalink" href="#optionsboundtestrun">#</a></h3>
@@ -996,7 +1035,7 @@ that cannot take any parameters from the outside.</p>
     <div class="site-footer-content">
         <div class="footer-col-1">
             <p><strong>TestCafe</strong>: Automated browser testing for the modern web development stack<br/>
-            Copyright © 2012-2017 Developer Express Inc.</p>
+            Copyright © 2012-2018 Developer Express Inc.</p>
         </div>
     </div>
 </footer>
