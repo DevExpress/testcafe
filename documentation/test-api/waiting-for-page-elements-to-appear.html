@@ -507,14 +507,53 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors.html"  >Selectors</a>
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/"  >Selectors</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/creating-selectors.html"  >Creating Selectors</a>
 		
     </li>
 
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/selecting-page-elements/selector-options.html"  >Selector Options</a>
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/using-selectors.html"  >Using Selectors</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html"  >Functional-Style Selectors</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/selector-options.html"  >Selector Options</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/extending-selectors.html"  >Extending Selectors</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/edge-cases-and-limitations.html"  >Edge Cases and Limitations</a>
+		
+    </li>
+
+</ul>
 		
     </li>
 
@@ -760,7 +799,7 @@
 <p>TestCafe has a built-in automatic waiting mechanism, so that it does not need dedicated API to wait for page elements to appear.</p>
 
 <p>This topic describes how the automatic waiting mechanism works with <a href="actions/">test actions</a>,
-<a href="assertions/">assertions</a> and <a href="selecting-page-elements/selectors.html">selectors</a>.</p>
+<a href="assertions/">assertions</a> and <a href="selecting-page-elements/selectors/">selectors</a>.</p>
 <h2><a class="anchor" name="waiting-for-action-target-elements"></a>Waiting for Action Target Elements <a class="permalink" href="#waiting-for-action-target-elements">#</a></h2>
 <p>TestCafe automatically waits for the target element to become visible when an action is executed.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
@@ -777,7 +816,7 @@
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">submitButton</span><span class="p">);</span>                <span class="c1">// Waits for '#submit-button'</span>
 <span class="p">});</span>
 </code></pre></div>
-<p>TestCafe tries to evaluate the specified selector multiple times within the <a href="selecting-page-elements/selectors.html#selector-timeout">timeout</a>.
+<p>TestCafe tries to evaluate the specified selector multiple times within the <a href="selecting-page-elements/selectors/using-selectors.html#selector-timeout">timeout</a>.
 If the element does not appear, the test will fail.</p>
 <h2><a class="anchor" name="waiting-for-elements-when-evaluating-selectors"></a>Waiting for Elements When Evaluating Selectors <a class="permalink" href="#waiting-for-elements-when-evaluating-selectors">#</a></h2>
 <p>When evaluating a selector, TestCafe automatically waits for the element to appear in the DOM.</p>
@@ -794,10 +833,10 @@ If the element does not appear, the test will fail.</p>
     <span class="kr">const</span> <span class="nx">nameInputElement</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">nameInput</span><span class="p">();</span>
 <span class="p">});</span>
 </code></pre></div>
-<p>TestCafe keeps trying to evaluate the selector until the element appears in the DOM or the <a href="selecting-page-elements/selectors.html#selector-timeout">timeout</a> passes.</p>
+<p>TestCafe keeps trying to evaluate the selector until the element appears in the DOM or the <a href="selecting-page-elements/selectors/using-selectors.html#selector-timeout">timeout</a> passes.</p>
 
 <p>You can additionally require that TestCafe should wait for an element to become visible.
-Use the <a href="selecting-page-elements/selector-options.html#optionsvisibilitycheck">visibilityCheck</a> selector option for this.</p>
+Use the <a href="selecting-page-elements/selectors/selector-options.html#optionsvisibilitycheck">visibilityCheck</a> selector option for this.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
 <span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
@@ -812,14 +851,14 @@ Use the <a href="selecting-page-elements/selector-options.html#optionsvisibility
 <span class="p">});</span>
 </code></pre></div><h2><a class="anchor" name="waiting-for-assertions-to-pass"></a>Waiting for Assertions to Pass <a class="permalink" href="#waiting-for-assertions-to-pass">#</a></h2>
 <p>TestCafe assertions feature the <a href="assertions/#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a>.
-This mechanism is activated when you pass a <a href="selecting-page-elements/selectors.html#obtain-element-state">selector property</a>
+This mechanism is activated when you pass a <a href="selecting-page-elements/selectors/using-selectors.html#obtain-element-state">selector property</a>
 or a <a href="obtaining-data-from-the-client.html">client function</a> as an actual value. In this instance, TestCafe keeps recalculating the actual
 value until it matches the expected value or the <a href="assertions/#optionstimeout">assertion timeout</a> passes.</p>
 
 <p>Note that the Smart Assertion Query Mechanism does not wait for page elements to appear.
 If you need to wait for an element before executing an assertion,
-add another assertion that checks the selector&#39;s <a href="selecting-page-elements/selectors.html#check-if-an-element-exists">count</a>
-or <a href="selecting-page-elements/selectors.html#check-if-an-element-exists">exists</a> property.</p>
+add another assertion that checks the selector&#39;s <a href="selecting-page-elements/selectors/using-selectors.html#check-if-an-element-exists">count</a>
+or <a href="selecting-page-elements/selectors/using-selectors.html#check-if-an-element-exists">exists</a> property.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
 <span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
@@ -883,7 +922,7 @@ or <a href="selecting-page-elements/selectors.html#check-if-an-element-exists">e
     <div class="site-footer-content">
         <div class="footer-col-1">
             <p><strong>TestCafe</strong>: Automated browser testing for the modern web development stack<br/>
-            Copyright © 2012-2017 Developer Express Inc.</p>
+            Copyright © 2012-2018 Developer Express Inc.</p>
         </div>
     </div>
 </footer>

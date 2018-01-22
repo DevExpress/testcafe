@@ -8,20 +8,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <title>Upload | TestCafe</title>
+  <title>Edge Cases and Limitations | TestCafe</title>
 
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
   
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/test-api/actions/upload.html" />
-  <meta property="og:title" content="Upload | TestCafe" />
+  <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/edge-cases-and-limitations.html" />
+  <meta property="og:title" content="Edge Cases and Limitations | TestCafe" />
 
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
-  <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/test-api/actions/upload.html">
+  <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/edge-cases-and-limitations.html">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="http://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
@@ -549,7 +549,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/edge-cases-and-limitations.html"  >Edge Cases and Limitations</a>
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/edge-cases-and-limitations.html" class="active" >Edge Cases and Limitations</a>
 		
     </li>
 
@@ -655,7 +655,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/actions/upload.html" class="active" >Upload</a>
+<a href="/testcafe/documentation/test-api/actions/upload.html"  >Upload</a>
 		
     </li>
 
@@ -795,89 +795,63 @@
 	<article class="doc">
 		<div class="post-content">
 
-			<h1>Upload</h1>
-<p>Use the following actions to work with file upload input elements.</p>
+			<h1>Edge Cases and Limitations</h1>
+<p>This topic contains information about edge cases of using selectors and selectors API limitations.</p>
 
 <ul>
-<li><a href="#populate-file-upload-input">Populate File Upload Input</a></li>
-<li><a href="#clear-file-upload-input">Clear File Upload Input</a></li>
+<li><a href="#calling-selectors-from-nodejs-callbacks">Calling Selectors from Node.js Callbacks</a></li>
+<li><a href="#limitations">Limitations</a></li>
 </ul>
-<h2><a class="anchor" name="populate-file-upload-input"></a>Populate File Upload Input <a class="permalink" href="#populate-file-upload-input">#</a></h2>
-<p>Populates the specified file upload input with file paths.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">t.setFilesToUpload( selector, filePath )
-</code></pre></div>
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><code>selector</code></td>
-<td>Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise</td>
-<td>Identifies the input field to which file paths are written. See <a href=".#selecting-target-elements">Selecting Target Elements</a>.</td>
-</tr>
-<tr>
-<td><code>filePath</code></td>
-<td>String &#124; Array</td>
-<td>The path to the uploaded file, or several such paths. Relative paths resolve from the folder with the test file.</td>
-</tr>
-</tbody></table>
+<h2><a class="anchor" name="calling-selectors-from-nodejs-callbacks"></a>Calling Selectors from Node.js Callbacks <a class="permalink" href="#calling-selectors-from-nodejs-callbacks">#</a></h2>
+<p>Selectors need access to the <a href="../../test-code-structure.html#test-controller">test controller</a> to be executed.
+When called right from the test function, they implicitly obtain the test controller.</p>
 
-<p>The following example illustrates how to use the <code>t.setFilesToUpload</code> action.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//www.example.com/`;</span>
+<p>However, if you need to call a selector from a Node.js callback that fires during the test run,
+you have to manually bind it to the test controller.</p>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Uploading'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
-        <span class="p">.</span><span class="nx">setFilesToUpload</span><span class="p">(</span><span class="s1">'#upload-input'</span><span class="p">,</span> <span class="p">[</span>
-            <span class="s1">'./uploads/1.jpg'</span><span class="p">,</span>
-            <span class="s1">'./uploads/2.jpg'</span><span class="p">,</span>
-            <span class="s1">'./uploads/3.jpg'</span>
-        <span class="p">])</span>
-        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#upload-button'</span><span class="p">);</span>
-<span class="p">});</span>
-</code></pre></div>
-<p>The <code>t.setFilesToUpload</code> action removes all file paths from the input before populating it with new ones.</p>
-<blockquote><div class="blockquote-content"><p>If an error occurs while uploading files, the test will fail.</p>
-</div></blockquote><h2><a class="anchor" name="clear-file-upload-input"></a>Clear File Upload Input <a class="permalink" href="#clear-file-upload-input">#</a></h2>
-<p>Removes all file paths from the specified file upload input.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">t.clearUpload( selector )
-</code></pre></div>
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><code>selector</code></td>
-<td>Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise</td>
-<td>Identifies the input field that needs to be cleared. See <a href=".#selecting-target-elements">Selecting Target Elements</a>.</td>
-</tr>
-</tbody></table>
-
-<p>The example below shows how to use the <code>t.clearUpload</code> action.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
-
-<span class="kr">const</span> <span class="nx">uploadBtn</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#upload-button'</span><span class="p">);</span>
+<p>Use the <a href="selector-options.html#optionsboundtestrun">boundTestRun</a> option for this.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">http</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'http'</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
 <span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
     <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//www.example.com/`;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Trying to upload with no files specified'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
-        <span class="p">.</span><span class="nx">setFilesToUpload</span><span class="p">(</span><span class="s1">'#upload-input'</span><span class="p">,</span> <span class="p">[</span>
-            <span class="s1">'./uploads/1.jpg'</span><span class="p">,</span>
-            <span class="s1">'./uploads/2.jpg'</span><span class="p">,</span>
-            <span class="s1">'./uploads/3.jpg'</span>
-        <span class="p">])</span>
-        <span class="p">.</span><span class="nx">clearUpload</span><span class="p">(</span><span class="s1">'#upload-input'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">uploadBtn</span><span class="p">.</span><span class="nx">visible</span><span class="p">).</span><span class="nx">notOk</span><span class="p">();</span>
+<span class="kr">const</span> <span class="nx">elementWithId</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">id</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">id</span><span class="p">));</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Title changed'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">const</span> <span class="nx">boundSelector</span> <span class="o">=</span> <span class="nx">elementWithId</span><span class="p">.</span><span class="kd">with</span><span class="p">({</span> <span class="na">boundTestRun</span><span class="p">:</span> <span class="nx">t</span> <span class="p">});</span>
+
+    <span class="c1">// Performs an HTTP request that changes the article title on the page.</span>
+    <span class="c1">// Resolves to a value indicating whether the title has been changed.</span>
+    <span class="kr">const</span> <span class="nx">match</span> <span class="o">=</span> <span class="nx">await</span> <span class="k">new</span> <span class="nx">Promise</span><span class="p">(</span><span class="nx">resolve</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="kr">const</span> <span class="nx">req</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">request</span><span class="p">(</span><span class="cm">/* request options */</span><span class="p">,</span> <span class="nx">res</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="k">if</span><span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">statusCode</span> <span class="o">===</span> <span class="mi">200</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">boundSelector</span><span class="p">(</span><span class="s1">'article-title'</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">titleEl</span> <span class="o">=&gt;</span> <span class="p">{</span>
+                    <span class="nx">resolve</span><span class="p">(</span><span class="nx">titleEl</span><span class="p">.</span><span class="nx">textContent</span> <span class="o">===</span> <span class="s1">'New title'</span><span class="p">);</span>
+                <span class="p">});</span>
+            <span class="p">}</span>
+        <span class="p">});</span>
+
+        <span class="nx">req</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">title</span><span class="p">)</span>
+        <span class="nx">req</span><span class="p">.</span><span class="nx">end</span><span class="p">();</span>
+    <span class="p">});</span>
+
+    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">match</span><span class="p">).</span><span class="nx">ok</span><span class="p">();</span>
 <span class="p">});</span>
 </code></pre></div>
+<p>This approach only works for Node.js callbacks that fire during the test run. To ensure that the test function
+does not finish before the callback is executed, suspend the test until the callback fires. You can do this
+by introducing a promise and synchronously waiting for it to complete as shown in the example above.</p>
+<h2><a class="anchor" name="limitations"></a>Limitations <a class="permalink" href="#limitations">#</a></h2>
+<ul>
+<li><p>You cannot use generators or <code>async/await</code> syntax within selectors.</p></li>
+<li><p>Selectors cannot access variables defined in the outer scope in test code.
+However, you can use arguments to pass data inside the selectors, except for those that are self-invoked.
+They cannot take any parameters from the outside.</p>
+
+<p>Likewise, the return value is the only way to obtain data from selectors.</p></li>
+</ul>
+
 
 		</div>
 		<div class="widget-container hidden">

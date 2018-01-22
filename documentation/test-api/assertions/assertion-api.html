@@ -507,14 +507,53 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors.html"  >Selectors</a>
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/"  >Selectors</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/creating-selectors.html"  >Creating Selectors</a>
 		
     </li>
 
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/selecting-page-elements/selector-options.html"  >Selector Options</a>
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/using-selectors.html"  >Using Selectors</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html"  >Functional-Style Selectors</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/selector-options.html"  >Selector Options</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/extending-selectors.html"  >Extending Selectors</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/edge-cases-and-limitations.html"  >Edge Cases and Limitations</a>
+		
+    </li>
+
+</ul>
 		
     </li>
 
@@ -791,7 +830,7 @@
 <tr>
 <td><code>actual</code></td>
 <td>Any Type &#124; Selector&#39;s Property &#124; ClientFunction Promise</td>
-<td>A comparison value. If you pass a <a href="../selecting-page-elements/selectors.html#define-assertion-actual-value">selector&#39;s property</a> or a <a href="../obtaining-data-from-the-client.html">client function</a> promise, the <a href=".#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a> is activated and the assertion automatically waits until the comparison value is obtained.</td>
+<td>A comparison value. If you pass a <a href="../selecting-page-elements/selectors/using-selectors.html#define-assertion-actual-value">selector&#39;s property</a> or a <a href="../obtaining-data-from-the-client.html">client function</a> promise, the <a href=".#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a> is activated and the assertion automatically waits until the comparison value is obtained.</td>
 </tr>
 <tr>
 <td><code>expected</code></td>
@@ -835,7 +874,7 @@
 <tr>
 <td><code>actual</code></td>
 <td>Any Type &#124; Selector&#39;s Property &#124; ClientFunction Promise</td>
-<td>A comparison value. If you pass a <a href="../selecting-page-elements/selectors.html#define-assertion-actual-value">selector&#39;s property</a> or a <a href="../obtaining-data-from-the-client.html">client function</a> promise, the <a href=".#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a> is activated and the assertion automatically waits until the comparison value is obtained.</td>
+<td>A comparison value. If you pass a <a href="../selecting-page-elements/selectors/using-selectors.html#define-assertion-actual-value">selector&#39;s property</a> or a <a href="../obtaining-data-from-the-client.html">client function</a> promise, the <a href=".#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a> is activated and the assertion automatically waits until the comparison value is obtained.</td>
 </tr>
 <tr>
 <td><code>expected</code></td>
@@ -879,7 +918,7 @@
 <tr>
 <td><code>actual</code></td>
 <td>Any Type &#124; Selector&#39;s Property &#124; ClientFunction Promise</td>
-<td>A value that should be truthy. If you pass a <a href="../selecting-page-elements/selectors.html#define-assertion-actual-value">selector&#39;s property</a> or a <a href="../obtaining-data-from-the-client.html">client function</a> promise, the <a href=".#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a> is activated and the assertion automatically waits until the <code>actual</code> value is obtained.</td>
+<td>A value that should be truthy. If you pass a <a href="../selecting-page-elements/selectors/using-selectors.html#define-assertion-actual-value">selector&#39;s property</a> or a <a href="../obtaining-data-from-the-client.html">client function</a> promise, the <a href=".#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a> is activated and the assertion automatically waits until the <code>actual</code> value is obtained.</td>
 </tr>
 <tr>
 <td><code>message</code>&#160;<em>(optional)</em></td>
@@ -918,7 +957,7 @@
 <tr>
 <td><code>actual</code></td>
 <td>Any Type &#124; Selector&#39;s Property &#124; ClientFunction Promise</td>
-<td>A value that should be falsy. If you pass a <a href="../selecting-page-elements/selectors.html#define-assertion-actual-value">selector&#39;s property</a> or a <a href="../obtaining-data-from-the-client.html">client function</a> promise, the <a href=".#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a> is activated and the assertion automatically waits until the <code>actual</code> value is obtained.</td>
+<td>A value that should be falsy. If you pass a <a href="../selecting-page-elements/selectors/using-selectors.html#define-assertion-actual-value">selector&#39;s property</a> or a <a href="../obtaining-data-from-the-client.html">client function</a> promise, the <a href=".#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a> is activated and the assertion automatically waits until the <code>actual</code> value is obtained.</td>
 </tr>
 <tr>
 <td><code>message</code>&#160;<em>(optional)</em></td>
@@ -957,7 +996,7 @@
 <tr>
 <td><code>actual</code></td>
 <td>String &#124; Array &#124; Object &#124; Selector&#39;s Property &#124; ClientFunction Promise</td>
-<td>A string that contains the <code>expected</code> substring, an array that contains the <code>expected</code> value or an object that contains the <code>expected</code> property. If you pass a <a href="../selecting-page-elements/selectors.html#define-assertion-actual-value">selector&#39;s property</a> or a <a href="../obtaining-data-from-the-client.html">client function</a> promise, the <a href=".#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a> is activated and the assertion automatically waits until the <code>actual</code> value is obtained.</td>
+<td>A string that contains the <code>expected</code> substring, an array that contains the <code>expected</code> value or an object that contains the <code>expected</code> property. If you pass a <a href="../selecting-page-elements/selectors/using-selectors.html#define-assertion-actual-value">selector&#39;s property</a> or a <a href="../obtaining-data-from-the-client.html">client function</a> promise, the <a href=".#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a> is activated and the assertion automatically waits until the <code>actual</code> value is obtained.</td>
 </tr>
 <tr>
 <td><code>expected</code></td>
@@ -1004,7 +1043,7 @@
 <tr>
 <td><code>actual</code></td>
 <td>String &#124; Array &#124; Object &#124; Selector&#39;s Property &#124; ClientFunction Promise</td>
-<td>A string that should not contain the <code>expected</code> substring, an array that should not contain the <code>expected</code> value or an object that should not contain the <code>expected</code> property. If you pass a <a href="../selecting-page-elements/selectors.html#define-assertion-actual-value">selector&#39;s property</a> or a <a href="../obtaining-data-from-the-client.html">client function</a> promise, the <a href=".#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a> is activated and the assertion automatically waits until the <code>actual</code> value is obtained.</td>
+<td>A string that should not contain the <code>expected</code> substring, an array that should not contain the <code>expected</code> value or an object that should not contain the <code>expected</code> property. If you pass a <a href="../selecting-page-elements/selectors/using-selectors.html#define-assertion-actual-value">selector&#39;s property</a> or a <a href="../obtaining-data-from-the-client.html">client function</a> promise, the <a href=".#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a> is activated and the assertion automatically waits until the <code>actual</code> value is obtained.</td>
 </tr>
 <tr>
 <td><code>expected</code></td>
@@ -1051,7 +1090,7 @@
 <tr>
 <td><code>actual</code></td>
 <td>Any Type &#124; Selector&#39;s Property &#124; ClientFunction Promise</td>
-<td>A comparison value. If you pass a <a href="../selecting-page-elements/selectors.html#define-assertion-actual-value">selector&#39;s property</a> or a <a href="../obtaining-data-from-the-client.html">client function</a> promise, the <a href=".#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a> is activated and the assertion automatically waits until the <code>actual</code> value is obtained.</td>
+<td>A comparison value. If you pass a <a href="../selecting-page-elements/selectors/using-selectors.html#define-assertion-actual-value">selector&#39;s property</a> or a <a href="../obtaining-data-from-the-client.html">client function</a> promise, the <a href=".#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a> is activated and the assertion automatically waits until the <code>actual</code> value is obtained.</td>
 </tr>
 <tr>
 <td><code>typeName</code></td>
@@ -1096,7 +1135,7 @@
 <tr>
 <td><code>actual</code></td>
 <td>Any Type &#124; Selector&#39;s Property &#124; ClientFunction Promise</td>
-<td>A comparison value. If you pass a <a href="../selecting-page-elements/selectors.html#define-assertion-actual-value">selector&#39;s property</a> or a <a href="../obtaining-data-from-the-client.html">client function</a> promise, the <a href=".#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a> is activated and the assertion automatically waits until the <code>actual</code> value is obtained.</td>
+<td>A comparison value. If you pass a <a href="../selecting-page-elements/selectors/using-selectors.html#define-assertion-actual-value">selector&#39;s property</a> or a <a href="../obtaining-data-from-the-client.html">client function</a> promise, the <a href=".#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a> is activated and the assertion automatically waits until the <code>actual</code> value is obtained.</td>
 </tr>
 <tr>
 <td><code>typeName</code></td>
@@ -1138,7 +1177,7 @@
 <tr>
 <td><code>actual</code></td>
 <td>Number &#124; Selector&#39;s Property &#124; ClientFunction Promise</td>
-<td>A value that should be greater than <code>expected</code>. If you pass a <a href="../selecting-page-elements/selectors.html#define-assertion-actual-value">selector&#39;s property</a> or a <a href="../obtaining-data-from-the-client.html">client function</a> promise, the <a href=".#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a> is activated and the assertion automatically waits until the <code>actual</code> value is obtained.</td>
+<td>A value that should be greater than <code>expected</code>. If you pass a <a href="../selecting-page-elements/selectors/using-selectors.html#define-assertion-actual-value">selector&#39;s property</a> or a <a href="../obtaining-data-from-the-client.html">client function</a> promise, the <a href=".#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a> is activated and the assertion automatically waits until the <code>actual</code> value is obtained.</td>
 </tr>
 <tr>
 <td><code>expected</code></td>
@@ -1180,7 +1219,7 @@
 <tr>
 <td><code>actual</code></td>
 <td>Number &#124; Selector&#39;s Property &#124; ClientFunction Promise</td>
-<td>A value that should be greater than or equal to <code>expected</code>. If you pass a <a href="../selecting-page-elements/selectors.html#define-assertion-actual-value">selector&#39;s property</a> or a <a href="../obtaining-data-from-the-client.html">client function</a> promise, the <a href=".#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a> is activated and the assertion automatically waits until the <code>actual</code> value is obtained.</td>
+<td>A value that should be greater than or equal to <code>expected</code>. If you pass a <a href="../selecting-page-elements/selectors/using-selectors.html#define-assertion-actual-value">selector&#39;s property</a> or a <a href="../obtaining-data-from-the-client.html">client function</a> promise, the <a href=".#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a> is activated and the assertion automatically waits until the <code>actual</code> value is obtained.</td>
 </tr>
 <tr>
 <td><code>expected</code></td>
@@ -1224,7 +1263,7 @@
 <tr>
 <td><code>actual</code></td>
 <td>Number &#124; Selector&#39;s Property &#124; ClientFunction Promise</td>
-<td>A value that should be less than <code>expected</code>. If you pass a <a href="../selecting-page-elements/selectors.html#define-assertion-actual-value">selector&#39;s property</a> or a <a href="../obtaining-data-from-the-client.html">client function</a> promise, the <a href=".#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a> is activated and the assertion automatically waits until the <code>actual</code> value is obtained.</td>
+<td>A value that should be less than <code>expected</code>. If you pass a <a href="../selecting-page-elements/selectors/using-selectors.html#define-assertion-actual-value">selector&#39;s property</a> or a <a href="../obtaining-data-from-the-client.html">client function</a> promise, the <a href=".#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a> is activated and the assertion automatically waits until the <code>actual</code> value is obtained.</td>
 </tr>
 <tr>
 <td><code>expected</code></td>
@@ -1266,7 +1305,7 @@
 <tr>
 <td><code>actual</code></td>
 <td>Number &#124; Selector&#39;s Property &#124; ClientFunction Promise</td>
-<td>A value that should be less than or equal to <code>expected</code>. If you pass a <a href="../selecting-page-elements/selectors.html#define-assertion-actual-value">selector&#39;s property</a> or a <a href="../obtaining-data-from-the-client.html">client function</a> promise, the <a href=".#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a> is activated and the assertion automatically waits until the <code>actual</code> value is obtained.</td>
+<td>A value that should be less than or equal to <code>expected</code>. If you pass a <a href="../selecting-page-elements/selectors/using-selectors.html#define-assertion-actual-value">selector&#39;s property</a> or a <a href="../obtaining-data-from-the-client.html">client function</a> promise, the <a href=".#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a> is activated and the assertion automatically waits until the <code>actual</code> value is obtained.</td>
 </tr>
 <tr>
 <td><code>expected</code></td>
@@ -1310,7 +1349,7 @@
 <tr>
 <td><code>actual</code></td>
 <td>Number &#124; Selector&#39;s Property &#124; ClientFunction Promise</td>
-<td>A comparison value. If you pass a <a href="../selecting-page-elements/selectors.html#define-assertion-actual-value">selector&#39;s property</a> or a <a href="../obtaining-data-from-the-client.html">client function</a> promise, the <a href=".#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a> is activated and the assertion automatically waits until the <code>actual</code> value is obtained.</td>
+<td>A comparison value. If you pass a <a href="../selecting-page-elements/selectors/using-selectors.html#define-assertion-actual-value">selector&#39;s property</a> or a <a href="../obtaining-data-from-the-client.html">client function</a> promise, the <a href=".#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a> is activated and the assertion automatically waits until the <code>actual</code> value is obtained.</td>
 </tr>
 <tr>
 <td><code>start</code></td>
@@ -1357,7 +1396,7 @@
 <tr>
 <td><code>actual</code></td>
 <td>Number &#124; Selector&#39;s Property &#124; ClientFunction Promise</td>
-<td>A comparison value. If you pass a <a href="../selecting-page-elements/selectors.html#define-assertion-actual-value">selector&#39;s property</a> or a <a href="../obtaining-data-from-the-client.html">client function</a> promise, the <a href=".#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a> is activated and the assertion automatically waits until the <code>actual</code> value is obtained.</td>
+<td>A comparison value. If you pass a <a href="../selecting-page-elements/selectors/using-selectors.html#define-assertion-actual-value">selector&#39;s property</a> or a <a href="../obtaining-data-from-the-client.html">client function</a> promise, the <a href=".#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a> is activated and the assertion automatically waits until the <code>actual</code> value is obtained.</td>
 </tr>
 <tr>
 <td><code>start</code></td>
@@ -1404,7 +1443,7 @@
 <tr>
 <td><code>actual</code></td>
 <td>String &#124; Selector&#39;s Property &#124; ClientFunction Promise</td>
-<td>A comparison value. If you pass a <a href="../selecting-page-elements/selectors.html#define-assertion-actual-value">selector&#39;s property</a> or a <a href="../obtaining-data-from-the-client.html">client function</a> promise, the <a href=".#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a> is activated and the assertion automatically waits until the <code>actual</code> value is obtained.</td>
+<td>A comparison value. If you pass a <a href="../selecting-page-elements/selectors/using-selectors.html#define-assertion-actual-value">selector&#39;s property</a> or a <a href="../obtaining-data-from-the-client.html">client function</a> promise, the <a href=".#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a> is activated and the assertion automatically waits until the <code>actual</code> value is obtained.</td>
 </tr>
 <tr>
 <td><code>re</code></td>
@@ -1448,7 +1487,7 @@
 <tr>
 <td><code>actual</code></td>
 <td>String &#124; Selector&#39;s Property &#124; ClientFunction Promise</td>
-<td>A comparison value. If you pass a <a href="../selecting-page-elements/selectors.html#define-assertion-actual-value">selector&#39;s property</a> or a <a href="../obtaining-data-from-the-client.html">client function</a> promise, the <a href=".#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a> is activated and the assertion automatically waits until the <code>actual</code> value is obtained.</td>
+<td>A comparison value. If you pass a <a href="../selecting-page-elements/selectors/using-selectors.html#define-assertion-actual-value">selector&#39;s property</a> or a <a href="../obtaining-data-from-the-client.html">client function</a> promise, the <a href=".#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a> is activated and the assertion automatically waits until the <code>actual</code> value is obtained.</td>
 </tr>
 <tr>
 <td><code>re</code></td>
@@ -1519,7 +1558,7 @@
     <div class="site-footer-content">
         <div class="footer-col-1">
             <p><strong>TestCafe</strong>: Automated browser testing for the modern web development stack<br/>
-            Copyright © 2012-2017 Developer Express Inc.</p>
+            Copyright © 2012-2018 Developer Express Inc.</p>
         </div>
     </div>
 </footer>

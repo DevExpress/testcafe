@@ -507,14 +507,53 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors.html"  >Selectors</a>
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/"  >Selectors</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/creating-selectors.html"  >Creating Selectors</a>
 		
     </li>
 
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/selecting-page-elements/selector-options.html"  >Selector Options</a>
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/using-selectors.html"  >Using Selectors</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html"  >Functional-Style Selectors</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/selector-options.html"  >Selector Options</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/extending-selectors.html"  >Extending Selectors</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/edge-cases-and-limitations.html"  >Edge Cases and Limitations</a>
+		
+    </li>
+
+</ul>
 		
     </li>
 
@@ -800,7 +839,55 @@
         <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">,</span> <span class="s1">'r'</span><span class="p">,</span> <span class="p">{</span> <span class="na">caretPos</span><span class="p">:</span> <span class="mi">2</span> <span class="p">})</span>
         <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">.</span><span class="nx">value</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="s1">'Parker'</span><span class="p">);</span>
 <span class="p">});</span>
-</code></pre></div>
+</code></pre></div><h2><a class="anchor" name="typing-into-datetime-color-and-range-inputs"></a>Typing Into DateTime, Color and Range Inputs <a class="permalink" href="#typing-into-datetime-color-and-range-inputs">#</a></h2>
+<p>There are certain types of HTML5 inputs, like <code>DateTime</code>, <code>Color</code> or <code>Range</code>, that require entering values in a specific format.</p>
+
+<p>The following table lists value formats expected by these inputs.</p>
+
+<table><thead>
+<tr>
+<th>Input type</th>
+<th>Pattern</th>
+<th>Example</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Date</td>
+<td><code>yyyy-mm-dd</code></td>
+<td><code>&#39;2017-12-23&#39;</code></td>
+</tr>
+<tr>
+<td>Week</td>
+<td><code>yyyy-Www</code></td>
+<td><code>&#39;2017-W03&#39;</code></td>
+</tr>
+<tr>
+<td>Month</td>
+<td><code>yyyy-mm</code></td>
+<td><code>&#39;2017-08&#39;</code></td>
+</tr>
+<tr>
+<td>DateTime</td>
+<td><code>yyyy-mm-ddThh:mm</code></td>
+<td><code>&#39;2017-11-03T05:00&#39;</code></td>
+</tr>
+<tr>
+<td>Time</td>
+<td><code>hh:mm</code></td>
+<td><code>&#39;15:30&#39;</code></td>
+</tr>
+<tr>
+<td>Color</td>
+<td><code>#rrggbb</code></td>
+<td><code>&#39;#003000&#39;</code></td>
+</tr>
+<tr>
+<td>Range</td>
+<td><code>n</code></td>
+<td><code>&#39;45&#39;</code></td>
+</tr>
+</tbody></table>
+
 
 		</div>
 		<div class="widget-container hidden">
@@ -841,7 +928,7 @@
     <div class="site-footer-content">
         <div class="footer-col-1">
             <p><strong>TestCafe</strong>: Automated browser testing for the modern web development stack<br/>
-            Copyright © 2012-2017 Developer Express Inc.</p>
+            Copyright © 2012-2018 Developer Express Inc.</p>
         </div>
     </div>
 </footer>
