@@ -24,7 +24,7 @@
     (function (isIFrameWindowInDOM, window, JSON) {
         window.addEventListener('message', function (event) {
             if (event.data === 'isIFrameWindowInDOM')
-                event.source.postMessage(JSON.stringify({ message: isIFrameWindowInDOM(window).toString() }), '*');
+                event.source.postMessage({ message: isIFrameWindowInDOM(window).toString() }, '*');
 
         }, false);
     })(testCafeCore.domUtils.isIFrameWindowInDOM, window, JSON);
