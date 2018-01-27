@@ -4,18 +4,29 @@ import moment from 'moment';
 import Capturer from './capturer';
 
 export default class Screenshots {
-    constructor (path) {
+    constructor (path, pattern) {
+        const now = moment(Date.now());
+
         this.enabled               = !!path;
         this.screenshotsPath       = path;
+        this.screenshotsPattern    = pattern;
         this.testEntries           = [];
-        this.screenshotBaseDirName = Screenshots._getScreenshotBaseDirName();
         this.userAgentNames        = [];
-    }
-
-    static _getScreenshotBaseDirName () {
-        var now = Date.now();
-
-        return moment(now).format('YYYY-MM-DD_hh-mm-ss');
+        this.currentDate           = now.format('YYYY-MM-DD');
+        this.currentTime           = now.format('HH-mm-ss');
+        // FILENUMBER is handled in the Capturer class
+        this.patternMap            = {
+            FIXTURE:        null,
+            TEST:           null,
+            TESTNUMBER:     null,
+            DATE:           this.currentDate,
+            TIME:           this.currentTime,
+            USERAGENT:      null,
+            BROWSER:        null,
+            BROWSERVERSION: null,
+            OS:             null,
+            OSVERSION:      null
+        };
     }
 
     static _escapeUserAgent (userAgent) {
@@ -46,7 +57,19 @@ export default class Screenshots {
         }
 
         this.userAgentNames.push({ name: userAgentName, index: 0, testIndex, quarantineAttemptNum });
-        return userAgentName;
+
+        const userAgentMatches = userAgentName.match(new RegExp('^(.+?)_([0-9.]+)_(.+?)_([0-9.]+)$'));
+
+        userAgentMatches.shift();
+        const [browser, browserVersion, os, osVersion] = userAgentMatches;
+
+        return {
+            full: userAgentName,
+            browser,
+            browserVersion,
+            os,
+            osVersion
+        };
     }
 
     _addTestEntry (test) {
@@ -73,17 +96,46 @@ export default class Screenshots {
         return this._getTestEntry(test).path;
     }
 
+    _parsePattern (namePattern, options) {
+        if (!namePattern) return '';
+
+        this.patternMap = Object.assign(this.patternMap, {
+            FIXTURE:        options.fixture.replace(' ', '-'),
+            TEST:           options.test.replace(' ', '-'),
+            TESTNUMBER:     options.testNumber,
+            DATE:           this.currentDate,
+            TIME:           this.currentTime,
+            USERAGENT:      options.userAgent.full,
+            BROWSER:        options.userAgent.browser,
+            BROWSERVERSION: options.userAgent.browserVersion,
+            OS:             options.userAgent.os,
+            OSVERSION:      options.userAgent.osVersion
+        });
+
+        for (const pattern in this.patternMap)
+            namePattern = namePattern.replace(new RegExp(`%${pattern}%`, 'g'), this.patternMap[pattern]);
+
+        return namePattern;
+    }
+
     createCapturerFor (test, testIndex, quarantineAttemptNum, connection, warningLog) {
         var testEntry = this._getTestEntry(test);
 
         if (!testEntry)
             testEntry = this._addTestEntry(test);
 
+        const patternOptions = {
+            testNumber: testIndex,
+            fixture:    test.fixture.name,
+            test:       test.name,
+            userAgent:  this._getUserAgentName(connection.userAgent, testIndex, quarantineAttemptNum)
+        };
+
         var namingOptions = {
             testIndex,
             quarantineAttemptNum,
-            baseDirName:   this.screenshotBaseDirName,
-            userAgentName: this._getUserAgentName(connection.userAgent, testIndex, quarantineAttemptNum)
+            patternMap:  this.patternMap,
+            patternName: this._parsePattern(this.screenshotsPattern, patternOptions)
         };
 
         return new Capturer(this.screenshotsPath, testEntry, connection, namingOptions, warningLog);

@@ -17,19 +17,19 @@ export default class Capturer {
         this.testEntry            = testEntry;
         this.provider             = connection.provider;
         this.browserId            = connection.id;
-        this.baseDirName          = namingOptions.baseDirName;
-        this.userAgentName        = namingOptions.userAgentName;
         this.quarantineAttemptNum = namingOptions.quarantineAttemptNum;
         this.testIndex            = namingOptions.testIndex;
         this.screenshotIndex      = 1;
         this.errorScreenshotIndex = 1;
         this.warningLog           = warningLog;
 
-        var testDirName     = `test-${this.testIndex}`;
-        var screenshotsPath = this.enabled ? joinPath(this.baseScreenshotsPath, this.baseDirName, testDirName) : '';
+        var screenshotsPath = this.enabled ? this.baseScreenshotsPath : '';
 
         this.screenshotsPath         = screenshotsPath;
         this.screenshotPathForReport = screenshotsPath;
+        this.screenshotsPatternName  = namingOptions.patternName;
+
+        this.patternMap = namingOptions.patternMap;
     }
 
     static _correctFilePath (path) {
@@ -79,8 +79,20 @@ export default class Capturer {
         };
     }
 
+    _parseFileNumber (fileName) {
+        if (fileName.indexOf('%FILENUMBER%') !== -1)
+            return fileName.replace(new RegExp('%FILENUMBER%', 'g'), (this.screenshotIndex - 1).toString().padStart(3, 0));
+
+        return fileName;
+    }
+
     _getFileName (forError) {
-        var fileName = `${forError ? this.errorScreenshotIndex : this.screenshotIndex}.png`;
+        let fileName = '';
+
+        if (this.screenshotsPatternName)
+            fileName = `${this.screenshotsPatternName}.png`;
+        else
+            fileName = `${forError ? this.errorScreenshotIndex : this.screenshotIndex}.png`;
 
         if (forError)
             this.errorScreenshotIndex++;
@@ -90,15 +102,22 @@ export default class Capturer {
         return fileName;
     }
 
-    _getScreenshotPath (fileName, customPath) {
+    _parsePattern (namePattern) {
+        for (const pattern in this.patternMap)
+            namePattern = namePattern.replace(new RegExp(`%${pattern}%`, 'g'), this.patternMap[pattern]);
+
+        return namePattern;
+    }
+
+    _getSreenshotPath (fileName, customPath) {
         if (customPath)
-            return joinPath(this.baseScreenshotsPath, Capturer._correctFilePath(customPath));
+            return joinPath(this.baseScreenshotsPath, Capturer._correctFilePath(this._parsePattern(customPath)));
 
         var screenshotPath = this.quarantineAttemptNum !== null ?
             joinPath(this.screenshotsPath, `run-${this.quarantineAttemptNum}`) :
             this.screenshotsPath;
 
-        return joinPath(screenshotPath, this.userAgentName, fileName);
+        return joinPath(screenshotPath, fileName);
     }
 
     async _takeScreenshot (filePath, pageWidth, pageHeight) {
@@ -110,7 +129,7 @@ export default class Capturer {
         if (!this.enabled)
             return null;
 
-        var fileName = this._getFileName(forError);
+        var fileName = this._parseFileNumber(this._getFileName(forError));
 
         fileName = forError ? joinPath('errors', fileName) : fileName;
 
@@ -137,7 +156,6 @@ export default class Capturer {
 
         return screenshotPath;
     }
-
 
     async captureAction (options) {
         return await this._capture(false, options);

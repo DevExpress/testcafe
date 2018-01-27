@@ -88,6 +88,7 @@ export default class CLIArgumentParser {
             .option('-b, --list-browsers [provider]', 'output the aliases for local browsers or browsers available through the specified browser provider')
             .option('-r, --reporter <name[:outputFile][,...]>', 'specify the reporters and optionally files where reports are saved')
             .option('-s, --screenshots <path>', 'enable screenshot capturing and specify the path to save the screenshots to')
+            .option('-p, --pattern <pattern>', 'screenshot files are named using specific patterns: %BROWSER%, %BROWSERVERSION%, %OS%, %OSVERSION%, %USERAGENT%, %DATE%, %TIME%, %FIXTURE%, %TEST%, %TESTNUMBER%, %FILENUMBER%')
             .option('-S, --screenshots-on-fails', 'take a screenshot whenever a test fails')
             .option('-q, --quarantine-mode', 'enable the quarantine mode')
             .option('-d, --debug-mode', 'execute test steps one by one pausing the test after each step')
@@ -184,6 +185,11 @@ export default class CLIArgumentParser {
     _parseSpeed () {
         if (this.opts.speed)
             this.opts.speed = parseFloat(this.opts.speed);
+    }
+
+    _parseScreenshotsPattern () {
+        if (!this.opts.pattern)
+            this.opts.pattern = '%DATE%_%TIME%/test-%TESTNUMBER%/%USERAGENT%/%TESTNUMBER%';
     }
 
     _parseConcurrency () {
@@ -319,6 +325,7 @@ export default class CLIArgumentParser {
         this._parsePorts();
         this._parseBrowserList();
         this._parseConcurrency();
+        this._parseScreenshotsPattern();
 
         await Promise.all([
             this._parseScreenshotsPath(),

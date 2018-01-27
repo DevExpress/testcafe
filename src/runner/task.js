@@ -12,7 +12,7 @@ export default class Task extends EventEmitter {
         this.running                 = false;
         this.browserConnectionGroups = browserConnectionGroups;
         this.tests                   = tests;
-        this.screenshots             = new Screenshots(opts.screenshotPath);
+        this.screenshots             = new Screenshots(opts.screenshotPath, opts.screenshotsPattern);
         this.warningLog              = new WarningLog();
 
         this.fixtureHookController = new FixtureHookController(tests, browserConnectionGroups.length);
