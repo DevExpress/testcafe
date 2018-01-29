@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>gh-2015</title>
+</head>
+<body>
+
+<button id="logout">logout</button>
+<div id="result"></div>
+
+<script>
+    document.getElementById('result').innerHTML = window.localStorage.loginKey ? 'logged' : 'not logged';
+
+    document.getElementById("logout").addEventListener("click", function () {
+        delete window.localStorage.loginKey;
+        document.location = "./logon.html";
+    });
+</script>
+
+</body>
+</html>

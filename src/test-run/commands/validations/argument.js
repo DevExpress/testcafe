@@ -12,6 +12,7 @@ import {
     ActionOptionsTypeError,
     ActionBooleanArgumentError,
     ActionStringArgumentError,
+    ActionNullableStringArgumentError,
     ActionIntegerArgumentError,
     ActionRoleArgumentError,
     ActionPositiveIntegerArgumentError,
@@ -55,6 +56,13 @@ export function nonEmptyStringArgument (argument, val, createError) {
 
     if (!val.length)
         throw createError('""');
+}
+
+export function nullableStringArgument (argument, val) {
+    var type = typeof val;
+
+    if (type !== 'string' && val !== null)
+        throw new ActionNullableStringArgumentError(argument, type);
 }
 
 export function urlArgument (name, val) {

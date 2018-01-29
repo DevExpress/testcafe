@@ -84,13 +84,13 @@ export default class TestRunBookmark {
         }
     }
 
-    async _restorePage (url) {
-        var navigateCommand = new NavigateToCommand({ url });
+    async _restorePage (url, storages) {
+        var navigateCommand = new NavigateToCommand({ url, storages });
 
         await this.testRun.executeCommand(navigateCommand);
     }
 
-    async restore (callsite) {
+    async restore (callsite, storages) {
         var prevPhase = this.testRun.phase;
 
         this.testRun.phase = TEST_RUN_PHASE.inBookmarkRestore;
@@ -104,13 +104,13 @@ export default class TestRunBookmark {
             await this._restorePageLoadTimeout();
             await this._restoreDialogHandler();
 
-            if (this.role.opts.preserveUrl)
-                await this._restorePage(this.role.url);
+            var preserveUrl = this.role.opts.preserveUrl;
+            var url = preserveUrl ? this.role.url : this.url;
 
-            else {
-                await this._restorePage(this.url);
+            await this._restorePage(url, JSON.stringify(storages));
+
+            if (!preserveUrl)
                 await this._restoreWorkingFrame();
-            }
         }
         catch (err) {
             err.callsite = callsite;

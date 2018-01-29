@@ -200,6 +200,12 @@ export class ActionStringArgumentError extends ActionArgumentErrorBase {
     }
 }
 
+export class ActionNullableStringArgumentError extends ActionArgumentErrorBase {
+    constructor (argumentName, actualValue) {
+        super(TYPE.actionNullableStringArgumentError, argumentName, actualValue);
+    }
+}
+
 export class ActionIntegerArgumentError extends ActionArgumentErrorBase {
     constructor (argumentName, actualValue) {
         super(TYPE.actionIntegerArgumentError, argumentName, actualValue);

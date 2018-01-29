@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>gh-2015</title>
+</head>
+<body>
+
+<button id="setAuthToken">Set auth token</button>
+<button id="redirectAfterLogin">Redirect after login</button>
+
+<script>
+    if(window.localStorage.loginKey) {
+        document.location = "./logged.html";
+    }
+
+    var btn = document.getElementById('setAuthToken');
+
+    btn.addEventListener('click', function () {
+        window.localStorage.loginKey = 'login-key';
+    });
+
+    var btn = document.getElementById('redirectAfterLogin');
+
+    btn.addEventListener('click', function () {
+        if(window.localStorage.loginKey) {
+            document.location = "./logged.html";
+        }
+    });
+</script>
+</body>
+</html>

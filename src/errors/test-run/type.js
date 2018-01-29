@@ -16,6 +16,7 @@ export default {
     actionSpeedOptionError:                            'actionSpeedOptionError',
     actionOptionsTypeError:                            'actionOptionsTypeError',
     actionStringArgumentError:                         'actionStringArgumentError',
+    actionNullableStringArgumentError:                 'actionNullableStringArgumentError',
     actionStringOrStringArrayArgumentError:            'actionStringOrStringArrayArgumentError',
     actionStringArrayElementError:                     'actionStringArrayElementError',
     actionIntegerArgumentError:                        'actionIntegerArgumentError',
