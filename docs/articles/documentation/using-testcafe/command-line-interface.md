@@ -374,7 +374,7 @@ Executes the specified shell command before running tests. Use it to launch or d
 After testing is finished, this application will be automatically terminated.
 
 ```sh
-testcafe chrome my-tests --app 'node server.js'
+testcafe chrome my-tests --app "node server.js"
 ```
 
 > TestCafe adds `node_modules/.bin` to `PATH` so that you can use binaries provided by locally installed dependencies without prefixes.
@@ -411,7 +411,7 @@ TestCafe waits for the specified time before it starts running tests.
 **Default value**: `1000`
 
 ```sh
-testcafe chrome my-tests --app 'node server.js' --app-init-delay 4000
+testcafe chrome my-tests --app "node server.js" --app-init-delay 4000
 ```
 
 ### --selector-timeout \<ms\>
