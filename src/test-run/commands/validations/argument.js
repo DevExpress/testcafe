@@ -59,11 +59,9 @@ export function nonEmptyStringArgument (argument, val, createError) {
 }
 
 export function nullableStringArgument (argument, val) {
-    if (val === null) return;
-
     var type = typeof val;
 
-    if (type !== 'string')
+    if (type !== 'string' && val !== null)
         throw new ActionNullableStringArgumentError(argument, type);
 }
 
