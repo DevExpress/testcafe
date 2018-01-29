@@ -18,15 +18,6 @@
         "url": "https://alligator.io/angular/e2e-testing-testcafe/"
     },
     {
-        "type": "Tutorial",
-        "title": "Test Driven Development Courses: End-to-End Test Setup",
-        "excerpt": "In this lesson, we'll set up e2e testing with TestCafe... Unlike the majority of other end-to-end (e2e) testing tools, TestCafe is not dependent on Selenium or WebDriver. Instead, it injects scripts into the browser to communicate directly with the DOM and handle events. It works on any modern browser that supports HTML5 without any plugins.",
-        "author": "Michael Herman",
-        "date": "2017-11-20",
-        "publisher": "testdriven.io",
-        "url": "https://testdriven.io/part-four-e2e-test-setup/"
-    },    
-    {
         "type": "Review",
         "title": "TestCafe: An e2e Testing Tool That Doesn't Use Selenium",
         "excerpt": "Selenium WebDriver is one of the most well-known tools for e2e testing. But what if you don't want to invest a lot of time into the setup of an e2e testing environment?",
