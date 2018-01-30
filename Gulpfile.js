@@ -60,6 +60,8 @@ var CLIENT_TESTS_SETTINGS_BASE = {
         { src: '/before-test.js', path: 'test/client/before-test.js' }
     ],
 
+    css: [ { src: '/styles.css', path: 'lib/client/ui/styles.css' } ],
+
     configApp: require('./test/client/config-qunit-server-app')
 };
 

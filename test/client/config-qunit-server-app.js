@@ -2,6 +2,8 @@ var url  = require('url');
 var fs   = require('fs');
 var path = require('path');
 
+var createShadowStylesheet = require('testcafe-hammerhead/lib/shadow-ui/create-shadow-stylesheet');
+
 
 //The following code is copied from testcafe-hammerhead
 //NOTE: Url rewrite proxied requests (e.g. for iframes), so they will hit our server
@@ -64,5 +66,14 @@ module.exports = function (app) {
 
     app.get('/close-request', function (req) {
         req.destroy();
+    });
+
+    app.all('/styles.css', function (req, res) {
+        fs.readFile(path.join(__dirname, '../../lib/client/ui/styles.css'), function (err, css) {
+            /* eslint-disable no-console */
+            console.log('GOT!');
+            res.set('Content-Type', 'text/css');
+            res.send(createShadowStylesheet(css));
+        });
     });
 };
