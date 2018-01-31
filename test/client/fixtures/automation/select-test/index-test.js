@@ -360,7 +360,7 @@ $(document).ready(function () {
         select
             .run()
             .then(function () {
-                ok(mousedown, 'select started from textarea');
+                ok(mousedown, 'select started from textarea ' + browserUtils.version + ' ' + browserUtils.fullVersion);
                 ok(mouseup, 'select ended on textarea');
 
                 checkSelection(textarea, 2, 628);
