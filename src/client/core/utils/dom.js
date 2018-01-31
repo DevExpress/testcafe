@@ -174,7 +174,7 @@ function getFocusableElements (doc) {
         if (styleUtils.get(element, 'display') === 'none' || styleUtils.get(element, 'visibility') === 'hidden')
             continue;
 
-        if (browserUtils.isIE && isOptionElement(element))
+        if ((browserUtils.isIE || browserUtils.isAndroid) && isOptionElement(element))
             continue;
 
         if (tabIndex !== null && tabIndex < 0)
