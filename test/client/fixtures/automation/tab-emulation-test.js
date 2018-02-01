@@ -101,13 +101,13 @@ $(document).ready(function () {
         $expectedFocusedElements.push($divWithTabIndex);
         $expectedFocusedElements.push($link);
 
-        if (!browserUtils.isIE)
+        if (!browserUtils.isIE && !browserUtils.isAndroid)
             $expectedFocusedElements.push($optionOneWithTabIdex);
 
         $expectedFocusedElements.push($divContentEditableWithTabIndex);
         $expectedFocusedElements.push($buttonInContentEditable);
 
-        if (!browserUtils.isIE)
+        if (!browserUtils.isIE && !browserUtils.isAndroid)
             $expectedFocusedElements.push($optionTwoWithTabIdex);
 
         $expectedFocusedElements.push($radioInput2);

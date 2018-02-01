@@ -116,7 +116,7 @@ var CLIENT_TESTS_MOBILE_BROWSERS = [
     {
         platform:    'Linux',
         browserName: 'android',
-        version:     '5.1',
+        version:     '6.0',
         deviceName:  'Android Emulator'
     },
     {

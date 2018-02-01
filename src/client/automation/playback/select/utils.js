@@ -78,8 +78,12 @@ function getTextSelectionRectangle (element, position) {
 }
 
 function getSelectionRectangle (element, position) {
-    var fakeDiv = createFakeDiv(element);
-    var rect    = null;
+    var clientRectBeforeFakeDiv = element.getBoundingClientRect();
+    var fakeDiv                 = createFakeDiv(element);
+    var rect                    = null;
+    var clientRectAfterFakeDiv  = element.getBoundingClientRect();
+    var topBoundDiff            = clientRectAfterFakeDiv.top - clientRectBeforeFakeDiv.top;
+    var leftBoundDiff           = clientRectAfterFakeDiv.left - clientRectBeforeFakeDiv.left;
 
     try {
         var range = document.createRange(); //B254723
@@ -103,7 +107,14 @@ function getSelectionRectangle (element, position) {
 
     domUtils.remove(fakeDiv);
 
-    return rect;
+    return {
+        width:  rect.width,
+        height: rect.height,
+        top:    rect.top - topBoundDiff,
+        bottom: rect.bottom - topBoundDiff,
+        left:   rect.left - leftBoundDiff,
+        right:  rect.right - leftBoundDiff
+    };
 }
 
 function createFakeDiv (element) {
