@@ -60,9 +60,10 @@ export default {
         if (!this.streamsOverridden)
             this._overrideStreams();
 
-        // NOTE: We do not have callsite for the raw API at the moment. Remove this check after
-        // the callsite format for the raw API will be implemented.
-        var callsiteStr = callsite ? callsite.renderSync({
+        // NOTE: Raw API does not have callsite.
+        var hasCallsite = callsite && callsite.renderSync;
+
+        var callsiteStr = hasCallsite ? callsite.renderSync({
             frameSize:   1,
             stackFilter: createStackFilter(Error.stackTraceLimit),
             stack:       false
