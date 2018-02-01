@@ -1,4 +1,5 @@
 import { InvalidSelectorResultError } from '../../../../../errors/test-run';
+import { exists, visible } from '../visibility-function';
 import hammerhead from '../../../deps/hammerhead';
 
 // NOTE: save original ctors and methods because they may be overwritten by page code
@@ -40,6 +41,14 @@ hammerhead.nativeMethods.objectDefineProperty.call(window, window, '%testCafeSel
 
         else
             throw new InvalidSelectorResultError();
+
+        filtered = [].slice.call(filtered).filter(n => exists(n));
+
+        if (options.filterVisible)
+            filtered = filtered.filter(n => visible(n));
+
+        if (options.filterHidden)
+            filtered = filtered.filter(n => !visible(n));
 
         if (options.counterMode) {
             if (options.index !== null)

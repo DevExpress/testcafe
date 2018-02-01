@@ -362,6 +362,18 @@ function addFilterMethods (obj, getSelector, SelectorBuilder) {
 
         return createDerivativeSelectorWithFilter(getSelector, SelectorBuilder, selectorFn, filter);
     };
+
+    obj.filterVisible = () => {
+        const builder = new SelectorBuilder(getSelector(), { filterVisible: true }, { instantiation: 'Selector' });
+
+        return builder.getFunction();
+    };
+
+    obj.filterHidden = () => {
+        const builder = new SelectorBuilder(getSelector(), { filterHidden: true }, { instantiation: 'Selector' });
+
+        return builder.getFunction();
+    };
 }
 
 function addCustomDOMPropertiesMethod (obj, getSelector, SelectorBuilder) {

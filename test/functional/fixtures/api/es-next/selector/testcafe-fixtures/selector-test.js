@@ -15,6 +15,34 @@ const isIEFunction = ClientFunction(() => {
            appName === 'Netscape' && isIE11Re.exec(userAgent) !== null;
 });
 
+
+test('Selector `filterVisible/filterHidden` methods with plain structure', async t => {
+    const elements = Selector('#filterVisiblePlain div');
+
+    await t.expect(elements.count).eql(4);
+    await t.expect(elements.filterVisible().count).eql(1);
+    await t.expect(elements.filterHidden().count).eql(3);
+    await t.expect(elements.filterVisible().filterHidden().count).eql(0);
+});
+
+test('Selector `filterVisible/filterHidden` methods with hierarchical structure', async t => {
+    let elements = Selector('#filterVisibleHierarchical > div');
+
+    await t.expect(elements.child('p').count).eql(11);
+
+    elements = elements.filterVisible().child('p');
+
+    await t.expect(elements.count).eql(6);
+    await t.expect(elements.filterVisible().count).eql(5);
+    await t.expect(elements.filterHidden().count).eql(1);
+
+    elements = Selector('#filterVisibleHierarchical > div').filterHidden().child('p');
+
+    await t.expect(elements.count).eql(5);
+    await t.expect(elements.filterHidden().count).eql(5);
+});
+
+
 test('HTMLElement snapshot basic properties', async t => {
     const el = await getElementById('htmlElement');
 
