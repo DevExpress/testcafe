@@ -270,7 +270,7 @@ gulp.task('fast-build', ['server-scripts', 'client-scripts', 'styles', 'images',
 gulp.task('build', ['lint', 'fast-build']);
 
 // Test
-gulp.task('test-server', ['build'], function () {
+gulp.task('test-server', ['fast-build'], function () {
     return gulp
         .src('test/server/*-test.js')
         .pipe(mocha({
@@ -286,15 +286,15 @@ function testClient (tests, settings, sauselabsSettings) {
         .pipe(qunitHarness(settings, sauselabsSettings));
 }
 
-gulp.task('test-client', ['build'], function () {
+gulp.task('test-client', ['fast-build'], function () {
     return testClient('test/client/fixtures/**/*-test.js', CLIENT_TESTS_SETTINGS);
 });
 
-gulp.task('test-client-legacy', ['build'], function () {
+gulp.task('test-client-legacy', ['fast-build'], function () {
     return testClient('test/client/legacy-fixtures/**/*-test.js', CLIENT_TESTS_LEGACY_SETTINGS);
 });
 
-gulp.task('test-client-travis', ['build'], function () {
+gulp.task('test-client-travis', ['fast-build'], function () {
     var saucelabsSettings = CLIENT_TESTS_SAUCELABS_SETTINGS;
 
     saucelabsSettings.browsers = CLIENT_TESTS_DESKTOP_BROWSERS;
@@ -302,7 +302,7 @@ gulp.task('test-client-travis', ['build'], function () {
     return testClient('test/client/fixtures/**/*-test.js', CLIENT_TESTS_SETTINGS, saucelabsSettings);
 });
 
-gulp.task('test-client-old-browsers-travis', ['build'], function () {
+gulp.task('test-client-old-browsers-travis', ['fast-build'], function () {
     var saucelabsSettings = CLIENT_TESTS_SAUCELABS_SETTINGS;
 
     saucelabsSettings.browsers = CLIENT_TESTS_OLD_BROWSERS;
@@ -310,7 +310,7 @@ gulp.task('test-client-old-browsers-travis', ['build'], function () {
     return testClient('test/client/fixtures/**/*-test.js', CLIENT_TESTS_SETTINGS, saucelabsSettings);
 });
 
-gulp.task('test-client-travis-mobile', ['build'], function () {
+gulp.task('test-client-travis-mobile', ['fast-build'], function () {
     var saucelabsSettings = CLIENT_TESTS_SAUCELABS_SETTINGS;
 
     saucelabsSettings.browsers = CLIENT_TESTS_MOBILE_BROWSERS;
@@ -318,7 +318,7 @@ gulp.task('test-client-travis-mobile', ['build'], function () {
     return testClient('test/client/fixtures/**/*-test.js', CLIENT_TESTS_SETTINGS, saucelabsSettings);
 });
 
-gulp.task('test-client-legacy-travis', ['build'], function () {
+gulp.task('test-client-legacy-travis', ['fast-build'], function () {
     var saucelabsSettings = CLIENT_TESTS_SAUCELABS_SETTINGS;
 
     saucelabsSettings.browsers = CLIENT_TESTS_DESKTOP_BROWSERS;
@@ -326,7 +326,7 @@ gulp.task('test-client-legacy-travis', ['build'], function () {
     return testClient('test/client/legacy-fixtures/**/*-test.js', CLIENT_TESTS_LEGACY_SETTINGS, saucelabsSettings);
 });
 
-gulp.task('test-client-legacy-travis-mobile', ['build'], function () {
+gulp.task('test-client-legacy-travis-mobile', ['fast-build'], function () {
     var saucelabsSettings = CLIENT_TESTS_SAUCELABS_SETTINGS;
 
     saucelabsSettings.browsers = CLIENT_TESTS_MOBILE_BROWSERS;
@@ -568,23 +568,23 @@ function testFunctional (fixturesDir, testingEnvironmentName, browserProviderNam
         }));
 }
 
-gulp.task('test-functional-travis-desktop-osx-and-ms-edge', ['build'], function () {
+gulp.task('test-functional-travis-desktop-osx-and-ms-edge', ['fast-build'], function () {
     return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers, functionalTestConfig.browserProviderNames.browserstack);
 });
 
-gulp.task('test-functional-travis-mobile', ['build'], function () {
+gulp.task('test-functional-travis-mobile', ['fast-build'], function () {
     return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.mobileBrowsers, functionalTestConfig.browserProviderNames.browserstack);
 });
 
-gulp.task('test-functional-local', ['build'], function () {
+gulp.task('test-functional-local', ['fast-build'], function () {
     return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.localBrowsers);
 });
 
-gulp.task('test-functional-travis-legacy', ['build'], function () {
+gulp.task('test-functional-travis-legacy', ['fast-build'], function () {
     return testFunctional('test/functional/legacy-fixtures', functionalTestConfig.testingEnvironmentNames.legacy, functionalTestConfig.browserProviderNames.sauceLabs);
 });
 
-gulp.task('test-functional-travis-old-browsers', ['build'], function () {
+gulp.task('test-functional-travis-old-browsers', ['fast-build'], function () {
     return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.oldBrowsers, functionalTestConfig.browserProviderNames.sauceLabs);
 });
 

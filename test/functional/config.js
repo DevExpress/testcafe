@@ -31,26 +31,8 @@ testingEnvironments[testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers] = {
         {
             os:        'OS X',
             osVersion: 'Sierra',
-            name:      'safari',
-            alias:     'safari'
-        },
-        {
-            os:        'OS X',
-            osVersion: 'Sierra',
-            name:      'chrome',
-            alias:     'chrome-osx'
-        },
-        {
-            os:        'OS X',
-            osVersion: 'Sierra',
             name:      'firefox',
             alias:     'firefox-osx'
-        },
-        {
-            os:        'Windows',
-            osVersion: '10',
-            name:      'edge',
-            alias:     'edge',
         }
     ]
 };
