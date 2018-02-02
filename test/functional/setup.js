@@ -150,7 +150,7 @@ before(function () {
 
             global.runTests = function (fixture, testName, opts) {
 
-                // console.log(testName);
+                console.log(testName);
                 var report             = '';
                 var runner             = testCafe.createRunner();
                 var fixturePath        = path.isAbsolute(fixture) ? fixture : path.join(path.dirname(caller()), fixture);
