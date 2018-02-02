@@ -33,7 +33,7 @@ var childProcess         = require('child_process');
 
 ll
     .tasks([
-        'lint',
+        /*'lint',*/
         'server-scripts'
     ])
     .onlyInDebug([
@@ -267,7 +267,7 @@ gulp.task('ts-definitions', ['clean'], function () {
 });
 
 gulp.task('fast-build', ['server-scripts', 'client-scripts', 'styles', 'images', 'templates', 'ts-definitions']);
-gulp.task('build', ['lint', 'fast-build']);
+gulp.task('build', ['fast-build']);
 
 // Test
 gulp.task('test-server', ['fast-build'], function () {
@@ -445,7 +445,7 @@ gulp.task('put-in-publications', ['fetch-assets-repo'], function () {
 });
 
 
-gulp.task('prepare-website', ['put-in-articles', 'put-in-navigation', 'put-in-posts', 'put-in-publications', 'lint-docs']);
+gulp.task('prepare-website', ['put-in-articles', 'put-in-navigation', 'put-in-posts', 'put-in-publications']);
 
 function buildWebsite (mode, cb) {
     var options = mode ? { stdio: 'inherit', env: { JEKYLL_ENV: mode } } : { stdio: 'inherit' };
@@ -552,7 +552,7 @@ gulp.task('publish-website', ['build-website-production'], function () {
         .pipe(ghpages());
 });
 
-gulp.task('test-docs-travis', ['test-website-travis', 'lint']);
+gulp.task('test-docs-travis', ['test-website-travis']);
 
 
 function testFunctional (fixturesDir, testingEnvironmentName, browserProviderName) {
