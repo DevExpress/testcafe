@@ -177,6 +177,7 @@ before(function () {
                 });
 
                 if (!actualBrowsers.length) {
+                    console.log("------------------------no actual browsers");
                     mocha.test.skip();
                     return Promise.resolve();
                 }
@@ -191,8 +192,10 @@ before(function () {
                     if (shouldFail && !err)
                         throw new Error('Test should have failed but it succeeded');
 
-                    if (err)
+                    if (err) {
+                        console.log("------------------------error");
                         throw err;
+                    }
                 };
 
                 if (customReporters)
