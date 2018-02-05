@@ -124,7 +124,7 @@ export default class BrowserConnection extends EventEmitter {
     async _popNextTestRunUrl () {
         while (this.hasQueuedJobs && !this.currentJob.hasQueuedTestRuns)
             this.jobQueue.shift();
-
+        console.log("-----------------this.hasQueuedJobs: " + this.hasQueuedJobs);
         return this.hasQueuedJobs ? await this.currentJob.popNextTestRunUrl(this) : null;
     }
 

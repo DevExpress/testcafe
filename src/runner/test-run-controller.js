@@ -130,6 +130,8 @@ export default class TestRunController extends EventEmitter {
 
         testRun.start();
 
-        return this.proxy.openSession(testRun.test.pageUrl, testRun, this.opts.externalProxyHost);
+        var url = this.proxy.openSession(testRun.test.pageUrl, testRun, this.opts.externalProxyHost);
+        console.log('----------TestRunController: ' + url);
+        return url;
     }
 }

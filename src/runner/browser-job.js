@@ -100,8 +100,10 @@ export default class BrowserJob extends EventEmitter {
         while (this.testRunControllerQueue.length) {
             // NOTE: before hook for test run fixture is currently
             // executing, so test run is temporary blocked
-            if (this.testRunControllerQueue[0].blocked)
+            if (this.testRunControllerQueue[0].blocked) {
+                console.log('-------popNextTestRunUrl: blocked');
                 break;
+            }
 
             var testRunController = this.testRunControllerQueue.shift();
 
@@ -112,7 +114,7 @@ export default class BrowserJob extends EventEmitter {
                 this.emit('start');
             }
 
-            var testRunUrl = await testRunController.start(connection); 
+            var testRunUrl = await testRunController.start(connection);
 
             if (testRunUrl)
                 return testRunUrl;
