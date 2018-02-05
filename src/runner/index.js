@@ -84,7 +84,7 @@ export default class Runner extends EventEmitter {
 
         try {
             console.log("------Promise.race");
-            await Promise.race(promises).then(() => console.log("-------------done won race")).catch(() => console.log("-------------error won race"));
+            await Promise.race(promises).then(() => console.log("-------------done won race"));
         }
         catch (err) {
             console.log("------catch Promise.race");
