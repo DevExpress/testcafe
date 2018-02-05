@@ -64,6 +64,7 @@ export default class BrowserJob extends EventEmitter {
     }
 
     _onTestRunRestart (testRunController) {
+        console.log("-----------------_onTestRunRestart");
         this._removeFromCompletionQueue(testRunController);
         this.testRunControllerQueue.unshift(testRunController);
     }

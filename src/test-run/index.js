@@ -53,6 +53,9 @@ const MAX_RESPONSE_DELAY              = 2 * 60 * 1000;
 
 export default class TestRun extends Session {
     constructor (test, browserConnection, screenshotCapturer, warningLog, opts) {
+
+        console.log("------TestRun constructor");
+
         var uploadsRoot = path.dirname(test.fixture.path);
 
         super(uploadsRoot);
@@ -206,6 +209,8 @@ export default class TestRun extends Session {
     async start () {
         testRunTracker.activeTestRuns[this.id] = this;
 
+        console.log("-----TestRun start");
+
         this.emit('start');
 
         if (await this._runBeforeHook()) {
@@ -220,6 +225,8 @@ export default class TestRun extends Session {
         this._addPendingPageErrorIfAny();
 
         delete testRunTracker.activeTestRuns[this.id];
+
+        console.log("-----TestRun done");
 
         this.emit('done');
     }

@@ -8,6 +8,8 @@ const QUARANTINE_THRESHOLD = 3;
 
 export default class TestRunController extends EventEmitter {
     constructor (test, index, proxy, screenshots, warningLog, fixtureHookController, opts) {
+
+        console.log("-------constructor TestRunController");
         super();
 
         this.test  = test;
@@ -43,6 +45,7 @@ export default class TestRunController extends EventEmitter {
     }
 
     _createTestRun (connection) {
+        console.log("------_createTestRun");
         var quarantineAttemptNum = this.quarantine ? this.quarantine.attemptNumber : null;
         var screenshotCapturer   = this.screenshots.createCapturerFor(this.test, this.index, quarantineAttemptNum, connection);
         var TestRunCtor          = this.TestRunCtor;
@@ -111,6 +114,7 @@ export default class TestRunController extends EventEmitter {
     }
 
     async start (connection) {
+        console.log("------TestRunController Start");
         var testRun = this._createTestRun(connection);
 
         var hookOk = await this.fixtureHookController.runFixtureBeforeHookIfNecessary(testRun);
