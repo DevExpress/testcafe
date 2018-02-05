@@ -23,6 +23,8 @@ export default class BrowserConnection extends EventEmitter {
     constructor (gateway, browserInfo, permanent) {
         super();
 
+        console.log('-----------constructor BrowserConnection');
+
         this.HEARTBEAT_TIMEOUT = 2 * 60 * 1000;
 
         this.id                       = BrowserConnection._generateId();
@@ -52,6 +54,7 @@ export default class BrowserConnection extends EventEmitter {
         this.initScriptUrl = `${gateway.domain}/browser/init-script/${this.id}`;
 
         this.on('error', () => {
+            console.log("---------connection on error");
             this._forceIdle();
             this.close();
         });
@@ -77,6 +80,9 @@ export default class BrowserConnection extends EventEmitter {
                     await promisifyEvent(this, 'ready');
 
                 this.opened = true;
+
+                console.log('----------------connection opened = true');
+
                 this.emit('opened');
             }
             catch (err) {
@@ -231,6 +237,7 @@ export default class BrowserConnection extends EventEmitter {
     }
 
     async getStatus () {
+        console.log("------getStatus");
         if (this.switchingToIdle) {
             this.switchingToIdle = false;
             this.idle            = true;

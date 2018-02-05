@@ -90,6 +90,7 @@ export default class BrowserConnectionGateway {
         if (BrowserConnectionGateway.ensureConnectionReady(res, connection)) {
             var status = await connection.getStatus();
 
+            console.log("--------onStatusRequest result: " + JSON.stringify(status));
             respondWithJSON(res, status);
         }
     }
