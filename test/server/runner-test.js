@@ -617,9 +617,11 @@ describe('Runner', function () {
         };
 
         function taskDone () {
+            console.log("-----------taskDone");
             var task = this;
 
             task.pendingBrowserJobs.forEach(function (job) {
+                console.log("-------- task.emit('browser-job-done')");
                 task.emit('browser-job-done', job);
             });
 
