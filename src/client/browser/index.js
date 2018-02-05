@@ -80,13 +80,19 @@ export function stopInitScriptExecution () {
 }
 
 export function checkStatus (statusUrl, createXHR) {
+
+    var failXHRCount = 0;
+
     return sendXHR(statusUrl, createXHR)
         .then(res => {
+            if(failXHRCount > 5) {
+                debugger;
+            }
             if (res.cmd === COMMAND.run || res.cmd === COMMAND.idle && !isCurrentLocation(res.url)) {
                 stopInitScriptExecution();
                 document.location = res.url;
-            }
-
+            } else
+                failXHRCount++;
             return res.cmd;
         });
 }

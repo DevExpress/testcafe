@@ -22,9 +22,11 @@ class IdlePage {
     }
 
     _checkStatus () {
+        console.log('_checkStatus');
         browser
             .checkStatus(this.statusUrl, createXHR)
             .then(cmd => {
+                console.log('cmd: ' + cmd);
                 if (cmd === COMMAND.idle)
                     window.setTimeout(() => this._checkStatus(), CHECK_STATUS_DELAY);
             })
