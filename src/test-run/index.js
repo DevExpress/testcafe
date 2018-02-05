@@ -171,9 +171,12 @@ export default class TestRun extends Session {
         this.phase = phase;
 
         try {
+            console.log('-----------before FN. Phase: ' + phase);
             await fn(this);
+            console.log('-----------after FN');
         }
         catch (err) {
+            console.log('-----------catch error on FN');
             var screenshotPath = null;
 
             if (this.opts.takeScreenshotsOnFails)
