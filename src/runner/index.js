@@ -71,6 +71,7 @@ export default class Runner extends EventEmitter {
     async _getTaskResult (task, browserSet, reporter, testedApp) {
         console.log("----------_getTaskResult");
         task.on('browser-job-done', job => browserSet.releaseConnection(job.browserConnection));
+        browserSet.on('error', () => console.log('---------------------browserSet OnError'));
 
         var promises = [
             promisifyEvent(task, 'done'),

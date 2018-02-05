@@ -31,6 +31,7 @@ export default class Task extends EventEmitter {
         });
 
         job.once('done', () => {
+            console.log("------------task: done");
             remove(this.pendingBrowserJobs, job);
             this.emit('browser-job-done', job);
 
