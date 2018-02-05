@@ -37,6 +37,7 @@ export default class Runner extends EventEmitter {
     }
 
     static async _disposeTaskAndRelatedAssets (task, browserSet, testedApp) {
+        console.log("--------------------_disposeTaskAndRelatedAssets");
         task.abort();
         task.removeAllListeners();
 
@@ -80,9 +81,11 @@ export default class Runner extends EventEmitter {
             promises.push(testedApp.errorPromise);
 
         try {
+            console.log("------Promise.race");
             await Promise.race(promises);
         }
         catch (err) {
+            console.log("------catch Promise.race");
             await Runner._disposeTaskAndRelatedAssets(task, browserSet, testedApp);
 
             throw err;
