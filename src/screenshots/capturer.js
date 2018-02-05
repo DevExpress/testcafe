@@ -49,7 +49,7 @@ export default class Capturer {
         return fileName;
     }
 
-    _getSreenshotPath (fileName, customPath) {
+    _getScreenshotPath (fileName, customPath) {
         if (customPath)
             return joinPath(this.baseScreenshotsPath, Capturer._correctFilePath(customPath));
 
@@ -73,7 +73,7 @@ export default class Capturer {
 
         fileName = forError ? joinPath('errors', fileName) : fileName;
 
-        var screenshotPath = this._getSreenshotPath(fileName, customScreenshotPath);
+        var screenshotPath = this._getScreenshotPath(fileName, customScreenshotPath);
 
         await this._takeScreenshot(screenshotPath, pageWidth, pageHeight);
 
