@@ -572,6 +572,18 @@ gulp.task('test-functional-travis-desktop-osx-and-ms-edge', ['fast-build'], func
     return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers, functionalTestConfig.browserProviderNames.browserstack);
 });
 
+gulp.task('test-functional-travis-desktop-osx-and-ms-edge1', ['fast-build'], function () {
+    return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers, functionalTestConfig.browserProviderNames.browserstack);
+});
+
+gulp.task('test-functional-travis-desktop-osx-and-ms-edge2', ['fast-build'], function () {
+    return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers, functionalTestConfig.browserProviderNames.browserstack);
+});
+
+gulp.task('test-functional-travis-desktop-osx-and-ms-edge3', ['fast-build'], function () {
+    return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers, functionalTestConfig.browserProviderNames.browserstack);
+});
+
 gulp.task('test-functional-travis-mobile', ['fast-build'], function () {
     return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.mobileBrowsers, functionalTestConfig.browserProviderNames.browserstack);
 });
