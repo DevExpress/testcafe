@@ -107,6 +107,7 @@ function closeRemoteBrowsers () {
 
 function closeLocalBrowsers () {
     var closeBrowserPromises = browsersInfo.map(function (browserInfo) {
+        console.log('closeLocalBrowsers');
         return browserInfo.connection.getStatus().then(function (status) {
             return browserTools.close(status.url);
         });
