@@ -112,7 +112,7 @@ export default class BrowserJob extends EventEmitter {
                 this.emit('start');
             }
 
-            var testRunUrl = await testRunController.start(connection);
+            var testRunUrl = await testRunController.start(connection); 
 
             if (testRunUrl)
                 return testRunUrl;
