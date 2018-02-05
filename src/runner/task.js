@@ -41,12 +41,15 @@ export default class Task extends EventEmitter {
     }
 
     _createBrowserJobs (proxy, opts) {
+        console.log('----------------_createBrowserJobs');
         return this.browserConnectionGroups.map(browserConnectionGroup => {
             var job = new BrowserJob(this.tests, browserConnectionGroup, proxy, this.screenshots, this.warningLog, this.fixtureHookController, opts);
-
             this._assignBrowserJobEventHandlers(job);
-            browserConnectionGroup.map(bc => bc.addJob(job));
-
+            console.log('----------------job created and assigned');
+            browserConnectionGroup.map(bc => {
+                console.log('------------job added to console');
+                return bc.addJob(job);
+            });
             return job;
         });
     }
