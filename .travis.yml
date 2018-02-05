@@ -13,6 +13,12 @@ matrix:
     # page under Node 8 on BrowserStack for some reason. As a result we have blinking tests.
   - node_js: "7"
     env: GULP_TASK="test-functional-travis-desktop-osx-and-ms-edge"
+    - node_js: "7"
+    env: GULP_TASK="test-functional-travis-desktop-osx-and-ms-edge"
+    - node_js: "7"
+    env: GULP_TASK="test-functional-travis-desktop-osx-and-ms-edge"
+    - node_js: "7"
+    env: GULP_TASK="test-functional-travis-desktop-osx-and-ms-edge"
 #  - node_js: "7"
 #    env: GULP_TASK="test-functional-travis-mobile"
  fast_finish: true
