@@ -100,6 +100,7 @@ export default class BrowserSet extends EventEmitter {
     }
 
     releaseConnection (bc) {
+        console.log("-----releaseConnection");
         if (this.browserConnections.indexOf(bc) < 0)
             return Promise.resolve();
 
