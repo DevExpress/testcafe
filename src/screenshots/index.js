@@ -113,7 +113,7 @@ export default class Screenshots {
         });
 
         for (const pattern in this.patternMap)
-            namePattern = namePattern.replace(new RegExp(`%${pattern}%`, 'g'), this.patternMap[pattern]);
+            namePattern = namePattern.replace(new RegExp(`\\$\\{${pattern}\\}`, 'g'), this.patternMap[pattern]);
 
         return namePattern;
     }

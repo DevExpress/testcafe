@@ -8,6 +8,7 @@ import WARNING_MESSAGE from '../notifications/warning-message';
 
 
 const PNG_EXTENSION_RE = /(\.png)$/;
+const FILENAME_EXT = '.png';
 
 
 export default class Capturer {
@@ -80,8 +81,10 @@ export default class Capturer {
     }
 
     _parseFileNumber (fileName) {
-        if (fileName.indexOf('%FILENUMBER%') !== -1)
-            return fileName.replace(new RegExp('%FILENUMBER%', 'g'), (this.screenshotIndex - 1).toString().padStart(3, 0));
+        if (fileName.indexOf('${FILENUMBER}') !== -1)
+            return fileName.replace(new RegExp('\\$\\{FILENUMBER\\}', 'g'), (this.screenshotIndex - 1).toString().padStart(3, 0));
+        else if (this.screenshotIndex > 2)
+            return `${fileName}-${this.screenshotIndex - 1}`;
 
         return fileName;
     }
@@ -90,7 +93,7 @@ export default class Capturer {
         let fileName = '';
 
         if (this.screenshotsPatternName)
-            fileName = `${this.screenshotsPatternName}.png`;
+            fileName = `${this.screenshotsPatternName}`;
         else
             fileName = `${forError ? this.errorScreenshotIndex : this.screenshotIndex}.png`;
 
@@ -104,7 +107,7 @@ export default class Capturer {
 
     _parsePattern (namePattern) {
         for (const pattern in this.patternMap)
-            namePattern = namePattern.replace(new RegExp(`%${pattern}%`, 'g'), this.patternMap[pattern]);
+            namePattern = namePattern.replace(new RegExp(`\\$\\{${pattern}\\}`, 'g'), this.patternMap[pattern]);
 
         return namePattern;
     }
@@ -129,7 +132,7 @@ export default class Capturer {
         if (!this.enabled)
             return null;
 
-        var fileName = this._parseFileNumber(this._getFileName(forError));
+        var fileName = this._parseFileNumber(this._getFileName(forError)) + FILENAME_EXT;
 
         fileName = forError ? joinPath('errors', fileName) : fileName;
 
