@@ -242,6 +242,7 @@ export default class BrowserConnection extends EventEmitter {
 
             if (testRunUrl) {
                 this.idle = false;
+                console.log("COMMAND.run " + testRunUrl);
                 return { cmd: COMMAND.run, url: testRunUrl };
             }
         }
@@ -249,6 +250,7 @@ export default class BrowserConnection extends EventEmitter {
         if (!this.idle)
             this.switchingToIdle = true;
 
+        console.log("COMMAND.idle " + this.idleUrl);
         return { cmd: COMMAND.idle, url: this.idleUrl };
     }
 }

@@ -79,9 +79,9 @@ export function stopInitScriptExecution () {
     allowInitScriptExecution = false;
 }
 
-export function checkStatus (statusUrl, createXHR) {
+var failXHRCount = 0;
 
-    var failXHRCount = 0;
+export function checkStatus (statusUrl, createXHR) {
 
     return sendXHR(statusUrl, createXHR)
         .then(res => {
