@@ -68,6 +68,7 @@ export default class Runner extends EventEmitter {
 
     // Run task
     async _getTaskResult (task, browserSet, reporter, testedApp) {
+        console.log("----------_getTaskResult");
         task.on('browser-job-done', job => browserSet.releaseConnection(job.browserConnection));
 
         var promises = [
@@ -93,6 +94,9 @@ export default class Runner extends EventEmitter {
     }
 
     _runTask (reporterPlugins, browserSet, tests, testedApp) {
+
+        console.log("---runTask");
+
         var completed         = false;
         var task              = new Task(tests, browserSet.browserConnectionGroups, this.proxy, this.opts);
         var reporters         = reporterPlugins.map(reporter => new Reporter(reporter.plugin, task, reporter.outStream));
@@ -186,6 +190,7 @@ export default class Runner extends EventEmitter {
     }
 
     run ({ skipJsErrors, quarantineMode, debugMode, selectorTimeout, assertionTimeout, pageLoadTimeout, speed = 1, debugOnFail } = {}) {
+        console.log("-----------run");
         this.opts.skipJsErrors     = !!skipJsErrors;
         this.opts.quarantineMode   = !!quarantineMode;
         this.opts.debugMode        = !!debugMode;
