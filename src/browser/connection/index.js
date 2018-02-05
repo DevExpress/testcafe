@@ -251,7 +251,11 @@ export default class BrowserConnection extends EventEmitter {
                 this.idle = false;
                 console.log("COMMAND.run " + testRunUrl);
                 return { cmd: COMMAND.run, url: testRunUrl };
+            } else {
+                console.log("----- no test run url");
             }
+        } else {
+            console.log("-------not opened");
         }
 
         if (!this.idle)
