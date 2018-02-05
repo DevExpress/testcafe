@@ -45,6 +45,7 @@ export default class Runner extends EventEmitter {
     }
 
     static async _disposeBrowserSetAndTestedApp (browserSet, testedApp) {
+        console.log('_disposeBrowserSetAndTestedApp');
         await browserSet.dispose();
 
         if (testedApp)
