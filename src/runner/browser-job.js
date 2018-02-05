@@ -32,6 +32,8 @@ export default class BrowserJob extends EventEmitter {
     }
 
     _createTestRunController (test, index) {
+
+        console.log("-------------_createTestRunController");
         var testRunController = new TestRunController(test, index + 1, this.proxy, this.screenshots, this.warningLog,
             this.fixtureHookController, this.opts);
 
@@ -67,6 +69,9 @@ export default class BrowserJob extends EventEmitter {
     }
 
     async _onTestRunDone (testRunController) {
+
+        console.log("-----------------_onTestRunDone");
+
         this.total++;
 
         if (!testRunController.testRun.errs.length)
