@@ -48,6 +48,7 @@ window.cLog = function (text) {
     if(!el)
         return;
     el.innerHTML += (text + '<br/>');
+    el.scrollTop = 5000;
 }
 
 window.IdlePage = IdlePage;
