@@ -32,6 +32,8 @@ export default class BrowserJob extends EventEmitter {
     }
 
     _createTestRunController (test, index) {
+
+        console.log("-------------_createTestRunController");
         var testRunController = new TestRunController(test, index + 1, this.proxy, this.screenshots, this.warningLog,
             this.fixtureHookController, this.opts);
 
@@ -62,11 +64,15 @@ export default class BrowserJob extends EventEmitter {
     }
 
     _onTestRunRestart (testRunController) {
+        console.log("-----------------_onTestRunRestart");
         this._removeFromCompletionQueue(testRunController);
         this.testRunControllerQueue.unshift(testRunController);
     }
 
     async _onTestRunDone (testRunController) {
+
+        console.log("-----------------_onTestRunDone");
+
         this.total++;
 
         if (!testRunController.testRun.errs.length)
@@ -94,8 +100,10 @@ export default class BrowserJob extends EventEmitter {
         while (this.testRunControllerQueue.length) {
             // NOTE: before hook for test run fixture is currently
             // executing, so test run is temporary blocked
-            if (this.testRunControllerQueue[0].blocked)
+            if (this.testRunControllerQueue[0].blocked) {
+                console.log('-------popNextTestRunUrl: blocked');
                 break;
+            }
 
             var testRunController = this.testRunControllerQueue.shift();
 

@@ -27,7 +27,9 @@ export default class BrowserSet extends EventEmitter {
 
         // NOTE: We're setting an empty error handler, because Node kills the process on an 'error' event
         // if there is no handler. See: https://nodejs.org/api/events.html#events_class_events_eventemitter
-        this.on('error', noop);
+        this.on('error', function () {
+            console.log('-------------------BrowserSet: error');
+        });
     }
 
     static async _waitIdle (bc) {
@@ -100,6 +102,7 @@ export default class BrowserSet extends EventEmitter {
     }
 
     releaseConnection (bc) {
+        console.log("-----releaseConnection");
         if (this.browserConnections.indexOf(bc) < 0)
             return Promise.resolve();
 

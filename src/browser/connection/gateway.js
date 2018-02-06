@@ -87,9 +87,12 @@ export default class BrowserConnectionGateway {
     }
 
     static async onStatusRequest (req, res, connection) {
+        console.log('-----beforeEnsureConnection ---- onStatusRequest');
         if (BrowserConnectionGateway.ensureConnectionReady(res, connection)) {
+
             var status = await connection.getStatus();
 
+            console.log("--------onStatusRequest result: " + JSON.stringify(status));
             respondWithJSON(res, status);
         }
     }

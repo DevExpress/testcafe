@@ -78,6 +78,7 @@ export default class Reporter {
         });
 
         task.on('test-run-start', testRun => {
+            console.log('----TASK test-run-start');
             var reportItem = this._getReportItemForTestRun(testRun);
 
             if (!reportItem.startTime)
@@ -85,6 +86,7 @@ export default class Reporter {
         });
 
         task.on('test-run-done', testRun => {
+            console.log('----TASK test-run-done');
             var reportItem = this._getReportItemForTestRun(testRun);
 
             reportItem.pendingRuns--;

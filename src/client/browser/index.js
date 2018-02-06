@@ -79,14 +79,30 @@ export function stopInitScriptExecution () {
     allowInitScriptExecution = false;
 }
 
+var failXHRCount = 0;
+
 export function checkStatus (statusUrl, createXHR) {
+    window.cLog = window.cLog || function () { };
+    window.cLog('browser checkStatus');
     return sendXHR(statusUrl, createXHR)
         .then(res => {
+            window.cLog("browser checkStatus done");
+
+
+            if(failXHRCount > 5) {
+                debugger;
+            }
+            if(res) {
+                window.cLog("res: " + JSON.stringify(res));
+            } else {
+                window.cLog("no res");
+            }
             if (res.cmd === COMMAND.run || res.cmd === COMMAND.idle && !isCurrentLocation(res.url)) {
+                var q = window.cLog("res.url: " + res.url);
                 stopInitScriptExecution();
                 document.location = res.url;
-            }
-
+            } else
+                failXHRCount++;
             return res.cmd;
         });
 }

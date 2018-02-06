@@ -2,7 +2,7 @@
 import { Selector, ClientFunction } from 'testcafe';
 
 fixture `Selector`
-    .page `http://localhost:3000/fixtures/api/es-next/selector/pages/index.html`;
+    .page `../pages/index.html`;
 
 const getElementById = Selector(id => document.getElementById(id));
 

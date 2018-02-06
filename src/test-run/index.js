@@ -53,6 +53,9 @@ const MAX_RESPONSE_DELAY              = 2 * 60 * 1000;
 
 export default class TestRun extends Session {
     constructor (test, browserConnection, screenshotCapturer, warningLog, opts) {
+
+        console.log("------TestRun constructor");
+
         var uploadsRoot = path.dirname(test.fixture.path);
 
         super(uploadsRoot);
@@ -168,9 +171,12 @@ export default class TestRun extends Session {
         this.phase = phase;
 
         try {
+            console.log('-----------before FN. Phase: ' + phase);
             await fn(this);
+            console.log('-----------after FN');
         }
         catch (err) {
+            console.log('-----------catch error on FN');
             var screenshotPath = null;
 
             if (this.opts.takeScreenshotsOnFails)
@@ -206,20 +212,39 @@ export default class TestRun extends Session {
     async start () {
         testRunTracker.activeTestRuns[this.id] = this;
 
+        console.log("-----TestRun start");
+
         this.emit('start');
 
+        console.log("-----TestRun emit.start");
+
+        console.log("-----TestRun 1");
+
         if (await this._runBeforeHook()) {
+            console.log("-----TestRun 2");
             await this._executeTestFn(PHASE.inTest, this.test.fn);
+            console.log("-----TestRun 3");
             await this._runAfterHook();
+            console.log("-----TestRun 4");
         }
 
-        if (this.errs.length && this.debugOnFail)
-            await this._enqueueSetBreakpointCommand(null, this.debugReporterPluginHost.formatError(this.errs[0]));
+        console.log("-----TestRun 5");
 
+        if (this.errs.length && this.debugOnFail) {
+            console.log("-----TestRun 6");
+            await this._enqueueSetBreakpointCommand(null, this.debugReporterPluginHost.formatError(this.errs[0]));
+            console.log("-----TestRun 7");
+        }
+
+        console.log("-----TestRun 8");
         await this.executeCommand(new TestDoneCommand());
+        console.log("-----TestRun 9");
         this._addPendingPageErrorIfAny();
+        console.log("-----TestRun 10");
 
         delete testRunTracker.activeTestRuns[this.id];
+
+        console.log("-----TestRun done");
 
         this.emit('done');
     }

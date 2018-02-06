@@ -31,26 +31,8 @@ testingEnvironments[testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers] = {
         {
             os:        'OS X',
             osVersion: 'Sierra',
-            name:      'safari',
-            alias:     'safari'
-        },
-        {
-            os:        'OS X',
-            osVersion: 'Sierra',
-            name:      'chrome',
-            alias:     'chrome-osx'
-        },
-        {
-            os:        'OS X',
-            osVersion: 'Sierra',
             name:      'firefox',
             alias:     'firefox-osx'
-        },
-        {
-            os:        'Windows',
-            osVersion: '10',
-            name:      'edge',
-            alias:     'edge',
         }
     ]
 };
@@ -91,17 +73,17 @@ testingEnvironments[testingEnvironmentNames.mobileBrowsers] = {
 
 testingEnvironments[testingEnvironmentNames.localBrowsers] = {
     browsers: [
-        {
-            platform:    'Windows 10',
-            browserName: 'chrome',
-            alias:       'chrome'
-        },
-        {
-            platform:    'Windows 10',
-            browserName: 'internet explorer',
-            version:     '11.0',
-            alias:       'ie'
-        },
+        // {
+        //     platform:    'Windows 10',
+        //     browserName: 'chrome',
+        //     alias:       'chrome'
+        // },
+        // {
+        //     platform:    'Windows 10',
+        //     browserName: 'internet explorer',
+        //     version:     '11.0',
+        //     alias:       'ie'
+        // },
         {
             platform:    'Windows 10',
             browserName: 'firefox',

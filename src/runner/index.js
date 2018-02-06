@@ -37,6 +37,7 @@ export default class Runner extends EventEmitter {
     }
 
     static async _disposeTaskAndRelatedAssets (task, browserSet, testedApp) {
+        console.log("--------------------_disposeTaskAndRelatedAssets");
         task.abort();
         task.removeAllListeners();
 
@@ -44,6 +45,7 @@ export default class Runner extends EventEmitter {
     }
 
     static async _disposeBrowserSetAndTestedApp (browserSet, testedApp) {
+        console.log('_disposeBrowserSetAndTestedApp');
         await browserSet.dispose();
 
         if (testedApp)
@@ -68,7 +70,9 @@ export default class Runner extends EventEmitter {
 
     // Run task
     async _getTaskResult (task, browserSet, reporter, testedApp) {
+        console.log("----------_getTaskResult");
         task.on('browser-job-done', job => browserSet.releaseConnection(job.browserConnection));
+        browserSet.on('error', () => console.log('---------------------browserSet OnError'));
 
         var promises = [
             promisifyEvent(task, 'done'),
@@ -79,9 +83,11 @@ export default class Runner extends EventEmitter {
             promises.push(testedApp.errorPromise);
 
         try {
+            console.log("------Promise.race");
             await Promise.race(promises);
         }
         catch (err) {
+            console.log("------catch Promise.race");
             await Runner._disposeTaskAndRelatedAssets(task, browserSet, testedApp);
 
             throw err;
@@ -93,6 +99,9 @@ export default class Runner extends EventEmitter {
     }
 
     _runTask (reporterPlugins, browserSet, tests, testedApp) {
+
+        console.log("---runTask");
+
         var completed         = false;
         var task              = new Task(tests, browserSet.browserConnectionGroups, this.proxy, this.opts);
         var reporters         = reporterPlugins.map(reporter => new Reporter(reporter.plugin, task, reporter.outStream));
@@ -186,6 +195,7 @@ export default class Runner extends EventEmitter {
     }
 
     run ({ skipJsErrors, quarantineMode, debugMode, selectorTimeout, assertionTimeout, pageLoadTimeout, speed = 1, debugOnFail } = {}) {
+        console.log("-----------run");
         this.opts.skipJsErrors     = !!skipJsErrors;
         this.opts.quarantineMode   = !!quarantineMode;
         this.opts.debugMode        = !!debugMode;

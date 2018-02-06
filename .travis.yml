@@ -1,20 +1,26 @@
 language: node_js
 matrix:
  include:
-  - node_js: "4"
-    env: GULP_TASK="test-server"
-  - node_js: "stable"
-    env: GULP_TASK="test-server"
-  - node_js: "stable"
-    env: GULP_TASK="test-client-travis"
-  - node_js: "stable"
-    env: GULP_TASK="test-client-travis-mobile"
+#  - node_js: "4"
+#    env: GULP_TASK="test-server"
+#  - node_js: "stable"
+#    env: GULP_TASK="test-server"
+#  - node_js: "stable"
+#    env: GULP_TASK="test-client-travis"
+#  - node_js: "stable"
+#    env: GULP_TASK="test-client-travis-mobile"
     # We use Node 7 here as a temporary workaround. Browsers on OS X sometimes can't open a tested
     # page under Node 8 on BrowserStack for some reason. As a result we have blinking tests.
   - node_js: "7"
     env: GULP_TASK="test-functional-travis-desktop-osx-and-ms-edge"
   - node_js: "7"
-    env: GULP_TASK="test-functional-travis-mobile"
+    env: GULP_TASK="test-functional-travis-desktop-osx-and-ms-edge1"
+  - node_js: "7"
+    env: GULP_TASK="test-functional-travis-desktop-osx-and-ms-edge2"
+  - node_js: "7"
+    env: GULP_TASK="test-functional-travis-desktop-osx-and-ms-edge3"
+#  - node_js: "7"
+#    env: GULP_TASK="test-functional-travis-mobile"
  fast_finish: true
 
 cache: yarn

@@ -107,6 +107,7 @@ function closeRemoteBrowsers () {
 
 function closeLocalBrowsers () {
     var closeBrowserPromises = browsersInfo.map(function (browserInfo) {
+        console.log('closeLocalBrowsers');
         return browserInfo.connection.getStatus().then(function (status) {
             return browserTools.close(status.url);
         });
@@ -149,6 +150,8 @@ before(function () {
             global.testCafe   = testCafe;
 
             global.runTests = function (fixture, testName, opts) {
+
+                console.log("------------------------------------------testName: " + testName);
                 var report             = '';
                 var runner             = testCafe.createRunner();
                 var fixturePath        = path.isAbsolute(fixture) ? fixture : path.join(path.dirname(caller()), fixture);
@@ -175,6 +178,7 @@ before(function () {
                 });
 
                 if (!actualBrowsers.length) {
+                    console.log("------------------------no actual browsers");
                     mocha.test.skip();
                     return Promise.resolve();
                 }
@@ -189,8 +193,10 @@ before(function () {
                     if (shouldFail && !err)
                         throw new Error('Test should have failed but it succeeded');
 
-                    if (err)
+                    if (err) {
+                        console.log("------------------------error");
                         throw err;
+                    }
                 };
 
                 if (customReporters)
