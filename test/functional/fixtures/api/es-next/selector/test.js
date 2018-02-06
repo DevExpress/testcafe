@@ -5,14 +5,6 @@ var DEFAULT_RUN_OPTIONS = { selectorTimeout: DEFAULT_SELECTOR_TIMEOUT };
 var DEFAULT_CHROME_RUN_OPTIONS = { only: 'chrome', selectorTimeout: 3000 };
 
 describe('[API] Selector', function () {
-    it('Should provide methods for filtering by visibility for plain structure of HTML elements', function () {
-        return runTests('./testcafe-fixtures/selector-test.js', 'Selector `filterVisible/filterHidden` methods with plain structure', DEFAULT_RUN_OPTIONS);
-    });
-
-    it('Should provide methods for filtering by visibility for hierarchical structure of HTML elements', function () {
-        return runTests('./testcafe-fixtures/selector-test.js', 'Selector `filterVisible/filterHidden` methods with hierarchical structure', DEFAULT_RUN_OPTIONS);
-    });
-
     it('Should provide basic properties in HTMLElement snapshots', function () {
         return runTests('./testcafe-fixtures/selector-test.js', 'HTMLElement snapshot basic properties', DEFAULT_RUN_OPTIONS);
     });
@@ -95,6 +87,14 @@ describe('[API] Selector', function () {
 
     it('Should filter using combination of filter methods', function () {
         return runTests('./testcafe-fixtures/selector-test.js', 'Combination of filter methods', DEFAULT_CHROME_RUN_OPTIONS);
+    });
+
+    it('Should provide methods for filtering by visibility for plain structure of HTML elements', function () {
+        return runTests('./testcafe-fixtures/selector-test.js', 'Selector `filterVisible/filterHidden` methods with plain structure', DEFAULT_RUN_OPTIONS);
+    });
+
+    it('Should provide methods for filtering by visibility for hierarchical structure of HTML elements', function () {
+        return runTests('./testcafe-fixtures/selector-test.js', 'Selector `filterVisible/filterHidden` methods with hierarchical structure', DEFAULT_RUN_OPTIONS);
     });
 
     it('Should provide .find() method', function () {
