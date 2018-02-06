@@ -19,9 +19,15 @@ class IdlePage {
         this._checkStatus();
 
         document.title = '[' + document.location.toString() + ']';
+
+        this.checkStatusCount = 0;
     }
 
     _checkStatus () {
+        this.checkStatusCount++;
+        if(this.checkStatusCount > 4) {
+            debugger;
+        }
         console.log('_checkStatus');
         browser
             .checkStatus(this.statusUrl, createXHR)
