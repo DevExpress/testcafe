@@ -85,11 +85,19 @@ export function checkStatus (statusUrl, createXHR) {
 
     return sendXHR(statusUrl, createXHR)
         .then(res => {
+
+            window.cLog = window.cLog || function () { };
+
             if(failXHRCount > 5) {
                 debugger;
             }
+            if(res) {
+                window.cLog("res: " + JSON.stringify(res));
+            } else {
+                window.cLog("no res");
+            }
             if (res.cmd === COMMAND.run || res.cmd === COMMAND.idle && !isCurrentLocation(res.url)) {
-                var q = window.cLog && window.cLog("res.url: " + res.url);
+                var q = window.cLog("res.url: " + res.url);
                 stopInitScriptExecution();
                 document.location = res.url;
             } else
