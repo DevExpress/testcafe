@@ -89,7 +89,7 @@ export function checkStatus (statusUrl, createXHR) {
                 debugger;
             }
             if (res.cmd === COMMAND.run || res.cmd === COMMAND.idle && !isCurrentLocation(res.url)) {
-                console.log("res.url: " + res.url);
+                var q = window.cLog && window.cLog("res.url: " + res.url);
                 stopInitScriptExecution();
                 document.location = res.url;
             } else

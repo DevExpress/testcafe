@@ -28,16 +28,26 @@ class IdlePage {
         if(this.checkStatusCount > 4) {
             debugger;
         }
-        console.log('_checkStatus: ' + this.checkStatusCount);
+        window.cLog('_checkStatus: ' + this.checkStatusCount);
         browser
             .checkStatus(this.statusUrl, createXHR)
             .then(cmd => {
-                console.log('cmd: ' + cmd);
+                window.cLog('cmd: ' + cmd);
                 if (cmd === COMMAND.idle)
                     window.setTimeout(() => this._checkStatus(), CHECK_STATUS_DELAY);
             })
             .catch(() => this.statusIndicator.showDisconnection());
     }
+}
+
+window.cLog = function (text) {
+    console.log(text);
+    if(!document)
+        return;
+    var el = document.getElementBId('logEl');
+    if(!el)
+        return;
+    el.innerHTML += (text + '<br/>');
 }
 
 window.IdlePage = IdlePage;
