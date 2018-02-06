@@ -41,7 +41,7 @@ class IdlePage {
 }
 
 window.cLog = function (text) {
-    console.log(text);
+    console.log(text); 
     if(!document)
         return;
     var el = document.getElementBId('logEl');
