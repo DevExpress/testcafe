@@ -44,6 +44,7 @@ testingEnvironments[testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers] = {
             os:        'OS X',
             osVersion: 'Sierra',
             name:      'firefox',
+            version:   '57.0',
             alias:     'firefox-osx'
         },
         {
@@ -105,6 +106,7 @@ testingEnvironments[testingEnvironmentNames.localBrowsers] = {
         {
             platform:    'Windows 10',
             browserName: 'firefox',
+            version:     '57.0',
             alias:       'firefox'
         }
     ]
