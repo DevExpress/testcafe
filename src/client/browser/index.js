@@ -82,11 +82,12 @@ export function stopInitScriptExecution () {
 var failXHRCount = 0;
 
 export function checkStatus (statusUrl, createXHR) {
-
+    window.cLog = window.cLog || function () { };
+    window.cLog('browser checkStatus');
     return sendXHR(statusUrl, createXHR)
         .then(res => {
+            window.cLog("browser checkStatus done");
 
-            window.cLog = window.cLog || function () { };
 
             if(failXHRCount > 5) {
                 debugger;
