@@ -41,10 +41,10 @@ class IdlePage {
 }
 
 window.cLog = function (text) {
-    console.log(text); 
+    console.log(text);
     if(!document)
         return;
-    var el = document.getElementBId('logEl');
+    var el = document.getElementById('logEl');
     if(!el)
         return;
     el.innerHTML += (text + '<br/>');
