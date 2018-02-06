@@ -28,7 +28,7 @@ class IdlePage {
         if(this.checkStatusCount > 4) {
             debugger;
         }
-        console.log('_checkStatus');
+        console.log('_checkStatus: ' + this.checkStatusCount);
         browser
             .checkStatus(this.statusUrl, createXHR)
             .then(cmd => {
