@@ -1,4 +1,6 @@
 import { InvalidSelectorResultError } from '../../../../../errors/test-run';
+import { exists, visible } from '../element-utils';
+import testCafeCore from '../../../deps/testcafe-core';
 import hammerhead from '../../../deps/hammerhead';
 
 // NOTE: save original ctors and methods because they may be overwritten by page code
@@ -6,6 +8,7 @@ var isArray        = Array.isArray;
 var Node           = window.Node;
 var HTMLCollection = window.HTMLCollection;
 var NodeList       = window.NodeList;
+var arrayUtils     = testCafeCore.arrayUtils;
 
 function isArrayOfNodes (obj) {
     if (!isArray(obj))
@@ -40,6 +43,14 @@ hammerhead.nativeMethods.objectDefineProperty.call(window, window, '%testCafeSel
 
         else
             throw new InvalidSelectorResultError();
+
+        filtered = arrayUtils.filter(filtered, n => exists(n));
+
+        if (options.filterVisible)
+            filtered = filtered.filter(n => visible(n));
+
+        if (options.filterHidden)
+            filtered = filtered.filter(n => !visible(n));
 
         if (options.counterMode) {
             if (options.index !== null)

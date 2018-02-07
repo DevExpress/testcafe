@@ -1,27 +1,12 @@
 import { Promise } from '../../../deps/hammerhead';
-import { delay, positionUtils, domUtils } from '../../../deps/testcafe-core';
-import { selectElement as selectElementUI } from '../../../deps/testcafe-ui';
+import { delay } from '../../../deps/testcafe-core';
 import ClientFunctionExecutor from '../client-function-executor';
+import { exists, visible } from '../element-utils';
 import { createReplicator, FunctionTransform, SelectorNodeTransform } from '../replicator';
 import './filter';
 
 const CHECK_ELEMENT_DELAY = 200;
 
-
-// Utils
-function exists (el) {
-    return !!el;
-}
-
-function visible (el) {
-    if (!domUtils.isDomElement(el) && !domUtils.isTextNode(el))
-        return false;
-
-    if (domUtils.isOptionElement(el) || domUtils.getTagName(el) === 'optgroup')
-        return selectElementUI.isOptionElementVisible(el);
-
-    return positionUtils.isElementVisible(el);
-}
 
 export default class SelectorExecutor extends ClientFunctionExecutor {
     constructor (command, globalTimeout, startTime, createNotFoundError, createIsInvisibleError) {

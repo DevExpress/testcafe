@@ -81,6 +81,8 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
 
         return merge({}, dependencies, {
             filterOptions: {
+                filterVisible:  this.options.filterVisible,
+                filterHidden:   this.options.filterHidden,
                 counterMode:    this.options.counterMode,
                 collectionMode: this.options.collectionMode,
                 index:          isNullOrUndefined(this.options.index) ? null : this.options.index

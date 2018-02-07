@@ -89,6 +89,14 @@ describe('[API] Selector', function () {
         return runTests('./testcafe-fixtures/selector-test.js', 'Combination of filter methods', DEFAULT_CHROME_RUN_OPTIONS);
     });
 
+    it('Should provide methods for filtering by visibility for plain structure of HTML elements', function () {
+        return runTests('./testcafe-fixtures/selector-test.js', 'Selector `filterVisible/filterHidden` methods with plain structure', DEFAULT_RUN_OPTIONS);
+    });
+
+    it('Should provide methods for filtering by visibility for hierarchical structure of HTML elements', function () {
+        return runTests('./testcafe-fixtures/selector-test.js', 'Selector `filterVisible/filterHidden` methods with hierarchical structure', DEFAULT_RUN_OPTIONS);
+    });
+
     it('Should provide .find() method', function () {
         return runTests('./testcafe-fixtures/selector-test.js', 'Selector "find" method', DEFAULT_RUN_OPTIONS);
     });

@@ -583,6 +583,33 @@ test('Combination of filter methods', async t => {
     await t.expect(id).eql('el2');
 });
 
+test('Selector `filterVisible/filterHidden` methods with plain structure', async t => {
+    const elements = Selector('#filterVisiblePlain div');
+
+    await t.expect(elements.count).eql(4);
+    await t.expect(elements.filterVisible().count).eql(1);
+    await t.expect(elements.filterHidden().count).eql(3);
+    await t.expect(elements.filterVisible().filterHidden().count).eql(0);
+});
+
+test('Selector `filterVisible/filterHidden` methods with hierarchical structure', async t => {
+    let elements = Selector('#filterVisibleHierarchical > div');
+
+    await t.expect(elements.child('p').count).eql(11);
+
+    elements = elements.filterVisible().child('p');
+
+    await t.expect(elements.count).eql(6);
+    await t.expect(elements.filterVisible().count).eql(5);
+    await t.expect(elements.filterVisible().filter('.p').count).eql(2);
+    await t.expect(elements.filterHidden().count).eql(1);
+
+    elements = Selector('#filterVisibleHierarchical > div').filterHidden().child('p');
+
+    await t.expect(elements.count).eql(5);
+    await t.expect(elements.filterHidden().count).eql(5);
+});
+
 test('Selector "find" method', async t => {
     await t
     // String filter
