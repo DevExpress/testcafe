@@ -49,6 +49,7 @@ export default class BrowserConnection extends EventEmitter {
         this.heartbeatUrl  = `${gateway.domain}/browser/heartbeat/${this.id}`;
         this.idleUrl       = `${gateway.domain}/browser/idle/${this.id}`;
         this.statusUrl     = `${gateway.domain}/browser/status/${this.id}`;
+        this.statusDoneUrl = `${gateway.domain}/browser/status-done/${this.id}`;
         this.initScriptUrl = `${gateway.domain}/browser/init-script/${this.id}`;
 
         this.on('error', () => {
@@ -113,6 +114,18 @@ export default class BrowserConnection extends EventEmitter {
         this.heartbeatTimeout = setTimeout(() => {
             this.emit('error', new GeneralError(MESSAGE.browserDisconnected, this.userAgent));
         }, this.HEARTBEAT_TIMEOUT);
+    }
+
+    async _getTestRunUrl (isTestDone) {
+        if (isTestDone)
+            this.nextTestRunUrl = null;
+
+        if (this.nextTestRunUrl)
+            return this.nextTestRunUrl;
+
+        this.nextTestRunUrl = await this._popNextTestRunUrl();
+
+        return this.nextTestRunUrl;
     }
 
     async _popNextTestRunUrl () {
@@ -230,7 +243,7 @@ export default class BrowserConnection extends EventEmitter {
         await this.provider.reportJobResult(this.id, status, data);
     }
 
-    async getStatus () {
+    async getStatus (isTestDone) {
         if (this.switchingToIdle) {
             this.switchingToIdle = false;
             this.idle            = true;
@@ -238,7 +251,7 @@ export default class BrowserConnection extends EventEmitter {
         }
 
         if (this.opened) {
-            var testRunUrl = await this._popNextTestRunUrl();
+            var testRunUrl = await this._getTestRunUrl(isTestDone);
 
             if (testRunUrl) {
                 this.idle = false;
