@@ -14,7 +14,7 @@ install:
 
     choco install GoogleChrome
 
-    choco install Firefox --version 57.0.1
+    choco install Firefox
 
 - cmd: >-
     node --version
