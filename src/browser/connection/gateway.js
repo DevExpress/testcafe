@@ -97,7 +97,6 @@ export default class BrowserConnectionGateway {
 
     static async _onStatusRequestCore (req, res, connection, isTestDone) {
         if (BrowserConnectionGateway.ensureConnectionReady(res, connection)) {
-
             var status = await connection.getStatus(isTestDone);
 
             respondWithJSON(res, status);
