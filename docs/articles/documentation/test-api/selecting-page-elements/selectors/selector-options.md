@@ -42,6 +42,59 @@ or the [selector-timeout](../../../using-testcafe/command-line-interface.md#--se
 
 `true` to additionally require the returned element to become visible within [options.timeout](#optionstimeout).
 
+This option is in effect when TestCafe waits for the selector to return a page element. This includes situations when
+
+* a property is obtained from the selector;
+
+    ```js
+    const width = await Selector('#element').with({ visibilityCheck: true }).clientWidth;
+    ```
+
+* a selector property is passed to an [assertion](../../assertions/README.md) as its actual value;
+
+    ```js
+    await t.expect(Selector('#element').with({ visibilityCheck: true }).clientWidth).eql(400);
+    ```
+
+* a selector is evaluated using the `await` keyword;
+
+    ```js
+    const snapshot = await Selector('#element').with({ visibilityCheck: true })();
+    ```
+
+If the target element is not visible, the selector throws an exception in all these cases.
+
+Note that when a selector is passed to a [test action](../../actions/README.md) as an identifier for the target element,
+TestCafe requires that the target element is visible regardless of the `visibilityCheck` option.
+
+Unlike filter functions, the `visibilityCheck` option does not change the matching set of the selector.
+
+Consider the following page:
+
+```html
+<html>
+  <body>
+    <div>This div is visible</div>
+    <div style="display:none">This div not is visible</div>
+    <div style="visibility:hidden">This div not is visible either</div>
+  </body>
+</html>
+```
+
+When a selector with `visibilitycheck` enabled is tested for an element existance
+or the number of matching elements, invisible elements also count.
+
+```js
+const count = Selector('div').with({ visibilityCheck: true }).count;
+
+// returns 3 since the visibilityCheck option
+// does not affect the selector's matching set
+```
+
+In case you need to filter page elements by their visibility,
+use [filterVisible](functional-style-selectors.md#filtervisible) and
+[filterHidden](functional-style-selectors.md#filterhidden) methods.
+
 **Default value**: `false`
 
 ## Overwriting Options
