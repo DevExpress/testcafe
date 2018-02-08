@@ -4,7 +4,6 @@ import Promise from 'pinkie';
 import dedent from 'dedent';
 import isGlob from 'is-glob';
 import globby from 'globby';
-import OS from 'os-family';
 import { readSync as read } from 'read-file-relative';
 import { GeneralError } from '../errors/runtime';
 import MESSAGE from '../errors/runtime/message';
@@ -16,7 +15,7 @@ import { stat, ensureDir } from '../utils/promisified-functions';
 
 
 const REMOTE_ALIAS_RE          = /^remote(?::(\d*))?$/;
-const DEFAULT_TEST_LOOKUP_DIRS = OS.win ? ['test/', 'tests/'] : ['test/', 'tests/', 'Test/', 'Tests/'];
+const DEFAULT_TEST_LOOKUP_DIRS = ['test/', 'tests/'];
 const TEST_FILE_GLOB_PATTERN   = `./**/*@(${Compiler.getSupportedTestFileExtensions().join('|')})`;
 
 const DESCRIPTION = dedent(`
@@ -261,11 +260,19 @@ export default class CLIArgumentParser {
         return fileList.filter(file => !!file);
     }
 
+    async _getDefaultDirs () {
+        return await globby(DEFAULT_TEST_LOOKUP_DIRS, {
+            cwd:    this.cwd,
+            silent: true,
+            nocase: true
+        });
+    }
+
     async _parseFileList () {
         var fileList = this.program.args.slice(1);
 
         if (!fileList.length)
-            fileList = DEFAULT_TEST_LOOKUP_DIRS;
+            fileList = await this._getDefaultDirs();
 
         fileList = await this._convertDirsToGlobs(fileList);
 
