@@ -36,14 +36,14 @@ export default class BrowserConnection extends EventEmitter {
 
         this.provider = browserInfo.provider;
 
-        this.permanent        = permanent;
-        this.closing          = false;
-        this.closed           = false;
-        this.ready            = false;
-        this.opened           = false;
-        this.idle             = true;
-        this.switchingToIdle  = false;
-        this.heartbeatTimeout = null;
+        this.permanent         = permanent;
+        this.closing           = false;
+        this.closed            = false;
+        this.ready             = false;
+        this.opened            = false;
+        this.idle              = true;
+        this.heartbeatTimeout  = null;
+        this.pendingTestRunUrl = null;
 
         this.url           = `${gateway.domain}/browser/connect/${this.id}`;
         this.heartbeatUrl  = `${gateway.domain}/browser/heartbeat/${this.id}`;
@@ -117,15 +117,10 @@ export default class BrowserConnection extends EventEmitter {
     }
 
     async _getTestRunUrl (isTestDone) {
-        if (isTestDone)
-            this.nextTestRunUrl = null;
+        if (isTestDone || !this.pendingTestRunUrl)
+            this.pendingTestRunUrl = await this._popNextTestRunUrl();
 
-        if (this.nextTestRunUrl)
-            return this.nextTestRunUrl;
-
-        this.nextTestRunUrl = await this._popNextTestRunUrl();
-
-        return this.nextTestRunUrl;
+        return this.pendingTestRunUrl;
     }
 
     async _popNextTestRunUrl () {
@@ -244,9 +239,8 @@ export default class BrowserConnection extends EventEmitter {
     }
 
     async getStatus (isTestDone) {
-        if (this.switchingToIdle) {
-            this.switchingToIdle = false;
-            this.idle            = true;
+        if (!this.idle && !isTestDone) {
+            this.idle = true;
             this.emit('idle');
         }
 
@@ -258,9 +252,6 @@ export default class BrowserConnection extends EventEmitter {
                 return { cmd: COMMAND.run, url: testRunUrl };
             }
         }
-
-        if (!this.idle)
-            this.switchingToIdle = true;
 
         return { cmd: COMMAND.idle, url: this.idleUrl };
     }
