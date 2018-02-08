@@ -75,6 +75,7 @@ This topic lists test API members in alphabetical order.
     * [getBrowserConsoleMessages](accessing-console-messages.md)
     * [getNativeDialogHistory](handling-native-dialogs.md#dialog-history)
     * [hover](actions/hover.md)
+    * [maximizeWindow](actions/resize-window.md#maximizing-the-window)
     * [navigate](actions/navigate.md)
     * [pressKey](actions/press-key.md)
     * [resizeWindow](actions/resize-window.md#setting-the-window-size)
