@@ -6,7 +6,7 @@ checked: true
 ---
 # Resize Window
 
-There are two ways of resizing a browser window.
+There are three ways of resizing a browser window.
 
 **Note**: these actions require a [ICCCM/EWMH-compliant window manager](https://en.wikipedia.org/wiki/Comparison_of_X_window_managers) on Linux.
 
