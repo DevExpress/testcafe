@@ -6,22 +6,98 @@ checked: true
 ---
 # Take Screenshot
 
-Takes a screenshot of the tested page.
+This topic describes how you can take screenshots of the tested page.
 
-**Note**: this action requires a [ICCCM/EWMH-compliant window manager](https://en.wikipedia.org/wiki/Comparison_of_X_window_managers) on Linux.
+**Note**: these actions require a [ICCCM/EWMH-compliant window manager](https://en.wikipedia.org/wiki/Comparison_of_X_window_managers) on Linux.
+
+> Important! If the screenshot directory is not specified with the [runner.screenshots](../../using-testcafe/programming-interface/runner.md#screenshots) API method or the [screenshots](../../using-testcafe/command-line-interface.md#-s-path---screenshots-path) command line option,
+> the screenshot actions are ignored.
+
+## Take a Screenshot of the Entire Page
 
 ```text
 t.takeScreenshot( [path] )
 ```
 
-Parameter           | Type   | Description                                                                                           | Default
-------------------- | ------ | ----------------------------------------------------------------------------------------------------- | ----------
-`path`&#160;*(optional)* | String | The relative path and the name of the screenshot file to be created. Resolved from the *screenshot directory* specified by using the [runner.screenshots](../../using-testcafe/programming-interface/runner.md#screenshots) API method or the [screenshots-path](../../using-testcafe/command-line-interface.md#-s-path---screenshots-path) command line option. | `{currentDate}\test-{testIndex}\{userAgent}\{screenshotIndex}.png`; `{currentDate}\test-{testIndex}\run-{quarantineAttempt}\{userAgent}\{screenshotIndex}.png` if quarantine mode is enabled.
+Parameter           | Type   | Description
+------------------- | ------ | -----------------------------------------------------------------------------------------------------
+`path`&#160;*(optional)* | String | The relative path and the name of the screenshot file to be created. Resolved from the *screenshot directory* specified by using the [runner.screenshots](../../using-testcafe/programming-interface/runner.md#screenshots) API method or the [screenshots](../../using-testcafe/command-line-interface.md#-s-path---screenshots-path) command line option.
 
-> Important! If the screenshot directory is not specified with the [runner.screenshots](../../using-testcafe/programming-interface/runner.md#screenshots) API method or the [screenshots-path](../../using-testcafe/command-line-interface.md#-s-path---screenshots-path) command line option,
-> the `t.takeScreenshot` action is ignored.
+By default, paths to which screenshots are saved are specified as:
+
+* `{currentDate}\test-{testIndex}\{userAgent}\{screenshotIndex}.png` if the [quarantine mode](../../using-testcafe/command-line-interface.md#-q---quarantine-mode) is disabled;
+* `{currentDate}\test-{testIndex}\run-{quarantineAttempt}\{userAgent}\{screenshotIndex}.png` if the [quarantine mode](../../using-testcafe/command-line-interface.md#-q---quarantine-mode) is enabled.
 
 The following example shows how to use the `t.takeScreenshot` action.
+
+```js
+import { Selector } from 'testcafe';
+
+fixture `My fixture`
+    .page `http://devexpress.github.io/testcafe/example/`;
+
+test('Take a screenshot of a fieldset', async t => {
+    await t
+        .typeText('#developer-name', 'Peter Parker')
+        .click('#submit-button')
+        .takeScreenshot('my-fixture/thank-you-page.png');
+});
+```
+
+## Take a Screenshot of a Page Element
+
+```text
+t.takeElementScreenshot(selector[, path][, options])
+```
+
+Takes a screenshot of the specified page element.
+
+Parameter                | Type   | Description
+------------------------ | ------ | -----------------------------------------------------------------------------------------------------
+`selector`               | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the webpage element whose screenshot will be taken. See [Selecting Target Elements](README.md#selecting-target-elements).
+`path`&#160;*(optional)* | String | The relative path and the name of the screenshot file to be created. Resolved from the *screenshot directory* specified by using the [runner.screenshots](../../using-testcafe/programming-interface/runner.md#screenshots) API method or the [screenshots](../../using-testcafe/command-line-interface.md#-s-path---screenshots-path) command line option.
+`options`&#160;*(optional)*   | Object | Options that define how the screenshot will be taken. See details below.
+
+```js
+import { Selector } from 'testcafe';
+
+fixture `My fixture`
+    .page `http://devexpress.github.io/testcafe/example/`;
+
+test('Take a screenshot of a fieldset', async t => {
+    await t
+        .click('#reusing-js-code')
+        .click('#continuous-integration-embedding')
+        .takeElementScreenshot(Selector('fieldset').nth(1), 'my-fixture/important-features.png');
+});
+```
+
+By default, paths to which screenshots are saved are specified as:
+
+* `{currentDate}\test-{testIndex}\{userAgent}\{screenshotIndex}.png` if the [quarantine mode](../../using-testcafe/command-line-interface.md#-q---quarantine-mode) is disabled;
+* `{currentDate}\test-{testIndex}\run-{quarantineAttempt}\{userAgent}\{screenshotIndex}.png` if the [quarantine mode](../../using-testcafe/command-line-interface.md#-q---quarantine-mode) is enabled.
+
+The `options` object contains the following properties.
+
+Property        | Type | Description
+--------------- | ---- | ------------
+`scrollTargetX`,&#160;`scrollTargetY` | Number | If the target element is too big to fit into the browser window, the page will be scrolled to put this point to the center of the viewport. The coordinates of this point are calculated relative to the target element. If the numbers are positive, the point is positioned relative to the top-left corner of the element. If the numbers are negative, the point is positioned relative to the bottom-right corner. If the target element fits into the browser window, these properties have no effect.
+`includeMargins` | Boolean | Set this property to `true` to include target element's margins in the screenshot.
+`crop`           | Object  | Allows you to crop the target element on the screenshot.
+
+An object assigned to the `crop` property has the following fields.
+
+Field                                        | Type   | Description
+-------------------------------------------- | ------ | --------------
+`width`,&#160;`height`                       | Number | The width and height of the cropping rectangle.
+`left`,&#160;`right`, `bottom`,&#160;`top`     | Number | The position of the cropping rectangle.
+
+This is how the crop rectangle position and dimensions are determined.
+
+* If the `left`, `right`, `bottom` and `top` fields are specified, the `width` and `height` fields are ignored.
+* If only `right` and `bottom` are specified, `left` and `top` are calculated using `width` and `height`.
+* If only `left` and `top` are specified, `right` and `bottom` are calculated using `width` and `height`.
+* If neither `left` and `top` nor `right` and `bottom` are specified, `left` and `top` are assumed `(0, 0)` and `right` and `bottom` are calculated using `width` and `height`.
 
 ```js
 fixture `My fixture`
@@ -32,6 +108,12 @@ test('Take a screenshot of my new avatar', async t => {
         .click('#change-avatar')
         .setFilesToUpload('#upload-input', 'img/portrait.jpg')
         .click('#submit')
-        .takeScreenshot('my-fixture/test1.png');
+        .takeElementScreenshot('#avatar', 'my-fixture/test1.png', {
+            includeMargins: true,
+            crop: {
+                width: 20,
+                height: 30
+            }
+        });
 });
 ```
