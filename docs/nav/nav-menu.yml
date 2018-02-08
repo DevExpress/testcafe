@@ -87,6 +87,8 @@
       url: /documentation/test-api/selecting-page-elements/dom-node-state.md
     - name: Framework-Specific Selectors
       url: /documentation/test-api/selecting-page-elements/framework-specific-selectors.md
+    - name: Examples of Working with Page DOM
+      url: /documentation/test-api/selecting-page-elements/examples-of-working-with-page-dom.md
   - name: Actions
     url: /documentation/test-api/actions/README.md
     content:
