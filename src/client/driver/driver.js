@@ -83,17 +83,18 @@ export default class Driver {
         this.COMMAND_EXECUTING_FLAG   = 'testcafe|driver|command-executing-flag';
         this.EXECUTING_IN_IFRAME_FLAG = 'testcafe|driver|executing-in-iframe-flag';
 
-        this.testRunId        = testRunId;
-        this.heartbeatUrl     = communicationUrls.heartbeat;
-        this.browserStatusUrl = communicationUrls.status;
-        this.userAgent        = runInfo.userAgent;
-        this.fixtureName      = runInfo.fixtureName;
-        this.testName         = runInfo.testName;
-        this.selectorTimeout  = options.selectorTimeout;
-        this.pageLoadTimeout  = options.pageLoadTimeout;
-        this.initialSpeed     = options.speed;
-        this.skipJsErrors     = options.skipJsErrors;
-        this.dialogHandler    = options.dialogHandler;
+        this.testRunId            = testRunId;
+        this.heartbeatUrl         = communicationUrls.heartbeat;
+        this.browserStatusUrl     = communicationUrls.status;
+        this.browserStatusDoneUrl = communicationUrls.statusDone;
+        this.userAgent            = runInfo.userAgent;
+        this.fixtureName          = runInfo.fixtureName;
+        this.testName             = runInfo.testName;
+        this.selectorTimeout      = options.selectorTimeout;
+        this.pageLoadTimeout      = options.pageLoadTimeout;
+        this.initialSpeed         = options.speed;
+        this.skipJsErrors         = options.skipJsErrors;
+        this.dialogHandler        = options.dialogHandler;
 
         this.customCommandHandlers = {};
 
@@ -478,7 +479,7 @@ export default class Driver {
 
         this
             ._sendStatus(status)
-            .then(() => browser.checkStatus(this.browserStatusUrl, hammerhead.createNativeXHR));
+            .then(() => browser.checkStatus(this.browserStatusDoneUrl, hammerhead.createNativeXHR));
     }
 
     _onBackupStoragesCommand () {

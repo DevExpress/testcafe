@@ -36,19 +36,20 @@ export default class BrowserConnection extends EventEmitter {
 
         this.provider = browserInfo.provider;
 
-        this.permanent        = permanent;
-        this.closing          = false;
-        this.closed           = false;
-        this.ready            = false;
-        this.opened           = false;
-        this.idle             = true;
-        this.switchingToIdle  = false;
-        this.heartbeatTimeout = null;
+        this.permanent         = permanent;
+        this.closing           = false;
+        this.closed            = false;
+        this.ready             = false;
+        this.opened            = false;
+        this.idle              = true;
+        this.heartbeatTimeout  = null;
+        this.pendingTestRunUrl = null;
 
         this.url           = `${gateway.domain}/browser/connect/${this.id}`;
         this.heartbeatUrl  = `${gateway.domain}/browser/heartbeat/${this.id}`;
         this.idleUrl       = `${gateway.domain}/browser/idle/${this.id}`;
         this.statusUrl     = `${gateway.domain}/browser/status/${this.id}`;
+        this.statusDoneUrl = `${gateway.domain}/browser/status-done/${this.id}`;
         this.initScriptUrl = `${gateway.domain}/browser/init-script/${this.id}`;
 
         this.on('error', () => {
@@ -113,6 +114,13 @@ export default class BrowserConnection extends EventEmitter {
         this.heartbeatTimeout = setTimeout(() => {
             this.emit('error', new GeneralError(MESSAGE.browserDisconnected, this.userAgent));
         }, this.HEARTBEAT_TIMEOUT);
+    }
+
+    async _getTestRunUrl (isTestDone) {
+        if (isTestDone || !this.pendingTestRunUrl)
+            this.pendingTestRunUrl = await this._popNextTestRunUrl();
+
+        return this.pendingTestRunUrl;
     }
 
     async _popNextTestRunUrl () {
@@ -230,24 +238,20 @@ export default class BrowserConnection extends EventEmitter {
         await this.provider.reportJobResult(this.id, status, data);
     }
 
-    async getStatus () {
-        if (this.switchingToIdle) {
-            this.switchingToIdle = false;
-            this.idle            = true;
+    async getStatus (isTestDone) {
+        if (!this.idle && !isTestDone) {
+            this.idle = true;
             this.emit('idle');
         }
 
         if (this.opened) {
-            var testRunUrl = await this._popNextTestRunUrl();
+            var testRunUrl = await this._getTestRunUrl(isTestDone);
 
             if (testRunUrl) {
                 this.idle = false;
                 return { cmd: COMMAND.run, url: testRunUrl };
             }
         }
-
-        if (!this.idle)
-            this.switchingToIdle = true;
 
         return { cmd: COMMAND.idle, url: this.idleUrl };
     }

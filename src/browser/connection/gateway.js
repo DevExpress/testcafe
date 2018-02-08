@@ -38,6 +38,7 @@ export default class BrowserConnectionGateway {
         this._dispatch('/browser/heartbeat/{id}', proxy, BrowserConnectionGateway.onHeartbeat);
         this._dispatch('/browser/idle/{id}', proxy, BrowserConnectionGateway.onIdle);
         this._dispatch('/browser/status/{id}', proxy, BrowserConnectionGateway.onStatusRequest);
+        this._dispatch('/browser/status-done/{id}', proxy, BrowserConnectionGateway.onStatusRequestOnTestDone);
         this._dispatch('/browser/init-script/{id}', proxy, BrowserConnectionGateway.onInitScriptRequest);
         this._dispatch('/browser/init-script/{id}', proxy, BrowserConnectionGateway.onInitScriptResponse, 'POST');
 
@@ -87,8 +88,16 @@ export default class BrowserConnectionGateway {
     }
 
     static async onStatusRequest (req, res, connection) {
+        return BrowserConnectionGateway._onStatusRequestCore(req, res, connection, false);
+    }
+
+    static async onStatusRequestOnTestDone (req, res, connection) {
+        return BrowserConnectionGateway._onStatusRequestCore(req, res, connection, true);
+    }
+
+    static async _onStatusRequestCore (req, res, connection, isTestDone) {
         if (BrowserConnectionGateway.ensureConnectionReady(res, connection)) {
-            var status = await connection.getStatus();
+            var status = await connection.getStatus(isTestDone);
 
             respondWithJSON(res, status);
         }

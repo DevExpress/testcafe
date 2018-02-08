@@ -2,22 +2,23 @@
     if (window !== window.top)
         return;
 
-    var testRunId           = {{{testRunId}}};
-    var browserId           = {{{browserId}}};
-    var selectorTimeout     = {{{selectorTimeout}}};
-    var pageLoadTimeout     = {{{pageLoadTimeout}}};
-    var speed               = {{{speed}}};
-    var browserHeartbeatUrl = {{{browserHeartbeatUrl}}};
-    var browserStatusUrl    = {{{browserStatusUrl}}};
-    var skipJsErrors        = {{{skipJsErrors}}};
-    var dialogHandler       = {{{dialogHandler}}};
-    var userAgent           = {{{userAgent}}};
-    var fixtureName         = {{{fixtureName}}};
-    var testName            = {{{testName}}};
+    var testRunId            = {{{testRunId}}};
+    var browserId            = {{{browserId}}};
+    var selectorTimeout      = {{{selectorTimeout}}};
+    var pageLoadTimeout      = {{{pageLoadTimeout}}};
+    var speed                = {{{speed}}};
+    var browserHeartbeatUrl  = {{{browserHeartbeatUrl}}};
+    var browserStatusUrl     = {{{browserStatusUrl}}};
+    var browserStatusDoneUrl = {{{browserStatusDoneUrl}}};
+    var skipJsErrors         = {{{skipJsErrors}}};
+    var dialogHandler        = {{{dialogHandler}}};
+    var userAgent            = {{{userAgent}}};
+    var fixtureName          = {{{fixtureName}}};
+    var testName             = {{{testName}}};
 
     var ClientDriver = window['%testCafeDriver%'];
     var driver       = new ClientDriver(testRunId,
-        { heartbeat: browserHeartbeatUrl, status: browserStatusUrl },
+        { heartbeat: browserHeartbeatUrl, status: browserStatusUrl, statusDone: browserStatusDoneUrl },
         { userAgent: userAgent, fixtureName: fixtureName, testName: testName },
         {
             selectorTimeout: selectorTimeout,
