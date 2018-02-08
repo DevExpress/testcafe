@@ -33,7 +33,7 @@ test('My test', async t => {
 TestCafe tries to evaluate the specified selector multiple times within the [timeout](selecting-page-elements/selectors/using-selectors.md#selector-timeout).
 If the element does not appear, the test will fail.
 
-The exceptions are [t.setFilesToUpload](../../actions/upload.md#populate-file-upload-input) and [t.clearUpload](../../actions/upload.md#clear-file-upload-input) actions that do not require that the target element is visible.
+The exceptions are [t.setFilesToUpload](actions/upload.md#populate-file-upload-input) and [t.clearUpload](actions/upload.md#clear-file-upload-input) actions that do not require that the target element is visible.
 
 ## Waiting for Elements When Evaluating Selectors
 
