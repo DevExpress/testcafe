@@ -85,7 +85,7 @@ When a selector with `visibilitycheck` enabled is tested for an element existanc
 or the number of matching elements, invisible elements also count.
 
 ```js
-const count = Selector('div').with({ visibilityCheck: true }).count;
+const count = await Selector('div').with({ visibilityCheck: true }).count;
 
 // returns 3 since the visibilityCheck option
 // does not affect the selector's matching set
