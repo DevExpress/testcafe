@@ -82,22 +82,23 @@ The `options` object contains the following properties.
 Property        | Type | Description
 --------------- | ---- | ------------
 `scrollTargetX`,&#160;`scrollTargetY` | Number | If the target element is too big to fit into the browser window, the page will be scrolled to put this point to the center of the viewport. The coordinates of this point are calculated relative to the target element. If the numbers are positive, the point is positioned relative to the top-left corner of the element. If the numbers are negative, the point is positioned relative to the bottom-right corner. If the target element fits into the browser window, these properties have no effect.
-`includeMargins` | Boolean | Set this property to `true` to include target element's margins in the screenshot.
+`includeMargins` | Boolean | Set this property to `true` to include target element's margins in the screenshot. When it is enabled, the `scrollTargetX`, `scrollTargetY` and `crop` rectangle coordinates are calculated from the corners where top and left (or bottom and right) margins intersect.
 `crop`           | Object  | Allows you to crop the target element on the screenshot.
 
 An object assigned to the `crop` property has the following fields.
 
-Field                                        | Type   | Description
--------------------------------------------- | ------ | --------------
-`width`,&#160;`height`                       | Number | The width and height of the cropping rectangle.
-`left`,&#160;`right`, `bottom`,&#160;`top`     | Number | The position of the cropping rectangle.
+Field    | Type   | Description
+-------- | ------ | --------------
+`top`    | Number | The top edge of the cropping rectangle. If a negative number is passed, the top edge coordinate is calculated from the element's bottom edge.
+`left`   | Number | The left edge of the cropping rectangle. If a negative number is passed, the left edge coordinate is calculated from the element's right edge.
+`bottom` | Number | The bottom edge of the cropping rectangle. If a negative number is passed, the bottom edge coordinate is calculated from the element's top edge.
+`right`  | Number | The right edge of the cropping rectangle. If a negative number is passed, the right edge coordinate is calculated from the element's left edge.
 
-This is how the crop rectangle position and dimensions are determined.
+![Crop Rectangle - Positive Coordinates](../../../images/screenshot-crop-positive.png)
 
-* If the `left`, `right`, `bottom` and `top` fields are specified, the `width` and `height` fields are ignored.
-* If only `right` and `bottom` are specified, `left` and `top` are calculated using `width` and `height`.
-* If only `left` and `top` are specified, `right` and `bottom` are calculated using `width` and `height`.
-* If neither `left` and `top` nor `right` and `bottom` are specified, `left` and `top` are assumed `(0, 0)` and `right` and `bottom` are calculated using `width` and `height`.
+![Crop Rectangle - Negative Coordinates](../../../images/screenshot-crop-negative.png)
+
+**Example**
 
 ```js
 fixture `My fixture`
@@ -111,8 +112,10 @@ test('Take a screenshot of my new avatar', async t => {
         .takeElementScreenshot('#avatar', 'my-fixture/test1.png', {
             includeMargins: true,
             crop: {
-                width: 20,
-                height: 30
+                top: -100,
+                left: 10,
+                bottom: 30,
+                right: 200
             }
         });
 });
