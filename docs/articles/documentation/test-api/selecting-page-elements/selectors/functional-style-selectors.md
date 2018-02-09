@@ -63,13 +63,13 @@ If `attrName` or `attrValue` is a String, `withAttribute` selects an element by 
 
 Method                              | Type     | Description
 ----------------------------------- | -------- | -----------
-`filterVisible()` | Selector | Creates a selector that filters a matching set leaving only visible elements.
+`filterVisible()` | Selector | Creates a selector that filters a matching set leaving only visible elements. These are elements that *do not* have `display: none` or `visibility: hidden` CSS properties and have non-zero width and height.
 
 #### filterHidden
 
 Method                              | Type     | Description
 ----------------------------------- | -------- | -----------
-`filterHidden()` | Selector | Creates a selector that filters a matching set leaving only hidden elements.
+`filterHidden()` | Selector | Creates a selector that filters a matching set leaving only hidden elements. These are elements that have a `display: none` or `visibility: hidden` CSS property or zero width or height.
 
 ### filter
 

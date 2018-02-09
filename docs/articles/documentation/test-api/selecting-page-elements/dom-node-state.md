@@ -55,7 +55,7 @@ Property | Type | Description
 `style` | Object | The [computed](https://developer.mozilla.org/en-US/docs/Web/API/Window/getComputedStyle) values of element's CSS properties as `{ property: value, ... }`. You can also use the `getStyleProperty` method to access CSS properties.
 `tagName` | String | The name of the element. See [Element.tagName](https://developer.mozilla.org/en-US/docs/Web/API/Element/tagName).
 `value` | String | For input elements, the current value in the control. For other elements, `undefined`.
-`visible` | Boolean | `true` if the element is visible.
+`visible` | Boolean | `true` if the element is visible, i.e. does not have `display: none` or `visibility: hidden` CSS properties and has non-zero width and height.
 
 Method | Type | Description
 ------ | ---- | -----
