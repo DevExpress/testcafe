@@ -70,10 +70,8 @@ module.exports = function (app) {
 
     app.all('/styles.css', function (req, res) {
         fs.readFile(path.join(__dirname, '../../lib/client/ui/styles.css'), function (err, css) {
-            /* eslint-disable no-console */
-            console.log('GOT!');
             res.set('Content-Type', 'text/css');
-            res.send(createShadowStylesheet(css));
+            res.send(createShadowStylesheet(css.toString()));
         });
     });
 };
