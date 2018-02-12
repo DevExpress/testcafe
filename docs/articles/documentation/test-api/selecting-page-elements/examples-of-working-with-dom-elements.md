@@ -98,9 +98,8 @@ fixture `My fixture`
 test('My test', async t => {
     const element = Selector('#developer-name');
 
-    if(await element.exists && await element.visible) {
+    if(await element.exists && await element.visible)
         await t.typeText(element, 'Peter Parker');
-    }
 
     // ...
 });
