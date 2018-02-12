@@ -30,7 +30,7 @@ test('My test', async t => {
     const element     = Selector('#developer-name');
     const clientWidth = await element.clientWidth;
 
-    // do something wuth clientWidth
+    // do something with clientWidth
 });
 ```
 
@@ -50,6 +50,8 @@ test('Check Label HTML', async t => {
     await t.expect(label.innerHTML).contains('input type="checkbox" name="remote"');
 });
 ```
+
+Note that the `await` keyword can be omitted when specifying a selector property in an [assertion](../assertions/README.md). This activates the [Smart Assertion Query Mechanism](../assertions/README.md#smart-assertion-query-mechanism).
 
 ## Getting a Page Element Using Custom Logic
 
