@@ -72,7 +72,7 @@ test('My test', async t => {
 
         labels = Array.prototype.slice.call(labels);
 
-        var targetLabels = labels.filter(label => label.textContent.match(/^ R/));
+        var targetLabels = labels.filter(label => label.textContent.match(/^R/));
 
         return targetLabels.map(label => label.children[0]);
     });
