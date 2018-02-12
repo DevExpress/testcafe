@@ -89,14 +89,12 @@ An object assigned to the `crop` property has the following fields.
 
 Field    | Type   | Description
 -------- | ------ | --------------
-`top`    | Number | The top edge of the cropping rectangle. If a negative number is passed, the top edge coordinate is calculated from the element's bottom edge.
-`left`   | Number | The left edge of the cropping rectangle. If a negative number is passed, the left edge coordinate is calculated from the element's right edge.
-`bottom` | Number | The bottom edge of the cropping rectangle. If a negative number is passed, the bottom edge coordinate is calculated from the element's top edge.
-`right`  | Number | The right edge of the cropping rectangle. If a negative number is passed, the right edge coordinate is calculated from the element's left edge.
+`top`    | Number | The top edge of the cropping rectangle. The coordinate is calculated from the element's top edge. If a negative number is passed, the coordinate is calculated from the element's bottom edge.
+`left`   | Number | The left edge of the cropping rectangle. The coordinate is calculated from the element's left edge. If a negative number is passed, the coordinate is calculated from the element's right edge.
+`bottom` | Number | The bottom edge of the cropping rectangle. The coordinate is calculated from the element's top edge. If a negative number is passed, the coordinate is calculated from the element's bottom edge.
+`right`  | Number | The right edge of the cropping rectangle. The coordinate is calculated from the element's left edge. If a negative number is passed, the coordinate is calculated from the element's right edge.
 
-![Crop Rectangle - Positive Coordinates](../../../images/screenshot-crop-positive.png)
-
-![Crop Rectangle - Negative Coordinates](../../../images/screenshot-crop-negative.png)
+![Crop Rectangle - Positive Coordinates](../../../images/screenshot-crop-positive.png) ![Crop Rectangle - Negative Coordinates](../../../images/screenshot-crop-negative.png)
 
 **Example**
 
