@@ -1,9 +1,9 @@
 ---
 layout: docs
-title: Examples of Working with Page DOM
-permalink: /documentation/test-api/selecting-page-elements/examples-of-working-with-page-dom.html
+title: Examples of Working with DOM Elements
+permalink: /documentation/test-api/selecting-page-elements/examples-of-working-with-dom-elements.html
 ---
-# Examples of Working with Page DOM
+# Examples of Working with DOM Elements
 
 This document shows how to work with page DOM in frequent real-world situations.
 
@@ -66,12 +66,12 @@ fixture `My fixture`
 
 test('My test', async t => {
     const checkBoxesStartingWithR = Selector(() => {
-        var checkboxes     = document.querySelectorAll('input[type=checkbox]');
-        var targetElements = [];
+        var allCheckboxes = document.querySelectorAll('input[type=checkbox]');
 
-        checkboxes.forEach(node => {
-            if(node.labels[0].textContent.startsWith(' R'))
-                targetElements.push(node);
+        allCheckboxes = Array.prototype.slice.call(allCheckboxes);
+
+        var targetElements = allCheckboxes.filter(function (checkbox) {
+            return checkbox.labels[0].textContent.startsWith(' R')
         });
 
         return targetElements;
@@ -119,9 +119,10 @@ fixture `My fixture`
     .page `https://devexpress.github.io/testcafe/example/`;
 
 test('My test', async t => {
-    const checkboxes = Selector('legend').withText('Which features are important to you:').parent(0).find('input');
+    const checkboxes    = Selector('legend').withText('Which features are important to you:').parent(0).find('input');
+    const checkboxCount = await checkboxes.count;
 
-    for(let i = 0; i < await checkboxes.count; i++) {
+    for(let i = 0; i < checkboxCount; i++) {
         await t.click(checkboxes.nth(i));
     }
 });
