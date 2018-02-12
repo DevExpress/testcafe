@@ -1,4 +1,6 @@
 (function () {
+    $('<link rel="stylesheet" type="text/css" href="/styles.css">').appendTo('head');
+
     //NOTE: Prohibit Hammerhead from processing testing environment resources.
     // There are only testing environment resources on the page when this script is being executed. So, we can add
     // the hammerhead class to all script and link elements on the page.
