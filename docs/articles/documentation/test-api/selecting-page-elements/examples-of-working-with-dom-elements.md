@@ -47,7 +47,9 @@ test('Check Label HTML', async t => {
         innerHTML: el => el.innerHTML
     });
 
-    await t.expect(label.innerHTML).contains('input type="checkbox" name="remote"');
+    await t
+        .expect(label.innerHTML).contains('type="checkbox"')
+        .expect(label.innerHTML).contains('name="remote"');
 });
 ```
 
@@ -66,15 +68,13 @@ fixture `My fixture`
 
 test('My test', async t => {
     const checkBoxesStartingWithR = Selector(() => {
-        var allCheckboxes = document.querySelectorAll('input[type=checkbox]');
+        var labels = document.querySelectorAll('label');
 
-        allCheckboxes = Array.prototype.slice.call(allCheckboxes);
+        labels = Array.prototype.slice.call(labels);
 
-        var targetElements = allCheckboxes.filter(function (checkbox) {
-            return checkbox.labels[0].textContent.startsWith(' R')
-        });
+        var targetLabels = labels.filter(label => label.textContent.match(/^ R/));
 
-        return targetElements;
+        return targetLabels.map(label => label.children[0]);
     });
 
     await t.click(checkBoxesStartingWithR.nth(0));
