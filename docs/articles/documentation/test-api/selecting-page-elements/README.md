@@ -20,4 +20,4 @@ use it in actions and assertions.
 * [Selectors](selectors/README.md)
 * [DOM Node State](dom-node-state.md)
 * [Framework-Specific Selectors](framework-specific-selectors.md)
-* [Examples of Working with Page DOM](examples-of-working-with-dom-elements.md)
+* [Examples of Working with DOM Elements](examples-of-working-with-dom-elements.md)
