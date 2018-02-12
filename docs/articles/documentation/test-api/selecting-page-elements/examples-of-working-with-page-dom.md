@@ -63,7 +63,7 @@ fixture `My fixture`
     .page `https://devexpress.github.io/testcafe/example/`;
 
 test('My test', async t => {
-    const rCheckBoxes = Selector(() => {
+    const checkBoxesStartingWithR = Selector(() => {
         var checkboxes     = document.querySelectorAll('input[type=checkbox]');
         var targetElements = [];
 
@@ -75,7 +75,7 @@ test('My test', async t => {
         return targetElements;
     });
 
-    await t.click(rCheckBoxes.nth(0));
+    await t.click(checkBoxesStartingWithR.nth(0));
 });
 ```
 
