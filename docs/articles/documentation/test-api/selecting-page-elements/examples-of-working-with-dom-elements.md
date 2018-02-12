@@ -5,7 +5,7 @@ permalink: /documentation/test-api/selecting-page-elements/examples-of-working-w
 ---
 # Examples of Working with DOM Elements
 
-This document shows how to work with page DOM in frequent real-world situations.
+This document shows how to work with DOM elements in frequent real-world situations.
 
 * [Accessing Page Element Properties](#accessing-page-element-properties)
 * [Getting a Page Element Using Custom Logic](#getting-a-page-element-using-custom-logic)
@@ -130,6 +130,6 @@ test('My test', async t => {
 
 ## More Examples
 
-If you encounter a difficult situation while working with page DOM,
+If you encounter a difficult situation while working with DOM elements,
 let us know by posting on [our forum](https://testcafe-discuss.devexpress.com/)
 and if you are not alone we will add an example to this topic.
