@@ -4,16 +4,23 @@
 // -------------------------------------------------------------
 
 /* eslint-disable no-undef */
-export default function selectorTextFilter (node, index, originNode, textRe) {
+export default function selectorTextFilter (node, index, originNode, textFilter) {
+
     function hasChildrenWithText (parentNode) {
         var cnCount = parentNode.childNodes.length;
 
         for (var i = 0; i < cnCount; i++) {
-            if (selectorTextFilter(parentNode.childNodes[i], index, originNode, textRe))
+            if (selectorTextFilter(parentNode.childNodes[i], index, originNode, textFilter))
                 return true;
         }
 
         return false;
+    }
+
+    function checkNodeText (text) {
+        if (textFilter instanceof RegExp)
+            return textFilter.test(text);
+        return textFilter === text.trim();
     }
 
     // Element
@@ -29,7 +36,7 @@ export default function selectorTextFilter (node, index, originNode, textRe) {
                 text = textContent;
         }
 
-        return textRe.test(text);
+        return checkNodeText(text);
     }
 
     // Document
@@ -39,13 +46,13 @@ export default function selectorTextFilter (node, index, originNode, textRe) {
         var head = node.querySelector('head');
         var body = node.querySelector('body');
 
-        return hasChildrenWithText(head, textRe) || hasChildrenWithText(body, textRe);
+        return hasChildrenWithText(head, textFilter) || hasChildrenWithText(body, textFilter);
     }
 
     // DocumentFragment
     if (node.nodeType === 11)
-        return hasChildrenWithText(node, textRe);
+        return hasChildrenWithText(node, textFilter);
 
-    return textRe.test(node.textContent);
+    return checkNodeText(node.textContent);
 }
 /* eslint-enable no-undef */

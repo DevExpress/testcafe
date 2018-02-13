@@ -452,6 +452,12 @@ interface SelectorAPI {
      */
     withText(re: RegExp): Selector;
     /**
+     * Creates a selector that filters a matching set by the specified text. Selects elements whose text content *strictly matches* this text.
+     *
+     * @param text - The text in the element.
+     */
+    withExactText(text: string): Selector;
+    /**
      * Creates a selector that filters a matching set by the specified attribute and, optionally, attribute value.
      *
      * @param attrName - The attribute name.
