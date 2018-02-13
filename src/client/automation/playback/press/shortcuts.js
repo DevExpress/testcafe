@@ -1,9 +1,9 @@
 import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
 import testCafeUI from '../../deps/testcafe-ui';
-import { setValue } from '../../utils/utils';
 
 var Promise               = hammerhead.Promise;
+var nativeMethods         = hammerhead.nativeMethods;
 var browserUtils          = hammerhead.utils.browser;
 var eventSimulator        = hammerhead.eventSandbox.eventSimulator;
 var focusBlurSandbox      = hammerhead.eventSandbox.focusBlur;
@@ -38,19 +38,19 @@ function updateTextAreaIndent (element) {
 
 function getLineIndentInTextarea (textarea) {
     var inverseSelection = textSelection.hasInverseSelection(textarea);
+    var cursorPosition   = inverseSelection
+        ? textSelection.getSelectionStart(textarea)
+        : textSelection.getSelectionEnd(textarea);
+    var textareaValue    = nativeMethods.textAreaValueGetter.call(textarea);
 
-    var cursorPosition = inverseSelection ?
-        textSelection.getSelectionStart(textarea) :
-        textSelection.getSelectionEnd(textarea);
-
-    if (!textarea.value || !cursorPosition)
+    if (!textareaValue || !cursorPosition)
         return 0;
 
     return domUtils.getTextareaIndentInLine(textarea, cursorPosition);
 }
 
 function moveTextAreaCursorUp (element, withSelection) {
-    var textareaValue = element.value;
+    var textareaValue = nativeMethods.textAreaValueGetter.call(element);
 
     if (!textareaValue)
         return;
@@ -72,7 +72,7 @@ function moveTextAreaCursorUp (element, withSelection) {
 }
 
 function moveTextAreaCursorDown (element, withSelection) {
-    var textareaValue = element.value;
+    var textareaValue = nativeMethods.textAreaValueGetter.call(element);
 
     if (!textareaValue)
         return;
@@ -131,7 +131,7 @@ function setElementValue (element, value, position) {
             value = value.substring(0, value.length - 1);
     }
 
-    setValue(element, value);
+    domUtils.setElementValue(element, value);
 
     textSelection.select(element, position, position);
     eventSimulator.input(element);
@@ -183,7 +183,7 @@ function backspace (element) {
     if (domUtils.isTextEditableElementAndEditingAllowed(element)) {
         var startPos = textSelection.getSelectionStart(element);
         var endPos   = textSelection.getSelectionEnd(element);
-        var value    = element.value.replace(/\r\n/g, '\n');
+        var value    = domUtils.getElementValue(element).replace(/\r\n/g, '\n');
 
         if (endPos === startPos) {
             if (startPos > 0) {
@@ -205,7 +205,7 @@ function del (element) {
     if (domUtils.isTextEditableElementAndEditingAllowed(element)) {
         var startPos = textSelection.getSelectionStart(element);
         var endPos   = textSelection.getSelectionEnd(element);
-        var value    = element.value.replace(/\r\n/g, '\n');
+        var value    = domUtils.getElementValue(element).replace(/\r\n/g, '\n');
 
         if (endPos === startPos) {
             if (startPos < value.length) {
@@ -274,7 +274,7 @@ function right (element) {
 
         var newPosition = startPosition === endPosition ? endPosition + 1 : endPosition;
 
-        if (startPosition === element.value.length)
+        if (startPosition === domUtils.getElementValue(element).length)
             newPosition = startPosition;
 
         textSelection.select(element, newPosition, newPosition);
@@ -342,7 +342,7 @@ function home (element, withSelection) {
         else
             referencePosition = inverseSelection ? startPos : endPos;
 
-        var valueBeforeCursor  = element.value.substring(0, referencePosition);
+        var valueBeforeCursor  = domUtils.getElementValue(element).substring(0, referencePosition);
         var lastLineBreakIndex = valueBeforeCursor.lastIndexOf('\n');
         var newPosition        = lastLineBreakIndex === -1 ? 0 : lastLineBreakIndex + 1;
         var newStartPos        = null;
@@ -380,7 +380,7 @@ function end (element, withSelection) {
         else
             referencePosition = inverseSelection ? startPos : endPos;
 
-        var valueAsterCursor    = element.value.substring(referencePosition);
+        var valueAsterCursor    = domUtils.getElementValue(element).substring(referencePosition);
         var firstLineBreakIndex = valueAsterCursor.indexOf('\n');
         var newPosition         = referencePosition;
         var newStartPos         = null;
@@ -448,13 +448,14 @@ function shiftLeft (element) {
 
 function shiftRight (element) {
     if (domUtils.isTextEditableElement(element)) {
-        var startPos = textSelection.getSelectionStart(element);
-        var endPos   = textSelection.getSelectionEnd(element);
+        var startPos    = textSelection.getSelectionStart(element);
+        var endPos      = textSelection.getSelectionEnd(element);
+        var valueLength = domUtils.getElementValue(element).length;
 
         if (startPos === endPos || !textSelection.hasInverseSelection(element))
-            textSelection.select(element, startPos, Math.min(endPos + 1, element.value.length));
+            textSelection.select(element, startPos, Math.min(endPos + 1, valueLength));
         else
-            textSelection.select(element, endPos, Math.min(startPos + 1, element.value.length));
+            textSelection.select(element, endPos, Math.min(startPos + 1, valueLength));
 
         updateTextAreaIndent(element);
     }
@@ -488,8 +489,9 @@ function enter (element) {
     }
     else if (domUtils.isTextAreaElement(element)) {
         var startPos          = textSelection.getSelectionStart(element);
-        var valueBeforeCursor = element.value.substring(0, startPos);
-        var valueAfterCursor  = element.value.substring(startPos);
+        var value             = nativeMethods.textAreaValueGetter.call(element);
+        var valueBeforeCursor = value.substring(0, startPos);
+        var valueAfterCursor  = value.substring(startPos);
         var newPosition       = startPos + 1;
 
         setElementValue(element, valueBeforeCursor + String.fromCharCode(10) + valueAfterCursor, newPosition);

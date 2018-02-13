@@ -4,9 +4,6 @@
     "arrow-spacing": [2, { "before": true, "after": true }],
     "prefer-arrow-callback": 2
   },
-  "plugins": [
-    "babel"
-  ],
   "globals": {
      "Map": true,
      "Set": true

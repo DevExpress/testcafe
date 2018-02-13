@@ -1,11 +1,14 @@
 import testCafeCore from '../../deps/testcafe-core';
+import hammerhead from '../../deps/hammerhead';
 
 var domUtils        = testCafeCore.domUtils;
 var contentEditable = testCafeCore.contentEditable;
 
+var nativeMethods = hammerhead.nativeMethods;
+
 
 function getSelectTextAreaContentArguments (element, argumentsObject) {
-    var value         = element.value;
+    var value         = nativeMethods.textAreaValueGetter.call(element);
     var linesArray    = value && value.length ? value.split('\n') : [];
     var lastLineIndex = linesArray.length - 1;
 
@@ -32,9 +35,8 @@ function getSelectTextAreaContentArguments (element, argumentsObject) {
 
 export default function (element, argumentsObject = {}) {
     var isTextEditable = domUtils.isTextEditableElement(element);
-    var valueLength    = element.value ? element.value.length : 0;
     var firstPos       = isTextEditable ? 0 : contentEditable.getFirstVisiblePosition(element);
-    var lastPos        = isTextEditable ? valueLength : contentEditable.getLastVisiblePosition(element);
+    var lastPos        = isTextEditable ? domUtils.getElementValue(element).length : contentEditable.getLastVisiblePosition(element);
     var startPos       = !argumentsObject.startPos ? firstPos : Math.min(argumentsObject.startPos, lastPos);
     var endPos         = argumentsObject.endPos === void 0 ||
                          argumentsObject.endPos === null ? lastPos : Math.min(argumentsObject.endPos, lastPos);

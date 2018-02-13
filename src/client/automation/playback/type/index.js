@@ -11,6 +11,7 @@ import { getDefaultAutomationOffsets } from '../../utils/offsets';
 import AutomationSettings from '../../settings';
 
 var Promise               = hammerhead.Promise;
+var nativeMethods         = hammerhead.nativeMethods;
 var extend                = hammerhead.utils.extend;
 var eventSimulator        = hammerhead.eventSandbox.eventSimulator;
 var elementEditingWatcher = hammerhead.eventSandbox.elementEditingWatcher;
@@ -60,11 +61,11 @@ export default class TypeAutomation {
         var innerElement = null;
 
         if (!domUtils.isEditableElement(element)) {
-            var children = element.querySelectorAll('*');
+            var allChildren = element.querySelectorAll('*');
 
-            for (var i = 0; i < children.length; i++) {
-                if (domUtils.isTextEditableElementAndEditingAllowed(children[i])) {
-                    innerElement = children[i];
+            for (var i = 0; i < allChildren.length; i++) {
+                if (domUtils.isTextEditableElementAndEditingAllowed(allChildren[i])) {
+                    innerElement = allChildren[i];
                     break;
                 }
             }
@@ -245,7 +246,7 @@ export default class TypeAutomation {
 
         if (isInputTypeNumber) {
             var selectionStart      = textSelection.getSelectionStart(element);
-            var valueLength         = element.value.length;
+            var valueLength         = nativeMethods.inputValueGetter.call(element).length;
             var textHasDigits       = /^\d/.test(this.text);
             var isPermissibleSymbol = currentChar === '.' || currentChar === '-' && valueLength;
 

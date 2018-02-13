@@ -1,5 +1,6 @@
 var hammerhead       = window.getTestCafeModule('hammerhead');
 var browserUtils     = hammerhead.utils.browser;
+var nativeMethods    = hammerhead.nativeMethods;
 var focusBlurSandbox = hammerhead.eventSandbox.focusBlur;
 var eventSimulator   = hammerhead.eventSandbox.eventSimulator;
 
@@ -197,7 +198,7 @@ asyncTest('B236526 - Change event raising if blur() is called by a client script
             };
 
             focusBlurSandbox.focus(input2, function () {
-                input2.value += 'test';
+                nativeMethods.inputValueSetter.call(input2, nativeMethods.inputValueGetter.call(input2) + 'test');
                 input2.blur();
 
                 setDoubleTimeout(function () {

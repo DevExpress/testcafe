@@ -118,7 +118,9 @@ function createGroup (realGroup, parent) {
 }
 
 function createChildren (children, parent) {
-    for (var i = 0; i < children.length; i++) {
+    var childrenLength = nativeMethods.htmlCollectionLengthGetter.call(children);
+
+    for (var i = 0; i < childrenLength; i++) {
         if (domUtils.isOptionElement(children[i]))
             createOption(children[i], parent);
         else if (domUtils.getTagName(children[i]) === 'optgroup')

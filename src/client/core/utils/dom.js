@@ -3,7 +3,8 @@ import * as styleUtils from './style';
 import * as arrayUtils from './array';
 
 
-var browserUtils = hammerhead.utils.browser;
+var browserUtils  = hammerhead.utils.browser;
+var nativeMethods = hammerhead.nativeMethods;
 
 export var getActiveElement                       = hammerhead.utils.dom.getActiveElement;
 export var findDocument                           = hammerhead.utils.dom.findDocument;
@@ -233,17 +234,20 @@ export function containsElement (elements, element) {
 }
 
 export function getTextareaIndentInLine (textarea, position) {
-    if (!textarea.value)
+    var textareaValue = nativeMethods.textAreaValueGetter.call(textarea);
+
+    if (!textareaValue)
         return 0;
 
-    var topPart      = textarea.value.substring(0, position);
+    var topPart      = textareaValue.substring(0, position);
     var linePosition = topPart.lastIndexOf('\n') === -1 ? 0 : topPart.lastIndexOf('\n') + 1;
 
     return position - linePosition;
 }
 
 export function getTextareaLineNumberByPosition (textarea, position) {
-    var lines         = textarea.value.split('\n');
+    var textareaValue = nativeMethods.textAreaValueGetter.call(textarea);
+    var lines         = textareaValue.split('\n');
     var topPartLength = 0;
     var line          = 0;
 
@@ -261,8 +265,9 @@ export function getTextareaLineNumberByPosition (textarea, position) {
 }
 
 export function getTextareaPositionByLineAndOffset (textarea, line, offset) {
-    var lines     = textarea.value.split('\n');
-    var lineIndex = 0;
+    var textareaValue = nativeMethods.textAreaValueGetter.call(textarea);
+    var lines         = textareaValue.split('\n');
+    var lineIndex     = 0;
 
     for (var i = 0; i < line; i++)
         lineIndex += lines[i].length + 1;
@@ -463,4 +468,28 @@ export function getCommonAncestor (element1, element2) {
     }
 
     return commonAncestor;
+}
+
+export function getElementValue (element) {
+    if (isInputElement(element))
+        return nativeMethods.inputValueGetter.call(element);
+    else if (isTextAreaElement(element))
+        return nativeMethods.textAreaValueGetter.call(element);
+
+    /*eslint-disable no-restricted-properties*/
+    return element.value;
+    /*eslint-enable no-restricted-properties*/
+}
+
+export function setElementValue (element, value) {
+    if (isInputElement(element))
+        return nativeMethods.inputValueSetter.call(element, value);
+    else if (isTextAreaElement(element))
+        return nativeMethods.textAreaValueSetter.call(element, value);
+
+    /*eslint-disable no-restricted-properties*/
+    element.value = value;
+    /*eslint-enable no-restricted-properties*/
+
+    return value;
 }

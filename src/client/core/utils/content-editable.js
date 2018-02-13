@@ -1,12 +1,15 @@
 import * as domUtils from './dom';
 import * as arrayUtils from './array';
+import hammerhead from '../deps/hammerhead';
 
+var nativeMethods = hammerhead.nativeMethods;
 
 //nodes utils
 function getOwnFirstVisibleTextNode (el) {
-    var children = el.childNodes;
+    var children       = el.childNodes;
+    var childrenLength = nativeMethods.nodeListLengthGetter.call(children);
 
-    if (!children.length && isVisibleTextNode(el))
+    if (!childrenLength && isVisibleTextNode(el))
         return el;
 
     return arrayUtils.find(children, node => isVisibleTextNode(node));
@@ -102,7 +105,7 @@ function isNodeAfterNodeBlockWithBreakLine (parent, node) {
 
 export function getFirstVisibleTextNode (el) {
     var children                    = el.childNodes;
-    var childrenLength              = children.length;
+    var childrenLength              = nativeMethods.nodeListLengthGetter.call(children);
     var curNode                     = null;
     var child                       = null;
     var isNotContentEditableElement = null;
@@ -129,7 +132,7 @@ export function getFirstVisibleTextNode (el) {
 
 export function getLastTextNode (el, onlyVisible) {
     var children                    = el.childNodes;
-    var childrenLength              = children.length;
+    var childrenLength              = nativeMethods.nodeListLengthGetter.call(children);
     var curNode                     = null;
     var child                       = null;
     var isNotContentEditableElement = null;
@@ -259,7 +262,7 @@ export function getNearestCommonAncestor (node1, node2) {
 function getSelectedPositionInParentByOffset (node, offset) {
     var currentNode          = null;
     var currentOffset        = null;
-    var childCount           = node.childNodes.length;
+    var childCount           = nativeMethods.nodeListLengthGetter.call(node.childNodes);
     var isSearchForLastChild = offset >= childCount;
 
     // NOTE: we get a child element by its offset index in the parent
@@ -373,7 +376,8 @@ export function calculateNodeAndOffsetByPosition (el, offset) {
     };
 
     function checkChildNodes (target) {
-        var childNodes = target.childNodes;
+        var childNodes       = target.childNodes;
+        var childNodesLength = nativeMethods.nodeListLengthGetter.call(childNodes);
 
         if (point.node)
             return point;
@@ -400,7 +404,7 @@ export function calculateNodeAndOffsetByPosition (el, offset) {
             }
             if (!point.node && (isNodeBlockWithBreakLine(el, target) || isNodeAfterNodeBlockWithBreakLine(el, target)))
                 point.offset--;
-            else if (!childNodes.length && domUtils.isElementNode(target) && domUtils.getTagName(target) === 'br')
+            else if (!childNodesLength && domUtils.isElementNode(target) && domUtils.getTagName(target) === 'br')
                 point.offset--;
         }
 
@@ -419,7 +423,8 @@ export function calculatePositionByNodeAndOffset (el, { node, offset }) {
     var find          = false;
 
     function checkChildNodes (target) {
-        var childNodes = target.childNodes;
+        var childNodes       = target.childNodes;
+        var childNodesLength = nativeMethods.nodeListLengthGetter.call(childNodes);
 
         if (find)
             return currentOffset;
@@ -435,14 +440,14 @@ export function calculatePositionByNodeAndOffset (el, { node, offset }) {
         if (isSkippableNode(target))
             return currentOffset;
 
-        if (!childNodes.length && target.nodeValue && target.nodeValue.length) {
+        if (!childNodesLength && target.nodeValue && target.nodeValue.length) {
             if (!find && isNodeAfterNodeBlockWithBreakLine(el, target))
                 currentOffset++;
 
             currentOffset += target.nodeValue.length;
         }
 
-        else if (!childNodes.length && domUtils.isElementNode(target) && domUtils.getTagName(target) === 'br')
+        else if (!childNodesLength && domUtils.isElementNode(target) && domUtils.getTagName(target) === 'br')
             currentOffset++;
 
         else if (!find && (isNodeBlockWithBreakLine(el, target) || isNodeAfterNodeBlockWithBreakLine(el, target)))
@@ -497,15 +502,16 @@ export function getLastVisiblePosition (el) {
 
 //contents util
 export function getContentEditableValue (target) {
-    var elementValue = '';
-    var childNodes   = target.childNodes;
+    var elementValue     = '';
+    var childNodes       = target.childNodes;
+    var childNodesLength = nativeMethods.nodeListLengthGetter.call(childNodes);
 
     if (isSkippableNode(target))
         return elementValue;
 
-    if (!childNodes.length && domUtils.isTextNode(target))
+    if (!childNodesLength && domUtils.isTextNode(target))
         return target.nodeValue;
-    else if (childNodes.length === 1 && domUtils.isTextNode(childNodes[0]))
+    else if (childNodesLength === 1 && domUtils.isTextNode(childNodes[0]))
         return childNodes[0].nodeValue;
 
     arrayUtils.forEach(childNodes, node => {
