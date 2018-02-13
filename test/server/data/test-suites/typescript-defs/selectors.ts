@@ -516,6 +516,24 @@ test('Combination of filter methods', async t => {
     expect(id).eql('el2');
 });
 
+test('Selector `filterVisible/filterHidden` methods with hierarchical structure', async() => {
+    let elements = Selector('#filterVisibleHierarchical > div');
+
+    expect(await elements.child('p').count).eql(11);
+
+    elements = elements.filterVisible().child('p');
+
+    expect(await elements.count).eql(6);
+    expect(await elements.filterVisible().count).eql(5);
+    expect(await elements.filterVisible().filter('.p').count).eql(2);
+    expect(await elements.filterHidden().count).eql(1);
+
+    elements = Selector('#filterVisibleHierarchical > div').filterHidden().child('p');
+
+    expect(await elements.count).eql(5);
+    expect(await elements.filterHidden().count).eql(5);
+});
+
 test('Selector "find" method', async() => {
     // String filter
     expect(await Selector('#htmlElement').find('span').id).eql('someSpan');
