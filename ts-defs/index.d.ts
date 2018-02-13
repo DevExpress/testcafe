@@ -476,6 +476,14 @@ interface SelectorAPI {
     filter(filterFn: (node: Element, idx: number) => boolean,
            dependencies?: {[key: string]: any}): Selector;
     /**
+     * Creates a selector that filters a matching set leaving only visible elements.
+     */
+    filterVisible(): Selector;
+    /**
+     * Creates a selector that filters a matching set leaving only hidden elements.
+     */
+    filterHidden(): Selector;
+    /**
      * Finds all descendants of all nodes in the matching set and filters them by `cssSelector`.
      *
      * @param cssSelector - A CSS selector string.
