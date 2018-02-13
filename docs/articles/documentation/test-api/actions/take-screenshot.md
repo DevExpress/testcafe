@@ -23,7 +23,7 @@ Parameter           | Type   | Description
 ------------------- | ------ | -----------------------------------------------------------------------------------------------------
 `path`&#160;*(optional)* | String | The relative path and the name of the screenshot file to be created. Resolved from the *screenshot directory* specified by using the [runner.screenshots](../../using-testcafe/programming-interface/runner.md#screenshots) API method or the [screenshots](../../using-testcafe/command-line-interface.md#-s-path---screenshots-path) command line option.
 
-By default, paths to which screenshots are saved are specified as:
+By default, the path to which screenshots are saved is specified as:
 
 * `{currentDate}\test-{testIndex}\{userAgent}\{screenshotIndex}.png` if the [quarantine mode](../../using-testcafe/command-line-interface.md#-q---quarantine-mode) is disabled;
 * `{currentDate}\test-{testIndex}\run-{quarantineAttempt}\{userAgent}\{screenshotIndex}.png` if the [quarantine mode](../../using-testcafe/command-line-interface.md#-q---quarantine-mode) is enabled.
@@ -72,7 +72,7 @@ test('Take a screenshot of a fieldset', async t => {
 });
 ```
 
-By default, paths to which screenshots are saved are specified as:
+By default, the path to which screenshots are saved is specified as:
 
 * `{currentDate}\test-{testIndex}\{userAgent}\{screenshotIndex}.png` if the [quarantine mode](../../using-testcafe/command-line-interface.md#-q---quarantine-mode) is disabled;
 * `{currentDate}\test-{testIndex}\run-{quarantineAttempt}\{userAgent}\{screenshotIndex}.png` if the [quarantine mode](../../using-testcafe/command-line-interface.md#-q---quarantine-mode) is enabled.
@@ -94,7 +94,7 @@ Field    | Type   | Description
 `bottom` | Number | The bottom edge of the cropping rectangle. The coordinate is calculated from the element's top edge. If a negative number is passed, the coordinate is calculated from the element's bottom edge.
 `right`  | Number | The right edge of the cropping rectangle. The coordinate is calculated from the element's left edge. If a negative number is passed, the coordinate is calculated from the element's right edge.
 
-![Crop Rectangle - Positive Coordinates](../../../images/screenshot-crop-positive.png) ![Crop Rectangle - Negative Coordinates](../../../images/screenshot-crop-negative.png)
+![Crop Rectangle](../../../images/screenshot-crop.png)
 
 **Example**
 
