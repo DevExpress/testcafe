@@ -77,6 +77,10 @@ describe('[API] Selector', function () {
         return runTests('./testcafe-fixtures/selector-test.js', 'Selector "withText" method', DEFAULT_CHROME_RUN_OPTIONS);
     });
 
+    it('Should filter results with `withExactText()` method', function () {
+        return runTests('./testcafe-fixtures/selector-test.js', 'Selector "withExactText" method', DEFAULT_CHROME_RUN_OPTIONS);
+    });
+
     it('Should filter results with `withAttribute()` method', function () {
         return runTests('./testcafe-fixtures/selector-test.js', 'Selector "withAttribute" method', DEFAULT_CHROME_RUN_OPTIONS);
     });

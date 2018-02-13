@@ -474,7 +474,7 @@ test('Selector "withText" method', async t => {
 });
 
 test('Selector "withExactText" method', async t => {
-    let selector  = Selector('#el5 div');
+    let selector  = Selector('#withExactText div');
 
     await t
         .expect(selector.withText('Element with text').count).eql(6);
