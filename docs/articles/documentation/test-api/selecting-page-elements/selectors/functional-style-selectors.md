@@ -13,6 +13,8 @@ These methods can be used in a chain for a functional-style selection mechanism.
     * [nth](#nth)
     * [withText](#withtext)
     * [withAttribute](#withattribute)
+    * [filterVisible](#filtervisible)
+    * [filterHidden](#filterhidden)
     * [filter](#filter)
 * [Search for Elements in the DOM Hierarchy](#search-for-elements-in-the-dom-hierarchy)
     * [find](#find)
@@ -56,6 +58,18 @@ Parameter                     | Type                 | Description
 `attrValue`&#160;*(optional)* | String &#124; RegExp | The attribute value. You can omit this parameter to select elements that have the `attrName` attribute regardless of the value.
 
 If `attrName` or `attrValue` is a String, `withAttribute` selects an element by strict match.
+
+#### filterVisible
+
+Method                              | Type     | Description
+----------------------------------- | -------- | -----------
+`filterVisible()` | Selector | Creates a selector that filters a matching set leaving only visible elements. These are elements that *do not* have `display: none` or `visibility: hidden` CSS properties and have non-zero width and height.
+
+#### filterHidden
+
+Method                              | Type     | Description
+----------------------------------- | -------- | -----------
+`filterHidden()` | Selector | Creates a selector that filters a matching set leaving only hidden elements. These are elements that have a `display: none` or `visibility: hidden` CSS property or zero width or height.
 
 ### filter
 
