@@ -68,11 +68,11 @@ fixture `My fixture`
 
 test('My test', async t => {
     const checkBoxesStartingWithR = Selector(() => {
-        var labels = document.querySelectorAll('label');
+        let labels = document.querySelectorAll('label');
 
         labels = Array.prototype.slice.call(labels);
 
-        var targetLabels = labels.filter(label => label.textContent.match(/^R/));
+        const targetLabels = labels.filter(label => label.textContent.match(/^R/));
 
         return targetLabels.map(label => label.children[0]);
     });
@@ -121,9 +121,8 @@ test('My test', async t => {
     const checkboxes    = Selector('legend').withText('Which features are important to you:').parent(0).find('input');
     const checkboxCount = await checkboxes.count;
 
-    for(let i = 0; i < checkboxCount; i++) {
+    for(let i = 0; i < checkboxCount; i++)
         await t.click(checkboxes.nth(i));
-    }
 });
 ```
 
