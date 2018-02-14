@@ -38,10 +38,11 @@ function updateTextAreaIndent (element) {
 
 function getLineIndentInTextarea (textarea) {
     var inverseSelection = textSelection.hasInverseSelection(textarea);
-    var cursorPosition   = inverseSelection
-        ? textSelection.getSelectionStart(textarea)
-        : textSelection.getSelectionEnd(textarea);
     var textareaValue    = nativeMethods.textAreaValueGetter.call(textarea);
+
+    var cursorPosition = inverseSelection ?
+        textSelection.getSelectionStart(textarea) :
+        textSelection.getSelectionEnd(textarea);
 
     if (!textareaValue || !cursorPosition)
         return 0;

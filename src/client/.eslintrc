@@ -1,32 +1,8 @@
 {
+  "extends": "plugin:hammerhead/recommended",
   "rules": {
     "hammerhead/use-hh-promise": 2,
-    "hammerhead/use-native-methods": [2, ["setTimeout", "setInterval", "clearTimeout", "clearInterval"]],
-    "no-restricted-globals": [2, "Object", "JSON"],
-    "no-restricted-properties": [2,
-      {
-        "object": "childNodes",
-        "property": "length",
-        "message": "Please use the 'nodeListLengthGetter' from native methods instead."
-      },
-      {
-        "object": "children",
-        "property": "length",
-        "message": "Please use the 'htmlCollectionLengthGetter' from native methods instead."
-      },
-      {
-        "property": "childElementCount",
-        "message": "Please use the 'elementChildElementCountGetter' from native methods instead."
-      },
-      {
-        "property": "files",
-        "message": "Please use the 'inputFilesGetter' from native methods instead."
-      },
-      {
-        "property": "value",
-        "message": "Please use getters and setters for input and textarea elements from native methods instead."
-      }
-    ]
+    "hammerhead/use-native-methods": [2, ["setTimeout", "setInterval", "clearTimeout", "clearInterval"]]
   },
   "env": {
     "browser": true,
