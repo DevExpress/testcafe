@@ -1,13 +1,11 @@
 import * as domUtils from './dom';
 import * as arrayUtils from './array';
-import hammerhead from '../deps/hammerhead';
 
-var nativeMethods = hammerhead.nativeMethods;
 
 //nodes utils
 function getOwnFirstVisibleTextNode (el) {
     var children       = el.childNodes;
-    var childrenLength = nativeMethods.nodeListLengthGetter.call(children);
+    var childrenLength = domUtils.getChildNodesLength(children);
 
     if (!childrenLength && isVisibleTextNode(el))
         return el;
@@ -37,7 +35,7 @@ function getOwnPreviousVisibleSibling (el) {
 }
 
 function hasChildren (node) {
-    return node.childNodes && node.childNodes.length;
+    return node.childNodes && domUtils.getChildNodesLength(node.childNodes);
 }
 
 function isElementWithChildren (node) {
@@ -55,7 +53,8 @@ function isNodeBlockWithBreakLine (parent, node) {
     if (domUtils.isShadowUIElement(parent) || domUtils.isShadowUIElement(node))
         return false;
 
-    if (!domUtils.isTheSameNode(node, parent) && node.childNodes.length && /div|p/.test(domUtils.getTagName(node))) {
+    if (!domUtils.isTheSameNode(node, parent) && domUtils.getChildNodesLength(node.childNodes) &&
+        /div|p/.test(domUtils.getTagName(node))) {
         parentFirstVisibleChild = getOwnFirstVisibleNode(parent);
 
         if (!parentFirstVisibleChild || domUtils.isTheSameNode(node, parentFirstVisibleChild))
@@ -80,7 +79,7 @@ function isNodeAfterNodeBlockWithBreakLine (parent, node) {
         return false;
 
     if (!domUtils.isTheSameNode(node, parent) &&
-        (isRenderedNode && domUtils.isElementNode(node) && node.childNodes.length &&
+        (isRenderedNode && domUtils.isElementNode(node) && domUtils.getChildNodesLength(node.childNodes) &&
          !/div|p/.test(domUtils.getTagName(node)) ||
          isVisibleTextNode(node) && !domUtils.isTheSameNode(node, parent) && node.nodeValue.length)) {
 
@@ -105,7 +104,7 @@ function isNodeAfterNodeBlockWithBreakLine (parent, node) {
 
 export function getFirstVisibleTextNode (el) {
     var children                    = el.childNodes;
-    var childrenLength              = nativeMethods.nodeListLengthGetter.call(children);
+    var childrenLength              = domUtils.getChildNodesLength(children);
     var curNode                     = null;
     var child                       = null;
     var isNotContentEditableElement = null;
@@ -132,7 +131,7 @@ export function getFirstVisibleTextNode (el) {
 
 export function getLastTextNode (el, onlyVisible) {
     var children                    = el.childNodes;
-    var childrenLength              = nativeMethods.nodeListLengthGetter.call(children);
+    var childrenLength              = domUtils.getChildNodesLength(children);
     var curNode                     = null;
     var child                       = null;
     var isNotContentEditableElement = null;
@@ -262,7 +261,7 @@ export function getNearestCommonAncestor (node1, node2) {
 function getSelectedPositionInParentByOffset (node, offset) {
     var currentNode          = null;
     var currentOffset        = null;
-    var childCount           = nativeMethods.nodeListLengthGetter.call(node.childNodes);
+    var childCount           = domUtils.getChildNodesLength(node.childNodes);
     var isSearchForLastChild = offset >= childCount;
 
     // NOTE: we get a child element by its offset index in the parent
@@ -377,7 +376,7 @@ export function calculateNodeAndOffsetByPosition (el, offset) {
 
     function checkChildNodes (target) {
         var childNodes       = target.childNodes;
-        var childNodesLength = nativeMethods.nodeListLengthGetter.call(childNodes);
+        var childNodesLength = domUtils.getChildNodesLength(childNodes);
 
         if (point.node)
             return point;
@@ -424,7 +423,7 @@ export function calculatePositionByNodeAndOffset (el, { node, offset }) {
 
     function checkChildNodes (target) {
         var childNodes       = target.childNodes;
-        var childNodesLength = nativeMethods.nodeListLengthGetter.call(childNodes);
+        var childNodesLength = domUtils.getChildNodesLength(childNodes);
 
         if (find)
             return currentOffset;
@@ -504,7 +503,7 @@ export function getLastVisiblePosition (el) {
 export function getContentEditableValue (target) {
     var elementValue     = '';
     var childNodes       = target.childNodes;
-    var childNodesLength = nativeMethods.nodeListLengthGetter.call(childNodes);
+    var childNodesLength = domUtils.getChildNodesLength(childNodes);
 
     if (isSkippableNode(target))
         return elementValue;

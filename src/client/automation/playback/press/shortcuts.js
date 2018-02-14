@@ -3,7 +3,6 @@ import testCafeCore from '../../deps/testcafe-core';
 import testCafeUI from '../../deps/testcafe-ui';
 
 var Promise               = hammerhead.Promise;
-var nativeMethods         = hammerhead.nativeMethods;
 var browserUtils          = hammerhead.utils.browser;
 var eventSimulator        = hammerhead.eventSandbox.eventSimulator;
 var focusBlurSandbox      = hammerhead.eventSandbox.focusBlur;
@@ -38,7 +37,7 @@ function updateTextAreaIndent (element) {
 
 function getLineIndentInTextarea (textarea) {
     var inverseSelection = textSelection.hasInverseSelection(textarea);
-    var textareaValue    = nativeMethods.textAreaValueGetter.call(textarea);
+    var textareaValue    = domUtils.getTextAreaValue(textarea);
 
     var cursorPosition = inverseSelection ?
         textSelection.getSelectionStart(textarea) :
@@ -51,7 +50,7 @@ function getLineIndentInTextarea (textarea) {
 }
 
 function moveTextAreaCursorUp (element, withSelection) {
-    var textareaValue = nativeMethods.textAreaValueGetter.call(element);
+    var textareaValue = domUtils.getTextAreaValue(element);
 
     if (!textareaValue)
         return;
@@ -73,7 +72,7 @@ function moveTextAreaCursorUp (element, withSelection) {
 }
 
 function moveTextAreaCursorDown (element, withSelection) {
-    var textareaValue = nativeMethods.textAreaValueGetter.call(element);
+    var textareaValue = domUtils.getTextAreaValue(element);
 
     if (!textareaValue)
         return;
@@ -490,7 +489,7 @@ function enter (element) {
     }
     else if (domUtils.isTextAreaElement(element)) {
         var startPos          = textSelection.getSelectionStart(element);
-        var value             = nativeMethods.textAreaValueGetter.call(element);
+        var value             = domUtils.getTextAreaValue(element);
         var valueBeforeCursor = value.substring(0, startPos);
         var valueAfterCursor  = value.substring(startPos);
         var newPosition       = startPos + 1;

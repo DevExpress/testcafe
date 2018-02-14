@@ -1,14 +1,11 @@
 import testCafeCore from '../../deps/testcafe-core';
-import hammerhead from '../../deps/hammerhead';
 
 var domUtils        = testCafeCore.domUtils;
 var contentEditable = testCafeCore.contentEditable;
 
-var nativeMethods = hammerhead.nativeMethods;
-
 
 function getSelectTextAreaContentArguments (element, argumentsObject) {
-    var value         = nativeMethods.textAreaValueGetter.call(element);
+    var value         = domUtils.getTextAreaValue(element);
     var linesArray    = value && value.length ? value.split('\n') : [];
     var lastLineIndex = linesArray.length - 1;
 

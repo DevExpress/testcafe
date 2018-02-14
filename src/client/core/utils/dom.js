@@ -234,7 +234,7 @@ export function containsElement (elements, element) {
 }
 
 export function getTextareaIndentInLine (textarea, position) {
-    var textareaValue = nativeMethods.textAreaValueGetter.call(textarea);
+    var textareaValue = getTextAreaValue(textarea);
 
     if (!textareaValue)
         return 0;
@@ -246,7 +246,7 @@ export function getTextareaIndentInLine (textarea, position) {
 }
 
 export function getTextareaLineNumberByPosition (textarea, position) {
-    var textareaValue = nativeMethods.textAreaValueGetter.call(textarea);
+    var textareaValue = getTextAreaValue(textarea);
     var lines         = textareaValue.split('\n');
     var topPartLength = 0;
     var line          = 0;
@@ -265,7 +265,7 @@ export function getTextareaLineNumberByPosition (textarea, position) {
 }
 
 export function getTextareaPositionByLineAndOffset (textarea, line, offset) {
-    var textareaValue = nativeMethods.textAreaValueGetter.call(textarea);
+    var textareaValue = getTextAreaValue(textarea);
     var lines         = textareaValue.split('\n');
     var lineIndex     = 0;
 
@@ -470,11 +470,35 @@ export function getCommonAncestor (element1, element2) {
     return commonAncestor;
 }
 
+export function getChildrenLength (children) {
+    return nativeMethods.htmlCollectionLengthGetter.call(children);
+}
+
+export function getChildNodesLength (childNodes) {
+    return nativeMethods.nodeListLengthGetter.call(childNodes);
+}
+
+export function getInputValue (input) {
+    return nativeMethods.inputValueGetter.call(input);
+}
+
+export function getTextAreaValue (textArea) {
+    return nativeMethods.textAreaValueGetter.call(textArea);
+}
+
+export function setInputValue (input, value) {
+    return nativeMethods.inputValueSetter.call(input, value);
+}
+
+export function setTextAreaValue (textArea, value) {
+    return nativeMethods.textAreaValueSetter.call(textArea, value);
+}
+
 export function getElementValue (element) {
     if (isInputElement(element))
-        return nativeMethods.inputValueGetter.call(element);
+        return getInputValue(element);
     else if (isTextAreaElement(element))
-        return nativeMethods.textAreaValueGetter.call(element);
+        return getTextAreaValue(element);
 
     /*eslint-disable no-restricted-properties*/
     return element.value;
@@ -483,9 +507,9 @@ export function getElementValue (element) {
 
 export function setElementValue (element, value) {
     if (isInputElement(element))
-        return nativeMethods.inputValueSetter.call(element, value);
+        return setInputValue(element, value);
     else if (isTextAreaElement(element))
-        return nativeMethods.textAreaValueSetter.call(element, value);
+        return setTextAreaValue(element, value);
 
     /*eslint-disable no-restricted-properties*/
     element.value = value;
