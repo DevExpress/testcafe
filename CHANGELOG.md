@@ -66,6 +66,25 @@ test('Search by exact text', async t => {
 
 ### Bug Fixes
 
+* TestCafe can now scroll a webpage when `body` has a scroll bar ([#1940](https://github.com/DevExpress/testcafe/issues/1940))
+* Firefox no longer hangs with a dialog asking to set it as the default browser ([#1926](https://github.com/DevExpress/testcafe/issues/1926))
+* Legacy API no longer freezes because of an unexpected error ([#1790](https://github.com/DevExpress/testcafe/issues/1790))
+* Click on an element that was hidden and then recreated on timeout now works correctly ([#1994](https://github.com/DevExpress/testcafe/issues/1994))
+* TestCafe now correctly finds browsers in headless mode on macOS when tests are executing concurrently ([#2035](https://github.com/DevExpress/testcafe/issues/2035))
+* When roles are switched using the `preserverUrl` flag, the local storage now restores correctly ([#2015](https://github.com/DevExpress/testcafe/issues/2015))
+* TestCafe progress bar is no longer visible on screenshots ([#2076](https://github.com/DevExpress/testcafe/issues/2076))
+* Fixed a bug where a page wouldn't load because of an error in `generateCallExpression` ([testcafe-hammerhead/#1389](https://github.com/DevExpress/testcafe-hammerhead/issues/1389))
+* Now the overridden Blob constructor doesn't process data unnecessarily ([testcafe-hammerhead/#1359](https://github.com/DevExpress/testcafe-hammerhead/issues/1359))
+* Now the `target` attribute is not set for a button after a click on it ([testcafe-hammerhead/#1437](https://github.com/DevExpress/testcafe-hammerhead/issues/1437))
+* The `sandbox`, `target` and `style` attributes are now cleaned up ([testcafe-hammerhead/#1448](https://github.com/DevExpress/testcafe-hammerhead/issues/1448))
+* A `RangeError` with the message `Maximum call stack size exceeded` is no longer raised ([testcafe-hammerhead/#1452](https://github.com/DevExpress/testcafe-hammerhead/issues/1452))
+* A script error is no lnoger raised on pages that contain a `beforeunload` handler ([testcafe-hammerhead/#1419](https://github.com/DevExpress/testcafe-hammerhead/issues/1419))
+* Fixed wrong overridding of an event object ([testcafe-hammerhead/#1445](https://github.com/DevExpress/testcafe-hammerhead/issues/1445))
+* Illegal invocation error is no longer raised when calling the `FileListWrapper.item` method ([testcafe-hammerhead/#1446](https://github.com/DevExpress/testcafe-hammerhead/issues/1446))
+* A script error is no longer raised when `Node.nextSibling` is `null` ([testcafe-hammerhead/#1469](https://github.com/DevExpress/testcafe-hammerhead/issues/1469))
+* The `isShadowUIElement` check is now performed for `Node.nextSibling` when a node is not an element ([testcafe-hammerhead/#1465](https://github.com/DevExpress/testcafe-hammerhead/issues/1465))
+* The `toString` function is now overridden for anchor elements ([testcafe-hammerhead/#1483](https://github.com/DevExpress/testcafe-hammerhead/issues/1483))
+
 ## v0.18.6 (2017-12-28)
 
 ### Enhancements
