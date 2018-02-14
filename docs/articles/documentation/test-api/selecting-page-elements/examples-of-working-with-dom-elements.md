@@ -16,7 +16,7 @@ This document shows how to work with DOM elements in frequent real-world situati
 
 To work with page elements, use TestCafe [selectors](selectors/README.md).
 Import the `Selector` function and call it passing a CSS selector inside.
-This function creates a selector object [whose API](dom-node-state.md) exposes the most used members of HTML element API.
+This function creates a selector object whose [API](dom-node-state.md) exposes the most used members of HTML element API.
 
 Note that all property getters are asynchronous, so add the `await` keyword.
 
