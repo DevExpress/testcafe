@@ -1,5 +1,71 @@
 # Changelog
 
+## v0.19.0 (2018-2-15)
+
+### Enhancements
+
+#### Taking Screenshots of Individual Page Elements ([#1496](https://github.com/DevExpress/testcafe/issues/1496))
+
+We have added the [t.takeElementScreenshot](https://devexpress.github.io/testcafe/documentation/test-api/actions/take-screenshot.html#take-a-screenshot-of-a-page-element) action that allows you to take a screenshot of an individual page element.
+
+```js
+import { Selector } from 'testcafe';
+
+fixture `My fixture`
+    .page `http://devexpress.github.io/testcafe/example/`;
+
+test('Take a screenshot of a fieldset', async t => {
+    await t
+        .click('#reusing-js-code')
+        .click('#continuous-integration-embedding')
+        .takeElementScreenshot(Selector('fieldset').nth(1), 'my-fixture/important-features.png');
+});
+```
+
+This action provides additional customization that allows you to position the center of the screenshot or crop it. For more information, see the [documentation](https://devexpress.github.io/testcafe/documentation/test-api/actions/take-screenshot.html#take-a-screenshot-of-a-page-element).
+
+#### Filtering Elements by Their Visibility ([#1018](https://github.com/DevExpress/testcafe/issues/1018))
+
+You can now filter the selector's matching set to leave only visible or hidden elements. To do this, use the [filterVisible](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#filtervisible) and [filterHidden](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#filterhidden) methods.
+
+```js
+import { Selector } from 'testcafe';
+
+fixture `My fixture`
+    .page `http://devexpress.github.io/testcafe/example/`;
+
+test('Filter visible and hidden elements', async t => {
+    const inputs        = Selector('input');
+    const hiddenInput   = inputs.filterHidden();
+    const visibleInputs = inputs.filterVisible();
+
+    await t.expect(hiddenInput.value).eql(1);
+    await t.expect(visibleInputs.count).eql(11);
+});
+```
+
+#### Finding Elements by the Exact Matching Text ([#1292](https://github.com/DevExpress/testcafe/issues/1292))
+
+The current selector's [withText](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#withtext) method looks for elements whose text content *contains* the specified string. With this release, we have added the [withExactText](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#withexacttext) method that performs search by *strict match*.
+
+```js
+import { Selector } from 'testcafe';
+
+fixture `My fixture`
+    .page `http://devexpress.github.io/testcafe/example/`;
+
+test('Search by exact text', async t => {
+    const labels       = Selector('label');
+    const winLabel     = labels.withExactText('Windows');
+    const reusingLabel = labels.withText('JavaScript');
+
+    await t.expect(winLabel.exists).ok();
+    await t.expect(reusingLabel.exists).ok();
+});
+```
+
+### Bug Fixes
+
 ## v0.18.6 (2017-12-28)
 
 ### Enhancements
