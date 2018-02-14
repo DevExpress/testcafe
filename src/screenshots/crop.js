@@ -2,6 +2,7 @@ import fs from 'fs';
 import Promise from 'pinkie';
 import { PNG } from 'pngjs';
 import promisifyEvent from 'promisify-event';
+import limitNumber from '../utils/limit-number';
 import { InvalidElementScreenshotDimensionsError } from '../errors/test-run/';
 
 
@@ -30,10 +31,6 @@ function writePng (filePath, png) {
     return finishPromise;
 }
 
-function enforceDimension (value, min, max) {
-    return Math.max(Math.min(value, max), min);
-}
-
 export default async function (screenshotPath, markSeed, clientAreaDimensions, cropDimensions) {
     var mark = new Buffer(markSeed);
 
@@ -51,10 +48,10 @@ export default async function (screenshotPath, markSeed, clientAreaDimensions, c
     var top         = bottom - clientAreaDimensions.height;
 
     if (cropDimensions) {
-        right  = enforceDimension(left + cropDimensions.right, left, right);
-        bottom = enforceDimension(top + cropDimensions.bottom, top, bottom);
-        left   = enforceDimension(left + cropDimensions.left, left, right);
-        top    = enforceDimension(top + cropDimensions.top, top, bottom);
+        right  = limitNumber(left + cropDimensions.right, left, right);
+        bottom = limitNumber(top + cropDimensions.bottom, top, bottom);
+        left   = limitNumber(left + cropDimensions.left, left, right);
+        top    = limitNumber(top + cropDimensions.top, top, bottom);
     }
     else
         bottom -= 1;
@@ -63,7 +60,7 @@ export default async function (screenshotPath, markSeed, clientAreaDimensions, c
     var height = bottom - top;
 
     if (width <= 0 || height <= 0)
-        throw new InvalidElementScreenshotDimensionsError();
+        throw new InvalidElementScreenshotDimensionsError(width, height);
 
     var dstImage = new PNG({ width, height });
     var stride   = dstImage.width * 4;

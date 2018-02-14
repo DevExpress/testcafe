@@ -715,9 +715,25 @@ interface KeyModifiers {
 }
 
 interface CropOptions {
+    /**
+     * The top edge of the cropping rectangle. The coordinate is calculated from the element's top edge.
+     * If a negative number is passed, the coordinate is calculated from the element's bottom edge.
+     */
     left?: number;
+    /**
+     * The left edge of the cropping rectangle. The coordinate is calculated from the element's left edge.
+     * If a negative number is passed, the coordinate is calculated from the element's right edge.
+     */
     right?: number;
+    /**
+     * The bottom edge of the cropping rectangle. The coordinate is calculated from the element's top edge.
+     * If a negative number is passed, the coordinate is calculated from the element's bottom edge.
+     */
     top?: number;
+    /**
+     * The right edge of the cropping rectangle. The coordinate is calculated from the element's left edge.
+     * If a negative number is passed, the coordinate is calculated from the element's right edge.
+     */
     bottom?: number;
 }
 
@@ -731,9 +747,48 @@ interface ActionOptions {
 }
 
 interface TakeElementScreenshotOptions extends ActionOptions {
+    /**
+     * Allows to crop the target element on the screenshot.
+     */
     crop?: CropOptions;
+    /**
+     * Controls if element's margins should be included in the screenshot.
+     * Set this property to `true` to include target element's margins in the screenshot.
+     * When it is enabled, the `scrollTargetX`, `scrollTargetY` and `crop` rectangle coordinates are calculated from
+     * the corners where top and left (or bottom and right) margins intersect
+     */
     includeMargins?: boolean;
+    /**
+     * Controls if element's borders should be included in the screenshot.
+     * Set this property to `true` to include target element's borders in the screenshot.
+     * When it is enabled, the `scrollTargetX`, `scrollTargetY` and `crop` rectangle coordinates are calculated from
+     * the corners where top and left (or bottom and right) internal edges of the element  intersect
+     */
+    includeBorders?: boolean;
+    /**
+     * Controls if element's paddings should be included in the screenshot.
+     * Set this property to `true` to include target element's paddings in the screenshot.
+     * When it is enabled, the `scrollTargetX`, `scrollTargetY` and `crop` rectangle coordinates are calculated from
+     * the corners where top and left (or bottom and right) edges of the element's children area intersect
+     */
+    includePaddings?: boolean;
+    /**
+     * Specifies the X coordinate of target point for scrolling.
+     * If the target element is too big to fit into the browser window, the page will be scrolled to put this point
+     * to the center of the viewport. The coordinates of this point are calculated relative to the target element.
+     * If the numbers are positive, the point is positioned relative to the top-left corner of the element.
+     * If the numbers are negative, the point is positioned relative to the bottom-right corner.
+     * If the target element fits into the browser window, these properties have no effect.
+     */
     scrollTargetX?: number;
+    /**
+     * Specifies the Y coordinate of target point for scrolling.
+     * If the target element is too big to fit into the browser window, the page will be scrolled to put this point
+     * to the center of the viewport. The coordinates of this point are calculated relative to the target element.
+     * If the numbers are positive, the point is positioned relative to the top-left corner of the element.
+     * If the numbers are negative, the point is positioned relative to the bottom-right corner.
+     * If the target element fits into the browser window, these properties have no effect.
+     */
     scrollTargetY?: number;
 }
 

@@ -245,7 +245,7 @@ export default {
     `),
 
     [TYPE.invalidElementScreenshotDimensionsError]: err => markup(err, `
-        Unable to capture an image of the element, because resulting image dimensions are zero or negative.
+         Unable to capture an element image because the resulting image ${err.dimensions} ${err.verb} zero or negative.
     `),
 
     [TYPE.roleSwitchInRoleInitializerError]: err => markup(err, `

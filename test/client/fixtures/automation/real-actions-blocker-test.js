@@ -10,7 +10,6 @@ var ClickAutomation    = testCafeAutomation.Click;
 var HoverAutomation    = testCafeAutomation.Hover;
 var getOffsetOptions   = testCafeAutomation.getOffsetOptions;
 
-testCafeCore.scrollController.init();
 testCafeCore.preventRealEvents();
 
 $(document).ready(function () {

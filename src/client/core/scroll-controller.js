@@ -1,18 +1,19 @@
-import { eventSandbox } from './deps/hammerhead';
+import { eventSandbox, Promise } from './deps/hammerhead';
 import { EventEmitter } from './utils/service';
 
 
 const listeners = eventSandbox.listeners;
 
-class ScrollController extends EventEmitter {
+class ScrollController {
     constructor () {
-        super();
-
+        this.initialized         = false;
         this.stopPropagationFlag = false;
+
+        this.events = new EventEmitter();
     }
 
     _internalListener (event, dispatched, preventEvent, cancelHandlers, stopPropagation) {
-        this.emit('scroll', event);
+        this.events.emit('scroll', event);
 
         if (this.stopPropagationFlag) {
             cancelHandlers();
@@ -21,8 +22,27 @@ class ScrollController extends EventEmitter {
     }
 
     init () {
+        this.initialized = true;
+
         listeners.initElementListening(window, ['scroll']);
         listeners.addFirstInternalHandler(window, ['scroll'], (...args) => this._internalListener(...args));
+    }
+
+    getNextScrollEvent () {
+        if (!this.initialized)
+            return Promise.resolve();
+
+        var promiseResolver = null;
+
+        var promise = new Promise(resolve => {
+            promiseResolver = resolve;
+        });
+
+        promise.cancel = () => this.events.off('scroll', promiseResolver);
+
+        this.events.once('scroll', promiseResolver);
+
+        return promise;
     }
 
     stopPropagation () {

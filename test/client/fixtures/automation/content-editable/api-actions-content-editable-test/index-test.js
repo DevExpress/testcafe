@@ -17,7 +17,6 @@ var textSelection     = testCafeCore.get('./utils/text-selection');
 var parseKeySequence  = testCafeCore.get('./utils/parse-key-sequence');
 
 
-testCafeCore.scrollController.init();
 testCafeCore.preventRealEvents();
 
 $(document).ready(function () {

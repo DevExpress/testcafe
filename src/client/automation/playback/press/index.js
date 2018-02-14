@@ -1,8 +1,7 @@
 import hammerhead from '../../deps/hammerhead';
-import { arrayUtils, domUtils, delay, getKeyArray, sendRequestToFrame } from '../../deps/testcafe-core';
+import { arrayUtils, domUtils, promiseUtils, delay, getKeyArray, sendRequestToFrame } from '../../deps/testcafe-core';
 import KeyPressSimulator from './key-press-simulator';
 import supportedShortcutHandlers from './shortcuts';
-import each from '../../utils/promise-each';
 import { getActualKeysAndEventKeyProperties, getDeepActiveElement } from './utils';
 import AutomationSettings from '../../settings';
 
@@ -144,7 +143,7 @@ export default class PressAutomation {
 
         var keyPressSimulators = PressAutomation._getKeyPressSimulators(keyCombination);
 
-        return each(keyPressSimulators, keySimulator => {
+        return promiseUtils.each(keyPressSimulators, keySimulator => {
             return this
                 ._down(keySimulator)
                 .then(keyEventPrevented => this._press(keySimulator, keyEventPrevented));
@@ -152,7 +151,7 @@ export default class PressAutomation {
             .then(() => {
                 arrayUtils.reverse(keyPressSimulators);
 
-                return each(keyPressSimulators, keySimulator => this._up(keySimulator));
+                return promiseUtils.each(keyPressSimulators, keySimulator => this._up(keySimulator));
             });
     }
 
@@ -170,7 +169,7 @@ export default class PressAutomation {
             return sendRequestToFrame(msg, PRESS_RESPONSE_CMD, activeElement.contentWindow);
         }
 
-        return each(this.keyCombinations, combination => {
+        return promiseUtils.each(this.keyCombinations, combination => {
             return this
                 ._runCombination(combination)
                 .then(() => delay(this.automationSettings.keyActionStepDelay));

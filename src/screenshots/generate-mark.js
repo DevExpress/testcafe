@@ -17,11 +17,11 @@ export default function () {
     markSeed = flatten(chunk(markSeed, 3).map(array => array.concat(255)));
 
     var markSeedBuffer = new Buffer(markSeed);
-    var png = new PNG({ width: MARK_LENGTH, height: 1 });
+    var pngImage       = new PNG({ width: MARK_LENGTH, height: 1 });
 
-    markSeedBuffer.copy(png.data);
+    markSeedBuffer.copy(pngImage.data);
 
-    var markData = 'data:image/png;base64,' + PNG.sync.write(png).toString('base64');
+    var markData = 'data:image/png;base64,' + PNG.sync.write(pngImage).toString('base64');
 
     return { markSeed, markData };
 }

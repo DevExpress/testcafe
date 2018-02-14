@@ -6,7 +6,6 @@ var textSelection     = testCafeCore.get('./utils/text-selection');
 var testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
 var PressAutomation    = testCafeAutomation.Press;
 
-testCafeCore.scrollController.init();
 testCafeCore.preventRealEvents();
 
 var hammerhead    = window.getTestCafeModule('hammerhead');

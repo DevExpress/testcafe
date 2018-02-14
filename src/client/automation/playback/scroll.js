@@ -1,7 +1,5 @@
 import hammerhead from '../deps/hammerhead';
-import { domUtils, styleUtils, positionUtils, scrollController, sendRequestToFrame } from '../deps/testcafe-core';
-import whilst from '../utils/promise-whilst';
-import times from '../utils/promise-times';
+import { domUtils, styleUtils, positionUtils, promiseUtils, scrollController, sendRequestToFrame } from '../deps/testcafe-core';
 
 
 var Promise            = hammerhead.Promise;
@@ -35,11 +33,11 @@ messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
 
 export default class ScrollAutomation {
     constructor (element, scrollOptions) {
-        this.element                  = element;
-        this.offsetX                  = scrollOptions.offsetX;
-        this.offsetY                  = scrollOptions.offsetY;
-        this.scrollToCenter           = scrollOptions.scrollToCenter;
-        this.disableParentFrameScroll = scrollOptions.disableParentFrameScroll;
+        this.element          = element;
+        this.offsetX          = scrollOptions.offsetX;
+        this.offsetY          = scrollOptions.offsetY;
+        this.scrollToCenter   = scrollOptions.scrollToCenter;
+        this.skipParentFrames = scrollOptions.skipParentFrames;
 
         this.maxScrollMargin = DEFAULT_MAX_SCROLL_MARGIN;
     }
@@ -47,20 +45,6 @@ export default class ScrollAutomation {
     _isScrollValuesChanged (scrollElement, originalScroll) {
         return styleUtils.getScrollLeft(scrollElement) !== originalScroll.left
                || styleUtils.getScrollTop(scrollElement) !== originalScroll.top;
-    }
-
-    _getScrollEventPromise () {
-        var promiseResolver = null;
-
-        var promise = new Promise(resolve => {
-            promiseResolver = resolve;
-        });
-
-        promise.cancel = () => scrollController.off('scroll', promiseResolver);
-
-        scrollController.once('scroll', promiseResolver);
-
-        return promise;
     }
 
     _setScroll (element, { left, top }) {
@@ -74,7 +58,7 @@ export default class ScrollAutomation {
         left = Math.max(left, 0);
         top  = Math.max(top, 0);
 
-        var scrollPromise = this._getScrollEventPromise();
+        var scrollPromise = scrollController.getNextScrollEvent();
 
         styleUtils.setScrollLeft(scrollElement, left);
         styleUtils.setScrollTop(scrollElement, top);
@@ -202,7 +186,7 @@ export default class ScrollAutomation {
         var childDimensions  = null;
         var parentDimensions = null;
 
-        var scrollParentsPromise = times(parents.length, i => {
+        var scrollParentsPromise = promiseUtils.times(parents.length, i => {
             return this
                 ._scrollToChild(parents[i], currentChild, {
                     offsetX: currentOffsetX,
@@ -252,7 +236,7 @@ export default class ScrollAutomation {
         return this
             ._scrollElement()
             .then(() => this._scrollParents())
-            .then(() => whilst(() => !this._isScrollMarginTooBig() && this._isElementHiddenByFixed(), () => {
+            .then(() => promiseUtils.whilst(() => !this._isScrollMarginTooBig() && this._isElementHiddenByFixed(), () => {
                 this.maxScrollMargin += SCROLL_MARGIN_INCREASE_STEP;
 
                 return this._scrollParents();

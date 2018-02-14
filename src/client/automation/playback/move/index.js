@@ -7,7 +7,6 @@ import cursor from '../../cursor';
 import { underCursor as getElementUnderCursor } from '../../get-element';
 import getAutomationPoint from '../../utils/get-automation-point';
 import getLineRectIntersection from '../../utils/get-line-rect-intersection';
-import whilst from '../../utils/promise-whilst';
 import nextTick from '../../utils/next-tick';
 import AutomationSettings from '../../settings';
 
@@ -31,6 +30,7 @@ var positionUtils      = testCafeCore.positionUtils;
 var domUtils           = testCafeCore.domUtils;
 var styleUtils         = testCafeCore.styleUtils;
 var eventUtils         = testCafeCore.eventUtils;
+var promiseUtils       = testCafeCore.promiseUtils;
 var sendRequestToFrame = testCafeCore.sendRequestToFrame;
 
 
@@ -357,7 +357,7 @@ export default class MoveAutomation {
         if (this.minMovingTime)
             this.movingTime = Math.max(this.movingTime, this.minMovingTime);
 
-        return whilst(() => !this._isMovingFinished(), () => this._movingStep());
+        return promiseUtils.whilst(() => !this._isMovingFinished(), () => this._movingStep());
     }
 
     _scroll () {

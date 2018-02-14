@@ -48,11 +48,11 @@ describe('Test run command options', function () {
             }, false);
 
             expect(JSON.parse(JSON.stringify(options))).eql({
-                offsetX:                  15,
-                offsetY:                  null,
-                scrollToCenter:           false,
-                speed:                    null,
-                disableParentFrameScroll: false
+                offsetX:          15,
+                offsetY:          null,
+                scrollToCenter:   false,
+                speed:            null,
+                skipParentFrames: false
             });
         });
 

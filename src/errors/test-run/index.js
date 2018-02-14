@@ -364,10 +364,26 @@ export class WindowDimensionsOverflowError extends TestRunErrorBase {
 }
 
 export class InvalidElementScreenshotDimensionsError extends TestRunErrorBase {
-    constructor (callsite) {
+    constructor (width, height) {
         super(TYPE.invalidElementScreenshotDimensionsError);
 
-        this.callsite = callsite;
+        var widthIsInvalid  = width <= 0;
+        var heightIsInvalid = height <= 0;
+
+        if (widthIsInvalid) {
+            if (heightIsInvalid) {
+                this.verb      = 'are';
+                this.dimensions = 'width and height';
+            }
+            else {
+                this.verb      = 'is';
+                this.dimensions = 'width';
+            }
+        }
+        else {
+            this.verb      = 'is';
+            this.dimensions = 'height';
+        }
     }
 }
 

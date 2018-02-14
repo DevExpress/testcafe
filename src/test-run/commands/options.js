@@ -63,8 +63,8 @@ export class ScrollOptions extends OffsetOptions {
     constructor (obj, validate) {
         super();
 
-        this.scrollToCenter           = false;
-        this.disableParentFrameScroll = false;
+        this.scrollToCenter   = false;
+        this.skipParentFrames = false;
 
         this._assignFrom(obj, validate);
     }
@@ -72,7 +72,7 @@ export class ScrollOptions extends OffsetOptions {
     _getAssignableProperties () {
         return super._getAssignableProperties().concat([
             { name: 'scrollToCenter', type: booleanOption },
-            { name: 'disableParentFrameScroll', type: booleanOption }
+            { name: 'skipParentFrames ', type: booleanOption }
         ]);
     }
 }

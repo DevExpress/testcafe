@@ -8,7 +8,6 @@ var testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
 var PressAutomation    = testCafeAutomation.Press;
 var parseKeySequence   = testCafeCore.get('./utils/parse-key-sequence');
 
-testCafeCore.scrollController.init();
 testCafeCore.preventRealEvents();
 
 QUnit.config.testTimeout = 15000;

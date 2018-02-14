@@ -41,7 +41,7 @@ import generateId from './generate-id';
 import ChildDriverLink from './driver-link/child';
 
 import executeActionCommand from './command-executors/execute-action';
-import executeManipulationCommand from './command-executors/execute-browser-manipulation';
+import executeManipulationCommand from './command-executors/browser-manipulation';
 import executeNavigateToCommand from './command-executors/execute-navigate-to';
 import {
     getResult as getExecuteSelectorResult,

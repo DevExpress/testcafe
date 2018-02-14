@@ -312,7 +312,7 @@ describe('Error formatting', function () {
         });
 
         it('Should format "InvalidElementScreenshotDimensionsError"', function () {
-            assertErrorMessage('invalid-element-screenshot-dimensions-error', new InvalidElementScreenshotDimensionsError());
+            assertErrorMessage('invalid-element-screenshot-dimensions-error', new InvalidElementScreenshotDimensionsError(0, 10));
         });
 
         it('Should format "setTestSpeedArgumentError"', function () {

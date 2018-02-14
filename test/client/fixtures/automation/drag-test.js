@@ -6,7 +6,6 @@ var MouseOptions            = testCafeAutomation.get('../../test-run/commands/op
 var testCafeCore = window.getTestCafeModule('testCafeCore');
 var position     = testCafeCore.get('./utils/position');
 
-testCafeCore.scrollController.init();
 testCafeCore.preventRealEvents();
 
 var hammerhead       = window.getTestCafeModule('hammerhead');

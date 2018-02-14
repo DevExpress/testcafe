@@ -1,9 +1,6 @@
-import { styleUtils } from '../deps/testcafe-core';
+import { styleUtils } from '../../deps/testcafe-core';
+import limitNumber from '../../../../utils/limit-number';
 
-
-function clamp (value, min, max) {
-    return Math.min(Math.max(min, value), max);
-}
 
 function determineDimensionBounds (bounds, maximum) {
     var hasMin    = typeof bounds.min === 'number';
@@ -11,7 +8,7 @@ function determineDimensionBounds (bounds, maximum) {
     var hasLength = typeof bounds.length === 'number';
 
     if (hasLength)
-        bounds.length = clamp(bounds.length, 0, maximum);
+        bounds.length = limitNumber(bounds.length, 0, maximum);
 
     if (hasMin && bounds.min < 0)
         bounds.min += maximum;
@@ -25,15 +22,15 @@ function determineDimensionBounds (bounds, maximum) {
     if (!hasMax)
         bounds.max = hasLength ? bounds.min + bounds.length : maximum;
 
-    bounds.min    = clamp(bounds.min, 0, maximum);
-    bounds.max    = clamp(bounds.max, 0, maximum);
+    bounds.min    = limitNumber(bounds.min, 0, maximum);
+    bounds.max    = limitNumber(bounds.max, 0, maximum);
     bounds.length = bounds.max - bounds.min;
 
     return bounds;
 }
 
 function determineScrollPoint (cropStart, cropEnd, viewportBound) {
-    return Math.round(cropStart + (clamp(cropEnd, 0, viewportBound) - cropStart) / 2);
+    return Math.round(cropStart + (limitNumber(cropEnd, 0, viewportBound) - cropStart) / 2);
 }
 
 export default function ensureCropOptions (element, options) {
