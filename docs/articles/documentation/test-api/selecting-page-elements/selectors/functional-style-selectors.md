@@ -42,14 +42,14 @@ Method | Return Type | Description
 
 Method | Type | Description
 ------ | ----- | -----
-`withText(text)` | Selector | Creates a selector that filters a matching set by the specified text. Selects elements that *contain* this text. The `text` parameter is case-sensitive.
+`withText(text)` | Selector | Creates a selector that filters a matching set by the specified text. Selects elements that *contain* this text. To filter elements by *strict match*, use the `withExactText` method. The `text` parameter is case-sensitive.
 `withText(re)` | Selector | Creates a selector that filters a matching set using the specified regular expression.
 
 ### withExactText
 
 Method | Type | Description
 ------ | ----- | -----
-`withExactText(text)` | Selector | Creates a selector that filters a matching set by the specified text. Selects elements whose text content *strictly matches* this text. The `text` parameter is case-sensitive.
+`withExactText(text)` | Selector | Creates a selector that filters a matching set by the specified text. Selects elements whose text content *strictly matches* this text. To search for elements that *contain* a specific text, use the `withText` method. The `text` parameter is case-sensitive.
 
 ### withAttribute
 
