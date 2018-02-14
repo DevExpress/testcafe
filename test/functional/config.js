@@ -1,4 +1,5 @@
 var os = require('os');
+var osFamily = require('os-family');
 
 var isTravisEnvironment = !!process.env.TRAVIS;
 var isCCNetEnvironment  = !!process.env.CCNET;
@@ -8,6 +9,57 @@ var browserProviderNames = {
     sauceLabs:    'sauceLabs',
     browserstack: 'browserstack'
 };
+
+var windowsBrowsers = [
+    {
+        platform:    'Windows 10',
+        browserName: 'chrome',
+        alias:       'chrome'
+    },
+    {
+        platform:    'Windows 10',
+        browserName: 'internet explorer',
+        version:     '11.0',
+        alias:       'ie'
+    },
+    {
+        platform:    'Windows 10',
+        browserName: 'firefox',
+        alias:       'firefox'
+    }
+];
+
+var osXBrowsers  = [
+    {
+        os:        'OS X',
+        osVersion: 'Sierra',
+        name:      'safari',
+        alias:     'safari'
+    },
+    {
+        os:        'OS X',
+        osVersion: 'Sierra',
+        name:      'chrome',
+        alias:     'chrome-osx'
+    },
+    {
+        os:        'OS X',
+        osVersion: 'Sierra',
+        name:      'firefox',
+        alias:     'firefox-osx'
+    }
+];
+
+function getLocalBrowsers () {
+    if (osFamily.win)
+        return windowsBrowsers;
+
+    if (osFamily.mac)
+        return osXBrowsers;
+
+    return [];
+}
+
 
 var testingEnvironmentNames = {
     osXDesktopAndMSEdgeBrowsers: 'osx-desktop-and-ms-edge-browsers',
@@ -28,30 +80,12 @@ testingEnvironments[testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers] = {
     },
 
     browsers: [
-        {
-            os:        'OS X',
-            osVersion: 'Sierra',
-            name:      'safari',
-            alias:     'safari'
-        },
-        {
-            os:        'OS X',
-            osVersion: 'Sierra',
-            name:      'chrome',
-            alias:     'chrome-osx'
-        },
-        {
-            os:        'OS X',
-            osVersion: 'Sierra',
-            name:      'firefox',
-            alias:     'firefox-osx'
-        },
-        {
+        osXBrowsers.concat({
             os:        'Windows',
             osVersion: '10',
             name:      'edge',
             alias:     'edge',
-        }
+        })
     ]
 };
 
@@ -90,24 +124,7 @@ testingEnvironments[testingEnvironmentNames.mobileBrowsers] = {
 };
 
 testingEnvironments[testingEnvironmentNames.localBrowsers] = {
-    browsers: [
-        {
-            platform:    'Windows 10',
-            browserName: 'chrome',
-            alias:       'chrome'
-        },
-        {
-            platform:    'Windows 10',
-            browserName: 'internet explorer',
-            version:     '11.0',
-            alias:       'ie'
-        },
-        {
-            platform:    'Windows 10',
-            browserName: 'firefox',
-            alias:       'firefox'
-        }
-    ]
+    browsers: getLocalBrowsers()
 };
 
 testingEnvironments[testingEnvironmentNames.oldBrowsers] = {
@@ -143,24 +160,7 @@ testingEnvironments[testingEnvironmentNames.legacy] = {
         accessKey: process.env.SAUCE_ACCESS_KEY_FUNCTIONAL_DESKTOP
     },
 
-    browsers: [
-        {
-            platform:    'Windows 10',
-            browserName: 'chrome',
-            alias:       'chrome'
-        },
-        {
-            platform:    'Windows 10',
-            browserName: 'internet explorer',
-            version:     '11.0',
-            alias:       'ie'
-        },
-        {
-            platform:    'Windows 10',
-            browserName: 'firefox',
-            alias:       'firefox'
-        }
-    ]
+    browsers: windowsBrowsers
 };
 
 

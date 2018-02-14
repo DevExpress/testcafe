@@ -39,7 +39,10 @@ function getBrowserInfo (settings) {
         .then(function (connection) {
             return {
                 settings:   settings,
-                connection: connection
+                connection: connection,
+                get name () {
+                    return this.settings.name || this.settings.alias;
+                }
             };
         });
 }
@@ -85,7 +88,7 @@ function openRemoteBrowsers () {
 
 function openLocalBrowsers () {
     var openBrowserPromises = browsersInfo.map(function (browserInfo) {
-        return browserTools.getBrowserInfo(browserInfo.settings.alias)
+        return browserTools.getBrowserInfo(browserInfo.name)
             .then(function (browser) {
                 return browserTools.open(browser, browserInfo.connection.url);
             });
