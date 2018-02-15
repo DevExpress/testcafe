@@ -1,8 +1,8 @@
 {
+  "extends": "plugin:hammerhead/recommended",
   "rules": {
     "hammerhead/use-hh-promise": 2,
-    "hammerhead/use-native-methods": [2, ["setTimeout", "setInterval", "clearTimeout", "clearInterval"]],
-    "no-restricted-globals": [2, "Object", "JSON"]
+    "hammerhead/use-native-methods": [2, ["setTimeout", "setInterval", "clearTimeout", "clearInterval"]]
   },
   "env": {
     "browser": true,

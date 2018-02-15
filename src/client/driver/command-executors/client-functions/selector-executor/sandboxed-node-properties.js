@@ -10,8 +10,6 @@ function sandboxed (fn) {
 }
 
 export var getAttrs       = sandboxed(element => element.attributes);
-export var getChildNodes  = sandboxed(node => node.childNodes);
-export var getChildren    = sandboxed(node => node.children);
 export var getTextContent = sandboxed(node => node.textContent);
 export var getClassName   = sandboxed(element => element.className);
 export var getInnerText   = sandboxed(element => element.innerText);

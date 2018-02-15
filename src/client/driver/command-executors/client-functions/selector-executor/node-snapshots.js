@@ -7,8 +7,6 @@ import {
 
 import {
     getAttrs,
-    getChildNodes,
-    getChildren,
     getTextContent,
     getClassName,
     getInnerText
@@ -18,11 +16,12 @@ import {
 // Node
 var nodeSnapshotPropertyInitializers = {
     textContent:    getTextContent,
-    childNodeCount: node => getChildNodes(node).length,
+    childNodeCount: node => node.childNodes.length,
     hasChildNodes:  node => !!nodeSnapshotPropertyInitializers.childNodeCount(node),
 
     childElementCount: node => {
-        var children = getChildren(node);
+        /*eslint-disable no-restricted-properties*/
+        var children = node.children;
 
         if (children)
             return children.length;
@@ -30,6 +29,7 @@ var nodeSnapshotPropertyInitializers = {
         // NOTE: IE doesn't have `children` for non-element nodes =/
         var childElementCount = 0;
         var childNodeCount    = node.childNodes.length;
+        /*eslint-enable no-restricted-properties*/
 
         for (var i = 0; i < childNodeCount; i++) {
             if (node.childNodes[i].nodeType === 1)
@@ -39,7 +39,9 @@ var nodeSnapshotPropertyInitializers = {
         return childElementCount;
     },
 
+    /*eslint-disable no-restricted-properties*/
     hasChildElements: node => !!nodeSnapshotPropertyInitializers.childElementCount(node)
+    /*eslint-enable no-restricted-properties*/
 };
 
 export class NodeSnapshot {
@@ -68,8 +70,10 @@ var elementSnapshotPropertyInitializers = {
         var attrs  = getAttrs(element);
         var result = {};
 
+        /*eslint-disable no-restricted-properties*/
         for (var i = attrs.length - 1; i >= 0; i--)
             result[attrs[i].name] = attrs[i].value;
+        /*eslint-enable no-restricted-properties*/
 
         return result;
     },

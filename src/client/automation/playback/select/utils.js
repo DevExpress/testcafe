@@ -84,13 +84,14 @@ function getSelectionRectangle (element, position) {
     var clientRectAfterFakeDiv  = element.getBoundingClientRect();
     var topBoundDiff            = clientRectAfterFakeDiv.top - clientRectBeforeFakeDiv.top;
     var leftBoundDiff           = clientRectAfterFakeDiv.left - clientRectBeforeFakeDiv.left;
+    var valueLength             = domUtils.getElementValue(element).length;
 
     try {
         var range = document.createRange(); //B254723
 
-        range.setStart(fakeDiv.firstChild, Math.min(position, element.value.length));
+        range.setStart(fakeDiv.firstChild, Math.min(position, valueLength));
         // NOTE: The range.getClientRects function returns wrong result if range length is 0 in Safari 11
-        range.setEnd(fakeDiv.firstChild, Math.min(position + 1, element.value.length + 1));
+        range.setEnd(fakeDiv.firstChild, Math.min(position + 1, valueLength + 1));
 
         if (domUtils.isTextAreaElement(element)) {
             rect = range.getBoundingClientRect();
@@ -149,7 +150,7 @@ function createFakeDiv (element) {
         height:   element.scrollHeight + 'px'
     });
 
-    fakeDiv.textContent = element.value + ' ';
+    fakeDiv.textContent = domUtils.getElementValue(element) + ' ';
 
     body.appendChild(fakeDiv);
 
@@ -181,7 +182,7 @@ function getPositionCoordinates (element, position) {
 export function getSelectionCoordinatesByPosition (element, position) {
     var isTextEditable    = domUtils.isTextEditableElement(element);
     var isContentEditable = domUtils.isContentEditableElement(element);
-    var hasText           = isTextEditable && element.value.length > 0 ||
+    var hasText           = isTextEditable && domUtils.getElementValue(element).length > 0 ||
                             isContentEditable && contentEditable.getContentEditableValue(element).length;
 
     if (!hasText)

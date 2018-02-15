@@ -4,9 +4,10 @@ import * as arrayUtils from './array';
 
 //nodes utils
 function getOwnFirstVisibleTextNode (el) {
-    var children = el.childNodes;
+    var children       = el.childNodes;
+    var childrenLength = domUtils.getChildNodesLength(children);
 
-    if (!children.length && isVisibleTextNode(el))
+    if (!childrenLength && isVisibleTextNode(el))
         return el;
 
     return arrayUtils.find(children, node => isVisibleTextNode(node));
@@ -34,7 +35,7 @@ function getOwnPreviousVisibleSibling (el) {
 }
 
 function hasChildren (node) {
-    return node.childNodes && node.childNodes.length;
+    return node.childNodes && domUtils.getChildNodesLength(node.childNodes);
 }
 
 function isElementWithChildren (node) {
@@ -52,7 +53,8 @@ function isNodeBlockWithBreakLine (parent, node) {
     if (domUtils.isShadowUIElement(parent) || domUtils.isShadowUIElement(node))
         return false;
 
-    if (!domUtils.isTheSameNode(node, parent) && node.childNodes.length && /div|p/.test(domUtils.getTagName(node))) {
+    if (!domUtils.isTheSameNode(node, parent) && domUtils.getChildNodesLength(node.childNodes) &&
+        /div|p/.test(domUtils.getTagName(node))) {
         parentFirstVisibleChild = getOwnFirstVisibleNode(parent);
 
         if (!parentFirstVisibleChild || domUtils.isTheSameNode(node, parentFirstVisibleChild))
@@ -77,7 +79,7 @@ function isNodeAfterNodeBlockWithBreakLine (parent, node) {
         return false;
 
     if (!domUtils.isTheSameNode(node, parent) &&
-        (isRenderedNode && domUtils.isElementNode(node) && node.childNodes.length &&
+        (isRenderedNode && domUtils.isElementNode(node) && domUtils.getChildNodesLength(node.childNodes) &&
          !/div|p/.test(domUtils.getTagName(node)) ||
          isVisibleTextNode(node) && !domUtils.isTheSameNode(node, parent) && node.nodeValue.length)) {
 
@@ -102,7 +104,7 @@ function isNodeAfterNodeBlockWithBreakLine (parent, node) {
 
 export function getFirstVisibleTextNode (el) {
     var children                    = el.childNodes;
-    var childrenLength              = children.length;
+    var childrenLength              = domUtils.getChildNodesLength(children);
     var curNode                     = null;
     var child                       = null;
     var isNotContentEditableElement = null;
@@ -129,7 +131,7 @@ export function getFirstVisibleTextNode (el) {
 
 export function getLastTextNode (el, onlyVisible) {
     var children                    = el.childNodes;
-    var childrenLength              = children.length;
+    var childrenLength              = domUtils.getChildNodesLength(children);
     var curNode                     = null;
     var child                       = null;
     var isNotContentEditableElement = null;
@@ -259,7 +261,7 @@ export function getNearestCommonAncestor (node1, node2) {
 function getSelectedPositionInParentByOffset (node, offset) {
     var currentNode          = null;
     var currentOffset        = null;
-    var childCount           = node.childNodes.length;
+    var childCount           = domUtils.getChildNodesLength(node.childNodes);
     var isSearchForLastChild = offset >= childCount;
 
     // NOTE: we get a child element by its offset index in the parent
@@ -373,7 +375,8 @@ export function calculateNodeAndOffsetByPosition (el, offset) {
     };
 
     function checkChildNodes (target) {
-        var childNodes = target.childNodes;
+        var childNodes       = target.childNodes;
+        var childNodesLength = domUtils.getChildNodesLength(childNodes);
 
         if (point.node)
             return point;
@@ -400,7 +403,7 @@ export function calculateNodeAndOffsetByPosition (el, offset) {
             }
             if (!point.node && (isNodeBlockWithBreakLine(el, target) || isNodeAfterNodeBlockWithBreakLine(el, target)))
                 point.offset--;
-            else if (!childNodes.length && domUtils.isElementNode(target) && domUtils.getTagName(target) === 'br')
+            else if (!childNodesLength && domUtils.isElementNode(target) && domUtils.getTagName(target) === 'br')
                 point.offset--;
         }
 
@@ -419,7 +422,8 @@ export function calculatePositionByNodeAndOffset (el, { node, offset }) {
     var find          = false;
 
     function checkChildNodes (target) {
-        var childNodes = target.childNodes;
+        var childNodes       = target.childNodes;
+        var childNodesLength = domUtils.getChildNodesLength(childNodes);
 
         if (find)
             return currentOffset;
@@ -435,14 +439,14 @@ export function calculatePositionByNodeAndOffset (el, { node, offset }) {
         if (isSkippableNode(target))
             return currentOffset;
 
-        if (!childNodes.length && target.nodeValue && target.nodeValue.length) {
+        if (!childNodesLength && target.nodeValue && target.nodeValue.length) {
             if (!find && isNodeAfterNodeBlockWithBreakLine(el, target))
                 currentOffset++;
 
             currentOffset += target.nodeValue.length;
         }
 
-        else if (!childNodes.length && domUtils.isElementNode(target) && domUtils.getTagName(target) === 'br')
+        else if (!childNodesLength && domUtils.isElementNode(target) && domUtils.getTagName(target) === 'br')
             currentOffset++;
 
         else if (!find && (isNodeBlockWithBreakLine(el, target) || isNodeAfterNodeBlockWithBreakLine(el, target)))
@@ -497,15 +501,16 @@ export function getLastVisiblePosition (el) {
 
 //contents util
 export function getContentEditableValue (target) {
-    var elementValue = '';
-    var childNodes   = target.childNodes;
+    var elementValue     = '';
+    var childNodes       = target.childNodes;
+    var childNodesLength = domUtils.getChildNodesLength(childNodes);
 
     if (isSkippableNode(target))
         return elementValue;
 
-    if (!childNodes.length && domUtils.isTextNode(target))
+    if (!childNodesLength && domUtils.isTextNode(target))
         return target.nodeValue;
-    else if (childNodes.length === 1 && domUtils.isTextNode(childNodes[0]))
+    else if (childNodesLength === 1 && domUtils.isTextNode(childNodes[0]))
         return childNodes[0].nodeValue;
 
     arrayUtils.forEach(childNodes, node => {

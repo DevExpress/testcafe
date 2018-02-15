@@ -81,13 +81,9 @@
     "no-use-before-define" : [2, "nofunc"],
     "handle-callback-err": 0,
     "linebreak-style": [2, "unix"],
-    "import/export": 2,
-    "import/no-duplicates": 2
+    "no-duplicate-imports": 2
   },
   "env": {
     "node": true
-  },
-  "plugins": [
-    "import"
-  ]
+  }
 }

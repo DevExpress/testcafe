@@ -1,7 +1,6 @@
 import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
 import nextTick from '../../utils/next-tick';
-import { setValue } from '../../utils/utils';
 
 var browserUtils   = hammerhead.utils.browser;
 var eventSimulator = hammerhead.eventSandbox.eventSimulator;
@@ -150,7 +149,7 @@ function _typeTextToContentEditable (element, text) {
 }
 
 function _typeTextToTextEditable (element, text) {
-    var elementValue      = element.value;
+    var elementValue      = domUtils.getElementValue(element);
     var textLength        = text.length;
     var startSelection    = textSelection.getSelectionStart(element);
     var endSelection      = textSelection.getSelectionEnd(element);
@@ -169,7 +168,7 @@ function _typeTextToTextEditable (element, text) {
             endSelection += 1;
         }
 
-        setValue(element, elementValue.substring(0, startSelection) + text +
+        domUtils.setElementValue(element, elementValue.substring(0, startSelection) + text +
                           elementValue.substring(endSelection, elementValue.length));
 
         textSelection.select(element, startSelection + textLength, startSelection + textLength);
@@ -180,10 +179,13 @@ function _typeTextToTextEditable (element, text) {
 }
 
 function _typeTextToNonTextEditable (element, text, caretPos) {
-    if (caretPos !== null)
-        setValue(element, element.value.substr(0, caretPos) + text + element.value.substr(caretPos + text.length));
+    if (caretPos !== null) {
+        var elementValue = domUtils.getElementValue(element);
+
+        domUtils.setElementValue(element, elementValue.substr(0, caretPos) + text + elementValue.substr(caretPos + text.length));
+    }
     else
-        setValue(element, text);
+        domUtils.setElementValue(element, text);
 
     eventSimulator.change(element);
     eventSimulator.input(element);

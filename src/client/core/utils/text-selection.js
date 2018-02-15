@@ -323,7 +323,7 @@ export function select (el, from, to) {
     }
 
     var start   = from || 0;
-    var end     = typeof to === 'undefined' ? el.value.length : to;
+    var end     = typeof to === 'undefined' ? domUtils.getElementValue(el).length : to;
     var inverse = false;
     var temp    = null;
 
