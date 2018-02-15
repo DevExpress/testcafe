@@ -83,6 +83,8 @@ Property        | Type | Description
 --------------- | ---- | ------------
 `scrollTargetX`,&#160;`scrollTargetY` | Number | If the target element is too big to fit into the browser window, the page will be scrolled to put this point to the center of the viewport. The coordinates of this point are calculated relative to the target element. If the numbers are positive, the point is positioned relative to the top-left corner of the element. If the numbers are negative, the point is positioned relative to the bottom-right corner. If the target element fits into the browser window, these properties have no effect.
 `includeMargins` | Boolean | Set this property to `true` to include target element's margins in the screenshot. When it is enabled, the `scrollTargetX`, `scrollTargetY` and `crop` rectangle coordinates are calculated from the corners where top and left (or bottom and right) margins intersect.
+`includeBorders` | Boolean | Set this property to `true` to include target element's borders in the screenshot. When it is enabled, the `scrollTargetX`, `scrollTargetY` and `crop` rectangle coordinates are calculated from the corners where top and left (or bottom and right) internal edges of the element intersect.
+`includePaddings` | Boolean | Set this property to `true` to include target element's paddings in the screenshot. When it is enabled, the `scrollTargetX`, `scrollTargetY` and `crop` rectangle coordinates are calculated from the corners where top and left (or bottom and right) edges of the element's children area intersect.
 `crop`           | Object  | Allows you to crop the target element on the screenshot.
 
 An object assigned to the `crop` property has the following fields.
