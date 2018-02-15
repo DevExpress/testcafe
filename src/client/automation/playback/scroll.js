@@ -58,7 +58,7 @@ export default class ScrollAutomation {
         left = Math.max(left, 0);
         top  = Math.max(top, 0);
 
-        var scrollPromise = scrollController.getNextScrollEvent();
+        var scrollPromise = scrollController.waitForScroll();
 
         styleUtils.setScrollLeft(scrollElement, left);
         styleUtils.setScrollTop(scrollElement, top);
@@ -205,7 +205,7 @@ export default class ScrollAutomation {
 
         return scrollParentsPromise
             .then(() => {
-                if (window.top !== window && !this.disableParentFrameScroll) {
+                if (window.top !== window && !this.skipParentFrames) {
                     return sendRequestToFrame({
                         cmd:             SCROLL_REQUEST_CMD,
                         offsetX:         currentOffsetX,

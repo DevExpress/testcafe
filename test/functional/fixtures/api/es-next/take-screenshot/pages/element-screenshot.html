@@ -82,6 +82,24 @@
             document.querySelector('#remove').addEventListener('click', function () {
                 table.parentNode.removeChild(table);
             });
+
+            var testCafeAutomation = window['%testCafeAutomation%'];
+            var ScrollAutomation   = testCafeAutomation.Scroll;
+            var origRunScroll      = ScrollAutomation.prototype.run;
+
+            window.wasScrolled               = false;
+            window.internalScrollEventsCount = 0;
+
+            window.addEventListener('scroll', function () {
+                window.wasScrolled = true;
+            }, true);
+
+
+            ScrollAutomation.prototype.run = function () {
+                window.internalScrollEventsCount++;
+
+                return origRunScroll.apply(this, arguments);
+            };
         </script>
     </body>
 </html>

@@ -31,7 +31,7 @@ class ScrollController {
         listeners.addFirstInternalHandler(window, ['scroll'], (...args) => this._internalListener(...args));
     }
 
-    getNextScrollEvent () {
+    waitForScroll () {
         var promiseResolver = null;
 
         var promise = new Promise(resolve => {
@@ -40,7 +40,10 @@ class ScrollController {
 
         promise.cancel = () => this.events.off('scroll', promiseResolver);
 
-        this.events.once('scroll', promiseResolver);
+        if (this.initialized)
+            this.events.once('scroll', promiseResolver);
+        else
+            promiseResolver();
 
         return promise;
     }

@@ -72,7 +72,7 @@ export class ScrollOptions extends OffsetOptions {
     _getAssignableProperties () {
         return super._getAssignableProperties().concat([
             { name: 'scrollToCenter', type: booleanOption },
-            { name: 'skipParentFrames ', type: booleanOption }
+            { name: 'skipParentFrames', type: booleanOption }
         ]);
     }
 }

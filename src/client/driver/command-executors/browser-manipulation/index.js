@@ -22,14 +22,16 @@ const MANIPULATION_RESPONSE_CMD = 'driver|browser-manipulation|response';
 // Setup cross-iframe interaction
 messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
     if (e.message.cmd === MANIPULATION_REQUEST_CMD) {
-        var elements = [domUtils.findIframeByWindow(e.source)];
+        var element = domUtils.findIframeByWindow(e.source);
 
         var { command, cropDimensions } = e.message;
 
         if (cropDimensions)
             command.options = new ElementScreenshotOptions({ crop: cropDimensions, includePaddings: false });
 
-        var manipulation = new ManipulationExecutor(command, { elements });
+        var manipulation = new ManipulationExecutor(command);
+
+        manipulation.element = element;
 
         manipulation
             .execute()
@@ -38,15 +40,15 @@ messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
 });
 
 class ManipulationExecutor {
-    constructor (command, { globalSelectorTimeout, statusBar, elements } = {}) {
+    constructor (command, globalSelectorTimeout, statusBar) {
         this.command  = command;
         this.globalSelectorTimeout = globalSelectorTimeout;
         this.statusBar = statusBar;
-        this.elements = elements;
+        this.element = null;
     }
 
     _getAbsoluteCropValues () {
-        var { top, left } = this.elements[0].getBoundingClientRect();
+        var { top, left } = this.element.getBoundingClientRect();
 
         left += this.command.options.originOffset.x;
         top += this.command.options.originOffset.y;
@@ -89,7 +91,7 @@ class ManipulationExecutor {
         return Promise
             .resolve()
             .then(() => {
-                if (this.elements || !this.command.selector)
+                if (this.element || !this.command.selector)
                     return Promise.resolve();
 
                 var selectorTimeout = this.command.selector.timeout;
@@ -102,7 +104,7 @@ class ManipulationExecutor {
                     .then(elements => {
                         this.statusBar.hideWaitingElementStatus();
 
-                        this.elements = elements;
+                        this.element = elements[0];
                     })
                     .catch(error => {
                         this.statusBar.hideWaitingElementStatus();
@@ -111,11 +113,11 @@ class ManipulationExecutor {
                     });
             })
             .then(() => {
-                ensureCropOptions(this.elements[0], this.command.options);
+                ensureCropOptions(this.element, this.command.options);
 
                 var { scrollTargetX, scrollTargetY, scrollToCenter } = this.command.options;
 
-                var scrollAutomation = new ScrollAutomation(this.elements[0], new ScrollOptions({
+                var scrollAutomation = new ScrollAutomation(this.element, new ScrollOptions({
                     offsetX:          scrollTargetX,
                     offsetY:          scrollTargetY,
                     scrollToCenter:   scrollToCenter,
@@ -217,7 +219,7 @@ class ManipulationExecutor {
 }
 
 export default function (command, globalSelectorTimeout, statusBar) {
-    var manipulationExecutor = new ManipulationExecutor(command, { globalSelectorTimeout, statusBar });
+    var manipulationExecutor = new ManipulationExecutor(command, globalSelectorTimeout, statusBar);
 
     return manipulationExecutor.execute();
 }

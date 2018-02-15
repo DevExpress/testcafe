@@ -9,7 +9,8 @@ const enableScrollWatcher = ClientFunction(() => window.addEventListener('scroll
     window.wasScrolled = true;
 }));
 
-const checkWindowScroll   = ClientFunction(() => window.wasScrolled);
+const checkWindowScroll            = ClientFunction(() => window.wasScrolled);
+const getInternalScrollEventsCount = ClientFunction(() => window.internalScrollEventsCount);
 
 // NOTE: to preserve callsites, add new tests AFTER the existing ones
 fixture `Take a screenshot`
@@ -54,6 +55,7 @@ test('Element', async t => {
 
     await t.takeElementScreenshot('table', 'custom/' + t.ctx.parsedUA.family + '.png');
 
+    await t.expect(await getInternalScrollEventsCount()).gt(0);
     await t.expect(await checkWindowScroll()).notOk();
 });
 
@@ -96,6 +98,33 @@ test
             .switchToIframe('iframe')
             .switchToIframe('iframe')
             .takeElementScreenshot('table', 'custom/' + t.ctx.parsedUA.family + '.png');
+    });
+
+test
+    .page('../pages/nested-iframe.html')
+    ('Rescroll parents', async t => {
+        await t
+            .switchToIframe('iframe')
+            .switchToIframe('iframe')
+            .takeElementScreenshot('table', 'custom/' + t.ctx.parsedUA.family + '.png');
+
+        await t.switchToMainWindow();
+
+        var internalScrollEventsCount = await getInternalScrollEventsCount();
+
+        await t.expect(internalScrollEventsCount).lte(1);
+
+        await t.switchToIframe('iframe');
+
+        internalScrollEventsCount = await getInternalScrollEventsCount();
+
+        await t.expect(internalScrollEventsCount).lte(1);
+
+        await t.switchToIframe('iframe');
+
+        internalScrollEventsCount = await getInternalScrollEventsCount();
+
+        await t.expect(internalScrollEventsCount).lte(1);
     });
 
 test

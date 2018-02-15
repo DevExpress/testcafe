@@ -141,9 +141,9 @@ describe('[API] t.takeElementScreenshot()', function () {
                     );
 
                     expect(errs[0]).to.contains(
-                        ' 28 |test(\'Incorrect action selector argument\', async t => {' +
-                        ' > 29 |    await t.takeElementScreenshot(1, \'custom/\' + t.ctx.parsedUA.family + \'.png\');' +
-                        ' 30 |});'
+                        ' 29 |test(\'Incorrect action selector argument\', async t => {' +
+                        ' > 30 |    await t.takeElementScreenshot(1, \'custom/\' + t.ctx.parsedUA.family + \'.png\');' +
+                        ' 31 |});'
                     );
                 });
         });
@@ -156,9 +156,9 @@ describe('[API] t.takeElementScreenshot()', function () {
                 .catch(function (errs) {
                     expect(errs[0]).to.contains('The "path" argument is expected to be a non-empty string, but it was number.');
                     expect(errs[0]).to.contains(
-                        ' 32 |test(\'Incorrect action path argument\', async t => {' +
-                        ' > 33 |    await t.takeElementScreenshot(\'table\', 1);' +
-                        ' 34 |});'
+                        ' 33 |test(\'Incorrect action path argument\', async t => {' +
+                        ' > 34 |    await t.takeElementScreenshot(\'table\', 1);' +
+                        ' 35 |});'
                     );
                 });
         });
@@ -240,9 +240,9 @@ describe('[API] t.takeElementScreenshot()', function () {
                 .catch(function (errs) {
                     expect(errs[0]).to.contains('Unable to capture an element image because the resulting image width is zero or negative.');
                     expect(errs[0]).to.contains(
-                        ' 36 |test(\'Invalid dimensions\', async t => {' +
-                        ' > 37 |    await t.takeElementScreenshot(\'table\', \'custom/\' + t.ctx.parsedUA.family + \'.png\', { crop: { left: 50, right: -50 } });' +
-                        ' 38 |});'
+                        ' 37 |test(\'Invalid dimensions\', async t => {' +
+                        ' > 38 |    await t.takeElementScreenshot(\'table\', \'custom/\' + t.ctx.parsedUA.family + \'.png\', { crop: { left: 50, right: -50 } });' +
+                        ' 39 |});'
                     );
                 });
         });
@@ -256,9 +256,9 @@ describe('[API] t.takeElementScreenshot()', function () {
                 .catch(function (errs) {
                     expect(errs[0]).to.contains('The element that matches the specified selector is not visible.');
                     expect(errs[0]).to.contains(
-                        ' 42 |        .click(\'#hide\')' +
-                        ' > 43 |        .takeElementScreenshot(\'table\', \'custom/\' + t.ctx.parsedUA.family + \'.png\');' +
-                        ' 44 |});'
+                        ' 43 |        .click(\'#hide\')' +
+                        ' > 44 |        .takeElementScreenshot(\'table\', \'custom/\' + t.ctx.parsedUA.family + \'.png\');' +
+                        ' 45 |});'
                     );
                 });
         });
@@ -272,9 +272,9 @@ describe('[API] t.takeElementScreenshot()', function () {
                 .catch(function (errs) {
                     expect(errs[0]).to.contains('The specified selector does not match any element in the DOM tree.');
                     expect(errs[0]).to.contains(
-                        ' 48 |        .click(\'#remove\')' +
-                        ' > 49 |        .takeElementScreenshot(\'table\', \'custom/\' + t.ctx.parsedUA.family + \'.png\');' +
-                        ' 50 |});'
+                        ' 49 |        .click(\'#remove\')' +
+                        ' > 50 |        .takeElementScreenshot(\'table\', \'custom/\' + t.ctx.parsedUA.family + \'.png\');' +
+                        ' 51 |});'
                     );
                 });
         });
@@ -303,6 +303,17 @@ describe('[API] t.takeElementScreenshot()', function () {
 
         it('Should capture screenshot of the element inside a cross-domain iframe', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Cross-domain iframe',
+                { setScreenshotPath: true })
+                .then(function () {
+                    return assertionHelper.isScreenshotsEqual('custom', path.join(__dirname, './data/element.png'));
+                })
+                .then(function (result) {
+                    expect(result).eql(true);
+                });
+        });
+
+        it('Shouldn\'t scroll parent frames multiple times', function () {
+            return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Rescroll parents',
                 { setScreenshotPath: true })
                 .then(function () {
                     return assertionHelper.isScreenshotsEqual('custom', path.join(__dirname, './data/element.png'));
