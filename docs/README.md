@@ -41,6 +41,7 @@
       * [Edge Cases and Limitations](articles/documentation/test-api/selecting-page-elements/selectors/edge-cases-and-limitations.md)
     * [DOM Node State](articles/documentation/test-api/selecting-page-elements/dom-node-state.md)
     * [Framework-Specific Selectors](articles/documentation/test-api/selecting-page-elements/framework-specific-selectors.md)
+    * [Examples of Working with DOM Elements](articles/documentation/test-api/selecting-page-elements/examples-of-working-with-dom-elements.md)
   * [Actions](articles/documentation/test-api/actions/README.md)
     * [Click](articles/documentation/test-api/actions/click.md)
     * [Double Click](articles/documentation/test-api/actions/double-click.md)
