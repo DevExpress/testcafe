@@ -49,16 +49,7 @@ export default function ensureCropOptions (element, options) {
 
     options.originOffset = { x: 0, y: 0 };
 
-    if (options.includeMargins) {
-        options.originOffset.x -= elementMargin.left;
-        options.originOffset.y -= elementMargin.top;
-
-        elementBounds.left   -= elementMargin.left;
-        elementBounds.top    -= elementMargin.top;
-        elementBounds.right  += elementMargin.right;
-        elementBounds.bottom += elementMargin.bottom;
-    }
-    else if (!options.includeBorders || !options.includePaddings) {
+    if (!options.includeBorders || !options.includePaddings) {
         options.originOffset.x += elementBordersWidth.left;
         options.originOffset.y += elementBordersWidth.top;
 
@@ -76,6 +67,15 @@ export default function ensureCropOptions (element, options) {
             elementBounds.right  -= elementPadding.right;
             elementBounds.bottom -= elementPadding.bottom;
         }
+    }
+    else if (options.includeMargins) {
+        options.originOffset.x -= elementMargin.left;
+        options.originOffset.y -= elementMargin.top;
+
+        elementBounds.left   -= elementMargin.left;
+        elementBounds.top    -= elementMargin.top;
+        elementBounds.right  += elementMargin.right;
+        elementBounds.bottom += elementMargin.bottom;
     }
 
     elementBounds.width  = elementBounds.right - elementBounds.left;

@@ -6,7 +6,6 @@ import {
     domUtils,
     preventRealEvents,
     disableRealEventsPreventing,
-    scrollController,
     waitFor,
     browser
 } from './deps/testcafe-core';
@@ -117,7 +116,6 @@ export default class Driver {
         this._initChildDriverListening();
 
         pageUnloadBarrier.init();
-        scrollController.init();
         preventRealEvents();
 
         hammerhead.on(hammerhead.EVENTS.uncaughtJsError, err => this._onJsError(err));

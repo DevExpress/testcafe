@@ -22,6 +22,9 @@ class ScrollController {
     }
 
     init () {
+        if (this.initialized)
+            return;
+
         this.initialized = true;
 
         listeners.initElementListening(window, ['scroll']);
@@ -29,9 +32,6 @@ class ScrollController {
     }
 
     getNextScrollEvent () {
-        if (!this.initialized)
-            return Promise.resolve();
-
         var promiseResolver = null;
 
         var promise = new Promise(resolve => {
