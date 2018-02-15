@@ -12,6 +12,7 @@ These methods can be used in a chain for a functional-style selection mechanism.
 * [Filter DOM Nodes](#filter-dom-nodes)
     * [nth](#nth)
     * [withText](#withtext)
+    * [withExactText](#withexacttext)
     * [withAttribute](#withattribute)
     * [filterVisible](#filtervisible)
     * [filterHidden](#filterhidden)
@@ -39,10 +40,16 @@ Method | Return Type | Description
 
 ### withText
 
-Method | Return Type | Description
+Method | Type | Description
 ------ | ----- | -----
-`withText(text)` | Selector | Finds elements whose text content contains the specified string. The `text` argument is case-sensitive.
-`withText(re)` | Selector | Finds elements whose text content matches the specified regular expression.
+`withText(text)` | Selector | Creates a selector that filters a matching set by the specified text. Selects elements that *contain* this text. To filter elements by *strict match*, use the `withExactText` method. The `text` parameter is case-sensitive.
+`withText(re)` | Selector | Creates a selector that filters a matching set using the specified regular expression.
+
+### withExactText
+
+Method | Type | Description
+------ | ----- | -----
+`withExactText(text)` | Selector | Creates a selector that filters a matching set by the specified text. Selects elements whose text content *strictly matches* this text. To search for elements that *contain* a specific text, use the `withText` method. The `text` parameter is case-sensitive.
 
 ### withAttribute
 
