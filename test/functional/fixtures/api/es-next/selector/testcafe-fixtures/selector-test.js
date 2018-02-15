@@ -473,6 +473,21 @@ test('Selector "withText" method', async t => {
         .expect(elWithClass('idxEl').withText('element 1.').id).eql('el1');
 });
 
+test('Selector "withExactText" method', async t => {
+    let selector  = Selector('#withExactText div');
+
+    await t
+        .expect(selector.withText('Element with text').count).eql(6);
+
+    selector = selector.withExactText('Element with text');
+
+    await t
+        .expect(selector.count).eql(3)
+        .expect(selector.nth(0).id).eql('passed-0')
+        .expect(selector.nth(1).id).eql('passed-1')
+        .expect(selector.nth(2).id).eql('passed-2');
+});
+
 test('Selector "withAttribute" method', async t => {
     await t
     // string attr name

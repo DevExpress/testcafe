@@ -317,6 +317,25 @@ function addFilterMethods (obj, getSelector, SelectorBuilder) {
         });
     };
 
+    obj.withExactText = text => {
+        assertType(is.string, 'withExactText', '"text" argument', text);
+
+        var selectorFn = () => {
+            /* eslint-disable no-undef */
+            var nodes = selector();
+
+            if (!nodes.length)
+                return null;
+
+            return filterNodes(nodes, filter, document, void 0, exactText);
+            /* eslint-enable no-undef */
+        };
+
+        return createDerivativeSelectorWithFilter(getSelector, SelectorBuilder, selectorFn, filterByText, {
+            exactText: text
+        });
+    };
+
     obj.withAttribute = (attrName, attrValue) => {
         assertType([is.string, is.regExp], 'withAttribute', '"attrName" argument', attrName);
 

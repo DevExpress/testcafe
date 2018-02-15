@@ -455,6 +455,19 @@ test('Selector "withText" method', async() => {
     expect(await elWithClass('idxEl').withText('element 1.').id).eql('el1');
 });
 
+test('Selector "withExactText" method', async() => {
+    let selector  = Selector('#el5 div');
+
+    expect(await selector.withText('Element with text').count).eql(6);
+
+    selector = selector.withExactText('Element with text');
+
+    expect(await selector.count).eql(3);
+    expect(await selector.nth(0).id).eql('passed-0');
+    expect(await selector.nth(1).id).eql('passed-1');
+    expect(await selector.nth(2).id).eql('passed-2');
+});
+
 test('Selector "filter" method', async() => {
     // String filter
     expect(await Selector('body div').filter('#htmlElementWithInnerText').id).eql('htmlElementWithInnerText');
