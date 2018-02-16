@@ -53,10 +53,10 @@ test('Non-existent element', async t => {
 test('Element', async t => {
     await enableScrollWatcher();
 
-    await t.takeElementScreenshot('table', 'custom/' + t.ctx.parsedUA.family + '.png');
-
-    await t.expect(await getInternalScrollEventsCount()).gt(0);
-    await t.expect(await checkWindowScroll()).notOk();
+    await t
+        .takeElementScreenshot('table', 'custom/' + t.ctx.parsedUA.family + '.png')
+        .expect(getInternalScrollEventsCount()).gt(0)
+        .expect(checkWindowScroll()).notOk();
 });
 
 test('Element with margins', async t => {
@@ -106,25 +106,13 @@ test
         await t
             .switchToIframe('iframe')
             .switchToIframe('iframe')
-            .takeElementScreenshot('table', 'custom/' + t.ctx.parsedUA.family + '.png');
-
-        await t.switchToMainWindow();
-
-        var internalScrollEventsCount = await getInternalScrollEventsCount();
-
-        await t.expect(internalScrollEventsCount).lte(1);
-
-        await t.switchToIframe('iframe');
-
-        internalScrollEventsCount = await getInternalScrollEventsCount();
-
-        await t.expect(internalScrollEventsCount).lte(1);
-
-        await t.switchToIframe('iframe');
-
-        internalScrollEventsCount = await getInternalScrollEventsCount();
-
-        await t.expect(internalScrollEventsCount).lte(1);
+            .takeElementScreenshot('table', 'custom/' + t.ctx.parsedUA.family + '.png')
+            .switchToMainWindow()
+            .expect(getInternalScrollEventsCount()).eql(1)
+            .switchToIframe('iframe')
+            .expect(getInternalScrollEventsCount()).eql(1)
+            .switchToIframe('iframe')
+            .expect(getInternalScrollEventsCount()).eql(1);
     });
 
 test
