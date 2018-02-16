@@ -272,7 +272,7 @@ gulp.task('build', ['lint', 'fast-build']);
 // Test
 gulp.task('test-server', ['build'], function () {
     return gulp
-        .src('test/server/*-test.js')
+        .src('test/server/*-test.js', { read: false })
         .pipe(mocha({
             ui:       'bdd',
             reporter: 'spec',
