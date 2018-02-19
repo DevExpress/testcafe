@@ -23,7 +23,9 @@ export default class ScriptExecutionBarrier {
     }
 
     _onScriptElementAdded (el) {
-        if (el.src === void 0 || el.src === '')
+        var scriptSrc = nativeMethods.scriptSrcGetter.call(el);
+
+        if (scriptSrc === void 0 || scriptSrc === '')
             return;
 
         this.scriptsCount++;
