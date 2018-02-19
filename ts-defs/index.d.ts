@@ -769,11 +769,11 @@ interface TakeElementScreenshotOptions extends ActionOptions {
      * Controls if element's paddings should be included in the screenshot.
      * Set this property to `true` to include target element's paddings in the screenshot.
      * When it is enabled, the `scrollTargetX`, `scrollTargetY` and `crop` rectangle coordinates are calculated from
-     * the corners where top and left (or bottom and right) edges of the element's children area intersect
+     * the corners where top and left (or bottom and right) edges of the element's content area intersect
      */
     includePaddings?: boolean;
     /**
-     * Specifies the X coordinate of target point for scrolling.
+     * Specifies the X coordinate of the scrolling target point.
      * If the target element is too big to fit into the browser window, the page will be scrolled to put this point
      * to the center of the viewport. The coordinates of this point are calculated relative to the target element.
      * If the numbers are positive, the point is positioned relative to the top-left corner of the element.
@@ -782,7 +782,7 @@ interface TakeElementScreenshotOptions extends ActionOptions {
      */
     scrollTargetX?: number;
     /**
-     * Specifies the Y coordinate of target point for scrolling.
+     * Specifies the Y coordinate of the scrolling target point.
      * If the target element is too big to fit into the browser window, the page will be scrolled to put this point
      * to the center of the viewport. The coordinates of this point are calculated relative to the target element.
      * If the numbers are positive, the point is positioned relative to the top-left corner of the element.
