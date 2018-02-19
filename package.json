@@ -101,7 +101,7 @@
     "source-map-support": "^0.4.0",
     "stack-chain": "^2.0.0",
     "strip-bom": "^2.0.0",
-    "testcafe-browser-tools": "1.4.6",
+    "testcafe-browser-tools": "1.5.1",
     "testcafe-hammerhead": "13.1.1",
     "testcafe-legacy-api": "3.1.4",
     "testcafe-reporter-json": "^2.1.0",
