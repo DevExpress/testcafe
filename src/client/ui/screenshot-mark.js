@@ -1,4 +1,4 @@
-import { shadowUI } from './deps/hammerhead';
+import { shadowUI, nativeMethods } from './deps/hammerhead';
 
 
 export default {
@@ -29,7 +29,7 @@ export default {
         if (!this.screenshotMark)
             this._createMark();
 
-        this.screenshotMark.src = url;
+        nativeMethods.imageSrcSetter.call(this.screenshotMark, url);
 
         this.screenshotMark.style.visibility = '';
     }
