@@ -1,6 +1,78 @@
 [
     {
         "type": "Mention",
+        "title": "An Overview of JavaScript Testing in 2018",
+        "excerpt": "This guide is intended to catch you up with the most important reasoning, terms, tools, and approaches to JavaScript testing in 2018.",
+        "author": "Vitali Zaidman",
+        "date": "2018-02-09",
+        "publisher": "medium.com",
+        "url": "https://medium.com/welldone-software/an-overview-of-javascript-testing-in-2018-f68950900bc3"
+    },
+    {
+        "type": "Review",
+        "title": "UI Test Automation Frameworks Showdown: TestCafé versus Nightwatch.js",
+        "excerpt": "Want to learn a little more about TestCafé and Nightwatch.js? Christine Zierold compares and contrasts the two UI Test Automation frameworks to help explain the benefits and drawbacks of each.",
+        "author": "Christine Zierold",
+        "date": "2018-02-05",
+        "publisher": "pqatesting.com",
+        "url": "http://www.pqatesting.com/our_ideas/blog/u"
+    },
+    {
+        "type": "Tutorial",
+        "title": "End-to-End testing React & Vue SPAs with TestCafé",
+        "excerpt": "Unit tests are a great asset to help ensure the quality of your application. But by nature, they only test small isolated pieces of...",
+        "author": "Rowan Youngson",
+        "date": "2018-02-04",
+        "publisher": "medium.com",
+        "url": "https://medium.com/technical-credit/end-to-end-testing-for-react-vue-etc-18b85e10c6f0"
+    },
+    {
+        "type": "Tutorial",
+        "title": "E2E Testing with TestCafe | Part 4",
+        "excerpt": "So what can we do to improve our TestCafe project? If you followed this guide since we started, your devto.js should look like this...",
+        "author": "Christian Vasquez",
+        "date": "2018-01-16",
+        "publisher": "dev.to",
+        "url": "https://dev.to/chrisvasqm/e2e-testing-with-testcafe--part-4-1glp"
+    },
+    {
+        "type": "Tutorial",
+        "title": "E2E Testing with TestCafe | Part 3",
+        "excerpt": "Now we are going to run our tests in both Chrome and Firefox.",
+        "author": "Christian Vasquez",
+        "date": "2018-01-15",
+        "publisher": "dev.to",
+        "url": "https://dev.to/chrisvasqm/e2e-testing-with-testcafe--part-3-2io7"
+    },
+    {
+        "type": "Tutorial",
+        "title": "E2E testing with TestCafe | Part 2",
+        "excerpt": "This time we will learn about running tests in parallel. This can be achieved by using a command like this...",
+        "author": "Christian Vasquez",
+        "date": "2018-01-15",
+        "publisher": "dev.to",
+        "url": "https://dev.to/chrisvasqm/e2e-testing-with-testcafe--part-2-1lfg"
+    },
+    {
+        "type": "Review",
+        "title": "Better E2E testing with TestCafe",
+        "excerpt": "With TestCafe I can write all of my code in Typescript or the latest (ES2017) JS. When I can write my E2E tests in the same manner that I write my application code, I see it as a huge win.",
+        "author": "Marques Woodson",
+        "date": "2018-01-06",
+        "publisher": "medium.com",
+        "url": "https://medium.com/@mwq27/better-e2e-testing-with-testcafe-666aacf2a94e"
+    },
+    {
+        "type": "Tutorial",
+        "title": "E2E testing with TestCafe | Part 1",
+        "excerpt": "End-To-End (E2E) testing is a technique used to test an entire flow as if we were an actual user by simulating their actions (clicks, pressing certain keys, typing into a field, etc).",
+        "author": "Christian Vasquez",
+        "date": "2017-12-30",
+        "publisher": "dev.to",
+        "url": "https://dev.to/chrisvasqm/e2e-testing-with-testcafe-17jl"
+    },
+    {
+        "type": "Mention",
         "title": "Why End-to-End Testing is Important for Your Team",
         "excerpt": "At Hubba, our business needs are always evolving and the development speed needs to catch up with it. One of the ways to keep the team moving forward without breaking everything is End-to-end Testing (E2E).",
         "author": "Phong Huynh",
