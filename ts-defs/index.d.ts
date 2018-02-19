@@ -720,6 +720,29 @@ interface KeyModifiers {
     meta?: boolean
 }
 
+interface CropOptions {
+    /**
+     * The top edge of the cropping rectangle. The coordinate is calculated from the element's top edge.
+     * If a negative number is passed, the coordinate is calculated from the element's bottom edge.
+     */
+    left?: number;
+    /**
+     * The left edge of the cropping rectangle. The coordinate is calculated from the element's left edge.
+     * If a negative number is passed, the coordinate is calculated from the element's right edge.
+     */
+    right?: number;
+    /**
+     * The bottom edge of the cropping rectangle. The coordinate is calculated from the element's top edge.
+     * If a negative number is passed, the coordinate is calculated from the element's bottom edge.
+     */
+    top?: number;
+    /**
+     * The right edge of the cropping rectangle. The coordinate is calculated from the element's left edge.
+     * If a negative number is passed, the coordinate is calculated from the element's right edge.
+     */
+    bottom?: number;
+}
+
 interface ActionOptions {
     /**
      * The speed of action emulation. Defines how fast TestCafe performs the action when running tests.
@@ -727,6 +750,52 @@ interface ActionOptions {
      * programmatically, the action speed setting overrides test speed. Default is 1.
      */
     speed?: number;
+}
+
+interface TakeElementScreenshotOptions extends ActionOptions {
+    /**
+     * Allows to crop the target element on the screenshot.
+     */
+    crop?: CropOptions;
+    /**
+     * Controls if element's margins should be included in the screenshot.
+     * Set this property to `true` to include target element's margins in the screenshot.
+     * When it is enabled, the `scrollTargetX`, `scrollTargetY` and `crop` rectangle coordinates are calculated from
+     * the corners where top and left (or bottom and right) margins intersect
+     */
+    includeMargins?: boolean;
+    /**
+     * Controls if element's borders should be included in the screenshot.
+     * Set this property to `true` to include target element's borders in the screenshot.
+     * When it is enabled, the `scrollTargetX`, `scrollTargetY` and `crop` rectangle coordinates are calculated from
+     * the corners where top and left (or bottom and right) internal edges of the element  intersect
+     */
+    includeBorders?: boolean;
+    /**
+     * Controls if element's paddings should be included in the screenshot.
+     * Set this property to `true` to include target element's paddings in the screenshot.
+     * When it is enabled, the `scrollTargetX`, `scrollTargetY` and `crop` rectangle coordinates are calculated from
+     * the corners where top and left (or bottom and right) edges of the element's content area intersect
+     */
+    includePaddings?: boolean;
+    /**
+     * Specifies the X coordinate of the scrolling target point.
+     * If the target element is too big to fit into the browser window, the page will be scrolled to put this point
+     * to the center of the viewport. The coordinates of this point are calculated relative to the target element.
+     * If the numbers are positive, the point is positioned relative to the top-left corner of the element.
+     * If the numbers are negative, the point is positioned relative to the bottom-right corner.
+     * If the target element fits into the browser window, these properties have no effect.
+     */
+    scrollTargetX?: number;
+    /**
+     * Specifies the Y coordinate of the scrolling target point.
+     * If the target element is too big to fit into the browser window, the page will be scrolled to put this point
+     * to the center of the viewport. The coordinates of this point are calculated relative to the target element.
+     * If the numbers are positive, the point is positioned relative to the top-left corner of the element.
+     * If the numbers are negative, the point is positioned relative to the bottom-right corner.
+     * If the target element fits into the browser window, these properties have no effect.
+     */
+    scrollTargetY?: number;
 }
 
 interface MouseActionOptions extends ActionOptions {
@@ -980,10 +1049,22 @@ interface TestController {
     /**
      * Takes a screenshot of the tested page.
      *
-     * @param path - relative path to the folder where screenshots should be saved. Resolved from the screenshot
-     * directory specified by using the `runner.screenshots` API method or the `screenshots-path` command line option.
+     * @param path - relative path to the screenshot file. Resolved from the screenshot directory specified by
+     * using the `runner.screenshots` API method or the `screenshots-path` command line option.
+     * If path doesn't have .png extension, it will be added automatically.
      */
     takeScreenshot(path?: string): TestControllerPromise;
+    /**
+     * Takes a screenshot of the specified element.
+     *
+     * @param selector - Identifies the element for screenshot capturing.
+     * @param path - relative path to the screenshot file. Resolved from the screenshot  directory specified by
+     * using the `runner.screenshots` API method or the `screenshots-path` command line option.
+     * If path doesn't have .png extension, it will be added automatically.
+     */
+    takeElementScreenshot(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
+                          path?:    string,
+                          options?: TakeElementScreenshotOptions): TestControllerPromise
     /**
      * Sets the browser window size.
      *
@@ -991,6 +1072,7 @@ interface TestController {
      * @param height - The new height, in pixels.
      */
     resizeWindow(width: number, height: number): TestControllerPromise;
+
     /**
      * Fits the browser window into a particular device.
      *

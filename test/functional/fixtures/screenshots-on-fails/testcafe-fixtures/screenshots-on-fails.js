@@ -1,4 +1,5 @@
 import { expect } from 'chai';
+import { saveWindowState, restoreWindowState } from '../../../window-helpers';
 
 
 // NOTE: to preserve callsites, add new tests AFTER the existing ones
@@ -24,3 +25,15 @@ test('Screenshot on the assertion fail', async () => {
 test('Test for quarantine mode', async t => {
     await t.click('#notExist');
 });
+
+test
+    .page('../pages/crop.html')
+    .before(async t => {
+        await saveWindowState(t);
+
+        await t.maximizeWindow();
+    })
+    .after(t => restoreWindowState(t))
+    ('Crop screenshots', () => {
+        throw new Error('Custom error');
+    });

@@ -1,5 +1,5 @@
 fixture `Fail in beforeEach`
-    .page `http://localhost:3000/fixtures/screenshots-on-fails/pages/index.html`
+    .page `../pages/index.html`
     .beforeEach(() => {
         throw new Error('Fail in beforeEach');
     });
@@ -7,3 +7,4 @@ fixture `Fail in beforeEach`
 test('Screenshot on a beforeEach error', async t => {
     await t.click('body');
 });
+

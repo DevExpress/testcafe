@@ -3,10 +3,10 @@ import { Selector, ClientFunction } from 'testcafe';
 fixture `gh-1521`;
 
 test
-    .page('http://localhost:3000/fixtures/regression/gh-1521/pages/hidden-element.html')
+    .page('../pages/hidden-element.html')
     ('Wait for an out-of-viewport element', async t => {
         const getEventCount = ClientFunction(event => window.eventCounter[event]);
-        const target        = Selector('#out-of-viewport-input', { timeout: 2000 });
+        const target        = Selector('#out-of-viewport-input', { timeout: 5000 });
 
         const actions = [
             {

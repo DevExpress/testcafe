@@ -7,7 +7,7 @@ import AUTOMATION_ERROR_TYPES from '../errors';
 import AutomationSettings from '../settings';
 import ScrollAutomation from './scroll';
 import MoveAutomation from './move';
-import { MoveOptions } from '../../../test-run/commands/options';
+import { MoveOptions, ScrollOptions } from '../../../test-run/commands/options';
 
 var extend = hammerhead.utils.extend;
 
@@ -49,7 +49,7 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
     }
 
     _scrollToElement () {
-        var scrollAutomation = new ScrollAutomation(this.element, this.options);
+        var scrollAutomation = new ScrollAutomation(this.element, new ScrollOptions(this.options));
 
         return scrollAutomation
             .run()

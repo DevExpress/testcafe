@@ -6,7 +6,6 @@ import typeText from './type-text';
 import getKeyCode from '../../utils/get-key-code';
 import getKeyIdentifier from '../../utils/get-key-identifier';
 import keyIdentifierRequiredForEvent from '../../utils/key-identifier-required-for-event';
-import whilst from '../../utils/promise-whilst';
 import { getDefaultAutomationOffsets } from '../../utils/offsets';
 import AutomationSettings from '../../settings';
 
@@ -16,6 +15,7 @@ var eventSimulator        = hammerhead.eventSandbox.eventSimulator;
 var elementEditingWatcher = hammerhead.eventSandbox.elementEditingWatcher;
 
 var domUtils        = testCafeCore.domUtils;
+var promiseUtils    = testCafeCore.promiseUtils;
 var contentEditable = testCafeCore.contentEditable;
 var textSelection   = testCafeCore.textSelection;
 var delay           = testCafeCore.delay;
@@ -167,7 +167,7 @@ export default class TypeAutomation {
                 textSelection.deleteSelectionContents(this.element, true);
         }
 
-        return whilst(() => !this._isTypingFinished(), () => this._typingStep());
+        return promiseUtils.whilst(() => !this._isTypingFinished(), () => this._typingStep());
     }
 
     _isTypingFinished () {

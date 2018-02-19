@@ -1,11 +1,13 @@
 var expect                   = require('chai').expect;
 var ActionOptions            = require('../../lib/test-run/commands/options').ActionOptions;
 var OffsetOptions            = require('../../lib/test-run/commands/options').OffsetOptions;
+var ScrollOptions            = require('../../lib/test-run/commands/options').ScrollOptions;
 var MouseOptions             = require('../../lib/test-run/commands/options').MouseOptions;
 var DragToElementOptions     = require('../../lib/test-run/commands/options').DragToElementOptions;
 var ClickOptions             = require('../../lib/test-run/commands/options').ClickOptions;
 var MoveOptions              = require('../../lib/test-run/commands/options').MoveOptions;
 var TypeOptions              = require('../../lib/test-run/commands/options').TypeOptions;
+var ElementScreenshotOptions = require('../../lib/test-run/commands/options').ElementScreenshotOptions;
 var ResizeToFitDeviceOptions = require('../../lib/test-run/commands/options').ResizeToFitDeviceOptions;
 var AssertionOptions         = require('../../lib/test-run/commands/options').AssertionOptions;
 var ERROR_TYPE               = require('../../lib/errors/test-run/type');
@@ -36,6 +38,21 @@ describe('Test run command options', function () {
                 offsetX: null,
                 offsetY: 15,
                 speed:   null
+            });
+        });
+
+        it('Should create ScrollOptions from object', function () {
+            var options = new ScrollOptions({
+                offsetX: 15,
+                dummy:   false
+            }, false);
+
+            expect(JSON.parse(JSON.stringify(options))).eql({
+                offsetX:          15,
+                offsetY:          null,
+                scrollToCenter:   false,
+                speed:            null,
+                skipParentFrames: false
             });
         });
 
@@ -183,6 +200,40 @@ describe('Test run command options', function () {
                     shift: true,
                     meta:  false
                 }
+            });
+        });
+
+        it('Should create ElementScreenshotOptions from object', function () {
+            var options = new ElementScreenshotOptions({
+                scrollTargetX: 42,
+
+                crop: {
+                    left:   146,
+                    bottom: 50
+                },
+
+                includeMargins: true,
+
+                modifiers: {
+                    alt: true
+                }
+            });
+
+            expect(JSON.parse(JSON.stringify(options))).eql({
+                scrollTargetX: 42,
+                scrollTargetY: null,
+                speed:         null,
+
+                crop: {
+                    left:   146,
+                    right:  null,
+                    top:    null,
+                    bottom: 50
+                },
+
+                includeMargins:  true,
+                includeBorders:  true,
+                includePaddings: true
             });
         });
 

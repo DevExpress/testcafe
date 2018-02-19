@@ -1,6 +1,7 @@
 import { join as joinPath, dirname } from 'path';
 import sanitizeFilename from 'sanitize-filename';
 import { generateThumbnail } from 'testcafe-browser-tools';
+import cropScreenshot from './crop';
 import { ensureDir } from '../utils/promisified-functions';
 
 
@@ -38,6 +39,37 @@ export default class Capturer {
         return PNG_EXTENSION_RE.test(correctedPath) ? correctedPath : `${correctedPath}.png`;
     }
 
+    static _getDimensionWithoutScrollbar (fullDimension, documentDimension, bodyDimension) {
+        if (bodyDimension > fullDimension)
+            return documentDimension;
+
+        if (documentDimension > fullDimension)
+            return bodyDimension;
+
+        return Math.max(documentDimension, bodyDimension);
+    }
+
+    static _getCropDimensions (cropDimensions, { dpr }) {
+        if (!cropDimensions)
+            return null;
+
+        var { top, left, bottom, right } = cropDimensions;
+
+        return {
+            top:    Math.round(top * dpr),
+            left:   Math.round(left * dpr),
+            bottom: Math.round(bottom * dpr),
+            right:  Math.round(right * dpr)
+        };
+    }
+
+    static _getClientAreaDimensions ({ innerWidth, documentWidth, bodyWidth, innerHeight, documentHeight, bodyHeight, dpr }) {
+        return {
+            width:  Math.floor(Capturer._getDimensionWithoutScrollbar(innerWidth, documentWidth, bodyWidth) * dpr),
+            height: Math.floor(Capturer._getDimensionWithoutScrollbar(innerHeight, documentHeight, bodyHeight) * dpr)
+        };
+    }
+
     _getFileName (forError) {
         var fileName = `${forError ? this.errorScreenshotIndex : this.screenshotIndex}.png`;
 
@@ -65,7 +97,7 @@ export default class Capturer {
         await this.provider.takeScreenshot(this.browserId, filePath, pageWidth, pageHeight);
     }
 
-    async _capture (forError, pageWidth, pageHeight, customScreenshotPath) {
+    async _capture (forError, pageDimensions, markSeed, customScreenshotPath, cropDimensions) {
         if (!this.enabled)
             return null;
 
@@ -75,7 +107,9 @@ export default class Capturer {
 
         var screenshotPath = this._getScreenshotPath(fileName, customScreenshotPath);
 
-        await this._takeScreenshot(screenshotPath, pageWidth, pageHeight);
+        await this._takeScreenshot(screenshotPath, pageDimensions.innerWidth, pageDimensions.innerHeight);
+
+        await cropScreenshot(screenshotPath, markSeed, Capturer._getClientAreaDimensions(pageDimensions), Capturer._getCropDimensions(cropDimensions, pageDimensions));
 
         await generateThumbnail(screenshotPath);
 
@@ -91,12 +125,12 @@ export default class Capturer {
     }
 
 
-    async captureAction ({ pageWidth, pageHeight, customPath }) {
-        return await this._capture(false, pageWidth, pageHeight, customPath);
+    async captureAction ({ pageDimensions, markSeed, customPath, cropDimensions, }) {
+        return await this._capture(false, pageDimensions, markSeed, customPath, cropDimensions);
     }
 
-    async captureError ({ pageWidth, pageHeight }) {
-        return await this._capture(true, pageWidth, pageHeight);
+    async captureError ({ pageDimensions, markSeed }) {
+        return await this._capture(true, pageDimensions, markSeed);
     }
 }
 

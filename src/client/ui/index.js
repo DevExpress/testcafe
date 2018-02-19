@@ -8,6 +8,9 @@ import StatusBar from './status-bar';
 import IframeStatusBar from './status-bar/iframe-status-bar';
 import cursorUI from './cursor';
 import * as iframeCursorUI from './cursor/iframe-cursor';
+import screenshotMark from './screenshot-mark';
+import uiRoot from './ui-root';
+
 
 var Promise        = hammerhead.Promise;
 var messageSandbox = hammerhead.eventSandbox.message;
@@ -22,11 +25,11 @@ const SHOW_RESPONSE_CMD = 'ui|show|response';
 // Setup cross-iframe interaction
 messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
     if (e.message.cmd === HIDE_REQUEST_CMD) {
-        hammerhead.shadowUI.getRoot().style.visibility = 'hidden';
+        uiRoot.hide();
         messageSandbox.sendServiceMsg({ cmd: HIDE_RESPONSE_CMD }, e.source);
     }
     else if (e.message.cmd === SHOW_REQUEST_CMD) {
-        hammerhead.shadowUI.getRoot().style.visibility = '';
+        uiRoot.show();
         messageSandbox.sendServiceMsg({ cmd: SHOW_RESPONSE_CMD }, e.source);
     }
 });
@@ -46,7 +49,7 @@ exports.hide = function (hideTopRoot) {
     if (hideTopRoot)
         return sendRequestToFrame({ cmd: HIDE_REQUEST_CMD }, HIDE_RESPONSE_CMD, window.top);
 
-    hammerhead.shadowUI.getRoot().style.visibility = 'hidden';
+    uiRoot.hide();
     return Promise.resolve();
 };
 
@@ -54,9 +57,12 @@ exports.show = function (showTopRoot) {
     if (showTopRoot)
         return sendRequestToFrame({ cmd: SHOW_REQUEST_CMD }, SHOW_RESPONSE_CMD, window.top);
 
-    hammerhead.shadowUI.getRoot().style.visibility = '';
+    uiRoot.show();
     return Promise.resolve();
 };
+
+exports.showScreenshotMark = url => screenshotMark.show(url);
+exports.hideScreenshotMark = () => screenshotMark.hide();
 
 hammerhead.nativeMethods.objectDefineProperty.call(window, window, '%testCafeUI%', {
     configurable: true,

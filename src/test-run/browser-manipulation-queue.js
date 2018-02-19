@@ -3,6 +3,7 @@ import { isServiceCommand } from './commands/utils';
 import COMMAND_TYPE from './commands/type';
 import WARNING_MESSAGE from '../notifications/warning-message';
 import { WindowDimensionsOverflowError } from '../errors/test-run/';
+import ERROR_TYPE from '../errors/test-run/type';
 
 
 export default class BrowserManipulationQueue {
@@ -58,7 +59,10 @@ export default class BrowserManipulationQueue {
             return await capture();
         }
         catch (err) {
-            this.warningLog.addWarning(WARNING_MESSAGE.screenshotError, err.message);
+            if (err.type === ERROR_TYPE.invalidElementScreenshotDimensionsError)
+                throw err;
+
+            this.warningLog.addWarning(WARNING_MESSAGE.screenshotError, err.stack);
             return null;
         }
     }
@@ -67,24 +71,26 @@ export default class BrowserManipulationQueue {
         var command = this.commands.shift();
 
         switch (command.type) {
+            case COMMAND_TYPE.takeElementScreenshot:
             case COMMAND_TYPE.takeScreenshot:
                 return await this._takeScreenshot(() => this.screenshotCapturer.captureAction({
-                    customPath: command.path,
-                    pageWidth:  driverMsg.innerWidth,
-                    pageHeight: driverMsg.innerHeight
+                    customPath:     command.path,
+                    pageDimensions: driverMsg.pageDimensions,
+                    cropDimensions: driverMsg.cropDimensions,
+                    markSeed:       command.markSeed
                 }));
 
             case COMMAND_TYPE.takeScreenshotOnFail:
                 return await this._takeScreenshot(() => this.screenshotCapturer.captureError({
-                    pageWidth:  driverMsg.innerWidth,
-                    pageHeight: driverMsg.innerHeight
+                    pageDimensions: driverMsg.pageDimensions,
+                    markSeed:       command.markSeed
                 }));
 
             case COMMAND_TYPE.resizeWindow:
-                return await this._resizeWindow(command.width, command.height, driverMsg.innerWidth, driverMsg.innerHeight);
+                return await this._resizeWindow(command.width, command.height, driverMsg.pageDimensions.innerWidth, driverMsg.pageDimensions.innerHeight);
 
             case COMMAND_TYPE.resizeWindowToFitDevice:
-                return await this._resizeWindowToFitDevice(command.device, command.options.portraitOrientation, driverMsg.innerWidth, driverMsg.innerHeight);
+                return await this._resizeWindowToFitDevice(command.device, command.options.portraitOrientation, driverMsg.pageDimensions.innerWidth, driverMsg.pageDimensions.innerHeight);
 
             case COMMAND_TYPE.maximizeWindow:
                 return await this._maximizeWindow();

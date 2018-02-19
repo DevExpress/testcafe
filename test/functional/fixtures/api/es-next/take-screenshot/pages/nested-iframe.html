@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Take screenshot</title>
+</head>
+<body>
+<iframe width="640" height="480" src="same-domain-iframe.html">
+</iframe>
+<script>
+    var testCafeAutomation = window['%testCafeAutomation%'];
+    var ScrollAutomation   = testCafeAutomation.Scroll;
+    var origRunScroll      = ScrollAutomation.prototype.run;
+
+    window.internalScrollEventsCount = 0;
+
+    ScrollAutomation.prototype.run = function () {
+        window.internalScrollEventsCount++;
+
+        return origRunScroll.apply(this, arguments);
+    };
+</script>
+</body>
+</html>
