@@ -8,7 +8,7 @@ const RAW_API_JS_EXPRESSION_TYPE = 'js-expr';
 
 export function isCommandRejectableByPageError (command) {
     return !isObservationCommand(command) && !isBrowserManipulationCommand(command) && !isServiceCommand(command) ||
-           isRejectablePrepareBrowserManipulationCommand(command)
+           isRejectableBrowserManipulationCommand(command)
            && !isWindowSwitchingCommand(command);
 }
 
@@ -34,22 +34,26 @@ export function canSetDebuggerBreakpointBeforeCommand (command) {
 
 export function isBrowserManipulationCommand (command) {
     return command.type === TYPE.takeScreenshot ||
+           command.type === TYPE.takeElementScreenshot ||
            command.type === TYPE.takeScreenshotOnFail ||
            command.type === TYPE.resizeWindow ||
            command.type === TYPE.resizeWindowToFitDevice ||
            command.type === TYPE.maximizeWindow;
 }
 
-function isRejectablePrepareBrowserManipulationCommand (command) {
-    return command.type === TYPE.prepareBrowserManipulation &&
-           (command.manipulationCommandType === TYPE.resizeWindow ||
-            command.manipulationCommandType === TYPE.resizeWindowToFitDevice ||
-            command.manipulationCommandType === TYPE.maximizeWindow);
+export function isScreenshotCommand (command) {
+    return command.type === TYPE.takeScreenshot ||
+               command.type === TYPE.takeScreenshotOnFail;
 }
 
-function isServicePrepareBrowserManipulationCommand (command) {
-    return command.type === TYPE.prepareBrowserManipulation &&
-           command.manipulationCommandType === TYPE.takeScreenshotOnFail;
+function isRejectableBrowserManipulationCommand (command) {
+    return command.type === TYPE.resizeWindow ||
+            command.type === TYPE.resizeWindowToFitDevice ||
+            command.type === TYPE.maximizeWindow;
+}
+
+function isServiceBrowserManipulationCommand (command) {
+    return command.type === TYPE.takeScreenshotOnFail;
 }
 
 export function isServiceCommand (command) {
@@ -58,19 +62,19 @@ export function isServiceCommand (command) {
            command.type === TYPE.showAssertionRetriesStatus ||
            command.type === TYPE.hideAssertionRetriesStatus ||
            command.type === TYPE.setBreakpoint ||
-           isServicePrepareBrowserManipulationCommand(command);
+           isServiceBrowserManipulationCommand(command);
 }
 
 export function isExecutableInTopWindowOnly (command) {
     return command.type === TYPE.testDone ||
-           command.type === TYPE.prepareBrowserManipulation ||
            command.type === TYPE.switchToMainWindow ||
            command.type === TYPE.setNativeDialogHandler ||
            command.type === TYPE.getNativeDialogHistory ||
            command.type === TYPE.setTestSpeed ||
            command.type === TYPE.showAssertionRetriesStatus ||
            command.type === TYPE.hideAssertionRetriesStatus ||
-           command.type === TYPE.setBreakpoint;
+           command.type === TYPE.setBreakpoint ||
+           isBrowserManipulationCommand(command) && command.type !== TYPE.takeElementScreenshot;
 }
 
 export function isJSExpression (val) {

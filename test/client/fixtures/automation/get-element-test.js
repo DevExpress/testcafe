@@ -1,7 +1,5 @@
-var shadowUI = window.getTestCafeModule('hammerhead').shadowUI;
+var testCafeUIRoot = window.getTestCafeModule('testCafeUI').get('./ui-root');
 
-
-var shadowUIRoot  = null;
 var $rootDiv      = null;
 var $underRootDiv = null;
 
@@ -12,8 +10,6 @@ function getElementFromPointMethod (window) {
 }
 
 function createRoot () {
-    shadowUIRoot = shadowUI.getRoot();
-
     $rootDiv = $('<div></div>')
         .width(100)
         .height(100)
@@ -21,7 +17,7 @@ function createRoot () {
             zIndex:   2,
             position: 'absolute'
         })
-        .appendTo(shadowUIRoot);
+        .appendTo(testCafeUIRoot.element());
 }
 
 function createElementUnderRoot (parent, left, top) {
@@ -55,7 +51,7 @@ function createIFrame (onLoadHandler) {
 }
 
 QUnit.testDone(function () {
-    $(shadowUIRoot).remove();
+    testCafeUIRoot.remove();
     $underRootDiv.remove();
 });
 
@@ -63,8 +59,8 @@ $(document).ready(function () {
     asyncTest('Should ignore shadow ui elements', function () {
         createRoot();
 
-        var shadowUITop  = shadowUIRoot.offsetTop;
-        var shadowUILeft = shadowUIRoot.offsetLeft;
+        var shadowUITop  = testCafeUIRoot.element().offsetTop;
+        var shadowUILeft = testCafeUIRoot.element().offsetLeft;
 
         createElementUnderRoot(document.body, shadowUILeft, shadowUITop);
 

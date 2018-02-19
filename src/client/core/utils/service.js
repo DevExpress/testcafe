@@ -51,3 +51,11 @@ EventEmitter.prototype.on = function (evt, listener) {
 
     this.eventsListeners[evt].push(listener);
 };
+
+EventEmitter.prototype.once = function (evt, listener) {
+    this.on(evt, (...args) => {
+        this.off(evt, listener);
+
+        return listener(...args);
+    });
+};

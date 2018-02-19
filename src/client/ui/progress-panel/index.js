@@ -1,6 +1,7 @@
 import hammerhead from '../deps/hammerhead';
 import testCafeCore from '../deps/testcafe-core';
 import ProgressBar from './progress-bar';
+import uiRoot from '../ui-root';
 
 var shadowUI      = hammerhead.shadowUI;
 var nativeMethods = hammerhead.nativeMethods;
@@ -29,7 +30,7 @@ export default class ProgressPanel {
         this.animationInterval = null;
 
         this.panelDiv = document.createElement('div');
-        shadowUI.getRoot().appendChild(this.panelDiv);
+        uiRoot.element().appendChild(this.panelDiv);
 
         this.titleDiv = document.createElement('div');
         this.panelDiv.appendChild(this.titleDiv);

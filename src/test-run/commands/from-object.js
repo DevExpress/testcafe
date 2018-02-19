@@ -26,6 +26,7 @@ import AssertionCommand from './assertion';
 
 import {
     TakeScreenshotCommand,
+    TakeElementScreenshotCommand,
     ResizeWindowCommand,
     ResizeWindowToFitDeviceCommand,
     MaximizeWindowCommand
@@ -84,6 +85,9 @@ export default function createCommandFromObject (obj) {
 
         case TYPE.takeScreenshot:
             return new TakeScreenshotCommand(obj);
+
+        case TYPE.takeElementScreenshot:
+            return new TakeElementScreenshotCommand(obj);
 
         case TYPE.resizeWindow:
             return new ResizeWindowCommand(obj);

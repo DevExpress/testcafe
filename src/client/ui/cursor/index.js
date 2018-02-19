@@ -1,5 +1,6 @@
 import hammerhead from './../deps/hammerhead';
 import testCafeCore from './../deps/testcafe-core';
+import uiRoot from '../ui-root';
 import CURSOR_UI_MESSAGES from './messages';
 
 
@@ -70,7 +71,7 @@ var CursorUI = {
             this.pointerOffsetY = Math.ceil(styleUtils.getHeight(this.cursorElement) / 2);
         }
 
-        shadowUI.getRoot().appendChild(this.cursorElement);
+        uiRoot.element().appendChild(this.cursorElement);
     },
 
     isVisible () {

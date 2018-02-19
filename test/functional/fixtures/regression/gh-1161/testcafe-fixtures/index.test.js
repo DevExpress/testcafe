@@ -1,5 +1,5 @@
 fixture `gh-1161`
-    .page `http://localhost:3000/fixtures/regression/gh-1161/pages/index.html`;
+    .page `../pages/index.html`;
 
 test('hover above floating element', async t => {
     await t

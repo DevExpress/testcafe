@@ -30,7 +30,6 @@ import { SetNativeDialogHandlerCommand, SetTestSpeedCommand, SetPageLoadTimeoutC
 
 import {
     TestDoneCommand,
-    PrepareBrowserManipulationCommand,
     ShowAssertionRetriesStatusCommand,
     HideAssertionRetriesStatusCommand,
     SetBreakpointCommand,
@@ -267,11 +266,6 @@ export default class TestRun extends Session {
         return new Promise((resolve, reject) => this.driverTaskQueue.push({ command, resolve, reject, callsite }));
     }
 
-    _enqueueBrowserManipulation (command, callsite) {
-        this.browserManipulationQueue.push(command);
-        return this.executeCommand(new PrepareBrowserManipulationCommand(command.type), callsite);
-    }
-
     async _enqueueBrowserConsoleMessagesCommand (command, callsite) {
         await this._enqueueCommand(command, callsite);
 
@@ -432,7 +426,7 @@ export default class TestRun extends Session {
         await this._setBreakpointIfNecessary(command, callsite);
 
         if (isBrowserManipulationCommand(command))
-            return this._enqueueBrowserManipulation(command, callsite);
+            this.browserManipulationQueue.push(command);
 
         if (command.type === COMMAND_TYPE.wait)
             return delay(command.timeout);
@@ -589,7 +583,17 @@ ServiceMessages[CLIENT_MESSAGES.ready] = function (msg) {
 ServiceMessages[CLIENT_MESSAGES.readyForBrowserManipulation] = async function (msg) {
     this.debugLog.driverMessage(msg);
 
-    return await this.browserManipulationQueue.executePendingManipulation(msg);
+    var result = null;
+    var error  = null;
+
+    try {
+        result = await this.browserManipulationQueue.executePendingManipulation(msg);
+    }
+    catch (err) {
+        error = err;
+    }
+
+    return { result, error };
 };
 
 ServiceMessages[CLIENT_MESSAGES.waitForFileDownload] = function (msg) {

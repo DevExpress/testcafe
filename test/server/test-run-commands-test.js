@@ -1,9 +1,8 @@
-var expect          = require('chai').expect;
-var TYPE            = require('../../lib/test-run/commands/type');
-var createCommand   = require('../../lib/test-run/commands/from-object');
-var ERROR_TYPE      = require('../../lib/errors/test-run/type');
-var SelectorBuilder = require('../../lib/client-functions/selectors/selector-builder');
-
+var expect                   = require('chai').expect;
+var TYPE                     = require('../../lib/test-run/commands/type');
+var createCommand            = require('../../lib/test-run/commands/from-object');
+var ERROR_TYPE               = require('../../lib/errors/test-run/type');
+var SelectorBuilder          = require('../../lib/client-functions/selectors/selector-builder');
 
 // NOTE: chai's throws doesn't perform deep comparison of error objects
 function assertThrow (fn, expectedErr) {
@@ -844,6 +843,12 @@ describe('Test run commands', function () {
 
             var command = createCommand(commandObj);
 
+            expect(command.markData).contain('data:image/png;base64,');
+            expect(command.markSeed.length % 4).eql(0);
+
+            delete command.markData;
+            delete command.markSeed;
+
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type: TYPE.takeScreenshot,
                 path: 'custom'
@@ -861,9 +866,63 @@ describe('Test run commands', function () {
 
             command = createCommand(commandObj);
 
+            delete command.markData;
+            delete command.markSeed;
+
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type: TYPE.takeScreenshot,
                 path: ''
+            });
+        });
+
+        it('Should create TakeElementScreenshotCommand from object', function () {
+            var commandObj = {
+                type:     TYPE.takeElementScreenshot,
+                selector: '#yo',
+                path:     'custom',
+                dummy:    'test',
+
+                options: {
+                    crop: {
+                        left: 50,
+                        top:  13
+                    },
+
+                    modifiers: {
+                        alt: true
+                    }
+                }
+            };
+
+            var command = createCommand(commandObj);
+
+            expect(command.markData).contain('data:image/png;base64,');
+            expect(command.markSeed.length % 4).eql(0);
+
+            delete command.markData;
+            delete command.markSeed;
+
+            expect(JSON.parse(JSON.stringify(command))).eql({
+                type:     TYPE.takeElementScreenshot,
+                selector: makeSelector('#yo'),
+                path:     'custom',
+
+                options: {
+                    scrollTargetX: null,
+                    scrollTargetY: null,
+                    speed:         null,
+
+                    crop: {
+                        left:   50,
+                        right:  null,
+                        top:    13,
+                        bottom: null
+                    },
+
+                    includeMargins:  false,
+                    includeBorders:  true,
+                    includePaddings: true
+                }
             });
         });
 
