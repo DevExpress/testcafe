@@ -12,6 +12,8 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
         var ts = require('typescript');
 
         return {
+            experimentalDecorators:  true,
+            emitDecoratorMetadata:   true,
             allowJs:                 true,
             pretty:                  true,
             inlineSourceMap:         true,
