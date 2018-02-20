@@ -474,7 +474,7 @@ test('Selector "withText" method', async t => {
 });
 
 test('Selector "withExactText" method', async t => {
-    let selector  = Selector('#withExactText div');
+    let selector = Selector('#withExactText div');
 
     await t
         .expect(selector.withText('Element with text').count).eql(6);
@@ -1033,4 +1033,54 @@ test('hasAttribute method', async t => {
     await t
         .expect(sel.hasAttribute('id')).notOk()
         .expect(el.hasAttribute).eql(void 0);
+});
+
+test('Selector `addCustomMethods` method - Selector mode', async t => {
+    const sectionDiv = Selector('section div').addCustomMethods({
+        customFilter:        nodes => nodes.filter(node => node.id === 'el2' || node.id === 'el3'),
+        customFilterByParam: (nodes, id) => nodes.filter(node => node.id === id)
+    }, { isSelectorMode: true });
+
+    const form = Selector('form').addCustomMethods({
+        customFind:       (nodes) => nodes[0].querySelectorAll('input'),
+        customFindByType: (nodes, type) => nodes[0].querySelectorAll(`input[type=${type}]`)
+    }, { isSelectorMode: true });
+
+    let filteredDivs = sectionDiv.customFilter();
+    let divsById     = sectionDiv.customFilterByParam('el4');
+
+    await t
+        .expect(filteredDivs.count).eql(2)
+        .expect(filteredDivs.nth(0).id).eql('el2')
+        .expect(filteredDivs.nth(1).id).eql('el3')
+
+        .expect(divsById.id).eql('el4');
+
+    const inputs      = form.customFind();
+    const inputByType = form.customFindByType('checkbox');
+
+    await t
+        .expect(inputs.count).eql(2)
+        .expect(inputs.nth(0).id).eql('textInput')
+        .expect(inputs.nth(1).id).eql('checkInput')
+
+        .expect(inputByType.id).eql('checkInput');
+
+    const snapshot = await sectionDiv();
+
+    filteredDivs = snapshot.customFilter();
+    divsById     = snapshot.customFilterByParam('el4');
+
+    await t
+        .expect(filteredDivs.count).eql(2)
+        .expect(filteredDivs.nth(0).id).eql('el2')
+        .expect(filteredDivs.nth(1).id).eql('el3')
+
+        .expect(divsById.id).eql('el4');
+
+    const nonExistingElement = Selector('nonExistingElement').addCustomMethods({
+        prop: () => 'value'
+    }, { isSelectorMode: true });
+
+    await t.expect(await nonExistingElement()).eql(null);
 });

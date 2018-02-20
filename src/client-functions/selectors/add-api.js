@@ -120,35 +120,55 @@ function addSnapshotProperties (obj, getSelector, properties) {
     });
 }
 
-export function addCustomMethods (obj, getSelector, customMethods) {
-    var customMethodProps = customMethods ? Object.keys(customMethods) : [];
+export function addCustomMethods (obj, getSelector, SelectorBuilder, customMethods) {
+    const customMethodProps = customMethods ? Object.keys(customMethods) : [];
 
     customMethodProps.forEach(prop => {
-        var dependencies = {
-            customMethod: customMethods[prop],
+        const { isSelectorMode = false, method } = customMethods[prop];
+
+        const dependencies = {
+            customMethod: method,
             selector:     getSelector()
         };
 
-        var callsiteNames = { instantiation: prop };
+        const callsiteNames = { instantiation: prop };
 
-        obj[prop] = (new ClientFunctionBuilder((...args) => {
-            /* eslint-disable no-undef */
-            var node = selector();
+        if (isSelectorMode) {
+            obj[prop] = (...args) => {
+                const selectorFn = () => {
+                    /* eslint-disable no-undef */
+                    const nodes = selector();
 
-            return customMethod.apply(customMethod, [node].concat(args));
-            /* eslint-enable no-undef */
-        }, { dependencies }, callsiteNames)).getFunction();
+                    return customMethod.apply(customMethod, [nodes].concat(args));
+                    /* eslint-enable no-undef */
+                };
+
+                return createDerivativeSelectorWithFilter(getSelector, SelectorBuilder, selectorFn, () => true, {
+                    args,
+                    customMethod: method
+                });
+            };
+        }
+        else {
+            obj[prop] = (new ClientFunctionBuilder((...args) => {
+                /* eslint-disable no-undef */
+                const node = selector();
+
+                return customMethod.apply(customMethod, [node].concat(args));
+                /* eslint-enable no-undef */
+            }, { dependencies }, callsiteNames)).getFunction();
+        }
     });
 }
 
-function addSnapshotPropertyShorthands (obj, getSelector, customDOMProperties, customMethods) {
+function addSnapshotPropertyShorthands (obj, getSelector, SelectorBuilder, customDOMProperties, customMethods) {
     var properties = SNAPSHOT_PROPERTIES;
 
     if (customDOMProperties)
         properties = properties.concat(Object.keys(customDOMProperties));
 
     addSnapshotProperties(obj, getSelector, properties);
-    addCustomMethods(obj, getSelector, customMethods);
+    addCustomMethods(obj, getSelector, SelectorBuilder, customMethods);
 
     obj.getStyleProperty = prop => {
         var callsite = getCallsiteForMethod('getStyleProperty');
@@ -406,10 +426,19 @@ function addCustomDOMPropertiesMethod (obj, getSelector, SelectorBuilder) {
 }
 
 function addCustomMethodsMethod (obj, getSelector, SelectorBuilder) {
-    obj.addCustomMethods = customMethods => {
-        assertAddCustomMethods(customMethods);
+    obj.addCustomMethods = function (methods, opts) {
+        assertAddCustomMethods(methods);
 
-        var builder = new SelectorBuilder(getSelector(), { customMethods }, { instantiation: 'Selector' });
+        const customMethods = {};
+
+        Object.keys(methods).forEach(methodName => {
+            customMethods[methodName] = {
+                method:         methods[methodName],
+                isSelectorMode: opts && !!opts.isSelectorMode
+            };
+        });
+
+        const builder = new SelectorBuilder(getSelector(), { customMethods }, { instantiation: 'Selector' });
 
         return builder.getFunction();
     };
@@ -615,7 +644,7 @@ function addHierarchicalSelectors (obj, getSelector, SelectorBuilder) {
 }
 
 export function addAPI (obj, getSelector, SelectorBuilder, customDOMProperties, customMethods) {
-    addSnapshotPropertyShorthands(obj, getSelector, customDOMProperties, customMethods);
+    addSnapshotPropertyShorthands(obj, getSelector, SelectorBuilder, customDOMProperties, customMethods);
     addCustomDOMPropertiesMethod(obj, getSelector, SelectorBuilder);
     addCustomMethodsMethod(obj, getSelector, SelectorBuilder);
     addFilterMethods(obj, getSelector, SelectorBuilder);

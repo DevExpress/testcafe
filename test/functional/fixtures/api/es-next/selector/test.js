@@ -1,7 +1,7 @@
 var expect = require('chai').expect;
 
-var DEFAULT_SELECTOR_TIMEOUT = 3000;
-var DEFAULT_RUN_OPTIONS = { selectorTimeout: DEFAULT_SELECTOR_TIMEOUT };
+var DEFAULT_SELECTOR_TIMEOUT   = 3000;
+var DEFAULT_RUN_OPTIONS        = { selectorTimeout: DEFAULT_SELECTOR_TIMEOUT };
 var DEFAULT_CHROME_RUN_OPTIONS = { only: 'chrome', selectorTimeout: 3000 };
 
 describe('[API] Selector', function () {
@@ -59,6 +59,10 @@ describe('[API] Selector', function () {
 
     it('Should provide "addCustomMethods" method in node snapshot', function () {
         return runTests('./testcafe-fixtures/selector-test.js', 'Selector `addCustomMethods` method', DEFAULT_RUN_OPTIONS);
+    });
+
+    it('Selector `addCustomMethods` method - Selector mode', function () {
+        return runTests('./testcafe-fixtures/selector-test.js', 'Selector `addCustomMethods` method - Selector mode', DEFAULT_RUN_OPTIONS);
     });
 
     it('Should wait for element to appear on new page', function () {
@@ -281,6 +285,21 @@ describe('[API] Selector', function () {
                             'An error occurred in customMethod code:  Error: test'
                         );
                         expect(errs[0]).contains('> 63 |    await el.customMethod();');
+                    });
+            }
+        );
+
+        it('Should raise error if custom method throws an error - Selector mode',
+            function () {
+                return runTests('./testcafe-fixtures/selector-error-test.js', 'Add custom method - method throws an error - Selector mode', {
+                    shouldFail: true,
+                    only:       'chrome'
+                })
+                    .catch(function (errs) {
+                        expect(errs[0]).contains(
+                            'An error occurred in Selector code:  Error: test'
+                        );
+                        expect(errs[0]).contains('> 73 |    await el.customMethod()();');
                     });
             }
         );

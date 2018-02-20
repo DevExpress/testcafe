@@ -6,3 +6,4 @@ node_modules
 .publish
 /___test-screenshots___
 yarn.lock
+package-lock.json
