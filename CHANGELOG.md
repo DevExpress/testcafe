@@ -2,7 +2,7 @@
 
 ## v0.19.0 (2018-2-15)
 
-### TestCafe Live: See instant feedback when working on tests
+### TestCafe Live: See instant feedback when working on tests ([#1624](https://github.com/DevExpress/testcafe/issues/1624))
 
 We have prepared a new tool for rapid test development.
 
@@ -76,6 +76,12 @@ test('Search by exact text', async t => {
 });
 ```
 
+#### Using Decorators in TypeScript Code ([#2117](https://github.com/DevExpress/testcafe/issues/2117)) by [@pietrovich](https://github.com/pietrovich)
+
+TestCafe now allows you to use [decorators](https://www.typescriptlang.org/docs/handbook/decorators.html) when [writing tests in TypeScript](https://devexpress.github.io/testcafe/documentation/test-api/typescript-support.html).
+
+Note that decorators are still an experimental feature in TypeScript.
+
 ### Bug Fixes
 
 * TestCafe can now scroll a webpage when `body` has a scroll bar ([#1940](https://github.com/DevExpress/testcafe/issues/1940))
@@ -85,6 +91,8 @@ test('Search by exact text', async t => {
 * TestCafe now correctly finds browsers in headless mode on macOS when tests are executing concurrently ([#2035](https://github.com/DevExpress/testcafe/issues/2035))
 * When roles are switched using the `preserverUrl` flag, the local storage now restores correctly ([#2015](https://github.com/DevExpress/testcafe/issues/2015))
 * TestCafe progress bar is no longer visible on screenshots ([#2076](https://github.com/DevExpress/testcafe/issues/2076))
+* Window manipulations now wait for page loading ([#2000](https://github.com/DevExpress/testcafe/issues/2000))
+* All toolbars are now hidden when taking screenshots ([#1445](https://github.com/DevExpress/testcafe/issues/1445))
 * Fixed a bug where a page wouldn't load because of an error in `generateCallExpression` ([testcafe-hammerhead/#1389](https://github.com/DevExpress/testcafe-hammerhead/issues/1389))
 * Now the overridden Blob constructor doesn't process data unnecessarily ([testcafe-hammerhead/#1359](https://github.com/DevExpress/testcafe-hammerhead/issues/1359))
 * Now the `target` attribute is not set for a button after a click on it ([testcafe-hammerhead/#1437](https://github.com/DevExpress/testcafe-hammerhead/issues/1437))
@@ -92,7 +100,7 @@ test('Search by exact text', async t => {
 * A `RangeError` with the message `Maximum call stack size exceeded` is no longer raised ([testcafe-hammerhead/#1452](https://github.com/DevExpress/testcafe-hammerhead/issues/1452))
 * A script error is no longer raised on pages that contain a `beforeunload` handler ([testcafe-hammerhead/#1419](https://github.com/DevExpress/testcafe-hammerhead/issues/1419))
 * Fixed wrong overridding of an event object ([testcafe-hammerhead/#1445](https://github.com/DevExpress/testcafe-hammerhead/issues/1445))
-* Illegal invocation error is no longer raised when calling the `FileListWrapper.item` method ([testcafe-hammerhead/#1446](https://github.com/DevExpress/testcafe-hammerhead/issues/1446))
+* Illegal invocation error is no longer raised when calling the `FileListWrapper.item` method ([testcafe-hammerhead/#1446](https://github.com/DevExpress/testcafe-hammerhead/issues/1446)) by [@javiercbk](https://github.com/javiercbk)
 * A script error is no longer raised when `Node.nextSibling` is `null` ([testcafe-hammerhead/#1469](https://github.com/DevExpress/testcafe-hammerhead/issues/1469))
 * The `isShadowUIElement` check is now performed for `Node.nextSibling` when a node is not an element ([testcafe-hammerhead/#1465](https://github.com/DevExpress/testcafe-hammerhead/issues/1465))
 * The `toString` function is now overridden for anchor elements ([testcafe-hammerhead/#1483](https://github.com/DevExpress/testcafe-hammerhead/issues/1483))
