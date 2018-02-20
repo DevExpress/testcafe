@@ -51,8 +51,9 @@ test('Filter visible and hidden elements', async t => {
     const hiddenInput   = inputs.filterHidden();
     const visibleInputs = inputs.filterVisible();
 
-    await t.expect(hiddenInput.value).eql(1);
-    await t.expect(visibleInputs.count).eql(11);
+    await t
+        .expect(hiddenInput.value).eql('1')
+        .expect(visibleInputs.count).eql(11);
 });
 ```
 
