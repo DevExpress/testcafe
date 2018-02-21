@@ -4,7 +4,7 @@ import { map, flatten } from 'lodash';
 import { MARK_LENGTH } from './constants';
 
 
-const ALPHABET    = '01';
+const ALPHABET = '01';
 
 export default function () {
     // NOTE: 32-bit id
