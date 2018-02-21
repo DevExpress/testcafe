@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.19.0 (2018-2-15)
+## v0.19.0 (2018-2-26)
 
 ### TestCafe Live: See instant feedback when working on tests ([#1624](https://github.com/DevExpress/testcafe/issues/1624))
 
