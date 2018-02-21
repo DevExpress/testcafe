@@ -52,7 +52,7 @@ test('Filter visible and hidden elements', async t => {
     const visibleInputs = inputs.filterVisible();
 
     await t
-        .expect(hiddenInput.value).eql('1')
+        .expect(hiddenInput.count).eql(1)
         .expect(visibleInputs.count).eql(11);
 });
 ```
@@ -72,8 +72,9 @@ test('Search by exact text', async t => {
     const winLabel     = labels.withExactText('Windows');
     const reusingLabel = labels.withText('JavaScript');
 
-    await t.expect(winLabel.exists).ok();
-    await t.expect(reusingLabel.exists).ok();
+    await t
+        .expect(winLabel.exists).ok()
+        .expect(reusingLabel.exists).ok();
 });
 ```
 
