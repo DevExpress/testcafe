@@ -3,6 +3,7 @@ import Promise from 'pinkie';
 import { PNG } from 'pngjs';
 import promisifyEvent from 'promisify-event';
 import limitNumber from '../utils/limit-number';
+import { deleteFile } from '../utils/promisified-functions';
 import { InvalidElementScreenshotDimensionsError } from '../errors/test-run/';
 import { MARK_LENGTH, MARK_RIGHT_MARGIN } from './constants';
 
@@ -60,8 +61,10 @@ export default async function (screenshotPath, markSeed, clientAreaDimensions, c
     var width  = right - left;
     var height = bottom - top;
 
-    if (width <= 0 || height <= 0)
+    if (width <= 0 || height <= 0) {
+        await deleteFile(screenshotPath);
         throw new InvalidElementScreenshotDimensionsError(width, height);
+    }
 
     var dstImage = new PNG({ width, height });
     var stride   = dstImage.width * 4;

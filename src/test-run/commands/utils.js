@@ -28,8 +28,7 @@ function isWindowSwitchingCommand (command) {
 }
 
 export function canSetDebuggerBreakpointBeforeCommand (command) {
-    return command.type !== TYPE.debug && !isClientFunctionCommand(command) && !isBrowserManipulationCommand(command) &&
-           !isServiceCommand(command);
+    return command.type !== TYPE.debug && !isClientFunctionCommand(command) && !isServiceCommand(command);
 }
 
 export function isBrowserManipulationCommand (command) {
@@ -41,19 +40,10 @@ export function isBrowserManipulationCommand (command) {
            command.type === TYPE.maximizeWindow;
 }
 
-export function isScreenshotCommand (command) {
-    return command.type === TYPE.takeScreenshot ||
-               command.type === TYPE.takeScreenshotOnFail;
-}
-
 function isRejectableBrowserManipulationCommand (command) {
     return command.type === TYPE.resizeWindow ||
             command.type === TYPE.resizeWindowToFitDevice ||
             command.type === TYPE.maximizeWindow;
-}
-
-function isServiceBrowserManipulationCommand (command) {
-    return command.type === TYPE.takeScreenshotOnFail;
 }
 
 export function isServiceCommand (command) {
@@ -62,7 +52,7 @@ export function isServiceCommand (command) {
            command.type === TYPE.showAssertionRetriesStatus ||
            command.type === TYPE.hideAssertionRetriesStatus ||
            command.type === TYPE.setBreakpoint ||
-           isServiceBrowserManipulationCommand(command);
+           command.type === TYPE.takeScreenshotOnFail;
 }
 
 export function isExecutableInTopWindowOnly (command) {
