@@ -238,6 +238,7 @@ describe('[API] t.takeElementScreenshot()', function () {
                 only:              'chrome'
             })
                 .catch(function (errs) {
+                    expect(assertionHelper.checkScreenshotsCreated(false, 2, 'custom')).eql(false);
                     expect(errs[0]).to.contains('Unable to capture an element image because the resulting image width is zero or negative.');
                     expect(errs[0]).to.contains(
                         ' 37 |test(\'Invalid dimensions\', async t => {' +
