@@ -1,20 +1,17 @@
 import generateId from 'nanoid/generate';
 import { PNG } from 'pngjs';
-import { chunk, flatten } from 'lodash';
+import { map, flatten } from 'lodash';
+import { MARK_LENGTH } from './constants';
 
 
-const ALPHABET    = '1234567890abcdef';
-const MARK_LENGTH = 5;
+const ALPHABET = '01';
 
 export default function () {
-    // NOTE: 3 hex numbers in a pixel, 2 letters in  a hex number
-    var id = generateId(ALPHABET, MARK_LENGTH * 3 * 2);
+    // NOTE: 32-bit id
+    var id = generateId(ALPHABET, MARK_LENGTH);
 
     // NOTE: array of RGB values
-    var markSeed = chunk(id, 2).map(array => parseInt(array.join(''), 16));
-
-    // NOTE: convert to RGBA
-    markSeed = flatten(chunk(markSeed, 3).map(array => array.concat(255)));
+    var markSeed = flatten(map(id, bit => bit === '0' ? [0, 0, 0, 255] : [255, 255, 255, 255]));
 
     var markSeedBuffer = new Buffer(markSeed);
     var pngImage       = new PNG({ width: MARK_LENGTH, height: 1 });

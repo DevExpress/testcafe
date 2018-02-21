@@ -1,4 +1,5 @@
 import { shadowUI, nativeMethods } from './deps/hammerhead';
+import { MARK_LENGTH, MARK_RIGHT_MARGIN } from '../../screenshots/constants';
 
 
 export default {
@@ -9,7 +10,8 @@ export default {
 
         shadowUI.addClass(this.screenshotMark, 'screenshot-mark');
 
-        this.screenshotMark.style.width = 5 / window.devicePixelRatio + 'px';
+        this.screenshotMark.style.right  = MARK_RIGHT_MARGIN / window.devicePixelRatio + 'px';
+        this.screenshotMark.style.width  = MARK_LENGTH / window.devicePixelRatio + 'px';
         this.screenshotMark.style.height = 1 / window.devicePixelRatio + 'px';
 
         this.hide();
