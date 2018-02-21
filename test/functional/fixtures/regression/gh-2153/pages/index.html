@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript">
+        window.counter = 0;
+
+        function onClick (e) {
+            var currentTarget = e.currentTarget;
+            var logger = document.getElementById('logger');
+            if(currentTarget === window)
+                logger.innerHTML = logger.innerHTML += "window|";
+            else if(currentTarget === document)
+                logger.innerHTML = logger.innerHTML += "document|";
+            else
+                logger.innerHTML = logger.innerHTML += "error|";
+        }
+    </script>
+</head>
+<body>
+<div id="logger"></div>
+<select id="select">
+    <option>One</option>
+    <option>Two</option>
+</select>
+</div>
+
+<script>
+    window.addEventListener('click', this.onClick, true);
+    document.addEventListener('click', this.onClick, true);
+</script>
+</body>
+</html>
