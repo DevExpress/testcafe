@@ -1,8 +1,12 @@
-import stackTrace from 'stack-chain';
 import createStackFilter from './create-stack-filter';
 
 const ORIGINAL_STACK_TRACE_LIMIT = Error.stackTraceLimit;
 const STACK_TRACE_LIMIT          = 200;
+
+// NOTE: 'stack-chain' can't be imported directly, because only one version of it can be imported in a process.
+// It causes the process to crash, when older globally installed TestCafe version loads newer locally installed version.
+// See the 'stack-chain' code at https://github.com/AndreasMadsen/stack-chain/blob/001f69e35ecd070c68209d13c4325fe5d23fc136/index.js#L10
+let stackTrace = null;
 
 export default {
     isEnabled: false,
@@ -20,6 +24,9 @@ export default {
             return;
 
         this.isEnabled = val;
+
+        if (!stackTrace)
+            stackTrace = require('stack-chain');
 
         if (this.isEnabled) {
             // NOTE: Babel errors may have really deep stacks,
