@@ -122,3 +122,11 @@ test
             .switchToIframe('iframe')
             .takeElementScreenshot('table', 'custom/' + t.ctx.parsedUA.family + '.png');
     });
+
+test('Scroll target', async t => {
+    await t.takeElementScreenshot('body', 'custom/' + t.ctx.parsedUA.family + '.png', { scrollTargetX: 2000, scrollTargetY: 3000 });
+});
+
+test('Negative scroll target', async t => {
+    await t.takeElementScreenshot('body', 'custom/' + t.ctx.parsedUA.family + '.png', { scrollTargetX: -2000, scrollTargetY: -3000 });
+});

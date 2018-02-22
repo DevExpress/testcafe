@@ -1,4 +1,5 @@
 import { styleUtils } from '../../deps/testcafe-core';
+import { getOffsetOptions } from '../../deps/testcafe-automation';
 import limitNumber from '../../../../utils/limit-number';
 
 
@@ -48,6 +49,12 @@ export default function ensureCropOptions (element, options) {
     var elementBordersWidth = styleUtils.getBordersWidth(element);
 
     options.originOffset = { x: 0, y: 0 };
+
+    var scrollRight  = elementBounds.left + element.scrollWidth + elementBordersWidth.left + elementBordersWidth.right;
+    var scrollBottom = elementBounds.top + element.scrollHeight + elementBordersWidth.top + elementBordersWidth.bottom;
+
+    elementBounds.right  = Math.max(elementBounds.right, scrollRight);
+    elementBounds.bottom = Math.max(elementBounds.bottom, scrollBottom);
 
     if (!options.includeBorders || !options.includePaddings) {
         options.originOffset.x += elementBordersWidth.left;
@@ -102,4 +109,9 @@ export default function ensureCropOptions (element, options) {
 
     if (typeof options.scrollTargetY !== 'number')
         options.scrollTargetY = determineScrollPoint(options.crop.top, options.crop.bottom, viewportDimensions.height);
+
+    var { offsetX, offsetY } = getOffsetOptions(element, options.scrollTargetX, options.scrollTargetY);
+
+    options.scrollTargetX = offsetX;
+    options.scrollTargetY = offsetY;
 }

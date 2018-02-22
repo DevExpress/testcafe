@@ -323,6 +323,28 @@ describe('[API] t.takeElementScreenshot()', function () {
                     expect(result).eql(true);
                 });
         });
+
+        it('Should scroll to the scroll target when positive scrollTargetX/Y are specified', function () {
+            return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Scroll target',
+                { setScreenshotPath: true })
+                .then(function () {
+                    return assertionHelper.checkScreenshotIsNotWhite(false, 'custom');
+                })
+                .then(function (result) {
+                    expect(result).eql(true);
+                });
+        });
+
+        it('Should scroll to the scroll target when negative scrollTargetX/Y are specified', function () {
+            return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Negative scroll target',
+                { setScreenshotPath: true })
+                .then(function () {
+                    return assertionHelper.checkScreenshotIsNotWhite(false, 'custom');
+                })
+                .then(function (result) {
+                    expect(result).eql(true);
+                });
+        });
     }
 });
 
