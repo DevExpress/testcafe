@@ -37,7 +37,7 @@ function onDocumentMouseDown (e) {
         collapseOptionList();
 }
 
-function onOptionClick (e, dispatched, preventDefault) {
+function onWindowClick (e, dispatched, preventDefault) {
     const target   = e.target || e.srcElement;
     const optionIndex = arrayUtils.indexOf(options, target);
 
@@ -46,10 +46,12 @@ function onOptionClick (e, dispatched, preventDefault) {
 
     preventDefault();
 
-    if (target.isDisabled && browserUtils.isWebKit)
+    const isDisabled = target.className.indexOf(DISABLED_CLASS) > -1;
+
+    if (isDisabled && browserUtils.isWebKit)
         return;
 
-    clickOnOption(optionIndex, target.isDisabled);
+    clickOnOption(optionIndex, isDisabled);
 }
 
 function clickOnOption (optionIndex, isOptionDisabled) {
@@ -161,7 +163,7 @@ export function expandOptionList (select) {
 
     createChildren(selectChildren, optionList);
 
-    listeners.addInternalEventListener(window, [ 'click' ], onOptionClick);
+    listeners.addInternalEventListener(window, [ 'click' ], onWindowClick);
 
     nativeMethods.setTimeout.call(window, () => {
         eventUtils.bind(document, 'mousedown', onDocumentMouseDown);
