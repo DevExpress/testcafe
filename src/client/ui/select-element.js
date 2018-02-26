@@ -38,15 +38,14 @@ function onDocumentMouseDown (e) {
 }
 
 function onWindowClick (e, dispatched, preventDefault) {
-    const target   = e.target || e.srcElement;
-    const optionIndex = arrayUtils.indexOf(options, target);
+    const optionIndex = arrayUtils.indexOf(options, e.target);
 
     if (optionIndex < 0)
         return;
 
     preventDefault();
 
-    const isDisabled = target.className.indexOf(DISABLED_CLASS) > -1;
+    const isDisabled = e.target.className.indexOf(DISABLED_CLASS) > -1;
 
     if (isDisabled && browserUtils.isWebKit)
         return;
@@ -96,7 +95,6 @@ function createOption (realOption, parent) {
                                                   realOption.parentElement.disabled;
 
     option.textContent = realOption.text;
-    option.isDisabled  = isOptionDisabled;
 
     parent.appendChild(option);
     shadowUI.addClass(option, OPTION_CLASS);

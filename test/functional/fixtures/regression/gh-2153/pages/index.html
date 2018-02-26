@@ -9,6 +9,7 @@
         function onClick (e) {
             var currentTarget = e.currentTarget;
             var logger = document.getElementById('logger');
+
             if(currentTarget === window)
                 logger.innerHTML = logger.innerHTML += "window|";
             else if(currentTarget === document)
