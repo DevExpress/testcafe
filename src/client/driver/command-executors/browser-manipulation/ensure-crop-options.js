@@ -32,7 +32,7 @@ function determineDimensionBounds (bounds, maximum) {
 }
 
 function determineScrollPoint (cropStart, cropEnd, viewportBound) {
-    return Math.round(cropStart + (limitNumber(cropEnd, 0, viewportBound) - cropStart) / 2);
+    return Math.round(cropStart + limitNumber(cropEnd - cropStart, 0, viewportBound) / 2);
 }
 
 export default function ensureCropOptions (element, options) {
