@@ -7,26 +7,22 @@
         window.counter = 0;
 
         function onClick (e) {
-            var currentTarget = e.currentTarget;
-            var logger = document.getElementById('logger');
+            var selectEl = document.getElementById('select');
+            var optOne = document.getElementById('one');
+            var optTwo = document.getElementById('two');
 
-            if(currentTarget === window)
-                logger.innerHTML = logger.innerHTML += "window|";
-            else if(currentTarget === document)
-                logger.innerHTML = logger.innerHTML += "document|";
-            else
-                logger.innerHTML = logger.innerHTML += "error|";
+            var targets = [ selectEl, optOne, optTwo ];
+
+            if(targets.indexOf(e.target) === -1)
+                throw new Error('Shadow element appeared in user event handler');
         }
     </script>
 </head>
 <body>
-<div id="logger"></div>
 <select id="select">
-    <option>One</option>
-    <option>Two</option>
+    <option id="one">One</option>
+    <option id="two">Two</option>
 </select>
-</div>
-
 <script>
     window.addEventListener('click', this.onClick, true);
     document.addEventListener('click', this.onClick, true);
