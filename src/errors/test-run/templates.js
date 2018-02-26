@@ -199,7 +199,7 @@ export default {
     `),
 
     [TYPE.actionInvalidScrollTargetError]: err => markup(err, `
-        Unable to scroll to the specified point of the element, because a point with the specified ${err.properties} is not inside the element's cropping region.
+        Unable to scroll to the specified point because a point with the specified ${err.properties} is not located inside the element's cropping region.
     `),
 
     [TYPE.actionIframeIsNotLoadedError]: err => markup(err, `

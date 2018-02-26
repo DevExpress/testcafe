@@ -287,9 +287,9 @@ describe('[API] t.takeElementScreenshot()', function () {
                 only:              'chrome'
             })
                 .catch(function (errs) {
-                    expect(errs[0]).to.contains('Unable to scroll to the specified point of the element, ' +
-                                                'because a point with the specified scrollTargetX and scrollTargetY properties ' +
-                                                'is not inside the element\'s cropping region');
+                    expect(errs[0]).to.contains('Unable to scroll to the specified point because a point ' +
+                                                'with the specified scrollTargetX and scrollTargetY properties ' +
+                                                'is not located inside the element\'s cropping region');
                     expect(errs[0]).to.contains(
                         ' 53 |test(\'Invalid scroll target\', async t => {' +
                         ' > 54 |    await t.takeElementScreenshot(\'table\', \'custom/\' + t.ctx.parsedUA.family + \'.png\', { scrollTargetX: -2000, scrollTargetY: -3000 });' +
