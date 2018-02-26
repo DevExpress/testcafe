@@ -1,6 +1,7 @@
 import { styleUtils } from '../../deps/testcafe-core';
 import { getOffsetOptions } from '../../deps/testcafe-automation';
 import limitNumber from '../../../../utils/limit-number';
+import { ActionInvalidScrollTargetError } from '../../../../errors/test-run';
 
 
 function determineDimensionBounds (bounds, maximum) {
@@ -114,4 +115,10 @@ export default function ensureCropOptions (element, options) {
 
     options.scrollTargetX = offsetX;
     options.scrollTargetY = offsetY;
+
+    var isScrollTargetXValid = options.scrollTargetX >= options.crop.left && options.scrollTargetX <= options.crop.right;
+    var isScrollTargetYValid = options.scrollTargetY >= options.crop.top && options.scrollTargetY <= options.crop.bottom;
+
+    if (!isScrollTargetXValid || !isScrollTargetYValid)
+        throw new ActionInvalidScrollTargetError(isScrollTargetXValid, isScrollTargetYValid);
 }

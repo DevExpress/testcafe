@@ -355,6 +355,21 @@ export class ActionElementIsNotFileInputError extends TestRunErrorBase {
     }
 }
 
+export class ActionInvalidScrollTargetError extends TestRunErrorBase {
+    constructor (scrollTargetXValid, scrollTargetYValid) {
+        super(TYPE.actionInvalidScrollTargetError);
+
+        if (!scrollTargetXValid) {
+            if (!scrollTargetYValid)
+                this.properties = 'scrollTargetX and scrollTargetY properties';
+            else
+                this.properties = 'scrollTargetX property';
+        }
+        else
+            this.properties = 'scrollTargetY property';
+    }
+}
+
 export class WindowDimensionsOverflowError extends TestRunErrorBase {
     constructor (callsite) {
         super(TYPE.windowDimensionsOverflowError);

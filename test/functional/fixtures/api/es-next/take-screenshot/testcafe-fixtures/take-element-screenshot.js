@@ -50,6 +50,10 @@ test('Non-existent element', async t => {
         .takeElementScreenshot('table', 'custom/' + t.ctx.parsedUA.family + '.png');
 });
 
+test('Invalid scroll target', async t => {
+    await t.takeElementScreenshot('table', 'custom/' + t.ctx.parsedUA.family + '.png', { scrollTargetX: -2000, scrollTargetY: -3000 });
+});
+
 test('Element', async t => {
     await enableScrollWatcher();
 

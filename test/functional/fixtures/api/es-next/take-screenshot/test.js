@@ -280,6 +280,24 @@ describe('[API] t.takeElementScreenshot()', function () {
                 });
         });
 
+        it('Should throw an error if the specified scroll target is out of the cropping region', function () {
+            return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Invalid scroll target', {
+                setScreenshotPath: true,
+                shouldFail:        true,
+                only:              'chrome'
+            })
+                .catch(function (errs) {
+                    expect(errs[0]).to.contains('Unable to scroll to the specified point of the element, ' +
+                                                'because a point with the specified scrollTargetX and scrollTargetY properties ' +
+                                                'is not inside the element\'s cropping region');
+                    expect(errs[0]).to.contains(
+                        ' 53 |test(\'Invalid scroll target\', async t => {' +
+                        ' > 54 |    await t.takeElementScreenshot(\'table\', \'custom/\' + t.ctx.parsedUA.family + \'.png\', { scrollTargetX: -2000, scrollTargetY: -3000 });' +
+                        ' 55 |});'
+                    );
+                });
+        });
+
         it('Should capture screenshot of the element inside a same-domain iframe', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Same-domain iframe',
                 { setScreenshotPath: true })

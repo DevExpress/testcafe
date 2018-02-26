@@ -198,6 +198,10 @@ export default {
         The "${err.argumentName}" argument specifies an unsupported "${err.actualValue}" device. For a list of supported devices, refer to <a href="http://viewportsizes.com">http://viewportsizes.com</a>.
     `),
 
+    [TYPE.actionInvalidScrollTargetError]: err => markup(err, `
+        Unable to scroll to the specified point of the element, because a point with the specified ${err.properties} is not inside the element's cropping region.
+    `),
+
     [TYPE.actionIframeIsNotLoadedError]: err => markup(err, `
         Content of the iframe to which you are switching did not load.
     `),

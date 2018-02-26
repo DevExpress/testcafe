@@ -40,6 +40,7 @@ var ActionIncorrectKeysError                          = require('../../lib/error
 var ActionCanNotFindFileToUploadError                 = require('../../lib/errors/test-run').ActionCanNotFindFileToUploadError;
 var ActionElementIsNotFileInputError                  = require('../../lib/errors/test-run').ActionElementIsNotFileInputError;
 var ActionUnsupportedDeviceTypeError                  = require('../../lib/errors/test-run').ActionUnsupportedDeviceTypeError;
+var ActionInvalidScrollTargetError                    = require('../../lib/errors/test-run').ActionInvalidScrollTargetError;
 var ClientFunctionExecutionInterruptionError          = require('../../lib/errors/test-run').ClientFunctionExecutionInterruptionError;
 var ActionElementNotIframeError                       = require('../../lib/errors/test-run').ActionElementNotIframeError;
 var ActionIframeIsNotLoadedError                      = require('../../lib/errors/test-run').ActionIframeIsNotLoadedError;
@@ -249,6 +250,10 @@ describe('Error formatting', function () {
 
         it('Should format "actionUnsupportedDeviceTypeError" message', function () {
             assertErrorMessage('action-unsupported-device-type-error', new ActionUnsupportedDeviceTypeError('device', 'iPhone 555'));
+        });
+
+        it('Should format "actionInvalidScrollTargetError" message', function () {
+            assertErrorMessage('action-invalid-scroll-target-error', new ActionInvalidScrollTargetError(false, true));
         });
 
         it('Should format "actionIframeIsNotLoadedError" message', function () {
