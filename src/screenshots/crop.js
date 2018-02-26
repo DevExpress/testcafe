@@ -5,7 +5,7 @@ import promisifyEvent from 'promisify-event';
 import limitNumber from '../utils/limit-number';
 import { deleteFile } from '../utils/promisified-functions';
 import { InvalidElementScreenshotDimensionsError } from '../errors/test-run/';
-import { MARK_LENGTH, MARK_RIGHT_MARGIN } from './constants';
+import { MARK_LENGTH, MARK_RIGHT_MARGIN, MARK_BYTES_PER_PIXEL } from './constants';
 
 
 function readPng (filePath) {
@@ -43,7 +43,7 @@ export default async function (screenshotPath, markSeed, clientAreaDimensions, c
     if (markIndex < 0)
         return false;
 
-    var endPosition = markIndex / 4 + MARK_LENGTH + MARK_RIGHT_MARGIN;
+    var endPosition = markIndex / MARK_BYTES_PER_PIXEL + MARK_LENGTH + MARK_RIGHT_MARGIN;
     var right       = endPosition % srcImage.width || srcImage.width;
     var bottom      = (endPosition - right) / srcImage.width + 1;
     var left        = right - clientAreaDimensions.width;
@@ -67,10 +67,10 @@ export default async function (screenshotPath, markSeed, clientAreaDimensions, c
     }
 
     var dstImage = new PNG({ width, height });
-    var stride   = dstImage.width * 4;
+    var stride   = dstImage.width * MARK_BYTES_PER_PIXEL;
 
     for (let i = 0; i < height; i++) {
-        var srcStartIndex = (srcImage.width * (i + top) + left) * 4;
+        var srcStartIndex = (srcImage.width * (i + top) + left) * MARK_BYTES_PER_PIXEL;
 
         srcImage.data.copy(dstImage.data, stride * i, srcStartIndex, srcStartIndex + stride);
     }
