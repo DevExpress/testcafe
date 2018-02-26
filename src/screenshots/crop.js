@@ -55,8 +55,9 @@ export default async function (screenshotPath, markSeed, clientAreaDimensions, c
         left   = limitNumber(left + cropDimensions.left, left, right);
         top    = limitNumber(top + cropDimensions.top, top, bottom);
     }
-    else
-        bottom -= 1;
+
+    if (bottom - top >= clientAreaDimensions.height)
+        bottom = top + clientAreaDimensions.height - 1;
 
     var width  = right - left;
     var height = bottom - top;

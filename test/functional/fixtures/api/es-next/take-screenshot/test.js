@@ -280,6 +280,24 @@ describe('[API] t.takeElementScreenshot()', function () {
                 });
         });
 
+        it('Should throw an error if the specified scroll target is out of the cropping region', function () {
+            return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Invalid scroll target', {
+                setScreenshotPath: true,
+                shouldFail:        true,
+                only:              'chrome'
+            })
+                .catch(function (errs) {
+                    expect(errs[0]).to.contains('Unable to scroll to the specified point because a point ' +
+                                                'with the specified scrollTargetX and scrollTargetY properties ' +
+                                                'is not located inside the element\'s cropping region');
+                    expect(errs[0]).to.contains(
+                        ' 53 |test(\'Invalid scroll target\', async t => {' +
+                        ' > 54 |    await t.takeElementScreenshot(\'table\', \'custom/\' + t.ctx.parsedUA.family + \'.png\', { scrollTargetX: -2000, scrollTargetY: -3000 });' +
+                        ' 55 |});'
+                    );
+                });
+        });
+
         it('Should capture screenshot of the element inside a same-domain iframe', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Same-domain iframe',
                 { setScreenshotPath: true })
@@ -318,6 +336,28 @@ describe('[API] t.takeElementScreenshot()', function () {
                 { setScreenshotPath: true })
                 .then(function () {
                     return assertionHelper.isScreenshotsEqual('custom', path.join(__dirname, './data/element.png'));
+                })
+                .then(function (result) {
+                    expect(result).eql(true);
+                });
+        });
+
+        it('Should scroll to the scroll target when positive scrollTargetX/Y are specified', function () {
+            return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Scroll target',
+                { setScreenshotPath: true })
+                .then(function () {
+                    return assertionHelper.checkScreenshotIsNotWhite(false, 'custom');
+                })
+                .then(function (result) {
+                    expect(result).eql(true);
+                });
+        });
+
+        it('Should scroll to the scroll target when negative scrollTargetX/Y are specified', function () {
+            return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Negative scroll target',
+                { setScreenshotPath: true })
+                .then(function () {
+                    return assertionHelper.checkScreenshotIsNotWhite(false, 'custom');
                 })
                 .then(function (result) {
                     expect(result).eql(true);

@@ -39,6 +39,7 @@ export default {
     actionUnsupportedDeviceTypeError:                  'actionUnsupportedDeviceTypeError',
     actionIframeIsNotLoadedError:                      'actionIframeIsNotLoadedError',
     actionElementNotIframeError:                       'actionElementNotIframeError',
+    actionInvalidScrollTargetError:                    'actionInvalidScrollTargetError',
     currentIframeIsNotLoadedError:                     'currentIframeIsNotLoadedError',
     currentIframeNotFoundError:                        'currentIframeNotFoundError',
     currentIframeIsInvisibleError:                     'currentIframeIsInvisibleError',

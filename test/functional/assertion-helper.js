@@ -73,6 +73,13 @@ function checkScreenshotFileCropped (filePath) {
         });
 }
 
+function checkScreenshotFileIsNotWhite (filePath) {
+    return readPng(filePath)
+        .then(function (png) {
+            return png.data.indexOf(Buffer.from(RED_PIXEL)) > -1 && png.data.indexOf(Buffer.from(GREEN_PIXEL)) > -1;
+        });
+}
+
 function isDirExists (folderPath) {
     var exists = false;
 
@@ -281,6 +288,10 @@ exports.checkScreenshotsCreated = function checkScreenshotsCreated (forError, co
 
 exports.checkScreenshotsCropped = function (forError, customPath) {
     return checkScreenshotImages(forError, customPath, checkScreenshotFileCropped);
+};
+
+exports.checkScreenshotIsNotWhite = function (forError, customPath) {
+    return checkScreenshotImages(forError, customPath, checkScreenshotFileIsNotWhite);
 };
 
 exports.isScreenshotsEqual = function (customPath, referenceImagePath) {

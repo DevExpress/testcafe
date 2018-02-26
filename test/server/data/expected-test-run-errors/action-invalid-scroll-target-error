@@ -1,0 +1,20 @@
+Unable to scroll to the specified point because a point with the specified
+scrollTargetX property is not located inside the element's cropping region.
+
+Browser: Chrome 15.0.874 / Mac OS X 10.8.1
+Screenshot: /unix/path/with/<tag>
+
+   18 |function func1 () {
+   19 |    record = createCallsiteRecord({ byFunctionName: 'func1' });
+   20 |}
+   21 |
+   22 |(function func2 () {
+ > 23 |    func1();
+   24 |})();
+   25 |
+   26 |stackTrace.filter.deattach(stackFilter);
+   27 |
+   28 |module.exports = record;
+
+   at func2 (testfile.js:23:5)
+   at Object.<anonymous> (testfile.js:24:3)
