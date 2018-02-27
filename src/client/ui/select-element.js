@@ -9,6 +9,7 @@ var browserUtils     = hammerhead.utils.browser;
 var featureDetection = hammerhead.utils.featureDetection;
 var nativeMethods    = hammerhead.nativeMethods;
 var eventSimulator   = hammerhead.eventSandbox.eventSimulator;
+var listeners        = hammerhead.eventSandbox.listeners;
 
 var positionUtils = testCafeCore.positionUtils;
 var domUtils      = testCafeCore.domUtils;
@@ -34,6 +35,22 @@ function onDocumentMouseDown (e) {
     if ((e.target || e.srcElement) !== curSelectEl && !domUtils.containsElement(curSelectEl, e.target) &&
         !domUtils.containsElement(optionList, e.target))
         collapseOptionList();
+}
+
+function onWindowClick (e, dispatched, preventDefault) {
+    const optionIndex = arrayUtils.indexOf(options, e.target);
+
+    if (optionIndex < 0)
+        return;
+
+    preventDefault();
+
+    const isDisabled = e.target.className.indexOf(DISABLED_CLASS) > -1;
+
+    if (isDisabled && browserUtils.isWebKit)
+        return;
+
+    clickOnOption(optionIndex, isDisabled);
 }
 
 function clickOnOption (optionIndex, isOptionDisabled) {
@@ -78,22 +95,13 @@ function createOption (realOption, parent) {
                                                   realOption.parentElement.disabled;
 
     option.textContent = realOption.text;
+
     parent.appendChild(option);
     shadowUI.addClass(option, OPTION_CLASS);
 
     if (isOptionDisabled) {
         shadowUI.addClass(option, DISABLED_CLASS);
         styleUtils.set(option, 'color', styleUtils.get(realOption, 'color'));
-    }
-
-    if (isOptionDisabled && browserUtils.isWebKit)
-        eventUtils.bind(option, 'click', () => false);
-    else {
-        eventUtils.bind(option, 'click', function () {
-            var optionIndex = arrayUtils.indexOf(options, this);
-
-            clickOnOption(optionIndex, isOptionDisabled);
-        });
     }
 
     options.push(option);
@@ -152,6 +160,8 @@ export function expandOptionList (select) {
     shadowUI.addClass(optionList, OPTION_LIST_CLASS);
 
     createChildren(selectChildren, optionList);
+
+    listeners.addInternalEventListener(window, [ 'click' ], onWindowClick);
 
     nativeMethods.setTimeout.call(window, () => {
         eventUtils.bind(document, 'mousedown', onDocumentMouseDown);

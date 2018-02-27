@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript">
+        function onClick (e) {
+            var selectEl = document.getElementById('select');
+            var option = document.getElementById('two');
+
+            var targets = [ selectEl, option ];
+
+            if(targets.indexOf(e.target) === -1)
+                throw new Error('Shadow element appeared in user event handler');
+        }
+    </script>
+</head>
+<body>
+<select id="select">
+    <option id="one">One</option>
+    <option id="two">Two</option>
+</select>
+<script>
+    window.addEventListener('click', this.onClick, true);
+    document.addEventListener('click', this.onClick, true);
+</script>
+</body>
+</html>
