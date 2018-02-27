@@ -99,6 +99,7 @@
     "replicator": "^1.0.0",
     "resolve-cwd": "^1.0.0",
     "sanitize-filename": "^1.6.0",
+    "semver": "^5.5.0",
     "source-map-support": "^0.4.0",
     "stack-chain": "^2.0.0",
     "strip-bom": "^2.0.0",
