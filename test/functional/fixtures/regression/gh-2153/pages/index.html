@@ -4,14 +4,11 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <script type="text/javascript">
-        window.counter = 0;
-
         function onClick (e) {
             var selectEl = document.getElementById('select');
-            var optOne = document.getElementById('one');
-            var optTwo = document.getElementById('two');
+            var option = document.getElementById('two');
 
-            var targets = [ selectEl, optOne, optTwo ];
+            var targets = [ selectEl, option ];
 
             if(targets.indexOf(e.target) === -1)
                 throw new Error('Shadow element appeared in user event handler');
