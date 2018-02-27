@@ -1,7 +1,7 @@
 import { styleUtils } from '../../deps/testcafe-core';
 import { getOffsetOptions } from '../../deps/testcafe-automation';
 import limitNumber from '../../../../utils/limit-number';
-import { ActionInvalidScrollTargetError } from '../../../../errors/test-run';
+import { ActionInvalidScrollTargetError, InvalidElementScreenshotDimensionsError } from '../../../../errors/test-run';
 
 
 function determineDimensionBounds (bounds, maximum) {
@@ -100,15 +100,21 @@ export default function ensureCropOptions (element, options) {
     options.crop.bottom = verticalCropBounds.max;
     options.crop.height = verticalCropBounds.length;
 
+    if (options.crop.width <= 0 || options.crop.height <= 0)
+        throw new InvalidElementScreenshotDimensionsError(options.crop.width, options.crop.height);
+
     var viewportDimensions = styleUtils.getViewportDimensions();
 
     if (elementBounds.width > viewportDimensions.width || elementBounds.height > viewportDimensions.height)
         options.scrollToCenter = true;
 
-    if (typeof options.scrollTargetX !== 'number')
+    var hasScrollTargetX = typeof options.scrollTargetX === 'number';
+    var hasScrollTargetY = typeof options.scrollTargetY === 'number';
+
+    if (!hasScrollTargetX)
         options.scrollTargetX = determineScrollPoint(options.crop.left, options.crop.right, viewportDimensions.width);
 
-    if (typeof options.scrollTargetY !== 'number')
+    if (!hasScrollTargetY)
         options.scrollTargetY = determineScrollPoint(options.crop.top, options.crop.bottom, viewportDimensions.height);
 
     var { offsetX, offsetY } = getOffsetOptions(element, options.scrollTargetX, options.scrollTargetY);
@@ -116,8 +122,8 @@ export default function ensureCropOptions (element, options) {
     options.scrollTargetX = offsetX;
     options.scrollTargetY = offsetY;
 
-    var isScrollTargetXValid = options.scrollTargetX >= options.crop.left && options.scrollTargetX <= options.crop.right;
-    var isScrollTargetYValid = options.scrollTargetY >= options.crop.top && options.scrollTargetY <= options.crop.bottom;
+    var isScrollTargetXValid = !hasScrollTargetX || options.scrollTargetX >= options.crop.left && options.scrollTargetX <= options.crop.right;
+    var isScrollTargetYValid = !hasScrollTargetY || options.scrollTargetY >= options.crop.top && options.scrollTargetY <= options.crop.bottom;
 
     if (!isScrollTargetXValid || !isScrollTargetYValid)
         throw new ActionInvalidScrollTargetError(isScrollTargetXValid, isScrollTargetYValid);
