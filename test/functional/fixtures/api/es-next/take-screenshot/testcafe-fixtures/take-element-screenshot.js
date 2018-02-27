@@ -35,7 +35,7 @@ test('Incorrect action path argument', async t => {
 });
 
 test('Invalid dimensions', async t => {
-    await t.takeElementScreenshot('table', 'custom/' + t.ctx.parsedUA.family + '.png', { crop: { left: 50, right: -50 } });
+    await t.takeElementScreenshot('table', 'custom/' + t.ctx.parsedUA.family + '.png', { crop: { left: -10, right: -50 } });
 });
 
 test('Invisible element', async t => {

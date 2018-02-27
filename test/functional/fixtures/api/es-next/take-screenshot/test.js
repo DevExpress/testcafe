@@ -242,7 +242,7 @@ describe('[API] t.takeElementScreenshot()', function () {
                     expect(errs[0]).to.contains('Unable to capture an element image because the resulting image width is zero or negative.');
                     expect(errs[0]).to.contains(
                         ' 37 |test(\'Invalid dimensions\', async t => {' +
-                        ' > 38 |    await t.takeElementScreenshot(\'table\', \'custom/\' + t.ctx.parsedUA.family + \'.png\', { crop: { left: 50, right: -50 } });' +
+                        ' > 38 |    await t.takeElementScreenshot(\'table\', \'custom/\' + t.ctx.parsedUA.family + \'.png\', { crop: { left: -10, right: -50 } });' +
                         ' 39 |});'
                     );
                 });
