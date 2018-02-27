@@ -6,7 +6,12 @@ import log from './log';
 import TerminationHandler from './termination-handler';
 
 
-const SAFE_VERSION = '0.19.0-alpha2';
+// NOTE: Older TestCafe versions will import stack-chain module in a process, even if a different locally installed
+// TestCafe will be actually used. It can result in a stack-chain version conflict, because only the one version of
+// stack-chain can be loaded in a process. So we need to start CLI in a new process, when an old globally installed
+// TestCafe version is detected. See the stack-chain code for more information about the isssue:
+// https://github.com/AndreasMadsen/stack-chain/blob/001f69e35ecd070c68209d13c4325fe5d23fc136/index.js#L10
+const MINIMAL_TESTCAFE_VERSION_WITH_SAFE_STACK_CHAIN_IN_PROCESS_LOADING = '0.19.0-alpha2';
 
 function getLocalInstallation () {
     const local = resolveCwd('testcafe/lib/cli');
@@ -19,7 +24,7 @@ function getLocalInstallation () {
     return '';
 }
 
-function isNewProcessNeeded () {
+function shouldRunInNewProcess () {
     if (!module.parent)
         return false;
 
@@ -38,13 +43,18 @@ function isNewProcessNeeded () {
     if (parentPackagePath === path.join(__dirname, '../..'))
         return false;
 
-    const parentPkgInfo = require(path.join(parentPackagePath, 'package.json'));
+    try {
+        const parentPkgInfo = require(path.join(parentPackagePath, 'package.json'));
 
-    return semver.lt(parentPkgInfo.version, SAFE_VERSION);
+        return semver.lt(parentPkgInfo.version, MINIMAL_TESTCAFE_VERSION_WITH_SAFE_STACK_CHAIN_IN_PROCESS_LOADING);
+    }
+    catch (e) {
+        return false;
+    }
 }
 
-function startCli (cliPath, newProcess) {
-    if (!newProcess) {
+function startCli (cliPath, inNewProcess) {
+    if (!inNewProcess) {
         require(cliPath);
         return;
     }
@@ -63,8 +73,8 @@ function startCli (cliPath, newProcess) {
 }
 
 (async function loader () {
-    const needNewProcess = isNewProcessNeeded();
-    const cliPath        = getLocalInstallation() || require.resolve('./cli');
+    const inNewProcess = shouldRunInNewProcess();
+    const cliPath      = getLocalInstallation() || require.resolve('./cli');
 
-    return startCli(cliPath, needNewProcess);
+    return startCli(cliPath, inNewProcess);
 })();
