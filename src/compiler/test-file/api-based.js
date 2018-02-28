@@ -104,7 +104,7 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
             compiledCode = this._compileCode(code, filename);
         }
         catch (err) {
-            throw new TestCompilationError(err);
+            throw new TestCompilationError(stackCleaningHook.cleanError(err));
         }
         finally {
             stackCleaningHook.enabled = false;
@@ -147,7 +147,7 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
             // HACK: workaround for the `instanceof` problem
             // (see: http://stackoverflow.com/questions/33870684/why-doesnt-instanceof-work-on-instances-of-error-subclasses-under-babel-node)
             if (err.constructor !== APIError)
-                throw new TestCompilationError(err);
+                throw new TestCompilationError(stackCleaningHook.cleanError(err));
 
             throw err;
         }
