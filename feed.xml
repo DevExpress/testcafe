@@ -5,9 +5,108 @@
     <description></description>
     <link>http://devexpress.github.io/testcafe/</link>
     <atom:link href="http://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 11 Dec 2017 17:15:52 +0300</pubDate>
-    <lastBuildDate>Mon, 11 Dec 2017 17:15:52 +0300</lastBuildDate>
-    <generator>Jekyll v3.5.0</generator>
+    <pubDate>Thu, 01 Mar 2018 17:52:57 +0300</pubDate>
+    <lastBuildDate>Thu, 01 Mar 2018 17:52:57 +0300</lastBuildDate>
+    <generator>Jekyll v3.6.2</generator>
+    
+      <item>
+        <title>TestCafe v0.19.0 Released - Rapid Test Development Tool, Screenshots of Page Elements, etc</title>
+        <description>&lt;h1&gt;TestCafe v0.19.0 Released - Rapid Test Development Tool, Screenshots of Page Elements, etc&lt;/h1&gt;
+&lt;p&gt;Welcome TestCafe Live, a tool for rapid test development. We have also added a couple of new features like taking screenshots of individual page elements and filtering visible and hidden elements in the selector chain.&lt;/p&gt;
+
+&lt;!--more--&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; name=&quot;testcafe-live-see-instant-feedback-when-working-on-tests-1624&quot;&gt;&lt;/a&gt;TestCafe Live: See instant feedback when working on tests (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1624&quot;&gt;#1624&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#testcafe-live-see-instant-feedback-when-working-on-tests-1624&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;TestCafe Live provides a service that keeps the TestCafe process and browsers opened the whole time you are working on tests. Changes you make in code immediately restart the tests. That is, TestCafe Live allows you to see test results instantly.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=RWQtB6Xv01Q&quot;&gt;&lt;img src=&quot;https://raw.githubusercontent.com/DevExpress/testcafe/master/media/changelog/testcafe-live-video.png&quot; alt=&quot;TestCafe Live Video&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;For more information, see &lt;a href=&quot;https://github.com/DevExpress/testcafe-live&quot;&gt;the TestCafe Live repository&lt;/a&gt;.&lt;/p&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; name=&quot;enhancements&quot;&gt;&lt;/a&gt;Enhancements &lt;a class=&quot;permalink&quot; href=&quot;#enhancements&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; name=&quot;taking-screenshots-of-individual-page-elements-1496&quot;&gt;&lt;/a&gt;⚙ Taking Screenshots of Individual Page Elements (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1496&quot;&gt;#1496&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#taking-screenshots-of-individual-page-elements-1496&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;We have added the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/actions/take-screenshot.html#take-a-screenshot-of-a-page-element&quot;&gt;t.takeElementScreenshot&lt;/a&gt; action that allows you to take a screenshot of an individual page element.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kr&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'testcafe'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;My&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;page&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//devexpress.github.io/testcafe/example/`;&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Take a screenshot of a fieldset'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;click&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'#reusing-js-code'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;click&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'#continuous-integration-embedding'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;takeElementScreenshot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'fieldset'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nth&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'my-fixture/important-features.png'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This action provides additional customization that allows you to position the center of the screenshot or crop it. For more information, see the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/actions/take-screenshot.html#take-a-screenshot-of-a-page-element&quot;&gt;documentation&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Note that if the screenshot directory is not specified with the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#screenshots&quot;&gt;runner.screenshots&lt;/a&gt; API method or the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-s-path---screenshots-path&quot;&gt;screenshots&lt;/a&gt; command line option, the &lt;code&gt;t.takeElementScreenshot&lt;/code&gt; action will be ignored.&lt;/p&gt;
+&lt;h3&gt;&lt;a class=&quot;anchor&quot; name=&quot;filtering-elements-by-their-visibility-1018&quot;&gt;&lt;/a&gt;⚙ Filtering Elements by Their Visibility (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1018&quot;&gt;#1018&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#filtering-elements-by-their-visibility-1018&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;You can now filter the selector&amp;#39;s matching set to leave only visible or hidden elements. To do this, use the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#filtervisible&quot;&gt;filterVisible&lt;/a&gt; and &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#filterhidden&quot;&gt;filterHidden&lt;/a&gt; methods.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kr&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'testcafe'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;My&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;page&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//devexpress.github.io/testcafe/example/`;&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Filter visible and hidden elements'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;inputs&lt;/span&gt;        &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'input'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;hiddenInput&lt;/span&gt;   &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;inputs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;filterHidden&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;visibleInputs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;inputs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;filterVisible&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+
+    &lt;span class=&quot;nx&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;hiddenInput&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;eql&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;visibleInputs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;eql&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;11&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; name=&quot;finding-elements-by-the-exact-matching-text-1292&quot;&gt;&lt;/a&gt;⚙ Finding Elements by the Exact Matching Text (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1292&quot;&gt;#1292&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#finding-elements-by-the-exact-matching-text-1292&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;The current selector&amp;#39;s &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#withtext&quot;&gt;withText&lt;/a&gt; method looks for elements whose text content &lt;em&gt;contains&lt;/em&gt; the specified string. With this release, we have added the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#withexacttext&quot;&gt;withExactText&lt;/a&gt; method that performs search by &lt;em&gt;strict match&lt;/em&gt;.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kr&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'testcafe'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;My&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;page&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//devexpress.github.io/testcafe/example/`;&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Search by exact text'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;labels&lt;/span&gt;       &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'label'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;winLabel&lt;/span&gt;     &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;labels&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;withExactText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Windows'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;reusingLabel&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;labels&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;withText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'JavaScript'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+    &lt;span class=&quot;nx&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;winLabel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;exists&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;ok&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;reusingLabel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;exists&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;ok&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; name=&quot;using-decorators-in-typescript-code-2117-by-pietrovich&quot;&gt;&lt;/a&gt;⚙ Using Decorators in TypeScript Code (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2117&quot;&gt;#2117&lt;/a&gt;) by &lt;a href=&quot;https://github.com/pietrovich&quot;&gt;@pietrovich&lt;/a&gt; &lt;a class=&quot;permalink&quot; href=&quot;#using-decorators-in-typescript-code-2117-by-pietrovich&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;TestCafe now allows you to use &lt;a href=&quot;https://www.typescriptlang.org/docs/handbook/decorators.html&quot;&gt;decorators&lt;/a&gt; when &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/typescript-support.html&quot;&gt;writing tests in TypeScript&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Note that decorators are still an experimental feature in TypeScript.&lt;/p&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; name=&quot;bug-fixes&quot;&gt;&lt;/a&gt;Bug Fixes &lt;a class=&quot;permalink&quot; href=&quot;#bug-fixes&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;TestCafe can now scroll a webpage when &lt;code&gt;body&lt;/code&gt; has a scroll bar (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1940&quot;&gt;#1940&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Firefox no longer hangs with a dialog asking to set it as the default browser (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1926&quot;&gt;#1926&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Legacy API no longer freezes because of an unexpected error (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1790&quot;&gt;#1790&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Click on an element that was hidden and then recreated on timeout now works correctly (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1994&quot;&gt;#1994&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;TestCafe now correctly finds browsers in headless mode on macOS when tests are executing concurrently (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2035&quot;&gt;#2035&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;When roles are switched using the &lt;code&gt;preserverUrl&lt;/code&gt; flag, the local storage now restores correctly (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2015&quot;&gt;#2015&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;TestCafe progress bar is no longer visible on screenshots (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2076&quot;&gt;#2076&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Window manipulations now wait for page loading (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2000&quot;&gt;#2000&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;All toolbars are now hidden when taking screenshots (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1445&quot;&gt;#1445&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;TestCafe now works normally with the latest version of CucumberJS (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2107&quot;&gt;#2107&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Fixed an error connected to file permissions on Ubuntu (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2144&quot;&gt;#2144&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Browser manipulations can now be executed step-by-step (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2150&quot;&gt;#2150&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Fixed a bug where a page wouldn&amp;#39;t load because of an error in &lt;code&gt;generateCallExpression&lt;/code&gt; (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1389&quot;&gt;testcafe-hammerhead/#1389&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Now the overridden Blob constructor doesn&amp;#39;t process data unnecessarily (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1359&quot;&gt;testcafe-hammerhead/#1359&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Now the &lt;code&gt;target&lt;/code&gt; attribute is not set for a button after a click on it (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1437&quot;&gt;testcafe-hammerhead/#1437&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;The &lt;code&gt;sandbox&lt;/code&gt;, &lt;code&gt;target&lt;/code&gt; and &lt;code&gt;style&lt;/code&gt; attributes are now cleaned up (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1448&quot;&gt;testcafe-hammerhead/#1448&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;A &lt;code&gt;RangeError&lt;/code&gt; with the message &lt;code&gt;Maximum call stack size exceeded&lt;/code&gt; is no longer raised (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1452&quot;&gt;testcafe-hammerhead/#1452&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;A script error is no longer raised on pages that contain a &lt;code&gt;beforeunload&lt;/code&gt; handler (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1419&quot;&gt;testcafe-hammerhead/#1419&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Fixed wrong overridding of an event object (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1445&quot;&gt;testcafe-hammerhead/#1445&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Illegal invocation error is no longer raised when calling the &lt;code&gt;FileListWrapper.item&lt;/code&gt; method (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1446&quot;&gt;testcafe-hammerhead/#1446&lt;/a&gt;) by &lt;a href=&quot;https://github.com/javiercbk&quot;&gt;@javiercbk&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;A script error is no longer raised when &lt;code&gt;Node.nextSibling&lt;/code&gt; is &lt;code&gt;null&lt;/code&gt; (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1469&quot;&gt;testcafe-hammerhead/#1469&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;The &lt;code&gt;isShadowUIElement&lt;/code&gt; check is now performed for &lt;code&gt;Node.nextSibling&lt;/code&gt; when a node is not an element (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1465&quot;&gt;testcafe-hammerhead/#1465&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;The &lt;code&gt;toString&lt;/code&gt; function is now overridden for anchor elements (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1483&quot;&gt;testcafe-hammerhead/#1483&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Thu, 01 Mar 2018 00:00:00 +0300</pubDate>
+        <link>http://devexpress.github.io/testcafe/blog/testcafe-v0-19-0-released.html</link>
+        <guid isPermaLink="true">http://devexpress.github.io/testcafe/blog/testcafe-v0-19-0-released.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>TestCafe v0.18.0 Released - Angular Selectors, Using Multiple Reporters, etc</title>
@@ -1235,100 +1334,6 @@ This approach allows you to create stable tests that lack random errors and decr
         <pubDate>Thu, 08 Dec 2016 00:00:00 +0300</pubDate>
         <link>http://devexpress.github.io/testcafe/blog/testcafe-v0-11-0-released.html</link>
         <guid isPermaLink="true">http://devexpress.github.io/testcafe/blog/testcafe-v0-11-0-released.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>TestCafe v0.10.0 Released</title>
-        <description>&lt;h1&gt;TestCafe v0.10.0 Released&lt;/h1&gt;
-&lt;p&gt;First of all, we would like to thank everyone who&amp;#39;s reading this for your interest and support for TestCafe.
-And we especially appreciate those of you who reached us to say thank you, offer help or share feedback.
-Let&amp;#39;s keep building a better testing framework together!&lt;/p&gt;
-
-&lt;p&gt;So, here is our first minor update and that&amp;#39;s what it includes.&lt;/p&gt;
-
-&lt;!--more--&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; name=&quot;enhancements&quot;&gt;&lt;/a&gt;Enhancements &lt;a class=&quot;permalink&quot; href=&quot;#enhancements&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; name=&quot;snapshot-api-shorthands&quot;&gt;&lt;/a&gt;Snapshot API shorthands &lt;a class=&quot;permalink&quot; href=&quot;#snapshot-api-shorthands&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;Previously, if you needed to use a single property from the snapshot, you had to introduce two assignments&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;snapshot&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-&lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;nodeType&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;snapshot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nodeType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;or additional parentheses.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;nodeType&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nodeType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Now snapshot methods and property getters are exposed by selectors
-(and selector promises as well) so that you can write more compact code.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;nodeType&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nodeType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;// or&lt;/span&gt;
-
-&lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;nodeType&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'someParam'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nodeType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;However, shorthand properties do not allow you to omit parentheses when working with dictionary properties
-like &lt;code&gt;style&lt;/code&gt;, &lt;code&gt;attributes&lt;/code&gt; or &lt;code&gt;boundingClientRect&lt;/code&gt;.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;width&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;style&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'width'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;That is why we have also introduced shorthand methods for these dictionaries: &lt;code&gt;getStyleProperty&lt;/code&gt;, &lt;code&gt;getAttribute&lt;/code&gt; and &lt;code&gt;getBoundingClientRectProperty&lt;/code&gt;.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;width&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;getStyleProperty&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'width'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;id&lt;/span&gt;    &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;getAttribute&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'id'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;left&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;getBoundingClientRectProperty&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'left'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Finally, we have added the &lt;code&gt;hasClass&lt;/code&gt; method.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;hasClass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'foo'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;//...&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;See &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#obtain-element-state&quot;&gt;Snapshot API Shorthands&lt;/a&gt;.  &lt;/p&gt;
-&lt;h3&gt;&lt;a class=&quot;anchor&quot; name=&quot;improved-automatic-wait-mechanism&quot;&gt;&lt;/a&gt;Improved automatic wait mechanism &lt;a class=&quot;permalink&quot; href=&quot;#improved-automatic-wait-mechanism&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;We got rid of unnecessary waiting so that tests now run almost two times faster.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/DevExpress/testcafe/master/media/new-0-10-0-autowait.gif&quot; alt=&quot;Tests running in v0.10.0 vs v0.9.0&quot;&gt;&lt;/p&gt;
-&lt;h3&gt;&lt;a class=&quot;anchor&quot; name=&quot;test-execution-speed-control&quot;&gt;&lt;/a&gt;Test execution speed control &lt;a class=&quot;permalink&quot; href=&quot;#test-execution-speed-control&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;We have introduced an option that allows you to specify how fast tests run.&lt;/p&gt;
-
-&lt;p&gt;By default, tests run at the maximum speed. However, if you need to watch a test running to understand what happens in it,
-this speed may seem too fast. In this instance, use the new &lt;code&gt;speed&lt;/code&gt; option to slow the test down.&lt;/p&gt;
-
-&lt;p&gt;This option is available from the command line&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe chrome my-tests --speed 0.1
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;and from the API.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;speed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;0.1&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;You can use factor values between &lt;code&gt;1&lt;/code&gt; (the fastest, used by default) and &lt;code&gt;0.01&lt;/code&gt; (the slowest).&lt;/p&gt;
-&lt;h3&gt;&lt;a class=&quot;anchor&quot; name=&quot;tmaximizewindow-test-action&quot;&gt;&lt;/a&gt;t.maximizeWindow test action &lt;a class=&quot;permalink&quot; href=&quot;#tmaximizewindow-test-action&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;We have added a test action that maximizes the browser window.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kr&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;expect&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'chai'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kr&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'testcafe'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;menu&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'#side-menu'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-
-&lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;My&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;page&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//www.example.com/`;&lt;/span&gt;
-
-&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Side menu is displayed in full screen'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;nx&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;maximizeWindow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-
-    &lt;span class=&quot;nx&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;menu&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;visible&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;to&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;be&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;ok&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2&gt;&lt;a class=&quot;anchor&quot; name=&quot;bug-fixes&quot;&gt;&lt;/a&gt;Bug Fixes &lt;a class=&quot;permalink&quot; href=&quot;#bug-fixes&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;The &lt;code&gt;t.resizeWindow&lt;/code&gt; and &lt;code&gt;t.resizeWindowToFitDevice&lt;/code&gt; actions now work correctly on macOS (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/816&quot;&gt;#816&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Browser aliases are now case insensitive in the command line (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/890&quot;&gt;#890&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Tests no longer hang if target scrolling coordinates are fractional (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/882&quot;&gt;#882&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;The &amp;#39;Element is not visible&amp;#39; error is no longer raised when scrolling a document in Quirks mode (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/883&quot;&gt;#883&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;&amp;lt;table&amp;gt;&lt;/code&gt; child elements are now focused correctly (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/889&quot;&gt;#889&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;The page is no longer scrolled to the parent element when focusing on a non-focusable child during click automation (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/913&quot;&gt;#913&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Browser auto-detection now works with all the Linux distributions (&lt;a href=&quot;https://github.com/DevExpress/testcafe-browser-tools/issues/104&quot;&gt;#104&lt;/a&gt;,
-&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/915&quot;&gt;#915&lt;/a&gt;)&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Tue, 08 Nov 2016 00:00:00 +0300</pubDate>
-        <link>http://devexpress.github.io/testcafe/blog/testcafe-v0-10-0-released.html</link>
-        <guid isPermaLink="true">http://devexpress.github.io/testcafe/blog/testcafe-v0-10-0-released.html</guid>
         
         
       </item>

@@ -571,6 +571,13 @@
 		
     </li>
 
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/examples-of-working-with-dom-elements.html"  >Examples of Working with DOM Elements</a>
+		
+    </li>
+
 </ul>
 		
     </li>
@@ -818,6 +825,8 @@
 </code></pre></div>
 <p>TestCafe tries to evaluate the specified selector multiple times within the <a href="selecting-page-elements/selectors/using-selectors.html#selector-timeout">timeout</a>.
 If the element does not appear, the test will fail.</p>
+
+<p>The exceptions are <a href="actions/upload.html#populate-file-upload-input">t.setFilesToUpload</a> and <a href="actions/upload.html#clear-file-upload-input">t.clearUpload</a> actions that do not require that the target element is visible.</p>
 <h2><a class="anchor" name="waiting-for-elements-when-evaluating-selectors"></a>Waiting for Elements When Evaluating Selectors <a class="permalink" href="#waiting-for-elements-when-evaluating-selectors">#</a></h2>
 <p>When evaluating a selector, TestCafe automatically waits for the element to appear in the DOM.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>

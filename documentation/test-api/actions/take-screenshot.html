@@ -571,6 +571,13 @@
 		
     </li>
 
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/examples-of-working-with-dom-elements.html"  >Examples of Working with DOM Elements</a>
+		
+    </li>
+
 </ul>
 		
     </li>
@@ -796,30 +803,168 @@
 		<div class="post-content">
 
 			<h1>Take Screenshot</h1>
-<p>Takes a screenshot of the tested page.</p>
+<p>This topic describes how you can take screenshots of the tested page.</p>
 
-<p><strong>Note</strong>: this action requires a <a href="https://en.wikipedia.org/wiki/Comparison_of_X_window_managers">ICCCM/EWMH-compliant window manager</a> on Linux.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">t.takeScreenshot( [path] )
+<p><strong>Note</strong>: these actions require a <a href="https://en.wikipedia.org/wiki/Comparison_of_X_window_managers">ICCCM/EWMH-compliant window manager</a> on Linux.</p>
+<blockquote class="important"><div class="blockquote-content"><p>If the screenshot directory is not specified with the <a href="../../using-testcafe/programming-interface/runner.html#screenshots">runner.screenshots</a> API method or the <a href="../../using-testcafe/command-line-interface.html#-s-path---screenshots-path">screenshots</a> command line option,
+the screenshot actions are ignored.</p>
+</div></blockquote><h2><a class="anchor" name="take-a-screenshot-of-the-entire-page"></a>Take a Screenshot of the Entire Page <a class="permalink" href="#take-a-screenshot-of-the-entire-page">#</a></h2><div class="highlight"><pre><code class="language-text" data-lang="text">t.takeScreenshot( [path] )
 </code></pre></div>
 <table><thead>
 <tr>
 <th>Parameter</th>
 <th>Type</th>
 <th>Description</th>
-<th>Default</th>
 </tr>
 </thead><tbody>
 <tr>
 <td><code>path</code>&#160;<em>(optional)</em></td>
 <td>String</td>
-<td>The relative path and the name of the screenshot file to be created. Resolved from the <em>screenshot directory</em> specified by using the <a href="../../using-testcafe/programming-interface/runner.html#screenshots">runner.screenshots</a> API method or the <a href="../../using-testcafe/command-line-interface.html#-s-path---screenshots-path">screenshots-path</a> command line option.</td>
-<td><code>{currentDate}\test-{testIndex}\{userAgent}\{screenshotIndex}.png</code>; <code>{currentDate}\test-{testIndex}\run-{quarantineAttempt}\{userAgent}\{screenshotIndex}.png</code> if quarantine mode is enabled.</td>
+<td>The relative path and the name of the screenshot file to be created. Resolved from the <em>screenshot directory</em> specified by using the <a href="../../using-testcafe/programming-interface/runner.html#screenshots">runner.screenshots</a> API method or the <a href="../../using-testcafe/command-line-interface.html#-s-path---screenshots-path">screenshots</a> command line option.</td>
 </tr>
 </tbody></table>
-<blockquote class="important"><div class="blockquote-content"><p>If the screenshot directory is not specified with the <a href="../../using-testcafe/programming-interface/runner.html#screenshots">runner.screenshots</a> API method or the <a href="../../using-testcafe/command-line-interface.html#-s-path---screenshots-path">screenshots-path</a> command line option,
-the <code>t.takeScreenshot</code> action is ignored.</p>
-</div></blockquote>
+
+<p>By default, the path to which screenshots are saved is specified as:</p>
+
+<ul>
+<li><code>{currentDate}\test-{testIndex}\{userAgent}\{screenshotIndex}.png</code> if the <a href="../../using-testcafe/command-line-interface.html#-q---quarantine-mode">quarantine mode</a> is disabled;</li>
+<li><code>{currentDate}\test-{testIndex}\run-{quarantineAttempt}\{userAgent}\{screenshotIndex}.png</code> if the <a href="../../using-testcafe/command-line-interface.html#-q---quarantine-mode">quarantine mode</a> is enabled.</li>
+</ul>
+
 <p>The following example shows how to use the <code>t.takeScreenshot</code> action.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+
+<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`;</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Take a screenshot of a fieldset'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">await</span> <span class="nx">t</span>
+        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">,</span> <span class="s1">'Peter Parker'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">takeScreenshot</span><span class="p">(</span><span class="s1">'my-fixture/thank-you-page.png'</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div><h2><a class="anchor" name="take-a-screenshot-of-a-page-element"></a>Take a Screenshot of a Page Element <a class="permalink" href="#take-a-screenshot-of-a-page-element">#</a></h2><div class="highlight"><pre><code class="language-text" data-lang="text">t.takeElementScreenshot(selector[, path][, options])
+</code></pre></div>
+<p>Takes a screenshot of the specified page element.</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>selector</code></td>
+<td>Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise</td>
+<td>Identifies the webpage element whose screenshot will be taken. See <a href=".#selecting-target-elements">Selecting Target Elements</a>.</td>
+</tr>
+<tr>
+<td><code>path</code>&#160;<em>(optional)</em></td>
+<td>String</td>
+<td>The relative path and the name of the screenshot file to be created. Resolved from the <em>screenshot directory</em> specified by using the <a href="../../using-testcafe/programming-interface/runner.html#screenshots">runner.screenshots</a> API method or the <a href="../../using-testcafe/command-line-interface.html#-s-path---screenshots-path">screenshots</a> command line option.</td>
+</tr>
+<tr>
+<td><code>options</code>&#160;<em>(optional)</em></td>
+<td>Object</td>
+<td>Options that define how the screenshot will be taken. See details below.</td>
+</tr>
+</tbody></table>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+
+<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`;</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Take a screenshot of a fieldset'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">await</span> <span class="nx">t</span>
+        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#reusing-js-code'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#continuous-integration-embedding'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">takeElementScreenshot</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="s1">'fieldset'</span><span class="p">).</span><span class="nx">nth</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="s1">'my-fixture/important-features.png'</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div>
+<p>By default, the path to which screenshots are saved is specified as:</p>
+
+<ul>
+<li><code>{currentDate}\test-{testIndex}\{userAgent}\{screenshotIndex}.png</code> if the <a href="../../using-testcafe/command-line-interface.html#-q---quarantine-mode">quarantine mode</a> is disabled;</li>
+<li><code>{currentDate}\test-{testIndex}\run-{quarantineAttempt}\{userAgent}\{screenshotIndex}.png</code> if the <a href="../../using-testcafe/command-line-interface.html#-q---quarantine-mode">quarantine mode</a> is enabled.</li>
+</ul>
+
+<p>The <code>options</code> object contains the following properties.</p>
+
+<table><thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>scrollTargetX</code>,&#160;<code>scrollTargetY</code></td>
+<td>Number</td>
+<td>If the target element is too big to fit into the browser window, the page will be scrolled to put this point to the center of the viewport. The coordinates of this point are calculated relative to the target element. If the numbers are positive, the point is positioned relative to the top-left corner of the element. If the numbers are negative, the point is positioned relative to the bottom-right corner. If the target element fits into the browser window, these properties have no effect.</td>
+<td>The center of the element. If the <code>crop</code> rectangle is specified, its center. If the <code>crop</code> rectangle is larger than the viewport, the center of the viewport.</td>
+</tr>
+<tr>
+<td><code>includeMargins</code></td>
+<td>Boolean</td>
+<td>Specifies whether to include target element&#39;s margins in the screenshot. When it is enabled, the <code>scrollTargetX</code>, <code>scrollTargetY</code> and <code>crop</code> rectangle coordinates are calculated from the corners where top and left (or bottom and right) margins intersect.</td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>includeBorders</code></td>
+<td>Boolean</td>
+<td>Specifies whether to include target element&#39;s borders in the screenshot. When it is enabled, the <code>scrollTargetX</code>, <code>scrollTargetY</code> and <code>crop</code> rectangle coordinates are calculated from the corners where top and left (or bottom and right) internal edges of the element intersect.</td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td><code>includePaddings</code></td>
+<td>Boolean</td>
+<td>Specifies whether to include target element&#39;s paddings in the screenshot. When it is enabled, the <code>scrollTargetX</code>, <code>scrollTargetY</code> and <code>crop</code> rectangle coordinates are calculated from the corners where top and left (or bottom and right) edges of the element&#39;s content area intersect.</td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td><code>crop</code></td>
+<td>Object</td>
+<td>Allows you to crop the target element on the screenshot.</td>
+<td>Crops to the whole element or, if it does not fit into the viewport, its visible part.</td>
+</tr>
+</tbody></table>
+
+<p>An object assigned to the <code>crop</code> property has the following fields.</p>
+
+<table><thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>top</code></td>
+<td>Number</td>
+<td>The top edge of the cropping rectangle. The coordinate is calculated from the element&#39;s top edge. If a negative number is passed, the coordinate is calculated from the element&#39;s bottom edge.</td>
+</tr>
+<tr>
+<td><code>left</code></td>
+<td>Number</td>
+<td>The left edge of the cropping rectangle. The coordinate is calculated from the element&#39;s left edge. If a negative number is passed, the coordinate is calculated from the element&#39;s right edge.</td>
+</tr>
+<tr>
+<td><code>bottom</code></td>
+<td>Number</td>
+<td>The bottom edge of the cropping rectangle. The coordinate is calculated from the element&#39;s top edge. If a negative number is passed, the coordinate is calculated from the element&#39;s bottom edge.</td>
+</tr>
+<tr>
+<td><code>right</code></td>
+<td>Number</td>
+<td>The right edge of the cropping rectangle. The coordinate is calculated from the element&#39;s left edge. If a negative number is passed, the coordinate is calculated from the element&#39;s right edge.</td>
+</tr>
+</tbody></table>
+
+<p><img src="../../../images/screenshot-crop.png" alt="Crop Rectangle"></p>
+
+<p><strong>Example</strong></p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
     <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//www.example.com/`;</span>
 
@@ -828,7 +973,15 @@ the <code>t.takeScreenshot</code> action is ignored.</p>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#change-avatar'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">setFilesToUpload</span><span class="p">(</span><span class="s1">'#upload-input'</span><span class="p">,</span> <span class="s1">'img/portrait.jpg'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#submit'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">takeScreenshot</span><span class="p">(</span><span class="s1">'my-fixture/test1.png'</span><span class="p">);</span>
+        <span class="p">.</span><span class="nx">takeElementScreenshot</span><span class="p">(</span><span class="s1">'#avatar'</span><span class="p">,</span> <span class="p">{</span>
+            <span class="na">includeMargins</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="na">crop</span><span class="p">:</span> <span class="p">{</span>
+                <span class="na">top</span><span class="p">:</span> <span class="o">-</span><span class="mi">100</span><span class="p">,</span>
+                <span class="na">left</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+                <span class="na">bottom</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span>
+                <span class="na">right</span><span class="p">:</span> <span class="mi">200</span>
+            <span class="p">}</span>
+        <span class="p">});</span>
 <span class="p">});</span>
 </code></pre></div>
 

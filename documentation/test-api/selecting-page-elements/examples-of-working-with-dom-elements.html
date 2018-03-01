@@ -8,20 +8,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <title>Edge Cases and Limitations | TestCafe</title>
+  <title>Examples of Working with DOM Elements | TestCafe</title>
 
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
   
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/edge-cases-and-limitations.html" />
-  <meta property="og:title" content="Edge Cases and Limitations | TestCafe" />
+  <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/examples-of-working-with-dom-elements.html" />
+  <meta property="og:title" content="Examples of Working with DOM Elements | TestCafe" />
 
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
-  <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/edge-cases-and-limitations.html">
+  <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/examples-of-working-with-dom-elements.html">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="http://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
@@ -549,7 +549,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/edge-cases-and-limitations.html" class="active" >Edge Cases and Limitations</a>
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/edge-cases-and-limitations.html"  >Edge Cases and Limitations</a>
 		
     </li>
 
@@ -574,7 +574,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/selecting-page-elements/examples-of-working-with-dom-elements.html"  >Examples of Working with DOM Elements</a>
+<a href="/testcafe/documentation/test-api/selecting-page-elements/examples-of-working-with-dom-elements.html" class="active" >Examples of Working with DOM Elements</a>
 		
     </li>
 
@@ -802,62 +802,110 @@
 	<article class="doc">
 		<div class="post-content">
 
-			<h1>Edge Cases and Limitations</h1>
-<p>This topic contains information about edge cases of using selectors and selectors API limitations.</p>
+			<h1>Examples of Working with DOM Elements</h1>
+<p>This document shows how to work with DOM elements in frequent real-world situations.</p>
 
 <ul>
-<li><a href="#calling-selectors-from-nodejs-callbacks">Calling Selectors from Node.js Callbacks</a></li>
-<li><a href="#limitations">Limitations</a></li>
+<li><a href="#accessing-page-element-properties">Accessing Page Element Properties</a></li>
+<li><a href="#getting-a-page-element-using-custom-logic">Getting a Page Element Using Custom Logic</a></li>
+<li><a href="#checking-if-an-element-is-available">Checking if an Element is Available</a></li>
+<li><a href="#enumerating-elements-identified-by-a-selector">Enumerating Elements Identified by a Selector</a></li>
 </ul>
-<h2><a class="anchor" name="calling-selectors-from-nodejs-callbacks"></a>Calling Selectors from Node.js Callbacks <a class="permalink" href="#calling-selectors-from-nodejs-callbacks">#</a></h2>
-<p>Selectors need access to the <a href="../../test-code-structure.html#test-controller">test controller</a> to be executed.
-When called right from the test function, they implicitly obtain the test controller.</p>
+<h2><a class="anchor" name="accessing-page-element-properties"></a>Accessing Page Element Properties <a class="permalink" href="#accessing-page-element-properties">#</a></h2>
+<p>To work with page elements, use TestCafe <a href="selectors/">selectors</a>.
+Import the <code>Selector</code> function and call it passing a CSS selector inside.
+This function creates a selector object whose <a href="dom-node-state.html">API</a> exposes the most used members of HTML element API.</p>
 
-<p>However, if you need to call a selector from a Node.js callback that fires during the test run,
-you have to manually bind it to the test controller.</p>
-
-<p>Use the <a href="selector-options.html#optionsboundtestrun">boundTestRun</a> option for this.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">http</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'http'</span><span class="p">;</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<p>Note that all property getters are asynchronous, so add the <code>await</code> keyword.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
 <span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//www.example.com/`;</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">https</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`;</span>
 
-<span class="kr">const</span> <span class="nx">elementWithId</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">id</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">id</span><span class="p">));</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">const</span> <span class="nx">element</span>     <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">);</span>
+    <span class="kr">const</span> <span class="nx">clientWidth</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">element</span><span class="p">.</span><span class="nx">clientWidth</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Title changed'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">boundSelector</span> <span class="o">=</span> <span class="nx">elementWithId</span><span class="p">.</span><span class="kd">with</span><span class="p">({</span> <span class="na">boundTestRun</span><span class="p">:</span> <span class="nx">t</span> <span class="p">});</span>
-
-    <span class="c1">// Performs an HTTP request that changes the article title on the page.</span>
-    <span class="c1">// Resolves to a value indicating whether the title has been changed.</span>
-    <span class="kr">const</span> <span class="nx">match</span> <span class="o">=</span> <span class="nx">await</span> <span class="k">new</span> <span class="nx">Promise</span><span class="p">(</span><span class="nx">resolve</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="kr">const</span> <span class="nx">req</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">request</span><span class="p">(</span><span class="cm">/* request options */</span><span class="p">,</span> <span class="nx">res</span> <span class="o">=&gt;</span> <span class="p">{</span>
-            <span class="k">if</span><span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">statusCode</span> <span class="o">===</span> <span class="mi">200</span><span class="p">)</span> <span class="p">{</span>
-                <span class="nx">boundSelector</span><span class="p">(</span><span class="s1">'article-title'</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">titleEl</span> <span class="o">=&gt;</span> <span class="p">{</span>
-                    <span class="nx">resolve</span><span class="p">(</span><span class="nx">titleEl</span><span class="p">.</span><span class="nx">textContent</span> <span class="o">===</span> <span class="s1">'New title'</span><span class="p">);</span>
-                <span class="p">});</span>
-            <span class="p">}</span>
-        <span class="p">});</span>
-
-        <span class="nx">req</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">title</span><span class="p">)</span>
-        <span class="nx">req</span><span class="p">.</span><span class="nx">end</span><span class="p">();</span>
-    <span class="p">});</span>
-
-    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">match</span><span class="p">).</span><span class="nx">ok</span><span class="p">();</span>
+    <span class="c1">// do something with clientWidth</span>
 <span class="p">});</span>
 </code></pre></div>
-<p>This approach only works for Node.js callbacks that fire during the test run. To ensure that the test function
-does not finish before the callback is executed, suspend the test until the callback fires. You can do this
-by introducing a promise and synchronously waiting for it to complete as shown in the example above.</p>
-<h2><a class="anchor" name="limitations"></a>Limitations <a class="permalink" href="#limitations">#</a></h2>
-<ul>
-<li><p>You cannot use generators or <code>async/await</code> syntax within selectors.</p></li>
-<li><p>Selectors cannot access variables defined in the outer scope in test code.
-However, you can use arguments to pass data inside the selectors, except for those that are self-invoked.
-They cannot take any parameters from the outside.</p>
+<p>If you need to access an element property not included in the selector&#39;s API, request it explicitly by using the <a href="selectors/extending-selectors.html">addCustomDOMProperties</a> method.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<p>Likewise, the return value is the only way to obtain data from selectors.</p></li>
-</ul>
+<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">https</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`;</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Check Label HTML'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">const</span> <span class="nx">label</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'label'</span><span class="p">).</span><span class="nx">addCustomDOMProperties</span><span class="p">({</span>
+        <span class="na">innerHTML</span><span class="p">:</span> <span class="nx">el</span> <span class="o">=&gt;</span> <span class="nx">el</span><span class="p">.</span><span class="nx">innerHTML</span>
+    <span class="p">});</span>
+
+    <span class="nx">await</span> <span class="nx">t</span>
+        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">label</span><span class="p">.</span><span class="nx">innerHTML</span><span class="p">).</span><span class="nx">contains</span><span class="p">(</span><span class="s1">'type="checkbox"'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">label</span><span class="p">.</span><span class="nx">innerHTML</span><span class="p">).</span><span class="nx">contains</span><span class="p">(</span><span class="s1">'name="remote"'</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div>
+<p>Note that the <code>await</code> keyword can be omitted when specifying a selector property in an <a href="../assertions/">assertion</a>. This activates the <a href="../assertions/#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a>.</p>
+<h2><a class="anchor" name="getting-a-page-element-using-custom-logic"></a>Getting a Page Element Using Custom Logic <a class="permalink" href="#getting-a-page-element-using-custom-logic">#</a></h2>
+<p>Sometimes CSS selectors are not powerful enough to identify the required page element.
+In this instance, you can introduce a function that picks the desired element.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+
+<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">https</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`;</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">const</span> <span class="nx">checkBoxesStartingWithR</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="kd">let</span> <span class="nx">labels</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelectorAll</span><span class="p">(</span><span class="s1">'label'</span><span class="p">);</span>
+
+        <span class="nx">labels</span> <span class="o">=</span> <span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">slice</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">labels</span><span class="p">);</span>
+
+        <span class="kr">const</span> <span class="nx">targetLabels</span> <span class="o">=</span> <span class="nx">labels</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">label</span> <span class="o">=&gt;</span> <span class="nx">label</span><span class="p">.</span><span class="nx">textContent</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/^R/</span><span class="p">));</span>
+
+        <span class="k">return</span> <span class="nx">targetLabels</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">label</span> <span class="o">=&gt;</span> <span class="nx">label</span><span class="p">.</span><span class="nx">children</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+    <span class="p">});</span>
+
+    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">checkBoxesStartingWithR</span><span class="p">.</span><span class="nx">nth</span><span class="p">(</span><span class="mi">0</span><span class="p">));</span>
+<span class="p">});</span>
+</code></pre></div><h2><a class="anchor" name="checking-if-an-element-is-available"></a>Checking if an Element is Available <a class="permalink" href="#checking-if-an-element-is-available">#</a></h2>
+<p>Generally speaking, introducing conditions in tests is not considered good practice because it indicates that your tests are non-deterministic.
+The tested website should guarantee that the test writer knows the page state at any moment. If it is so, you need no conditions in test code.</p>
+
+<p>However, in practice, things are usually a bit different. Many websites contain elements that may be invisible or non-existent at times.
+In this instance, it may be a good idea to check the element availability before taking actions on it.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+
+<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">https</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`;</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">const</span> <span class="nx">element</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">);</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="nx">await</span> <span class="nx">element</span><span class="p">.</span><span class="nx">exists</span> <span class="o">&amp;&amp;</span> <span class="nx">await</span> <span class="nx">element</span><span class="p">.</span><span class="nx">visible</span><span class="p">)</span>
+        <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">element</span><span class="p">,</span> <span class="s1">'Peter Parker'</span><span class="p">);</span>
+
+    <span class="c1">// ...</span>
+<span class="p">});</span>
+</code></pre></div><h2><a class="anchor" name="enumerating-elements-identified-by-a-selector"></a>Enumerating Elements Identified by a Selector <a class="permalink" href="#enumerating-elements-identified-by-a-selector">#</a></h2>
+<p>Another common case is creating a selector that matches several elements to perform certain actions using all of them.</p>
+
+<p>The following example clicks through a number of check boxes on the example page.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+
+<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">https</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`;</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">const</span> <span class="nx">checkboxes</span>    <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'legend'</span><span class="p">).</span><span class="nx">withText</span><span class="p">(</span><span class="s1">'Which features are important to you:'</span><span class="p">).</span><span class="nx">parent</span><span class="p">(</span><span class="mi">0</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">'input'</span><span class="p">);</span>
+    <span class="kr">const</span> <span class="nx">checkboxCount</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">checkboxes</span><span class="p">.</span><span class="nx">count</span><span class="p">;</span>
+
+    <span class="k">for</span><span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">checkboxCount</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+        <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">checkboxes</span><span class="p">.</span><span class="nx">nth</span><span class="p">(</span><span class="nx">i</span><span class="p">));</span>
+<span class="p">});</span>
+</code></pre></div><h2><a class="anchor" name="more-examples"></a>More Examples <a class="permalink" href="#more-examples">#</a></h2>
+<p>If you encounter a difficult situation while working with DOM elements,
+let us know by posting on <a href="https://testcafe-discuss.devexpress.com/">our forum</a>
+and if you are not alone we will add an example to this topic.</p>
 
 
 		</div>
