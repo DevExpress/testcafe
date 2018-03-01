@@ -766,7 +766,7 @@ Tests will run concurrently against this pool, i.e. each test will run in the fi
 <p>Executes the specified shell command before running tests. Use it to launch or deploy the application you are going to test.</p>
 
 <p>After testing is finished, this application will be automatically terminated.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests --app <span class="s1">'node server.js'</span>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests --app <span class="s2">"node server.js"</span>
 </code></pre></div><blockquote><div class="blockquote-content"><p>TestCafe adds <code>node_modules/.bin</code> to <code>PATH</code> so that you can use binaries provided by locally installed dependencies without prefixes.</p>
 </div></blockquote>
 <p>Use the <a href="#--app-init-delay-ms">--app-init-delay</a> option to specify the amount of time allowed for this command to initialize the tested application.</p>
@@ -792,7 +792,7 @@ it will be paused within this hook before the first action.</p>
 <p>TestCafe waits for the specified time before it starts running tests.</p>
 
 <p><strong>Default value</strong>: <code>1000</code></p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests --app <span class="s1">'node server.js'</span> --app-init-delay 4000
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests --app <span class="s2">"node server.js"</span> --app-init-delay 4000
 </code></pre></div><h3><a class="anchor" name="--selector-timeout-ms"></a>--selector-timeout &lt;ms&gt; <a class="permalink" href="#--selector-timeout-ms">#</a></h3>
 <p>Specifies the amount of time, in milliseconds, within which <a href="../test-api/selecting-page-elements/selectors/">selectors</a> make
 attempts to obtain a node to be returned. See <a href="../test-api/selecting-page-elements/selectors/using-selectors.html#selector-timeout">Selector Timeout</a>.</p>

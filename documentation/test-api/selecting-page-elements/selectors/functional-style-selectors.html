@@ -571,6 +571,13 @@
 		
     </li>
 
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/examples-of-working-with-dom-elements.html"  >Examples of Working with DOM Elements</a>
+		
+    </li>
+
 </ul>
 		
     </li>
@@ -805,7 +812,10 @@ These methods can be used in a chain for a functional-style selection mechanism.
 <ul>
 <li><a href="#nth">nth</a></li>
 <li><a href="#withtext">withText</a></li>
+<li><a href="#withexacttext">withExactText</a></li>
 <li><a href="#withattribute">withAttribute</a></li>
+<li><a href="#filtervisible">filterVisible</a></li>
+<li><a href="#filterhidden">filterHidden</a></li>
 <li><a href="#filter">filter</a></li>
 </ul></li>
 <li><a href="#search-for-elements-in-the-dom-hierarchy">Search for Elements in the DOM Hierarchy</a>
@@ -842,19 +852,33 @@ The selector provides methods to filter DOM nodes by their index, text, attribut
 <table><thead>
 <tr>
 <th>Method</th>
-<th>Return Type</th>
+<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
 <td><code>withText(text)</code></td>
 <td>Selector</td>
-<td>Finds elements whose text content contains the specified string. The <code>text</code> argument is case-sensitive.</td>
+<td>Creates a selector that filters a matching set by the specified text. Selects elements that <em>contain</em> this text. To filter elements by <em>strict match</em>, use the <code>withExactText</code> method. The <code>text</code> parameter is case-sensitive.</td>
 </tr>
 <tr>
 <td><code>withText(re)</code></td>
 <td>Selector</td>
-<td>Finds elements whose text content matches the specified regular expression.</td>
+<td>Creates a selector that filters a matching set using the specified regular expression.</td>
+</tr>
+</tbody></table>
+<h3><a class="anchor" name="withexacttext"></a>withExactText <a class="permalink" href="#withexacttext">#</a></h3>
+<table><thead>
+<tr>
+<th>Method</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>withExactText(text)</code></td>
+<td>Selector</td>
+<td>Creates a selector that filters a matching set by the specified text. Selects elements whose text content <em>strictly matches</em> this text. To search for elements that <em>contain</em> a specific text, use the <code>withText</code> method. The <code>text</code> parameter is case-sensitive.</td>
 </tr>
 </tbody></table>
 <h3><a class="anchor" name="withattribute"></a>withAttribute <a class="permalink" href="#withattribute">#</a></h3>
@@ -894,6 +918,34 @@ The selector provides methods to filter DOM nodes by their index, text, attribut
 </tbody></table>
 
 <p>If <code>attrName</code> or <code>attrValue</code> is a String, <code>withAttribute</code> selects an element by strict match.</p>
+<h4><a class="anchor" name="filtervisible"></a>filterVisible <a class="permalink" href="#filtervisible">#</a></h4>
+<table><thead>
+<tr>
+<th>Method</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>filterVisible()</code></td>
+<td>Selector</td>
+<td>Creates a selector that filters a matching set leaving only visible elements. These are elements that <em>do not</em> have <code>display: none</code> or <code>visibility: hidden</code> CSS properties and have non-zero width and height.</td>
+</tr>
+</tbody></table>
+<h4><a class="anchor" name="filterhidden"></a>filterHidden <a class="permalink" href="#filterhidden">#</a></h4>
+<table><thead>
+<tr>
+<th>Method</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>filterHidden()</code></td>
+<td>Selector</td>
+<td>Creates a selector that filters a matching set leaving only hidden elements. These are elements that have a <code>display: none</code> or <code>visibility: hidden</code> CSS property or zero width or height.</td>
+</tr>
+</tbody></table>
 <h3><a class="anchor" name="filter"></a>filter <a class="permalink" href="#filter">#</a></h3>
 <table><thead>
 <tr>

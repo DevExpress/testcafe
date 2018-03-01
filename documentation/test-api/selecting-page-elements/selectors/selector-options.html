@@ -571,6 +571,13 @@
 		
     </li>
 
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/examples-of-working-with-dom-elements.html"  >Examples of Working with DOM Elements</a>
+		
+    </li>
+
 </ul>
 		
     </li>
@@ -829,6 +836,47 @@ or the <a href="../../../using-testcafe/command-line-interface.html#--selector-t
 <p><strong>Type</strong>: Boolean</p>
 
 <p><code>true</code> to additionally require the returned element to become visible within <a href="#optionstimeout">options.timeout</a>.</p>
+
+<p>This option is in effect when TestCafe waits for the selector to return a page element. This includes situations when</p>
+
+<ul>
+<li><p>a property is obtained from the selector;</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">width</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#element'</span><span class="p">,</span> <span class="p">{</span> <span class="na">visibilityCheck</span><span class="p">:</span> <span class="kc">true</span> <span class="p">}).</span><span class="nx">clientWidth</span><span class="p">;</span>
+</code></pre></div></li>
+<li><p>a selector property is passed to an <a href="../../assertions/">assertion</a> as its actual value;</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="s1">'#element'</span><span class="p">,</span> <span class="p">{</span> <span class="na">visibilityCheck</span><span class="p">:</span> <span class="kc">true</span> <span class="p">}).</span><span class="nx">clientWidth</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="mi">400</span><span class="p">);</span>
+</code></pre></div></li>
+<li><p>a selector is evaluated using the <code>await</code> keyword;</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">snapshot</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#element'</span><span class="p">,</span> <span class="p">{</span> <span class="na">visibilityCheck</span><span class="p">:</span> <span class="kc">true</span> <span class="p">})();</span>
+</code></pre></div></li>
+</ul>
+
+<p>If the target element is not visible, the selector throws an exception in all these cases.</p>
+
+<p>Note that when a selector is passed to a <a href="../../actions/">test action</a> as an identifier for the target element,
+TestCafe <a href="../../waiting-for-page-elements-to-appear.html#waiting-for-action-target-elements">requires</a> that the target element is visible regardless of the <code>visibilityCheck</code> option.</p>
+
+<p>Unlike filter functions, the <code>visibilityCheck</code> option does not change the matching set of the selector.</p>
+
+<p>Consider the following page:</p>
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;html&gt;</span>
+  <span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;div&gt;</span>This div is visible<span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">style=</span><span class="s">"display:none"</span><span class="nt">&gt;</span>This div not is visible<span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">style=</span><span class="s">"visibility:hidden"</span><span class="nt">&gt;</span>This div not is visible either<span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div>
+<p>When a selector with <code>visibilitycheck</code> enabled is tested for an element existance
+or the number of matching elements, invisible elements also count.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">count</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'div'</span><span class="p">,</span> <span class="p">{</span> <span class="na">visibilityCheck</span><span class="p">:</span> <span class="kc">true</span> <span class="p">}).</span><span class="nx">count</span><span class="p">;</span>
+
+<span class="c1">// returns 3 since the visibilityCheck option</span>
+<span class="c1">// does not affect the selector's matching set</span>
+</code></pre></div>
+<p>In case you need to filter page elements by their visibility,
+use <a href="functional-style-selectors.html#filtervisible">filterVisible</a> and
+<a href="functional-style-selectors.html#filterhidden">filterHidden</a> methods.</p>
 
 <p><strong>Default value</strong>: <code>false</code></p>
 <h2><a class="anchor" name="overwriting-options"></a>Overwriting Options <a class="permalink" href="#overwriting-options">#</a></h2>
