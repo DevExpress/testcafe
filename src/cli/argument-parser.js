@@ -88,7 +88,7 @@ export default class CLIArgumentParser {
             .option('-b, --list-browsers [provider]', 'output the aliases for local browsers or browsers available through the specified browser provider')
             .option('-r, --reporter <name[:outputFile][,...]>', 'specify the reporters and optionally files where reports are saved')
             .option('-s, --screenshots <path>', 'enable screenshot capturing and specify the path to save the screenshots to')
-            .option('-p, --pattern <pattern>', 'use patterns to compose screenshot file names and paths: ${BROWSER}, ${BROWSERVERSION}, ${OS}, ${OSVERSION}, ${USERAGENT}, ${DATE}, ${TIME}, ${FIXTURE}, ${TEST}, ${TESTNUMBER}, ${FILENUMBER}')
+            .option('-p, --screenshot-path-pattern <pattern>', 'use patterns to compose screenshot file names and paths: ${BROWSER}, ${BROWSER_VERSION}, ${OS}, ${OS_VERSION}, ${USERAGENT}, ${DATE}, ${TIME}, ${FIXTURE}, ${TEST}, ${TEST_INDEX}, ${FILE_INDEX}, ${QUARANTINE_ATTEMPT}')
             .option('-S, --screenshots-on-fails', 'take a screenshot whenever a test fails')
             .option('-q, --quarantine-mode', 'enable the quarantine mode')
             .option('-d, --debug-mode', 'execute test steps one by one pausing the test after each step')
@@ -188,8 +188,8 @@ export default class CLIArgumentParser {
     }
 
     _parseScreenshotsPattern () {
-        if (!this.opts.pattern)
-            this.opts.pattern = '${DATE}_${TIME}/test-${TESTNUMBER}/${USERAGENT}/${TESTNUMBER}';
+        if (!this.opts.screenshotPathPattern)
+            this.opts.screenshotPathPattern = '${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${TEST_INDEX}';
     }
 
     _parseConcurrency () {

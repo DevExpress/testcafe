@@ -80,9 +80,9 @@ export default class Capturer {
         };
     }
 
-    _parseFileNumber (fileName) {
-        if (fileName.indexOf('${FILENUMBER}') !== -1)
-            return fileName.replace(new RegExp('\\$\\{FILENUMBER\\}', 'g'), (this.screenshotIndex - 1).toString().padStart(3, 0));
+    _parseFileIndex (fileName) {
+        if (fileName.indexOf('${FILE_INDEX}') !== -1)
+            return fileName.replace(new RegExp('\\$\\{FILE_INDEX\\}', 'g'), (this.screenshotIndex - 1).toString().padStart(3, 0));
         else if (this.screenshotIndex > 2)
             return `${fileName}-${this.screenshotIndex - 1}`;
 
@@ -132,7 +132,7 @@ export default class Capturer {
         if (!this.enabled)
             return null;
 
-        var fileName = this._parseFileNumber(this._getFileName(forError)) + FILENAME_EXT;
+        var fileName = this._parseFileIndex(this._getFileName(forError)) + FILENAME_EXT;
 
         fileName = forError ? joinPath('errors', fileName) : fileName;
 

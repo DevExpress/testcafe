@@ -1,6 +1,7 @@
 import { find } from 'lodash';
 import sanitizeFilename from 'sanitize-filename';
 import moment from 'moment';
+import useragent from 'useragent';
 import Capturer from './capturer';
 
 export default class Screenshots {
@@ -14,18 +15,18 @@ export default class Screenshots {
         this.userAgentNames        = [];
         this.currentDate           = now.format('YYYY-MM-DD');
         this.currentTime           = now.format('HH-mm-ss');
-        // FILENUMBER is handled in the Capturer class
+        // FILE_INDEX is handled in the Capturer class
         this.patternMap            = {
-            FIXTURE:        null,
-            TEST:           null,
-            TESTNUMBER:     null,
-            DATE:           this.currentDate,
-            TIME:           this.currentTime,
-            USERAGENT:      null,
-            BROWSER:        null,
-            BROWSERVERSION: null,
-            OS:             null,
-            OSVERSION:      null
+            FIXTURE:         null,
+            TEST:            null,
+            TEST_INDEX:      null,
+            DATE:            this.currentDate,
+            TIME:            this.currentTime,
+            USERAGENT:       null,
+            BROWSER:         null,
+            BROWSER_VERSION: null,
+            OS:              null,
+            OSV_ERSION:      null
         };
     }
 
@@ -48,7 +49,8 @@ export default class Screenshots {
     }
 
     _getUserAgentName (userAgent, testIndex, quarantineAttemptNum) {
-        var userAgentName = Screenshots._escapeUserAgent(userAgent);
+        var userAgentString = userAgent.toString();
+        var userAgentName = Screenshots._escapeUserAgent(userAgentString);
         var usedUserAgent = this._getUsedUserAgent(userAgentName, testIndex, quarantineAttemptNum);
 
         if (usedUserAgent) {
@@ -58,17 +60,12 @@ export default class Screenshots {
 
         this.userAgentNames.push({ name: userAgentName, index: 0, testIndex, quarantineAttemptNum });
 
-        const userAgentMatches = userAgentName.match(new RegExp('^(.+?)_([0-9.]+)_(.+?)_([0-9.]+)$'));
-
-        userAgentMatches.shift();
-        const [browser, browserVersion, os, osVersion] = userAgentMatches;
-
         return {
-            full: userAgentName,
-            browser,
-            browserVersion,
-            os,
-            osVersion
+            full:           userAgentName,
+            browser:        userAgent.family,
+            browserVersion: userAgent.toVersion(),
+            os:             userAgent.os.family,
+            osVersion:      userAgent.os.toVersion()
         };
     }
 
@@ -99,17 +96,20 @@ export default class Screenshots {
     _parsePattern (namePattern, options) {
         if (!namePattern) return '';
 
+        var spaceRegex = new RegExp(' ', 'g');
+
         this.patternMap = Object.assign(this.patternMap, {
-            FIXTURE:        options.fixture.replace(' ', '-'),
-            TEST:           options.test.replace(' ', '-'),
-            TESTNUMBER:     options.testNumber,
-            DATE:           this.currentDate,
-            TIME:           this.currentTime,
-            USERAGENT:      options.userAgent.full,
-            BROWSER:        options.userAgent.browser,
-            BROWSERVERSION: options.userAgent.browserVersion,
-            OS:             options.userAgent.os,
-            OSVERSION:      options.userAgent.osVersion
+            FIXTURE:            options.fixture.replace(spaceRegex, '-'),
+            TEST:               options.test.replace(spaceRegex, '-'),
+            TEST_INDEX:         options.testIndex,
+            DATE:               this.currentDate,
+            TIME:               this.currentTime,
+            USERAGENT:          options.userAgent.full,
+            BROWSER:            options.userAgent.browser.replace(spaceRegex, '_'),
+            BROWSER_VERSION:    options.userAgent.browserVersion,
+            OS:                 options.userAgent.os.replace(spaceRegex, '_'),
+            OS_VERSION:         options.userAgent.osVersion,
+            QUARANTINE_ATTEMPT: options.quarantineAttempt
         });
 
         for (const pattern in this.patternMap)
@@ -119,16 +119,18 @@ export default class Screenshots {
     }
 
     createCapturerFor (test, testIndex, quarantineAttemptNum, connection, warningLog) {
+        var userAgent = useragent.parse(connection.browserInfo.userAgentRaw);
         var testEntry = this._getTestEntry(test);
 
         if (!testEntry)
             testEntry = this._addTestEntry(test);
 
         const patternOptions = {
-            testNumber: testIndex,
-            fixture:    test.fixture.name,
-            test:       test.name,
-            userAgent:  this._getUserAgentName(connection.userAgent, testIndex, quarantineAttemptNum)
+            testIndex:         testIndex,
+            fixture:           test.fixture.name,
+            test:              test.name,
+            quarantineAttempt: quarantineAttemptNum ? quarantineAttemptNum : 1,
+            userAgent:         this._getUserAgentName(userAgent, testIndex, quarantineAttemptNum)
         };
 
         var namingOptions = {
