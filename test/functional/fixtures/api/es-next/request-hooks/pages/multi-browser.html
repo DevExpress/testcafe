@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<button>Get browser info</button>
+<script>
+    var button = document.getElementsByTagName('button')[0];
+
+    button.addEventListener('click', function () {
+        var xhr = new XMLHttpRequest();
+
+        xhr.open('GET', '/get-browser-name');
+        xhr.addEventListener('load', function (e) {
+            button.textContent = 'Done';
+        });
+        xhr.addEventListener('error', function (e) {
+            throw new Error('XMLHttpRequest for `/get-browser-name` route was finished with error.');
+        });
+
+        xhr.send();
+    });
+</script>
+</body>
+</html>

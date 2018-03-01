@@ -106,6 +106,31 @@ export default class TestRun extends Session {
         this.injectable.scripts.push('/testcafe-automation.js');
         this.injectable.scripts.push('/testcafe-driver.js');
         this.injectable.styles.push('/testcafe-ui-styles.css');
+
+        this.requestHooks = Array.from(this.test.requestHooks);
+
+        this._initRequestHooks();
+    }
+
+    _initRequestHook (hook) {
+        hook._instantiateRequestFilterRules();
+        hook._instantiatedRequestFilterRules.forEach(rule => {
+            this.addRequestEventListeners(rule, {
+                onRequest:           hook.onRequest.bind(hook),
+                onConfigureResponse: hook._onConfigureResponse.bind(hook),
+                onResponse:          hook.onResponse.bind(hook)
+            });
+        });
+    }
+
+    _disposeRequestHook (hook) {
+        hook._instantiatedRequestFilterRules.forEach(rule => {
+            this.removeRequestEventListeners(rule);
+        });
+    }
+
+    _initRequestHooks () {
+        this.requestHooks.forEach(hook => this._initRequestHook(hook));
     }
 
 

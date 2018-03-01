@@ -56,5 +56,6 @@ export default {
     windowDimensionsOverflowError:                     'windowDimensionsOverflowError',
     invalidElementScreenshotDimensionsError:           'invalidElementScreenshotDimensionsError',
     roleSwitchInRoleInitializerError:                  'roleSwitchInRoleInitializerError',
-    assertionExecutableArgumentError:                  'assertionExecutableArgumentError'
+    assertionExecutableArgumentError:                  'assertionExecutableArgumentError',
+    requestHookConfigureAPIError:                      'requestHookConfigureAPIError'
 };

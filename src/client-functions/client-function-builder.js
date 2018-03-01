@@ -8,7 +8,7 @@ import { APIError, ClientFunctionAPIError } from '../errors/runtime';
 import { assertType, is } from '../errors/runtime/type-assertions';
 import MESSAGE from '../errors/runtime/message';
 import { getCallsiteForMethod } from '../errors/get-callsite';
-import ClientFunctionResultPromise from './result-promise';
+import ReExecutablePromise from '../utils/re-executable-promise';
 import testRunMarker from '../test-run/marker-symbol';
 
 const DEFAULT_EXECUTION_CALLSITE_NAME = '__$$clientFunction$$';
@@ -117,7 +117,7 @@ export default class ClientFunctionBuilder {
         // correct callsite in case of replicator error.
         var command = this.getCommand(args);
 
-        return ClientFunctionResultPromise.fromFn(async () => {
+        return ReExecutablePromise.fromFn(async () => {
             if (!testRun) {
                 var err = new ClientFunctionAPIError(this.callsiteNames.execution, this.callsiteNames.instantiation, MESSAGE.clientFunctionCantResolveTestRun);
 

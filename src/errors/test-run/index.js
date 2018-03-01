@@ -470,3 +470,13 @@ export class SetNativeDialogHandlerCodeWrongTypeError extends TestRunErrorBase {
     }
 }
 
+// Request Hooks
+export class RequestHookConfigureAPIError extends TestRunErrorBase {
+    constructor (requestHookName, errMsg) {
+        super(TYPE.requestHookConfigureAPIError);
+
+        this.requestHookName = requestHookName;
+        this.errMsg          = errMsg;
+    }
+}
+

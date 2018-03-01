@@ -1,24 +1,10 @@
-var expect                   = require('chai').expect;
-var TYPE                     = require('../../lib/test-run/commands/type');
-var createCommand            = require('../../lib/test-run/commands/from-object');
-var ERROR_TYPE               = require('../../lib/errors/test-run/type');
-var SelectorBuilder          = require('../../lib/client-functions/selectors/selector-builder');
-var MARK_BYTES_PER_PIXEL     = require('../../lib/screenshots/constants').MARK_BYTES_PER_PIXEL;
-
-
-// NOTE: chai's throws doesn't perform deep comparison of error objects
-function assertThrow (fn, expectedErr) {
-    var actualErr = null;
-
-    try {
-        fn();
-    }
-    catch (err) {
-        actualErr = err;
-    }
-
-    expect(actualErr).eql(expectedErr);
-}
+var expect               = require('chai').expect;
+var TYPE                 = require('../../lib/test-run/commands/type');
+var createCommand        = require('../../lib/test-run/commands/from-object');
+var ERROR_TYPE           = require('../../lib/errors/test-run/type');
+var SelectorBuilder      = require('../../lib/client-functions/selectors/selector-builder');
+var MARK_BYTES_PER_PIXEL = require('../../lib/screenshots/constants').MARK_BYTES_PER_PIXEL;
+var assertThrow          = require('./helpers/assert-error').assertThrow;
 
 function assertErrorMessage (fn, expectedErrMessage) {
     var actualErr = null;

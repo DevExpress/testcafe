@@ -1,5 +1,5 @@
 import Promise from 'pinkie';
-import { identity, assign, isNil as isNullOrUndefined } from 'lodash';
+import { identity, assign, isNil as isNullOrUndefined, flattenDeep as flatten, pull as remove } from 'lodash';
 import { getCallsiteForMethod } from '../../errors/get-callsite';
 import ClientFunctionBuilder from '../../client-functions/client-function-builder';
 import Assertion from './assertion';
@@ -39,7 +39,7 @@ import {
 } from '../../test-run/commands/browser-manipulation';
 
 import { WaitCommand, DebugCommand } from '../../test-run/commands/observation';
-
+import assertRequestHookType from '../request-hooks/assert-type';
 
 export default class TestController {
     constructor (testRun) {
@@ -105,7 +105,6 @@ export default class TestController {
             return () => this.testRun.executeCommand(command, callsite);
         });
     }
-
 
     // API implementation
     // We need implementation methods to obtain correct callsites. If we use plain API
@@ -281,6 +280,36 @@ export default class TestController {
 
     _useRole$ (role) {
         return this._enqueueCommand('useRole', UseRoleCommand, { role });
+    }
+
+    _addRequestHooks$ (...hooks) {
+        return this._enqueueTask('addRequestHooks', () => {
+            hooks = flatten(hooks);
+
+            assertRequestHookType(hooks);
+
+            hooks.forEach(hook => {
+                if (!this.testRun.requestHooks.includes(hook)) {
+                    this.testRun.requestHooks.push(hook);
+                    this.testRun._initRequestHook(hook);
+                }
+            });
+        });
+    }
+
+    _removeRequestHooks$ (...hooks) {
+        return this._enqueueTask('removeRequestHooks', () => {
+            hooks = flatten(hooks);
+
+            assertRequestHookType(hooks);
+
+            hooks.forEach(hook => {
+                if (this.testRun.requestHooks.includes(hook)) {
+                    remove(this.testRun.requestHooks, hook);
+                    this.testRun._disposeRequestHook(hook);
+                }
+            });
+        });
     }
 }
 
