@@ -109,7 +109,7 @@ test('Take a screenshot of my new avatar', async t => {
         .click('#change-avatar')
         .setFilesToUpload('#upload-input', 'img/portrait.jpg')
         .click('#submit')
-        .takeElementScreenshot('#avatar', 'my-fixture/test1.png', {
+        .takeElementScreenshot('#avatar', {
             includeMargins: true,
             crop: {
                 top: -100,
