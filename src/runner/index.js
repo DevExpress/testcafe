@@ -26,6 +26,7 @@ export default class Runner extends EventEmitter {
 
         this.opts = {
             externalProxyHost:      null,
+            proxyBypass:            [],
             screenshotPath:         null,
             takeScreenshotsOnFails: false,
             skipJsErrors:           false,
@@ -165,8 +166,11 @@ export default class Runner extends EventEmitter {
         return this;
     }
 
-    useProxy (externalProxyHost) {
+    useProxy (externalProxyHost, proxyBypass) {
         this.opts.externalProxyHost = externalProxyHost;
+
+        if (proxyBypass)
+            this.opts.proxyBypass = proxyBypass.split(',');
 
         return this;
     }
