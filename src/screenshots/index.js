@@ -3,6 +3,7 @@ import sanitizeFilename from 'sanitize-filename';
 import moment from 'moment';
 import useragent from 'useragent';
 import Capturer from './capturer';
+import * as patternParser from './pattern-parser';
 
 export default class Screenshots {
     constructor (path, pattern) {
@@ -13,21 +14,9 @@ export default class Screenshots {
         this.screenshotsPattern    = pattern;
         this.testEntries           = [];
         this.userAgentNames        = [];
+        this.now                   = now;
         this.currentDate           = now.format('YYYY-MM-DD');
         this.currentTime           = now.format('HH-mm-ss');
-        // FILE_INDEX is handled in the Capturer class
-        this.patternMap            = {
-            FIXTURE:         null,
-            TEST:            null,
-            TEST_INDEX:      null,
-            DATE:            this.currentDate,
-            TIME:            this.currentTime,
-            USERAGENT:       null,
-            BROWSER:         null,
-            BROWSER_VERSION: null,
-            OS:              null,
-            OSV_ERSION:      null
-        };
     }
 
     static _escapeUserAgent (userAgent) {
@@ -130,14 +119,19 @@ export default class Screenshots {
             fixture:           test.fixture.name,
             test:              test.name,
             quarantineAttempt: quarantineAttemptNum ? quarantineAttemptNum : 1,
-            userAgent:         this._getUserAgentName(userAgent, testIndex, quarantineAttemptNum)
+            userAgent:         this._getUserAgentName(userAgent, testIndex, quarantineAttemptNum),
+            currentTime:       this.currentTime,
+            currentDate:       this.currentDate
         };
+
+        const patternMap = patternParser.generatePatternMap(patternOptions);
 
         var namingOptions = {
             testIndex,
             quarantineAttemptNum,
-            patternMap:  this.patternMap,
-            patternName: this._parsePattern(this.screenshotsPattern, patternOptions)
+            patternMap,
+            now:         this.now,
+            patternName: patternParser.parse(this.screenshotsPattern, patternMap, patternOptions)
         };
 
         return new Capturer(this.screenshotsPath, testEntry, connection, namingOptions, warningLog);

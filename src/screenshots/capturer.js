@@ -5,11 +5,10 @@ import cropScreenshot from './crop';
 import { ensureDir } from '../utils/promisified-functions';
 import { isInQueue, addToQueue } from '../utils/async-queue';
 import WARNING_MESSAGE from '../notifications/warning-message';
-
+import * as patternParser from './pattern-parser';
 
 const PNG_EXTENSION_RE = /(\.png)$/;
 const FILENAME_EXT = '.png';
-
 
 export default class Capturer {
     constructor (baseScreenshotsPath, testEntry, connection, namingOptions, warningLog) {
@@ -31,6 +30,7 @@ export default class Capturer {
         this.screenshotsPatternName  = namingOptions.patternName;
 
         this.patternMap = namingOptions.patternMap;
+        this.patternOptions = namingOptions;
     }
 
     static _correctFilePath (path) {
@@ -80,15 +80,6 @@ export default class Capturer {
         };
     }
 
-    _parseFileIndex (fileName) {
-        if (fileName.indexOf('${FILE_INDEX}') !== -1)
-            return fileName.replace(new RegExp('\\$\\{FILE_INDEX\\}', 'g'), (this.screenshotIndex - 1).toString().padStart(3, 0));
-        else if (this.screenshotIndex > 2)
-            return `${fileName}-${this.screenshotIndex - 1}`;
-
-        return fileName;
-    }
-
     _getFileName (forError) {
         let fileName = '';
 
@@ -112,9 +103,9 @@ export default class Capturer {
         return namePattern;
     }
 
-    _getSreenshotPath (fileName, customPath) {
+    _getScreenshotPath (fileName, customPath) {
         if (customPath)
-            return joinPath(this.baseScreenshotsPath, Capturer._correctFilePath(this._parsePattern(customPath)));
+            return joinPath(this.baseScreenshotsPath, Capturer._correctFilePath(patternParser.parse(customPath, this.patternMap, this.patternOptions)));
 
         var screenshotPath = this.quarantineAttemptNum !== null ?
             joinPath(this.screenshotsPath, `run-${this.quarantineAttemptNum}`) :
@@ -132,7 +123,7 @@ export default class Capturer {
         if (!this.enabled)
             return null;
 
-        var fileName = this._parseFileIndex(this._getFileName(forError)) + FILENAME_EXT;
+        var fileName = patternParser.parseFileIndex(this._getFileName(forError), this.screenshotIndex) + FILENAME_EXT;
 
         fileName = forError ? joinPath('errors', fileName) : fileName;
 

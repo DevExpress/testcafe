@@ -359,7 +359,7 @@ describe('CLI argument parser', function () {
             { long: '--list-browsers', short: '-b' },
             { long: '--reporter', short: '-r' },
             { long: '--screenshots', short: '-s' },
-            { long: '--pattern', short: '-p' },
+            { long: '--screenshot-path-pattern', short: '-p' },
             { long: '--screenshots-on-fails', short: '-S' },
             { long: '--quarantine-mode', short: '-q' },
             { long: '--debug-mode', short: '-d' },
