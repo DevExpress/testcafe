@@ -1,7 +1,7 @@
 var expect   = require('chai').expect;
 var matchUrl = require('../../lib/utils/check-url');
 
-it('Should fallback to the default reporter if reporter was not set', function () {
+it('Should check does url match rule', function () {
     var rule = ['google.com'];
 
     expect(matchUrl('google.com.uk', rule)).to.be.false;
