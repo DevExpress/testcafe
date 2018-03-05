@@ -1,15 +1,15 @@
 import { escapeRegExp as escapeRe } from 'lodash';
 
-const wildcardPlaceholder         = '-!_!-';
-const startsWithWildcardRegExp    = /^\*\./;
-const endsWithWildcardRegExp      = /\.\*$/;
-const containsWildcardRegExp      = /\.\*/g;
-const trailingSlashesRegExp       = /\/.*$/;
-const portRegExp                  = /:(\d+)$/;
-const protocolRegExp              = /^(\w+):\/\//;
-const containsWildcardPlaceholder = new RegExp(wildcardPlaceholder, 'g');
+const startsWithWildcardRegExp = /^\*\./;
+const endsWithWildcardRegExp   = /\.\*$/;
+const trailingSlashesRegExp    = /\/.*$/;
+const portRegExp               = /:(\d+)$/;
+const protocolRegExp           = /^(\w+):\/\//;
+const wildcardRegExp           = /\\\.\\\*/g;
 
 function parseUrl (url) {
+    if (!url || typeof url !== 'string')
+        return null;
 
     let protocol = url.match(protocolRegExp);
 
@@ -21,25 +21,34 @@ function parseUrl (url) {
 
     port = port ? parseInt(port[1], 10) : null;
     url  = url.replace(portRegExp, '');
-    url  = url.replace(startsWithWildcardRegExp, '.');
-    url  = url.replace(endsWithWildcardRegExp, '.');
-    url  = url.replace(containsWildcardRegExp, '.' + wildcardPlaceholder);
 
     return { protocol, url, port };
 }
 
-function matchUrl (sourceUrl, rule) {
-    const matchByProtocols = !rule.protocol || !sourceUrl.protocol || rule.protocol === sourceUrl.protocol;
-    const matchByPorts = !rule.port || sourceUrl.port === rule.port;
+function prepareRuleUrl (url) {
+    url = url.replace(startsWithWildcardRegExp, '.');
+    url = url.replace(endsWithWildcardRegExp, '.');
+
+    return url;
+}
+
+function urlMatchRule (sourceUrl, rule) {
+    if (!sourceUrl || !rule)
+        return false;
+
+    rule.url = prepareRuleUrl(rule.url);
+
+    const matchByProtocols         = !rule.protocol || !sourceUrl.protocol || rule.protocol === sourceUrl.protocol;
+    const matchByPorts             = !rule.port || sourceUrl.port === rule.port;
     const domainRequiredBeforeRule = rule.url.startsWith('.');
-    const domainRequiredAfterRule = rule.url.endsWith('.');
+    const domainRequiredAfterRule  = rule.url.endsWith('.');
 
     let regExStr = '^';
 
     if (domainRequiredBeforeRule)
         regExStr += '.+';
 
-    regExStr += escapeRe(rule.url).replace(containsWildcardPlaceholder, '.*');
+    regExStr += escapeRe(rule.url).replace(wildcardRegExp, '\\..*');
 
     if (domainRequiredAfterRule)
         regExStr += '.+';
@@ -50,13 +59,8 @@ function matchUrl (sourceUrl, rule) {
 }
 
 export default function (url, rules) {
-    url = parseUrl(url);
-
     if (!Array.isArray(rules))
-        rules = [ rules ];
+        rules = [rules];
 
-    const parsedRules = rules.map(rule => parseUrl(rule));
-
-    return parsedRules.some(rule => matchUrl(url, rule));
-
+    return rules.some(rule => urlMatchRule(parseUrl(url), parseUrl(rule)));
 }

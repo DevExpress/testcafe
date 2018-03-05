@@ -2,7 +2,7 @@ var expect   = require('chai').expect;
 var matchUrl = require('../../lib/utils/check-url');
 
 it('Should check does url match rule', function () {
-    var rule = ['google.com'];
+    var rule = 'google.com';
 
     expect(matchUrl('google.com.uk', rule)).to.be.false;
     expect(matchUrl('docs.google.com', rule)).to.be.false;
@@ -17,7 +17,7 @@ it('Should check does url match rule', function () {
     expect(matchUrl('https://google.com/', rule)).to.be.true;
     expect(matchUrl('google.com/', rule)).to.be.true;
 
-    rule = ['http://google.com'];
+    rule = 'http://google.com';
 
     expect(matchUrl('https://google.com', rule)).to.be.false;
     expect(matchUrl('https://google.com/', rule)).to.be.false;
@@ -29,7 +29,7 @@ it('Should check does url match rule', function () {
     expect(matchUrl('http://google.com', rule)).to.be.true;
     expect(matchUrl('google.com/', rule)).to.be.true;
 
-    rule = ['https://google.com'];
+    rule = 'https://google.com';
 
     expect(matchUrl('http://google.com', rule)).to.be.false;
     expect(matchUrl('https://google.com', rule)).to.be.true;
@@ -92,14 +92,14 @@ it('Should check does url match rule', function () {
         expect(matchUrl('www.my.docs.google.com.eu', r)).to.be.true;
     });
 
-    rule = ['docs.*.com'];
+    rule = 'docs.*.com';
 
     expect(matchUrl('docs.google.com', rule)).to.be.true;
     expect(matchUrl('docs.google.eu.com', rule)).to.be.true;
     expect(matchUrl('docs.google.ru', rule)).to.be.false;
     expect(matchUrl('docs.google.co.uk', rule)).to.be.false;
 
-    rule = ['docs.*.*.com'];
+    rule = 'docs.*.*.com';
 
     expect(matchUrl('docs.google.com', rule)).to.be.false;
     expect(matchUrl('docs.google.ru', rule)).to.be.false;
@@ -108,58 +108,62 @@ it('Should check does url match rule', function () {
     expect(matchUrl('docs.google.eu.com', rule)).to.be.true;
     expect(matchUrl('docs.google.ro.eu.com', rule)).to.be.true;
 
-    rule = ['.docs.*.*.com.'];
+    rule = '.docs.*.*.com.';
 
     expect(matchUrl('my.docs.google.eu.com.ru', rule)).to.be.true;
 
-    rule = ['docs.g*e.com'];
+    rule = 'docs.g*e.com';
 
     expect(matchUrl('docs.google.com', rule)).to.be.false;
 
-    rule = ['localhost'];
+    rule = 'localhost';
 
     expect(matchUrl('localhost', rule)).to.be.true;
     expect(matchUrl('http://localhost', rule)).to.be.true;
     expect(matchUrl('my-localhost', rule)).to.be.false;
     expect(matchUrl('localhost-my', rule)).to.be.false;
 
-    rule = ['127.0.0.1'];
+    rule = '127.0.0.1';
 
     expect(matchUrl('127.0.0.1', rule)).to.be.true;
     expect(matchUrl('http://127.0.0.1', rule)).to.be.true;
     expect(matchUrl('https://127.0.0.1', rule)).to.be.true;
     expect(matchUrl('https://127.0.0.1', rule)).to.be.true;
 
-    rule = ['127.0.0.'];
+    rule = '127.0.0.';
 
     expect(matchUrl('127.127.0.0', rule)).to.be.false;
     expect(matchUrl('127.0.0.2', rule)).to.be.true;
 
-    rule = ['.0.0.'];
+    rule = '.0.0.';
 
     expect(matchUrl('127.0.1.2', rule)).to.be.false;
     expect(matchUrl('127.0.0.2', rule)).to.be.true;
 
-    rule = ['127.*.*.0'];
+    rule = '127.*.*.0';
 
     expect(matchUrl('128.120.120.0', rule)).to.be.false;
     expect(matchUrl('127.0.0.0', rule)).to.be.true;
     expect(matchUrl('127.120.120.0', rule)).to.be.true;
 
-    rule = ['google.com:81'];
+    rule = 'google.com:81';
 
     expect(matchUrl('google.com', rule)).to.be.false;
     expect(matchUrl('google.com:80', rule)).to.be.false;
     expect(matchUrl('google.com:81', rule)).to.be.true;
 
-    rule = ['google.:81'];
+    rule = 'google.:81';
 
     expect(matchUrl('google.com', rule)).to.be.false;
     expect(matchUrl('google.com:80', rule)).to.be.false;
     expect(matchUrl('google.com:81', rule)).to.be.true;
 
-    rule = ['localhost:3000'];
+    rule = 'localhost:3000';
 
     expect(matchUrl('localhost:3000/features/functional/local', rule)).to.be.true;
     expect(matchUrl('http://localhost:3000/features/functional/local', rule)).to.be.true;
+    expect(matchUrl(null, rule)).to.be.false;
+
+    rule = 1;
+    expect(matchUrl('google', rule)).to.be.false;
 });

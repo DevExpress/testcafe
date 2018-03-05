@@ -169,7 +169,7 @@ export default class Runner extends EventEmitter {
     useProxy (externalProxyHost, proxyBypass) {
         this.opts.externalProxyHost = externalProxyHost;
 
-        if (proxyBypass)
+        if (proxyBypass && typeof proxyBypass === 'string')
             this.opts.proxyBypass = proxyBypass.split(',');
 
         return this;
