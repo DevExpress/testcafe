@@ -98,7 +98,9 @@ function assertAddCustomDOMPropertiesOptions (properties) {
 
 function assertAddCustomMethods (properties, opts) {
     assertType(is.nonNullObject, 'addCustomMethods', '"addCustomMethods" option', properties);
-    assertType(is.nonNullObject, 'addCustomMethods', '"addCustomMethods" option', opts);
+
+    if (opts !== void 0)
+        assertType(is.nonNullObject, 'addCustomMethods', '"addCustomMethods" option', opts);
 
     Object.keys(properties).forEach(prop => {
         assertType(is.function, 'addCustomMethods', `Custom method '${prop}'`, properties[prop]);
