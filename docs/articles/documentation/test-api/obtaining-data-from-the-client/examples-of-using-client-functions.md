@@ -7,7 +7,7 @@ permalink: /documentation/test-api/obtaining-data-from-the-client/examples-of-us
 
 This topic contains some cases of using client functions in tests.
 
-* [Checking a Page URL](checking-a-page-url)
+* [Checking a Page URL](#checking-a-page-url)
 * [Obtaining a Browser Alias Within a Test](#obtaining-a-browser-alias-within-a-test)
 * [Injecting External Libraries into a Page from a Test](#injecting-external-libraries-into-a-page-from-a-test)
 * [Accessing Child Nodes in the DOM Hierarchy](#accessing-child-nodes-in-the-dom-hierarchy)

@@ -78,7 +78,7 @@ test('My test', async t => {
 
 TestCafe assertions feature the [Smart Assertion Query Mechanism](assertions/README.md#smart-assertion-query-mechanism).
 This mechanism is activated when you pass a [selector property](selecting-page-elements/selectors/using-selectors.md#obtain-element-state)
-or a [client function](obtaining-data-from-the-client.md) as an actual value. In this instance, TestCafe keeps recalculating the actual
+or a [client function](obtaining-data-from-the-client/README.md) as an actual value. In this instance, TestCafe keeps recalculating the actual
 value until it matches the expected value or the [assertion timeout](assertions/README.md#optionstimeout) passes.
 
 Note that the Smart Assertion Query Mechanism does not wait for page elements to appear.

@@ -123,7 +123,7 @@ To wait for actions to complete, use the `await` keyword when calling these acti
 TestCafe allows you to observe the page state.
 For this purpose, it offers special kinds of functions that will execute your code on the client:
 [Selector](../test-api/selecting-page-elements/selectors/README.md) used to get direct access to DOM elements
-and [ClientFunction](../test-api/obtaining-data-from-the-client.md) used to obtain arbitrary data from the client side.
+and [ClientFunction](../test-api/obtaining-data-from-the-client/README.md) used to obtain arbitrary data from the client side.
 You call these functions as regular async functions, that is you can obtain their results and use parameters to pass data to them.
 
 The selector API provides methods and properties to select elements on the page and get their state.

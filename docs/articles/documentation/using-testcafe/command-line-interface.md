@@ -429,7 +429,7 @@ testcafe ie my-tests --selector-timeout 500000
 
 Specifies the amount of time, in milliseconds, within which TestCafe makes attempts to successfully execute an [assertion](../test-api/assertions/README.md)
 if a [selector property](../test-api/selecting-page-elements/selectors/using-selectors.md#define-assertion-actual-value)
-or a [client function](../test-api/obtaining-data-from-the-client.md) was passed as an actual value.
+or a [client function](../test-api/obtaining-data-from-the-client/README.md) was passed as an actual value.
 See [Smart Assertion Query Mechanism](../test-api/assertions/README.md#smart-assertion-query-mechanism).
 
 **Default value**: `3000`
