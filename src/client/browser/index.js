@@ -30,7 +30,9 @@ function sendXHR (url, createXHR, method = 'GET', data = null) {
 }
 
 function isCurrentLocation (url) {
+    /*eslint-disable no-restricted-properties*/
     return document.location.href.toLowerCase() === url.toLowerCase();
+    /*eslint-enable no-restricted-properties*/
 }
 
 
