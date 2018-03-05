@@ -96,8 +96,9 @@ function assertAddCustomDOMPropertiesOptions (properties) {
     });
 }
 
-function assertAddCustomMethods (properties) {
+function assertAddCustomMethods (properties, opts) {
     assertType(is.nonNullObject, 'addCustomMethods', '"addCustomMethods" option', properties);
+    assertType(is.nonNullObject, 'addCustomMethods', '"addCustomMethods" option', opts);
 
     Object.keys(properties).forEach(prop => {
         assertType(is.function, 'addCustomMethods', `Custom method '${prop}'`, properties[prop]);
@@ -124,7 +125,7 @@ export function addCustomMethods (obj, getSelector, SelectorBuilder, customMetho
     const customMethodProps = customMethods ? Object.keys(customMethods) : [];
 
     customMethodProps.forEach(prop => {
-        const { isSelectorMode = false, method } = customMethods[prop];
+        const { addAsSelectors = false, method } = customMethods[prop];
 
         const dependencies = {
             customMethod: method,
@@ -133,7 +134,7 @@ export function addCustomMethods (obj, getSelector, SelectorBuilder, customMetho
 
         const callsiteNames = { instantiation: prop };
 
-        if (isSelectorMode) {
+        if (addAsSelectors) {
             obj[prop] = (...args) => {
                 const selectorFn = () => {
                     /* eslint-disable no-undef */
@@ -427,14 +428,14 @@ function addCustomDOMPropertiesMethod (obj, getSelector, SelectorBuilder) {
 
 function addCustomMethodsMethod (obj, getSelector, SelectorBuilder) {
     obj.addCustomMethods = function (methods, opts) {
-        assertAddCustomMethods(methods);
+        assertAddCustomMethods(methods, opts);
 
         const customMethods = {};
 
         Object.keys(methods).forEach(methodName => {
             customMethods[methodName] = {
                 method:         methods[methodName],
-                isSelectorMode: opts && !!opts.isSelectorMode
+                addAsSelectors: opts && !!opts.addAsSelectors
             };
         });
 
