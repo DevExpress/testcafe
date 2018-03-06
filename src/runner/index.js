@@ -9,6 +9,7 @@ import Reporter from '../reporter';
 import Task from './task';
 import { GeneralError } from '../errors/runtime';
 import MESSAGE from '../errors/runtime/message';
+import { assertType, is } from '../errors/runtime/type-assertions';
 
 
 const DEFAULT_SELECTOR_TIMEOUT  = 10000;
@@ -26,7 +27,7 @@ export default class Runner extends EventEmitter {
 
         this.opts = {
             externalProxyHost:      null,
-            proxyBypass:            [],
+            proxyBypass:            null,
             screenshotPath:         null,
             takeScreenshotsOnFails: false,
             skipJsErrors:           false,
@@ -119,6 +120,21 @@ export default class Runner extends EventEmitter {
         assets.forEach(asset => this.proxy.GET(asset.path, asset.info));
     }
 
+    _validateRunOptions () {
+        const concurrency = this.bootstrapper.concurrency;
+        const speed       = this.opts.speed;
+        const proxyBypass = this.opts.proxyBypass;
+
+        if (typeof speed !== 'number' || isNaN(speed) || speed < 0.01 || speed > 1)
+            throw new GeneralError(MESSAGE.invalidSpeedValue);
+
+        if (typeof concurrency !== 'number' || isNaN(concurrency) || concurrency < 1)
+            throw new GeneralError(MESSAGE.invalidConcurrencyFactor);
+
+        if (proxyBypass)
+            assertType(is.string, null, '"proxyBypass" argument', proxyBypass);
+    }
+
 
     // API
     embeddingOptions (opts) {
@@ -143,9 +159,6 @@ export default class Runner extends EventEmitter {
     }
 
     concurrency (concurrency) {
-        if (typeof concurrency !== 'number' || isNaN(concurrency) || concurrency < 1)
-            throw new GeneralError(MESSAGE.invalidConcurrencyFactor);
-
         this.bootstrapper.concurrency = concurrency;
 
         return this;
@@ -168,9 +181,7 @@ export default class Runner extends EventEmitter {
 
     useProxy (externalProxyHost, proxyBypass) {
         this.opts.externalProxyHost = externalProxyHost;
-
-        if (proxyBypass && typeof proxyBypass === 'string')
-            this.opts.proxyBypass = proxyBypass.split(',');
+        this.opts.proxyBypass       = proxyBypass;
 
         return this;
     }
@@ -198,12 +209,13 @@ export default class Runner extends EventEmitter {
         this.opts.assertionTimeout = assertionTimeout === void 0 ? DEFAULT_ASSERTION_TIMEOUT : assertionTimeout;
         this.opts.pageLoadTimeout  = pageLoadTimeout === void 0 ? DEFAULT_PAGE_LOAD_TIMEOUT : pageLoadTimeout;
 
-        if (typeof speed !== 'number' || isNaN(speed) || speed < 0.01 || speed > 1)
-            throw new GeneralError(MESSAGE.invalidSpeedValue);
-
         this.opts.speed = speed;
 
-        var runTaskPromise = this.bootstrapper.createRunnableConfiguration()
+        var runTaskPromise = Promise.resolve()
+            .then(() => {
+                this._validateRunOptions();
+                return this.bootstrapper.createRunnableConfiguration();
+            })
             .then(({ reporterPlugins, browserSet, tests, testedApp }) => {
                 this.emit('done-bootstrapping');
 

@@ -128,7 +128,6 @@ it('Should check does url match rule', function () {
     expect(matchUrl('127.0.0.1', rule)).to.be.true;
     expect(matchUrl('http://127.0.0.1', rule)).to.be.true;
     expect(matchUrl('https://127.0.0.1', rule)).to.be.true;
-    expect(matchUrl('https://127.0.0.1', rule)).to.be.true;
 
     rule = '127.0.0.';
 

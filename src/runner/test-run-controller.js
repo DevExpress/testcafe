@@ -128,7 +128,7 @@ export default class TestRunController extends EventEmitter {
         testRun.start();
 
         const pageUrl           = testRun.test.pageUrl;
-        const needBypassHost    = checkUrl(pageUrl, this.opts.proxyBypass);
+        const needBypassHost    = this.opts.proxyBypass && checkUrl(pageUrl, this.opts.proxyBypass.split(','));
         const externalProxyHost = needBypassHost ? null : this.opts.externalProxyHost;
 
         return this.proxy.openSession(pageUrl, testRun, externalProxyHost);

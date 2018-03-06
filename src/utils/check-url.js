@@ -25,18 +25,20 @@ function parseUrl (url) {
     return { protocol, url, port };
 }
 
-function prepareRuleUrl (url) {
-    url = url.replace(startsWithWildcardRegExp, '.');
-    url = url.replace(endsWithWildcardRegExp, '.');
+function prepareRule (url) {
+    const rule = parseUrl(url);
 
-    return url;
+    if (rule) {
+        rule.url = rule.url.replace(startsWithWildcardRegExp, '.');
+        rule.url = rule.url.replace(endsWithWildcardRegExp, '.');
+    }
+
+    return rule;
 }
 
 function urlMatchRule (sourceUrl, rule) {
     if (!sourceUrl || !rule)
         return false;
-
-    rule.url = prepareRuleUrl(rule.url);
 
     const matchByProtocols         = !rule.protocol || !sourceUrl.protocol || rule.protocol === sourceUrl.protocol;
     const matchByPorts             = !rule.port || sourceUrl.port === rule.port;
@@ -62,5 +64,5 @@ export default function (url, rules) {
     if (!Array.isArray(rules))
         rules = [rules];
 
-    return rules.some(rule => urlMatchRule(parseUrl(url), parseUrl(rule)));
+    return rules.some(rule => urlMatchRule(parseUrl(url), prepareRule(rule)));
 }

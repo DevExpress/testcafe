@@ -22,9 +22,5 @@ describe('Using proxy-bypass', function () {
     it('Should bypass using proxy by set of rules', function () {
         return runTests('testcafe-fixtures/index.test.js', null, { useProxy: ERROR_PROXY_URL, proxyBypass: 'dummy,localhost:3000' });
     });
-
-    it('Should use proxy and not fail on wrong proxy bypass type', function () {
-        return runTests('testcafe-fixtures/index.test.js', null, { useProxy: TRANSPARENT_PROXY_URL, proxyBypass: 1 });
-    });
 });
 
