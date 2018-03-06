@@ -68,6 +68,7 @@ async function runTests (argParser) {
     var port1             = opts.ports && opts.ports[0];
     var port2             = opts.ports && opts.ports[1];
     var externalProxyHost = opts.proxy;
+    var proxyBypass       = opts.proxyBypass;
 
     log.showSpinner();
 
@@ -87,7 +88,7 @@ async function runTests (argParser) {
     reporters.forEach(r => runner.reporter(r.name, r.outStream));
 
     runner
-        .useProxy(externalProxyHost)
+        .useProxy(externalProxyHost, proxyBypass)
         .src(argParser.src)
         .browsers(browsers)
         .concurrency(concurrency)

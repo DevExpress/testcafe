@@ -165,6 +165,7 @@ before(function () {
                 var appCommand         = opts && opts.appCommand;
                 var appInitDelay       = opts && opts.appInitDelay;
                 var externalProxyHost  = opts && opts.useProxy;
+                var proxyBypass        = opts && opts.proxyBypass;
                 var customReporters    = opts && opts.reporters;
 
                 var actualBrowsers = browsersInfo.filter(function (browserInfo) {
@@ -208,7 +209,7 @@ before(function () {
                 }
 
                 return runner
-                    .useProxy(externalProxyHost)
+                    .useProxy(externalProxyHost, proxyBypass)
                     .browsers(connections)
                     .filter(function (test) {
                         return testName ? test === testName : true;

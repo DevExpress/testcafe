@@ -497,58 +497,64 @@ describe('Runner', function () {
         });
 
         it('Should raise an error if speed option has wrong value', function () {
-            var incorrectSpeedErrorMessage = 'Speed should be a number between 0.01 and 1.';
+            var exceptionCount = 0;
 
-            return testCafe
-                .createBrowserConnection()
-                .then(function (browserConnection) {
-                    return runner
-                        .browsers(browserConnection)
-                        .run({ speed: 'yo' });
-                })
-                .catch(function (err) {
-                    expect(err.message).eql(incorrectSpeedErrorMessage);
-                })
-                .then(function () {
-                    return runner.run({ speed: -0.01 });
-                }).catch(function (err) {
-                    expect(err.message).eql(incorrectSpeedErrorMessage);
-                })
-                .then(function () {
-                    return runner.run({ speed: 1.01 });
-                }).catch(function (err) {
-                    expect(err.message).eql(incorrectSpeedErrorMessage);
-                });
+            var incorrectSpeedError = function (speed) {
+                return runner
+                    .run({ speed })
+                    .catch(function (err) {
+                        exceptionCount++;
+                        expect(err.message).eql('Speed should be a number between 0.01 and 1.');
+                    });
+            };
+
+            return Promise.resolve()
+                .then(() => incorrectSpeedError('yo'))
+                .then(() => incorrectSpeedError(-0.01))
+                .then(() => incorrectSpeedError(0))
+                .then(() => incorrectSpeedError(1.01))
+                .then(() => expect(exceptionCount).to.be.eql(4));
         });
 
         it('Should raise an error if concurrency option has wrong value', function () {
-            var incorrectConcurrencyFactorErrorMessage = 'The concurrency factor should be an integer greater or equal to 1.';
+            var exceptionCount = 0;
 
-            return testCafe
-                .createBrowserConnection()
-                .then(function (browserConnection) {
-                    return runner
-                        .browsers(browserConnection)
-                        .concurrency('yo');
-                })
-                .catch(function (err) {
-                    expect(err.message).eql(incorrectConcurrencyFactorErrorMessage);
-                })
-                .then(function () {
-                    return runner.concurrency(-1);
-                }).catch(function (err) {
-                    expect(err.message).eql(incorrectConcurrencyFactorErrorMessage);
-                })
-                .then(function () {
-                    return runner.concurrency(0.1);
-                }).catch(function (err) {
-                    expect(err.message).eql(incorrectConcurrencyFactorErrorMessage);
-                })
-                .then(function () {
-                    return runner.concurrency(0);
-                }).catch(function (err) {
-                    expect(err.message).eql(incorrectConcurrencyFactorErrorMessage);
-                });
+            var incorrectConcurrencyFactorError = function (concurrency) {
+                return runner
+                    .concurrency(concurrency)
+                    .run()
+                    .catch(function (err) {
+                        exceptionCount++;
+                        expect(err.message).eql('The concurrency factor should be an integer greater or equal to 1.');
+                    });
+            };
+
+            return Promise.resolve()
+                .then(() => incorrectConcurrencyFactorError('yo'))
+                .then(() => incorrectConcurrencyFactorError(-1))
+                .then(() => incorrectConcurrencyFactorError(0.1))
+                .then(() => incorrectConcurrencyFactorError(0))
+                .then(() => expect(exceptionCount).to.be.eql(4));
+        });
+
+        it('Should raise an error if proxyBypass option has wrong type', function () {
+            var exceptionCount = 0;
+
+            var expectProxyBypassError = function (proxyBypass, type) {
+                runner.opts.proxyBypass = proxyBypass;
+
+                return runner
+                    .run()
+                    .catch(function (err) {
+                        exceptionCount++;
+                        expect(err.message).contains('"proxyBypass" argument is expected to be a string, but it was ' + type);
+                    });
+            };
+
+            return expectProxyBypassError(1, 'number')
+                .then(() => expectProxyBypassError({}, 'object'))
+                .then(() => expectProxyBypassError(true, 'bool'))
+                .then(() => expect(exceptionCount).to.be.eql(3));
         });
     });
 
