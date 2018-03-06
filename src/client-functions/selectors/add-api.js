@@ -127,7 +127,7 @@ export function addCustomMethods (obj, getSelector, SelectorBuilder, customMetho
     const customMethodProps = customMethods ? Object.keys(customMethods) : [];
 
     customMethodProps.forEach(prop => {
-        const { addAsSelectors = false, method } = customMethods[prop];
+        const { isSelectorMethods = false, method } = customMethods[prop];
 
         const dependencies = {
             customMethod: method,
@@ -136,7 +136,7 @@ export function addCustomMethods (obj, getSelector, SelectorBuilder, customMetho
 
         const callsiteNames = { instantiation: prop };
 
-        if (addAsSelectors) {
+        if (isSelectorMethods) {
             obj[prop] = (...args) => {
                 const selectorFn = () => {
                     /* eslint-disable no-undef */
@@ -436,8 +436,8 @@ function addCustomMethodsMethod (obj, getSelector, SelectorBuilder) {
 
         Object.keys(methods).forEach(methodName => {
             customMethods[methodName] = {
-                method:         methods[methodName],
-                addAsSelectors: opts && !!opts.addAsSelectors
+                method:            methods[methodName],
+                isSelectorMethods: opts && !!opts.isSelectorMethods
             };
         });
 

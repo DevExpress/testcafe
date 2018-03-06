@@ -68,7 +68,7 @@ test('Add custom method - method throws an error - Selector mode', async () => {
         customMethod: () => {
             throw new Error('test');
         }
-    }, { addAsSelectors: true });
+    }, { isSelectorMethods: true });
 
     await el.customMethod()();
 });
