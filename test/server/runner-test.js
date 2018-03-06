@@ -497,7 +497,8 @@ describe('Runner', function () {
         });
 
         it('Should raise an error if speed option has wrong value', function () {
-            var exceptionCount      = 0;
+            var exceptionCount = 0;
+
             var incorrectSpeedError = function (speed) {
                 return runner
                     .run({ speed })
@@ -516,7 +517,8 @@ describe('Runner', function () {
         });
 
         it('Should raise an error if concurrency option has wrong value', function () {
-            var exceptionCount                  = 0;
+            var exceptionCount = 0;
+
             var incorrectConcurrencyFactorError = function (concurrency) {
                 return runner
                     .concurrency(concurrency)
@@ -536,10 +538,13 @@ describe('Runner', function () {
         });
 
         it('Should raise an error if proxyBypass option has wrong type', function () {
-            var exceptionCount         = 0;
+            var exceptionCount = 0;
+
             var expectProxyBypassError = function (proxyBypass, type) {
                 runner.opts.proxyBypass = proxyBypass;
-                return runner.run()
+
+                return runner
+                    .run()
                     .catch(function (err) {
                         exceptionCount++;
                         expect(err.message).contains('"proxyBypass" argument is expected to be a string, but it was ' + type);

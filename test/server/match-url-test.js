@@ -164,5 +164,6 @@ it('Should check does url match rule', function () {
     expect(matchUrl(null, rule)).to.be.false;
 
     rule = 1;
+
     expect(matchUrl('google', rule)).to.be.false;
 });
