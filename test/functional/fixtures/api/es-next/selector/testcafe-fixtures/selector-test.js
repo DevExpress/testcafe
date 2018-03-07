@@ -1039,12 +1039,12 @@ test('Selector `addCustomMethods` method - Selector mode', async t => {
     const sectionDiv = Selector('section div').addCustomMethods({
         customFilter:        nodes => nodes.filter(node => node.id === 'el2' || node.id === 'el3'),
         customFilterByParam: (nodes, id) => nodes.filter(node => node.id === id)
-    }, { isSelectorMethods: true });
+    }, { returnDOMNodes: true });
 
     const form = Selector('form').addCustomMethods({
         customFind:       (nodes) => nodes[0].querySelectorAll('input'),
         customFindByType: (nodes, type) => nodes[0].querySelectorAll(`input[type=${type}]`)
-    }, { isSelectorMethods: true });
+    }, { returnDOMNodes: true });
 
     let filteredDivs = sectionDiv.customFilter();
     let divsById     = sectionDiv.customFilterByParam('el4');
@@ -1080,7 +1080,7 @@ test('Selector `addCustomMethods` method - Selector mode', async t => {
 
     const nonExistingElement = Selector('nonExistingElement').addCustomMethods({
         prop: () => 'value'
-    }, { isSelectorMethods: true });
+    }, { returnDOMNodes: true });
 
     await t.expect(await nonExistingElement()).eql(null);
 });
