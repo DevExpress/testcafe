@@ -49,7 +49,7 @@ import { ClientFunction } from 'testcafe';
 import uaParser from 'ua-parser-js';
 
 fixture `My fixture`
-   .page `http://example.com`;
+    .page `http://example.com`;
 
 //Returns a user-agent header sent by the browser
 const getUA = ClientFunction(() => navigator.userAgent);
@@ -89,19 +89,18 @@ import { ClientFunction } from 'testcafe';
 import fs from 'fs';
 
 fixture `My fixture`
-   .page `http://devexpress.github.io/testcafe/example/`;
+    .page `http://devexpress.github.io/testcafe/example/`;
 
 test('My test', async t => {
     // Adds jQuery code to the page
-    await t.eval(new Function(fs.readFileSync('./jquery.js').toString()));
+    await t.eval(new Function(fs.readFileSync('./jquery.min.js').toString()));
 
-    const clientFunction = ClientFunction(() => {
+    const getElementText = ClientFunction(() => {
         // Uses the jQuery selector
-        return $('div.column.col-2').text();
+        return $('div.column.col-2').find('legend').eq(0).text();
     });
 
-    const text = await clientFunction();
-    console.log(text);
+    await t.expect(getElementText()).contains('What is your primary Operating System');
 });
 ```
 
