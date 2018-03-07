@@ -1,10 +1,11 @@
 var expect = require('chai').expect;
+var globby = require('globby').sync;
+var path   = require('path');
+
 
 describe('[Legacy] Smoke tests', function () {
     it('Should run basic tests', function () {
-        this.timeout(60000);
-
-        return runTests('./testcafe-fixtures/basic.test.js', null, { selectorTimeout: 5000 });
+        return runTests(globby(path.join(__dirname, './testcafe-fixtures/basic/*test.js')), null);
     });
 
     it('Should fail on errors', function () {
