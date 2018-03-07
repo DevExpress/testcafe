@@ -134,7 +134,7 @@ If all nodes are filtered out, the selector returns `null`.
 
 ## Search for Elements in the DOM Hierarchy
 
-The selector API provides methods to find elements within a DOM hierarchy in jQuery style.
+The selector API provides methods to find elements in a DOM hierarchy in jQuery style.
 
 ### find
 
