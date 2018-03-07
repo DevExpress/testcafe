@@ -145,7 +145,7 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
             createSnapshotMethods(snapshot);
 
             if (this.options.customMethods)
-                addCustomMethods(snapshot, () => snapshot.selector, this.options.customMethods);
+                addCustomMethods(snapshot, () => snapshot.selector, SelectorBuilder, this.options.customMethods);
         }
 
         return snapshot;

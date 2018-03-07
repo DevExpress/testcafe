@@ -62,3 +62,13 @@ test('Add custom method - method throws an error', async () => {
 
     await el.customMethod();
 });
+
+test('Add custom method - method throws an error - Selector mode', async () => {
+    const el = Selector('rect').addCustomMethods({
+        customMethod: () => {
+            throw new Error('test');
+        }
+    }, { returnDOMNodes: true });
+
+    await el.customMethod()();
+});
