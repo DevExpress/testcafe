@@ -7,7 +7,8 @@
 ### Bug Fixes
 
 * The `document.all` property is now overridden ([testcafe-hammerhead/#1046](https://github.com/DevExpress/testcafe-hammerhead/issues/1046))
-* The `async` expression generator was added to *esotope* ([testcafe-hammerhead/#1510](https://github.com/DevExpress/testcafe-hammerhead/issues/1510))
+* Proxying properties in `async` class methods is now supported ([testcafe-hammerhead/#1510](https://github.com/DevExpress/testcafe-hammerhead/issues/1510))
+* Fixed wrong proxying of a `localStorage` check in WebWorkers ([testcafe-hammerhead/#1510](https://github.com/DevExpress/testcafe-hammerhead/issues/1510))
 * Function wrappers no longer break *is-defined* checks ([testcafe-hammerhead/#1496](https://github.com/DevExpress/testcafe-hammerhead/issues/1496))
 
 ## v0.19.0 (2018-3-1)
