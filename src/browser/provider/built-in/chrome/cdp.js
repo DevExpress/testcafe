@@ -79,7 +79,9 @@ export async function closeTab ({ tab, cdpPort }) {
 export async function takeScreenshot (path, { client, config }) {
     var screenshot = await client.Page.captureScreenshot({ fromSurface: config.headless });
 
-    await writeFile(path, screenshot.data, { encoding: 'base64' });
+    //await writeFile(path, screenshot.data, { encoding: 'base64' });
+
+    return Buffer.from(screenshot.data, 'base64');
 }
 
 export async function resizeWindow (newDimensions, runtimeInfo) {

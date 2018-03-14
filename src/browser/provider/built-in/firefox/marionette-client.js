@@ -165,7 +165,9 @@ module.exports = class MarionetteClient {
     async takeScreenshot (path) {
         var screenshot = await this._getResponse({ command: 'takeScreenshot' });
 
-        await writeFile(path, screenshot.value, { encoding: 'base64' });
+        //await writeFile(path, screenshot.value, { encoding: 'base64' });
+
+        return Buffer.from(screenshot.value, 'base64');
     }
 
     async setWindowSize (width, height) {

@@ -56,7 +56,7 @@ export default {
     async takeScreenshot (browserId, path) {
         var { marionetteClient } = this.openedBrowsers[browserId];
 
-        await marionetteClient.takeScreenshot(path);
+        return marionetteClient.takeScreenshot(path);
     },
 
     async resizeWindow (browserId, width, height) {

@@ -54,7 +54,7 @@ export default {
     async takeScreenshot (browserId, path) {
         var runtimeInfo = this.openedBrowsers[browserId];
 
-        await cdp.takeScreenshot(path, runtimeInfo);
+        return cdp.takeScreenshot(path, runtimeInfo);
     },
 
     async resizeWindow (browserId, width, height, currentWidth, currentHeight) {
