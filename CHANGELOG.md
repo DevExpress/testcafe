@@ -1,5 +1,15 @@
 # Changelog
 
+## v0.19.1 (2018-3-13)
+
+### Backward compatibility with the legacy test syntax has been restored ([#2210](https://github.com/DevExpress/testcafe/issues/2210))
+
+### Bug Fixes
+
+* The `document.all` property is now overridden ([testcafe-hammerhead/#1046](https://github.com/DevExpress/testcafe-hammerhead/issues/1046))
+* Proxying properties in `async` class methods is now supported ([testcafe-hammerhead/#1510](https://github.com/DevExpress/testcafe-hammerhead/issues/1510))
+* Fixed wrong proxying of a `localStorage` check in WebWorkers ([testcafe-hammerhead/#1496](https://github.com/DevExpress/testcafe-hammerhead/issues/1496))
+
 ## v0.19.0 (2018-3-1)
 
 ### TestCafe Live: See instant feedback when working on tests ([#1624](https://github.com/DevExpress/testcafe/issues/1624))
