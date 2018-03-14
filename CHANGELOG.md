@@ -10,7 +10,6 @@
 * Proxying properties in `async` class methods is now supported ([testcafe-hammerhead/#1510](https://github.com/DevExpress/testcafe-hammerhead/issues/1510))
 * Fixed wrong proxying of a `localStorage` check in WebWorkers ([testcafe-hammerhead/#1496](https://github.com/DevExpress/testcafe-hammerhead/issues/1496))
 
-
 ## v0.19.0 (2018-3-1)
 
 ### TestCafe Live: See instant feedback when working on tests ([#1624](https://github.com/DevExpress/testcafe/issues/1624))
