@@ -358,10 +358,10 @@ gulp.task('generate-docs-readme', function () {
     function generateReadme (toc) {
         var tocList = generateDirectory(toc, 0);
 
-        return "# Documentation\n\n> This is the documentation's development version. " +
-               "The functionality described here may not be included in the current release version. " +
-               "Unreleased functionality may change or be dropped before the next release. " +
-               "The release version's documentation is available at the [TestCafe website](https://devexpress.github.io/testcafe/documentation/getting-started/).\n\n" +
+        return '# Documentation\n\n> This is the documentation\'s development version. ' +
+               'The functionality described here may not be included in the current release version. ' +
+               'Unreleased functionality may change or be dropped before the next release. ' +
+               'The release version\'s documentation is available at the [TestCafe website](https://devexpress.github.io/testcafe/documentation/getting-started/).\n\n' +
                tocList;
     }
 
