@@ -358,10 +358,10 @@ gulp.task('generate-docs-readme', function () {
     function generateReadme (toc) {
         var tocList = generateDirectory(toc, 0);
 
-        return '# Documentation\n\n> This is a development version of the documentation. ' +
-               'The functionality described here may not be included in the current release version. ' +
-               'Unreleased functionality may change or be dropped before the next release. ' +
-               'Documentation for the release version is available at the [TestCafe website](https://devexpress.github.io/testcafe/documentation/getting-started/).\n\n' +
+        return "# Documentation\n\n> This is the documentation's development version. " +
+               "The functionality described here may not be included in the current release version. " +
+               "Unreleased functionality may change or be dropped before the next release. " +
+               "The release version's documentation is available at the [TestCafe website](https://devexpress.github.io/testcafe/documentation/getting-started/).\n\n" +
                tocList;
     }
 
@@ -444,8 +444,14 @@ gulp.task('put-in-publications', ['fetch-assets-repo'], function () {
         .pipe(gulp.dest('site/src/_data'));
 });
 
+gulp.task('put-in-tweets', ['fetch-assets-repo'], function () {
+    return gulp
+        .src('docs/tweets/**/*')
+        .pipe(gulp.dest('site/src/_data'));
+});
 
-gulp.task('prepare-website', ['put-in-articles', 'put-in-navigation', 'put-in-posts', 'put-in-publications', 'lint-docs']);
+
+gulp.task('prepare-website', ['put-in-articles', 'put-in-navigation', 'put-in-posts', 'put-in-publications', 'put-in-tweets', 'lint-docs']);
 
 function buildWebsite (mode, cb) {
     var options = mode ? { stdio: 'inherit', env: { JEKYLL_ENV: mode } } : { stdio: 'inherit' };
