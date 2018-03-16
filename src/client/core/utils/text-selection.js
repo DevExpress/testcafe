@@ -5,6 +5,7 @@ import * as eventUtils from './event';
 
 
 var browserUtils     = hammerhead.utils.browser;
+var nativeMethods    = hammerhead.nativeMethods;
 var selectionSandbox = hammerhead.eventSandbox.selection;
 
 
@@ -79,7 +80,7 @@ function onSelectionChange () {
             range = this.selection.createRange();
         else {
             //HACK: we need do this for IE11 because otherwise we can not get TextRange properties
-            activeElement = this.activeElement;
+            activeElement = nativeMethods.documentActiveElementGetter.call(this);
 
             if (!activeElement || !domUtils.isTextEditableElement(activeElement)) {
                 selectionDirection = NONE_SELECTION_DIRECTION;

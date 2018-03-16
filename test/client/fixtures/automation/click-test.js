@@ -207,6 +207,51 @@ $(document).ready(function () {
             });
     });
 
+    asyncTest('an active input should be blurred and a parent of a disabled input should be focused after a click the disabled input', function () {
+        var activeInput         = document.createElement('input');
+        var disabledInput       = document.createElement('input');
+        var disabledInputParent = document.createElement('div');
+
+        disabledInput.setAttribute('disabled', 'disabled');
+        disabledInputParent.setAttribute('tabindex', '0');
+
+        activeInput.className = disabledInputParent.className = TEST_ELEMENT_CLASS;
+
+        document.body.appendChild(activeInput);
+        document.body.appendChild(disabledInputParent);
+        disabledInputParent.appendChild(disabledInput);
+
+        var isActiveInputFocused         = false;
+        var isActiveInputBlurred         = false;
+        var isDisabledInputParentFocused = false;
+
+        activeInput.onfocus = function () {
+            isActiveInputFocused = true;
+        };
+
+        activeInput.onblur = function () {
+            isActiveInputBlurred = true;
+        };
+
+        disabledInputParent.onfocus = function () {
+            isDisabledInputParentFocused = true;
+        };
+
+        activeInput.focus();
+
+        var click = new ClickAutomation(disabledInput, new ClickOptions({ offsetX: 5, offsetY: 5 }));
+
+        click
+            .run()
+            .then(function () {
+                ok(isActiveInputFocused);
+                ok(isActiveInputBlurred);
+                ok(isDisabledInputParentFocused);
+
+                startNext();
+            });
+    });
+
     asyncTest('scroll up and click with offset', function () {
         var clicked = false;
 

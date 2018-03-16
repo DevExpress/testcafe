@@ -2,6 +2,7 @@ import hammerhead from './deps/hammerhead';
 import * as eventUtils from './utils/event';
 import delay from './utils/delay';
 import MESSAGE from '../../test-run/client-messages';
+import { isAnchorElement } from './utils/dom';
 
 var Promise       = hammerhead.Promise;
 var browserUtils  = hammerhead.utils.browser;
@@ -34,10 +35,12 @@ function onBeforeUnload () {
     delay(0)
         .then(() => {
             // NOTE: except file downloading
-            if (document.readyState === 'loading' &&
-                !(document.activeElement && document.activeElement.tagName.toLowerCase() === 'a' &&
-                document.activeElement.hasAttribute('download')))
-                unloading = true;
+            if (document.readyState === 'loading') {
+                var activeElement = nativeMethods.documentActiveElementGetter.call(document);
+
+                if (!activeElement || !isAnchorElement(activeElement) || !activeElement.hasAttribute('download'))
+                    unloading = true;
+            }
         });
 }
 
