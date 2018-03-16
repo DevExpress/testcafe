@@ -12,7 +12,7 @@ class OperationsQueue {
     }
 
     executeOperation (operation) {
-        var operationPromise = this.chainPromise.then(operation);
+        const operationPromise = this.chainPromise.then(operation);
 
         this.chainPromise = operationPromise.then(() => delay(POST_OPERATION_DELAY));
 

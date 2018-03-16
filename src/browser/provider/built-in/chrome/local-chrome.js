@@ -23,7 +23,7 @@ export async function start (pageUrl, { browserName, config, cdpPort, tempProfil
 
     chromeOpenParameters.cmd = buildChromeArgs(config, cdpPort, chromeOpenParameters.cmd, tempProfileDir);
 
-    browserStarter.startBrowser(chromeOpenParameters, pageUrl);
+    await browserStarter.startBrowser(chromeOpenParameters, pageUrl);
 }
 
 export async function stop ({ browserId }) {
