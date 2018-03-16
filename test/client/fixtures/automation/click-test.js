@@ -207,7 +207,7 @@ $(document).ready(function () {
             });
     });
 
-    asyncTest('an active input should be blurred and a parent of a disabled input should be focused after a click the disabled input', function () {
+    asyncTest('an active input should be blurred and a parent of a disabled input should be focused after a click on the disabled input', function () {
         var activeInput         = document.createElement('input');
         var disabledInput       = document.createElement('input');
         var disabledInputParent = document.createElement('div');
