@@ -2,6 +2,7 @@ import hammerhead from '../deps/hammerhead';
 import testCafeCore from '../deps/testcafe-core';
 
 var Promise          = hammerhead.Promise;
+var nativeMethods    = hammerhead.nativeMethods;
 var browserUtils     = hammerhead.utils.browser;
 var focusBlurSandbox = hammerhead.eventSandbox.focusBlur;
 
@@ -65,7 +66,7 @@ export function focusAndSetSelection (element, simulateFocus, caretPos) {
 
         if (!isElementFocusable && !isContentEditable) {
             var curDocument         = domUtils.findDocument(elementForFocus);
-            var curActiveElement    = curDocument.activeElement;
+            var curActiveElement    = nativeMethods.documentActiveElementGetter.call(curDocument);
             var isActiveElementBody = domUtils.isBodyElement(curActiveElement);
             var focusableParent     = domUtils.isBodyElement(elementForFocus) ?
                 elementForFocus : domUtils.getFocusableParent(elementForFocus);
