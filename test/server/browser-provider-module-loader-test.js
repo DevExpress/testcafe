@@ -1,5 +1,3 @@
-/*eslint linebreak-style: ["error", "windows"]*/
-
 var BrowserProviderModuleLoader  = require('../../lib/browser/provider/module-loader');
 var expect = require('chai').expect;
 

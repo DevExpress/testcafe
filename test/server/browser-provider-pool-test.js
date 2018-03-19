@@ -1,5 +1,3 @@
-/*eslint linebreak-style: ["error", "windows"]*/
-
 var expect               = require('chai').expect;
 var browserProviderPool  = require('../../lib/browser/provider/pool');
 

@@ -1,5 +1,3 @@
-/*eslint linebreak-style: ["off", "windows"]*/
-
 import Promise from 'pinkie';
 import BUILT_IN_PROVIDERS from './built-in';
 import BrowserProviderPluginHost from './plugin-host';
