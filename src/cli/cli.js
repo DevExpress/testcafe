@@ -107,7 +107,7 @@ async function runTests (argParser) {
         await testCafe.close();
     }
 
-    exit(failed);
+    //exit(failed);
 }
 
 async function listBrowsers (providerName = 'locally-installed') {
