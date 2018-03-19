@@ -1,16 +1,19 @@
+/*eslint linebreak-style: ["off", "windows"]*/
+
 import Promise from 'pinkie';
 import BUILT_IN_PROVIDERS from './built-in';
 import BrowserProviderPluginHost from './plugin-host';
+import BrowserProviderModuleLoader from './module-loader';
 import BrowserProvider from './';
 import BrowserConnection from '../connection';
 import { GeneralError } from '../../errors/runtime';
 import MESSAGE from '../../errors/runtime/message';
 
-
 const BROWSER_PROVIDER_RE = /^([^:\s]+):?(.*)?$/;
 
 export default {
     providersCache: {},
+
 
     async _handlePathAndCmd (alias) {
         var browserName  = JSON.stringify(alias);
@@ -67,7 +70,7 @@ export default {
 
     _getProviderModule (providerName) {
         try {
-            var providerObject = require(`testcafe-browser-provider-${providerName}`);
+            var providerObject = BrowserProviderModuleLoader.loadModule(providerName);
 
             this.addProvider(providerName, providerObject);
             return this._getProviderFromCache(providerName);
