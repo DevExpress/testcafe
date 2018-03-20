@@ -68,7 +68,7 @@ export default {
 
     _getProviderModule (providerName) {
         try {
-            var providerObject = BrowserProviderModuleLoader.loadModule(providerName);
+            var providerObject = new BrowserProviderModuleLoader().loadModule(providerName);
 
             this.addProvider(providerName, providerObject);
             return this._getProviderFromCache(providerName);
