@@ -1,6 +1,8 @@
+import hammerhead from '../../deps/hammerhead';
 import { KEY_MAPS, domUtils } from '../../deps/testcafe-core';
 import isLetter from '../../utils/is-letter';
 
+var nativeMethods = hammerhead.nativeMethods;
 
 export function changeLetterCase (letter) {
     var isLowCase = letter === letter.toLowerCase();
@@ -56,8 +58,10 @@ export function getChar (key, shiftModified) {
 export function getDeepActiveElement (currentDocument) {
     var doc                   = currentDocument || document;
     var activeElementInIframe = null;
-    var activeElement         = doc.activeElement &&
-                                domUtils.isDomElement(doc.activeElement) ? doc.activeElement : doc.body;
+    var activeElement         = nativeMethods.documentActiveElementGetter.call(doc);
+
+    if (!activeElement || !domUtils.isDomElement(activeElement))
+        activeElement = doc.body;
 
     if (activeElement && domUtils.isIframeElement(activeElement) && activeElement.contentDocument) {
         try {
