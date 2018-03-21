@@ -1067,7 +1067,9 @@ describe('Test run commands', function () {
                 actual:        1,
                 message:       null,
 
-                options: {}
+                options: {
+                    allowUnawaitedPromise: null
+                }
             });
         });
 
