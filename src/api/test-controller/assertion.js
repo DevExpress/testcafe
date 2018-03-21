@@ -21,7 +21,7 @@ export default class Assertion {
             expected:      assertionArgs.expected,
             expected2:     assertionArgs.expected2,
             message:       message,
-            options:       { timeout: options.timeout }
+            options:       { timeout: options.timeout, allowUnawaitedPromise: options.allowUnawaitedPromise }
         });
     }
 

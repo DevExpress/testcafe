@@ -204,7 +204,7 @@ describe('[API] Assertions', function () {
     });
 
     it('Should allow an unawaited Promise with override option', function () {
-        return runTests('./testcafe-fixtures/assertions-test.js', 'Unawaited Promise assertion', { only: 'chrome' });
+        return runTests('./testcafe-fixtures/assertions-test.js', 'Unawaited Promise assertion override', { only: 'chrome' });
     });
 
     it('Should raise error if `await` is missing', function () {

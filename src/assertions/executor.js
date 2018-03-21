@@ -23,8 +23,10 @@ export default class AssertionExecutor extends EventEmitter {
 
         if (actualCommand instanceof ReExecutablePromise)
             this.fn =  this._wrapFunction(fn);
-        else if ('then' in actualCommand && typeof actualCommand.then === 'function')
+        else if (!this.command.options.allowUnawaitedPromise && 'then' in actualCommand && typeof actualCommand.then === 'function')
             throw new AssertionUnawaitedPromiseError(this.callsite);
+        else
+            this.fn = fn;
     }
 
     _getTimeLeft () {

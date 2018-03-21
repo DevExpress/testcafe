@@ -240,13 +240,15 @@ export class AssertionOptions extends Assignable {
         super();
 
         this.timeout = void 0;
+        this.allowUnawaitedPromise = null;
 
         this._assignFrom(obj, validate);
     }
 
     _getAssignableProperties () {
         return [
-            { name: 'timeout', type: positiveIntegerOption }
+            { name: 'timeout', type: positiveIntegerOption },
+            { name: 'allowUnawaitedPromise', type: booleanOption }
         ];
     }
 }
