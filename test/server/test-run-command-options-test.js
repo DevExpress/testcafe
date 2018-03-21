@@ -255,7 +255,8 @@ describe('Test run command options', function () {
             }, false);
 
             expect(JSON.parse(JSON.stringify(options))).eql({
-                timeout: 100
+                timeout:               100,
+                allowUnawaitedPromise: null
             });
         });
     });
