@@ -1,6 +1,7 @@
 var expect          = require('chai').expect;
 var globby          = require('globby').sync;
 var path            = require('path');
+var config          = require('../../../../config');
 var assertionHelper = require('../../../../assertion-helper');
 
 
@@ -19,24 +20,26 @@ describe('[Legacy] Smoke tests', function () {
             });
     });
 
-    describe('Screenshots', function () {
-        afterEach(assertionHelper.removeScreenshotDir);
+    if (config.useLocalBrowsers) {
+        describe('Screenshots', function () {
+            afterEach(assertionHelper.removeScreenshotDir);
 
-        it('Should take a screenshot', function () {
-            return runTests('./testcafe-fixtures/screenshots.test.js', 'Take a screenshot', { setScreenshotPath: true })
-                .then(function () {
-                    expect(SCREENSHOT_PATH_MESSAGE_RE.test(testReport.screenshotPath)).eql(true);
-                    expect(assertionHelper.checkScreenshotsCreated(false, 2)).eql(true);
-                });
-        });
+            it('Should take a screenshot', function () {
+                return runTests('./testcafe-fixtures/screenshots.test.js', 'Take a screenshot', { setScreenshotPath: true })
+                    .then(function () {
+                        expect(SCREENSHOT_PATH_MESSAGE_RE.test(testReport.screenshotPath)).eql(true);
+                        expect(assertionHelper.checkScreenshotsCreated(false, 2)).eql(true);
+                    });
+            });
 
-        it('Should take a screenshot if an error in test code is raised', function () {
-            return runTests('./testcafe-fixtures/screenshots.test.js', 'Screenshot on test code error',
-                { shouldFail: true, screenshotsOnFails: true, setScreenshotPath: true })
-                .catch(function (errs) {
-                    assertionHelper.errorInEachBrowserContainsRegExp(errs, ERROR_SCREENSHOT_PATH_RE, 0);
-                    expect(assertionHelper.checkScreenshotsCreated(true)).eql(true);
-                });
+            it('Should take a screenshot if an error in test code is raised', function () {
+                return runTests('./testcafe-fixtures/screenshots.test.js', 'Screenshot on test code error',
+                    { shouldFail: true, screenshotsOnFails: true, setScreenshotPath: true })
+                    .catch(function (errs) {
+                        assertionHelper.errorInEachBrowserContainsRegExp(errs, ERROR_SCREENSHOT_PATH_RE, 0);
+                        expect(assertionHelper.checkScreenshotsCreated(true)).eql(true);
+                    });
+            });
         });
-    });
+    }
 });
