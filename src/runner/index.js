@@ -193,6 +193,13 @@ export default class Runner extends EventEmitter {
         return this;
     }
 
+    videoRecording (path, options) {
+        this.opts.videoPath    = path;
+        this.opts.videoOptions = options;
+
+        return this;
+    }
+
     startApp (command, initDelay) {
         this.bootstrapper.appCommand   = command;
         this.bootstrapper.appInitDelay = initDelay;
@@ -214,7 +221,7 @@ export default class Runner extends EventEmitter {
         var runTaskPromise = Promise.resolve()
             .then(() => {
                 this._validateRunOptions();
-                return this.bootstrapper.createRunnableConfiguration();
+                return this.bootstrapper.createRunnableConfiguration(this.opts);
             })
             .then(({ reporterPlugins, browserSet, tests, testedApp }) => {
                 this.emit('done-bootstrapping');

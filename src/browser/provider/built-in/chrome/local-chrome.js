@@ -12,7 +12,7 @@ var throttlingPromise = Promise.resolve();
 function buildChromeArgs (config, cdpPort, platformArgs, profileDir) {
     return []
         .concat(
-            config.headless || config.emulation ? [`--remote-debugging-port=${cdpPort}`] : [],
+            [`--remote-debugging-port=${cdpPort}`],
             !config.userProfile ? [`--user-data-dir=${profileDir.name}`] : [],
             config.headless ? ['--headless'] : [],
             config.userArgs ? [config.userArgs] : [],

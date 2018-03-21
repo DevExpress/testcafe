@@ -4,11 +4,8 @@ import OS from 'os-family';
 import delay from '../../utils/delay';
 import { GET_TITLE_SCRIPT, GET_WINDOW_DIMENSIONS_INFO_SCRIPT } from './utils/client-functions';
 
-const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
-const spawn = require('child_process').spawn;
+import net from 'net';
 
-let ffmpeg = null;
-let done = false;
 const BROWSER_OPENING_DELAY = 2000;
 
 const RESIZE_DIFF_SIZE = {
@@ -176,27 +173,9 @@ export default class BrowserProvider {
 
         if (isLocalBrowser)
             await this._onOpenBrowser(browserId);
-
-        ffmpeg = spawn(ffmpegPath, ['-framerate', '1', '-f', 'image2pipe', '-i', '-', '-c:v', 'libx264', '-r','30', '-pix_fmt', 'yuv420p', require('path').join(process.cwd(), 'output.mp4')], { maxBuffer: 30 * 1024 * 1024, stdio: ['pipe', 'inherit', 'inherit' ]});
-
-        const f = () => setTimeout(() => {
-            if (!done) this.plugin
-                .takeScreenshot(browserId)
-                .then(data => {
-                    console.log('data'.length);
-                    //ffmpeg.stdin.write(data);
-                    if (!done)
-                        f();
-                })
-                .catch(e => console.log(e.stack));
-        }, 1000)
-
-        f();
     }
 
     async closeBrowser (browserId) {
-        done = true;
-
         var isLocalBrowser         = await this.plugin.isLocalBrowser(browserId);
         var customActionsInfo      = await this.plugin.hasCustomActionForBrowser(browserId);
         var hasCustomCloseBrowser  = customActionsInfo.hasCloseBrowser;
@@ -207,11 +186,7 @@ export default class BrowserProvider {
             return;
         }
 
-       fmpeg.stdin.end();
-
         await this._closeLocalBrowser(browserId);
-
-        return new Promise(r => ffmpeg.on('exit', r));
     }
 
     async getBrowserList () {

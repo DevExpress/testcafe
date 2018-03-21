@@ -46,21 +46,21 @@ export default class Bootstrapper {
         return flatten(browserInfo);
     }
 
-    _createAutomatedConnections (browserInfo) {
+    _createAutomatedConnections (browserInfo, opts) {
         if (!browserInfo)
             return [];
 
         return browserInfo
-            .map(browser => times(this.concurrency, () => new BrowserConnection(this.browserConnectionGateway, browser)));
+            .map(browser => times(this.concurrency, () => new BrowserConnection(this.browserConnectionGateway, Object.assign({ videoPath: opts.videoPath, videoOptions: opts.videoOptions }, browser))));
     }
 
-    async _getBrowserConnections (browserInfo) {
+    async _getBrowserConnections (browserInfo, opts) {
         var { automated, remotes } = Bootstrapper._splitBrowserInfo(browserInfo);
 
         if (remotes && remotes.length % this.concurrency)
             throw new GeneralError(MESSAGE.cannotDivideRemotesCountByConcurrency);
 
-        var browserConnections = this._createAutomatedConnections(automated);
+        var browserConnections = this._createAutomatedConnections(automated, opts);
 
         browserConnections = browserConnections.concat(chunk(remotes, this.concurrency));
 
@@ -134,17 +134,17 @@ export default class Bootstrapper {
 
 
     // API
-    async createRunnableConfiguration () {
+    async createRunnableConfiguration (opts) {
         var reporterPlugins = this._getReporterPlugins();
 
         // NOTE: If a user forgot to specify a browser, but has specified a path to tests, the specified path will be
         // considered as the browser argument, and the tests path argument will have the predefined default value.
         // It's very ambiguous for the user, who might be confused by compilation errors from an unexpected test.
         // So, we need to retrieve the browser aliases and paths before tests compilation.
-        var browserInfo = await this._getBrowserInfo();
+        var browserInfo = await this._getBrowserInfo(opts);
         var tests       = await this._getTests();
         var testedApp   = await this._startTestedApp();
-        var browserSet  = await this._getBrowserConnections(browserInfo);
+        var browserSet  = await this._getBrowserConnections(browserInfo, opts);
 
         return { reporterPlugins, browserSet, tests, testedApp };
     }

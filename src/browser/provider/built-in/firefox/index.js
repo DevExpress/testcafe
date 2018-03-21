@@ -21,13 +21,11 @@ export default {
 
         await this.waitForConnectionReady(runtimeInfo.browserId);
 
-        if (runtimeInfo.config.headless) {
-            var marionetteClient = new MarionetteClient(runtimeInfo.marionettePort);
+        var marionetteClient = new MarionetteClient(runtimeInfo.marionettePort);
 
-            await marionetteClient.connect();
+        await marionetteClient.connect();
 
-            runtimeInfo.marionetteClient = marionetteClient;
-        }
+        runtimeInfo.marionetteClient = marionetteClient;
 
         this.openedBrowsers[browserId] = runtimeInfo;
     },
@@ -53,10 +51,10 @@ export default {
         return !config.headless;
     },
 
-    async takeScreenshot (browserId, path) {
+    async takeScreenshot (browserId, path, w, h, onlyBuffer) {
         var { marionetteClient } = this.openedBrowsers[browserId];
 
-        return marionetteClient.takeScreenshot(path);
+        return marionetteClient.takeScreenshot(path, onlyBuffer);
     },
 
     async resizeWindow (browserId, width, height) {
@@ -71,7 +69,7 @@ export default {
         return {
             hasCloseBrowser:                true,
             hasResizeWindow:                !!marionetteClient && config.headless,
-            hasTakeScreenshot:              !!marionetteClient && config.headless,
+            hasTakeScreenshot:              !!marionetteClient,
             hasCanResizeWindowToDimensions: false,
             hasMaximizeWindow:              false
         };

@@ -15,7 +15,7 @@ function buildFirefoxArgs (config, platformArgs, profileDir) {
     return []
         .concat(
             !config.userProfile ? ['-no-remote', '-new-instance', `-profile "${profileDir.name}"`] : [],
-            config.headless ? ['-marionette', '-headless'] : [],
+            ['-marionette', '-headless'],
             config.userArgs ? [config.userArgs] : [],
             platformArgs ? [platformArgs] : []
         )

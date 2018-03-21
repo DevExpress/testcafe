@@ -25,8 +25,7 @@ export default {
 
         runtimeInfo.viewportSize = await this.runInitScript(browserId, GET_WINDOW_DIMENSIONS_INFO_SCRIPT);
 
-        if (runtimeInfo.config.headless || runtimeInfo.config.emulation)
-            await cdp.createClient(runtimeInfo);
+        await cdp.createClient(runtimeInfo);
 
         this.openedBrowsers[browserId] = runtimeInfo;
     },
@@ -51,10 +50,10 @@ export default {
         return !config.headless;
     },
 
-    async takeScreenshot (browserId, path) {
+    async takeScreenshot (browserId, path, w, h, onlyBuffer) {
         var runtimeInfo = this.openedBrowsers[browserId];
 
-        return cdp.takeScreenshot(path, runtimeInfo);
+        return cdp.takeScreenshot(path, onlyBuffer, runtimeInfo);
     },
 
     async resizeWindow (browserId, width, height, currentWidth, currentHeight) {
@@ -72,7 +71,7 @@ export default {
         return {
             hasCloseBrowser:                true,
             hasResizeWindow:                !!client && (config.emulation || config.headless),
-            hasTakeScreenshot:              !!client,
+            hasTakeScreenshot:              true,
             hasCanResizeWindowToDimensions: false,
             hasMaximizeWindow:              false
         };

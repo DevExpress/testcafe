@@ -76,12 +76,13 @@ export async function closeTab ({ tab, cdpPort }) {
     await remoteChrome.closeTab({ id: tab.id, port: cdpPort });
 }
 
-export async function takeScreenshot (path, { client, config }) {
+export async function takeScreenshot (path, onlyBuffer, { client, config }) {
     var screenshot = await client.Page.captureScreenshot({ fromSurface: config.headless });
 
-    //await writeFile(path, screenshot.data, { encoding: 'base64' });
+    if (onlyBuffer)
+        return Buffer.from(screenshot.data, 'base64');
 
-    return Buffer.from(screenshot.data, 'base64');
+    await writeFile(path, screenshot.data, { encoding: 'base64' });
 }
 
 export async function resizeWindow (newDimensions, runtimeInfo) {

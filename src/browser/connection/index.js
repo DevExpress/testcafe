@@ -6,6 +6,7 @@ import { parse as parseUserAgent } from 'useragent';
 import { readSync as read } from 'read-file-relative';
 import promisifyEvent from 'promisify-event';
 import nanoid from 'nanoid';
+import VideoRecorder from '../../video-recorder';
 import COMMAND from './command';
 import STATUS from './status';
 import { GeneralError } from '../../errors/runtime';
@@ -44,6 +45,9 @@ export default class BrowserConnection extends EventEmitter {
         this.idle              = true;
         this.heartbeatTimeout  = null;
         this.pendingTestRunUrl = null;
+
+        this.videoPath    = browserInfo.videoPath;
+        this.videoOptions = browserInfo.videoOptions;
 
         this.url           = `${gateway.domain}/browser/connect/${this.id}`;
         this.heartbeatUrl  = `${gateway.domain}/browser/heartbeat/${this.id}`;
@@ -124,8 +128,30 @@ export default class BrowserConnection extends EventEmitter {
     }
 
     async _popNextTestRunUrl () {
-        while (this.hasQueuedJobs && !this.currentJob.hasQueuedTestRuns)
+        if (this.idle && this.hasQueuedJobs && this.currentJob.hasQueuedTestRuns && this.videoPath) {
+            this.videoRecorder = new VideoRecorder(this.videoPath, this, { mode: 'all-tests-at-once' });
+
+            this.videoRecorder.startCapturing();
+
+            (async () => {
+                while (!this.videoRecorder.closed) {
+                    const frame = await this.provider.plugin.takeScreenshot(this.id, '', 0, 0, true).catch(() => null);
+
+                    if (frame)
+                        await this.videoRecorder.addFrame(frame);
+                }
+            })();
+        }
+
+        while (this.hasQueuedJobs && !this.currentJob.hasQueuedTestRuns) {
+            if (this.videoRecorder) {
+                await this.videoRecorder.finishCapturing();
+
+                this.videoRecorder = null;
+            }
+
             this.jobQueue.shift();
+        }
 
         return this.hasQueuedJobs ? await this.currentJob.popNextTestRunUrl(this) : null;
     }
@@ -167,6 +193,8 @@ export default class BrowserConnection extends EventEmitter {
 
     addJob (job) {
         this.jobQueue.push(job);
+
+
     }
 
     removeJob (job) {

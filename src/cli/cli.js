@@ -94,6 +94,7 @@ async function runTests (argParser) {
         .concurrency(concurrency)
         .filter(argParser.filter)
         .screenshots(opts.screenshots, opts.screenshotsOnFails)
+        .videoRecording(opts.videoRecording)
         .startApp(opts.app, opts.appInitDelay);
 
     runner.once('done-bootstrapping', () => log.hideSpinner());
@@ -107,7 +108,7 @@ async function runTests (argParser) {
         await testCafe.close();
     }
 
-    //exit(failed);
+    exit(failed);
 }
 
 async function listBrowsers (providerName = 'locally-installed') {
