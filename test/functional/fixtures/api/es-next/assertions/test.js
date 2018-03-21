@@ -197,7 +197,10 @@ describe('[API] Assertions', function () {
         return runTests('./testcafe-fixtures/assertions-test.js', 'Unawaited Promise assertion', {
             shouldFail: true,
             only:       'chrome'
-        });
+        })
+            .catch(function (errs) {
+                expect(errs[0]).contains(`Attempted to run assertions on a Promise object. Did you forget to await it? If not, pass "{ allowUnawaitedPromise: true }" to the assertion options.`);
+            });
     });
 
     it('Should allow an unawaited Promise with override option', function () {

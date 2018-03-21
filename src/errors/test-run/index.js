@@ -157,6 +157,14 @@ export class AssertionExecutableArgumentError extends ActionArgumentErrorBase {
     }
 }
 
+export class AssertionUnawaitedPromiseError extends TestRunErrorBase {
+    constructor (callsite) {
+        super(TYPE.assertionUnawaitedPromiseError);
+
+        this.callsite = callsite;
+    }
+}
+
 // Action parameters errors
 //--------------------------------------------------------------------
 // Options errors
