@@ -112,6 +112,14 @@ test('Selector result assertion timeout', async t => {
         .expect(el.getStyleProperty('float')).eql('left');
 });
 
+test('Unawaited Promise assertion', async t => {
+    await t.expect(Promise.resolve()).ok();
+});
+
+test('Unawaited Promise assertion override', async t => {
+    await t.expect(Promise.resolve()).ok({ allowUnawaitedPromise: true });
+});
+
 test('Missing await', async t => {
     t.expect(42).eql(43);
 });

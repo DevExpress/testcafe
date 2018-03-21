@@ -193,6 +193,17 @@ describe('[API] Assertions', function () {
             });
     });
 
+    it('Should raise error when expecting an unawaited Promise that cannot be retried', function () {
+        return runTests('./testcafe-fixtures/assertions-test.js', 'Unawaited Promise assertion', {
+            shouldFail: true,
+            only:       'chrome'
+        });
+    });
+
+    it('Should allow an unawaited Promise with override option', function () {
+        return runTests('./testcafe-fixtures/assertions-test.js', 'Unawaited Promise assertion', { only: 'chrome' });
+    });
+
     it('Should raise error if `await` is missing', function () {
         return runTests('./testcafe-fixtures/assertions-test.js', 'Missing await', {
             shouldFail: true,
