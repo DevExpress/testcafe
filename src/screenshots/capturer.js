@@ -97,7 +97,7 @@ export default class Capturer {
         await this.provider.takeScreenshot(this.browserId, filePath, pageWidth, pageHeight);
     }
 
-    async _capture (forError, { pageDimensions, cropDimensions, markSeed, customScreenshotPath } = {}) {
+    async _capture (forError, { pageDimensions, cropDimensions, markSeed, customPath } = {}) {
         if (!this.enabled)
             return null;
 
@@ -105,7 +105,7 @@ export default class Capturer {
 
         fileName = forError ? joinPath('errors', fileName) : fileName;
 
-        var screenshotPath = this._getScreenshotPath(fileName, customScreenshotPath);
+        var screenshotPath = this._getScreenshotPath(fileName, customPath);
 
         await this._takeScreenshot(screenshotPath, ... pageDimensions ? [pageDimensions.innerWidth, pageDimensions.innerHeight] : []);
 
@@ -116,7 +116,7 @@ export default class Capturer {
 
         // NOTE: if test contains takeScreenshot action with custom path
         // we should specify the most common screenshot folder in report
-        if (customScreenshotPath)
+        if (customPath)
             this.screenshotPathForReport = this.baseScreenshotsPath;
 
         this.testEntry.hasScreenshots = true;
