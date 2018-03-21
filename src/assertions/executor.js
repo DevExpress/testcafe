@@ -1,5 +1,6 @@
 import { EventEmitter } from 'events';
 import delay from '../utils/delay';
+import { isThennable } from '../utils/thennable';
 import { ExternalAssertionLibraryError, AssertionUnawaitedPromiseError } from '../errors/test-run';
 import ReExecutablePromise from '../utils/re-executable-promise';
 import getFn from './get-fn';
@@ -23,7 +24,7 @@ export default class AssertionExecutor extends EventEmitter {
 
         if (actualCommand instanceof ReExecutablePromise)
             this.fn =  this._wrapFunction(fn);
-        else if (!this.command.options.allowUnawaitedPromise && 'then' in actualCommand && typeof actualCommand.then === 'function')
+        else if (!this.command.options.allowUnawaitedPromise && isThennable(actualCommand))
             throw new AssertionUnawaitedPromiseError(this.callsite);
         else
             this.fn = fn;
