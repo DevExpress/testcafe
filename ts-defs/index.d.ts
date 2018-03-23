@@ -1168,7 +1168,7 @@ interface AssertionOptions {
      * By default, a Promise is not allowed to be passed to an assertion unless it is a selector property
      * or the result of a client function. Setting this property to `true` overrides that default.
      */
-    allowUnawaitedPromise?: true;
+    allowUnawaitedPromise?: boolean;
 }
 
 interface Assertion {

@@ -19,11 +19,11 @@ export default class AssertionExecutor extends EventEmitter {
         this.passed    = false;
         this.inRetry   = false;
 
-        var fn = getFn(this.command);
+        var fn            = getFn(this.command);
         var actualCommand = this.command.actual;
 
         if (actualCommand instanceof ReExecutablePromise)
-            this.fn =  this._wrapFunction(fn);
+            this.fn = this._wrapFunction(fn);
         else if (!this.command.options.allowUnawaitedPromise && isThennable(actualCommand))
             throw new AssertionUnawaitedPromiseError(this.callsite);
         else
