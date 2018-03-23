@@ -12,7 +12,6 @@ const BROWSER_PROVIDER_RE = /^([^:\s]+):?(.*)?$/;
 export default {
     providersCache: {},
 
-
     async _handlePathAndCmd (alias) {
         var browserName  = JSON.stringify(alias);
         var providerName = 'path';
