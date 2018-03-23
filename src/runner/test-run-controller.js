@@ -1,6 +1,5 @@
 import EventEmitter from 'events';
 import { TestRun as LegacyTestRun } from 'testcafe-legacy-api';
-import checkUrl from '../utils/check-url';
 import TestRun from '../test-run';
 
 
@@ -127,10 +126,18 @@ export default class TestRunController extends EventEmitter {
 
         testRun.start();
 
-        const pageUrl           = testRun.test.pageUrl;
-        const needBypassHost    = this.opts.proxyBypass && checkUrl(pageUrl, this.opts.proxyBypass.split(','));
-        const externalProxyHost = needBypassHost ? null : this.opts.externalProxyHost;
+        const pageUrl             = testRun.test.pageUrl;
+        const externalProxyHost   = this.opts.externalProxyHost;
+        const proxyBypassRules    = this.opts.proxyBypass && this.opts.proxyBypass.split(',');
+        let externalProxySettings = null;
 
-        return this.proxy.openSession(pageUrl, testRun, externalProxyHost);
+        if (externalProxyHost) {
+            externalProxySettings = {
+                url:         externalProxyHost,
+                bypassRules: proxyBypassRules
+            };
+        }
+
+        return this.proxy.openSession(pageUrl, testRun, externalProxySettings);
     }
 }
