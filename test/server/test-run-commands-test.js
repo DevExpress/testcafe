@@ -1049,7 +1049,7 @@ describe('Test run commands', function () {
 
                 options: {
                     timeout:               100,
-                    allowUnawaitedPromise: null
+                    allowUnawaitedPromise: false
                 }
             });
 
@@ -1068,7 +1068,7 @@ describe('Test run commands', function () {
                 message:       null,
 
                 options: {
-                    allowUnawaitedPromise: null
+                    allowUnawaitedPromise: false
                 }
             });
         });
@@ -1127,7 +1127,7 @@ describe('Test run commands', function () {
                 message:       null,
 
                 options: {
-                    allowUnawaitedPromise: null
+                    allowUnawaitedPromise: false
                 }
             });
         });
