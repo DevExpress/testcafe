@@ -16,12 +16,26 @@ describe('Browser provider module loader', function () {
             expect(new BrowserProviderModuleLoader().isScopedProvider('browserprovider')).to.be.null;
         });
     });
-    describe('private module loading package name loading', function () {
+    describe('command argument to package name transformation', function () {
         it('Should return @private/testcafe-browser-provider-package for @private/package', function () {
             var result = new BrowserProviderModuleLoader().getScopedProviderModuleName('@private/package');
 
-            expect(result).to.be.not.null;
             expect(result).to.equal('@private/testcafe-browser-provider-package');
+        });
+        it('Should return @private/testcafe-browser-provider-package for @private/testcafe-browser-provider-package', function () {
+            var result = new BrowserProviderModuleLoader().getScopedProviderModuleName('@private/testcafe-browser-provider-package');
+
+            expect(result).to.equal('@private/testcafe-browser-provider-package');
+        });
+        it('Should clean the prefix from testcafe-browser-provider-package', function () {
+            var result = new BrowserProviderModuleLoader().cleanStringOfDefaultPackagePrefix('testcafe-browser-provider-package');
+
+            expect(result).to.equal('package');
+        });
+        it('Should not clean the prefix from testcafe-browser-provider-package', function () {
+            var result = new BrowserProviderModuleLoader().cleanStringOfDefaultPackagePrefix('package');
+
+            expect(result).to.equal('package');
         });
     });
 });
