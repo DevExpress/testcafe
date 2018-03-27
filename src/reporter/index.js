@@ -40,7 +40,8 @@ export default class Reporter {
             unstable:       reportItem.unstable,
             screenshotPath: reportItem.screenshotPath,
             skipped:        reportItem.test.skip,
-            ctx:            reportItem.test.ctx ? reportItem.test.ctx : {}
+            ctx:            reportItem.test.ctx ? reportItem.test.ctx : {},
+            fixtureCtx:     reportItem.fixture.ctx ? reportItem.fixture.ctx : {}
         };
     }
 

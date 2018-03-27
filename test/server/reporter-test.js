@@ -18,7 +18,10 @@ describe('Reporter', function () {
     var fixtureMocks = [
         {
             name: 'fixture1',
-            path: './file1.js'
+            path: './file1.js',
+            ctx:  {
+                run: 'run-001'
+            }
         },
         {
             name: 'fixture2',
@@ -274,6 +277,9 @@ describe('Reporter', function () {
                         screenshotPath: '/screenshots/1445437598847',
                         ctx:            {
                             testId: 'tst-001'
+                        },
+                        fixtureCtx: {
+                            run: 'run-001'
                         }
                     }
                 ]
@@ -304,6 +310,9 @@ describe('Reporter', function () {
                         screenshotPath: '/screenshots/1445437598847',
                         ctx:            {
                             testId: 'tst-002'
+                        },
+                        fixtureCtx: {
+                            run: 'run-001'
                         }
                     }
                 ]
@@ -318,7 +327,10 @@ describe('Reporter', function () {
                         unstable:       false,
                         skipped:        false,
                         screenshotPath: null,
-                        ctx:            {}
+                        ctx:            {},
+                        fixtureCtx:     {
+                            run: 'run-001'
+                        }
                     }
                 ]
             },
@@ -339,7 +351,8 @@ describe('Reporter', function () {
                         unstable:       false,
                         skipped:        false,
                         screenshotPath: null,
-                        ctx:            {}
+                        ctx:            {},
+                        fixtureCtx:     {}
                     }
                 ]
             },
@@ -353,7 +366,8 @@ describe('Reporter', function () {
                         unstable:       false,
                         skipped:        false,
                         screenshotPath: null,
-                        ctx:            {}
+                        ctx:            {},
+                        fixtureCtx:     {}
                     }
                 ]
             },
@@ -380,7 +394,8 @@ describe('Reporter', function () {
                         unstable:       true,
                         skipped:        false,
                         screenshotPath: null,
-                        ctx:            {}
+                        ctx:            {},
+                        fixtureCtx:     {}
                     }
                 ]
             },
