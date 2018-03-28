@@ -100,7 +100,7 @@ body {
     background-image: url("/testcafe/images/landing-page/arrow-right-yellow.png");
 }
 
-.dx-gallery-wrapper {
+#main-gallery .dx-gallery-wrapper {
     overflow: visible;
 }
 
@@ -108,6 +108,7 @@ body {
 
 #main-gallery .dx-gallery-item .gallery-item-top {
     text-align: left;
+    font-family: "Segoe UI", Frutiger, "Frutiger Linotype", Roboto, "Noto Sans", "Helvetica Neue", Arial, sans-serif;
 }
 
 #main-gallery .dx-gallery-item .gallery-item-number, #main-gallery .dx-gallery-item .gallery-item-text, #main-gallery .dx-gallery-item h3 {
@@ -127,7 +128,7 @@ body {
     background-color: #8ab2c2;
     border-radius: 28px;
     text-align: center;
-    line-height: 56px;
+    line-height: 52px;
     color: #fff;
     font-size: 34px;
     font-weight: bold;
@@ -148,6 +149,13 @@ body {
 
 #main-gallery img {
     padding-top: 20px;
+}
+
+#main-gallery .download-button {
+    cursor: pointer;
+    text-decoration: underline;
+    text-align: left;
+    margin: 10px 0 0 89px;
 }
 
 @media only screen and (max-width: 1270px) {

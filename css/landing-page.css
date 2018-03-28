@@ -267,6 +267,26 @@ code {
       .tweets-section .tweets-content #tweet-why a {
         text-decoration: underline;
         color: #8ab2c2; }
+    .tweets-section .tweets-content #tweet-gallery {
+      margin: auto; }
+      .tweets-section .tweets-content #tweet-gallery .dx-gallery-nav-button-prev {
+        background-image: url("/testcafe/images/landing-page/arrow-left-blue-tweets.png");
+        height: 321px;
+        width: 30px;
+        top: 0px;
+        margin: 0; }
+      .tweets-section .tweets-content #tweet-gallery .dx-gallery-nav-button-prev.dx-state-hover, .tweets-section .tweets-content #tweet-gallery .dx-gallery-nav-button-prev.dx-state-active {
+        background-image: url("/testcafe/images/landing-page/arrow-left-yellow-tweets.png"); }
+      .tweets-section .tweets-content #tweet-gallery .dx-gallery-nav-button-next {
+        background-image: url("/testcafe/images/landing-page/arrow-right-blue-tweets.png");
+        height: 321px;
+        width: 30px;
+        top: 0px;
+        margin: 0; }
+      .tweets-section .tweets-content #tweet-gallery .dx-gallery-nav-button-next.dx-state-hover, .tweets-section .tweets-content #tweet-gallery .dx-gallery-nav-button-next.dx-state-active {
+        background-image: url("/testcafe/images/landing-page/arrow-right-yellow-tweets.png"); }
+      .tweets-section .tweets-content #tweet-gallery .dx-gallery-nav-button-prev:before, .tweets-section .tweets-content #tweet-gallery .dx-gallery-nav-button-next:before {
+        content: ""; }
 
 .follow-section {
   background-color: #edf1f3;
