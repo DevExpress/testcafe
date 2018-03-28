@@ -1,5 +1,6 @@
 node_modules
 .idea
+.vscode
 /lib
 /site
 .sass-cache
