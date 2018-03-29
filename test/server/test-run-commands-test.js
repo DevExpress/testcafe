@@ -1080,7 +1080,7 @@ describe('Test run commands', function () {
                 actual:        1,
                 message:       null,
 
-                options: { timeout: null }
+                options: {}
             });
         });
 
@@ -1137,9 +1137,7 @@ describe('Test run commands', function () {
                 expected:      1,
                 message:       null,
 
-                options: {
-                    timeout: null
-                }
+                options: {}
             });
         });
     });

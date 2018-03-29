@@ -239,7 +239,7 @@ export class AssertionOptions extends Assignable {
     constructor (obj, validate) {
         super();
 
-        this.timeout = null;
+        this.timeout = void 0;
 
         this._assignFrom(obj, validate);
     }

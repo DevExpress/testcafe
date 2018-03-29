@@ -7,10 +7,11 @@ import getFn from './get-fn';
 const ASSERTION_DELAY = 200;
 
 export default class AssertionExecutor extends EventEmitter {
-    constructor (command, callsite) {
+    constructor (command, timeout, callsite) {
         super();
 
         this.command  = command;
+        this.timeout  = timeout;
         this.callsite = callsite;
 
         this.startTime = null;
@@ -24,7 +25,7 @@ export default class AssertionExecutor extends EventEmitter {
     }
 
     _getTimeLeft () {
-        return this.command.options.timeout - (new Date() - this.startTime);
+        return this.timeout - (new Date() - this.startTime);
     }
 
     _onExecutionFinished () {

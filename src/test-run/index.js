@@ -376,7 +376,8 @@ export default class TestRun extends Session {
 
     // Execute command
     async _executeAssertion (command, callsite) {
-        var executor = new AssertionExecutor(command, callsite);
+        var assertionTimeout = command.options.timeout === void 0 ? this.opts.assertionTimeout : command.options.timeout;
+        var executor         = new AssertionExecutor(command, assertionTimeout, callsite);
 
         executor.once('start-assertion-retries', timeout => this._enqueueCommand(new ShowAssertionRetriesStatusCommand(timeout)));
         executor.once('end-assertion-retries', success => this._enqueueCommand(new HideAssertionRetriesStatusCommand(success)));

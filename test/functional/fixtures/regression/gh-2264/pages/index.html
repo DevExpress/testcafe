@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>gh-2264</title>
+</head>
+<body>
+<button id="first-btn">Show the second button</button>
+<button id="second-btn" style="display: none;">Second button</button>
+
+<script>
+    document.getElementById('first-btn').addEventListener('click', function () {
+        window.setTimeout(function () {
+            document.getElementById('second-btn').style.display = "block";
+        }, 1000);
+    });
+</script>
+</body>
+</html>
