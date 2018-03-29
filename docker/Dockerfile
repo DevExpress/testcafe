@@ -7,7 +7,7 @@ COPY . /opt/testcafe
 
 RUN cd /opt/testcafe; \
  npm install --production && \
- npm cache clean && \
+ npm cache clean --force && \
  rm -rf /tmp/* && \
  chmod +x /opt/testcafe/docker/testcafe-docker.sh && \
  adduser -D user
