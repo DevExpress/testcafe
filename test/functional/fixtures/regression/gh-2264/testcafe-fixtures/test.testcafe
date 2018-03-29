@@ -2,7 +2,7 @@
   "fixtures": [
     {
       "name": "Assertions",
-      "pageUrl": "D:\\Git\\testcafe\\test\\functional\\fixtures\\regression\\gh-2264\\pages\\index.html",
+      "pageUrl": "../pages/index.html",
       "tests": [
         {
           "name": "Smart Assertion",
