@@ -4,6 +4,7 @@ var BsConnector    = require('browserstack-connector');
 var Promise        = require('pinkie');
 var caller         = require('caller');
 var path           = require('path');
+var promisifyEvent = require('promisify-event');
 var createTestCafe = require('../../lib');
 var config         = require('./config.js');
 var site           = require('./site');
@@ -87,7 +88,13 @@ function openLocalBrowsers () {
     var openBrowserPromises = browsersInfo.map(function (browserInfo) {
         return browserTools.getBrowserInfo(browserInfo.settings.alias)
             .then(function (browser) {
-                return browserTools.open(browser, browserInfo.connection.url);
+                var browserOpenedPromise = promisifyEvent(browserInfo.connection, 'opened');
+
+                return browserTools
+                    .open(browser, browserInfo.connection.url)
+                    .then(function () {
+                        return browserOpenedPromise;
+                    });
             });
     });
 
