@@ -12,6 +12,7 @@ export var getElementPadding    = hammerhead.utils.style.getElementPadding;
 export var getElementScroll     = hammerhead.utils.style.getElementScroll;
 export var getOptionHeight      = hammerhead.utils.style.getOptionHeight;
 export var getSelectElementSize = hammerhead.utils.style.getSelectElementSize;
+export var isElementVisible     = hammerhead.utils.style.isElementVisible;
 export var isSelectVisibleChild = hammerhead.utils.style.isVisibleChild;
 export var getWidth             = hammerhead.utils.style.getWidth;
 export var getHeight            = hammerhead.utils.style.getHeight;
@@ -40,10 +41,14 @@ var getAncestorsAndSelf = function (node) {
     return getAncestors(node).concat([node]);
 };
 
-var isVisibilityHiddenTextNode = function (textNode) {
-    var el = domUtils.isTextNode(textNode) ? textNode.parentNode : null;
+var isVisibilityHiddenNode = function (node) {
+    var ancestors = getAncestorsAndSelf(node);
 
-    return el && get(el, 'visibility') === 'hidden';
+    return some(ancestors, ancestor => domUtils.isElementNode(ancestor) && get(ancestor, 'visibility') === 'hidden');
+};
+
+var isVisibilityHiddenTextNode = function (textNode) {
+    return domUtils.isTextNode(textNode) && isVisibilityHiddenNode(textNode);
 };
 
 var isHiddenNode = function (node) {
@@ -133,22 +138,6 @@ export function hasScroll (el) {
 export function hasDimensions (el) {
     //NOTE: it's like jquery ':visible' selector (http://blog.jquery.com/2009/02/20/jquery-1-3-2-released/)
     return el && !(el.offsetHeight <= 0 && el.offsetWidth <= 0);
-}
-
-export function isElementHidden (el) {
-    //NOTE: it's like jquery ':hidden' selector
-    if (get(el, 'display') === 'none' || !hasDimensions(el) || el.type && el.type === 'hidden')
-        return true;
-
-    var elements       = domUtils.findDocument(el).querySelectorAll('*');
-    var hiddenElements = [];
-
-    for (var i = 0; i < elements.length; i++) {
-        if (get(elements[i], 'display') === 'none' || !hasDimensions(elements[i]))
-            hiddenElements.push(elements[i]);
-    }
-
-    return domUtils.containsElement(hiddenElements, el);
 }
 
 export function set (el, style, value) {

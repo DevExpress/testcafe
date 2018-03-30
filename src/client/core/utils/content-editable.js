@@ -1,6 +1,6 @@
 import * as domUtils from './dom';
 import * as arrayUtils from './array';
-
+import * as styleUtils from './style';
 
 //nodes utils
 function getOwnFirstVisibleTextNode (el) {
@@ -36,6 +36,12 @@ function getOwnPreviousVisibleSibling (el) {
 
 function hasChildren (node) {
     return node.childNodes && domUtils.getChildNodesLength(node.childNodes);
+}
+
+function hasSelectableChildren (target) {
+    return arrayUtils.some(target.childNodes, node => {
+        return domUtils.isTextNode(node) || domUtils.isElementNode(node) && domUtils.getTagName(node) !== 'br' && styleUtils.isElementVisible(node);
+    });
 }
 
 function isElementWithChildren (node) {
@@ -321,7 +327,7 @@ function getSelectionStart (el, selection, inverseSelection) {
     };
 
     //NOTE: window.getSelection() can't returns not rendered node like selected node, so we shouldn't check it
-    if ((domUtils.isTheSameNode(el, startNode) || domUtils.isElementNode(startNode)) && hasChildren(startNode))
+    if ((domUtils.isTheSameNode(el, startNode) || domUtils.isElementNode(startNode)) && hasSelectableChildren(startNode))
         correctedStartPosition = getSelectedPositionInParentByOffset(startNode, startOffset);
 
     return {
@@ -340,7 +346,7 @@ function getSelectionEnd (el, selection, inverseSelection) {
     };
 
     //NOTE: window.getSelection() can't returns not rendered node like selected node, so we shouldn't check it
-    if ((domUtils.isTheSameNode(el, endNode) || domUtils.isElementNode(endNode)) && hasChildren(endNode))
+    if ((domUtils.isTheSameNode(el, endNode) || domUtils.isElementNode(endNode)) && hasSelectableChildren(endNode))
         correctedEndPosition = getSelectedPositionInParentByOffset(endNode, endOffset);
 
     return {
@@ -368,11 +374,35 @@ export function getSelectionEndPosition (el, selection, inverseSelection) {
     return calculatePositionByNodeAndOffset(el, correctedSelectionEnd);
 }
 
+function getElementOffset (target) {
+    let offset = 0;
+
+    const firstBreakElement = arrayUtils.find(target.childNodes, (node, index) => {
+        offset = index;
+        return domUtils.getTagName(node) === 'br';
+    });
+
+    return firstBreakElement ? offset : 0;
+}
+
 export function calculateNodeAndOffsetByPosition (el, offset) {
     var point = {
         node:   null,
         offset: offset
     };
+
+    function isElementSelectable (target) {
+        if (hasSelectableChildren(target))
+            return false;
+
+        const textNodes = getContentEditableNodes(target);
+        const notVisibleTextNodes = arrayUtils.filter(textNodes, node => styleUtils.isNotVisibleNode(node));
+
+        const nodesValue = arrayUtils.map(textNodes, node => node.nodeValue).join('');
+        const hiddenNodesValue = arrayUtils.map(notVisibleTextNodes, node => node.nodeValue).join('');
+
+        return nodesValue === hiddenNodesValue;
+    }
 
     function checkChildNodes (target) {
         var childNodes       = target.childNodes;
@@ -397,13 +427,17 @@ export function calculateNodeAndOffsetByPosition (el, offset) {
             }
         }
         else if (domUtils.isElementNode(target)) {
-            if (point.offset === 0 && !getContentEditableValue(target).length) {
+            if (!styleUtils.isElementVisible(target))
+                return point;
+
+            if (point.offset === 0 && isElementSelectable(target)) {
                 point.node = target;
+                point.offset = getElementOffset(target);
                 return point;
             }
             if (!point.node && (isNodeBlockWithBreakLine(el, target) || isNodeAfterNodeBlockWithBreakLine(el, target)))
                 point.offset--;
-            else if (!childNodesLength && domUtils.isElementNode(target) && domUtils.getTagName(target) === 'br')
+            else if (!childNodesLength && domUtils.getTagName(target) === 'br')
                 point.offset--;
         }
 
@@ -499,23 +533,22 @@ export function getLastVisiblePosition (el) {
     return 0;
 }
 
-//contents util
-export function getContentEditableValue (target) {
-    var elementValue     = '';
+function getContentEditableNodes (target) {
+    var result = [];
     var childNodes       = target.childNodes;
     var childNodesLength = domUtils.getChildNodesLength(childNodes);
 
-    if (isSkippableNode(target))
-        return elementValue;
-
-    if (!childNodesLength && domUtils.isTextNode(target))
-        return target.nodeValue;
-    else if (childNodesLength === 1 && domUtils.isTextNode(childNodes[0]))
-        return childNodes[0].nodeValue;
+    if (!isSkippableNode(target) && !childNodesLength && domUtils.isTextNode(target))
+        result.push(target);
 
     arrayUtils.forEach(childNodes, node => {
-        elementValue += getContentEditableValue(node);
+        result = result.concat(getContentEditableNodes(node));
     });
 
-    return elementValue;
+    return result;
+}
+
+// contents util
+export function getContentEditableValue (target) {
+    return arrayUtils.map(getContentEditableNodes(target), node => node.nodeValue).join('');
 }
