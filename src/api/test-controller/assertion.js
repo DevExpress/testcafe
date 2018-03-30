@@ -15,17 +15,13 @@ export default class Assertion {
             message = void 0;
         }
 
-        var timeout = options.timeout === void 0 ?
-            this.testController.testRun.opts.assertionTimeout :
-            options.timeout;
-
         return this.testController._enqueueCommand(apiMethodName, AssertionCommand, {
             assertionType: apiMethodName,
             actual:        this.actual,
             expected:      assertionArgs.expected,
             expected2:     assertionArgs.expected2,
             message:       message,
-            options:       { timeout }
+            options:       { timeout: options.timeout }
         });
     }
 

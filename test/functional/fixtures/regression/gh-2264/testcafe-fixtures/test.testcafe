@@ -1,0 +1,34 @@
+{
+  "fixtures": [
+    {
+      "name": "Assertions",
+      "pageUrl": "../pages/index.html",
+      "tests": [
+        {
+          "name": "Smart Assertion",
+          "commands": [
+            {
+              "callsite": "0",
+              "options": {},
+              "selector": {
+                "type": "js-expr",
+                "value": "Selector('#first-btn')"
+              },
+              "type": "click"
+            },
+            {
+              "actual": {
+                "type": "js-expr",
+                "value": "Selector('#second-btn').visible"
+              },
+              "assertionType": "ok",
+              "callsite": "1",
+              "options": {},
+              "type": "assertion"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
