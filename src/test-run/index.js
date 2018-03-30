@@ -1,4 +1,5 @@
 import path from 'path';
+import { pull as remove } from 'lodash';
 import { readSync as read } from 'read-file-relative';
 import promisifyEvent from 'promisify-event';
 import Promise from 'pinkie';
@@ -110,6 +111,22 @@ export default class TestRun extends Session {
         this.requestHooks = Array.from(this.test.requestHooks);
 
         this._initRequestHooks();
+    }
+
+    addRequestHook (hook) {
+        if (this.requestHooks.indexOf(hook) !== -1)
+            return;
+
+        this.requestHooks.push(hook);
+        this._initRequestHook(hook);
+    }
+
+    removeRequestHook (hook) {
+        if (this.requestHooks.indexOf(hook) === -1)
+            return;
+
+        remove(this.requestHooks, hook);
+        this._disposeRequestHook(hook);
     }
 
     _initRequestHook (hook) {

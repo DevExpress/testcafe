@@ -170,6 +170,17 @@ describe('RequestLogger', () => {
 
         testRunTracker.resolveContextTestRun = storedResolveContextTestRunFn;
     });
+
+    it('.requests property without test context', () => {
+        const logger = new RequestLogger();
+
+        expect(logger.requests.length).eql(0);
+
+        logger.onRequest(requestEventMock);
+        logger.onResponse(responseEventMock);
+
+        expect(logger.requests.length).eql(1);
+    });
 });
 
 describe('RequestMock (throwing errors)', () => {

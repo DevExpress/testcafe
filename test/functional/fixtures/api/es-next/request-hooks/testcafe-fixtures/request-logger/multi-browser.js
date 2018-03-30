@@ -1,6 +1,8 @@
 import { RequestLogger, Selector, ClientFunction } from 'testcafe';
 import userAgent from 'useragent';
 
+const pageUrl = 'http://localhost:3000/fixtures/api/es-next/request-hooks/pages/multi-browser.html';
+
 const logger = new RequestLogger(
     {
         url:    /get-browser-name/,
@@ -12,7 +14,7 @@ const logger = new RequestLogger(
     });
 
 fixture `RequestLogger`
-    .page('http://localhost:3000/fixtures/api/es-next/request-hooks/pages/multi-browser.html');
+    .page(pageUrl);
 
 test
     .requestHooks(logger)
@@ -24,5 +26,6 @@ test
         await t
             .click(buttonSelector)
             .expect(buttonSelector.textContent).eql('Done')
-            .expect(logger.contains(r => r.response.body === browserName)).ok();
+            .expect(logger.contains(r => r.response.body === browserName)).ok()
+            .expect(logger.contains(r => r.request.url === pageUrl)).notOk();
     });

@@ -16,6 +16,8 @@ class RequestMock extends RequestHook {
         event.setMock(mock);
     }
 
+    onResponse () {}
+
     // API
     onRequestTo (requestFilterRuleInit) {
         if (this.pendingRequestFilterRuleInit)

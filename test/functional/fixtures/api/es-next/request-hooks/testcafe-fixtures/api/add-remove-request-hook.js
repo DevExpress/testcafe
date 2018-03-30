@@ -5,10 +5,9 @@ const ResultPromise = require(path.resolve('./lib/utils/re-executable-promise'))
 const pageUrl       = 'http://localhost:3000/fixtures/api/es-next/request-hooks/pages/index.html';
 
 class TestRequestHook extends RequestHook {
-    constructor (name) {
+    constructor () {
         super(pageUrl);
 
-        this.name                        = name;
         this.onResponseCallCountInternal = 0;
     }
 
@@ -16,14 +15,16 @@ class TestRequestHook extends RequestHook {
         return ResultPromise.fromFn(async () => this.onResponseCallCountInternal);
     }
 
+    onRequest () {}
+
     onResponse () {
         this.onResponseCallCountInternal++;
     }
 }
 
-const hook1 = new TestRequestHook('hook1');
-const hook2 = new TestRequestHook('hook2');
-const hook3 = new TestRequestHook('hook3');
+const hook1 = new TestRequestHook();
+const hook2 = new TestRequestHook();
+const hook3 = new TestRequestHook();
 
 fixture `Fixture`
     .requestHooks(hook1)

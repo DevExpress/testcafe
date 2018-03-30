@@ -1,5 +1,5 @@
 import Promise from 'pinkie';
-import { identity, assign, isNil as isNullOrUndefined, flattenDeep as flatten, pull as remove } from 'lodash';
+import { identity, assign, isNil as isNullOrUndefined, flattenDeep as flatten } from 'lodash';
 import { getCallsiteForMethod } from '../../errors/get-callsite';
 import ClientFunctionBuilder from '../../client-functions/client-function-builder';
 import Assertion from './assertion';
@@ -288,12 +288,7 @@ export default class TestController {
 
             assertRequestHookType(hooks);
 
-            hooks.forEach(hook => {
-                if (!this.testRun.requestHooks.includes(hook)) {
-                    this.testRun.requestHooks.push(hook);
-                    this.testRun._initRequestHook(hook);
-                }
-            });
+            hooks.forEach(hook => this.testRun.addRequestHook(hook));
         });
     }
 
@@ -303,12 +298,7 @@ export default class TestController {
 
             assertRequestHookType(hooks);
 
-            hooks.forEach(hook => {
-                if (this.testRun.requestHooks.includes(hook)) {
-                    remove(this.testRun.requestHooks, hook);
-                    this.testRun._disposeRequestHook(hook);
-                }
-            });
+            hooks.forEach(hook => this.testRun.removeRequestHook(hook));
         });
     }
 }

@@ -15,10 +15,6 @@ describe('Request Hooks', () => {
         it('Multi-browser', () => {
             return runTests('./testcafe-fixtures/request-logger/multi-browser.js', 'Multi-browser');
         });
-
-        it('Not in test context', () => {
-            return runTests('./testcafe-fixtures/request-logger/not-in-test-context.js', 'Not in test context', { only: 'chrome' });
-        });
     });
 
     describe('API', () => {

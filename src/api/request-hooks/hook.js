@@ -24,6 +24,7 @@ export default class RequestHook {
     }
 
     onRequest (/*RequestEvent event*/) {
+        throw new Error('Not implemented');
     }
 
     _onConfigureResponse (event) {
@@ -35,5 +36,6 @@ export default class RequestHook {
     }
 
     onResponse (/*ResponseEvent event*/) {
+        throw new Error('Not implemented');
     }
 }
