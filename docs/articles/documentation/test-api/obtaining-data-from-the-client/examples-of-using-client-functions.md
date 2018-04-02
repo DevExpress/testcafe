@@ -38,7 +38,7 @@ test('Check the page URL', async t => {
 
 ## Obtaining a Browser Alias Within a Test
 
-Sometimes you may need to determine a browser's alias from within a test. For example, you configured a test tasks using the [testCafe.createRunner](../../using-testcafe/programming-interface/testcafe.md#createrunner) function and specified several browsers where the test should run. However, the test logic should be different for different browsers: `runner.browsers(['safari','chrome'])`. To do this, you need to detect which test instance corresponds to `safari` and which one corresponds to `chrome`.
+Sometimes you may need to determine a browser's alias from within a test. For example, you configured a test tasks using the [testCafe.createRunner](../../using-testcafe/programming-interface/testcafe.md#createrunner) function and specified several browsers where the test should run: `runner.browsers(['safari','chrome'])`. However, the test logic should be different for different browsers. To do this, you need to detect which test instance corresponds to `safari` and which one corresponds to `chrome`.
 
 To obtain a browser's alias, create a client function that uses the [navigator.userAgent](https://www.w3schools.com/jsref/prop_nav_useragent.asp) property. This function returns the browser's user-agent header, and you can use external modules (for example, [ua-parser-js](https://github.com/faisalman/ua-parser-js)) to parse this header.
 
@@ -54,7 +54,7 @@ fixture `My fixture`
 //Returns a user-agent header sent by the browser
 const getUA = ClientFunction(() => navigator.userAgent);
 
-test('My Test', async t => {
+test('My test', async t => {
     const ua = await getUA();
     const browserAlias =uaParser(ua).browser.name;
 
@@ -76,13 +76,7 @@ test('My Test', async t => {
 
 Another example is using client functions to inject external libraries like [jQuery](https://jquery.com/) into a tested page.
 
-To work with jQuery from a test, you first need to add jQuery code to the tested page using the `eval` method.
-
-```js
-await t.eval(new Function(fs.readFileSync('./jquery.js').toString()));
-```
-
-After that,  you can use jQuery in the test within a client function.
+To work with jQuery from a test, you first need to place the jQuery library file to the test directory. After that, add the library's code to the tested page using the `eval` method and use jQuery in the test within a client function. The following sample demonstrates this.
 
 ```js
 import { ClientFunction } from 'testcafe';
@@ -93,7 +87,7 @@ fixture `My fixture`
 
 test('My test', async t => {
     // Adds jQuery code to the page
-    await t.eval(new Function(fs.readFileSync('./jquery.min.js').toString()));
+    await t.eval(new Function(fs.readFileSync('./jquery.js').toString()));
 
     const getElementText = ClientFunction(() => {
         // Uses the jQuery selector
@@ -121,9 +115,7 @@ For instance, you are testing the *example.html* page with the following HTML co
 </html>
 ```
 
-... and you need to obtain the text *This is my tested page*.
-
-This text is considered as a child node. You can obtain it within a client function using the [childNodes](https://developer.mozilla.org/en-US/docs/Web/API/Node/childNodes) property. The following sample demonstrates this.
+... and you need to obtain the text content of the first child node - *This is my tested page*. You can do this within a client function using the [childNodes](https://developer.mozilla.org/en-US/docs/Web/API/Node/childNodes) property. The following sample demonstrates this.
 
 ```js
 import { Selector } from 'testcafe';
@@ -132,9 +124,11 @@ import { ClientFunction } from 'testcafe';
 fixture `My Fixture`
     .page `examplepage.html`;
 
+    const testedPage = Selector('#testedpage');
+
     const getChildNodeText = ClientFunction(index => {
         return getEl().childNodes[index].textContent;
-    },{ dependencies: { getEl: Selector('#testedpage') } });
+    },{ dependencies: { getEl: testedPage } });
 
 
 test('My Test', async t => {
@@ -142,7 +136,7 @@ test('My Test', async t => {
 });
 ```
 
-> Note that the `getChildNodeText` client function uses the `Selector('#testedpage')` selector that is passed to it as a dependency. See [options.dependencies](../obtaining-data-from-the-client.md#optionsdependencies) for more information.
+> Note that the `getChildNodeText` client function uses the `testedPage` selector that is passed to it as a dependency. See [options.dependencies](../obtaining-data-from-the-client.md#optionsdependencies) for more information.
 
 ## Complex DOM Queries
 
@@ -171,7 +165,7 @@ fixture `Get sale amount`
         return array;
     });
 
-test('Test1', async t => {
+test('My test', async t => {
     console.log(await getSaleAmount());
 });
 ```
