@@ -108,18 +108,17 @@ function getSelectionRectangle (element, position) {
 
     domUtils.remove(fakeDiv);
 
-    if (rect) {
-        return {
-            width:  rect.width,
-            height: rect.height,
-            top:    rect.top - topBoundDiff,
-            bottom: rect.bottom - topBoundDiff,
-            left:   rect.left - leftBoundDiff,
-            right:  rect.right - leftBoundDiff
-        };
-    }
+    if (!rect)
+        return null;
 
-    return null;
+    return {
+        width:  rect.width,
+        height: rect.height,
+        top:    rect.top - topBoundDiff,
+        bottom: rect.bottom - topBoundDiff,
+        left:   rect.left - leftBoundDiff,
+        right:  rect.right - leftBoundDiff
+    };
 }
 
 function createFakeDiv (element) {
