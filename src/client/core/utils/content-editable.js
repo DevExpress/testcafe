@@ -38,14 +38,16 @@ function hasChildren (node) {
     return node.childNodes && domUtils.getChildNodesLength(node.childNodes);
 }
 
-function hasSelectableChildren (target) {
-    return arrayUtils.some(target.childNodes, node => {
-        return domUtils.isTextNode(node) || domUtils.isElementNode(node) && domUtils.getTagName(node) !== 'br' && styleUtils.isElementVisible(node);
-    });
+function getVisibleChildren (node) {
+    return arrayUtils.filter(node.childNodes, child => domUtils.isTextNode(child) || domUtils.isElementNode(child) && styleUtils.isElementVisible(child));
 }
 
-function isElementWithChildren (node) {
-    return domUtils.isElementNode(node) || hasChildren(node);
+function hasVisibleChildren (node) {
+    return getVisibleChildren(node).length;
+}
+
+function hasSelectableChildren (node) {
+    return getVisibleChildren(node).filter(child => domUtils.getTagName(child) !== 'br').length;
 }
 
 //NOTE: before such elements (like div or p) adds line breaks before and after it
@@ -124,7 +126,7 @@ export function getFirstVisibleTextNode (el) {
 
         if (isVisibleTextNode(curNode))
             return curNode;
-        else if (domUtils.isRenderedNode(curNode) && isElementWithChildren(curNode) && !isNotContentEditableElement) {
+        else if (domUtils.isRenderedNode(curNode) && hasVisibleChildren(curNode) && !isNotContentEditableElement) {
             child = getFirstVisibleTextNode(curNode);
 
             if (child)
@@ -154,7 +156,7 @@ export function getLastTextNode (el, onlyVisible) {
 
         if (visibleTextNode)
             return curNode;
-        else if (domUtils.isRenderedNode(curNode) && isElementWithChildren(curNode) && !isNotContentEditableElement) {
+        else if (domUtils.isRenderedNode(curNode) && hasVisibleChildren(curNode) && !isNotContentEditableElement) {
             child = getLastTextNode(curNode, false);
 
             if (child)
@@ -392,7 +394,7 @@ export function calculateNodeAndOffsetByPosition (el, offset) {
     };
 
     function isElementSelectable (target) {
-        if (hasSelectableChildren(target))
+        if (hasSelectableChildren(target) || hasVisibleChildren(target))
             return false;
 
         const textNodes = getContentEditableNodes(target);

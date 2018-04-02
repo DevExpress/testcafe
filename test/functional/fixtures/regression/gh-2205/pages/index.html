@@ -12,6 +12,10 @@
             visibility: hidden;
         }
 
+        #editor3 .placeholder {
+            display: none;
+        }
+
         .placeholder {
             color: #aaa;
             font-style: italic;
@@ -70,6 +74,11 @@
 <div class="outer-editor">
     <div id="editor2" contenteditable="true" class="editor"
          onmousedown="event.currentTarget.className += ' focused'"></div>
+</div>
+
+<h2>Two hidden divs inside</h2>
+<div class="outer-editor">
+    <div id="editor3" contenteditable="true" class="editor"><div><div class="placeholder"></div><div class="placeholder">test</div></div></div>
 </div>
 
 <div id="placeholder1" contenteditable="false" class="placeholder">Type here...</div>
