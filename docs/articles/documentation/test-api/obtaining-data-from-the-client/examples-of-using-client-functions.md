@@ -76,7 +76,7 @@ test('My test', async t => {
 
 Another example is using client functions to inject external libraries like [jQuery](https://jquery.com/) into a tested page.
 
-To work with jQuery from a test, you first need to place the jQuery library file to the test directory. After that, add the library's code to the tested page using the `eval` method and use jQuery in the test within a client function. The following sample demonstrates this.
+To work with jQuery from a test, you first need to place the jQuery library file in the test directory. After that, add the library's code to the tested page using the `eval` method and use jQuery in the test within a client function. The following sample demonstrates this.
 
 ```js
 import { ClientFunction } from 'testcafe';
