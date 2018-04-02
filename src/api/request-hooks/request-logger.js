@@ -5,7 +5,7 @@ import testRunTracker from '../test-run-tracker';
 import ReExecutablePromise from '../../utils/re-executable-promise';
 import { RequestHookConfigureAPIError } from '../../errors/test-run/index';
 
-const DEFAULT_LOG_OPTIONS = {
+const DEFAULT_OPTIONS = {
     logRequestHeaders:     false,
     logRequestBody:        false,
     stringifyRequestBody:  false,
@@ -15,15 +15,15 @@ const DEFAULT_LOG_OPTIONS = {
 };
 
 class RequestLogger extends RequestHook {
-    constructor (requestFilterRuleInit, logOptions) {
-        logOptions = Object.assign({}, DEFAULT_LOG_OPTIONS, logOptions);
-        RequestLogger._assertLogOptions(logOptions);
+    constructor (requestFilterRuleInit, options) {
+        options = Object.assign({}, DEFAULT_OPTIONS, options);
+        RequestLogger._assertLogOptions(options);
 
-        const configureResponseEventOptions = new ConfigureResponseEventOptions(logOptions.logResponseHeaders, logOptions.logResponseBody);
+        const configureResponseEventOptions = new ConfigureResponseEventOptions(options.logResponseHeaders, options.logResponseBody);
 
         super(requestFilterRuleInit, configureResponseEventOptions);
 
-        this.logOptions = logOptions;
+        this.options = options;
 
         this._internalRequests = {};
     }
@@ -49,11 +49,11 @@ class RequestLogger extends RequestHook {
             }
         };
 
-        if (this.logOptions.logRequestHeaders)
+        if (this.options.logRequestHeaders)
             loggedReq.request.headers = Object.assign({}, event._requestInfo.headers);
 
-        if (this.logOptions.logRequestBody)
-            loggedReq.request.body = this.logOptions.stringifyRequestBody ? event._requestInfo.body.toString() : event._requestInfo.body;
+        if (this.options.logRequestBody)
+            loggedReq.request.body = this.options.stringifyRequestBody ? event._requestInfo.body.toString() : event._requestInfo.body;
 
         this._internalRequests[loggedReq.id] = loggedReq;
     }
@@ -67,11 +67,11 @@ class RequestLogger extends RequestHook {
         loggerReq.response            = {};
         loggerReq.response.statusCode = event.statusCode;
 
-        if (this.logOptions.logResponseHeaders)
+        if (this.options.logResponseHeaders)
             loggerReq.response.headers = Object.assign({}, event.headers);
 
-        if (this.logOptions.logResponseBody)
-            loggerReq.response.body = this.logOptions.stringifyResponseBody ? event.body.toString() : event.body;
+        if (this.options.logResponseBody)
+            loggerReq.response.body = this.options.stringifyResponseBody ? event.body.toString() : event.body;
     }
 
     _prepareInternalRequestInfo () {

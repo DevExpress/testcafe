@@ -1,4 +1,5 @@
 import { RequestFilterRule } from 'testcafe-hammerhead';
+import { castArray } from 'lodash';
 
 export default class RequestHook {
     constructor (requestFilterRules, responseEventConfigureOpts) {
@@ -9,7 +10,7 @@ export default class RequestHook {
 
     _prepareRequestFilterRules (rules) {
         if (rules)
-            return Array.isArray(rules) ? rules : [rules];
+            return castArray(rules);
 
         return [RequestFilterRule.ANY];
     }
