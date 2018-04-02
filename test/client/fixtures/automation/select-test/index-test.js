@@ -4,8 +4,9 @@ var featureDetection = hammerhead.utils.featureDetection;
 
 var testCafeCore = window.getTestCafeModule('testCafeCore');
 
-var testCafeAutomation   = window.getTestCafeModule('testCafeAutomation');
-var SelectTextAutomation = testCafeAutomation.SelectText;
+var testCafeAutomation                = window.getTestCafeModule('testCafeAutomation');
+var SelectTextAutomation              = testCafeAutomation.SelectText;
+var getSelectionCoordinatesByPosition = testCafeAutomation.get('./playback/select/utils').getSelectionCoordinatesByPosition;
 
 testCafeCore.preventRealEvents();
 
@@ -508,5 +509,27 @@ $(document).ready(function () {
                 expect(checkScrollAfterSelect ? 9 : 6);
                 start();
             });
+    });
+
+
+    module('regression');
+
+    test('GH2169 - SelectText action sometimes raise error in Safari', function () {
+        var input = $(INPUT_SELECTOR)[0];
+        var err   = null;
+
+        //emulate Safari behavior
+        document.createRange = function () {
+            return null;
+        };
+
+        try {
+            getSelectionCoordinatesByPosition(input, 3);
+        }
+        catch (e) {
+            err = e;
+        }
+
+        notOk(err);
     });
 });
