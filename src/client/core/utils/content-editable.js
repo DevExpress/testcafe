@@ -34,10 +34,6 @@ function getOwnPreviousVisibleSibling (el) {
     return sibling;
 }
 
-function hasChildren (node) {
-    return node.childNodes && domUtils.getChildNodesLength(node.childNodes);
-}
-
 function getVisibleChildren (node) {
     return arrayUtils.filter(node.childNodes, child => domUtils.isTextNode(child) || domUtils.isElementNode(child) && styleUtils.isElementVisible(child));
 }
@@ -47,7 +43,7 @@ function hasVisibleChildren (node) {
 }
 
 function hasSelectableChildren (node) {
-    return getVisibleChildren(node).filter(child => domUtils.getTagName(child) !== 'br').length;
+    return arrayUtils.some(node.childNodes, child => isNodeSelectable(child, true));
 }
 
 //NOTE: before such elements (like div or p) adds line breaks before and after it
@@ -301,8 +297,10 @@ function getSelectedPositionInParentByOffset (node, offset) {
 
     // NOTE: we try to find text node
     while (!isSkippableNode(currentNode) && domUtils.isElementNode(currentNode)) {
-        if (hasChildren(currentNode))
-            currentNode = currentNode.childNodes[isSearchForLastChild ? currentNode.childNodes.length - 1 : 0];
+        const visibleChildren = getVisibleChildren(currentNode);
+
+        if (visibleChildren.length)
+            currentNode = visibleChildren[isSearchForLastChild ? visibleChildren.length - 1 : 0];
         else {
             //NOTE: if we didn't find a text node then always set offset to zero
             currentOffset = 0;
@@ -387,24 +385,26 @@ function getElementOffset (target) {
     return firstBreakElement ? offset : 0;
 }
 
+function isNodeSelectable (node, includeDescendants = false) {
+    if (domUtils.isTextNode(node))
+        return true;
+
+    if (!domUtils.isElementNode(node))
+        return false;
+
+    const visibleChildren       = getVisibleChildren(node);
+    const isContentEditableRoot = !domUtils.isContentEditableElement(node.parentNode);
+    const selectableChildren    = arrayUtils.filter(visibleChildren, child => isNodeSelectable(child));
+    const breakLineElements     = arrayUtils.filter(visibleChildren, child => domUtils.getTagName(child) === 'br');
+
+    return selectableChildren.length ? includeDescendants : isContentEditableRoot || breakLineElements.length;
+}
+
 export function calculateNodeAndOffsetByPosition (el, offset) {
     var point = {
         node:   null,
         offset: offset
     };
-
-    function isElementSelectable (target) {
-        if (hasSelectableChildren(target) || hasVisibleChildren(target))
-            return false;
-
-        const textNodes = getContentEditableNodes(target);
-        const notVisibleTextNodes = arrayUtils.filter(textNodes, node => styleUtils.isNotVisibleNode(node));
-
-        const nodesValue = arrayUtils.map(textNodes, node => node.nodeValue).join('');
-        const hiddenNodesValue = arrayUtils.map(notVisibleTextNodes, node => node.nodeValue).join('');
-
-        return nodesValue === hiddenNodesValue;
-    }
 
     function checkChildNodes (target) {
         var childNodes       = target.childNodes;
@@ -432,8 +432,8 @@ export function calculateNodeAndOffsetByPosition (el, offset) {
             if (!styleUtils.isElementVisible(target))
                 return point;
 
-            if (point.offset === 0 && isElementSelectable(target)) {
-                point.node = target;
+            if (point.offset === 0 && isNodeSelectable(target)) {
+                point.node   = target;
                 point.offset = getElementOffset(target);
                 return point;
             }
@@ -536,7 +536,7 @@ export function getLastVisiblePosition (el) {
 }
 
 function getContentEditableNodes (target) {
-    var result = [];
+    var result           = [];
     var childNodes       = target.childNodes;
     var childNodesLength = domUtils.getChildNodesLength(childNodes);
 
