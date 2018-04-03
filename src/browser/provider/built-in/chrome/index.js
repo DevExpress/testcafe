@@ -19,6 +19,10 @@ export default {
         runtimeInfo.browserId   = browserId;
         runtimeInfo.browserName = browserName;
 
+        runtimeInfo.providerMethods = {
+            resizeLocalBrowserWindow: (...args) => this.resizeLocalBrowserWindow(...args)
+        };
+
         await startLocalChrome(pageUrl, runtimeInfo);
 
         await this.waitForConnectionReady(browserId);

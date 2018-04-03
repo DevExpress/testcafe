@@ -1,5 +1,4 @@
 import remoteChrome from 'chrome-remote-interface';
-import browserTools from 'testcafe-browser-tools';
 import { writeFile } from '../../../../utils/promisified-functions';
 
 
@@ -88,7 +87,7 @@ export async function takeScreenshot (path, { client, config }) {
 }
 
 export async function resizeWindow (newDimensions, runtimeInfo) {
-    var { browserId, config, viewportSize } = runtimeInfo;
+    var { browserId, config, viewportSize, providerMethods } = runtimeInfo;
 
     var currentWidth  = viewportSize.width;
     var currentHeight = viewportSize.height;
@@ -97,7 +96,7 @@ export async function resizeWindow (newDimensions, runtimeInfo) {
 
 
     if (!config.headless)
-        await browserTools.resize(browserId, currentWidth, currentHeight, newWidth, newHeight);
+        await providerMethods.resizeLocalBrowserWindow(browserId, newWidth, newHeight, currentWidth, currentHeight);
 
     viewportSize.width  = newWidth;
     viewportSize.height = newHeight;

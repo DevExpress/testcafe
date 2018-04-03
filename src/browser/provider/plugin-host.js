@@ -54,7 +54,15 @@ export default class BrowserProviderPluginHost {
     async closeLocalBrowser (browserId) {
         var connection = BrowserConnection.getById(browserId);
 
+        await connection.provider._ensureBrowserWindowDescriptor(browserId);
         await connection.provider._closeLocalBrowser(browserId);
+    }
+
+    async resizeLocalBrowserWindow (browserId, width, height, currentWidth, currentHeight) {
+        var connection = BrowserConnection.getById(browserId);
+
+        await connection.provider._ensureBrowserWindowParameters(browserId);
+        await connection.provider._resizeLocalBrowserWindow(browserId, width, height, currentWidth, currentHeight);
     }
 
     // API
