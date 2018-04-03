@@ -108,6 +108,9 @@ function getSelectionRectangle (element, position) {
 
     domUtils.remove(fakeDiv);
 
+    if (!rect)
+        return null;
+
     return {
         width:  rect.width,
         height: rect.height,
