@@ -274,9 +274,7 @@ gulp.task('test-server', ['build'], function () {
     return gulp
         .src('test/server/*-test.js', { read: false })
         .pipe(mocha({
-            ui:       'bdd',
-            reporter: 'spec',
-            timeout:  typeof v8debug === 'undefined' ? 2000 : Infinity // NOTE: disable timeouts in debug
+            timeout: typeof v8debug !== 'undefined' || !!process.debugPort ? Infinity : 2000 // NOTE: disable timeouts in debug
         }));
 });
 
