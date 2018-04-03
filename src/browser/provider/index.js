@@ -39,6 +39,17 @@ export default class BrowserProvider {
         this.localBrowsersInfo  = {};
     }
 
+    _createLocalBrowserInfo (browserId) {
+        if (this.localBrowsersInfo[browserId])
+            return;
+
+        this.localBrowsersInfo[browserId] = {
+            windowDescriptor:  null,
+            maxScreenSize:     null,
+            resizeCorrections: null
+        };
+    }
+
     _getWindowDescriptor (browserId) {
         return this.localBrowsersInfo[browserId] && this.localBrowsersInfo[browserId].windowDescriptor;
     }
@@ -92,6 +103,8 @@ export default class BrowserProvider {
     async _ensureBrowserWindowDescriptor (browserId) {
         if (this._getWindowDescriptor(browserId))
             return;
+
+        await this._createLocalBrowserInfo(browserId);
 
         // NOTE: delay to ensure the window finished the opening
         await this.plugin.waitForConnectionReady(browserId);
@@ -191,15 +204,8 @@ export default class BrowserProvider {
 
         var isLocalBrowser = await this.plugin.isLocalBrowser(browserId);
 
-        if (isLocalBrowser) {
-            this.localBrowsersInfo[browserId] = {
-                windowDescriptor:  null,
-                maxScreenSize:     null,
-                resizeCorrections: null
-            };
-
+        if (isLocalBrowser)
             await this._ensureBrowserWindowParameters(browserId);
-        }
     }
 
     async closeBrowser (browserId) {
