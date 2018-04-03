@@ -99,7 +99,7 @@ Selector('ul').filter((node, idx) => {
 });
 ```
 
-The [dependencies parameter](../../obtaining-data-from-the-client.md#optionsdependencies) allows
+The [dependencies parameter](../../obtaining-data-from-the-client/README.md#optionsdependencies) allows
 you to pass objects to the `filterFn` client-side scope where they appear as variables.
 
 ```js
@@ -134,7 +134,7 @@ If all nodes are filtered out, the selector returns `null`.
 
 ## Search for Elements in the DOM Hierarchy
 
-The selector API provides methods to find elements within a DOM hierarchy in jQuery style.
+The selector API provides methods to find elements in a DOM hierarchy in jQuery style.
 
 ### find
 
@@ -156,10 +156,12 @@ Method | Description
 
 Method | Description
 ------ | -----
-`child()` | Finds all child elements (not nodes) of all nodes in the matching set.
+`child()` | Finds all child elements (not [nodes](https://developer.mozilla.org/en-US/docs/Web/API/Node)) of all nodes in the matching set.
 `child(index)` | Finds all child elements (not nodes) of all nodes in the matching set and filters them by `index`. The `index` parameter is zero-based. If `index` is negative, the index is counted from the end of the matching set.
 `child(cssSelector)` | Finds all child elements (not nodes) of all nodes in the matching set and filters them by `cssSelector`.
 `child(filterFn, dependencies)` | Finds all child elements (not nodes) of all nodes in the matching set and filters them by the `filterFn` predicate. Use an optional `dependencies` parameter to pass functions, variables or objects to the `filterFn` function. See [Filtering DOM Elements by Predicates](#filtering-dom-elements-by-predicates).
+
+> Important! To know how to access child nodes, see [Accessing Child Nodes in the DOM Hierarchy](../../obtaining-data-from-the-client/examples-of-using-client-functions.md#accessing-child-nodes-in-the-dom-hierarchy).
 
 ### sibling
 
@@ -208,7 +210,7 @@ Selector('section').prevSibling((node, idx, originNode) => {
 });
 ```
 
-The [dependencies parameter](../../obtaining-data-from-the-client.md#optionsdependencies) allows
+The [dependencies parameter](../../obtaining-data-from-the-client/README.md#optionsdependencies) allows
 you to pass objects to the `filterFn` client-side scope where they appear as variables.
 
 ```js

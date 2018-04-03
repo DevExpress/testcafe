@@ -61,4 +61,4 @@ For more information about selectors, see the detailed topics in this section.
 * [Extending Selectors](extending-selectors.md)
 * [Edge Cases and Limitations](edge-cases-and-limitations.md)
 
-Note that you can use [client functions](../../obtaining-data-from-the-client.md) to obtain page information that does not relate to elements' state.
+Note that you can use [client functions](../../obtaining-data-from-the-client/README.md) to obtain page information that does not relate to elements' state.

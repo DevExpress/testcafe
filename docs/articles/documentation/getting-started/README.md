@@ -5,7 +5,7 @@ permalink: /documentation/getting-started/
 ---
 # Getting Started
 
-This guide provides step-by-step instructions on how to create a functional web test with TestCafe and contains the following sections.
+This guide provides step-by-step instructions on how to create a functional web test with TestCafe and consists of the following sections.
 
 * [Installing TestCafe](#installing-testcafe)
 * [Creating a Test](#creating-a-test)
@@ -18,7 +18,7 @@ This guide provides step-by-step instructions on how to create a functional web 
 
 ## Installing TestCafe
 
-Ensure that [Node.js](https://nodejs.org/) and [npm](https://www.npmjs.com/) are installed on your computer, then run a single command:
+Ensure that [Node.js](https://nodejs.org/) and [npm](https://www.npmjs.com/) are installed on your computer and run the following command:
 
 ```bash
 npm install -g testcafe
@@ -29,10 +29,10 @@ For more information, see [Installing TestCafe](../using-testcafe/installing-tes
 ## Creating a Test
 
 TestCafe allows you to write tests using TypeScript or JavaScript (with its modern features like `async/await`).
-By using TypeScript to write your TestCafe tests, you get the advantages of strongly-typed languages such as: rich coding assistance, painless scalability, check-as-you-type code verification, and much more. For more information about writing tests in TypeScript, see [TypeScript Support](../test-api/typescript-support.md).
+You get all the advantages of strongly-typed languages like rich coding assistance, painless scalability, check-as-you-type code verification, etc., by using TypeScript to write your TestCafe tests. For more information about writing tests in TypeScript, see [TypeScript Support](../test-api/typescript-support.md).
 
-To create a test, create a new .js or .ts file anywhere on your computer.
-This file must have a special structure: tests must be organized into fixtures.
+To create a test, create a new .js or .ts file.
+This file must have a special structure - tests must be organized into fixtures.
 
 Firstly, import the `testcafe` module.
 
@@ -46,15 +46,15 @@ Then declare a fixture using the [fixture](../test-api/test-code-structure.md#fi
 fixture `Getting Started`
 ```
 
-In this tutorial, you will create a test for the [http://devexpress.github.io/testcafe/example](/testcafe/example) sample page.
-Specify this page as a start page for the fixture by using the [page](../test-api/test-code-structure.md#specifying-the-start-webpage) function.
+In this tutorial, you create a test for the [http://devexpress.github.io/testcafe/example](/testcafe/example) sample page.
+Specify this page as a start page for the fixture using the [page](../test-api/test-code-structure.md#specifying-the-start-webpage) function.
 
 ```js
 fixture `Getting Started`
     .page `http://devexpress.github.io/testcafe/example`;
 ```
 
-Then, create the [test](../test-api/test-code-structure.md#tests) function where you will place test code.
+Then, create the [test](../test-api/test-code-structure.md#tests) function where you can enter test code.
 
 ```js
 import { Selector } from 'testcafe';
@@ -69,13 +69,13 @@ test('My first test', async t => {
 
 ## Running the Test
 
-You can simply run the test from a command shell by calling a single command where you specify the [target browser](../using-testcafe/command-line-interface.md#browser-list) and [file path](../using-testcafe/command-line-interface.md#file-pathglob-pattern).
+You can run the test from a command shell by calling a single command where you specify the [target browser](../using-testcafe/command-line-interface.md#browser-list) and [file path](../using-testcafe/command-line-interface.md#file-pathglob-pattern).
 
 ```bash
 testcafe chrome test1.js
 ```
 
-TestCafe will automatically open the chosen browser and start test execution within it.
+TestCafe automatically opens the chosen browser and starts test execution within it.
 
 > Important! Make sure to keep the browser tab that is running tests active. Do not minimize the browser window.
 > Inactive tabs and minimized browser windows switch to a lower resource consumption mode
@@ -85,11 +85,11 @@ For more information on how to configure the test run, see [Command Line Interfa
 
 ## Viewing the Test Results
 
-While the test is running, TestCafe is gathering information about the test run and outputting the report right into a command shell.
+While the test is running, TestCafe is gathering information about the test run and outputting the report in a command shell.
 
 ![Test Report](../../images/report.png)
 
-For more information, see [Reporters](../using-testcafe/common-concepts/reporters.md).
+See [Reporters](../using-testcafe/common-concepts/reporters.md) for more information.
 
 ## Writing Test Code
 
@@ -123,8 +123,8 @@ To wait for actions to complete, use the `await` keyword when calling these acti
 TestCafe allows you to observe the page state.
 For this purpose, it offers special kinds of functions that will execute your code on the client:
 [Selector](../test-api/selecting-page-elements/selectors/README.md) used to get direct access to DOM elements
-and [ClientFunction](../test-api/obtaining-data-from-the-client.md) used to obtain arbitrary data from the client side.
-You call these functions as regular async functions, that is you can obtain their results and use parameters to pass data to them.
+and [ClientFunction](../test-api/obtaining-data-from-the-client/README.md) used to obtain arbitrary data from the client side.
+You call these functions as regular async functions, that is, you can obtain their results and use parameters to pass data to them.
 
 The selector API provides methods and properties to select elements on the page and get their state.
 
@@ -150,12 +150,12 @@ test('My first test', async t => {
 });
 ```
 
-For more information, see [Selecting Page Elements](../test-api/selecting-page-elements/README.md).
+See [Selecting Page Elements](../test-api/selecting-page-elements/README.md) for more information.
 
 ### Assertions
 
-A functional test also should check the result of actions performed.
-For example, the article header on the "Thank you" page should address a user by the entered name.
+A functional test should also check the result of actions performed.
+For example, the article header on the "Thank you" page should address a user using the entered name.
 To check if the header is correct, you have to add an assertion to the test.
 
 The following test demonstrates how to use [build-in assertions](../test-api/assertions/README.md).
