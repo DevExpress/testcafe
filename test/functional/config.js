@@ -136,13 +136,6 @@ testingEnvironments[testingEnvironmentNames.oldBrowsers] = {
 };
 
 testingEnvironments[testingEnvironmentNames.legacy] = {
-    jobName: 'functional tests - legacy',
-
-    sauceLabs: {
-        username:  process.env.SAUCE_USERNAME_FUNCTIONAL_DESKTOP,
-        accessKey: process.env.SAUCE_ACCESS_KEY_FUNCTIONAL_DESKTOP
-    },
-
     browsers: [
         {
             platform:    'Windows 10',
@@ -154,11 +147,6 @@ testingEnvironments[testingEnvironmentNames.legacy] = {
             browserName: 'internet explorer',
             version:     '11.0',
             alias:       'ie'
-        },
-        {
-            platform:    'Windows 10',
-            browserName: 'firefox',
-            alias:       'firefox'
         }
     ]
 };
