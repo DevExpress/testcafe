@@ -176,6 +176,8 @@ test('My Test', async t => {
 });
 ```
 
+> Since the `eval` method returns a value, not an object, you cannot call other methods of the test controller in the chain after calling 'eval'.
+
 ## Calling Client Functions from Node.js Callbacks
 
 Client functions need access to the [test controller](../test-code-structure.md#test-controller) to be executed.
