@@ -758,17 +758,17 @@ describe('Test run commands', function () {
 
         it('Should create NavigateToCommand from object', function () {
             var commandObj = {
-                type:     TYPE.navigateTo,
-                url:      'localhost',
-                storages: 'storages'
+                type:          TYPE.navigateTo,
+                url:           'localhost',
+                stateSnapshot: 'stateSnapshot'
             };
 
             var command = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
-                type:     TYPE.navigateTo,
-                url:      'localhost',
-                storages: 'storages'
+                type:          TYPE.navigateTo,
+                url:           'localhost',
+                stateSnapshot: 'stateSnapshot'
             });
         });
 

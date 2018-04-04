@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript">
+        function login () {
+            document.cookie = 'auth=true';
+            location.href = './authorized.html';
+        }
+
+        window.onload = function () {
+            if (document.cookie === 'auth=true')
+                location.href = './authorized.html';
+        }
+    </script>
+</head>
+<body>
+    <div id="login" style="border: 1px solid black; width: 200px;" onclick="login()">Click me to log in</div>
+</body>
+</html>

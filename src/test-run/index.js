@@ -368,8 +368,8 @@ export default class TestRun extends Session {
 
         const command = this.currentDriverTask.command;
 
-        if (command.type === COMMAND_TYPE.navigateTo && command.storages)
-            this.useStateSnapshot({ storages: JSON.parse(command.storages) });
+        if (command.type === COMMAND_TYPE.navigateTo && command.stateSnapshot)
+            this.useStateSnapshot(JSON.parse(command.stateSnapshot));
 
         return command;
     }
@@ -532,7 +532,7 @@ export default class TestRun extends Session {
 
         this.currentRoleId = role.id;
 
-        await bookmark.restore(callsite, stateSnapshot ? stateSnapshot.storages : null);
+        await bookmark.restore(callsite, stateSnapshot);
 
         this.disableDebugBreakpoints = false;
     }
