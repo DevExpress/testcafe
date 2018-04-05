@@ -183,13 +183,13 @@ TestCafe developers and community members made these plugins:
 
 * **Rapid test development tool**<br/>
   Changes in test code immediately restart the test, and you see the results instantly.
-  * [TestCafe Live](https://github.com/DevExpress/testcafe-live) (by [DevExpress](https://github.com/DevExpress))
+  * [TestCafe Live](https://github.com/DevExpress/testcafe-live) (by [@DevExpress](https://github.com/DevExpress))
 
 * **Browser Providers**<br/>
   Allow you to use TestCafe with cloud browser providers and emulators.
   * [SauceLabs provider](https://github.com/DevExpress/testcafe-browser-provider-saucelabs) (by [@AndreyBelym](https://github.com/AndreyBelym))
   * [BrowserStack provider](https://github.com/DevExpress/testcafe-browser-provider-browserstack) (by [@AndreyBelym](https://github.com/AndreyBelym))
-  * [CrossBrowserTesting provider ](https://github.com/sijosyn/testcafe-browser-provider-crossbrowsertesting)(by [@sijosyn](https://github.com/sijosyn))
+  * [CrossBrowserTesting provider](https://github.com/sijosyn/testcafe-browser-provider-crossbrowsertesting)(by [@sijosyn](https://github.com/sijosyn))
   * [Nightmare headless provider](https://github.com/ryx/testcafe-browser-provider-nightmare) (by [@ryx](https://github.com/ryx))
   * [fbsimctl iOS emulator](https://github.com/Ents24/testcafe-browser-provider-fbsimctl) (by [@ents24](https://github.com/Ents24))
   * [Electron](https://github.com/DevExpress/testcafe-browser-provider-electron) (by [@AndreyBelym](https://github.com/AndreyBelym))
