@@ -51,8 +51,8 @@ You can change the maximum wait time.
 If elements load faster, tests skip the timeout and continue.
 
 **Rapid test development tool**<br/>
-Changes in test code immediately restart the test, and you see the results instantly. 
-See how it works in the [TestCafe Live repository](https://github.com/DevExpress/testcafe-live).
+Changes in test code immediately restart the test, and you see the results instantly.<br/>
+See how it works in [TestCafe Live repository](https://github.com/DevExpress/testcafe-live).
 
 **Latest JS and TypeScript support**<br/>
 TestCafe supports the latest JavaScript features, including ES2017 (for example, async/await).
