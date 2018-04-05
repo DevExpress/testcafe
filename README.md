@@ -52,7 +52,7 @@ If elements load faster, tests skip the timeout and continue.
 
 **Rapid test development tool**<br/>
 Changes in test code immediately restart the test, and you see the results instantly. 
-Check out [TestCafe Live](https://github.com/DevExpress/testcafe-live) for details.
+See how it works in the [TestCafe Live repository](https://github.com/DevExpress/testcafe-live).
 
 **Latest JS and TypeScript support**<br/>
 TestCafe supports the latest JavaScript features, including ES2017 (for example, async/await).
