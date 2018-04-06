@@ -29,6 +29,7 @@ build: off
 test_script:
 - cmd: >-
      echo %APPVEYOR_REPO_BRANCH%
+
      echo %GULP_TASK%
 
      start /D "C:\Program Files (x86)\Mozilla Firefox" firefox.exe -new-window http://example.com/
