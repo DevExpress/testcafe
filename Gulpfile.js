@@ -29,7 +29,7 @@ var assignIn             = require('lodash').assignIn;
 var runSequence          = require('run-sequence');
 var yaml                 = require('js-yaml');
 var childProcess         = require('child_process');
-
+var listBrowsers         = require('testcafe-browser-tools').getInstallations;
 
 ll
     .tasks([
@@ -64,6 +64,7 @@ var CLIENT_TESTS_SETTINGS_BASE = {
 };
 
 var CLIENT_TESTS_SETTINGS        = assignIn({}, CLIENT_TESTS_SETTINGS_BASE, { basePath: CLIENT_TESTS_PATH });
+var CLIENT_TESTS_LOCAL_SETTINGS  = assignIn({}, CLIENT_TESTS_SETTINGS);
 var CLIENT_TESTS_LEGACY_SETTINGS = assignIn({}, CLIENT_TESTS_SETTINGS_BASE, { basePath: CLIENT_TESTS_LEGACY_PATH });
 
 var CLIENT_TESTS_DESKTOP_BROWSERS = [
@@ -138,6 +139,8 @@ var CLIENT_TESTS_SAUCELABS_SETTINGS = {
     name:      'testcafe client tests',
     timeout:   720
 };
+
+var CLIENT_TEST_LOCAL_BROWSERS_ALIASES = ['ie', 'edge', 'chrome', 'firefox', 'safari'];
 
 var PUBLISH_TAG = JSON.parse(fs.readFileSync(path.join(__dirname, '.publishrc')).toString()).publishTag;
 
@@ -278,14 +281,35 @@ gulp.task('test-server', ['build'], function () {
         }));
 });
 
-function testClient (tests, settings, sauselabsSettings) {
-    return gulp
-        .src(tests)
-        .pipe(qunitHarness(settings, sauselabsSettings));
+function testClient (tests, settings, envSettings, cliMode) {
+    function runTests (env, runOpts) {
+        return gulp
+            .src(tests)
+            .pipe(qunitHarness(settings, env, runOpts));
+    }
+
+    if (!cliMode)
+        return runTests(envSettings);
+
+    return listBrowsers().then(function (browsers) {
+        const browserNames   = Object.keys(browsers);
+        const targetBrowsers = [];
+
+        browserNames.forEach(function (browserName) {
+            if (CLIENT_TEST_LOCAL_BROWSERS_ALIASES.includes(browserName))
+                targetBrowsers.push({ browserInfo: browsers[browserName], browserName: browserName });
+        });
+
+        return runTests({ browsers: targetBrowsers }, { cliMode: true });
+    });
 }
 
 gulp.task('test-client', ['build'], function () {
     return testClient('test/client/fixtures/**/*-test.js', CLIENT_TESTS_SETTINGS);
+});
+
+gulp.task('test-client-local', ['build'], function () {
+    return testClient('test/client/fixtures/**/*-test.js', CLIENT_TESTS_LOCAL_SETTINGS, {}, true);
 });
 
 gulp.task('test-client-legacy', ['build'], function () {
