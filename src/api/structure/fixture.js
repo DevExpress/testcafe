@@ -7,7 +7,7 @@ import { flattenDeep as flatten } from 'lodash';
 
 export default class Fixture extends TestingUnit {
     constructor (testFile) {
-        super(testFile);
+        super(testFile, 'fixture');
 
         this.path = testFile.filename;
 

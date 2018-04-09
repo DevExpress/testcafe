@@ -258,6 +258,43 @@ describe('API', function () {
                                   '   4 |test(\'test\', async t => {\n' +
                                   '   5 |});\n' +
                                   '   6 |'
+
+                    });
+                });
+        });
+
+        it('Should collect meta data', function () {
+            return compile('test/server/data/test-suites/meta/testfile.js')
+                .then(function (compiled) {
+                    expect(compiled.tests[0].fixture.meta.metaField1).eql('fixtureMetaValue1');
+                    expect(compiled.tests[0].fixture.meta.metaField2).eql('fixtureMetaUpdatedValue2');
+                    expect(compiled.tests[0].fixture.meta.metaField3).eql('fixtureMetaValue3');
+                    expect(compiled.tests[1].fixture.meta.emptyField).eql(void 0);
+                });
+        });
+
+        it('Should raise an error if fixture.meta is undefined', function () {
+            var file = resolve('test/server/data/test-suites/meta/incorrect-fixture-meta.js');
+
+            return compile(file)
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    assertAPIError(err, {
+                        stackTop: file,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 'fixture.meta is expected to be a string or a non-null object, but it was undefined.',
+
+                        callsite: '   1 |fixture(\'Fixture1\')\n' +
+                                  '   2 |    .page(\'http://example.com\')\n' +
+                                  ' > 3 |    .meta();\n' +
+                                  '   4 |\n' +
+                                  '   5 |test\n' +
+                                  '   6 |    (\'Fixture1Test1\', async () => {\n' +
+                                  '   7 |        // do nothing\n' +
+                                  '   8 |    });'
                     });
                 });
         });
@@ -407,6 +444,42 @@ describe('API', function () {
 
                     expect(fixture.requestHooks.length).eql(2);
                     expect(test.requestHooks.length).eql(3);
+                });
+        });
+
+        it('Should collect meta data', function () {
+            return compile('test/server/data/test-suites/meta/testfile.js')
+                .then(function (compiled) {
+                    expect(compiled.tests[0].meta.metaField1).eql('testMetaValue1');
+                    expect(compiled.tests[0].meta.metaField4).eql('testMetaUpdatedValue4');
+                    expect(compiled.tests[0].meta.metaField5).eql('testMetaValue5');
+                    expect(compiled.tests[1].meta.emptyField).eql(void 0);
+                });
+        });
+
+        it('Should raise an error if test.meta is null', function () {
+            var file = resolve('test/server/data/test-suites/meta/incorrect-test-meta.js');
+
+            return compile(file)
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    assertAPIError(err, {
+                        stackTop: file,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 'test.meta is expected to be a string or a non-null object, but it was null.',
+
+                        callsite: '   1 |fixture(\'Fixture1\')\n' +
+                                  '   2 |    .page(\'http://example.com\');\n' +
+                                  '   3 |\n' +
+                                  '   4 |test\n' +
+                                  ' > 5 |    .meta(null)\n' +
+                                  '   6 |    (\'Fixture1Test1\', async () => {\n' +
+                                  '   7 |        // do nothing\n' +
+                                  '   8 |    });'
+                    });
                 });
         });
     });

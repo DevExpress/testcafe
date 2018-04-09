@@ -6,7 +6,6 @@ import Fixture from '../../../api/structure/fixture';
 import Test from '../../../api/structure/test';
 import createCommandFromObject from '../../../test-run/commands/from-object';
 
-
 export default class RawTestFileCompiler extends TestFileCompilerBase {
     static _createTestFn (commands) {
         return async t => {

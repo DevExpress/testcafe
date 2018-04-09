@@ -18,15 +18,22 @@ describe('Reporter', function () {
     var fixtureMocks = [
         {
             name: 'fixture1',
-            path: './file1.js'
+            path: './file1.js',
+            meta: {
+                run: 'run-001'
+            }
         },
         {
             name: 'fixture2',
-            path: './file1.js'
+            path: './file1.js',
+            meta: {
+                run: 'run-002'
+            }
         },
         {
             name: 'fixture3',
-            path: './file2.js'
+            path: './file2.js',
+            meta: null
         }
     ];
 
@@ -35,33 +42,51 @@ describe('Reporter', function () {
             name:               'fixture1test1',
             fixture:            fixtureMocks[0],
             skip:               false,
-            screenshotExpected: true
+            screenshotExpected: true,
+            meta:               {
+                run: 'run-001'
+            }
         },
         {
             name:               'fixture1test2',
             fixture:            fixtureMocks[0],
             skip:               false,
-            screenshotExpected: true
+            screenshotExpected: true,
+            meta:               {
+                run: 'run-001'
+            }
         },
         {
             name:    'fixture1test3',
             skip:    false,
-            fixture: fixtureMocks[0]
+            fixture: fixtureMocks[0],
+            meta:    {
+                run: 'run-001'
+            }
         },
         {
             name:    'fixture2test1',
             skip:    false,
-            fixture: fixtureMocks[1]
+            fixture: fixtureMocks[1],
+            meta:    {
+                run: 'run-001'
+            }
         },
         {
             name:    'fixture2test2',
             skip:    false,
-            fixture: fixtureMocks[1]
+            fixture: fixtureMocks[1],
+            meta:    {
+                run: 'run-001'
+            }
         },
         {
             name:    'fixture3test1',
             skip:    false,
-            fixture: fixtureMocks[2]
+            fixture: fixtureMocks[2],
+            meta:    {
+                run: 'run-001'
+            }
         }
     ];
 
@@ -253,7 +278,10 @@ describe('Reporter', function () {
                 method: 'reportFixtureStart',
                 args:   [
                     'fixture1',
-                    './file1.js'
+                    './file1.js',
+                    {
+                        run: 'run-001'
+                    }
                 ]
             },
             {
@@ -266,6 +294,9 @@ describe('Reporter', function () {
                         unstable:       true,
                         skipped:        false,
                         screenshotPath: '/screenshots/1445437598847'
+                    },
+                    {
+                        run: 'run-001'
                     }
                 ]
             },
@@ -293,6 +324,9 @@ describe('Reporter', function () {
                         unstable:       false,
                         skipped:        false,
                         screenshotPath: '/screenshots/1445437598847'
+                    },
+                    {
+                        run: 'run-001'
                     }
                 ]
             },
@@ -306,6 +340,9 @@ describe('Reporter', function () {
                         unstable:       false,
                         skipped:        false,
                         screenshotPath: null
+                    },
+                    {
+                        run: 'run-001'
                     }
                 ]
             },
@@ -313,7 +350,10 @@ describe('Reporter', function () {
                 method: 'reportFixtureStart',
                 args:   [
                     'fixture2',
-                    './file1.js'
+                    './file1.js',
+                    {
+                        run: 'run-002'
+                    }
                 ]
             },
             {
@@ -326,6 +366,9 @@ describe('Reporter', function () {
                         unstable:       false,
                         skipped:        false,
                         screenshotPath: null
+                    },
+                    {
+                        run: 'run-001'
                     }
                 ]
             },
@@ -339,6 +382,9 @@ describe('Reporter', function () {
                         unstable:       false,
                         skipped:        false,
                         screenshotPath: null
+                    },
+                    {
+                        run: 'run-001'
                     }
                 ]
             },
@@ -346,7 +392,8 @@ describe('Reporter', function () {
                 method: 'reportFixtureStart',
                 args:   [
                     'fixture3',
-                    './file2.js'
+                    './file2.js',
+                    null
                 ]
             },
             {
@@ -365,6 +412,9 @@ describe('Reporter', function () {
                         unstable:       true,
                         skipped:        false,
                         screenshotPath: null
+                    },
+                    {
+                        run: 'run-001'
                     }
                 ]
             },

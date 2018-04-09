@@ -6,7 +6,7 @@ import { flattenDeep as flatten, union } from 'lodash';
 
 export default class Test extends TestingUnit {
     constructor (testFile) {
-        super(testFile);
+        super(testFile, 'test');
 
         this.fixture = testFile.currentFixture;
 
@@ -19,6 +19,7 @@ export default class Test extends TestingUnit {
     }
 
     _add (name, fn) {
+
         assertType(is.string, 'apiOrigin', 'The test name', name);
         assertType(is.function, 'apiOrigin', 'The test body', fn);
 

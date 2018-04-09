@@ -1,5 +1,7 @@
 fixture `Fixture`;
 
-test('1.Test', () => {
+test
+  .meta({ run: 'run-001' })
+  ('1.Test', () => {
 
-});
+  });
