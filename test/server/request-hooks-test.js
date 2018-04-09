@@ -25,7 +25,7 @@ describe('RequestLogger', () => {
                     'cache-control':   'max-age=0'
                 },
                 body:      Buffer.from('testParamerValue'),
-                testRunId: testRunId
+                sessionId: testRunId
             }
         };
     };
@@ -35,7 +35,7 @@ describe('RequestLogger', () => {
             requestId:  requestId,
             body:       Buffer.from('<html><body><h1>Content</h1></body></html>'),
             statusCode: 304,
-            testRunId:  testRunId,
+            sessionId:  testRunId,
             headers:    {
                 'cache-control': 'max-age=604800',
                 'date':          'Wed, 17 Jan 2018 10:08:08 GMT',
