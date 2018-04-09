@@ -10,7 +10,7 @@ const expect      = require('chai').expect;
 const noop        = require('lodash').noop;
 
 describe('RequestLogger', () => {
-    const createProxyRequestEventMock = (sessionId, requestId) => {
+    const createProxyRequestEventMock = (testRunId, requestId) => {
         return {
             isAjax:       false,
             _requestInfo: {
@@ -25,17 +25,17 @@ describe('RequestLogger', () => {
                     'cache-control':   'max-age=0'
                 },
                 body:      Buffer.from('testParamerValue'),
-                sessionId: sessionId
+                testRunId: testRunId
             }
         };
     };
 
-    const createProxyResponseEventMock = (sessionId, requestId) => {
+    const createProxyResponseEventMock = (testRunId, requestId) => {
         return {
             requestId:  requestId,
             body:       Buffer.from('<html><body><h1>Content</h1></body></html>'),
             statusCode: 304,
-            sessionId:  sessionId,
+            testRunId:  testRunId,
             headers:    {
                 'cache-control': 'max-age=604800',
                 'date':          'Wed, 17 Jan 2018 10:08:08 GMT',
@@ -45,9 +45,9 @@ describe('RequestLogger', () => {
     };
 
     const requestId         = 'IwQA12J12';
-    const sessionId         = 'UnqLnm189';
-    const requestEventMock  = createProxyRequestEventMock(requestId, sessionId);
-    const responseEventMock = createProxyResponseEventMock(requestId, sessionId);
+    const testRunId         = 'UnqLnm189';
+    const requestEventMock  = createProxyRequestEventMock(requestId, testRunId);
+    const responseEventMock = createProxyResponseEventMock(requestId, testRunId);
 
     describe('Check collected data', () => {
         const getLoggerRequests = logOptions => {
@@ -131,12 +131,12 @@ describe('RequestLogger', () => {
 
         const requestId1         = 'IwQA12J13';
         const requestId2         = '2wZA32J14';
-        const sessionId1         = 'iPqLnm180';
-        const sessionId2         = 'KlqLnm181';
-        const requestEventMock1  = createProxyRequestEventMock(sessionId1, requestId1);
-        const responseEventMock1 = createProxyResponseEventMock(sessionId1, requestId1);
-        const requestEventMock2  = createProxyRequestEventMock(sessionId2, requestId2);
-        const responseEventMock2 = createProxyResponseEventMock(sessionId2, requestId2);
+        const testRunId1         = 'iPqLnm180';
+        const testRunId2         = 'KlqLnm181';
+        const requestEventMock1  = createProxyRequestEventMock(testRunId1, requestId1);
+        const responseEventMock1 = createProxyResponseEventMock(testRunId1, requestId1);
+        const requestEventMock2  = createProxyRequestEventMock(testRunId2, requestId2);
+        const responseEventMock2 = createProxyResponseEventMock(testRunId2, requestId2);
 
         logger.onRequest(requestEventMock1);
         logger.onResponse(responseEventMock1);
@@ -147,7 +147,7 @@ describe('RequestLogger', () => {
 
         testRunTracker.resolveContextTestRun = () => {
             return {
-                id: sessionId1
+                id: testRunId1
             };
         };
 
@@ -159,7 +159,7 @@ describe('RequestLogger', () => {
         const firstInternalRequest = logger._internalRequests[internalRequestIds[0]];
 
         expect(internalRequestIds.length).eql(1);
-        expect(firstInternalRequest.sessionId).eql(sessionId2);
+        expect(firstInternalRequest.testRunId).eql(testRunId2);
         expect(firstInternalRequest.id).eql(requestId2);
 
         testRunTracker.resolveContextTestRun = () => void 0;

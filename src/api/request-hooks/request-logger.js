@@ -41,7 +41,7 @@ class RequestLogger extends RequestHook {
 
         const loggedReq = {
             id:        event._requestInfo.requestId,
-            sessionId: event._requestInfo.sessionId,
+            testRunId: event._requestInfo.sessionId,
             userAgent,
             request:   {
                 url:    event._requestInfo.url,
@@ -79,7 +79,7 @@ class RequestLogger extends RequestHook {
         let preparedRequests = Object.values(this._internalRequests);
 
         if (testRun)
-            preparedRequests = preparedRequests.filter(r => r.sessionId === testRun.id);
+            preparedRequests = preparedRequests.filter(r => r.testRunId === testRun.id);
 
         return preparedRequests;
     }
@@ -102,7 +102,7 @@ class RequestLogger extends RequestHook {
 
         if (testRun) {
             Object.keys(this._internalRequests).forEach(id => {
-                if (this._internalRequests[id].sessionId === testRun.id)
+                if (this._internalRequests[id].testRunId === testRun.id)
                     delete this._internalRequests[id];
             });
         }
