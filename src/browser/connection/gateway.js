@@ -90,9 +90,9 @@ export default class BrowserConnectionGateway {
 
     static async onIdleForced (req, res, connection) {
         if (BrowserConnectionGateway.ensureConnectionReady(res, connection)) {
-            await connection.getStatus(true);
+            const status = await connection.getStatus(true);
 
-            redirect(res, connection.idleUrl);
+            redirect(res, status.url);
         }
     }
 
