@@ -13,25 +13,28 @@
         function log (eventName, target, relatedTarget) {
             var logger = document.getElementById('logger');
             
-            logger.innerHTML += eventName + ' ' + target.id + ' ' + (relatedTarget ? relatedTarget.id : 'none') + '<br/>';
+            logger.innerHTML += eventName + ' ' + target.id + ' ' + (relatedTarget ? relatedTarget.id : 'none') + ' <br/>';
         }
     </script>
     <style>
-        .droptarget {
-            float: left;
-            width: 100px;
-            height: 35px;
-            padding: 10px;
+        p {
+            width: 80px;
+            padding: 3px;
             border: 1px solid #aaaaaa;
         }
+
+        #dropTarget {
+            width: 400px;
+            height: 400px;
+            border: 1px solid black;
+        }
+
     </style>
 </head>
 <body id="body">
-    <div id="dropTarget1" class="droptarget" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)">
-        <p id='dragElement' draggable="true">Drag me!</p>
+    <div id="dropTarget" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)">
+            <p id='dragElement' draggable="true">Drag me!</p>
     </div>
-    <div id="dropTarget2" class="droptarget" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)"></div>
-    <div style="clear:both"/>
     <div id="logger"></div>
 </body>
 </html>
