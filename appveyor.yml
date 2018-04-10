@@ -25,12 +25,8 @@ install:
     npm i --loglevel error
 build: off
 
-# NOTE: We should prerun Firefox to avoid "Refresh Firefox" notification in the tests window.
 test_script:
-- cmd: >-
-     start /D "C:\Program Files (x86)\Mozilla Firefox" firefox.exe -new-window http://example.com/
-
-     npm test
+- cmd: npm test
 
 for:
 -
@@ -47,8 +43,6 @@ for:
 
   test_script:
   - cmd: >-
-       start /D "C:\Program Files (x86)\Mozilla Firefox" firefox.exe -new-window http://example.com/
-
        node node_modules/gulp/bin/gulp test-functional-local
 
        node node_modules/gulp/bin/gulp test-functional-local-legacy
