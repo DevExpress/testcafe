@@ -36,7 +36,7 @@ export default class BrowserProvider {
         // HACK: The browser window has different border sizes in normal and maximized modes. So, we need to be sure that the window is
         // not maximized before resizing it in order to keep the mechanism of correcting the client area size working. When browser is started,
         // we are resizing it for the first time to switch the window to normal mode, and for the second time - to restore the client area size.
-        this.localBrowsersInfo  = {};
+        this.localBrowsersInfo = {};
     }
 
     _createLocalBrowserInfo (browserId) {
@@ -214,15 +214,13 @@ export default class BrowserProvider {
         var hasCustomCloseBrowser  = customActionsInfo.hasCloseBrowser;
         var usePluginsCloseBrowser = hasCustomCloseBrowser || !isLocalBrowser;
 
+        if (usePluginsCloseBrowser)
+            await this.plugin.closeBrowser(browserId);
+        else
+            await this._closeLocalBrowser(browserId);
+
         if (isLocalBrowser)
             delete this.localBrowsersInfo[browserId];
-
-        if (usePluginsCloseBrowser) {
-            await this.plugin.closeBrowser(browserId);
-            return;
-        }
-
-        await this._closeLocalBrowser(browserId);
     }
 
     async getBrowserList () {

@@ -37,6 +37,7 @@ export default class BrowserConnectionGateway {
         this._dispatch('/browser/connect/{id}', proxy, BrowserConnectionGateway.onConnection);
         this._dispatch('/browser/heartbeat/{id}', proxy, BrowserConnectionGateway.onHeartbeat);
         this._dispatch('/browser/idle/{id}', proxy, BrowserConnectionGateway.onIdle);
+        this._dispatch('/browser/idle-forced/{id}', proxy, BrowserConnectionGateway.onIdleForced);
         this._dispatch('/browser/status/{id}', proxy, BrowserConnectionGateway.onStatusRequest);
         this._dispatch('/browser/status-done/{id}', proxy, BrowserConnectionGateway.onStatusRequestOnTestDone);
         this._dispatch('/browser/init-script/{id}', proxy, BrowserConnectionGateway.onInitScriptRequest);
@@ -85,6 +86,14 @@ export default class BrowserConnectionGateway {
     static onIdle (req, res, connection) {
         if (BrowserConnectionGateway.ensureConnectionReady(res, connection))
             res.end(connection.renderIdlePage());
+    }
+
+    static async onIdleForced (req, res, connection) {
+        if (BrowserConnectionGateway.ensureConnectionReady(res, connection)) {
+            const status = await connection.getStatus(true);
+
+            redirect(res, status.url);
+        }
     }
 
     static async onStatusRequest (req, res, connection) {

@@ -48,6 +48,7 @@ export default class BrowserConnection extends EventEmitter {
         this.url           = `${gateway.domain}/browser/connect/${this.id}`;
         this.heartbeatUrl  = `${gateway.domain}/browser/heartbeat/${this.id}`;
         this.idleUrl       = `${gateway.domain}/browser/idle/${this.id}`;
+        this.forcedIdleUrl = `${gateway.domain}/browser/idle-forced/${this.id}`;
         this.statusUrl     = `${gateway.domain}/browser/status/${this.id}`;
         this.statusDoneUrl = `${gateway.domain}/browser/status-done/${this.id}`;
         this.initScriptUrl = `${gateway.domain}/browser/init-script/${this.id}`;
