@@ -45,9 +45,7 @@ for:
   notifications:
   - provider: Email
     to:
-      - alexander.moskovkin@devexpress.com
-      - andrey.belym@devexpress.com
-      - elena.dikareva@devexpress.com
+      - mikhail.losev@devexpress.com
     on_build_success: false
     on_build_status_changed: false
 
