@@ -39,11 +39,8 @@ test_script:
 for:
 -
   branches:
-    only:
+    except:
       - master
-
-  environment:
-    GULP_TASK: "test-functional-local-legacy"
 
   notifications:
   - provider: Email
@@ -53,3 +50,17 @@ for:
       - elena.dikareva@devexpress.com
     on_build_success: false
     on_build_status_changed: false
+
+  test_script:
+  - cmd: >-
+       echo %APPVEYOR_REPO_BRANCH%
+
+       echo %GULP_TASK%
+
+       start /D "C:\Program Files (x86)\Mozilla Firefox" firefox.exe -new-window http://example.com/
+
+       npm test
+
+       set GULP_TASK=test-functional-local-legacy
+
+       npm test
