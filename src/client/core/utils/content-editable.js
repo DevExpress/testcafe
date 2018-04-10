@@ -34,12 +34,16 @@ function getOwnPreviousVisibleSibling (el) {
     return sibling;
 }
 
+function isVisibleNode (node) {
+    return domUtils.isTextNode(node) || domUtils.isElementNode(node) && styleUtils.isElementVisible(node);
+}
+
 function getVisibleChildren (node) {
-    return arrayUtils.filter(node.childNodes, child => domUtils.isTextNode(child) || domUtils.isElementNode(child) && styleUtils.isElementVisible(child));
+    return arrayUtils.filter(node.childNodes, isVisibleNode);
 }
 
 function hasVisibleChildren (node) {
-    return getVisibleChildren(node).length;
+    return arrayUtils.some(node.childNodes, isVisibleNode);
 }
 
 function hasSelectableChildren (node) {
@@ -397,7 +401,10 @@ function isNodeSelectable (node, includeDescendants = false) {
     const selectableChildren    = arrayUtils.filter(visibleChildren, child => isNodeSelectable(child));
     const breakLineElements     = arrayUtils.filter(visibleChildren, child => domUtils.getTagName(child) === 'br');
 
-    return selectableChildren.length ? includeDescendants : isContentEditableRoot || breakLineElements.length;
+    if (selectableChildren.length)
+        return includeDescendants;
+
+    return isContentEditableRoot || breakLineElements.length;
 }
 
 export function calculateNodeAndOffsetByPosition (el, offset) {
@@ -429,12 +436,13 @@ export function calculateNodeAndOffsetByPosition (el, offset) {
             }
         }
         else if (domUtils.isElementNode(target)) {
-            if (!styleUtils.isElementVisible(target))
+            if (!isVisibleNode(target))
                 return point;
 
             if (point.offset === 0 && isNodeSelectable(target)) {
                 point.node   = target;
                 point.offset = getElementOffset(target);
+
                 return point;
             }
             if (!point.node && (isNodeBlockWithBreakLine(el, target) || isNodeAfterNodeBlockWithBreakLine(el, target)))
