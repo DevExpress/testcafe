@@ -1,6 +1,6 @@
 # Documentation
 
-> This is a development version of the documentation. The functionality described here may not be included in the current release version. Unreleased functionality may change or be dropped before the next release. Documentation for the release version is available at the [TestCafe website](https://devexpress.github.io/testcafe/documentation/getting-started/).
+> This is the documentation's development version. The functionality described here may not be included in the current release version. Unreleased functionality may change or be dropped before the next release. The release version's documentation is available at the [TestCafe website](https://devexpress.github.io/testcafe/documentation/getting-started/).
 
 * [GETTING STARTED](articles/documentation/getting-started/README.md)
 * [USING TESTCAFE](articles/documentation/using-testcafe/README.md)
@@ -60,6 +60,7 @@
     * [Assertion API](articles/documentation/test-api/assertions/assertion-api.md)
   * [Obtaining Data from the Client](articles/documentation/test-api/obtaining-data-from-the-client/README.md)
     * [Examples of Using Client Functions](articles/documentation/test-api/obtaining-data-from-the-client/examples-of-using-client-functions.md)
+  * [Intercepting and Mocking HTTP Requests](articles/documentation/test-api/intercepting-and-mocking-http-requests.md)
   * [Waiting for Page Elements to Appear](articles/documentation/test-api/waiting-for-page-elements-to-appear.md)
   * [Authentication](articles/documentation/test-api/authentication/README.md)
     * [User Roles](articles/documentation/test-api/authentication/user-roles.md)

@@ -128,6 +128,8 @@
     content:
     - name: Examples of Using Client Functions
       url: /documentation/test-api/obtaining-data-from-the-client/examples-of-using-client-functions.md
+  - name: Intercepting and Mocking HTTP Requests
+    url: /documentation/test-api/intercepting-and-mocking-http-requests.md
   - name: Waiting for Page Elements to Appear
     url: /documentation/test-api/waiting-for-page-elements-to-appear.md
   - name: Authentication
