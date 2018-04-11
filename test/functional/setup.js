@@ -125,6 +125,8 @@ function closeLocalBrowsers () {
 before(function () {
     var mocha = this;
 
+    mocha.timeout(60000);
+
     return createTestCafe(config.testCafe.hostname, config.testCafe.port1, config.testCafe.port2)
         .then(function (tc) {
             testCafe = tc;
