@@ -47,10 +47,6 @@ var isVisibilityHiddenNode = function (node) {
     return some(ancestors, ancestor => domUtils.isElementNode(ancestor) && get(ancestor, 'visibility') === 'hidden');
 };
 
-var isVisibilityHiddenTextNode = function (textNode) {
-    return domUtils.isTextNode(textNode) && isVisibilityHiddenNode(textNode);
-};
-
 var isHiddenNode = function (node) {
     var ancestors = getAncestorsAndSelf(node);
 
@@ -58,7 +54,7 @@ var isHiddenNode = function (node) {
 };
 
 export function isNotVisibleNode (node) {
-    return !domUtils.isRenderedNode(node) || isHiddenNode(node) || isVisibilityHiddenTextNode(node);
+    return !domUtils.isRenderedNode(node) || isHiddenNode(node) || isVisibilityHiddenNode(node);
 }
 
 export function getScrollableParents (element) {

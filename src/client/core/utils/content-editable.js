@@ -399,12 +399,12 @@ function isNodeSelectable (node, includeDescendants = false) {
     const visibleChildren       = getVisibleChildren(node);
     const isContentEditableRoot = !domUtils.isContentEditableElement(node.parentNode);
     const selectableChildren    = arrayUtils.filter(visibleChildren, child => isNodeSelectable(child));
-    const breakLineElements     = arrayUtils.filter(visibleChildren, child => domUtils.getTagName(child) === 'br');
+    const hasBreakLineElements  = arrayUtils.some(visibleChildren, child => domUtils.getTagName(child) === 'br');
 
     if (selectableChildren.length)
         return includeDescendants;
 
-    return isContentEditableRoot || breakLineElements.length;
+    return isContentEditableRoot || hasBreakLineElements;
 }
 
 export function calculateNodeAndOffsetByPosition (el, offset) {

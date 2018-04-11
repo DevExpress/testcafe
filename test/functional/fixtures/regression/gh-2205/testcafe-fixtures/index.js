@@ -9,7 +9,6 @@ async function typeAndCheck (t, editorId) {
     await t
         .click(editor)
         .typeText(editor, 'Hello')
-        .wait(1000)
         .expect(editor.innerText).contains('Hello');
 }
 
