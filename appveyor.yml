@@ -31,13 +31,15 @@ test_script:
 for:
 -
   branches:
-    except:
+    only:
       - master
 
   notifications:
   - provider: Email
     to:
-      - mikhail.losev@devexpress.com
+      - alexander.moskovkin@devexpress.com
+      - andrey.belym@devexpress.com
+      - elena.dikareva@devexpress.com
     on_build_success: false
     on_build_status_changed: false
 
