@@ -6,11 +6,8 @@ fixture `GH-2271 - Drag events should contain relatedTarget property`
 const logger = Selector('#logger');
 
 test('Drag one element to another', async t => {
-    await t.setTestSpeed(0.05);
-    await t.dragToElement('#dragElement', '#dropTarget2');
-    await t.expect(logger.textContent).contains('dragenter dragElement body');
-    await t.expect(logger.textContent).contains('dragenter dropTarget1 dragElement');
-    await t.expect(logger.textContent).contains('dragleave dragElement dropTarget1');
-    await t.expect(logger.textContent).contains('dragenter dropTarget2 dropTarget1');
-    await t.expect(logger.textContent).contains('dragleave dropTarget1 dropTarget2');
+    await t.setTestSpeed(0.01);
+    await t.dragToElement('#dragElement', '#dropTarget');
+    await t.expect(logger.textContent).contains('dragenter dropTarget dragElement');
+    await t.expect(logger.textContent).contains('dragleave dragElement dropTarget');
 });
