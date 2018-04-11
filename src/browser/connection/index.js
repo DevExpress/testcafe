@@ -53,6 +53,10 @@ export default class BrowserConnection extends EventEmitter {
         this.statusDoneUrl = `${gateway.domain}/browser/status-done/${this.id}`;
         this.initScriptUrl = `${gateway.domain}/browser/init-script/${this.id}`;
 
+        this.heartbeatRelativeUrl  = `/browser/heartbeat/${this.id}`;
+        this.statusRelativeUrl     = `/browser/status/${this.id}`;
+        this.statusDoneRelativeUrl = `/browser/status-done/${this.id}`;
+
         this.on('error', () => {
             this._forceIdle();
             this.close();

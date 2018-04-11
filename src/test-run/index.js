@@ -115,19 +115,19 @@ export default class TestRun extends Session {
         this.resolveWaitForFileDownloadingPromise = null;
 
         return Mustache.render(TEST_RUN_TEMPLATE, {
-            testRunId:            JSON.stringify(this.id),
-            browserId:            JSON.stringify(this.browserConnection.id),
-            browserHeartbeatUrl:  JSON.stringify(this.browserConnection.heartbeatUrl),
-            browserStatusUrl:     JSON.stringify(this.browserConnection.statusUrl),
-            browserStatusDoneUrl: JSON.stringify(this.browserConnection.statusDoneUrl),
-            userAgent:            JSON.stringify(this.browserConnection.userAgent),
-            testName:             JSON.stringify(this.test.name),
-            fixtureName:          JSON.stringify(this.test.fixture.name),
-            selectorTimeout:      this.opts.selectorTimeout,
-            pageLoadTimeout:      this.pageLoadTimeout,
-            skipJsErrors:         this.opts.skipJsErrors,
-            speed:                this.speed,
-            dialogHandler:        JSON.stringify(this.activeDialogHandler)
+            testRunId:                    JSON.stringify(this.id),
+            browserId:                    JSON.stringify(this.browserConnection.id),
+            browserHeartbeatRelativeUrl:  JSON.stringify(this.browserConnection.heartbeatRelativeUrl),
+            browserStatusRelativeUrl:     JSON.stringify(this.browserConnection.statusRelativeUrl),
+            browserStatusDoneRelativeUrl: JSON.stringify(this.browserConnection.statusDoneRelativeUrl),
+            userAgent:                    JSON.stringify(this.browserConnection.userAgent),
+            testName:                     JSON.stringify(this.test.name),
+            fixtureName:                  JSON.stringify(this.test.fixture.name),
+            selectorTimeout:              this.opts.selectorTimeout,
+            pageLoadTimeout:              this.pageLoadTimeout,
+            skipJsErrors:                 this.opts.skipJsErrors,
+            speed:                        this.speed,
+            dialogHandler:                JSON.stringify(this.activeDialogHandler)
         });
     }
 
