@@ -20,7 +20,7 @@ This guide provides step-by-step instructions on how to create a functional web 
 
 Ensure that [Node.js](https://nodejs.org/) and [npm](https://www.npmjs.com/) are installed on your computer and run the following command:
 
-```bash
+```sh
 npm install -g testcafe
 ```
 
@@ -71,7 +71,7 @@ test('My first test', async t => {
 
 You can run the test from a command shell by calling a single command where you specify the [target browser](../using-testcafe/command-line-interface.md#browser-list) and [file path](../using-testcafe/command-line-interface.md#file-pathglob-pattern).
 
-```bash
+```sh
 testcafe chrome test1.js
 ```
 
