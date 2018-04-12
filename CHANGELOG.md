@@ -16,7 +16,7 @@
 * The `Element.innerHTML` property is now processed correctly in certain special cases ([testcafe-hammerhead/#1538](https://github.com/DevExpress/testcafe-hammerhead/issues/1538))
 * Now the iframe location has the correct value when it is not initialized([testcafe-hammerhead/#1531](https://github.com/devexpress/testcafe-hammerhead/issues/1531))
 * A trailing slash is now added to test page URL if it is necessary ([#2005](https://github.com/DevExpress/testcafe/issues/2005))
-* The `focus` event is not called for a disabled input now ([#2123](https://github.com/devexpress/testcafe/issues/2123)) 
+* The `focus` event is not called for a disabled input now ([#2123](https://github.com/devexpress/testcafe/issues/2123))
 
 ## v0.19.1 (2018-3-13)
 
