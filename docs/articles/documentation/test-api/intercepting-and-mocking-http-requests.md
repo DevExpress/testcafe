@@ -114,13 +114,12 @@ test
     ('test', async t => {
         const logRecord = logger.requests[0];
 
-        await t
-            .expect(logRecord.id).eql('UnqLnm189')
-            .expect(logRecord.testRunId).eql('IwQA12J12')
-            .expect(logRecord.userAgent).eql('Chrome 63.0.3239 / Windows 8.1.0.0')
-            .expect(logRecord.request.url).eql('http://api.example.com')
-            .expect(logRecord.request.method).eql('get')
-            .expect(logRecord.response.statusCode).eql('304')
+        console.log(logRecord.id);                  // UnqLnm189
+        console.log(logRecord.testRunId);           // IwQA12J12
+        console.log(logRecord.userAgent);           // Chrome 63.0.3239 / Windows 8.1.0.0
+        console.log(logRecord.request.url);         // http://api.example.com
+        console.log(logRecord.request.method);      // get
+        console.log(logRecord.response.statusCode); // 304
     });
 ```
 
