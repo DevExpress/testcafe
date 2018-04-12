@@ -1,6 +1,6 @@
 import * as domUtils from './dom';
 import * as arrayUtils from './array';
-
+import * as styleUtils from './style';
 
 //nodes utils
 function getOwnFirstVisibleTextNode (el) {
@@ -34,12 +34,20 @@ function getOwnPreviousVisibleSibling (el) {
     return sibling;
 }
 
-function hasChildren (node) {
-    return node.childNodes && domUtils.getChildNodesLength(node.childNodes);
+function isVisibleNode (node) {
+    return domUtils.isTextNode(node) || domUtils.isElementNode(node) && styleUtils.isElementVisible(node);
 }
 
-function isElementWithChildren (node) {
-    return domUtils.isElementNode(node) || hasChildren(node);
+function getVisibleChildren (node) {
+    return arrayUtils.filter(node.childNodes, isVisibleNode);
+}
+
+function hasVisibleChildren (node) {
+    return arrayUtils.some(node.childNodes, isVisibleNode);
+}
+
+function hasSelectableChildren (node) {
+    return arrayUtils.some(node.childNodes, child => isNodeSelectable(child, true));
 }
 
 //NOTE: before such elements (like div or p) adds line breaks before and after it
@@ -118,7 +126,7 @@ export function getFirstVisibleTextNode (el) {
 
         if (isVisibleTextNode(curNode))
             return curNode;
-        else if (domUtils.isRenderedNode(curNode) && isElementWithChildren(curNode) && !isNotContentEditableElement) {
+        else if (domUtils.isRenderedNode(curNode) && hasVisibleChildren(curNode) && !isNotContentEditableElement) {
             child = getFirstVisibleTextNode(curNode);
 
             if (child)
@@ -148,7 +156,7 @@ export function getLastTextNode (el, onlyVisible) {
 
         if (visibleTextNode)
             return curNode;
-        else if (domUtils.isRenderedNode(curNode) && isElementWithChildren(curNode) && !isNotContentEditableElement) {
+        else if (domUtils.isRenderedNode(curNode) && hasVisibleChildren(curNode) && !isNotContentEditableElement) {
             child = getLastTextNode(curNode, false);
 
             if (child)
@@ -293,8 +301,10 @@ function getSelectedPositionInParentByOffset (node, offset) {
 
     // NOTE: we try to find text node
     while (!isSkippableNode(currentNode) && domUtils.isElementNode(currentNode)) {
-        if (hasChildren(currentNode))
-            currentNode = currentNode.childNodes[isSearchForLastChild ? currentNode.childNodes.length - 1 : 0];
+        const visibleChildren = getVisibleChildren(currentNode);
+
+        if (visibleChildren.length)
+            currentNode = visibleChildren[isSearchForLastChild ? visibleChildren.length - 1 : 0];
         else {
             //NOTE: if we didn't find a text node then always set offset to zero
             currentOffset = 0;
@@ -321,7 +331,7 @@ function getSelectionStart (el, selection, inverseSelection) {
     };
 
     //NOTE: window.getSelection() can't returns not rendered node like selected node, so we shouldn't check it
-    if ((domUtils.isTheSameNode(el, startNode) || domUtils.isElementNode(startNode)) && hasChildren(startNode))
+    if ((domUtils.isTheSameNode(el, startNode) || domUtils.isElementNode(startNode)) && hasSelectableChildren(startNode))
         correctedStartPosition = getSelectedPositionInParentByOffset(startNode, startOffset);
 
     return {
@@ -340,7 +350,7 @@ function getSelectionEnd (el, selection, inverseSelection) {
     };
 
     //NOTE: window.getSelection() can't returns not rendered node like selected node, so we shouldn't check it
-    if ((domUtils.isTheSameNode(el, endNode) || domUtils.isElementNode(endNode)) && hasChildren(endNode))
+    if ((domUtils.isTheSameNode(el, endNode) || domUtils.isElementNode(endNode)) && hasSelectableChildren(endNode))
         correctedEndPosition = getSelectedPositionInParentByOffset(endNode, endOffset);
 
     return {
@@ -366,6 +376,37 @@ export function getSelectionEndPosition (el, selection, inverseSelection) {
     var correctedSelectionEnd = getSelectionEnd(el, selection, inverseSelection);
 
     return calculatePositionByNodeAndOffset(el, correctedSelectionEnd);
+}
+
+function getElementOffset (target) {
+    let offset = 0;
+
+    const firstBreakElement = arrayUtils.find(target.childNodes, (node, index) => {
+        offset = index;
+        return domUtils.getTagName(node) === 'br';
+    });
+
+    return firstBreakElement ? offset : 0;
+}
+
+function isNodeSelectable (node, includeDescendants) {
+    if (styleUtils.isNotVisibleNode(node))
+        return false;
+
+    if (domUtils.isTextNode(node))
+        return true;
+
+    if (!domUtils.isElementNode(node))
+        return false;
+
+    if (hasSelectableChildren(node))
+        return includeDescendants;
+
+    const isContentEditableRoot = !domUtils.isContentEditableElement(node.parentNode);
+    const visibleChildren       = getVisibleChildren(node);
+    const hasBreakLineElements  = arrayUtils.some(visibleChildren, child => domUtils.getTagName(child) === 'br');
+
+    return isContentEditableRoot || hasBreakLineElements;
 }
 
 export function calculateNodeAndOffsetByPosition (el, offset) {
@@ -397,13 +438,18 @@ export function calculateNodeAndOffsetByPosition (el, offset) {
             }
         }
         else if (domUtils.isElementNode(target)) {
-            if (point.offset === 0 && !getContentEditableValue(target).length) {
-                point.node = target;
+            if (!isVisibleNode(target))
+                return point;
+
+            if (point.offset === 0 && isNodeSelectable(target, false)) {
+                point.node   = target;
+                point.offset = getElementOffset(target);
+
                 return point;
             }
             if (!point.node && (isNodeBlockWithBreakLine(el, target) || isNodeAfterNodeBlockWithBreakLine(el, target)))
                 point.offset--;
-            else if (!childNodesLength && domUtils.isElementNode(target) && domUtils.getTagName(target) === 'br')
+            else if (!childNodesLength && domUtils.getTagName(target) === 'br')
                 point.offset--;
         }
 
@@ -499,23 +545,22 @@ export function getLastVisiblePosition (el) {
     return 0;
 }
 
-//contents util
-export function getContentEditableValue (target) {
-    var elementValue     = '';
+function getContentEditableNodes (target) {
+    var result           = [];
     var childNodes       = target.childNodes;
     var childNodesLength = domUtils.getChildNodesLength(childNodes);
 
-    if (isSkippableNode(target))
-        return elementValue;
-
-    if (!childNodesLength && domUtils.isTextNode(target))
-        return target.nodeValue;
-    else if (childNodesLength === 1 && domUtils.isTextNode(childNodes[0]))
-        return childNodes[0].nodeValue;
+    if (!isSkippableNode(target) && !childNodesLength && domUtils.isTextNode(target))
+        result.push(target);
 
     arrayUtils.forEach(childNodes, node => {
-        elementValue += getContentEditableValue(node);
+        result = result.concat(getContentEditableNodes(node));
     });
 
-    return elementValue;
+    return result;
+}
+
+// contents util
+export function getContentEditableValue (target) {
+    return arrayUtils.map(getContentEditableNodes(target), node => node.nodeValue).join('');
 }
