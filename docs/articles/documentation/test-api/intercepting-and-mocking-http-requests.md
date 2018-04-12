@@ -41,10 +41,10 @@ Option | Type | Description   | Default
 ------ | ---- | ------------- | ---------
 `logRequestHeaders` | Boolean | Specifies whether the request headers should be logged. | `false`
 `logRequestBody` | Boolean | Specifies whether the request body should be logged. | `false`
-`stringifyRequestBody` | Boolean | Specifies whether the request body should be stored as a string or an object. | `false`
+`stringifyRequestBody` | Boolean | Specifies whether the request body should be stored as a String or a [Buffer](https://nodejs.org/api/buffer.html). | `false`
 `logResponseHeaders` | Boolean | Specifies whether the response headers should be logged. | `false`
 `logResponseBody` | Boolean | Specifies whether the response body should be logged. | `false`
-`stringifyResponseBody` | Boolean | Specifies whether the response body should be stored as a string or an object. | `false`
+`stringifyResponseBody` | Boolean | Specifies whether the response body should be stored as a string or a [Buffer](https://nodejs.org/api/buffer.html). | `false`
 
 ```js
 import { RequestLogger } from 'testcafe';
@@ -96,10 +96,10 @@ Property | Type | Description
 `request.url`    | String | The URL where the request is sent.
 `request.method`     | String | The request's HTTP method.
 `request.headers`    | Object | Request headers in the property-value form. Logged if the `logRequestHeaders` option is set to `true`.
-`request.body`    | Object &#124; String | The request body. An object or string depending on the `stringifyRequestBody` option. Logged if the `logRequestBody` option is set to `true`.
+`request.body`    | [Buffer](https://nodejs.org/api/buffer.html) &#124; String | The request body. A [Buffer](https://nodejs.org/api/buffer.html) or string depending on the `stringifyRequestBody` option. Logged if the `logRequestBody` option is set to `true`.
 `response.statusCode` | Number | The status code received in the response.
 `response.headers`    | Object | Response headers in the property-value form. Logged if the `logResponseHeaders` option is set to `true`.
-`response.body`    | Object &#124; String | The response body. An object or string depending on the `stringifyResponseBody` option. Logged if the `logResponseBody` option is set to `true`.
+`response.body`    | [Buffer](https://nodejs.org/api/buffer.html) &#124; String | The response body. A [Buffer](https://nodejs.org/api/buffer.html) or string depending on the `stringifyResponseBody` option. Logged if the `logResponseBody` option is set to `true`.
 
 ```js
 import { RequestLogger } from 'testcafe';
@@ -229,7 +229,7 @@ The `req` parameter exposes the following members.
 Property | Type | Description
 -------- | ---- | ------------
 `headers`     | Object  | The request headers in the property-value form.
-`body`        | Object | The request body.
+`body`        | [Buffer](https://nodejs.org/api/buffer.html) | The request body.
 `url`    | String | A URL to which the request is sent.
 `protocol` | String | The request protocol.
 `hostname` | String | The destination host name.
@@ -331,7 +331,7 @@ Property | Type | Description
 `method`    | String | The request method.
 `isAjax`    | Boolean | Specifies whether this is an AJAX request.
 `headers`   | Object | The request headers in the property-value form.
-`body`      | Object | The request body.
+`body`      | String | A stringified request body.
 `testRunId` | String | TestCafe internal ID of the test run that sent the request.
 
 ## Attaching Hooks to Tests and Fixtures
@@ -493,7 +493,7 @@ The `requestOptions` object has the following properties.
 Property | Type | Description
 -------- | ---- | ------------
 `headers`     | Object  | The request headers in the property-value form.
-`body`        | Object | The request body.
+`body`        | [Buffer](https://nodejs.org/api/buffer.html) | The request body.
 `url`    | String | A URL to which the request is sent.
 `protocol` | String | The request protocol.
 `hostname` | String | The destination host name.
@@ -521,7 +521,7 @@ Property | Type | Description
 -------- | ---- | --------------
 `statusCode` | Number | The response status code.
 `headers`    | Object | The response headers in a property-value form.
-`body`       | Object | The response body.
+`body`       | [Buffer](https://nodejs.org/api/buffer.html) | The response body.
 
 ```js
 onResponse (event) {
