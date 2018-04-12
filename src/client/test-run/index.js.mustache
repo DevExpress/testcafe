@@ -2,7 +2,7 @@
     if (window !== window.top)
         return;
 
-    var origin = location.protocol + '//' + location.host;
+    var origin = location.origin;
 
     var testRunId            = {{{testRunId}}};
     var browserId            = {{{browserId}}};
