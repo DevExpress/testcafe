@@ -9,5 +9,5 @@ test('Load a top window on the cross-domain port', async t => {
         .click('body');
 });
 
-test('Second test', async t => {
+test('Second test', async () => {
 });
