@@ -18,7 +18,7 @@ async function findProcessWin (processOptions) {
 }
 
 export default async function (browserId) {
-    var processOptions = { arguments: browserId };
+    var processOptions = { arguments: browserId, psargs: 'aux' };
     var processList    = OS.win ? await findProcessWin(processOptions) : await findProcess(processOptions);
 
     if (!processList.length)
