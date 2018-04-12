@@ -112,14 +112,15 @@ fixture `test`
 test
     .requestHooks(logger)
     ('test', async t => {
-        const r = logger.requests[0];
+        const logRecord = logger.requests[0];
 
-        console.log(r.id);                  // UnqLnm189
-        console.log(r.testRunId);           // IwQA12J12
-        console.log(r.userAgent);           // Chrome 63.0.3239 / Windows 8.1.0.0
-        console.log(r.request.url);         // http://api.example.com
-        console.log(r.request.method);      // get
-        console.log(r.response.statusCode); // 304
+        await t
+            .expect(logRecord.id).eql('UnqLnm189')
+            .expect(logRecord.testRunId).eql('IwQA12J12')
+            .expect(logRecord.userAgent).eql('Chrome 63.0.3239 / Windows 8.1.0.0')
+            .expect(logRecord.request.url).eql('http://api.example.com')
+            .expect(logRecord.request.method).eql('get')
+            .expect(logRecord.response.statusCode).eql('304')
     });
 ```
 
@@ -136,7 +137,7 @@ fixture `test`
 test
     .requestHooks(logger)
     ('test', async t => {
-        await t.expect(logger.contains(r => r.response.statusCode === 200)).ok();
+        await t.expect(logger.contains(record => record.response.statusCode === 200)).ok();
     });
 ```
 
@@ -205,7 +206,7 @@ var mock = RequestMock()
         'server': 'nginx/1.10.3'
     })
     .onRequestTo(/*...*/)
-    .respond(function (req, res) { // a custom response
+    .respond((req, res) => { // a custom response
         res.headers['x-calculated-header'] = 'calculated-value';
         res.statusCode = '200';
 
@@ -312,7 +313,7 @@ const mock = RequestMock()
 In case you need more request parameters to decide whether to handle the request or not, you can use a predicate function.
 
 ```js
-const logger = RequestLogger(function (request) {
+const logger = RequestLogger(request => {
     return request.url === 'http://example.com' &&
            request.method === 'post' &&
            request.isAjax &&
@@ -434,9 +435,9 @@ To handle HTTP requests in a custom way, you can create your own request hook. B
     }
     ```
 
-* When a response is received, first an internal `_onConfigureResponse` event fires. This event configures the call to the `onResponse` method that follows.
+* When a response is received, the hook starts preparing to call the `onResponse` method that handles the response.
 
-    The `_onConfigureResponse` method processes settings that specify whether to pass the response headers and body to the `onResponse` method. These settings are specified in the second constructor parameter. This parameter takes an object with two properties - `includeHeaders` and `includeBody`.
+    At this moment, the hook processes settings that define whether to pass the response headers and body to the `onResponse` method. These settings are specified in the second constructor parameter. This parameter takes an object with two properties - `includeHeaders` and `includeBody`.
 
     ```js
     export default class RequestHook {
@@ -446,7 +447,7 @@ To handle HTTP requests in a custom way, you can create your own request hook. B
         }
     ```
 
-* After `_onConfigureResponse` is handled, the `onResponse` method is called. This method is abstract in the base class. Override it in the descendant to handle the request sending.
+* After all the necessary preparations are done, the `onResponse` method is called. This method is abstract in the base class. Override it in the descendant to handle the request sending.
 
     ```js
     onResponse (/*ResponseEvent event*/) {
