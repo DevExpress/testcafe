@@ -389,20 +389,22 @@ function getElementOffset (target) {
     return firstBreakElement ? offset : 0;
 }
 
-function isNodeSelectable (node, includeDescendants = false) {
+function isNodeSelectable (node, includeDescendants) {
+    if (styleUtils.isNotVisibleNode(node))
+        return false;
+
     if (domUtils.isTextNode(node))
         return true;
 
     if (!domUtils.isElementNode(node))
         return false;
 
-    const visibleChildren       = getVisibleChildren(node);
-    const isContentEditableRoot = !domUtils.isContentEditableElement(node.parentNode);
-    const selectableChildren    = arrayUtils.filter(visibleChildren, child => isNodeSelectable(child));
-    const hasBreakLineElements  = arrayUtils.some(visibleChildren, child => domUtils.getTagName(child) === 'br');
-
-    if (selectableChildren.length)
+    if (hasSelectableChildren(node))
         return includeDescendants;
+
+    const isContentEditableRoot = !domUtils.isContentEditableElement(node.parentNode);
+    const visibleChildren       = getVisibleChildren(node);
+    const hasBreakLineElements  = arrayUtils.some(visibleChildren, child => domUtils.getTagName(child) === 'br');
 
     return isContentEditableRoot || hasBreakLineElements;
 }
@@ -439,7 +441,7 @@ export function calculateNodeAndOffsetByPosition (el, offset) {
             if (!isVisibleNode(target))
                 return point;
 
-            if (point.offset === 0 && isNodeSelectable(target)) {
+            if (point.offset === 0 && isNodeSelectable(target, false)) {
                 point.node   = target;
                 point.offset = getElementOffset(target);
 
