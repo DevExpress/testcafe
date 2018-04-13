@@ -128,8 +128,11 @@ export default class TestRunController extends EventEmitter {
 
         const pageUrl             = testRun.test.pageUrl;
         const externalProxyHost   = this.opts.externalProxyHost;
-        const proxyBypassRules    = this.opts.proxyBypass && this.opts.proxyBypass.split(',');
+        let proxyBypassRules      = this.opts.proxyBypass;
         let externalProxySettings = null;
+
+        if (typeof this.opts.proxyBypass === 'string')
+            proxyBypassRules = this.opts.proxyBypass.split(',');
 
         if (externalProxyHost) {
             externalProxySettings = {

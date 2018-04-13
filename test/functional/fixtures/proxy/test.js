@@ -19,8 +19,12 @@ describe('Using proxy-bypass', function () {
         return runTests('testcafe-fixtures/index.test.js', null, { useProxy: ERROR_PROXY_URL, proxyBypass: 'localhost:3000' });
     });
 
-    it('Should bypass using proxy by set of rules', function () {
+    it('Should bypass using proxy by comma-separated string of rules', function () {
         return runTests('testcafe-fixtures/index.test.js', null, { useProxy: ERROR_PROXY_URL, proxyBypass: 'dummy,localhost:3000' });
+    });
+
+    it('Should bypass using proxy by array of rules', function () {
+        return runTests('testcafe-fixtures/index.test.js', null, { useProxy: ERROR_PROXY_URL, proxyBypass: [ 'dummy', 'localhost:3000' ] });
     });
 
     it('Should open page without proxy but get resource with proxy', function () {
