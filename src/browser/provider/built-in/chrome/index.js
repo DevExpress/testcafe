@@ -64,8 +64,12 @@ export default {
     async resizeWindow (browserId, width, height, currentWidth, currentHeight) {
         var runtimeInfo = this.openedBrowsers[browserId];
 
-        runtimeInfo.viewportSize.width  = currentWidth;
-        runtimeInfo.viewportSize.height = currentHeight;
+        if (runtimeInfo.config.mobile)
+            await cdp.updateMobileViewportSize(runtimeInfo);
+        else {
+            runtimeInfo.viewportSize.width  = currentWidth;
+            runtimeInfo.viewportSize.height = currentHeight;
+        }
 
         await cdp.resizeWindow({ width, height }, runtimeInfo);
     },
