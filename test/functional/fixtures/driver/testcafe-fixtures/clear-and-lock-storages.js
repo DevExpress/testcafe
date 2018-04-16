@@ -4,13 +4,13 @@ fixture `Storages`
     .page `http://localhost:3000/fixtures/driver/pages/set-value-to-storages.html`;
 
 const setNativeStorageKey = ClientFunction(storageName => {
-    const storageWrapper = window['%hammerhead%'].sandbox.storageSandbox[storageName];
+    const storageWrapper = window[storageName];
 
     storageWrapper.nativeStorage.setItem('stored-native-storage-key', storageWrapper.nativeStorageKey);
 });
 
 const getNativeStorageState = ClientFunction(storageName => {
-    const storageWrapper = window['%hammerhead%'].sandbox.storageSandbox[storageName];
+    const storageWrapper = window[storageName];
 
     return storageWrapper.nativeStorage.getItem(storageWrapper.nativeStorage.getItem('stored-native-storage-key'));
 });

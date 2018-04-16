@@ -1,12 +1,13 @@
 import hammerhead from './deps/hammerhead';
 
-var JSON = hammerhead.json;
+var JSON          = hammerhead.json;
+var nativeMethods = hammerhead.nativeMethods;
 
 const STORAGE_KEY_PREFIX = 'testcafe|driver|';
 
 export default class Storage {
     constructor (window, testRunId) {
-        this.storage    = window.sessionStorage;
+        this.storage    = nativeMethods.winSessionStorageGetter.call(window);
         this.storageKey = STORAGE_KEY_PREFIX + testRunId;
         this.data       = {};
 

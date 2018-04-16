@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript">
+        window.onload = function () {
+            if (!document.cookie || document.cookie === 'auth=false')
+                location.href = './login.html';
+            else {
+                var result = document.getElementById('result');
+
+                result.innerHTML = 'logged'
+            }
+        }
+
+        function logout () {
+            document.cookie = 'auth=false';
+            location.href = './login.html';
+        }
+    </script>
+</head>
+<body>
+    <div id="result">no access</div>
+    <div style="border: 1px solid black; width: 200px;" onclick="logout()">Reset cookie</div>
+</body>
+</html>

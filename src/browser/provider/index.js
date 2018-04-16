@@ -36,9 +36,30 @@ export default class BrowserProvider {
         // HACK: The browser window has different border sizes in normal and maximized modes. So, we need to be sure that the window is
         // not maximized before resizing it in order to keep the mechanism of correcting the client area size working. When browser is started,
         // we are resizing it for the first time to switch the window to normal mode, and for the second time - to restore the client area size.
-        this.resizeCorrections = {};
-        this.maxScreenSizes    = {};
-        this.windowDescriptors = {};
+        this.localBrowsersInfo = {};
+    }
+
+    _createLocalBrowserInfo (browserId) {
+        if (this.localBrowsersInfo[browserId])
+            return;
+
+        this.localBrowsersInfo[browserId] = {
+            windowDescriptor:  null,
+            maxScreenSize:     null,
+            resizeCorrections: null
+        };
+    }
+
+    _getWindowDescriptor (browserId) {
+        return this.localBrowsersInfo[browserId] && this.localBrowsersInfo[browserId].windowDescriptor;
+    }
+
+    _getMaxScreenSize (browserId) {
+        return this.localBrowsersInfo[browserId] && this.localBrowsersInfo[browserId].maxScreenSize;
+    }
+
+    _getResizeCorrections (browserId) {
+        return this.localBrowsersInfo[browserId] && this.localBrowsersInfo[browserId].resizeCorrections;
     }
 
     async _calculateResizeCorrections (browserId) {
@@ -61,63 +82,77 @@ export default class BrowserProvider {
 
         correctionSize = sumSizes(correctionSize, subtractSizes(resizedSize, etalonSize));
 
-        this.resizeCorrections[browserId] = correctionSize;
+        if (this.localBrowsersInfo[browserId])
+            this.localBrowsersInfo[browserId].resizeCorrections = correctionSize;
 
         await browserTools.maximize(title);
     }
 
+
     async _calculateMacSizeLimits (browserId) {
         var sizeInfo = await this.plugin.runInitScript(browserId, GET_WINDOW_DIMENSIONS_INFO_SCRIPT);
 
-        this.maxScreenSizes[browserId] = {
-            width:  sizeInfo.availableWidth - (sizeInfo.outerWidth - sizeInfo.width),
-            height: sizeInfo.availableHeight - (sizeInfo.outerHeight - sizeInfo.height)
-        };
+        if (this.localBrowsersInfo[browserId]) {
+            this.localBrowsersInfo[browserId].maxScreenSize = {
+                width:  sizeInfo.availableWidth - (sizeInfo.outerWidth - sizeInfo.width),
+                height: sizeInfo.availableHeight - (sizeInfo.outerHeight - sizeInfo.height)
+            };
+        }
     }
 
-    async _onOpenBrowser (browserId) {
+    async _ensureBrowserWindowDescriptor (browserId) {
+        if (this._getWindowDescriptor(browserId))
+            return;
+
+        await this._createLocalBrowserInfo(browserId);
+
         // NOTE: delay to ensure the window finished the opening
         await this.plugin.waitForConnectionReady(browserId);
         await delay(BROWSER_OPENING_DELAY);
 
-        this.windowDescriptors[browserId] = await browserTools.findWindow(browserId);
+        if (this.localBrowsersInfo[browserId])
+            this.localBrowsersInfo[browserId].windowDescriptor = await browserTools.findWindow(browserId);
+    }
 
-        if (OS.win)
+    async _ensureBrowserWindowParameters (browserId) {
+        await this._ensureBrowserWindowDescriptor(browserId);
+
+        if (OS.win && !this._getResizeCorrections(browserId))
             await this._calculateResizeCorrections(browserId);
-        else if (OS.mac)
+        else if (OS.mac && !this._getMaxScreenSize(browserId))
             await this._calculateMacSizeLimits(browserId);
     }
 
     async _closeLocalBrowser (browserId) {
-        await browserTools.close(this.windowDescriptors[browserId]);
-
-        delete this.windowDescriptors[browserId];
+        await browserTools.close(this._getWindowDescriptor(browserId));
     }
 
     async _resizeLocalBrowserWindow (browserId, width, height, currentWidth, currentHeight) {
-        if (this.resizeCorrections[browserId] && await browserTools.isMaximized(this.windowDescriptors[browserId])) {
-            width -= this.resizeCorrections[browserId].width;
-            height -= this.resizeCorrections[browserId].height;
+        const resizeCorrections = this._getResizeCorrections(browserId);
+
+        if (resizeCorrections && await browserTools.isMaximized(this._getWindowDescriptor(browserId))) {
+            width -= resizeCorrections.width;
+            height -= resizeCorrections.height;
         }
 
-        await browserTools.resize(this.windowDescriptors[browserId], currentWidth, currentHeight, width, height);
+        await browserTools.resize(this._getWindowDescriptor(browserId), currentWidth, currentHeight, width, height);
     }
 
     async _takeLocalBrowserScreenshot (browserId, screenshotPath) {
-        await browserTools.screenshot(this.windowDescriptors[browserId], screenshotPath);
+        await browserTools.screenshot(this._getWindowDescriptor(browserId), screenshotPath);
     }
 
     async _canResizeLocalBrowserWindowToDimensions (browserId, width, height) {
         if (!OS.mac)
             return true;
 
-        var maxScreenSize = this.maxScreenSizes[browserId];
+        var maxScreenSize = this._getMaxScreenSize(browserId);
 
         return width <= maxScreenSize.width && height <= maxScreenSize.height;
     }
 
     async _maximizeLocalBrowserWindow (browserId) {
-        await browserTools.maximize(this.windowDescriptors[browserId]);
+        await browserTools.maximize(this._getWindowDescriptor(browserId));
     }
 
     async init () {
@@ -170,7 +205,7 @@ export default class BrowserProvider {
         var isLocalBrowser = await this.plugin.isLocalBrowser(browserId);
 
         if (isLocalBrowser)
-            await this._onOpenBrowser(browserId);
+            await this._ensureBrowserWindowParameters(browserId);
     }
 
     async closeBrowser (browserId) {
@@ -179,12 +214,13 @@ export default class BrowserProvider {
         var hasCustomCloseBrowser  = customActionsInfo.hasCloseBrowser;
         var usePluginsCloseBrowser = hasCustomCloseBrowser || !isLocalBrowser;
 
-        if (usePluginsCloseBrowser) {
+        if (usePluginsCloseBrowser)
             await this.plugin.closeBrowser(browserId);
-            return;
-        }
+        else
+            await this._closeLocalBrowser(browserId);
 
-        await this._closeLocalBrowser(browserId);
+        if (isLocalBrowser)
+            delete this.localBrowsersInfo[browserId];
     }
 
     async getBrowserList () {

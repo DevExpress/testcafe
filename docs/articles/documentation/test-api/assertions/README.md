@@ -6,12 +6,12 @@ checked: false
 ---
 # Assertions
 
-To check if the state of the tested webpage matches the one you expect to see, use *assertions*.
+You can use *assertions* to check if the tested webpage's state matches your expectations.
 
-TestCafe provides a comprehensive set of assertions that are based on Behavior Driven Development style (BDD-style).
+TestCafe provides a comprehensive set of assertions that are based on the Behavior Driven Development style (BDD-style).
 See [Assertion API](assertion-api.md).
 
-This topic contains the following sections.
+This topic consists of the following sections.
 
 * [Assertion Structure](#assertion-structure)
 * [Smart Assertion Query Mechanism](#smart-assertion-query-mechanism)
@@ -20,13 +20,13 @@ This topic contains the following sections.
 
 ## Assertion Structure
 
-TestCafe assertions start with the `expect` method exposed by [test controller](../test-code-structure.html#test-controller).
+TestCafe assertions start with the `expect` method the [test controller](../test-code-structure.html#test-controller) exposes.
 This method accepts the actual value. You can pass a value, a [Selector's DOM node state property](../selecting-page-elements/selectors/using-selectors.md#define-assertion-actual-value)
-or a [client function](../obtaining-data-from-the-client.md) promise.
+or a [client function](../obtaining-data-from-the-client/README.md) promise.
 TestCafe automatically waits for node state properties to obtain a value and for client functions to execute.
 See [Smart Assertion Query Mechanism](#smart-assertion-query-mechanism) for details.
 
-After `expect`, an [assertion method](assertion-api.md) follows. Assertion methods accept an expected value
+Next is an [assertion method](assertion-api.md). Assertion methods accept an expected value
 and, optionally, other arguments.
 
 For instance, the deep equality assertion has the following structure.
@@ -57,28 +57,26 @@ test('Check property of element', async t => {
 
 ## Smart Assertion Query Mechanism
 
-In synchronous functional testing, you can perform the required assertions immediately after test action is executed:
+You can perform the required assertions immediately after test action is executed in synchronous functional testing.
 
 ![Synchronous Functional Testing](../../../images/assertions/synchronous-testing.png)
 
-On the web, functional tests are asynchronous. This means that we can not get the expected changes immediately after an end-user action.
-For example, the tested web page can send a request to the server for the required data, and this can take some time;
-or an end-user action launches animation after which the web page will reach its final state.
-All of these time gaps cannot be pre-calculated, because they depend on various factors: computer performance,
-network connection speed, etc. In this case, if we perform assertions immediately after the test action finished,
-we can get an indefinite result:
+Functional tests are asynchronous on the web. This means that we cannot get the expected changes immediately after an end-user's actions.
++For example, it can take time for the tested web page to send a request to the server for the required data, or an end-user's action launches an animation after which the web page reaches its final state.
++All these intervals cannot be pre-calculated because they depend on various factors: computer performance,
+ network connection speed, etc. In this case, if we perform assertions immediately after the test action finished,we can get an indefinite result.
 
 ![Asynchronous Functional Testing](../../../images/assertions/asynchronous-testing.png)
 
-To perform asynchronous functional tests, an additional timeout as usually added:
+An additional timeout is usually added when performing asynchronous functional tests.
 
 ![Asynchronous Functional Testing with Extra Waiting](../../../images/assertions/extra-waiting.png)
 
-To stabilize such tests, you need to add a timeout that will guarantee that the required changes are successfully applied.
-Adding such timeouts can increase the test running time because of extra waiting.
+To stabilize such tests, you need to add a timeout that enables the required changes to be successfully applied.
+Note that adding such timeouts can increase the test's running time.
 
 If the TestCafe assertion receives a [Selector's DOM node state property](../selecting-page-elements/selectors/using-selectors.md#define-assertion-actual-value)
-or a [client function](../obtaining-data-from-the-client.md) promise
+or a [client function](../obtaining-data-from-the-client/README.md) promise
 as an actual value, TestCafe uses the smart assertion query mechanism:
 if an assertion did not pass, the test does not fail immediately. The assertion retries to pass multiple times and
 each time it requests the actual property value. The test fails if the assertion could not complete successfully
@@ -88,7 +86,7 @@ within a timeout:
 
 **Example:**
 
-Assume you have the following web page.
+The following web page is an example:
 
 ```html
 <div id="btn"></div>
@@ -118,11 +116,11 @@ test('Button click', async t => {
 });
 ```
 
-The approach described above allows you to create stable tests free from random errors and running fast without additional waiting.
+The approach described above allows you to create stable tests with a fast run-time that do not contain random errors.
 
 You can specify the assertion query timeout in test code by using the [options.timeout](#assertion-options) option.
 To set the timeout when launching tests, pass the timeout value to the [runner.run](../../using-testcafe/programming-interface/runner.md#run)
-method if you use API or specify the [assertion-timeout](../../using-testcafe/command-line-interface.md#--assertion-timeout-ms) option
+method if you use an API or specify the [assertion-timeout](../../using-testcafe/command-line-interface.md#--assertion-timeout-ms) option
 if you run TestCafe from the command line.
 
 ## Assertion options
@@ -131,16 +129,16 @@ if you run TestCafe from the command line.
 
 **Type**: Number
 
-The amount of time, in milliseconds, allowed for an assertion to pass before the test fails if
+The time (in milliseconds) an assertion can take to pass before the test fails if
 [a selector property](../selecting-page-elements/selectors/using-selectors.md#define-assertion-actual-value)
-or a [client function](../obtaining-data-from-the-client.md) promise was used in assertion.
+or a [client function](../obtaining-data-from-the-client/README.md) promise was used in assertion.
 
-**Default value**: timeout is specified by using the [runner.run](../../using-testcafe/programming-interface/runner.md#run) API method
+**Default value**: The timeout is specified using the [runner.run](../../using-testcafe/programming-interface/runner.md#run) API method
 or the [assertion-timeout](../../using-testcafe/command-line-interface.md#--assertion-timeout-ms) command line option.
 
 ```js
 await t.expect(Selector('#elementId').innerText).eql('text', 'check element text', { timeout: 500 });
 ```
 
-> In addition to built-in assertions, you also can use assertions from Node's built-in [assert](https://nodejs.org/api/assert.html) module or choose a 3rd-party library you like (for example [chai](http://chaijs.com/)).
-> In this case, you should care about the amount of time required to complete asynchronous actions using the [t.wait(timeout)](../pausing-the-test.md) method.
+> In addition to built-in assertions, you also can use assertions from Node's built-in [assert](https://nodejs.org/api/assert.html) module or 3rd-party library (for example [chai](http://chaijs.com/)).
+> In this case, you specify the time required to complete asynchronous actions using the [t.wait(timeout)](../pausing-the-test.md) method.

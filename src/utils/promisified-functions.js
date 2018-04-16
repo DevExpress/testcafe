@@ -1,5 +1,5 @@
-import fs from 'fs';
 import childProcess from 'child_process';
+import fs from 'graceful-fs';
 import mkdirp from 'mkdirp';
 import psNode from 'ps-node';
 import promisify from './promisify';

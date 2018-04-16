@@ -84,13 +84,13 @@ export default class TestRunBookmark {
         }
     }
 
-    async _restorePage (url, storages) {
-        var navigateCommand = new NavigateToCommand({ url, storages });
+    async _restorePage (url, stateSnapshot) {
+        var navigateCommand = new NavigateToCommand({ url, stateSnapshot });
 
         await this.testRun.executeCommand(navigateCommand);
     }
 
-    async restore (callsite, storages) {
+    async restore (callsite, stateSnapshot) {
         var prevPhase = this.testRun.phase;
 
         this.testRun.phase = TEST_RUN_PHASE.inBookmarkRestore;
@@ -107,7 +107,7 @@ export default class TestRunBookmark {
             var preserveUrl = this.role.opts.preserveUrl;
             var url = preserveUrl ? this.role.url : this.url;
 
-            await this._restorePage(url, JSON.stringify(storages));
+            await this._restorePage(url, JSON.stringify(stateSnapshot));
 
             if (!preserveUrl)
                 await this._restoreWorkingFrame();

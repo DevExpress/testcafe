@@ -1,11 +1,11 @@
 import Promise from 'pinkie';
 import BUILT_IN_PROVIDERS from './built-in';
 import BrowserProviderPluginHost from './plugin-host';
+import parseProviderName from './parse-provider-name';
 import BrowserProvider from './';
 import BrowserConnection from '../connection';
 import { GeneralError } from '../../errors/runtime';
 import MESSAGE from '../../errors/runtime/message';
-
 
 const BROWSER_PROVIDER_RE = /^([^:\s]+):?(.*)?$/;
 
@@ -65,9 +65,9 @@ export default {
             .map(browserName => ({ provider, providerName, browserName }));
     },
 
-    _getProviderModule (providerName) {
+    _getProviderModule (providerName, moduleName) {
         try {
-            var providerObject = require(`testcafe-browser-provider-${providerName}`);
+            var providerObject = require(moduleName);
 
             this.addProvider(providerName, providerObject);
             return this._getProviderFromCache(providerName);
@@ -110,18 +110,27 @@ export default {
     },
 
     addProvider (providerName, providerObject) {
+        providerName = parseProviderName(providerName).providerName;
+
         this.providersCache[providerName] = new BrowserProvider(
             new BrowserProviderPluginHost(providerObject, providerName)
         );
     },
 
     removeProvider (providerName) {
+        providerName = parseProviderName(providerName).providerName;
+
         delete this.providersCache[providerName];
     },
 
     async getProvider (providerName) {
+        const parsedProviderName = parseProviderName(providerName);
+        const moduleName         = parsedProviderName.moduleName;
+
+        providerName = parsedProviderName.providerName;
+
         var provider = this._getProviderFromCache(providerName) ||
-                       this._getProviderModule(providerName) ||
+                       this._getProviderModule(providerName, moduleName) ||
                        this._getBuiltinProvider(providerName);
 
         if (provider)

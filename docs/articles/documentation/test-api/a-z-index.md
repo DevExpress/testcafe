@@ -7,8 +7,8 @@ permalink: /documentation/test-api/a-z.html
 
 This topic lists test API members in alphabetical order.
 
-* [ClientFunction](obtaining-data-from-the-client.md#creating-client-functions)
-    * [with](obtaining-data-from-the-client.md#overwriting-options)
+* [ClientFunction](obtaining-data-from-the-client/README.md#creating-client-functions)
+    * [with](obtaining-data-from-the-client/README.md#overwriting-options)
 * [DOM Node State](selecting-page-elements/dom-node-state.md)
    * *[members](selecting-page-elements/dom-node-state.md#members-common-across-all-nodes)*
 * [fixture](test-code-structure.md#fixtures)
@@ -56,7 +56,7 @@ This topic lists test API members in alphabetical order.
     * [doubleClick](actions/double-click.md)
     * [drag](actions/drag-element.md#drag-an-element-by-an-offset)
     * [dragtoElement](actions/drag-element.md#drag-an-element-onto-another-one)
-    * [eval](obtaining-data-from-the-client.md#one-time-client-code-execution)
+    * [eval](obtaining-data-from-the-client/README.md#one-time-client-code-execution)
     * [expect](assertions/README.md)
         * [eql](assertions/assertion-api.md#deep-equal)
         * [notEql](assertions/assertion-api.md#not-deep-equal)

@@ -410,15 +410,16 @@ export default class TestRun extends Session {
 
         const command = this.currentDriverTask.command;
 
-        if (command.type === COMMAND_TYPE.navigateTo && command.storages)
-            this.useStateSnapshot({ storages: JSON.parse(command.storages) });
+        if (command.type === COMMAND_TYPE.navigateTo && command.stateSnapshot)
+            this.useStateSnapshot(JSON.parse(command.stateSnapshot));
 
         return command;
     }
 
     // Execute command
     async _executeAssertion (command, callsite) {
-        var executor = new AssertionExecutor(command, callsite);
+        var assertionTimeout = command.options.timeout === void 0 ? this.opts.assertionTimeout : command.options.timeout;
+        var executor         = new AssertionExecutor(command, assertionTimeout, callsite);
 
         executor.once('start-assertion-retries', timeout => this._enqueueCommand(new ShowAssertionRetriesStatusCommand(timeout)));
         executor.once('end-assertion-retries', success => this._enqueueCommand(new HideAssertionRetriesStatusCommand(success)));
@@ -573,7 +574,7 @@ export default class TestRun extends Session {
 
         this.currentRoleId = role.id;
 
-        await bookmark.restore(callsite, stateSnapshot ? stateSnapshot.storages : null);
+        await bookmark.restore(callsite, stateSnapshot);
 
         this.disableDebugBreakpoints = false;
     }

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #editor1.focused .placeholder {
+            display: none;
+        }
+
+        #editor2.focused .placeholder {
+            visibility: hidden;
+        }
+
+        #editor3 .placeholder {
+            display: none;
+        }
+
+        .placeholder {
+            color: #aaa;
+            font-style: italic;
+            height: 0;
+            pointer-events: none;
+        }
+
+        .editor {
+            padding: 4px 8px 4px 14px;
+            line-height: 1.2;
+            outline: none;
+        }
+
+        .editor {
+            word-wrap: break-word;
+            white-space: pre-wrap;
+            font-variant-ligatures: none;
+        }
+
+        .editor {
+            position: relative;
+        }
+
+        .outer-editor {
+            background: white;
+            color: black;
+            background-clip: padding-box;
+            border-radius: 4px;
+            border: 2px solid rgba(0, 0, 0, 0.2);
+            padding: 5px 0;
+            margin-bottom: 23px;
+        }
+
+        .outer-editor {
+            border: 1px solid grey;
+        }
+
+        .editor p:first-child {
+            margin-top: 10px;
+        }
+
+        .editor p {
+            margin-bottom: 1em;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Display: none</h2>
+<div class="outer-editor">
+    <div id="editor1" contenteditable="true" class="editor"
+         onmousedown="event.currentTarget.className += ' focused'"></div>
+</div>
+
+<h2>Visibility: hidden</h2>
+<div class="outer-editor">
+    <div id="editor2" contenteditable="true" class="editor"
+         onmousedown="event.currentTarget.className += ' focused'"></div>
+</div>
+
+<h2>Two hidden divs inside</h2>
+<div class="outer-editor">
+    <div id="editor3" contenteditable="true" class="editor"><div><div class="placeholder"></div><div class="placeholder">test</div></div></div>
+</div>
+
+<div id="placeholder1" contenteditable="false" class="placeholder">Type here...</div>
+<div id="placeholder2" contenteditable="false" class="placeholder">Type here...</div>
+
+<script type="text/javascript">
+    function createEditor (editor, placeholder) {
+        var paragraph = document.createElement('p');
+        var lineBreak = document.createElement('br');
+
+        editor.appendChild(paragraph);
+        paragraph.appendChild(placeholder);
+        paragraph.appendChild(lineBreak);
+    }
+
+    createEditor(document.getElementById('editor1'), document.getElementById('placeholder1'));
+    createEditor(document.getElementById('editor2'), document.getElementById('placeholder2'));
+</script>
+</body>
+</html>

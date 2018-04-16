@@ -303,9 +303,9 @@ export class NavigateToCommand extends Assignable {
     constructor (obj) {
         super(obj);
 
-        this.type = TYPE.navigateTo;
-        this.url  = null;
-        this.storages = null;
+        this.type          = TYPE.navigateTo;
+        this.url           = null;
+        this.stateSnapshot = null;
 
         this._assignFrom(obj, true);
     }
@@ -313,7 +313,7 @@ export class NavigateToCommand extends Assignable {
     _getAssignableProperties () {
         return [
             { name: 'url', type: urlArgument, required: true },
-            { name: 'storages', type: nullableStringArgument }
+            { name: 'stateSnapshot', type: nullableStringArgument }
         ];
     }
 }

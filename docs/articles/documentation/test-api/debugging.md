@@ -28,16 +28,16 @@ t.debug()
 ```
 
 When test execution reaches `t.debug`, it pauses so that you can open browser's developer tools
-and check the web page state, the location of DOM elements, their CSS styles, etc.
+and check the web page state, DOM elements' location, their CSS styles, etc.
 
 You can also use the [--debug-mode](../using-testcafe/command-line-interface.md#-d---debug-mode)
 command line option to pause the test before the first action or assertion.
 
-The footer displays buttons that allow you to continue test execution or step to the next test action or assertion.
+The footer displays buttons that allow you to continue the test or skip to the next test action or assertion.
 
 ![Page Footer when Debugging on a Client](../../images/debugging/client-debugging-footer.png)
 
-> The debugger does not stop at creating and resolving the [selectors](selecting-page-elements/selectors/README.md) and [client functions](obtaining-data-from-the-client.md).
+> The debugger does not stop at creating and resolving the [selectors](selecting-page-elements/selectors/README.md) and [client functions](obtaining-data-from-the-client/README.md).
 
 TestCafe logs points in code where the debugger stopped.
 
@@ -60,12 +60,11 @@ test('Debugger', async t => {
 
 ## Options Useful for Debugging
 
-TestCafe includes a few features helpful when you need to find the cause of issues in your tests.
+TestCafe includes features that help you locate the cause of issues in your tests.
 
 ### Screenshots
 
-You can specify that a screenshot should be taken in a particular place in a test.
-Use the [t.takeScreenshot](actions/take-screenshot.md) action for this.
+You can specify that a screenshot should be taken in a particular place in a test using the [t.takeScreenshot](actions/take-screenshot.md) action.
 
 ```js
 fixture `My fixture`
@@ -83,20 +82,18 @@ test('My test', async t => {
 ```
 
 You can also turn on the [--screenshots-on-fails](../using-testcafe/command-line-interface.md#-s---screenshots-on-fails)
-option.
+option to automatically take a screenshot when a test fails.
 
 ```sh
 testcafe chrome ./my-tests --screenshots ./screenshots --screenshots-on-fails
 ```
 
-This option enables TestCafe to take a screenshot automatically when a test fails.
-
-Analyzing these screenshots helps save time on debugging and allows you to determine the reason of issues earlier.
+Analyzing these screenshots reduces debugging time and allows you to determine the reason of issues earlier.
 
 ### Test Speed
 
-TestCafe provides the capability to change test speed. By default, tests are executed at full speed with minimum delays between actions and assertions.
-This makes it hard to identify problems visually when running the test.
+TestCafe provides the capability to change test speed. Tests are executed at full speed with minimum delays between actions and assertions by default, which can make it hard to identify problems when the test is running.
+
 To slow down the test, use the [--speed](../using-testcafe/command-line-interface.md#--speed-factor)
 CLI flag. You can use values from `1` to `0.01`.
 
@@ -104,4 +101,4 @@ CLI flag. You can use values from `1` to `0.01`.
 testcafe chrome ./my-tests --speed 0.1
 ```
 
-When tests run slowly, you can monitor test execution more easily and notice when test behavior differs from the one that's expected.
+When tests run slower, you can monitor test execution and notice when the test's behavior differs from what is expected.

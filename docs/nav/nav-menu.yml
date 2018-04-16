@@ -53,7 +53,7 @@
       - name: Test Controller
         url: /documentation/test-api/test-code-structure.md#test-controller
       - name: Setting Test Speed
-        url: /documentation/test-api/test-code-structure.md#setting-test-speed 
+        url: /documentation/test-api/test-code-structure.md#setting-test-speed
     - name: Specifying the Start Webpage
       url: /documentation/test-api/test-code-structure.md#specifying-the-start-webpage
     - name: Initialization and Clean-Up
@@ -124,7 +124,10 @@
     - name: Assertion API
       url: /documentation/test-api/assertions/assertion-api.md
   - name: Obtaining Data from the Client
-    url: /documentation/test-api/obtaining-data-from-the-client.md
+    url: /documentation/test-api/obtaining-data-from-the-client/README.md
+    content:
+    - name: Examples of Using Client Functions
+      url: /documentation/test-api/obtaining-data-from-the-client/examples-of-using-client-functions.md
   - name: Waiting for Page Elements to Appear
     url: /documentation/test-api/waiting-for-page-elements-to-appear.md
   - name: Authentication
@@ -143,7 +146,7 @@
   - name: Debugging
     url: /documentation/test-api/debugging.md
   - name: Accessing Console Messages
-    url: /documentation/test-api/accessing-console-messages.md  
+    url: /documentation/test-api/accessing-console-messages.md
   - name: A-Z Index
     url: /documentation/test-api/a-z.md
 - name: EXTENDING TESTCAFE
@@ -187,7 +190,7 @@
       url: /documentation/recipes/finding-code-issues-with-flow-type-checker.md
     - name: Running Tests Using Travis CI and Sauce Labs
       url: /documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.md
-    - name: Testing &lt;select&gt; Elements 
+    - name: Testing &lt;select&gt; Elements
       url: /documentation/recipes/testing-select-elements.md
     - name: Test Static HTML Pages
       url: /documentation/recipes/test-static-html-pages.md

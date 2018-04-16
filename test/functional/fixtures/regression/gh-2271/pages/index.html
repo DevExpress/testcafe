@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        function dragEnter (event) {
+            log('dragenter', event.target, event.relatedTarget);
+        }
+
+        function dragLeave (event) {
+            log('dragleave', event.target, event.relatedTarget);
+        }
+        function log (eventName, target, relatedTarget) {
+            var logger = document.getElementById('logger');
+            
+            logger.innerHTML += eventName + ' ' + target.id + ' ' + (relatedTarget ? relatedTarget.id : 'none') + ' <br/>';
+        }
+    </script>
+    <style>
+        p {
+            width: 80px;
+            padding: 3px;
+            border: 1px solid #aaaaaa;
+        }
+
+        #dropTarget {
+            width: 400px;
+            height: 400px;
+            border: 1px solid black;
+        }
+
+    </style>
+</head>
+<body id="body">
+    <div id="dropTarget" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)">
+            <p id='dragElement' draggable="true">Drag me!</p>
+    </div>
+    <div id="logger"></div>
+</body>
+</html>

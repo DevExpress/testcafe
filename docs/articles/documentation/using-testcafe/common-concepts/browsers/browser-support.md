@@ -18,7 +18,7 @@ While TestCafe is designed to support most modern browsers, there are a limited 
 of *officially supported* browsers against which TestCafe is actively tested.
 
 * Google Chrome: Stable, Beta, Dev and Canary
-* Internet Explorer (9+)
+* Internet Explorer (11+)
 * Microsoft Edge
 * Mozilla Firefox
 * Safari

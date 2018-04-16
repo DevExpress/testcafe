@@ -21,7 +21,9 @@
 
 
     //Hammerhead setup
-    var hammerhead = getTestCafeModule('hammerhead');
+    var hammerhead  = getTestCafeModule('hammerhead');
+    var INSTRUCTION = hammerhead.get('../processing/script/instruction');
+
 
     hammerhead.get('./utils/destination-location').forceLocation('http://localhost/sessionId/https://example.com');
 
@@ -82,7 +84,7 @@
         window.loadedTime = Date.now();
 
         $('#button').click(function () {
-            window.top.postMessage(JSON.stringify({ type: "clickRaised" }), "*");
+            window[INSTRUCTION.callMethod](top, 'postMessage', [JSON.stringify({ type: "clickRaised" }), '*']);
         });
 
         $('#errorButton').click(function () {

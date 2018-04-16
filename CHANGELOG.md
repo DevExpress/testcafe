@@ -1,5 +1,23 @@
 # Changelog
 
+## v0.19.2 (2018-4-11)
+
+### Enhancements
+
+#### Added support for browser providers from private repositories ([#2221](https://github.com/DevExpress/testcafe/issues/2221))
+
+### Bug Fixes
+
+* Restored the screenshot functionality in legacy tests ([#2235](https://github.com/DevExpress/testcafe/issues/2235))
+* Updated the list of devices available for emulation in Google Chrome ([#2257](https://github.com/DevExpress/testcafe/issues/2257))
+* Fixed touch events emulation ([#2268](https://github.com/DevExpress/testcafe/issues/2268))
+* Now the `event.relatedTarget` property is set correctly for the emulated focus and drag events ([#2197](https://github.com/DevExpress/testcafe/issues/2197))
+* Now the `event.detail` property is set correctly for the emulated mouse events ([#2232](https://github.com/DevExpress/testcafe/issues/2232))
+* The `Element.innerHTML` property is now processed correctly in certain special cases ([testcafe-hammerhead/#1538](https://github.com/DevExpress/testcafe-hammerhead/issues/1538))
+* Now the iframe location has the correct value when it is not initialized([testcafe-hammerhead/#1531](https://github.com/devexpress/testcafe-hammerhead/issues/1531))
+* A trailing slash is now added to test page URL if it is necessary ([#2005](https://github.com/DevExpress/testcafe/issues/2005))
+* The `focus` event is not called for a disabled input now ([#2123](https://github.com/devexpress/testcafe/issues/2123))
+
 ## v0.19.1 (2018-3-13)
 
 ### Backward compatibility with the legacy test syntax has been restored ([#2210](https://github.com/DevExpress/testcafe/issues/2210))

@@ -75,7 +75,7 @@ reference any modules or libraries you need.
 
 TestCafe tests are executed server side. To manipulate the tested webpage, use [test actions](actions/README.md).
 To determine the state of page elements or obtain any other data from the client side, use [selectors](selecting-page-elements/selectors/README.md) and
-[client functions](obtaining-data-from-the-client.md).
+[client functions](obtaining-data-from-the-client/README.md).
 
 To check if the page state matches the expected one, use [assertions](assertions/README.md).
 
@@ -106,7 +106,7 @@ test('My Test', async t => {
 
 Another job of the test controller is providing access to the internal context required for test API to operate.
 This is why [selectors](selecting-page-elements/selectors/README.md) and
-[client functions](obtaining-data-from-the-client.md) need the test controller object when they are
+[client functions](obtaining-data-from-the-client/README.md) need the test controller object when they are
 called from Node.js callbacks.
 
 #### Using Test Controller Outside of Test Code

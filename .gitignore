@@ -8,3 +8,4 @@ node_modules
 /___test-screenshots___
 yarn.lock
 package-lock.json
+.npmrc
