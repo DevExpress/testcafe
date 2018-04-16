@@ -10,4 +10,6 @@ test('Load a top window on the cross-domain port', async t => {
 });
 
 test('Second test', async () => {
+    // NOTE: The first test is never going to end and the second test will never begin
+    // if the `heartbeat` message is using a cross-domain port
 });
