@@ -1,4 +1,5 @@
 import path from 'path';
+import { pull as remove } from 'lodash';
 import { readSync as read } from 'read-file-relative';
 import promisifyEvent from 'promisify-event';
 import Promise from 'pinkie';
@@ -106,6 +107,47 @@ export default class TestRun extends Session {
         this.injectable.scripts.push('/testcafe-automation.js');
         this.injectable.scripts.push('/testcafe-driver.js');
         this.injectable.styles.push('/testcafe-ui-styles.css');
+
+        this.requestHooks = Array.from(this.test.requestHooks);
+
+        this._initRequestHooks();
+    }
+
+    addRequestHook (hook) {
+        if (this.requestHooks.indexOf(hook) !== -1)
+            return;
+
+        this.requestHooks.push(hook);
+        this._initRequestHook(hook);
+    }
+
+    removeRequestHook (hook) {
+        if (this.requestHooks.indexOf(hook) === -1)
+            return;
+
+        remove(this.requestHooks, hook);
+        this._disposeRequestHook(hook);
+    }
+
+    _initRequestHook (hook) {
+        hook._instantiateRequestFilterRules();
+        hook._instantiatedRequestFilterRules.forEach(rule => {
+            this.addRequestEventListeners(rule, {
+                onRequest:           hook.onRequest.bind(hook),
+                onConfigureResponse: hook._onConfigureResponse.bind(hook),
+                onResponse:          hook.onResponse.bind(hook)
+            });
+        });
+    }
+
+    _disposeRequestHook (hook) {
+        hook._instantiatedRequestFilterRules.forEach(rule => {
+            this.removeRequestEventListeners(rule);
+        });
+    }
+
+    _initRequestHooks () {
+        this.requestHooks.forEach(hook => this._initRequestHook(hook));
     }
 
 

@@ -144,7 +144,6 @@ describe('API', function () {
                 });
         });
 
-
         it('Should raise an error if fixture.after is not a function', function () {
             var testfile = resolve('test/server/data/test-suites/fixture-after-is-not-a-function/testfile.js');
 
@@ -235,6 +234,30 @@ describe('API', function () {
                                   '   5 |\n' +
                                   '   6 |});\n' +
                                   '   7 |'
+                    });
+                });
+        });
+
+        it('Should raise an error if requestHooks takes a wrong argument', function () {
+            const fixtureHookHasWrongType = resolve('test/server/data/test-suites/request-hooks/fixture-hook-has-wrong-type.js');
+
+            return compile(fixtureHookHasWrongType)
+                .then(() => {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(err => {
+                    assertAPIError(err, {
+                        stackTop: fixtureHookHasWrongType,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 'Hook is expected to be a RequestHook subclass, but it was string.',
+
+                        callsite: '   1 |fixture `RequestHook is undefined`\n' +
+                                  ' > 2 |    .requestHooks(\'string\');\n' +
+                                  '   3 |\n' +
+                                  '   4 |test(\'test\', async t => {\n' +
+                                  '   5 |});\n' +
+                                  '   6 |'
                     });
                 });
         });
@@ -333,6 +356,57 @@ describe('API', function () {
                                   '   5 |});\n' +
                                   '   6 |'
                     });
+                });
+        });
+
+        it('Should raise an error if requestHooks takes a wrong argument', function () {
+            const testHookArrayContainsNotRequestHookInheritor = resolve('test/server/data/test-suites/request-hooks/test-hook-array-contains-not-request-hook-inheritor.js');
+
+            return compile(testHookArrayContainsNotRequestHookInheritor)
+                .then(() => {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(err => {
+                    assertAPIError(err, {
+                        stackTop: testHookArrayContainsNotRequestHookInheritor,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 'Hook is expected to be a RequestHook subclass, but it was number.',
+
+                        callsite: "   1 |import { RequestMock } from 'testcafe';\n" +
+                                  '   2 |\n' +
+                                  '   3 |fixture `Hook array contains not RequestHook inheritor`;\n' +
+                                  '   4 |\n' +
+                                  " > 5 |test.requestHooks([RequestMock(), 1])('test', async t => {\n" +
+                                  '   6 |});\n' +
+                                  '   7 |\n'
+                    });
+                });
+        });
+
+        it('Should clone request hooks from fixture to test', () => {
+            const cloneHooksFromFixtureToTest = resolve('test/server/data/test-suites/request-hooks/clone-hooks-from-fixture-to-test.js');
+
+            return compile(cloneHooksFromFixtureToTest)
+                .then(compiledData => {
+                    const fixture = compiledData.fixtures[0];
+                    const test    = compiledData.tests[0];
+
+                    expect(fixture.requestHooks.length).eql(2);
+                    expect(test.requestHooks.length).eql(3);
+                });
+        });
+
+        it('Should not clone the same request hook from fixture to test twice', () => {
+            const shouldNotCloneSameRequestHookFromFixtureToTest = resolve('test/server/data/test-suites/request-hooks/should-not-clone-same-request-hook-from-fixture-to-test.js');
+
+            return compile(shouldNotCloneSameRequestHookFromFixtureToTest)
+                .then(compiledData => {
+                    const fixture = compiledData.fixtures[0];
+                    const test    = compiledData.tests[0];
+
+                    expect(fixture.requestHooks.length).eql(2);
+                    expect(test.requestHooks.length).eql(3);
                 });
         });
     });
@@ -970,7 +1044,6 @@ describe('API', function () {
                     });
                 });
         });
-
 
         it('Should raise an error if ClientFunction `boundTestRun` option is not TestController', function () {
             var testfile = resolve('test/server/data/test-suites/client-fn-bound-test-run-not-t/testfile.js');

@@ -60,7 +60,7 @@ var InvalidElementScreenshotDimensionsError           = require('../../lib/error
 var SetTestSpeedArgumentError                         = require('../../lib/errors/test-run').SetTestSpeedArgumentError;
 var RoleSwitchInRoleInitializerError                  = require('../../lib/errors/test-run').RoleSwitchInRoleInitializerError;
 var ActionRoleArgumentError                           = require('../../lib/errors/test-run').ActionRoleArgumentError;
-
+var RequestHookConfigureAPIError                      = require('../../lib/errors/test-run').RequestHookConfigureAPIError;
 
 var TEST_FILE_STACK_ENTRY_RE = new RegExp('\\s*\\n?\\(' + escapeRe(require.resolve('./data/test-callsite')), 'g');
 
@@ -334,6 +334,10 @@ describe('Error formatting', function () {
 
         it('Should format "assertionExecutableArgumentError"', function () {
             assertErrorMessage('assertion-executable-argument-error', new AssertionExecutableArgumentError('actual', '1 + temp', 'Unexpected identifier'));
+        });
+
+        it('Should format "requestHookConfigureAPIError"', () => {
+            assertErrorMessage('request-hook-configure-api-error', new RequestHookConfigureAPIError('RequestMock', 'test error message'));
         });
     });
 

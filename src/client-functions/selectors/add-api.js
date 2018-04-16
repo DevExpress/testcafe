@@ -4,7 +4,7 @@ import { ELEMENT_SNAPSHOT_PROPERTIES, NODE_SNAPSHOT_PROPERTIES } from './snapsho
 import { CantObtainInfoForElementSpecifiedBySelectorError } from '../../errors/test-run';
 import { getCallsiteForMethod } from '../../errors/get-callsite';
 import ClientFunctionBuilder from '../client-function-builder';
-import ClientFunctionResultPromise from '../result-promise';
+import ReExecutablePromise from '../../utils/re-executable-promise';
 import { assertType, is } from '../../errors/runtime/type-assertions';
 import makeRegExp from '../../utils/make-reg-exp';
 import selectorTextFilter from './selector-text-filter';
@@ -113,7 +113,7 @@ function addSnapshotProperties (obj, getSelector, properties) {
             get: () => {
                 var callsite = getCallsiteForMethod('get');
 
-                return ClientFunctionResultPromise.fromFn(async () => {
+                return ReExecutablePromise.fromFn(async () => {
                     var snapshot = await getSnapshot(getSelector, callsite);
 
                     return snapshot[prop];
@@ -176,7 +176,7 @@ function addSnapshotPropertyShorthands (obj, getSelector, SelectorBuilder, custo
     obj.getStyleProperty = prop => {
         var callsite = getCallsiteForMethod('getStyleProperty');
 
-        return ClientFunctionResultPromise.fromFn(async () => {
+        return ReExecutablePromise.fromFn(async () => {
             var snapshot = await getSnapshot(getSelector, callsite);
 
             return snapshot.style ? snapshot.style[prop] : void 0;
@@ -186,7 +186,7 @@ function addSnapshotPropertyShorthands (obj, getSelector, SelectorBuilder, custo
     obj.getAttribute = attrName => {
         var callsite = getCallsiteForMethod('getAttribute');
 
-        return ClientFunctionResultPromise.fromFn(async () => {
+        return ReExecutablePromise.fromFn(async () => {
             var snapshot = await getSnapshot(getSelector, callsite);
 
             return snapshot.attributes ? snapshot.attributes[attrName] : void 0;
@@ -196,7 +196,7 @@ function addSnapshotPropertyShorthands (obj, getSelector, SelectorBuilder, custo
     obj.hasAttribute = attrName => {
         var callsite = getCallsiteForMethod('hasAttribute');
 
-        return ClientFunctionResultPromise.fromFn(async () => {
+        return ReExecutablePromise.fromFn(async () => {
             var snapshot = await getSnapshot(getSelector, callsite);
 
             return snapshot.attributes ? snapshot.attributes.hasOwnProperty(attrName) : false;
@@ -206,7 +206,7 @@ function addSnapshotPropertyShorthands (obj, getSelector, SelectorBuilder, custo
     obj.getBoundingClientRectProperty = prop => {
         var callsite = getCallsiteForMethod('getBoundingClientRectProperty');
 
-        return ClientFunctionResultPromise.fromFn(async () => {
+        return ReExecutablePromise.fromFn(async () => {
             var snapshot = await getSnapshot(getSelector, callsite);
 
             return snapshot.boundingClientRect ? snapshot.boundingClientRect[prop] : void 0;
@@ -216,7 +216,7 @@ function addSnapshotPropertyShorthands (obj, getSelector, SelectorBuilder, custo
     obj.hasClass = name => {
         var callsite = getCallsiteForMethod('hasClass');
 
-        return ClientFunctionResultPromise.fromFn(async () => {
+        return ReExecutablePromise.fromFn(async () => {
             var snapshot = await getSnapshot(getSelector, callsite);
 
             return snapshot.classNames ? snapshot.classNames.indexOf(name) > -1 : false;
@@ -246,7 +246,7 @@ function addCounterProperties (obj, getSelector, SelectorBuilder) {
         get: () => {
             var counter = createCounter(getSelector, SelectorBuilder);
 
-            return ClientFunctionResultPromise.fromFn(() => counter());
+            return ReExecutablePromise.fromFn(() => counter());
         }
     });
 
@@ -254,7 +254,7 @@ function addCounterProperties (obj, getSelector, SelectorBuilder) {
         get: () => {
             var counter = createCounter(getSelector, SelectorBuilder);
 
-            return ClientFunctionResultPromise.fromFn(async () => await counter() > 0);
+            return ReExecutablePromise.fromFn(async () => await counter() > 0);
         }
     });
 }

@@ -260,5 +260,11 @@ export default {
         Cannot evaluate the "${err.actualValue}" expression in the "${err.argumentName}" parameter because of the following error:
 
         ${err.errMsg}
+    `),
+
+    [TYPE.requestHookConfigureAPIError]: err => markup(err, `
+        There was an error while configuring the request hook:
+        
+        ${err.requestHookName}: ${err.errMsg}
     `)
 };

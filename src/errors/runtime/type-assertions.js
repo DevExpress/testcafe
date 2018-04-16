@@ -1,6 +1,7 @@
 import { isFinite as isFiniteNumber, isRegExp, isNil as isNullOrUndefined } from 'lodash';
 import { APIError, GeneralError } from './';
 import MESSAGE from './message';
+import RequestHook from '../../api/request-hooks/hook';
 
 function isNonNegativeValue (value) {
     return isFiniteNumber(value) && value >= 0;
@@ -53,6 +54,11 @@ export var is = {
         name:              'non-null object',
         predicate:         (value, type) => type === 'object' && !isNullOrUndefined(value),
         getActualValueMsg: (value, type) => isNullOrUndefined(value) ? String(value) : type
+    },
+
+    requestHookSubclass: {
+        name:      'RequestHook subclass',
+        predicate: value => value instanceof RequestHook && value.constructor && value.constructor !== RequestHook
     }
 };
 

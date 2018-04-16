@@ -7,6 +7,7 @@ var multer                = require('multer');
 var Mustache              = require('mustache');
 var readFile              = require('../../../lib/utils/promisified-functions').readFile;
 var quarantineModeTracker = require('../quarantine-mode-tracker');
+var useragent             = require('useragent');
 
 var storage = multer.memoryStorage();
 var upload  = multer({ storage: storage });
@@ -48,6 +49,12 @@ Server.prototype._setupRoutes = function () {
         var filePath = path.join(server.basePath, '../../package.json');
 
         res.download(filePath);
+    });
+
+    this.app.get('/get-browser-name', function (req, res) {
+        const agent = useragent.parse(req.headers['user-agent']);
+
+        res.end(agent.family);
     });
 
     this.app.get('*', function (req, res) {

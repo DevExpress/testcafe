@@ -1,6 +1,8 @@
 import TestingUnit from './testing-unit';
 import { assertType, is } from '../../errors/runtime/type-assertions';
 import wrapTestFunction from '../wrap-test-function';
+import assertRequestHookType from '../request-hooks/assert-type';
+import { flattenDeep as flatten, union } from 'lodash';
 
 export default class Test extends TestingUnit {
     constructor (testFile) {
@@ -8,9 +10,10 @@ export default class Test extends TestingUnit {
 
         this.fixture = testFile.currentFixture;
 
-        this.fn       = null;
-        this.beforeFn = null;
-        this.afterFn  = null;
+        this.fn           = null;
+        this.beforeFn     = null;
+        this.afterFn      = null;
+        this.requestHooks = this.fixture.requestHooks.length ? Array.from(this.fixture.requestHooks) : [];
 
         return this.apiOrigin;
     }
@@ -40,6 +43,16 @@ export default class Test extends TestingUnit {
         assertType(is.function, 'after', 'test.after hook', fn);
 
         this.afterFn = wrapTestFunction(fn);
+
+        return this.apiOrigin;
+    }
+
+    _requestHooks$ (...hooks) {
+        hooks = flatten(hooks);
+
+        assertRequestHookType(hooks);
+
+        this.requestHooks = union(this.requestHooks, hooks);
 
         return this.apiOrigin;
     }

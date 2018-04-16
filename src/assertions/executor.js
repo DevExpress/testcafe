@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events';
 import delay from '../utils/delay';
 import { ExternalAssertionLibraryError } from '../errors/test-run';
-import ClientFunctionResultPromise from '../client-functions/result-promise';
+import ReExecutablePromise from '../utils/re-executable-promise';
 import getFn from './get-fn';
 
 const ASSERTION_DELAY = 200;
@@ -20,7 +20,7 @@ export default class AssertionExecutor extends EventEmitter {
 
         var fn = getFn(this.command);
 
-        this.fn = this.command.actual instanceof ClientFunctionResultPromise ?
+        this.fn = this.command.actual instanceof ReExecutablePromise ?
             this._wrapFunction(fn) : fn;
     }
 

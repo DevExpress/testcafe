@@ -47,11 +47,27 @@ function assertError (err, expected) {
 function assertAPIError (err, expected) {
     assertError(err, expected);
 
+    expect(expected.callsite).to.not.empty;
     expect(err.stack.indexOf(expected.message + '\n\n' + expected.callsite)).eql(0);
     expect(stripAnsi(err.coloredStack)).eql(err.stack);
 }
 
+// NOTE: chai's throws doesn't perform deep comparison of error objects
+function assertThrow (fn, expectedErr) {
+    var actualErr = null;
+
+    try {
+        fn();
+    }
+    catch (err) {
+        actualErr = err;
+    }
+
+    expect(actualErr).eql(expectedErr);
+}
+
 module.exports = {
     assertError:    assertError,
-    assertAPIError: assertAPIError
+    assertAPIError: assertAPIError,
+    assertThrow:    assertThrow
 };
