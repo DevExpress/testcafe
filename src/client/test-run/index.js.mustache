@@ -2,14 +2,16 @@
     if (window !== window.top)
         return;
 
+    var origin = location.origin;
+
     var testRunId            = {{{testRunId}}};
     var browserId            = {{{browserId}}};
     var selectorTimeout      = {{{selectorTimeout}}};
     var pageLoadTimeout      = {{{pageLoadTimeout}}};
     var speed                = {{{speed}}};
-    var browserHeartbeatUrl  = {{{browserHeartbeatUrl}}};
-    var browserStatusUrl     = {{{browserStatusUrl}}};
-    var browserStatusDoneUrl = {{{browserStatusDoneUrl}}};
+    var browserHeartbeatUrl  = origin + {{{browserHeartbeatRelativeUrl}}};
+    var browserStatusUrl     = origin + {{{browserStatusRelativeUrl}}};
+    var browserStatusDoneUrl = origin + {{{browserStatusDoneRelativeUrl}}};
     var skipJsErrors         = {{{skipJsErrors}}};
     var dialogHandler        = {{{dialogHandler}}};
     var userAgent            = {{{userAgent}}};
