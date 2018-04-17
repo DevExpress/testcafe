@@ -18,7 +18,10 @@ describe('Reporter', function () {
     var fixtureMocks = [
         {
             name: 'fixture1',
-            path: './file1.js'
+            path: './file1.js',
+            ctx:  {
+                run: 'run-001'
+            }
         },
         {
             name: 'fixture2',
@@ -35,13 +38,19 @@ describe('Reporter', function () {
             name:               'fixture1test1',
             fixture:            fixtureMocks[0],
             skip:               false,
-            screenshotExpected: true
+            screenshotExpected: true,
+            ctx:                {
+                testId: 'tst-001'
+            }
         },
         {
             name:               'fixture1test2',
             fixture:            fixtureMocks[0],
             skip:               false,
-            screenshotExpected: true
+            screenshotExpected: true,
+            ctx:                {
+                testId: 'tst-002'
+            }
         },
         {
             name:    'fixture1test3',
@@ -265,7 +274,13 @@ describe('Reporter', function () {
                         durationMs:     74000,
                         unstable:       true,
                         skipped:        false,
-                        screenshotPath: '/screenshots/1445437598847'
+                        screenshotPath: '/screenshots/1445437598847',
+                        ctx:            {
+                            testId: 'tst-001'
+                        },
+                        fixtureCtx: {
+                            run: 'run-001'
+                        }
                     }
                 ]
             },
@@ -292,7 +307,13 @@ describe('Reporter', function () {
                         durationMs:     74000,
                         unstable:       false,
                         skipped:        false,
-                        screenshotPath: '/screenshots/1445437598847'
+                        screenshotPath: '/screenshots/1445437598847',
+                        ctx:            {
+                            testId: 'tst-002'
+                        },
+                        fixtureCtx: {
+                            run: 'run-001'
+                        }
                     }
                 ]
             },
@@ -305,7 +326,11 @@ describe('Reporter', function () {
                         durationMs:     74000,
                         unstable:       false,
                         skipped:        false,
-                        screenshotPath: null
+                        screenshotPath: null,
+                        ctx:            {},
+                        fixtureCtx:     {
+                            run: 'run-001'
+                        }
                     }
                 ]
             },
@@ -325,7 +350,9 @@ describe('Reporter', function () {
                         durationMs:     74000,
                         unstable:       false,
                         skipped:        false,
-                        screenshotPath: null
+                        screenshotPath: null,
+                        ctx:            {},
+                        fixtureCtx:     {}
                     }
                 ]
             },
@@ -338,7 +365,9 @@ describe('Reporter', function () {
                         durationMs:     74000,
                         unstable:       false,
                         skipped:        false,
-                        screenshotPath: null
+                        screenshotPath: null,
+                        ctx:            {},
+                        fixtureCtx:     {}
                     }
                 ]
             },
@@ -364,7 +393,9 @@ describe('Reporter', function () {
                         durationMs:     74000,
                         unstable:       true,
                         skipped:        false,
-                        screenshotPath: null
+                        screenshotPath: null,
+                        ctx:            {},
+                        fixtureCtx:     {}
                     }
                 ]
             },
