@@ -1,6 +1,7 @@
 import Promise from 'pinkie';
 import browserTools from 'testcafe-browser-tools';
 import OS from 'os-family';
+import BrowserConnection from '../connection';
 import delay from '../../utils/delay';
 import { GET_TITLE_SCRIPT, GET_WINDOW_DIMENSIONS_INFO_SCRIPT } from './utils/client-functions';
 
@@ -62,7 +63,16 @@ export default class BrowserProvider {
         return this.localBrowsersInfo[browserId] && this.localBrowsersInfo[browserId].resizeCorrections;
     }
 
+    _isBrowserIdle (browserId) {
+        const connection = BrowserConnection.getById(browserId);
+
+        return connection.idle;
+    }
+
     async _calculateResizeCorrections (browserId) {
+        if (!this._isBrowserIdle(browserId))
+            return;
+
         var title = await this.plugin.runInitScript(browserId, GET_TITLE_SCRIPT);
 
         if (!await browserTools.isMaximized(title))
@@ -90,6 +100,9 @@ export default class BrowserProvider {
 
 
     async _calculateMacSizeLimits (browserId) {
+        if (!this._isBrowserIdle(browserId))
+            return;
+
         var sizeInfo = await this.plugin.runInitScript(browserId, GET_WINDOW_DIMENSIONS_INFO_SCRIPT);
 
         if (this.localBrowsersInfo[browserId]) {
