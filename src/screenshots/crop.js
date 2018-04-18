@@ -4,8 +4,10 @@ import { PNG } from 'pngjs';
 import promisifyEvent from 'promisify-event';
 import limitNumber from '../utils/limit-number';
 import { deleteFile } from '../utils/promisified-functions';
+import renderTemplate from '../utils/render-template';
 import { InvalidElementScreenshotDimensionsError } from '../errors/test-run/';
 import { MARK_LENGTH, MARK_RIGHT_MARGIN, MARK_BYTES_PER_PIXEL } from './constants';
+import WARNING_MESSAGES from '../notifications/warning-message';
 
 
 function readPng (filePath) {
@@ -33,6 +35,15 @@ function writePng (filePath, png) {
     return finishPromise;
 }
 
+function markSeedToId (markSeed) {
+    let id = 0;
+
+    for (let i = 0; i < MARK_LENGTH; i++)
+        id = id * 2 + (markSeed[i * MARK_BYTES_PER_PIXEL] ? 1 : 0);
+
+    return id;
+}
+
 export default async function (screenshotPath, markSeed, clientAreaDimensions, cropDimensions) {
     var mark = new Buffer(markSeed);
 
@@ -41,13 +52,15 @@ export default async function (screenshotPath, markSeed, clientAreaDimensions, c
     var markIndex = srcImage.data.indexOf(mark);
 
     if (markIndex < 0)
-        return false;
+        throw new Error(renderTemplate(WARNING_MESSAGES.screenshotMarkNotFound, screenshotPath, markSeedToId(markSeed)));
 
     var endPosition = markIndex / MARK_BYTES_PER_PIXEL + MARK_LENGTH + MARK_RIGHT_MARGIN;
     var right       = endPosition % srcImage.width || srcImage.width;
     var bottom      = (endPosition - right) / srcImage.width + 1;
     var left        = right - clientAreaDimensions.width;
     var top         = bottom - clientAreaDimensions.height;
+
+    const markLineNumber = bottom;
 
     if (cropDimensions) {
         right  = limitNumber(left + cropDimensions.right, left, right);
@@ -56,8 +69,8 @@ export default async function (screenshotPath, markSeed, clientAreaDimensions, c
         top    = limitNumber(top + cropDimensions.top, top, bottom);
     }
 
-    if (bottom - top >= clientAreaDimensions.height)
-        bottom = top + clientAreaDimensions.height - 1;
+    if (bottom === markLineNumber)
+        bottom -= 1;
 
     var width  = right - left;
     var height = bottom - top;

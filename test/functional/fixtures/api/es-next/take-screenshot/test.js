@@ -363,6 +363,17 @@ describe('[API] t.takeElementScreenshot()', function () {
                     expect(result).eql(true);
                 });
         });
+
+        it('Should remove screenshot mark from an element screenshot when the element is in bottom right corner', function () {
+            return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Bottom-right element',
+                { setScreenshotPath: true })
+                .then(function () {
+                    return assertionHelper.isScreenshotsEqual('custom', path.join(__dirname, './data/element-bottom-right.png'));
+                })
+                .then(function (result) {
+                    expect(result).eql(true);
+                });
+        });
     }
 });
 
