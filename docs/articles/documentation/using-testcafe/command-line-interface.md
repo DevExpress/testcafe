@@ -41,6 +41,7 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [--assertion-timeout \<ms\>](#--assertion-timeout-ms)
   * [--page-load-timeout \<ms\>](#--page-load-timeout-ms)
   * [--proxy \<host\>](#--proxy-host)
+  * [--proxy-bypass \<rules\>](#--proxy-bypass-rules)
   * [--ports \<port1,port2\>](#--ports-port1port2)
   * [--hostname \<name\>](#--hostname-name)
   * [--speed \<factor\>](#--speed-factor)
@@ -470,6 +471,26 @@ You can also specify authentication credentials with the proxy host.
 
 ```js
 testcafe chrome my-tests/**/*.js --proxy username:password@proxy.mycorp.com
+```
+
+### --proxy-bypass \<rules\>
+
+Specifies the resources accessed bypassing the proxy server.
+
+When you access the Internet through a proxy server specified using the [--proxy](#--proxy-host) option, you may still need some local or external resources to be accessed directly. In this instance, provide their URLs to the `--proxy-bypass` option.
+
+The `rules` parameter takes a comma-separated list (without spaces) of URLs that require direct access. You can omit parts of the URLs or replace them with wildcards `*` (which has the same effect). TestCafe will correspond these symbols to any number of characters in the URL.
+
+```sh
+testcafe chrome my-tests/**/*.js --proxy proxy.corp.mycompany.com --proxy-bypass localhost:8080
+```
+
+```sh
+testcafe chrome my-tests/**/*.js --proxy proxy.corp.mycompany.com --proxy-bypass localhost:8080,internal-resource.corp.mycompany.com
+```
+
+```sh
+testcafe chrome my-tests/**/*.js --proxy proxy.corp.mycompany.com --proxy-bypass *.mycompany.com
 ```
 
 ### --ports \<port1,port2\>

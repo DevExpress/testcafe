@@ -344,15 +344,22 @@ runner.startApp('node server.js', 4000);
 
 ### useProxy
 
-Specifies the proxy server used in your local network to access the Internet.
+Specifies the proxy server used in your local network to access the Internet. Allows you to bypass the proxy when accessing specific resources.
 
 ```text
-async useProxy(host) → this
+async useProxy(host [, bypassRules]) → this
 ```
 
 Parameter | Type   | Description
 --------- | ------ | ---------------------
 `host`    | String | The proxy server host.
+`bypassRules`&#160;*(optional)* | String &#124; Array | A set of rules that specify which resources are accessed bypassing the proxy.
+
+If you access Internet through a proxy server, use the `useProxy` method to specify its host.
+
+When using a proxy server, you may still need to access some local or external resources directly. In this instance, provide their URLs in the `bypassRules` option.
+
+The `bypassRules` parameter takes one or several URLs that require direct access. You can omit parts of the URLs or replace them with wildcards `*` (which has the same effect). TestCafe will correspond these symbols to any number of characters in the URL.
 
 **Examples**
 
@@ -361,7 +368,11 @@ runner.useProxy('proxy.corp.mycompany.com');
 ```
 
 ```js
-runner.useProxy('172.0.10.10:8080');
+runner.useProxy('172.0.10.10:8080', ['localhost:8080', 'internal-resource.corp.mycompany.com']);
+```
+
+```js
+runner.useProxy('proxy.corp.mycompany.com', '*.mycompany.com');
 ```
 
 You can also specify authentication credentials with the proxy host.
