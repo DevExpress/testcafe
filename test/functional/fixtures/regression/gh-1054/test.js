@@ -4,8 +4,9 @@ describe('[Regression](GH-1054)', function () {
             return runTests('testcafe-fixtures/index.test.js', 'Type text in the input');
         });
 
+        // NOTE: IE11 does not raise Input event on contenteditable element
         it('Typing in the content editable element with "replace" option', function () {
-            return runTests('testcafe-fixtures/index.test.js', 'Type text in the content editable element');
+            return runTests('testcafe-fixtures/index.test.js', 'Type text in the content editable element', { skip: [ 'ie' ] });
         });
     });
 });

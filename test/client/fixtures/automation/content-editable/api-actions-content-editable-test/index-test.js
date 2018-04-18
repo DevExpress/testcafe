@@ -439,6 +439,9 @@ $(document).ready(function () {
         var fixedText             = 'Test' + String.fromCharCode(160) + 'me' + String.fromCharCode(160) + 'all!';
         var inputEventRaisedCount = 0;
 
+        // NOTE IE11 does not raise input event on contenteditable element
+        var expectedInputEventRaisedCount = !browserUtils.isIE11 ? 12 : 0;
+
         $el = $('#2');
 
         function onInput () {
@@ -454,7 +457,7 @@ $(document).ready(function () {
             .then(function () {
                 checkSelection($el, $el[0].childNodes[2], 4 + text.length, $el[0].childNodes[2], 4 + text.length);
                 equal($.trim($el[0].childNodes[2].nodeValue), 'with' + fixedText + ' br');
-                equal(inputEventRaisedCount, 12);
+                equal(inputEventRaisedCount, expectedInputEventRaisedCount);
                 $el.unbind('input', onInput);
 
                 startNext();
@@ -464,6 +467,9 @@ $(document).ready(function () {
     asyncTest('type in element node', function () {
         var text                  = 'Test';
         var inputEventRaisedCount = 0;
+
+        // NOTE IE11 does not raise input event on contenteditable element
+        var expectedInputEventRaisedCount = !browserUtils.isIE11 ? 4 : 0;
 
         $el = $('#8');
 
@@ -479,7 +485,7 @@ $(document).ready(function () {
             .run()
             .then(function () {
                 equal($.trim($el[0].textContent), text);
-                equal(inputEventRaisedCount, 4);
+                equal(inputEventRaisedCount, expectedInputEventRaisedCount);
                 $el.unbind('input', onInput);
 
                 startNext();
