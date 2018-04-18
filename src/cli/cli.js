@@ -70,9 +70,15 @@ async function runTests (argParser) {
     var externalProxyHost = opts.proxy;
     var proxyBypass       = opts.proxyBypass;
 
+    var options = {
+        ssl:  Boolean(opts.ssl),
+        key:  String(opts.certificate && opts.certificate.key),
+        cert: String(opts.certificate && opts.certificate.cert),
+    };
+
     log.showSpinner();
 
-    var testCafe       = await createTestCafe(opts.hostname, port1, port2);
+    var testCafe       = await createTestCafe(opts.hostname, port1, port2, options);
     var concurrency    = argParser.concurrency || 1;
     var remoteBrowsers = await remotesWizard(testCafe, argParser.remoteCount, opts.qrCode);
     var browsers       = argParser.browsers.concat(remoteBrowsers);

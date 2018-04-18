@@ -28,5 +28,6 @@ export default {
     invalidValueType:                      '{smthg} is expected to be a {type}, but it was {actual}.',
     unsupportedUrlProtocol:                'The specified "{url}" test page URL uses an unsupported {protocol}:// protocol. Only relative URLs or absolute URLs with http://, https:// and file:// protocols are supported.',
     unableToOpenBrowser:                   'Was unable to open the browser "{alias}" due to error.\n\n{errMessage}',
+    certificateOptionRequiresTwoPaths:     'The "--certificate" option requires two paths to be specified.',
     testControllerProxyCantResolveTestRun: `Cannot implicitly resolve the test run in the context of which the test controller action should be executed. Use test function's 't' argument instead.`
 };
