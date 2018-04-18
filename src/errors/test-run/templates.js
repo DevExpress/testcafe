@@ -266,5 +266,9 @@ export default {
         There was an error while configuring the request hook:
         
         ${err.requestHookName}: ${err.errMsg}
+    `),
+
+    [TYPE.assertionUnawaitedPromiseError]: err => markup(err, `
+        Attempted to run assertions on a Promise object. Did you forget to await it? If not, pass "{ allowUnawaitedPromise: true }" to the assertion options.
     `)
 };

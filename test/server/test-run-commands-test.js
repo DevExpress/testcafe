@@ -1048,7 +1048,8 @@ describe('Test run commands', function () {
                 message:       'ok',
 
                 options: {
-                    timeout: 100
+                    timeout:               100,
+                    allowUnawaitedPromise: false
                 }
             });
 
@@ -1066,7 +1067,9 @@ describe('Test run commands', function () {
                 actual:        1,
                 message:       null,
 
-                options: {}
+                options: {
+                    allowUnawaitedPromise: false
+                }
             });
         });
 
@@ -1123,7 +1126,9 @@ describe('Test run commands', function () {
                 expected:      1,
                 message:       null,
 
-                options: {}
+                options: {
+                    allowUnawaitedPromise: false
+                }
             });
         });
     });

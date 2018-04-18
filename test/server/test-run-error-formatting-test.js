@@ -8,6 +8,7 @@ var TYPE                                              = require('../../lib/error
 var TestRunErrorFormattableAdapter                    = require('../../lib/errors/test-run/formattable-adapter');
 var testCallsite                                      = require('./data/test-callsite');
 var AssertionExecutableArgumentError                  = require('../../lib/errors/test-run').AssertionExecutableArgumentError;
+var AssertionUnawaitedPromiseError                    = require('../../lib/errors/test-run').AssertionUnawaitedPromiseError;
 var ActionIntegerOptionError                          = require('../../lib/errors/test-run').ActionIntegerOptionError;
 var ActionPositiveIntegerOptionError                  = require('../../lib/errors/test-run').ActionPositiveIntegerOptionError;
 var ActionIntegerArgumentError                        = require('../../lib/errors/test-run').ActionIntegerArgumentError;
@@ -338,6 +339,10 @@ describe('Error formatting', function () {
 
         it('Should format "requestHookConfigureAPIError"', () => {
             assertErrorMessage('request-hook-configure-api-error', new RequestHookConfigureAPIError('RequestMock', 'test error message'));
+        });
+
+        it('Should format "assertionUnawaitedPromiseError"', function () {
+            assertErrorMessage('assertion-unawaited-promise-error', new AssertionUnawaitedPromiseError(testCallsite));
         });
     });
 

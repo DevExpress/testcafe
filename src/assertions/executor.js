@@ -1,6 +1,7 @@
 import { EventEmitter } from 'events';
 import delay from '../utils/delay';
-import { ExternalAssertionLibraryError } from '../errors/test-run';
+import { isThennable } from '../utils/thennable';
+import { ExternalAssertionLibraryError, AssertionUnawaitedPromiseError } from '../errors/test-run';
 import ReExecutablePromise from '../utils/re-executable-promise';
 import getFn from './get-fn';
 
@@ -18,10 +19,15 @@ export default class AssertionExecutor extends EventEmitter {
         this.passed    = false;
         this.inRetry   = false;
 
-        var fn = getFn(this.command);
+        var fn            = getFn(this.command);
+        var actualCommand = this.command.actual;
 
-        this.fn = this.command.actual instanceof ReExecutablePromise ?
-            this._wrapFunction(fn) : fn;
+        if (actualCommand instanceof ReExecutablePromise)
+            this.fn = this._wrapFunction(fn);
+        else if (!this.command.options.allowUnawaitedPromise && isThennable(actualCommand))
+            throw new AssertionUnawaitedPromiseError(this.callsite);
+        else
+            this.fn = fn;
     }
 
     _getTimeLeft () {

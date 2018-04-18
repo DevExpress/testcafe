@@ -162,7 +162,7 @@ describe('[API] Assertions', function () {
         })
             .catch(function (errs) {
                 expect(errs[0]).contains("AssertionError: expected 'yo' to match /[x,z]o/");
-                expect(errs[0]).contains("> 136 |        .expect('yo').match(/[x,z]o/);");
+                expect(errs[0]).contains("> 144 |        .expect('yo').match(/[x,z]o/);");
             });
     });
 
@@ -173,7 +173,7 @@ describe('[API] Assertions', function () {
         })
             .catch(function (errs) {
                 expect(errs[0]).contains("AssertionError: expected '42 hey' not to match /\\d+ hey/");
-                expect(errs[0]).contains("> 142 |        .expect('42 hey').notMatch(/\\d+ hey/);");
+                expect(errs[0]).contains("> 150 |        .expect('42 hey').notMatch(/\\d+ hey/);");
             });
     });
 
@@ -193,6 +193,20 @@ describe('[API] Assertions', function () {
             });
     });
 
+    it('Should raise error when expecting an unawaited Promise that cannot be retried', function () {
+        return runTests('./testcafe-fixtures/assertions-test.js', 'Unawaited Promise assertion', {
+            shouldFail: true,
+            only:       'chrome'
+        })
+            .catch(function (errs) {
+                expect(errs[0]).contains(`Attempted to run assertions on a Promise object. Did you forget to await it? If not, pass "{ allowUnawaitedPromise: true }" to the assertion options.`);
+            });
+    });
+
+    it('Should allow an unawaited Promise with override option', function () {
+        return runTests('./testcafe-fixtures/assertions-test.js', 'Unawaited Promise assertion override', { only: 'chrome' });
+    });
+
     it('Should raise error if `await` is missing', function () {
         return runTests('./testcafe-fixtures/assertions-test.js', 'Missing await', {
             shouldFail: true,
@@ -200,7 +214,7 @@ describe('[API] Assertions', function () {
         })
             .catch(function (errs) {
                 expect(errs[0]).contains('A call to an async function is not awaited.');
-                expect(errs[0]).contains('> 116 |    t.expect(42).eql(43); 117 |});');
+                expect(errs[0]).contains('> 124 |    t.expect(42).eql(43); 125 |});');
             });
     });
 
@@ -211,7 +225,7 @@ describe('[API] Assertions', function () {
         })
             .catch(function (errs) {
                 expect(errs[0]).contains('The "timeout" option is expected to be a positive integer, but it was string.');
-                expect(errs[0]).contains("> 120 |    await t.expect(42).eql(43, { timeout: 'hey' });");
+                expect(errs[0]).contains("> 128 |    await t.expect(42).eql(43, { timeout: 'hey' });");
             });
     });
 
