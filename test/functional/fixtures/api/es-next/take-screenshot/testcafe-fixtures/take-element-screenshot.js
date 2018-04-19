@@ -134,3 +134,9 @@ test('Scroll target', async t => {
 test('Negative scroll target', async t => {
     await t.takeElementScreenshot('body', 'custom/' + t.ctx.parsedUA.family + '.png', { scrollTargetX: -2000, scrollTargetY: -3000 });
 });
+
+test
+    .page('../pages/element-bottom-right.html')
+    (`Bottom-right element`, async t => {
+        await t.takeElementScreenshot('table', 'custom/' + t.ctx.parsedUA.family + '.png');
+    });
