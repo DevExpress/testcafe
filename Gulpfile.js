@@ -608,8 +608,8 @@ gulp.task('test-functional-local', ['build'], function () {
     return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.localBrowsers);
 });
 
-gulp.task('test-functional-travis-legacy', ['build'], function () {
-    return testFunctional('test/functional/legacy-fixtures', functionalTestConfig.testingEnvironmentNames.legacy, functionalTestConfig.browserProviderNames.sauceLabs);
+gulp.task('test-functional-local-legacy', ['build'], function () {
+    return testFunctional('test/functional/legacy-fixtures', functionalTestConfig.testingEnvironmentNames.legacy);
 });
 
 gulp.task('test-functional-travis-old-browsers', ['build'], function () {

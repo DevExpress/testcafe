@@ -125,6 +125,8 @@ function closeLocalBrowsers () {
 before(function () {
     var mocha = this;
 
+    mocha.timeout(60000);
+
     return createTestCafe(config.testCafe.hostname, config.testCafe.port1, config.testCafe.port2)
         .then(function (tc) {
             testCafe = tc;
@@ -269,7 +271,9 @@ after(function () {
     return closeLocalBrowsers();
 });
 
-
 // TODO: Run takeScreenshot tests first because other tests heavily impact them
-require('./fixtures/api/es-next/take-screenshot/test');
-require('./fixtures/screenshots-on-fails/test');
+if (envName === config.testingEnvironmentNames.localBrowsers) {
+    require('./fixtures/api/es-next/take-screenshot/test');
+    require('./fixtures/screenshots-on-fails/test');
+}
+

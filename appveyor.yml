@@ -20,16 +20,32 @@ install:
 
     choco install Firefox | out-null
 
-- cmd: >-
-    node --version
-
     npm --version
 
-    npm install
-
+    npm i --loglevel error
 build: off
 
-# NOTE: We should prerun Firefox to avoid "Refresh Firefox" notification in the tests window.
 test_script:
-- cmd: start /D "C:\Program Files (x86)\Mozilla Firefox" firefox.exe -new-window https://google.com
 - cmd: npm test
+
+for:
+-
+  branches:
+    only:
+      - master
+
+  notifications:
+  - provider: Email
+    to:
+      - boris.kirov@devexpress.com
+      - andrey.belym@devexpress.com
+      - elena.dikareva@devexpress.com
+    on_build_success: false
+    on_build_status_changed: false
+
+  test_script:
+  - cmd: >-
+       node node_modules/gulp/bin/gulp test-functional-local
+
+       node node_modules/gulp/bin/gulp test-functional-local-legacy
+
