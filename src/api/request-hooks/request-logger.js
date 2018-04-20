@@ -87,13 +87,27 @@ class RequestLogger extends RequestHook {
     // API
     contains (predicate) {
         return ReExecutablePromise.fromFn(async () => {
-            return !!this._prepareInternalRequestInfo().find(predicate);
+            // NOTE: If the exception is raised inside Promise,
+            // Promise will be resolved immediately and 'Smart Assertion Query Mechanism' will not work
+            try {
+                return !!this._prepareInternalRequestInfo().find(predicate);
+            }
+            catch (e) {
+                return false;
+            }
         });
     }
 
     count (predicate) {
         return ReExecutablePromise.fromFn(async () => {
-            return this._prepareInternalRequestInfo().filter(predicate).length;
+            // NOTE: If the exception is raised inside Promise,
+            // Promise will be resolved immediately and 'Smart Assertion Query Mechanism' will not work
+            try {
+                return this._prepareInternalRequestInfo().filter(predicate).length;
+            }
+            catch (e) {
+                return 0;
+            }
         });
     }
 
