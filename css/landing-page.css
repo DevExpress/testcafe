@@ -18,10 +18,6 @@
 .veil-off {
   display: none; }
 
-@media (max-width: 1490px) {
-  .page-object-example {
-    display: none; } }
-
 .banner {
   padding: 96px 100px 51px;
   background: #a4cada; }
@@ -448,3 +444,6 @@ code {
   border: 1px solid #c8dfe8;
   border-radius: 0;
   padding: 7px 15px; }
+  @media (max-width: 1490px) {
+    .feature-5-code {
+      display: none; } }
