@@ -465,7 +465,7 @@ export default class Driver {
     }
 
     _onCustomCommand (command) {
-        var handler = this.customCommandHandlers[command.type];
+        var handler = this.customCommandHandlers[command.type].handler;
 
         handler(command).then(result => {
             this._onReady(new DriverStatus({ isCommandResult: true, result }));
@@ -557,6 +557,15 @@ export default class Driver {
             this._onActionCommand(command);
     }
 
+    _isExecutableInTopWindowOnly (command) {
+        if (isExecutableInTopWindowOnly(command))
+            return true;
+
+        const customCommandHandler = this.customCommandHandlers[command.type];
+
+        return customCommandHandler && customCommandHandler.isExecutableInTopWindowOnly;
+    }
+
     _onCommand (command) {
         // NOTE: the driver sends status to the server as soon as it's created,
         // but it should wait until the page is loaded before executing a command.
@@ -577,7 +586,7 @@ export default class Driver {
                 var isThereActiveIframe = this.activeChildDriverLink ||
                                           this.contextStorage.getItem(ACTIVE_IFRAME_SELECTOR);
 
-                if (!isExecutableInTopWindowOnly(command) && isThereActiveIframe) {
+                if (!this._isExecutableInTopWindowOnly(command) && isThereActiveIframe) {
                     this._runInActiveIframe(command);
                     return;
                 }
@@ -588,8 +597,11 @@ export default class Driver {
 
 
     // API
-    setCustomCommandHandlers (command, handler) {
-        this.customCommandHandlers[command] = handler;
+    setCustomCommandHandlers (command, handler, executeInTopWindowOnly) {
+        this.customCommandHandlers[command] = {
+            isExecutableInTopWindowOnly: executeInTopWindowOnly,
+            handler
+        };
     }
 
     start () {
