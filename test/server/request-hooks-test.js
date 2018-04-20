@@ -195,7 +195,7 @@ describe('RequestLogger', () => {
             logger.count(r => r.response.statusCode === 200)
         ])
             .then(data => {
-                expect(data[0]).eql(true);
+                expect(data[0]).eql(false);
                 expect(data[1]).eql(0);
             })
             .catch(err => {
