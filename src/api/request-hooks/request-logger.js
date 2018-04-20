@@ -88,7 +88,7 @@ class RequestLogger extends RequestHook {
     contains (predicate) {
         return ReExecutablePromise.fromFn(async () => {
             // NOTE: If the exception is raised inside Promise,
-            // Promise will be resolved immediately and 'Smart Assertion Query Mechanism' will not work
+            // Promise will be rejected immediately and 'Smart Assertion Query Mechanism' will not work
             try {
                 return !!this._prepareInternalRequestInfo().find(predicate);
             }
@@ -101,7 +101,7 @@ class RequestLogger extends RequestHook {
     count (predicate) {
         return ReExecutablePromise.fromFn(async () => {
             // NOTE: If the exception is raised inside Promise,
-            // Promise will be resolved immediately and 'Smart Assertion Query Mechanism' will not work
+            // Promise will be rejected immediately and 'Smart Assertion Query Mechanism' will not work
             try {
                 return this._prepareInternalRequestInfo().filter(predicate).length;
             }
