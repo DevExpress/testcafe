@@ -339,7 +339,7 @@
   function closeSearchBox(e) {
       var clickOutsideSearchBox = searchPanel !== e.target && !has(searchPanel, e.target);
 
-      if(clickOutsideSearchBox && !searchPanel.className.includes('hidden')) 
+      if(clickOutsideSearchBox && searchPanel.className.indexOf('hidden') === -1) 
           searchPanel.className += ' hidden';
   }
 
@@ -705,7 +705,18 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/obtaining-data-from-the-client.html"  >Obtaining Data from the Client</a>
+<a href="/testcafe/documentation/test-api/obtaining-data-from-the-client/"  >Obtaining Data from the Client</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/obtaining-data-from-the-client/examples-of-using-client-functions.html"  >Examples of Using Client Functions</a>
+		
+    </li>
+
+</ul>
 		
     </li>
 
@@ -806,10 +817,10 @@
 <p>This topic lists test API members in alphabetical order.</p>
 
 <ul>
-<li><a href="obtaining-data-from-the-client.html#creating-client-functions">ClientFunction</a>
+<li><a href="obtaining-data-from-the-client/#creating-client-functions">ClientFunction</a>
 
 <ul>
-<li><a href="obtaining-data-from-the-client.html#overwriting-options">with</a></li>
+<li><a href="obtaining-data-from-the-client/#overwriting-options">with</a></li>
 </ul></li>
 <li><a href="selecting-page-elements/dom-node-state.html">DOM Node State</a>
 
@@ -875,7 +886,7 @@
 <li><a href="actions/double-click.html">doubleClick</a></li>
 <li><a href="actions/drag-element.html#drag-an-element-by-an-offset">drag</a></li>
 <li><a href="actions/drag-element.html#drag-an-element-onto-another-one">dragtoElement</a></li>
-<li><a href="obtaining-data-from-the-client.html#one-time-client-code-execution">eval</a></li>
+<li><a href="obtaining-data-from-the-client/#one-time-client-code-execution">eval</a></li>
 <li><a href="assertions/">expect</a>
 
 <ul>

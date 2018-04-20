@@ -339,7 +339,7 @@
   function closeSearchBox(e) {
       var clickOutsideSearchBox = searchPanel !== e.target && !has(searchPanel, e.target);
 
-      if(clickOutsideSearchBox && !searchPanel.className.includes('hidden')) 
+      if(clickOutsideSearchBox && searchPanel.className.indexOf('hidden') === -1) 
           searchPanel.className += ' hidden';
   }
 
@@ -705,7 +705,18 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/obtaining-data-from-the-client.html"  >Obtaining Data from the Client</a>
+<a href="/testcafe/documentation/test-api/obtaining-data-from-the-client/"  >Obtaining Data from the Client</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/obtaining-data-from-the-client/examples-of-using-client-functions.html"  >Examples of Using Client Functions</a>
+		
+    </li>
+
+</ul>
 		
     </li>
 
@@ -833,12 +844,12 @@ using the <code>setNativeDialogHandler</code> method of the
 <tr>
 <td><code>fn</code></td>
 <td>Function &#124; ClientFunction</td>
-<td>A regular or <a href="obtaining-data-from-the-client.html">client function</a> that will be triggered whenever a native dialog is invoked. <code>null</code> to remove the native dialog handler.</td>
+<td>A regular or <a href="obtaining-data-from-the-client/">client function</a> that will be triggered whenever a native dialog is invoked. <code>null</code> to remove the native dialog handler.</td>
 </tr>
 <tr>
 <td><code>options</code>&#160;<em>(optional)</em></td>
 <td>Object</td>
-<td>See <a href="obtaining-data-from-the-client.html#options">Client Function Options</a>.</td>
+<td>See <a href="obtaining-data-from-the-client/#options">Client Function Options</a>.</td>
 </tr>
 </tbody></table>
 

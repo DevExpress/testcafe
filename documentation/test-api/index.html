@@ -339,7 +339,7 @@
   function closeSearchBox(e) {
       var clickOutsideSearchBox = searchPanel !== e.target && !has(searchPanel, e.target);
 
-      if(clickOutsideSearchBox && !searchPanel.className.includes('hidden')) 
+      if(clickOutsideSearchBox && searchPanel.className.indexOf('hidden') === -1) 
           searchPanel.className += ' hidden';
   }
 
@@ -705,7 +705,18 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/obtaining-data-from-the-client.html"  >Obtaining Data from the Client</a>
+<a href="/testcafe/documentation/test-api/obtaining-data-from-the-client/"  >Obtaining Data from the Client</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/obtaining-data-from-the-client/examples-of-using-client-functions.html"  >Examples of Using Client Functions</a>
+		
+    </li>
+
+</ul>
 		
     </li>
 
@@ -819,7 +830,7 @@ For more information about writing tests in TypeScript, see <a href="typescript-
 <li><a href="actions/">Actions</a></li>
 <li><a href="selecting-page-elements/">Selecting Page Elements</a></li>
 <li><a href="assertions/">Assertions</a></li>
-<li><a href="obtaining-data-from-the-client.html">Obtaining Data From the Client</a></li>
+<li><a href="obtaining-data-from-the-client/">Obtaining Data From the Client</a></li>
 <li><a href="waiting-for-page-elements-to-appear.html">Waiting for Page Elements to Appear</a></li>
 <li><a href="authentication/">Authentication</a></li>
 <li><a href="pausing-the-test.html">Pausing the Test</a></li>
