@@ -37,7 +37,7 @@ for:
   notifications:
   - provider: Email
     to:
-      - alexander.moskovkin@devexpress.com
+      - boris.kirov@devexpress.com
       - andrey.belym@devexpress.com
       - elena.dikareva@devexpress.com
     on_build_success: false
