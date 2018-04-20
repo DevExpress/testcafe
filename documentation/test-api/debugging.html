@@ -339,7 +339,7 @@
   function closeSearchBox(e) {
       var clickOutsideSearchBox = searchPanel !== e.target && !has(searchPanel, e.target);
 
-      if(clickOutsideSearchBox && !searchPanel.className.includes('hidden')) 
+      if(clickOutsideSearchBox && searchPanel.className.indexOf('hidden') === -1) 
           searchPanel.className += ' hidden';
   }
 
@@ -705,7 +705,18 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/obtaining-data-from-the-client.html"  >Obtaining Data from the Client</a>
+<a href="/testcafe/documentation/test-api/obtaining-data-from-the-client/"  >Obtaining Data from the Client</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/obtaining-data-from-the-client/examples-of-using-client-functions.html"  >Examples of Using Client Functions</a>
+		
+    </li>
+
+</ul>
 		
     </li>
 
@@ -822,15 +833,15 @@
 <div class="highlight"><pre><code class="language-text" data-lang="text">t.debug()
 </code></pre></div>
 <p>When test execution reaches <code>t.debug</code>, it pauses so that you can open browser&#39;s developer tools
-and check the web page state, the location of DOM elements, their CSS styles, etc.</p>
+and check the web page state, DOM elements&#39; location, their CSS styles, etc.</p>
 
 <p>You can also use the <a href="../using-testcafe/command-line-interface.html#-d---debug-mode">--debug-mode</a>
 command line option to pause the test before the first action or assertion.</p>
 
-<p>The footer displays buttons that allow you to continue test execution or step to the next test action or assertion.</p>
+<p>The footer displays buttons that allow you to continue the test or skip to the next test action or assertion.</p>
 
 <p><img src="../../images/debugging/client-debugging-footer.png" alt="Page Footer when Debugging on a Client"></p>
-<blockquote><div class="blockquote-content"><p>The debugger does not stop at creating and resolving the <a href="selecting-page-elements/selectors/">selectors</a> and <a href="obtaining-data-from-the-client.html">client functions</a>.</p>
+<blockquote><div class="blockquote-content"><p>The debugger does not stop at creating and resolving the <a href="selecting-page-elements/selectors/">selectors</a> and <a href="obtaining-data-from-the-client/">client functions</a>.</p>
 </div></blockquote>
 <p>TestCafe logs points in code where the debugger stopped.</p>
 
@@ -848,10 +859,9 @@ command line option to pause the test before the first action or assertion.</p>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div><h2><a class="anchor" name="options-useful-for-debugging"></a>Options Useful for Debugging <a class="permalink" href="#options-useful-for-debugging">#</a></h2>
-<p>TestCafe includes a few features helpful when you need to find the cause of issues in your tests.</p>
+<p>TestCafe includes features that help you locate the cause of issues in your tests.</p>
 <h3><a class="anchor" name="screenshots"></a>Screenshots <a class="permalink" href="#screenshots">#</a></h3>
-<p>You can specify that a screenshot should be taken in a particular place in a test.
-Use the <a href="actions/take-screenshot.html">t.takeScreenshot</a> action for this.</p>
+<p>You can specify that a screenshot should be taken in a particular place in a test using the <a href="actions/take-screenshot.html">t.takeScreenshot</a> action.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
     <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">https</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example`;</span>
 
@@ -866,20 +876,18 @@ Use the <a href="actions/take-screenshot.html">t.takeScreenshot</a> action for t
 <span class="p">});</span>
 </code></pre></div>
 <p>You can also turn on the <a href="../using-testcafe/command-line-interface.html#-s---screenshots-on-fails">--screenshots-on-fails</a>
-option.</p>
+option to automatically take a screenshot when a test fails.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome ./my-tests --screenshots ./screenshots --screenshots-on-fails
 </code></pre></div>
-<p>This option enables TestCafe to take a screenshot automatically when a test fails.</p>
-
-<p>Analyzing these screenshots helps save time on debugging and allows you to determine the reason of issues earlier.</p>
+<p>Analyzing these screenshots reduces debugging time and allows you to determine the reason of issues earlier.</p>
 <h3><a class="anchor" name="test-speed"></a>Test Speed <a class="permalink" href="#test-speed">#</a></h3>
-<p>TestCafe provides the capability to change test speed. By default, tests are executed at full speed with minimum delays between actions and assertions.
-This makes it hard to identify problems visually when running the test.
-To slow down the test, use the <a href="../using-testcafe/command-line-interface.html#--speed-factor">--speed</a>
+<p>TestCafe provides the capability to change test speed. Tests are executed at full speed with minimum delays between actions and assertions by default, which can make it hard to identify problems when the test is running.</p>
+
+<p>To slow down the test, use the <a href="../using-testcafe/command-line-interface.html#--speed-factor">--speed</a>
 CLI flag. You can use values from <code>1</code> to <code>0.01</code>.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome ./my-tests --speed 0.1
 </code></pre></div>
-<p>When tests run slowly, you can monitor test execution more easily and notice when test behavior differs from the one that&#39;s expected.</p>
+<p>When tests run slower, you can monitor test execution and notice when the test&#39;s behavior differs from what is expected.</p>
 
 
 		</div>

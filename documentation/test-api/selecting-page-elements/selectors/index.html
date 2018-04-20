@@ -339,7 +339,7 @@
   function closeSearchBox(e) {
       var clickOutsideSearchBox = searchPanel !== e.target && !has(searchPanel, e.target);
 
-      if(clickOutsideSearchBox && !searchPanel.className.includes('hidden')) 
+      if(clickOutsideSearchBox && searchPanel.className.indexOf('hidden') === -1) 
           searchPanel.className += ' hidden';
   }
 
@@ -705,7 +705,18 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/obtaining-data-from-the-client.html"  >Obtaining Data from the Client</a>
+<a href="/testcafe/documentation/test-api/obtaining-data-from-the-client/"  >Obtaining Data from the Client</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/obtaining-data-from-the-client/examples-of-using-client-functions.html"  >Examples of Using Client Functions</a>
+		
+    </li>
+
+</ul>
 		
     </li>
 
@@ -842,7 +853,7 @@ To interact with the page, use <a href="../../actions/">test actions</a>.</p>
 <li><a href="edge-cases-and-limitations.html">Edge Cases and Limitations</a></li>
 </ul>
 
-<p>Note that you can use <a href="../../obtaining-data-from-the-client.html">client functions</a> to obtain page information that does not relate to elements&#39; state.</p>
+<p>Note that you can use <a href="../../obtaining-data-from-the-client/">client functions</a> to obtain page information that does not relate to elements&#39; state.</p>
 
 
 		</div>

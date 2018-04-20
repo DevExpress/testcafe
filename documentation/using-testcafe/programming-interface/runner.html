@@ -339,7 +339,7 @@
   function closeSearchBox(e) {
       var clickOutsideSearchBox = searchPanel !== e.target && !has(searchPanel, e.target);
 
-      if(clickOutsideSearchBox && !searchPanel.className.includes('hidden')) 
+      if(clickOutsideSearchBox && searchPanel.className.indexOf('hidden') === -1) 
           searchPanel.className += ' hidden';
   }
 
@@ -970,7 +970,7 @@ where tests are not guaranteed to execute correctly.</p>
 <tr>
 <td><code>assertionTimeout</code></td>
 <td>Number</td>
-<td>Specifies the amount of time, in milliseconds, within which TestCafe makes attempts  to successfully execute an <a href="../../test-api/assertions/">assertion</a> if <a href="../../test-api/selecting-page-elements/selectors/using-selectors.html#define-assertion-actual-value">a selector property</a> or a <a href="../../test-api/obtaining-data-from-the-client.html">client function</a> was passed as an actual value. See <a href="../../test-api/assertions/#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a>.</td>
+<td>Specifies the amount of time, in milliseconds, within which TestCafe makes attempts  to successfully execute an <a href="../../test-api/assertions/">assertion</a> if <a href="../../test-api/selecting-page-elements/selectors/using-selectors.html#define-assertion-actual-value">a selector property</a> or a <a href="../../test-api/obtaining-data-from-the-client/">client function</a> was passed as an actual value. See <a href="../../test-api/assertions/#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a>.</td>
 <td><code>3000</code></td>
 </tr>
 <tr>

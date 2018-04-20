@@ -8,20 +8,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <title>Using Selectors | TestCafe</title>
+  <title>Examples of Using Client Functions | TestCafe</title>
 
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
   
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/using-selectors.html" />
-  <meta property="og:title" content="Using Selectors | TestCafe" />
+  <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/test-api/obtaining-data-from-the-client/examples-of-using-client-functions.html" />
+  <meta property="og:title" content="Examples of Using Client Functions | TestCafe" />
 
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
-  <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/using-selectors.html">
+  <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/test-api/obtaining-data-from-the-client/examples-of-using-client-functions.html">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="http://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
@@ -521,7 +521,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/using-selectors.html" class="active" >Using Selectors</a>
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/using-selectors.html"  >Using Selectors</a>
 		
     </li>
 
@@ -712,7 +712,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/obtaining-data-from-the-client/examples-of-using-client-functions.html"  >Examples of Using Client Functions</a>
+<a href="/testcafe/documentation/test-api/obtaining-data-from-the-client/examples-of-using-client-functions.html" class="active" >Examples of Using Client Functions</a>
 		
     </li>
 
@@ -813,172 +813,145 @@
 	<article class="doc">
 		<div class="post-content">
 
-			<h1>Using Selectors</h1>
-<p>This topic describes how to identify DOM elements and obtain information about them using selectors.</p>
+			<h1>Examples of Using Client Functions</h1>
+<p>This topic describes examples of using client functions in tests.</p>
 
 <ul>
-<li><a href="#check-if-an-element-exists">Check if an Element Exists</a></li>
-<li><a href="#obtain-element-state">Obtain Element State</a>
-
-<ul>
-<li><a href="#dom-node-snapshot">DOM Node Snapshot</a></li>
-</ul></li>
-<li><a href="#define-action-targets">Define Action Targets</a></li>
-<li><a href="#define-assertion-actual-value">Define Assertion Actual Value</a></li>
-<li><a href="#selector-timeout">Selector Timeout</a></li>
+<li><a href="#checking-a-page-url">Checking a Page URL</a></li>
+<li><a href="#obtaining-a-browser-alias-within-a-test">Obtaining a Browser Alias Within a Test</a></li>
+<li><a href="#injecting-external-libraries-into-a-page-from-a-test">Injecting External Libraries into a Page from a Test</a></li>
+<li><a href="#accessing-child-nodes-in-the-dom-hierarchy">Accessing Child Nodes in the DOM Hierarchy</a></li>
+<li><a href="#complex-dom-queries">Complex DOM Queries</a></li>
 </ul>
-<h2><a class="anchor" name="check-if-an-element-exists"></a>Check if an Element Exists <a class="permalink" href="#check-if-an-element-exists">#</a></h2>
-<p>Functions and CSS selector strings that initialize a selector may return
-a single matching DOM element on the page, multiple elements or nothing.
-You can use the following Selector properties to check whether matching
-elements exist and determine the number of matching elements.</p>
+<h2><a class="anchor" name="checking-a-page-url"></a>Checking a Page URL <a class="permalink" href="#checking-a-page-url">#</a></h2>
+<p>When performing certain actions on a tested web page (clicking buttons or links), it can redirect a browser to another page and you need to check if the desired page is open. For example, you are testing your web application&#39;s login form and need to verify if a particular web page opens after a user logs in.</p>
 
-<table><thead>
-<tr>
-<th>Property</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><code>exists</code></td>
-<td>Boolean</td>
-<td><code>true</code> if at least one matching element exists.</td>
-</tr>
-<tr>
-<td><code>count</code></td>
-<td>Number</td>
-<td>The number of matching elements.</td>
-</tr>
-</tbody></table>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<p>You can create a client function and use the <a href="https://www.w3schools.com/jsref/prop_loc_href.asp">window.location.href</a> property within it to return the URL of a page that is open on the client and then verify if the actual page URL matches the expected one using an <a href="../assertions/">assertion</a>. The sample below demonstrates how to do this.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">Example</span> <span class="nx">page</span><span class="err">`</span>
+<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">Fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example`;</span>
+
+<span class="c1">//Returns the URL of the current web page</span>
+<span class="kr">const</span> <span class="nx">getPageUrl</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">href</span><span class="p">);</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Check the page URL'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">await</span> <span class="nx">t</span>
+        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">,</span> <span class="s1">'John Smith'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">)</span> <span class="c1">//Redirects to the 'Thank you' page</span>
+        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">getPageUrl</span><span class="p">()).</span><span class="nx">contains</span><span class="p">(</span><span class="s1">'thank-you'</span><span class="p">);</span> <span class="c1">//Checks if the current page URL contains the 'thank-you' string</span>
+<span class="p">});</span>
+</code></pre></div><h2><a class="anchor" name="obtaining-a-browser-alias-within-a-test"></a>Obtaining a Browser Alias Within a Test <a class="permalink" href="#obtaining-a-browser-alias-within-a-test">#</a></h2>
+<p>Sometimes you may need to determine a browser&#39;s alias from within a test. For example, you configured a test tasks using the <a href="../../using-testcafe/programming-interface/testcafe.html#createrunner">testCafe.createRunner</a> function and specified several browsers where the test should run: <code>runner.browsers([&#39;safari&#39;,&#39;chrome&#39;])</code>. However, the test logic should be different for different browsers. To do this, you need to detect which test instance corresponds to <code>safari</code> and which one corresponds to <code>chrome</code>.</p>
+
+<p>To obtain a browser&#39;s alias, create a client function that uses the <a href="https://www.w3schools.com/jsref/prop_nav_useragent.asp">navigator.userAgent</a> property. This function returns the browser&#39;s user-agent header, and you can use external modules (for example, <a href="https://github.com/faisalman/ua-parser-js">ua-parser-js</a>) to parse this header.</p>
+
+<p>The following sample demonstrates how to create a conditional test logic based on the browser. Before running this test, install <em>ua-parser-js</em> by running <code>npm install ua-parser-js</code>.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<span class="kr">import</span> <span class="nx">uaParser</span> <span class="nx">from</span> <span class="s1">'ua-parser-js'</span><span class="p">;</span>
+
+<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//example.com`;</span>
+
+<span class="c1">//Returns a user-agent header sent by the browser</span>
+<span class="kr">const</span> <span class="nx">getUA</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nx">navigator</span><span class="p">.</span><span class="nx">userAgent</span><span class="p">);</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">const</span> <span class="nx">ua</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">getUA</span><span class="p">();</span>
+    <span class="kr">const</span> <span class="nx">browserAlias</span> <span class="o">=</span><span class="nx">uaParser</span><span class="p">(</span><span class="nx">ua</span><span class="p">).</span><span class="nx">browser</span><span class="p">.</span><span class="nx">name</span><span class="p">;</span>
+
+    <span class="c1">//Some common actions</span>
+
+    <span class="c1">//Conditional logic</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">browserAlias</span> <span class="o">===</span> <span class="s1">'Chrome'</span><span class="p">){</span>
+        <span class="c1">//Test logic for Chrome</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'The browser is Chrome'</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">browserAlias</span> <span class="o">===</span> <span class="s1">'Safari'</span><span class="p">){</span>
+        <span class="c1">//Test logic for Safari</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'The browser is Safari'</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</code></pre></div><h2><a class="anchor" name="injecting-external-libraries-into-a-page-from-a-test"></a>Injecting External Libraries into a Page from a Test <a class="permalink" href="#injecting-external-libraries-into-a-page-from-a-test">#</a></h2>
+<p>Another example is using client functions to inject external libraries like <a href="https://jquery.com/">jQuery</a> into a tested page.</p>
+
+<p>To work with jQuery from a test, you first need to place the jQuery library file in the test directory. After that, add the library&#39;s code to the tested page using the <code>eval</code> method and use jQuery in the test within a client function. The following sample demonstrates this.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<span class="kr">import</span> <span class="nx">fs</span> <span class="nx">from</span> <span class="s1">'fs'</span><span class="p">;</span>
+
+<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
     <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`;</span>
 
 <span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">osCount</span>            <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'.column.col-2 label'</span><span class="p">).</span><span class="nx">count</span><span class="p">;</span>
-    <span class="kr">const</span> <span class="nx">submitButtonExists</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">).</span><span class="nx">exists</span><span class="p">;</span>
+    <span class="c1">// Adds jQuery code to the page</span>
+    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nb">eval</span><span class="p">(</span><span class="k">new</span> <span class="nb">Function</span><span class="p">(</span><span class="nx">fs</span><span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="s1">'./jquery.js'</span><span class="p">).</span><span class="nx">toString</span><span class="p">()));</span>
 
-    <span class="nx">await</span> <span class="nx">t</span>
-        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">osCount</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">submitButtonExists</span><span class="p">).</span><span class="nx">ok</span><span class="p">();</span>
+    <span class="kr">const</span> <span class="nx">getElementText</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="c1">// Uses the jQuery selector</span>
+        <span class="k">return</span> <span class="nx">$</span><span class="p">(</span><span class="s1">'div.column.col-2'</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">'legend'</span><span class="p">).</span><span class="nx">eq</span><span class="p">(</span><span class="mi">0</span><span class="p">).</span><span class="nx">text</span><span class="p">();</span>
+    <span class="p">});</span>
+
+    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">getElementText</span><span class="p">()).</span><span class="nx">contains</span><span class="p">(</span><span class="s1">'What is your primary Operating System'</span><span class="p">);</span>
 <span class="p">});</span>
-</code></pre></div>
-<p>Note that selector property getters are asynchronous.</p>
-<h2><a class="anchor" name="obtain-element-state"></a>Obtain Element State <a class="permalink" href="#obtain-element-state">#</a></h2>
-<p>Selectors and promises returned by selectors expose API to get the state (size, position, classes, etc.) of the matching element.
-See <a href="../dom-node-state.html">DOM Node State</a>. Note that these methods and property getters
-are asynchronous, so use <code>await</code> to obtain an element&#39;s property.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">headerText</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#header'</span><span class="p">).</span><span class="nx">textContent</span><span class="p">;</span>
-</code></pre></div>
-<p><strong>Example</strong></p>
+</code></pre></div><h2><a class="anchor" name="accessing-child-nodes-in-the-dom-hierarchy"></a>Accessing Child Nodes in the DOM Hierarchy <a class="permalink" href="#accessing-child-nodes-in-the-dom-hierarchy">#</a></h2>
+<p>You can use client functions to access child nodes in a DOM hierarchy and obtain their properties.</p>
+
+<p>For instance, you are testing the <em>example.html</em> page with the following HTML code ...</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="o">&lt;!</span><span class="nx">DOCTYPE</span> <span class="nx">html</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="nx">html</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nx">body</span> <span class="nx">id</span><span class="o">=</span><span class="s2">"testedpage"</span><span class="o">&gt;</span>
+        <span class="nx">This</span> <span class="nx">is</span> <span class="nx">my</span> <span class="nx">tested</span> <span class="nx">page</span><span class="p">.</span> <span class="c">&lt;!--</span><span class="nx">This</span> <span class="nx">is</span> <span class="nx">the</span> <span class="nx">first</span> <span class="nx">child</span> <span class="nx">node</span> <span class="nx">of</span> <span class="o">&lt;</span><span class="nx">body</span><span class="o">&gt;--&gt;</span>
+        <span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">My</span> <span class="nx">first</span> <span class="nx">paragraph</span><span class="p">.</span><span class="o">&lt;</span><span class="sr">/p</span><span class="err">&gt;
+</span>        <span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">My</span> <span class="nx">second</span> <span class="nx">paragraph</span><span class="p">.</span><span class="o">&lt;</span><span class="sr">/p</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="sr">/body</span><span class="err">&gt;
+</span><span class="o">&lt;</span><span class="sr">/html</span><span class="err">&gt;
+</span></code></pre></div>
+<p>... and you need to obtain the text content of the first child node - <em>This is my tested page</em>. You can do this within a client function using the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Node/childNodes">childNodes</a> property. The following sample demonstrates this.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="s1">'http://devexpress.github.io/testcafe/example/'</span><span class="p">);</span>
+<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">Fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">examplepage</span><span class="p">.</span><span class="nx">html</span><span class="err">`</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">windowsInput</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#windows'</span><span class="p">);</span>
+    <span class="kr">const</span> <span class="nx">testedPage</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#testedpage'</span><span class="p">);</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Obtain Element State'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">windowsInput</span><span class="p">);</span>
+    <span class="kr">const</span> <span class="nx">getChildNodeText</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(</span><span class="nx">index</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">getEl</span><span class="p">().</span><span class="nx">childNodes</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">textContent</span><span class="p">;</span>
+    <span class="p">},{</span> <span class="na">dependencies</span><span class="p">:</span> <span class="p">{</span> <span class="na">getEl</span><span class="p">:</span> <span class="nx">testedPage</span> <span class="p">}</span> <span class="p">});</span>
 
-    <span class="kr">const</span> <span class="nx">windowsInputChecked</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">windowsInput</span><span class="p">.</span><span class="nx">checked</span><span class="p">;</span> <span class="c1">// returns true</span>
-<span class="p">});</span>
-</code></pre></div><h3><a class="anchor" name="dom-node-snapshot"></a>DOM Node Snapshot <a class="permalink" href="#dom-node-snapshot">#</a></h3>
-<p>If you need to get the entire DOM element state, call the selector
-with the <code>await</code> keyword like you would do with regular async functions.
-It returns a <em>DOM Node Snapshot</em> that contains <a href="../dom-node-state.html">all property values</a>
-exposed by the selector in a single object.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
-
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`;</span>
-
-<span class="nx">test</span><span class="p">(</span><span class="s1">'DOM Node Snapshot'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">sliderHandle</span>        <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#slider'</span><span class="p">).</span><span class="nx">child</span><span class="p">(</span><span class="s1">'span'</span><span class="p">);</span>
-    <span class="kr">const</span> <span class="nx">sliderHandleSnaphot</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sliderHandle</span><span class="p">();</span>
-
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">sliderHandleSnaphot</span><span class="p">.</span><span class="nx">hasClass</span><span class="p">(</span><span class="s1">'ui-slider-handle'</span><span class="p">));</span>    <span class="c1">// =&gt; true</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">sliderHandleSnaphot</span><span class="p">.</span><span class="nx">childElementCount</span><span class="p">);</span>               <span class="c1">// =&gt; 0</span>
-<span class="p">});</span>
-</code></pre></div>
-<p>Note that if a selector initializer has several matching DOM nodes on the page,
-the selector returns the first node from the matching set.</p>
-<blockquote><div class="blockquote-content"><p>It&#39;s not recommended to pass DOM Node Snapshot&#39;s properties
-to <a href="../../assertions/">built-in assertions</a> to check the state of the element.
-To enable <a href="../../assertions/#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a>
-pass <a href="../dom-node-state.html#members-common-across-all-nodes">selector&#39;s properties</a> to assertions instead.</p>
-</div></blockquote><h2><a class="anchor" name="define-action-targets"></a>Define Action Targets <a class="permalink" href="#define-action-targets">#</a></h2>
-<p>You can pass selectors to <a href="../../actions/">test actions</a> to use the returned element as the action target.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
-
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`;</span>
-
-<span class="kr">const</span> <span class="nx">label</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#tried-section'</span><span class="p">).</span><span class="nx">child</span><span class="p">(</span><span class="s1">'label'</span><span class="p">);</span>
 
 <span class="nx">test</span><span class="p">(</span><span class="s1">'My Test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">label</span><span class="p">);</span>
+    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">getChildNodeText</span><span class="p">(</span><span class="mi">0</span><span class="p">)).</span><span class="nx">contains</span><span class="p">(</span><span class="s1">'This is my tested page.'</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div><blockquote><div class="blockquote-content"><p>Note that the <code>getChildNodeText</code> client function uses the <code>testedPage</code> selector that is passed to it as a dependency. See <a href="../obtaining-data-from-the-client.html#optionsdependencies">options.dependencies</a> for more information.</p>
+</div></blockquote><h2><a class="anchor" name="complex-dom-queries"></a>Complex DOM Queries <a class="permalink" href="#complex-dom-queries">#</a></h2>
+<p>Client functions can be helpful for complex DOM queries. For example, a tested page contains a table with some data, and you need to validate data from two columns only. To do this, obtain data from these columns, push them to an array and then compare the returned array with the expected one.</p>
+
+<p>Below is a sample test for the <a href="https://js.devexpress.com/">https://js.devexpress.com/</a> page that contains a grid. The sample demonstrates how to create a client function that returns an array containing data from the grid’s <strong>Customer</strong> and <strong>Sale Amount</strong> columns.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">ClientFunction</span><span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+
+<span class="nx">fixture</span> <span class="err">`</span><span class="nx">Get</span> <span class="nx">sale</span> <span class="nx">amount</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="s1">'https://js.devexpress.com/'</span><span class="p">);</span>
+
+    <span class="kr">const</span> <span class="nx">getSaleAmount</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="kr">const</span> <span class="nx">elements</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s1">'.dx-datagrid-rowsview'</span><span class="p">).</span><span class="nx">querySelectorAll</span><span class="p">(</span><span class="s1">'td:nth-child(3),td:nth-child(7)'</span><span class="p">);</span>
+        <span class="kr">const</span> <span class="nx">array</span> <span class="o">=</span> <span class="p">[];</span>
+
+        <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;=</span> <span class="nx">elements</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">2</span><span class="p">;</span> <span class="nx">i</span><span class="o">+=</span><span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kr">const</span> <span class="nx">customerName</span>  <span class="o">=</span> <span class="nx">elements</span><span class="p">[</span><span class="nx">i</span><span class="o">+</span><span class="mi">1</span><span class="p">].</span><span class="nx">textContent</span><span class="p">;</span>
+            <span class="kr">const</span> <span class="nx">saleAmount</span> <span class="o">=</span> <span class="nx">elements</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">textContent</span><span class="p">;</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="nx">customerName</span> <span class="o">&amp;&amp;</span> <span class="nx">saleAmount</span><span class="p">)</span>
+                <span class="nx">array</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="err">`</span><span class="nx">Customer</span> <span class="nx">$</span><span class="p">{</span><span class="nx">customerName</span><span class="p">}:</span> <span class="nx">$</span><span class="p">{</span><span class="nx">saleAmount</span><span class="p">}</span><span class="err">`</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="nx">array</span><span class="p">;</span>
+    <span class="p">});</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">await</span> <span class="nx">getSaleAmount</span><span class="p">());</span>
 <span class="p">});</span>
 </code></pre></div>
-<p>DOM element snapshots can also be passed to test actions.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
-
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`;</span>
-
-<span class="kr">const</span> <span class="nx">label</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#tried-section'</span><span class="p">).</span><span class="nx">child</span><span class="p">(</span><span class="s1">'label'</span><span class="p">);</span>
-
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My Test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">labelSnapshot</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">label</span><span class="p">();</span>
-
-    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">labelSnapshot</span><span class="p">);</span>
-<span class="p">});</span>
-</code></pre></div>
-<p>In this instance, the selector that was used to fetch this snapshot will be called once again.</p>
-
-<p>Before executing an action, TestCafe waits for the target element to appear
-in the DOM and become visible. If this does not happen
-within the <a href="#selector-timeout">selector timeout</a>, the test fails.</p>
-
-<p>Note that if a selector initializer has multiple matching DOM nodes on the page,
-the action will be executed only for the first node from the matching set.</p>
-<h2><a class="anchor" name="define-assertion-actual-value"></a>Define Assertion Actual Value <a class="permalink" href="#define-assertion-actual-value">#</a></h2>
-<p>You can check whether a particular DOM node has the expected state by passing a selector property directly to <a href="../../assertions/">assertions</a>.
-In this case, TestCafe enables <a href="../../assertions/#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a>
-to avoid accidental errors and unstable tests.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
-
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`;</span>
-
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Assertion with Selector'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">developerNameInput</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">);</span>
-
-    <span class="nx">await</span> <span class="nx">t</span>
-        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">developerNameInput</span><span class="p">.</span><span class="nx">innerText</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="s1">''</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">developerNameInput</span><span class="p">,</span> <span class="s1">'Peter'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">developerNameInput</span><span class="p">.</span><span class="nx">innerText</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="s1">'Peter'</span><span class="p">);</span>
-<span class="p">});</span>
-</code></pre></div>
-<p>In this example the <code>developerNameInput.innerText</code> property will not be
-calculated immediately, but it will wait until the assertion is executed.</p>
-<h2><a class="anchor" name="selector-timeout"></a>Selector Timeout <a class="permalink" href="#selector-timeout">#</a></h2>
-<p>When a selector is called in test code, TestCafe waits for the target node to appear
-in the DOM within the <em>selector timeout</em>.</p>
-
-<p>You can specify the selector timeout in test code by using the <a href="selector-options.html#optionstimeout">timeout</a> option.
-To set this timeout when launching tests, pass it to the <a href="../../../using-testcafe/programming-interface/runner.html#run">runner.run</a>
-method if you use API or specify the <a href="../../../using-testcafe/command-line-interface.html#--selector-timeout-ms">selector-timeout</a> option
-if you run TestCafe from the command line.</p>
-
-<p>Within the selector timeout, the selector is executed over and over again, until it returns a
-DOM node or the timeout exceeds.</p>
-
-<p>Note that you can additionally require that the node returned by the selector is visible.
-To do this, use the <a href="selector-options.html#optionsvisibilitycheck">visibilityCheck</a> option.</p>
-
 
 		</div>
 		<div class="widget-container hidden">

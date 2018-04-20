@@ -339,7 +339,7 @@
   function closeSearchBox(e) {
       var clickOutsideSearchBox = searchPanel !== e.target && !has(searchPanel, e.target);
 
-      if(clickOutsideSearchBox && !searchPanel.className.includes('hidden')) 
+      if(clickOutsideSearchBox && searchPanel.className.indexOf('hidden') === -1) 
           searchPanel.className += ' hidden';
   }
 
@@ -705,7 +705,18 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/obtaining-data-from-the-client.html"  >Obtaining Data from the Client</a>
+<a href="/testcafe/documentation/test-api/obtaining-data-from-the-client/"  >Obtaining Data from the Client</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/obtaining-data-from-the-client/examples-of-using-client-functions.html"  >Examples of Using Client Functions</a>
+		
+    </li>
+
+</ul>
 		
     </li>
 
@@ -861,7 +872,7 @@ Use the <a href="selecting-page-elements/selectors/selector-options.html#options
 </code></pre></div><h2><a class="anchor" name="waiting-for-assertions-to-pass"></a>Waiting for Assertions to Pass <a class="permalink" href="#waiting-for-assertions-to-pass">#</a></h2>
 <p>TestCafe assertions feature the <a href="assertions/#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a>.
 This mechanism is activated when you pass a <a href="selecting-page-elements/selectors/using-selectors.html#obtain-element-state">selector property</a>
-or a <a href="obtaining-data-from-the-client.html">client function</a> as an actual value. In this instance, TestCafe keeps recalculating the actual
+or a <a href="obtaining-data-from-the-client/">client function</a> as an actual value. In this instance, TestCafe keeps recalculating the actual
 value until it matches the expected value or the <a href="assertions/#optionstimeout">assertion timeout</a> passes.</p>
 
 <p>Note that the Smart Assertion Query Mechanism does not wait for page elements to appear.

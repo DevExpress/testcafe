@@ -339,7 +339,7 @@
   function closeSearchBox(e) {
       var clickOutsideSearchBox = searchPanel !== e.target && !has(searchPanel, e.target);
 
-      if(clickOutsideSearchBox && !searchPanel.className.includes('hidden')) 
+      if(clickOutsideSearchBox && searchPanel.className.indexOf('hidden') === -1) 
           searchPanel.className += ' hidden';
   }
 
@@ -705,7 +705,18 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/obtaining-data-from-the-client.html"  >Obtaining Data from the Client</a>
+<a href="/testcafe/documentation/test-api/obtaining-data-from-the-client/"  >Obtaining Data from the Client</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/obtaining-data-from-the-client/examples-of-using-client-functions.html"  >Examples of Using Client Functions</a>
+		
+    </li>
+
+</ul>
 		
     </li>
 
@@ -803,12 +814,12 @@
 		<div class="post-content">
 
 			<h1>Assertions</h1>
-<p>To check if the state of the tested webpage matches the one you expect to see, use <em>assertions</em>.</p>
+<p>You can use <em>assertions</em> to check if the tested webpage&#39;s state matches your expectations.</p>
 
-<p>TestCafe provides a comprehensive set of assertions that are based on Behavior Driven Development style (BDD-style).
+<p>TestCafe provides a comprehensive set of assertions that are based on the Behavior Driven Development style (BDD-style).
 See <a href="assertion-api.html">Assertion API</a>.</p>
 
-<p>This topic contains the following sections.</p>
+<p>This topic consists of the following sections.</p>
 
 <ul>
 <li><a href="#assertion-structure">Assertion Structure</a></li>
@@ -820,13 +831,13 @@ See <a href="assertion-api.html">Assertion API</a>.</p>
 </ul></li>
 </ul>
 <h2><a class="anchor" name="assertion-structure"></a>Assertion Structure <a class="permalink" href="#assertion-structure">#</a></h2>
-<p>TestCafe assertions start with the <code>expect</code> method exposed by <a href="../test-code-structure.html#test-controller">test controller</a>.
+<p>TestCafe assertions start with the <code>expect</code> method the <a href="../test-code-structure.html#test-controller">test controller</a> exposes.
 This method accepts the actual value. You can pass a value, a <a href="../selecting-page-elements/selectors/using-selectors.html#define-assertion-actual-value">Selector&#39;s DOM node state property</a>
-or a <a href="../obtaining-data-from-the-client.html">client function</a> promise.
+or a <a href="../obtaining-data-from-the-client/">client function</a> promise.
 TestCafe automatically waits for node state properties to obtain a value and for client functions to execute.
 See <a href="#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a> for details.</p>
 
-<p>After <code>expect</code>, an <a href="assertion-api.html">assertion method</a> follows. Assertion methods accept an expected value
+<p>Next is an <a href="assertion-api.html">assertion method</a>. Assertion methods accept an expected value
 and, optionally, other arguments.</p>
 
 <p>For instance, the deep equality assertion has the following structure.</p>
@@ -849,28 +860,26 @@ and, optionally, other arguments.</p>
        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">developerNameInput</span><span class="p">.</span><span class="nx">value</span><span class="p">).</span><span class="nx">contains</span><span class="p">(</span><span class="s1">'Peter'</span><span class="p">,</span> <span class="s1">'input contains text "Peter"'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div><h2><a class="anchor" name="smart-assertion-query-mechanism"></a>Smart Assertion Query Mechanism <a class="permalink" href="#smart-assertion-query-mechanism">#</a></h2>
-<p>In synchronous functional testing, you can perform the required assertions immediately after test action is executed:</p>
+<p>You can perform the required assertions immediately after test action is executed in synchronous functional testing.</p>
 
 <p><img src="../../../images/assertions/synchronous-testing.png" alt="Synchronous Functional Testing"></p>
 
-<p>On the web, functional tests are asynchronous. This means that we can not get the expected changes immediately after an end-user action.
-For example, the tested web page can send a request to the server for the required data, and this can take some time;
-or an end-user action launches animation after which the web page will reach its final state.
-All of these time gaps cannot be pre-calculated, because they depend on various factors: computer performance,
-network connection speed, etc. In this case, if we perform assertions immediately after the test action finished,
-we can get an indefinite result:</p>
+<p>Functional tests are asynchronous on the web. This means that we cannot get the expected changes immediately after an end-user&#39;s actions.
++For example, it can take time for the tested web page to send a request to the server for the required data, or an end-user&#39;s action launches an animation after which the web page reaches its final state.
++All these intervals cannot be pre-calculated because they depend on various factors: computer performance,
+ network connection speed, etc. In this case, if we perform assertions immediately after the test action finished,we can get an indefinite result.</p>
 
 <p><img src="../../../images/assertions/asynchronous-testing.png" alt="Asynchronous Functional Testing"></p>
 
-<p>To perform asynchronous functional tests, an additional timeout as usually added:</p>
+<p>An additional timeout is usually added when performing asynchronous functional tests.</p>
 
 <p><img src="../../../images/assertions/extra-waiting.png" alt="Asynchronous Functional Testing with Extra Waiting"></p>
 
-<p>To stabilize such tests, you need to add a timeout that will guarantee that the required changes are successfully applied.
-Adding such timeouts can increase the test running time because of extra waiting.</p>
+<p>To stabilize such tests, you need to add a timeout that enables the required changes to be successfully applied.
+Note that adding such timeouts can increase the test&#39;s running time.</p>
 
 <p>If the TestCafe assertion receives a <a href="../selecting-page-elements/selectors/using-selectors.html#define-assertion-actual-value">Selector&#39;s DOM node state property</a>
-or a <a href="../obtaining-data-from-the-client.html">client function</a> promise
+or a <a href="../obtaining-data-from-the-client/">client function</a> promise
 as an actual value, TestCafe uses the smart assertion query mechanism:
 if an assertion did not pass, the test does not fail immediately. The assertion retries to pass multiple times and
 each time it requests the actual property value. The test fails if the assertion could not complete successfully
@@ -880,7 +889,7 @@ within a timeout:</p>
 
 <p><strong>Example:</strong></p>
 
-<p>Assume you have the following web page.</p>
+<p>The following web page is an example:</p>
 <div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"btn"</span><span class="nt">&gt;&lt;/div&gt;</span>
 <span class="nt">&lt;script&gt;</span>
 <span class="kd">var</span> <span class="nx">btn</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">'btn'</span><span class="p">);</span>
@@ -904,24 +913,24 @@ within a timeout:</p>
         <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">btn</span><span class="p">.</span><span class="nx">textContent</span><span class="p">).</span><span class="nx">contains</span><span class="p">(</span><span class="s1">'Loading...'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div>
-<p>The approach described above allows you to create stable tests free from random errors and running fast without additional waiting.</p>
+<p>The approach described above allows you to create stable tests with a fast run-time that do not contain random errors.</p>
 
 <p>You can specify the assertion query timeout in test code by using the <a href="#assertion-options">options.timeout</a> option.
 To set the timeout when launching tests, pass the timeout value to the <a href="../../using-testcafe/programming-interface/runner.html#run">runner.run</a>
-method if you use API or specify the <a href="../../using-testcafe/command-line-interface.html#--assertion-timeout-ms">assertion-timeout</a> option
+method if you use an API or specify the <a href="../../using-testcafe/command-line-interface.html#--assertion-timeout-ms">assertion-timeout</a> option
 if you run TestCafe from the command line.</p>
 <h2><a class="anchor" name="assertion-options"></a>Assertion options <a class="permalink" href="#assertion-options">#</a></h2><h3><a class="anchor" name="optionstimeout"></a>options.timeout <a class="permalink" href="#optionstimeout">#</a></h3>
 <p><strong>Type</strong>: Number</p>
 
-<p>The amount of time, in milliseconds, allowed for an assertion to pass before the test fails if
+<p>The time (in milliseconds) an assertion can take to pass before the test fails if
 <a href="../selecting-page-elements/selectors/using-selectors.html#define-assertion-actual-value">a selector property</a>
-or a <a href="../obtaining-data-from-the-client.html">client function</a> promise was used in assertion.</p>
+or a <a href="../obtaining-data-from-the-client/">client function</a> promise was used in assertion.</p>
 
-<p><strong>Default value</strong>: timeout is specified by using the <a href="../../using-testcafe/programming-interface/runner.html#run">runner.run</a> API method
+<p><strong>Default value</strong>: The timeout is specified using the <a href="../../using-testcafe/programming-interface/runner.html#run">runner.run</a> API method
 or the <a href="../../using-testcafe/command-line-interface.html#--assertion-timeout-ms">assertion-timeout</a> command line option.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="s1">'#elementId'</span><span class="p">).</span><span class="nx">innerText</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="s1">'text'</span><span class="p">,</span> <span class="s1">'check element text'</span><span class="p">,</span> <span class="p">{</span> <span class="na">timeout</span><span class="p">:</span> <span class="mi">500</span> <span class="p">});</span>
-</code></pre></div><blockquote><div class="blockquote-content"><p>In addition to built-in assertions, you also can use assertions from Node&#39;s built-in <a href="https://nodejs.org/api/assert.html">assert</a> module or choose a 3rd-party library you like (for example <a href="http://chaijs.com/">chai</a>).
-In this case, you should care about the amount of time required to complete asynchronous actions using the <a href="../pausing-the-test.html">t.wait(timeout)</a> method.</p>
+</code></pre></div><blockquote><div class="blockquote-content"><p>In addition to built-in assertions, you also can use assertions from Node&#39;s built-in <a href="https://nodejs.org/api/assert.html">assert</a> module or 3rd-party library (for example <a href="http://chaijs.com/">chai</a>).
+In this case, you specify the time required to complete asynchronous actions using the <a href="../pausing-the-test.html">t.wait(timeout)</a> method.</p>
 </div></blockquote>
 
 		</div>

@@ -1,6 +1,23 @@
 .site-header, body, html {
   min-width: 1230px; }
 
+.veil-on {
+  background: rgba(0, 0, 0, 0.6);
+  position: fixed;
+  min-height: 100%;
+  width: 100%;
+  top: 0;
+  z-index: 1000; }
+  .veil-on .player {
+    position: fixed;
+    overflow: visible;
+    left: 50%;
+    top: 50%;
+    margin: -240px 0 0 -426px; }
+
+.veil-off {
+  display: none; }
+
 @media (max-width: 1490px) {
   .page-object-example {
     display: none; } }
@@ -162,15 +179,12 @@
   .how-it-works-section .how-it-works-content:before {
     left: 24px; } }
 code {
-  background-color: transparent;
-  border: none; }
-  code p {
-    background-color: #98c0d1;
-    color: #ffffff;
-    border: none;
-    border-radius: 0;
-    padding: 7px;
-    margin-bottom: -15px; }
+  background-color: #98c0d1;
+  color: #ffffff;
+  border: 1px solid #c8dfe8;
+  border-radius: 0;
+  padding: 7px 15px;
+  margin-bottom: -15px; }
 
 .features-section {
   background: #a4cada;
@@ -201,7 +215,8 @@ code {
           border-right: none; }
       .features-section .features-content .features .row-2 .feature-container {
         border-right: 1px solid #c8dfe8;
-        padding: 28px 41px 0px 47px; }
+        border-bottom: 1px solid #c8dfe8;
+        padding: 28px 41px 20px 47px; }
         .features-section .features-content .features .row-2 .feature-container:last-child {
           border-right: none; }
       .features-section .features-content .features .row {
@@ -248,6 +263,84 @@ code {
           cursor: pointer;
           border-bottom: 1px dashed #404142;
           text-decoration: none; }
+    .features-section .features-content .testcafe-live-promo {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 30px; }
+      .features-section .features-content .testcafe-live-promo .promo-block {
+        display: flex;
+        justify-content: space-between; }
+        .features-section .features-content .testcafe-live-promo .promo-block .image {
+          background-image: url("/testcafe/images/landing-page/rapid-dev-icon.svg");
+          background-repeat: no-repeat;
+          background-position-y: 9px;
+          width: 83px;
+          min-width: 83px;
+          height: 84px;
+          display: inline-block;
+          vertical-align: top; }
+        .features-section .features-content .testcafe-live-promo .promo-block .description {
+          display: inline-block;
+          max-width: 400px;
+          margin-left: 35px; }
+          .features-section .features-content .testcafe-live-promo .promo-block .description .header {
+            font-size: 24px;
+            color: #ffffff; }
+          .features-section .features-content .testcafe-live-promo .promo-block .description .text {
+            font-size: 14px;
+            color: #404142;
+            margin-top: 9px;
+            margin-bottom: 15px; }
+      .features-section .features-content .testcafe-live-promo .buttons {
+        display: flex;
+        justify-content: space-between; }
+        .features-section .features-content .testcafe-live-promo .buttons .video-button {
+          width: 326px;
+          height: 61px;
+          text-align: center;
+          padding-left: 10px;
+          line-height: 63px;
+          font-size: 18px;
+          font-weight: bold;
+          color: #404142;
+          background-image: url("/testcafe/images/landing-page/rapid-dev-play-video.svg");
+          background-repeat: no-repeat;
+          background-position: 15px 15px;
+          background-color: #ffffff;
+          border-radius: 5px;
+          cursor: pointer;
+          margin-left: 40px; }
+          @media (max-width: 1480px) {
+            .features-section .features-content .testcafe-live-promo .buttons .video-button {
+              width: 286px; } }
+          .features-section .features-content .testcafe-live-promo .buttons .video-button:hover {
+            text-decoration: none;
+            color: #ffffff;
+            background-color: #404142; }
+        .features-section .features-content .testcafe-live-promo .buttons .repo-button {
+          width: 320px;
+          height: 61px;
+          text-align: center;
+          padding-left: 10px;
+          line-height: 56px;
+          font-size: 18px;
+          font-weight: bold;
+          color: #404142;
+          background-image: url("/testcafe/images/landing-page/rapid-dev-github-icon.svg");
+          background-repeat: no-repeat;
+          background-position: 15px 13px;
+          border: 2px solid #ffffff;
+          border-radius: 5px;
+          cursor: pointer;
+          margin-left: 40px;
+          box-sizing: border-box; }
+          @media (max-width: 1480px) {
+            .features-section .features-content .testcafe-live-promo .buttons .repo-button {
+              width: 280px; } }
+          .features-section .features-content .testcafe-live-promo .buttons .repo-button:hover {
+            text-decoration: none;
+            background-color: #ffffff; }
 
 .tweets-section {
   margin: 55px 0 45px;
@@ -342,3 +435,16 @@ code {
     padding-left: 70px;
     padding-right: 70px;
     min-width: calc(1230px - 140px); } }
+
+.page-object-example {
+  border: none;
+  background-color: transparent;
+  padding: 0; }
+
+.feature-5-code {
+  display: inline-block;
+  background-color: #98c0d1;
+  color: #ffffff;
+  border: 1px solid #c8dfe8;
+  border-radius: 0;
+  padding: 7px 15px; }

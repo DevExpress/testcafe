@@ -339,7 +339,7 @@
   function closeSearchBox(e) {
       var clickOutsideSearchBox = searchPanel !== e.target && !has(searchPanel, e.target);
 
-      if(clickOutsideSearchBox && !searchPanel.className.includes('hidden')) 
+      if(clickOutsideSearchBox && searchPanel.className.indexOf('hidden') === -1) 
           searchPanel.className += ' hidden';
   }
 
@@ -802,7 +802,7 @@ attempts to obtain a node to be returned. See <a href="../test-api/selecting-pag
 </code></pre></div><h3><a class="anchor" name="--assertion-timeout-ms"></a>--assertion-timeout &lt;ms&gt; <a class="permalink" href="#--assertion-timeout-ms">#</a></h3>
 <p>Specifies the amount of time, in milliseconds, within which TestCafe makes attempts to successfully execute an <a href="../test-api/assertions/">assertion</a>
 if a <a href="../test-api/selecting-page-elements/selectors/using-selectors.html#define-assertion-actual-value">selector property</a>
-or a <a href="../test-api/obtaining-data-from-the-client.html">client function</a> was passed as an actual value.
+or a <a href="../test-api/obtaining-data-from-the-client/">client function</a> was passed as an actual value.
 See <a href="../test-api/assertions/#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a>.</p>
 
 <p><strong>Default value</strong>: <code>3000</code></p>

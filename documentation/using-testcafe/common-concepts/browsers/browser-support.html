@@ -339,7 +339,7 @@
   function closeSearchBox(e) {
       var clickOutsideSearchBox = searchPanel !== e.target && !has(searchPanel, e.target);
 
-      if(clickOutsideSearchBox && !searchPanel.className.includes('hidden')) 
+      if(clickOutsideSearchBox && searchPanel.className.indexOf('hidden') === -1) 
           searchPanel.className += ' hidden';
   }
 
@@ -559,7 +559,7 @@ of <em>officially supported</em> browsers against which TestCafe is actively tes
 
 <ul>
 <li>Google Chrome: Stable, Beta, Dev and Canary</li>
-<li>Internet Explorer (9+)</li>
+<li>Internet Explorer (11+)</li>
 <li>Microsoft Edge</li>
 <li>Mozilla Firefox</li>
 <li>Safari</li>

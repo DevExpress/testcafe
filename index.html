@@ -244,7 +244,7 @@
   function closeSearchBox(e) {
       var clickOutsideSearchBox = searchPanel !== e.target && !has(searchPanel, e.target);
 
-      if(clickOutsideSearchBox && !searchPanel.className.includes('hidden')) 
+      if(clickOutsideSearchBox && searchPanel.className.indexOf('hidden') === -1) 
           searchPanel.className += ' hidden';
   }
 
@@ -303,7 +303,7 @@
                         <p>1 minute to set up</p>
                         <div class="description">
                             <p>You <a href="https://devexpress.github.io/testcafe/faq/#i-have-heard-that-testcafe-does-not-use-selenium-how-does-it-operate" target="_blank">do not need WebDriver</a> or any other testing software. Install TestCafe with one command, and you are ready to test.</p>
-                            <code class="install-example"><p>npm install -g testcafe</p></code>
+                            <code class="install-example">npm install -g testcafe</code>
                         </div>
                     </div>
                 </div>
@@ -379,7 +379,7 @@
                                 <p>Build readable tests<br/>with PageObject</p>
                                 <div class="description">
                                     <p>The TestCafe's <a href="https://devexpress.github.io/testcafe/documentation/test-api/" target="_blank">Test API</a> includes a high-level selector library, assertions, etc. You can combine them to implement readable tests with the <a href="https://devexpress.github.io/testcafe/documentation/recipes/using-page-model.html" target="_blank">PageObject pattern</a>.</p>
-                                    <code class="page-object-example"><p>const el = Selector('.column').find('label')<br/>           .withText('MacOS').child('input');</p></code>
+                                    <div class="feature-5-code"><code class="page-object-example">const el = Selector('.column').find('label')<br/>           .withText('MacOS').child('input');</code></div>
                                 </div>
                             </div>
                         </div>
@@ -391,6 +391,20 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div class="testcafe-live-promo">
+                    <div class="promo-block">
+                        <div class="image"></div>
+                        <div class="description">
+                            <div class="header">Rapid test development</div>
+                            <div class="text">Here's a free plugin to edit your TestCafe tests on the fly. Changes you make in the code will immediately restart the tests. And you'll see test results instantly.</div>
+                            <code class="textcafe-live-install">npm install -g testcafe-live</code>
+                        </div>
+                    </div>
+                    <div class="buttons">
+                        <a class="video-button">See how it works</a>
+                        <a class="repo-button" href="https://github.com/DevExpress/testcafe-live" target="_blank">View the repository</a>
                     </div>
                 </div>
             </div>
@@ -426,6 +440,11 @@
         </div>
     </form>
 </main>
+<div class="veil-off">
+    <div class="player">
+        <iframe id="yt-iframe" width="853" height="480" src="https://www.youtube.com/embed/RWQtB6Xv01Q" frameborder="0" allowfullscreen=""></iframe>
+    </div>        
+</div>
 
 
       <div class="push"></div>

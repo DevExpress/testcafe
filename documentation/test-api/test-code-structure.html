@@ -339,7 +339,7 @@
   function closeSearchBox(e) {
       var clickOutsideSearchBox = searchPanel !== e.target && !has(searchPanel, e.target);
 
-      if(clickOutsideSearchBox && !searchPanel.className.includes('hidden')) 
+      if(clickOutsideSearchBox && searchPanel.className.indexOf('hidden') === -1) 
           searchPanel.className += ' hidden';
   }
 
@@ -705,7 +705,18 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/obtaining-data-from-the-client.html"  >Obtaining Data from the Client</a>
+<a href="/testcafe/documentation/test-api/obtaining-data-from-the-client/"  >Obtaining Data from the Client</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/obtaining-data-from-the-client/examples-of-using-client-functions.html"  >Examples of Using Client Functions</a>
+		
+    </li>
+
+</ul>
 		
     </li>
 
@@ -893,7 +904,7 @@ reference any modules or libraries you need.</p>
 
 <p>TestCafe tests are executed server side. To manipulate the tested webpage, use <a href="actions/">test actions</a>.
 To determine the state of page elements or obtain any other data from the client side, use <a href="selecting-page-elements/selectors/">selectors</a> and
-<a href="obtaining-data-from-the-client.html">client functions</a>.</p>
+<a href="obtaining-data-from-the-client/">client functions</a>.</p>
 
 <p>To check if the page state matches the expected one, use <a href="assertions/">assertions</a>.</p>
 <h3><a class="anchor" name="test-controller"></a>Test Controller <a class="permalink" href="#test-controller">#</a></h3>
@@ -919,7 +930,7 @@ use the <a href="pausing-the-test.html">wait function</a> or <a href="assertions
 </code></pre></div>
 <p>Another job of the test controller is providing access to the internal context required for test API to operate.
 This is why <a href="selecting-page-elements/selectors/">selectors</a> and
-<a href="obtaining-data-from-the-client.html">client functions</a> need the test controller object when they are
+<a href="obtaining-data-from-the-client/">client functions</a> need the test controller object when they are
 called from Node.js callbacks.</p>
 <h4><a class="anchor" name="using-test-controller-outside-of-test-code"></a>Using Test Controller Outside of Test Code <a class="permalink" href="#using-test-controller-outside-of-test-code">#</a></h4>
 <p>You may sometimes need to call test API from outside of test code. For instance, your <a href="../recipes/using-page-model.html">page model</a>
