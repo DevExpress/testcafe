@@ -667,7 +667,7 @@ interface SelectorAPI {
      * @param methods `node` - The matching DOM node for which custom method is executed.
      * @param methods `methodParams` - Custom method parameters.
      */
-    addCustomMethods(methods: {[method: string]: (node: Element, ...methodParams: any[]) => any}): Selector;
+    addCustomMethods(methods: {[method: string]: (node: Element, ...methodParams: any[]) => any}, opts?: {returnDOMNodes?: boolean}): Selector;
     /**
      * Returns a new selector with a different set of options that includes options from the
      * original selector and new `options` that overwrite the original ones.
