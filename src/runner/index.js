@@ -132,11 +132,16 @@ export default class Runner extends EventEmitter {
             throw new GeneralError(MESSAGE.invalidConcurrencyFactor);
 
         if (proxyBypass) {
-            proxyBypass = Array.isArray(proxyBypass) ? proxyBypass : [ proxyBypass ];
+            assertType([ is.string, is.array ], null, '"proxyBypass" argument', proxyBypass);
+
+            if (typeof proxyBypass === 'string')
+                proxyBypass = proxyBypass.split(',');
 
             proxyBypass.forEach(bypassRule => {
                 assertType(is.string, null, '"proxyBypass" argument', bypassRule);
             });
+
+            this.opts.proxyBypass = proxyBypass;
         }
     }
 

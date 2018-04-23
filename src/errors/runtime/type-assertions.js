@@ -50,6 +50,11 @@ export var is = {
         predicate: isRegExp
     },
 
+    array: {
+        name:      'array',
+        predicate: value => Array.isArray(value)
+    },
+
     nonNullObject: {
         name:              'non-null object',
         predicate:         (value, type) => type === 'object' && !isNullOrUndefined(value),
