@@ -3,6 +3,12 @@ import { APIError, GeneralError } from './';
 import MESSAGE from './message';
 import RequestHook from '../../api/request-hooks/hook';
 
+const startsFromVowelRegExp = /^[aeiou]/i;
+
+function getIndefiniteArticle (text) {
+    return startsFromVowelRegExp.test(text) ? 'an' : 'a';
+}
+
 function isNonNegativeValue (value) {
     return isFiniteNumber(value) && value >= 0;
 }
@@ -85,7 +91,7 @@ export function assertType (types, callsiteName, what, value) {
         if (i === 0)
             expectedTypeMsg += type.name;
         else
-            expectedTypeMsg += (i === last ? ' or a ' : ', ') + type.name;
+            expectedTypeMsg += (i === last ? ' or ' + getIndefiniteArticle(type.name) + ' ' : ', ') + type.name;
     });
 
     if (!pass) {

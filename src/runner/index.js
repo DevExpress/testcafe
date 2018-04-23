@@ -135,11 +135,13 @@ export default class Runner extends EventEmitter {
             assertType([ is.string, is.array ], null, '"proxyBypass" argument', proxyBypass);
 
             if (typeof proxyBypass === 'string')
-                proxyBypass = proxyBypass.split(',');
+                proxyBypass = [ proxyBypass ];
 
-            proxyBypass.forEach(bypassRule => {
-                assertType(is.string, null, '"proxyBypass" argument', bypassRule);
-            });
+            proxyBypass = proxyBypass.reduce((arr, rules) => {
+                assertType(is.string, null, '"proxyBypass" argument', rules);
+
+                return arr.concat(rules.split(','));
+            }, []);
 
             this.opts.proxyBypass = proxyBypass;
         }
