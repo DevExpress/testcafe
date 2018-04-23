@@ -12,6 +12,9 @@ export default class RequestHook {
         if (rules)
             return castArray(rules);
 
+        else if (rules === null)
+            return [];
+
         return [RequestFilterRule.ANY];
     }
 

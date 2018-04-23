@@ -4,7 +4,7 @@ import { RequestHookConfigureAPIError } from '../../errors/test-run/index';
 
 class RequestMock extends RequestHook {
     constructor () {
-        super();
+        super(null);
 
         this.pendingRequestFilterRuleInit = null;
         this.mocks                        = new Map();
