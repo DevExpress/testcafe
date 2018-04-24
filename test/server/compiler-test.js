@@ -32,6 +32,7 @@ describe('Compiler', function () {
                 expect(compiled.tests.length).eql(2);
 
                 expect(compiled.tests[0].name).eql('1.Test');
+                expect(compiled.tests[0].meta).eql({ run: 'run-001' });
                 expect(compiled.tests[0].isLegacy).to.be.undefined;
 
                 expect(compiled.tests[1].name).eql('2.LegacyTest');

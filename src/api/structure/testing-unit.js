@@ -5,12 +5,14 @@ import { assertType, is } from '../../errors/runtime/type-assertions';
 
 
 export default class TestingUnit {
-    constructor (testFile) {
-        this.testFile = testFile;
+    constructor (testFile, unitTypeName) {
+        this.testFile     = testFile;
+        this.unitTypeName = unitTypeName;
 
         this.name            = null;
         this.pageUrl         = null;
         this.authCredentials = null;
+        this.meta            = {};
         this.only            = false;
         this.skip            = false;
 
@@ -62,6 +64,18 @@ export default class TestingUnit {
             assertType(is.string, 'httpAuth', 'credentials.workstation', credentials.workstation);
 
         this.authCredentials = credentials;
+
+        return this.apiOrigin;
+    }
+
+    _meta$ (...args) {
+        assertType([is.string, is.nonNullObject], 'meta', `${this.unitTypeName}.meta`, args[0]);
+
+        const data = typeof args[0] === 'string' ? { [args[0]]: args[1] } : args[0];
+
+        Object.keys(data).forEach(key => {
+            this.meta[key] = data[key];
+        });
 
         return this.apiOrigin;
     }

@@ -55,7 +55,7 @@ export default class Reporter {
             reportItem     = this.reportQueue.shift();
             currentFixture = reportItem.fixture;
 
-            this.plugin.reportTestDone(reportItem.test.name, reportItem.testRunInfo);
+            this.plugin.reportTestDone(reportItem.test.name, reportItem.testRunInfo, reportItem.test.meta);
 
             // NOTE: here we assume that tests are sorted by fixture.
             // Therefore, if the next report item has a different
@@ -63,7 +63,7 @@ export default class Reporter {
             nextReportItem = this.reportQueue[0];
 
             if (nextReportItem && nextReportItem.fixture !== currentFixture)
-                this.plugin.reportFixtureStart(nextReportItem.fixture.name, nextReportItem.fixture.path);
+                this.plugin.reportFixtureStart(nextReportItem.fixture.name, nextReportItem.fixture.path, nextReportItem.fixture.meta);
         }
     }
 
@@ -74,7 +74,7 @@ export default class Reporter {
             var first      = this.reportQueue[0];
 
             this.plugin.reportTaskStart(startTime, userAgents, this.testCount);
-            this.plugin.reportFixtureStart(first.fixture.name, first.fixture.path);
+            this.plugin.reportFixtureStart(first.fixture.name, first.fixture.path, first.fixture.meta);
         });
 
         task.on('test-run-start', testRun => {
