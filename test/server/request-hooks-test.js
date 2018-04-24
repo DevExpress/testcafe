@@ -183,46 +183,57 @@ describe('RequestLogger', () => {
     });
 });
 
-describe('RequestMock (throwing errors)', () => {
-    describe('Chaining', () => {
-        it('.respond().onRequestTo()', () => {
-            assertThrow(() => {
-                RequestMock().respond(noop).onRequestTo({});
-            }, {
-                isTestCafeError: true,
-                requestHookName: 'RequestMock',
-                errMsg:          "The 'onRequestTo' method was not called before 'respond'. You must call the 'onRequestTo' method to provide the URL requests to which are mocked.",
-                type:            'requestHookConfigureAPIError',
-                callsite:        null
+describe('RequestMock', () => {
+    describe('Throwing errors', () => {
+        describe('Chaining', () => {
+            it('.respond().onRequestTo()', () => {
+                assertThrow(() => {
+                    RequestMock().respond(noop).onRequestTo({});
+                }, {
+                    isTestCafeError: true,
+                    requestHookName: 'RequestMock',
+                    errMsg:          "The 'onRequestTo' method was not called before 'respond'. You must call the 'onRequestTo' method to provide the URL requests to which are mocked.",
+                    type:            'requestHookConfigureAPIError',
+                    callsite:        null
+                });
+            });
+
+            it('onRequestTo().onRequestTo()', () => {
+                assertThrow(() => {
+                    RequestMock().onRequestTo({}).onRequestTo({});
+                }, {
+                    isTestCafeError: true,
+                    requestHookName: 'RequestMock',
+                    errMsg:          "The 'respond' method was not called after 'onRequestTo'. You must call the 'respond' method to provide the mocked response.",
+                    type:            'requestHookConfigureAPIError',
+                    callsite:        null
+                });
             });
         });
 
-        it('onRequestTo().onRequestTo()', () => {
-            assertThrow(() => {
-                RequestMock().onRequestTo({}).onRequestTo({});
-            }, {
-                isTestCafeError: true,
-                requestHookName: 'RequestMock',
-                errMsg:          "The 'respond' method was not called after 'onRequestTo'. You must call the 'respond' method to provide the mocked response.",
-                type:            'requestHookConfigureAPIError',
-                callsite:        null
+        describe('Construction', () => {
+            it('Without configure', () => {
+                expect(() => {
+                    RequestMock();
+                }).to.not.throw;
+            });
+            it('With configure', () => {
+                expect(() => {
+                    RequestMock()
+                        .onRequestTo('http://example.com')
+                        .respond('<html></html>');
+                }).to.not.throw;
             });
         });
     });
 
-    describe('Construction', () => {
-        it('Without configure', () => {
-            expect(() => {
-                RequestMock();
-            }).to.not.throw;
-        });
-        it('With configure', () => {
-            expect(() => {
-                RequestMock()
-                    .onRequestTo('http://example.com')
-                    .respond('<html></html>');
-            }).to.not.throw;
-        });
+    it('Should handle only specified requests (GH-2336)', () => {
+        const mock = RequestMock()
+            .onRequestTo('http://example.com')
+            .respond();
+
+        expect(mock.requestFilterRules.length).eql(1);
+        expect(mock.requestFilterRules[0].options.url).eql('http://example.com');
     });
 });
 
