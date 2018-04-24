@@ -7,7 +7,7 @@ import { assertType, is } from '../../errors/runtime/type-assertions';
 export default class TestingUnit {
     constructor (testFile, unitTypeName) {
         this.testFile     = testFile;
-        this.unitTypeName = unitTypeName || null;
+        this.unitTypeName = unitTypeName;
 
         this.name            = null;
         this.pageUrl         = null;
@@ -68,10 +68,10 @@ export default class TestingUnit {
         return this.apiOrigin;
     }
 
-    _meta$ () {
-        assertType([is.string, is.nonNullObject], 'meta', `${this.unitTypeName}.meta`, arguments[0]);
+    _meta$ (...args) {
+        assertType([is.string, is.nonNullObject], 'meta', `${this.unitTypeName}.meta`, args[0]);
 
-        const data = typeof arguments[0] === 'string' ? { [arguments[0]]: arguments[1] } : arguments[0];
+        const data = typeof args[0] === 'string' ? { [args[0]]: args[1] } : args[0];
 
         Object.keys(data).forEach(key => {
             this.meta[key] = data[key];

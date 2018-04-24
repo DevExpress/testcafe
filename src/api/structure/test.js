@@ -19,7 +19,6 @@ export default class Test extends TestingUnit {
     }
 
     _add (name, fn) {
-
         assertType(is.string, 'apiOrigin', 'The test name', name);
         assertType(is.function, 'apiOrigin', 'The test body', fn);
 
