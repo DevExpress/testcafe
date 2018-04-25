@@ -1,0 +1,105 @@
+<html>
+<head><title>Edit test</title></head>
+<style>
+    h2 {
+        margin-top: 20px;
+    }
+    div {
+        border: 1px solid black;
+        min-height: 10px;
+    }
+</style>
+<script type="text/javascript">
+    function onTextInput (event) {
+        var needPreventDefault = true;
+
+        if (isTargetElement(event.target, 'contentEditableWithModify'))
+            changeNodeValueOnTextInput(event);
+
+        if (isTargetElement(event.target, 'contentEditableWithReplace')) {
+            replaceEditableElementOnTextInput(event);
+
+            needPreventDefault = false;
+        }
+
+        if(needPreventDefault)
+            event.preventDefault();
+    }
+
+    function changeNodeValueOnTextInput(event) {
+        document.getElementById('contentEditableWithModify').childNodes[0].childNodes[0].nodeValue += event.data;
+    }
+
+    function replaceEditableElementOnTextInput (event) {
+        if (window.preventNextElementReplacement)
+            return;
+
+        window.preventNextElementReplacement = true;
+
+        var div          = document.getElementById('contentEditableWithReplace');
+        var paragraph    = div.childNodes[0];
+        var textNode     = paragraph.childNodes[0];
+        var newParagraph = document.createElement("P");
+
+        newParagraph.innerHTML = 'X';
+
+        div.removeChild(paragraph);
+        div.appendChild(newParagraph);
+        newParagraph.focus();
+    }
+
+    function onInput (event) {
+        if (!isTargetElement(event.target, 'contentEditableWithReplace'))
+            throw new Error('Input event has raised');
+    }
+
+    function isTargetElement(el, id) {
+        while (el) {
+            if (el.id === id)
+                return true;
+
+            el = el.parentNode;
+        }
+
+        return null;
+    }
+
+    document.addEventListener('textInput', onTextInput, true);
+    document.addEventListener('textinput', onTextInput, true);
+    document.addEventListener('input', onInput, true);
+</script>
+<body>
+    <h2>Prevent Input event on TextInput when type to input element</h2>
+    <pre>
+        Chrome/Edge. Typing is prevented and Input event is not raised
+        IE11/Firefox. Typing is not prevented. Input event is raised
+    </pre>
+    <input id="simpleInput" />
+    <h2>Prevent Input event and typing on simple ContentEditable div</h2>
+    <pre>
+        Chrome/Edge. Typing is prevented. Input event is not raised
+        IE11/Firefox. Typing is not prevented.
+        Input event is raised in firefox but is not raised in IE11 - it's a IE11 bug
+    </pre>
+    <div contenteditable="true" id="simpleContentEditable"></div>
+    <h2>Prevent Input event on TextInput event when type to element node</h2>
+    <pre>
+        Not for IE11 because preventDefault will not prevent typing
+        Not for Firefox because Firefox does not support TextInput event
+    </pre>
+    <div contenteditable="true" id="contentEditableWithElementNode"><p><br/></p></div>
+    <h2>Modify text node of ContentEditable div on TextInput event and prevent Input event</h2>
+    <pre>
+        Not for IE11 because is's not possible to prevent typing in IE11
+        Not for Firefox because Firefox does not support TextInput event
+    </pre>
+    <div contenteditable="true" id="contentEditableWithModify"><p>A</p></div>
+    <h2>Type to ContentEditable div when selected node was replaced on TextInput event</h2>
+    <pre>
+        Not for IE11 because this test emulates behavior from https://github.com/DevExpress/testcafe/issues/1956.
+        This behavior is different in IE11
+        Not for Firefox because Firefox does not support TextInput event
+    </pre>
+    <div contenteditable="true" id="contentEditableWithReplace"><p>B</p></div>
+</body>
+</html>
