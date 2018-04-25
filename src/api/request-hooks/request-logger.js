@@ -84,30 +84,20 @@ class RequestLogger extends RequestHook {
         return preparedRequests;
     }
 
+    _getCompletedRequests () {
+        return this._prepareInternalRequestInfo().filter(r => r.response);
+    }
+
     // API
     contains (predicate) {
         return ReExecutablePromise.fromFn(async () => {
-            // NOTE: If the exception is raised inside Promise,
-            // Promise will be rejected immediately and 'Smart Assertion Query Mechanism' will not work
-            try {
-                return !!this._prepareInternalRequestInfo().find(predicate);
-            }
-            catch (e) {
-                return false;
-            }
+            return !!this._getCompletedRequests().find(predicate);
         });
     }
 
     count (predicate) {
         return ReExecutablePromise.fromFn(async () => {
-            // NOTE: If the exception is raised inside Promise,
-            // Promise will be rejected immediately and 'Smart Assertion Query Mechanism' will not work
-            try {
-                return this._prepareInternalRequestInfo().filter(predicate).length;
-            }
-            catch (e) {
-                return 0;
-            }
+            return this._getCompletedRequests().filter(predicate).length;
         });
     }
 

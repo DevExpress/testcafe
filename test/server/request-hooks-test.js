@@ -5,12 +5,11 @@ const RequestMock       = exportableLib.RequestMock;
 const RequestLogger     = exportableLib.RequestLogger;
 const RequestHook       = exportableLib.RequestHook;
 const Promise           = require('pinkie');
+const nanoid            = require('nanoid');
 
-const assertThrow    = require('./helpers/assert-error').assertThrow;
-const chai           = require('chai');
-const expect         = chai.expect;
-const AssertionError = chai.AssertionError;
-const noop           = require('lodash').noop;
+const assertThrow = require('./helpers/assert-error').assertThrow;
+const expect      = require('chai').expect;
+const noop        = require('lodash').noop;
 
 describe('RequestLogger', () => {
     const createProxyRequestEventMock = (testRunId, requestId) => {
@@ -47,8 +46,8 @@ describe('RequestLogger', () => {
         };
     };
 
-    const requestId         = 'IwQA12J12';
-    const testRunId         = 'UnqLnm189';
+    const requestId         = nanoid(9);
+    const testRunId         = nanoid(9);
     const requestEventMock  = createProxyRequestEventMock(requestId, testRunId);
     const responseEventMock = createProxyResponseEventMock(requestId, testRunId);
 
@@ -132,10 +131,10 @@ describe('RequestLogger', () => {
     it('.clear method', () => {
         const logger = new RequestLogger('http://example.com');
 
-        const requestId1         = 'IwQA12J13';
-        const requestId2         = '2wZA32J14';
-        const testRunId1         = 'iPqLnm180';
-        const testRunId2         = 'KlqLnm181';
+        const requestId1         = nanoid(9);
+        const requestId2         = nanoid(9);
+        const testRunId1         = nanoid(9);
+        const testRunId2         = nanoid(9);
         const requestEventMock1  = createProxyRequestEventMock(testRunId1, requestId1);
         const responseEventMock1 = createProxyResponseEventMock(testRunId1, requestId1);
         const requestEventMock2  = createProxyRequestEventMock(testRunId2, requestId2);
@@ -185,24 +184,23 @@ describe('RequestLogger', () => {
         expect(logger.requests.length).eql(1);
     });
 
-    it('.contains and .count methods should not throw error for delayed response', () => {
-        const logger = new RequestLogger();
+    it('.contains and .count methods should affect only completed requests', () => {
+        const logger            = new RequestLogger();
+        const requestEventMock2 = createProxyRequestEventMock(nanoid(9), nanoid(9));
 
         logger.onRequest(requestEventMock);
+        logger.onResponse(responseEventMock);
+        logger.onRequest(requestEventMock2);
 
         return Promise.all([
-            logger.contains(r => r.response.statusCode === 200),
-            logger.count(r => r.response.statusCode === 200)
+            logger.contains(r => r.response),
+            logger.contains(r => !r.response),
+            logger.count(r => r.response),
         ])
             .then(data => {
-                expect(data[0]).eql(false);
-                expect(data[1]).eql(0);
-            })
-            .catch(err => {
-                if (err instanceof AssertionError)
-                    throw err;
-                else
-                    throw new Error('.contains and .count methods should not throw errors for delayed response');
+                expect(data[0]).eql(true);
+                expect(data[1]).eql(false);
+                expect(data[2]).eql(1);
             });
     });
 });
