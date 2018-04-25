@@ -3,10 +3,10 @@ import { APIError, GeneralError } from './';
 import MESSAGE from './message';
 import RequestHook from '../../api/request-hooks/hook';
 
-const startsFromVowelRegExp = /^[aeiou]/i;
+const START_FROM_VOWEL_RE = /^[aeiou]/i;
 
 function getIndefiniteArticle (text) {
-    return startsFromVowelRegExp.test(text) ? 'an' : 'a';
+    return START_FROM_VOWEL_RE.test(text) ? 'an' : 'a';
 }
 
 function isNonNegativeValue (value) {
