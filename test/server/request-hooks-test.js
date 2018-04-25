@@ -193,14 +193,12 @@ describe('RequestLogger', () => {
         logger.onRequest(requestEventMock2);
 
         return Promise.all([
-            logger.contains(r => r.response),
-            logger.contains(r => !r.response),
-            logger.count(r => r.response),
+            logger.count(r => r.request),
+            logger.contains(r => r.request.id === requestEventMock2._requestInfo.requestId)
         ])
             .then(data => {
-                expect(data[0]).eql(true);
+                expect(data[0]).eql(1);
                 expect(data[1]).eql(false);
-                expect(data[2]).eql(1);
             });
     });
 });
