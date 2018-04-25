@@ -1,6 +1,6 @@
 var expect = require('chai').expect;
 
-var browsersWithLimitations = [ 'ie', 'safari', 'firefox', 'firefox-osx', 'ipad', 'iphone' ];
+var browsersWithLimitations = [ 'ie', 'firefox', 'firefox-osx' ];
 
 describe('Should support TextInput event[Regression](GH-1956)', function () {
     it('Prevent Input event on TextInput when type to input element', function () {
