@@ -26,6 +26,7 @@ async function generatePrefs (profileDir, port) {
         'user_pref("browser.startup.homepage_override.mstone","ignore");',
         'user_pref("browser.tabs.warnOnCloseOtherTabs", false);',
         'user_pref("browser.tabs.warnOnClose", false);',
+        'user_pref("browser.sessionstore.resume_from_crash", false);',
         'user_pref("toolkit.telemetry.reportingpolicy.firstRun", false);',
         'user_pref("toolkit.telemetry.enabled", false);',
         'user_pref("toolkit.telemetry.rejected", true);',
