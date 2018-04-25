@@ -95,6 +95,11 @@ function _typeTextToContentEditable (element, text) {
 
     var onInput = () => {
         inputEventRaised = true;
+
+        const q = 1;
+
+        if (q === 1)
+            return;
     };
 
     var afterContentChanged = () => {
