@@ -9,7 +9,7 @@ const contentEditableWithElementNode = Selector('#contentEditableWithElementNode
 const contentEditableWithModify      = Selector('#contentEditableWithModify');
 const contentEditableWithReplace     = Selector('#contentEditableWithReplace');
 
-// NOTE: Chrome/Edge. Typing is prevented and Input event is not raised
+// NOTE: Chrome/Edge/Safari. Typing is prevented and Input event is not raised
 test('Prevent Input event on TextInput when type to input element', async t => {
     await t
         .typeText(simpleInput, 'Hello')
@@ -23,7 +23,7 @@ test('Prevent Input event on TextInput when type to input element IE11/Firefox',
         .expect(simpleInput.value).eql('Hello');
 });
 
-// NOTE: Chrome/Edge. Typing is prevented. Input event is not raised
+// NOTE: Chrome/Edge/Safari. Typing is prevented. Input event is not raised
 test('Prevent Input event on TextInput when type to ContentEditable div', async t => {
     await t
         .typeText(simpleContentEditable, 'Hello')
