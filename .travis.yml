@@ -3,7 +3,7 @@ matrix:
  include:
   - node_js: "4"
     env: GULP_TASK="test-server"
-  - node_js: "stable"
+  - node_js: "9.11.1"
     env: GULP_TASK="test-server"
   - node_js: "stable"
     env: GULP_TASK="test-client-travis"
