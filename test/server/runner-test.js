@@ -547,7 +547,7 @@ describe('Runner', function () {
                     .run()
                     .catch(function (err) {
                         exceptionCount++;
-                        expect(err.message).contains('"proxyBypass" argument is expected to be a string, but it was ' + type);
+                        expect(err.message).contains('"proxyBypass" argument is expected to be a string or an array, but it was ' + type);
                     });
             };
 

@@ -1,4 +1,5 @@
-var os = require('os');
+var os     = require('os');
+var expect = require('chai').expect;
 
 const TRUSTED_PROXY_URL     = os.hostname() + ':3004';
 const TRANSPARENT_PROXY_URL = os.hostname() + ':3005';
@@ -19,8 +20,23 @@ describe('Using proxy-bypass', function () {
         return runTests('testcafe-fixtures/index.test.js', null, { useProxy: ERROR_PROXY_URL, proxyBypass: 'localhost:3000' });
     });
 
-    it('Should bypass using proxy by set of rules', function () {
+    it('Should bypass using proxy by comma-separated string of rules', function () {
         return runTests('testcafe-fixtures/index.test.js', null, { useProxy: ERROR_PROXY_URL, proxyBypass: 'dummy,localhost:3000' });
+    });
+
+    it('Should bypass using proxy by array of rules', function () {
+        return runTests('testcafe-fixtures/index.test.js', null, { useProxy: ERROR_PROXY_URL, proxyBypass: ['dummy', 'localhost:3000'] });
+    });
+
+    it('Should bypass using proxy by array of comma-separated strings', function () {
+        return runTests('testcafe-fixtures/index.test.js', null, { useProxy: ERROR_PROXY_URL, proxyBypass: ['dummy,localhost:3000', 'dummy,localhost:3000'] });
+    });
+
+    it('Should fail using proxy-bypass which is set by incorrect argument', function () {
+        return runTests('testcafe-fixtures/index.test.js', null, { useProxy: ERROR_PROXY_URL, proxyBypass: /dummy/, shouldFail: true })
+            .catch(function (err) {
+                expect(err.message).contains('proxyBypass" argument is expected to be a string or an array, but it was object.');
+            });
     });
 
     it('Should open page without proxy but get resource with proxy', function () {

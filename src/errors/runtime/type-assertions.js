@@ -3,6 +3,12 @@ import { APIError, GeneralError } from './';
 import MESSAGE from './message';
 import RequestHook from '../../api/request-hooks/hook';
 
+const START_FROM_VOWEL_RE = /^[aeiou]/i;
+
+function getIndefiniteArticle (text) {
+    return START_FROM_VOWEL_RE.test(text) ? 'an' : 'a';
+}
+
 function isNonNegativeValue (value) {
     return isFiniteNumber(value) && value >= 0;
 }
@@ -50,6 +56,11 @@ export var is = {
         predicate: isRegExp
     },
 
+    array: {
+        name:      'array',
+        predicate: value => Array.isArray(value)
+    },
+
     nonNullObject: {
         name:              'non-null object',
         predicate:         (value, type) => type === 'object' && !isNullOrUndefined(value),
@@ -80,7 +91,7 @@ export function assertType (types, callsiteName, what, value) {
         if (i === 0)
             expectedTypeMsg += type.name;
         else
-            expectedTypeMsg += (i === last ? ' or a ' : ', ') + type.name;
+            expectedTypeMsg += (i === last ? ' or ' + getIndefiniteArticle(type.name) + ' ' : ', ') + type.name;
     });
 
     if (!pass) {

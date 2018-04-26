@@ -123,7 +123,7 @@ export default class Runner extends EventEmitter {
     _validateRunOptions () {
         const concurrency = this.bootstrapper.concurrency;
         const speed       = this.opts.speed;
-        const proxyBypass = this.opts.proxyBypass;
+        let proxyBypass   = this.opts.proxyBypass;
 
         if (typeof speed !== 'number' || isNaN(speed) || speed < 0.01 || speed > 1)
             throw new GeneralError(MESSAGE.invalidSpeedValue);
@@ -131,8 +131,20 @@ export default class Runner extends EventEmitter {
         if (typeof concurrency !== 'number' || isNaN(concurrency) || concurrency < 1)
             throw new GeneralError(MESSAGE.invalidConcurrencyFactor);
 
-        if (proxyBypass)
-            assertType(is.string, null, '"proxyBypass" argument', proxyBypass);
+        if (proxyBypass) {
+            assertType([ is.string, is.array ], null, '"proxyBypass" argument', proxyBypass);
+
+            if (typeof proxyBypass === 'string')
+                proxyBypass = [proxyBypass];
+
+            proxyBypass = proxyBypass.reduce((arr, rules) => {
+                assertType(is.string, null, '"proxyBypass" argument', rules);
+
+                return arr.concat(rules.split(','));
+            }, []);
+
+            this.opts.proxyBypass = proxyBypass;
+        }
     }
 
 
