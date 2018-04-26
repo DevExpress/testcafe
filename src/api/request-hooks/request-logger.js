@@ -84,16 +84,20 @@ class RequestLogger extends RequestHook {
         return preparedRequests;
     }
 
+    _getCompletedRequests () {
+        return this._prepareInternalRequestInfo().filter(r => r.response);
+    }
+
     // API
     contains (predicate) {
         return ReExecutablePromise.fromFn(async () => {
-            return !!this._prepareInternalRequestInfo().find(predicate);
+            return !!this._getCompletedRequests().find(predicate);
         });
     }
 
     count (predicate) {
         return ReExecutablePromise.fromFn(async () => {
-            return this._prepareInternalRequestInfo().filter(predicate).length;
+            return this._getCompletedRequests().filter(predicate).length;
         });
     }
 

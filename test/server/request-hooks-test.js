@@ -4,6 +4,8 @@ const exportableLib     = require('../../lib/api/exportable-lib');
 const RequestMock       = exportableLib.RequestMock;
 const RequestLogger     = exportableLib.RequestLogger;
 const RequestHook       = exportableLib.RequestHook;
+const Promise           = require('pinkie');
+const nanoid            = require('nanoid');
 
 const assertThrow = require('./helpers/assert-error').assertThrow;
 const expect      = require('chai').expect;
@@ -44,8 +46,8 @@ describe('RequestLogger', () => {
         };
     };
 
-    const requestId         = 'IwQA12J12';
-    const testRunId         = 'UnqLnm189';
+    const requestId         = nanoid(9);
+    const testRunId         = nanoid(9);
     const requestEventMock  = createProxyRequestEventMock(requestId, testRunId);
     const responseEventMock = createProxyResponseEventMock(requestId, testRunId);
 
@@ -129,10 +131,10 @@ describe('RequestLogger', () => {
     it('.clear method', () => {
         const logger = new RequestLogger('http://example.com');
 
-        const requestId1         = 'IwQA12J13';
-        const requestId2         = '2wZA32J14';
-        const testRunId1         = 'iPqLnm180';
-        const testRunId2         = 'KlqLnm181';
+        const requestId1         = nanoid(9);
+        const requestId2         = nanoid(9);
+        const testRunId1         = nanoid(9);
+        const testRunId2         = nanoid(9);
         const requestEventMock1  = createProxyRequestEventMock(testRunId1, requestId1);
         const responseEventMock1 = createProxyResponseEventMock(testRunId1, requestId1);
         const requestEventMock2  = createProxyRequestEventMock(testRunId2, requestId2);
@@ -180,6 +182,26 @@ describe('RequestLogger', () => {
         logger.onResponse(responseEventMock);
 
         expect(logger.requests.length).eql(1);
+    });
+
+    it('.contains and .count methods should affect only completed requests', () => {
+        const logger            = new RequestLogger();
+        const requestEventMock2 = createProxyRequestEventMock(nanoid(9), nanoid(9));
+
+        logger.onRequest(requestEventMock);
+        logger.onResponse(responseEventMock);
+        logger.onRequest(requestEventMock2);
+
+        return Promise.all([
+            logger.count(r => r.request),
+            logger.count(r => r.response.statusCode === 304),
+            logger.contains(r => r.request.id === requestEventMock2._requestInfo.requestId)
+        ])
+            .then(data => {
+                expect(data[0]).eql(1);
+                expect(data[1]).eql(1);
+                expect(data[2]).eql(false);
+            });
     });
 });
 
