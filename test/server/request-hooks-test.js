@@ -194,11 +194,13 @@ describe('RequestLogger', () => {
 
         return Promise.all([
             logger.count(r => r.request),
+            logger.count(r => r.response.statusCode === 304),
             logger.contains(r => r.request.id === requestEventMock2._requestInfo.requestId)
         ])
             .then(data => {
                 expect(data[0]).eql(1);
-                expect(data[1]).eql(false);
+                expect(data[1]).eql(1);
+                expect(data[2]).eql(false);
             });
     });
 });
