@@ -89,9 +89,9 @@ function getSelectionRectangle (element, position) {
     try {
         var range = document.createRange(); //B254723
 
-        range.setStart(fakeDiv.firstChild, Math.min(position, valueLength));
+        range.setStart(hammerhead.nativeMethods.nodeFirstChildGetter.call(fakeDiv), Math.min(position, valueLength));
         // NOTE: The range.getClientRects function returns wrong result if range length is 0 in Safari 11
-        range.setEnd(fakeDiv.firstChild, Math.min(position + 1, valueLength + 1));
+        range.setEnd(hammerhead.nativeMethods.nodeFirstChildGetter.call(fakeDiv), Math.min(position + 1, valueLength + 1));
 
         if (domUtils.isTextAreaElement(element)) {
             rect = range.getBoundingClientRect();

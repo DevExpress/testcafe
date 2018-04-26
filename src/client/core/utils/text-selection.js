@@ -101,7 +101,7 @@ function onSelectionChange () {
                 //NOTE: for MSEdge
                 range = document.createRange();
 
-                var textNode = activeElement.firstChild;
+                var textNode = hammerhead.nativeMethods.nodeFirstChildGetter.call(activeElement);
 
                 range.setStart(textNode, startSelection);
                 range.setEnd(textNode, endSelection);
