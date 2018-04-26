@@ -271,8 +271,12 @@ export default class MoveAutomation {
     _emulateEvents (currentElement) {
         var whichButton = this.holdLeftButton ? eventUtils.WHICH_PARAMETER.leftButton : eventUtils.WHICH_PARAMETER.noButton;
         var button      = this.holdLeftButton ? eventUtils.BUTTONS_PARAMETER.leftButton : eventUtils.BUTTONS_PARAMETER.noButton;
+        var screenLeft  = window.screenLeft ? window.screenLeft : window.screenX;
+        var screenTop   = window.screenTop ? window.screenTop : window.screenY;
 
         var eventOptions = {
+            screenX:      screenLeft + this.x,
+            screenY:      screenTop + this.y,
             clientX:      this.x,
             clientY:      this.y,
             button:       0,
