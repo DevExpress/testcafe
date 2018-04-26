@@ -6,7 +6,7 @@ skip_commits:
 
 environment:
   GULP_TASK: "test-functional-local"
-  NODEJS_VERSION: "9.11.1"
+  NODEJS_VERSION: "stable"
 
 install:
 - ps: >-

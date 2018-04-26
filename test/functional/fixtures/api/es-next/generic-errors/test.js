@@ -1,4 +1,5 @@
-var expect = require('chai').expect;
+var expect      = require('chai').expect;
+var nodeVersion = require('node-version');
 
 // NOTE: we run tests in chrome only, because we mainly test server API functionality.
 // Actions functionality is tested in lower-level raw API.
@@ -49,11 +50,25 @@ describe('[API] Generic errors', function () {
 
     describe('External assertion library error', function () {
         it('Should handle Node built-in assertion lib error', function () {
+            const NEW_NODE_ASSERTION_MESSAGE = [
+                'AssertionError [ERR_ASSERTION]: Input A expected to strictly equal input B:',
+                '+ expected - actual',
+                '',
+                '- \'answer\'',
+                '+ \'42\''
+            ].join(' ');
+
+            const OLD_NODE_ASSERTION_MESSAGE_RE = /AssertionError( \[ERR_ASSERTION])?: 'answer' === '42'/;
+
             return runTests('./testcafe-fixtures/external-assertion-lib-errors-test.js', 'Built-in assertion lib error',
                 { shouldFail: true, only: 'chrome' })
                 .catch(function (errs) {
                     expect(errs[0]).to.contains('> 13 |    assert.strictEqual(\'answer\', \'42\');');
-                    expect(errs[0]).to.match(/AssertionError( \[ERR_ASSERTION])?: 'answer' === '42'/);
+
+                    if (nodeVersion.major >= 10)
+                        expect(errs[0]).to.contain(NEW_NODE_ASSERTION_MESSAGE);
+                    else
+                        expect(errs[0]).to.match(OLD_NODE_ASSERTION_MESSAGE_RE);
                 });
         });
 
