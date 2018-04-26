@@ -17,7 +17,7 @@ This topic consists of the following sections.
 * [Smart Assertion Query Mechanism](#smart-assertion-query-mechanism)
 * [Assertion options](#assertion-options)
   * [options.timeout](#optionstimeout)
-  * [options.allowUnawaitedPromise](#optionsallowUnawaitedPromise)
+  * [options.allowUnawaitedPromise](#optionsallowunawaitedpromise)
 
 ## Assertion Structure
 
@@ -27,7 +27,7 @@ or a [client function](../obtaining-data-from-the-client/README.md) promise.
 TestCafe automatically waits for node state properties to obtain a value and for client functions to execute.
 See [Smart Assertion Query Mechanism](#smart-assertion-query-mechanism) for details.
 
-> You cannot pass a regular promise to the `expect` method unless the [options.allowUnawaitedPromise](#optionsallowUnawaitedPromise) option is enabled.
+> You cannot pass a regular promise to the `expect` method unless the [options.allowUnawaitedPromise](#optionsallowunawaitedpromise) option is enabled.
 
 Next is an [assertion method](assertion-api.md). Assertion methods accept an expected value
 and, optionally, other arguments.
