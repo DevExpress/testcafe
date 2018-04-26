@@ -153,8 +153,8 @@ Allows a regular promise to be passed to the assertion's `expect` method.
 By default, only promises returned by the [selectors](../selecting-page-elements/selectors/using-selectors.md#define-assertion-actual-value)
 and [client functions](../obtaining-data-from-the-client/README.md) can be passed as the assertion's actual value.
 They trigger the [Smart Assertion Query Mechanism](#smart-assertion-query-mechanism).
-If you pass a regular unawaited promise, this will tell TestCafe to compare the promise itself with the expected value.
-In case this is what you need, set the `allowUnawaitedPromise` option to `true`.
+If you could pass a regular unawaited promise, this would tell TestCafe to compare the promise itself with the expected value.
+In case this is what you need, set the `allowUnawaitedPromise` option to `true`. Otherwise, an error will be thrown.
 
 ```js
 await t.expect(doSomethingAsync()).ok('check that a promise is returned', { allowUnawaitedPromise: true });
