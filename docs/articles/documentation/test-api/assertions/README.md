@@ -17,6 +17,7 @@ This topic consists of the following sections.
 * [Smart Assertion Query Mechanism](#smart-assertion-query-mechanism)
 * [Assertion options](#assertion-options)
   * [options.timeout](#optionstimeout)
+  * [options.allowUnawaitedPromise](#optionsallowUnawaitedPromise)
 
 ## Assertion Structure
 
@@ -25,6 +26,8 @@ This method accepts the actual value. You can pass a value, a [Selector's DOM no
 or a [client function](../obtaining-data-from-the-client/README.md) promise.
 TestCafe automatically waits for node state properties to obtain a value and for client functions to execute.
 See [Smart Assertion Query Mechanism](#smart-assertion-query-mechanism) for details.
+
+> You cannot pass a regular promise to the `expect` method unless the [options.allowUnawaitedPromise](#optionsallowUnawaitedPromise) option is enabled.
 
 Next is an [assertion method](assertion-api.md). Assertion methods accept an expected value
 and, optionally, other arguments.
@@ -62,9 +65,9 @@ You can perform the required assertions immediately after test action is execute
 ![Synchronous Functional Testing](../../../images/assertions/synchronous-testing.png)
 
 Functional tests are asynchronous on the web. This means that we cannot get the expected changes immediately after an end-user's actions.
-+For example, it can take time for the tested web page to send a request to the server for the required data, or an end-user's action launches an animation after which the web page reaches its final state.
-+All these intervals cannot be pre-calculated because they depend on various factors: computer performance,
- network connection speed, etc. In this case, if we perform assertions immediately after the test action finished,we can get an indefinite result.
+For example, it can take time for the tested web page to send a request to the server for the required data, or an end-user's action launches an animation after which the web page reaches its final state.
+All these intervals cannot be pre-calculated because they depend on various factors: computer performance,
+network connection speed, etc. In this case, if we perform assertions immediately after the test action finished, we can get an indefinite result.
 
 ![Asynchronous Functional Testing](../../../images/assertions/asynchronous-testing.png)
 
@@ -142,3 +145,17 @@ await t.expect(Selector('#elementId').innerText).eql('text', 'check element text
 
 > In addition to built-in assertions, you also can use assertions from Node's built-in [assert](https://nodejs.org/api/assert.html) module or 3rd-party library (for example [chai](http://chaijs.com/)).
 > In this case, you specify the time required to complete asynchronous actions using the [t.wait(timeout)](../pausing-the-test.md) method.
+
+### options.allowUnawaitedPromise
+
+Allows a regular promise to be passed to the assertion's `expect` method.
+
+By default, only promises returned by the [selectors](../selecting-page-elements/selectors/using-selectors.md#define-assertion-actual-value)
+and [client functions](../obtaining-data-from-the-client/README.md) can be passed as the assertion's actual value.
+They trigger the [Smart Assertion Query Mechanism](#smart-assertion-query-mechanism).
+If you pass a regular unawaited promise, this will tell TestCafe to compare the promise itself with the expected value.
+In case this is what you need, set the `allowUnawaitedPromise` option to `true`.
+
+```js
+await t.expect(doSomethingAsync()).ok('check that a promise is returned', { allowUnawaitedPromise: true });
+```
