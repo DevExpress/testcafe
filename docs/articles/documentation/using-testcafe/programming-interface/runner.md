@@ -363,13 +363,19 @@ The `bypassRules` parameter takes one or several URLs that require direct access
 
 **Examples**
 
+The following example shows how to use the proxy server at `proxy.corp.mycompany.com`.
+
 ```js
 runner.useProxy('proxy.corp.mycompany.com');
 ```
 
+In the example below, the proxy server address is `172.0.10.10:8080` and two resources at `localhost:8080` and `internal-resource.corp.mycompany.com` are accessed directly.
+
 ```js
 runner.useProxy('172.0.10.10:8080', ['localhost:8080', 'internal-resource.corp.mycompany.com']);
 ```
+
+The `*.mycompany.com` proxy bypass rule means that all URLs in `mycompany.com` subdomains will be accessed directly.
 
 ```js
 runner.useProxy('proxy.corp.mycompany.com', '*.mycompany.com');

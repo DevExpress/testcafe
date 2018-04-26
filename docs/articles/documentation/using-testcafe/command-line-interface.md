@@ -481,13 +481,19 @@ When you access the Internet through a proxy server specified using the [--proxy
 
 The `rules` parameter takes a comma-separated list (without spaces) of URLs that require direct access. You can omit parts of the URLs or replace them with wildcards `*` (which has the same effect). TestCafe will correspond these symbols to any number of characters in the URL.
 
+The following example uses the proxy server at `proxy.corp.mycompany.com` with the `localhost:8080` address accessed directly.
+
 ```sh
 testcafe chrome my-tests/**/*.js --proxy proxy.corp.mycompany.com --proxy-bypass localhost:8080
 ```
 
+In the example below, two resources are accessed bypassing the proxy: `localhost:8080` and `internal-resource.corp.mycompany.com`.
+
 ```sh
 testcafe chrome my-tests/**/*.js --proxy proxy.corp.mycompany.com --proxy-bypass localhost:8080,internal-resource.corp.mycompany.com
 ```
+
+The `*.mycompany.com` value means that all URLs in `mycompany.com` subdomains will be accessed directly.
 
 ```sh
 testcafe chrome my-tests/**/*.js --proxy proxy.corp.mycompany.com --proxy-bypass *.mycompany.com
