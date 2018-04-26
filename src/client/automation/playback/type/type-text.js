@@ -3,6 +3,7 @@ import testCafeCore from '../../deps/testcafe-core';
 import nextTick from '../../utils/next-tick';
 
 var browserUtils   = hammerhead.utils.browser;
+var eventSandbox   = hammerhead.sandbox.event;
 var eventSimulator = hammerhead.eventSandbox.eventSimulator;
 var listeners      = hammerhead.eventSandbox.listeners;
 
@@ -112,23 +113,30 @@ function _excludeInvisibleSymbolsFromSelection (selection) {
 let forceInputInSafari;
 
 function simulateTextInput (element, text) {
-    forceInputInSafari = false;
-
-    if (browserUtils.isSafari)
-        document.addEventListener('textInput', onSafariTextInput);
+    if (browserUtils.isSafari) {
+        listeners.addInternalEventListener(window, ['textInput'], onSafariTextInput);
+        eventSandbox.on(eventSandbox.EVENT_PREVENTED_EVENT, onSafariPreventTextInput);
+    }
 
     const isInputEventRequired = browserUtils.isFirefox || eventSimulator.textInput(element, text) || forceInputInSafari;
 
-    if (browserUtils.isSafari)
-        document.removeEventListener('textInput', onSafariTextInput);
+    if (browserUtils.isSafari) {
+        listeners.removeInternalEventListener(window, ['textInput'], onSafariTextInput);
+        eventSandbox.off(eventSandbox.EVENT_PREVENTED_EVENT, onSafariPreventTextInput);
+    }
 
     return isInputEventRequired || browserUtils.isIE11;
 }
 
 function onSafariTextInput (e) {
-    forceInputInSafari = !e.defaultPrevented;
-
     e.preventDefault();
+
+    forceInputInSafari = true;
+}
+
+function onSafariPreventTextInput (e) {
+    if (e.type === 'textInput')
+        forceInputInSafari = false;
 }
 
 function _typeTextToContentEditable (element, text) {
