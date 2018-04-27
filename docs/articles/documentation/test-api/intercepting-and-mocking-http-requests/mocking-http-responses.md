@@ -76,6 +76,8 @@ var mock = RequestMock()
         'server': 'nginx/1.10.3'
     })
     .onRequestTo(/*...*/)
+    .respond(Buffer.from([0x62, 0x75, 0x66, 0x66, 0x65, 0x72])) // a response with binary data
+    .onRequestTo(/*...*/)
     .respond((req, res) => { // a custom response
         res.headers['x-calculated-header'] = 'calculated-value';
         res.statusCode = '200';
