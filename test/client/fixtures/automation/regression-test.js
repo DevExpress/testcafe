@@ -2,6 +2,7 @@ var hammerhead       = window.getTestCafeModule('hammerhead');
 var browserUtils     = hammerhead.utils.browser;
 var featureDetection = hammerhead.utils.featureDetection;
 var nativeMethods    = hammerhead.nativeMethods;
+var Promise          = hammerhead.Promise;
 
 var testCafeCore     = window.getTestCafeModule('testCafeCore');
 var eventUtils       = testCafeCore.get('./utils/event');
@@ -16,6 +17,7 @@ var TypeOptions  = testCafeAutomation.get('../../test-run/commands/options').Typ
 var MouseOptions = testCafeAutomation.get('../../test-run/commands/options').MouseOptions;
 
 var ClickAutomation      = testCafeAutomation.Click;
+var RClickAutomation     = testCafeAutomation.RClick;
 var DblClickAutomation   = testCafeAutomation.DblClick;
 var HoverAutomation      = testCafeAutomation.Hover;
 var TypeAutomation       = testCafeAutomation.Type;
@@ -608,6 +610,78 @@ $(document).ready(function () {
                 equal(textSelection.getSelectionStart($input[0]), caretPos + newText.length, 'start selection correct');
                 equal(textSelection.getSelectionEnd($input[0]), caretPos + newText.length, 'end selection correct');
                 startNext();
+            });
+    });
+
+    asyncTest('GH-2325 - mouse events should have e.screenX and e.screenY properties', function () {
+        var promises   = [];
+        var screenLeft = window.screenLeft || window.screenX;
+        var screenTop  = window.screenTop || window.screenY;
+        var el         = document.createElement('div');
+        var mouseOutEl = document.createElement('div');
+
+        el.innerHTML         = 'Click me';
+        el.className         = TEST_ELEMENT_CLASS;
+        mouseOutEl.innerHTML = 'Hover me';
+        mouseOutEl.className = TEST_ELEMENT_CLASS;
+
+        document.body.appendChild(el);
+        document.body.appendChild(mouseOutEl);
+
+        var checkEventScreenXYOptions = function (eventName) {
+            var resolveFn;
+
+            promises.push(new Promise(function (resolve) {
+                resolveFn = resolve;
+            }));
+
+            var handler = function (e) {
+                ok(e.screenX > 0);
+                ok(e.screenY > 0);
+                equal(e.screenX, e.clientX + screenLeft);
+                equal(e.screenY, e.clientY + screenTop);
+
+                resolveFn();
+                el.removeEventListener(eventName, handler);
+            };
+
+            return handler;
+        };
+
+        var addEventListener = function (eventName) {
+            el.addEventListener(eventName, checkEventScreenXYOptions(eventName));
+        };
+
+        addEventListener('mousemove');
+        addEventListener('mouseenter');
+        addEventListener('mouseover');
+        addEventListener('mousedown');
+        addEventListener('mouseup');
+        addEventListener('click');
+        addEventListener('mouseout');
+        addEventListener('mouseleave');
+        addEventListener('contextmenu');
+        addEventListener('dblclick');
+
+        var click    = new ClickAutomation(el, { offsetX: 5, offsetY: 5 });
+        var rClick   = new RClickAutomation(el, { offsetX: 5, offsetY: 5 });
+        var dblClick = new DblClickAutomation(el, { offsetX: 5, offsetY: 5 });
+        var mouseOut = new ClickAutomation(mouseOutEl, { offsetX: 5, offsetY: 5 });
+
+        click.run()
+            .then(function () {
+                return mouseOut.run();
+            })
+            .then(function () {
+                return rClick.run();
+            })
+            .then(function () {
+                return dblClick.run();
+            })
+            .then(function () {
+                Promise.all(promises).then(function () {
+                    startNext();
+                });
             });
     });
 

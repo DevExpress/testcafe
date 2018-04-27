@@ -7,6 +7,7 @@ import cursor from '../../cursor';
 import { underCursor as getElementUnderCursor } from '../../get-element';
 import getAutomationPoint from '../../utils/get-automation-point';
 import getLineRectIntersection from '../../utils/get-line-rect-intersection';
+import getDevicePoint from '../../utils/get-device-point';
 import nextTick from '../../utils/next-tick';
 import AutomationSettings from '../../settings';
 
@@ -271,14 +272,13 @@ export default class MoveAutomation {
     _emulateEvents (currentElement) {
         var whichButton = this.holdLeftButton ? eventUtils.WHICH_PARAMETER.leftButton : eventUtils.WHICH_PARAMETER.noButton;
         var button      = this.holdLeftButton ? eventUtils.BUTTONS_PARAMETER.leftButton : eventUtils.BUTTONS_PARAMETER.noButton;
-        var screenLeft  = window.screenLeft || window.screenX;
-        var screenTop   = window.screenTop || window.screenY;
+        var devicePoint = getDevicePoint({ x: this.x, y: this.y });
 
         var eventOptions = {
-            screenX:      screenLeft + this.x,
-            screenY:      screenTop + this.y,
             clientX:      this.x,
             clientY:      this.y,
+            screenX:      devicePoint.x,
+            screenY:      devicePoint.y,
             button:       0,
             which:        browserUtils.isWebKit ? whichButton : 1,
             buttons:      button,

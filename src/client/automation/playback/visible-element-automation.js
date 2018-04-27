@@ -2,6 +2,7 @@ import hammerhead from '../deps/hammerhead';
 import { delay, positionUtils, domUtils, arrayUtils, serviceUtils } from '../deps/testcafe-core';
 import getAutomationPoint from '../utils/get-automation-point';
 import screenPointToClient from '../utils/screen-point-to-client';
+import getDevicePoint from '../utils/get-device-point';
 import { fromPoint as getElementFromPoint } from '../get-element';
 import AUTOMATION_ERROR_TYPES from '../errors';
 import AutomationSettings from '../settings';
@@ -18,6 +19,7 @@ class ElementState {
         this.screenPoint = screenPoint;
         this.isTarget    = isTarget;
         this.inMoving    = inMoving;
+        this.devicePoint = getDevicePoint(clientPoint);
     }
 }
 
@@ -130,7 +132,8 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
                 return {
                     element:     state.element,
                     clientPoint: state.clientPoint,
-                    screenPoint: state.screenPoint
+                    screenPoint: state.screenPoint,
+                    devicePoint: state.devicePoint
                 };
             });
     }
