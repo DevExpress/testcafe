@@ -359,7 +359,7 @@ If you access Internet through a proxy server, use the `useProxy` method to spec
 
 When using a proxy server, you may still need to access some local or external resources directly. In this instance, provide their URLs in the `bypassRules` option.
 
-The `bypassRules` parameter takes one or several URLs that require direct access. You can replace parts of the URL with wildcards `*`. TestCafe will correspond these symbols to any number of characters in the URL. Wildcards at the start and end of the rules can be omitted (`*.mycompany.com` and `.mycompany.com` have the same effect).
+The `bypassRules` parameter takes one or several URLs that require direct access. You can replace parts of the URL with wildcards `*`. TestCafe will correspond these symbols to any number of characters in the URL. Wildcards at the beginning and end of the rules can be omitted (`*.mycompany.com` and `.mycompany.com` have the same effect).
 
 **Examples**
 

@@ -479,7 +479,7 @@ Specifies the resources accessed bypassing the proxy server.
 
 When you access the Internet through a proxy server specified using the [--proxy](#--proxy-host) option, you may still need some local or external resources to be accessed directly. In this instance, provide their URLs to the `--proxy-bypass` option.
 
-The `rules` parameter takes a comma-separated list (without spaces) of URLs that require direct access. You can replace parts of the URL with wildcards `*`. TestCafe will correspond these symbols to any number of characters in the URL. Wildcards at the start and end of the rules can be omitted (`*.mycompany.com` and `.mycompany.com` have the same effect).
+The `rules` parameter takes a comma-separated list (without spaces) of URLs that require direct access. You can replace parts of the URL with wildcards `*`. TestCafe will correspond these symbols to any number of characters in the URL. Wildcards at the beginning and end of the rules can be omitted (`*.mycompany.com` and `.mycompany.com` have the same effect).
 
 The following example uses the proxy server at `proxy.corp.mycompany.com` with the `localhost:8080` address accessed directly.
 
