@@ -78,13 +78,15 @@ export default class RClickAutomation extends VisibleElementAutomation {
 
         return this
             ._ensureElement(useStrictElementCheck)
-            .then(({ element, clientPoint }) => {
+            .then(({ element, clientPoint, devicePoint }) => {
                 eventArgs = {
                     point:   clientPoint,
                     element: element,
                     options: extend({
                         clientX: clientPoint.x,
                         clientY: clientPoint.y,
+                        screenX: devicePoint.x,
+                        screenY: devicePoint.y,
                         button:  eventUtils.BUTTON.right,
                         which:   eventUtils.WHICH_PARAMETER.rightButton,
                         buttons: eventUtils.BUTTONS_PARAMETER.rightButton
