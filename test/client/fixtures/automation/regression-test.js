@@ -613,77 +613,79 @@ $(document).ready(function () {
             });
     });
 
-    asyncTest('GH-2325 - mouse events should have e.screenX and e.screenY properties', function () {
-        var promises   = [];
-        var screenLeft = window.screenLeft || window.screenX;
-        var screenTop  = window.screenTop || window.screenY;
-        var el         = document.createElement('div');
-        var mouseOutEl = document.createElement('div');
+    if (!browserUtils.isIOS && !browserUtils.isAndroid) {
+        asyncTest('GH-2325 - mouse events should have e.screenX and e.screenY properties', function () {
+            var promises   = [];
+            var screenLeft = window.screenLeft || window.screenX;
+            var screenTop  = window.screenTop || window.screenY;
+            var el         = document.createElement('div');
+            var mouseOutEl = document.createElement('div');
 
-        el.innerHTML         = 'Click me';
-        el.className         = TEST_ELEMENT_CLASS;
-        mouseOutEl.innerHTML = 'Hover me';
-        mouseOutEl.className = TEST_ELEMENT_CLASS;
+            el.innerHTML         = 'Click me';
+            el.className         = TEST_ELEMENT_CLASS;
+            mouseOutEl.innerHTML = 'Hover me';
+            mouseOutEl.className = TEST_ELEMENT_CLASS;
 
-        document.body.appendChild(el);
-        document.body.appendChild(mouseOutEl);
+            document.body.appendChild(el);
+            document.body.appendChild(mouseOutEl);
 
-        var checkEventScreenXYOptions = function (eventName) {
-            var resolveFn;
+            var checkEventScreenXYOptions = function (eventName) {
+                var resolveFn;
 
-            promises.push(new Promise(function (resolve) {
-                resolveFn = resolve;
-            }));
+                promises.push(new Promise(function (resolve) {
+                    resolveFn = resolve;
+                }));
 
-            var handler = function (e) {
-                ok(e.screenX > 0);
-                ok(e.screenY > 0);
-                equal(e.screenX, e.clientX + screenLeft);
-                equal(e.screenY, e.clientY + screenTop);
+                var handler = function (e) {
+                    ok(e.screenX > 0);
+                    ok(e.screenY > 0);
+                    equal(e.screenX, e.clientX + screenLeft);
+                    equal(e.screenY, e.clientY + screenTop);
 
-                resolveFn();
-                el.removeEventListener(eventName, handler);
+                    resolveFn();
+                    el.removeEventListener(eventName, handler);
+                };
+
+                return handler;
             };
 
-            return handler;
-        };
+            var addEventListener = function (eventName) {
+                el.addEventListener(eventName, checkEventScreenXYOptions(eventName));
+            };
 
-        var addEventListener = function (eventName) {
-            el.addEventListener(eventName, checkEventScreenXYOptions(eventName));
-        };
+            addEventListener('mousemove');
+            addEventListener('mouseenter');
+            addEventListener('mouseover');
+            addEventListener('mousedown');
+            addEventListener('mouseup');
+            addEventListener('click');
+            addEventListener('mouseout');
+            addEventListener('mouseleave');
+            addEventListener('contextmenu');
+            addEventListener('dblclick');
 
-        addEventListener('mousemove');
-        addEventListener('mouseenter');
-        addEventListener('mouseover');
-        addEventListener('mousedown');
-        addEventListener('mouseup');
-        addEventListener('click');
-        addEventListener('mouseout');
-        addEventListener('mouseleave');
-        addEventListener('contextmenu');
-        addEventListener('dblclick');
+            var click    = new ClickAutomation(el, { offsetX: 5, offsetY: 5 });
+            var rClick   = new RClickAutomation(el, { offsetX: 5, offsetY: 5 });
+            var dblClick = new DblClickAutomation(el, { offsetX: 5, offsetY: 5 });
+            var mouseOut = new ClickAutomation(mouseOutEl, { offsetX: 5, offsetY: 5 });
 
-        var click    = new ClickAutomation(el, { offsetX: 5, offsetY: 5 });
-        var rClick   = new RClickAutomation(el, { offsetX: 5, offsetY: 5 });
-        var dblClick = new DblClickAutomation(el, { offsetX: 5, offsetY: 5 });
-        var mouseOut = new ClickAutomation(mouseOutEl, { offsetX: 5, offsetY: 5 });
-
-        click.run()
-            .then(function () {
-                return mouseOut.run();
-            })
-            .then(function () {
-                return rClick.run();
-            })
-            .then(function () {
-                return dblClick.run();
-            })
-            .then(function () {
-                Promise.all(promises).then(function () {
-                    startNext();
+            click.run()
+                .then(function () {
+                    return mouseOut.run();
+                })
+                .then(function () {
+                    return rClick.run();
+                })
+                .then(function () {
+                    return dblClick.run();
+                })
+                .then(function () {
+                    Promise.all(promises).then(function () {
+                        startNext();
+                    });
                 });
-            });
-    });
+        });
+    }
 
     if (browserUtils.isIE) {
         //TODO: fix it for other browsers
