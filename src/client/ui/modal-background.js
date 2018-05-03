@@ -26,8 +26,9 @@ function createBackground () {
     root.appendChild(backgroundDiv);
     shadowUI.addClass(backgroundDiv, BACKGROUND_CLASS);
 
-    loadingTextDiv             = document.createElement('div');
-    loadingTextDiv.textContent = LOADING_TEXT;
+    loadingTextDiv = document.createElement('div');
+
+    nativeMethods.nodeTextContentSetter.call(loadingTextDiv, LOADING_TEXT);
     root.appendChild(loadingTextDiv);
     shadowUI.addClass(loadingTextDiv, LOADING_TEXT_CLASS);
 

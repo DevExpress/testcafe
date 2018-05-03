@@ -443,10 +443,11 @@ export default class MoveAutomation {
                         var srcAttr   = isLink ? 'href' : 'src';
                         var parsedUrl = urlUtils.parseProxyUrl(this.dragElement[srcAttr]);
                         var src       = parsedUrl ? parsedUrl.destUrl : this.dragElement[srcAttr];
+                        var outerHTML = htmlUtils.cleanUpHtml(nativeMethods.elementOuterHTMLGetter.call(this.dragElement));
 
                         this.dragAndDropState.dataTransfer.setData('text/plain', src);
                         this.dragAndDropState.dataTransfer.setData('text/uri-list', src);
-                        this.dragAndDropState.dataTransfer.setData('text/html', htmlUtils.cleanUpHtml(this.dragElement.outerHTML));
+                        this.dragAndDropState.dataTransfer.setData('text/html', outerHTML);
                     }
                 }
 

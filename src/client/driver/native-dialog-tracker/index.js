@@ -66,6 +66,7 @@ export default class NativeDialogTracker {
             var msg = e.message;
 
             if (msg.type === MESSAGE_TYPE.appearedDialog)
+                // eslint-disable-next-line no-restricted-properties
                 this._addAppearedDialogs(msg.dialogType, msg.text, msg.url);
 
             else if (msg.type === MESSAGE_TYPE.unexpectedDialog && !this.unexpectedDialog)

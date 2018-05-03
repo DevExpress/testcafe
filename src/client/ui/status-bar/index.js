@@ -121,13 +121,13 @@ export default class StatusBar extends serviceUtils.EventEmitter {
 
         var fixtureDiv = document.createElement('div');
 
-        fixtureDiv.textContent = `${this.fixtureName} - ${this.testName}`;
+        nativeMethods.nodeTextContentSetter.call(fixtureDiv, `${this.fixtureName} - ${this.testName}`);
         shadowUI.addClass(fixtureDiv, FIXTURE_DIV_CLASS);
         this.fixtureContainer.appendChild(fixtureDiv);
 
         var userAgentDiv = document.createElement('div');
 
-        userAgentDiv.textContent = this.userAgent;
+        nativeMethods.nodeTextContentSetter.call(userAgentDiv, this.userAgent);
         shadowUI.addClass(userAgentDiv, USER_AGENT_DIV_CLASS);
         this.fixtureContainer.appendChild(userAgentDiv);
     }
@@ -139,7 +139,7 @@ export default class StatusBar extends serviceUtils.EventEmitter {
         var iconSeparator       = document.createElement('div');
         var unlockText          = document.createElement('span');
 
-        unlockText.textContent = UNLOCK_PAGE_TEXT;
+        nativeMethods.nodeTextContentSetter.call(unlockText, UNLOCK_PAGE_TEXT);
 
         shadowUI.addClass(unlockPageArea, UNLOCK_PAGE_AREA_CLASS);
         shadowUI.addClass(unlockPageContainer, UNLOCK_PAGE_CONTAINER_CLASS);
@@ -164,7 +164,7 @@ export default class StatusBar extends serviceUtils.EventEmitter {
         this._bindClickOnce([unlockPageContainer], () => {
             shadowUI.removeClass(unlockPageContainer, LOCKED_CLASS);
             shadowUI.addClass(unlockPageContainer, UNLOCKED_CLASS);
-            unlockText.textContent = PAGE_UNLOCKED_TEXT;
+            nativeMethods.nodeTextContentSetter.call(unlockText, PAGE_UNLOCKED_TEXT);
 
             this.emit(this.UNLOCK_PAGE_BTN_CLICK, {});
         });
@@ -180,8 +180,9 @@ export default class StatusBar extends serviceUtils.EventEmitter {
         shadowUI.addClass(statusContainer, STATUS_CONTAINER_CLASS);
         this.container.appendChild(statusContainer);
 
-        this.statusDiv             = document.createElement('div');
-        this.statusDiv.textContent = LOADING_PAGE_TEXT;
+        this.statusDiv = document.createElement('div');
+
+        nativeMethods.nodeTextContentSetter.call(this.statusDiv, LOADING_PAGE_TEXT);
 
         shadowUI.addClass(this.statusDiv, STATUS_DIV_CLASS);
 
@@ -210,7 +211,7 @@ export default class StatusBar extends serviceUtils.EventEmitter {
         var icon   = document.createElement('div');
         var span   = document.createElement('span');
 
-        span.textContent = text;
+        nativeMethods.nodeTextContentSetter.call(span, text);
 
         shadowUI.addClass(button, 'button');
         shadowUI.addClass(button, className);
@@ -466,12 +467,14 @@ export default class StatusBar extends serviceUtils.EventEmitter {
         this.buttons.style.display        = 'none';
         this.unlockPageArea.style.display = 'none';
 
-        this.statusDiv.textContent = '';
+        nativeMethods.nodeTextContentSetter.call(this.statusDiv, '');
         this.progressBar.hide();
     }
 
     _showWaitingStatus () {
-        this.statusDiv.textContent = this.state.assertionRetries ? WAITING_FOR_ASSERTION_EXECUTION_TEXT : WAITING_FOR_ELEMENT_TEXT;
+        var waitingStatusText = this.state.assertionRetries ? WAITING_FOR_ASSERTION_EXECUTION_TEXT : WAITING_FOR_ELEMENT_TEXT;
+
+        nativeMethods.nodeTextContentSetter.call(this.statusDiv, waitingStatusText);
         this._setStatusDivLeftMargin();
         this.progressBar.show();
     }
@@ -504,12 +507,12 @@ export default class StatusBar extends serviceUtils.EventEmitter {
                 this.buttons.removeChild(this.resumeButton);
                 this.buttons.appendChild(this.finishButton);
 
-                this.statusDiv.textContent = TEST_FAILED_TEXT;
+                nativeMethods.nodeTextContentSetter.call(this.statusDiv, TEST_FAILED_TEXT);
                 shadowUI.removeClass(this.statusBar, WAITING_SUCCESS_CLASS);
                 shadowUI.addClass(this.statusBar, WAITING_FAILED_CLASS);
             }
             else
-                this.statusDiv.textContent = DEBUGGING_TEXT;
+                nativeMethods.nodeTextContentSetter.call(this.statusDiv, DEBUGGING_TEXT);
 
             this.buttons.style.display        = '';
             this.unlockPageArea.style.display = '';

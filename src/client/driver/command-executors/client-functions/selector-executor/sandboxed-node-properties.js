@@ -9,7 +9,4 @@ function sandboxed (fn) {
     return evalFunction(code, null);
 }
 
-export var getAttrs       = sandboxed(element => element.attributes);
-export var getTextContent = sandboxed(node => node.textContent);
-export var getClassName   = sandboxed(element => element.className);
-export var getInnerText   = sandboxed(element => element.innerText);
+export var getAttrs = sandboxed(element => element.attributes);

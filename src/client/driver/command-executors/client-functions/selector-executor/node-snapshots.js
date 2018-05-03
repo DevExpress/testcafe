@@ -5,17 +5,13 @@ import {
     ELEMENT_SNAPSHOT_PROPERTIES
 } from '../../../../../client-functions/selectors/snapshot-properties';
 
-import {
-    getAttrs,
-    getTextContent,
-    getClassName,
-    getInnerText
-} from './sandboxed-node-properties';
+import { getAttrs } from './sandboxed-node-properties';
 
 
 // Node
 var nodeSnapshotPropertyInitializers = {
-    textContent:    getTextContent,
+    // eslint-disable-next-line no-restricted-properties
+    textContent:    node => node.textContent,
     childNodeCount: node => node.childNodes.length,
     hasChildNodes:  node => !!nodeSnapshotPropertyInitializers.childNodeCount(node),
 
@@ -92,7 +88,7 @@ var elementSnapshotPropertyInitializers = {
     },
 
     classNames: element => {
-        var className = getClassName(element);
+        var className = element.className;
 
         className = typeof className.animVal === 'string' ? className.animVal : className;
 
@@ -114,7 +110,8 @@ var elementSnapshotPropertyInitializers = {
         return result;
     },
 
-    innerText: getInnerText
+    // eslint-disable-next-line no-restricted-properties
+    innerText: element => element.innerText
 };
 
 export class ElementSnapshot extends NodeSnapshot {

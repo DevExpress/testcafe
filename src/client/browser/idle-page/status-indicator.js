@@ -89,8 +89,9 @@ export default class StatusIndicator {
     static _createStatusMessage (connected) {
         var statusSpan = StatusIndicator._getStatusElementSpan();
 
-        statusSpan.className   = connected ? CONNECTED_CLASS_NAME : DISCONNECTED_CLASS_NAME;
+        // eslint-disable-next-line no-restricted-properties
         statusSpan.textContent = connected ? CONNECTED_TEXT : DISCONNECTED_TEXT;
+        statusSpan.className   = connected ? CONNECTED_CLASS_NAME : DISCONNECTED_CLASS_NAME;
     }
 
     static _alignContainerVertically () {

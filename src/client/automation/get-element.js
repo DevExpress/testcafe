@@ -5,6 +5,7 @@ import cursor from './cursor';
 
 var browserUtils  = hammerhead.utils.browser;
 var Promise       = hammerhead.Promise;
+var nativeMethods = hammerhead.nativeMethods;
 var positionUtils = testCafeCore.positionUtils;
 var domUtils      = testCafeCore.domUtils;
 
@@ -29,7 +30,8 @@ function ensureImageMap (imgElement, areaElement) {
 
 function findElementOrNonEmptyChildFromPoint (x, y, element) {
     var topElement      = positionUtils.getElementFromPoint(x, y);
-    var isNonEmptyChild = domUtils.containsElement(element, topElement) && topElement.textContent.length;
+    var isNonEmptyChild = domUtils.containsElement(element, topElement) &&
+                          nativeMethods.nodeTextContentGetter.call(topElement).length;
 
     if (topElement && topElement === element || isNonEmptyChild)
         return topElement;
@@ -64,10 +66,10 @@ function correctTopElementByExpectedElement (topElement, expectedElement) {
 
     var isTopElementChildOfLink = isLinkOrChildExpected &&
                                   domUtils.containsElement(expectedElement, topElement) &&
-                                  topElement.textContent.length;
+                                  nativeMethods.nodeTextContentGetter.call(topElement).length;
 
     var shouldSearchForMultilineLink = isLinkOrChildExpected && !isTopElementChildOfLink &&
-                                       expectedElement.textContent.length;
+                                       nativeMethods.nodeTextContentGetter.call(expectedElement).length;
 
     if (!shouldSearchForMultilineLink)
         return topElement;
