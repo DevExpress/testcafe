@@ -329,7 +329,7 @@ test
     ('MyTest', async t => { /* ... */});
 ```
 
-> If you specified the same entries in the `test.meta` and `fixture.meta` methods, the `test.meta` method call overrides values for these entries. The following example demonstrates the case when the `test.meta` method call overrides the `creationDate` entry.
+> If you specified the same entries in the `test.meta` and `fixture.meta` methods, the `test.meta` method call overrides values for these entries. The following example demonstrates the case when the `test.meta` method call overrides the **creationDate** entry.
 
 ```js
 fixture `My fixture`
@@ -337,13 +337,13 @@ fixture `My fixture`
     .page `http://www.example.com/`;
 
 test
-    .meta('creationDate', '05/04/2018'); // The value of the creationDate entry is '05/04/2018' }
+    .meta('creationDate', '05/04/2018'); // The value of the creationDate entry is '05/04/2018'
     ('MyTest', async t => { /* ... */});
 ```
 
 ### Using Metadata in Reports
 
-You can include testing metadata to reports using a [custom reporter](../extending-testcafe/reporter-plugin/README.md). The reporter's [reportFixtureStart](../extending-testcafe/reporter-plugin/reporter-methods.md#reportfixturestart) and [reportTestDone](../extending-testcafe/reporter-plugin/reporter-methods.md#reporttestdone) methods can access to fixture and test metadata.
+You can include testing metadata to reports using a [custom reporter](../extending-testcafe/reporter-plugin/README.md). The reporter's [reportFixtureStart](../extending-testcafe/reporter-plugin/reporter-methods.md#reportfixturestart) and [reportTestDone](../extending-testcafe/reporter-plugin/reporter-methods.md#reporttestdone) methods can access to the fixture and test metadata.
 
 ## Initialization and Clean-Up
 
