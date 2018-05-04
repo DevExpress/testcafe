@@ -15,8 +15,6 @@ This topic contains the following sections.
   * [Setting Page Load Timeout](#setting-page-load-timeout)
 * [Specifying the Start Webpage](#specifying-the-start-webpage)
 * [Specifying Testing Metadata](#specifying-testing-metadata)
-  * [Fixture Metadata](#fixture-metadata)
-  * [Test Metadata](#test-metadata)
   * [Using Metadata in Reports](#using-metadata-in-reports)
 * [Initialization and Clean-Up](#initialization-and-clean-up)
   * [Test Hooks](#test-hooks)
@@ -283,24 +281,40 @@ fixture `MyFixture`
 
 ## Specifying Testing Metadata
 
-TestCafe allows you to specify additional information for fixtures and tests in the form of *key-value metadata*.
+TestCafe allows you to specify additional information for tests in the form of *key-value metadata* and use it in reports.
 
-### Fixture Metadata
+To specify metadata, use the `meta` method. You can call this method both for a fixture and a test.
 
-You can specify metadata for a fixture by using the `meta` method in the [fixture declaration](#fixtures).
+* You can specify one metadata entry for a fixture or a test.
 
-```js
-fixture.meta({ key1: 'value1', key2: 'value2', key3: 'value3' });
-```
+    ```js
+    fixture.meta('key1', 'value1')
+    ```
 
-Parameter | Type   | Description
---------- | ------ | -----------------
-`name`    | String | The name of the metadata entry
-`value`   | String | The value of the metadata entry
+    ```js
+    test.meta('key2', 'value2')
+    ```
 
-All metadata entries specified for a fixture are available in tests included to this fixture.
+    Parameter | Type   | Description
+    --------- | ------ | -----------------
+    `name`    | String | The name of the metadata entry
+    `value`   | String | The value of the metadata entry
 
-**Example**
+* You can specify a set of metadata entries for a fixture or a test.
+
+    ```js
+    fixture.meta({ key1: 'value1', key2: 'value2', key3: 'value3' })
+    ```
+
+    ```js
+    test.meta({ key4: 'value1', key5: 'value2', key6: 'value3' })
+    ```
+
+    Parameter  | Type   | Description
+    ---------- | ------ | -----------------
+    `metadata` | Object | Key-value pairs
+
+**Examples**
 
 ```js
 fixture 'MyFixture'
@@ -308,28 +322,16 @@ fixture 'MyFixture'
     .meta({ author: 'John', creationDate: '05/03/2018' });
 ```
 
-### Test Metadata
-
-You can specify metadata for an individual test by using the `test.meta` method.
-
-```js
-test.meta({ key1: 'value1', key2: 'value2', key3: 'value3' });
-```
-
-Parameter | Type   | Description
---------- | ------ | -----------------
-`name`    | String | The name of the metadata entry
-`value`   | String | The value of the metadata entry
-
-**Example**
-
 ```js
 test
-    .meta({ testID: 't-0005', severity: 'critical' });
+    .meta('testID', 't-0005')
+    .meta({ severity: 'critical', testedAPIVersion: '1.0' });
     ('MyTest', async t => { /* ... */});
 ```
 
-> If you specified the same entries in the `test.meta` and `fixture.meta` methods, the `test.meta` method call overrides values for these entries. The following example demonstrates the case when the `test.meta` method call overrides the **creationDate** entry.
+All metadata entries specified for a fixture are available in tests included to this fixture.
+
+If you specified the same entries in the `test.meta` and `fixture.meta` methods, the `test.meta` method call overrides values for these entries. The following example demonstrates the case when the `test.meta` method call overrides the **creationDate** entry.
 
 ```js
 fixture `My fixture`
