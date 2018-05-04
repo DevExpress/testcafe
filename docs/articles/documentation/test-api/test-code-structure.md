@@ -283,9 +283,11 @@ fixture `MyFixture`
 
 TestCafe allows you to specify additional information for tests in the form of *key-value metadata* and use it in reports.
 
-To specify metadata, use the `meta` method. You can call this method both for a fixture and a test.
+To define metadata, use the `meta` method. You can call this method both for a fixture and a test.
 
-* You can specify one metadata entry for a fixture or a test.
+The `meta` method allows you to specify one or several metadata entries:
+
+* Specifying one metadata entry.
 
     ```js
     fixture.meta('key1', 'value1')
@@ -300,7 +302,7 @@ To specify metadata, use the `meta` method. You can call this method both for a 
     `name`    | String | The name of the metadata entry
     `value`   | String | The value of the metadata entry
 
-* You can specify a set of metadata entries for a fixture or a test.
+* Specifying a set of metadata entries.
 
     ```js
     fixture.meta({ key1: 'value1', key2: 'value2', key3: 'value3' })
