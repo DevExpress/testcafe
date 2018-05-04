@@ -331,9 +331,9 @@ test
     ('MyTest', async t => { /* ... */});
 ```
 
-All metadata entries specified for a fixture are available in tests included to this fixture.
+All metadata entries specified for a fixture are applied to tests included to this fixture.
 
-If you specified the same entries in the `test.meta` and `fixture.meta` methods, the `test.meta` method call overrides values for these entries. The following example demonstrates the case when the `test.meta` method call overrides the **creationDate** entry.
+If you specified the same entries in the `test.meta` and `fixture.meta` methods, the `test.meta` method call overrides values of these entries. The following example demonstrates the case when the `test.meta` method call overrides the **creationDate** entry.
 
 ```js
 fixture `My fixture`
