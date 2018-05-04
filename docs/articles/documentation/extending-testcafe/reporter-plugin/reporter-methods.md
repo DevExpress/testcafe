@@ -48,24 +48,26 @@ reportTaskStart (startTime, userAgents, testCount) {
 Fires each time a fixture starts.
 
 ```text
-reportFixtureStart (name, path)
+reportFixtureStart (name, path, meta)
 ```
 
 Parameter | Type   | Description
 --------- | ------ | --------------------------------
 `name`    | String | The test fixture name.
 `path`    | String | The path to a test fixture file.
+`meta`    | Object | The [fixture metadata](../../test-api/test-code-structure.md#fixture-metadata).
 
 **Example**
 
 ```js
-reportFixtureStart (name) {
+reportFixtureStart (name, path, meta) {
     this.currentFixtureName = name;
-    this.write(`Starting fixture: ${name}`)
+    this.currentFixtureMeta = meta;
+    this.write(`Starting fixture: ${name} ${meta.fixtureID}`)
         .newline();
 }
 
-//=> Starting fixture: First fixture
+//=> Starting fixture: First fixture f-0001
 ```
 
 ## reportTestDone
@@ -73,13 +75,14 @@ reportFixtureStart (name) {
 Fires each time a test ends.
 
 ```text
-reportTestDone (name, testRunInfo)
+reportTestDone (name, testRunInfo, meta)
 ```
 
 Parameter     | Type   | Description
 ------------- | ------ | -------------------------------------------------------------
 `name`        | String | The test name.
 `testRunInfo` | Object | The object providing detailed information about the test run.
+`meta`        | Object | The [test metadata](../../test-api/test-code-structure.md#test-metadata).
 
 The `testRunInfo` object has the following properties.
 
@@ -94,7 +97,7 @@ Property         | Type             | Description
 **Example**
 
 ```js
-reportTestDone (name, testRunInfo) {
+reportTestDone (name, testRunInfo, meta) {
     const hasErr = !!testRunInfo.errs.length;
     const result = testRunInfo.skipped ? 'skipped' : hasErr ? `passed` : `failed`;
 
@@ -108,11 +111,14 @@ reportTestDone (name, testRunInfo) {
     if (testRunInfo.screenshotPath)
         title += ` (screenshots: ${testRunInfo.screenshotPath})`;
 
+    if (meta.severity)
+        title += ' (meta.severity)';
+
     this.write(title)
         .newline();
 }
 
-//=> failed First fixture - First test in first fixture (unstable) (screenshots: /screenshots/1445437598847)
+//=> failed First fixture - First test in first fixture (unstable) (screenshots: /screenshots/1445437598847) (critical)
 //=> passed First fixture - Second test in first fixture (screenshots: /screenshots/1445437598847)
 //=> failed First fixture - Third test in first fixture
 //=> skipped First fixture - Fourth test in first fixture

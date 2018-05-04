@@ -14,6 +14,10 @@ This topic contains the following sections.
   * [Setting Test Speed](#setting-test-speed)
   * [Setting Page Load Timeout](#setting-page-load-timeout)
 * [Specifying the Start Webpage](#specifying-the-start-webpage)
+* [Specifying Testing Metadata](#specifying-testing-metadata)
+  * [Fixture Metadata](#fixture-metadata)
+  * [Test Metadata](#test-metadata)
+  * [Using Metadata in Reports](#using-metadata-in-reports)
 * [Initialization and Clean-Up](#initialization-and-clean-up)
   * [Test Hooks](#test-hooks)
     * [Sharing Variables Between Test Hooks and Test Code](#sharing-variables-between-test-hooks-and-test-code)
@@ -40,7 +44,7 @@ Parameter     | Type   | Description
 ------------- | ------ | ------------------------
 `fixtureName` | String | The name of the fixture.
 
-This function returns the `fixture` object that allows you to configure the fixture - specify the [start webpage](#specifying-the-start-webpage) and [initialization and clean-up code](#initialization-and-clean-up) for tests included to the fixture.
+This function returns the `fixture` object that allows you to configure the fixture - specify the [start webpage](#specifying-the-start-webpage), [metadata](#specifying-testing-metadata) and [initialization and clean-up code](#initialization-and-clean-up) for tests included to the fixture.
 
 > [Tests](#tests) that constitute a fixture go after this declaration.
 
@@ -276,6 +280,54 @@ fixture `MyFixture`
 fixture `MyFixture`
     .page `../my-project/index.html`;
 ```
+
+## Specifying Testing Metadata
+
+TestCafe allows you to specify additional information for fixtures and tests in the form of *field-value metadata*.
+
+### Fixture Metadata
+
+You can specify metadata for a fixture by using the `meta` method in the [fixture declaration](#fixtures).
+
+```js
+fixture.meta({ field1: 'value1', field2: 'value2', field3: 'value3' });
+```
+
+Parameter  | Type   | Description
+---------- | ------ | -----------------
+`metadata` | Object | Field-value pairs
+
+**Example**
+
+```js
+fixture 'MyFixture'
+    .meta('fixtureID', 'f-0001')
+    .meta({ field2: 'value2', field3: 'value3' });
+```
+
+### Test Metadata
+
+You can specify metadata for an individual test by using the `test.meta` method.
+
+```js
+test.meta({ field1: 'value1', field2: 'value2', field3: 'value3' });
+```
+
+Parameter  | Type   | Description
+---------- | ------ | -----------------
+`metadata` | Object | Field-value pairs
+
+**Example**
+
+```js
+test
+    .meta({ testID: 't-0005', severity: 'critical' });
+    ('MyTest', async t => { /* ... */});
+```
+
+### Using Metadata in Reports
+
+You can include testing metadata to reports using a [custom reporter](../extending-testcafe/reporter-plugin/README.md). The reporter's [reportFixtureStart](../extending-testcafe/reporter-plugin/reporter-methods.md#reportfixturestart) and [reportTestDone](../extending-testcafe/reporter-plugin/reporter-methods.md#reporttestdone) methods can access to fixture and test metadata.
 
 ## Initialization and Clean-Up
 
