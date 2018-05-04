@@ -70,7 +70,8 @@ var CLIENT_TESTS_LEGACY_SETTINGS = assignIn({}, CLIENT_TESTS_SETTINGS_BASE, { ba
 var CLIENT_TESTS_DESKTOP_BROWSERS = [
     {
         platform:    'Windows 10',
-        browserName: 'microsoftedge'
+        browserName: 'microsoftedge',
+        version:     '16.16299'
     },
     {
         platform:    'Windows 10',
