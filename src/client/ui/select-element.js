@@ -94,7 +94,8 @@ function createOption (realOption, parent) {
     var isOptionDisabled = realOption.disabled || domUtils.getTagName(realOption.parentElement) === 'optgroup' &&
                                                   realOption.parentElement.disabled;
 
-    option.textContent = realOption.text;
+    // eslint-disable-next-line no-restricted-properties
+    nativeMethods.nodeTextContentSetter.call(option, realOption.text);
 
     parent.appendChild(option);
     shadowUI.addClass(option, OPTION_CLASS);
@@ -110,7 +111,7 @@ function createOption (realOption, parent) {
 function createGroup (realGroup, parent) {
     var group = document.createElement('div');
 
-    group.textContent = realGroup.label || ' ';
+    nativeMethods.nodeTextContentSetter.call(group, realGroup.label || ' ');
     parent.appendChild(group);
 
     shadowUI.addClass(group, OPTION_GROUP_CLASS);

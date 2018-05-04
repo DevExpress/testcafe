@@ -153,7 +153,7 @@ function createFakeDiv (element) {
         height:   element.scrollHeight + 'px'
     });
 
-    fakeDiv.textContent = domUtils.getElementValue(element) + ' ';
+    hammerhead.nativeMethods.nodeTextContentSetter.call(fakeDiv, domUtils.getElementValue(element) + ' ');
 
     body.appendChild(fakeDiv);
 

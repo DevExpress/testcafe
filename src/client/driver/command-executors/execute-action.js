@@ -193,6 +193,7 @@ class ActionExecutor {
                 return new DragToElementAutomation(this.elements[0], this.elements[1], this.command.options);
 
             case COMMAND_TYPE.typeText:
+                // eslint-disable-next-line no-restricted-properties
                 return new TypeAutomation(this.elements[0], this.command.text, this.command.options);
 
             case COMMAND_TYPE.selectText:

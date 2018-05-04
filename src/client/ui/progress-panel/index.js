@@ -136,7 +136,7 @@ export default class ProgressPanel {
         this.startTime  = Date.now();
         this.maxTimeout = timeout;
 
-        this.titleDiv.textContent = text;
+        nativeMethods.nodeTextContentSetter.call(this.titleDiv, text);
         this._setSuccess(false);
 
         this.openingTimeout = nativeMethods.setTimeout.call(window, () => {
