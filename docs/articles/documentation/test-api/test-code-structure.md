@@ -302,7 +302,7 @@ Parameter  | Type   | Description
 ```js
 fixture 'MyFixture'
     .meta('fixtureID', 'f-0001')
-    .meta({ field2: 'value2', field3: 'value3' });
+    .meta({ author: 'John', creationDate: '05/03/2018' });
 ```
 
 ### Test Metadata
