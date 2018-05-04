@@ -25,9 +25,7 @@ var SPECIAL_KEYS    = testCafeCore.KEY_MAPS.specialKeys;
 export default class TypeAutomation {
     constructor (element, text, typeOptions) {
         this.element = TypeAutomation.findTextEditableChild(element) || element;
-
-        // eslint-disable-next-line no-restricted-properties
-        this.text = text.toString();
+        this.typingText    = text.toString();
 
         this.modifiers = typeOptions.modifiers;
         this.caretPos  = typeOptions.caretPos;
@@ -173,17 +171,14 @@ export default class TypeAutomation {
     }
 
     _isTypingFinished () {
-        // eslint-disable-next-line no-restricted-properties
-        return this.currentPos === this.text.length;
+        return this.currentPos === this.typingText.length;
     }
 
     _typingStep () {
-        // eslint-disable-next-line no-restricted-properties
-        var char = this.text.charAt(this.currentPos);
+        var char = this.typingText.charAt(this.currentPos);
 
-        // eslint-disable-next-line no-restricted-properties
-        this.currentCharCode      = this.text.charCodeAt(this.currentPos);
         this.currentKeyCode       = getKeyCode(char);
+        this.currentCharCode      = this.typingText.charCodeAt(this.currentPos);
         this.currentKey           = this.currentKeyCode === SPECIAL_KEYS['enter'] ? 'Enter' : char;
         this.currentKeyIdentifier = getKeyIdentifier(this.currentKey);
 
@@ -227,8 +222,7 @@ export default class TypeAutomation {
                 eventSimulator.keyup(this.eventArgs.element, this.eventArgs.options);
 
                 if (shouldTypeAllText)
-                    // eslint-disable-next-line no-restricted-properties
-                    this.currentPos = this.text.length;
+                    this.currentPos = this.typingText.length;
                 else
                     this.currentPos++;
             });
@@ -243,20 +237,15 @@ export default class TypeAutomation {
             return delay(this.automationSettings.keyActionStepDelay);
         }
 
-        /* eslint-disable no-restricted-properties */
-        var currentChar = this.text.charAt(this.currentPos);
-        var prevChar    = this.currentPos === 0 ? null : this.text.charAt(this.currentPos - 1);
-        /* eslint-enable no-restricted-properties */
-
+        var currentChar       = this.typingText.charAt(this.currentPos);
         var isDigit           = /^\d$/.test(currentChar);
-        var isInputTypeNumber = domUtils.isInputElement(element) &&
-                                element.type === 'number';
+        var prevChar          = this.currentPos === 0 ? null : this.typingText.charAt(this.currentPos - 1);
+        var isInputTypeNumber = domUtils.isInputElement(element) && element.type === 'number';
 
         if (isInputTypeNumber) {
-            // eslint-disable-next-line no-restricted-properties
-            var textHasDigits       = /^\d/.test(this.text);
             var selectionStart      = textSelection.getSelectionStart(element);
             var valueLength         = domUtils.getInputValue(element).length;
+            var textHasDigits       = /^\d/.test(this.typingText);
             var isPermissibleSymbol = currentChar === '.' || currentChar === '-' && valueLength;
 
             if (!isDigit && (textHasDigits || !isPermissibleSymbol || selectionStart !== 0))
@@ -274,8 +263,7 @@ export default class TypeAutomation {
     }
 
     _typeAllText (element) {
-        // eslint-disable-next-line no-restricted-properties
-        typeText(element, this.text, this.caretPos);
+        typeText(element, this.typingText, this.caretPos);
         return delay(this.automationSettings.keyActionStepDelay);
     }
 
