@@ -283,19 +283,22 @@ fixture `MyFixture`
 
 ## Specifying Testing Metadata
 
-TestCafe allows you to specify additional information for fixtures and tests in the form of *field-value metadata*.
+TestCafe allows you to specify additional information for fixtures and tests in the form of *key-value metadata*.
 
 ### Fixture Metadata
 
 You can specify metadata for a fixture by using the `meta` method in the [fixture declaration](#fixtures).
 
 ```js
-fixture.meta({ field1: 'value1', field2: 'value2', field3: 'value3' });
+fixture.meta({ key1: 'value1', key2: 'value2', key3: 'value3' });
 ```
 
-Parameter  | Type   | Description
----------- | ------ | -----------------
-`metadata` | Object | Field-value pairs
+Parameter | Type   | Description
+--------- | ------ | -----------------
+`name`    | String | The name of the metadata entry
+`value`   | String | The value of the metadata entry
+
+All metadata entries specified for a fixture are available in tests included to this fixture.
 
 **Example**
 
@@ -310,18 +313,31 @@ fixture 'MyFixture'
 You can specify metadata for an individual test by using the `test.meta` method.
 
 ```js
-test.meta({ field1: 'value1', field2: 'value2', field3: 'value3' });
+test.meta({ key1: 'value1', key2: 'value2', key3: 'value3' });
 ```
 
-Parameter  | Type   | Description
----------- | ------ | -----------------
-`metadata` | Object | Field-value pairs
+Parameter | Type   | Description
+--------- | ------ | -----------------
+`name`    | String | The name of the metadata entry
+`value`   | String | The value of the metadata entry
 
 **Example**
 
 ```js
 test
     .meta({ testID: 't-0005', severity: 'critical' });
+    ('MyTest', async t => { /* ... */});
+```
+
+> If you specified the same entries in the `test.meta` and `fixture.meta` methods, the `test.meta` method call overrides values for these entries. The following example demonstrates the case when the `test.meta` method call overrides the `creationDate` entry.
+
+```js
+fixture `My fixture`
+    .meta('creationDate', '05/03/2018')
+    .page `http://www.example.com/`;
+
+test
+    .meta('creationDate', '05/04/2018'); // The value of the creationDate entry is '05/04/2018' }
     ('MyTest', async t => { /* ... */});
 ```
 
