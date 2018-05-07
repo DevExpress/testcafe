@@ -9,9 +9,9 @@ checked: false
 You can use *assertions* to check if the tested webpage's state matches your expectations.
 
 TestCafe provides a comprehensive set of assertions that are based on the Behavior Driven Development style (BDD-style).
-See [Assertion API](assertion-api.md).
+See [Assertion API](assertion-api.md) for more information.
 
-This topic consists of the following sections.
+This topic consists of the following sections:
 
 * [Assertion Structure](#assertion-structure)
 * [Smart Assertion Query Mechanism](#smart-assertion-query-mechanism)
@@ -32,7 +32,7 @@ See [Smart Assertion Query Mechanism](#smart-assertion-query-mechanism) for deta
 Next is an [assertion method](assertion-api.md). Assertion methods accept an expected value
 and, optionally, other arguments.
 
-For instance, the deep equality assertion has the following structure.
+For instance, the deep equality assertion has the following structure:
 
 ```text
 await t.expect( actual ).eql( expected, message, options );
