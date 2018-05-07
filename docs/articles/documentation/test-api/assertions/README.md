@@ -6,7 +6,7 @@ checked: false
 ---
 # Assertions
 
-You can use *assertions* to check if the tested webpage's state matches your expectations.
+You can use *assertions* to check if the tested webpage's state matches the expected state.
 
 TestCafe provides a comprehensive set of assertions that are based on the Behavior Driven Development style (BDD-style).
 See [Assertion API](assertion-api.md) for more information.
