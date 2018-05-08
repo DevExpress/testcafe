@@ -1,6 +1,8 @@
+import path from 'path';
 import Promise from 'pinkie';
 import { EventEmitter } from 'events';
-import { remove } from 'lodash';
+import { remove, range } from 'lodash';
+import  SessionController from '../test-run/session-controller';
 import TestRunController from './test-run-controller';
 import RESULT from './browser-job-result';
 
@@ -21,6 +23,10 @@ export default class BrowserJob extends EventEmitter {
         this.warningLog            = warningLog;
         this.fixtureHookController = fixtureHookController;
         this.result                = null;
+
+        this.session = new SessionController(path.dirname(tests[0].fixture.path));
+
+        this.openedProxy = '';
 
         this.testRunControllerQueue = tests.map((test, index) => this._createTestRunController(test, index));
 
@@ -106,11 +112,18 @@ export default class BrowserJob extends EventEmitter {
                 this.emit('start');
             }
 
-            var testRunUrl = await testRunController.start(connection);
+            var testRunUrl = await testRunController.start(this.session, connection);
 
-            if (testRunUrl)
-                return testRunUrl;
+            if (testRunUrl) {
+                if (!this.openedProxy)
+                    this.openedProxy = this.proxy.openSession(testRunUrl.pageUrl, this.session, testRunUrl.externalProxySettings);
+
+                return this.openedProxy;
+            }
         }
+
+        if (this.openedProxy)
+            this.proxy.closeSession(this.session);
 
         return null;
     }

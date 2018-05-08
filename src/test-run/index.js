@@ -1,4 +1,4 @@
-import path from 'path';
+import EventEmitter from 'events';
 import { pull as remove } from 'lodash';
 import { readSync as read } from 'read-file-relative';
 import promisifyEvent from 'promisify-event';
@@ -12,7 +12,6 @@ import TestCafeErrorList from '../errors/error-list';
 import { executeJsExpression } from './execute-js-expression';
 import { PageLoadError, RoleSwitchInRoleInitializerError } from '../errors/test-run/';
 import BrowserManipulationQueue from './browser-manipulation-queue';
-import CLIENT_MESSAGES from './client-messages';
 import PHASE from './phase';
 import COMMAND_TYPE from './commands/type';
 import AssertionExecutor from '../assertions/executor';
@@ -51,17 +50,17 @@ const TEST_DONE_CONFIRMATION_RESPONSE = 'test-done-confirmation';
 const MAX_RESPONSE_DELAY              = 2 * 60 * 1000;
 
 
-export default class TestRun extends Session {
-    constructor (test, browserConnection, screenshotCapturer, warningLog, opts) {
-        var uploadsRoot = path.dirname(test.fixture.path);
-
-        super(uploadsRoot);
+export default class TestRun extends EventEmitter {
+    constructor (test, session, browserConnection, screenshotCapturer, warningLog, opts) {
+        super();
 
         this[testRunMarker] = true;
 
         this.opts              = opts;
         this.test              = test;
         this.browserConnection = browserConnection;
+
+        this.session = session;
 
         this.phase = PHASE.initial;
 
@@ -102,12 +101,6 @@ export default class TestRun extends Session {
 
         this.debugLog = new TestRunDebugLog(this.browserConnection.userAgent);
 
-        this.injectable.scripts.push('/testcafe-core.js');
-        this.injectable.scripts.push('/testcafe-ui.js');
-        this.injectable.scripts.push('/testcafe-automation.js');
-        this.injectable.scripts.push('/testcafe-driver.js');
-        this.injectable.styles.push('/testcafe-ui-styles.css');
-
         this.requestHooks = Array.from(this.test.requestHooks);
 
         this._initRequestHooks();
@@ -132,7 +125,7 @@ export default class TestRun extends Session {
     _initRequestHook (hook) {
         hook._instantiateRequestFilterRules();
         hook._instantiatedRequestFilterRules.forEach(rule => {
-            this.addRequestEventListeners(rule, {
+            this.session.addRequestEventListeners(rule, {
                 onRequest:           hook.onRequest.bind(hook),
                 onConfigureResponse: hook._onConfigureResponse.bind(hook),
                 onResponse:          hook.onResponse.bind(hook)
@@ -142,7 +135,7 @@ export default class TestRun extends Session {
 
     _disposeRequestHook (hook) {
         hook._instantiatedRequestFilterRules.forEach(rule => {
-            this.removeRequestEventListeners(rule);
+            this.session.removeRequestEventListeners(rule);
         });
     }
 
@@ -157,7 +150,7 @@ export default class TestRun extends Session {
         this.resolveWaitForFileDownloadingPromise = null;
 
         return Mustache.render(TEST_RUN_TEMPLATE, {
-            testRunId:                    JSON.stringify(this.id),
+            testRunId:                    JSON.stringify(this.session.id),
             browserId:                    JSON.stringify(this.browserConnection.id),
             browserHeartbeatRelativeUrl:  JSON.stringify(this.browserConnection.heartbeatRelativeUrl),
             browserStatusRelativeUrl:     JSON.stringify(this.browserConnection.statusRelativeUrl),
@@ -204,6 +197,59 @@ export default class TestRun extends Session {
         ctx.redirect(ctx.toProxyUrl('about:error'));
     }
 
+    ready (msg) {
+        this.debugLog.driverMessage(msg);
+
+        this._clearPendingRequest();
+
+        // NOTE: the driver sends the status for the second time if it didn't get a response at the
+        // first try. This is possible when the page was unloaded after the driver sent the status.
+        if (msg.status.id === this.lastDriverStatusId)
+            return this.lastDriverStatusResponse;
+
+        this.lastDriverStatusId       = msg.status.id;
+        this.lastDriverStatusResponse = this._handleDriverRequest(msg.status);
+
+        if (this.lastDriverStatusResponse)
+            return this.lastDriverStatusResponse;
+
+        // NOTE: browsers abort an opened xhr request after a certain timeout (the actual duration depends on the browser).
+        // To avoid this, we send an empty response after 2 minutes if we didn't get any command.
+        var responseTimeout = setTimeout(() => this._resolvePendingRequest(null), MAX_RESPONSE_DELAY);
+
+        return new Promise((resolve, reject) => {
+            this.pendingRequest = { resolve, reject, responseTimeout };
+        });
+    }
+
+    async readyForBrowserManipulation (msg) {
+        this.debugLog.driverMessage(msg);
+
+        var result = null;
+        var error  = null;
+
+        try {
+            result = await this.browserManipulationQueue.executePendingManipulation(msg);
+        }
+        catch (err) {
+            error = err;
+        }
+
+        return { result, error };
+    }
+
+    waitForFileDownload (msg) {
+        this.debugLog.driverMessage(msg);
+
+        return new Promise(resolve => {
+            if (this.fileDownloadingHandled) {
+                this.fileDownloadingHandled = false;
+                resolve(true);
+            }
+            else
+                this.resolveWaitForFileDownloadingPromise = resolve;
+        });
+    }
 
     // Test function execution
     async _executeTestFn (phase, fn) {
@@ -593,61 +639,3 @@ export default class TestRun extends Session {
         return await getLocation();
     }
 }
-
-
-// Service message handlers
-var ServiceMessages = TestRun.prototype;
-
-ServiceMessages[CLIENT_MESSAGES.ready] = function (msg) {
-    this.debugLog.driverMessage(msg);
-
-    this._clearPendingRequest();
-
-    // NOTE: the driver sends the status for the second time if it didn't get a response at the
-    // first try. This is possible when the page was unloaded after the driver sent the status.
-    if (msg.status.id === this.lastDriverStatusId)
-        return this.lastDriverStatusResponse;
-
-    this.lastDriverStatusId       = msg.status.id;
-    this.lastDriverStatusResponse = this._handleDriverRequest(msg.status);
-
-    if (this.lastDriverStatusResponse)
-        return this.lastDriverStatusResponse;
-
-    // NOTE: browsers abort an opened xhr request after a certain timeout (the actual duration depends on the browser).
-    // To avoid this, we send an empty response after 2 minutes if we didn't get any command.
-    var responseTimeout = setTimeout(() => this._resolvePendingRequest(null), MAX_RESPONSE_DELAY);
-
-    return new Promise((resolve, reject) => {
-        this.pendingRequest = { resolve, reject, responseTimeout };
-    });
-};
-
-ServiceMessages[CLIENT_MESSAGES.readyForBrowserManipulation] = async function (msg) {
-    this.debugLog.driverMessage(msg);
-
-    var result = null;
-    var error  = null;
-
-    try {
-        result = await this.browserManipulationQueue.executePendingManipulation(msg);
-    }
-    catch (err) {
-        error = err;
-    }
-
-    return { result, error };
-};
-
-ServiceMessages[CLIENT_MESSAGES.waitForFileDownload] = function (msg) {
-    this.debugLog.driverMessage(msg);
-
-    return new Promise(resolve => {
-        if (this.fileDownloadingHandled) {
-            this.fileDownloadingHandled = false;
-            resolve(true);
-        }
-        else
-            this.resolveWaitForFileDownloadingPromise = resolve;
-    });
-};

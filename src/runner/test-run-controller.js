@@ -42,12 +42,12 @@ export default class TestRunController extends EventEmitter {
         return test.isLegacy ? LegacyTestRun : TestRun;
     }
 
-    _createTestRun (connection) {
+    _createTestRun (session, connection) {
         var quarantineAttemptNum = this.quarantine ? this.quarantine.attemptNumber : null;
         var screenshotCapturer   = this.screenshots.createCapturerFor(this.test, this.index, quarantineAttemptNum, connection);
         var TestRunCtor          = this.TestRunCtor;
 
-        this.testRun = new TestRunCtor(this.test, connection, screenshotCapturer, this.warningLog, this.opts);
+        this.testRun = new TestRunCtor(this.test, session, connection, screenshotCapturer, this.warningLog, this.opts);
 
         return this.testRun;
     }
@@ -88,8 +88,6 @@ export default class TestRunController extends EventEmitter {
     }
 
     async _testRunDone () {
-        this.proxy.closeSession(this.testRun);
-
         if (this.quarantine)
             await this._testRunDoneInQuarantineMode();
         else
@@ -110,8 +108,10 @@ export default class TestRunController extends EventEmitter {
         return this.fixtureHookController.isTestBlocked(this.test);
     }
 
-    async start (connection) {
-        var testRun = this._createTestRun(connection);
+    async start (session, connection) {
+        var testRun = this._createTestRun(session, connection);
+
+        session.currentTestRun = testRun;
 
         var hookOk = await this.fixtureHookController.runFixtureBeforeHookIfNecessary(testRun);
 
@@ -137,6 +137,6 @@ export default class TestRunController extends EventEmitter {
             };
         }
 
-        return this.proxy.openSession(pageUrl, testRun, externalProxySettings);
+        return { pageUrl, testRun, externalProxySettings };
     }
 }

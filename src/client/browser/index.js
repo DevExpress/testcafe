@@ -84,7 +84,7 @@ export function stopInitScriptExecution () {
 export function checkStatus (statusUrl, createXHR) {
     return sendXHR(statusUrl, createXHR)
         .then(res => {
-            if (res.cmd === COMMAND.run || res.cmd === COMMAND.idle && !isCurrentLocation(res.url)) {
+            if ((res.cmd === COMMAND.run || res.cmd === COMMAND.idle) && !isCurrentLocation(res.url)) {
                 stopInitScriptExecution();
                 document.location = res.url;
             }

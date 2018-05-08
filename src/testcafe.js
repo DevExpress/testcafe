@@ -76,3 +76,6 @@ export default class TestCafe {
         this.proxy.close();
     }
 }
+
+process.on('unhandledException', e => console.log('unhandledException', e.stack || e)); //eslint-disable-line no-console
+process.on('unhandledRejection', e => console.log('unhandledRejection', e.stack || e)); //eslint-disable-line no-console

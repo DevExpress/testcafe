@@ -473,14 +473,15 @@ export default class Driver {
     }
 
     _onTestDone (status) {
-        this.contextStorage.setItem(TEST_DONE_SENT_FLAG, true);
+        //this.contextStorage.setItem(TEST_DONE_SENT_FLAG, true);
 
-        storages.clear();
-        storages.lock();
+        //storages.clear();
+        //storages.lock();
 
         this
             ._sendStatus(status)
-            .then(() => browser.checkStatus(this.browserStatusDoneUrl, hammerhead.createNativeXHR));
+            .then(() => browser.checkStatus(this.browserStatusDoneUrl, hammerhead.createNativeXHR))
+            .then(() => this._onReady({ isCommandResult: false }));
     }
 
     _onBackupStoragesCommand () {
