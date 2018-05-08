@@ -39,7 +39,7 @@ test('Prevent Input event on TextInput when type to ContentEditable div IE11/Fir
 });
 
 // NOTE: Not for IE11 because preventDefault will not prevent typing
-//       Not for Firefox because Firefox does not support TextInput event
+// Not for Firefox because Firefox does not support TextInput event
 test('Prevent Input event on TextInput when type to element node', async t => {
     await t
         .typeText(contentEditableWithElementNode, 'Hello')
@@ -47,7 +47,7 @@ test('Prevent Input event on TextInput when type to element node', async t => {
 });
 
 // NOTE: Not for IE11 because is's not possible to prevent typing in IE11
-//       Not for Firefox because Firefox does not support TextInput event
+// Not for Firefox because Firefox does not support TextInput event
 test('Modify text node of ContentEditable div on TextInput event and prevent Input event', async t => {
     await t
         .typeText(contentEditableWithModify, 'Hello')
@@ -55,8 +55,8 @@ test('Modify text node of ContentEditable div on TextInput event and prevent Inp
 });
 
 // NOTE: Not for IE11 because this test emulates behavior from https://github.com/DevExpress/testcafe/issues/1956.
-//       This behavior is different in IE11
-//       Not for Firefox because Firefox does not support TextInput event
+// This behavior is different in IE11
+// Not for Firefox because Firefox does not support TextInput event
 test('Type to ContentEditable div when selected node was replaced on TextInput event', async t => {
     await t
         .typeText(contentEditableWithReplace, 'Hello')

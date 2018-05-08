@@ -106,13 +106,24 @@ function _excludeInvisibleSymbolsFromSelection (selection) {
 }
 
 // NOTE: Typing can be prevented in Chrome/Edge but can not be prevented in IE11 or Firefox
-//       Firefox does not support TextInput event
-//       Safari supports the TextInput event but has a bug: e.data is added to the node value.
-//       So in Safari we need to call preventDefault in the last textInput handler but not prevent the Input event
-
-let forceInputInSafari;
+// Firefox does not support TextInput event
+// Safari supports the TextInput event but has a bug: e.data is added to the node value.
+// So in Safari we need to call preventDefault in the last textInput handler but not prevent the Input event
 
 function simulateTextInput (element, text) {
+    let forceInputInSafari;
+
+    function onSafariTextInput (e) {
+        e.preventDefault();
+
+        forceInputInSafari = true;
+    }
+
+    function onSafariPreventTextInput (e) {
+        if (e.type === 'textInput')
+            forceInputInSafari = false;
+    }
+
     if (browserUtils.isSafari) {
         listeners.addInternalEventListener(window, ['textInput'], onSafariTextInput);
         eventSandbox.on(eventSandbox.EVENT_PREVENTED_EVENT, onSafariPreventTextInput);
@@ -126,17 +137,6 @@ function simulateTextInput (element, text) {
     }
 
     return isInputEventRequired || browserUtils.isIE11;
-}
-
-function onSafariTextInput (e) {
-    e.preventDefault();
-
-    forceInputInSafari = true;
-}
-
-function onSafariPreventTextInput (e) {
-    if (e.type === 'textInput')
-        forceInputInSafari = false;
 }
 
 function _typeTextToContentEditable (element, text) {

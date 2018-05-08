@@ -440,7 +440,7 @@ $(document).ready(function () {
         var inputEventRaisedCount = 0;
 
         // NOTE IE11 does not raise input event on contenteditable element
-        var expectedInputEventRaisedCount = !browserUtils.isIE11 ? 12 : 0;
+        var expectedInputEventRaisedCount = browserUtils.isIE11 ? 0 : 12;
 
         $el = $('#2');
 
