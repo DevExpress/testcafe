@@ -21,7 +21,7 @@ This topic consists of the following sections:
 
 ## Assertion Structure
 
-The first TestCafe assertions is the `expect` method the [test controller](../test-code-structure.html#test-controller) exposes.
+To construct assertions, use the `expect` method of the [test controller](../test-code-structure.html#test-controller).
 This method accepts the actual value. You can pass a value, a [Selector's DOM node state property](../selecting-page-elements/selectors/using-selectors.md#define-assertion-actual-value)
 or a [client function](../obtaining-data-from-the-client/README.md) promise.
 TestCafe automatically waits for node state properties to obtain a value and for client functions to execute.
@@ -148,13 +148,10 @@ await t.expect(Selector('#elementId').innerText).eql('text', 'check element text
 
 ### options.allowUnawaitedPromise
 
-Allows a regular promise to be passed to the assertion's `expect` method.
+By default, only promises the [selectors](../selecting-page-elements/selectors/using-selectors.md#define-assertion-actual-value)
+and [client functions](../obtaining-data-from-the-client/README.md) return can be passed as the assertion's actual value. If you pass a regular unawaited promise, TestCafe throws an error.
 
-Only promises the [selectors](../selecting-page-elements/selectors/using-selectors.md#define-assertion-actual-value)
-and [client functions](../obtaining-data-from-the-client/README.md) return can be passed as the assertion's actual value.
-They trigger the [Smart Assertion Query Mechanism](#smart-assertion-query-mechanism).
-If you pass a regular unawaited promise, TestCafe compares the promise with the expected value.
-If this is what you need, set the `allowUnawaitedPromise` option to `true`. Otherwise, an error is thrown.
+If you need to assert a regular promise, set the `allowUnawaitedPromise` option to `true`.
 
 ```js
 await t.expect(doSomethingAsync()).ok('check that a promise is returned', { allowUnawaitedPromise: true });

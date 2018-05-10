@@ -45,15 +45,15 @@ test
 
 To include testing metadata to reports, use [custom reporter methods](https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html).
 
-#### :gear: Passing a regular promise to `t.expect` ([#2207](https://github.com/DevExpress/testcafe/issues/2207))
+#### :gear: Passing a regular promise to `t.expect` is deprecated now ([#2207](https://github.com/DevExpress/testcafe/issues/2207))
 
-We have added the [allowUnawaitedPromise](docs/articles/documentation/test-api/assertions/README.md#allowunawaitedpromise) assertion option that allows passing a regular promise to the assertion's `expect` method.
+TestCafe now throws an error if you pass a regular promise to the assertion's `expect` method.
+
+If you need to assert a regular promise, set the [allowUnawaitedPromise](docs/articles/documentation/test-api/assertions/README.md#allowunawaitedpromise) option to `true`.
 
 ```js
 await t.expect(doSomethingAsync()).ok('check that a promise is returned', { allowUnawaitedPromise: true });
 ```
-
-If the option is disable, and `Promise` is passed to `t.expect`, an error is thrown.
 
 ### Bug Fixes
 
