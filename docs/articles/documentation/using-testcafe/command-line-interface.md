@@ -153,7 +153,7 @@ testcafe "saucelabs:Chrome@52.0:Windows 8.1" tests/sample-fixture.js
 
 ### Starting browser with arguments
 
-If you need to pass arguments for the specified browser, write them after the browser's alias. Encolse the browser call and its arguments in quotation marks.
+If you need to pass arguments for the specified browser, write them after the browser's alias. Enclose the browser call and its arguments in quotation marks.
 
 In Windows `cmd.exe` (default command prompt), use double quotation marks:
 
@@ -301,10 +301,7 @@ testcafe all tests/sample-fixture.js -q
 
 ### -e, --skip-js-errors
 
-Prevents tests from failing when a JavaScript error occurs on a tested web page.
-In this case, TestCafe stops test execution and posts
-an error message to a report. If you want TestCafe to ignore JavaScript errors,
-specify this in an argument.
+When a JavaScript error occurs on a tested web page, TestCafe stops test execution and posts an error message to a report. To ignore JavaScript errors, use the `-e`(`--skip-js-errors`) option.
 
 For example, the following command runs tests from the specified file and forces TestCafe to ignore JavaScript errors:
 
@@ -341,7 +338,7 @@ testcafe ie tests/sample-fixture.js -t "Click a label"
 
 TestCafe runs tests whose names match the specified pattern.
 
-For example, the following command runs tests whose names match `Click.*`. These can be the `Click a label`, `Click a button`, etc.
+For example, the following command runs tests whose names match `Click.*`. These can be `Click a label`, `Click a button`, etc.
 
 ```sh
 testcafe ie my-tests -T "Click.*"
@@ -359,7 +356,7 @@ testcafe ie my-tests -f sample-fixture
 
 TestCafe runs fixtures whose names match the specified pattern.
 
-For example, the following command runs fixtures whose names match `Page.*`. These can be the `Page1`, `Page2`, etc.
+For example, the following command runs fixtures whose names match `Page.*`. These can be `Page1`, `Page2`, etc.
 
 ```sh
 testcafe ie my-tests -F "Page.*"
