@@ -13,11 +13,18 @@ fixture.requestHooks(...hook)
 test.requestHooks(...hook)
 ```
 
+You can also attach and detach hooks during test run using the `t.addRequestHooks` and `t.removeRequestHooks` methods.
+
+```text
+t.addRequestHooks(...hook)
+t.removeRequestHooks(...hooks)
+```
+
 Parameter | Type | Description
 --------- | ---- | ------------
-`hook`    | RequestHook | A request logger, mock or custom hook.
+`hook`    | RequestHook subclass | A `RequestLogger`, `RequestMock` or custom user-defined hook.
 
-The `requestHooks` methods use the rest operator which allows you to pass multiple hooks as parameters or arrays of hooks.
+The `fixture.requestHooks`, `test.requestHooks` `t.addRequestHooks` and `t.removeRequestHooks` methods use the rest operator which allows you to pass multiple hooks as parameters or arrays of hooks.
 
 ```js
 import { RequestLogger, RequestMock } from 'testcafe';
@@ -34,38 +41,14 @@ fixture `My fixture`
 test
     .requestHooks(mock)
     ('My test', async t => {
-        // test actions
-    })
-```
-
-You can also attach and detach hooks during test run using the `t.addRequestHooks` and `t.removeRequestHooks` methods.
-
-```text
-t.addRequestHooks(...hook)
-t.removeRequestHooks(...hooks)
-```
-
-Parameter | Type | Description
---------- | ---- | ------------
-`hook`    | RequestHook | A request logger, mock or custom hook.
-
-The `t.addRequestHooks` and `t.removeRequestHooks` methods use the rest operator which allows you to pass multiple hooks as parameters or arrays of hooks.
-
-```js
-import { RequestLogger } from 'testcafe';
-
-const logger = RequestLogger('http://example.com');
-
-fixture `My fixture`
-    .page('http://example.com');
-
-test('My test', async t => {
     await t
-        .click('#send-unlogged-request')
-        .addRequestHooks(logger)
-        .click('#send-logged-request')
-        .expect(logger.count(() => true)).eql(1)
-        .removeRequestHooks(logger)
-        .click('#send-unlogged-request');
-})
+         .click('#send-logged-request')
+         .expect(logger.count(() => true)).eql(1)  
+         .removeRequestHooks(logger) 
+         .click('#send-unlogged-request')
+         .expect(logger.count(() => true)).eql(1)  
+         .addRequestHooks(logger)
+         .click('#send-logged-request')
+         .expect(logger.count(() => true)).eql(2);     
+})    
 ```
