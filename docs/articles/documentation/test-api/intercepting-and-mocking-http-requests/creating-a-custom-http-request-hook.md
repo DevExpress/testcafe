@@ -6,7 +6,7 @@ checked: false
 ---
 # Creating a Custom HTTP Request Hook
 
-To handle HTTP requests in a custom way, you can create your own request hook. This topic provides basic information on how request hooks work and what you need to do to create a custom hook.
+You can create your own request hook to handle HTTP requests. This topic describes request hooks and how to create a custom hook.
 
 * [Understanding How TestCafe Request Hooks Operate](#understanding-how-testcafe-request-hooks-operate)
 * [Writing a Hook](#writing-a-hook)
@@ -25,7 +25,7 @@ To handle HTTP requests in a custom way, you can create your own request hook. T
     }
     ```
 
-    This class has the following public interface.
+    This class has the following public interface:
 
     ```js
     class RequestHook {
@@ -43,7 +43,7 @@ To handle HTTP requests in a custom way, you can create your own request hook. T
     }
     ```
 
-* To determine which requests the hook handles, the base class constructor receives an array of [filtering rules](specifying-which-requests-are-handled-by-the-hook.md) as the first parameter. If no rules are passed, all requests are handled.
+* The base class constructor receives an array of [filtering rules](specifying-which-requests-are-handled-by-the-hook.md) as the first parameter to determine which requests the hook handles. All requests are handled if no rules are passed.
 
     ```js
     class RequestHook {
@@ -54,7 +54,7 @@ To handle HTTP requests in a custom way, you can create your own request hook. T
     }
     ```
 
-* Before sending the request, the `onRequest` method is called. Use this method to handle the request sending. If necessary, you can change the request parameters before it is sent.
+* The `onRequest` method is called before sending the request. Use this method to handle sending the request. You can change the request parameters before it is sent.
 
     This method is abstract in the base class and needs to be overriden in the descendant.
 
@@ -66,7 +66,7 @@ To handle HTTP requests in a custom way, you can create your own request hook. T
 
 * When a response is received, the hook starts preparing to call the `onResponse` method that handles the response.
 
-    At this moment, the hook processes settings that define whether to pass the response headers and body to the `onResponse` method. These settings are specified in the second constructor parameter. This parameter takes an object with two properties - `includeHeaders` and `includeBody`.
+    At this moment, the hook processes settings that define whether to pass the response headers and body to the `onResponse` method. These settings are specified in the second constructor parameter. This parameter takes an object with the `includeHeaders` and `includeBody` properties.
 
     ```js
     class RequestHook {
@@ -77,7 +77,7 @@ To handle HTTP requests in a custom way, you can create your own request hook. T
     }
     ```
 
-* After all the necessary preparations are done, the `onResponse` method is called. This method is abstract in the base class. Override it in the descendant to handle the request sending.
+* Finally, the `onResponse` method is called. This an abstract method in the base class. Override it in the descendant to handle sending the request.
 
     ```js
     onResponse (/*ResponseEvent event*/) {
@@ -87,7 +87,7 @@ To handle HTTP requests in a custom way, you can create your own request hook. T
 
 ## Writing a Hook
 
-To sum up, this is what you need to write a custom hook.
+Do the following to write a custom hook:
 
 * inherit from the `RequestHook` class,
 * override the `onRequest` method to handle sending the request,
@@ -121,7 +121,7 @@ Property | Type | Description
 `requestOptions` | Object | Contains the request parameters. You can use it to change the request parameters before the request is sent.
 `isAjax`         | Boolean | Specifies if the request is performed using AJAX.
 
-The `requestOptions` object has the following properties.
+The `requestOptions` object has the following properties:
 
 Property | Type | Description
 -------- | ---- | ------------
@@ -134,8 +134,8 @@ Property | Type | Description
 `port`     | Number | The destination port.
 `path`     | String | The destination path.
 `method`   | String | The request method.
-`credentials` | Object | Credentials that were used to authenticate in the current session using NTLM or Basic authentication. For HTTP Basic authentication, these are `username` and `password`. NTLM authentication additionally specifies `workstation` and `domain`. See [HTTP Authentication](../authentication/http-authentication.md).
-`proxy`       | Object | If a proxy is used, contains information about its `host`, `hostname`, `port`, `proxyAuth`, `authHeader` and `bypassRules`.
+`credentials` | Object | Credentials that were used for authentication in the current session using NTLM or Basic authentication. For HTTP Basic authentication, these are `username` and `password`. NTLM authentication additionally specifies `workstation` and `domain`. See [HTTP Authentication](../authentication/http-authentication.md).
+`proxy`       | Object | It contains information about its `host`, `hostname`, `port`, `proxyAuth`, `authHeader` and `bypassRules` if a proxy is used.
 
 ```js
 onRequest (event) {
@@ -150,7 +150,7 @@ onRequest (event) {
 
 ### The onResponse Method
 
-The `onResponse` method's `event` object exposes the following properties.
+The `onResponse` method's `event` object exposes the following properties:
 
 Property | Type | Description
 -------- | ---- | --------------
