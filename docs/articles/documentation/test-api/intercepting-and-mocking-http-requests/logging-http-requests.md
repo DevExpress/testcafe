@@ -6,7 +6,7 @@ checked: false
 ---
 # Logging HTTP Requests
 
-To log HTTP requests sent during test execution, use the `RequestLogger`. This object stores all requests sent and responses received while the test is running. You can use this information in [assertions](../assertions/README.md) to check how the tested page communicates with HTTP services.
+You can use the `RequestLogger` to log HTTP requests sent during test execution. This object stores all requests sent and responses received while the test is running. You can use this information in [assertions](../assertions/README.md) to check how the tested page communicates with HTTP services.
 
 * [Creating a Logger](#creating-a-logger)
 * [Logger Methods](#logger-methods)
@@ -15,7 +15,7 @@ To log HTTP requests sent during test execution, use the `RequestLogger`. This o
 
 ## Creating a Logger
 
-To create a request logger, use the `RequestLogger` constructor.
+Use the `RequestLogger` constructor to create a request logger.
 
 ```text
 RequestLogger([filter] [, options])
@@ -23,10 +23,10 @@ RequestLogger([filter] [, options])
 
 Parameter    | Type | Description | Default
 ------------ | ---- | ----------- | --------
-`filter`&#160;*(optional)*  | String &#124; RegExp &#124; Object &#124; Predicate | Specifies which requests should be tracked by the logger. See [Specifying Which Requests are Handled by the Hook](specifying-which-requests-are-handled-by-the-hook.md). | All requests are tracked
+`filter`&#160;*(optional)*  | String &#124; RegExp &#124; Object &#124; Predicate | Specifies which requests the logger should track. See [Specifying Which Requests are Handled by the Hook](specifying-which-requests-are-handled-by-the-hook.md). | All requests are tracked
 `options`&#160;*(optional)* | Object | Options that define how the requests and responses are logged. | See below
 
-The `options` parameter contains the following options.
+The `options` parameter contains the following options:
 
 Option | Type | Description   | Default
 ------ | ---- | ------------- | ---------
@@ -49,14 +49,14 @@ const headerLogger = RequestLogger(/testcafe/, {
 
 To enable the logger to track the requests, [attach it to a test or fixture](attaching-hooks-to-tests-and-fixtures.md).
 
-By default, `RequestLogger` stores the following parameters.
+The `RequestLogger` stores the following parameters by default:
 
 * The URL where the request is sent.
 * The request's HTTP method.
 * The status code received in the response.
 * The user agent that sent the request.
 
-To access data stored by the logger, use its API.
+Use the logger's API to access the data it stores.
 
 ## Logger Methods
 
