@@ -56,7 +56,7 @@ You can create your own request hook to handle HTTP requests. This topic describ
 
 * The `onRequest` method is called before sending the request. Use this method to handle sending the request. You can change the request parameters before it is sent.
 
-    This method is abstract in the base class and needs to be overriden in the descendant.
+    This method is abstract in the base class and needs to be overriden in the subclass.
 
     ```js
     onRequest (/*RequestEvent event*/) {
@@ -66,7 +66,7 @@ You can create your own request hook to handle HTTP requests. This topic describ
 
 * When a response is received, the hook starts preparing to call the `onResponse` method that handles the response.
 
-    At this moment, the hook processes settings that define whether to pass the response headers and body to the `onResponse` method. These settings are specified in the second constructor parameter. This parameter takes an object with the `includeHeaders` and `includeBody` properties.
+    At this moment, the hook processes settings that define whether to pass the response headers and body to the `onResponse` method. These settings are specified in the second constructor parameter. This parameter takes an object with the `includeHeaders` and `includeBody` properties that have the `false` value by default.
 
     ```js
     class RequestHook {
@@ -127,15 +127,15 @@ Property | Type | Description
 -------- | ---- | ------------
 `headers`     | Object  | The request headers in the property-value form.
 `body`        | [Buffer](https://nodejs.org/api/buffer.html) | The request body.
-`url`    | String | A URL to which the request is sent.
-`protocol` | String | The request protocol.
-`hostname` | String | The destination host name.
-`host`     | String | The destination host.
-`port`     | Number | The destination port.
-`path`     | String | The destination path.
-`method`   | String | The request method.
+`url`    | String | The URL to which the request is sent.
+`protocol` | String | The protocol to use. Default: *http:*.
+`hostname` | String | The alias for the host.
+`host`     | String | The domain name or IP address of the server to issue the request to. Default: *localhost*.
+`port`     | Number | The port of the remote server. Default: *80*.
+`path`     | String | The request path. Should include query string if any. E.G. *'/index.html?page=12'*. An exception is thrown when the request path contains illegal characters. Currently, only spaces are rejected but that may change in the future. Default: *'/'*.
+`method`   | String | The string specifying the HTTP request method. Default: *'GET'*.
 `credentials` | Object | Credentials that were used for authentication in the current session using NTLM or Basic authentication. For HTTP Basic authentication, these are `username` and `password`. NTLM authentication additionally specifies `workstation` and `domain`. See [HTTP Authentication](../authentication/http-authentication.md).
-`proxy`       | Object | It contains information about its `host`, `hostname`, `port`, `proxyAuth`, `authHeader` and `bypassRules` if a proxy is used.
+`proxy`       | Object | If a proxy is used, the property contains information about its `host`, `hostname`, `port`, `proxyAuth`, `authHeader` and `bypassRules`.
 
 ```js
 onRequest (event) {
