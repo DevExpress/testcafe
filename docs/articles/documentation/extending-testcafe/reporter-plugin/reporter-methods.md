@@ -6,13 +6,13 @@ checked: false
 ---
 # Reporter Methods
 
-To create a [reporter](README.md#implementing-the-reporter), you need to implement the following methods.
+You should implement the following methods to create a [reporter](README.md#implementing-the-reporter).
 
-> You can use [helper methods and libraries](helpers.md) within the reporter methods to output required data.
+> You can use the [helper methods and libraries](helpers.md) within the reporter methods to output the required data.
 
 ## reportTaskStart
 
-Fires when a test task starts, which happens at the beginning of testing.
+Fires when a test task starts.
 
 ```text
 reportTaskStart (startTime, userAgents, testCount)
@@ -90,7 +90,7 @@ Property         | Type             | Description
 ---------------- | ---------------- | --------------------------------------------------------
 `errs`           | Array or Strings | An array of errors that occurred during a test run.
 `durationMs`     | Number           | The time spent on test execution (in milliseconds).
-`unstable`       | Boolean          | Specifies if the test has been marked as unstable.
+`unstable`       | Boolean          | Specifies if the test is marked as unstable.
 `screenshotPath` | String           | The directory path where screenshots have been saved to.
 `skipped`        | Boolean          | Specifies if the test was skipped.
 
@@ -126,7 +126,7 @@ reportTestDone (name, testRunInfo, meta) {
 
 ## reportTaskDone
 
-Fires when the entire task ends, which happens at the end of testing.
+Fires when the task ends.
 
 ```text
 reportTaskDone (endTime, passed, warnings)
