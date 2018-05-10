@@ -6,7 +6,7 @@ checked: false
 ---
 # Logging HTTP Requests
 
-You can use the `RequestLogger` to log HTTP requests sent during test execution. This object stores all requests sent and responses received while the test is running. You can use this information in [assertions](../assertions/README.md) to check how the tested page communicates with HTTP services.
+You can use the `RequestLogger` to log HTTP requests sent during test execution. This object stores all requests sent and responses received while the test is running.
 
 * [Creating a Logger](#creating-a-logger)
 * [Logger Methods](#logger-methods)
@@ -67,6 +67,8 @@ Method | Return Type | Description
 `clear()`             | None    | Clears all logged requests.
 
 The `predicate` functions take a single parameter - the `Request` object.
+
+If you use the `contains(predicate)` or `count(predicate)` methods in assertions, TestCafe uses the [Smart Assertion Query Mechanism](../../assertions/README.md#smart-assertion-query-mechanism).
 
 ## Logger Properties
 
