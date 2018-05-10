@@ -8,7 +8,7 @@ checked: true
 
 An object that configures and launches test tasks.
 
-Created by the [testCafe.createRunner](testcafe.md#createrunner) function.
+Created using the [testCafe.createRunner](testcafe.md#createrunner) function.
 
 **Example**
 
@@ -67,7 +67,7 @@ Parameter | Type                | Description
 --------- | ------------------- | ----------------------------------------------------------------------------
 `source`  | String &#124; Array | The relative or absolute path to a test fixture file, or several such paths.
 
-Concatenates the settings when called several times.
+If you call the method several times, all the specified sources are added to the test runner.
 
 **Example**
 
@@ -77,7 +77,7 @@ runner.src(['/home/user/tests/fixture1.js', 'fixture5.js']);
 
 ### filter
 
-Allows you to manually select which tests should be run.
+Allows you to select which tests should be run.
 
 ```text
 filter(callback) → this
@@ -87,11 +87,11 @@ Parameter  | Type                                           | Description
 ---------- | ---------------------------------------------- | ----------------------------------------------------------------
 `callback` | `function(testName, fixtureName, fixturePath)` | The callback that determines if a particular test should be run.
 
-The callback function is called for each test in files that are specified using the [src](#src) method.
+The callback function is called for each test in the files specified using the [src](#src) method.
 
-Return `true` from the callback to include the current test, or `false` to exclude it.
+Return `true` from the callback to include the current test or `false` to exclude it.
 
-The callback function takes the following arguments.
+The callback function accepts the following arguments:
 
 Parameter     | Type   | Description
 ------------- | ------ | ----------------------------------
@@ -117,15 +117,15 @@ Configures the test runner to run tests in the specified browsers.
 browsers(browser) → this
 ```
 
-The `browser` parameter can be any of the following objects, or an `Array` of them.
+The `browser` parameter can be any of the following objects or an `Array` of them:
 
 Parameter Type                                                                                        | Description                            | Browser Type
 ---------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------
-String                                                                                                | The browser alias that differs for different browser types. For details, see [Browser Support](../common-concepts/browsers/browser-support.md).                            | [Local browsers](../common-concepts/browsers/browser-support.md#locally-installed-browsers), [cloud browsers](../common-concepts/browsers/browser-support.md#browsers-in-cloud-testing-services) and [browsers accessed through *browser provider plugins*](../common-concepts/browsers/browser-support.md#nonconventional-browsers).                                                                 |
- `{path: String, cmd: String}`                                                                        | The path to the browser executable (`path`) and command line parameters (`cmd`). The `cmd` property is optional.                                                     | [Local](../common-concepts/browsers/browser-support.md#locally-installed-browsers) and [portable](../common-concepts/browsers/browser-support.md#portable-browsers) browsers
+String                                                                                                | A different browser alias for each browser type. See [Browser Support](../common-concepts/browsers/browser-support.md) for more details.                            | [Local browsers](../common-concepts/browsers/browser-support.md#locally-installed-browsers), [cloud browsers](../common-concepts/browsers/browser-support.md#browsers-in-cloud-testing-services), and [browsers accessed through *browser provider plugins*](../common-concepts/browsers/browser-support.md#nonconventional-browsers).                                                                 |
+ `{path: String, cmd: String}`                                                                        | The path to the browser's executable (`path`) and command line parameters (`cmd`). The `cmd` property is optional.                                                     | [Local](../common-concepts/browsers/browser-support.md#locally-installed-browsers) and [portable](../common-concepts/browsers/browser-support.md#portable-browsers) browsers
 [BrowserConnection](browserconnection.md)                                                            | The remote browser connection.                                                                                                                                        | [Remote browsers](../common-concepts/browsers/browser-support.md#browsers-on-remote-devices)
 
-You are free to mix different types of objects in one function call. The `browsers` function concatenates the settings when called several times.
+You can use different object types in one function call. If you call the method several times, all the specified sources are added to the test runner.
 
 #### Using Browser Aliases
 
@@ -149,7 +149,7 @@ runner.browsers('chrome:headless');
 
 #### Specifying the Path to the Browser Executable
 
-Use the `path:` prefix. If the path contains spaces, surround it with backticks.
+Use the `path:` prefix. Enclose the path in backticks if it contains spaces.
 
 ```js
 runner.browsers('path:`C:\\Program Files\\Internet Explorer\\iexplore.exe`');
@@ -206,15 +206,15 @@ screenshots(path [, takeOnFails]) → this
 
 Parameter                  | Type    | Description                                                                   | Default
 -------------------------- | ------- | ----------------------------------------------------------------------------- | -------
-`path`                     | String  | The path to which the screenshots will be saved.
-`takeOnFails`&#160;*(optional)* | Boolean | Specifies if screenshots should be taken automatically whenever a test fails. | `false`
+`path`                     | String  | The path to which the screenshots are saved.
+`takeOnFails`&#160;*(optional)* | Boolean | Specifies if screenshots should be taken automatically when a test fails. | `false`
 
-The `screenshots` function must be called to enable TestCafe to take screenshots
+The `screenshots` function should be called to allow TestCafe to take screenshots
 when the [t.takeScreenshot](../../test-api/actions/take-screenshot.md) action is called from test code.
 
-Set the `takeOnFails` parameter to `true` to additionally take a screenshot whenever a test fails.
+Set the `takeOnFails` parameter to `true` to take a screenshot when a test fails.
 
-> Important! If the `screenshots` function is not called, TestCafe does not take screenshots.
+> Important! TestCafe does not take screenshots if the `screenshots` function is not called.
 
 **Example**
 
@@ -224,7 +224,7 @@ runner.screenshots('reports/screenshots/', true);
 
 ### reporter
 
-Configures the TestCafe reporting feature.
+Configures TestCafe's reporting feature.
 
 ```text
 reporter(name [, outStream]) → this
@@ -233,7 +233,7 @@ reporter(name [, outStream]) → this
 Parameter                | Type                        | Description                                     | Default
 ------------------------ | --------------------------- | ----------------------------------------------- | --------
 `name`                   | String                      | The name of the [reporter](../common-concepts/reporters.md) to use.
-`outStream`&#160;*(optional)* | Writable Stream implementer | The stream to which the report will be written. | `stdout`
+`outStream`&#160;*(optional)* | Writable Stream implementer | The stream to which the report is written. | `stdout`
 
 To use multiple reporters, call this method several times with different reporter names. Note that only one reporter can write to `stdout`.
 
@@ -298,18 +298,18 @@ Specifies that tests should run concurrently.
 concurrency(n) → this
 ```
 
-TestCafe will open `n` instances of the same browser thus creating a pool of browser instances.
-Tests will run concurrently against this pool, i.e. each test will run in the first free instance.
+TestCafe opens `n` instances of the same browser and creates a pool of browser instances.
+Tests are run concurrently against this pool, that is, each test is run in the first free instance.
 
-The `concurrency` function takes the following parameters.
+The `concurrency` function takes the following parameters:
 
 Parameter | Type    | Description
 --------- | ------- | --------
-`n`  | Number | The number of browser instances that will be invoked.
+`n`  | Number | The number of browser instances that are invoked.
 
-To learn more about concurrent test execution, see [Concurrent Test Execution](../common-concepts/concurrent-test-execution.md).
+See [Concurrent Test Execution](../common-concepts/concurrent-test-execution.md) to learn more about concurrent test execution.
 
-The following example shows how to run tests in three Chrome instances.
+The following example shows how to run tests in three Chrome instances:
 
 ```js
 runner
@@ -319,22 +319,22 @@ runner
 
 ### startApp
 
-Specifies a shell command that will be executed before running tests. Use it to launch or deploy the application that will be tested.
+Specifies a shell command that is executed before running tests. Use it to launch or deploy the application that is tested.
 
 ```text
 async startApp(command, initDelay) → this
 ```
 
-After the testing is finished, the appication will be automatically terminated.
+After the testing is finished, the application is automatically terminated.
 
-The `startApp` function takes the following parameters.
+The `startApp` function takes the following parameters:
 
 Parameter         | Type    | Description   Default
 ----------------- | ------- | -------- | -------
 `command`                     | String | The shell command to be executed.
-`initDelay`&#160;*(optional)* | Number | The amount of time, in milliseconds, allowed for the command to initialize the tested application. | `1000`
+`initDelay`&#160;*(optional)* | Number | The amount of time (in milliseconds) allowed for the command to initialize the tested application. | `1000`
 
-> TestCafe adds `node_modules/.bin` to `PATH` so that you can use binaries provided by locally installed dependencies without prefixes.
+> TestCafe adds `node_modules/.bin` to `PATH` so that you can use binaries the locally installed dependencies provide without prefixes.
 
 **Example**
 
@@ -355,15 +355,15 @@ Parameter | Type   | Description
 `host`    | String | The proxy server host.
 `bypassRules`&#160;*(optional)* | String &#124; Array | A set of rules that specify which resources are accessed bypassing the proxy.
 
-If you access Internet through a proxy server, use the `useProxy` method to specify its host.
+If you access the Internet through a proxy server, use the `useProxy` method to specify its host.
 
-When using a proxy server, you may still need to access some local or external resources directly. In this instance, provide their URLs in the `bypassRules` option.
+When using a proxy server, you may still need to access local or external resources directly. In this instance, provide their URLs in the `bypassRules` option.
 
-The `bypassRules` parameter takes one or several URLs that require direct access. You can replace parts of the URL with wildcards `*`. TestCafe will correspond these symbols to any number of characters in the URL. Wildcards at the beginning and end of the rules can be omitted (`*.mycompany.com` and `.mycompany.com` have the same effect).
+The `bypassRules` parameter takes one or several URLs that require direct access. You can replace parts of the URL with the `*` wildcard that corresponds to a string. Wildcards at the beginning and end of the rules can be omitted (`*.mycompany.com` and `.mycompany.com` have the same effect).
 
 **Examples**
 
-The following example shows how to use the proxy server at `proxy.corp.mycompany.com`.
+The following example shows how to use the proxy server at `proxy.corp.mycompany.com`:
 
 ```js
 runner.useProxy('proxy.corp.mycompany.com');
@@ -375,13 +375,13 @@ In the example below, the proxy server address is `172.0.10.10:8080` and two res
 runner.useProxy('172.0.10.10:8080', ['localhost:8080', 'internal-resource.corp.mycompany.com']);
 ```
 
-The `*.mycompany.com` proxy bypass rule means that all URLs in `mycompany.com` subdomains will be accessed directly.
+The `*.mycompany.com` proxy bypass rule means that all URLs in `mycompany.com` subdomains are accessed directly.
 
 ```js
 runner.useProxy('proxy.corp.mycompany.com', '*.mycompany.com');
 ```
 
-You can also specify authentication credentials with the proxy host.
+You can also use the proxy host to specify authentication credentials.
 
 ```js
 runner.useProxy('username:password@proxy.mycorp.com');
@@ -405,12 +405,12 @@ Parameter         | Type    | Description                                       
 ----------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------
 `skipJsErrors`    | Boolean | Defines whether to continue running a test after a JavaScript error occurs on a page (`true`), or consider such a test failed (`false`).                                              | `false`
 `quarantineMode`  | Boolean | Defines whether to enable the [quarantine mode](#quarantine-mode).                                                                                                                    | `false`
-`selectorTimeout` | Number  | Specifies the amount of time, in milliseconds, within which [selectors](../../test-api/selecting-page-elements/selectors/README.md) make attempts to obtain a node to be returned. See [Selector Timeout](../../test-api/selecting-page-elements/selectors/using-selectors.md#selector-timeout). | `10000`
-`assertionTimeout` | Number  | Specifies the amount of time, in milliseconds, within which TestCafe makes attempts  to successfully execute an [assertion](../../test-api/assertions/README.md) if [a selector property](../../test-api/selecting-page-elements/selectors/using-selectors.md#define-assertion-actual-value) or a [client function](../../test-api/obtaining-data-from-the-client/README.md) was passed as an actual value. See [Smart Assertion Query Mechanism](../../test-api/assertions/README.md#smart-assertion-query-mechanism). | `3000`
-`pageLoadTimeout` | Number  | Specifies the amount of time, in milliseconds, passed after the `DOMContentLoaded` event, within which TestCafe waits for the `window.load` event to fire. After the timeout passes or the `window.load` event is raised (whichever happens first), TestCafe starts the test. You can set this timeout to `0` to skip waiting for `window.load`. | `3000`
-`speed`           | Number  | Specifies the speed of test execution. Should be a number between `1` (the fastest) and `0.01` (the slowest). If speed is also specified for an [individual action](../../test-api/actions/action-options.md#basic-action-options), the action speed setting overrides test speed. | `1`
+`selectorTimeout` | Number  | Specifies the time (in milliseconds) within which [selectors](../../test-api/selecting-page-elements/selectors/README.md) make attempts to obtain a node to be returned. See [Selector Timeout](../../test-api/selecting-page-elements/selectors/using-selectors.md#selector-timeout). | `10000`
+`assertionTimeout` | Number  | Specifies the time (in milliseconds) within which TestCafe makes attempts  to successfully execute an [assertion](../../test-api/assertions/README.md) if [a selector property](../../test-api/selecting-page-elements/selectors/using-selectors.md#define-assertion-actual-value) or a [client function](../../test-api/obtaining-data-from-the-client/README.md) was passed as an actual value. See [Smart Assertion Query Mechanism](../../test-api/assertions/README.md#smart-assertion-query-mechanism). | `3000`
+`pageLoadTimeout` | Number  | Specifies the time (in milliseconds) passed after the `DOMContentLoaded` event, within which TestCafe waits for the `window.load` event to fire. After the timeout passes or the `window.load` event is raised (whichever happens first), TestCafe starts the test. You can set this timeout to `0` to skip waiting for `window.load`. | `3000`
+`speed`           | Number  | Specifies the test execution speed. Should be a number between `1` (the fastest) and `0.01` (the slowest). If speed is also specified for an [individual action](../../test-api/actions/action-options.md#basic-action-options), the action speed setting overrides test speed. | `1`
 `debugMode`       | Boolean | Specifies if tests run in the debug mode. If this option is enabled, test execution is paused before the first action or assertion allowing you to invoke the developer tools and debug. In the debug mode, you can execute the test step-by-step to reproduce its incorrect behavior. You can also use the **Unlock page** switch in the footer to unlock the tested page and interact with its elements. | `false`
-`debugOnFail`     | Boolean | Specifies whether to enter the debug mode when a test fails. If enabled, the test is paused at the moment it fails, so that you can explore the tested page to determine the cause of the fail. | `false`
+`debugOnFail`     | Boolean | Specifies whether to enter the debug mode when a test fails. If enabled, the test is paused at the moment it fails, so that you can explore the tested page to determine what caused the failure. | `false`
 
 After all tests are finished, call the [testcafe.close](testcafe.md#close) function to stop the TestCafe server.
 
@@ -455,18 +455,18 @@ const taskPromise = runner
 taskPromise.cancel();
 ```
 
-You can also cancel all pending tasks at once by using the [runner.stop](#stop) function.
+You can also cancel all pending tasks at once using the [runner.stop](#stop) function.
 
 #### Quarantine Mode
 
-The quarantine mode is designed to isolate *non-deterministic* tests (i.e., tests that sometimes pass and sometimes fail without a clear reason)
+The quarantine mode is designed to isolate *non-deterministic* tests (that is, tests that sometimes pass and fail without a clear reason)
 from the rest of the test base (*healthy* tests).
 
-When the quarantine mode is enabled, tests are not marked as *failed* after the first unsuccessful run but rather sent to quarantine.
-After that, these tests are run several more times. The outcome of the most runs (*passed* or *failed*) is recorded as the test result.
-A test is separately marked *unstable* if the outcome varies between runs. The run that led to quarantining the test counts.
+When quarantine mode is enabled, tests are not marked as *failed* after the first unsuccessful run but rather sent to quarantine.
+After that, these tests are run again several times. The outcome of the most runs (*passed* or *failed*) is recorded as the test result.
+A test is separately marked *unstable* if the outcome varies between runs. The test counts the run that was quarantined.
 
-To learn more about the issue of non-deterministic tests, see Martin Fowler's [Eradicating Non-Determinism in Tests](http://martinfowler.com/articles/nonDeterminism.html) article.
+To learn more about non-deterministic tests, see Martin Fowler's [Eradicating Non-Determinism in Tests](http://martinfowler.com/articles/nonDeterminism.html) article.
 
 ### stop
 
