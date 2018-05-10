@@ -6,7 +6,7 @@ checked: true
 ---
 # Test Code Structure
 
-This topic contains the following sections.
+This topic contains the following sections:
 
 * [Fixtures](#fixtures)
 * [Tests](#tests)
@@ -23,7 +23,7 @@ This topic contains the following sections.
     * [Sharing Variables Between Fixture Hooks and Test Code](#sharing-variables-between-fixture-hooks-and-test-code)
 * [Skipping Tests](#skipping-tests)
 
-> If you use [eslint](http://eslint.org/) in your project, get the [TestCafe plugin](https://www.npmjs.com/package/eslint-plugin-testcafe)
+> If you use [eslint](http://eslint.org/) in your project, use  the [TestCafe plugin](https://www.npmjs.com/package/eslint-plugin-testcafe)
 to avoid the `'fixture' is not defined` and `'test' is not defined` errors.
 
 ## Fixtures
