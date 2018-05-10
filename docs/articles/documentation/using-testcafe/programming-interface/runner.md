@@ -125,7 +125,7 @@ String                                                                          
  `{path: String, cmd: String}`                                                                        | The path to the browser's executable (`path`) and command line parameters (`cmd`). The `cmd` property is optional.                                                     | [Local](../common-concepts/browsers/browser-support.md#locally-installed-browsers) and [portable](../common-concepts/browsers/browser-support.md#portable-browsers) browsers
 [BrowserConnection](browserconnection.md)                                                            | The remote browser connection.                                                                                                                                        | [Remote browsers](../common-concepts/browsers/browser-support.md#browsers-on-remote-devices)
 
-You can use different object types in one function call. If you call the method several times, all the specified sources are added to the test runner.
+You can use different object types in one function call. If you call the method several times, all the specified browsers are added to the test runner.
 
 #### Using Browser Aliases
 
@@ -359,7 +359,7 @@ If you access the Internet through a proxy server, use the `useProxy` method to 
 
 When using a proxy server, you may still need to access local or external resources directly. In this instance, provide their URLs in the `bypassRules` option.
 
-The `bypassRules` parameter takes one or several URLs that require direct access. You can replace parts of the URL with the `*` wildcard that corresponds to a string. Wildcards at the beginning and end of the rules can be omitted (`*.mycompany.com` and `.mycompany.com` have the same effect).
+The `bypassRules` parameter takes one or several URLs that require direct access. You can replace parts of the URL with the `*` wildcard that corresponds to a string of any length. Wildcards at the beginning and end of the rules can be omitted (`*.mycompany.com` and `.mycompany.com` have the same effect).
 
 **Examples**
 
