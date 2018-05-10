@@ -61,7 +61,7 @@ If the option is disable, and `Promise` is passed to `t.expect`, an error is thr
 * TestCafe works properly now if a `body` element has the `pointer-events: none;` css style rule ([#2251](https://github.com/DevExpress/testcafe/issues/2251))
 * Resizing Chrome in the emulation mode works correctly now ([#2154](https://github.com/DevExpress/testcafe/issues/2154))
 * The location port is used for service messages ([#2308](https://github.com/DevExpress/testcafe/pull/2308))
-* A browser instance is shut down correctly now on the `Unix` system ([#2226](https://github.com/DevExpress/testcafe/issues/2226))
+* A browser instance is shut down correctly now on Unix systems ([#2226](https://github.com/DevExpress/testcafe/issues/2226))
 * An `Integrity` attribute is removed from `script` and `link` tags ([testcafe-hammerhead/#235](https://github.com/DevExpress/testcafe-hammerhead/issues/235))
 * The `event.preventDefault()` method call changes the `event.defaultPrevented` property value now ([testcafe-hammerhead/#1588](https://github.com/DevExpress/testcafe-hammerhead/issues/1588))
 * It is possible now to set the `content` attribute of the `meta` element ([testcafe-hammerhead/#1586](https://github.com/DevExpress/testcafe-hammerhead/issues/1586))
