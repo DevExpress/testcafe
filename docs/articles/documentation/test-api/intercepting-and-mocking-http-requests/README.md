@@ -1,10 +1,10 @@
 ---
 layout: docs
-title: Intercepting and Mocking HTTP Requests
-permalink: /documentation/test-api/intercepting-and-mocking-http-requests/
-checked: false
+title: Intercepting HTTP Requests
+permalink: /documentation/test-api/intercepting-http-requests/
+checked: true
 ---
-# Intercepting and Mocking HTTP Requests
+# Intercepting HTTP Requests
 
 This section describes how to handle HTTP requests in your tests. TestCafe allows you to log them and mock the responses out of the box. You can also create a custom HTTP request hook, which allows you, for instance, to emulate Kerberos or client certificate authentication.
 
@@ -105,7 +105,7 @@ See [Mocking HTTP Responses](mocking-http-responses.md) for more information.
 
 You can create your own request hook to handle HTTP requests.
 
-The example below shows a custom hook that adds the `Authorization` header for JWT bearer authorization.
+The example below shows a custom hook that adds the `Authorization` header for [JWT](https://tools.ietf.org/html/rfc7519) bearer authorization.
 
 ```js
 import { Selector, RequestHook } from 'testcafe';
