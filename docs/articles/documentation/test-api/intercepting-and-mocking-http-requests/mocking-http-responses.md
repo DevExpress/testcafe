@@ -6,7 +6,7 @@ checked: false
 ---
 # Mocking HTTP Responses
 
-Mocking is useful when the tested app uses a piece of infrastructure that is difficult to deploy during the test run. In this instance, you can intercept requests to this resource and mock the responses using TestCafe.
+Mocking is useful when the tested app uses infrastructure that is difficult to deploy during the test run. In this instance, you can intercept requests to this resource and mock the responses using TestCafe.
 
 * [Creating a Mocker](#creating-a-mocker)
 * [The onRequestTo Method](#the-onrequestto-method)
@@ -105,9 +105,9 @@ Parameter | Type | Description
 `req`     | Object | A request to be mocked.
 `res`     | Object | A mocked response.
 
-Use information about the request provided in the `req` parameter to configure the response via the `res` parameter.
+Use information about the request the `req` parameter provides to configure the response via the `res` parameter.
 
-The `req` parameter exposes the following members.
+The `req` parameter exposes the following members:
 
 Property | Type | Description
 -------- | ---- | ------------
@@ -123,7 +123,7 @@ Property | Type | Description
 `credentials` | Object | Credentials that were used to authenticate in the current session using NTLM or Basic authentication. For HTTP Basic authentication, these are `username` and `password`. NTLM authentication additionally specifies `workstation` and `domain`.
 `proxy`       | Object | If a proxy is used, contains information about its `host`, `hostname`, `port`, `proxyAuth`, `authHeader` and `bypassRules`.
 
-Use the following members exposed by `res` to configure the response.
+Use the following members `res` exposes to configure the response:
 
 Property | Type | Description
 -------- | ---- | ------------
