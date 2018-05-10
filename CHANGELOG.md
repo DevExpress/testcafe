@@ -1,5 +1,79 @@
 # Changelog
 
+## v0.20.0 (2018-5-11)
+
+### Request Hooks: Intercepting HTTP requests ([#1341](https://github.com/DevExpress/testcafe/issues/1341))
+
+TestCafe now allows you to record HTTP request data or mock responses. You can also create a custom HTTP request hook to emulate authentications like  **Kerberos** or **Client Sertificate Authentication**.
+
+See [Intercepting HTTP Requests](docs/articles/documentation/test-api/intercepting-http-requests/README.md) for more information.
+
+### Enhancements
+
+#### :gear: Specifying resources accessed bypassing a proxy server ([#1791](https://github.com/DevExpress/testcafe/issues/1791))
+
+TestCafe now allows you to bypass the proxy server when accessing specific resources.
+
+To specify resources that require direct access, use the [--proxy-bypass](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--proxy-bypass-rules) flag in the command line or the [useProxy](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.md) API method's parameters.
+
+```sh
+testcafe chrome my-tests/**/*.js --proxy proxy.corp.mycompany.com --proxy-bypass localhost:8080,internal-resource.corp.mycompany.com
+```
+
+```js
+runner.useProxy('172.0.10.10:8080', ['localhost:8080', 'internal-resource.corp.mycompany.com']);
+```
+
+#### :gear: Specifying testing metadata ([#2242](https://github.com/DevExpress/testcafe/issues/2242))
+
+TestCafe allows you to specify additional information for tests in the form of key-value metadata and use it in reports.
+
+You can define metadata for a fixture or a test using the [meta](https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.md#specifying-testing-metadat) method:
+
+```js
+fixture 'MyFixture'
+    .meta('fixtureID', 'f-0001')
+    .meta({ author: 'John', creationDate: '05/03/2018' });
+```
+
+```js
+test
+    .meta('testID', 't-0005')
+    .meta({ severity: 'critical', testedAPIVersion: '1.0' });
+    ('MyTest', async t => { /* ... */});
+```
+
+To include testing metadata to reports, use [custom reporter methods](https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html).
+
+#### :gear: Passing a regular promise to `t.expect` ([#2207](https://github.com/DevExpress/testcafe/issues/2207))
+
+We have added the [allowUnawaitedPromise](docs/articles/documentation/test-api/assertions/README.md#allowunawaitedpromise) assertion option that allows passing a regular promise to the assertion's `expect` method.
+
+```js
+await t.expect(doSomethingAsync()).ok('check that a promise is returned', { allowUnawaitedPromise: true });
+```
+
+If the option is disable, and `Promise` is passed to `t.expect`, an error is thrown.
+
+### Bug Fixes
+
+* The session recovery bubble in Firefox is disabled ([#2341](https://github.com/DevExpress/testcafe/pull/2341))
+* TestCafe works properly now if a `body` element has the `pointer-events: none;` css style rule ([#2251](https://github.com/DevExpress/testcafe/issues/2251))
+* Resizing Chrome in the emulation mode works correctly now ([#2154](https://github.com/DevExpress/testcafe/issues/2154))
+* The location port is used for service messages ([#2308](https://github.com/DevExpress/testcafe/pull/2308))
+* A browser instance is shut down correctly now on the `Unix` system ([#2226](https://github.com/DevExpress/testcafe/issues/2226))
+* An `Integrity` attribute is removed from `script` and `link` tags ([testcafe-hammerhead/#235](https://github.com/DevExpress/testcafe-hammerhead/issues/235))
+* The `event.preventDefault()` method call changes the `event.defaultPrevented` property value now ([testcafe-hammerhead/#1588](https://github.com/DevExpress/testcafe-hammerhead/issues/1588))
+* It is possible now to set the `content` attribute of the `meta` element ([testcafe-hammerhead/#1586](https://github.com/DevExpress/testcafe-hammerhead/issues/1586))
+* TestCafe no longer overrides attributes used in a non-standard way with `null` ([testcafe-hammerhead/#1583](https://github.com/DevExpress/testcafe-hammerhead/pull/1583))
+* The `Change` event fires correctly now if `target.value` changes ([#2319](https://github.com/DevExpress/testcafe/issues/2319))
+* `MouseEvent.screenX` and `MouseEvent.screenY` are added to the emulated events ([#2325](https://github.com/DevExpress/testcafe/issues/2325))
+* Cookies on `localhost` are processed correctly now ([testcafe-hammerhead/#1491](https://github.com/DevExpress/testcafe-hammerhead/issues/1491))
+* Setting the `//` url for an image works correctly now ([#2312](https://github.com/DevExpress/testcafe/issues/2312))
+* `shadowUI` internal elements are no longer processed ([#2281](https://github.com/DevExpress/testcafe/issues/2281))
+* `typeInput` event is raised correctly now ([#1956](https://github.com/DevExpress/testcafe/issues/1956))
+* Selecting text in contenteditable elements works properly now ([#2301](https://github.com/DevExpress/testcafe/issues/2301))
+
 ## v0.19.2 (2018-4-11)
 
 ### Enhancements
