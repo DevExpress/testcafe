@@ -8,7 +8,7 @@ checked: false
 
 The request logger, mock and custom request hooks require specifying which requests they should handle and skip.
 
-You can perform this filtering by passing the *request filtering rules* to the hook. Note that you can pass a single rule or an array of rules.
+You can set up this filtering by passing the *request filtering rules* to the hook. Note that you can pass a single rule or an array of rules.
 
 * [Filtering by a URL](#filtering-by-a-url)
 * [Filtering by a Regular Expression](#filtering-by-a-regular-expression)
