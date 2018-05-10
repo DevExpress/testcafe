@@ -6,9 +6,9 @@ checked: false
 ---
 # Specifying Which Requests are Handled by the Hook
 
-The request logger, mock and custom request hooks require that you specify which requests should be handled by them and which should be skipped.
+The request logger, mock and custom request hooks require specifying which requests they should handle and skip.
 
-You can perform this filtering by passing the *request filtering rules* to the hook. Note that you can pass a single rule or an array of those.
+You can perform this filtering by passing the *request filtering rules* to the hook. Note that you can pass a single rule or an array of rules.
 
 * [Filtering by a URL](#filtering-by-a-url)
 * [Filtering by a Regular Expression](#filtering-by-a-regular-expression)
@@ -45,9 +45,9 @@ const mock = RequestMock()
 
 ## Filtering by Request Parameters
 
-You can filter requests by a combination of the URL and the request method.
+You can filter requests by combining the URL and the request method.
 
-In this instance, you need to use an object that contains the following fields.
+In this instance, you need to use an object that contains the following fields:
 
 Property | Type | Description
 -------- | ---- | ------------
@@ -67,7 +67,7 @@ const mock = RequestMock()
 
 ## Filtering by a Predicate
 
-In case you need more request parameters to decide whether to handle the request or not, you can use a predicate function.
+You can get more request parameters using a predicate function and use them to determine whether to handle the request.
 
 ```js
 const logger = RequestLogger(request => {
@@ -79,7 +79,7 @@ const logger = RequestLogger(request => {
 });
 ```
 
-This predicate takes the `request` parameter that provides the following properties.
+This predicate takes the `request` parameter that provides the following properties:
 
 Property | Type | Description
 -------- | ---- | --------------
