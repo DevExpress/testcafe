@@ -6,7 +6,7 @@ checked: false
 ---
 # Attaching Hooks to Tests and Fixtures
 
-To attach a hook to a test or fixture, use the `fixture.requestHooks` and `test.requestHooks` methods. A hook attached to a fixture will handle requests from all tests in the fixture.
+To attach a hook to a test or fixture, use the `fixture.requestHooks` and `test.requestHooks` methods. A hook attached to a fixture handles requests from all tests in the fixture.
 
 ```text
 fixture.requestHooks(...hook)
@@ -17,7 +17,7 @@ Parameter | Type | Description
 --------- | ---- | ------------
 `hook`    | RequestHook | A request logger, mock or custom hook.
 
-The `requestHooks` methods use the rest operator, which allows you to pass multiple hooks as parameters or arrays of hooks.
+The `requestHooks` methods use the rest operator which allows you to pass multiple hooks as parameters or arrays of hooks.
 
 ```js
 import { RequestLogger, RequestMock } from 'testcafe';
@@ -38,7 +38,7 @@ test
     })
 ```
 
-You can also attach and detach hooks during test run. To do this, use the `t.addRequestHooks` and `t.removeRequestHooks` methods.
+You can also attach and detach hooks during test run using the `t.addRequestHooks` and `t.removeRequestHooks` methods.
 
 ```text
 t.addRequestHooks(...hook)
@@ -49,7 +49,7 @@ Parameter | Type | Description
 --------- | ---- | ------------
 `hook`    | RequestHook | A request logger, mock or custom hook.
 
-The `t.addRequestHooks` and `t.removeRequestHooks` methods use the rest operator, which allows you to pass multiple hooks as parameters or arrays of hooks.
+The `t.addRequestHooks` and `t.removeRequestHooks` methods use the rest operator which allows you to pass multiple hooks as parameters or arrays of hooks.
 
 ```js
 import { RequestLogger } from 'testcafe';
