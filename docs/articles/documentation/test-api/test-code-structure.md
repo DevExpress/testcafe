@@ -42,13 +42,13 @@ Parameter     | Type   | Description
 ------------- | ------ | ------------------------
 `fixtureName` | String | The name of the fixture.
 
-This function returns the `fixture` object that allows you to configure the fixture - specify the [start webpage](#specifying-the-start-webpage), [metadata](#specifying-testing-metadata) and [initialization and clean-up code](#initialization-and-clean-up) for tests included to the fixture.
+This function returns the `fixture` object that allows you to configure the fixture - specify the [start webpage](#specifying-the-start-webpage), [metadata](#specifying-testing-metadata) and [initialization and clean-up code](#initialization-and-clean-up) for tests included in the fixture.
 
 > [Tests](#tests) that constitute a fixture go after this declaration.
 
 ## Tests
 
-To introduce a test, call the `test` function and pass test code inside.
+To introduce a test, call the `test` function and pass the test code inside it.
 
 ```text
 test( testName, fn(t) )
@@ -57,8 +57,8 @@ test( testName, fn(t) )
 Parameter  | Type     | Description
 ---------- | -------- | --------------------------------------------------------------------
 `testName` | String   | The test name.
-`fn`       | Function | An asynchronous function that contains test code.
-`t`        | Object   | The [test controller](#test-controller) used to access test run API.
+`fn`       | Function | An asynchronous function that contains the test code.
+`t`        | Object   | The [test controller](#test-controller) used to access the test run API.
 
 ```js
 fixture `MyFixture`;
@@ -72,18 +72,17 @@ test('Test2', async t => {
 });
 ```
 
-You are free to structure test code in any manner, and you can
-reference any modules or libraries you need.
+You can arrange test code in any manner and reference any modules or libraries.
 
-TestCafe tests are executed server side. To manipulate the tested webpage, use [test actions](actions/README.md).
-To determine the state of page elements or obtain any other data from the client side, use [selectors](selecting-page-elements/selectors/README.md) and
+TestCafe tests are executed on the server side. You can use [test actions](actions/README.md) to manipulate the tested webpage.
+To determine page elements' state or obtain any other data from the client side, use the [selectors](selecting-page-elements/selectors/README.md) and
 [client functions](obtaining-data-from-the-client/README.md).
 
 To check if the page state matches the expected one, use [assertions](assertions/README.md).
 
 ### Test Controller
 
-A *test controller* object `t` exposes methods of test API. That is why it is
+A *test controller* object `t` exposes the test API's methods. That is why it is
 passed to each function that is expected to contain server-side test code (like [test](#tests),
 [beforeEach](#initialization-and-clean-up) or [afterEach](#initialization-and-clean-up)).
 
@@ -106,15 +105,15 @@ test('My Test', async t => {
 });
 ```
 
-Another job of the test controller is providing access to the internal context required for test API to operate.
+The test controller also provides access to the internal context the test API requires to operate.
 This is why [selectors](selecting-page-elements/selectors/README.md) and
 [client functions](obtaining-data-from-the-client/README.md) need the test controller object when they are
 called from Node.js callbacks.
 
 #### Using Test Controller Outside of Test Code
 
-You may sometimes need to call test API from outside of test code. For instance, your [page model](../recipes/using-page-model.md)
-can contain methods that perform common operations used in many tests, like authentication.
+You may sometimes need to call the test API from outside the test code. For instance, your [page model](../recipes/using-page-model.md)
+can contain methods that perform common operations used in different tests (like authentication).
 
 ```js
 import { Selector } from 'testcafe';
@@ -137,7 +136,7 @@ export default class Page {
 In this instance, you need to access the test controller from the page model's `login` method.
 
 TestCafe allows you to avoid passing the test controller to the method explicitly.
-Instead, you can simply import `t` to the page model file.
+Instead, you can import `t` to the page model file.
 
 ```js
 import { Selector, t } from 'testcafe';
@@ -157,15 +156,14 @@ export default class Page {
 }
 ```
 
-TestCafe will implicitly resolve test context and provide the right test controller.
+TestCafe implicitly resolves test context and provides the right test controller.
 
 ### Setting Test Speed
 
-TestCafe allows you to specify the speed of test execution.
+TestCafe allows you to specify the test execution speed.
 
-By default, tests run at the maximum speed. However, if you need to watch a test running
-to understand what happens in it, this speed may seem too fast. In this instance, use the `t.setTestSpeed` method
-to slow the test down.
+Tests are run at the maximum speed by default. You can use the `t.setTestSpeed` method
+to specify the speed.
 
 ```text
 t.setTestSpeed( factor )
@@ -175,7 +173,7 @@ Parameter  | Type      | Description
 ---------- | --------- | -----------
 `factor`   | Number    | Specifies the test speed. Must be a number between `1` (the fastest) and `0.01` (the slowest).
 
-If speed is also specified for an [individual action](actions/action-options.md#basic-action-options), the action speed setting overrides test speed.
+If the speed is also specified for an [individual action](actions/action-options.md#basic-action-options), the action's speed setting overrides the test speed.
 
 **Example**
 
@@ -197,7 +195,7 @@ test(`Test Speed`, async t => {
 
 ### Setting Page Load Timeout
 
-Page load timeout defines the amount of time passed after the `DOMContentLoaded` event, within which the `window.load` event should be raised.
+The page load timeout defines the time passed after the `DOMContentLoaded` event within which the `window.load` event should be raised.
 
 After the timeout passes or the `window.load` event is raised (whichever happens first), TestCafe starts the test.
 
@@ -209,7 +207,7 @@ t.setPageLoadTimeout( duration )
 
 Parameter  | Type      | Description
 ---------- | --------- | -----------
-`duration` | Number    | Page load timeout, in milliseconds. `0` to skip waiting for the `window.load` event.
+`duration` | Number    | Page load timeout (in milliseconds). `0` to skip waiting for the `window.load` event.
 
 You can also set the page load timeout when launching tests via the [command line](../using-testcafe/command-line-interface.md#--page-load-timeout-ms) or [API](../using-testcafe/programming-interface/runner.md#run).
 
@@ -230,8 +228,7 @@ test(`Page load timeout`, async t => {
 
 ## Specifying the Start Webpage
 
-You can specify a webpage at which all tests in a fixture start.
-To do this, use the `fixture.page` function.
+You can specify the web page where all tests in a fixture start using the `fixture.page` function.
 
 ```text
 fixture.page( url )
@@ -239,7 +236,7 @@ fixture.page `url`
 ```
 
 Similarly, you can specify a start page for individual tests
-using the `test.page` function that overrides `fixture.page`.
+using the `test.page` function that overrides the `fixture.page`.
 
 ```text
 test.page( url )
@@ -267,7 +264,7 @@ test
 
 If the start page is not specified, it defaults to `about:blank`.
 
-To test webpages in local directories, you can use the `file://` scheme or relative paths.
+You can use the `file://` scheme or relative paths to test web pages in local directories.
 
 ```js
 fixture `MyFixture`
@@ -283,7 +280,7 @@ fixture `MyFixture`
 
 TestCafe allows you to specify additional information for tests in the form of *key-value metadata* and use it in reports.
 
-To define metadata, use the `meta` method. You can call this method both for a fixture and a test.
+To define metadata, use the `meta` method. You can call this method for a fixture and a test.
 
 The `meta` method allows you to specify one or several metadata entries:
 
@@ -331,9 +328,9 @@ test
     ('MyTest', async t => { /* ... */});
 ```
 
-All metadata entries specified for a fixture are applied to tests included to this fixture.
+All metadata entries specified for a fixture are applied to tests included in this fixture.
 
-If you specified the same entries in the `test.meta` and `fixture.meta` methods, the `test.meta` method call overrides values of these entries. The following example demonstrates the case when the `test.meta` method call overrides the **creationDate** entry.
+If you specified the same entries in the `test.meta` and `fixture.meta` methods, the `test.meta` method call overrides values of these entries. The following example demonstrates a `test.meta` method call that overrides the **creationDate** entry:
 
 ```js
 fixture `My fixture`
@@ -347,11 +344,11 @@ test
 
 ### Using Metadata in Reports
 
-You can include testing metadata to reports using a [custom reporter](../extending-testcafe/reporter-plugin/README.md). The reporter's [reportFixtureStart](../extending-testcafe/reporter-plugin/reporter-methods.md#reportfixturestart) and [reportTestDone](../extending-testcafe/reporter-plugin/reporter-methods.md#reporttestdone) methods can access to the fixture and test metadata.
+You can include testing metadata to reports using a [custom reporter](../extending-testcafe/reporter-plugin/README.md). The reporter's [reportFixtureStart](../extending-testcafe/reporter-plugin/reporter-methods.md#reportfixturestart) and [reportTestDone](../extending-testcafe/reporter-plugin/reporter-methods.md#reporttestdone) methods can access the fixture and test metadata.
 
 ## Initialization and Clean-Up
 
-TestCafe allows you to specify functions that will be executed before a fixture or test is started and after it is finished.
+TestCafe allows you to specify functions that are executed before a fixture or test is started and after it is finished.
 These functions are called *hook functions* or *hooks*.
 
 ### Test Hooks
@@ -360,7 +357,7 @@ Test hooks are executed in each test run before a test is started and after it i
 
 At the moment test hooks run, the tested webpage is already loaded, so that you can use [test actions](actions/README.md) and other test run API inside test hooks.
 
-You can specify a hook for each test in a fixture by using the `beforeEach` and `afterEach` methods in the [fixture declaration](#fixtures).
+You can specify a hook for each test in a fixture using the `beforeEach` and `afterEach` methods in the [fixture declaration](#fixtures).
 
 ```text
 fixture.beforeEach( fn(t) )
@@ -370,7 +367,7 @@ fixture.beforeEach( fn(t) )
 fixture.afterEach( fn(t) )
 ```
 
-You can also specify hooks for an individual test by using the `test.before` and `test.after` methods.
+You can also specify hooks for an individual test using the `test.before` and `test.after` methods.
 
 ```text
 test.before( fn(t) )
@@ -383,7 +380,7 @@ test.after( fn(t) )
 > If `test.before` or `test.after` is specified, it overrides the corresponding
 > `fixture.beforeEach` and `fixture.afterEach` hook, so that the latter are not executed.
 
-The `test.before`, `test.after`,  `fixture.beforeEach` and `fixture.afterEach` methods take the following parameters.
+The `test.before`, `test.after`,  `fixture.beforeEach` and `fixture.afterEach` methods accept the following parameters:
 
 Parameter | Type     | Description
 --------- | -------- | ---------------------------------------------------------------------------
@@ -423,7 +420,7 @@ Test context is available through the `t.ctx` property.
 t.ctx
 ```
 
-Instead of using a global variable, assign the object you want to share directly to `t.ctx` or create a property like in the following example.
+Instead of using a global variable, assign the object you want to share directly to `t.ctx` or create a property as in the following example:
 
 ```js
 fixture `Fixture1`
@@ -545,12 +542,12 @@ fixture.only
 test.only
 ```
 
-If several tests or fixtures are marked with `only`, all the marked tests and fixtures will run.
+If several tests or fixtures are marked with `only`, all the marked tests and fixtures are run.
 
 **Examples**
 
 ```js
-fixture.skip `Fixture1`; // All tests in this fixture will be skipped
+fixture.skip `Fixture1`; // All tests in this fixture are skipped
 
 test('Fixture1Test1', () => {});
 test('Fixture1Test2', () => {});
@@ -558,7 +555,7 @@ test('Fixture1Test2', () => {});
 fixture `Fixture2`;
 
 test('Fixture2Test1', () => {});
-test.skip('Fixture2Test2', () => {}); // This test will be skipped
+test.skip('Fixture2Test2', () => {}); // This test is skipped
 test('Fixture2Test3', () => {});
 ```
 
@@ -573,5 +570,5 @@ test('Fixture2Test1', () => {});
 test.only('Fixture2Test2', () => {});
 test('Fixture2Test3', () => {});
 
-// Only tests in Fixture1 and the Fixture2Test2 test will run
+// Only tests in Fixture1 and the Fixture2Test2 test are run
 ```
