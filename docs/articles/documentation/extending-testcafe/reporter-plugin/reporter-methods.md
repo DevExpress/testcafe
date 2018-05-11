@@ -6,13 +6,13 @@ checked: false
 ---
 # Reporter Methods
 
-To create a [reporter](README.md#implementing-the-reporter), you need to implement the following methods.
+You should implement the following methods to create a [reporter](README.md#implementing-the-reporter).
 
-> You can use [helper methods and libraries](helpers.md) within the reporter methods to output required data.
+> You can use the [helper methods and libraries](helpers.md) within the reporter methods to output the required data.
 
 ## reportTaskStart
 
-Fires when a test task starts, which happens at the beginning of testing.
+Fires when a test task starts.
 
 ```text
 reportTaskStart (startTime, userAgents, testCount)
@@ -48,24 +48,26 @@ reportTaskStart (startTime, userAgents, testCount) {
 Fires each time a fixture starts.
 
 ```text
-reportFixtureStart (name, path)
+reportFixtureStart (name, path, meta)
 ```
 
 Parameter | Type   | Description
 --------- | ------ | --------------------------------
 `name`    | String | The test fixture name.
 `path`    | String | The path to a test fixture file.
+`meta`    | Object | The fixture metadata. See [Specifying Testing Metadata](../../test-api/test-code-structure.md#specifying-testing-metadata) for more information.
 
 **Example**
 
 ```js
-reportFixtureStart (name) {
+reportFixtureStart (name, path, meta) {
     this.currentFixtureName = name;
-    this.write(`Starting fixture: ${name}`)
+    this.currentFixtureMeta = meta;
+    this.write(`Starting fixture: ${name} ${meta.fixtureID}`)
         .newline();
 }
 
-//=> Starting fixture: First fixture
+//=> Starting fixture: First fixture f-0001
 ```
 
 ## reportTestDone
@@ -73,13 +75,14 @@ reportFixtureStart (name) {
 Fires each time a test ends.
 
 ```text
-reportTestDone (name, testRunInfo)
+reportTestDone (name, testRunInfo, meta)
 ```
 
 Parameter     | Type   | Description
 ------------- | ------ | -------------------------------------------------------------
 `name`        | String | The test name.
 `testRunInfo` | Object | The object providing detailed information about the test run.
+`meta`        | Object | The test metadata. See [Specifying Testing Metadata](../../test-api/test-code-structure.md#specifying-testing-metadata) for more information.
 
 The `testRunInfo` object has the following properties.
 
@@ -87,14 +90,14 @@ Property         | Type             | Description
 ---------------- | ---------------- | --------------------------------------------------------
 `errs`           | Array or Strings | An array of errors that occurred during a test run.
 `durationMs`     | Number           | The time spent on test execution (in milliseconds).
-`unstable`       | Boolean          | Specifies if the test has been marked as unstable.
+`unstable`       | Boolean          | Specifies if the test is marked as unstable.
 `screenshotPath` | String           | The directory path where screenshots have been saved to.
 `skipped`        | Boolean          | Specifies if the test was skipped.
 
 **Example**
 
 ```js
-reportTestDone (name, testRunInfo) {
+reportTestDone (name, testRunInfo, meta) {
     const hasErr = !!testRunInfo.errs.length;
     const result = testRunInfo.skipped ? 'skipped' : hasErr ? `passed` : `failed`;
 
@@ -108,11 +111,14 @@ reportTestDone (name, testRunInfo) {
     if (testRunInfo.screenshotPath)
         title += ` (screenshots: ${testRunInfo.screenshotPath})`;
 
+    if (meta.severity)
+        title += ' (meta.severity)';
+
     this.write(title)
         .newline();
 }
 
-//=> failed First fixture - First test in first fixture (unstable) (screenshots: /screenshots/1445437598847)
+//=> failed First fixture - First test in first fixture (unstable) (screenshots: /screenshots/1445437598847) (critical)
 //=> passed First fixture - Second test in first fixture (screenshots: /screenshots/1445437598847)
 //=> failed First fixture - Third test in first fixture
 //=> skipped First fixture - Fourth test in first fixture
@@ -120,7 +126,7 @@ reportTestDone (name, testRunInfo) {
 
 ## reportTaskDone
 
-Fires when the entire task ends, which happens at the end of testing.
+Fires when the task ends.
 
 ```text
 reportTaskDone (endTime, passed, warnings)
