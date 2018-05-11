@@ -41,7 +41,7 @@ onRequestTo([filter])
 
 Parameters | Type | Description | Default
 ---------- | ---- | ----------- | -----
-`filter`&#160;*(optional)* | String &#124; RegExp &#124; Object &#124; Predicate | Specifies which requests should be mocked with a response that follows in the `respond` method. See [Specifying Which Requests are Handled by the Hook](specifying-which-requests-are-handled-by-the-hook.md). | All requests are mocked.
+`filter`&#160;*(required)* | String &#124; RegExp &#124; Object &#124; Predicate | Specifies which requests should be mocked with a response that follows in the `respond` method. See [Specifying Which Requests are Handled by the Hook](specifying-which-requests-are-handled-by-the-hook.md). | All requests are mocked.
 
 ```js
 var mock = RequestMock()
@@ -59,7 +59,7 @@ respond([body] [, statusCode] [, headers])
 
 Parameter | Type | Description   | Default
 --------- | ---- | ------------- | -----
-`body`&#160;*(optional)* | Object &#124; String &#124; Function &#124; Buffer | A mocked response body. Pass an object for a JSON response, a string for an HTML response or a function to build a custom response. | An empty HTML page is returned with the response.
+`body`&#160;*(optional)* | Object &#124; String &#124; Function &#124; [Buffer](https://nodejs.org/api/buffer.html) | A mocked response body. Pass an object for a JSON response, a string for an HTML response or a function to build a custom response. | An empty HTML page is returned with the response.
 `statusCode`&#160;*(optional)* | Number | The response status code. | `200`
 `headers`&#160;*(optional)* | Object | Custom headers added to the response in the property-value form.| The `content-type` header. If the header is not provided, it is set depending on the `body` parameter's type. If `body` is an object, the `content-type` header is set to *application/json*. If `body` has another type, the `content-type` header is set to *text/html; charset=utf-8*.
 
