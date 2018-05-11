@@ -68,7 +68,7 @@ Method | Return Type | Description
 
 The `predicate` functions take a single parameter - the `Request` object.
 
-If you use the `contains(predicate)` or `count(predicate)` methods in assertions, TestCafe uses the [Smart Assertion Query Mechanism](../../assertions/README.md#smart-assertion-query-mechanism).
+If you use the `contains(predicate)` or `count(predicate)` methods in assertions, TestCafe uses the [Smart Assertion Query Mechanism](../assertions/README.md#smart-assertion-query-mechanism).
 
 ## Logger Properties
 
