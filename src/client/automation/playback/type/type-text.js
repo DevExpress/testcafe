@@ -3,6 +3,7 @@ import testCafeCore from '../../deps/testcafe-core';
 import nextTick from '../../utils/next-tick';
 
 var browserUtils   = hammerhead.utils.browser;
+var eventSandbox   = hammerhead.sandbox.event;
 var eventSimulator = hammerhead.eventSandbox.eventSimulator;
 var listeners      = hammerhead.eventSandbox.listeners;
 
@@ -64,6 +65,26 @@ function _typeTextInElementNode (elementNode, text, offset) {
     textSelection.selectByNodesAndOffsets(selectPosition, selectPosition);
 }
 
+function _typeTextInChildTextNode (element, selection, text) {
+    let startNode = selection.startPos.node;
+
+    // NOTE: startNode could be moved or deleted on textInput event. Need ensure startNode.
+    if (!domUtils.isElementContainsNode(element, startNode)) {
+        selection = _excludeInvisibleSymbolsFromSelection(_getSelectionInElement(element));
+        startNode = selection.startPos.node;
+    }
+
+    const startOffset    = selection.startPos.offset;
+    const endOffset      = selection.endPos.offset;
+    const nodeValue      = startNode.nodeValue;
+    const selectPosition = { node: startNode, offset: startOffset + text.length };
+
+    startNode.nodeValue = nodeValue.substring(0, startOffset) + text +
+                          nodeValue.substring(endOffset, nodeValue.length);
+
+    textSelection.selectByNodesAndOffsets(selectPosition, selectPosition);
+}
+
 function _excludeInvisibleSymbolsFromSelection (selection) {
     var startNode   = selection.startPos.node;
     var startOffset = selection.startPos.offset;
@@ -84,26 +105,68 @@ function _excludeInvisibleSymbolsFromSelection (selection) {
     return selection;
 }
 
+// NOTE: Typing can be prevented in Chrome/Edge but can not be prevented in IE11 or Firefox
+// Firefox does not support TextInput event
+// Safari supports the TextInput event but has a bug: e.data is added to the node value.
+// So in Safari we need to call preventDefault in the last textInput handler but not prevent the Input event
+
+function simulateTextInput (element, text) {
+    let forceInputInSafari;
+
+    function onSafariTextInput (e) {
+        e.preventDefault();
+
+        forceInputInSafari = true;
+    }
+
+    function onSafariPreventTextInput (e) {
+        if (e.type === 'textInput')
+            forceInputInSafari = false;
+    }
+
+    if (browserUtils.isSafari) {
+        listeners.addInternalEventListener(window, ['textInput'], onSafariTextInput);
+        eventSandbox.on(eventSandbox.EVENT_PREVENTED_EVENT, onSafariPreventTextInput);
+    }
+
+    const isInputEventRequired = browserUtils.isFirefox || eventSimulator.textInput(element, text) || forceInputInSafari;
+
+    if (browserUtils.isSafari) {
+        listeners.removeInternalEventListener(window, ['textInput'], onSafariTextInput);
+        eventSandbox.off(eventSandbox.EVENT_PREVENTED_EVENT, onSafariPreventTextInput);
+    }
+
+    return isInputEventRequired || browserUtils.isIE11;
+}
+
 function _typeTextToContentEditable (element, text) {
-    var currentSelection = _getSelectionInElement(element);
-    var startNode        = currentSelection.startPos.node;
-    var endNode          = currentSelection.endPos.node;
+    var currentSelection    = _getSelectionInElement(element);
+    var startNode           = currentSelection.startPos.node;
+    var endNode             = currentSelection.endPos.node;
+    var needProcessInput    = true;
+    var needRaiseInputEvent = true;
 
     // NOTE: some browsers raise the 'input' event after the element
     // content is changed, but in others we should do it manually.
-    var inputEventRaised = false;
 
     var onInput = () => {
-        inputEventRaised = true;
+        needRaiseInputEvent = false;
+    };
+
+    // NOTE: IE11 does not raise input event when type to contenteditable
+
+    var beforeContentChanged = () => {
+        needProcessInput    = simulateTextInput(element, text);
+        needRaiseInputEvent = needProcessInput && !browserUtils.isIE11;
     };
 
     var afterContentChanged = () => {
         nextTick()
             .then(() => {
-                if (!inputEventRaised)
+                if (needRaiseInputEvent)
                     eventSimulator.input(element);
 
-                listeners.removeInternalEventListener(window, 'input', onInput);
+                listeners.removeInternalEventListener(window, ['input'], onInput);
             });
     };
 
@@ -126,26 +189,15 @@ function _typeTextToContentEditable (element, text) {
     if (!startNode || !domUtils.isContentEditableElement(startNode) || !domUtils.isRenderedNode(startNode))
         return;
 
-    // NOTE: we can type only to the text nodes; for nodes with the 'element-node' type, we use a special behavior
-    if (domUtils.isElementNode(startNode)) {
-        _typeTextInElementNode(startNode, text, currentSelection.startPos.offset);
+    beforeContentChanged();
 
-        afterContentChanged();
-        return;
+    if (needProcessInput) {
+        // NOTE: we can type only to the text nodes; for nodes with the 'element-node' type, we use a special behavior
+        if (domUtils.isElementNode(startNode))
+            _typeTextInElementNode(startNode, text);
+        else
+            _typeTextInChildTextNode(element, _excludeInvisibleSymbolsFromSelection(currentSelection), text);
     }
-
-    currentSelection = _excludeInvisibleSymbolsFromSelection(currentSelection);
-    startNode        = currentSelection.startPos.node;
-
-    var startOffset    = currentSelection.startPos.offset;
-    var endOffset      = currentSelection.endPos.offset;
-    var nodeValue      = startNode.nodeValue;
-    var selectPosition = { node: startNode, offset: startOffset + text.length };
-
-    startNode.nodeValue = nodeValue.substring(0, startOffset) + text +
-                          nodeValue.substring(endOffset, nodeValue.length);
-
-    textSelection.selectByNodesAndOffsets(selectPosition, selectPosition);
 
     afterContentChanged();
 }
@@ -156,6 +208,10 @@ function _typeTextToTextEditable (element, text) {
     var startSelection    = textSelection.getSelectionStart(element);
     var endSelection      = textSelection.getSelectionEnd(element);
     var isInputTypeNumber = domUtils.isInputElement(element) && element.type === 'number';
+    var needProcessInput  = simulateTextInput(element, text);
+
+    if (!needProcessInput)
+        return;
 
     // NOTE: the 'maxlength' attribute doesn't work in all browsers. IE still doesn't support input with the 'number' type
     var elementMaxLength = !browserUtils.isIE && isInputTypeNumber ? null : parseInt(element.maxLength, 10);

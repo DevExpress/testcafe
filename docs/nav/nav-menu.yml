@@ -56,6 +56,11 @@
         url: /documentation/test-api/test-code-structure.md#setting-test-speed
     - name: Specifying the Start Webpage
       url: /documentation/test-api/test-code-structure.md#specifying-the-start-webpage
+    - name: Specifying Testing Metadata
+      url: /documentation/test-api/test-code-structure.md#specifying-testing-metadata
+      content:
+      - name: Using Metadata in Reports
+        url: /documentation/test-api/test-code-structure.md#using-metadata-in-reports
     - name: Initialization and Clean-Up
       url: /documentation/test-api/test-code-structure.md#initialization-and-clean-up
       content:
