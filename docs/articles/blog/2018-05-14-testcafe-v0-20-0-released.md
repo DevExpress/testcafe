@@ -5,7 +5,7 @@ permalink: /blog/:title.html
 ---
 # TestCafe v0.20.0 Released
 
-Intercepting HTTP requests, bypassing a proxy server, specifying testing metadata and lots of bug fixes.
+Intercepting HTTP requests, specifying resources accessed by bypassing a proxy server, specifying testing metadata, deprecated passing a regular promise to assertions.
 
 ## Request Hooks: Intercepting HTTP requests ([#1341](https://github.com/DevExpress/testcafe/issues/1341))
 
