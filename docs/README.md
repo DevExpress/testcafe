@@ -60,7 +60,7 @@
     * [Assertion API](articles/documentation/test-api/assertions/assertion-api.md)
   * [Obtaining Data from the Client](articles/documentation/test-api/obtaining-data-from-the-client/README.md)
     * [Examples of Using Client Functions](articles/documentation/test-api/obtaining-data-from-the-client/examples-of-using-client-functions.md)
-  * [Intercepting HTTP Requests](articles/documentation/test-api/intercepting-http-requests/README.md)
+  * [Intercepting HTTP Requests](articles/documentation/test-api/intercepting-and-mocking-http-requests/README.md)
     * [Logging HTTP Requests](articles/documentation/test-api/intercepting-and-mocking-http-requests/logging-http-requests.md)
     * [Mocking HTTP Responses](articles/documentation/test-api/intercepting-and-mocking-http-requests/mocking-http-responses.md)
     * [Creating a Custom HTTP Request Hook](articles/documentation/test-api/intercepting-and-mocking-http-requests/creating-a-custom-http-request-hook.md)
