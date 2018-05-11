@@ -31,7 +31,7 @@ var mock = RequestMock()
     .respond(responseMock2);
 ```
 
-To enable the hook to mock the requests, [attach it to a test or fixture](attaching-hooks-to-tests-and-fixtures.md).
+Next, [attach it to a test or fixture](attaching-hooks-to-tests-and-fixtures.md).
 
 ## The onRequestTo Method
 
@@ -59,9 +59,9 @@ respond([body] [, statusCode] [, headers])
 
 Parameter | Type | Description   | Default
 --------- | ---- | ------------- | -----
-`body`&#160;*(optional)* | Object &#124; String &#124; Function | A mocked response body. Pass an object for a JSON response, a string for an HTML response or a function to build a custom response. | An empty HTML page is returned with the response.
+`body`&#160;*(optional)* | Object &#124; String &#124; Function &#124; Buffer | A mocked response body. Pass an object for a JSON response, a string for an HTML response or a function to build a custom response. | An empty HTML page is returned with the response.
 `statusCode`&#160;*(optional)* | Number | The response status code. | `200`
-`headers`&#160;*(optional)* | Object | Custom headers added to the response in the property-value form.| The `content-type` header is provided.
+`headers`&#160;*(optional)* | Object | Custom headers added to the response in the property-value form.| The `content-type` header. If the header is not provided, it is set depending on the `body` parameter's type. If `body` is an object, the `content-type` header is set to *application/json*. If `body` has another type, the `content-type` header is set to *text/html; charset=utf-8*.   
 
 ```js
 var mock = RequestMock()
@@ -102,28 +102,12 @@ A custom response function takes two parameters.
 
 Parameter | Type | Description
 --------- | ---- | ---------------
-`req`     | Object | A request to be mocked.
+`req`     | The [requestOptions](creating-a-custom-http-request-hook.md#the-requestoptions-object) object | A request to be mocked.
 `res`     | Object | A mocked response.
 
 Use information about the request the `req` parameter provides to configure the response via the `res` parameter.
 
-The `req` parameter exposes the following members:
-
-Property | Type | Description
--------- | ---- | ------------
-`headers`     | Object  | The request headers in the property-value form.
-`body`        | [Buffer](https://nodejs.org/api/buffer.html) | The request body.
-`url`    | String | A URL to which the request is sent.
-`protocol` | String | The request protocol.
-`hostname` | String | The destination host name.
-`host`     | String | The destination host.
-`port`     | Number | The destination port.
-`path`     | String | The destination path.
-`method`   | String | The request method.
-`credentials` | Object | Credentials that were used to authenticate in the current session using NTLM or Basic authentication. For HTTP Basic authentication, these are `username` and `password`. NTLM authentication additionally specifies `workstation` and `domain`.
-`proxy`       | Object | If a proxy is used, contains information about its `host`, `hostname`, `port`, `proxyAuth`, `authHeader` and `bypassRules`.
-
-Use the following members `res` exposes to configure the response:
+The `res` exposes the following members:
 
 Property | Type | Description
 -------- | ---- | ------------
@@ -132,4 +116,4 @@ Property | Type | Description
 
 Method | Description
 ------ | ---------------
-`setBody(value)` | Sets the `value` as the response body.
+`setBody(value)` | Sets the response body.  Accepts a string as a parameter.
