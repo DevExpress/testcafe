@@ -21,7 +21,7 @@ This topic consists of the following sections:
 
 ## Assertion Structure
 
-To construct assertions, use the `expect` method of the [test controller](../test-code-structure.html#test-controller).
+To construct assertions, use the [test controller](../test-code-structure.html#test-controller)'s `expect` method.
 This method accepts the actual value. You can pass a value, a [Selector's DOM node state property](../selecting-page-elements/selectors/using-selectors.md#define-assertion-actual-value)
 or a [client function](../obtaining-data-from-the-client/README.md) promise.
 TestCafe automatically waits for node state properties to obtain a value and for client functions to execute.
