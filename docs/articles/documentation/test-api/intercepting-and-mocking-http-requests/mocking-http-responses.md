@@ -61,7 +61,7 @@ Parameter | Type | Description   | Default
 --------- | ---- | ------------- | -----
 `body`&#160;*(optional)* | Object &#124; String &#124; Function &#124; Buffer | A mocked response body. Pass an object for a JSON response, a string for an HTML response or a function to build a custom response. | An empty HTML page is returned with the response.
 `statusCode`&#160;*(optional)* | Number | The response status code. | `200`
-`headers`&#160;*(optional)* | Object | Custom headers added to the response in the property-value form.| The `content-type` header. If the header is not provided, it is set depending on the `body` parameter's type. If `body` is an object, the `content-type` header is set to *application/json*. If `body` has another type, the `content-type` header is set to *text/html; charset=utf-8*.   
+`headers`&#160;*(optional)* | Object | Custom headers added to the response in the property-value form.| The `content-type` header. If the header is not provided, it is set depending on the `body` parameter's type. If `body` is an object, the `content-type` header is set to *application/json*. If `body` has another type, the `content-type` header is set to *text/html; charset=utf-8*.
 
 ```js
 var mock = RequestMock()
