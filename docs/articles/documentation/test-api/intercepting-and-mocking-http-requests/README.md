@@ -6,7 +6,7 @@ checked: true
 ---
 # Intercepting HTTP Requests
 
-This section describes how to handle HTTP requests in your tests. TestCafe allows you to log them and mock the responses out of the box. You can also create a custom HTTP request hook, which allows you, for instance, to emulate Kerberos or client certificate authentication.
+This section describes how to handle HTTP requests in your tests. TestCafe allows you to log them and mock the responses out of the box. You can also create a custom HTTP request hook, which allows you, for instance, to emulate authentications like **Kerberos** or **Client Certificate Authentication**.
 
 * [Logging HTTP Requests](logging-http-requests.md)
 * [Mocking HTTP Responses](mocking-http-responses.md)
