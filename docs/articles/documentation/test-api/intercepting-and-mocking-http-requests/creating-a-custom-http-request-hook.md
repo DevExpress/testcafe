@@ -121,6 +121,8 @@ Property | Type | Description
 `requestOptions` | Object | Contains the request parameters. You can use it to change the request parameters before the request is sent.
 `isAjax`         | Boolean | Specifies if the request is performed using AJAX.
 
+#### The requestOptions object  
+
 The `requestOptions` object has the following properties:
 
 Property | Type | Description
