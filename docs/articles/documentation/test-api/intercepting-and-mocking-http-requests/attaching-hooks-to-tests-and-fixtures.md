@@ -43,12 +43,12 @@ test
     ('My test', async t => {
     await t
          .click('#send-logged-request')
-         .expect(logger.count(() => true)).eql(1)  
-         .removeRequestHooks(logger) 
+         .expect(logger.count(() => true)).eql(1)
+         .removeRequestHooks(logger)
          .click('#send-unlogged-request')
-         .expect(logger.count(() => true)).eql(1)  
+         .expect(logger.count(() => true)).eql(1)
          .addRequestHooks(logger)
          .click('#send-logged-request')
-         .expect(logger.count(() => true)).eql(2);     
+         .expect(logger.count(() => true)).eql(2);
 })    
 ```
