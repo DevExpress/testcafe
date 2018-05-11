@@ -55,7 +55,7 @@ Parameter | Type   | Description
 --------- | ------ | --------------------------------
 `name`    | String | The test fixture name.
 `path`    | String | The path to a test fixture file.
-`meta`    | Object | The [fixture metadata](../../test-api/test-code-structure.md#fixture-metadata).
+`meta`    | Object | The fixture metadata. See [Specifying Testing Metadata](../../test-api/test-code-structure.md#specifying-testing-metadata) for more information.
 
 **Example**
 
@@ -82,7 +82,7 @@ Parameter     | Type   | Description
 ------------- | ------ | -------------------------------------------------------------
 `name`        | String | The test name.
 `testRunInfo` | Object | The object providing detailed information about the test run.
-`meta`        | Object | The [test metadata](../../test-api/test-code-structure.md#test-metadata).
+`meta`        | Object | The test metadata. See [Specifying Testing Metadata](../../test-api/test-code-structure.md#specifying-testing-metadata) for more information.
 
 The `testRunInfo` object has the following properties.
 
