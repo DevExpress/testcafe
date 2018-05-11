@@ -128,7 +128,7 @@
     content:
     - name: Examples of Using Client Functions
       url: /documentation/test-api/obtaining-data-from-the-client/examples-of-using-client-functions.md
-  - name: Intercepting and Mocking HTTP Requests
+  - name: Intercepting HTTP Requests
     url: /documentation/test-api/intercepting-and-mocking-http-requests/README.md
     content: 
     - name: Logging HTTP Requests
