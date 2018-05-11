@@ -18,8 +18,6 @@ $(document).ready(function () {
     var secondElementInnerHTML = null;
     var thirdElementInnerHTML  = null;
 
-    $('body').css('height', 1500).attr('contenteditable', 'true');
-
     var startNext = function () {
         if (browserUtils.isIE) {
             removeTestElements();
@@ -91,6 +89,7 @@ $(document).ready(function () {
         var nodeValue  = node.nodeValue;
         var typingText = '123 test';
 
+        $body.css('height', 1500).attr('contenteditable', 'true');
         $body.focus();
         equal(document.activeElement, $body[0]);
 
@@ -107,7 +106,39 @@ $(document).ready(function () {
                     nodeValue + typingText.replace(' ', String.fromCharCode(160)),
                     'typing must be in the end of element from a parameter of act.type');
 
+                $body.attr('contenteditable', 'false');
+
                 startNext();
             });
     });
+
+    if (!browserUtils.isFirefox) {
+        asyncTest('textInput eventArgs.data should contain space but not &nbsp;)', function () {
+            var editor = document.createElement('div');
+            var text   = ' ';
+            var type   = new TypeAutomation(editor, text, {});
+
+            editor.className       = TEST_ELEMENT_CLASS;
+            editor.contentEditable = true;
+
+            document.body.appendChild(editor);
+
+            var onTextInput = function (e) {
+                equal(e.data, text);
+
+                document.removeEventListener('textInput', onTextInput, true);
+                document.removeEventListener('textinput', onTextInput, true);
+            };
+
+            document.addEventListener('textInput', onTextInput, true);
+            document.addEventListener('textinput', onTextInput, true);
+
+            type
+                .run()
+                .then(function () {
+                    startNext();
+                });
+        });
+    }
+
 });

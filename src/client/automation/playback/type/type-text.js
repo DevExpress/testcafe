@@ -145,6 +145,9 @@ function _typeTextToContentEditable (element, text) {
     var endNode             = currentSelection.endPos.node;
     var needProcessInput    = true;
     var needRaiseInputEvent = true;
+    var textInputData       = text;
+
+    text = text === ' ' ? String.fromCharCode(160) : text;
 
     // NOTE: some browsers raise the 'input' event after the element
     // content is changed, but in others we should do it manually.
@@ -156,7 +159,7 @@ function _typeTextToContentEditable (element, text) {
     // NOTE: IE11 does not raise input event when type to contenteditable
 
     var beforeContentChanged = () => {
-        needProcessInput    = simulateTextInput(element, text);
+        needProcessInput    = simulateTextInput(element, textInputData);
         needRaiseInputEvent = needProcessInput && !browserUtils.isIE11;
     };
 
@@ -251,7 +254,7 @@ function _typeTextToNonTextEditable (element, text, caretPos) {
 
 export default function (element, text, caretPos) {
     if (domUtils.isContentEditableElement(element))
-        _typeTextToContentEditable(element, text === ' ' ? String.fromCharCode(160) : text);
+        _typeTextToContentEditable(element, text);
 
     if (!domUtils.isElementReadOnly(element)) {
         if (domUtils.isTextEditableElement(element))
