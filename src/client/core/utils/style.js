@@ -57,7 +57,7 @@ export function isFixedNode (node) {
     var ancestors = getAncestorsAndSelf(node);
 
     return some(ancestors, ancestor => domUtils.isElementNode(ancestor) && get(ancestor, 'position') === 'fixed');
-};
+}
 
 export function isNotVisibleNode (node) {
     return !domUtils.isRenderedNode(node) || isHiddenNode(node) || isVisibilityHiddenNode(node);
