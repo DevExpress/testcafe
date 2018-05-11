@@ -50,5 +50,5 @@ test
          .addRequestHooks(logger)
          .click('#send-logged-request')
          .expect(logger.count(() => true)).eql(2);
-})    
+})
 ```
