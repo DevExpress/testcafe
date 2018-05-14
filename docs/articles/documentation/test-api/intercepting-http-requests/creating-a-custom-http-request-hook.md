@@ -1,7 +1,7 @@
 ---
 layout: docs
 title: Creating a Custom HTTP Request Hook
-permalink: /documentation/test-api/intercepting-and-mocking-http-requests/creating-a-custom-http-request-hook.html
+permalink: /documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html
 checked: false
 ---
 # Creating a Custom HTTP Request Hook
@@ -118,26 +118,8 @@ The `onRequest` method's `event` object exposes the following fields.
 
 Property | Type | Description
 -------- | ---- | --------------
-`requestOptions` | Object | Contains the request parameters. You can use it to change the request parameters before the request is sent.
+`requestOptions` | [RequestOptions](requestoptions-object.md) | Contains the request parameters. You can use it to change the request parameters before the request is sent.
 `isAjax`         | Boolean | Specifies if the request is performed using AJAX.
-
-#### The requestOptions object  
-
-The `requestOptions` object has the following properties:
-
-Property | Type | Description
--------- | ---- | ------------
-`headers`     | Object  | The request headers in the property-value form.
-`body`        | [Buffer](https://nodejs.org/api/buffer.html) | The request body.
-`url`    | String | The URL to which the request is sent.
-`protocol` | String | The protocol to use. Default: *http:*.
-`hostname` | String | The alias for the host.
-`host`     | String | The domain name or IP address of the server to issue the request to. Default: *localhost*.
-`port`     | Number | The port of the remote server. Default: *80*.
-`path`     | String | The request path. Should include query string if any. E.G. *'/index.html?page=12'*. An exception is thrown when the request path contains illegal characters. Currently, only spaces are rejected but that may change in the future. Default: *'/'*.
-`method`   | String | The string specifying the HTTP request method. Default: *'GET'*.
-`credentials` | Object | Credentials that were used for authentication in the current session using NTLM or Basic authentication. For HTTP Basic authentication, these are `username` and `password`. NTLM authentication additionally specifies `workstation` and `domain`. See [HTTP Authentication](../authentication/http-authentication.md).
-`proxy`       | Object | If a proxy is used, the property contains information about its `host`, `hostname`, `port`, `proxyAuth`, `authHeader` and `bypassRules`.
 
 ```js
 onRequest (event) {

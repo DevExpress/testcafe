@@ -19,7 +19,7 @@ The following topics describe the API used to manipulate the webpage and check i
 * [Selecting Page Elements](selecting-page-elements/README.md)
 * [Assertions](assertions/README.md)
 * [Obtaining Data From the Client](obtaining-data-from-the-client/README.md)
-* [Intercepting HTTP Requests](intercepting-and-mocking-http-requests/README.md)
+* [Intercepting HTTP Requests](intercepting-http-requests/README.md)
 * [Waiting for Page Elements to Appear](waiting-for-page-elements-to-appear.md)
 * [Authentication](authentication/README.md)
 * [Pausing the Test](pausing-the-test.md)

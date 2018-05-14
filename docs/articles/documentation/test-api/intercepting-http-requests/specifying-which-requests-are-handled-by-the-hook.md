@@ -1,7 +1,7 @@
 ---
 layout: docs
 title: Specifying Which Requests are Handled by the Hook
-permalink: /documentation/test-api/intercepting-and-mocking-http-requests/specifying-which-requests-are-handled-by-the-hook.html
+permalink: /documentation/test-api/intercepting-http-requests/specifying-which-requests-are-handled-by-the-hook.html
 checked: false
 ---
 # Specifying Which Requests are Handled by the Hook
