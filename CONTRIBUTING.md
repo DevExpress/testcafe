@@ -58,7 +58,7 @@ Please follow the steps below when submitting your code.
     ```sh
     gulp test-server
     gulp test-functional-local
-    gulp test-client
+    gulp test-client-local
     ```
 
 10. Push changes to your fork.
