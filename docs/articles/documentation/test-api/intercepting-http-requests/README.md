@@ -89,13 +89,12 @@ fixture `Fixture`
 
 test('basic', async t => {
     await t
-        .setTestSpeed(0.01)
         .click('.get-started-button')
 
         // During the pause, you can open DevTools and
         // find the request sent to Analytics
         // and the mocked response received.
-        .wait(100000);
+        .debug();
 });
 ```
 

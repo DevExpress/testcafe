@@ -316,7 +316,7 @@ The `meta` method allows you to specify one or several metadata entries:
 **Examples**
 
 ```js
-fixture 'MyFixture'
+fixture `My fixture`
     .meta('fixtureID', 'f-0001')
     .meta({ author: 'John', creationDate: '05/03/2018' });
 ```
@@ -324,7 +324,7 @@ fixture 'MyFixture'
 ```js
 test
     .meta('testID', 't-0005')
-    .meta({ severity: 'critical', testedAPIVersion: '1.0' });
+    .meta({ severity: 'critical', testedAPIVersion: '1.0' })
     ('MyTest', async t => { /* ... */});
 ```
 
