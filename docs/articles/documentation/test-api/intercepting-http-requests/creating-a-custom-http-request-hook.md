@@ -2,7 +2,7 @@
 layout: docs
 title: Creating a Custom HTTP Request Hook
 permalink: /documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html
-checked: false
+checked: true
 ---
 # Creating a Custom HTTP Request Hook
 

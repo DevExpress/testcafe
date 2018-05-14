@@ -2,7 +2,7 @@
 layout: docs
 title: Attaching Hooks to Tests and Fixtures
 permalink: /documentation/test-api/intercepting-http-requests/attaching-hooks-to-tests-and-fixtures.html
-checked: false
+checked: true
 ---
 # Attaching Hooks to Tests and Fixtures
 

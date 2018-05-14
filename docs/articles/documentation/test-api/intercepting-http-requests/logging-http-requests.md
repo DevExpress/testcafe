@@ -2,7 +2,7 @@
 layout: docs
 title: Logging HTTP Requests
 permalink: /documentation/test-api/intercepting-http-requests/logging-http-requests.html
-checked: false
+checked: true
 ---
 # Logging HTTP Requests
 
