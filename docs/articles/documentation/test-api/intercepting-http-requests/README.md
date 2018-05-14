@@ -95,7 +95,7 @@ test('basic', async t => {
         // During the pause, you can open DevTools and
         // find the request sent to Analytics
         // and the mocked response received.
-        .wait(100000);
+        .debug();
 });
 ```
 
