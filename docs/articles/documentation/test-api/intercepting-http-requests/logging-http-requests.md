@@ -1,8 +1,8 @@
 ---
 layout: docs
 title: Logging HTTP Requests
-permalink: /documentation/test-api/intercepting-and-mocking-http-requests/logging-http-requests.html
-checked: false
+permalink: /documentation/test-api/intercepting-http-requests/logging-http-requests.html
+checked: true
 ---
 # Logging HTTP Requests
 

@@ -1,7 +1,7 @@
 ---
 layout: docs
 title: Intercepting HTTP Requests
-permalink: /documentation/test-api/intercepting-and-mocking-http-requests/
+permalink: /documentation/test-api/intercepting-http-requests/
 checked: true
 ---
 # Intercepting HTTP Requests

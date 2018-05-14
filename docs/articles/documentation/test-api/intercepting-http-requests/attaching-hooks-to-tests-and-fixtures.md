@@ -1,8 +1,8 @@
 ---
 layout: docs
 title: Attaching Hooks to Tests and Fixtures
-permalink: /documentation/test-api/intercepting-and-mocking-http-requests/attaching-hooks-to-tests-and-fixtures.html
-checked: false
+permalink: /documentation/test-api/intercepting-http-requests/attaching-hooks-to-tests-and-fixtures.html
+checked: true
 ---
 # Attaching Hooks to Tests and Fixtures
 

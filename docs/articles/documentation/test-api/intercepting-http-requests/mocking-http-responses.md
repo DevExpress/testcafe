@@ -1,8 +1,8 @@
 ---
 layout: docs
 title: Mocking HTTP Responses
-permalink: /documentation/test-api/intercepting-and-mocking-http-requests/mocking-http-responses.html
-checked: false
+permalink: /documentation/test-api/intercepting-http-requests/mocking-http-responses.html
+checked: true
 ---
 # Mocking HTTP Responses
 
@@ -102,7 +102,7 @@ A custom response function takes two parameters.
 
 Parameter | Type | Description
 --------- | ---- | ---------------
-`req`     | The [requestOptions](creating-a-custom-http-request-hook.md#the-requestoptions-object) object | A request to be mocked.
+`req`     | [RequestOptions](requestoptions-object.md) | A request to be mocked.
 `res`     | Object | A mocked response.
 
 Use information about the request the `req` parameter provides to configure the response via the `res` parameter.
