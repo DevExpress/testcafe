@@ -31,7 +31,7 @@ TestCafe allows you to specify additional information for tests in the form of k
 You can define metadata for a fixture or a test using the [meta](https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#specifying-testing-metadata) method:
 
 ```js
-fixture 'MyFixture'
+fixture `My Fixture`
     .meta('fixtureID', 'f-0001')
     .meta({ author: 'John', creationDate: '05/03/2018' });
 ```
@@ -39,7 +39,7 @@ fixture 'MyFixture'
 ```js
 test
     .meta('testID', 't-0005')
-    .meta({ severity: 'critical', testedAPIVersion: '1.0' });
+    .meta({ severity: 'critical', testedAPIVersion: '1.0' })
     ('MyTest', async t => { /* ... */});
 ```
 
