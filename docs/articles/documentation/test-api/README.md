@@ -6,8 +6,7 @@ checked: true
 ---
 # Test API
 
-TestCafe allows you to write tests using both JavaScript and TypeScript.
-For more information about writing tests in TypeScript, see [TypeScript Support](typescript-support.md).
+TestCafe allows you to write tests using JavaScript and TypeScript (see [TypeScript Support](typescript-support.md) for more information about writing tests in TypeScript).
 
 The following topics demonstrate how to organize test code:
 
@@ -20,6 +19,7 @@ The following topics describe the API used to manipulate the webpage and check i
 * [Selecting Page Elements](selecting-page-elements/README.md)
 * [Assertions](assertions/README.md)
 * [Obtaining Data From the Client](obtaining-data-from-the-client/README.md)
+* [Intercepting HTTP Requests](intercepting-and-mocking-http-requests/README.md)
 * [Waiting for Page Elements to Appear](waiting-for-page-elements-to-appear.md)
 * [Authentication](authentication/README.md)
 * [Pausing the Test](pausing-the-test.md)
