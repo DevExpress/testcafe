@@ -11,7 +11,7 @@ $(document).ready(function () {
         asyncTest('should wait while added script is loaded and executed', function () {
             var barrier       = new ScriptExecutionBarrier();
             var script        = document.createElement('script');
-            var scriptContent = encodeURIComponent('window.scriptExecuted=true');
+            var scriptContent = encodeURIComponent('window.scriptExecuted=true;');
 
             script.src = '/xhr-test/500?expectedResponse=' + scriptContent;
             document.body.appendChild(script);

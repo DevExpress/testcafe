@@ -217,7 +217,7 @@ function _typeTextToTextEditable (element, text) {
     var elementMaxLength = !browserUtils.isIE && isInputTypeNumber ? null : parseInt(element.maxLength, 10);
 
     if (elementMaxLength < 0)
-        elementMaxLength = browserUtils.isIE ? 0 : null;
+        elementMaxLength = browserUtils.isIE && browserUtils.version < 17 ? 0 : null;
 
     if (elementMaxLength === null || isNaN(elementMaxLength) || elementMaxLength > elementValue.length) {
         // NOTE: B254013

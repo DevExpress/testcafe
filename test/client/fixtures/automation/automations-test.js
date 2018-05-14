@@ -192,7 +192,9 @@ $(document).ready(function () {
         equal(domUtils.getActiveElement(), el, 'selected element is active');
         equal(textSelection.getSelectionStart(el), start, 'start selection correct');
         equal(textSelection.getSelectionEnd(el), end, 'end selection correct');
-        equal(textSelection.hasInverseSelection(el), inverse, 'selection direction correct');
+
+        if (!window.DIRECTION_ALWAYS_IS_FORWARD)
+            equal(textSelection.hasInverseSelection(el), inverse, 'selection direction correct');
     };
 
     var preventDefault = function (e) {

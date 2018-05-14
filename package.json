@@ -2,7 +2,7 @@
   "name": "testcafe",
   "description": "Automated browser testing for the modern web development stack.",
   "license": "MIT",
-  "version": "0.20.0-alpha.3",
+  "version": "0.20.0-alpha.4",
   "author": {
     "name": "Developer Express Inc.",
     "url": "https://www.devexpress.com/"
@@ -80,7 +80,7 @@
     "indent-string": "^1.2.2",
     "is-ci": "^1.0.10",
     "is-glob": "^2.0.1",
-    "lodash": "^4.13.1",
+    "lodash": "^4.17.10",
     "log-update-async-hook": "^2.0.2",
     "map-reverse": "^1.0.1",
     "mkdirp": "^0.5.1",
@@ -104,7 +104,7 @@
     "source-map-support": "^0.4.0",
     "strip-bom": "^2.0.0",
     "testcafe-browser-tools": "1.5.1",
-    "testcafe-hammerhead": "13.4.3",
+    "testcafe-hammerhead": "13.4.4",
     "testcafe-legacy-api": "3.1.7",
     "testcafe-reporter-json": "^2.1.0",
     "testcafe-reporter-list": "^2.1.0",
