@@ -49,7 +49,7 @@ To include testing metadata to reports, use the [custom reporter methods](https:
 
 TestCafe now throws an error if you pass a regular promise to the assertion's `expect` method.
 
-If you need to assert a regular promise, set the [allowUnawaitedPromise](https://devexpress.github.io/testcafe/documentation/test-api/assertions/#allowunawaitedpromise) option to `true`.
+If you need to assert a regular promise, set the [allowUnawaitedPromise](https://devexpress.github.io/testcafe/documentation/test-api/assertions/#optionsallowunawaitedpromise) option to `true`.
 
 ```js
 await t.expect(doSomethingAsync()).ok('check that a promise is returned', { allowUnawaitedPromise: true });
