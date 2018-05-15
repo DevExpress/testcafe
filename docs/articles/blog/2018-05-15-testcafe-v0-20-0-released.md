@@ -7,6 +7,8 @@ permalink: /blog/:title.html
 
 Intercepting HTTP requests, specifying resources accessed by bypassing a proxy server, specifying testing metadata, deprecated passing a regular promise to assertions.
 
+<!--more-->
+
 ## Request Hooks: Intercepting HTTP requests ([#1341](https://github.com/DevExpress/testcafe/issues/1341))
 
 TestCafe now allows you to record HTTP request data or mock responses. You can also create a custom HTTP request hook to emulate authentications like  **Kerberos** or **Client Certificate Authentication**.
