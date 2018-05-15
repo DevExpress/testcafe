@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.20.0 (2018-5-14)
+## v0.20.0 (2018-5-15)
 
 ### Request Hooks: Intercepting HTTP requests ([#1341](https://github.com/DevExpress/testcafe/issues/1341))
 
