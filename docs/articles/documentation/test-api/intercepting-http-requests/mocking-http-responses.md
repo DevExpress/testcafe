@@ -36,7 +36,7 @@ Next, [attach it to a test or fixture](attaching-hooks-to-tests-and-fixtures.md)
 ## The onRequestTo Method
 
 ```text
-onRequestTo([filter])
+onRequestTo(filter)
 ```
 
 Parameters | Type | Description | Default
