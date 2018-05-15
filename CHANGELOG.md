@@ -6,7 +6,7 @@
 
 TestCafe now allows you to record HTTP request data or mock responses. You can also create a custom HTTP request hook to emulate authentications like  **Kerberos** or **Client Certificate Authentication**.
 
-See [Intercepting HTTP Requests](docs/articles/documentation/test-api/intercepting-http-requests/README.html) for more information.
+See [Intercepting HTTP Requests](https://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests) for more information.
 
 ### Enhancements
 
@@ -49,7 +49,7 @@ To include testing metadata to reports, use the [custom reporter methods](https:
 
 TestCafe now throws an error if you pass a regular promise to the assertion's `expect` method.
 
-If you need to assert a regular promise, set the [allowUnawaitedPromise](docs/articles/documentation/test-api/assertions/README.html#optionsallowunawaitedpromise) option to `true`.
+If you need to assert a regular promise, set the [allowUnawaitedPromise](https://devexpress.github.io/testcafe/documentation/test-api/assertions/#optionsallowunawaitedpromise) option to `true`.
 
 ```js
 await t.expect(doSomethingAsync()).ok('check that a promise is returned', { allowUnawaitedPromise: true });
