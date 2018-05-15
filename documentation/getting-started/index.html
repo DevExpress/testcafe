@@ -433,7 +433,7 @@
 </ul>
 <h2><a class="anchor" name="installing-testcafe"></a>Installing TestCafe <a class="permalink" href="#installing-testcafe">#</a></h2>
 <p>Ensure that <a href="https://nodejs.org/">Node.js</a> and <a href="https://www.npmjs.com/">npm</a> are installed on your computer and run the following command:</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm install -g testcafe
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm <span class="nb">install</span> <span class="nt">-g</span> testcafe
 </code></pre></div>
 <p>For more information, see <a href="../using-testcafe/installing-testcafe.html">Installing TestCafe</a>.</p>
 <h2><a class="anchor" name="creating-a-test"></a>Creating a Test <a class="permalink" href="#creating-a-test">#</a></h2>
@@ -444,23 +444,23 @@ You get all the advantages of strongly-typed languages like rich coding assistan
 This file must have a special structure - tests must be organized into fixtures.</p>
 
 <p>Firstly, import the <code>testcafe</code> module.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 </code></pre></div>
 <p>Then declare a fixture using the <a href="../test-api/test-code-structure.html#fixtures">fixture</a> function.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">Getting</span> <span class="nx">Started</span><span class="err">`</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`Getting Started`</span>
 </code></pre></div>
 <p>In this tutorial, you create a test for the <a href="/testcafe/example">http://devexpress.github.io/testcafe/example</a> sample page.
 Specify this page as a start page for the fixture using the <a href="../test-api/test-code-structure.html#specifying-the-start-webpage">page</a> function.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">Getting</span> <span class="nx">Started</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example`;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`Getting Started`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://devexpress.github.io/testcafe/example`</span><span class="p">;</span>
 </code></pre></div>
 <p>Then, create the <a href="../test-api/test-code-structure.html#tests">test</a> function where you can enter test code.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">Getting</span> <span class="nx">Started</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example`;</span>
+<span class="nx">fixture</span> <span class="s2">`Getting Started`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://devexpress.github.io/testcafe/example`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My first test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My first test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="c1">// Test code</span>
 <span class="p">});</span>
 </code></pre></div><h2><a class="anchor" name="running-the-test"></a>Running the Test <a class="permalink" href="#running-the-test">#</a></h2>
@@ -485,13 +485,13 @@ a number of <a href="../test-api/actions/">actions</a>: <code>click</code>, <cod
 They can be called in a chain.</p>
 
 <p>The following fixture contains a simple test that types a developer name into a text editor and then clicks the Submit button.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">Getting</span> <span class="nx">Started</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example`;</span>
+<span class="nx">fixture</span> <span class="s2">`Getting Started`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://devexpress.github.io/testcafe/example`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My first test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My first test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">,</span> <span class="s1">'John Smith'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">);</span>
 <span class="p">});</span>
@@ -511,20 +511,20 @@ You call these functions as regular async functions, that is, you can obtain the
 <p>For example, clicking the Submit button on the sample web page opens a &quot;Thank you&quot; page.
 To get access to DOM elements on the opened page, the <code>Selector</code> function can be used.
 The following example demonstrates how to access the article header element and obtain its actual text.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">Getting</span> <span class="nx">Started</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example`;</span>
+<span class="nx">fixture</span> <span class="s2">`Getting Started`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://devexpress.github.io/testcafe/example`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My first test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My first test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">,</span> <span class="s1">'John Smith'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">);</span>
 
-    <span class="kr">const</span> <span class="nx">articleHeader</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'.result-content'</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">'h1'</span><span class="p">);</span>
+    <span class="kd">const</span> <span class="nx">articleHeader</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'.result-content'</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">'h1'</span><span class="p">);</span>
 
     <span class="c1">// Obtain the text of the article header</span>
-    <span class="kd">let</span> <span class="nx">headerText</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">articleHeader</span><span class="p">.</span><span class="nx">innerText</span><span class="p">;</span>
+    <span class="kd">let</span> <span class="nx">headerText</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">articleHeader</span><span class="p">.</span><span class="nx">innerText</span><span class="p">;</span>
 <span class="p">});</span>
 </code></pre></div>
 <p>See <a href="../test-api/selecting-page-elements/">Selecting Page Elements</a> for more information.</p>
@@ -534,13 +534,13 @@ For example, the article header on the &quot;Thank you&quot; page should address
 To check if the header is correct, you have to add an assertion to the test.</p>
 
 <p>The following test demonstrates how to use <a href="../test-api/assertions/">build-in assertions</a>.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">Getting</span> <span class="nx">Started</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example`;</span>
+<span class="nx">fixture</span> <span class="s2">`Getting Started`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://devexpress.github.io/testcafe/example`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My first test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My first test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">,</span> <span class="s1">'John Smith'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">)</span>
 

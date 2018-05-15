@@ -574,10 +574,10 @@ Thus, you can run your tests completely in the cloud.</p>
 <li><p>Add a <code>.travis.yml</code> configuration file to the root of your project. This file contains parameters and commands that instruct Travis CI how to execute your builds. For more information, see <a href="https://docs.travis-ci.com/user/customizing-the-build">Customizing the Build</a>.</p>
 
 <p>For Node.js projects, the <code>.travis.yml</code> file can have the following content.</p>
-<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"> <span class="s">language</span><span class="pi">:</span> <span class="s">node_js</span>
- <span class="s">node_js</span><span class="pi">:</span> <span class="s2">"</span><span class="s">stable"</span>
+<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"> <span class="na">language</span><span class="pi">:</span> <span class="s">node_js</span>
+ <span class="na">node_js</span><span class="pi">:</span> <span class="s2">"</span><span class="s">stable"</span>
 
- <span class="s">before_install</span><span class="pi">:</span>
+ <span class="na">before_install</span><span class="pi">:</span>
    <span class="pi">-</span> <span class="s">stty cols 80</span>
 </code></pre></div>
 <p>Commit and push this file to your repository.</p></li>
@@ -592,7 +592,7 @@ Thus, you can run your tests completely in the cloud.</p>
 <h2><a class="anchor" name="step-4---install-the-sauce-labs-browser-provider-plugin"></a>Step 4 - Install the Sauce Labs browser provider plugin <a class="permalink" href="#step-4---install-the-sauce-labs-browser-provider-plugin">#</a></h2>
 <p>To run TestCafe tests in the cloud using Sauce Labs browsers, you need to install the <a href="https://www.npmjs.com/package/testcafe-browser-provider-saucelabs">testcafe-browser-provider-saucelabs</a> plugin locally to your project.
 To do this, run the following command.</p>
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">npm install --save-dev testcafe-browser-provider-saucelabs
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">npm <span class="nb">install</span> <span class="nt">--save-dev</span> testcafe-browser-provider-saucelabs
 </code></pre></div>
 <p>For more information on testing in cloud browsers, see <a href="../using-testcafe/common-concepts/browsers/browser-support.html#browsers-in-cloud-testing-services">Browsers in Cloud Testing Services</a>.</p>
 <h2><a class="anchor" name="step-5---add-the-test-script-to-packagejson"></a>Step 5 - Add the <code>test</code> script to package.json <a class="permalink" href="#step-5---add-the-test-script-to-packagejson">#</a></h2>

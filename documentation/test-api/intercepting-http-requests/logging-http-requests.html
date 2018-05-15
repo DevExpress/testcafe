@@ -8,20 +8,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <title>Navigate | TestCafe</title>
+  <title>Logging HTTP Requests | TestCafe</title>
 
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
   
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/test-api/actions/navigate.html" />
-  <meta property="og:title" content="Navigate | TestCafe" />
+  <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/logging-http-requests.html" />
+  <meta property="og:title" content="Logging HTTP Requests | TestCafe" />
 
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
-  <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/test-api/actions/navigate.html">
+  <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/logging-http-requests.html">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="http://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
@@ -666,7 +666,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/actions/navigate.html" class="active" >Navigate</a>
+<a href="/testcafe/documentation/test-api/actions/navigate.html"  >Navigate</a>
 		
     </li>
 
@@ -748,7 +748,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/intercepting-http-requests/logging-http-requests.html"  >Logging HTTP Requests</a>
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/logging-http-requests.html" class="active" >Logging HTTP Requests</a>
 		
     </li>
 
@@ -884,43 +884,232 @@
 	<article class="doc">
 		<div class="post-content">
 
-			<h1>Navigate</h1>
-<p>Navigates to the specified URL.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">t.navigateTo( url )
+			<h1>Logging HTTP Requests</h1>
+<p>You can use the <code>RequestLogger</code> to log HTTP requests sent during test execution. This object stores all requests sent and responses received while the test is running.</p>
+
+<ul>
+<li><a href="#creating-a-logger">Creating a Logger</a></li>
+<li><a href="#logger-methods">Logger Methods</a></li>
+<li><a href="#logger-properties">Logger Properties</a></li>
+<li><a href="#the-request-object">The Request Object</a></li>
+</ul>
+<h2><a class="anchor" name="creating-a-logger"></a>Creating a Logger <a class="permalink" href="#creating-a-logger">#</a></h2>
+<p>Use the <code>RequestLogger</code> constructor to create a request logger.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">RequestLogger([filter] [, options])
 </code></pre></div>
 <table><thead>
 <tr>
 <th>Parameter</th>
 <th>Type</th>
 <th>Description</th>
+<th>Default</th>
 </tr>
 </thead><tbody>
 <tr>
-<td><code>url</code></td>
-<td>String</td>
-<td>The URL to navigate to. Absolute or relative to the current page.</td>
+<td><code>filter</code>&#160;<em>(optional)</em></td>
+<td>String &#124; RegExp &#124; Object &#124; Predicate</td>
+<td>Specifies which requests the logger should track. See <a href="specifying-which-requests-are-handled-by-the-hook.html">Specifying Which Requests are Handled by the Hook</a>.</td>
+<td>All requests are tracked</td>
+</tr>
+<tr>
+<td><code>options</code>&#160;<em>(optional)</em></td>
+<td>Object</td>
+<td>Options that define how the requests and responses are logged.</td>
+<td>See below</td>
 </tr>
 </tbody></table>
 
-<p>The following example shows how to use the <code>t.navigateTo</code> action.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://www.example.com/`</span><span class="p">;</span>
+<p>The <code>options</code> parameter contains the following options:</p>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Navigate to the main page'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">await</span> <span class="nx">t</span>
-        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">navigateTo</span><span class="p">(</span><span class="s1">'http://devexpress.github.io/testcafe'</span><span class="p">);</span>
+<table><thead>
+<tr>
+<th>Option</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>logRequestHeaders</code></td>
+<td>Boolean</td>
+<td>Specifies whether the request headers should be logged.</td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>logRequestBody</code></td>
+<td>Boolean</td>
+<td>Specifies whether the request body should be logged.</td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>stringifyRequestBody</code></td>
+<td>Boolean</td>
+<td>Specifies whether the request body should be stored as a String or a <a href="https://nodejs.org/api/buffer.html">Buffer</a>.</td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>logResponseHeaders</code></td>
+<td>Boolean</td>
+<td>Specifies whether the response headers should be logged.</td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>logResponseBody</code></td>
+<td>Boolean</td>
+<td>Specifies whether the response body should be logged.</td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>stringifyResponseBody</code></td>
+<td>Boolean</td>
+<td>Specifies whether the response body should be stored as a string or a <a href="https://nodejs.org/api/buffer.html">Buffer</a>.</td>
+<td><code>false</code></td>
+</tr>
+</tbody></table>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">RequestLogger</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">simpleLogger</span> <span class="o">=</span> <span class="nx">RequestLogger</span><span class="p">(</span><span class="s1">'http://example.com'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">headerLogger</span> <span class="o">=</span> <span class="nx">RequestLogger</span><span class="p">(</span><span class="sr">/testcafe/</span><span class="p">,</span> <span class="p">{</span>
+    <span class="na">logRequestHeaders</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="na">logResponseHeaders</span><span class="p">:</span> <span class="kc">true</span>
 <span class="p">});</span>
 </code></pre></div>
-<p>You can use the <code>file://</code> scheme or relative paths to navigate to a webpage in a local directory.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://www.example.com/`</span><span class="p">;</span>
+<p>To enable the logger to track the requests, <a href="attaching-hooks-to-tests-and-fixtures.html">attach it to a test or fixture</a>.</p>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Navigate to local pages'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">await</span> <span class="nx">t</span>
-        <span class="p">.</span><span class="nx">navigateTo</span><span class="p">(</span><span class="s1">'file:///user/my-website/index.html'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">navigateTo</span><span class="p">(</span><span class="s1">'../my-project/index.html'</span><span class="p">);</span>
-<span class="p">});</span>
+<p>The <code>RequestLogger</code> stores the following parameters by default:</p>
+
+<ul>
+<li>The URL where the request is sent.</li>
+<li>The request&#39;s HTTP method.</li>
+<li>The status code received in the response.</li>
+<li>The user agent that sent the request.</li>
+</ul>
+
+<p>Use the logger&#39;s API to access the data it stores.</p>
+<h2><a class="anchor" name="logger-methods"></a>Logger Methods <a class="permalink" href="#logger-methods">#</a></h2>
+<table><thead>
+<tr>
+<th>Method</th>
+<th>Return Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>contains(predicate)</code></td>
+<td>Promise</td>
+<td>Returns whether the logger contains a request that matches the predicate.</td>
+</tr>
+<tr>
+<td><code>count(predicate)</code></td>
+<td>Promise</td>
+<td>Returns the number of requests that match the predicate.</td>
+</tr>
+<tr>
+<td><code>clear()</code></td>
+<td>None</td>
+<td>Clears all logged requests.</td>
+</tr>
+</tbody></table>
+
+<p>The <code>predicate</code> functions take a single parameter - the <code>Request</code> object.</p>
+
+<p>If you use the <code>contains(predicate)</code> or <code>count(predicate)</code> methods in assertions, TestCafe uses the <a href="../assertions/#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a>.</p>
+<h2><a class="anchor" name="logger-properties"></a>Logger Properties <a class="permalink" href="#logger-properties">#</a></h2>
+<table><thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>requests</code></td>
+<td>Array of Request</td>
+<td>Returns an array of logged requests.</td>
+</tr>
+</tbody></table>
+<h2><a class="anchor" name="the-request-object"></a>The Request Object <a class="permalink" href="#the-request-object">#</a></h2>
+<p>This object represents a request-response pair.</p>
+
+<table><thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>userAgent</code></td>
+<td>String</td>
+<td>The user agent that sent the request.</td>
+</tr>
+<tr>
+<td><code>request.url</code></td>
+<td>String</td>
+<td>The URL where the request is sent.</td>
+</tr>
+<tr>
+<td><code>request.method</code></td>
+<td>String</td>
+<td>The request&#39;s HTTP method.</td>
+</tr>
+<tr>
+<td><code>request.headers</code></td>
+<td>Object</td>
+<td>Request headers in the property-value form. Logged if the <code>logRequestHeaders</code> option is set to <code>true</code>.</td>
+</tr>
+<tr>
+<td><code>request.body</code></td>
+<td><a href="https://nodejs.org/api/buffer.html">Buffer</a> &#124; String</td>
+<td>The request body. A <a href="https://nodejs.org/api/buffer.html">Buffer</a> or string depending on the <code>stringifyRequestBody</code> option. Logged if the <code>logRequestBody</code> option is set to <code>true</code>.</td>
+</tr>
+<tr>
+<td><code>response.statusCode</code></td>
+<td>Number</td>
+<td>The status code received in the response.</td>
+</tr>
+<tr>
+<td><code>response.headers</code></td>
+<td>Object</td>
+<td>Response headers in the property-value form. Logged if the <code>logResponseHeaders</code> option is set to <code>true</code>.</td>
+</tr>
+<tr>
+<td><code>response.body</code></td>
+<td><a href="https://nodejs.org/api/buffer.html">Buffer</a> &#124; String</td>
+<td>The response body. A <a href="https://nodejs.org/api/buffer.html">Buffer</a> or string depending on the <code>stringifyResponseBody</code> option. Logged if the <code>logResponseBody</code> option is set to <code>true</code>.</td>
+</tr>
+</tbody></table>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">RequestLogger</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">logger</span> <span class="o">=</span> <span class="nx">RequestLogger</span><span class="p">(</span><span class="s1">'http://api.example.com'</span><span class="p">);</span>
+
+<span class="nx">fixture</span> <span class="s2">`test`</span>
+    <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="s1">'http://example.com'</span><span class="p">);</span>
+
+<span class="nx">test</span>
+    <span class="p">.</span><span class="nx">requestHooks</span><span class="p">(</span><span class="nx">logger</span><span class="p">)</span>
+    <span class="p">(</span><span class="s1">'test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">logRecord</span> <span class="o">=</span> <span class="nx">logger</span><span class="p">.</span><span class="nx">requests</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">logRecord</span><span class="p">.</span><span class="nx">userAgent</span><span class="p">);</span>           <span class="c1">// Chrome 63.0.3239 / Windows 8.1.0.0</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">logRecord</span><span class="p">.</span><span class="nx">request</span><span class="p">.</span><span class="nx">url</span><span class="p">);</span>         <span class="c1">// http://api.example.com</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">logRecord</span><span class="p">.</span><span class="nx">request</span><span class="p">.</span><span class="nx">method</span><span class="p">);</span>      <span class="c1">// get</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">logRecord</span><span class="p">.</span><span class="nx">response</span><span class="p">.</span><span class="nx">statusCode</span><span class="p">);</span> <span class="c1">// 304</span>
+    <span class="p">});</span>
+</code></pre></div>
+<p><strong>Example</strong></p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">RequestLogger</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">logger</span> <span class="o">=</span> <span class="nx">RequestLogger</span><span class="p">(</span><span class="s1">'http://api.example.com'</span><span class="p">);</span>
+
+<span class="nx">fixture</span> <span class="s2">`test`</span>
+    <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="s1">'http://example.com'</span><span class="p">);</span>
+
+<span class="nx">test</span>
+    <span class="p">.</span><span class="nx">requestHooks</span><span class="p">(</span><span class="nx">logger</span><span class="p">)</span>
+    <span class="p">(</span><span class="s1">'test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="kr">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">logger</span><span class="p">.</span><span class="nx">contains</span><span class="p">(</span><span class="nx">record</span> <span class="o">=&gt;</span> <span class="nx">record</span><span class="p">.</span><span class="nx">response</span><span class="p">.</span><span class="nx">statusCode</span> <span class="o">===</span> <span class="mi">200</span><span class="p">)).</span><span class="nx">ok</span><span class="p">();</span>
+    <span class="p">});</span>
 </code></pre></div>
 
 		</div>

@@ -8,20 +8,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <title>TestCafe v0.10.0 Released | TestCafe</title>
+  <title>TestCafe v0.20.0 Released | TestCafe</title>
 
-  <meta name="description" content="TestCafe v0.10.0 ReleasedFirst of all, we would like to thank everyone who&#39;s reading this for your interest and support for TestCafe.And we especially ap...">
+  <meta name="description" content="TestCafe v0.20.0 ReleasedIntercepting HTTP requests, specifying resources accessed by bypassing a proxy server, specifying testing metadata, deprecated passi...">
   <meta name="viewport" content="width=device-width">
   
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="http://devexpress.github.io/testcafe/blog/testcafe-v0-10-0-released.html" />
-  <meta property="og:title" content="TestCafe v0.10.0 Released | TestCafe" />
+  <meta property="og:url" content="http://devexpress.github.io/testcafe/blog/testcafe-v0-20-0-released.html" />
+  <meta property="og:title" content="TestCafe v0.20.0 Released | TestCafe" />
 
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
-  <link rel="canonical" href="http://devexpress.github.io/testcafe/blog/testcafe-v0-10-0-released.html">
+  <link rel="canonical" href="http://devexpress.github.io/testcafe/blog/testcafe-v0-20-0-released.html">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="http://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
@@ -255,92 +255,59 @@
     <main>
     <div class="post">
         <div class="post-date">
-            NOV  8, 2016
+            MAY 15, 2018
         </div>
         <article class="post-content">
-            <h1>TestCafe v0.10.0 Released</h1>
-<p>First of all, we would like to thank everyone who&#39;s reading this for your interest and support for TestCafe.
-And we especially appreciate those of you who reached us to say thank you, offer help or share feedback.
-Let&#39;s keep building a better testing framework together!</p>
-
-<p>So, here is our first minor update and that&#39;s what it includes.</p>
+            <h1>TestCafe v0.20.0 Released</h1>
+<p>Intercepting HTTP requests, specifying resources accessed by bypassing a proxy server, specifying testing metadata, deprecated passing a regular promise to assertions.</p>
 
 <!--more-->
-<h2><a class="anchor" name="enhancements"></a>Enhancements <a class="permalink" href="#enhancements">#</a></h2><h3><a class="anchor" name="snapshot-api-shorthands"></a>Snapshot API shorthands <a class="permalink" href="#snapshot-api-shorthands">#</a></h3>
-<p>Previously, if you needed to use a single property from the snapshot, you had to introduce two assignments</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">snapshot</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">selector</span><span class="p">();</span>
-<span class="kd">const</span> <span class="nx">nodeType</span> <span class="o">=</span> <span class="nx">snapshot</span><span class="p">.</span><span class="nx">nodeType</span><span class="p">;</span>
+<h2><a class="anchor" name="request-hooks-intercepting-http-requests-1341"></a>Request Hooks: Intercepting HTTP requests (<a href="https://github.com/DevExpress/testcafe/issues/1341">#1341</a>) <a class="permalink" href="#request-hooks-intercepting-http-requests-1341">#</a></h2>
+<p>TestCafe now allows you to record HTTP request data or mock responses. You can also create a custom HTTP request hook to emulate authentications like  <strong>Kerberos</strong> or <strong>Client Certificate Authentication</strong>.</p>
+
+<p>See <a href="docs/articles/documentation/test-api/intercepting-http-requests/README.html">Intercepting HTTP Requests</a> for more information.</p>
+<h2><a class="anchor" name="enhancements"></a>Enhancements <a class="permalink" href="#enhancements">#</a></h2><h3><a class="anchor" name="specifying-resources-accessed-by-bypassing-a-proxy-server-1791"></a>⚙ Specifying resources accessed by bypassing a proxy server (<a href="https://github.com/DevExpress/testcafe/issues/1791">#1791</a>) <a class="permalink" href="#specifying-resources-accessed-by-bypassing-a-proxy-server-1791">#</a></h3>
+<p>TestCafe now allows you to bypass the proxy server when accessing specific resources.</p>
+
+<p>To specify resources that require direct access, use the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--proxy-bypass-rules">--proxy-bypass</a> flag in the command line or the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html">useProxy</a> API method&#39;s parameters.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests/<span class="k">**</span>/<span class="k">*</span>.js <span class="nt">--proxy</span> proxy.corp.mycompany.com <span class="nt">--proxy-bypass</span> localhost:8080,internal-resource.corp.mycompany.com
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">useProxy</span><span class="p">(</span><span class="s1">'172.0.10.10:8080'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'localhost:8080'</span><span class="p">,</span> <span class="s1">'internal-resource.corp.mycompany.com'</span><span class="p">]);</span>
+</code></pre></div><h3><a class="anchor" name="specifying-testing-metadata-2242"></a>⚙ Specifying testing metadata (<a href="https://github.com/DevExpress/testcafe/issues/2242">#2242</a>) <a class="permalink" href="#specifying-testing-metadata-2242">#</a></h3>
+<p>TestCafe allows you to specify additional information for tests in the form of key-value metadata and use it in reports.</p>
+
+<p>You can define metadata for a fixture or a test using the <a href="https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#specifying-testing-metadata">meta</a> method:</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My Fixture`</span>
+    <span class="p">.</span><span class="nx">meta</span><span class="p">(</span><span class="s1">'fixtureID'</span><span class="p">,</span> <span class="s1">'f-0001'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">meta</span><span class="p">({</span> <span class="na">author</span><span class="p">:</span> <span class="s1">'John'</span><span class="p">,</span> <span class="na">creationDate</span><span class="p">:</span> <span class="s1">'05/03/2018'</span> <span class="p">});</span>
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">test</span>
+    <span class="p">.</span><span class="nx">meta</span><span class="p">(</span><span class="s1">'testID'</span><span class="p">,</span> <span class="s1">'t-0005'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">meta</span><span class="p">({</span> <span class="na">severity</span><span class="p">:</span> <span class="s1">'critical'</span><span class="p">,</span> <span class="na">testedAPIVersion</span><span class="p">:</span> <span class="s1">'1.0'</span> <span class="p">})</span>
+    <span class="p">(</span><span class="s1">'MyTest'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/* ... */</span><span class="p">});</span>
 </code></pre></div>
-<p>or additional parentheses.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">nodeType</span> <span class="o">=</span> <span class="p">(</span><span class="kr">await</span> <span class="nx">selector</span><span class="p">()).</span><span class="nx">nodeType</span><span class="p">;</span>
-</code></pre></div>
-<p>Now snapshot methods and property getters are exposed by selectors
-(and selector promises as well) so that you can write more compact code.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">nodeType</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">selector</span><span class="p">.</span><span class="nx">nodeType</span><span class="p">;</span>
+<p>To include testing metadata to reports, use the <a href="https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html">custom reporter methods</a>.</p>
+<h3><a class="anchor" name="passing-a-regular-promise-to-texpect-is-deprecated-now-2207"></a>⚙ Passing a regular promise to <code>t.expect</code> is deprecated now (<a href="https://github.com/DevExpress/testcafe/issues/2207">#2207</a>) <a class="permalink" href="#passing-a-regular-promise-to-texpect-is-deprecated-now-2207">#</a></h3>
+<p>TestCafe now throws an error if you pass a regular promise to the assertion&#39;s <code>expect</code> method.</p>
 
-<span class="c1">// or</span>
-
-<span class="kd">const</span> <span class="nx">nodeType</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">selector</span><span class="p">(</span><span class="s1">'someParam'</span><span class="p">).</span><span class="nx">nodeType</span><span class="p">;</span>
-</code></pre></div>
-<p>However, shorthand properties do not allow you to omit parentheses when working with dictionary properties
-like <code>style</code>, <code>attributes</code> or <code>boundingClientRect</code>.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">width</span> <span class="o">=</span> <span class="p">(</span><span class="kr">await</span> <span class="nx">selector</span><span class="p">.</span><span class="nx">style</span><span class="p">)[</span><span class="s1">'width'</span><span class="p">];</span>
-</code></pre></div>
-<p>That is why we have also introduced shorthand methods for these dictionaries: <code>getStyleProperty</code>, <code>getAttribute</code> and <code>getBoundingClientRectProperty</code>.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">width</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">selector</span><span class="p">.</span><span class="nx">getStyleProperty</span><span class="p">(</span><span class="s1">'width'</span><span class="p">);</span>
-<span class="kd">const</span> <span class="nx">id</span>    <span class="o">=</span> <span class="kr">await</span> <span class="nx">selector</span><span class="p">.</span><span class="nx">getAttribute</span><span class="p">(</span><span class="s1">'id'</span><span class="p">);</span>
-<span class="kd">const</span> <span class="nx">left</span>  <span class="o">=</span> <span class="kr">await</span> <span class="nx">selector</span><span class="p">.</span><span class="nx">getBoundingClientRectProperty</span><span class="p">(</span><span class="s1">'left'</span><span class="p">);</span>
-</code></pre></div>
-<p>Finally, we have added the <code>hasClass</code> method.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">if</span> <span class="p">(</span><span class="kr">await</span> <span class="nx">selector</span><span class="p">.</span><span class="nx">hasClass</span><span class="p">(</span><span class="s1">'foo'</span><span class="p">))</span> <span class="p">{</span>
-    <span class="c1">//...</span>
-<span class="p">}</span>
-</code></pre></div>
-<p>See <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#obtain-element-state">Snapshot API Shorthands</a>.  </p>
-<h3><a class="anchor" name="improved-automatic-wait-mechanism"></a>Improved automatic wait mechanism <a class="permalink" href="#improved-automatic-wait-mechanism">#</a></h3>
-<p>We got rid of unnecessary waiting so that tests now run almost two times faster.</p>
-
-<p><img src="https://raw.githubusercontent.com/DevExpress/testcafe/master/media/new-0-10-0-autowait.gif" alt="Tests running in v0.10.0 vs v0.9.0"></p>
-<h3><a class="anchor" name="test-execution-speed-control"></a>Test execution speed control <a class="permalink" href="#test-execution-speed-control">#</a></h3>
-<p>We have introduced an option that allows you to specify how fast tests run.</p>
-
-<p>By default, tests run at the maximum speed. However, if you need to watch a test running to understand what happens in it,
-this speed may seem too fast. In this instance, use the new <code>speed</code> option to slow the test down.</p>
-
-<p>This option is available from the command line</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests <span class="nt">--speed</span> 0.1
-</code></pre></div>
-<p>and from the API.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">await</span> <span class="nx">runner</span><span class="p">.</span><span class="nx">run</span><span class="p">({</span>
-    <span class="na">speed</span><span class="p">:</span> <span class="mf">0.1</span>
-<span class="p">})</span>
-</code></pre></div>
-<p>You can use factor values between <code>1</code> (the fastest, used by default) and <code>0.01</code> (the slowest).</p>
-<h3><a class="anchor" name="tmaximizewindow-test-action"></a>t.maximizeWindow test action <a class="permalink" href="#tmaximizewindow-test-action">#</a></h3>
-<p>We have added a test action that maximizes the browser window.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">expect</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'chai'</span><span class="p">;</span>
-<span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
-
-<span class="kd">const</span> <span class="nx">menu</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#side-menu'</span><span class="p">);</span>
-
-<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://www.example.com/`</span><span class="p">;</span>
-
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Side menu is displayed in full screen'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">maximizeWindow</span><span class="p">();</span>
-
-    <span class="nx">expect</span><span class="p">(</span><span class="kr">await</span> <span class="nx">menu</span><span class="p">.</span><span class="nx">visible</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">ok</span><span class="p">;</span>
-<span class="p">});</span>
+<p>If you need to assert a regular promise, set the <a href="docs/articles/documentation/test-api/assertions/#optionsallowunawaitedpromise">allowUnawaitedPromise</a> option to <code>true</code>.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">doSomethingAsync</span><span class="p">()).</span><span class="nx">ok</span><span class="p">(</span><span class="s1">'check that a promise is returned'</span><span class="p">,</span> <span class="p">{</span> <span class="na">allowUnawaitedPromise</span><span class="p">:</span> <span class="kc">true</span> <span class="p">});</span>
 </code></pre></div><h2><a class="anchor" name="bug-fixes"></a>Bug Fixes <a class="permalink" href="#bug-fixes">#</a></h2>
 <ul>
-<li>The <code>t.resizeWindow</code> and <code>t.resizeWindowToFitDevice</code> actions now work correctly on macOS (<a href="https://github.com/DevExpress/testcafe/issues/816">#816</a>)</li>
-<li>Browser aliases are now case insensitive in the command line (<a href="https://github.com/DevExpress/testcafe/issues/890">#890</a>)</li>
-<li>Tests no longer hang if target scrolling coordinates are fractional (<a href="https://github.com/DevExpress/testcafe/issues/882">#882</a>)</li>
-<li>The &#39;Element is not visible&#39; error is no longer raised when scrolling a document in Quirks mode (<a href="https://github.com/DevExpress/testcafe/issues/883">#883</a>)</li>
-<li><code>&lt;table&gt;</code> child elements are now focused correctly (<a href="https://github.com/DevExpress/testcafe/issues/889">#889</a>)</li>
-<li>The page is no longer scrolled to the parent element when focusing on a non-focusable child during click automation (<a href="https://github.com/DevExpress/testcafe/issues/913">#913</a>)</li>
-<li>Browser auto-detection now works with all the Linux distributions (<a href="https://github.com/DevExpress/testcafe-browser-tools/issues/104">#104</a>,
-<a href="https://github.com/DevExpress/testcafe/issues/915">#915</a>)</li>
+<li>The session recovery bubble in Firefox is disabled (<a href="https://github.com/DevExpress/testcafe/pull/2341">#2341</a>)</li>
+<li>TestCafe works properly if a <code>body</code> element has the <code>pointer-events: none;</code> css style rule (<a href="https://github.com/DevExpress/testcafe/issues/2251">#2251</a>)</li>
+<li>Resizing Chrome in the emulation mode works correctly (<a href="https://github.com/DevExpress/testcafe/issues/2154">#2154</a>)</li>
+<li>The location port is used for service messages (<a href="https://github.com/DevExpress/testcafe/pull/2308">#2308</a>)</li>
+<li>A browser instance shuts down correctly on Unix systems (<a href="https://github.com/DevExpress/testcafe/issues/2226">#2226</a>)</li>
+<li>An <code>Integrity</code> attribute is removed from <code>script</code> and <code>link</code> tags (<a href="https://github.com/DevExpress/testcafe-hammerhead/issues/235">testcafe-hammerhead/#235</a>)</li>
+<li>The <code>event.preventDefault()</code> method call changes the <code>event.defaultPrevented</code> property value (<a href="https://github.com/DevExpress/testcafe-hammerhead/issues/1588">testcafe-hammerhead/#1588</a>)</li>
+<li>It is possible to set the <code>meta</code> element&#39;s <code>content</code> attribute (<a href="https://github.com/DevExpress/testcafe-hammerhead/issues/1586">testcafe-hammerhead/#1586</a>)</li>
+<li>TestCafe no longer overrides attributes used in a non-standard way with <code>null</code> (<a href="https://github.com/DevExpress/testcafe-hammerhead/pull/1583">testcafe-hammerhead/#1583</a>)</li>
+<li>The <code>Change</code> event fires correctly if the <code>target.value</code> changes (<a href="https://github.com/DevExpress/testcafe/issues/2319">#2319</a>)</li>
+<li><code>MouseEvent.screenX</code> and <code>MouseEvent.screenY</code> are added to the emulated events (<a href="https://github.com/DevExpress/testcafe/issues/2325">#2325</a>)</li>
+<li>Cookies on <code>localhost</code> are processed correctly (<a href="https://github.com/DevExpress/testcafe-hammerhead/issues/1491">testcafe-hammerhead/#1491</a>)</li>
+<li>Setting the <code>//</code> url for an image works correctly (<a href="https://github.com/DevExpress/testcafe/issues/2312">#2312</a>)</li>
+<li><code>shadowUI</code> internal elements are no longer processed (<a href="https://github.com/DevExpress/testcafe/issues/2281">#2281</a>)</li>
+<li><code>typeInput</code> event is raised correctly (<a href="https://github.com/DevExpress/testcafe/issues/1956">#1956</a>)</li>
+<li>Selecting text in contenteditable elements works properly (<a href="https://github.com/DevExpress/testcafe/issues/2301">#2301</a>)</li>
 </ul>
 
         </article>
@@ -354,8 +321,8 @@ this speed may seem too fast. In this instance, use the new <code>speed</code> o
 <!-- 
 <script>
     var disqus_config = function () {
-        this.page.url = 'http://devexpress.github.io/testcafe/blog/testcafe-v0-10-0-released.html';
-        this.page.identifier = '/blog/testcafe-v0-10-0-released';
+        this.page.url = 'http://devexpress.github.io/testcafe/blog/testcafe-v0-20-0-released.html';
+        this.page.identifier = '/blog/testcafe-v0-20-0-released';
     };
     (function() {
         var d = document, s = d.createElement('script');

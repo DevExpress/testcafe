@@ -8,20 +8,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <title>Navigate | TestCafe</title>
+  <title>Creating a Custom HTTP Request Hook | TestCafe</title>
 
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
   
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/test-api/actions/navigate.html" />
-  <meta property="og:title" content="Navigate | TestCafe" />
+  <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html" />
+  <meta property="og:title" content="Creating a Custom HTTP Request Hook | TestCafe" />
 
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
-  <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/test-api/actions/navigate.html">
+  <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="http://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
@@ -666,7 +666,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/actions/navigate.html" class="active" >Navigate</a>
+<a href="/testcafe/documentation/test-api/actions/navigate.html"  >Navigate</a>
 		
     </li>
 
@@ -762,7 +762,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html"  >Creating a Custom HTTP Request Hook</a>
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html" class="active" >Creating a Custom HTTP Request Hook</a>
 		
     </li>
 
@@ -884,42 +884,168 @@
 	<article class="doc">
 		<div class="post-content">
 
-			<h1>Navigate</h1>
-<p>Navigates to the specified URL.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">t.navigateTo( url )
+			<h1>Creating a Custom HTTP Request Hook</h1>
+<p>You can create your own request hook to handle HTTP requests. This topic describes request hooks and how to create a custom hook.</p>
+
+<ul>
+<li><a href="#understanding-how-testcafe-request-hooks-operate">Understanding How TestCafe Request Hooks Operate</a></li>
+<li><a href="#writing-a-hook">Writing a Hook</a>
+
+<ul>
+<li><a href="#the-onrequest-method">The onRequest Method</a></li>
+<li><a href="#the-onresponse-method">The onResponse Method</a></li>
+</ul></li>
+</ul>
+<h2><a class="anchor" name="understanding-how-testcafe-request-hooks-operate"></a>Understanding How TestCafe Request Hooks Operate <a class="permalink" href="#understanding-how-testcafe-request-hooks-operate">#</a></h2>
+<ul>
+<li><p>All TestCafe request hooks inherit from the <code>RequestHook</code> class.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">RequestHook</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+
+<span class="kd">class</span> <span class="nx">MyRequestHook</span> <span class="kd">extends</span> <span class="nx">RequestHook</span> <span class="p">{</span>
+    <span class="c1">// ...</span>
+<span class="p">}</span>
 </code></pre></div>
+<p>This class has the following public interface:</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">class</span> <span class="nx">RequestHook</span> <span class="p">{</span>
+    <span class="kd">constructor</span> <span class="p">(</span><span class="nx">requestFilterRules</span><span class="p">,</span> <span class="nx">responseEventConfigureOpts</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// ...</span>
+    <span class="p">}</span>
+
+    <span class="nx">onRequest</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// ...</span>
+    <span class="p">}</span>
+
+    <span class="nx">onResponse</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// ...</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></li>
+<li><p>The base class constructor receives an array of <a href="specifying-which-requests-are-handled-by-the-hook.html">filtering rules</a> as the first parameter to determine which requests the hook handles. All requests are handled if no rules are passed.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">class</span> <span class="nx">RequestHook</span> <span class="p">{</span>
+    <span class="kd">constructor</span> <span class="p">(</span><span class="nx">requestFilterRules</span><span class="p">,</span> <span class="cm">/* other params */</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">requestFilterRules</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span> <span class="c1">// http://example.com</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">requestFilterRules</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span> <span class="c1">// /\/api\/users\//</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></li>
+<li><p>The <code>onRequest</code> method is called before sending the request. Use this method to handle sending the request. You can change the request parameters before it is sent.</p>
+
+<p>This method is abstract in the base class and needs to be overriden in the subclass.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">onRequest</span> <span class="p">(</span><span class="cm">/*RequestEvent event*/</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">'Not implemented'</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></li>
+<li><p>When a response is received, the hook starts preparing to call the <code>onResponse</code> method that handles the response.</p>
+
+<p>At this moment, the hook processes settings that define whether to pass the response headers and body to the <code>onResponse</code> method. These settings are specified in the second constructor parameter. This parameter takes an object with the <code>includeHeaders</code> and <code>includeBody</code> properties that have the <code>false</code> value by default.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">class</span> <span class="nx">RequestHook</span> <span class="p">{</span>
+    <span class="kd">constructor</span> <span class="p">(</span><span class="nx">requestFilterRules</span><span class="p">,</span> <span class="nx">responseEventConfigureOpts</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">responseEventConfigureOpts</span><span class="p">.</span><span class="nx">includeHeaders</span><span class="p">);</span> <span class="c1">// false</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">responseEventConfigureOpts</span><span class="p">.</span><span class="nx">includeBody</span><span class="p">);</span>    <span class="c1">// false</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></li>
+<li><p>Finally, the <code>onResponse</code> method is called. This an abstract method in the base class. Override it in the descendant to handle sending the request.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">onResponse</span> <span class="p">(</span><span class="cm">/*ResponseEvent event*/</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">'Not implemented'</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></li>
+</ul>
+<h2><a class="anchor" name="writing-a-hook"></a>Writing a Hook <a class="permalink" href="#writing-a-hook">#</a></h2>
+<p>Do the following to write a custom hook:</p>
+
+<ul>
+<li>inherit from the <code>RequestHook</code> class,</li>
+<li>override the <code>onRequest</code> method to handle sending the request,</li>
+<li>override the <code>onResponse</code> method to handle receiving the response.</li>
+</ul>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">RequestHook</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+
+<span class="kd">class</span> <span class="nx">MyRequestHook</span> <span class="kd">extends</span> <span class="nx">RequestHook</span> <span class="p">{</span>
+    <span class="kd">constructor</span> <span class="p">(</span><span class="nx">requestFilterRules</span><span class="p">,</span> <span class="nx">responseEventConfigureOpts</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">super</span><span class="p">(</span><span class="nx">requestFilterRules</span><span class="p">,</span> <span class="nx">responseEventConfigureOpts</span><span class="p">);</span>
+        <span class="c1">// ...</span>
+    <span class="p">}</span>
+    <span class="nx">onRequest</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// ...</span>
+    <span class="p">}</span>
+    <span class="nx">onResponse</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// ...</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>The <code>onRequest</code> and <code>onResponse</code> methods receive an object that contains the event parameters.</p>
+<h3><a class="anchor" name="the-onrequest-method"></a>The onRequest Method <a class="permalink" href="#the-onrequest-method">#</a></h3>
+<p>The <code>onRequest</code> method&#39;s <code>event</code> object exposes the following fields.</p>
+
 <table><thead>
 <tr>
-<th>Parameter</th>
+<th>Property</th>
 <th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td><code>url</code></td>
-<td>String</td>
-<td>The URL to navigate to. Absolute or relative to the current page.</td>
+<td><code>requestOptions</code></td>
+<td><a href="requestoptions-object.html">RequestOptions</a></td>
+<td>Contains the request parameters. You can use it to change the request parameters before the request is sent.</td>
+</tr>
+<tr>
+<td><code>isAjax</code></td>
+<td>Boolean</td>
+<td>Specifies if the request is performed using AJAX.</td>
 </tr>
 </tbody></table>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">onRequest</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">isAjax</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">requestOptions</span><span class="p">.</span><span class="nx">url</span><span class="p">);</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">requestOptions</span><span class="p">.</span><span class="nx">credentials</span><span class="p">.</span><span class="nx">username</span><span class="p">);</span>
 
-<p>The following example shows how to use the <code>t.navigateTo</code> action.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://www.example.com/`</span><span class="p">;</span>
+        <span class="nx">event</span><span class="p">.</span><span class="nx">requestOptions</span><span class="p">.</span><span class="nx">headers</span><span class="p">[</span><span class="s1">'custom-header'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'value'</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div><h3><a class="anchor" name="the-onresponse-method"></a>The onResponse Method <a class="permalink" href="#the-onresponse-method">#</a></h3>
+<p>The <code>onResponse</code> method&#39;s <code>event</code> object exposes the following properties:</p>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Navigate to the main page'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">await</span> <span class="nx">t</span>
-        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">navigateTo</span><span class="p">(</span><span class="s1">'http://devexpress.github.io/testcafe'</span><span class="p">);</span>
-<span class="p">});</span>
+<table><thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>statusCode</code></td>
+<td>Number</td>
+<td>The response status code.</td>
+</tr>
+<tr>
+<td><code>headers</code></td>
+<td>Object</td>
+<td>The response headers in a property-value form.</td>
+</tr>
+<tr>
+<td><code>body</code></td>
+<td><a href="https://nodejs.org/api/buffer.html">Buffer</a></td>
+<td>The response body.</td>
+</tr>
+</tbody></table>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">onResponse</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">statusCode</span> <span class="o">===</span> <span class="mi">200</span><span class="p">)</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">headers</span><span class="p">[</span><span class="s1">'Content-Type'</span><span class="p">]);</span>
+<span class="p">}</span>
 </code></pre></div>
-<p>You can use the <code>file://</code> scheme or relative paths to navigate to a webpage in a local directory.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://www.example.com/`</span><span class="p">;</span>
+<p>Now you can <a href="attaching-hooks-to-tests-and-fixtures.html">attach this hook to a test or fixture</a> in your test suite and start using it.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">MyRequestHook</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'./my-request-hook'</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Navigate to local pages'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">await</span> <span class="nx">t</span>
-        <span class="p">.</span><span class="nx">navigateTo</span><span class="p">(</span><span class="s1">'file:///user/my-website/index.html'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">navigateTo</span><span class="p">(</span><span class="s1">'../my-project/index.html'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">customHook</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyRequestHook</span><span class="p">(</span><span class="s1">'http://example.com'</span><span class="p">);</span>
+
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="s1">'http://example.com'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">requestHooks</span><span class="p">(</span><span class="nx">customHook</span><span class="p">);</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="c1">// test actions</span>
 <span class="p">});</span>
 </code></pre></div>
 

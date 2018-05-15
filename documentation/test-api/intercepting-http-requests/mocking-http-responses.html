@@ -8,20 +8,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <title>Navigate | TestCafe</title>
+  <title>Mocking HTTP Responses | TestCafe</title>
 
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
   
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/test-api/actions/navigate.html" />
-  <meta property="og:title" content="Navigate | TestCafe" />
+  <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/mocking-http-responses.html" />
+  <meta property="og:title" content="Mocking HTTP Responses | TestCafe" />
 
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
-  <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/test-api/actions/navigate.html">
+  <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/mocking-http-responses.html">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="http://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
@@ -666,7 +666,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/actions/navigate.html" class="active" >Navigate</a>
+<a href="/testcafe/documentation/test-api/actions/navigate.html"  >Navigate</a>
 		
     </li>
 
@@ -755,7 +755,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/intercepting-http-requests/mocking-http-responses.html"  >Mocking HTTP Responses</a>
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/mocking-http-responses.html" class="active" >Mocking HTTP Responses</a>
 		
     </li>
 
@@ -884,10 +884,111 @@
 	<article class="doc">
 		<div class="post-content">
 
-			<h1>Navigate</h1>
-<p>Navigates to the specified URL.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">t.navigateTo( url )
+			<h1>Mocking HTTP Responses</h1>
+<p>Mocking is useful when the tested app uses infrastructure that is difficult to deploy during the test run. In this instance, you can intercept requests to this resource and mock the responses using TestCafe.</p>
+
+<ul>
+<li><a href="#creating-a-mocker">Creating a Mocker</a></li>
+<li><a href="#the-onrequestto-method">The onRequestTo Method</a></li>
+<li><a href="#the-respond-method">The respond Method</a>
+
+<ul>
+<li><a href="#a-custom-response-function">A Custom Response Function</a></li>
+</ul></li>
+</ul>
+<h2><a class="anchor" name="creating-a-mocker"></a>Creating a Mocker <a class="permalink" href="#creating-a-mocker">#</a></h2>
+<p>To create a response mocker, use the <code>RequestMock</code> constructor.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">var</span> <span class="nx">mock</span> <span class="o">=</span> <span class="nx">RequestMock</span><span class="p">()</span>
 </code></pre></div>
+<p>Then call the <code>onRequestTo</code> and <code>respond</code> methods in a chain. The <code>onRequestTo</code> method specifies a request to intercept, while the <code>respond</code> method specifies the mocked response for this request. Repeat calling these methods to provide a mock for every request you need.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">var</span> <span class="nx">mock</span> <span class="o">=</span> <span class="nx">RequestMock</span><span class="p">()</span>
+    <span class="p">.</span><span class="nx">onRequestTo</span><span class="p">(</span><span class="nx">request1</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">respond</span><span class="p">(</span><span class="nx">responseMock1</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">onRequestTo</span><span class="p">(</span><span class="nx">request2</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">respond</span><span class="p">(</span><span class="nx">responseMock2</span><span class="p">);</span>
+</code></pre></div>
+<p>Next, <a href="attaching-hooks-to-tests-and-fixtures.html">attach it to a test or fixture</a>.</p>
+<h2><a class="anchor" name="the-onrequestto-method"></a>The onRequestTo Method <a class="permalink" href="#the-onrequestto-method">#</a></h2><div class="highlight"><pre><code class="language-text" data-lang="text">onRequestTo(filter)
+</code></pre></div>
+<table><thead>
+<tr>
+<th>Parameters</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>filter</code>&#160;<em>(required)</em></td>
+<td>String &#124; RegExp &#124; Object &#124; Predicate</td>
+<td>Specifies which requests should be mocked with a response that follows in the <code>respond</code> method. See <a href="specifying-which-requests-are-handled-by-the-hook.html">Specifying Which Requests are Handled by the Hook</a>.</td>
+<td>All requests are mocked.</td>
+</tr>
+</tbody></table>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">var</span> <span class="nx">mock</span> <span class="o">=</span> <span class="nx">RequestMock</span><span class="p">()</span>
+    <span class="p">.</span><span class="nx">onRequestTo</span><span class="p">(</span><span class="s1">'http://external-service.com/api/'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">respond</span><span class="p">(</span><span class="cm">/*...*/</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">onRequestTo</span><span class="p">(</span><span class="sr">/</span><span class="se">\/</span><span class="sr">users</span><span class="se">\/</span><span class="sr">/</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">respond</span><span class="p">(</span><span class="cm">/*...*/</span><span class="p">);</span>
+</code></pre></div><h2><a class="anchor" name="the-respond-method"></a>The respond Method <a class="permalink" href="#the-respond-method">#</a></h2><div class="highlight"><pre><code class="language-text" data-lang="text">respond([body] [, statusCode] [, headers])
+</code></pre></div>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>body</code>&#160;<em>(optional)</em></td>
+<td>Object &#124; String &#124; Function &#124; <a href="https://nodejs.org/api/buffer.html">Buffer</a></td>
+<td>A mocked response body. Pass an object for a JSON response, a string for an HTML response or a function to build a custom response.</td>
+<td>An empty HTML page is returned with the response.</td>
+</tr>
+<tr>
+<td><code>statusCode</code>&#160;<em>(optional)</em></td>
+<td>Number</td>
+<td>The response status code.</td>
+<td><code>200</code></td>
+</tr>
+<tr>
+<td><code>headers</code>&#160;<em>(optional)</em></td>
+<td>Object</td>
+<td>Custom headers added to the response in the property-value form.</td>
+<td>The <code>content-type</code> header. If the header is not provided, it is set depending on the <code>body</code> parameter&#39;s type. If <code>body</code> is an object, the <code>content-type</code> header is set to <em>application/json</em>. If <code>body</code> has another type, the <code>content-type</code> header is set to <em>text/html; charset=utf-8</em>.</td>
+</tr>
+</tbody></table>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">var</span> <span class="nx">mock</span> <span class="o">=</span> <span class="nx">RequestMock</span><span class="p">()</span>
+    <span class="p">.</span><span class="nx">onRequestTo</span><span class="p">(</span><span class="cm">/*...*/</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">respond</span><span class="p">({</span> <span class="na">data</span><span class="p">:</span> <span class="mi">123</span> <span class="p">})</span> <span class="c1">// a JSON response</span>
+    <span class="p">.</span><span class="nx">onRequestTo</span><span class="p">(</span><span class="cm">/*...*/</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">respond</span><span class="p">(</span><span class="s1">'&lt;html&gt;&lt;/html&gt;'</span><span class="p">)</span> <span class="c1">// an HTML response</span>
+    <span class="p">.</span><span class="nx">onRequestTo</span><span class="p">(</span><span class="cm">/*...*/</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">respond</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="mi">204</span><span class="p">)</span> <span class="c1">// an empty response with a status code</span>
+    <span class="p">.</span><span class="nx">onRequestTo</span><span class="p">(</span><span class="cm">/*...*/</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">respond</span><span class="p">(</span><span class="s1">'&lt;html_markup&gt;'</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="p">{</span> <span class="c1">// a response with custom headers</span>
+        <span class="s1">'server'</span><span class="p">:</span> <span class="s1">'nginx/1.10.3'</span>
+    <span class="p">})</span>
+    <span class="p">.</span><span class="nx">onRequestTo</span><span class="p">(</span><span class="cm">/*...*/</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">respond</span><span class="p">(</span><span class="nx">Buffer</span><span class="p">.</span><span class="k">from</span><span class="p">([</span><span class="mh">0x62</span><span class="p">,</span> <span class="mh">0x75</span><span class="p">,</span> <span class="mh">0x66</span><span class="p">,</span> <span class="mh">0x66</span><span class="p">,</span> <span class="mh">0x65</span><span class="p">,</span> <span class="mh">0x72</span><span class="p">]))</span> <span class="c1">// a response with binary data</span>
+    <span class="p">.</span><span class="nx">onRequestTo</span><span class="p">(</span><span class="cm">/*...*/</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">respond</span><span class="p">((</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="c1">// a custom response</span>
+        <span class="nx">res</span><span class="p">.</span><span class="nx">headers</span><span class="p">[</span><span class="s1">'x-calculated-header'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'calculated-value'</span><span class="p">;</span>
+        <span class="nx">res</span><span class="p">.</span><span class="nx">statusCode</span> <span class="o">=</span> <span class="s1">'200'</span><span class="p">;</span>
+
+        <span class="kd">const</span> <span class="nx">parsedUrl</span> <span class="o">=</span> <span class="nx">url</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">path</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+        <span class="nx">res</span><span class="p">.</span><span class="nx">setBody</span><span class="p">(</span><span class="s1">'calculated body'</span> <span class="o">+</span> <span class="nx">parsedUrl</span><span class="p">.</span><span class="nx">query</span><span class="p">[</span><span class="s1">'param'</span><span class="p">]);</span>
+    <span class="p">});</span>
+</code></pre></div><h3><a class="anchor" name="a-custom-response-function"></a>A Custom Response Function <a class="permalink" href="#a-custom-response-function">#</a></h3><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">var</span> <span class="nx">mock</span> <span class="o">=</span> <span class="nx">RequestMock</span><span class="p">()</span>
+    <span class="p">.</span><span class="nx">onRequestTo</span><span class="p">(</span><span class="cm">/*...*/</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">respond</span><span class="p">((</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="c1">// ...</span>
+    <span class="p">});</span>
+</code></pre></div>
+<p>A custom response function takes two parameters.</p>
+
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -896,32 +997,52 @@
 </tr>
 </thead><tbody>
 <tr>
-<td><code>url</code></td>
-<td>String</td>
-<td>The URL to navigate to. Absolute or relative to the current page.</td>
+<td><code>req</code></td>
+<td><a href="requestoptions-object.html">RequestOptions</a></td>
+<td>A request to be mocked.</td>
+</tr>
+<tr>
+<td><code>res</code></td>
+<td>Object</td>
+<td>A mocked response.</td>
 </tr>
 </tbody></table>
 
-<p>The following example shows how to use the <code>t.navigateTo</code> action.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://www.example.com/`</span><span class="p">;</span>
+<p>Use information about the request the <code>req</code> parameter provides to configure the response via the <code>res</code> parameter.</p>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Navigate to the main page'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">await</span> <span class="nx">t</span>
-        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">navigateTo</span><span class="p">(</span><span class="s1">'http://devexpress.github.io/testcafe'</span><span class="p">);</span>
-<span class="p">});</span>
-</code></pre></div>
-<p>You can use the <code>file://</code> scheme or relative paths to navigate to a webpage in a local directory.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://www.example.com/`</span><span class="p">;</span>
+<p>The <code>res</code> exposes the following members:</p>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Navigate to local pages'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">await</span> <span class="nx">t</span>
-        <span class="p">.</span><span class="nx">navigateTo</span><span class="p">(</span><span class="s1">'file:///user/my-website/index.html'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">navigateTo</span><span class="p">(</span><span class="s1">'../my-project/index.html'</span><span class="p">);</span>
-<span class="p">});</span>
-</code></pre></div>
+<table><thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>headers</code></td>
+<td>Object</td>
+<td>The response headers.</td>
+</tr>
+<tr>
+<td><code>statusCode</code></td>
+<td>Number</td>
+<td>The response status code.</td>
+</tr>
+</tbody></table>
+
+<table><thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>setBody(value)</code></td>
+<td>Sets the response body.  Accepts a string as a parameter.</td>
+</tr>
+</tbody></table>
+
 
 		</div>
 		<div class="widget-container hidden">

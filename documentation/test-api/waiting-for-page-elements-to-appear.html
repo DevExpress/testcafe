@@ -464,6 +464,24 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#specifying-testing-metadata"  >Specifying Testing Metadata</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#using-metadata-in-reports"  >Using Metadata in Reports</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/test-api/test-code-structure.html#initialization-and-clean-up"  >Initialization and Clean-Up</a>
 		
 			<ul>
@@ -723,6 +741,59 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/"  >Intercepting HTTP Requests</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/logging-http-requests.html"  >Logging HTTP Requests</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/mocking-http-responses.html"  >Mocking HTTP Responses</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html"  >Creating a Custom HTTP Request Hook</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/specifying-which-requests-are-handled-by-the-hook.html"  >Specifying Which Requests are Handled by the Hook</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/attaching-hooks-to-tests-and-fixtures.html"  >Attaching Hooks to Tests and Fixtures</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/requestoptions-object.html"  >requestOptions Object</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/test-api/waiting-for-page-elements-to-appear.html" class="active" >Waiting for Page Elements to Appear</a>
 		
     </li>
@@ -820,16 +891,16 @@
 <a href="assertions/">assertions</a> and <a href="selecting-page-elements/selectors/">selectors</a>.</p>
 <h2><a class="anchor" name="waiting-for-action-target-elements"></a>Waiting for Action Target Elements <a class="permalink" href="#waiting-for-action-target-elements">#</a></h2>
 <p>TestCafe automatically waits for the target element to become visible when an action is executed.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">https</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example`;</span>
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`https://devexpress.github.io/testcafe/example`</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">nameInput</span>    <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">);</span>
-<span class="kr">const</span> <span class="nx">submitButton</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">nameInput</span>    <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">submitButton</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">);</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">,</span> <span class="s1">'Peter Parker'</span><span class="p">)</span> <span class="c1">// Waits for `#developer-name`</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">submitButton</span><span class="p">);</span>                <span class="c1">// Waits for '#submit-button'</span>
 <span class="p">});</span>
@@ -840,34 +911,34 @@ If the element does not appear, the test will fail.</p>
 <p>The exceptions are <a href="actions/upload.html#populate-file-upload-input">t.setFilesToUpload</a> and <a href="actions/upload.html#clear-file-upload-input">t.clearUpload</a> actions that do not require that the target element is visible.</p>
 <h2><a class="anchor" name="waiting-for-elements-when-evaluating-selectors"></a>Waiting for Elements When Evaluating Selectors <a class="permalink" href="#waiting-for-elements-when-evaluating-selectors">#</a></h2>
 <p>When evaluating a selector, TestCafe automatically waits for the element to appear in the DOM.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">https</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example`;</span>
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`https://devexpress.github.io/testcafe/example`</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">nameInput</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">nameInput</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">);</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
     <span class="c1">// Waits for '#developer-name' to appear in the DOM.</span>
-    <span class="kr">const</span> <span class="nx">nameInputElement</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">nameInput</span><span class="p">();</span>
+    <span class="kd">const</span> <span class="nx">nameInputElement</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">nameInput</span><span class="p">();</span>
 <span class="p">});</span>
 </code></pre></div>
 <p>TestCafe keeps trying to evaluate the selector until the element appears in the DOM or the <a href="selecting-page-elements/selectors/using-selectors.html#selector-timeout">timeout</a> passes.</p>
 
 <p>You can additionally require that TestCafe should wait for an element to become visible.
 Use the <a href="selecting-page-elements/selectors/selector-options.html#optionsvisibilitycheck">visibilityCheck</a> selector option for this.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">https</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example`;</span>
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`https://devexpress.github.io/testcafe/example`</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">nameInput</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">nameInput</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">);</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
     <span class="c1">// Waits for '#developer-name' to appear in the DOM and become visible.</span>
-    <span class="kr">const</span> <span class="nx">nameInputElement</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">nameInput</span><span class="p">.</span><span class="kd">with</span><span class="p">({</span> <span class="na">visibilityCheck</span><span class="p">:</span> <span class="kc">true</span> <span class="p">})();</span>
+    <span class="kd">const</span> <span class="nx">nameInputElement</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">nameInput</span><span class="p">.</span><span class="kd">with</span><span class="p">({</span> <span class="na">visibilityCheck</span><span class="p">:</span> <span class="kc">true</span> <span class="p">})();</span>
 <span class="p">});</span>
 </code></pre></div><h2><a class="anchor" name="waiting-for-assertions-to-pass"></a>Waiting for Assertions to Pass <a class="permalink" href="#waiting-for-assertions-to-pass">#</a></h2>
 <p>TestCafe assertions feature the <a href="assertions/#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a>.
@@ -879,16 +950,16 @@ value until it matches the expected value or the <a href="assertions/#optionstim
 If you need to wait for an element before executing an assertion,
 add another assertion that checks the selector&#39;s <a href="selecting-page-elements/selectors/using-selectors.html#check-if-an-element-exists">count</a>
 or <a href="selecting-page-elements/selectors/using-selectors.html#check-if-an-element-exists">exists</a> property.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">https</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example`;</span>
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`https://devexpress.github.io/testcafe/example`</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">nameInput</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">);</span>
-<span class="kr">const</span> <span class="nx">populate</span>  <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#populate'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">nameInput</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">populate</span>  <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#populate'</span><span class="p">);</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">setNativeDialogHandler</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">populate</span><span class="p">)</span>
 

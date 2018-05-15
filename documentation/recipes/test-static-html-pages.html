@@ -556,14 +556,14 @@ we will focus on two simple methods that use a few other packages and can be eas
 <p>Install TestCafe <a href="../using-testcafe/installing-testcafe.html#locally">locally</a> in your project and <a href="../getting-started/#creating-a-test">create tests</a>.</p>
 <h2><a class="anchor" name="option-1---test-webpages-in-the-local-file-system"></a>Option 1 - Test webpages in the local file system <a class="permalink" href="#option-1---test-webpages-in-the-local-file-system">#</a></h2>
 <p><a href="../test-api/test-code-structure.html#specifying-the-start-webpage">Specify the target webpage</a> using a relative path or the <code>file://</code> URL scheme.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">file</span><span class="err">:</span><span class="c1">///user/my-website/index.html`</span>
-</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="p">..</span><span class="o">/</span><span class="nx">my</span><span class="o">-</span><span class="nx">website</span><span class="o">/</span><span class="nx">index</span><span class="p">.</span><span class="nx">html</span><span class="err">`</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`file:///user/my-website/index.html`</span>
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`../my-website/index.html`</span>
 </code></pre></div>
 <p>Add a command that runs tests to the <code>package.json</code> file.</p>
-<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="s2">"scripts"</span><span class="err">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="nt">"test"</span><span class="p">:</span><span class="w"> </span><span class="s2">"testcafe chrome ./test/acceptance/**"</span><span class="w">
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="s2">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"test"</span><span class="p">:</span><span class="w"> </span><span class="s2">"testcafe chrome ./test/acceptance/**"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>This script runs tests from the <code>./test/acceptance/</code> directory in Chrome.</p>
@@ -574,8 +574,8 @@ we will focus on two simple methods that use a few other packages and can be eas
 This command will be automatically executed before running tests. After tests are finished, TestCafe will stop the server.</p>
 
 <p>Add the following code to <code>package.json</code>.</p>
-<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="s2">"scripts"</span><span class="err">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="nt">"test"</span><span class="p">:</span><span class="w"> </span><span class="s2">"testcafe chrome ./test/acceptance/** --app \"http-server ./my-website -s\""</span><span class="w">
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="s2">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"test"</span><span class="p">:</span><span class="w"> </span><span class="s2">"testcafe chrome ./test/acceptance/** --app </span><span class="se">\"</span><span class="s2">http-server ./my-website -s</span><span class="se">\"</span><span class="s2">"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>This script contains the following commands.</p>

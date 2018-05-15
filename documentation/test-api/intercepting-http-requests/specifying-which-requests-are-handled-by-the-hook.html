@@ -8,20 +8,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <title>Navigate | TestCafe</title>
+  <title>Specifying Which Requests are Handled by the Hook | TestCafe</title>
 
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
   
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/test-api/actions/navigate.html" />
-  <meta property="og:title" content="Navigate | TestCafe" />
+  <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/specifying-which-requests-are-handled-by-the-hook.html" />
+  <meta property="og:title" content="Specifying Which Requests are Handled by the Hook | TestCafe" />
 
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
-  <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/test-api/actions/navigate.html">
+  <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/specifying-which-requests-are-handled-by-the-hook.html">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="http://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
@@ -666,7 +666,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/actions/navigate.html" class="active" >Navigate</a>
+<a href="/testcafe/documentation/test-api/actions/navigate.html"  >Navigate</a>
 		
     </li>
 
@@ -769,7 +769,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/intercepting-http-requests/specifying-which-requests-are-handled-by-the-hook.html"  >Specifying Which Requests are Handled by the Hook</a>
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/specifying-which-requests-are-handled-by-the-hook.html" class="active" >Specifying Which Requests are Handled by the Hook</a>
 		
     </li>
 
@@ -884,13 +884,37 @@
 	<article class="doc">
 		<div class="post-content">
 
-			<h1>Navigate</h1>
-<p>Navigates to the specified URL.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">t.navigateTo( url )
-</code></pre></div>
+			<h1>Specifying Which Requests are Handled by the Hook</h1>
+<p>The request logger, mock and custom request hooks require specifying which requests they should handle and skip.</p>
+
+<p>You can set up this filtering by passing the <em>request filtering rules</em> to the hook. Note that you can pass a single rule or an array of rules.</p>
+
+<ul>
+<li><a href="#filtering-by-a-url">Filtering by a URL</a></li>
+<li><a href="#filtering-by-a-regular-expression">Filtering by a Regular Expression</a></li>
+<li><a href="#filtering-by-request-parameters">Filtering by Request Parameters</a></li>
+<li><a href="#filtering-by-a-predicate">Filtering by a Predicate</a></li>
+</ul>
+<h2><a class="anchor" name="filtering-by-a-url"></a>Filtering by a URL <a class="permalink" href="#filtering-by-a-url">#</a></h2>
+<p>Pass a string with a URL to intercept all requests sent to this URL.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">logger</span> <span class="o">=</span> <span class="nx">RequestLogger</span><span class="p">(</span><span class="s1">'http://example.com'</span><span class="p">);</span>
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">mock</span> <span class="o">=</span> <span class="nx">RequestMock</span><span class="p">()</span>
+    <span class="p">.</span><span class="nx">onRequestTo</span><span class="p">(</span><span class="s1">'http://external-service.com/api/'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">respond</span><span class="p">(</span><span class="cm">/*...*/</span><span class="p">);</span>
+</code></pre></div><h2><a class="anchor" name="filtering-by-a-regular-expression"></a>Filtering by a Regular Expression <a class="permalink" href="#filtering-by-a-regular-expression">#</a></h2>
+<p>You can also specify a regular expression that matches the desired URLs.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">logger</span> <span class="o">=</span> <span class="nx">RequestLogger</span><span class="p">(</span><span class="sr">/.co.uk/</span><span class="p">);</span>
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">mock</span> <span class="o">=</span> <span class="nx">RequestMock</span><span class="p">()</span>
+    <span class="p">.</span><span class="nx">onRequestTo</span><span class="p">(</span><span class="s1">'/</span><span class="err">\</span><span class="s1">/api</span><span class="err">\</span><span class="s1">/users</span><span class="err">\</span><span class="s1">//'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">respond</span><span class="p">(</span><span class="cm">/*...*/</span><span class="p">);</span>
+</code></pre></div><h2><a class="anchor" name="filtering-by-request-parameters"></a>Filtering by Request Parameters <a class="permalink" href="#filtering-by-request-parameters">#</a></h2>
+<p>You can filter requests by combining the URL and the request method.</p>
+
+<p>In this instance, you need to use an object that contains the following fields:</p>
+
 <table><thead>
 <tr>
-<th>Parameter</th>
+<th>Property</th>
 <th>Type</th>
 <th>Description</th>
 </tr>
@@ -898,30 +922,74 @@
 <tr>
 <td><code>url</code></td>
 <td>String</td>
-<td>The URL to navigate to. Absolute or relative to the current page.</td>
+<td>A URL to which a request is sent.</td>
+</tr>
+<tr>
+<td><code>method</code></td>
+<td>String</td>
+<td>The request method.</td>
+</tr>
+<tr>
+<td><code>isAjax</code></td>
+<td>Boolean</td>
+<td>Specifies whether this is an AJAX request.</td>
+</tr>
+</tbody></table>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">logger</span> <span class="o">=</span> <span class="nx">RequestLogger</span><span class="p">({</span> <span class="na">url</span><span class="p">:</span> <span class="s1">'http://example.com'</span><span class="p">,</span> <span class="na">method</span><span class="p">:</span> <span class="s1">'GET'</span><span class="p">,</span> <span class="na">isAjax</span><span class="p">:</span> <span class="kc">false</span> <span class="p">});</span>
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">mock</span> <span class="o">=</span> <span class="nx">RequestMock</span><span class="p">()</span>
+    <span class="p">.</span><span class="nx">onRequestTo</span><span class="p">({</span> <span class="na">url</span><span class="p">:</span> <span class="s1">'http://external-service.com/api/'</span><span class="p">,</span> <span class="na">method</span><span class="p">:</span> <span class="s1">'POST'</span><span class="p">,</span> <span class="na">isAjax</span><span class="p">:</span> <span class="kc">true</span> <span class="p">})</span>
+    <span class="p">.</span><span class="nx">respond</span><span class="p">(</span><span class="cm">/*...*/</span><span class="p">);</span>
+</code></pre></div><h2><a class="anchor" name="filtering-by-a-predicate"></a>Filtering by a Predicate <a class="permalink" href="#filtering-by-a-predicate">#</a></h2>
+<p>You can get more request parameters using a predicate function and use them to determine whether to handle the request.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">logger</span> <span class="o">=</span> <span class="nx">RequestLogger</span><span class="p">(</span><span class="nx">request</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">request</span><span class="p">.</span><span class="nx">url</span> <span class="o">===</span> <span class="s1">'http://example.com'</span> <span class="o">&amp;&amp;</span>
+           <span class="nx">request</span><span class="p">.</span><span class="nx">method</span> <span class="o">===</span> <span class="s1">'post'</span> <span class="o">&amp;&amp;</span>
+           <span class="nx">request</span><span class="p">.</span><span class="nx">isAjax</span> <span class="o">&amp;&amp;</span>
+           <span class="nx">request</span><span class="p">.</span><span class="nx">body</span> <span class="o">===</span> <span class="s1">'{ test: true }'</span> <span class="o">&amp;&amp;</span>
+           <span class="nx">request</span><span class="p">.</span><span class="nx">headers</span><span class="p">[</span><span class="s1">'content-type'</span><span class="p">]</span> <span class="o">===</span> <span class="s1">'application/json'</span><span class="p">;</span>
+<span class="p">});</span>
+</code></pre></div>
+<p>This predicate takes the <code>request</code> parameter that provides the following properties:</p>
+
+<table><thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>userAgent</code></td>
+<td>String</td>
+<td>The user agent that originated the request.</td>
+</tr>
+<tr>
+<td><code>url</code></td>
+<td>String</td>
+<td>The URL to which the request is sent.</td>
+</tr>
+<tr>
+<td><code>method</code></td>
+<td>String</td>
+<td>The request method.</td>
+</tr>
+<tr>
+<td><code>isAjax</code></td>
+<td>Boolean</td>
+<td>Specifies whether this is an AJAX request.</td>
+</tr>
+<tr>
+<td><code>headers</code></td>
+<td>Object</td>
+<td>The request headers in the property-value form.</td>
+</tr>
+<tr>
+<td><code>body</code></td>
+<td>String</td>
+<td>A stringified request body.</td>
 </tr>
 </tbody></table>
 
-<p>The following example shows how to use the <code>t.navigateTo</code> action.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://www.example.com/`</span><span class="p">;</span>
-
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Navigate to the main page'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">await</span> <span class="nx">t</span>
-        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">navigateTo</span><span class="p">(</span><span class="s1">'http://devexpress.github.io/testcafe'</span><span class="p">);</span>
-<span class="p">});</span>
-</code></pre></div>
-<p>You can use the <code>file://</code> scheme or relative paths to navigate to a webpage in a local directory.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://www.example.com/`</span><span class="p">;</span>
-
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Navigate to local pages'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">await</span> <span class="nx">t</span>
-        <span class="p">.</span><span class="nx">navigateTo</span><span class="p">(</span><span class="s1">'file:///user/my-website/index.html'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">navigateTo</span><span class="p">(</span><span class="s1">'../my-project/index.html'</span><span class="p">);</span>
-<span class="p">});</span>
-</code></pre></div>
 
 		</div>
 		<div class="widget-container hidden">

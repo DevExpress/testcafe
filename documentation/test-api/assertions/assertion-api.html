@@ -464,6 +464,24 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#specifying-testing-metadata"  >Specifying Testing Metadata</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#using-metadata-in-reports"  >Using Metadata in Reports</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/test-api/test-code-structure.html#initialization-and-clean-up"  >Initialization and Clean-Up</a>
 		
 			<ul>
@@ -723,6 +741,59 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/"  >Intercepting HTTP Requests</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/logging-http-requests.html"  >Logging HTTP Requests</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/mocking-http-responses.html"  >Mocking HTTP Responses</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html"  >Creating a Custom HTTP Request Hook</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/specifying-which-requests-are-handled-by-the-hook.html"  >Specifying Which Requests are Handled by the Hook</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/attaching-hooks-to-tests-and-fixtures.html"  >Attaching Hooks to Tests and Fixtures</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/requestoptions-object.html"  >requestOptions Object</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/test-api/waiting-for-page-elements-to-appear.html"  >Waiting for Page Elements to Appear</a>
 		
     </li>
@@ -868,15 +939,15 @@
 </tbody></table>
 
 <p><strong>Examples:</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">await</span> <span class="nx">t</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">await</span> <span class="nx">t</span>
     <span class="p">.</span><span class="nx">expect</span><span class="p">({</span> <span class="na">a</span><span class="p">:</span> <span class="s1">'bar'</span> <span class="p">}).</span><span class="nx">eql</span><span class="p">({</span> <span class="na">a</span><span class="p">:</span> <span class="s1">'bar'</span> <span class="p">},</span> <span class="s1">'this assertion will pass'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">expect</span><span class="p">({</span> <span class="na">a</span><span class="p">:</span> <span class="s1">'bar'</span> <span class="p">}).</span><span class="nx">eql</span><span class="p">({</span> <span class="na">a</span><span class="p">:</span> <span class="s1">'foo'</span> <span class="p">},</span> <span class="s1">'this assertion will fail'</span><span class="p">);</span>
-</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span><span class="p">;</span>
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="s1">'.className'</span><span class="p">).</span><span class="nx">count</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="s1">'.className'</span><span class="p">).</span><span class="nx">count</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div><h2><a class="anchor" name="not-deep-equal"></a>Not Deep Equal <a class="permalink" href="#not-deep-equal">#</a></h2>
 <p>Assert that <code>actual</code> is not equal to <code>unexpected</code>.</p>
@@ -912,15 +983,15 @@
 </tbody></table>
 
 <p><strong>Examples:</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">await</span> <span class="nx">t</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">await</span> <span class="nx">t</span>
     <span class="p">.</span><span class="nx">expect</span><span class="p">({</span> <span class="na">a</span><span class="p">:</span> <span class="s1">'bar'</span> <span class="p">}).</span><span class="nx">notEql</span><span class="p">({</span> <span class="na">a</span><span class="p">:</span> <span class="s1">'bar'</span> <span class="p">},</span> <span class="s1">'this assertion will fail'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">expect</span><span class="p">({</span> <span class="na">a</span><span class="p">:</span> <span class="s1">'bar'</span> <span class="p">}).</span><span class="nx">notEql</span><span class="p">({</span> <span class="na">a</span><span class="p">:</span> <span class="s1">'foo'</span> <span class="p">},</span> <span class="s1">'this assertion will pass'</span><span class="p">);</span>
-</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span><span class="p">;</span>
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="s1">'.className'</span><span class="p">).</span><span class="nx">count</span><span class="p">).</span><span class="nx">notEql</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="s1">'.className'</span><span class="p">).</span><span class="nx">count</span><span class="p">).</span><span class="nx">notEql</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div><h2><a class="anchor" name="ok"></a>Ok <a class="permalink" href="#ok">#</a></h2>
 <p>Asserts that <code>actual</code> is true.</p>
@@ -951,15 +1022,15 @@
 </tbody></table>
 
 <p><strong>Examples:</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">await</span> <span class="nx">t</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">await</span> <span class="nx">t</span>
     <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="s1">'ok'</span><span class="p">).</span><span class="nx">ok</span><span class="p">(</span><span class="s1">'this assertion will pass'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="kc">false</span><span class="p">).</span><span class="nx">ok</span><span class="p">(</span><span class="s1">'this assertion will fail'</span><span class="p">);</span>
-</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span><span class="p">;</span>
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="s1">'#element'</span><span class="p">).</span><span class="nx">exists</span><span class="p">).</span><span class="nx">ok</span><span class="p">();</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="s1">'#element'</span><span class="p">).</span><span class="nx">exists</span><span class="p">).</span><span class="nx">ok</span><span class="p">();</span>
 <span class="p">});</span>
 </code></pre></div><h2><a class="anchor" name="not-ok"></a>Not Ok <a class="permalink" href="#not-ok">#</a></h2>
 <p>Asserts that <code>actual</code> is false.</p>
@@ -990,15 +1061,15 @@
 </tbody></table>
 
 <p><strong>Examples:</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">await</span> <span class="nx">t</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">await</span> <span class="nx">t</span>
     <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="s1">'ok'</span><span class="p">).</span><span class="nx">notOk</span><span class="p">(</span><span class="s1">'this assertion will fail'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="kc">false</span><span class="p">).</span><span class="nx">notOk</span><span class="p">(</span><span class="s1">'this assertion will pass'</span><span class="p">);</span>
-</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span><span class="p">;</span>
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="s1">'#element'</span><span class="p">).</span><span class="nx">exists</span><span class="p">).</span><span class="nx">notOk</span><span class="p">();</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="s1">'#element'</span><span class="p">).</span><span class="nx">exists</span><span class="p">).</span><span class="nx">notOk</span><span class="p">();</span>
 <span class="p">});</span>
 </code></pre></div><h2><a class="anchor" name="contains"></a>Contains <a class="permalink" href="#contains">#</a></h2>
 <p>Asserts that <code>actual</code> contains <code>expected</code>.</p>
@@ -1034,18 +1105,18 @@
 </tbody></table>
 
 <p><strong>Examples:</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">await</span> <span class="nx">t</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">await</span> <span class="nx">t</span>
     <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="s1">'foo bar'</span><span class="p">).</span><span class="nx">contains</span><span class="p">(</span><span class="s1">'bar'</span><span class="p">,</span> <span class="s1">'string contains the expected substring'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">expect</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]).</span><span class="nx">contains</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">'array contains the expected value'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">expect</span><span class="p">({</span> <span class="na">foo</span><span class="p">:</span> <span class="s1">'bar'</span><span class="p">,</span> <span class="na">hello</span><span class="p">:</span> <span class="s1">'universe'</span> <span class="p">}).</span><span class="nx">contains</span><span class="p">({</span> <span class="na">foo</span><span class="p">:</span> <span class="s1">'bar'</span> <span class="p">},</span> <span class="s1">'object contains the expected property'</span><span class="p">);</span>
-</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span><span class="p">;</span>
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">getLocation</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">href</span><span class="p">.</span><span class="nx">toString</span><span class="p">());</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">getLocation</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">href</span><span class="p">.</span><span class="nx">toString</span><span class="p">());</span>
 
-    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">getLocation</span><span class="p">()).</span><span class="nx">contains</span><span class="p">(</span><span class="s1">'example.com'</span><span class="p">);</span>
+    <span class="kr">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">getLocation</span><span class="p">()).</span><span class="nx">contains</span><span class="p">(</span><span class="s1">'example.com'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div><h2><a class="anchor" name="not-contains"></a>Not Contains <a class="permalink" href="#not-contains">#</a></h2>
 <p>Asserts that <code>actual</code> does not contain <code>expected</code>.</p>
@@ -1081,18 +1152,18 @@
 </tbody></table>
 
 <p><strong>Examples:</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">await</span> <span class="nx">t</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">await</span> <span class="nx">t</span>
     <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="s1">'foo bar'</span><span class="p">).</span><span class="nx">notContains</span><span class="p">(</span><span class="s1">'baz'</span><span class="p">,</span> <span class="s1">'string does not contain a substring'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">expect</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]).</span><span class="nx">notContains</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">'array does not contain a value'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">expect</span><span class="p">({</span> <span class="na">foo</span><span class="p">:</span> <span class="s1">'bar'</span><span class="p">,</span> <span class="na">hello</span><span class="p">:</span> <span class="s1">'universe'</span> <span class="p">}).</span><span class="nx">notContains</span><span class="p">({</span> <span class="na">buzz</span><span class="p">:</span> <span class="s1">'abc'</span> <span class="p">},</span> <span class="s1">'object does not contain a property'</span><span class="p">);</span>
-</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span><span class="p">;</span>
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">getLocation</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">href</span><span class="p">.</span><span class="nx">toString</span><span class="p">());</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">getLocation</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">href</span><span class="p">.</span><span class="nx">toString</span><span class="p">());</span>
 
-    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">getLocation</span><span class="p">()).</span><span class="nx">notContains</span><span class="p">(</span><span class="s1">'devexpress.com'</span><span class="p">);</span>
+    <span class="kr">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">getLocation</span><span class="p">()).</span><span class="nx">notContains</span><span class="p">(</span><span class="s1">'devexpress.com'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div><h2><a class="anchor" name="type-of"></a>Type Of <a class="permalink" href="#type-of">#</a></h2>
 <p>Asserts that the <code>actual</code> type is <code>typeName</code>.</p>
@@ -1128,16 +1199,16 @@
 </tbody></table>
 
 <p><strong>Examples:</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">await</span> <span class="nx">t</span>
-    <span class="p">.</span><span class="nx">expect</span><span class="p">({</span> <span class="na">a</span><span class="p">:</span> <span class="s1">'bar'</span> <span class="p">}).</span><span class="nx">typeOf</span><span class="p">(</span><span class="s1">'object'</span><span class="p">,</span> <span class="s1">'it\'s an object'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="sr">/bar/</span><span class="p">).</span><span class="nx">typeOf</span><span class="p">(</span><span class="s1">'regexp'</span><span class="p">,</span> <span class="s1">'it\'s a regular expression'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="kc">null</span><span class="p">).</span><span class="nx">typeOf</span><span class="p">(</span><span class="s1">'null'</span><span class="p">,</span> <span class="s1">'it\'s a null'</span><span class="p">);</span>
-</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">await</span> <span class="nx">t</span>
+    <span class="p">.</span><span class="nx">expect</span><span class="p">({</span> <span class="na">a</span><span class="p">:</span> <span class="s1">'bar'</span> <span class="p">}).</span><span class="nx">typeOf</span><span class="p">(</span><span class="s1">'object'</span><span class="p">,</span> <span class="s1">'it</span><span class="se">\'</span><span class="s1">s an object'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="sr">/bar/</span><span class="p">).</span><span class="nx">typeOf</span><span class="p">(</span><span class="s1">'regexp'</span><span class="p">,</span> <span class="s1">'it</span><span class="se">\'</span><span class="s1">s a regular expression'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="kc">null</span><span class="p">).</span><span class="nx">typeOf</span><span class="p">(</span><span class="s1">'null'</span><span class="p">,</span> <span class="s1">'it</span><span class="se">\'</span><span class="s1">s a null'</span><span class="p">);</span>
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span><span class="p">;</span>
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="s1">'#element'</span><span class="p">).</span><span class="nx">getAttribute</span><span class="p">(</span><span class="s1">'attr'</span><span class="p">)).</span><span class="nx">typeOf</span><span class="p">(</span><span class="s1">'string'</span><span class="p">);</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="s1">'#element'</span><span class="p">).</span><span class="nx">getAttribute</span><span class="p">(</span><span class="s1">'attr'</span><span class="p">)).</span><span class="nx">typeOf</span><span class="p">(</span><span class="s1">'string'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div><h2><a class="anchor" name="not-type-of"></a>Not Type of <a class="permalink" href="#not-type-of">#</a></h2>
 <p>Asserts that the <code>actual</code> type is not <code>typeName</code>.</p>
@@ -1173,13 +1244,13 @@
 </tbody></table>
 
 <p><strong>Example:</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="s1">'bar'</span><span class="p">).</span><span class="nx">notTypeOf</span><span class="p">(</span><span class="s1">'number'</span><span class="p">,</span> <span class="s1">'string is not a number'</span><span class="p">);</span>
-</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="s1">'bar'</span><span class="p">).</span><span class="nx">notTypeOf</span><span class="p">(</span><span class="s1">'number'</span><span class="p">,</span> <span class="s1">'string is not a number'</span><span class="p">);</span>
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span><span class="p">;</span>
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="s1">'#element'</span><span class="p">).</span><span class="nx">getAttribute</span><span class="p">(</span><span class="s1">'attr'</span><span class="p">)).</span><span class="nx">notTypeOf</span><span class="p">(</span><span class="s1">'null'</span><span class="p">);</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="s1">'#element'</span><span class="p">).</span><span class="nx">getAttribute</span><span class="p">(</span><span class="s1">'attr'</span><span class="p">)).</span><span class="nx">notTypeOf</span><span class="p">(</span><span class="s1">'null'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div><h2><a class="anchor" name="greater-than"></a>Greater than <a class="permalink" href="#greater-than">#</a></h2>
 <p>Asserts that <code>actual</code> is greater than <code>expected</code>.</p>
@@ -1215,13 +1286,13 @@
 </tbody></table>
 
 <p><strong>Example:</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="mi">5</span><span class="p">).</span><span class="nx">gt</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">'5 is greater than 2'</span><span class="p">);</span>
-</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="mi">5</span><span class="p">).</span><span class="nx">gt</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">'5 is greater than 2'</span><span class="p">);</span>
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span><span class="p">;</span>
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="s1">'#element'</span><span class="p">).</span><span class="nx">clientWidth</span><span class="p">).</span><span class="nx">gt</span><span class="p">(</span><span class="mi">300</span><span class="p">);</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="s1">'#element'</span><span class="p">).</span><span class="nx">clientWidth</span><span class="p">).</span><span class="nx">gt</span><span class="p">(</span><span class="mi">300</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div><h2><a class="anchor" name="greater-than-or-equal-to"></a>Greater than or Equal to <a class="permalink" href="#greater-than-or-equal-to">#</a></h2>
 <p>Asserts that <code>actual</code> is greater than or equal to <code>expected</code>.</p>
@@ -1257,15 +1328,15 @@
 </tbody></table>
 
 <p><strong>Examples:</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">await</span> <span class="nx">t</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">await</span> <span class="nx">t</span>
     <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="mi">5</span><span class="p">).</span><span class="nx">gte</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">'5 is greater or equal than 2'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="mi">2</span><span class="p">).</span><span class="nx">gte</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">'2 is greater or equal than 2 '</span><span class="p">);</span>
-</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span><span class="p">;</span>
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="s1">'#element'</span><span class="p">).</span><span class="nx">clientWidth</span><span class="p">).</span><span class="nx">gte</span><span class="p">(</span><span class="mi">50</span><span class="p">);</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="s1">'#element'</span><span class="p">).</span><span class="nx">clientWidth</span><span class="p">).</span><span class="nx">gte</span><span class="p">(</span><span class="mi">50</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div><h2><a class="anchor" name="less-than"></a>Less than <a class="permalink" href="#less-than">#</a></h2>
 <p>Asserts that <code>actual</code> is less than <code>expected</code>.</p>
@@ -1301,13 +1372,13 @@
 </tbody></table>
 
 <p><strong>Example:</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="mi">2</span><span class="p">).</span><span class="nx">lt</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s1">'2 is less than 5'</span><span class="p">);</span>
-</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="mi">2</span><span class="p">).</span><span class="nx">lt</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s1">'2 is less than 5'</span><span class="p">);</span>
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span><span class="p">;</span>
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="s1">'#element'</span><span class="p">).</span><span class="nx">offsetHeight</span><span class="p">).</span><span class="nx">lt</span><span class="p">(</span><span class="mi">25</span><span class="p">);</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="s1">'#element'</span><span class="p">).</span><span class="nx">offsetHeight</span><span class="p">).</span><span class="nx">lt</span><span class="p">(</span><span class="mi">25</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div><h2><a class="anchor" name="less-than-or-equal-to"></a>Less than or Equal to <a class="permalink" href="#less-than-or-equal-to">#</a></h2>
 <p>Asserts that <code>actual</code> is less than or equal to <code>expected</code>.</p>
@@ -1343,15 +1414,15 @@
 </tbody></table>
 
 <p><strong>Examples:</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">await</span> <span class="nx">t</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">await</span> <span class="nx">t</span>
     <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="mi">2</span><span class="p">).</span><span class="nx">lte</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s1">'2 is less or equal than 5'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="mi">2</span><span class="p">).</span><span class="nx">lte</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">'2 is less or equal than 2 '</span><span class="p">);</span>
-</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span><span class="p">;</span>
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="s1">'#element'</span><span class="p">).</span><span class="nx">offsetHeight</span><span class="p">).</span><span class="nx">lte</span><span class="p">(</span><span class="mi">400</span><span class="p">);</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="s1">'#element'</span><span class="p">).</span><span class="nx">offsetHeight</span><span class="p">).</span><span class="nx">lte</span><span class="p">(</span><span class="mi">400</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div><h2><a class="anchor" name="within"></a>Within <a class="permalink" href="#within">#</a></h2>
 <p>Asserts that <code>actual</code> is within a range from <code>start</code> to <code>finish</code>. Bounds are inclusive.</p>
@@ -1392,13 +1463,13 @@
 </tbody></table>
 
 <p><strong>Example:</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="mi">5</span><span class="p">).</span><span class="nx">within</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">'this assertion will pass'</span><span class="p">);</span>
-</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="mi">5</span><span class="p">).</span><span class="nx">within</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">'this assertion will pass'</span><span class="p">);</span>
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span><span class="p">;</span>
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="s1">'#element'</span><span class="p">).</span><span class="nx">scrollTop</span><span class="p">).</span><span class="nx">within</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">400</span><span class="p">);</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="s1">'#element'</span><span class="p">).</span><span class="nx">scrollTop</span><span class="p">).</span><span class="nx">within</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">400</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div><h2><a class="anchor" name="not-within"></a>Not Within <a class="permalink" href="#not-within">#</a></h2>
 <p>Asserts that <code>actual</code> is not within a range from <code>start</code> to <code>finish</code>. Bounds are inclusive.</p>
@@ -1439,13 +1510,13 @@
 </tbody></table>
 
 <p><strong>Example:</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="nx">notWithin</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">'this assertion will pass'</span><span class="p">);</span>
-</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="nx">notWithin</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">'this assertion will pass'</span><span class="p">);</span>
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span><span class="p">;</span>
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="s1">'#element'</span><span class="p">).</span><span class="nx">scrollTop</span><span class="p">).</span><span class="nx">notWithin</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">);</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="s1">'#element'</span><span class="p">).</span><span class="nx">scrollTop</span><span class="p">).</span><span class="nx">notWithin</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div><h2><a class="anchor" name="match"></a>Match <a class="permalink" href="#match">#</a></h2>
 <p>Asserts that <code>actual</code> matches the <code>re</code> regular expression.</p>
@@ -1481,15 +1552,15 @@
 </tbody></table>
 
 <p><strong>Example:</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="s1">'foobar'</span><span class="p">).</span><span class="nx">match</span><span class="p">(</span><span class="sr">/^f/</span><span class="p">,</span> <span class="s1">'this assertion will be passed'</span><span class="p">);</span>
-</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="s1">'foobar'</span><span class="p">).</span><span class="nx">match</span><span class="p">(</span><span class="sr">/^f/</span><span class="p">,</span> <span class="s1">'this assertion will be passed'</span><span class="p">);</span>
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span><span class="p">;</span>
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">getLocation</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">href</span><span class="p">.</span><span class="nx">toString</span><span class="p">());</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">getLocation</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">href</span><span class="p">.</span><span class="nx">toString</span><span class="p">());</span>
 
-    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">getLocation</span><span class="p">()).</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\.</span><span class="sr">com/</span><span class="p">);</span>
+    <span class="kr">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">getLocation</span><span class="p">()).</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\.</span><span class="sr">com/</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div><h2><a class="anchor" name="not-match"></a>Not Match <a class="permalink" href="#not-match">#</a></h2>
 <p>Asserts that <code>actual</code> does not match the <code>re</code> regular expression.</p>
@@ -1525,15 +1596,15 @@
 </tbody></table>
 
 <p><strong>Example:</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="s1">'foobar'</span><span class="p">).</span><span class="nx">notMatch</span><span class="p">(</span><span class="sr">/^b/</span><span class="p">,</span> <span class="s1">'this assertion will be passed'</span><span class="p">);</span>
-</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="s1">'foobar'</span><span class="p">).</span><span class="nx">notMatch</span><span class="p">(</span><span class="sr">/^b/</span><span class="p">,</span> <span class="s1">'this assertion will be passed'</span><span class="p">);</span>
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span><span class="p">;</span>
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">getLocation</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">href</span><span class="p">.</span><span class="nx">toString</span><span class="p">());</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">getLocation</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">href</span><span class="p">.</span><span class="nx">toString</span><span class="p">());</span>
 
-    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">getLocation</span><span class="p">()).</span><span class="nx">notMatch</span><span class="p">(</span><span class="sr">/</span><span class="se">\.</span><span class="sr">co</span><span class="se">\.</span><span class="sr">uk/</span><span class="p">);</span>
+    <span class="kr">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">getLocation</span><span class="p">()).</span><span class="nx">notMatch</span><span class="p">(</span><span class="sr">/</span><span class="se">\.</span><span class="sr">co</span><span class="se">\.</span><span class="sr">uk/</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div>
 

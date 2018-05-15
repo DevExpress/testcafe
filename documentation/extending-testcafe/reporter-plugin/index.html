@@ -489,11 +489,11 @@ The generator will scaffold out a reporter plugin, so that you only need to writ
 </ul>
 <h2><a class="anchor" name="generating-a-reporter-project"></a>Generating a Reporter Project <a class="permalink" href="#generating-a-reporter-project">#</a></h2>
 <p>First, install <a href="http://yeoman.io">Yeoman</a> and <code>generator-testcafe-reporter</code> using <a href="https://www.npmjs.com/">npm</a>.</p>
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">npm install -g yo
-npm install -g generator-testcafe-reporter
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">npm <span class="nb">install</span> <span class="nt">-g</span> yo
+npm <span class="nb">install</span> <span class="nt">-g</span> generator-testcafe-reporter
 </code></pre></div>
 <p>Create a new directory where the generator should place your scaffolded project files and go into it.</p>
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">mkdir my-reporter
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">mkdir </span>my-reporter
 <span class="nb">cd </span>my-reporter
 </code></pre></div><blockquote><div class="blockquote-content"><p>It is recommended that you name the directory as you would name your reporter project. When you run the generator,
 it will automatically suggest the reporter name that matches the reporter directory name.</p>
@@ -546,7 +546,7 @@ and the overall duration of the tests.</p>
     <span class="k">this</span><span class="p">.</span><span class="nx">startTime</span> <span class="o">=</span> <span class="nx">startTime</span><span class="p">;</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">testCount</span> <span class="o">=</span> <span class="nx">testCount</span><span class="p">;</span>
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="err">`</span><span class="nx">Running</span> <span class="nx">tests</span> <span class="k">in</span><span class="err">:</span> <span class="nx">$</span><span class="p">{</span><span class="nx">userAgents</span><span class="p">}</span><span class="err">`</span><span class="p">)</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s2">`Running tests in: </span><span class="p">${</span><span class="nx">userAgents</span><span class="p">}</span><span class="s2">`</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">newline</span><span class="p">()</span>
         <span class="p">.</span><span class="nx">newline</span><span class="p">();</span>
 <span class="p">},</span>
@@ -556,27 +556,27 @@ and the overall duration of the tests.</p>
 <span class="p">},</span>
 
 <span class="nx">reportTestDone</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">errs</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">hasErr</span> <span class="o">=</span> <span class="o">!!</span><span class="nx">errs</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
-    <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">hasErr</span> <span class="p">?</span> <span class="err">`</span><span class="nx">passed</span><span class="err">`</span> <span class="p">:</span> <span class="err">`</span><span class="nx">failed</span><span class="err">`</span><span class="p">;</span>
+    <span class="kd">const</span> <span class="nx">hasErr</span> <span class="o">=</span> <span class="o">!!</span><span class="nx">errs</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+    <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">hasErr</span> <span class="p">?</span> <span class="s2">`passed`</span> <span class="p">:</span> <span class="s2">`failed`</span><span class="p">;</span>
 
-    <span class="nx">name</span> <span class="o">=</span> <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">currentFixtureName</span><span class="p">}</span> <span class="o">-</span> <span class="nx">$</span><span class="p">{</span><span class="nx">name</span><span class="p">}</span><span class="err">`</span><span class="p">;</span>
+    <span class="nx">name</span> <span class="o">=</span> <span class="s2">`</span><span class="p">${</span><span class="k">this</span><span class="p">.</span><span class="nx">currentFixtureName</span><span class="p">}</span><span class="s2"> - </span><span class="p">${</span><span class="nx">name</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
 
-    <span class="kr">const</span> <span class="nx">title</span> <span class="o">=</span> <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="nx">result</span><span class="p">}</span> <span class="nx">$</span><span class="p">{</span><span class="nx">name</span><span class="p">}</span><span class="err">`</span><span class="p">;</span>
+    <span class="kd">const</span> <span class="nx">title</span> <span class="o">=</span> <span class="s2">`</span><span class="p">${</span><span class="nx">result</span><span class="p">}</span><span class="s2"> </span><span class="p">${</span><span class="nx">name</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
 
     <span class="k">this</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">title</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">newline</span><span class="p">();</span>
 <span class="p">},</span>
 
 <span class="nx">reportTaskDone</span> <span class="p">(</span><span class="nx">endTime</span><span class="p">,</span> <span class="nx">passed</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">durationMs</span>  <span class="o">=</span> <span class="nx">endTime</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">startTime</span><span class="p">;</span>
-    <span class="kr">const</span> <span class="nx">durationStr</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">moment</span>
+    <span class="kd">const</span> <span class="nx">durationMs</span>  <span class="o">=</span> <span class="nx">endTime</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">startTime</span><span class="p">;</span>
+    <span class="kd">const</span> <span class="nx">durationStr</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">moment</span>
                             <span class="p">.</span><span class="nx">duration</span><span class="p">(</span><span class="nx">durationMs</span><span class="p">)</span>
                             <span class="p">.</span><span class="nx">format</span><span class="p">(</span><span class="s1">'h[h] mm[m] ss[s]'</span><span class="p">);</span>
     <span class="kd">let</span> <span class="nx">footer</span> <span class="o">=</span> <span class="nx">passed</span> <span class="o">===</span> <span class="k">this</span><span class="p">.</span><span class="nx">testCount</span> <span class="p">?</span>
-                 <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">testCount</span><span class="p">}</span> <span class="nx">passed</span><span class="err">`</span> <span class="p">:</span>
-                 <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">testCount</span> <span class="o">-</span> <span class="nx">passed</span><span class="p">}</span><span class="sr">/${this.testCount} failed`</span><span class="err">;
-</span>
-    <span class="nx">footer</span> <span class="o">+=</span> <span class="err">`</span> <span class="p">(</span><span class="nx">Duration</span><span class="err">:</span> <span class="nx">$</span><span class="p">{</span><span class="nx">durationStr</span><span class="p">})</span><span class="err">`</span><span class="p">;</span>
+                 <span class="s2">`</span><span class="p">${</span><span class="k">this</span><span class="p">.</span><span class="nx">testCount</span><span class="p">}</span><span class="s2"> passed`</span> <span class="p">:</span>
+                 <span class="s2">`</span><span class="p">${</span><span class="k">this</span><span class="p">.</span><span class="nx">testCount</span> <span class="o">-</span> <span class="nx">passed</span><span class="p">}</span><span class="s2">/</span><span class="p">${</span><span class="k">this</span><span class="p">.</span><span class="nx">testCount</span><span class="p">}</span><span class="s2"> failed`</span><span class="p">;</span>
+
+    <span class="nx">footer</span> <span class="o">+=</span> <span class="s2">` (Duration: </span><span class="p">${</span><span class="nx">durationStr</span><span class="p">}</span><span class="s2">)`</span><span class="p">;</span>
 
     <span class="k">this</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">footer</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">newline</span><span class="p">();</span>
@@ -631,7 +631,7 @@ This allows you to work on the reporter project and test it iteratively without 
 
 <p>To link the reporter package, navigate to the reporter directory and run <code>npm link</code>:</p>
 <div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">cd </span>my-reporter
-npm link
+npm <span class="nb">link</span>
 </code></pre></div>
 <p>After that, TestCafe will use the reporter version you are currently developing.</p>
 

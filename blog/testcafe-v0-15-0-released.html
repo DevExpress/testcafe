@@ -265,7 +265,7 @@
 <h2><a class="anchor" name="breaking-changes"></a>Breaking Changes <a class="permalink" href="#breaking-changes">#</a></h2><h3><a class="anchor" name="new-calls-to-selectors-withtext-method-no-longer-override-previous-calls"></a>New calls to selector&#39;s withText method no longer override previous calls <a class="permalink" href="#new-calls-to-selectors-withtext-method-no-longer-override-previous-calls">#</a></h3>
 <p>We have changed the way the <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#withtext">withText</a>
 method behaves when it is called in a chain.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">el</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'div'</span><span class="p">).</span><span class="nx">withText</span><span class="p">(</span><span class="s1">'This is'</span><span class="p">).</span><span class="nx">withText</span><span class="p">(</span><span class="s1">'my element'</span><span class="p">);</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">el</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'div'</span><span class="p">).</span><span class="nx">withText</span><span class="p">(</span><span class="s1">'This is'</span><span class="p">).</span><span class="nx">withText</span><span class="p">(</span><span class="s1">'my element'</span><span class="p">);</span>
 </code></pre></div>
 <p>In previous versions, this selector searched for a <code>div</code> with text <code>my element</code> because the second call to <code>withText</code> overrode the first one.</p>
 
@@ -273,23 +273,23 @@ method behaves when it is called in a chain.</p>
 <h2><a class="anchor" name="enhancements"></a>Enhancements <a class="permalink" href="#enhancements">#</a></h2><h3><a class="anchor" name="plugin-for-testing-react-apps"></a>⚙ Plugin for testing React apps <a class="permalink" href="#plugin-for-testing-react-apps">#</a></h3>
 <p>In this release cycle, we have created a plugin for testing React applications.
 This plugin allows you to select React components by their names.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="nx">ReactSelector</span> <span class="nx">from</span> <span class="s1">'testcafe-react-selector'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="nx">ReactSelector</span> <span class="k">from</span> <span class="s1">'testcafe-react-selector'</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">TodoList</span>         <span class="o">=</span> <span class="nx">ReactSelector</span><span class="p">(</span><span class="s1">'TodoApp TodoList'</span><span class="p">);</span>
-<span class="kr">const</span> <span class="nx">itemsCountStatus</span> <span class="o">=</span> <span class="nx">ReactSelector</span><span class="p">(</span><span class="s1">'TodoApp div'</span><span class="p">);</span>
-<span class="kr">const</span> <span class="nx">itemsCount</span>       <span class="o">=</span> <span class="nx">ReactSelector</span><span class="p">(</span><span class="s1">'TodoApp div span'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">TodoList</span>         <span class="o">=</span> <span class="nx">ReactSelector</span><span class="p">(</span><span class="s1">'TodoApp TodoList'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">itemsCountStatus</span> <span class="o">=</span> <span class="nx">ReactSelector</span><span class="p">(</span><span class="s1">'TodoApp div'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">itemsCount</span>       <span class="o">=</span> <span class="nx">ReactSelector</span><span class="p">(</span><span class="s1">'TodoApp div span'</span><span class="p">);</span>
 </code></pre></div>
 <p>And it enables you to get React component&#39;s <code>state</code> and <code>props</code>.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="nx">ReactSelector</span> <span class="nx">from</span> <span class="s1">'testcafe-react-selector'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="nx">ReactSelector</span> <span class="k">from</span> <span class="s1">'testcafe-react-selector'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">TODO</span> <span class="nx">list</span> <span class="nx">test</span><span class="err">`</span>
+<span class="nx">fixture</span> <span class="s2">`TODO list test`</span>
     <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="s1">'http://localhost:1337'</span><span class="p">);</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Check list item'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">el</span> <span class="o">=</span> <span class="nx">ReactSelector</span><span class="p">(</span><span class="s1">'TodoList'</span><span class="p">);</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Check list item'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">el</span> <span class="o">=</span> <span class="nx">ReactSelector</span><span class="p">(</span><span class="s1">'TodoList'</span><span class="p">);</span>
 
-    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">el</span><span class="p">.</span><span class="nx">getReact</span><span class="p">().</span><span class="nx">props</span><span class="p">.</span><span class="nx">priority</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="s1">'High'</span><span class="p">);</span>
-    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">el</span><span class="p">.</span><span class="nx">getReact</span><span class="p">().</span><span class="nx">state</span><span class="p">.</span><span class="nx">isActive</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+    <span class="kr">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">el</span><span class="p">.</span><span class="nx">getReact</span><span class="p">().</span><span class="nx">props</span><span class="p">.</span><span class="nx">priority</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="s1">'High'</span><span class="p">);</span>
+    <span class="kr">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">el</span><span class="p">.</span><span class="nx">getReact</span><span class="p">().</span><span class="nx">state</span><span class="p">.</span><span class="nx">isActive</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div>
 <p>To learn more, see the <a href="https://github.com/DevExpress/testcafe-react-selectors/">testcafe-react-selectors</a> repository.</p>
@@ -297,22 +297,22 @@ This plugin allows you to select React components by their names.</p>
 <p>In addition to the React plugin, we have released a plugin that facilitates testing Vue.js applications.</p>
 
 <p>In the same manner, it allows you to select Vue.js components with <code>VueSelector</code> selectors.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="nx">VueSelector</span> <span class="nx">from</span> <span class="s1">'testcafe-vue-selectors'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="nx">VueSelector</span> <span class="k">from</span> <span class="s1">'testcafe-vue-selectors'</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">rootVue</span>   <span class="o">=</span> <span class="nx">VueSelector</span><span class="p">();</span>
-<span class="kr">const</span> <span class="nx">todoInput</span> <span class="o">=</span> <span class="nx">VueSelector</span><span class="p">(</span><span class="s1">'todo-input'</span><span class="p">);</span>
-<span class="kr">const</span> <span class="nx">todoItem</span>  <span class="o">=</span> <span class="nx">VueSelector</span><span class="p">(</span><span class="s1">'todo-list todo-item'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">rootVue</span>   <span class="o">=</span> <span class="nx">VueSelector</span><span class="p">();</span>
+<span class="kd">const</span> <span class="nx">todoInput</span> <span class="o">=</span> <span class="nx">VueSelector</span><span class="p">(</span><span class="s1">'todo-input'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">todoItem</span>  <span class="o">=</span> <span class="nx">VueSelector</span><span class="p">(</span><span class="s1">'todo-list todo-item'</span><span class="p">);</span>
 </code></pre></div>
 <p>These selectors allow you to get Vue component&#39;s <code>props</code>, <code>state</code> and <code>computed</code> properties.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="nx">VueSelector</span> <span class="nx">from</span> <span class="s1">'testcafe-vue-selector'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="nx">VueSelector</span> <span class="k">from</span> <span class="s1">'testcafe-vue-selector'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">TODO</span> <span class="nx">list</span> <span class="nx">test</span><span class="err">`</span>
+<span class="nx">fixture</span> <span class="s2">`TODO list test`</span>
     <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="s1">'http://localhost:1337'</span><span class="p">);</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Check list item'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">todoItem</span> <span class="o">=</span> <span class="nx">VueSelector</span><span class="p">(</span><span class="s1">'todo-item'</span><span class="p">);</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Check list item'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">todoItem</span> <span class="o">=</span> <span class="nx">VueSelector</span><span class="p">(</span><span class="s1">'todo-item'</span><span class="p">);</span>
 
-    <span class="nx">await</span> <span class="nx">t</span>
+    <span class="kr">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">todoItem</span><span class="p">.</span><span class="nx">getVue</span><span class="p">().</span><span class="nx">props</span><span class="p">.</span><span class="nx">priority</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="s1">'High'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">todoItem</span><span class="p">.</span><span class="nx">getVue</span><span class="p">().</span><span class="nx">state</span><span class="p">.</span><span class="nx">isActive</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="kc">false</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">todoItem</span><span class="p">.</span><span class="nx">getVue</span><span class="p">().</span><span class="nx">computed</span><span class="p">.</span><span class="nx">text</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="s1">'Item 1'</span><span class="p">);</span>
@@ -325,14 +325,14 @@ This plugin allows you to select React components by their names.</p>
 <p>You no longer need to manually install browsers or the testing framework on your server.
 Pull the Docker image from the repository and run TestCafe immediately.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">docker pull testcafe/testcafe
-docker run -v //user/tests:/tests -it testcafe/testcafe firefox tests/<span class="k">**</span>/<span class="k">*</span>.js
+docker run <span class="nt">-v</span> //user/tests:/tests <span class="nt">-it</span> testcafe/testcafe firefox tests/<span class="k">**</span>/<span class="k">*</span>.js
 </code></pre></div>
 <p>To learn more, see <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/installing-testcafe.html#using-testcafe-docker-image">Using TestCafe Docker Image</a></p>
 <h3><a class="anchor" name="support-for-internet-access-proxies-1206"></a>⚙ Support for Internet access proxies (<a href="https://github.com/DevExpress/testcafe/issues/1206">#1206</a>) <a class="permalink" href="#support-for-internet-access-proxies-1206">#</a></h3>
 <p>If your local network uses a proxy server to access the Internet, TestCafe can use it reach the external webpages.</p>
 
 <p>To specify the proxy server, use a command line option</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests/<span class="k">**</span>/<span class="k">*</span>.js --proxy 172.0.10.10:8080
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests/<span class="k">**</span>/<span class="k">*</span>.js <span class="nt">--proxy</span> 172.0.10.10:8080
 </code></pre></div>
 <p>or a method in the API.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">useProxy</span><span class="p">(</span><span class="s1">'username:password@proxy.mycorp.com'</span><span class="p">);</span>
@@ -342,24 +342,24 @@ docker run -v //user/tests:/tests -it testcafe/testcafe firefox tests/<span clas
 <p>As an alternative to calling the <a href="https://devexpress.github.io/testcafe/documentation/test-api/debugging.html#client-side-debugging">t.debug</a> method
 in test code, you can now specify the <code>--debug-mode</code> command line option to pause the test before the first action or assertion.
 When the test is paused, you can debug in the browser developer tools as well as continue test execution step by step.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests/<span class="k">**</span>/<span class="k">*</span>.js --debug-mode
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests/<span class="k">**</span>/<span class="k">*</span>.js <span class="nt">--debug-mode</span>
 </code></pre></div>
 <p>If you use TestCafe API, provide the <code>debugMode</code> option to the <code>runner.run</code> method.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">run</span><span class="p">({</span> <span class="na">debugMode</span><span class="p">:</span> <span class="kc">true</span> <span class="p">});</span>
 </code></pre></div><h3><a class="anchor" name="filtering-selectors-matching-set-by-attribute-1346"></a>⚙ Filtering selector&#39;s matching set by attribute (<a href="https://github.com/DevExpress/testcafe/issues/1346">#1346</a>) <a class="permalink" href="#filtering-selectors-matching-set-by-attribute-1346">#</a></h3>
 <p>You can now use the <code>withAttribute</code> method to select elements that have a particular attribute set to a specific value.
 You can omit the attribute value to select elements that simply have the specified attribute.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">el</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'div'</span><span class="p">).</span><span class="nx">withAttribute</span><span class="p">(</span><span class="s1">'attributeName'</span><span class="p">,</span> <span class="s1">'value'</span><span class="p">).</span><span class="nx">nth</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">el</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'div'</span><span class="p">).</span><span class="nx">withAttribute</span><span class="p">(</span><span class="s1">'attributeName'</span><span class="p">,</span> <span class="s1">'value'</span><span class="p">).</span><span class="nx">nth</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
 </code></pre></div><h3><a class="anchor" name="hasattribute-method-added-to-dom-node-state-1045"></a>⚙ hasAttribute method added to DOM node state (<a href="https://github.com/DevExpress/testcafe/issues/1045">#1045</a>) <a class="permalink" href="#hasattribute-method-added-to-dom-node-state-1045">#</a></h3>
 <p>For you convenience, the DOM node state object now provides the <code>hasAttribute</code> method that allows you to determine if an element has a particular attribute.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">el</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'div.button'</span><span class="p">);</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">el</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'div.button'</span><span class="p">);</span>
 
 <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">el</span><span class="p">.</span><span class="nx">hasAttribute</span><span class="p">(</span><span class="s1">'disabled'</span><span class="p">)).</span><span class="nx">ok</span><span class="p">();</span>
 </code></pre></div><h3><a class="anchor" name="redirection-when-switching-between-roles-1339"></a>⚙ Redirection when switching between roles (<a href="https://github.com/DevExpress/testcafe/issues/1339">#1339</a>) <a class="permalink" href="#redirection-when-switching-between-roles-1339">#</a></h3>
 <p><a href="https://devexpress.github.io/testcafe/documentation/test-api/authentication/user-roles.html">User roles</a> now provide a <code>preserveUrl</code> option
 that allows you to save the webpage URL to which the browser was redirected after logging in. If you enable this option when creating a role,
 the browser will be redirected to the saved URL every time you switch to this role.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">regularUser</span> <span class="o">=</span> <span class="nx">Role</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">regularUser</span> <span class="o">=</span> <span class="nx">Role</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="cm">/* authentication code */</span>
 <span class="p">},</span> <span class="p">{</span> <span class="na">preserveUrl</span><span class="p">:</span> <span class="kc">true</span> <span class="p">})</span>
 </code></pre></div><h2><a class="anchor" name="bug-fixes"></a>Bug Fixes <a class="permalink" href="#bug-fixes">#</a></h2>
@@ -386,11 +386,11 @@ the browser will be redirected to the saved URL every time you switch to this ro
         <div id="back-to-posts-link">
             <p><a href="./">Back to Post List</a></p>
         </div>
-        <div id="disqus_thread"></div>
+        <!-- <div id="disqus_thread"></div> -->
     </div>
 </main>
 
-
+<!-- 
 <script>
     var disqus_config = function () {
         this.page.url = 'http://devexpress.github.io/testcafe/blog/testcafe-v0-15-0-released.html';
@@ -406,7 +406,7 @@ the browser will be redirected to the saved URL every time you switch to this ro
     })();
 </script>
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
-
+ -->
 </div>
 
       <div class="push"></div>

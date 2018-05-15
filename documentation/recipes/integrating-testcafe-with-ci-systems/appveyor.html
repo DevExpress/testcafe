@@ -577,7 +577,7 @@ The list of supported platforms is available after you click the <em>NEW PROJECT
 <p>Now configure AppVeyor to install TestCafe before running tests.</p>
 
 <p>To this end, go to the <strong>Environment</strong> settings category and find the <strong>Install script</strong> section. Select PowerShell (<strong>PS</strong>) and enter a command that installs TestCafe.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm install -g testcafe testcafe-reporter-xunit
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm <span class="nb">install</span> <span class="nt">-g</span> testcafe testcafe-reporter-xunit
 </code></pre></div>
 <p>This command installs the main <code>testcafe</code> module and a plugin used to output reports in the xUnit format.</p>
 
@@ -590,7 +590,7 @@ The list of supported platforms is available after you click the <em>NEW PROJECT
 <p><img src="../../../images/appveyor/choose-to-use-script.png" alt="Choose to use a script to run tests"></p>
 
 <p>Select <strong>PS</strong> as a shell type and enter the following code.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome:headless tests/<span class="k">**</span>/<span class="k">*</span> -r xunit:.<span class="se">\T</span>estsResults.xml
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome:headless tests/<span class="k">**</span>/<span class="k">*</span> <span class="nt">-r</span> xunit:.<span class="se">\T</span>estsResults.xml
 
 <span class="nv">$wc</span> <span class="o">=</span> New-Object <span class="s1">'System.Net.WebClient'</span>
 <span class="nv">$wc</span>.UploadFile<span class="o">(</span><span class="s2">"https://ci.appveyor.com/api/testresults/junit/</span><span class="k">$(</span><span class="nv">$env</span>:APPVEYOR_JOB_ID<span class="k">)</span><span class="s2">"</span>, <span class="o">(</span>Resolve-Path .<span class="se">\T</span>estsResults.xml<span class="o">))</span>

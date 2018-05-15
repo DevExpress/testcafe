@@ -8,20 +8,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <title>Navigate | TestCafe</title>
+  <title>requestOptions Object | TestCafe</title>
 
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
   
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/test-api/actions/navigate.html" />
-  <meta property="og:title" content="Navigate | TestCafe" />
+  <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/requestoptions-object.html" />
+  <meta property="og:title" content="requestOptions Object | TestCafe" />
 
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
-  <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/test-api/actions/navigate.html">
+  <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/requestoptions-object.html">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="http://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
@@ -666,7 +666,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/actions/navigate.html" class="active" >Navigate</a>
+<a href="/testcafe/documentation/test-api/actions/navigate.html"  >Navigate</a>
 		
     </li>
 
@@ -783,7 +783,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/intercepting-http-requests/requestoptions-object.html"  >requestOptions Object</a>
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/requestoptions-object.html" class="active" >requestOptions Object</a>
 		
     </li>
 
@@ -884,44 +884,73 @@
 	<article class="doc">
 		<div class="post-content">
 
-			<h1>Navigate</h1>
-<p>Navigates to the specified URL.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">t.navigateTo( url )
-</code></pre></div>
+			<h1>RequestOptions Object</h1>
+<p>The <code>RequestOptions</code> object contains the request parameters.</p>
+
 <table><thead>
 <tr>
-<th>Parameter</th>
+<th>Property</th>
 <th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
+<td><code>headers</code></td>
+<td>Object</td>
+<td>The request headers in the property-value form.</td>
+</tr>
+<tr>
+<td><code>body</code></td>
+<td><a href="https://nodejs.org/api/buffer.html">Buffer</a></td>
+<td>The request body.</td>
+</tr>
+<tr>
 <td><code>url</code></td>
 <td>String</td>
-<td>The URL to navigate to. Absolute or relative to the current page.</td>
+<td>The URL to which the request is sent.</td>
+</tr>
+<tr>
+<td><code>protocol</code></td>
+<td>String</td>
+<td>The protocol to use. Default: <em>http:</em>.</td>
+</tr>
+<tr>
+<td><code>hostname</code></td>
+<td>String</td>
+<td>The alias for the host.</td>
+</tr>
+<tr>
+<td><code>host</code></td>
+<td>String</td>
+<td>The domain name or IP address of the server to issue the request to. Default: <em>localhost</em>.</td>
+</tr>
+<tr>
+<td><code>port</code></td>
+<td>Number</td>
+<td>The port of the remote server. Default: <em>80</em>.</td>
+</tr>
+<tr>
+<td><code>path</code></td>
+<td>String</td>
+<td>The request path. Should include query string if any. E.G. <em>&#39;/index.html?page=12&#39;</em>. An exception is thrown when the request path contains illegal characters. Currently, only spaces are rejected but that may change in the future. Default: <em>&#39;/&#39;</em>.</td>
+</tr>
+<tr>
+<td><code>method</code></td>
+<td>String</td>
+<td>The string specifying the HTTP request method. Default: <em>&#39;GET&#39;</em>.</td>
+</tr>
+<tr>
+<td><code>credentials</code></td>
+<td>Object</td>
+<td>Credentials that were used for authentication in the current session using NTLM or Basic authentication. For HTTP Basic authentication, these are <code>username</code> and <code>password</code>. NTLM authentication additionally specifies <code>workstation</code> and <code>domain</code>. See <a href="../authentication/http-authentication.html">HTTP Authentication</a>.</td>
+</tr>
+<tr>
+<td><code>proxy</code></td>
+<td>Object</td>
+<td>If a proxy is used, the property contains information about its <code>host</code>, <code>hostname</code>, <code>port</code>, <code>proxyAuth</code>, <code>authHeader</code> and <code>bypassRules</code>.</td>
 </tr>
 </tbody></table>
 
-<p>The following example shows how to use the <code>t.navigateTo</code> action.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://www.example.com/`</span><span class="p">;</span>
-
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Navigate to the main page'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">await</span> <span class="nx">t</span>
-        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">navigateTo</span><span class="p">(</span><span class="s1">'http://devexpress.github.io/testcafe'</span><span class="p">);</span>
-<span class="p">});</span>
-</code></pre></div>
-<p>You can use the <code>file://</code> scheme or relative paths to navigate to a webpage in a local directory.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://www.example.com/`</span><span class="p">;</span>
-
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Navigate to local pages'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">await</span> <span class="nx">t</span>
-        <span class="p">.</span><span class="nx">navigateTo</span><span class="p">(</span><span class="s1">'file:///user/my-website/index.html'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">navigateTo</span><span class="p">(</span><span class="s1">'../my-project/index.html'</span><span class="p">);</span>
-<span class="p">});</span>
-</code></pre></div>
 
 		</div>
 		<div class="widget-container hidden">

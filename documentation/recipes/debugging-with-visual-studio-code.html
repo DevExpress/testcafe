@@ -546,30 +546,30 @@
 			<h1>Debugging with Visual Studio Code</h1>
 <p>Before debugging in Visual Studio Code, ensure that your root test directory contains a <code>package.json</code> file that includes <code>testcafe</code> in the <code>devDependencies</code> section.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-  </span><span class="nt">"devDependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="nt">"testcafe"</span><span class="p">:</span><span class="w"> </span><span class="s2">"x.y.z"</span><span class="w">
+  </span><span class="s2">"devDependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"testcafe"</span><span class="p">:</span><span class="w"> </span><span class="s2">"x.y.z"</span><span class="w">
   </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>where <code>x.y.z</code> is the TestCafe version you use.</p>
 
 <p>Then you need to install TestCafe locally in the tests directory via <code>npm</code>.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm install
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm <span class="nb">install</span>
 </code></pre></div>
 <p>The next step is adding a launch configuration that runs TestCafe tests. See the <a href="https://code.visualstudio.com/docs/editor/debugging#_launch-configurations">Visual Studio Code documentation</a> to learn how to create a configuration.</p>
 
 <p>You will need to add the following configuration to the <code>launch.json</code> file.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"node"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"protocol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"inspector"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"request"</span><span class="p">:</span><span class="w"> </span><span class="s2">"launch"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Launch test files with TestCafe"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"program"</span><span class="p">:</span><span class="w"> </span><span class="s2">"${workspaceRoot}/node_modules/testcafe/bin/testcafe.js"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"args"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"node"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"protocol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"inspector"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"request"</span><span class="p">:</span><span class="w"> </span><span class="s2">"launch"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Launch test files with TestCafe"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"program"</span><span class="p">:</span><span class="w"> </span><span class="s2">"${workspaceRoot}/node_modules/testcafe/bin/testcafe.js"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"args"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
         </span><span class="s2">"firefox"</span><span class="p">,</span><span class="w">
         </span><span class="s2">"${file}"</span><span class="w">
     </span><span class="p">],</span><span class="w">
-    </span><span class="nt">"cwd"</span><span class="p">:</span><span class="w"> </span><span class="s2">"${workspaceRoot}"</span><span class="w">
+    </span><span class="s2">"cwd"</span><span class="p">:</span><span class="w"> </span><span class="s2">"${workspaceRoot}"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>This configuration contains the following attributes:</p>
