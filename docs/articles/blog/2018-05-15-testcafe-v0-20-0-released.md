@@ -13,7 +13,7 @@ Intercepting HTTP requests, specifying resources accessed by bypassing a proxy s
 
 TestCafe now allows you to record HTTP request data or mock responses. You can also create a custom HTTP request hook to emulate authentications like  **Kerberos** or **Client Certificate Authentication**.
 
-See [Intercepting HTTP Requests](docs/articles/documentation/test-api/intercepting-and-mocking-http-requests/README.html) for more information.
+See [Intercepting HTTP Requests](docs/articles/documentation/test-api/intercepting-http-requests/README.html) for more information.
 
 ## Enhancements
 
