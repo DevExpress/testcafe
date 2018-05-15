@@ -5,8 +5,8 @@
     <description></description>
     <link>http://devexpress.github.io/testcafe/</link>
     <atom:link href="http://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 15 May 2018 13:22:04 +0300</pubDate>
-    <lastBuildDate>Tue, 15 May 2018 13:22:04 +0300</lastBuildDate>
+    <pubDate>Tue, 15 May 2018 14:06:22 +0300</pubDate>
+    <lastBuildDate>Tue, 15 May 2018 14:06:22 +0300</lastBuildDate>
     <generator>Jekyll v3.8.1</generator>
     
       <item>
@@ -18,7 +18,7 @@
 &lt;h2&gt;&lt;a class=&quot;anchor&quot; name=&quot;request-hooks-intercepting-http-requests-1341&quot;&gt;&lt;/a&gt;Request Hooks: Intercepting HTTP requests (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1341&quot;&gt;#1341&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#request-hooks-intercepting-http-requests-1341&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;TestCafe now allows you to record HTTP request data or mock responses. You can also create a custom HTTP request hook to emulate authentications like  &lt;strong&gt;Kerberos&lt;/strong&gt; or &lt;strong&gt;Client Certificate Authentication&lt;/strong&gt;.&lt;/p&gt;
 
-&lt;p&gt;See &lt;a href=&quot;docs/articles/documentation/test-api/intercepting-and-mocking-http-requests/README.html&quot;&gt;Intercepting HTTP Requests&lt;/a&gt; for more information.&lt;/p&gt;
+&lt;p&gt;See &lt;a href=&quot;docs/articles/documentation/test-api/intercepting-http-requests/README.html&quot;&gt;Intercepting HTTP Requests&lt;/a&gt; for more information.&lt;/p&gt;
 &lt;h2&gt;&lt;a class=&quot;anchor&quot; name=&quot;enhancements&quot;&gt;&lt;/a&gt;Enhancements &lt;a class=&quot;permalink&quot; href=&quot;#enhancements&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; name=&quot;specifying-resources-accessed-by-bypassing-a-proxy-server-1791&quot;&gt;&lt;/a&gt;⚙ Specifying resources accessed by bypassing a proxy server (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1791&quot;&gt;#1791&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#specifying-resources-accessed-by-bypassing-a-proxy-server-1791&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;TestCafe now allows you to bypass the proxy server when accessing specific resources.&lt;/p&gt;
 
@@ -41,7 +41,7 @@
 &lt;h3&gt;&lt;a class=&quot;anchor&quot; name=&quot;passing-a-regular-promise-to-texpect-is-deprecated-now-2207&quot;&gt;&lt;/a&gt;⚙ Passing a regular promise to &lt;code&gt;t.expect&lt;/code&gt; is deprecated now (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2207&quot;&gt;#2207&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#passing-a-regular-promise-to-texpect-is-deprecated-now-2207&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;TestCafe now throws an error if you pass a regular promise to the assertion&amp;#39;s &lt;code&gt;expect&lt;/code&gt; method.&lt;/p&gt;
 
-&lt;p&gt;If you need to assert a regular promise, set the &lt;a href=&quot;docs/articles/documentation/test-api/assertions/README.html#allowunawaitedpromise&quot;&gt;allowUnawaitedPromise&lt;/a&gt; option to &lt;code&gt;true&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;If you need to assert a regular promise, set the &lt;a href=&quot;docs/articles/documentation/test-api/assertions/#optionsallowunawaitedpromise&quot;&gt;allowUnawaitedPromise&lt;/a&gt; option to &lt;code&gt;true&lt;/code&gt;.&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kr&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;doSomethingAsync&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;ok&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'check that a promise is returned'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;allowUnawaitedPromise&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2&gt;&lt;a class=&quot;anchor&quot; name=&quot;bug-fixes&quot;&gt;&lt;/a&gt;Bug Fixes &lt;a class=&quot;permalink&quot; href=&quot;#bug-fixes&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;ul&gt;

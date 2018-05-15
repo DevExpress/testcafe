@@ -265,7 +265,7 @@
 <h2><a class="anchor" name="request-hooks-intercepting-http-requests-1341"></a>Request Hooks: Intercepting HTTP requests (<a href="https://github.com/DevExpress/testcafe/issues/1341">#1341</a>) <a class="permalink" href="#request-hooks-intercepting-http-requests-1341">#</a></h2>
 <p>TestCafe now allows you to record HTTP request data or mock responses. You can also create a custom HTTP request hook to emulate authentications like  <strong>Kerberos</strong> or <strong>Client Certificate Authentication</strong>.</p>
 
-<p>See <a href="docs/articles/documentation/test-api/intercepting-and-mocking-http-requests/README.html">Intercepting HTTP Requests</a> for more information.</p>
+<p>See <a href="docs/articles/documentation/test-api/intercepting-http-requests/README.html">Intercepting HTTP Requests</a> for more information.</p>
 <h2><a class="anchor" name="enhancements"></a>Enhancements <a class="permalink" href="#enhancements">#</a></h2><h3><a class="anchor" name="specifying-resources-accessed-by-bypassing-a-proxy-server-1791"></a>⚙ Specifying resources accessed by bypassing a proxy server (<a href="https://github.com/DevExpress/testcafe/issues/1791">#1791</a>) <a class="permalink" href="#specifying-resources-accessed-by-bypassing-a-proxy-server-1791">#</a></h3>
 <p>TestCafe now allows you to bypass the proxy server when accessing specific resources.</p>
 
@@ -288,7 +288,7 @@
 <h3><a class="anchor" name="passing-a-regular-promise-to-texpect-is-deprecated-now-2207"></a>⚙ Passing a regular promise to <code>t.expect</code> is deprecated now (<a href="https://github.com/DevExpress/testcafe/issues/2207">#2207</a>) <a class="permalink" href="#passing-a-regular-promise-to-texpect-is-deprecated-now-2207">#</a></h3>
 <p>TestCafe now throws an error if you pass a regular promise to the assertion&#39;s <code>expect</code> method.</p>
 
-<p>If you need to assert a regular promise, set the <a href="docs/articles/documentation/test-api/assertions/README.html#allowunawaitedpromise">allowUnawaitedPromise</a> option to <code>true</code>.</p>
+<p>If you need to assert a regular promise, set the <a href="docs/articles/documentation/test-api/assertions/#optionsallowunawaitedpromise">allowUnawaitedPromise</a> option to <code>true</code>.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">doSomethingAsync</span><span class="p">()).</span><span class="nx">ok</span><span class="p">(</span><span class="s1">'check that a promise is returned'</span><span class="p">,</span> <span class="p">{</span> <span class="na">allowUnawaitedPromise</span><span class="p">:</span> <span class="kc">true</span> <span class="p">});</span>
 </code></pre></div><h2><a class="anchor" name="bug-fixes"></a>Bug Fixes <a class="permalink" href="#bug-fixes">#</a></h2>
 <ul>
