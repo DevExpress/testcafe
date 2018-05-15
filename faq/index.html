@@ -257,6 +257,7 @@
 		<div class="post-content">
 
 			<h1>FAQ</h1>
+
 <ul>
 <li><a href="#general-questions">General Questions</a>
 
@@ -276,7 +277,11 @@
 <li><a href="#my-test-fails-because-testcafe-could-not-find-the-required-webpage-element-why-does-this-happen">My test fails because TestCafe could not find the required webpage element. Why does this happen?</a></li>
 </ul></li>
 </ul>
-<h2><a class="anchor" name="general-questions"></a>General Questions <a class="permalink" href="#general-questions">#</a></h2><h3><a class="anchor" name="i-have-heard-that-testcafe-does-not-use-selenium-how-does-it-operate"></a>I have heard that TestCafe does not use Selenium. How does it operate? <a class="permalink" href="#i-have-heard-that-testcafe-does-not-use-selenium-how-does-it-operate">#</a></h3>
+
+<h2>General Questions</h2>
+
+<h3>I have heard that TestCafe does not use Selenium. How does it operate?</h3>
+
 <p>Unlike most testing solutions, TestCafe is not built on Selenium.
 This allows us to implement features you cannot find in Selenium-based tools
 (for example, testing on mobile devices, user roles, automatic waiting, etc.).</p>
@@ -287,7 +292,9 @@ This proxy injects the driver script that emulates user actions into the tested 
 
 <p>You can read about this in our <a href="https://testcafe-discuss.devexpress.com/t/why-not-use-selenium/47">forum</a>.
 Feel free to ask for more details.</p>
-<h3><a class="anchor" name="what-is-the-difference-between-a-paid-and-an-open-source-testcafe-version"></a>What is the difference between a <a href="https://testcafe.devexpress.com">paid</a> and an <a href="https://devexpress.github.io/testcafe">open-source</a> TestCafe version? <a class="permalink" href="#what-is-the-difference-between-a-paid-and-an-open-source-testcafe-version">#</a></h3>
+
+<h3>What is the difference between a <a href="https://testcafe.devexpress.com">paid</a> and an <a href="https://devexpress.github.io/testcafe">open-source</a> TestCafe version?</h3>
+
 <p>TestCafe first appeared as a paid, standalone tool. It had several features besides the test runner: the
 <a href="https://testcafe.devexpress.com/Documentation/Using_TestCafe/Control_Panel/">Control Panel</a>,
 a visual interface for creating, modifying and running your tests, and the
@@ -314,15 +321,19 @@ It has the same name but contains lots of new functionality and improvements:</p
 <p>We have not abandoned our aspirations to create a competitive proprietary product.
 We plan to release a new commercial version called <strong><em>TestCafe Studio</em></strong>, based on the revised open-source TestCafe.
 Follow us on <a href="https://twitter.com/DXTestCafe">Twitter</a> for the news about TestCafe Studio.</p>
-<h3><a class="anchor" name="which-browsers-does-testcafe-support-what-are-the-exact-supported-versions"></a>Which browsers does TestCafe support? What are the exact supported versions? <a class="permalink" href="#which-browsers-does-testcafe-support-what-are-the-exact-supported-versions">#</a></h3>
+
+<h3>Which browsers does TestCafe support? What are the exact supported versions?</h3>
+
 <p>You can find a list of supported browsers in
-<a href="../documentation/using-testcafe/common-concepts/browsers/browser-support.html">our documentation</a>.
+<a href="../documentation/using-testcafe/common-concepts/browsers/browser-support.md">our documentation</a>.
 TestCafe is tested against the two latest versions of each browser
 except for the browsers whose versions are specified explicitly in this list.</p>
 
 <p>We do not use the most recent JavaScript features in TestCafe code,
 which means it should work with any browser with HTML5 support released in the last three years.</p>
-<h3><a class="anchor" name="can-i-use-third-party-modules-in-tests"></a>Can I use third-party modules in tests? <a class="permalink" href="#can-i-use-third-party-modules-in-tests">#</a></h3>
+
+<h3>Can I use third-party modules in tests?</h3>
+
 <p>You can import third-party modules to test files in the same way as a regular node.js module.</p>
 
 <p>On the server side, use the <code>import</code> statement.</p>
@@ -350,7 +361,9 @@ Then you can use this module inside client functions and selectors.</p>
 
     <span class="kd">var</span> <span class="nx">text</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">clientFunction</span><span class="p">();</span>
 <span class="p">});</span>
-</code></pre></div><h3><a class="anchor" name="how-do-i-work-with-configuration-files-and-environment-variables"></a>How do I work with configuration files and environment variables? <a class="permalink" href="#how-do-i-work-with-configuration-files-and-environment-variables">#</a></h3>
+</code></pre></div>
+<h3>How do I work with configuration files and environment variables?</h3>
+
 <p>TestCafe works without any configuration.
 It does not have any config files where you can place custom variables.
 However, you can introduce your own configuration file and import it to the test code.</p>
@@ -391,28 +404,34 @@ However, you can introduce your own configuration file and import it to the test
 <p>On macOS, <a href="https://stackoverflow.com/questions/135688/setting-environment-variables-in-os-x">the workflow is longer</a>.</p>
 
 <p>In test code, you can access this variable as <code>process.env.DEV_MODE</code>.</p>
-<h2><a class="anchor" name="troubleshooting"></a>Troubleshooting <a class="permalink" href="#troubleshooting">#</a></h2><h3><a class="anchor" name="i-have-installed-testcafe-but-i-cannot-run-it-what-should-i-do"></a>I have installed TestCafe but I cannot run it. What should I do? <a class="permalink" href="#i-have-installed-testcafe-but-i-cannot-run-it-what-should-i-do">#</a></h3>
+
+<h2>Troubleshooting</h2>
+
+<h3>I have installed TestCafe but I cannot run it. What should I do?</h3>
+
 <p><strong>Check your firewall.</strong> First, make sure that your firewall does not block the ports TestCafe uses.
 TestCafe chooses free ports automatically by default. Use the
-<a href="../documentation/using-testcafe/command-line-interface.html#--ports-port1port2">--ports</a> command line option
-or the <a href="../documentation/using-testcafe/programming-interface/createtestcafe.html">createTestCafe</a>
+<a href="../documentation/using-testcafe/command-line-interface.md#--ports-port1port2">--ports</a> command line option
+or the <a href="../documentation/using-testcafe/programming-interface/createtestcafe.md">createTestCafe</a>
 API factory function to specify custom ports. After that, check that the firewall does not block these specific ports.</p>
 
 <p><strong>Check your proxy server</strong>. Another reason for this problem can be the proxy server you use to access the Internet.
 If your network is connected to the Web via a proxy, use the
-<a href="../documentation/using-testcafe/command-line-interface.html#--proxy-host">--proxy</a> command line option
-or the <a href="../documentation/using-testcafe/programming-interface/runner.html#useproxy">useProxy</a> API method
+<a href="../documentation/using-testcafe/command-line-interface.md#--proxy-host">--proxy</a> command line option
+or the <a href="../documentation/using-testcafe/programming-interface/runner.md#useproxy">useProxy</a> API method
 to specify the proxy address.</p>
 
 <p><strong>For Linux check X11.</strong> Also note that if you run TestCafe on Linux,
 you need to make sure the system is running the <a href="https://en.wikipedia.org/wiki/X_Window_System">X11</a> server.
 Without X11, you can only run tests in cloud services and headless Google Chrome.
 However, if you use the <a href="https://en.wikipedia.org/wiki/Xvfb">Xvbf</a> server, you can run any other browser in the headless mode.</p>
-<h3><a class="anchor" name="when-i-run-a-testcafe-test-i-get-an-unexpected-error-what-can-cause-that"></a>When I run a TestCafe test, I get an unexpected error. What can cause that? <a class="permalink" href="#when-i-run-a-testcafe-test-i-get-an-unexpected-error-what-can-cause-that">#</a></h3>
+
+<h3>When I run a TestCafe test, I get an unexpected error. What can cause that?</h3>
+
 <p><strong>JavaScript errors.</strong> The most common reason for this is a JavaScript error on the tested page.
 Load this page in the browser, open the console and see if the page has any errors.
 In case there are errors, you can either fix them or use
-the <a href="../documentation/using-testcafe/command-line-interface.html#-e---skip-js-errors">--skip-js-errors</a> flag
+the <a href="../documentation/using-testcafe/command-line-interface.md#-e---skip-js-errors">--skip-js-errors</a> flag
 to tell TestCafe to skip them.</p>
 
 <p><strong>Browser extensions.</strong> If this does not help, try running the problematic test in incognito mode.
@@ -427,16 +446,20 @@ This way you can find out which extension prevents the test from running.</p>
 <p><strong>Third-party modules.</strong> In rare cases, third-party modules can be the cause.
 If you use a locally installed TestCafe, try installing it globally and running the test
 outside of the project to eliminate the influence of third-party modules.</p>
-<h3><a class="anchor" name="i-have-installed-testcafe-plugins-but-they-do-not-work-what-have-i-done-wrong"></a>I have installed TestCafe plugins but they do not work. What have I done wrong? <a class="permalink" href="#i-have-installed-testcafe-plugins-but-they-do-not-work-what-have-i-done-wrong">#</a></h3>
+
+<h3>I have installed TestCafe plugins but they do not work. What have I done wrong?</h3>
+
 <p>Plugins should also be installed locally if you are using a locally installed TestCafe.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">npm install --save-dev <span class="o">{</span>pluginName<span class="o">}</span>
 </code></pre></div>
 <p>If you are going to use a global TestCafe installation, or you wish
 to use the plugin in other projects as well, install it globally.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">npm install -g <span class="o">{</span>pluginName<span class="o">}</span>
-</code></pre></div><h3><a class="anchor" name="my-test-fails-because-testcafe-could-not-find-the-required-webpage-element-why-does-this-happen"></a>My test fails because TestCafe could not find the required webpage element. Why does this happen? <a class="permalink" href="#my-test-fails-because-testcafe-could-not-find-the-required-webpage-element-why-does-this-happen">#</a></h3>
+</code></pre></div>
+<h3>My test fails because TestCafe could not find the required webpage element. Why does this happen?</h3>
+
 <p>First, try debugging the tested page with the TestCafe&#39;s built-in debugger by adding
-the <a href="../documentation/test-api/debugging.html">t.debug()</a> method to test code.
+the <a href="../documentation/test-api/debugging.md">t.debug()</a> method to test code.
 Then run the test and wait until the browser stops at the breakpoint.
 After this, use the browser&#39;s development tools to check that:</p>
 
@@ -454,8 +477,8 @@ to switch to the appropriate <code>&lt;iframe&gt;</code>).</li>
 </ul>
 
 <p>Also, try running the test at full screen.
-Use the <a href="../documentation/test-api/actions/resize-window.html#maximizing-the-window">t.maximizeWindow</a>
-and <a href="../documentation/test-api/actions/resize-window.html#setting-the-window-size">t.resizeWindow</a> actions
+Use the <a href="../documentation/test-api/actions/resize-window.md#maximizing-the-window">t.maximizeWindow</a>
+and <a href="../documentation/test-api/actions/resize-window.md#setting-the-window-size">t.resizeWindow</a> actions
 to control the browser window size. If the test passes, it means your webpage hides
 the target element when the window is resized to smaller dimensions.</p>
 

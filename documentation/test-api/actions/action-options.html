@@ -464,6 +464,24 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#specifying-testing-metadata"  >Specifying Testing Metadata</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#using-metadata-in-reports"  >Using Metadata in Reports</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/test-api/test-code-structure.html#initialization-and-clean-up"  >Initialization and Clean-Up</a>
 		
 			<ul>
@@ -723,6 +741,59 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/"  >Intercepting HTTP Requests</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/logging-http-requests.html"  >Logging HTTP Requests</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/mocking-http-responses.html"  >Mocking HTTP Responses</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html"  >Creating a Custom HTTP Request Hook</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/specifying-which-requests-are-handled-by-the-hook.html"  >Specifying Which Requests are Handled by the Hook</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/attaching-hooks-to-tests-and-fixtures.html"  >Attaching Hooks to Tests and Fixtures</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/requestoptions-object.html"  >requestOptions Object</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/test-api/waiting-for-page-elements-to-appear.html"  >Waiting for Page Elements to Appear</a>
 		
     </li>
@@ -814,7 +885,8 @@
 		<div class="post-content">
 
 			<h1>Action Options</h1>
-<p>This topic describes <a href=".">test action</a> options.</p>
+
+<p>This topic describes <a href="README.md">test action</a> options.</p>
 
 <ul>
 <li><a href="#basic-action-options">Basic Action Options</a></li>
@@ -823,7 +895,9 @@
 <li><a href="#click-action-options">Click Action Options</a></li>
 <li><a href="#typing-action-options">Typing Action Options</a></li>
 </ul>
-<h2><a class="anchor" name="basic-action-options"></a>Basic Action Options <a class="permalink" href="#basic-action-options">#</a></h2>
+
+<h2>Basic Action Options</h2>
+
 <p>Provide additional parameters for an action.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="p">{</span>
     <span class="nl">speed</span><span class="p">:</span> <span class="nb">Number</span>
@@ -840,14 +914,14 @@
 <tr>
 <td><code>speed</code></td>
 <td>Number</td>
-<td>The speed of action emulation. Defines how fast TestCafe performs the action when running tests. A number between <code>1</code> (the maximum speed) and <code>0.01</code> (the minimum speed). If test speed is also specified in the <a href="../../using-testcafe/command-line-interface.html#--speed-factor">CLI</a>, <a href="../../using-testcafe/programming-interface/runner.html#run">API</a> or in <a href="../test-code-structure.html#setting-test-speed">test code</a>, the action speed setting overrides test speed.</td>
+<td>The speed of action emulation. Defines how fast TestCafe performs the action when running tests. A number between <code>1</code> (the maximum speed) and <code>0.01</code> (the minimum speed). If test speed is also specified in the <a href="../../using-testcafe/command-line-interface.md#--speed-factor">CLI</a>, <a href="../../using-testcafe/programming-interface/runner.md#run">API</a> or in <a href="../test-code-structure.md#setting-test-speed">test code</a>, the action speed setting overrides test speed.</td>
 <td><code>1</code></td>
 </tr>
 </tbody></table>
 
-<p>Basic action options are used in the <a href="press-key.html">t.pressKey</a>,
-<a href="select-text.html#select-text-in-input-elements">t.selectText</a>, <a href="select-text.html#select-textarea-content">t.selectTextAreaContent</a> and
-<a href="select-text.html#perform-selection-within-editable-content">t.selectEditableContent</a> actions.</p>
+<p>Basic action options are used in the <a href="press-key.md">t.pressKey</a>,
+<a href="select-text.md#select-text-in-input-elements">t.selectText</a>, <a href="select-text.md#select-textarea-content">t.selectTextAreaContent</a> and
+<a href="select-text.md#perform-selection-within-editable-content">t.selectEditableContent</a> actions.</p>
 
 <p><strong>Example</strong></p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
@@ -862,7 +936,9 @@
         <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">,</span> <span class="s1">'Peter'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">,</span> <span class="s1">' Parker'</span><span class="p">,</span> <span class="p">{</span> <span class="na">speed</span><span class="p">:</span> <span class="mf">0.1</span> <span class="p">});</span>
 <span class="p">});</span>
-</code></pre></div><h2><a class="anchor" name="mouse-action-options"></a>Mouse Action Options <a class="permalink" href="#mouse-action-options">#</a></h2>
+</code></pre></div>
+<h2>Mouse Action Options</h2>
+
 <p>Provide additional parameters for a mouse action.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="p">{</span>
     <span class="nl">modifiers</span><span class="p">:</span> <span class="p">{</span>
@@ -900,12 +976,12 @@
 <tr>
 <td><code>speed</code></td>
 <td>Number</td>
-<td>The speed of action emulation. Defines how fast TestCafe performs the action when running tests. A value between <code>1</code> (the maximum speed) and <code>0.01</code> (the minimum speed). If test speed is also specified in the <a href="../../using-testcafe/command-line-interface.html#--speed-factor">CLI</a> or <a href="../../using-testcafe/programming-interface/runner.html#run">programmatically</a>, the action speed setting overrides test speed.</td>
+<td>The speed of action emulation. Defines how fast TestCafe performs the action when running tests. A value between <code>1</code> (the maximum speed) and <code>0.01</code> (the minimum speed). If test speed is also specified in the <a href="../../using-testcafe/command-line-interface.md#--speed-factor">CLI</a> or <a href="../../using-testcafe/programming-interface/runner.md#run">programmatically</a>, the action speed setting overrides test speed.</td>
 <td><code>1</code></td>
 </tr>
 </tbody></table>
 
-<p>Mouse action options are used in the <a href="drag-element.html#drag-an-element-by-an-offset">t.drag</a> and <a href="hover.html">t.hover</a> actions.</p>
+<p>Mouse action options are used in the <a href="drag-element.md#drag-an-element-by-an-offset">t.drag</a> and <a href="hover.md">t.hover</a> actions.</p>
 
 <p><strong>Example</strong></p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
@@ -925,7 +1001,9 @@
             <span class="p">}</span>
         <span class="p">});</span>
 <span class="p">});</span>
-</code></pre></div><h2><a class="anchor" name="dragtoelement-action-options"></a>DragToElement Action Options <a class="permalink" href="#dragtoelement-action-options">#</a></h2>
+</code></pre></div>
+<h2>DragToElement Action Options</h2>
+
 <p>Provides additional parameters for the <code>t.dragToElement</code> action.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="p">{</span>
     <span class="nl">modifiers</span><span class="p">:</span> <span class="p">{</span>
@@ -971,12 +1049,12 @@
 <tr>
 <td><code>speed</code></td>
 <td>Number</td>
-<td>The speed of action emulation. Defines how fast TestCafe performs the action when running tests. A value between <code>1</code> (the maximum speed) and <code>0.01</code> (the minimum speed). If test speed is also specified in the <a href="../../using-testcafe/command-line-interface.html#--speed-factor">CLI</a> or <a href="../../using-testcafe/programming-interface/runner.html#run">programmatically</a>, the action speed setting overrides test speed.</td>
+<td>The speed of action emulation. Defines how fast TestCafe performs the action when running tests. A value between <code>1</code> (the maximum speed) and <code>0.01</code> (the minimum speed). If test speed is also specified in the <a href="../../using-testcafe/command-line-interface.md#--speed-factor">CLI</a> or <a href="../../using-testcafe/programming-interface/runner.md#run">programmatically</a>, the action speed setting overrides test speed.</td>
 <td><code>1</code></td>
 </tr>
 </tbody></table>
 
-<p>DragToElement options are used in the <a href="drag-element.html#drag-an-element-onto-another-one">t.dragToElement</a> action.</p>
+<p>DragToElement options are used in the <a href="drag-element.md#drag-an-element-onto-another-one">t.dragToElement</a> action.</p>
 
 <p><strong>Example</strong></p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
@@ -999,7 +1077,9 @@
             <span class="p">}</span>
         <span class="p">});</span>
 <span class="p">});</span>
-</code></pre></div><h2><a class="anchor" name="click-action-options"></a>Click Action Options <a class="permalink" href="#click-action-options">#</a></h2>
+</code></pre></div>
+<h2>Click Action Options</h2>
+
 <p>Provide additional parameters for a click action.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="p">{</span>
     <span class="nl">modifiers</span><span class="p">:</span> <span class="p">{</span>
@@ -1044,12 +1124,12 @@
 <tr>
 <td><code>speed</code></td>
 <td>Number</td>
-<td>The speed of action emulation. Defines how fast TestCafe performs the action when running tests. A value between <code>1</code> (the maximum speed) and <code>0.01</code> (the minimum speed). If test speed is also specified in the <a href="../../using-testcafe/command-line-interface.html#--speed-factor">CLI</a> or <a href="../../using-testcafe/programming-interface/runner.html#run">programmatically</a>, the action speed setting overrides test speed.</td>
+<td>The speed of action emulation. Defines how fast TestCafe performs the action when running tests. A value between <code>1</code> (the maximum speed) and <code>0.01</code> (the minimum speed). If test speed is also specified in the <a href="../../using-testcafe/command-line-interface.md#--speed-factor">CLI</a> or <a href="../../using-testcafe/programming-interface/runner.md#run">programmatically</a>, the action speed setting overrides test speed.</td>
 <td><code>1</code></td>
 </tr>
 </tbody></table>
 
-<p>Click action options are used in the <a href="click.html">t.click</a>, <a href="double-click.html">t.doubleClick</a> and <a href="right-click.html">t.rightClick</a> actions.</p>
+<p>Click action options are used in the <a href="click.md">t.click</a>, <a href="double-click.md">t.doubleClick</a> and <a href="right-click.md">t.rightClick</a> actions.</p>
 
 <p><strong>Example</strong></p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
@@ -1065,7 +1145,9 @@
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">,</span> <span class="p">{</span> <span class="na">caretPos</span><span class="p">:</span> <span class="mi">4</span> <span class="p">})</span>
         <span class="p">.</span><span class="nx">pressKey</span><span class="p">(</span><span class="s1">'r'</span><span class="p">);</span>
 <span class="p">});</span>
-</code></pre></div><h2><a class="anchor" name="typing-action-options"></a>Typing Action Options <a class="permalink" href="#typing-action-options">#</a></h2>
+</code></pre></div>
+<h2>Typing Action Options</h2>
+
 <p>Provide additional parameters for a typing operation.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="p">{</span>
     <span class="nl">modifiers</span><span class="p">:</span> <span class="p">{</span>
@@ -1124,12 +1206,12 @@
 <tr>
 <td><code>speed</code></td>
 <td>Number</td>
-<td>The speed of action emulation. Defines how fast TestCafe performs the action when running tests. A value between <code>1</code> (the maximum speed) and <code>0.01</code> (the minimum speed). If test speed is also specified in the <a href="../../using-testcafe/command-line-interface.html#--speed-factor">CLI</a> or <a href="../../using-testcafe/programming-interface/runner.html#run">programmatically</a>, the action speed setting overrides test speed.</td>
+<td>The speed of action emulation. Defines how fast TestCafe performs the action when running tests. A value between <code>1</code> (the maximum speed) and <code>0.01</code> (the minimum speed). If test speed is also specified in the <a href="../../using-testcafe/command-line-interface.md#--speed-factor">CLI</a> or <a href="../../using-testcafe/programming-interface/runner.md#run">programmatically</a>, the action speed setting overrides test speed.</td>
 <td><code>1</code></td>
 </tr>
 </tbody></table>
 
-<p>Typing action options are used in the <a href="type-text.html">t.typeText</a> action.</p>
+<p>Typing action options are used in the <a href="type-text.md">t.typeText</a> action.</p>
 
 <p><strong>Example</strong></p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>

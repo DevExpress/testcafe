@@ -545,9 +545,10 @@
 		<div class="post-content">
 
 			<h1>TestCafe Class</h1>
+
 <p>A TestCafe server.</p>
 
-<p>To create a server instance, use the <a href="createtestcafe.html">createTestCafe</a> factory function.</p>
+<p>To create a server instance, use the <a href="createtestcafe.md">createTestCafe</a> factory function.</p>
 
 <p><strong>Example</strong></p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">createTestCafe</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'testcafe'</span><span class="p">);</span>
@@ -556,17 +557,21 @@
     <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">testcafe</span> <span class="o">=&gt;</span> <span class="p">{</span>
         <span class="cm">/* ... */</span>
     <span class="p">});</span>
-</code></pre></div><h2><a class="anchor" name="methods"></a>Methods <a class="permalink" href="#methods">#</a></h2>
+</code></pre></div>
+<h2>Methods</h2>
+
 <ul>
 <li><a href="#createbrowserconnection">createBrowserConnection</a></li>
 <li><a href="#createrunner">createRunner</a></li>
 <li><a href="#close">close</a></li>
 </ul>
-<h3><a class="anchor" name="createbrowserconnection"></a>createBrowserConnection <a class="permalink" href="#createbrowserconnection">#</a></h3>
-<p>Creates a <a href="browserconnection.html">remote browser connection</a>.</p>
+
+<h3>createBrowserConnection</h3>
+
+<p>Creates a <a href="browserconnection.md">remote browser connection</a>.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">async createBrowserConnection() → Promise&lt;BrowserConnection&gt;
 </code></pre></div>
-<p>To connect a remote browser, navigate it to <a href="browserconnection.html#url">BrowserConnection.url</a>.</p>
+<p>To connect a remote browser, navigate it to <a href="browserconnection.md#url">BrowserConnection.url</a>.</p>
 
 <p><strong>Example</strong></p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">createTestCafe</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'testcafe'</span><span class="p">);</span>
@@ -597,8 +602,10 @@
                 <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="nx">error</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/* ... */</span><span class="p">});</span>
         <span class="p">});</span>
     <span class="p">});</span>
-</code></pre></div><h3><a class="anchor" name="createrunner"></a>createRunner <a class="permalink" href="#createrunner">#</a></h3>
-<p>Creates the <a href="runner.html">test runner</a> that is used to configure and launch test tasks.</p>
+</code></pre></div>
+<h3>createRunner</h3>
+
+<p>Creates the <a href="runner.md">test runner</a> that is used to configure and launch test tasks.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">createRunner() → Runner
 </code></pre></div>
 <p><strong>Example</strong></p>
@@ -619,7 +626,9 @@
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Tests failed: '</span> <span class="o">+</span> <span class="nx">failedCount</span><span class="p">);</span>
         <span class="nx">testcafe</span><span class="p">.</span><span class="nx">close</span><span class="p">();</span>
     <span class="p">});</span>
-</code></pre></div><h3><a class="anchor" name="close"></a>close <a class="permalink" href="#close">#</a></h3>
+</code></pre></div>
+<h3>close</h3>
+
 <p>Stops the TestCafe server. Forcibly closes all connections and pending test runs immediately.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">async close()
 </code></pre></div>

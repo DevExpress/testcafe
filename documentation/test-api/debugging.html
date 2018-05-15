@@ -464,6 +464,24 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#specifying-testing-metadata"  >Specifying Testing Metadata</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#using-metadata-in-reports"  >Using Metadata in Reports</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/test-api/test-code-structure.html#initialization-and-clean-up"  >Initialization and Clean-Up</a>
 		
 			<ul>
@@ -723,6 +741,59 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/"  >Intercepting HTTP Requests</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/logging-http-requests.html"  >Logging HTTP Requests</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/mocking-http-responses.html"  >Mocking HTTP Responses</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html"  >Creating a Custom HTTP Request Hook</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/specifying-which-requests-are-handled-by-the-hook.html"  >Specifying Which Requests are Handled by the Hook</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/attaching-hooks-to-tests-and-fixtures.html"  >Attaching Hooks to Tests and Fixtures</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/requestoptions-object.html"  >requestOptions Object</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/test-api/waiting-for-page-elements-to-appear.html"  >Waiting for Page Elements to Appear</a>
 		
     </li>
@@ -814,6 +885,7 @@
 		<div class="post-content">
 
 			<h1>Debugging</h1>
+
 <p>TestCafe allows you to debug server-side test code and test behavior on the client.</p>
 
 <ul>
@@ -821,28 +893,35 @@
 <li><a href="#client-side-debugging">Client-Side Debugging</a></li>
 <li><a href="#options-useful-for-debugging">Options Useful for Debugging</a></li>
 </ul>
-<h2><a class="anchor" name="debugging-test-code"></a>Debugging Test Code <a class="permalink" href="#debugging-test-code">#</a></h2>
+
+<h2>Debugging Test Code</h2>
+
 <p>You can debug test code in Chrome Developer Tools and popular IDEs. See the following recipes for details.</p>
 
 <ul>
-<li><a href="../recipes/debugging-with-chrome-dev-tools.html">Debugging with Chrome Developer Tools</a></li>
-<li><a href="../recipes/debugging-with-visual-studio-code.html">Debugging with Visual Studio Code</a></li>
+<li><a href="../recipes/debugging-with-chrome-dev-tools.md">Debugging with Chrome Developer Tools</a></li>
+<li><a href="../recipes/debugging-with-visual-studio-code.md">Debugging with Visual Studio Code</a></li>
 </ul>
-<h2><a class="anchor" name="client-side-debugging"></a>Client-Side Debugging <a class="permalink" href="#client-side-debugging">#</a></h2>
+
+<h2>Client-Side Debugging</h2>
+
 <p>TestCafe provides the <code>t.debug</code> method that pauses the test and allows you to debug using the browser&#39;s developer tools.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">t.debug()
 </code></pre></div>
 <p>When test execution reaches <code>t.debug</code>, it pauses so that you can open browser&#39;s developer tools
 and check the web page state, DOM elements&#39; location, their CSS styles, etc.</p>
 
-<p>You can also use the <a href="../using-testcafe/command-line-interface.html#-d---debug-mode">--debug-mode</a>
+<p>You can also use the <a href="../using-testcafe/command-line-interface.md#-d---debug-mode">--debug-mode</a>
 command line option to pause the test before the first action or assertion.</p>
 
 <p>The footer displays buttons that allow you to continue the test or skip to the next test action or assertion.</p>
 
 <p><img src="../../images/debugging/client-debugging-footer.png" alt="Page Footer when Debugging on a Client"></p>
-<blockquote><div class="blockquote-content"><p>The debugger does not stop at creating and resolving the <a href="selecting-page-elements/selectors/">selectors</a> and <a href="obtaining-data-from-the-client/">client functions</a>.</p>
-</div></blockquote>
+
+<blockquote>
+<p>The debugger does not stop at creating and resolving the <a href="selecting-page-elements/selectors/README.md">selectors</a> and <a href="obtaining-data-from-the-client/README.md">client functions</a>.</p>
+</blockquote>
+
 <p>TestCafe logs points in code where the debugger stopped.</p>
 
 <p><img src="../../images/debugging/log-debugger.png" alt="Logging Debugger Breakpoints"></p>
@@ -858,10 +937,14 @@ command line option to pause the test before the first action or assertion.</p>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#populate'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">);</span>
 <span class="p">});</span>
-</code></pre></div><h2><a class="anchor" name="options-useful-for-debugging"></a>Options Useful for Debugging <a class="permalink" href="#options-useful-for-debugging">#</a></h2>
+</code></pre></div>
+<h2>Options Useful for Debugging</h2>
+
 <p>TestCafe includes features that help you locate the cause of issues in your tests.</p>
-<h3><a class="anchor" name="screenshots"></a>Screenshots <a class="permalink" href="#screenshots">#</a></h3>
-<p>You can specify that a screenshot should be taken in a particular place in a test using the <a href="actions/take-screenshot.html">t.takeScreenshot</a> action.</p>
+
+<h3>Screenshots</h3>
+
+<p>You can specify that a screenshot should be taken in a particular place in a test using the <a href="actions/take-screenshot.md">t.takeScreenshot</a> action.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
     <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">https</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example`;</span>
 
@@ -875,15 +958,17 @@ command line option to pause the test before the first action or assertion.</p>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div>
-<p>You can also turn on the <a href="../using-testcafe/command-line-interface.html#-s---screenshots-on-fails">--screenshots-on-fails</a>
+<p>You can also turn on the <a href="../using-testcafe/command-line-interface.md#-s---screenshots-on-fails">--screenshots-on-fails</a>
 option to automatically take a screenshot when a test fails.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome ./my-tests --screenshots ./screenshots --screenshots-on-fails
 </code></pre></div>
 <p>Analyzing these screenshots reduces debugging time and allows you to determine the reason of issues earlier.</p>
-<h3><a class="anchor" name="test-speed"></a>Test Speed <a class="permalink" href="#test-speed">#</a></h3>
+
+<h3>Test Speed</h3>
+
 <p>TestCafe provides the capability to change test speed. Tests are executed at full speed with minimum delays between actions and assertions by default, which can make it hard to identify problems when the test is running.</p>
 
-<p>To slow down the test, use the <a href="../using-testcafe/command-line-interface.html#--speed-factor">--speed</a>
+<p>To slow down the test, use the <a href="../using-testcafe/command-line-interface.md#--speed-factor">--speed</a>
 CLI flag. You can use values from <code>1</code> to <code>0.01</code>.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome ./my-tests --speed 0.1
 </code></pre></div>

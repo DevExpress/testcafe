@@ -464,6 +464,24 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#specifying-testing-metadata"  >Specifying Testing Metadata</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#using-metadata-in-reports"  >Using Metadata in Reports</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/test-api/test-code-structure.html#initialization-and-clean-up"  >Initialization and Clean-Up</a>
 		
 			<ul>
@@ -723,6 +741,59 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/"  >Intercepting HTTP Requests</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/logging-http-requests.html"  >Logging HTTP Requests</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/mocking-http-responses.html"  >Mocking HTTP Responses</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html"  >Creating a Custom HTTP Request Hook</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/specifying-which-requests-are-handled-by-the-hook.html"  >Specifying Which Requests are Handled by the Hook</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/attaching-hooks-to-tests-and-fixtures.html"  >Attaching Hooks to Tests and Fixtures</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/requestoptions-object.html"  >requestOptions Object</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/test-api/waiting-for-page-elements-to-appear.html"  >Waiting for Page Elements to Appear</a>
 		
     </li>
@@ -814,14 +885,20 @@
 		<div class="post-content">
 
 			<h1>TypeScript Support</h1>
+
 <p>TestCafe allows you to write tests with <a href="https://www.typescriptlang.org/">TypeScript</a> - a typed superset of JavaScript.
 Using TypeScript brings you all the advantages of strongly typed languages: rich coding assistance,
 painless scalability, check-as-you-type code verification and much more.</p>
-<blockquote><div class="blockquote-content"><p>TestCafe automatically compiles TypeScript before running tests, so you do not need to compile the TypeScript code.</p>
-</div></blockquote>
+
+<blockquote>
+<p>TestCafe automatically compiles TypeScript before running tests, so you do not need to compile the TypeScript code.</p>
+</blockquote>
+
 <p>TestCafe bundles the TypeScript declaration file with the npm package, so you do not need to install it separately.</p>
-<h2><a class="anchor" name="writing-tests-with-typescript"></a>Writing Tests with TypeScript <a class="permalink" href="#writing-tests-with-typescript">#</a></h2>
-<p>To start writing tests with TypeScript, install TestCafe into your project directory. For more information, see <a href="../using-testcafe/installing-testcafe.html#locally">Installing TestCafe</a>.</p>
+
+<h2>Writing Tests with TypeScript</h2>
+
+<p>To start writing tests with TypeScript, install TestCafe into your project directory. For more information, see <a href="../using-testcafe/installing-testcafe.md#locally">Installing TestCafe</a>.</p>
 
 <p>When writing test in TypeScript, it is required to import TestCafe module first.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
@@ -830,17 +907,23 @@ painless scalability, check-as-you-type code verification and much more.</p>
 file and will show you code completion hints for TestCafe API:</p>
 
 <p><img src="../../images/typescript-support.png" alt="Writing Tests with TypeScript"></p>
-<blockquote><div class="blockquote-content"><p>If installed <a href="../using-testcafe/installing-testcafe.html#globally">globally</a>, TestCafe will successfully compile and run your tests written in TypeScript.
+
+<blockquote>
+<p>If installed <a href="../using-testcafe/installing-testcafe.md#globally">globally</a>, TestCafe will successfully compile and run your tests written in TypeScript.
 In this case, your IDE will not be able to find the TestCafe declaration file and provide code completion.</p>
-</div></blockquote>
+</blockquote>
+
 <p>Now, you can write tests in the same manner as in JavaScript.
 When you run a test Testcafe will output if there are any compilation errors.</p>
-<blockquote><div class="blockquote-content"><p>The <a href="./selecting-page-elements/selectors/extending-selectors.html">extending selectors</a>
+
+<blockquote>
+<p>The <a href="./selecting-page-elements/selectors/extending-selectors.md">extending selectors</a>
 in TypeScript differs from extending selectors in JavaScript. Refer to the
-<a href="./selecting-page-elements/selectors/extending-selectors.html#custom-properties">Custom Properties</a>
-and <a href="./selecting-page-elements/selectors/extending-selectors.html#custom-methods">Custom Methods</a>
+<a href="./selecting-page-elements/selectors/extending-selectors.md#custom-properties">Custom Properties</a>
+and <a href="./selecting-page-elements/selectors/extending-selectors.md#custom-methods">Custom Methods</a>
 sections to learn how to extend selectors in TypeScript.</p>
-</div></blockquote>
+</blockquote>
+
 
 		</div>
 		<div class="widget-container hidden">

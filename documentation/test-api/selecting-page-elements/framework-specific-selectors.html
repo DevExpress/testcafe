@@ -464,6 +464,24 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#specifying-testing-metadata"  >Specifying Testing Metadata</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#using-metadata-in-reports"  >Using Metadata in Reports</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/test-api/test-code-structure.html#initialization-and-clean-up"  >Initialization and Clean-Up</a>
 		
 			<ul>
@@ -723,6 +741,59 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/"  >Intercepting HTTP Requests</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/logging-http-requests.html"  >Logging HTTP Requests</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/mocking-http-responses.html"  >Mocking HTTP Responses</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html"  >Creating a Custom HTTP Request Hook</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/specifying-which-requests-are-handled-by-the-hook.html"  >Specifying Which Requests are Handled by the Hook</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/attaching-hooks-to-tests-and-fixtures.html"  >Attaching Hooks to Tests and Fixtures</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/requestoptions-object.html"  >requestOptions Object</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/test-api/waiting-for-page-elements-to-appear.html"  >Waiting for Page Elements to Appear</a>
 		
     </li>
@@ -814,7 +885,8 @@
 		<div class="post-content">
 
 			<h1>Framework-Specific Selectors</h1>
-<p>TestCafe provides a full-featured set of general purpose <a href="selectors/">selectors</a>. They are based on CSS selectors or client JS code, which works well with any HTML5 website. However, if you use a front-end framework, you may want your tests to be aware of your framework specifics. For instance, the component tree for React or element bindings for Aurelia.</p>
+
+<p>TestCafe provides a full-featured set of general purpose <a href="selectors/README.md">selectors</a>. They are based on CSS selectors or client JS code, which works well with any HTML5 website. However, if you use a front-end framework, you may want your tests to be aware of your framework specifics. For instance, the component tree for React or element bindings for Aurelia.</p>
 
 <p>For this purpose, the TestCafe team and community developed libraries of dedicated selectors for the most popular frameworks. So far, the following selectors are available.</p>
 
@@ -824,7 +896,9 @@
 <li><a href="#vue">Vue</a></li>
 <li><a href="#aurelia">Aurelia</a></li>
 </ul>
-<h2><a class="anchor" name="react"></a>React <a class="permalink" href="#react">#</a></h2>
+
+<h2>React</h2>
+
 <p>The React selectors module provides the <code>ReactSelector</code> class that allows you to select DOM elements by the component name. You can get a root element or search through the nested components or elements. In addition, you can obtain the component props and state.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="nx">ReactSelector</span> <span class="nx">from</span> <span class="s1">'testcafe-react-selectors'</span><span class="p">;</span>
 
@@ -842,7 +916,11 @@
 <span class="c1">// }</span>
 </code></pre></div>
 <p>To learn more, see the <a href="https://github.com/DevExpress/testcafe-react-selectors/blob/master/README.md">repository documentation</a>.</p>
-<h2><a class="anchor" name="angular"></a>Angular <a class="permalink" href="#angular">#</a></h2><h3><a class="anchor" name="angularjs"></a>AngularJS <a class="permalink" href="#angularjs">#</a></h3>
+
+<h2>Angular</h2>
+
+<h3>AngularJS</h3>
+
 <p><code>AngularJSSelector</code> contains a set of static methods to search for an HTML element by the specified binding (<code>byModel</code>, <code>byBinding</code>, etc.).</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">AngularJSSelector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe-angular-selectors'</span><span class="p">;</span>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
@@ -858,7 +936,9 @@
 <span class="p">});</span>
 </code></pre></div>
 <p>To learn more, see the <a href="https://github.com/DevExpress/testcafe-angular-selectors/blob/master/angularJS-selector.md">angularJS-selector.md</a> file in the plugin repository.</p>
-<h3><a class="anchor" name="angular-v2"></a>Angular v2+ <a class="permalink" href="#angular-v2">#</a></h3>
+
+<h3>Angular v2+</h3>
+
 <p>Use the <code>AngularSelector</code> class to select DOM elements by the component name. Call it without parameters to get a root element. You can also search through the nested components or elements. In addition, you can obtain the component state.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">AngularSelector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe-angular-selectors'</span><span class="p">;</span>
 
@@ -873,7 +953,9 @@
 <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">listAngular</span><span class="p">.</span><span class="nx">testProp</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
 </code></pre></div>
 <p>To learn more, refer to the <a href="https://github.com/DevExpress/testcafe-angular-selectors/blob/master/angular-selector.md">plugin repository</a>.</p>
-<h2><a class="anchor" name="vue"></a>Vue <a class="permalink" href="#vue">#</a></h2>
+
+<h2>Vue</h2>
+
 <p>Vue selectors allow you to pick DOM elements by the component name. You can also search through the nested components or elements. In addition, you can obtain the component props, state and computed props.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="nx">VueSelector</span> <span class="nx">from</span> <span class="s1">'testcafe-vue-selectors'</span><span class="p">;</span>
 
@@ -892,7 +974,9 @@
 <span class="c1">// }</span>
 </code></pre></div>
 <p>To learn more, see the <a href="https://github.com/DevExpress/testcafe-vue-selectors/blob/master/README.md">repository documentation</a>.</p>
-<h2><a class="anchor" name="aurelia"></a>Aurelia <a class="permalink" href="#aurelia">#</a></h2>
+
+<h2>Aurelia</h2>
+
 <p>The Aurelia selectors plugin allows you to select page elements by JS expressions to which the element&#39;s attributes are bound.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="nx">AureliaSelector</span> <span class="nx">from</span> <span class="s1">'testcafe-aurelia-selectors'</span><span class="p">;</span>
 

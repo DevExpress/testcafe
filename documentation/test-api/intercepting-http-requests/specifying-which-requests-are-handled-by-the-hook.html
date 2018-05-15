@@ -8,20 +8,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <title>Working with &lt;iframes&gt; | TestCafe</title>
+  <title>Specifying Which Requests are Handled by the Hook | TestCafe</title>
 
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
   
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/test-api/working-with-iframes.html" />
-  <meta property="og:title" content="Working with &lt;iframes&gt; | TestCafe" />
+  <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/specifying-which-requests-are-handled-by-the-hook.html" />
+  <meta property="og:title" content="Specifying Which Requests are Handled by the Hook | TestCafe" />
 
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
-  <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/test-api/working-with-iframes.html">
+  <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/specifying-which-requests-are-handled-by-the-hook.html">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="http://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
@@ -769,7 +769,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/intercepting-http-requests/specifying-which-requests-are-handled-by-the-hook.html"  >Specifying Which Requests are Handled by the Hook</a>
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/specifying-which-requests-are-handled-by-the-hook.html" class="active" >Specifying Which Requests are Handled by the Hook</a>
 		
     </li>
 
@@ -840,7 +840,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/working-with-iframes.html" class="active" >Working with &lt;iframes&gt;</a>
+<a href="/testcafe/documentation/test-api/working-with-iframes.html"  >Working with &lt;iframes&gt;</a>
 		
     </li>
 
@@ -884,68 +884,121 @@
 	<article class="doc">
 		<div class="post-content">
 
-			<h1>Working with &lt;iframes&gt;</h1>
+			<h1>Specifying Which Requests are Handled by the Hook</h1>
 
-<p>At any moment, a TestCafe test has its <a href="https://html.spec.whatwg.org/multipage/browsers.html#windows">browsing context</a>
-limited to either the main window or an <code>&lt;iframe&gt;</code>. To use an <code>&lt;iframe&gt;</code> in your test,
-you need to switch the context from the main window to this <code>&lt;iframe&gt;</code> (and then probably back).
-Likewise, if several <code>&lt;iframes&gt;</code> are involved in your test, you will have to switch between them.</p>
+<p>The request logger, mock and custom request hooks require specifying which requests they should handle and skip.</p>
 
-<p>To do this, use the <code>switchToIframe</code> and <code>switchToMainWindow</code> methods of the <a href="test-code-structure.md#test-controller">test controller</a>.</p>
+<p>You can set up this filtering by passing the <em>request filtering rules</em> to the hook. Note that you can pass a single rule or an array of rules.</p>
 
-<h2>Switching to an &lt;iframe&gt;</h2>
-<div class="highlight"><pre><code class="language-text" data-lang="text">t.switchToIframe( selector )
+<ul>
+<li><a href="#filtering-by-a-url">Filtering by a URL</a></li>
+<li><a href="#filtering-by-a-regular-expression">Filtering by a Regular Expression</a></li>
+<li><a href="#filtering-by-request-parameters">Filtering by Request Parameters</a></li>
+<li><a href="#filtering-by-a-predicate">Filtering by a Predicate</a></li>
+</ul>
+
+<h2>Filtering by a URL</h2>
+
+<p>Pass a string with a URL to intercept all requests sent to this URL.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">logger</span> <span class="o">=</span> <span class="nx">RequestLogger</span><span class="p">(</span><span class="s1">'http://example.com'</span><span class="p">);</span>
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">mock</span> <span class="o">=</span> <span class="nx">RequestMock</span><span class="p">()</span>
+    <span class="p">.</span><span class="nx">onRequestTo</span><span class="p">(</span><span class="s1">'http://external-service.com/api/'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">respond</span><span class="p">(</span><span class="cm">/*...*/</span><span class="p">);</span>
 </code></pre></div>
-<p>Switches the test&#39;s browsing context to the specified <code>&lt;iframe&gt;</code>.</p>
+<h2>Filtering by a Regular Expression</h2>
+
+<p>You can also specify a regular expression that matches the desired URLs.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">logger</span> <span class="o">=</span> <span class="nx">RequestLogger</span><span class="p">(</span><span class="sr">/.co.uk/</span><span class="p">);</span>
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">mock</span> <span class="o">=</span> <span class="nx">RequestMock</span><span class="p">()</span>
+    <span class="p">.</span><span class="nx">onRequestTo</span><span class="p">(</span><span class="s1">'/\/api\/users\//'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">respond</span><span class="p">(</span><span class="cm">/*...*/</span><span class="p">);</span>
+</code></pre></div>
+<h2>Filtering by Request Parameters</h2>
+
+<p>You can filter requests by combining the URL and the request method.</p>
+
+<p>In this instance, you need to use an object that contains the following fields:</p>
 
 <table><thead>
 <tr>
-<th>Parameter</th>
+<th>Property</th>
 <th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td><code>selector</code></td>
-<td>Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise</td>
-<td>Identifies an <code>&lt;iframe&gt;</code> on the tested page. See <a href="actions/README.md#selecting-target-elements">Selecting Target Elements</a>.</td>
+<td><code>url</code></td>
+<td>String</td>
+<td>A URL to which a request is sent.</td>
+</tr>
+<tr>
+<td><code>method</code></td>
+<td>String</td>
+<td>The request method.</td>
+</tr>
+<tr>
+<td><code>isAjax</code></td>
+<td>Boolean</td>
+<td>Specifies whether this is an AJAX request.</td>
 </tr>
 </tbody></table>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">logger</span> <span class="o">=</span> <span class="nx">RequestLogger</span><span class="p">({</span> <span class="na">url</span><span class="p">:</span> <span class="s1">'http://example.com'</span><span class="p">,</span> <span class="na">method</span><span class="p">:</span> <span class="s1">'GET'</span><span class="p">,</span> <span class="na">isAjax</span><span class="p">:</span> <span class="kc">false</span> <span class="p">});</span>
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">mock</span> <span class="o">=</span> <span class="nx">RequestMock</span><span class="p">()</span>
+    <span class="p">.</span><span class="nx">onRequestTo</span><span class="p">({</span> <span class="na">url</span><span class="p">:</span> <span class="s1">'http://external-service.com/api/'</span><span class="p">,</span> <span class="na">method</span><span class="p">:</span> <span class="s1">'POST'</span><span class="p">,</span> <span class="na">isAjax</span><span class="p">:</span> <span class="kc">true</span> <span class="p">})</span>
+    <span class="p">.</span><span class="nx">respond</span><span class="p">(</span><span class="cm">/*...*/</span><span class="p">);</span>
+</code></pre></div>
+<h2>Filtering by a Predicate</h2>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//example.com`;</span>
-
-<span class="nx">test</span><span class="p">(</span><span class="s1">'switching to an iframe'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">getLocation</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">href</span><span class="p">);</span>
-
-    <span class="c1">// NOTE: the ClientFunction will be executed in TOP window's context</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">await</span> <span class="nx">getLocation</span><span class="p">());</span>
-
-    <span class="nx">await</span> <span class="nx">t</span>
-        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#button-in-main-window'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">switchToIframe</span><span class="p">(</span><span class="s1">'#iframe-1'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#button-in-iframe-1'</span><span class="p">);</span>
-
-    <span class="c1">// NOTE: the ClientFunction will be executed in IFRAME window's context</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">await</span> <span class="nx">getLocation</span><span class="p">());</span>
+<p>You can get more request parameters using a predicate function and use them to determine whether to handle the request.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">logger</span> <span class="o">=</span> <span class="nx">RequestLogger</span><span class="p">(</span><span class="nx">request</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">request</span><span class="p">.</span><span class="nx">url</span> <span class="o">===</span> <span class="s1">'http://example.com'</span> <span class="o">&amp;&amp;</span>
+           <span class="nx">request</span><span class="p">.</span><span class="nx">method</span> <span class="o">===</span> <span class="s1">'post'</span> <span class="o">&amp;&amp;</span>
+           <span class="nx">request</span><span class="p">.</span><span class="nx">isAjax</span> <span class="o">&amp;&amp;</span>
+           <span class="nx">request</span><span class="p">.</span><span class="nx">body</span> <span class="o">===</span> <span class="s1">'{ test: true }'</span> <span class="o">&amp;&amp;</span>
+           <span class="nx">request</span><span class="p">.</span><span class="nx">headers</span><span class="p">[</span><span class="s1">'content-type'</span><span class="p">]</span> <span class="o">===</span> <span class="s1">'application/json'</span><span class="p">;</span>
 <span class="p">});</span>
 </code></pre></div>
-<h2>Switching Back to the Main Window</h2>
-<div class="highlight"><pre><code class="language-text" data-lang="text">t.switchToMainWindow()
-</code></pre></div>
-<p>Switches the test&#39;s browsing context from an <code>&lt;iframe&gt;</code> back to the main window.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//www.example.com/`;</span>
+<p>This predicate takes the <code>request</code> parameter that provides the following properties:</p>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'switching back to main window'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
-        <span class="p">.</span><span class="nx">switchToIframe</span><span class="p">(</span><span class="s1">'#iframe-1'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#button-in-iframe-1'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">switchToMainWindow</span><span class="p">()</span>
-        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#button-in-main-window'</span><span class="p">);</span>
-<span class="p">});</span>
-</code></pre></div>
+<table><thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>userAgent</code></td>
+<td>String</td>
+<td>The user agent that originated the request.</td>
+</tr>
+<tr>
+<td><code>url</code></td>
+<td>String</td>
+<td>The URL to which the request is sent.</td>
+</tr>
+<tr>
+<td><code>method</code></td>
+<td>String</td>
+<td>The request method.</td>
+</tr>
+<tr>
+<td><code>isAjax</code></td>
+<td>Boolean</td>
+<td>Specifies whether this is an AJAX request.</td>
+</tr>
+<tr>
+<td><code>headers</code></td>
+<td>Object</td>
+<td>The request headers in the property-value form.</td>
+</tr>
+<tr>
+<td><code>body</code></td>
+<td>String</td>
+<td>A stringified request body.</td>
+</tr>
+</tbody></table>
+
 
 		</div>
 		<div class="widget-container hidden">

@@ -464,6 +464,24 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#specifying-testing-metadata"  >Specifying Testing Metadata</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#using-metadata-in-reports"  >Using Metadata in Reports</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/test-api/test-code-structure.html#initialization-and-clean-up"  >Initialization and Clean-Up</a>
 		
 			<ul>
@@ -723,6 +741,59 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/"  >Intercepting HTTP Requests</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/logging-http-requests.html"  >Logging HTTP Requests</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/mocking-http-responses.html"  >Mocking HTTP Responses</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html"  >Creating a Custom HTTP Request Hook</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/specifying-which-requests-are-handled-by-the-hook.html"  >Specifying Which Requests are Handled by the Hook</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/attaching-hooks-to-tests-and-fixtures.html"  >Attaching Hooks to Tests and Fixtures</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/requestoptions-object.html"  >requestOptions Object</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/test-api/waiting-for-page-elements-to-appear.html"  >Waiting for Page Elements to Appear</a>
 		
     </li>
@@ -814,6 +885,7 @@
 		<div class="post-content">
 
 			<h1>Functional-Style Selectors</h1>
+
 <p>The selector API provides methods used to filter the selector matching set and search for nodes through the DOM tree.
 These methods can be used in a chain for a functional-style selection mechanism.</p>
 
@@ -841,11 +913,15 @@ These methods can be used in a chain for a functional-style selection mechanism.
 </ul></li>
 <li><a href="#examples">Examples</a></li>
 </ul>
-<h2><a class="anchor" name="filter-dom-nodes"></a>Filter DOM Nodes <a class="permalink" href="#filter-dom-nodes">#</a></h2>
+
+<h2>Filter DOM Nodes</h2>
+
 <p>If a selector returns multiple DOM nodes, you can filter them to select
 a single node that will eventually be returned by the selector.
 The selector provides methods to filter DOM nodes by their index, text, attributes, etc.</p>
-<h3><a class="anchor" name="nth"></a>nth <a class="permalink" href="#nth">#</a></h3>
+
+<h3>nth</h3>
+
 <table><thead>
 <tr>
 <th>Method</th>
@@ -859,7 +935,9 @@ The selector provides methods to filter DOM nodes by their index, text, attribut
 <td>Finds an element by its index in the matching set. The <code>index</code> parameter is zero-based. If <code>index</code> is negative, the index is counted from the end of the matching set.</td>
 </tr>
 </tbody></table>
-<h3><a class="anchor" name="withtext"></a>withText <a class="permalink" href="#withtext">#</a></h3>
+
+<h3>withText</h3>
+
 <table><thead>
 <tr>
 <th>Method</th>
@@ -878,7 +956,9 @@ The selector provides methods to filter DOM nodes by their index, text, attribut
 <td>Creates a selector that filters a matching set using the specified regular expression.</td>
 </tr>
 </tbody></table>
-<h3><a class="anchor" name="withexacttext"></a>withExactText <a class="permalink" href="#withexacttext">#</a></h3>
+
+<h3>withExactText</h3>
+
 <table><thead>
 <tr>
 <th>Method</th>
@@ -892,7 +972,9 @@ The selector provides methods to filter DOM nodes by their index, text, attribut
 <td>Creates a selector that filters a matching set by the specified text. Selects elements whose text content <em>strictly matches</em> this text. To search for elements that <em>contain</em> a specific text, use the <code>withText</code> method. The <code>text</code> parameter is case-sensitive.</td>
 </tr>
 </tbody></table>
-<h3><a class="anchor" name="withattribute"></a>withAttribute <a class="permalink" href="#withattribute">#</a></h3>
+
+<h3>withAttribute</h3>
+
 <table><thead>
 <tr>
 <th>Method</th>
@@ -929,7 +1011,9 @@ The selector provides methods to filter DOM nodes by their index, text, attribut
 </tbody></table>
 
 <p>If <code>attrName</code> or <code>attrValue</code> is a String, <code>withAttribute</code> selects an element by strict match.</p>
-<h4><a class="anchor" name="filtervisible"></a>filterVisible <a class="permalink" href="#filtervisible">#</a></h4>
+
+<h4>filterVisible</h4>
+
 <table><thead>
 <tr>
 <th>Method</th>
@@ -943,7 +1027,9 @@ The selector provides methods to filter DOM nodes by their index, text, attribut
 <td>Creates a selector that filters a matching set leaving only visible elements. These are elements that <em>do not</em> have <code>display: none</code> or <code>visibility: hidden</code> CSS properties and have non-zero width and height.</td>
 </tr>
 </tbody></table>
-<h4><a class="anchor" name="filterhidden"></a>filterHidden <a class="permalink" href="#filterhidden">#</a></h4>
+
+<h4>filterHidden</h4>
+
 <table><thead>
 <tr>
 <th>Method</th>
@@ -957,7 +1043,9 @@ The selector provides methods to filter DOM nodes by their index, text, attribut
 <td>Creates a selector that filters a matching set leaving only hidden elements. These are elements that have a <code>display: none</code> or <code>visibility: hidden</code> CSS property or zero width or height.</td>
 </tr>
 </tbody></table>
-<h3><a class="anchor" name="filter"></a>filter <a class="permalink" href="#filter">#</a></h3>
+
+<h3>filter</h3>
+
 <table><thead>
 <tr>
 <th>Method</th>
@@ -999,7 +1087,7 @@ The selector provides methods to filter DOM nodes by their index, text, attribut
     <span class="c1">// idx === index of the current &lt;ul&gt; node</span>
 <span class="p">});</span>
 </code></pre></div>
-<p>The <a href="../../obtaining-data-from-the-client/#optionsdependencies">dependencies parameter</a> allows
+<p>The <a href="../../obtaining-data-from-the-client/README.md#optionsdependencies">dependencies parameter</a> allows
 you to pass objects to the <code>filterFn</code> client-side scope where they appear as variables.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">isNodeOk</span> <span class="o">=</span> <span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/*...*/</span> <span class="p">};</span>
 
@@ -1025,9 +1113,13 @@ you to pass objects to the <code>filterFn</code> client-side scope where they ap
 <span class="p">});</span>
 </code></pre></div>
 <p>If all nodes are filtered out, the selector returns <code>null</code>.</p>
-<h2><a class="anchor" name="search-for-elements-in-the-dom-hierarchy"></a>Search for Elements in the DOM Hierarchy <a class="permalink" href="#search-for-elements-in-the-dom-hierarchy">#</a></h2>
+
+<h2>Search for Elements in the DOM Hierarchy</h2>
+
 <p>The selector API provides methods to find elements in a DOM hierarchy in jQuery style.</p>
-<h3><a class="anchor" name="find"></a>find <a class="permalink" href="#find">#</a></h3>
+
+<h3>find</h3>
+
 <table><thead>
 <tr>
 <th>Method</th>
@@ -1043,7 +1135,9 @@ you to pass objects to the <code>filterFn</code> client-side scope where they ap
 <td>Finds all descendants of all nodes in the matching set and filters them using <code>filterFn</code> predicate. Use an optional <code>dependencies</code> parameter to pass functions, variables or objects to the <code>filterFn</code> function. See <a href="#filtering-dom-elements-by-predicates">Filtering DOM Elements by Predicates</a>.</td>
 </tr>
 </tbody></table>
-<h3><a class="anchor" name="parent"></a>parent <a class="permalink" href="#parent">#</a></h3>
+
+<h3>parent</h3>
+
 <table><thead>
 <tr>
 <th>Method</th>
@@ -1067,7 +1161,9 @@ you to pass objects to the <code>filterFn</code> client-side scope where they ap
 <td>Finds all parents of all nodes in the matching set and filters them by the <code>filterFn</code> predicate. Use an optional <code>dependencies</code> parameter to pass functions, variables or objects to the <code>filterFn</code> function. See <a href="#filtering-dom-elements-by-predicates">Filtering DOM Elements by Predicates</a>.</td>
 </tr>
 </tbody></table>
-<h3><a class="anchor" name="child"></a>child <a class="permalink" href="#child">#</a></h3>
+
+<h3>child</h3>
+
 <table><thead>
 <tr>
 <th>Method</th>
@@ -1091,8 +1187,13 @@ you to pass objects to the <code>filterFn</code> client-side scope where they ap
 <td>Finds all child elements (not nodes) of all nodes in the matching set and filters them by the <code>filterFn</code> predicate. Use an optional <code>dependencies</code> parameter to pass functions, variables or objects to the <code>filterFn</code> function. See <a href="#filtering-dom-elements-by-predicates">Filtering DOM Elements by Predicates</a>.</td>
 </tr>
 </tbody></table>
-<blockquote class="important"><div class="blockquote-content"><p>To know how to access child nodes, see <a href="../../obtaining-data-from-the-client/examples-of-using-client-functions.html#accessing-child-nodes-in-the-dom-hierarchy">Accessing Child Nodes in the DOM Hierarchy</a>.</p>
-</div></blockquote><h3><a class="anchor" name="sibling"></a>sibling <a class="permalink" href="#sibling">#</a></h3>
+
+<blockquote>
+<p>Important! To know how to access child nodes, see <a href="../../obtaining-data-from-the-client/examples-of-using-client-functions.md#accessing-child-nodes-in-the-dom-hierarchy">Accessing Child Nodes in the DOM Hierarchy</a>.</p>
+</blockquote>
+
+<h3>sibling</h3>
+
 <table><thead>
 <tr>
 <th>Method</th>
@@ -1116,7 +1217,9 @@ you to pass objects to the <code>filterFn</code> client-side scope where they ap
 <td>Finds all sibling elements (not nodes) of all nodes in the matching set and filters them by the <code>filterFn</code> predicate. Use an optional <code>dependencies</code> parameter to pass functions, variables or objects to the <code>filterFn</code> function. See <a href="#filtering-dom-elements-by-predicates">Filtering DOM Elements by Predicates</a>.</td>
 </tr>
 </tbody></table>
-<h3><a class="anchor" name="nextsibling"></a>nextSibling <a class="permalink" href="#nextsibling">#</a></h3>
+
+<h3>nextSibling</h3>
+
 <table><thead>
 <tr>
 <th>Method</th>
@@ -1140,7 +1243,9 @@ you to pass objects to the <code>filterFn</code> client-side scope where they ap
 <td>Finds all succeeding sibling elements (not nodes) of all nodes in the matching set and filters them by the <code>filterFn</code> predicate. Use an optional <code>dependencies</code> parameter to pass functions, variables or objects to the <code>filterFn</code> function. See <a href="#filtering-dom-elements-by-predicates">Filtering DOM Elements by Predicates</a>.</td>
 </tr>
 </tbody></table>
-<h3><a class="anchor" name="prevsibling"></a>prevSibling <a class="permalink" href="#prevsibling">#</a></h3>
+
+<h3>prevSibling</h3>
+
 <table><thead>
 <tr>
 <th>Method</th>
@@ -1164,7 +1269,9 @@ you to pass objects to the <code>filterFn</code> client-side scope where they ap
 <td>Finds all preceding sibling elements (not nodes) of all nodes in the matching set and filters them by the <code>filterFn</code> predicate. Use an optional <code>dependencies</code> parameter to pass functions, variables or objects to the <code>filterFn</code> function. See <a href="#filtering-dom-elements-by-predicates">Filtering DOM Elements by Predicates</a>.</td>
 </tr>
 </tbody></table>
-<h3><a class="anchor" name="filtering-dom-elements-by-predicates"></a>Filtering DOM Elements by Predicates <a class="permalink" href="#filtering-dom-elements-by-predicates">#</a></h3>
+
+<h3>Filtering DOM Elements by Predicates</h3>
+
 <p>Functions that search for elements through the DOM tree allow you to filter the matching set by a <code>filterFn</code> predicate.</p>
 
 <p>The <code>filterFn</code> predicate is executed on the client. It takes the following parameters.</p>
@@ -1194,22 +1301,24 @@ you to pass objects to the <code>filterFn</code> client-side scope where they ap
     <span class="c1">// originNode === the &lt;section&gt; element</span>
 <span class="p">});</span>
 </code></pre></div>
-<p>The <a href="../../obtaining-data-from-the-client/#optionsdependencies">dependencies parameter</a> allows
+<p>The <a href="../../obtaining-data-from-the-client/README.md#optionsdependencies">dependencies parameter</a> allows
 you to pass objects to the <code>filterFn</code> client-side scope where they appear as variables.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">isNodeOk</span> <span class="o">=</span> <span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">,</span> <span class="nx">originNode</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/*...*/</span> <span class="p">};</span>
 
 <span class="nx">Selector</span><span class="p">(</span><span class="s1">'ul'</span><span class="p">).</span><span class="nx">prevSibling</span><span class="p">((</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">,</span> <span class="nx">originNode</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">isNodeOk</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">,</span> <span class="nx">originNode</span><span class="p">);</span>
 <span class="p">},</span> <span class="p">{</span> <span class="nx">isNodeOk</span> <span class="p">});</span>
-</code></pre></div><h2><a class="anchor" name="examples"></a>Examples <a class="permalink" href="#examples">#</a></h2><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">Selector</span><span class="p">(</span><span class="s1">'ul'</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">'label'</span><span class="p">).</span><span class="nx">parent</span><span class="p">(</span><span class="s1">'div.someClass'</span><span class="p">)</span>
+</code></pre></div>
+<h2>Examples</h2>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">Selector</span><span class="p">(</span><span class="s1">'ul'</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">'label'</span><span class="p">).</span><span class="nx">parent</span><span class="p">(</span><span class="s1">'div.someClass'</span><span class="p">)</span>
 </code></pre></div>
 <p>Finds all <code>ul</code> elements on page. Then, in each found <code>ul</code> element finds <code>label</code> elements.
 Then, for each <code>label</code> element finds a parent that matches the <code>div.someClass</code> selector.</p>
 
 <hr>
 
-<p>Like in jQuery, if you request a <a href="../dom-node-state.html#members-common-across-all-nodes">property</a> of the matching set or try to evaluate
-a <a href="using-selectors.html#dom-node-snapshot">snapshot</a>, the selector returns values for the first element in the set.</p>
+<p>Like in jQuery, if you request a <a href="../dom-node-state.md#members-common-across-all-nodes">property</a> of the matching set or try to evaluate
+a <a href="using-selectors.md#dom-node-snapshot">snapshot</a>, the selector returns values for the first element in the set.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// Returns id of the first element in the set</span>
 <span class="kr">const</span> <span class="nx">id</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'ul'</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">'label'</span><span class="p">).</span><span class="nx">parent</span><span class="p">(</span><span class="s1">'div.someClass'</span><span class="p">).</span><span class="nx">id</span><span class="p">;</span>
 

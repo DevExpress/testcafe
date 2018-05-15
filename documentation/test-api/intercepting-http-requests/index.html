@@ -8,20 +8,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <title>Working with &lt;iframes&gt; | TestCafe</title>
+  <title>Intercepting HTTP Requests | TestCafe</title>
 
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
   
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/test-api/working-with-iframes.html" />
-  <meta property="og:title" content="Working with &lt;iframes&gt; | TestCafe" />
+  <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/" />
+  <meta property="og:title" content="Intercepting HTTP Requests | TestCafe" />
 
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
-  <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/test-api/working-with-iframes.html">
+  <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="http://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
@@ -741,7 +741,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/intercepting-http-requests/"  >Intercepting HTTP Requests</a>
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/" class="active" >Intercepting HTTP Requests</a>
 		
 			<ul>
 
@@ -840,7 +840,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/working-with-iframes.html" class="active" >Working with &lt;iframes&gt;</a>
+<a href="/testcafe/documentation/test-api/working-with-iframes.html"  >Working with &lt;iframes&gt;</a>
 		
     </li>
 
@@ -884,68 +884,129 @@
 	<article class="doc">
 		<div class="post-content">
 
-			<h1>Working with &lt;iframes&gt;</h1>
+			<h1>Intercepting HTTP Requests</h1>
 
-<p>At any moment, a TestCafe test has its <a href="https://html.spec.whatwg.org/multipage/browsers.html#windows">browsing context</a>
-limited to either the main window or an <code>&lt;iframe&gt;</code>. To use an <code>&lt;iframe&gt;</code> in your test,
-you need to switch the context from the main window to this <code>&lt;iframe&gt;</code> (and then probably back).
-Likewise, if several <code>&lt;iframes&gt;</code> are involved in your test, you will have to switch between them.</p>
+<p>This section describes how to handle HTTP requests in your tests. TestCafe allows you to log them and mock the responses out of the box. You can also create a custom HTTP request hook, which allows you, for instance, to emulate authentications like <strong>Kerberos</strong> or <strong>Client Certificate Authentication</strong>.</p>
 
-<p>To do this, use the <code>switchToIframe</code> and <code>switchToMainWindow</code> methods of the <a href="test-code-structure.md#test-controller">test controller</a>.</p>
+<ul>
+<li><a href="logging-http-requests.md">Logging HTTP Requests</a></li>
+<li><a href="mocking-http-responses.md">Mocking HTTP Responses</a></li>
+<li><a href="creating-a-custom-http-request-hook.md">Creating a Custom HTTP Request Hook</a></li>
+<li><a href="specifying-which-requests-are-handled-by-the-hook.md">Specifying Which Requests are Handled by the Hook</a></li>
+<li><a href="attaching-hooks-to-tests-and-fixtures.md">Attaching Hooks to Tests and Fixtures</a></li>
+</ul>
 
-<h2>Switching to an &lt;iframe&gt;</h2>
-<div class="highlight"><pre><code class="language-text" data-lang="text">t.switchToIframe( selector )
-</code></pre></div>
-<p>Switches the test&#39;s browsing context to the specified <code>&lt;iframe&gt;</code>.</p>
+<h2>Logging HTTP Requests</h2>
 
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><code>selector</code></td>
-<td>Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise</td>
-<td>Identifies an <code>&lt;iframe&gt;</code> on the tested page. See <a href="actions/README.md#selecting-target-elements">Selecting Target Elements</a>.</td>
-</tr>
-</tbody></table>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<p>You can use the request logger to record HTTP requests the tested web app sends and responses it receives. For instance, you may want to make sure that the data from a remote service is correct. In this example, the test checks the DevExpress grid control&#39;s data.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span><span class="p">,</span> <span class="nx">RequestLogger</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<span class="kr">import</span> <span class="nx">fs</span> <span class="nx">from</span> <span class="s1">'fs'</span><span class="p">;</span>
+<span class="kr">import</span> <span class="nx">path</span> <span class="nx">from</span> <span class="s1">'path'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//example.com`;</span>
+<span class="kr">const</span> <span class="nx">url</span> <span class="o">=</span> <span class="s1">'https://demos.devexpress.com/ASPxGridViewDemos/Exporting/Exporting.aspx'</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'switching to an iframe'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">getLocation</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">href</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">logger</span> <span class="o">=</span> <span class="nx">RequestLogger</span><span class="p">({</span> <span class="nx">url</span><span class="p">,</span> <span class="na">method</span><span class="p">:</span> <span class="s1">'post'</span> <span class="p">},</span> <span class="p">{</span>
+    <span class="na">logResponseHeaders</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="na">logResponseBody</span><span class="p">:</span>    <span class="kc">true</span>
+<span class="p">});</span>
 
-    <span class="c1">// NOTE: the ClientFunction will be executed in TOP window's context</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">await</span> <span class="nx">getLocation</span><span class="p">());</span>
+<span class="nx">fixture</span> <span class="err">`</span><span class="nx">Export</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="nx">url</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">requestHooks</span><span class="p">(</span><span class="nx">logger</span><span class="p">);</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="s1">'export to csv'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">const</span> <span class="nx">exportToCSVButton</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'span'</span><span class="p">).</span><span class="nx">withText</span><span class="p">(</span><span class="s1">'Export to CSV'</span><span class="p">);</span>
 
     <span class="nx">await</span> <span class="nx">t</span>
-        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#button-in-main-window'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">switchToIframe</span><span class="p">(</span><span class="s1">'#iframe-1'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#button-in-iframe-1'</span><span class="p">);</span>
+        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">exportToCSVButton</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">logger</span><span class="p">.</span><span class="nx">contains</span><span class="p">(</span><span class="nx">r</span> <span class="o">=&gt;</span> <span class="nx">r</span><span class="p">.</span><span class="nx">response</span><span class="p">.</span><span class="nx">statusCode</span> <span class="o">===</span> <span class="mi">200</span><span class="p">)).</span><span class="nx">ok</span><span class="p">();</span>
 
-    <span class="c1">// NOTE: the ClientFunction will be executed in IFRAME window's context</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">await</span> <span class="nx">getLocation</span><span class="p">());</span>
+    <span class="c1">// After clicking 'Export', the response comes as a gziped CSV.</span>
+    <span class="c1">// The browser unpacks the archive and gives you the file that was inside.</span>
+    <span class="c1">// The test receives the archive as is.</span>
+    <span class="kr">const</span> <span class="nx">filePath</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="s1">'exported-grid.zip'</span><span class="p">);</span>
+
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">filePath</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">logger</span><span class="p">.</span><span class="nx">requests</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">response</span><span class="p">.</span><span class="nx">headers</span><span class="p">);</span>
+
+    <span class="nx">fs</span><span class="p">.</span><span class="nx">writeFileSync</span><span class="p">(</span><span class="nx">filePath</span><span class="p">,</span> <span class="nx">logger</span><span class="p">.</span><span class="nx">requests</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">response</span><span class="p">.</span><span class="nx">body</span><span class="p">);</span>
+
+    <span class="c1">// Here you can use 3rd party modules to</span>
+    <span class="c1">// unpack the archive, parse CSV and check the data.</span>
+    <span class="c1">// Or you can just manually verify the file.</span>
 <span class="p">});</span>
 </code></pre></div>
-<h2>Switching Back to the Main Window</h2>
-<div class="highlight"><pre><code class="language-text" data-lang="text">t.switchToMainWindow()
-</code></pre></div>
-<p>Switches the test&#39;s browsing context from an <code>&lt;iframe&gt;</code> back to the main window.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//www.example.com/`;</span>
+<p>See <a href="logging-http-requests.md">Logging HTTP Requests</a> for more information.</p>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'switching back to main window'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<h2>Mocking HTTP Responses</h2>
+
+<p>Use TestCafe request mocker to substitute infrastructure that is difficult to deploy or that you do not want to use when testing. This can be a third-party service that charges you per pageview or an analytics service that should not log page views tests generate.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span><span class="p">,</span> <span class="nx">RequestMock</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+
+<span class="c1">// A URL to which Google Analytics sends data.</span>
+<span class="kr">const</span> <span class="nx">collectDataGoogleAnalyticsRegExp</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">RegExp</span><span class="p">(</span><span class="s1">'https://www.google-analytics.com/collect'</span><span class="p">);</span>
+
+<span class="c1">// Technically, Google Analytics sends an XHR request for a GIF image.</span>
+<span class="c1">// So, we prepare a mocked response with binary data.</span>
+<span class="kr">const</span> <span class="nx">mockedResponse</span> <span class="o">=</span> <span class="nx">Buffer</span><span class="p">.</span><span class="nx">from</span><span class="p">([</span><span class="mh">0x47</span><span class="p">,</span> <span class="mh">0x49</span><span class="p">,</span> <span class="mh">0x46</span><span class="p">,</span> <span class="mh">0x38</span><span class="p">,</span> <span class="mh">0x39</span><span class="p">,</span> <span class="mh">0x61</span><span class="p">,</span> <span class="mh">0x01</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x01</span><span class="p">]);</span>
+
+<span class="kr">const</span> <span class="nx">mock</span> <span class="o">=</span> <span class="nx">RequestMock</span><span class="p">()</span>
+    <span class="p">.</span><span class="nx">onRequestTo</span><span class="p">(</span><span class="nx">collectDataGoogleAnalyticsRegExp</span><span class="p">)</span>
+
+    <span class="c1">// We respond to Analytics requests with the prepared data</span>
+    <span class="c1">// represented as a GIF image and change the status code to 202.</span>
+    <span class="p">.</span><span class="nx">respond</span><span class="p">(</span><span class="nx">mockedResponse</span><span class="p">,</span> <span class="mi">202</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s1">'content-length'</span><span class="p">:</span> <span class="nx">mockedResponse</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span>
+        <span class="s1">'content-type'</span><span class="p">:</span> <span class="s1">'image/gif'</span>
+    <span class="p">});</span>
+
+<span class="nx">fixture</span> <span class="err">`</span><span class="nx">Fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="s1">'https://devexpress.github.io/testcafe/'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">requestHooks</span><span class="p">(</span><span class="nx">mock</span><span class="p">);</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="s1">'basic'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">await</span> <span class="nx">t</span>
-        <span class="p">.</span><span class="nx">switchToIframe</span><span class="p">(</span><span class="s1">'#iframe-1'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#button-in-iframe-1'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">switchToMainWindow</span><span class="p">()</span>
-        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#button-in-main-window'</span><span class="p">);</span>
+        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'.get-started-button'</span><span class="p">)</span>
+
+        <span class="c1">// During the pause, you can open DevTools and</span>
+        <span class="c1">// find the request sent to Analytics</span>
+        <span class="c1">// and the mocked response received.</span>
+        <span class="p">.</span><span class="nx">debug</span><span class="p">();</span>
 <span class="p">});</span>
 </code></pre></div>
+<p>See <a href="mocking-http-responses.md">Mocking HTTP Responses</a> for more information.</p>
+
+<h2>Creating a Custom HTTP Request Hook</h2>
+
+<p>You can create your own request hook to handle HTTP requests.</p>
+
+<p>The example below shows a custom hook that adds the <code>Authorization</code> header for <a href="https://tools.ietf.org/html/rfc7519">JWT</a> bearer authorization.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span><span class="p">,</span> <span class="nx">RequestHook</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+
+<span class="kr">class</span> <span class="nx">JwtBearerAuthorization</span> <span class="kr">extends</span> <span class="nx">RequestHook</span> <span class="p">{</span>
+    <span class="nx">constructor</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="c1">// No URL filtering applied to this hook</span>
+        <span class="c1">// so it will be used for all requests.</span>
+        <span class="kr">super</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="nx">onRequest</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">e</span><span class="p">.</span><span class="nx">requestOptions</span><span class="p">.</span><span class="nx">headers</span><span class="p">[</span><span class="s1">'Authorization'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'generate token here'</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kr">const</span> <span class="nx">jwtBearerAuthorization</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">JwtBearerAuthorization</span><span class="p">();</span>
+
+<span class="nx">fixture</span> <span class="err">`</span><span class="nx">Fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="s1">'&lt;website URL&gt;'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">requestHooks</span><span class="p">(</span><span class="nx">jwtBearerAuthorization</span><span class="p">);</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="s1">'basic'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="cm">/* some actions */</span>
+<span class="p">});</span>
+</code></pre></div>
+<p>See <a href="creating-a-custom-http-request-hook.md">Creating a Custom HTTP Request Hook</a> for more information.</p>
+
 
 		</div>
 		<div class="widget-container hidden">

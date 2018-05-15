@@ -464,6 +464,24 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#specifying-testing-metadata"  >Specifying Testing Metadata</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#using-metadata-in-reports"  >Using Metadata in Reports</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/test-api/test-code-structure.html#initialization-and-clean-up"  >Initialization and Clean-Up</a>
 		
 			<ul>
@@ -723,6 +741,59 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/"  >Intercepting HTTP Requests</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/logging-http-requests.html"  >Logging HTTP Requests</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/mocking-http-responses.html"  >Mocking HTTP Responses</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html"  >Creating a Custom HTTP Request Hook</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/specifying-which-requests-are-handled-by-the-hook.html"  >Specifying Which Requests are Handled by the Hook</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/attaching-hooks-to-tests-and-fixtures.html"  >Attaching Hooks to Tests and Fixtures</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/requestoptions-object.html"  >requestOptions Object</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/test-api/waiting-for-page-elements-to-appear.html"  >Waiting for Page Elements to Appear</a>
 		
     </li>
@@ -814,6 +885,7 @@
 		<div class="post-content">
 
 			<h1>Examples of Using Client Functions</h1>
+
 <p>This topic describes examples of using client functions in tests.</p>
 
 <ul>
@@ -823,10 +895,12 @@
 <li><a href="#accessing-child-nodes-in-the-dom-hierarchy">Accessing Child Nodes in the DOM Hierarchy</a></li>
 <li><a href="#complex-dom-queries">Complex DOM Queries</a></li>
 </ul>
-<h2><a class="anchor" name="checking-a-page-url"></a>Checking a Page URL <a class="permalink" href="#checking-a-page-url">#</a></h2>
+
+<h2>Checking a Page URL</h2>
+
 <p>When performing certain actions on a tested web page (clicking buttons or links), it can redirect a browser to another page and you need to check if the desired page is open. For example, you are testing your web application&#39;s login form and need to verify if a particular web page opens after a user logs in.</p>
 
-<p>You can create a client function and use the <a href="https://www.w3schools.com/jsref/prop_loc_href.asp">window.location.href</a> property within it to return the URL of a page that is open on the client and then verify if the actual page URL matches the expected one using an <a href="../assertions/">assertion</a>. The sample below demonstrates how to do this.</p>
+<p>You can create a client function and use the <a href="https://www.w3schools.com/jsref/prop_loc_href.asp">window.location.href</a> property within it to return the URL of a page that is open on the client and then verify if the actual page URL matches the expected one using an <a href="../assertions/README.md">assertion</a>. The sample below demonstrates how to do this.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
 <span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">Fixture</span><span class="err">`</span>
@@ -841,8 +915,10 @@
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">)</span> <span class="c1">//Redirects to the 'Thank you' page</span>
         <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">getPageUrl</span><span class="p">()).</span><span class="nx">contains</span><span class="p">(</span><span class="s1">'thank-you'</span><span class="p">);</span> <span class="c1">//Checks if the current page URL contains the 'thank-you' string</span>
 <span class="p">});</span>
-</code></pre></div><h2><a class="anchor" name="obtaining-a-browser-alias-within-a-test"></a>Obtaining a Browser Alias Within a Test <a class="permalink" href="#obtaining-a-browser-alias-within-a-test">#</a></h2>
-<p>Sometimes you may need to determine a browser&#39;s alias from within a test. For example, you configured a test tasks using the <a href="../../using-testcafe/programming-interface/testcafe.html#createrunner">testCafe.createRunner</a> function and specified several browsers where the test should run: <code>runner.browsers([&#39;safari&#39;,&#39;chrome&#39;])</code>. However, the test logic should be different for different browsers. To do this, you need to detect which test instance corresponds to <code>safari</code> and which one corresponds to <code>chrome</code>.</p>
+</code></pre></div>
+<h2>Obtaining a Browser Alias Within a Test</h2>
+
+<p>Sometimes you may need to determine a browser&#39;s alias from within a test. For example, you configured a test tasks using the <a href="../../using-testcafe/programming-interface/testcafe.md#createrunner">testCafe.createRunner</a> function and specified several browsers where the test should run: <code>runner.browsers([&#39;safari&#39;,&#39;chrome&#39;])</code>. However, the test logic should be different for different browsers. To do this, you need to detect which test instance corresponds to <code>safari</code> and which one corresponds to <code>chrome</code>.</p>
 
 <p>To obtain a browser&#39;s alias, create a client function that uses the <a href="https://www.w3schools.com/jsref/prop_nav_useragent.asp">navigator.userAgent</a> property. This function returns the browser&#39;s user-agent header, and you can use external modules (for example, <a href="https://github.com/faisalman/ua-parser-js">ua-parser-js</a>) to parse this header.</p>
 
@@ -872,7 +948,9 @@
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'The browser is Safari'</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">});</span>
-</code></pre></div><h2><a class="anchor" name="injecting-external-libraries-into-a-page-from-a-test"></a>Injecting External Libraries into a Page from a Test <a class="permalink" href="#injecting-external-libraries-into-a-page-from-a-test">#</a></h2>
+</code></pre></div>
+<h2>Injecting External Libraries into a Page from a Test</h2>
+
 <p>Another example is using client functions to inject external libraries like <a href="https://jquery.com/">jQuery</a> into a tested page.</p>
 
 <p>To work with jQuery from a test, you first need to place the jQuery library file in the test directory. After that, add the library&#39;s code to the tested page using the <code>eval</code> method and use jQuery in the test within a client function. The following sample demonstrates this.</p>
@@ -893,7 +971,9 @@
 
     <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">getElementText</span><span class="p">()).</span><span class="nx">contains</span><span class="p">(</span><span class="s1">'What is your primary Operating System'</span><span class="p">);</span>
 <span class="p">});</span>
-</code></pre></div><h2><a class="anchor" name="accessing-child-nodes-in-the-dom-hierarchy"></a>Accessing Child Nodes in the DOM Hierarchy <a class="permalink" href="#accessing-child-nodes-in-the-dom-hierarchy">#</a></h2>
+</code></pre></div>
+<h2>Accessing Child Nodes in the DOM Hierarchy</h2>
+
 <p>You can use client functions to access child nodes in a DOM hierarchy and obtain their properties.</p>
 
 <p>For instance, you are testing the <em>example.html</em> page with the following HTML code ...</p>
@@ -923,8 +1003,13 @@
 <span class="nx">test</span><span class="p">(</span><span class="s1">'My Test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">getChildNodeText</span><span class="p">(</span><span class="mi">0</span><span class="p">)).</span><span class="nx">contains</span><span class="p">(</span><span class="s1">'This is my tested page.'</span><span class="p">);</span>
 <span class="p">});</span>
-</code></pre></div><blockquote><div class="blockquote-content"><p>Note that the <code>getChildNodeText</code> client function uses the <code>testedPage</code> selector that is passed to it as a dependency. See <a href="../obtaining-data-from-the-client.html#optionsdependencies">options.dependencies</a> for more information.</p>
-</div></blockquote><h2><a class="anchor" name="complex-dom-queries"></a>Complex DOM Queries <a class="permalink" href="#complex-dom-queries">#</a></h2>
+</code></pre></div>
+<blockquote>
+<p>Note that the <code>getChildNodeText</code> client function uses the <code>testedPage</code> selector that is passed to it as a dependency. See <a href="../obtaining-data-from-the-client.md#optionsdependencies">options.dependencies</a> for more information.</p>
+</blockquote>
+
+<h2>Complex DOM Queries</h2>
+
 <p>Client functions can be helpful for complex DOM queries. For example, a tested page contains a table with some data, and you need to validate data from two columns only. To do this, obtain data from these columns, push them to an array and then compare the returned array with the expected one.</p>
 
 <p>Below is a sample test for the <a href="https://js.devexpress.com/">https://js.devexpress.com/</a> page that contains a grid. The sample demonstrates how to create a client function that returns an array containing data from the grid’s <strong>Customer</strong> and <strong>Sale Amount</strong> columns.</p>
@@ -942,7 +1027,7 @@
             <span class="kr">const</span> <span class="nx">saleAmount</span> <span class="o">=</span> <span class="nx">elements</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">textContent</span><span class="p">;</span>
 
             <span class="k">if</span> <span class="p">(</span><span class="nx">customerName</span> <span class="o">&amp;&amp;</span> <span class="nx">saleAmount</span><span class="p">)</span>
-                <span class="nx">array</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="err">`</span><span class="nx">Customer</span> <span class="nx">$</span><span class="p">{</span><span class="nx">customerName</span><span class="p">}:</span> <span class="nx">$</span><span class="p">{</span><span class="nx">saleAmount</span><span class="p">}</span><span class="err">`</span><span class="p">);</span>
+                <span class="nx">array</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="err">`</span><span class="nx">Customer</span> <span class="nx">$</span><span class="p">{</span><span class="nx">customerName</span><span class="p">}</span><span class="err">:</span> <span class="nx">$</span><span class="p">{</span><span class="nx">saleAmount</span><span class="p">}</span><span class="err">`</span><span class="p">);</span>
         <span class="p">}</span>
 
         <span class="k">return</span> <span class="nx">array</span><span class="p">;</span>

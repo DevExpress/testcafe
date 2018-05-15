@@ -464,6 +464,24 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#specifying-testing-metadata"  >Specifying Testing Metadata</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#using-metadata-in-reports"  >Using Metadata in Reports</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/test-api/test-code-structure.html#initialization-and-clean-up"  >Initialization and Clean-Up</a>
 		
 			<ul>
@@ -723,6 +741,59 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/"  >Intercepting HTTP Requests</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/logging-http-requests.html"  >Logging HTTP Requests</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/mocking-http-responses.html"  >Mocking HTTP Responses</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html"  >Creating a Custom HTTP Request Hook</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/specifying-which-requests-are-handled-by-the-hook.html"  >Specifying Which Requests are Handled by the Hook</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/attaching-hooks-to-tests-and-fixtures.html"  >Attaching Hooks to Tests and Fixtures</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/requestoptions-object.html"  >requestOptions Object</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/test-api/waiting-for-page-elements-to-appear.html"  >Waiting for Page Elements to Appear</a>
 		
     </li>
@@ -814,9 +885,10 @@
 		<div class="post-content">
 
 			<h1>Actions</h1>
+
 <p>Test API provides a set of <em>actions</em> that enable you to interact with the webpage.</p>
 
-<p>Actions are implemented as methods in the <a href="../test-code-structure.html#test-controller">test controller</a> object. You can call them in a chained fashion.</p>
+<p>Actions are implemented as methods in the <a href="../test-code-structure.md#test-controller">test controller</a> object. You can call them in a chained fashion.</p>
 
 <p>The following sample types text into an input and clicks a button by using the <code>t.typeText</code> and <code>t.click</code> actions.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
@@ -831,20 +903,22 @@
 <p>For details about a specific action, see the corresponding topic.</p>
 
 <ul>
-<li><a href="click.html">Click</a></li>
-<li><a href="right-click.html">Right Click</a></li>
-<li><a href="double-click.html">Double Click</a></li>
-<li><a href="drag-element.html">Drag Element</a></li>
-<li><a href="hover.html">Hover</a></li>
-<li><a href="take-screenshot.html">Take Screenshot</a></li>
-<li><a href="navigate.html">Navigate</a></li>
-<li><a href="press-key.html">Press Key</a></li>
-<li><a href="select-text.html">Select Text</a></li>
-<li><a href="type-text.html">Type Text</a></li>
-<li><a href="upload.html">Upload</a></li>
-<li><a href="resize-window.html">Resize Window</a></li>
+<li><a href="click.md">Click</a></li>
+<li><a href="right-click.md">Right Click</a></li>
+<li><a href="double-click.md">Double Click</a></li>
+<li><a href="drag-element.md">Drag Element</a></li>
+<li><a href="hover.md">Hover</a></li>
+<li><a href="take-screenshot.md">Take Screenshot</a></li>
+<li><a href="navigate.md">Navigate</a></li>
+<li><a href="press-key.md">Press Key</a></li>
+<li><a href="select-text.md">Select Text</a></li>
+<li><a href="type-text.md">Type Text</a></li>
+<li><a href="upload.md">Upload</a></li>
+<li><a href="resize-window.md">Resize Window</a></li>
 </ul>
-<h2><a class="anchor" name="selecting-target-elements"></a>Selecting Target Elements <a class="permalink" href="#selecting-target-elements">#</a></h2>
+
+<h2>Selecting Target Elements</h2>
+
 <p>For actions that target DOM elements, use the <code>selector</code> parameter to identify the desired element.</p>
 
 <p>You can pass any of the following objects as a <code>selector</code>.</p>
@@ -858,7 +932,7 @@
     <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div></li>
-<li><p>A <a href="../selecting-page-elements/selectors/">selector</a>.</p>
+<li><p>A <a href="../selecting-page-elements/selectors/README.md">selector</a>.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
 <span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
@@ -881,7 +955,7 @@
     <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">click</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">children</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span>
 <span class="p">});</span>
 </code></pre></div></li>
-<li><p>A <a href="../selecting-page-elements/selectors/using-selectors.html#dom-node-snapshot">DOM node snapshot</a>.</p>
+<li><p>A <a href="../selecting-page-elements/selectors/using-selectors.md#dom-node-snapshot">DOM node snapshot</a>.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
 <span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
@@ -895,7 +969,7 @@
     <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">topMenuSnapshot</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div></li>
-<li><p>A Promise returned by a <a href="../selecting-page-elements/selectors/">selector</a>.</p>
+<li><p>A Promise returned by a <a href="../selecting-page-elements/selectors/README.md">selector</a>.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">submitButton</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">);</span>
@@ -914,8 +988,10 @@
 
 <p>Before executing an action, TestCafe waits for the target element to appear
 in the DOM and become visible. If this does not happen
-within the <a href="../selecting-page-elements/selectors/using-selectors.html#selector-timeout">selector timeout</a>, the test fails.</p>
-<h2><a class="anchor" name="remarks-for-touch-devices"></a>Remarks for Touch Devices <a class="permalink" href="#remarks-for-touch-devices">#</a></h2>
+within the <a href="../selecting-page-elements/selectors/using-selectors.md#selector-timeout">selector timeout</a>, the test fails.</p>
+
+<h2>Remarks for Touch Devices</h2>
+
 <p>On touch devices, TestCafe emulates touch events instead of mouse events.</p>
 
 <table><thead>

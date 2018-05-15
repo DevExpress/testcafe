@@ -464,6 +464,24 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#specifying-testing-metadata"  >Specifying Testing Metadata</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#using-metadata-in-reports"  >Using Metadata in Reports</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/test-api/test-code-structure.html#initialization-and-clean-up"  >Initialization and Clean-Up</a>
 		
 			<ul>
@@ -723,6 +741,59 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/"  >Intercepting HTTP Requests</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/logging-http-requests.html"  >Logging HTTP Requests</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/mocking-http-responses.html"  >Mocking HTTP Responses</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html"  >Creating a Custom HTTP Request Hook</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/specifying-which-requests-are-handled-by-the-hook.html"  >Specifying Which Requests are Handled by the Hook</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/attaching-hooks-to-tests-and-fixtures.html"  >Attaching Hooks to Tests and Fixtures</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/requestoptions-object.html"  >requestOptions Object</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/test-api/waiting-for-page-elements-to-appear.html"  >Waiting for Page Elements to Appear</a>
 		
     </li>
@@ -814,6 +885,7 @@
 		<div class="post-content">
 
 			<h1>Using Selectors</h1>
+
 <p>This topic describes how to identify DOM elements and obtain information about them using selectors.</p>
 
 <ul>
@@ -827,7 +899,9 @@
 <li><a href="#define-assertion-actual-value">Define Assertion Actual Value</a></li>
 <li><a href="#selector-timeout">Selector Timeout</a></li>
 </ul>
-<h2><a class="anchor" name="check-if-an-element-exists"></a>Check if an Element Exists <a class="permalink" href="#check-if-an-element-exists">#</a></h2>
+
+<h2>Check if an Element Exists</h2>
+
 <p>Functions and CSS selector strings that initialize a selector may return
 a single matching DOM element on the page, multiple elements or nothing.
 You can use the following Selector properties to check whether matching
@@ -866,9 +940,11 @@ elements exist and determine the number of matching elements.</p>
 <span class="p">});</span>
 </code></pre></div>
 <p>Note that selector property getters are asynchronous.</p>
-<h2><a class="anchor" name="obtain-element-state"></a>Obtain Element State <a class="permalink" href="#obtain-element-state">#</a></h2>
+
+<h2>Obtain Element State</h2>
+
 <p>Selectors and promises returned by selectors expose API to get the state (size, position, classes, etc.) of the matching element.
-See <a href="../dom-node-state.html">DOM Node State</a>. Note that these methods and property getters
+See <a href="../dom-node-state.md">DOM Node State</a>. Note that these methods and property getters
 are asynchronous, so use <code>await</code> to obtain an element&#39;s property.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">headerText</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#header'</span><span class="p">).</span><span class="nx">textContent</span><span class="p">;</span>
 </code></pre></div>
@@ -885,10 +961,12 @@ are asynchronous, so use <code>await</code> to obtain an element&#39;s property.
 
     <span class="kr">const</span> <span class="nx">windowsInputChecked</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">windowsInput</span><span class="p">.</span><span class="nx">checked</span><span class="p">;</span> <span class="c1">// returns true</span>
 <span class="p">});</span>
-</code></pre></div><h3><a class="anchor" name="dom-node-snapshot"></a>DOM Node Snapshot <a class="permalink" href="#dom-node-snapshot">#</a></h3>
+</code></pre></div>
+<h3>DOM Node Snapshot</h3>
+
 <p>If you need to get the entire DOM element state, call the selector
 with the <code>await</code> keyword like you would do with regular async functions.
-It returns a <em>DOM Node Snapshot</em> that contains <a href="../dom-node-state.html">all property values</a>
+It returns a <em>DOM Node Snapshot</em> that contains <a href="../dom-node-state.md">all property values</a>
 exposed by the selector in a single object.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
@@ -905,12 +983,17 @@ exposed by the selector in a single object.</p>
 </code></pre></div>
 <p>Note that if a selector initializer has several matching DOM nodes on the page,
 the selector returns the first node from the matching set.</p>
-<blockquote><div class="blockquote-content"><p>It&#39;s not recommended to pass DOM Node Snapshot&#39;s properties
-to <a href="../../assertions/">built-in assertions</a> to check the state of the element.
-To enable <a href="../../assertions/#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a>
-pass <a href="../dom-node-state.html#members-common-across-all-nodes">selector&#39;s properties</a> to assertions instead.</p>
-</div></blockquote><h2><a class="anchor" name="define-action-targets"></a>Define Action Targets <a class="permalink" href="#define-action-targets">#</a></h2>
-<p>You can pass selectors to <a href="../../actions/">test actions</a> to use the returned element as the action target.</p>
+
+<blockquote>
+<p>It&#39;s not recommended to pass DOM Node Snapshot&#39;s properties
+to <a href="../../assertions/README.md">built-in assertions</a> to check the state of the element.
+To enable <a href="../../assertions/README.md#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a>
+pass <a href="../dom-node-state.md#members-common-across-all-nodes">selector&#39;s properties</a> to assertions instead.</p>
+</blockquote>
+
+<h2>Define Action Targets</h2>
+
+<p>You can pass selectors to <a href="../../actions/README.md">test actions</a> to use the returned element as the action target.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
 <span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
@@ -944,9 +1027,11 @@ within the <a href="#selector-timeout">selector timeout</a>, the test fails.</p>
 
 <p>Note that if a selector initializer has multiple matching DOM nodes on the page,
 the action will be executed only for the first node from the matching set.</p>
-<h2><a class="anchor" name="define-assertion-actual-value"></a>Define Assertion Actual Value <a class="permalink" href="#define-assertion-actual-value">#</a></h2>
-<p>You can check whether a particular DOM node has the expected state by passing a selector property directly to <a href="../../assertions/">assertions</a>.
-In this case, TestCafe enables <a href="../../assertions/#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a>
+
+<h2>Define Assertion Actual Value</h2>
+
+<p>You can check whether a particular DOM node has the expected state by passing a selector property directly to <a href="../../assertions/README.md">assertions</a>.
+In this case, TestCafe enables <a href="../../assertions/README.md#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a>
 to avoid accidental errors and unstable tests.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
@@ -964,20 +1049,22 @@ to avoid accidental errors and unstable tests.</p>
 </code></pre></div>
 <p>In this example the <code>developerNameInput.innerText</code> property will not be
 calculated immediately, but it will wait until the assertion is executed.</p>
-<h2><a class="anchor" name="selector-timeout"></a>Selector Timeout <a class="permalink" href="#selector-timeout">#</a></h2>
+
+<h2>Selector Timeout</h2>
+
 <p>When a selector is called in test code, TestCafe waits for the target node to appear
 in the DOM within the <em>selector timeout</em>.</p>
 
-<p>You can specify the selector timeout in test code by using the <a href="selector-options.html#optionstimeout">timeout</a> option.
-To set this timeout when launching tests, pass it to the <a href="../../../using-testcafe/programming-interface/runner.html#run">runner.run</a>
-method if you use API or specify the <a href="../../../using-testcafe/command-line-interface.html#--selector-timeout-ms">selector-timeout</a> option
+<p>You can specify the selector timeout in test code by using the <a href="selector-options.md#optionstimeout">timeout</a> option.
+To set this timeout when launching tests, pass it to the <a href="../../../using-testcafe/programming-interface/runner.md#run">runner.run</a>
+method if you use API or specify the <a href="../../../using-testcafe/command-line-interface.md#--selector-timeout-ms">selector-timeout</a> option
 if you run TestCafe from the command line.</p>
 
 <p>Within the selector timeout, the selector is executed over and over again, until it returns a
 DOM node or the timeout exceeds.</p>
 
 <p>Note that you can additionally require that the node returned by the selector is visible.
-To do this, use the <a href="selector-options.html#optionsvisibilitycheck">visibilityCheck</a> option.</p>
+To do this, use the <a href="selector-options.md#optionsvisibilitycheck">visibilityCheck</a> option.</p>
 
 
 		</div>

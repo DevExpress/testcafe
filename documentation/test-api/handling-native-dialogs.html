@@ -464,6 +464,24 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#specifying-testing-metadata"  >Specifying Testing Metadata</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#using-metadata-in-reports"  >Using Metadata in Reports</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/test-api/test-code-structure.html#initialization-and-clean-up"  >Initialization and Clean-Up</a>
 		
 			<ul>
@@ -723,6 +741,59 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/"  >Intercepting HTTP Requests</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/logging-http-requests.html"  >Logging HTTP Requests</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/mocking-http-responses.html"  >Mocking HTTP Responses</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html"  >Creating a Custom HTTP Request Hook</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/specifying-which-requests-are-handled-by-the-hook.html"  >Specifying Which Requests are Handled by the Hook</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/attaching-hooks-to-tests-and-fixtures.html"  >Attaching Hooks to Tests and Fixtures</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/requestoptions-object.html"  >requestOptions Object</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/test-api/waiting-for-page-elements-to-appear.html"  >Waiting for Page Elements to Appear</a>
 		
     </li>
@@ -814,6 +885,7 @@
 		<div class="post-content">
 
 			<h1>Handling Native Dialogs</h1>
+
 <p>TestCafe allows you to handle native browser dialogs whenever they are invoked during the test run.
 You can close <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/alert">alert</a> and
 <a href="https://developer.mozilla.org/en-US/docs/Web/Events/beforeunload">beforeunload</a> dialogs,
@@ -828,10 +900,12 @@ or provide text to type into <a href="https://developer.mozilla.org/en-US/docs/W
 <li><a href="#dialog-handler">Dialog Handler</a></li>
 <li><a href="#dialog-history">Dialog History</a></li>
 </ul>
-<h2><a class="anchor" name="dialog-handler"></a>Dialog Handler <a class="permalink" href="#dialog-handler">#</a></h2>
+
+<h2>Dialog Handler</h2>
+
 <p>To handle native dialogs invoked during the test run, specify a handler function
 using the <code>setNativeDialogHandler</code> method of the
-<a href="test-code-structure.html#test-controller">test controller</a>.</p>
+<a href="test-code-structure.md#test-controller">test controller</a>.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">t.setNativeDialogHandler( fn(type, text, url) [, options] )
 </code></pre></div>
 <table><thead>
@@ -844,12 +918,12 @@ using the <code>setNativeDialogHandler</code> method of the
 <tr>
 <td><code>fn</code></td>
 <td>Function &#124; ClientFunction</td>
-<td>A regular or <a href="obtaining-data-from-the-client/">client function</a> that will be triggered whenever a native dialog is invoked. <code>null</code> to remove the native dialog handler.</td>
+<td>A regular or <a href="obtaining-data-from-the-client/README.md">client function</a> that will be triggered whenever a native dialog is invoked. <code>null</code> to remove the native dialog handler.</td>
 </tr>
 <tr>
 <td><code>options</code>&#160;<em>(optional)</em></td>
 <td>Object</td>
-<td>See <a href="obtaining-data-from-the-client/#options">Client Function Options</a>.</td>
+<td>See <a href="obtaining-data-from-the-client/README.md#options">Client Function Options</a>.</td>
 </tr>
 </tbody></table>
 
@@ -887,8 +961,11 @@ If a native dialog appears when no handler is set, the test fails with an error.
 
 <p>To handle native dialogs that appear during the page load, specify the dialog handler
 before the first test action.</p>
-<blockquote><div class="blockquote-content"><p>The handler is executed on the client side, so you cannot use Node.js API in the handler.</p>
-</div></blockquote>
+
+<blockquote>
+<p>The handler is executed on the client side, so you cannot use Node.js API in the handler.</p>
+</blockquote>
+
 <p>You can control how a dialog is handled by using the handler&#39;s return values.
 If you return nothing, TestCafe performs default handling.</p>
 
@@ -960,10 +1037,12 @@ If you return nothing, TestCafe performs default handling.</p>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#show-prompt'</span><span class="p">);</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#confirm-account-deletion'</span><span class="p">);</span>
 <span class="p">});</span>
-</code></pre></div><h2><a class="anchor" name="dialog-history"></a>Dialog History <a class="permalink" href="#dialog-history">#</a></h2>
+</code></pre></div>
+<h2>Dialog History</h2>
+
 <p>You can get the history of the invoked native dialogs to check if a certain dialog appeared or not.</p>
 
-<p>Use the <a href="test-code-structure.html#test-controller">test controller&#39;s</a> <code>getNativeDialogHistory</code> method for this.</p>
+<p>Use the <a href="test-code-structure.md#test-controller">test controller&#39;s</a> <code>getNativeDialogHistory</code> method for this.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">t.getNativeDialogHistory() → Promise&lt;[{type, text, url}]&gt;
 </code></pre></div>
 <p><code>t.getNativeDialogHistory</code> returns a stack of history entries (i.e., an array in which the latest dialog has an index of <code>0</code>).

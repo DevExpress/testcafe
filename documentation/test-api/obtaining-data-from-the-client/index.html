@@ -464,6 +464,24 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#specifying-testing-metadata"  >Specifying Testing Metadata</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#using-metadata-in-reports"  >Using Metadata in Reports</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/test-api/test-code-structure.html#initialization-and-clean-up"  >Initialization and Clean-Up</a>
 		
 			<ul>
@@ -723,6 +741,59 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/"  >Intercepting HTTP Requests</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/logging-http-requests.html"  >Logging HTTP Requests</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/mocking-http-responses.html"  >Mocking HTTP Responses</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html"  >Creating a Custom HTTP Request Hook</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/specifying-which-requests-are-handled-by-the-hook.html"  >Specifying Which Requests are Handled by the Hook</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/attaching-hooks-to-tests-and-fixtures.html"  >Attaching Hooks to Tests and Fixtures</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/requestoptions-object.html"  >requestOptions Object</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/test-api/waiting-for-page-elements-to-appear.html"  >Waiting for Page Elements to Appear</a>
 		
     </li>
@@ -814,12 +885,16 @@
 		<div class="post-content">
 
 			<h1>Obtaining Data from the Client</h1>
+
 <p>TestCafe allows you to create <em>client functions</em> that can return any
 serializable value from the client side, like the current URL
 or custom data calculated by a client script.</p>
-<blockquote class="important"><div class="blockquote-content"><p>Do not modify the tested webpage within client functions.
-To interact with the page, use <a href="../actions/">test actions</a>.</p>
-</div></blockquote>
+
+<blockquote>
+<p>Important! Do not modify the tested webpage within client functions.
+To interact with the page, use <a href="../actions/README.md">test actions</a>.</p>
+</blockquote>
+
 <p>This topic contains the following sections.</p>
 
 <ul>
@@ -834,7 +909,9 @@ To interact with the page, use <a href="../actions/">test actions</a>.</p>
 <li><a href="#calling-client-functions-from-nodejs-callbacks">Calling Client Functions from Node.js Callbacks</a></li>
 <li><a href="#limitations">Limitations</a></li>
 </ul>
-<h2><a class="anchor" name="creating-client-functions"></a>Creating Client Functions <a class="permalink" href="#creating-client-functions">#</a></h2>
+
+<h2>Creating Client Functions</h2>
+
 <p>To create a client function, use the <code>ClientFunction</code> constructor.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">ClientFunction( fn [, options] )
 </code></pre></div>
@@ -856,13 +933,18 @@ To interact with the page, use <a href="../actions/">test actions</a>.</p>
 <td>See <a href="#options">Options</a>.</td>
 </tr>
 </tbody></table>
-<blockquote class="important"><div class="blockquote-content"><p>Client functions cannot return DOM nodes. Use <a href="../selecting-page-elements/selectors/">selectors</a> for this.</p>
-</div></blockquote>
+
+<blockquote>
+<p>Important! Client functions cannot return DOM nodes. Use <a href="../selecting-page-elements/selectors/README.md">selectors</a> for this.</p>
+</blockquote>
+
 <p>The following example shows how to create a client function.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">getWindowLocation</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">);</span>
-</code></pre></div><h3><a class="anchor" name="running-asynchronous-client-code"></a>Running Asynchronous Client Code <a class="permalink" href="#running-asynchronous-client-code">#</a></h3>
+</code></pre></div>
+<h3>Running Asynchronous Client Code</h3>
+
 <p>You can create client functions that run asynchronous code.
 To this end, pass a function that returns a Promise to the <code>ClientFunction</code> constructor.
 In this instance, the client function will complete only when this Promise resolves.</p>
@@ -873,7 +955,9 @@ In this instance, the client function will complete only when this Promise resol
         <span class="nb">window</span><span class="p">.</span><span class="nx">setTimeout</span><span class="p">(</span><span class="nx">resolve</span><span class="p">,</span> <span class="mi">500</span><span class="p">);</span> <span class="c1">// some async operations</span>
     <span class="p">});</span>
 <span class="p">});</span>
-</code></pre></div><h2><a class="anchor" name="executing-client-functions"></a>Executing Client Functions <a class="permalink" href="#executing-client-functions">#</a></h2>
+</code></pre></div>
+<h2>Executing Client Functions</h2>
+
 <p>To execute a client function, call it with the <code>await</code> keyword.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
@@ -885,18 +969,22 @@ In this instance, the client function will complete only when this Promise resol
 <span class="nx">test</span><span class="p">(</span><span class="s1">'My Test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="kr">const</span> <span class="nx">location</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">getWindowLocation</span><span class="p">();</span>
 <span class="p">});</span>
-</code></pre></div><h2><a class="anchor" name="options"></a>Options <a class="permalink" href="#options">#</a></h2>
+</code></pre></div>
+<h2>Options</h2>
+
 <p>You can pass the following options to the
 <a href="#creating-client-functions">ClientFunction constructor</a> and the
 <a href="#one-time-client-code-execution">t.eval</a> function.</p>
-<h3><a class="anchor" name="optionsdependencies"></a>options.dependencies <a class="permalink" href="#optionsdependencies">#</a></h3>
+
+<h3>options.dependencies</h3>
+
 <p><strong>Type</strong>: Object</p>
 
 <p>Contains functions, variables or objects used by the client function internally.
 Properties of the <code>dependencies</code> object will be added to the client function&#39;s scope as variables.</p>
 
 <p>The following sample demonstrates a client function (<code>getArticleHeaderHTML</code>) that
-calls a <a href="../selecting-page-elements/selectors/">selector</a> (<code>articleHeader</code>) internally.
+calls a <a href="../selecting-page-elements/selectors/README.md">selector</a> (<code>articleHeader</code>) internally.
 This selector is passed to <code>getArticleHeaderHTML</code> as a dependency.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span><span class="p">,</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
@@ -905,18 +993,25 @@ This selector is passed to <code>getArticleHeaderHTML</code> as a dependency.</p
 <span class="kr">const</span> <span class="nx">getArticleHeaderHTML</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nx">articleHeader</span><span class="p">().</span><span class="nx">innerHTML</span><span class="p">,</span> <span class="p">{</span>
      <span class="na">dependencies</span><span class="p">:</span> <span class="p">{</span> <span class="nx">articleHeader</span> <span class="p">}</span>
 <span class="p">});</span>
-</code></pre></div><blockquote><div class="blockquote-content"><p>When a client function calls a <a href="../selecting-page-elements/selectors/">selector</a> internally,
+</code></pre></div>
+<blockquote>
+<p>When a client function calls a <a href="../selecting-page-elements/selectors/README.md">selector</a> internally,
 the selector does not wait for the element to appear in the DOM
 but is executed at once, like a client function.</p>
-</div></blockquote><h3><a class="anchor" name="optionsboundtestrun"></a>options.boundTestRun <a class="permalink" href="#optionsboundtestrun">#</a></h3>
+</blockquote>
+
+<h3>options.boundTestRun</h3>
+
 <p><strong>Type</strong>: Object</p>
 
 <p>If you need to call a client function from a Node.js callback,
-assign the current <a href="../test-code-structure.html#test-controller">test controller</a>
+assign the current <a href="../test-code-structure.md#test-controller">test controller</a>
 to the <code>boundTestRun</code> option.</p>
 
 <p>For details, see <a href="#calling-client-functions-from-nodejs-callbacks">Calling Client Functions from Node.js Callbacks</a>.</p>
-<h3><a class="anchor" name="overwriting-options"></a>Overwriting Options <a class="permalink" href="#overwriting-options">#</a></h3>
+
+<h3>Overwriting Options</h3>
+
 <p>You can overwrite client function options by using the ClientFunction&#39;s <code>with</code> function.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">clientFunction.with( options ) → ClientFunction
 </code></pre></div>
@@ -939,9 +1034,11 @@ from the original function and new <code>options</code> that overwrite the origi
 <span class="kr">const</span> <span class="nx">getFourthOptionHTML</span> <span class="o">=</span> <span class="nx">getThirdOptionHTML</span><span class="p">.</span><span class="kd">with</span><span class="p">({</span>
     <span class="na">dependencies</span><span class="p">:</span> <span class="p">{</span> <span class="na">option</span><span class="p">:</span> <span class="nx">fourthOption</span> <span class="p">}</span>
 <span class="p">});</span>
-</code></pre></div><h2><a class="anchor" name="one-time-client-code-execution"></a>One-Time Client Code Execution <a class="permalink" href="#one-time-client-code-execution">#</a></h2>
+</code></pre></div>
+<h2>One-Time Client Code Execution</h2>
+
 <p>To create a client function and immediately execute it without saving it,
-use the <code>eval</code> method of the <a href="../test-code-structure.html#test-controller">test controller</a>.</p>
+use the <code>eval</code> method of the <a href="../test-code-structure.md#test-controller">test controller</a>.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">t.eval( fn [, options] )
 </code></pre></div>
 <table><thead>
@@ -970,9 +1067,14 @@ use the <code>eval</code> method of the <a href="../test-code-structure.html#tes
 <span class="nx">test</span><span class="p">(</span><span class="s1">'My Test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="kr">const</span> <span class="nx">docURI</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nb">eval</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">documentURI</span><span class="p">);</span>
 <span class="p">});</span>
-</code></pre></div><blockquote><div class="blockquote-content"><p>Since the <code>eval</code> method returns a value, not an object, you cannot call other methods of the test controller in the chain after calling &#39;eval&#39;.</p>
-</div></blockquote><h2><a class="anchor" name="calling-client-functions-from-nodejs-callbacks"></a>Calling Client Functions from Node.js Callbacks <a class="permalink" href="#calling-client-functions-from-nodejs-callbacks">#</a></h2>
-<p>Client functions need access to the <a href="../test-code-structure.html#test-controller">test controller</a> to be executed.
+</code></pre></div>
+<blockquote>
+<p>Since the <code>eval</code> method returns a value, not an object, you cannot call other methods of the test controller in the chain after calling &#39;eval&#39;.</p>
+</blockquote>
+
+<h2>Calling Client Functions from Node.js Callbacks</h2>
+
+<p>Client functions need access to the <a href="../test-code-structure.md#test-controller">test controller</a> to be executed.
 When called right from the test function, they implicitly obtain the test controller.</p>
 
 <p>However, if you need to call a client function from a Node.js callback that fires during the test run,
@@ -1004,7 +1106,9 @@ you will have to manually bind this function to the test controller.</p>
 <p>This approach only works for Node.js callbacks that fire during the test run. To ensure that the test function
 does not finish before the callback is executed, suspend the test until the callback fires. You can do this
 by introducing a promise and synchronously waiting for it to complete as shown in the example above.</p>
-<h2><a class="anchor" name="limitations"></a>Limitations <a class="permalink" href="#limitations">#</a></h2>
+
+<h2>Limitations</h2>
+
 <ul>
 <li><p>You cannot use generators or <code>async/await</code> syntax within client functions.</p></li>
 <li><p>Client functions cannot access variables defined in the outer scope in test code.

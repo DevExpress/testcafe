@@ -471,10 +471,16 @@
 		<div class="post-content">
 
 			<h1>Reporter Methods</h1>
-<p>To create a <a href=".#implementing-the-reporter">reporter</a>, you need to implement the following methods.</p>
-<blockquote><div class="blockquote-content"><p>You can use <a href="helpers.html">helper methods and libraries</a> within the reporter methods to output required data.</p>
-</div></blockquote><h2><a class="anchor" name="reporttaskstart"></a>reportTaskStart <a class="permalink" href="#reporttaskstart">#</a></h2>
-<p>Fires when a test task starts, which happens at the beginning of testing.</p>
+
+<p>You should implement the following methods to create a <a href="README.md#implementing-the-reporter">reporter</a>.</p>
+
+<blockquote>
+<p>You can use the <a href="helpers.md">helper methods and libraries</a> within the reporter methods to output the required data.</p>
+</blockquote>
+
+<h2>reportTaskStart</h2>
+
+<p>Fires when a test task starts.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">reportTaskStart (startTime, userAgents, testCount)
 </code></pre></div>
 <table><thead>
@@ -516,9 +522,11 @@
 
 <span class="c1">//=&gt; Testing started: 8/12/2016 3:00:00 am</span>
 <span class="c1">//=&gt; Running 6 tests in: Chrome 41.0.2227 / Mac OS X 10.10.1,Firefox 47 / Mac OS X 10.10.1</span>
-</code></pre></div><h2><a class="anchor" name="reportfixturestart"></a>reportFixtureStart <a class="permalink" href="#reportfixturestart">#</a></h2>
+</code></pre></div>
+<h2>reportFixtureStart</h2>
+
 <p>Fires each time a fixture starts.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">reportFixtureStart (name, path)
+<div class="highlight"><pre><code class="language-text" data-lang="text">reportFixtureStart (name, path, meta)
 </code></pre></div>
 <table><thead>
 <tr>
@@ -537,19 +545,27 @@
 <td>String</td>
 <td>The path to a test fixture file.</td>
 </tr>
+<tr>
+<td><code>meta</code></td>
+<td>Object</td>
+<td>The fixture metadata. See <a href="../../test-api/test-code-structure.md#specifying-testing-metadata">Specifying Testing Metadata</a> for more information.</td>
+</tr>
 </tbody></table>
 
 <p><strong>Example</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">reportFixtureStart</span> <span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">reportFixtureStart</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">path</span><span class="p">,</span> <span class="nx">meta</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">currentFixtureName</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="err">`</span><span class="nx">Starting</span> <span class="nx">fixture</span><span class="err">:</span> <span class="nx">$</span><span class="p">{</span><span class="nx">name</span><span class="p">}</span><span class="err">`</span><span class="p">)</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">currentFixtureMeta</span> <span class="o">=</span> <span class="nx">meta</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="err">`</span><span class="nx">Starting</span> <span class="nx">fixture</span><span class="err">:</span> <span class="nx">$</span><span class="p">{</span><span class="nx">name</span><span class="p">}</span> <span class="nx">$</span><span class="p">{</span><span class="nx">meta</span><span class="p">.</span><span class="nx">fixtureID</span><span class="p">}</span><span class="err">`</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">newline</span><span class="p">();</span>
 <span class="p">}</span>
 
-<span class="c1">//=&gt; Starting fixture: First fixture</span>
-</code></pre></div><h2><a class="anchor" name="reporttestdone"></a>reportTestDone <a class="permalink" href="#reporttestdone">#</a></h2>
+<span class="c1">//=&gt; Starting fixture: First fixture f-0001</span>
+</code></pre></div>
+<h2>reportTestDone</h2>
+
 <p>Fires each time a test ends.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">reportTestDone (name, testRunInfo)
+<div class="highlight"><pre><code class="language-text" data-lang="text">reportTestDone (name, testRunInfo, meta)
 </code></pre></div>
 <table><thead>
 <tr>
@@ -567,6 +583,11 @@
 <td><code>testRunInfo</code></td>
 <td>Object</td>
 <td>The object providing detailed information about the test run.</td>
+</tr>
+<tr>
+<td><code>meta</code></td>
+<td>Object</td>
+<td>The test metadata. See <a href="../../test-api/test-code-structure.md#specifying-testing-metadata">Specifying Testing Metadata</a> for more information.</td>
 </tr>
 </tbody></table>
 
@@ -592,7 +613,7 @@
 <tr>
 <td><code>unstable</code></td>
 <td>Boolean</td>
-<td>Specifies if the test has been marked as unstable.</td>
+<td>Specifies if the test is marked as unstable.</td>
 </tr>
 <tr>
 <td><code>screenshotPath</code></td>
@@ -607,7 +628,7 @@
 </tbody></table>
 
 <p><strong>Example</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">reportTestDone</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">testRunInfo</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">reportTestDone</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">testRunInfo</span><span class="p">,</span> <span class="nx">meta</span><span class="p">)</span> <span class="p">{</span>
     <span class="kr">const</span> <span class="nx">hasErr</span> <span class="o">=</span> <span class="o">!!</span><span class="nx">testRunInfo</span><span class="p">.</span><span class="nx">errs</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
     <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">testRunInfo</span><span class="p">.</span><span class="nx">skipped</span> <span class="p">?</span> <span class="s1">'skipped'</span> <span class="p">:</span> <span class="nx">hasErr</span> <span class="p">?</span> <span class="err">`</span><span class="nx">passed</span><span class="err">`</span> <span class="p">:</span> <span class="err">`</span><span class="nx">failed</span><span class="err">`</span><span class="p">;</span>
 
@@ -621,16 +642,21 @@
     <span class="k">if</span> <span class="p">(</span><span class="nx">testRunInfo</span><span class="p">.</span><span class="nx">screenshotPath</span><span class="p">)</span>
         <span class="nx">title</span> <span class="o">+=</span> <span class="err">`</span> <span class="p">(</span><span class="nx">screenshots</span><span class="err">:</span> <span class="nx">$</span><span class="p">{</span><span class="nx">testRunInfo</span><span class="p">.</span><span class="nx">screenshotPath</span><span class="p">})</span><span class="err">`</span><span class="p">;</span>
 
+    <span class="k">if</span> <span class="p">(</span><span class="nx">meta</span><span class="p">.</span><span class="nx">severity</span><span class="p">)</span>
+        <span class="nx">title</span> <span class="o">+=</span> <span class="s1">' (meta.severity)'</span><span class="p">;</span>
+
     <span class="k">this</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">title</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">newline</span><span class="p">();</span>
 <span class="p">}</span>
 
-<span class="c1">//=&gt; failed First fixture - First test in first fixture (unstable) (screenshots: /screenshots/1445437598847)</span>
+<span class="c1">//=&gt; failed First fixture - First test in first fixture (unstable) (screenshots: /screenshots/1445437598847) (critical)</span>
 <span class="c1">//=&gt; passed First fixture - Second test in first fixture (screenshots: /screenshots/1445437598847)</span>
 <span class="c1">//=&gt; failed First fixture - Third test in first fixture</span>
 <span class="c1">//=&gt; skipped First fixture - Fourth test in first fixture</span>
-</code></pre></div><h2><a class="anchor" name="reporttaskdone"></a>reportTaskDone <a class="permalink" href="#reporttaskdone">#</a></h2>
-<p>Fires when the entire task ends, which happens at the end of testing.</p>
+</code></pre></div>
+<h2>reportTaskDone</h2>
+
+<p>Fires when the task ends.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">reportTaskDone (endTime, passed, warnings)
 </code></pre></div>
 <table><thead>

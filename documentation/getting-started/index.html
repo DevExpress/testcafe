@@ -416,6 +416,7 @@
 		<div class="post-content">
 
 			<h1>Getting Started</h1>
+
 <p>This guide provides step-by-step instructions on how to create a functional web test with TestCafe and consists of the following sections.</p>
 
 <ul>
@@ -431,14 +432,18 @@
 <li><a href="#assertions">Assertions</a></li>
 </ul></li>
 </ul>
-<h2><a class="anchor" name="installing-testcafe"></a>Installing TestCafe <a class="permalink" href="#installing-testcafe">#</a></h2>
+
+<h2>Installing TestCafe</h2>
+
 <p>Ensure that <a href="https://nodejs.org/">Node.js</a> and <a href="https://www.npmjs.com/">npm</a> are installed on your computer and run the following command:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">npm install -g testcafe
 </code></pre></div>
-<p>For more information, see <a href="../using-testcafe/installing-testcafe.html">Installing TestCafe</a>.</p>
-<h2><a class="anchor" name="creating-a-test"></a>Creating a Test <a class="permalink" href="#creating-a-test">#</a></h2>
+<p>For more information, see <a href="../using-testcafe/installing-testcafe.md">Installing TestCafe</a>.</p>
+
+<h2>Creating a Test</h2>
+
 <p>TestCafe allows you to write tests using TypeScript or JavaScript (with its modern features like <code>async/await</code>).
-You get all the advantages of strongly-typed languages like rich coding assistance, painless scalability, check-as-you-type code verification, etc., by using TypeScript to write your TestCafe tests. For more information about writing tests in TypeScript, see <a href="../test-api/typescript-support.html">TypeScript Support</a>.</p>
+You get all the advantages of strongly-typed languages like rich coding assistance, painless scalability, check-as-you-type code verification, etc., by using TypeScript to write your TestCafe tests. For more information about writing tests in TypeScript, see <a href="../test-api/typescript-support.md">TypeScript Support</a>.</p>
 
 <p>To create a test, create a new .js or .ts file.
 This file must have a special structure - tests must be organized into fixtures.</p>
@@ -446,15 +451,15 @@ This file must have a special structure - tests must be organized into fixtures.
 <p>Firstly, import the <code>testcafe</code> module.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 </code></pre></div>
-<p>Then declare a fixture using the <a href="../test-api/test-code-structure.html#fixtures">fixture</a> function.</p>
+<p>Then declare a fixture using the <a href="../test-api/test-code-structure.md#fixtures">fixture</a> function.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">Getting</span> <span class="nx">Started</span><span class="err">`</span>
 </code></pre></div>
 <p>In this tutorial, you create a test for the <a href="/testcafe/example">http://devexpress.github.io/testcafe/example</a> sample page.
-Specify this page as a start page for the fixture using the <a href="../test-api/test-code-structure.html#specifying-the-start-webpage">page</a> function.</p>
+Specify this page as a start page for the fixture using the <a href="../test-api/test-code-structure.md#specifying-the-start-webpage">page</a> function.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">Getting</span> <span class="nx">Started</span><span class="err">`</span>
     <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example`;</span>
 </code></pre></div>
-<p>Then, create the <a href="../test-api/test-code-structure.html#tests">test</a> function where you can enter test code.</p>
+<p>Then, create the <a href="../test-api/test-code-structure.md#tests">test</a> function where you can enter test code.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
 <span class="nx">fixture</span> <span class="err">`</span><span class="nx">Getting</span> <span class="nx">Started</span><span class="err">`</span>
@@ -463,25 +468,36 @@ Specify this page as a start page for the fixture using the <a href="../test-api
 <span class="nx">test</span><span class="p">(</span><span class="s1">'My first test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="c1">// Test code</span>
 <span class="p">});</span>
-</code></pre></div><h2><a class="anchor" name="running-the-test"></a>Running the Test <a class="permalink" href="#running-the-test">#</a></h2>
-<p>You can run the test from a command shell by calling a single command where you specify the <a href="../using-testcafe/command-line-interface.html#browser-list">target browser</a> and <a href="../using-testcafe/command-line-interface.html#file-pathglob-pattern">file path</a>.</p>
+</code></pre></div>
+<h2>Running the Test</h2>
+
+<p>You can run the test from a command shell by calling a single command where you specify the <a href="../using-testcafe/command-line-interface.md#browser-list">target browser</a> and <a href="../using-testcafe/command-line-interface.md#file-pathglob-pattern">file path</a>.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test1.js
 </code></pre></div>
 <p>TestCafe automatically opens the chosen browser and starts test execution within it.</p>
-<blockquote class="important"><div class="blockquote-content"><p>Make sure to keep the browser tab that is running tests active. Do not minimize the browser window.
+
+<blockquote>
+<p>Important! Make sure to keep the browser tab that is running tests active. Do not minimize the browser window.
 Inactive tabs and minimized browser windows switch to a lower resource consumption mode
 where tests are not guaranteed to execute correctly.</p>
-</div></blockquote>
-<p>For more information on how to configure the test run, see <a href="../using-testcafe/command-line-interface.html">Command Line Interface</a>.</p>
-<h2><a class="anchor" name="viewing-the-test-results"></a>Viewing the Test Results <a class="permalink" href="#viewing-the-test-results">#</a></h2>
+</blockquote>
+
+<p>For more information on how to configure the test run, see <a href="../using-testcafe/command-line-interface.md">Command Line Interface</a>.</p>
+
+<h2>Viewing the Test Results</h2>
+
 <p>While the test is running, TestCafe is gathering information about the test run and outputting the report in a command shell.</p>
 
 <p><img src="../../images/report.png" alt="Test Report"></p>
 
-<p>See <a href="../using-testcafe/common-concepts/reporters.html">Reporters</a> for more information.</p>
-<h2><a class="anchor" name="writing-test-code"></a>Writing Test Code <a class="permalink" href="#writing-test-code">#</a></h2><h3><a class="anchor" name="performing-actions-on-the-page"></a>Performing Actions on the Page <a class="permalink" href="#performing-actions-on-the-page">#</a></h3>
+<p>See <a href="../using-testcafe/common-concepts/reporters.md">Reporters</a> for more information.</p>
+
+<h2>Writing Test Code</h2>
+
+<h3>Performing Actions on the Page</h3>
+
 <p>Every test should be capable of interacting with page content. To perform user actions, TestCafe provides
-a number of <a href="../test-api/actions/">actions</a>: <code>click</code>, <code>hover</code>, <code>typeText</code>, <code>setFilesToUpload</code>, etc.
+a number of <a href="../test-api/actions/README.md">actions</a>: <code>click</code>, <code>hover</code>, <code>typeText</code>, <code>setFilesToUpload</code>, etc.
 They can be called in a chain.</p>
 
 <p>The following fixture contains a simple test that types a developer name into a text editor and then clicks the Submit button.</p>
@@ -496,14 +512,16 @@ They can be called in a chain.</p>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div>
-<p>All test actions are implemented as async functions of the <a href="../test-api/test-code-structure.html#test-controller">test controller object</a> <code>t</code>.
+<p>All test actions are implemented as async functions of the <a href="../test-api/test-code-structure.md#test-controller">test controller object</a> <code>t</code>.
 This object is used to access test run API.
 To wait for actions to complete, use the <code>await</code> keyword when calling these actions or action chains.</p>
-<h3><a class="anchor" name="observing-page-state"></a>Observing Page State <a class="permalink" href="#observing-page-state">#</a></h3>
+
+<h3>Observing Page State</h3>
+
 <p>TestCafe allows you to observe the page state.
 For this purpose, it offers special kinds of functions that will execute your code on the client:
-<a href="../test-api/selecting-page-elements/selectors/">Selector</a> used to get direct access to DOM elements
-and <a href="../test-api/obtaining-data-from-the-client/">ClientFunction</a> used to obtain arbitrary data from the client side.
+<a href="../test-api/selecting-page-elements/selectors/README.md">Selector</a> used to get direct access to DOM elements
+and <a href="../test-api/obtaining-data-from-the-client/README.md">ClientFunction</a> used to obtain arbitrary data from the client side.
 You call these functions as regular async functions, that is, you can obtain their results and use parameters to pass data to them.</p>
 
 <p>The selector API provides methods and properties to select elements on the page and get their state.</p>
@@ -527,13 +545,15 @@ The following example demonstrates how to access the article header element and 
     <span class="kd">let</span> <span class="nx">headerText</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">articleHeader</span><span class="p">.</span><span class="nx">innerText</span><span class="p">;</span>
 <span class="p">});</span>
 </code></pre></div>
-<p>See <a href="../test-api/selecting-page-elements/">Selecting Page Elements</a> for more information.</p>
-<h3><a class="anchor" name="assertions"></a>Assertions <a class="permalink" href="#assertions">#</a></h3>
+<p>See <a href="../test-api/selecting-page-elements/README.md">Selecting Page Elements</a> for more information.</p>
+
+<h3>Assertions</h3>
+
 <p>A functional test should also check the result of actions performed.
 For example, the article header on the &quot;Thank you&quot; page should address a user using the entered name.
 To check if the header is correct, you have to add an assertion to the test.</p>
 
-<p>The following test demonstrates how to use <a href="../test-api/assertions/">build-in assertions</a>.</p>
+<p>The following test demonstrates how to use <a href="../test-api/assertions/README.md">build-in assertions</a>.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
 <span class="nx">fixture</span> <span class="err">`</span><span class="nx">Getting</span> <span class="nx">Started</span><span class="err">`</span>

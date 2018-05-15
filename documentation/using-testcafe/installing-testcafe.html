@@ -545,6 +545,7 @@
 		<div class="post-content">
 
 			<h1>Installing TestCafe</h1>
+
 <p>You can install TestCafe through <code>npm</code> globally or locally in your project.</p>
 
 <ul>
@@ -552,22 +553,26 @@
 <li><a href="#locally">Locally</a></li>
 <li><a href="#using-testcafe-docker-image">Using TestCafe Docker Image</a></li>
 </ul>
-<h2><a class="anchor" name="globally"></a>Globally <a class="permalink" href="#globally">#</a></h2><div class="highlight"><pre><code class="language-bash" data-lang="bash">npm install -g testcafe
+
+<h2>Globally</h2>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">npm install -g testcafe
 </code></pre></div>
-<p>After that, you can run TestCafe from a <a href="command-line-interface.html">command line</a> by using the <code>testcafe</code> command.</p>
+<p>After that, you can run TestCafe from a <a href="command-line-interface.md">command line</a> by using the <code>testcafe</code> command.</p>
 <div class="highlight"><pre><code class="language-bash" data-lang="bash">testcafe chrome tests/
-</code></pre></div><h2><a class="anchor" name="locally"></a>Locally <a class="permalink" href="#locally">#</a></h2>
+</code></pre></div>
+<h2>Locally</h2>
+
 <p>The following command will install TestCafe into your project directory and save it on the dependencies list.</p>
 <div class="highlight"><pre><code class="language-bash" data-lang="bash">npm install --save-dev testcafe
 </code></pre></div>
-<p>The local installation is preferred for continuous integration scenarios or if you are going to use TestCafe from a Node.js application (see <a href="programming-interface/">Programming Interface</a>). This kind of installation has two advantages.</p>
+<p>The local installation is preferred for continuous integration scenarios or if you are going to use TestCafe from a Node.js application (see <a href="programming-interface/README.md">Programming Interface</a>). This kind of installation has two advantages.</p>
 
 <ul>
 <li>It makes your project setup easier: running <code>npm install</code> in the project directory will automatically install TestCafe as well.</li>
 <li>Different projects can depend on different versions of TestCafe.</li>
 </ul>
 
-<p>You can use the local version of TestCafe from a <a href="command-line-interface.html">command line</a> as well. To run it, use one of the following ways.</p>
+<p>You can use the local version of TestCafe from a <a href="command-line-interface.md">command line</a> as well. To run it, use one of the following ways.</p>
 
 <ul>
 <li><p>By using <a href="https://docs.npmjs.com/misc/scripts">npm scripts</a>.</p>
@@ -580,7 +585,9 @@
 <div class="highlight"><pre><code class="language-bash" data-lang="bash">testcafe chrome tests/
 </code></pre></div></li>
 </ul>
-<h2><a class="anchor" name="using-testcafe-docker-image"></a>Using TestCafe Docker Image <a class="permalink" href="#using-testcafe-docker-image">#</a></h2>
+
+<h2>Using TestCafe Docker Image</h2>
+
 <p>TestCafe provides a preconfigured Docker image with Chromium and Firefox installed.
 Therefore, you can avoid manual installation of browsers and the testing framework on the server.</p>
 
@@ -604,21 +611,23 @@ Therefore, you can avoid manual installation of browsers and the testing framewo
 
 <p><code>-v //d/tests:/myTests</code></p></li>
 <li><p><code>-it testcafe/testcafe</code> - runs TestCafe in the interactive mode with the console enabled;</p></li>
-<li><p><code>${TESTCAFE_ARGS}</code> - arguments passed to the <code>testcafe</code> command. You can use any arguments from the TestCafe <a href="command-line-interface.html">CLI</a>;</p>
+<li><p><code>${TESTCAFE_ARGS}</code> - arguments passed to the <code>testcafe</code> command. You can use any arguments from the TestCafe <a href="command-line-interface.md">CLI</a>;</p>
 
 <p><code>-it testcafe/testcafe &#39;chromium --no-sandbox,firefox&#39; /tests/test.js</code></p>
 
 <p>You can run tests in the Chromium and Firefox browsers preinstalled to the Docker image. Add the <code>--no-sandbox</code> flag to Chromium if the container is run in the unprivileged mode.</p>
 
-<p>Use the <a href="command-line-interface.html#remote-browsers">remote browser</a> to run tests on a mobile device. To do this, you need to add the <code>-P</code> flag to the <code>docker run</code> command and specify the <code>remote</code> keyword as the browser name.</p>
+<p>Use the <a href="command-line-interface.md#remote-browsers">remote browser</a> to run tests on a mobile device. To do this, you need to add the <code>-P</code> flag to the <code>docker run</code> command and specify the <code>remote</code> keyword as the browser name.</p>
 
 <p><code>docker run -v //d/tests:/tests -P -it testcafe/testcafe remote /tests/test.js</code></p>
 
 <p>You can pass a glob instead of the directory path in TestCafe parameters.</p>
 
 <p><code>docker run -v //d/tests:/tests -it testcafe/testcafe firefox /tests/**/*.js</code></p>
-<blockquote><div class="blockquote-content"><p>If tests use other Node.js modules, these modules should be located in the tests directory or its child directories. TestCafe will not be able to find modules in the parent directories.</p>
-</div></blockquote></li>
+
+<blockquote>
+<p>If tests use other Node.js modules, these modules should be located in the tests directory or its child directories. TestCafe will not be able to find modules in the parent directories.</p>
+</blockquote></li>
 </ul>
 
 

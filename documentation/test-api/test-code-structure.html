@@ -464,6 +464,24 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#specifying-testing-metadata"  >Specifying Testing Metadata</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#using-metadata-in-reports"  >Using Metadata in Reports</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/test-api/test-code-structure.html#initialization-and-clean-up"  >Initialization and Clean-Up</a>
 		
 			<ul>
@@ -723,6 +741,59 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/"  >Intercepting HTTP Requests</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/logging-http-requests.html"  >Logging HTTP Requests</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/mocking-http-responses.html"  >Mocking HTTP Responses</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html"  >Creating a Custom HTTP Request Hook</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/specifying-which-requests-are-handled-by-the-hook.html"  >Specifying Which Requests are Handled by the Hook</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/attaching-hooks-to-tests-and-fixtures.html"  >Attaching Hooks to Tests and Fixtures</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/requestoptions-object.html"  >requestOptions Object</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/test-api/waiting-for-page-elements-to-appear.html"  >Waiting for Page Elements to Appear</a>
 		
     </li>
@@ -814,7 +885,8 @@
 		<div class="post-content">
 
 			<h1>Test Code Structure</h1>
-<p>This topic contains the following sections.</p>
+
+<p>This topic contains the following sections:</p>
 
 <ul>
 <li><a href="#fixtures">Fixtures</a></li>
@@ -826,6 +898,11 @@
 <li><a href="#setting-page-load-timeout">Setting Page Load Timeout</a></li>
 </ul></li>
 <li><a href="#specifying-the-start-webpage">Specifying the Start Webpage</a></li>
+<li><a href="#specifying-testing-metadata">Specifying Testing Metadata</a>
+
+<ul>
+<li><a href="#using-metadata-in-reports">Using Metadata in Reports</a></li>
+</ul></li>
 <li><a href="#initialization-and-clean-up">Initialization and Clean-Up</a>
 
 <ul>
@@ -836,9 +913,14 @@
 </ul></li>
 <li><a href="#skipping-tests">Skipping Tests</a></li>
 </ul>
-<blockquote><div class="blockquote-content"><p>If you use <a href="http://eslint.org/">eslint</a> in your project, get the <a href="https://www.npmjs.com/package/eslint-plugin-testcafe">TestCafe plugin</a>
+
+<blockquote>
+<p>If you use <a href="http://eslint.org/">eslint</a> in your project, use  the <a href="https://www.npmjs.com/package/eslint-plugin-testcafe">TestCafe plugin</a>
 to avoid the <code>&#39;fixture&#39; is not defined</code> and <code>&#39;test&#39; is not defined</code> errors.</p>
-</div></blockquote><h2><a class="anchor" name="fixtures"></a>Fixtures <a class="permalink" href="#fixtures">#</a></h2>
+</blockquote>
+
+<h2>Fixtures</h2>
+
 <p>TestCafe tests must be organized into categories called <em>fixtures</em>.
 A JavaScript or TypeScript file with TestCafe tests can contain one or more fixtures.</p>
 
@@ -860,10 +942,15 @@ fixture `fixtureName`
 </tr>
 </tbody></table>
 
-<p>This function returns the <code>fixture</code> object that allows you to configure the fixture - specify the <a href="#specifying-the-start-webpage">start webpage</a> and <a href="#initialization-and-clean-up">initialization and clean-up code</a> for tests included to the fixture.</p>
-<blockquote><div class="blockquote-content"><p><a href="#tests">Tests</a> that constitute a fixture go after this declaration.</p>
-</div></blockquote><h2><a class="anchor" name="tests"></a>Tests <a class="permalink" href="#tests">#</a></h2>
-<p>To introduce a test, call the <code>test</code> function and pass test code inside.</p>
+<p>This function returns the <code>fixture</code> object that allows you to configure the fixture - specify the <a href="#specifying-the-start-webpage">start webpage</a>, <a href="#specifying-testing-metadata">metadata</a> and <a href="#initialization-and-clean-up">initialization and clean-up code</a> for tests included in the fixture.</p>
+
+<blockquote>
+<p><a href="#tests">Tests</a> that constitute a fixture go after this declaration.</p>
+</blockquote>
+
+<h2>Tests</h2>
+
+<p>To introduce a test, call the <code>test</code> function and pass the test code inside it.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">test( testName, fn(t) )
 </code></pre></div>
 <table><thead>
@@ -881,12 +968,12 @@ fixture `fixtureName`
 <tr>
 <td><code>fn</code></td>
 <td>Function</td>
-<td>An asynchronous function that contains test code.</td>
+<td>An asynchronous function that contains the test code.</td>
 </tr>
 <tr>
 <td><code>t</code></td>
 <td>Object</td>
-<td>The <a href="#test-controller">test controller</a> used to access test run API.</td>
+<td>The <a href="#test-controller">test controller</a> used to access the test run API.</td>
 </tr>
 </tbody></table>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">MyFixture</span><span class="err">`</span><span class="p">;</span>
@@ -899,21 +986,22 @@ fixture `fixtureName`
     <span class="cm">/* Test 2 Code */</span>
 <span class="p">});</span>
 </code></pre></div>
-<p>You are free to structure test code in any manner, and you can
-reference any modules or libraries you need.</p>
+<p>You can arrange test code in any manner and reference any modules or libraries.</p>
 
-<p>TestCafe tests are executed server side. To manipulate the tested webpage, use <a href="actions/">test actions</a>.
-To determine the state of page elements or obtain any other data from the client side, use <a href="selecting-page-elements/selectors/">selectors</a> and
-<a href="obtaining-data-from-the-client/">client functions</a>.</p>
+<p>TestCafe tests are executed on the server side. You can use <a href="actions/README.md">test actions</a> to manipulate the tested webpage.
+To determine page elements&#39; state or obtain any other data from the client side, use the <a href="selecting-page-elements/selectors/README.md">selectors</a> and
+<a href="obtaining-data-from-the-client/README.md">client functions</a>.</p>
 
-<p>To check if the page state matches the expected one, use <a href="assertions/">assertions</a>.</p>
-<h3><a class="anchor" name="test-controller"></a>Test Controller <a class="permalink" href="#test-controller">#</a></h3>
-<p>A <em>test controller</em> object <code>t</code> exposes methods of test API. That is why it is
+<p>To check if the page state matches the expected one, use <a href="assertions/README.md">assertions</a>.</p>
+
+<h3>Test Controller</h3>
+
+<p>A <em>test controller</em> object <code>t</code> exposes the test API&#39;s methods. That is why it is
 passed to each function that is expected to contain server-side test code (like <a href="#tests">test</a>,
 <a href="#initialization-and-clean-up">beforeEach</a> or <a href="#initialization-and-clean-up">afterEach</a>).</p>
 
-<p>Use the test controller to call <a href="actions/">test actions</a>, handle <a href="handling-native-dialogs.html">browser dialogs</a>,
-use the <a href="pausing-the-test.html">wait function</a> or <a href="assertions/">execute assertions</a>.</p>
+<p>Use the test controller to call <a href="actions/README.md">test actions</a>, handle <a href="handling-native-dialogs.md">browser dialogs</a>,
+use the <a href="pausing-the-test.md">wait function</a> or <a href="assertions/README.md">execute assertions</a>.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
     <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//www.example.com/`;</span>
 
@@ -928,13 +1016,15 @@ use the <a href="pausing-the-test.html">wait function</a> or <a href="assertions
     <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">location</span><span class="p">.</span><span class="nx">pathname</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="s1">'/testcafe/example/thank-you.html'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div>
-<p>Another job of the test controller is providing access to the internal context required for test API to operate.
-This is why <a href="selecting-page-elements/selectors/">selectors</a> and
-<a href="obtaining-data-from-the-client/">client functions</a> need the test controller object when they are
+<p>The test controller also provides access to the internal context the test API requires to operate.
+This is why <a href="selecting-page-elements/selectors/README.md">selectors</a> and
+<a href="obtaining-data-from-the-client/README.md">client functions</a> need the test controller object when they are
 called from Node.js callbacks.</p>
-<h4><a class="anchor" name="using-test-controller-outside-of-test-code"></a>Using Test Controller Outside of Test Code <a class="permalink" href="#using-test-controller-outside-of-test-code">#</a></h4>
-<p>You may sometimes need to call test API from outside of test code. For instance, your <a href="../recipes/using-page-model.html">page model</a>
-can contain methods that perform common operations used in many tests, like authentication.</p>
+
+<h4>Using Test Controller Outside of Test Code</h4>
+
+<p>You may sometimes need to call the test API from outside the test code. For instance, your <a href="../recipes/using-page-model.md">page model</a>
+can contain methods that perform common operations used in different tests (like authentication).</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
 <span class="kr">export</span> <span class="k">default</span> <span class="kr">class</span> <span class="nx">Page</span> <span class="p">{</span>
@@ -954,7 +1044,7 @@ can contain methods that perform common operations used in many tests, like auth
 <p>In this instance, you need to access the test controller from the page model&#39;s <code>login</code> method.</p>
 
 <p>TestCafe allows you to avoid passing the test controller to the method explicitly.
-Instead, you can simply import <code>t</code> to the page model file.</p>
+Instead, you can import <code>t</code> to the page model file.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span><span class="p">,</span> <span class="nx">t</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
 <span class="kr">export</span> <span class="k">default</span> <span class="kr">class</span> <span class="nx">Page</span> <span class="p">{</span>
@@ -971,13 +1061,14 @@ Instead, you can simply import <code>t</code> to the page model file.</p>
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>TestCafe will implicitly resolve test context and provide the right test controller.</p>
-<h3><a class="anchor" name="setting-test-speed"></a>Setting Test Speed <a class="permalink" href="#setting-test-speed">#</a></h3>
-<p>TestCafe allows you to specify the speed of test execution.</p>
+<p>TestCafe implicitly resolves test context and provides the right test controller.</p>
 
-<p>By default, tests run at the maximum speed. However, if you need to watch a test running
-to understand what happens in it, this speed may seem too fast. In this instance, use the <code>t.setTestSpeed</code> method
-to slow the test down.</p>
+<h3>Setting Test Speed</h3>
+
+<p>TestCafe allows you to specify the test execution speed.</p>
+
+<p>Tests are run at the maximum speed by default. You can use the <code>t.setTestSpeed</code> method
+to specify the speed.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">t.setTestSpeed( factor )
 </code></pre></div>
 <table><thead>
@@ -994,7 +1085,7 @@ to slow the test down.</p>
 </tr>
 </tbody></table>
 
-<p>If speed is also specified for an <a href="actions/action-options.html#basic-action-options">individual action</a>, the action speed setting overrides test speed.</p>
+<p>If the speed is also specified for an <a href="actions/action-options.md#basic-action-options">individual action</a>, the action&#39;s speed setting overrides the test speed.</p>
 
 <p><strong>Example</strong></p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
@@ -1010,8 +1101,10 @@ to slow the test down.</p>
         <span class="p">.</span><span class="nx">setTestSpeed</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">,</span> <span class="s1">' Parker'</span><span class="p">);</span>
 <span class="p">});</span>
-</code></pre></div><h3><a class="anchor" name="setting-page-load-timeout"></a>Setting Page Load Timeout <a class="permalink" href="#setting-page-load-timeout">#</a></h3>
-<p>Page load timeout defines the amount of time passed after the <code>DOMContentLoaded</code> event, within which the <code>window.load</code> event should be raised.</p>
+</code></pre></div>
+<h3>Setting Page Load Timeout</h3>
+
+<p>The page load timeout defines the time passed after the <code>DOMContentLoaded</code> event within which the <code>window.load</code> event should be raised.</p>
 
 <p>After the timeout passes or the <code>window.load</code> event is raised (whichever happens first), TestCafe starts the test.</p>
 
@@ -1028,11 +1121,11 @@ to slow the test down.</p>
 <tr>
 <td><code>duration</code></td>
 <td>Number</td>
-<td>Page load timeout, in milliseconds. <code>0</code> to skip waiting for the <code>window.load</code> event.</td>
+<td>Page load timeout (in milliseconds). <code>0</code> to skip waiting for the <code>window.load</code> event.</td>
 </tr>
 </tbody></table>
 
-<p>You can also set the page load timeout when launching tests via the <a href="../using-testcafe/command-line-interface.html#--page-load-timeout-ms">command line</a> or <a href="../using-testcafe/programming-interface/runner.html#run">API</a>.</p>
+<p>You can also set the page load timeout when launching tests via the <a href="../using-testcafe/command-line-interface.md#--page-load-timeout-ms">command line</a> or <a href="../using-testcafe/programming-interface/runner.md#run">API</a>.</p>
 
 <p><strong>Example</strong></p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">Page</span> <span class="nx">load</span> <span class="nx">timeout</span><span class="err">`</span>
@@ -1043,15 +1136,19 @@ to slow the test down.</p>
         <span class="p">.</span><span class="nx">setPageLoadTimeout</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">navigateTo</span><span class="p">(</span><span class="s1">'http://devexpress.github.io/testcafe/'</span><span class="p">);</span>
 <span class="p">});</span>
-</code></pre></div><blockquote><div class="blockquote-content"><p>Note that the <code>DOMContentLoaded</code> event is raised after the HTML document is loaded and parsed, while <code>window.load</code> is raised after all stylesheets, images and subframes are loaded. That is why <code>window.load</code> is fired after the <code>DOMContentLoaded</code> event with a certain delay.</p>
-</div></blockquote><h2><a class="anchor" name="specifying-the-start-webpage"></a>Specifying the Start Webpage <a class="permalink" href="#specifying-the-start-webpage">#</a></h2>
-<p>You can specify a webpage at which all tests in a fixture start.
-To do this, use the <code>fixture.page</code> function.</p>
+</code></pre></div>
+<blockquote>
+<p>Note that the <code>DOMContentLoaded</code> event is raised after the HTML document is loaded and parsed, while <code>window.load</code> is raised after all stylesheets, images and subframes are loaded. That is why <code>window.load</code> is fired after the <code>DOMContentLoaded</code> event with a certain delay.</p>
+</blockquote>
+
+<h2>Specifying the Start Webpage</h2>
+
+<p>You can specify the web page where all tests in a fixture start using the <code>fixture.page</code> function.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">fixture.page( url )
 fixture.page `url`
 </code></pre></div>
 <p>Similarly, you can specify a start page for individual tests
-using the <code>test.page</code> function that overrides <code>fixture.page</code>.</p>
+using the <code>test.page</code> function that overrides the <code>fixture.page</code>.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">test.page( url )
 test.page `url`
 </code></pre></div>
@@ -1083,30 +1180,111 @@ test.page `url`
 </code></pre></div>
 <p>If the start page is not specified, it defaults to <code>about:blank</code>.</p>
 
-<p>To test webpages in local directories, you can use the <code>file://</code> scheme or relative paths.</p>
+<p>You can use the <code>file://</code> scheme or relative paths to test web pages in local directories.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">MyFixture</span><span class="err">`</span>
     <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">file</span><span class="err">:</span><span class="c1">///user/my-website/index.html`;</span>
 </code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">MyFixture</span><span class="err">`</span>
     <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="p">..</span><span class="o">/</span><span class="nx">my</span><span class="o">-</span><span class="nx">project</span><span class="o">/</span><span class="nx">index</span><span class="p">.</span><span class="nx">html</span><span class="err">`</span><span class="p">;</span>
-</code></pre></div><h2><a class="anchor" name="initialization-and-clean-up"></a>Initialization and Clean-Up <a class="permalink" href="#initialization-and-clean-up">#</a></h2>
-<p>TestCafe allows you to specify functions that will be executed before a fixture or test is started and after it is finished.
+</code></pre></div>
+<h2>Specifying Testing Metadata</h2>
+
+<p>TestCafe allows you to specify additional information for tests in the form of <em>key-value metadata</em> and use it in reports.</p>
+
+<p>To define metadata, use the <code>meta</code> method. You can call this method for a fixture and a test.</p>
+
+<p>The <code>meta</code> method allows you to specify one or several metadata entries:</p>
+
+<ul>
+<li><p>Specifying one metadata entry.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span><span class="p">.</span><span class="nx">meta</span><span class="p">(</span><span class="s1">'key1'</span><span class="p">,</span> <span class="s1">'value1'</span><span class="p">)</span>
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">test</span><span class="p">.</span><span class="nx">meta</span><span class="p">(</span><span class="s1">'key2'</span><span class="p">,</span> <span class="s1">'value2'</span><span class="p">)</span>
+</code></pre></div>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>name</code></td>
+<td>String</td>
+<td>The name of the metadata entry</td>
+</tr>
+<tr>
+<td><code>value</code></td>
+<td>String</td>
+<td>The value of the metadata entry</td>
+</tr>
+</tbody></table></li>
+<li><p>Specifying a set of metadata entries.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span><span class="p">.</span><span class="nx">meta</span><span class="p">({</span> <span class="na">key1</span><span class="p">:</span> <span class="s1">'value1'</span><span class="p">,</span> <span class="na">key2</span><span class="p">:</span> <span class="s1">'value2'</span><span class="p">,</span> <span class="na">key3</span><span class="p">:</span> <span class="s1">'value3'</span> <span class="p">})</span>
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">test</span><span class="p">.</span><span class="nx">meta</span><span class="p">({</span> <span class="na">key4</span><span class="p">:</span> <span class="s1">'value1'</span><span class="p">,</span> <span class="na">key5</span><span class="p">:</span> <span class="s1">'value2'</span><span class="p">,</span> <span class="na">key6</span><span class="p">:</span> <span class="s1">'value3'</span> <span class="p">})</span>
+</code></pre></div>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>metadata</code></td>
+<td>Object</td>
+<td>Key-value pairs</td>
+</tr>
+</tbody></table></li>
+</ul>
+
+<p><strong>Examples</strong></p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">meta</span><span class="p">(</span><span class="s1">'fixtureID'</span><span class="p">,</span> <span class="s1">'f-0001'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">meta</span><span class="p">({</span> <span class="na">author</span><span class="p">:</span> <span class="s1">'John'</span><span class="p">,</span> <span class="na">creationDate</span><span class="p">:</span> <span class="s1">'05/03/2018'</span> <span class="p">});</span>
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">test</span>
+    <span class="p">.</span><span class="nx">meta</span><span class="p">(</span><span class="s1">'testID'</span><span class="p">,</span> <span class="s1">'t-0005'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">meta</span><span class="p">({</span> <span class="na">severity</span><span class="p">:</span> <span class="s1">'critical'</span><span class="p">,</span> <span class="na">testedAPIVersion</span><span class="p">:</span> <span class="s1">'1.0'</span> <span class="p">})</span>
+    <span class="p">(</span><span class="s1">'MyTest'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/* ... */</span><span class="p">});</span>
+</code></pre></div>
+<p>All metadata entries specified for a fixture are applied to tests included in this fixture.</p>
+
+<p>If you specified the same entries in the <code>test.meta</code> and <code>fixture.meta</code> methods, the <code>test.meta</code> method call overrides values of these entries. The following example demonstrates a <code>test.meta</code> method call that overrides the <strong>creationDate</strong> entry:</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">meta</span><span class="p">(</span><span class="s1">'creationDate'</span><span class="p">,</span> <span class="s1">'05/03/2018'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//www.example.com/`;</span>
+
+<span class="nx">test</span>
+    <span class="p">.</span><span class="nx">meta</span><span class="p">(</span><span class="s1">'creationDate'</span><span class="p">,</span> <span class="s1">'05/04/2018'</span><span class="p">);</span> <span class="c1">// The value of the creationDate entry is '05/04/2018'</span>
+    <span class="p">(</span><span class="s1">'MyTest'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/* ... */</span><span class="p">});</span>
+</code></pre></div>
+<h3>Using Metadata in Reports</h3>
+
+<p>You can include testing metadata to reports using a <a href="../extending-testcafe/reporter-plugin/README.md">custom reporter</a>. The reporter&#39;s <a href="../extending-testcafe/reporter-plugin/reporter-methods.md#reportfixturestart">reportFixtureStart</a> and <a href="../extending-testcafe/reporter-plugin/reporter-methods.md#reporttestdone">reportTestDone</a> methods can access the fixture and test metadata.</p>
+
+<h2>Initialization and Clean-Up</h2>
+
+<p>TestCafe allows you to specify functions that are executed before a fixture or test is started and after it is finished.
 These functions are called <em>hook functions</em> or <em>hooks</em>.</p>
-<h3><a class="anchor" name="test-hooks"></a>Test Hooks <a class="permalink" href="#test-hooks">#</a></h3>
+
+<h3>Test Hooks</h3>
+
 <p>Test hooks are executed in each test run before a test is started and after it is finished. If a test runs in several browsers, test hooks are executed in each browser.</p>
 
-<p>At the moment test hooks run, the tested webpage is already loaded, so that you can use <a href="actions/">test actions</a> and other test run API inside test hooks.</p>
+<p>At the moment test hooks run, the tested webpage is already loaded, so that you can use <a href="actions/README.md">test actions</a> and other test run API inside test hooks.</p>
 
-<p>You can specify a hook for each test in a fixture by using the <code>beforeEach</code> and <code>afterEach</code> methods in the <a href="#fixtures">fixture declaration</a>.</p>
+<p>You can specify a hook for each test in a fixture using the <code>beforeEach</code> and <code>afterEach</code> methods in the <a href="#fixtures">fixture declaration</a>.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">fixture.beforeEach( fn(t) )
 </code></pre></div><div class="highlight"><pre><code class="language-text" data-lang="text">fixture.afterEach( fn(t) )
 </code></pre></div>
-<p>You can also specify hooks for an individual test by using the <code>test.before</code> and <code>test.after</code> methods.</p>
+<p>You can also specify hooks for an individual test using the <code>test.before</code> and <code>test.after</code> methods.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">test.before( fn(t) )
 </code></pre></div><div class="highlight"><pre><code class="language-text" data-lang="text">test.after( fn(t) )
-</code></pre></div><blockquote><div class="blockquote-content"><p>If <code>test.before</code> or <code>test.after</code> is specified, it overrides the corresponding
+</code></pre></div>
+<blockquote>
+<p>If <code>test.before</code> or <code>test.after</code> is specified, it overrides the corresponding
 <code>fixture.beforeEach</code> and <code>fixture.afterEach</code> hook, so that the latter are not executed.</p>
-</div></blockquote>
-<p>The <code>test.before</code>, <code>test.after</code>,  <code>fixture.beforeEach</code> and <code>fixture.afterEach</code> methods take the following parameters.</p>
+</blockquote>
+
+<p>The <code>test.before</code>, <code>test.after</code>,  <code>fixture.beforeEach</code> and <code>fixture.afterEach</code> methods accept the following parameters:</p>
 
 <table><thead>
 <tr>
@@ -1145,14 +1323,16 @@ These functions are called <em>hook functions</em> or <em>hooks</em>.</p>
     <span class="p">.</span><span class="nx">after</span><span class="p">(</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
         <span class="cm">/* test finalization code */</span>
     <span class="p">});</span>
-</code></pre></div><h4><a class="anchor" name="sharing-variables-between-test-hooks-and-test-code"></a>Sharing Variables Between Test Hooks and Test Code <a class="permalink" href="#sharing-variables-between-test-hooks-and-test-code">#</a></h4>
+</code></pre></div>
+<h4>Sharing Variables Between Test Hooks and Test Code</h4>
+
 <p>You can share variables between test hook functions and test code
 by using the <em>test context</em> object.</p>
 
 <p>Test context is available through the <code>t.ctx</code> property.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">t.ctx
 </code></pre></div>
-<p>Instead of using a global variable, assign the object you want to share directly to <code>t.ctx</code> or create a property like in the following example.</p>
+<p>Instead of using a global variable, assign the object you want to share directly to <code>t.ctx</code> or create a property as in the following example:</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">Fixture1</span><span class="err">`</span>
     <span class="p">.</span><span class="nx">beforeEach</span><span class="p">(</span><span class="nx">async</span> <span class="nx">t</span>  <span class="o">=&gt;</span> <span class="p">{</span>
         <span class="nx">t</span><span class="p">.</span><span class="nx">ctx</span><span class="p">.</span><span class="nx">someProp</span> <span class="o">=</span> <span class="mi">123</span><span class="p">;</span>
@@ -1167,8 +1347,13 @@ by using the <em>test context</em> object.</p>
     <span class="p">});</span>
 </code></pre></div>
 <p>Each test run has its own test context.</p>
-<blockquote><div class="blockquote-content"><p><code>t.ctx</code> is initialized with an empty object without a prototype. You can iterate its keys without the <code>hasOwnProperty</code> check.</p>
-</div></blockquote><h3><a class="anchor" name="fixture-hooks"></a>Fixture Hooks <a class="permalink" href="#fixture-hooks">#</a></h3>
+
+<blockquote>
+<p><code>t.ctx</code> is initialized with an empty object without a prototype. You can iterate its keys without the <code>hasOwnProperty</code> check.</p>
+</blockquote>
+
+<h3>Fixture Hooks</h3>
+
 <p>Fixture hooks are executed before the first test in a fixture is started and after the last test is finished.</p>
 
 <p>Unlike <a href="#test-hooks">test hooks</a>, fixture hooks are executed between test runs and do not have access to the tested page.
@@ -1206,7 +1391,9 @@ Use them to perform server-side operations like preparing the server that hosts 
     <span class="p">.</span><span class="nx">after</span><span class="p">(</span> <span class="nx">async</span> <span class="nx">ctx</span> <span class="o">=&gt;</span> <span class="p">{</span>
         <span class="cm">/* fixture finalization code */</span>
     <span class="p">});</span>
-</code></pre></div><h4><a class="anchor" name="sharing-variables-between-fixture-hooks-and-test-code"></a>Sharing Variables Between Fixture Hooks and Test Code <a class="permalink" href="#sharing-variables-between-fixture-hooks-and-test-code">#</a></h4>
+</code></pre></div>
+<h4>Sharing Variables Between Fixture Hooks and Test Code</h4>
+
 <p>Hook functions passed to <code>fixture.before</code> and <code>fixture.after</code> methods take a <code>ctx</code> parameter that contains <em>fixture context</em>.
 You can add properties to this parameter to share the value or object with test code.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">Fixture1</span><span class="err">`</span>
@@ -1238,7 +1425,9 @@ You can add properties to this parameter to share the value or object with test 
 <span class="nx">test</span><span class="p">(</span><span class="s1">'Test2'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">t</span><span class="p">.</span><span class="nx">fixtureCtx</span><span class="p">.</span><span class="nx">newProp</span> <span class="o">=</span> <span class="s1">'abc'</span><span class="p">;</span>
 <span class="p">});</span>
-</code></pre></div><h2><a class="anchor" name="skipping-tests"></a>Skipping Tests <a class="permalink" href="#skipping-tests">#</a></h2>
+</code></pre></div>
+<h2>Skipping Tests</h2>
+
 <p>TestCafe allows you to specify that a particular test or fixture should be skipped when running tests.
 Use the <code>fixture.skip</code> and <code>test.skip</code> methods for this.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">fixture.skip
@@ -1248,10 +1437,10 @@ Use the <code>fixture.skip</code> and <code>test.skip</code> methods for this.</
 <div class="highlight"><pre><code class="language-text" data-lang="text">fixture.only
 </code></pre></div><div class="highlight"><pre><code class="language-text" data-lang="text">test.only
 </code></pre></div>
-<p>If several tests or fixtures are marked with <code>only</code>, all the marked tests and fixtures will run.</p>
+<p>If several tests or fixtures are marked with <code>only</code>, all the marked tests and fixtures are run.</p>
 
 <p><strong>Examples</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span><span class="p">.</span><span class="nx">skip</span> <span class="err">`</span><span class="nx">Fixture1</span><span class="err">`</span><span class="p">;</span> <span class="c1">// All tests in this fixture will be skipped</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span><span class="p">.</span><span class="nx">skip</span> <span class="err">`</span><span class="nx">Fixture1</span><span class="err">`</span><span class="p">;</span> <span class="c1">// All tests in this fixture are skipped</span>
 
 <span class="nx">test</span><span class="p">(</span><span class="s1">'Fixture1Test1'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{});</span>
 <span class="nx">test</span><span class="p">(</span><span class="s1">'Fixture1Test2'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{});</span>
@@ -1259,7 +1448,7 @@ Use the <code>fixture.skip</code> and <code>test.skip</code> methods for this.</
 <span class="nx">fixture</span> <span class="err">`</span><span class="nx">Fixture2</span><span class="err">`</span><span class="p">;</span>
 
 <span class="nx">test</span><span class="p">(</span><span class="s1">'Fixture2Test1'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{});</span>
-<span class="nx">test</span><span class="p">.</span><span class="nx">skip</span><span class="p">(</span><span class="s1">'Fixture2Test2'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{});</span> <span class="c1">// This test will be skipped</span>
+<span class="nx">test</span><span class="p">.</span><span class="nx">skip</span><span class="p">(</span><span class="s1">'Fixture2Test2'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{});</span> <span class="c1">// This test is skipped</span>
 <span class="nx">test</span><span class="p">(</span><span class="s1">'Fixture2Test3'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{});</span>
 </code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span><span class="p">.</span><span class="nx">only</span> <span class="err">`</span><span class="nx">Fixture1</span><span class="err">`</span><span class="p">;</span>
 <span class="nx">test</span><span class="p">(</span><span class="s1">'Fixture1Test1'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{});</span>
@@ -1271,7 +1460,7 @@ Use the <code>fixture.skip</code> and <code>test.skip</code> methods for this.</
 <span class="nx">test</span><span class="p">.</span><span class="nx">only</span><span class="p">(</span><span class="s1">'Fixture2Test2'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{});</span>
 <span class="nx">test</span><span class="p">(</span><span class="s1">'Fixture2Test3'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{});</span>
 
-<span class="c1">// Only tests in Fixture1 and the Fixture2Test2 test will run</span>
+<span class="c1">// Only tests in Fixture1 and the Fixture2Test2 test are run</span>
 </code></pre></div>
 
 		</div>

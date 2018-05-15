@@ -544,6 +544,7 @@
 		<div class="post-content">
 
 			<h1>Debugging with Visual Studio Code</h1>
+
 <p>Before debugging in Visual Studio Code, ensure that your root test directory contains a <code>package.json</code> file that includes <code>testcafe</code> in the <code>devDependencies</code> section.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
   </span><span class="nt">"devDependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
@@ -580,7 +581,7 @@
 <li><code>request</code> - specifies the request type. Set to <code>launch</code> since this configuration launches a program.</li>
 <li><code>name</code> - specifies the name of the configuration.</li>
 <li><code>program</code> - path to a JS file that will be executed. In this case, it is the TestCafe module.</li>
-<li><code>args</code> - <a href="../using-testcafe/command-line-interface.html">command line arguments</a> passed to the launched program. In this case, they specify the browser in which the tests should run and the test file.</li>
+<li><code>args</code> - <a href="../using-testcafe/command-line-interface.md">command line arguments</a> passed to the launched program. In this case, they specify the browser in which the tests should run and the test file.</li>
 <li><code>cwd</code> - the current working directory. Set to the workspace root.</li>
 </ul>
 

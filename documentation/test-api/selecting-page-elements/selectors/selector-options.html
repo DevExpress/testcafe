@@ -464,6 +464,24 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#specifying-testing-metadata"  >Specifying Testing Metadata</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#using-metadata-in-reports"  >Using Metadata in Reports</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/test-api/test-code-structure.html#initialization-and-clean-up"  >Initialization and Clean-Up</a>
 		
 			<ul>
@@ -723,6 +741,59 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/"  >Intercepting HTTP Requests</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/logging-http-requests.html"  >Logging HTTP Requests</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/mocking-http-responses.html"  >Mocking HTTP Responses</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html"  >Creating a Custom HTTP Request Hook</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/specifying-which-requests-are-handled-by-the-hook.html"  >Specifying Which Requests are Handled by the Hook</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/attaching-hooks-to-tests-and-fixtures.html"  >Attaching Hooks to Tests and Fixtures</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/requestoptions-object.html"  >requestOptions Object</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/test-api/waiting-for-page-elements-to-appear.html"  >Waiting for Page Elements to Appear</a>
 		
     </li>
@@ -814,7 +885,8 @@
 		<div class="post-content">
 
 			<h1>Selector Options</h1>
-<p>You can pass the following options to the <a href="creating-selectors.html">Selector constructor</a>.</p>
+
+<p>You can pass the following options to the <a href="creating-selectors.md">Selector constructor</a>.</p>
 
 <ul>
 <li><a href="#optionsboundtestrun">options.boundTestRun</a></li>
@@ -827,23 +899,29 @@
 <ul>
 <li><a href="#overwriting-options">Overwriting Options</a></li>
 </ul>
-<h2><a class="anchor" name="optionsboundtestrun"></a>options.boundTestRun <a class="permalink" href="#optionsboundtestrun">#</a></h2>
+
+<h2>options.boundTestRun</h2>
+
 <p><strong>Type</strong>: Object</p>
 
 <p>If you need to call a selector from a Node.js callback, assign the current
-<a href="../../test-code-structure.html#test-controller">test controller</a> to the <code>boundTestRun</code> option.</p>
+<a href="../../test-code-structure.md#test-controller">test controller</a> to the <code>boundTestRun</code> option.</p>
 
-<p>For details, see <a href="edge-cases-and-limitations.html#calling-selectors-from-nodejs-callbacks">Calling Selectors from Node.js Callbacks</a>.</p>
-<h2><a class="anchor" name="optionstimeout"></a>options.timeout <a class="permalink" href="#optionstimeout">#</a></h2>
+<p>For details, see <a href="edge-cases-and-limitations.md#calling-selectors-from-nodejs-callbacks">Calling Selectors from Node.js Callbacks</a>.</p>
+
+<h2>options.timeout</h2>
+
 <p><strong>Type</strong>: Number</p>
 
 <p>The amount of time, in milliseconds, allowed for an element returned by the selector to appear in the DOM before the test fails.</p>
 
 <p>If the <a href="#optionsvisibilitycheck">visibilityCheck</a> option is enabled, the element then must become visible within the <code>timeout</code>.</p>
 
-<p><strong>Default value</strong>: timeout specified by using the <a href="../../../using-testcafe/programming-interface/runner.html#run">runner.run</a> API method
-or the <a href="../../../using-testcafe/command-line-interface.html#--selector-timeout-ms">selector-timeout</a> command line option.</p>
-<h2><a class="anchor" name="optionsvisibilitycheck"></a>options.visibilityCheck <a class="permalink" href="#optionsvisibilitycheck">#</a></h2>
+<p><strong>Default value</strong>: timeout specified by using the <a href="../../../using-testcafe/programming-interface/runner.md#run">runner.run</a> API method
+or the <a href="../../../using-testcafe/command-line-interface.md#--selector-timeout-ms">selector-timeout</a> command line option.</p>
+
+<h2>options.visibilityCheck</h2>
+
 <p><strong>Type</strong>: Boolean</p>
 
 <p><code>true</code> to additionally require the returned element to become visible within <a href="#optionstimeout">options.timeout</a>.</p>
@@ -854,7 +932,7 @@ or the <a href="../../../using-testcafe/command-line-interface.html#--selector-t
 <li><p>a property is obtained from the selector;</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">width</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#element'</span><span class="p">,</span> <span class="p">{</span> <span class="na">visibilityCheck</span><span class="p">:</span> <span class="kc">true</span> <span class="p">}).</span><span class="nx">clientWidth</span><span class="p">;</span>
 </code></pre></div></li>
-<li><p>a selector property is passed to an <a href="../../assertions/">assertion</a> as its actual value;</p>
+<li><p>a selector property is passed to an <a href="../../assertions/README.md">assertion</a> as its actual value;</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="s1">'#element'</span><span class="p">,</span> <span class="p">{</span> <span class="na">visibilityCheck</span><span class="p">:</span> <span class="kc">true</span> <span class="p">}).</span><span class="nx">clientWidth</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="mi">400</span><span class="p">);</span>
 </code></pre></div></li>
 <li><p>a selector is evaluated using the <code>await</code> keyword;</p>
@@ -864,8 +942,8 @@ or the <a href="../../../using-testcafe/command-line-interface.html#--selector-t
 
 <p>If the target element is not visible, the selector throws an exception in all these cases.</p>
 
-<p>Note that when a selector is passed to a <a href="../../actions/">test action</a> as an identifier for the target element,
-TestCafe <a href="../../waiting-for-page-elements-to-appear.html#waiting-for-action-target-elements">requires</a> that the target element is visible regardless of the <code>visibilityCheck</code> option.</p>
+<p>Note that when a selector is passed to a <a href="../../actions/README.md">test action</a> as an identifier for the target element,
+TestCafe <a href="../../waiting-for-page-elements-to-appear.md#waiting-for-action-target-elements">requires</a> that the target element is visible regardless of the <code>visibilityCheck</code> option.</p>
 
 <p>Unlike filter functions, the <code>visibilityCheck</code> option does not change the matching set of the selector.</p>
 
@@ -886,11 +964,13 @@ or the number of matching elements, invisible elements also count.</p>
 <span class="c1">// does not affect the selector's matching set</span>
 </code></pre></div>
 <p>In case you need to filter page elements by their visibility,
-use <a href="functional-style-selectors.html#filtervisible">filterVisible</a> and
-<a href="functional-style-selectors.html#filterhidden">filterHidden</a> methods.</p>
+use <a href="functional-style-selectors.md#filtervisible">filterVisible</a> and
+<a href="functional-style-selectors.md#filterhidden">filterHidden</a> methods.</p>
 
 <p><strong>Default value</strong>: <code>false</code></p>
-<h2><a class="anchor" name="overwriting-options"></a>Overwriting Options <a class="permalink" href="#overwriting-options">#</a></h2>
+
+<h2>Overwriting Options</h2>
+
 <p>You can overwrite selector options by using the selector&#39;s <code>with</code> function.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">selector.with( options ) → Selector
 </code></pre></div>

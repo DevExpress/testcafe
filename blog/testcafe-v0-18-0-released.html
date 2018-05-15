@@ -259,10 +259,15 @@
         </div>
         <article class="post-content">
             <h1>TestCafe v0.18.0 Released: Angular Selectors, Using Multiple Reporters, etc</h1>
+
 <p>With this release, we have prepared a bunch of useful things. We have put finishing touches on Angular selectors to let you address page elements on Angular websites using the component tree. We have also made it possible to output reports to multiple channels (like console + file). Read on to learn about more things we have for you.</p>
 
 <!--more-->
-<h2><a class="anchor" name="enhancements"></a>Enhancements <a class="permalink" href="#enhancements">#</a></h2><h3><a class="anchor" name="angular-selectors-testcafe-angular-selectors"></a>⚙ Angular Selectors (<a href="https://github.com/DevExpress/testcafe-angular-selectors">testcafe-angular-selectors</a>) <a class="permalink" href="#angular-selectors-testcafe-angular-selectors">#</a></h3>
+
+<h2>Enhancements</h2>
+
+<h3>⚙ Angular Selectors (<a href="https://github.com/DevExpress/testcafe-angular-selectors">testcafe-angular-selectors</a>)</h3>
+
 <p>In addition to AngularJS selectors we shipped earlier, we have prepared selectors for Angular 2+ websites.</p>
 
 <p>They are included in the same <code>testcafe-angular-selectors</code> module.</p>
@@ -287,14 +292,18 @@
 <span class="p">});</span>
 </code></pre></div>
 <p>For details, see <a href="https://github.com/DevExpress/testcafe-angular-selectors/blob/master/angular-selector.md">Angular Selector Extentions</a>.</p>
-<h3><a class="anchor" name="testing-in-headless-firefox"></a>⚙ Testing in headless Firefox <a class="permalink" href="#testing-in-headless-firefox">#</a></h3>
+
+<h3>⚙ Testing in headless Firefox</h3>
+
 <p>In addition to Chrome headless, we have added support for testing in <a href="https://developer.mozilla.org/en-US/Firefox/Headless_mode">headless</a> Firefox (version 56+).</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe firefox:headless tests/sample-fixture.js
 </code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span>
     <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">'tests/sample-fixture.js'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="s1">'firefox:headless'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">run</span><span class="p">();</span>
-</code></pre></div><h3><a class="anchor" name="outputting-test-results-to-multiple-channels-1412"></a>⚙ Outputting test results to multiple channels (<a href="https://github.com/DevExpress/testcafe/issues/1412">#1412</a>) <a class="permalink" href="#outputting-test-results-to-multiple-channels-1412">#</a></h3>
+</code></pre></div>
+<h3>⚙ Outputting test results to multiple channels (<a href="https://github.com/DevExpress/testcafe/issues/1412">#1412</a>)</h3>
+
 <p>If you need a report to be printed in the console and saved to a <code>.json</code> file,
 you can now do this by specifying multiple reporters when running tests.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe all tests/sample-fixture.js -r spec,json:report.json
@@ -309,13 +318,17 @@ you can now do this by specifying multiple reporters when running tests.</p>
     <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">failedCount</span> <span class="o">=&gt;</span> <span class="p">{</span>
         <span class="nx">stream</span><span class="p">.</span><span class="nx">end</span><span class="p">();</span>
     <span class="p">});</span>
-</code></pre></div><h3><a class="anchor" name="entering-the-debug-mode-when-a-test-fails-1608"></a>⚙ Entering the debug mode when a test fails (<a href="https://github.com/DevExpress/testcafe/issues/1608">#1608</a>) <a class="permalink" href="#entering-the-debug-mode-when-a-test-fails-1608">#</a></h3>
+</code></pre></div>
+<h3>⚙ Entering the debug mode when a test fails (<a href="https://github.com/DevExpress/testcafe/issues/1608">#1608</a>)</h3>
+
 <p>TestCafe can now automatically switch to the debug mode whenever a test fails. Test execution will be paused, so that you can explore the tested page to determine the cause of the fail.</p>
 
 <p>To enable this behavior, use the <code>--debug-on-fail</code> flag in the command line or the <code>debugOnFail</code> option in the API.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome tests/fixture.js --debug-on-fail
 </code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">run</span><span class="p">({</span> <span class="na">debugOnFail</span><span class="p">:</span> <span class="kc">true</span> <span class="p">});</span>
-</code></pre></div><h3><a class="anchor" name="interacting-with-the-tested-page-in-debug-mode-1848"></a>⚙ Interacting with the tested page in debug mode (<a href="https://github.com/DevExpress/testcafe/issues/1848">#1848</a>) <a class="permalink" href="#interacting-with-the-tested-page-in-debug-mode-1848">#</a></h3>
+</code></pre></div>
+<h3>⚙ Interacting with the tested page in debug mode (<a href="https://github.com/DevExpress/testcafe/issues/1848">#1848</a>)</h3>
+
 <p>When debugging your tests, you can now interact with the tested page. Click the <strong>Unlock page</strong> button in the page footer to enable interaction.</p>
 
 <p><img src="../images/unlock-page-button.png" alt="Unlock page button"></p>
@@ -323,7 +336,9 @@ you can now do this by specifying multiple reporters when running tests.</p>
 <p>After that, you can do anything with the webpage. This gives you additional powers to detect problems in your tests.</p>
 
 <p>Click <strong>Resume</strong> to continue running the test or click <strong>Next Step</strong> to step over.</p>
-<h3><a class="anchor" name="chrome-and-firefox-are-opened-with-clean-profiles-by-default-1623"></a>⚙ Chrome and Firefox are opened with clean profiles by default (<a href="https://github.com/DevExpress/testcafe/issues/1623">#1623</a>) <a class="permalink" href="#chrome-and-firefox-are-opened-with-clean-profiles-by-default-1623">#</a></h3>
+
+<h3>⚙ Chrome and Firefox are opened with clean profiles by default (<a href="https://github.com/DevExpress/testcafe/issues/1623">#1623</a>)</h3>
+
 <p>TestCafe now opens Chrome and Firefox with empty profiles to eliminate the influence of profile settings and extensions on test running.</p>
 
 <p>However, you can <strong>return to the previous behavior</strong> by using the <code>:userProfile</code> browser option.</p>
@@ -332,7 +347,9 @@ you can now do this by specifying multiple reporters when running tests.</p>
     <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">'tests/fixture1.js'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="s1">'firefox:userProfile'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">run</span><span class="p">();</span>
-</code></pre></div><h3><a class="anchor" name="customizable-timeout-to-wait-for-the-windowload-event-1645"></a>⚙ Customizable timeout to wait for the <code>window.load</code> event (<a href="https://github.com/DevExpress/testcafe/issues/1645">#1645</a>) <a class="permalink" href="#customizable-timeout-to-wait-for-the-windowload-event-1645">#</a></h3>
+</code></pre></div>
+<h3>⚙ Customizable timeout to wait for the <code>window.load</code> event (<a href="https://github.com/DevExpress/testcafe/issues/1645">#1645</a>)</h3>
+
 <p>Previously, TestCafe started a test when the <code>DOMContentLoaded</code> event was raised. However, there are many pages that execute some kind of initialization code on the <code>window.load</code> event (which is raised after <code>DOMContentLoaded</code> because it waits for all stylesheets, images and subframes to load). In this instance, you need to wait for the <code>window.load</code> event to fire before running tests.</p>
 
 <p>With this release, TestCafe waits for the <code>window.load</code> event for <code>3</code> seconds.
@@ -354,7 +371,9 @@ You can set it to <code>0</code> to skip waiting for <code>window.load</code>.</
         <span class="p">.</span><span class="nx">setPageLoadTimeout</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">navigateTo</span><span class="p">(</span><span class="s1">'http://devexpress.github.io/testcafe/'</span><span class="p">);</span>
 <span class="p">});</span>
-</code></pre></div><h3><a class="anchor" name="access-messages-output-by-the-tested-app-to-the-browser-console-1738"></a>⚙ Access messages output by the tested app to the browser console (<a href="https://github.com/DevExpress/testcafe/issues/1738">#1738</a>) <a class="permalink" href="#access-messages-output-by-the-tested-app-to-the-browser-console-1738">#</a></h3>
+</code></pre></div>
+<h3>⚙ Access messages output by the tested app to the browser console (<a href="https://github.com/DevExpress/testcafe/issues/1738">#1738</a>)</h3>
+
 <p>You can now obtain messages that the tested app outputs to the browser console. This is useful if your application or the framework it uses posts errors, warnings or other informative messages into the console.</p>
 
 <p>Use the <code>t.getBrowserConsoleMessages</code> method that returns the following object.</p>
@@ -393,7 +412,9 @@ You can set it to <code>0</code> to skip waiting for <code>window.load</code>.</
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="s1">'button'</span><span class="p">).</span><span class="nx">withText</span><span class="p">(</span><span class="s1">'Go'</span><span class="p">))</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="s1">'h4'</span><span class="p">).</span><span class="nx">withText</span><span class="p">(</span><span class="s1">'Organizations'</span><span class="p">));</span>
 <span class="p">});</span>
-</code></pre></div><h3><a class="anchor" name="defining-drag-end-point-on-the-destination-element-982"></a>⚙ Defining drag end point on the destination element (<a href="https://github.com/DevExpress/testcafe/issues/982">#982</a>) <a class="permalink" href="#defining-drag-end-point-on-the-destination-element-982">#</a></h3>
+</code></pre></div>
+<h3>⚙ Defining drag end point on the destination element (<a href="https://github.com/DevExpress/testcafe/issues/982">#982</a>)</h3>
+
 <p>The <code>t.dragToElement</code> action can now drop a dragged element at any point inside the destination element.
 You can specify the target point using the <code>destinationOffsetX</code> and <code>destinationOffsetY</code> options.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
@@ -416,10 +437,14 @@ You can specify the target point using the <code>destinationOffsetX</code> and <
             <span class="p">}</span>
         <span class="p">});</span>
 <span class="p">});</span>
-</code></pre></div><h3><a class="anchor" name="testcafe-exits-gracefully-when-the-process-is-interrupted-1378"></a>⚙ TestCafe exits gracefully when the process is interrupted (<a href="https://github.com/DevExpress/testcafe/issues/1378">#1378</a>) <a class="permalink" href="#testcafe-exits-gracefully-when-the-process-is-interrupted-1378">#</a></h3>
+</code></pre></div>
+<h3>⚙ TestCafe exits gracefully when the process is interrupted (<a href="https://github.com/DevExpress/testcafe/issues/1378">#1378</a>)</h3>
+
 <p>Previously, TestCafe left browsers open when you exited the process by pressing <code>Ctrl+C</code> in the terminal.
 Now TestCafe exits gracefully closing all browsers opened for testing.</p>
-<h2><a class="anchor" name="bug-fixes"></a>Bug Fixes <a class="permalink" href="#bug-fixes">#</a></h2>
+
+<h2>Bug Fixes</h2>
+
 <ul>
 <li>Tests no longer hang in Nightmare (<a href="https://github.com/DevExpress/testcafe/issues/1493">#1493</a>)</li>
 <li>The <code>focus</code> event is now raised when clicking links with <code>tabIndex=&quot;0&quot;</code> (<a href="https://github.com/DevExpress/testcafe/issues/1803">#1803</a>)</li>
@@ -440,11 +465,11 @@ Now TestCafe exits gracefully closing all browsers opened for testing.</p>
         <div id="back-to-posts-link">
             <p><a href="./">Back to Post List</a></p>
         </div>
-        <div id="disqus_thread"></div>
+        <!-- <div id="disqus_thread"></div> -->
     </div>
 </main>
 
-
+<!-- 
 <script>
     var disqus_config = function () {
         this.page.url = 'http://devexpress.github.io/testcafe/blog/testcafe-v0-18-0-released.html';
@@ -460,7 +485,7 @@ Now TestCafe exits gracefully closing all browsers opened for testing.</p>
     })();
 </script>
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
-
+ -->
 </div>
 
       <div class="push"></div>

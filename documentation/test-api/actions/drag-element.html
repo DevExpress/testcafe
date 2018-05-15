@@ -464,6 +464,24 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#specifying-testing-metadata"  >Specifying Testing Metadata</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#using-metadata-in-reports"  >Using Metadata in Reports</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/test-api/test-code-structure.html#initialization-and-clean-up"  >Initialization and Clean-Up</a>
 		
 			<ul>
@@ -723,6 +741,59 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/"  >Intercepting HTTP Requests</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/logging-http-requests.html"  >Logging HTTP Requests</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/mocking-http-responses.html"  >Mocking HTTP Responses</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html"  >Creating a Custom HTTP Request Hook</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/specifying-which-requests-are-handled-by-the-hook.html"  >Specifying Which Requests are Handled by the Hook</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/attaching-hooks-to-tests-and-fixtures.html"  >Attaching Hooks to Tests and Fixtures</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/requestoptions-object.html"  >requestOptions Object</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/test-api/waiting-for-page-elements-to-appear.html"  >Waiting for Page Elements to Appear</a>
 		
     </li>
@@ -814,16 +885,22 @@
 		<div class="post-content">
 
 			<h1>Drag Element</h1>
+
 <p>There are two ways to drag a page element.</p>
 
 <ul>
 <li><a href="#drag-an-element-by-an-offset">Drag an Element by an Offset</a></li>
 <li><a href="#drag-an-element-onto-another-one">Drag an Element onto Another One</a></li>
 </ul>
-<blockquote><div class="blockquote-content"><p>The <code>t.drag</code> or <code>t.dragToElement</code> actions will not invoke integrated browser actions such as selecting text.
+
+<blockquote>
+<p>The <code>t.drag</code> or <code>t.dragToElement</code> actions will not invoke integrated browser actions such as selecting text.
 Use them to perform drag-and-drop actions that are processed by webpage elements, not the browser.
-To select text, use <a href="select-text.html">t.selectText</a>.</p>
-</div></blockquote><h2><a class="anchor" name="drag-an-element-by-an-offset"></a>Drag an Element by an Offset <a class="permalink" href="#drag-an-element-by-an-offset">#</a></h2><div class="highlight"><pre><code class="language-text" data-lang="text">t.drag( selector, dragOffsetX, dragOffsetY [, options] )
+To select text, use <a href="select-text.md">t.selectText</a>.</p>
+</blockquote>
+
+<h2>Drag an Element by an Offset</h2>
+<div class="highlight"><pre><code class="language-text" data-lang="text">t.drag( selector, dragOffsetX, dragOffsetY [, options] )
 </code></pre></div>
 <table><thead>
 <tr>
@@ -835,7 +912,7 @@ To select text, use <a href="select-text.html">t.selectText</a>.</p>
 <tr>
 <td><code>selector</code></td>
 <td>Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise</td>
-<td>Identifies the webpage element being dragged. See <a href=".#selecting-target-elements">Selecting Target Elements</a>.</td>
+<td>Identifies the webpage element being dragged. See <a href="README.md#selecting-target-elements">Selecting Target Elements</a>.</td>
 </tr>
 <tr>
 <td><code>dragOffsetX</code></td>
@@ -850,7 +927,7 @@ To select text, use <a href="select-text.html">t.selectText</a>.</p>
 <tr>
 <td><code>options</code>&#160;<em>(optional)</em></td>
 <td>Object</td>
-<td>A set of options that provide additional parameters for the action. See <a href="action-options.html#mouse-action-options">Mouse Action Options</a>.</td>
+<td>A set of options that provide additional parameters for the action. See <a href="action-options.md#mouse-action-options">Mouse Action Options</a>.</td>
 </tr>
 </tbody></table>
 
@@ -869,7 +946,9 @@ To select text, use <a href="select-text.html">t.selectText</a>.</p>
         <span class="p">.</span><span class="nx">drag</span><span class="p">(</span><span class="s1">'.ui-slider-handle'</span><span class="p">,</span> <span class="mi">360</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">{</span> <span class="na">offsetX</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="na">offsetY</span><span class="p">:</span> <span class="mi">10</span> <span class="p">})</span>
         <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">slider</span><span class="p">.</span><span class="nx">value</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="mi">7</span><span class="p">);</span>
 <span class="p">});</span>
-</code></pre></div><h2><a class="anchor" name="drag-an-element-onto-another-one"></a>Drag an Element onto Another One <a class="permalink" href="#drag-an-element-onto-another-one">#</a></h2><div class="highlight"><pre><code class="language-text" data-lang="text">t.dragToElement( selector, destinationSelector [, options] )
+</code></pre></div>
+<h2>Drag an Element onto Another One</h2>
+<div class="highlight"><pre><code class="language-text" data-lang="text">t.dragToElement( selector, destinationSelector [, options] )
 </code></pre></div>
 <table><thead>
 <tr>
@@ -881,17 +960,17 @@ To select text, use <a href="select-text.html">t.selectText</a>.</p>
 <tr>
 <td><code>selector</code></td>
 <td>Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise</td>
-<td>Identifies the webpage element being dragged. See <a href=".#selecting-target-elements">Selecting Target Elements</a>.</td>
+<td>Identifies the webpage element being dragged. See <a href="README.md#selecting-target-elements">Selecting Target Elements</a>.</td>
 </tr>
 <tr>
 <td><code>destinationSelector</code></td>
 <td>Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise</td>
-<td>Identifies the webpage element that serves as the drop location. See <a href=".#selecting-target-elements">Selecting Target Elements</a>.</td>
+<td>Identifies the webpage element that serves as the drop location. See <a href="README.md#selecting-target-elements">Selecting Target Elements</a>.</td>
 </tr>
 <tr>
 <td><code>options</code>&#160;<em>(optional)</em></td>
 <td>Object</td>
-<td>A set of options that provide additional parameters for the action. See <a href="action-options.html#dragtoelement-action-options">DragToElement Action Options</a>.</td>
+<td>A set of options that provide additional parameters for the action. See <a href="action-options.md#dragtoelement-action-options">DragToElement Action Options</a>.</td>
 </tr>
 </tbody></table>
 

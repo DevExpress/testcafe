@@ -259,10 +259,15 @@
         </div>
         <article class="post-content">
             <h1>TestCafe v0.12.0 Released</h1>
+
 <p>HTTP authentication support, a CI-friendly way to start and stop the tested app and lots of API enhancements.</p>
 
 <!--more-->
-<h2><a class="anchor" name="enhancements"></a>Enhancements <a class="permalink" href="#enhancements">#</a></h2><h3><a class="anchor" name="http-authentication-support-955-1109"></a>⚙ HTTP authentication support (<a href="https://github.com/DevExpress/testcafe/issues/955">#955</a>, <a href="https://github.com/DevExpress/testcafe/issues/1109">#1109</a>) <a class="permalink" href="#http-authentication-support-955-1109">#</a></h3>
+
+<h2>Enhancements</h2>
+
+<h3>⚙ HTTP authentication support (<a href="https://github.com/DevExpress/testcafe/issues/955">#955</a>, <a href="https://github.com/DevExpress/testcafe/issues/1109">#1109</a>)</h3>
+
 <p>TestCafe now supports testing webpages protected with HTTP Basic and NTLM authentication.</p>
 
 <p>Use the <a href="https://devexpress.github.io/testcafe/documentation/test-api/authentication/http-authentication.html">httpAuth</a> function in fixture or test declaration to specify the credentials.</p>
@@ -285,7 +290,9 @@
         <span class="na">password</span><span class="p">:</span> <span class="s1">'differentPa$$word'</span>
     <span class="p">})</span>
     <span class="p">(</span><span class="s1">'Test2'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{});</span>
-</code></pre></div><h3><a class="anchor" name="built-in-ci-friendly-way-to-start-and-stop-the-tested-web-app-1047"></a>⚙ Built-in CI-friendly way to start and stop the tested web app (<a href="https://github.com/DevExpress/testcafe/issues/1047">#1047</a>) <a class="permalink" href="#built-in-ci-friendly-way-to-start-and-stop-the-tested-web-app-1047">#</a></h3>
+</code></pre></div>
+<h3>⚙ Built-in CI-friendly way to start and stop the tested web app (<a href="https://github.com/DevExpress/testcafe/issues/1047">#1047</a>)</h3>
+
 <p>When launching tests, you can now specify a command that starts the tested application.
 TestCafe will automatically execute this command before running tests and stop the process when tests are finished.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome tests/ --app <span class="s2">"node server.js"</span>
@@ -298,9 +305,13 @@ TestCafe will automatically execute this command before running tests and stop t
 </code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span>
     <span class="p">.</span><span class="nx">startApp</span><span class="p">(</span><span class="s1">'node server.js'</span><span class="p">,</span> <span class="mi">4000</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">run</span><span class="p">();</span>
-</code></pre></div><h3><a class="anchor" name="screenshot-and-window-resize-actions-now-work-on-linux-1117"></a>⚙ Screenshot and window resize actions now work on Linux (<a href="https://github.com/DevExpress/testcafe/issues/1117">#1117</a>) <a class="permalink" href="#screenshot-and-window-resize-actions-now-work-on-linux-1117">#</a></h3>
+</code></pre></div>
+<h3>⚙ Screenshot and window resize actions now work on Linux (<a href="https://github.com/DevExpress/testcafe/issues/1117">#1117</a>)</h3>
+
 <p>The <code>t.takeScreenshot</code>, <code>t.resizeWindow</code>, <code>t.resizeWindowToFitDevice</code> and <code>t.maximizeWindow</code> actions can now be executed on Linux machines.</p>
-<h3><a class="anchor" name="adding-custom-properties-to-the-element-state-749"></a>⚙ Adding custom properties to the element state (<a href="https://github.com/DevExpress/testcafe/issues/749">#749</a>) <a class="permalink" href="#adding-custom-properties-to-the-element-state-749">#</a></h3>
+
+<h3>⚙ Adding custom properties to the element state (<a href="https://github.com/DevExpress/testcafe/issues/749">#749</a>)</h3>
+
 <p>The state of webpage elements can now be extended with custom properties.</p>
 
 <p>We have added the <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#custom-properties">addCustomDOMProperties</a>
@@ -317,7 +328,9 @@ method to the selector, so that you can add properties to the element state like
 
     <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">label</span><span class="p">.</span><span class="nx">innerHTML</span><span class="p">).</span><span class="nx">contains</span><span class="p">(</span><span class="s1">'input type="checkbox" name="remote"'</span><span class="p">);</span>
 <span class="p">});</span>
-</code></pre></div><h3><a class="anchor" name="skipping-tests-246"></a>⚙ Skipping tests (<a href="https://github.com/DevExpress/testcafe/issues/246">#246</a>) <a class="permalink" href="#skipping-tests-246">#</a></h3>
+</code></pre></div>
+<h3>⚙ Skipping tests (<a href="https://github.com/DevExpress/testcafe/issues/246">#246</a>)</h3>
+
 <p>TestCafe now allows you to specify that a particular test or fixture should be skipped when running tests.
 Use the <code>fixture.skip</code> and <code>test.skip</code> methods for this.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span><span class="p">.</span><span class="nx">skip</span> <span class="err">`</span><span class="nx">Fixture1</span><span class="err">`</span><span class="p">;</span> <span class="c1">// All tests in this fixture will be skipped</span>
@@ -342,7 +355,9 @@ Use the <code>fixture.skip</code> and <code>test.skip</code> methods for this.</
 <span class="nx">test</span><span class="p">(</span><span class="s1">'Fixture2Test3'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{});</span>
 
 <span class="c1">// Only tests in Fixture1 and the Fixture2Test2 test will run</span>
-</code></pre></div><h3><a class="anchor" name="specifying-the-start-webpage-for-a-test-501"></a>⚙ Specifying the start webpage for a test (<a href="https://github.com/DevExpress/testcafe/issues/501">#501</a>) <a class="permalink" href="#specifying-the-start-webpage-for-a-test-501">#</a></h3>
+</code></pre></div>
+<h3>⚙ Specifying the start webpage for a test (<a href="https://github.com/DevExpress/testcafe/issues/501">#501</a>)</h3>
+
 <p>An individual test can now override the fixture&#39;s <code>page</code> setting and start on a different page.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"> <span class="nx">fixture</span> <span class="err">`</span><span class="nx">MyFixture</span><span class="err">`</span>
      <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example`;</span>
@@ -356,7 +371,9 @@ Use the <code>fixture.skip</code> and <code>test.skip</code> methods for this.</
      <span class="p">(</span><span class="s1">'Test2'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
          <span class="c1">// Starts at http://devexpress.github.io/testcafe/blog/</span>
      <span class="p">});</span>
-</code></pre></div><h3><a class="anchor" name="initialization-and-finalization-methods-for-a-test-1108"></a>⚙ Initialization and finalization methods for a test (<a href="https://github.com/DevExpress/testcafe/issues/1108">#1108</a>) <a class="permalink" href="#initialization-and-finalization-methods-for-a-test-1108">#</a></h3>
+</code></pre></div>
+<h3>⚙ Initialization and finalization methods for a test (<a href="https://github.com/DevExpress/testcafe/issues/1108">#1108</a>)</h3>
+
 <p>We have added the <a href="https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#initialization-and-clean-up">before</a>
 and <a href="https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#initialization-and-clean-up">after</a> methods to the test declaration.
 Use them to provide code that will be executed before a test is started and after it is finished.</p>
@@ -370,7 +387,9 @@ Use them to provide code that will be executed before a test is started and afte
     <span class="p">.</span><span class="nx">after</span><span class="p">(</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
         <span class="cm">/* test finalization code */</span>
     <span class="p">});</span>
-</code></pre></div><h3><a class="anchor" name="sharing-variables-between-hooks-and-test-code-841"></a>⚙ Sharing variables between hooks and test code (<a href="https://github.com/DevExpress/testcafe/issues/841">#841</a>) <a class="permalink" href="#sharing-variables-between-hooks-and-test-code-841">#</a></h3>
+</code></pre></div>
+<h3>⚙ Sharing variables between hooks and test code (<a href="https://github.com/DevExpress/testcafe/issues/841">#841</a>)</h3>
+
 <p>You can now share variables between <code>fixture.beforeEach</code>, <code>fixture.afterEach</code>, <code>test.before</code>, <code>test.after</code> functions and test code
 by using the <em>test context</em> object.</p>
 
@@ -389,11 +408,15 @@ by using the <em>test context</em> object.</p>
     <span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
          <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">ctx</span><span class="p">.</span><span class="nx">someProp</span><span class="p">);</span> <span class="c1">// &gt; 123</span>
     <span class="p">});</span>
-</code></pre></div><h3><a class="anchor" name="assertion-methods-to-check-for-regexp-match-1038"></a>⚙ Assertion methods to check for regexp match (<a href="https://github.com/DevExpress/testcafe/issues/1038">#1038</a>) <a class="permalink" href="#assertion-methods-to-check-for-regexp-match-1038">#</a></h3>
+</code></pre></div>
+<h3>⚙ Assertion methods to check for regexp match (<a href="https://github.com/DevExpress/testcafe/issues/1038">#1038</a>)</h3>
+
 <p>We have added <code>match</code> and <code>notMatch</code> methods to check if a string matches a particular regular expression.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="s1">'foobar'</span><span class="p">).</span><span class="nx">match</span><span class="p">(</span><span class="sr">/^f/</span><span class="p">,</span> <span class="s1">'this assertion passes'</span><span class="p">);</span>
 </code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="s1">'foobar'</span><span class="p">).</span><span class="nx">notMatch</span><span class="p">(</span><span class="sr">/^b/</span><span class="p">,</span> <span class="s1">'this assertion passes'</span><span class="p">);</span>
-</code></pre></div><h3><a class="anchor" name="improved-filtering-by-predicates-in-selectors-1025-and-1065"></a>⚙ Improved filtering by predicates in selectors (<a href="https://github.com/DevExpress/testcafe/issues/1025">#1025</a> and <a href="https://github.com/DevExpress/testcafe/issues/1065">#1065</a>) <a class="permalink" href="#improved-filtering-by-predicates-in-selectors-1025-and-1065">#</a></h3>
+</code></pre></div>
+<h3>⚙ Improved filtering by predicates in selectors (<a href="https://github.com/DevExpress/testcafe/issues/1025">#1025</a> and <a href="https://github.com/DevExpress/testcafe/issues/1065">#1065</a>)</h3>
+
 <p>Selector&#39;s filter predicates now receive more information about the current node, which enables you to implement more advanced filtering logic.</p>
 
 <p>The <code>filter</code>, <code>find</code>, <code>parent</code>, <code>child</code> and <code>sibling</code> methods now pass the node&#39;s index to the predicate.
@@ -412,14 +435,20 @@ an optional <code>dependencies</code> parameter.</p>
 <span class="nx">Selector</span><span class="p">(</span><span class="s1">'ul'</span><span class="p">).</span><span class="nx">child</span><span class="p">(</span><span class="nx">node</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">isNodeOk</span><span class="p">(</span><span class="nx">node</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">flag</span><span class="p">;</span>
 <span class="p">},</span> <span class="p">{</span> <span class="nx">isNodeOk</span><span class="p">,</span> <span class="nx">flag</span> <span class="p">});</span>
-</code></pre></div><h3><a class="anchor" name="filtering-by-negative-index-in-selectors-738"></a>⚙ Filtering by negative index in selectors (<a href="https://github.com/DevExpress/testcafe/issues/738">#738</a>) <a class="permalink" href="#filtering-by-negative-index-in-selectors-738">#</a></h3>
+</code></pre></div>
+<h3>⚙ Filtering by negative index in selectors (<a href="https://github.com/DevExpress/testcafe/issues/738">#738</a>)</h3>
+
 <p>You can now pass negative <code>index</code> values to selector methods. In this instance, index is counted from the end of the matching set.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">lastChild</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'.someClass'</span><span class="p">).</span><span class="nx">child</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
-</code></pre></div><h3><a class="anchor" name="improved-cursor-positioning-in-test-actions-981"></a>⚙ Improved cursor positioning in test actions (<a href="https://github.com/DevExpress/testcafe/issues/981">#981</a>) <a class="permalink" href="#improved-cursor-positioning-in-test-actions-981">#</a></h3>
+</code></pre></div>
+<h3>⚙ Improved cursor positioning in test actions (<a href="https://github.com/DevExpress/testcafe/issues/981">#981</a>)</h3>
+
 <p>In action options, X and Y offsets that define the point where action is performed can now be negative.
 In this instance, the cursor position is calculated from the bottom-right corner of the target element.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#element'</span><span class="p">,</span> <span class="p">{</span> <span class="na">offsetX</span><span class="p">:</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="na">offsetY</span><span class="p">:</span> <span class="o">-</span><span class="mi">30</span> <span class="p">});</span>
-</code></pre></div><h3><a class="anchor" name="client-functions-as-an-assertions-actual-value-1009"></a>⚙ Client functions as an assertion&#39;s actual value (<a href="https://github.com/DevExpress/testcafe/issues/1009">#1009</a>) <a class="permalink" href="#client-functions-as-an-assertions-actual-value-1009">#</a></h3>
+</code></pre></div>
+<h3>⚙ Client functions as an assertion&#39;s actual value (<a href="https://github.com/DevExpress/testcafe/issues/1009">#1009</a>)</h3>
+
 <p>You can now pass client functions to assertion&#39;s <code>expect</code> method. In this instance, the
 <a href="https://devexpress.github.io/testcafe/documentation/test-api/assertions/#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a>
 will run this client function and use the return value as the assertion&#39;s actual value.</p>
@@ -433,12 +462,17 @@ will run this client function and use the return value as the assertion&#39;s ac
 <span class="nx">test</span><span class="p">(</span><span class="s1">'My Test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">windowLocation</span><span class="p">()).</span><span class="nx">eql</span><span class="p">(</span><span class="s1">'http://www.example.com'</span><span class="p">);</span>
 <span class="p">});</span>
-</code></pre></div><h3><a class="anchor" name="automatic-waiting-for-scripts-added-during-a-test-action-1072"></a>⚙ Automatic waiting for scripts added during a test action (<a href="https://github.com/DevExpress/testcafe/issues/1072">#1072</a>) <a class="permalink" href="#automatic-waiting-for-scripts-added-during-a-test-action-1072">#</a></h3>
+</code></pre></div>
+<h3>⚙ Automatic waiting for scripts added during a test action (<a href="https://github.com/DevExpress/testcafe/issues/1072">#1072</a>)
 <p>If a test action adds scripts on a page, TestCafe now automatically waits for them to finish before proceeding to the next test action.</p>
-<h3><a class="anchor" name="new-eslint-plugin-1083"></a>⚙ New ESLint plugin (<a href="https://github.com/DevExpress/testcafe/issues/1083">#1083</a>) <a class="permalink" href="#new-eslint-plugin-1083">#</a></h3>
+
+<h3>⚙ New ESLint plugin (<a href="https://github.com/DevExpress/testcafe/issues/1083">#1083</a>)</h3>
+
 <p>We have prepared an <a href="https://github.com/miherlosev/eslint-plugin-testcafe">ESLint plugin</a>.
 Get it to ensure that ESLint does not fail on TestCafe test code.</p>
-<h2><a class="anchor" name="bug-fixes"></a>Bug Fixes <a class="permalink" href="#bug-fixes">#</a></h2>
+
+<h2>Bug Fixes</h2>
+
 <ul>
 <li>Remote browser connection timeout has been increased (<a href="https://github.com/DevExpress/testcafe/issues/1078">#1078</a>)</li>
 <li>You can now run tests located in directories with a large number of files (<a href="https://github.com/DevExpress/testcafe/issues/1090">#1090</a>)</li>
@@ -466,11 +500,11 @@ Get it to ensure that ESLint does not fail on TestCafe test code.</p>
         <div id="back-to-posts-link">
             <p><a href="./">Back to Post List</a></p>
         </div>
-        <div id="disqus_thread"></div>
+        <!-- <div id="disqus_thread"></div> -->
     </div>
 </main>
 
-
+<!-- 
 <script>
     var disqus_config = function () {
         this.page.url = 'http://devexpress.github.io/testcafe/blog/testcafe-v0-12-0-released.html';
@@ -486,7 +520,7 @@ Get it to ensure that ESLint does not fail on TestCafe test code.</p>
     })();
 </script>
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
-
+ -->
 </div>
 
       <div class="push"></div>

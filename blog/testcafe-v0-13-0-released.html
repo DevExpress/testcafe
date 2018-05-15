@@ -259,10 +259,13 @@
         </div>
         <article class="post-content">
             <h1>TestCafe v0.13.0 Released</h1>
+
 <p>IDE plugins, fixture hooks, speed setting for actions, a couple of API enhancements and lots of bug fixes.</p>
 
 <!--more-->
-<h2><a class="anchor" name="ide-plugins"></a>IDE Plugins <a class="permalink" href="#ide-plugins">#</a></h2>
+
+<h2>IDE Plugins</h2>
+
 <p>With this release, we have prepared test runner plugins for
 <a href="https://github.com/romanresh/vscode-testcafe">VSCode</a> and <a href="https://github.com/churkin/testcafe-sublimetext">SublimeText</a>.
 These plugins allow you to</p>
@@ -274,7 +277,11 @@ These plugins allow you to</p>
 <li>Debug tests,</li>
 <li>View test results in the <code>Debug Console</code> panel.</li>
 </ul>
-<h2><a class="anchor" name="enhancements"></a>Enhancements <a class="permalink" href="#enhancements">#</a></h2><h3><a class="anchor" name="fixture-hooks-903"></a>⚙ Fixture hooks (<a href="https://github.com/DevExpress/testcafe/issues/903">#903</a>) <a class="permalink" href="#fixture-hooks-903">#</a></h3>
+
+<h2>Enhancements</h2>
+
+<h3>⚙ Fixture hooks (<a href="https://github.com/DevExpress/testcafe/issues/903">#903</a>)</h3>
+
 <p>You can now specify fixture hooks that will be executed before the first test in a fixture is started and after the last test is finished.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
     <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//example.com`</span>
@@ -287,7 +294,9 @@ These plugins allow you to</p>
 </code></pre></div>
 <p>Unlike test hooks, fixture hooks are executed between test runs and do not have access to the tested page.
 Use them to perform server-side operations like preparing the server that hosts the tested app.</p>
-<h4><a class="anchor" name="sharing-variables-between-fixture-hooks-and-test-code"></a>Sharing variables between fixture hooks and test code <a class="permalink" href="#sharing-variables-between-fixture-hooks-and-test-code">#</a></h4>
+
+<h4>Sharing variables between fixture hooks and test code</h4>
+
 <p>Use the <code>ctx</code> parameter passed to <code>fixture.before</code> and <code>fixture.after</code> methods (<em>fixture context</em>) to share values and objects with test code.
 You can assign to <code>ctx</code> parameter&#39;s properties or add new properties.</p>
 
@@ -307,7 +316,9 @@ You can assign to <code>ctx</code> parameter&#39;s properties or add new propert
 <span class="nx">test</span><span class="p">(</span><span class="s1">'Test2'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">t</span><span class="p">.</span><span class="nx">fixtureCtx</span><span class="p">.</span><span class="nx">newProp</span> <span class="o">=</span> <span class="s1">'abc'</span><span class="p">;</span>
 <span class="p">});</span>
-</code></pre></div><h3><a class="anchor" name="speed-option-for-test-actions-865"></a>⚙ Speed option for test actions (<a href="https://github.com/DevExpress/testcafe/issues/865">#865</a>) <a class="permalink" href="#speed-option-for-test-actions-865">#</a></h3>
+</code></pre></div>
+<h3>⚙ Speed option for test actions (<a href="https://github.com/DevExpress/testcafe/issues/865">#865</a>)</h3>
+
 <p>You can now specify speed for individual test actions using the <code>speed</code> option.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
@@ -323,7 +334,9 @@ You can assign to <code>ctx</code> parameter&#39;s properties or add new propert
 <span class="p">});</span>
 </code></pre></div>
 <p>If speed is also specified for the whole test, the action speed setting overrides test speed.</p>
-<h3><a class="anchor" name="setting-test-speed-from-test-code-865"></a>⚙ Setting test speed from test code (<a href="https://github.com/DevExpress/testcafe/issues/865">#865</a>) <a class="permalink" href="#setting-test-speed-from-test-code-865">#</a></h3>
+
+<h3>⚙ Setting test speed from test code (<a href="https://github.com/DevExpress/testcafe/issues/865">#865</a>)</h3>
+
 <p>You can now specify test speed from code using the <code>t.setTestSpeed</code> method.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
@@ -338,7 +351,9 @@ You can assign to <code>ctx</code> parameter&#39;s properties or add new propert
         <span class="p">.</span><span class="nx">setTestSpeed</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">,</span> <span class="s1">' Parker'</span><span class="p">);</span>
 <span class="p">});</span>
-</code></pre></div><h3><a class="anchor" name="using-test-controller-outside-of-test-code-1166"></a>⚙ Using test controller outside of test code (<a href="https://github.com/DevExpress/testcafe/issues/1166">#1166</a>) <a class="permalink" href="#using-test-controller-outside-of-test-code-1166">#</a></h3>
+</code></pre></div>
+<h3>⚙ Using test controller outside of test code (<a href="https://github.com/DevExpress/testcafe/issues/1166">#1166</a>)</h3>
+
 <p>You may sometimes need to call test API from outside of test code. For instance, your <a href="https://devexpress.github.io/testcafe/documentation/recipes/using-page-model.html">page model</a>
 can contain methods that perform common operations used in many tests, like authentication.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
@@ -378,7 +393,9 @@ Instead, you can simply import <code>t</code> to the page model file.</p>
 <span class="p">}</span>
 </code></pre></div>
 <p>TestCafe will implicitly resolve test context and provide the right test controller.</p>
-<h3><a class="anchor" name="inserting-text-with-one-keystroke-with-ttypetext-action-by-ericyd-1230"></a>⚙ Inserting text with one keystroke with t.typeText action (by <a href="https://github.com/ericyd">@ericyd</a>) (<a href="https://github.com/DevExpress/testcafe/issues/1230">#1230</a>) <a class="permalink" href="#inserting-text-with-one-keystroke-with-ttypetext-action-by-ericyd-1230">#</a></h3>
+
+<h3>⚙ Inserting text with one keystroke with t.typeText action (by <a href="https://github.com/ericyd">@ericyd</a>) (<a href="https://github.com/DevExpress/testcafe/issues/1230">#1230</a>)</h3>
+
 <p>The new <code>paste</code> option allows you to insert a portion of text with one keystroke, similar to the paste operation.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
@@ -392,11 +409,14 @@ Instead, you can simply import <code>t</code> to the page model file.</p>
         <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">,</span> <span class="s1">'Peter'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">,</span> <span class="s1">' Parker'</span><span class="p">,</span> <span class="p">{</span> <span class="na">paste</span><span class="p">:</span> <span class="kc">true</span> <span class="p">});</span>
 <span class="p">});</span>
-</code></pre></div><h3><a class="anchor" name="prevsibling-and-nextsibling-selectors-dom-search-methods-1218"></a>⚙ prevSibling and nextSibling selector&#39;s DOM search methods (<a href="https://github.com/DevExpress/testcafe/issues/1218">#1218</a>) <a class="permalink" href="#prevsibling-and-nextsibling-selectors-dom-search-methods-1218">#</a></h3>
+</code></pre></div>
+<h3>⚙ prevSibling and nextSibling selector&#39;s DOM search methods (<a href="https://github.com/DevExpress/testcafe/issues/1218">#1218</a>)
 <p>The new <code>prevSibling</code> and <code>nextSibling</code> methods allow you to search among sibling elements that reside before and after the selector&#39;s matching elements in the DOM tree.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">Selector</span><span class="p">(</span><span class="s1">'li .active'</span><span class="p">).</span><span class="nx">prevSibling</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
 <span class="nx">Selector</span><span class="p">(</span><span class="s1">'li'</span><span class="p">).</span><span class="nx">nextSibling</span><span class="p">(</span><span class="s1">'.checked'</span><span class="p">);</span>
-</code></pre></div><h3><a class="anchor" name="deprecated-functionality-removed-1167"></a>⚙ Deprecated functionality removed (<a href="https://github.com/DevExpress/testcafe/issues/1167">#1167</a>) <a class="permalink" href="#deprecated-functionality-removed-1167">#</a></h3>
+</code></pre></div>
+<h3>⚙ Deprecated functionality removed (<a href="https://github.com/DevExpress/testcafe/issues/1167">#1167</a>)</h3>
+
 <p>The following deprecated members have been removed from the API.</p>
 
 <ul>
@@ -413,7 +433,9 @@ Instead, you can simply import <code>t</code> to the page model file.</p>
 <li><code>selectorOptions.text</code> - use <a href="http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#withtext">selector.withText()</a> instead.</li>
 <li><code>selectorOptions.dependencies</code> - use <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#filter-dom-nodes">filtering</a> and <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#search-for-elements-in-the-dom-hierarchy">hierarchical</a> methods to build combined selectors instead.</li>
 </ul>
-<h2><a class="anchor" name="bug-fixes"></a>Bug Fixes <a class="permalink" href="#bug-fixes">#</a></h2>
+
+<h2>Bug Fixes</h2>
+
 <ul>
 <li>Fixed a bug where tests failed with a script error (<a href="https://github.com/DevExpress/testcafe/issues/1188">#1188</a>)</li>
 <li>Text can now be typed to an input field with type &quot;email&quot; in Firefox (<a href="https://github.com/DevExpress/testcafe/issues/1187">#1187</a>)</li>
@@ -436,11 +458,11 @@ Instead, you can simply import <code>t</code> to the page model file.</p>
         <div id="back-to-posts-link">
             <p><a href="./">Back to Post List</a></p>
         </div>
-        <div id="disqus_thread"></div>
+        <!-- <div id="disqus_thread"></div> -->
     </div>
 </main>
 
-
+<!-- 
 <script>
     var disqus_config = function () {
         this.page.url = 'http://devexpress.github.io/testcafe/blog/testcafe-v0-13-0-released.html';
@@ -456,7 +478,7 @@ Instead, you can simply import <code>t</code> to the page model file.</p>
     })();
 </script>
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
-
+ -->
 </div>
 
       <div class="push"></div>

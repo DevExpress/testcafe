@@ -464,6 +464,24 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#specifying-testing-metadata"  >Specifying Testing Metadata</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#using-metadata-in-reports"  >Using Metadata in Reports</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/test-api/test-code-structure.html#initialization-and-clean-up"  >Initialization and Clean-Up</a>
 		
 			<ul>
@@ -723,6 +741,59 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/"  >Intercepting HTTP Requests</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/logging-http-requests.html"  >Logging HTTP Requests</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/mocking-http-responses.html"  >Mocking HTTP Responses</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html"  >Creating a Custom HTTP Request Hook</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/specifying-which-requests-are-handled-by-the-hook.html"  >Specifying Which Requests are Handled by the Hook</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/attaching-hooks-to-tests-and-fixtures.html"  >Attaching Hooks to Tests and Fixtures</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/requestoptions-object.html"  >requestOptions Object</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/test-api/waiting-for-page-elements-to-appear.html"  >Waiting for Page Elements to Appear</a>
 		
     </li>
@@ -814,12 +885,18 @@
 		<div class="post-content">
 
 			<h1>Take Screenshot</h1>
+
 <p>This topic describes how you can take screenshots of the tested page.</p>
 
 <p><strong>Note</strong>: these actions require a <a href="https://en.wikipedia.org/wiki/Comparison_of_X_window_managers">ICCCM/EWMH-compliant window manager</a> on Linux.</p>
-<blockquote class="important"><div class="blockquote-content"><p>If the screenshot directory is not specified with the <a href="../../using-testcafe/programming-interface/runner.html#screenshots">runner.screenshots</a> API method or the <a href="../../using-testcafe/command-line-interface.html#-s-path---screenshots-path">screenshots</a> command line option,
+
+<blockquote>
+<p>Important! If the screenshot directory is not specified with the <a href="../../using-testcafe/programming-interface/runner.md#screenshots">runner.screenshots</a> API method or the <a href="../../using-testcafe/command-line-interface.md#-s-path---screenshots-path">screenshots</a> command line option,
 the screenshot actions are ignored.</p>
-</div></blockquote><h2><a class="anchor" name="take-a-screenshot-of-the-entire-page"></a>Take a Screenshot of the Entire Page <a class="permalink" href="#take-a-screenshot-of-the-entire-page">#</a></h2><div class="highlight"><pre><code class="language-text" data-lang="text">t.takeScreenshot( [path] )
+</blockquote>
+
+<h2>Take a Screenshot of the Entire Page</h2>
+<div class="highlight"><pre><code class="language-text" data-lang="text">t.takeScreenshot( [path] )
 </code></pre></div>
 <table><thead>
 <tr>
@@ -831,15 +908,15 @@ the screenshot actions are ignored.</p>
 <tr>
 <td><code>path</code>&#160;<em>(optional)</em></td>
 <td>String</td>
-<td>The relative path and the name of the screenshot file to be created. Resolved from the <em>screenshot directory</em> specified by using the <a href="../../using-testcafe/programming-interface/runner.html#screenshots">runner.screenshots</a> API method or the <a href="../../using-testcafe/command-line-interface.html#-s-path---screenshots-path">screenshots</a> command line option.</td>
+<td>The relative path and the name of the screenshot file to be created. Resolved from the <em>screenshot directory</em> specified by using the <a href="../../using-testcafe/programming-interface/runner.md#screenshots">runner.screenshots</a> API method or the <a href="../../using-testcafe/command-line-interface.md#-s-path---screenshots-path">screenshots</a> command line option.</td>
 </tr>
 </tbody></table>
 
 <p>By default, the path to which screenshots are saved is specified as:</p>
 
 <ul>
-<li><code>{currentDate}\test-{testIndex}\{userAgent}\{screenshotIndex}.png</code> if the <a href="../../using-testcafe/command-line-interface.html#-q---quarantine-mode">quarantine mode</a> is disabled;</li>
-<li><code>{currentDate}\test-{testIndex}\run-{quarantineAttempt}\{userAgent}\{screenshotIndex}.png</code> if the <a href="../../using-testcafe/command-line-interface.html#-q---quarantine-mode">quarantine mode</a> is enabled.</li>
+<li><code>{currentDate}\test-{testIndex}\{userAgent}\{screenshotIndex}.png</code> if the <a href="../../using-testcafe/command-line-interface.md#-q---quarantine-mode">quarantine mode</a> is disabled;</li>
+<li><code>{currentDate}\test-{testIndex}\run-{quarantineAttempt}\{userAgent}\{screenshotIndex}.png</code> if the <a href="../../using-testcafe/command-line-interface.md#-q---quarantine-mode">quarantine mode</a> is enabled.</li>
 </ul>
 
 <p>The following example shows how to use the <code>t.takeScreenshot</code> action.</p>
@@ -854,7 +931,9 @@ the screenshot actions are ignored.</p>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">takeScreenshot</span><span class="p">(</span><span class="s1">'my-fixture/thank-you-page.png'</span><span class="p">);</span>
 <span class="p">});</span>
-</code></pre></div><h2><a class="anchor" name="take-a-screenshot-of-a-page-element"></a>Take a Screenshot of a Page Element <a class="permalink" href="#take-a-screenshot-of-a-page-element">#</a></h2><div class="highlight"><pre><code class="language-text" data-lang="text">t.takeElementScreenshot(selector[, path][, options])
+</code></pre></div>
+<h2>Take a Screenshot of a Page Element</h2>
+<div class="highlight"><pre><code class="language-text" data-lang="text">t.takeElementScreenshot(selector[, path][, options])
 </code></pre></div>
 <p>Takes a screenshot of the specified page element.</p>
 
@@ -868,12 +947,12 @@ the screenshot actions are ignored.</p>
 <tr>
 <td><code>selector</code></td>
 <td>Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise</td>
-<td>Identifies the webpage element whose screenshot will be taken. See <a href=".#selecting-target-elements">Selecting Target Elements</a>.</td>
+<td>Identifies the webpage element whose screenshot will be taken. See <a href="README.md#selecting-target-elements">Selecting Target Elements</a>.</td>
 </tr>
 <tr>
 <td><code>path</code>&#160;<em>(optional)</em></td>
 <td>String</td>
-<td>The relative path and the name of the screenshot file to be created. Resolved from the <em>screenshot directory</em> specified by using the <a href="../../using-testcafe/programming-interface/runner.html#screenshots">runner.screenshots</a> API method or the <a href="../../using-testcafe/command-line-interface.html#-s-path---screenshots-path">screenshots</a> command line option.</td>
+<td>The relative path and the name of the screenshot file to be created. Resolved from the <em>screenshot directory</em> specified by using the <a href="../../using-testcafe/programming-interface/runner.md#screenshots">runner.screenshots</a> API method or the <a href="../../using-testcafe/command-line-interface.md#-s-path---screenshots-path">screenshots</a> command line option.</td>
 </tr>
 <tr>
 <td><code>options</code>&#160;<em>(optional)</em></td>
@@ -896,8 +975,8 @@ the screenshot actions are ignored.</p>
 <p>By default, the path to which screenshots are saved is specified as:</p>
 
 <ul>
-<li><code>{currentDate}\test-{testIndex}\{userAgent}\{screenshotIndex}.png</code> if the <a href="../../using-testcafe/command-line-interface.html#-q---quarantine-mode">quarantine mode</a> is disabled;</li>
-<li><code>{currentDate}\test-{testIndex}\run-{quarantineAttempt}\{userAgent}\{screenshotIndex}.png</code> if the <a href="../../using-testcafe/command-line-interface.html#-q---quarantine-mode">quarantine mode</a> is enabled.</li>
+<li><code>{currentDate}\test-{testIndex}\{userAgent}\{screenshotIndex}.png</code> if the <a href="../../using-testcafe/command-line-interface.md#-q---quarantine-mode">quarantine mode</a> is disabled;</li>
+<li><code>{currentDate}\test-{testIndex}\run-{quarantineAttempt}\{userAgent}\{screenshotIndex}.png</code> if the <a href="../../using-testcafe/command-line-interface.md#-q---quarantine-mode">quarantine mode</a> is enabled.</li>
 </ul>
 
 <p>The <code>options</code> object contains the following properties.</p>

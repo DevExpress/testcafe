@@ -464,6 +464,24 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#specifying-testing-metadata"  >Specifying Testing Metadata</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#using-metadata-in-reports"  >Using Metadata in Reports</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/test-api/test-code-structure.html#initialization-and-clean-up"  >Initialization and Clean-Up</a>
 		
 			<ul>
@@ -723,6 +741,59 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/"  >Intercepting HTTP Requests</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/logging-http-requests.html"  >Logging HTTP Requests</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/mocking-http-responses.html"  >Mocking HTTP Responses</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html"  >Creating a Custom HTTP Request Hook</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/specifying-which-requests-are-handled-by-the-hook.html"  >Specifying Which Requests are Handled by the Hook</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/attaching-hooks-to-tests-and-fixtures.html"  >Attaching Hooks to Tests and Fixtures</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/requestoptions-object.html"  >requestOptions Object</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/test-api/waiting-for-page-elements-to-appear.html"  >Waiting for Page Elements to Appear</a>
 		
     </li>
@@ -814,6 +885,7 @@
 		<div class="post-content">
 
 			<h1>Right Click</h1>
+
 <p>Right-clicks a webpage element.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">t.rightClick( selector [, options] )
 </code></pre></div>
@@ -827,12 +899,12 @@
 <tr>
 <td><code>selector</code></td>
 <td>Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise</td>
-<td>Identifies the webpage element being right-clicked. See <a href=".#selecting-target-elements">Selecting Target Elements</a>.</td>
+<td>Identifies the webpage element being right-clicked. See <a href="README.md#selecting-target-elements">Selecting Target Elements</a>.</td>
 </tr>
 <tr>
 <td><code>options</code>&#160;<em>(optional)</em></td>
 <td>Object</td>
-<td>A set of options that provide additional parameters for the action. See <a href="action-options.html#click-action-options">Click Action Options</a>.</td>
+<td>A set of options that provide additional parameters for the action. See <a href="action-options.md#click-action-options">Click Action Options</a>.</td>
 </tr>
 </tbody></table>
 
@@ -847,9 +919,12 @@
         <span class="p">.</span><span class="nx">rightClick</span><span class="p">(</span><span class="s1">'#cell-1-1'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="s1">'#cell-popup-menu'</span><span class="p">).</span><span class="nx">exists</span><span class="p">).</span><span class="nx">notOk</span><span class="p">();</span>
 <span class="p">});</span>
-</code></pre></div><blockquote><div class="blockquote-content"><p>The <code>t.rightClick</code> action will not invoke integrated browser context menus, native editor menus, etc.
+</code></pre></div>
+<blockquote>
+<p>The <code>t.rightClick</code> action will not invoke integrated browser context menus, native editor menus, etc.
 Use it to perform right clicks that are processed by webpage elements, not the browser.</p>
-</div></blockquote>
+</blockquote>
+
 
 		</div>
 		<div class="widget-container hidden">

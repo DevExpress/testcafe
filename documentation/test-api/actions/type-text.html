@@ -464,6 +464,24 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#specifying-testing-metadata"  >Specifying Testing Metadata</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#using-metadata-in-reports"  >Using Metadata in Reports</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/test-api/test-code-structure.html#initialization-and-clean-up"  >Initialization and Clean-Up</a>
 		
 			<ul>
@@ -723,6 +741,59 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/"  >Intercepting HTTP Requests</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/logging-http-requests.html"  >Logging HTTP Requests</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/mocking-http-responses.html"  >Mocking HTTP Responses</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html"  >Creating a Custom HTTP Request Hook</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/specifying-which-requests-are-handled-by-the-hook.html"  >Specifying Which Requests are Handled by the Hook</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/attaching-hooks-to-tests-and-fixtures.html"  >Attaching Hooks to Tests and Fixtures</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/requestoptions-object.html"  >requestOptions Object</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/test-api/waiting-for-page-elements-to-appear.html"  >Waiting for Page Elements to Appear</a>
 		
     </li>
@@ -814,6 +885,7 @@
 		<div class="post-content">
 
 			<h1>Type Text</h1>
+
 <p>Types the specified text into an input element.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">t.typeText( selector, text [, options] )
 </code></pre></div>
@@ -827,7 +899,7 @@
 <tr>
 <td><code>selector</code></td>
 <td>Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise</td>
-<td>Identifies the webpage element that will receive input focus. See <a href=".#selecting-target-elements">Selecting Target Elements</a>.</td>
+<td>Identifies the webpage element that will receive input focus. See <a href="README.md#selecting-target-elements">Selecting Target Elements</a>.</td>
 </tr>
 <tr>
 <td><code>text</code></td>
@@ -837,11 +909,14 @@
 <tr>
 <td><code>options</code>&#160;<em>(optional)</em></td>
 <td>Object</td>
-<td>A set of options that provide additional parameters for the action. See <a href="action-options.html#typing-action-options">Typing Action Options</a>. If this parameter is omitted, TestCafe sets the cursor to the end of the text before typing, thus preserving the text that is already in the input box.</td>
+<td>A set of options that provide additional parameters for the action. See <a href="action-options.md#typing-action-options">Typing Action Options</a>. If this parameter is omitted, TestCafe sets the cursor to the end of the text before typing, thus preserving the text that is already in the input box.</td>
 </tr>
 </tbody></table>
-<blockquote><div class="blockquote-content"><p>Use the <a href="select-text.html">t.selectText</a> and <a href="press-key.html">t.pressKey</a> actions to implement operations such as selecting or deleting text.</p>
-</div></blockquote>
+
+<blockquote>
+<p>Use the <a href="select-text.md">t.selectText</a> and <a href="press-key.md">t.pressKey</a> actions to implement operations such as selecting or deleting text.</p>
+</blockquote>
+
 <p>The following example shows how to use <code>t.typeText</code> with and without options.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
@@ -857,7 +932,9 @@
         <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">,</span> <span class="s1">'r'</span><span class="p">,</span> <span class="p">{</span> <span class="na">caretPos</span><span class="p">:</span> <span class="mi">2</span> <span class="p">})</span>
         <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">.</span><span class="nx">value</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="s1">'Parker'</span><span class="p">);</span>
 <span class="p">});</span>
-</code></pre></div><h2><a class="anchor" name="typing-into-datetime-color-and-range-inputs"></a>Typing Into DateTime, Color and Range Inputs <a class="permalink" href="#typing-into-datetime-color-and-range-inputs">#</a></h2>
+</code></pre></div>
+<h2>Typing Into DateTime, Color and Range Inputs</h2>
+
 <p>There are certain types of HTML5 inputs, like <code>DateTime</code>, <code>Color</code> or <code>Range</code>, that require entering values in a specific format.</p>
 
 <p>The following table lists value formats expected by these inputs.</p>

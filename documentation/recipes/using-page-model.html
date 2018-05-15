@@ -544,9 +544,12 @@
 		<div class="post-content">
 
 			<h1>Using Page Model</h1>
+
 <p><a href="http://martinfowler.com/bliki/PageObject.html">Page Model</a> is a test automation pattern that allows you to create an abstraction of the tested page
 and use it in test code to refer to page elements.</p>
-<h2><a class="anchor" name="why-use-page-model"></a>Why Use Page Model <a class="permalink" href="#why-use-page-model">#</a></h2>
+
+<h2>Why Use Page Model</h2>
+
 <p>Consider the following fixture with two tests: one that types and edits
 the developer name on the <a href="https://devexpress.github.io/testcafe/example/">example</a> webpage and the other that
 checks check boxes in the Features section.</p>
@@ -584,7 +587,9 @@ you will only need to modify the page model.</p>
 <p>Generally speaking, the Page Model pattern allows you to follow
 the separation of concerns principle - you keep page representation in the Page Model,
 while tests remain focused on the behavior.</p>
-<h2><a class="anchor" name="creating-a-page-model"></a>Creating a Page Model <a class="permalink" href="#creating-a-page-model">#</a></h2>
+
+<h2>Creating a Page Model</h2>
+
 <ol>
 <li><p>Begin with a new <code>.js</code> file and declare the <code>Page</code> class there.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">export</span> <span class="k">default</span> <span class="kr">class</span> <span class="nx">Page</span> <span class="p">{</span>
@@ -594,7 +599,7 @@ while tests remain focused on the behavior.</p>
 </code></pre></div>
 <p>This class will contain the Page Model, so name the file <code>page-model.js</code>.</p></li>
 <li><p>Add the <code>Developer Name</code> input element to the model. To do this,
-introduce the <code>nameInput</code> property and assign a <a href="../test-api/selecting-page-elements/selectors/">selector</a> to it.</p>
+introduce the <code>nameInput</code> property and assign a <a href="../test-api/selecting-page-elements/selectors/README.md">selector</a> to it.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
 <span class="kr">export</span> <span class="k">default</span> <span class="kr">class</span> <span class="nx">Page</span> <span class="p">{</span>

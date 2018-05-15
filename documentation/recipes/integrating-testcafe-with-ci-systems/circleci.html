@@ -544,11 +544,19 @@
 		<div class="post-content">
 
 			<h1>Integrating TestCafe with CircelCI</h1>
+
 <p>This topic describes how to integrate TestCafe tests into a <a href="https://circleci.com/">CircelCI</a> project&#39;s build process.</p>
-<h2><a class="anchor" name="prerequisites"></a>Prerequisites <a class="permalink" href="#prerequisites">#</a></h2>
+
+<h2>Prerequisites</h2>
+
 <p>In this tutorial, we will fetch tests from a GitHub repository: <a href="https://github.com/VasilyStrelyaev/ci-integration-demo">ci-integration-demo</a>. Fork this repository before we start.</p>
-<blockquote><div class="blockquote-content"><p>If you use a different version control system, make sure CircleCI supports it. To learn which systems it supports, refer to the <a href="https://circleci.com/docs/2.0/first-steps/">First Steps</a> document.</p>
-</div></blockquote><h2><a class="anchor" name="step-1---create-a-new-circleci-project"></a>Step 1 - Create a New CircleCI Project <a class="permalink" href="#step-1---create-a-new-circleci-project">#</a></h2>
+
+<blockquote>
+<p>If you use a different version control system, make sure CircleCI supports it. To learn which systems it supports, refer to the <a href="https://circleci.com/docs/2.0/first-steps/">First Steps</a> document.</p>
+</blockquote>
+
+<h2>Step 1 - Create a New CircleCI Project</h2>
+
 <p>Log in to CircleCI using your GitHub account.</p>
 
 <p>If this is the first time you are using CircleCI, you will start from an empty workspace. Create your first project by clicking the <strong>Add Project</strong> button.</p>
@@ -570,7 +578,9 @@
 <p>In the <strong>Language</strong> section, select <em>Node</em>.</p>
 
 <p><img src="../../../images/circle-ci/language.png" alt="Select Language"></p>
-<h2><a class="anchor" name="step-2---configuring-the-build"></a>Step 2 - Configuring the Build <a class="permalink" href="#step-2---configuring-the-build">#</a></h2>
+
+<h2>Step 2 - Configuring the Build</h2>
+
 <p>Create a <code>.circleci</code> directory in the <code>ci-integration-demo</code> repository fork and add a <code>config.yml</code> file there.</p>
 
 <p>Use the content CircleCI provides by default with two changes:</p>
@@ -643,11 +653,15 @@
 <p>The <code>test</code> command runs tests from the <code>tests</code> directory in the headless Chrome. Reports are saved in the xUnit format at <code>/tmp/test-results/res.xml</code>.</p>
 
 <p>Finally, push all changes to GitHub.</p>
-<h2><a class="anchor" name="step-3---running-the-build"></a>Step 3 - Running the Build <a class="permalink" href="#step-3---running-the-build">#</a></h2>
+
+<h2>Step 3 - Running the Build</h2>
+
 <p>Use the <strong>Start building</strong> button to trigger a build.</p>
 
 <p><img src="../../../images/circle-ci/start-building.png" alt="Starting Build"></p>
-<h2><a class="anchor" name="step-4---viewing-test-results"></a>Step 4 - Viewing Test Results <a class="permalink" href="#step-4---viewing-test-results">#</a></h2>
+
+<h2>Step 4 - Viewing Test Results</h2>
+
 <p>Go to the <strong>Builds</strong> section and choose a build to view its results.</p>
 
 <p><img src="../../../images/circle-ci/fail-report.png" alt="Test Results"></p>

@@ -464,6 +464,24 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#specifying-testing-metadata"  >Specifying Testing Metadata</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#using-metadata-in-reports"  >Using Metadata in Reports</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/test-api/test-code-structure.html#initialization-and-clean-up"  >Initialization and Clean-Up</a>
 		
 			<ul>
@@ -723,6 +741,59 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/"  >Intercepting HTTP Requests</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/logging-http-requests.html"  >Logging HTTP Requests</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/mocking-http-responses.html"  >Mocking HTTP Responses</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html"  >Creating a Custom HTTP Request Hook</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/specifying-which-requests-are-handled-by-the-hook.html"  >Specifying Which Requests are Handled by the Hook</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/attaching-hooks-to-tests-and-fixtures.html"  >Attaching Hooks to Tests and Fixtures</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/requestoptions-object.html"  >requestOptions Object</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/test-api/waiting-for-page-elements-to-appear.html"  >Waiting for Page Elements to Appear</a>
 		
     </li>
@@ -814,6 +885,7 @@
 		<div class="post-content">
 
 			<h1>Examples of Working with DOM Elements</h1>
+
 <p>This document shows how to work with DOM elements in frequent real-world situations.</p>
 
 <ul>
@@ -822,10 +894,12 @@
 <li><a href="#checking-if-an-element-is-available">Checking if an Element is Available</a></li>
 <li><a href="#enumerating-elements-identified-by-a-selector">Enumerating Elements Identified by a Selector</a></li>
 </ul>
-<h2><a class="anchor" name="accessing-page-element-properties"></a>Accessing Page Element Properties <a class="permalink" href="#accessing-page-element-properties">#</a></h2>
-<p>To work with page elements, use TestCafe <a href="selectors/">selectors</a>.
+
+<h2>Accessing Page Element Properties</h2>
+
+<p>To work with page elements, use TestCafe <a href="selectors/README.md">selectors</a>.
 Import the <code>Selector</code> function and call it passing a CSS selector inside.
-This function creates a selector object whose <a href="dom-node-state.html">API</a> exposes the most used members of HTML element API.</p>
+This function creates a selector object whose <a href="dom-node-state.md">API</a> exposes the most used members of HTML element API.</p>
 
 <p>Note that all property getters are asynchronous, so add the <code>await</code> keyword.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
@@ -840,7 +914,7 @@ This function creates a selector object whose <a href="dom-node-state.html">API<
     <span class="c1">// do something with clientWidth</span>
 <span class="p">});</span>
 </code></pre></div>
-<p>If you need to access an element property not included in the selector&#39;s API, request it explicitly by using the <a href="selectors/extending-selectors.html">addCustomDOMProperties</a> method.</p>
+<p>If you need to access an element property not included in the selector&#39;s API, request it explicitly by using the <a href="selectors/extending-selectors.md">addCustomDOMProperties</a> method.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
 <span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
@@ -856,8 +930,10 @@ This function creates a selector object whose <a href="dom-node-state.html">API<
         <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">label</span><span class="p">.</span><span class="nx">innerHTML</span><span class="p">).</span><span class="nx">contains</span><span class="p">(</span><span class="s1">'name="remote"'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div>
-<p>Note that the <code>await</code> keyword can be omitted when specifying a selector property in an <a href="../assertions/">assertion</a>. This activates the <a href="../assertions/#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a>.</p>
-<h2><a class="anchor" name="getting-a-page-element-using-custom-logic"></a>Getting a Page Element Using Custom Logic <a class="permalink" href="#getting-a-page-element-using-custom-logic">#</a></h2>
+<p>Note that the <code>await</code> keyword can be omitted when specifying a selector property in an <a href="../assertions/README.md">assertion</a>. This activates the <a href="../assertions/README.md#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a>.</p>
+
+<h2>Getting a Page Element Using Custom Logic</h2>
+
 <p>Sometimes CSS selectors are not powerful enough to identify the required page element.
 In this instance, you can introduce a function that picks the desired element.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
@@ -878,7 +954,9 @@ In this instance, you can introduce a function that picks the desired element.</
 
     <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">checkBoxesStartingWithR</span><span class="p">.</span><span class="nx">nth</span><span class="p">(</span><span class="mi">0</span><span class="p">));</span>
 <span class="p">});</span>
-</code></pre></div><h2><a class="anchor" name="checking-if-an-element-is-available"></a>Checking if an Element is Available <a class="permalink" href="#checking-if-an-element-is-available">#</a></h2>
+</code></pre></div>
+<h2>Checking if an Element is Available</h2>
+
 <p>Generally speaking, introducing conditions in tests is not considered good practice because it indicates that your tests are non-deterministic.
 The tested website should guarantee that the test writer knows the page state at any moment. If it is so, you need no conditions in test code.</p>
 
@@ -897,7 +975,9 @@ In this instance, it may be a good idea to check the element availability before
 
     <span class="c1">// ...</span>
 <span class="p">});</span>
-</code></pre></div><h2><a class="anchor" name="enumerating-elements-identified-by-a-selector"></a>Enumerating Elements Identified by a Selector <a class="permalink" href="#enumerating-elements-identified-by-a-selector">#</a></h2>
+</code></pre></div>
+<h2>Enumerating Elements Identified by a Selector</h2>
+
 <p>Another common case is creating a selector that matches several elements to perform certain actions using all of them.</p>
 
 <p>The following example clicks through a number of check boxes on the example page.</p>
@@ -913,7 +993,9 @@ In this instance, it may be a good idea to check the element availability before
     <span class="k">for</span><span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">checkboxCount</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
         <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">checkboxes</span><span class="p">.</span><span class="nx">nth</span><span class="p">(</span><span class="nx">i</span><span class="p">));</span>
 <span class="p">});</span>
-</code></pre></div><h2><a class="anchor" name="more-examples"></a>More Examples <a class="permalink" href="#more-examples">#</a></h2>
+</code></pre></div>
+<h2>More Examples</h2>
+
 <p>If you encounter a difficult situation while working with DOM elements,
 let us know by posting on <a href="https://testcafe-discuss.devexpress.com/">our forum</a>
 and if you are not alone we will add an example to this topic.</p>

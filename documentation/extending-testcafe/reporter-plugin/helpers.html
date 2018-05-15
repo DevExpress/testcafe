@@ -471,7 +471,8 @@
 		<div class="post-content">
 
 			<h1>Helpers</h1>
-<p>Helpers are methods and libraries used to format report output when <a href=".#implementing-the-reporter">implementing a reporter</a>. TestCafe mixes in these methods to the reporter.</p>
+
+<p>Helpers are methods and libraries used to format report output when <a href="README.md#implementing-the-reporter">implementing a reporter</a>. TestCafe mixes in these methods to the reporter.</p>
 
 <p>To access helpers, use <code>this</code>.</p>
 
@@ -483,14 +484,18 @@
 <li><a href="#coloring-helper">Coloring Helper</a></li>
 <li><a href="#datetime-helper">Date-Time Helper</a></li>
 </ul>
-<h2><a class="anchor" name="output-helpers"></a>Output Helpers <a class="permalink" href="#output-helpers">#</a></h2>
+
+<h2>Output Helpers</h2>
+
 <p>All output helper methods are chainable: each method returns <code>this</code> so that the methods can be executed one right after another.
 This allows you to write compact code like this.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">this</span><span class="p">.</span><span class="nx">setIndent</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">testname</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">newline</span><span class="p">()</span>
     <span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
-</code></pre></div><h3><a class="anchor" name="newline"></a>newline <a class="permalink" href="#newline">#</a></h3>
+</code></pre></div>
+<h3>newline</h3>
+
 <p>Adds a new line to the report.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">newline () → this
 </code></pre></div>
@@ -505,7 +510,9 @@ This allows you to write compact code like this.</p>
         <span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">summary</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">newline</span><span class="p">();</span>
 <span class="p">}</span>
-</code></pre></div><h3><a class="anchor" name="write"></a>write <a class="permalink" href="#write">#</a></h3>
+</code></pre></div>
+<h3>write</h3>
+
 <p>Writes the specified text to the report.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">write (text) → this
 </code></pre></div>
@@ -533,7 +540,9 @@ This allows you to write compact code like this.</p>
     <span class="k">this</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">summary</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">newline</span><span class="p">();</span>
 <span class="p">}</span>
-</code></pre></div><h3><a class="anchor" name="usewordwrap"></a>useWordWrap <a class="permalink" href="#usewordwrap">#</a></h3>
+</code></pre></div>
+<h3>useWordWrap</h3>
+
 <p>Toggles word wrapping for subsequent output.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">useWordWrap (use) → this
 </code></pre></div>
@@ -563,7 +572,9 @@ This allows you to write compact code like this.</p>
     <span class="k">this</span><span class="p">.</span><span class="nx">useWordWrap</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">title</span><span class="p">);</span>
 <span class="p">}</span>
-</code></pre></div><h3><a class="anchor" name="setindent"></a>setIndent <a class="permalink" href="#setindent">#</a></h3>
+</code></pre></div>
+<h3>setIndent</h3>
+
 <p>Specifies indentation for subsequent output.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">setIndent (val) → this
 </code></pre></div>
@@ -594,7 +605,11 @@ This allows you to write compact code like this.</p>
         <span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">summary</span><span class="p">);</span>
 <span class="p">}</span>
 <span class="c1">//=&gt;    2/6 failed</span>
-</code></pre></div><h2><a class="anchor" name="formatting-helpers"></a>Formatting Helpers <a class="permalink" href="#formatting-helpers">#</a></h2><h3><a class="anchor" name="indentstring"></a>indentString <a class="permalink" href="#indentstring">#</a></h3>
+</code></pre></div>
+<h2>Formatting Helpers</h2>
+
+<h3>indentString</h3>
+
 <p>Indents each line in a string by a number of spaces.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">indentString (str, indentVal) → String
 </code></pre></div>
@@ -628,7 +643,9 @@ This allows you to write compact code like this.</p>
 <span class="p">}</span>
 <span class="c1">//=&gt;    Start running tests</span>
 <span class="c1">//=&gt;    Browsers used for testing: Chrome,Firefox</span>
-</code></pre></div><h3><a class="anchor" name="wordwrap"></a>wordWrap <a class="permalink" href="#wordwrap">#</a></h3>
+</code></pre></div>
+<h3>wordWrap</h3>
+
 <p>Breaks and wraps a string to a new line if its length exceeds the maximum allowed length.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">wordWrap (str, indentVal, width) → String
 </code></pre></div>
@@ -680,7 +697,9 @@ This allows you to write compact code like this.</p>
 <span class="c1">//=&gt;</span>
 <span class="c1">//=&gt;  passed Sample fixture - Clicking an array of</span>
 <span class="c1">//=&gt;  labels and checking their states</span>
-</code></pre></div><h3><a class="anchor" name="escapehtml"></a>escapeHtml <a class="permalink" href="#escapehtml">#</a></h3>
+</code></pre></div>
+<h3>escapeHtml</h3>
+
 <p>Encodes a string for use in HTML.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">escapeHtml (str) → String
 </code></pre></div>
@@ -706,7 +725,9 @@ This allows you to write compact code like this.</p>
     <span class="k">this</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">currentFixtureName</span><span class="p">);</span>
 <span class="p">}</span>
 <span class="c1">//=&gt;Tests for the &amp;quot;Example&amp;quot; page</span>
-</code></pre></div><h3><a class="anchor" name="formaterror"></a>formatError <a class="permalink" href="#formaterror">#</a></h3>
+</code></pre></div>
+<h3>formatError</h3>
+
 <p>Returns the formatted error message string for the specified error.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">formatError (err, prefix = '') → String
 </code></pre></div>
@@ -749,7 +770,11 @@ This allows you to write compact code like this.</p>
 <span class="c1">//=&gt; 2) Firefox</span>
 <span class="c1">//=&gt;    Assertion failed at step "Step1"</span>
 <span class="c1">//=&gt;    ...</span>
-</code></pre></div><h2><a class="anchor" name="coloring-helper"></a>Coloring Helper <a class="permalink" href="#coloring-helper">#</a></h2><h3><a class="anchor" name="chalk"></a>chalk <a class="permalink" href="#chalk">#</a></h3>
+</code></pre></div>
+<h2>Coloring Helper</h2>
+
+<h3>chalk</h3>
+
 <p><a href="https://github.com/chalk/chalk">chalk</a> is used for ANSI-coloring of the text.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">chalk.&lt;style&gt;[.&lt;style&gt;...](string, [string...]) → this
 </code></pre></div>
@@ -780,7 +805,11 @@ For example, you may need to disable coloring for machine-readable formats (JSON
         <span class="p">...</span>
     <span class="p">};</span>
 <span class="p">}</span>
-</code></pre></div><h2><a class="anchor" name="datetime-helper"></a>Date/Time Helper <a class="permalink" href="#datetime-helper">#</a></h2><h3><a class="anchor" name="moment"></a>moment <a class="permalink" href="#moment">#</a></h3>
+</code></pre></div>
+<h2>Date/Time Helper</h2>
+
+<h3>moment</h3>
+
 <p><a href="http://momentjs.com/">moment</a> is used to deal with dates and time.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">moment().format() → this
 </code></pre></div>
