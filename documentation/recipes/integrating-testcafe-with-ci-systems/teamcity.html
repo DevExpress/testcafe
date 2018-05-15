@@ -544,25 +544,20 @@
 		<div class="post-content">
 
 			<h1>Integrating TestCafe with TeamCity CI System</h1>
-
 <p>TestCafe is easy to set up with most modern CI systems.</p>
 
 <p>This topic describes how to use TestCafe with <a href="http://www.jetbrains.com/teamcity/">TeamCity</a>.</p>
-
-<h2>Prerequisites</h2>
-
+<h2><a class="anchor" name="prerequisites"></a>Prerequisites <a class="permalink" href="#prerequisites">#</a></h2>
 <ul>
 <li><p>Before starting this tutorial, install TestCafe and the TeamCity reporter plugin.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm install -g testcafe testcafe-reporter-teamcity
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm <span class="nb">install</span> <span class="nt">-g</span> testcafe testcafe-reporter-teamcity
 </code></pre></div>
 <p>The <code>testcafe-reporter-teamcity</code> plugin enables TestCafe to output test run results in the TeamCity format. The reports will be presented in the TeamCity UI allowing you to analyze the results with its built-in features.</p></li>
 <li><p>We will fetch test code from a GitHub repository: <a href="https://github.com/VasilyStrelyaev/ci-integration-demo">ci-integration-demo</a>. Fork it before starting.</p>
 
 <p>If you use a different version control system, make sure TeamCity supports it. You can find a list of supported VCS in the <a href="http://confluence.jetbrains.com/display/TCD10/TeamCity+Documentation">TeamCity documentation</a>.</p></li>
 </ul>
-
-<h2>Adding a Build Step that Runs TestCafe</h2>
-
+<h2><a class="anchor" name="adding-a-build-step-that-runs-testcafe"></a>Adding a Build Step that Runs TestCafe <a class="permalink" href="#adding-a-build-step-that-runs-testcafe">#</a></h2>
 <p>Create a new build configuration or open an existing one as described in the <a href="https://confluence.jetbrains.com/display/TCD10/Creating+and+Editing+Build+Configurations">TeamCity documentation</a>.</p>
 
 <p>Click the <strong>Edit Configuration Settings</strong> link.</p>
@@ -586,9 +581,7 @@
 <p><img src="../../../images/teamcity/create-new-build-step.png" alt="Create New Build Step"></p>
 
 <p>Click <strong>Save</strong>.</p>
-
-<h2>Fetching Test Code</h2>
-
+<h2><a class="anchor" name="fetching-test-code"></a>Fetching Test Code <a class="permalink" href="#fetching-test-code">#</a></h2>
 <p>First, you will need to create a connection with GitHub.com.</p>
 
 <p>Open project settings and click <strong>Connections</strong>.</p>
@@ -642,15 +635,11 @@
 <p><img src="../../../images/teamcity/attach-vcs-root-p3.png" alt="Providing Credentials"></p>
 
 <p>Now the TeamCity build configuration will fetch tests from the <code>ci-integration-demo</code> repo each time it runs.</p>
-
-<h2>Running the Build</h2>
-
+<h2><a class="anchor" name="running-the-build"></a>Running the Build <a class="permalink" href="#running-the-build">#</a></h2>
 <p>Now you can run the build using the <strong>Run</strong> button.</p>
 
 <p><img src="../../../images/teamcity/run-build.png" alt="Run a Build"></p>
-
-<h2>Viewing Test Results</h2>
-
+<h2><a class="anchor" name="viewing-test-results"></a>Viewing Test Results <a class="permalink" href="#viewing-test-results">#</a></h2>
 <p>Open the <strong>Overview</strong> tab and see which tests failed and why.</p>
 
 <p><img src="../../../images/teamcity/test-results.png" alt="Test Results"></p>

@@ -545,7 +545,6 @@
 		<div class="post-content">
 
 			<h1>Using Chrome Device Emulation</h1>
-
 <p>You can run test in Chrome&#39;s built-in <a href="https://developers.google.com/web/tools/chrome-devtools/device-mode/">device emulator</a>. To do this, use the <code>emulation</code> browser parameter. Specify the target device with the <code>device</code> parameter.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"chrome:emulation:device=iphone 6"</span> tests/sample-fixture.js
 </code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span>
@@ -566,9 +565,7 @@
     <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">'tests/sample-fixture.js'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="s1">'chrome:headless:emulation:device=iphone 6;cdpPort=9223'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">run</span><span class="p">();</span>
-</code></pre></div>
-<h2>Emulator Parameters</h2>
-
+</code></pre></div><h2><a class="anchor" name="emulator-parameters"></a>Emulator Parameters <a class="permalink" href="#emulator-parameters">#</a></h2>
 <p>Use the following parameters to configure Chrome device emulator. Specify them after the <code>emulation</code> parameter as in the examples above.</p>
 
 <table><thead>

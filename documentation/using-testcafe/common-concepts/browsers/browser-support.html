@@ -545,7 +545,6 @@
 		<div class="post-content">
 
 			<h1>Browser Support</h1>
-
 <ul>
 <li><a href="#officially-supported-browsers">Officially Supported Browsers</a></li>
 <li><a href="#locally-installed-browsers">Locally Installed Browsers</a></li>
@@ -554,9 +553,7 @@
 <li><a href="#browsers-in-cloud-testing-services">Browsers in Cloud Testing Services</a></li>
 <li><a href="#nonconventional-browsers">Nonconventional Browsers</a></li>
 </ul>
-
-<h2>Officially Supported Browsers</h2>
-
+<h2><a class="anchor" name="officially-supported-browsers"></a>Officially Supported Browsers <a class="permalink" href="#officially-supported-browsers">#</a></h2>
 <p>While TestCafe is designed to support most modern browsers, there are a limited number
 of <em>officially supported</em> browsers against which TestCafe is actively tested.</p>
 
@@ -569,13 +566,8 @@ of <em>officially supported</em> browsers against which TestCafe is actively tes
 <li>Android browser</li>
 <li>Safari mobile</li>
 </ul>
-
-<blockquote>
-<p>TestCafe supports the latest version of each browser unless specified explicitly.</p>
-</blockquote>
-
-<h2>Locally Installed Browsers</h2>
-
+<blockquote><div class="blockquote-content"><p>TestCafe supports the latest version of each browser unless specified explicitly.</p>
+</div></blockquote><h2><a class="anchor" name="locally-installed-browsers"></a>Locally Installed Browsers <a class="permalink" href="#locally-installed-browsers">#</a></h2>
 <p>TestCafe can automatically detect popular browsers installed on the local computer.
 You can use a short name - <em>browser alias</em> - to identify these browsers when launching tests.</p>
 
@@ -622,42 +614,36 @@ You can use a short name - <em>browser alias</em> - to identify these browsers w
 </tbody></table>
 
 <p>The list of all the available browsers can be obtained by calling the <code>testcafe</code> command
-with the <a href="../../command-line-interface.md#-b---list-browsers">--list-browsers</a> flag.</p>
+with the <a href="../../command-line-interface.html#-b---list-browsers">--list-browsers</a> flag.</p>
 
 <p>To run tests in a different local browser, specify the path to the browser executable file.</p>
 
 <p>For more information and examples, see:</p>
 
 <ul>
-<li>Command line: <a href="../../command-line-interface.md#local-browsers">Local Browsers</a></li>
-<li>API: <a href="../../programming-interface/runner.md#browsers">runner.browsers</a></li>
+<li>Command line: <a href="../../command-line-interface.html#local-browsers">Local Browsers</a></li>
+<li>API: <a href="../../programming-interface/runner.html#browsers">runner.browsers</a></li>
 </ul>
-
-<h2>Portable Browsers</h2>
-
+<h2><a class="anchor" name="portable-browsers"></a>Portable Browsers <a class="permalink" href="#portable-browsers">#</a></h2>
 <p>To use a portable browser, specify the path to the browser executable file. For more information and examples, see:</p>
 
 <ul>
-<li>Command line: <a href="../../command-line-interface.md#portable-browsers">Portable Browsers</a></li>
-<li>API: <a href="../../programming-interface/runner.md#browsers">runner.browsers</a></li>
+<li>Command line: <a href="../../command-line-interface.html#portable-browsers">Portable Browsers</a></li>
+<li>API: <a href="../../programming-interface/runner.html#browsers">runner.browsers</a></li>
 </ul>
-
-<h2>Browsers on Remote Devices</h2>
-
+<h2><a class="anchor" name="browsers-on-remote-devices"></a>Browsers on Remote Devices <a class="permalink" href="#browsers-on-remote-devices">#</a></h2>
 <p>To run tests on a remote mobile and desktop device, this device must have network access to the TestCafe server.</p>
 
 <p>First, you will need to create a remote browser connection.</p>
 
 <ul>
-<li>Command line: specify the <code>remote</code> <em>alias</em> (see <a href="../../command-line-interface.md#remote-browsers">Remote Browsers</a>)</li>
-<li>API: use the <a href="../../programming-interface/testcafe.md#createbrowserconnection">createBrowserConnection</a> method</li>
+<li>Command line: specify the <code>remote</code> <em>alias</em> (see <a href="../../command-line-interface.html#remote-browsers">Remote Browsers</a>)</li>
+<li>API: use the <a href="../../programming-interface/testcafe.html#createbrowserconnection">createBrowserConnection</a> method</li>
 </ul>
 
 <p>After that, TestCafe will provide a URL to open on the remote device in the browser against which you want to test.
 As you open this URL, the browser connects to the TestCafe server and starts testing.</p>
-
-<h2>Browsers in Cloud Testing Services</h2>
-
+<h2><a class="anchor" name="browsers-in-cloud-testing-services"></a>Browsers in Cloud Testing Services <a class="permalink" href="#browsers-in-cloud-testing-services">#</a></h2>
 <p>TestCafe allows you to use browsers from cloud testing services. You can access them through <a href="../../../extending-testcafe/browser-provider-plugin/">browser provider plugins</a>.</p>
 
 <p>The following plugins for cloud services are currently provided by the TestCafe team.</p>
@@ -680,15 +666,13 @@ As you open this URL, the browser connects to the TestCafe server and starts tes
 
 <p>You can search npm for plugins developed by the community. Their names begin with the <code>testcafe-browser-provider-</code> prefix: <a href="https://www.npmjs.com/search?q=testcafe-browser-provider">https://www.npmjs.com/search?q=testcafe-browser-provider</a>.</p>
 
-<p>You can also create your own plugin. See <a href="../../../extending-testcafe/browser-provider-plugin/README.md">Browser Provider Plugin</a> for instructions.</p>
-
-<h2>Nonconventional Browsers</h2>
-
-<p>To use a web browser of a different type, you will need a <a href="../../../extending-testcafe/browser-provider-plugin/README.md">browser provider plugin</a>.</p>
+<p>You can also create your own plugin. See <a href="../../../extending-testcafe/browser-provider-plugin/">Browser Provider Plugin</a> for instructions.</p>
+<h2><a class="anchor" name="nonconventional-browsers"></a>Nonconventional Browsers <a class="permalink" href="#nonconventional-browsers">#</a></h2>
+<p>To use a web browser of a different type, you will need a <a href="../../../extending-testcafe/browser-provider-plugin/">browser provider plugin</a>.</p>
 
 <p>You can search npm for plugins developed by the community. Their names begin with the <code>testcafe-browser-provider-</code> prefix: <a href="https://www.npmjs.com/search?q=testcafe-browser-provider">https://www.npmjs.com/search?q=testcafe-browser-provider</a>.</p>
 
-<p>You can also create your own plugin. See <a href="../../../extending-testcafe/browser-provider-plugin/README.md">Browser Provider Plugin</a> for instructions.</p>
+<p>You can also create your own plugin. See <a href="../../../extending-testcafe/browser-provider-plugin/">Browser Provider Plugin</a> for instructions.</p>
 
 
 		</div>

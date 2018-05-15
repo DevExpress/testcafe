@@ -885,7 +885,6 @@
 		<div class="post-content">
 
 			<h1>Creating Selectors</h1>
-
 <p>To create a selector, use the <code>Selector</code> constructor.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">Selector( init [, options] )
 </code></pre></div>
@@ -904,84 +903,82 @@
 <tr>
 <td><code>options</code>&#160;<em>(optional)</em></td>
 <td>Object</td>
-<td>See <a href="selector-options.md">Selector Options</a>.</td>
+<td>See <a href="selector-options.html">Selector Options</a>.</td>
 </tr>
 </tbody></table>
 
 <p>The following example creates a selector from a CSS string for an element with ID <code>username</code>.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">usernameInput</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#username'</span><span class="p">);</span>
-</code></pre></div>
-<h2>Initializing Selectors</h2>
-
+<span class="kd">const</span> <span class="nx">usernameInput</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#username'</span><span class="p">);</span>
+</code></pre></div><h2><a class="anchor" name="initializing-selectors"></a>Initializing Selectors <a class="permalink" href="#initializing-selectors">#</a></h2>
 <p>You can initialize a selector with any of these objects.</p>
 
 <ul>
 <li><p>A CSS selector string that matches one or several nodes.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
 <span class="c1">// A selector is created from a CSS selector string.</span>
-<span class="kr">const</span> <span class="nx">submitButton</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">submitButton</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">);</span>
 </code></pre></div></li>
 <li><p>A regular function. Executed on the client side. Must return a DOM node, array of DOM nodes,
 NodeList, HTMLCollection, <code>null</code> or <code>undefined</code>. Cannot use outer-scope variables from test code.
 This is convenient when you need to use some client-side logic to get an element.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
 <span class="c1">// A selector is created from a regular function.</span>
 <span class="c1">// This selector will take an element by id that is saved in the localStorage.</span>
-<span class="kr">const</span> <span class="nx">element</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">storedElementId</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">storedElementId</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">element</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">storedElementId</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">storedElementId</span><span class="p">;</span>
 
     <span class="k">return</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="nx">storedElementId</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div></li>
 <li><p>A selector.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
 <span class="c1">// This selector is created from a function that returns all elements of a specified class.</span>
-<span class="kr">const</span> <span class="nx">cta</span><span class="o">-</span><span class="nx">button</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'.cta-button'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">cta</span><span class="o">-</span><span class="nx">button</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'.cta-button'</span><span class="p">);</span>
 
 <span class="c1">// This selector is created based on the previous selector and inherits</span>
 <span class="c1">// its initializer, but overwrites the `visibilityCheck` parameter.</span>
 <span class="nx">Selector</span><span class="p">(</span><span class="nx">cta</span><span class="o">-</span><span class="nx">button</span><span class="p">,</span> <span class="p">{</span> <span class="na">visibilityCheck</span><span class="p">:</span> <span class="kc">true</span> <span class="p">});</span>
 </code></pre></div></li>
-<li><p>A <a href="using-selectors.md#dom-node-snapshot">DOM Node Snapshot</a> returned by selector execution.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<li><p>A <a href="using-selectors.html#dom-node-snapshot">DOM Node Snapshot</a> returned by selector execution.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//www.example.com/`;</span>
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://www.example.com/`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My Test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">topMenuSnapshot</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#top-menu'</span><span class="p">)();</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My Test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">topMenuSnapshot</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#top-menu'</span><span class="p">)();</span>
 
     <span class="c1">// This selector is created from a DOM Node state object returned</span>
     <span class="c1">// by a different selector. The new selector will use the same initializer</span>
     <span class="c1">// as 'elementWithId' and will always be executed with the same parameter</span>
     <span class="c1">// values that were used to obtain 'topMenuSnapshot'. You can still</span>
     <span class="c1">// overwrite the selector options.</span>
-    <span class="kr">const</span> <span class="nx">visibleTopMenu</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">topMenuSnapshot</span><span class="p">,</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">visibleTopMenu</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">topMenuSnapshot</span><span class="p">,</span> <span class="p">{</span>
         <span class="na">visibilityCheck</span><span class="p">:</span> <span class="kc">true</span>
     <span class="p">});</span>
 <span class="p">});</span>
 </code></pre></div></li>
 <li><p>A promise returned by a selector.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">elementWithIdOrClassName</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">value</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="kd">const</span> <span class="nx">elementWithIdOrClassName</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">value</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="o">||</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementsByClassName</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
 <span class="p">});</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="na">http</span><span class="p">:</span><span class="c1">//www.example.com/`;</span>
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://www.example.com/`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My Test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My Test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="c1">// This selector is created from a promise returned by a call to a</span>
     <span class="c1">// different selector. The new selector will be initialized with the</span>
     <span class="c1">// same function as the old one and with hard-coded parameter values</span>
     <span class="c1">// as in the previous example.</span>
-    <span class="kr">const</span> <span class="nx">submitButton</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">elementWithIdOrClassName</span><span class="p">(</span><span class="s1">'main-element'</span><span class="p">));</span>
+    <span class="kd">const</span> <span class="nx">submitButton</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">elementWithIdOrClassName</span><span class="p">(</span><span class="s1">'main-element'</span><span class="p">));</span>
 <span class="p">});</span>
 </code></pre></div></li>
 </ul>

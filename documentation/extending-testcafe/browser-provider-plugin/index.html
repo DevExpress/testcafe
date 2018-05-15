@@ -471,8 +471,7 @@
 		<div class="post-content">
 
 			<h1>Browser Provider Plugin</h1>
-
-<p>TestCafe supports testing in a number of popular browsers (see <a href="../../using-testcafe/common-concepts/browsers/browser-support.md">Browser Support</a>).
+<p>TestCafe supports testing in a number of popular browsers (see <a href="../../using-testcafe/common-concepts/browsers/browser-support.html">Browser Support</a>).
 If you need to use a different browser (for example, a browser from a cloud service), you can create a <strong>custom browser provider plugin</strong>.
 The provider should expose methods for performing common actions on the browser windows during testing: opening and closing it, taking screenshot, etc.</p>
 
@@ -486,105 +485,93 @@ The provider should expose methods for performing common actions on the browser 
 <li><a href="#publishing-the-provider-to-npm">Publishing the Provider to npm</a></li>
 <li><a href="#specifying-a-browser-for-a-test-task">Specifying a Browser for a Test Task</a></li>
 </ul>
-
-<blockquote>
-<p>To run tests on <a href="https://saucelabs.com">Sause Labs</a> or <a href="https://github.com/segmentio/nightmare">headless</a> browsers,
+<blockquote><div class="blockquote-content"><p>To run tests on <a href="https://saucelabs.com">Sause Labs</a> or <a href="https://github.com/segmentio/nightmare">headless</a> browsers,
 you can use the existing <a href="https://github.com/DevExpress/testcafe-browser-provider-saucelabs/">testcafe-browser-provider-saucelabs</a>
 or <a href="https://github.com/ryx/testcafe-browser-provider-nightmare">testcafe-browser-provider-nightmare</a> plugin.</p>
-</blockquote>
-
-<h2>Generating Browser Provider Project</h2>
-
+</div></blockquote><h2><a class="anchor" name="generating-browser-provider-project"></a>Generating Browser Provider Project <a class="permalink" href="#generating-browser-provider-project">#</a></h2>
 <p>To create a browser provider project, use the <a href="https://github.com/DevExpress/generator-testcafe-browser-provider">TestCafe browser provider generator</a>.
 The generator will scaffold out the plugin, so that you only need to write a few lines of code.</p>
 
 <p>First, install <a href="http://yeoman.io">Yeoman</a> and <code>generator-testcafe-browser-provider</code> using <a href="https://www.npmjs.com/">npm</a>.</p>
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">npm install -g yo
-npm install -g generator-testcafe-browser-provider
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">npm <span class="nb">install</span> <span class="nt">-g</span> yo
+npm <span class="nb">install</span> <span class="nt">-g</span> generator-testcafe-browser-provider
 </code></pre></div>
 <p>Create a new directory where the generator should place your scaffolded project files and go into it.</p>
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">mkdir my-provider
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">mkdir </span>my-provider
 <span class="nb">cd </span>my-provider
-</code></pre></div>
-<blockquote>
-<p>It is recommended that you name the directory as you would name the browser provider project. When you run the generator, it will automatically suggest the browser provider name that matches the browser provider directory name.</p>
+</code></pre></div><blockquote><div class="blockquote-content"><p>It is recommended that you name the directory as you would name the browser provider project. When you run the generator, it will automatically suggest the browser provider name that matches the browser provider directory name.</p>
 
 <p>The generator will also automatically create the provider package name that consists of two parts - the <code>testcafe-browser-provider-</code> prefix and the name of the provider itself; for example, <code>testcafe-browser-provider-my-provider</code>.</p>
 
 <p><strong>Important:</strong> If you name the provider package manually, its name must start with the <code>testcafe-browser-provider-</code> prefix. Otherwise, TestCafe will be unable to recognize the plugin.</p>
-</blockquote>
-
+</div></blockquote>
 <p>Then, run the browser provider generator to create a new project.</p>
 <div class="highlight"><pre><code class="language-bash" data-lang="bash">yo testcafe-browser-provider
 </code></pre></div>
 <p>The generator will ask you a few questions about the browser provider. Then, Yeoman will automatically scaffold out the provider, install the required dependencies, and pull in several useful Gulp tasks for your workflow.</p>
-
-<h2>Implementing the Browser Provider</h2>
-
+<h2><a class="anchor" name="implementing-the-browser-provider"></a>Implementing the Browser Provider <a class="permalink" href="#implementing-the-browser-provider">#</a></h2>
 <p>Once the browser provider has been scaffolded out, go to the provider directory and open the <code>src/index.js</code> file.</p>
 
-<p>There are several required and optional <a href="browser-provider-methods.md">provider methods</a> you can implement.</p>
+<p>There are several required and optional <a href="browser-provider-methods.html">provider methods</a> you can implement.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// Required methods</span>
-<span class="nx">async</span> <span class="nx">openBrowser</span> <span class="p">(</span><span class="cm">/* id, pageUrl, browserName */</span><span class="p">)</span> <span class="p">{</span>
+<span class="k">async</span> <span class="nx">openBrowser</span> <span class="p">(</span><span class="cm">/* id, pageUrl, browserName */</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">'Not implemented!'</span><span class="p">);</span>
 <span class="p">},</span>
 
-<span class="nx">async</span> <span class="nx">closeBrowser</span> <span class="p">(</span><span class="cm">/* id */</span><span class="p">)</span> <span class="p">{</span>
+<span class="k">async</span> <span class="nx">closeBrowser</span> <span class="p">(</span><span class="cm">/* id */</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">'Not implemented!'</span><span class="p">);</span>
 <span class="p">},</span>
 
 <span class="c1">// Optional initialization and cleanup methods</span>
-<span class="nx">async</span> <span class="nx">init</span> <span class="p">()</span> <span class="p">{</span>
+<span class="k">async</span> <span class="nx">init</span> <span class="p">()</span> <span class="p">{</span>
     <span class="k">return</span><span class="p">;</span>
 <span class="p">},</span>
 
-<span class="nx">async</span> <span class="nx">dispose</span> <span class="p">()</span> <span class="p">{</span>
+<span class="k">async</span> <span class="nx">dispose</span> <span class="p">()</span> <span class="p">{</span>
     <span class="k">return</span><span class="p">;</span>
 <span class="p">},</span>
 
 <span class="c1">// Optional methods for multi-browser support</span>
-<span class="nx">async</span> <span class="nx">getBrowserList</span> <span class="p">()</span> <span class="p">{</span>
+<span class="k">async</span> <span class="nx">getBrowserList</span> <span class="p">()</span> <span class="p">{</span>
     <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">'Not implemented!'</span><span class="p">);</span>
 <span class="p">},</span>
 
-<span class="nx">async</span> <span class="nx">isValidBrowserName</span> <span class="p">(</span><span class="cm">/* browserName */</span><span class="p">)</span> <span class="p">{</span>
+<span class="k">async</span> <span class="nx">isValidBrowserName</span> <span class="p">(</span><span class="cm">/* browserName */</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
 <span class="p">},</span>
 
 <span class="c1">// Optional extra methods</span>
-<span class="nx">async</span> <span class="nx">resizeWindow</span> <span class="p">(</span><span class="cm">/* id, width, height, currentWidth, currentHeight */</span><span class="p">)</span> <span class="p">{</span>
+<span class="k">async</span> <span class="nx">resizeWindow</span> <span class="p">(</span><span class="cm">/* id, width, height, currentWidth, currentHeight */</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">reportWarning</span><span class="p">(</span><span class="s1">'The window resize functionality is not supported by the "my-provider" browser provider.'</span><span class="p">);</span>
 <span class="p">},</span>
 
-<span class="nx">async</span> <span class="nx">canResizeWindowToDimensions</span> <span class="p">(</span><span class="cm">/* browserId, width, height */</span><span class="p">)</span> <span class="p">{</span>
+<span class="k">async</span> <span class="nx">canResizeWindowToDimensions</span> <span class="p">(</span><span class="cm">/* browserId, width, height */</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="nx">async</span> <span class="nx">takeScreenshot</span> <span class="p">(</span><span class="cm">/* id, screenshotPath, pageWidth, pageHeight */</span><span class="p">)</span> <span class="p">{</span>
+<span class="k">async</span> <span class="nx">takeScreenshot</span> <span class="p">(</span><span class="cm">/* id, screenshotPath, pageWidth, pageHeight */</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">reportWarning</span><span class="p">(</span><span class="s1">'The screenshot functionality is not supported by the "my-provider" browser provider.'</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="nx">async</span> <span class="nx">maximizeWindow</span> <span class="p">(</span><span class="cm">/*browserId*/</span><span class="p">)</span> <span class="p">{</span>
+<span class="k">async</span> <span class="nx">maximizeWindow</span> <span class="p">(</span><span class="cm">/*browserId*/</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">reportWarning</span><span class="p">(</span><span class="s1">'The window maximization functionality is not supported by the "my-provider" browser provider.'</span><span class="p">);</span>
 <span class="p">}</span>
 </code></pre></div>
 <p>To implement these methods, you can use the <a href="https://github.com/DevExpress/testcafe-browser-tools">testcafe-browser-tools</a> library that contains methods for performing platform-dependent actions on browser windows.</p>
-
-<h3>Example</h3>
-
+<h3><a class="anchor" name="example"></a>Example <a class="permalink" href="#example">#</a></h3>
 <p>The following example code demonstrates how you can implement the simple browser provider for portable browsers.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="nx">path</span> <span class="nx">from</span> <span class="s1">'path'</span><span class="p">;</span>
-<span class="kr">import</span> <span class="nx">browserTools</span> <span class="nx">from</span> <span class="s1">'testcafe-browser-tools'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="nx">path</span> <span class="k">from</span> <span class="s1">'path'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">browserTools</span> <span class="k">from</span> <span class="s1">'testcafe-browser-tools'</span><span class="p">;</span>
 
 <span class="kd">function</span> <span class="nx">getScreenSize</span> <span class="p">()</span> <span class="p">{</span>
     <span class="k">return</span> <span class="p">{</span> <span class="na">width</span><span class="p">:</span> <span class="nx">screen</span><span class="p">.</span><span class="nx">availWidth</span><span class="p">,</span> <span class="na">height</span><span class="p">:</span> <span class="nx">screen</span><span class="p">.</span><span class="nx">availHeight</span> <span class="p">};</span>
 <span class="p">}</span>
 
-<span class="kr">export</span> <span class="k">default</span> <span class="p">{</span>
+<span class="k">export</span> <span class="k">default</span> <span class="p">{</span>
     <span class="na">isMultiBrowser</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
     <span class="na">screenSizes</span><span class="p">:</span> <span class="p">{},</span>
 
-    <span class="nx">async</span> <span class="nx">openBrowser</span> <span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">pageUrl</span><span class="p">,</span> <span class="nx">browserName</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">async</span> <span class="nx">openBrowser</span> <span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">pageUrl</span><span class="p">,</span> <span class="nx">browserName</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">browserInfo</span> <span class="o">=</span> <span class="p">{};</span>
 
         <span class="k">switch</span> <span class="p">(</span><span class="nx">browserName</span><span class="p">)</span> <span class="p">{</span>
@@ -600,82 +587,71 @@ npm install -g generator-testcafe-browser-provider
                 <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">'Unsupported browser!'</span><span class="p">);</span>
         <span class="p">}</span>
 
-        <span class="nx">await</span> <span class="nx">browserTools</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="nx">browserInfo</span><span class="p">,</span> <span class="nx">pageUrl</span><span class="p">);</span>
+        <span class="kr">await</span> <span class="nx">browserTools</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="nx">browserInfo</span><span class="p">,</span> <span class="nx">pageUrl</span><span class="p">);</span>
 
-        <span class="nx">await</span> <span class="k">this</span><span class="p">.</span><span class="nx">waitForConnectionReady</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
+        <span class="kr">await</span> <span class="k">this</span><span class="p">.</span><span class="nx">waitForConnectionReady</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">screenSizes</span><span class="p">[</span><span class="nx">id</span><span class="p">]</span> <span class="o">=</span> <span class="nx">await</span> <span class="k">this</span><span class="p">.</span><span class="nx">runInitScript</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">getScreenSize</span><span class="p">.</span><span class="nx">toString</span><span class="p">());</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">screenSizes</span><span class="p">[</span><span class="nx">id</span><span class="p">]</span> <span class="o">=</span> <span class="kr">await</span> <span class="k">this</span><span class="p">.</span><span class="nx">runInitScript</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">getScreenSize</span><span class="p">.</span><span class="nx">toString</span><span class="p">());</span>
     <span class="p">},</span>
 
-    <span class="nx">async</span> <span class="nx">closeBrowser</span> <span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">await</span> <span class="nx">browserTools</span><span class="p">.</span><span class="nx">close</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
+    <span class="k">async</span> <span class="nx">closeBrowser</span> <span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kr">await</span> <span class="nx">browserTools</span><span class="p">.</span><span class="nx">close</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
     <span class="p">},</span>
 
-    <span class="nx">async</span> <span class="nx">getBrowserList</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">async</span> <span class="nx">getBrowserList</span> <span class="p">()</span> <span class="p">{</span>
         <span class="k">return</span> <span class="p">[</span><span class="s1">'firefox'</span><span class="p">,</span> <span class="s1">'chrome'</span><span class="p">];</span>
     <span class="p">},</span>
 
-    <span class="nx">async</span> <span class="nx">isValidBrowserName</span> <span class="p">(</span><span class="nx">browserName</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">browserList</span> <span class="o">=</span> <span class="nx">await</span> <span class="k">this</span><span class="p">.</span><span class="nx">getBrowserList</span><span class="p">();</span>
+    <span class="k">async</span> <span class="nx">isValidBrowserName</span> <span class="p">(</span><span class="nx">browserName</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">browserList</span> <span class="o">=</span> <span class="kr">await</span> <span class="k">this</span><span class="p">.</span><span class="nx">getBrowserList</span><span class="p">();</span>
 
         <span class="k">return</span> <span class="nx">browserList</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">browserName</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
     <span class="p">},</span>
 
-    <span class="nx">async</span> <span class="nx">resizeWindow</span> <span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">width</span><span class="p">,</span> <span class="nx">height</span><span class="p">,</span> <span class="nx">currentWidth</span><span class="p">,</span> <span class="nx">currentHeight</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">await</span> <span class="nx">browserTools</span><span class="p">.</span><span class="nx">resize</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">currentWidth</span><span class="p">,</span> <span class="nx">currentHeight</span><span class="p">,</span> <span class="nx">width</span><span class="p">,</span> <span class="nx">height</span><span class="p">);</span>
+    <span class="k">async</span> <span class="nx">resizeWindow</span> <span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">width</span><span class="p">,</span> <span class="nx">height</span><span class="p">,</span> <span class="nx">currentWidth</span><span class="p">,</span> <span class="nx">currentHeight</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kr">await</span> <span class="nx">browserTools</span><span class="p">.</span><span class="nx">resize</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">currentWidth</span><span class="p">,</span> <span class="nx">currentHeight</span><span class="p">,</span> <span class="nx">width</span><span class="p">,</span> <span class="nx">height</span><span class="p">);</span>
     <span class="p">},</span>
 
-    <span class="nx">async</span> <span class="nx">canResizeWindowToDimensions</span> <span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">width</span><span class="p">,</span> <span class="nx">height</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">async</span> <span class="nx">canResizeWindowToDimensions</span> <span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">width</span><span class="p">,</span> <span class="nx">height</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="p">{</span> <span class="na">width</span><span class="p">:</span> <span class="nx">screenWidth</span><span class="p">,</span> <span class="na">height</span><span class="p">:</span> <span class="nx">screenHeight</span> <span class="p">}</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">screenSizes</span><span class="p">[</span><span class="nx">id</span><span class="p">];</span>
 
         <span class="k">return</span> <span class="nx">width</span> <span class="o">&lt;=</span> <span class="nx">screenWidth</span> <span class="o">&amp;&amp;</span> <span class="nx">height</span> <span class="o">&lt;=</span> <span class="nx">screenHeight</span><span class="p">;</span>
     <span class="p">}</span>
 
-    <span class="nx">async</span> <span class="nx">maximizeWindow</span> <span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">await</span> <span class="nx">browserTools</span><span class="p">.</span><span class="nx">maximize</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
+    <span class="k">async</span> <span class="nx">maximizeWindow</span> <span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kr">await</span> <span class="nx">browserTools</span><span class="p">.</span><span class="nx">maximize</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
     <span class="p">},</span>
 
-    <span class="nx">async</span> <span class="nx">takeScreenshot</span> <span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">screenshotPath</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">await</span> <span class="nx">browserTools</span><span class="p">.</span><span class="nx">screenshot</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">screenshotPath</span><span class="p">);</span>
+    <span class="k">async</span> <span class="nx">takeScreenshot</span> <span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">screenshotPath</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kr">await</span> <span class="nx">browserTools</span><span class="p">.</span><span class="nx">screenshot</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">screenshotPath</span><span class="p">);</span>
     <span class="p">},</span>
 <span class="p">};</span>
-</code></pre></div>
-<blockquote>
-<p>To learn how to implement provider methods, you can also explore the existing browser provider plugins,
+</code></pre></div><blockquote><div class="blockquote-content"><p>To learn how to implement provider methods, you can also explore the existing browser provider plugins,
 for example, <a href="https://github.com/DevExpress/testcafe-browser-provider-saucelabs/">testcafe-browser-provider-saucelabs</a>
 or <a href="https://github.com/ryx/testcafe-browser-provider-nightmare">testcafe-browser-provider-nightmare</a>.</p>
-</blockquote>
-
-<h2>Building the Provider</h2>
-
+</div></blockquote><h2><a class="anchor" name="building-the-provider"></a>Building the Provider <a class="permalink" href="#building-the-provider">#</a></h2>
 <p>You can build a browser provider project by using the <code>build</code> Gulp task.</p>
 <div class="highlight"><pre><code class="language-bash" data-lang="bash">gulp build
-</code></pre></div>
-<h2>Using the Provider Development Version</h2>
-
+</code></pre></div><h2><a class="anchor" name="using-the-provider-development-version"></a>Using the Provider Development Version <a class="permalink" href="#using-the-provider-development-version">#</a></h2>
 <p>If you are still developing the browser provider, but need to test it within TestCafe, there is no need to publish the browser provider package to npm.
 You can link the browser provider to TestCafe by using the <a href="https://docs.npmjs.com/cli/link">npm link</a> command.
 This allows you to work on the browser provider project and test it iteratively without having to re-publish everytime you make a change.</p>
 
 <p>To link the browser provider package, navigate to the provider directory and run <code>npm link</code>:</p>
 <div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">cd </span>my-provider
-npm link
+npm <span class="nb">link</span>
 </code></pre></div>
 <p>After that, TestCafe will use the provider version you are currently developing.</p>
 
 <p>For information on how to specify a browser in tests, see <a href="#specifying-a-browser-for-a-test-task">Specifying a Browser for a Test Task</a>.</p>
-
-<h2>Publishing the Provider to npm</h2>
-
+<h2><a class="anchor" name="publishing-the-provider-to-npm"></a>Publishing the Provider to npm <a class="permalink" href="#publishing-the-provider-to-npm">#</a></h2>
 <p>When you finish developing the provider, you can publish it to npm by running the <code>publish-please</code> npm script.
 This script builds the package, tests the provider and then uses <a href="https://github.com/inikulin/publish-please">publish-please</a> to publish it to npm.
 That is why using the <code>publish-please</code> script instead of <code>npm publish</code> is what is recommended.</p>
 <div class="highlight"><pre><code class="language-bash" data-lang="bash">npm run publish-please
 </code></pre></div>
-<p>After that, you can install the provider plugin as you would <a href="../README.md#installing-plugins">install any other plugin</a>.</p>
-
-<h2>Specifying a Browser for a Test Task</h2>
-
+<p>After that, you can install the provider plugin as you would <a href="../#installing-plugins">install any other plugin</a>.</p>
+<h2><a class="anchor" name="specifying-a-browser-for-a-test-task"></a>Specifying a Browser for a Test Task <a class="permalink" href="#specifying-a-browser-for-a-test-task">#</a></h2>
 <p>When running tests, you can specify a browser accessed through the provider plugin by using a <em>browser alias</em>.
 The alias consists of the browser provider name and the name of the browser itself (the latter may be omitted in some providers); for example, <code>saucelabs:Chrome@52.0:Windows 8.1</code> or <code>nightmare</code>.</p>
 

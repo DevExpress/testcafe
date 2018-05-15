@@ -885,7 +885,6 @@
 		<div class="post-content">
 
 			<h1>Type Text</h1>
-
 <p>Types the specified text into an input element.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">t.typeText( selector, text [, options] )
 </code></pre></div>
@@ -899,7 +898,7 @@
 <tr>
 <td><code>selector</code></td>
 <td>Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise</td>
-<td>Identifies the webpage element that will receive input focus. See <a href="README.md#selecting-target-elements">Selecting Target Elements</a>.</td>
+<td>Identifies the webpage element that will receive input focus. See <a href=".#selecting-target-elements">Selecting Target Elements</a>.</td>
 </tr>
 <tr>
 <td><code>text</code></td>
@@ -909,32 +908,27 @@
 <tr>
 <td><code>options</code>&#160;<em>(optional)</em></td>
 <td>Object</td>
-<td>A set of options that provide additional parameters for the action. See <a href="action-options.md#typing-action-options">Typing Action Options</a>. If this parameter is omitted, TestCafe sets the cursor to the end of the text before typing, thus preserving the text that is already in the input box.</td>
+<td>A set of options that provide additional parameters for the action. See <a href="action-options.html#typing-action-options">Typing Action Options</a>. If this parameter is omitted, TestCafe sets the cursor to the end of the text before typing, thus preserving the text that is already in the input box.</td>
 </tr>
 </tbody></table>
-
-<blockquote>
-<p>Use the <a href="select-text.md">t.selectText</a> and <a href="press-key.md">t.pressKey</a> actions to implement operations such as selecting or deleting text.</p>
-</blockquote>
-
+<blockquote><div class="blockquote-content"><p>Use the <a href="select-text.html">t.selectText</a> and <a href="press-key.html">t.pressKey</a> actions to implement operations such as selecting or deleting text.</p>
+</div></blockquote>
 <p>The following example shows how to use <code>t.typeText</code> with and without options.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">nameInput</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">nameInput</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">);</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//www.example.com/`;</span>
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://www.example.com/`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Type and Replace'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Type and Replace'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">,</span> <span class="s1">'Peter'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">,</span> <span class="s1">'Paker'</span><span class="p">,</span> <span class="p">{</span> <span class="na">replace</span><span class="p">:</span> <span class="kc">true</span> <span class="p">})</span>
         <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">,</span> <span class="s1">'r'</span><span class="p">,</span> <span class="p">{</span> <span class="na">caretPos</span><span class="p">:</span> <span class="mi">2</span> <span class="p">})</span>
         <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">.</span><span class="nx">value</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="s1">'Parker'</span><span class="p">);</span>
 <span class="p">});</span>
-</code></pre></div>
-<h2>Typing Into DateTime, Color and Range Inputs</h2>
-
+</code></pre></div><h2><a class="anchor" name="typing-into-datetime-color-and-range-inputs"></a>Typing Into DateTime, Color and Range Inputs <a class="permalink" href="#typing-into-datetime-color-and-range-inputs">#</a></h2>
 <p>There are certain types of HTML5 inputs, like <code>DateTime</code>, <code>Color</code> or <code>Range</code>, that require entering values in a specific format.</p>
 
 <p>The following table lists value formats expected by these inputs.</p>

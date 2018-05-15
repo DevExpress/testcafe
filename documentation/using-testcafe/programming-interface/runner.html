@@ -545,19 +545,18 @@
 		<div class="post-content">
 
 			<h1>Runner Class</h1>
-
 <p>An object that configures and launches test tasks.</p>
 
-<p>Created using the <a href="testcafe.md#createrunner">testCafe.createRunner</a> function.</p>
+<p>Created using the <a href="testcafe.html#createrunner">testCafe.createRunner</a> function.</p>
 
 <p><strong>Example</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">createTestCafe</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'testcafe'</span><span class="p">);</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">createTestCafe</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'testcafe'</span><span class="p">);</span>
 <span class="kd">let</span> <span class="nx">testcafe</span>         <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
 
 <span class="nx">createTestCafe</span><span class="p">(</span><span class="s1">'localhost'</span><span class="p">,</span> <span class="mi">1337</span><span class="p">,</span> <span class="mi">1338</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">tc</span> <span class="o">=&gt;</span> <span class="p">{</span>
         <span class="nx">testcafe</span>     <span class="o">=</span> <span class="nx">tc</span><span class="p">;</span>
-        <span class="kr">const</span> <span class="nx">runner</span> <span class="o">=</span> <span class="nx">testcafe</span><span class="p">.</span><span class="nx">createRunner</span><span class="p">();</span>
+        <span class="kd">const</span> <span class="nx">runner</span> <span class="o">=</span> <span class="nx">testcafe</span><span class="p">.</span><span class="nx">createRunner</span><span class="p">();</span>
 
         <span class="k">return</span> <span class="nx">runner</span>
             <span class="p">.</span><span class="nx">src</span><span class="p">([</span><span class="s1">'tests/fixture1.js'</span><span class="p">,</span> <span class="s1">'tests/func/fixture3.js'</span><span class="p">])</span>
@@ -568,9 +567,7 @@
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Tests failed: '</span> <span class="o">+</span> <span class="nx">failedCount</span><span class="p">);</span>
         <span class="nx">testcafe</span><span class="p">.</span><span class="nx">close</span><span class="p">();</span>
     <span class="p">});</span>
-</code></pre></div>
-<h2>Methods</h2>
-
+</code></pre></div><h2><a class="anchor" name="methods"></a>Methods <a class="permalink" href="#methods">#</a></h2>
 <ul>
 <li><a href="#src">src</a></li>
 <li><a href="#filter">filter</a></li>
@@ -602,9 +599,7 @@
 </ul></li>
 <li><a href="#stop">stop</a></li>
 </ul>
-
-<h3>src</h3>
-
+<h3><a class="anchor" name="src"></a>src <a class="permalink" href="#src">#</a></h3>
 <p>Configures the test runner to run tests from the specified files.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">src(source) → this
 </code></pre></div>
@@ -626,9 +621,7 @@
 
 <p><strong>Example</strong></p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">src</span><span class="p">([</span><span class="s1">'/home/user/tests/fixture1.js'</span><span class="p">,</span> <span class="s1">'fixture5.js'</span><span class="p">]);</span>
-</code></pre></div>
-<h3>filter</h3>
-
+</code></pre></div><h3><a class="anchor" name="filter"></a>filter <a class="permalink" href="#filter">#</a></h3>
 <p>Allows you to select which tests should be run.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">filter(callback) → this
 </code></pre></div>
@@ -682,9 +675,7 @@
         <span class="nx">testName</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">someRe</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
         <span class="nx">fixtureName</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">anotherRe</span><span class="p">);</span>
 <span class="p">});</span>
-</code></pre></div>
-<h3>browsers</h3>
-
+</code></pre></div><h3><a class="anchor" name="browsers"></a>browsers <a class="permalink" href="#browsers">#</a></h3>
 <p>Configures the test runner to run tests in the specified browsers.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">browsers(browser) → this
 </code></pre></div>
@@ -699,25 +690,23 @@
 </thead><tbody>
 <tr>
 <td>String</td>
-<td>A different browser alias for each browser type. See <a href="../common-concepts/browsers/browser-support.md">Browser Support</a> for more details.</td>
-<td><a href="../common-concepts/browsers/browser-support.md#locally-installed-browsers">Local browsers</a>, <a href="../common-concepts/browsers/browser-support.md#browsers-in-cloud-testing-services">cloud browsers</a>, and <a href="../common-concepts/browsers/browser-support.md#nonconventional-browsers">browsers accessed through <em>browser provider plugins</em></a>.</td>
+<td>A different browser alias for each browser type. See <a href="../common-concepts/browsers/browser-support.html">Browser Support</a> for more details.</td>
+<td><a href="../common-concepts/browsers/browser-support.html#locally-installed-browsers">Local browsers</a>, <a href="../common-concepts/browsers/browser-support.html#browsers-in-cloud-testing-services">cloud browsers</a>, and <a href="../common-concepts/browsers/browser-support.html#nonconventional-browsers">browsers accessed through <em>browser provider plugins</em></a>.</td>
 </tr>
 <tr>
 <td><code>{path: String, cmd: String}</code></td>
 <td>The path to the browser&#39;s executable (<code>path</code>) and command line parameters (<code>cmd</code>). The <code>cmd</code> property is optional.</td>
-<td><a href="../common-concepts/browsers/browser-support.md#locally-installed-browsers">Local</a> and <a href="../common-concepts/browsers/browser-support.md#portable-browsers">portable</a> browsers</td>
+<td><a href="../common-concepts/browsers/browser-support.html#locally-installed-browsers">Local</a> and <a href="../common-concepts/browsers/browser-support.html#portable-browsers">portable</a> browsers</td>
 </tr>
 <tr>
-<td><a href="browserconnection.md">BrowserConnection</a></td>
+<td><a href="browserconnection.html">BrowserConnection</a></td>
 <td>The remote browser connection.</td>
-<td><a href="../common-concepts/browsers/browser-support.md#browsers-on-remote-devices">Remote browsers</a></td>
+<td><a href="../common-concepts/browsers/browser-support.html#browsers-on-remote-devices">Remote browsers</a></td>
 </tr>
 </tbody></table>
 
 <p>You can use different object types in one function call. If you call the method several times, all the specified browsers are added to the test runner.</p>
-
-<h4>Using Browser Aliases</h4>
-
+<h4><a class="anchor" name="using-browser-aliases"></a>Using Browser Aliases <a class="permalink" href="#using-browser-aliases">#</a></h4>
 <ul>
 <li>running local browsers</li>
 </ul>
@@ -729,23 +718,17 @@
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="s1">'saucelabs:Chrome@52.0:Windows 8.1'</span><span class="p">);</span>
 </code></pre></div>
 <ul>
-<li>using <a href="../common-concepts/browsers/testing-in-headless-mode.md">headless mode</a></li>
+<li>using <a href="../common-concepts/browsers/testing-in-headless-mode.html">headless mode</a></li>
 </ul>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="s1">'chrome:headless'</span><span class="p">);</span>
-</code></pre></div>
-<h4>Specifying the Path to the Browser Executable</h4>
-
+</code></pre></div><h4><a class="anchor" name="specifying-the-path-to-the-browser-executable"></a>Specifying the Path to the Browser Executable <a class="permalink" href="#specifying-the-path-to-the-browser-executable">#</a></h4>
 <p>Use the <code>path:</code> prefix. Enclose the path in backticks if it contains spaces.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="s1">'path:`C:\\Program Files\\Internet Explorer\\iexplore.exe`'</span><span class="p">);</span>
-</code></pre></div>
-<h4>Specifying the Path with Command Line Parameters</h4>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">browsers</span><span class="p">({</span>
-    <span class="na">path</span><span class="p">:</span> <span class="s1">'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'</span><span class="p">,</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="s1">'path:`C:</span><span class="err">\\</span><span class="s1">Program Files</span><span class="err">\\</span><span class="s1">Internet Explorer</span><span class="err">\\</span><span class="s1">iexplore.exe`'</span><span class="p">);</span>
+</code></pre></div><h4><a class="anchor" name="specifying-the-path-with-command-line-parameters"></a>Specifying the Path with Command Line Parameters <a class="permalink" href="#specifying-the-path-with-command-line-parameters">#</a></h4><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">browsers</span><span class="p">({</span>
+    <span class="na">path</span><span class="p">:</span> <span class="s1">'C:</span><span class="err">\\</span><span class="s1">Program Files</span><span class="err">\\</span><span class="s1">Google</span><span class="err">\\</span><span class="s1">Chrome</span><span class="err">\\</span><span class="s1">Application</span><span class="err">\\</span><span class="s1">chrome.exe'</span><span class="p">,</span>
     <span class="na">cmd</span><span class="p">:</span> <span class="s1">'--new-window'</span>
 <span class="p">});</span>
-</code></pre></div>
-<h4>Passing a Remote Browser Connection</h4>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">createTestCafe</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'testcafe'</span><span class="p">);</span>
+</code></pre></div><h4><a class="anchor" name="passing-a-remote-browser-connection"></a>Passing a Remote Browser Connection <a class="permalink" href="#passing-a-remote-browser-connection">#</a></h4><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">createTestCafe</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'testcafe'</span><span class="p">);</span>
 <span class="kd">let</span> <span class="nx">runner</span>           <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
 <span class="kd">let</span> <span class="nx">testcafe</span>         <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
 
@@ -772,9 +755,7 @@
                  <span class="p">});</span>
         <span class="p">});</span>
     <span class="p">});</span>
-</code></pre></div>
-<h3>screenshots</h3>
-
+</code></pre></div><h3><a class="anchor" name="screenshots"></a>screenshots <a class="permalink" href="#screenshots">#</a></h3>
 <p>Enables TestCafe to take screenshots of the tested webpages.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">screenshots(path [, takeOnFails]) → this
 </code></pre></div>
@@ -801,19 +782,14 @@
 </tbody></table>
 
 <p>The <code>screenshots</code> function should be called to allow TestCafe to take screenshots
-when the <a href="../../test-api/actions/take-screenshot.md">t.takeScreenshot</a> action is called from test code.</p>
+when the <a href="../../test-api/actions/take-screenshot.html">t.takeScreenshot</a> action is called from test code.</p>
 
 <p>Set the <code>takeOnFails</code> parameter to <code>true</code> to take a screenshot when a test fails.</p>
-
-<blockquote>
-<p>Important! TestCafe does not take screenshots if the <code>screenshots</code> function is not called.</p>
-</blockquote>
-
+<blockquote class="important"><div class="blockquote-content"><p>TestCafe does not take screenshots if the <code>screenshots</code> function is not called.</p>
+</div></blockquote>
 <p><strong>Example</strong></p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">screenshots</span><span class="p">(</span><span class="s1">'reports/screenshots/'</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-</code></pre></div>
-<h3>reporter</h3>
-
+</code></pre></div><h3><a class="anchor" name="reporter"></a>reporter <a class="permalink" href="#reporter">#</a></h3>
 <p>Configures TestCafe&#39;s reporting feature.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">reporter(name [, outStream]) → this
 </code></pre></div>
@@ -828,7 +804,7 @@ when the <a href="../../test-api/actions/take-screenshot.md">t.takeScreenshot</a
 <tr>
 <td><code>name</code></td>
 <td>String</td>
-<td>The name of the <a href="../common-concepts/reporters.md">reporter</a> to use.</td>
+<td>The name of the <a href="../common-concepts/reporters.html">reporter</a> to use.</td>
 <td></td>
 </tr>
 <tr>
@@ -840,12 +816,8 @@ when the <a href="../../test-api/actions/take-screenshot.md">t.takeScreenshot</a
 </tbody></table>
 
 <p>To use multiple reporters, call this method several times with different reporter names. Note that only one reporter can write to <code>stdout</code>.</p>
-
-<h4>Specifying the Reporter</h4>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">reporter</span><span class="p">(</span><span class="s1">'minimal'</span><span class="p">);</span>
-</code></pre></div>
-<h4>Saving the Report to a File</h4>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">stream</span> <span class="o">=</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">createWriteStream</span><span class="p">(</span><span class="s1">'report.xml'</span><span class="p">);</span>
+<h4><a class="anchor" name="specifying-the-reporter"></a>Specifying the Reporter <a class="permalink" href="#specifying-the-reporter">#</a></h4><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">reporter</span><span class="p">(</span><span class="s1">'minimal'</span><span class="p">);</span>
+</code></pre></div><h4><a class="anchor" name="saving-the-report-to-a-file"></a>Saving the Report to a File <a class="permalink" href="#saving-the-report-to-a-file">#</a></h4><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">stream</span> <span class="o">=</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">createWriteStream</span><span class="p">(</span><span class="s1">'report.xml'</span><span class="p">);</span>
 
 <span class="nx">runner</span>
     <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">'tests/sample-fixture.js'</span><span class="p">)</span>
@@ -855,9 +827,7 @@ when the <a href="../../test-api/actions/take-screenshot.md">t.takeScreenshot</a
     <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">failedCount</span> <span class="o">=&gt;</span> <span class="p">{</span>
         <span class="nx">stream</span><span class="p">.</span><span class="nx">end</span><span class="p">();</span>
     <span class="p">});</span>
-</code></pre></div>
-<h4>Using Multiple Reporters</h4>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">stream</span> <span class="o">=</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">createWriteStream</span><span class="p">(</span><span class="s1">'report.json'</span><span class="p">);</span>
+</code></pre></div><h4><a class="anchor" name="using-multiple-reporters"></a>Using Multiple Reporters <a class="permalink" href="#using-multiple-reporters">#</a></h4><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">stream</span> <span class="o">=</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">createWriteStream</span><span class="p">(</span><span class="s1">'report.json'</span><span class="p">);</span>
 
 <span class="nx">runner</span>
     <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">'tests/sample-fixture.js'</span><span class="p">)</span>
@@ -868,22 +838,18 @@ when the <a href="../../test-api/actions/take-screenshot.md">t.takeScreenshot</a
     <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">failedCount</span> <span class="o">=&gt;</span> <span class="p">{</span>
         <span class="nx">stream</span><span class="p">.</span><span class="nx">end</span><span class="p">();</span>
     <span class="p">});</span>
-</code></pre></div>
-<h4>Implementing a Custom Stream</h4>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">class</span> <span class="nx">MyStream</span> <span class="kr">extends</span> <span class="nx">stream</span><span class="p">.</span><span class="nx">Writable</span> <span class="p">{</span>
+</code></pre></div><h4><a class="anchor" name="implementing-a-custom-stream"></a>Implementing a Custom Stream <a class="permalink" href="#implementing-a-custom-stream">#</a></h4><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">class</span> <span class="nx">MyStream</span> <span class="kd">extends</span> <span class="nx">stream</span><span class="p">.</span><span class="nx">Writable</span> <span class="p">{</span>
     <span class="nx">_write</span><span class="p">(</span><span class="nx">chunk</span><span class="p">,</span> <span class="nx">encoding</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
         <span class="nx">doSomething</span><span class="p">(</span><span class="nx">chunk</span><span class="p">);</span>
         <span class="nx">next</span><span class="p">();</span>
     <span class="p">}</span>
 <span class="p">}</span>
 
-<span class="kr">const</span> <span class="nx">stream</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyStream</span><span class="p">();</span>
+<span class="kd">const</span> <span class="nx">stream</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyStream</span><span class="p">();</span>
 <span class="nx">runner</span><span class="p">.</span><span class="nx">reporter</span><span class="p">(</span><span class="s1">'json'</span><span class="p">,</span> <span class="nx">stream</span><span class="p">);</span>
 </code></pre></div>
-<p>You can also build your own reporter. Use a <a href="https://github.com/DevExpress/generator-testcafe-reporter">dedicated Yeoman generator</a> to scaffold out a <a href="../../extending-testcafe/reporter-plugin/README.md">reporter plugin</a>.</p>
-
-<h3>concurrency</h3>
-
+<p>You can also build your own reporter. Use a <a href="https://github.com/DevExpress/generator-testcafe-reporter">dedicated Yeoman generator</a> to scaffold out a <a href="../../extending-testcafe/reporter-plugin/">reporter plugin</a>.</p>
+<h3><a class="anchor" name="concurrency"></a>concurrency <a class="permalink" href="#concurrency">#</a></h3>
 <p>Specifies that tests should run concurrently.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">concurrency(n) → this
 </code></pre></div>
@@ -906,15 +872,13 @@ Tests are run concurrently against this pool, that is, each test is run in the f
 </tr>
 </tbody></table>
 
-<p>See <a href="../common-concepts/concurrent-test-execution.md">Concurrent Test Execution</a> to learn more about concurrent test execution.</p>
+<p>See <a href="../common-concepts/concurrent-test-execution.html">Concurrent Test Execution</a> to learn more about concurrent test execution.</p>
 
 <p>The following example shows how to run tests in three Chrome instances:</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span>
     <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="s1">'chrome'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">concurrency</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
-</code></pre></div>
-<h3>startApp</h3>
-
+</code></pre></div><h3><a class="anchor" name="startapp"></a>startApp <a class="permalink" href="#startapp">#</a></h3>
 <p>Specifies a shell command that is executed before running tests. Use it to launch or deploy the application that is tested.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">async startApp(command, initDelay) → this
 </code></pre></div>
@@ -940,16 +904,11 @@ Tests are run concurrently against this pool, that is, each test is run in the f
 <td>The amount of time (in milliseconds) allowed for the command to initialize the tested application.</td>
 </tr>
 </tbody></table>
-
-<blockquote>
-<p>TestCafe adds <code>node_modules/.bin</code> to <code>PATH</code> so that you can use binaries the locally installed dependencies provide without prefixes.</p>
-</blockquote>
-
+<blockquote><div class="blockquote-content"><p>TestCafe adds <code>node_modules/.bin</code> to <code>PATH</code> so that you can use binaries the locally installed dependencies provide without prefixes.</p>
+</div></blockquote>
 <p><strong>Example</strong></p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">startApp</span><span class="p">(</span><span class="s1">'node server.js'</span><span class="p">,</span> <span class="mi">4000</span><span class="p">);</span>
-</code></pre></div>
-<h3>useProxy</h3>
-
+</code></pre></div><h3><a class="anchor" name="useproxy"></a>useProxy <a class="permalink" href="#useproxy">#</a></h3>
 <p>Specifies the proxy server used in your local network to access the Internet. Allows you to bypass the proxy when accessing specific resources.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">async useProxy(host [, bypassRules]) → this
 </code></pre></div>
@@ -991,18 +950,13 @@ Tests are run concurrently against this pool, that is, each test is run in the f
 </code></pre></div>
 <p>You can also use the proxy host to specify authentication credentials.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">useProxy</span><span class="p">(</span><span class="s1">'username:password@proxy.mycorp.com'</span><span class="p">);</span>
-</code></pre></div>
-<h3>run</h3>
-
+</code></pre></div><h3><a class="anchor" name="run"></a>run <a class="permalink" href="#run">#</a></h3>
 <p>Runs tests according to the current configuration. Returns the number of failed tests.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">async run(options) → Promise&lt;Number&gt;
-</code></pre></div>
-<blockquote>
-<p>Important! Make sure to keep the browser tab that is running tests active. Do not minimize the browser window.
+</code></pre></div><blockquote class="important"><div class="blockquote-content"><p>Make sure to keep the browser tab that is running tests active. Do not minimize the browser window.
 Inactive tabs and minimized browser windows switch to a lower resource consumption mode
 where tests are not guaranteed to execute correctly.</p>
-</blockquote>
-
+</div></blockquote>
 <p>You can pass the following options to the <code>runner.run</code> function.</p>
 
 <table><thead>
@@ -1028,13 +982,13 @@ where tests are not guaranteed to execute correctly.</p>
 <tr>
 <td><code>selectorTimeout</code></td>
 <td>Number</td>
-<td>Specifies the time (in milliseconds) within which <a href="../../test-api/selecting-page-elements/selectors/README.md">selectors</a> make attempts to obtain a node to be returned. See <a href="../../test-api/selecting-page-elements/selectors/using-selectors.md#selector-timeout">Selector Timeout</a>.</td>
+<td>Specifies the time (in milliseconds) within which <a href="../../test-api/selecting-page-elements/selectors/">selectors</a> make attempts to obtain a node to be returned. See <a href="../../test-api/selecting-page-elements/selectors/using-selectors.html#selector-timeout">Selector Timeout</a>.</td>
 <td><code>10000</code></td>
 </tr>
 <tr>
 <td><code>assertionTimeout</code></td>
 <td>Number</td>
-<td>Specifies the time (in milliseconds) within which TestCafe makes attempts  to successfully execute an <a href="../../test-api/assertions/README.md">assertion</a> if <a href="../../test-api/selecting-page-elements/selectors/using-selectors.md#define-assertion-actual-value">a selector property</a> or a <a href="../../test-api/obtaining-data-from-the-client/README.md">client function</a> was passed as an actual value. See <a href="../../test-api/assertions/README.md#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a>.</td>
+<td>Specifies the time (in milliseconds) within which TestCafe makes attempts  to successfully execute an <a href="../../test-api/assertions/">assertion</a> if <a href="../../test-api/selecting-page-elements/selectors/using-selectors.html#define-assertion-actual-value">a selector property</a> or a <a href="../../test-api/obtaining-data-from-the-client/">client function</a> was passed as an actual value. See <a href="../../test-api/assertions/#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a>.</td>
 <td><code>3000</code></td>
 </tr>
 <tr>
@@ -1046,7 +1000,7 @@ where tests are not guaranteed to execute correctly.</p>
 <tr>
 <td><code>speed</code></td>
 <td>Number</td>
-<td>Specifies the test execution speed. Should be a number between <code>1</code> (the fastest) and <code>0.01</code> (the slowest). If speed is also specified for an <a href="../../test-api/actions/action-options.md#basic-action-options">individual action</a>, the action speed setting overrides test speed.</td>
+<td>Specifies the test execution speed. Should be a number between <code>1</code> (the fastest) and <code>0.01</code> (the slowest). If speed is also specified for an <a href="../../test-api/actions/action-options.html#basic-action-options">individual action</a>, the action speed setting overrides test speed.</td>
 <td><code>1</code></td>
 </tr>
 <tr>
@@ -1063,16 +1017,16 @@ where tests are not guaranteed to execute correctly.</p>
 </tr>
 </tbody></table>
 
-<p>After all tests are finished, call the <a href="testcafe.md#close">testcafe.close</a> function to stop the TestCafe server.</p>
+<p>After all tests are finished, call the <a href="testcafe.html#close">testcafe.close</a> function to stop the TestCafe server.</p>
 
 <p><strong>Example</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">createTestCafe</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'testcafe'</span><span class="p">);</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">createTestCafe</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'testcafe'</span><span class="p">);</span>
 <span class="kd">let</span> <span class="nx">testcafe</span>         <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
 
 <span class="nx">createTestCafe</span><span class="p">(</span><span class="s1">'localhost'</span><span class="p">,</span> <span class="mi">1337</span><span class="p">,</span> <span class="mi">1338</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">tc</span> <span class="o">=&gt;</span> <span class="p">{</span>
         <span class="nx">testcafe</span>     <span class="o">=</span> <span class="nx">tc</span><span class="p">;</span>
-        <span class="kr">const</span> <span class="nx">runner</span> <span class="o">=</span> <span class="nx">testcafe</span><span class="p">.</span><span class="nx">createRunner</span><span class="p">();</span>
+        <span class="kd">const</span> <span class="nx">runner</span> <span class="o">=</span> <span class="nx">testcafe</span><span class="p">.</span><span class="nx">createRunner</span><span class="p">();</span>
 
         <span class="k">return</span> <span class="nx">runner</span><span class="p">.</span><span class="nx">run</span><span class="p">({</span>
             <span class="na">skipJsErrors</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
@@ -1088,11 +1042,9 @@ where tests are not guaranteed to execute correctly.</p>
         <span class="nx">testcafe</span><span class="p">.</span><span class="nx">close</span><span class="p">();</span>
     <span class="p">})</span>
     <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="nx">error</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">});</span>
-</code></pre></div>
-<h4>Cancelling Test Tasks</h4>
-
+</code></pre></div><h4><a class="anchor" name="cancelling-test-tasks"></a>Cancelling Test Tasks <a class="permalink" href="#cancelling-test-tasks">#</a></h4>
 <p>You can stop an individual test task at any moment by cancelling the corresponding promise.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">taskPromise</span> <span class="o">=</span> <span class="nx">runner</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">taskPromise</span> <span class="o">=</span> <span class="nx">runner</span>
     <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">'tests/fixture1.js'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">browsers</span><span class="p">([</span><span class="nx">remoteConnection</span><span class="p">,</span> <span class="s1">'chrome'</span><span class="p">])</span>
     <span class="p">.</span><span class="nx">reporter</span><span class="p">(</span><span class="s1">'json'</span><span class="p">)</span>
@@ -1101,9 +1053,7 @@ where tests are not guaranteed to execute correctly.</p>
 <span class="nx">taskPromise</span><span class="p">.</span><span class="nx">cancel</span><span class="p">();</span>
 </code></pre></div>
 <p>You can also cancel all pending tasks at once using the <a href="#stop">runner.stop</a> function.</p>
-
-<h4>Quarantine Mode</h4>
-
+<h4><a class="anchor" name="quarantine-mode"></a>Quarantine Mode <a class="permalink" href="#quarantine-mode">#</a></h4>
 <p>The quarantine mode is designed to isolate <em>non-deterministic</em> tests (that is, tests that sometimes pass and fail without a clear reason)
 from the rest of the test base (<em>healthy</em> tests).</p>
 
@@ -1112,9 +1062,7 @@ After that, these tests are run again several times. The outcome of the most run
 A test is separately marked <em>unstable</em> if the outcome varies between runs. The test counts the run that was quarantined.</p>
 
 <p>To learn more about non-deterministic tests, see Martin Fowler&#39;s <a href="http://martinfowler.com/articles/nonDeterminism.html">Eradicating Non-Determinism in Tests</a> article.</p>
-
-<h3>stop</h3>
-
+<h3><a class="anchor" name="stop"></a>stop <a class="permalink" href="#stop">#</a></h3>
 <p>Stops all pending test tasks.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">async stop()
 </code></pre></div>

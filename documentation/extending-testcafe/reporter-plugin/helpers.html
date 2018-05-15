@@ -471,8 +471,7 @@
 		<div class="post-content">
 
 			<h1>Helpers</h1>
-
-<p>Helpers are methods and libraries used to format report output when <a href="README.md#implementing-the-reporter">implementing a reporter</a>. TestCafe mixes in these methods to the reporter.</p>
+<p>Helpers are methods and libraries used to format report output when <a href=".#implementing-the-reporter">implementing a reporter</a>. TestCafe mixes in these methods to the reporter.</p>
 
 <p>To access helpers, use <code>this</code>.</p>
 
@@ -484,35 +483,29 @@
 <li><a href="#coloring-helper">Coloring Helper</a></li>
 <li><a href="#datetime-helper">Date-Time Helper</a></li>
 </ul>
-
-<h2>Output Helpers</h2>
-
+<h2><a class="anchor" name="output-helpers"></a>Output Helpers <a class="permalink" href="#output-helpers">#</a></h2>
 <p>All output helper methods are chainable: each method returns <code>this</code> so that the methods can be executed one right after another.
 This allows you to write compact code like this.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">this</span><span class="p">.</span><span class="nx">setIndent</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">testname</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">newline</span><span class="p">()</span>
     <span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
-</code></pre></div>
-<h3>newline</h3>
-
+</code></pre></div><h3><a class="anchor" name="newline"></a>newline <a class="permalink" href="#newline">#</a></h3>
 <p>Adds a new line to the report.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">newline () → this
 </code></pre></div>
 <p><strong>Example</strong></p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">reportTaskDone</span> <span class="p">(</span><span class="nx">endTime</span><span class="p">,</span> <span class="nx">passed</span><span class="p">)</span> <span class="p">{</span>
     <span class="p">...</span>
-    <span class="kr">const</span> <span class="nx">summary</span> <span class="o">=</span> <span class="nx">passed</span> <span class="o">===</span> <span class="k">this</span><span class="p">.</span><span class="nx">testCount</span> <span class="p">?</span>
-                  <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">testCount</span><span class="p">}</span> <span class="nx">passed</span><span class="err">`</span> <span class="p">:</span>
-                  <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">testCount</span> <span class="o">-</span> <span class="nx">passed</span><span class="p">}</span><span class="sr">/${this.testCount} failed`</span><span class="err">;
-</span>
+    <span class="kd">const</span> <span class="nx">summary</span> <span class="o">=</span> <span class="nx">passed</span> <span class="o">===</span> <span class="k">this</span><span class="p">.</span><span class="nx">testCount</span> <span class="p">?</span>
+                  <span class="s2">`</span><span class="p">${</span><span class="k">this</span><span class="p">.</span><span class="nx">testCount</span><span class="p">}</span><span class="s2"> passed`</span> <span class="p">:</span>
+                  <span class="s2">`</span><span class="p">${</span><span class="k">this</span><span class="p">.</span><span class="nx">testCount</span> <span class="o">-</span> <span class="nx">passed</span><span class="p">}</span><span class="s2">/</span><span class="p">${</span><span class="k">this</span><span class="p">.</span><span class="nx">testCount</span><span class="p">}</span><span class="s2"> failed`</span><span class="p">;</span>
+
     <span class="k">this</span><span class="p">.</span><span class="nx">newline</span><span class="p">()</span>
         <span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">summary</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">newline</span><span class="p">();</span>
 <span class="p">}</span>
-</code></pre></div>
-<h3>write</h3>
-
+</code></pre></div><h3><a class="anchor" name="write"></a>write <a class="permalink" href="#write">#</a></h3>
 <p>Writes the specified text to the report.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">write (text) → this
 </code></pre></div>
@@ -533,16 +526,14 @@ This allows you to write compact code like this.</p>
 <p><strong>Example</strong></p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">reportTaskDone</span> <span class="p">(</span><span class="nx">endTime</span><span class="p">,</span> <span class="nx">passed</span><span class="p">)</span> <span class="p">{</span>
     <span class="p">...</span>
-    <span class="kr">const</span> <span class="nx">summary</span> <span class="o">=</span> <span class="nx">passed</span> <span class="o">===</span> <span class="k">this</span><span class="p">.</span><span class="nx">testCount</span> <span class="p">?</span>
-                  <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">testCount</span><span class="p">}</span> <span class="nx">passed</span><span class="err">`</span> <span class="p">:</span>
-                  <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">testCount</span> <span class="o">-</span> <span class="nx">passed</span><span class="p">}</span><span class="sr">/${this.testCount} failed`</span><span class="err">;
-</span>
+    <span class="kd">const</span> <span class="nx">summary</span> <span class="o">=</span> <span class="nx">passed</span> <span class="o">===</span> <span class="k">this</span><span class="p">.</span><span class="nx">testCount</span> <span class="p">?</span>
+                  <span class="s2">`</span><span class="p">${</span><span class="k">this</span><span class="p">.</span><span class="nx">testCount</span><span class="p">}</span><span class="s2"> passed`</span> <span class="p">:</span>
+                  <span class="s2">`</span><span class="p">${</span><span class="k">this</span><span class="p">.</span><span class="nx">testCount</span> <span class="o">-</span> <span class="nx">passed</span><span class="p">}</span><span class="s2">/</span><span class="p">${</span><span class="k">this</span><span class="p">.</span><span class="nx">testCount</span><span class="p">}</span><span class="s2"> failed`</span><span class="p">;</span>
+
     <span class="k">this</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">summary</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">newline</span><span class="p">();</span>
 <span class="p">}</span>
-</code></pre></div>
-<h3>useWordWrap</h3>
-
+</code></pre></div><h3><a class="anchor" name="usewordwrap"></a>useWordWrap <a class="permalink" href="#usewordwrap">#</a></h3>
 <p>Toggles word wrapping for subsequent output.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">useWordWrap (use) → this
 </code></pre></div>
@@ -565,16 +556,14 @@ This allows you to write compact code like this.</p>
 <p>The following example demonstrates how to enable word wrapping in case the <code>title</code> string is long.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">reportTestDone</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">errs</span><span class="p">)</span> <span class="p">{</span>
     <span class="p">...</span>
-    <span class="nx">name</span> <span class="o">=</span> <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">currentFixtureName</span><span class="p">}</span> <span class="o">-</span> <span class="nx">$</span><span class="p">{</span><span class="nx">name</span><span class="p">}</span><span class="err">`</span><span class="p">;</span>
+    <span class="nx">name</span> <span class="o">=</span> <span class="s2">`</span><span class="p">${</span><span class="k">this</span><span class="p">.</span><span class="nx">currentFixtureName</span><span class="p">}</span><span class="s2"> - </span><span class="p">${</span><span class="nx">name</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
 
-    <span class="kr">const</span> <span class="nx">title</span> <span class="o">=</span> <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="nx">result</span><span class="p">}</span> <span class="nx">$</span><span class="p">{</span><span class="nx">name</span><span class="p">}</span><span class="err">`</span><span class="p">;</span>
+    <span class="kd">const</span> <span class="nx">title</span> <span class="o">=</span> <span class="s2">`</span><span class="p">${</span><span class="nx">result</span><span class="p">}</span><span class="s2"> </span><span class="p">${</span><span class="nx">name</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
 
     <span class="k">this</span><span class="p">.</span><span class="nx">useWordWrap</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">title</span><span class="p">);</span>
 <span class="p">}</span>
-</code></pre></div>
-<h3>setIndent</h3>
-
+</code></pre></div><h3><a class="anchor" name="setindent"></a>setIndent <a class="permalink" href="#setindent">#</a></h3>
 <p>Specifies indentation for subsequent output.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">setIndent (val) → this
 </code></pre></div>
@@ -597,19 +586,15 @@ This allows you to write compact code like this.</p>
 <p>The following example demonstrates how to indent summary information by four spaces.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">reportTaskDone</span> <span class="p">(</span><span class="nx">endTime</span><span class="p">,</span> <span class="nx">passed</span><span class="p">)</span> <span class="p">{</span>
     <span class="p">...</span>
-    <span class="kr">const</span> <span class="nx">summary</span> <span class="o">=</span> <span class="nx">passed</span> <span class="o">===</span> <span class="k">this</span><span class="p">.</span><span class="nx">testCount</span> <span class="p">?</span>
-                  <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">testCount</span><span class="p">}</span> <span class="nx">passed</span><span class="err">`</span> <span class="p">:</span>
-                  <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">testCount</span> <span class="o">-</span> <span class="nx">passed</span><span class="p">}</span><span class="sr">/${this.testCount} failed`</span><span class="err">;
-</span>
+    <span class="kd">const</span> <span class="nx">summary</span> <span class="o">=</span> <span class="nx">passed</span> <span class="o">===</span> <span class="k">this</span><span class="p">.</span><span class="nx">testCount</span> <span class="p">?</span>
+                  <span class="s2">`</span><span class="p">${</span><span class="k">this</span><span class="p">.</span><span class="nx">testCount</span><span class="p">}</span><span class="s2"> passed`</span> <span class="p">:</span>
+                  <span class="s2">`</span><span class="p">${</span><span class="k">this</span><span class="p">.</span><span class="nx">testCount</span> <span class="o">-</span> <span class="nx">passed</span><span class="p">}</span><span class="s2">/</span><span class="p">${</span><span class="k">this</span><span class="p">.</span><span class="nx">testCount</span><span class="p">}</span><span class="s2"> failed`</span><span class="p">;</span>
+
     <span class="k">this</span><span class="p">.</span><span class="nx">setIndent</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">summary</span><span class="p">);</span>
 <span class="p">}</span>
 <span class="c1">//=&gt;    2/6 failed</span>
-</code></pre></div>
-<h2>Formatting Helpers</h2>
-
-<h3>indentString</h3>
-
+</code></pre></div><h2><a class="anchor" name="formatting-helpers"></a>Formatting Helpers <a class="permalink" href="#formatting-helpers">#</a></h2><h3><a class="anchor" name="indentstring"></a>indentString <a class="permalink" href="#indentstring">#</a></h3>
 <p>Indents each line in a string by a number of spaces.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">indentString (str, indentVal) → String
 </code></pre></div>
@@ -636,16 +621,14 @@ This allows you to write compact code like this.</p>
 
 <p>This example demonstrates how you can indent each line in the <code>str</code> string by four spaces.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">reportTaskStart</span> <span class="p">(</span><span class="nx">startTime</span><span class="p">,</span> <span class="nx">userAgents</span><span class="p">,</span> <span class="nx">testCount</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">let</span> <span class="nx">str</span> <span class="o">=</span> <span class="err">`</span><span class="nx">Start</span> <span class="nx">running</span> <span class="nx">tests</span><span class="err">\</span><span class="nx">nBrowsers</span> <span class="nx">used</span> <span class="k">for</span> <span class="nx">testing</span><span class="err">:</span> <span class="nx">$</span><span class="p">{</span><span class="nx">userAgents</span><span class="p">}</span><span class="err">`</span><span class="p">;</span>
+    <span class="kd">let</span> <span class="nx">str</span> <span class="o">=</span> <span class="s2">`Start running tests\nBrowsers used for testing: </span><span class="p">${</span><span class="nx">userAgents</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
     <span class="nx">str</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">indentString</span><span class="p">(</span><span class="nx">str</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="nx">str</span><span class="p">}</span><span class="err">`</span><span class="p">)</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s2">`</span><span class="p">${</span><span class="nx">str</span><span class="p">}</span><span class="s2">`</span><span class="p">)</span>
 <span class="p">}</span>
 <span class="c1">//=&gt;    Start running tests</span>
 <span class="c1">//=&gt;    Browsers used for testing: Chrome,Firefox</span>
-</code></pre></div>
-<h3>wordWrap</h3>
-
+</code></pre></div><h3><a class="anchor" name="wordwrap"></a>wordWrap <a class="permalink" href="#wordwrap">#</a></h3>
 <p>Breaks and wraps a string to a new line if its length exceeds the maximum allowed length.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">wordWrap (str, indentVal, width) → String
 </code></pre></div>
@@ -676,15 +659,15 @@ This allows you to write compact code like this.</p>
 <p><strong>Example</strong></p>
 
 <p>The following example demonstrates how to break the <code>title</code> string to the next line if the string length is more than 50 symbols.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">LINE_WIDTH</span> <span class="o">=</span> <span class="mi">50</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">LINE_WIDTH</span> <span class="o">=</span> <span class="mi">50</span><span class="p">;</span>
 
 <span class="nx">reportTestDone</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">errs</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">hasErr</span>    <span class="o">=</span> <span class="o">!!</span><span class="nx">errs</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
-    <span class="kr">const</span> <span class="nx">result</span>    <span class="o">=</span> <span class="nx">hasErr</span> <span class="p">?</span> <span class="err">`</span><span class="nx">passed</span><span class="err">`</span> <span class="p">:</span> <span class="err">`</span><span class="nx">failed</span><span class="err">`</span><span class="p">;</span>
+    <span class="kd">const</span> <span class="nx">hasErr</span>    <span class="o">=</span> <span class="o">!!</span><span class="nx">errs</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+    <span class="kd">const</span> <span class="nx">result</span>    <span class="o">=</span> <span class="nx">hasErr</span> <span class="p">?</span> <span class="s2">`passed`</span> <span class="p">:</span> <span class="s2">`failed`</span><span class="p">;</span>
 
-    <span class="nx">name</span> <span class="o">=</span> <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">currentFixtureName</span><span class="p">}</span> <span class="o">-</span> <span class="nx">$</span><span class="p">{</span><span class="nx">name</span><span class="p">}</span><span class="err">`</span><span class="p">;</span>
+    <span class="nx">name</span> <span class="o">=</span> <span class="s2">`</span><span class="p">${</span><span class="k">this</span><span class="p">.</span><span class="nx">currentFixtureName</span><span class="p">}</span><span class="s2"> - </span><span class="p">${</span><span class="nx">name</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
 
-    <span class="kd">let</span> <span class="nx">title</span> <span class="o">=</span> <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="nx">result</span><span class="p">}</span> <span class="nx">$</span><span class="p">{</span><span class="nx">name</span><span class="p">}</span><span class="err">`</span><span class="p">;</span>
+    <span class="kd">let</span> <span class="nx">title</span> <span class="o">=</span> <span class="s2">`</span><span class="p">${</span><span class="nx">result</span><span class="p">}</span><span class="s2"> </span><span class="p">${</span><span class="nx">name</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
 
     <span class="nx">title</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">wordWrap</span><span class="p">(</span><span class="nx">title</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">LINE_WIDTH</span><span class="p">);</span>
 
@@ -697,9 +680,7 @@ This allows you to write compact code like this.</p>
 <span class="c1">//=&gt;</span>
 <span class="c1">//=&gt;  passed Sample fixture - Clicking an array of</span>
 <span class="c1">//=&gt;  labels and checking their states</span>
-</code></pre></div>
-<h3>escapeHtml</h3>
-
+</code></pre></div><h3><a class="anchor" name="escapehtml"></a>escapeHtml <a class="permalink" href="#escapehtml">#</a></h3>
 <p>Encodes a string for use in HTML.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">escapeHtml (str) → String
 </code></pre></div>
@@ -725,9 +706,7 @@ This allows you to write compact code like this.</p>
     <span class="k">this</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">currentFixtureName</span><span class="p">);</span>
 <span class="p">}</span>
 <span class="c1">//=&gt;Tests for the &amp;quot;Example&amp;quot; page</span>
-</code></pre></div>
-<h3>formatError</h3>
-
+</code></pre></div><h3><a class="anchor" name="formaterror"></a>formatError <a class="permalink" href="#formaterror">#</a></h3>
 <p>Returns the formatted error message string for the specified error.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">formatError (err, prefix = '') → String
 </code></pre></div>
@@ -755,12 +734,12 @@ This allows you to write compact code like this.</p>
 <p>The following example demonstrates how to add numbering to the errors.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">reportTestDone</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">errs</span><span class="p">){</span>
     <span class="p">...</span>
-    <span class="kr">const</span> <span class="nx">hasErr</span> <span class="o">=</span> <span class="o">!!</span><span class="nx">errs</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+    <span class="kd">const</span> <span class="nx">hasErr</span> <span class="o">=</span> <span class="o">!!</span><span class="nx">errs</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
 
     <span class="k">if</span> <span class="p">(</span><span class="nx">hasErr</span><span class="p">)</span> <span class="p">{</span>
         <span class="nx">errs</span><span class="p">.</span><span class="nx">forEach</span><span class="p">((</span><span class="nx">err</span><span class="p">,</span> <span class="nx">idx</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
             <span class="k">this</span><span class="p">.</span><span class="nx">newline</span><span class="p">()</span>
-                <span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">formatError</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="nx">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">})</span> <span class="err">`</span><span class="p">));</span>
+                <span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">formatError</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="s2">`</span><span class="p">${</span><span class="nx">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">}</span><span class="s2">) `</span><span class="p">));</span>
         <span class="p">});</span>
     <span class="p">}</span>
 <span class="p">}</span>
@@ -770,11 +749,7 @@ This allows you to write compact code like this.</p>
 <span class="c1">//=&gt; 2) Firefox</span>
 <span class="c1">//=&gt;    Assertion failed at step "Step1"</span>
 <span class="c1">//=&gt;    ...</span>
-</code></pre></div>
-<h2>Coloring Helper</h2>
-
-<h3>chalk</h3>
-
+</code></pre></div><h2><a class="anchor" name="coloring-helper"></a>Coloring Helper <a class="permalink" href="#coloring-helper">#</a></h2><h3><a class="anchor" name="chalk"></a>chalk <a class="permalink" href="#chalk">#</a></h3>
 <p><a href="https://github.com/chalk/chalk">chalk</a> is used for ANSI-coloring of the text.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">chalk.&lt;style&gt;[.&lt;style&gt;...](string, [string...]) → this
 </code></pre></div>
@@ -782,19 +757,19 @@ This allows you to write compact code like this.</p>
 
 <p>The following example demonstrates how to color test results.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">reportTestDone</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">errs</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">hasErr</span> <span class="o">=</span> <span class="o">!!</span><span class="nx">errs</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
-    <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">hasErr</span> <span class="p">?</span> <span class="k">this</span><span class="p">.</span><span class="nx">chalk</span><span class="p">.</span><span class="nx">green</span><span class="p">(</span><span class="err">`</span><span class="nx">passed</span><span class="err">`</span><span class="p">)</span> <span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">chalk</span><span class="p">.</span><span class="nx">red</span><span class="p">(</span><span class="err">`</span><span class="nx">failed</span><span class="err">`</span><span class="p">);</span>
+    <span class="kd">const</span> <span class="nx">hasErr</span> <span class="o">=</span> <span class="o">!!</span><span class="nx">errs</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+    <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">hasErr</span> <span class="p">?</span> <span class="k">this</span><span class="p">.</span><span class="nx">chalk</span><span class="p">.</span><span class="nx">green</span><span class="p">(</span><span class="s2">`passed`</span><span class="p">)</span> <span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">chalk</span><span class="p">.</span><span class="nx">red</span><span class="p">(</span><span class="s2">`failed`</span><span class="p">);</span>
 
-    <span class="nx">name</span> <span class="o">=</span> <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">currentFixtureName</span><span class="p">}</span> <span class="o">-</span> <span class="nx">$</span><span class="p">{</span><span class="nx">name</span><span class="p">}</span><span class="err">`</span><span class="p">;</span>
+    <span class="nx">name</span> <span class="o">=</span> <span class="s2">`</span><span class="p">${</span><span class="k">this</span><span class="p">.</span><span class="nx">currentFixtureName</span><span class="p">}</span><span class="s2"> - </span><span class="p">${</span><span class="nx">name</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
 
-    <span class="kr">const</span> <span class="nx">title</span> <span class="o">=</span> <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="nx">result</span><span class="p">}</span> <span class="nx">$</span><span class="p">{</span><span class="nx">name</span><span class="p">}</span><span class="err">`</span><span class="p">;</span>
+    <span class="kd">const</span> <span class="nx">title</span> <span class="o">=</span> <span class="s2">`</span><span class="p">${</span><span class="nx">result</span><span class="p">}</span><span class="s2"> </span><span class="p">${</span><span class="nx">name</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
 
     <span class="k">this</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">title</span><span class="p">);</span>
 <span class="p">}</span>
 </code></pre></div>
 <p>To force disabling coloring in reports, set the reporter&#39;s <code>noColors</code> property in the <code>src/index.js</code> file to <code>false</code>.
 For example, you may need to disable coloring for machine-readable formats (JSON or xUnit) since the colored output is not required.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">export</span> <span class="k">default</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">export</span> <span class="k">default</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
     <span class="k">return</span> <span class="p">{</span>
         <span class="na">noColors</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
 
@@ -805,22 +780,18 @@ For example, you may need to disable coloring for machine-readable formats (JSON
         <span class="p">...</span>
     <span class="p">};</span>
 <span class="p">}</span>
-</code></pre></div>
-<h2>Date/Time Helper</h2>
-
-<h3>moment</h3>
-
+</code></pre></div><h2><a class="anchor" name="datetime-helper"></a>Date/Time Helper <a class="permalink" href="#datetime-helper">#</a></h2><h3><a class="anchor" name="moment"></a>moment <a class="permalink" href="#moment">#</a></h3>
 <p><a href="http://momentjs.com/">moment</a> is used to deal with dates and time.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">moment().format() → this
 </code></pre></div>
 <p><strong>Example</strong></p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">reportTaskDone</span> <span class="p">(</span><span class="nx">endTime</span><span class="p">,</span> <span class="nx">passed</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">durationMs</span>  <span class="o">=</span> <span class="nx">endTime</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">startTime</span><span class="p">;</span>
-    <span class="kr">const</span> <span class="nx">durationStr</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">moment</span>
+    <span class="kd">const</span> <span class="nx">durationMs</span>  <span class="o">=</span> <span class="nx">endTime</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">startTime</span><span class="p">;</span>
+    <span class="kd">const</span> <span class="nx">durationStr</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">moment</span>
                             <span class="p">.</span><span class="nx">duration</span><span class="p">(</span><span class="nx">durationMs</span><span class="p">)</span>
                             <span class="p">.</span><span class="nx">format</span><span class="p">(</span><span class="s1">'h[h] mm[m] ss[s]'</span><span class="p">);</span>
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="err">`</span><span class="nx">Duration</span><span class="err">:</span> <span class="nx">$</span><span class="p">{</span><span class="nx">durationStr</span><span class="p">}</span><span class="err">`</span><span class="p">)</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s2">`Duration: </span><span class="p">${</span><span class="nx">durationStr</span><span class="p">}</span><span class="s2">`</span><span class="p">)</span>
     <span class="p">...</span>
 <span class="p">}</span>
 </code></pre></div>

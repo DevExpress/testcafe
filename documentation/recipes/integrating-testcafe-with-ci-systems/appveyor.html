@@ -544,20 +544,12 @@
 		<div class="post-content">
 
 			<h1>Integrating TestCafe with AppVeyor</h1>
-
 <p>This topic describes how to integrate TestCafe tests into an <a href="https://www.appveyor.com/">AppVeyor</a> project&#39;s build process.</p>
-
-<h2>Prerequisites</h2>
-
+<h2><a class="anchor" name="prerequisites"></a>Prerequisites <a class="permalink" href="#prerequisites">#</a></h2>
 <p>In this tutorial, we will fetch tests from a GitHub repository: <a href="https://github.com/VasilyStrelyaev/ci-integration-demo">ci-integration-demo</a>. Fork this repository before we start.</p>
-
-<blockquote>
-<p>If you use a different version control system, make sure that AppVeyor supports your platform.
+<blockquote><div class="blockquote-content"><p>If you use a different version control system, make sure that AppVeyor supports your platform.
 The list of supported platforms is available after you click the <em>NEW PROJECT</em> button.</p>
-</blockquote>
-
-<h2>Step 1 - Create an AppVeyor Project</h2>
-
+</div></blockquote><h2><a class="anchor" name="step-1---create-an-appveyor-project"></a>Step 1 - Create an AppVeyor Project <a class="permalink" href="#step-1---create-an-appveyor-project">#</a></h2>
 <p>If you are using AppVeyor for the first time, you will begin with an empty account without any projects.</p>
 
 <p>To create a project, click <strong>NEW PROJECT</strong>.</p>
@@ -571,9 +563,7 @@ The list of supported platforms is available after you click the <em>NEW PROJECT
 <p><img src="../../../images/appveyor/add-project.png" alt="Adding a GitHub project"></p>
 
 <p>A new AppVeyor project is created.</p>
-
-<h2>Step 2 - Specify the Commands to Run Tests</h2>
-
+<h2><a class="anchor" name="step-2---specify-the-commands-to-run-tests"></a>Step 2 - Specify the Commands to Run Tests <a class="permalink" href="#step-2---specify-the-commands-to-run-tests">#</a></h2>
 <p>On the new project&#39;s page, open the <strong>SETTINGS</strong> menu.</p>
 
 <p><img src="../../../images/appveyor/open-settings.png" alt="Open the Settings Menu"></p>
@@ -587,7 +577,7 @@ The list of supported platforms is available after you click the <em>NEW PROJECT
 <p>Now configure AppVeyor to install TestCafe before running tests.</p>
 
 <p>To this end, go to the <strong>Environment</strong> settings category and find the <strong>Install script</strong> section. Select PowerShell (<strong>PS</strong>) and enter a command that installs TestCafe.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm install -g testcafe testcafe-reporter-xunit
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm <span class="nb">install</span> <span class="nt">-g</span> testcafe testcafe-reporter-xunit
 </code></pre></div>
 <p>This command installs the main <code>testcafe</code> module and a plugin used to output reports in the xUnit format.</p>
 
@@ -600,7 +590,7 @@ The list of supported platforms is available after you click the <em>NEW PROJECT
 <p><img src="../../../images/appveyor/choose-to-use-script.png" alt="Choose to use a script to run tests"></p>
 
 <p>Select <strong>PS</strong> as a shell type and enter the following code.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome:headless tests/<span class="k">**</span>/<span class="k">*</span> -r xunit:.<span class="se">\T</span>estsResults.xml
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome:headless tests/<span class="k">**</span>/<span class="k">*</span> <span class="nt">-r</span> xunit:.<span class="se">\T</span>estsResults.xml
 
 <span class="nv">$wc</span> <span class="o">=</span> New-Object <span class="s1">'System.Net.WebClient'</span>
 <span class="nv">$wc</span>.UploadFile<span class="o">(</span><span class="s2">"https://ci.appveyor.com/api/testresults/junit/</span><span class="k">$(</span><span class="nv">$env</span>:APPVEYOR_JOB_ID<span class="k">)</span><span class="s2">"</span>, <span class="o">(</span>Resolve-Path .<span class="se">\T</span>estsResults.xml<span class="o">))</span>
@@ -612,15 +602,11 @@ The list of supported platforms is available after you click the <em>NEW PROJECT
 <p><img src="../../../images/appveyor/enter-commands.png" alt="Enter test run commands"></p>
 
 <p>Click <strong>Save</strong>.</p>
-
-<h2>Step 3 - Trigger the Build</h2>
-
+<h2><a class="anchor" name="step-3---trigger-the-build"></a>Step 3 - Trigger the Build <a class="permalink" href="#step-3---trigger-the-build">#</a></h2>
 <p>Return to the project page and click <strong>NEW BUILD</strong> to trigger the AppVeyor build.</p>
 
 <p><img src="../../../images/appveyor/trigger-build.png" alt="Start a new build"></p>
-
-<h2>Step 4 - View Test Results</h2>
-
+<h2><a class="anchor" name="step-4---view-test-results"></a>Step 4 - View Test Results <a class="permalink" href="#step-4---view-test-results">#</a></h2>
 <p>When testing is done, you can go back to <strong>LATEST BUILD</strong> and click the <strong>TESTS</strong> button to view the results.</p>
 
 <p><img src="../../../images/appveyor/test-results.png" alt="Viewing Test Results"></p>

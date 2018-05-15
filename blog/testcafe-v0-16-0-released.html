@@ -259,15 +259,10 @@
         </div>
         <article class="post-content">
             <h1>TestCafe v0.16.0 Released</h1>
-
 <p>TypeScript support, seamless testing in headless Chrome and device emulator, and numerous bug fixes.</p>
 
 <!--more-->
-
-<h2>Enhancements</h2>
-
-<h3>⚙ TypeScript support (<a href="https://github.com/DevExpress/testcafe/issues/408">#408</a>)</h3>
-
+<h2><a class="anchor" name="enhancements"></a>Enhancements <a class="permalink" href="#enhancements">#</a></h2><h3><a class="anchor" name="typescript-support-408"></a>⚙ TypeScript support (<a href="https://github.com/DevExpress/testcafe/issues/408">#408</a>) <a class="permalink" href="#typescript-support-408">#</a></h3>
 <p>In this release, we have added the capability to write tests in <a href="https://www.typescriptlang.org/">TypeScript</a>. By using TypeScript to write your TestCafe tests, you get the advantages of strongly-typed languages such as: rich coding assistance, painless scalability, check-as-you-type code verification, and much more.</p>
 
 <p>TestCafe bundles TypeScript declaration file with the npm package, so you have no need to install any additional packages.</p>
@@ -275,14 +270,12 @@
 <p>Just create a <code>.ts</code> file with the</p>
 
 <!-- Use `js` instead of `ts` for this code block for proper code highlighting -->
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 </code></pre></div>
 <p>and write your test.</p>
 
 <p>For details, see <a href="https://devexpress.github.io/testcafe/documentation/test-api/typescript-support.html">TypeScript Support</a></p>
-
-<h3>⚙ Support running in Chrome in headless mode and in device emulator (<a href="https://github.com/DevExpress/testcafe/issues/1417">#1417</a>)</h3>
-
+<h3><a class="anchor" name="support-running-in-chrome-in-headless-mode-and-in-device-emulator-1417"></a>⚙ Support running in Chrome in headless mode and in device emulator (<a href="https://github.com/DevExpress/testcafe/issues/1417">#1417</a>) <a class="permalink" href="#support-running-in-chrome-in-headless-mode-and-in-device-emulator-1417">#</a></h3>
 <p>Now TestCafe allows you to run your tests in Google Chrome in headless and device emulation modes.</p>
 
 <p><a href="https://developers.google.com/web/updates/2017/04/headless-chrome">Headless mode</a> allows you to run tests in Chrome without any visible UI shell. To run tests in headless mode, use the <code>:headless</code> postfix:</p>
@@ -292,19 +285,13 @@
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"chrome:emulation:device=iphone 6"</span> tests/sample-fixture.js
 </code></pre></div>
 <p>For details, see <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browsers/using-chrome-device-emulation.html">Using Chrome-specific Features</a>.</p>
-
-<h3>⚙ Support HTML5 Drag and Drop (<a href="https://github.com/DevExpress/testcafe/issues/897">#897</a>)</h3>
-
+<h3><a class="anchor" name="support-html5-drag-and-drop-897"></a>⚙ Support HTML5 Drag and Drop (<a href="https://github.com/DevExpress/testcafe/issues/897">#897</a>) <a class="permalink" href="#support-html5-drag-and-drop-897">#</a></h3>
 <p>Starting with this release, TestCafe supports HTML5 drag and drop, so you can test elements with the <code>draggable</code> <a href="http://w3c.github.io/html/editing.html#the-draggable-attribute">attribute</a>.</p>
-
-<h3>⚙ Fixed URL for opening remote browsers (<a href="https://github.com/DevExpress/testcafe/issues/1476">#1476</a>)</h3>
-
+<h3><a class="anchor" name="fixed-url-for-opening-remote-browsers-1476"></a>⚙ Fixed URL for opening remote browsers (<a href="https://github.com/DevExpress/testcafe/issues/1476">#1476</a>) <a class="permalink" href="#fixed-url-for-opening-remote-browsers-1476">#</a></h3>
 <p>We have simplified the format of links that TestCafe generates when you <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browsers/browser-support.html#browsers-on-remote-devices">run tests on remote browsers</a>.</p>
 
 <p>Now, you have no need to type a unique link for each test run, all the links became constant. So, it is easier now to run tests on a remote device repeatedly: you can run them by navigating a link from your browser history.</p>
-
-<h2>Bug Fixes</h2>
-
+<h2><a class="anchor" name="bug-fixes"></a>Bug Fixes <a class="permalink" href="#bug-fixes">#</a></h2>
 <ul>
 <li>No TestCafe UI on screenshots created during testing (<a href="https://github.com/DevExpress/testcafe/issues/1357">#1357</a>)</li>
 <li><code>mouseenter</code> and <code>mouseleave</code> events are not triggered during cursor moving (<a href="https://github.com/DevExpress/testcafe/issues/1426">#1426</a>)</li>

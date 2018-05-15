@@ -259,15 +259,10 @@
         </div>
         <article class="post-content">
             <h1>TestCafe v0.14.0 Released</h1>
-
 <p>Authentication via user roles, client-side debugging and numerous bug fixes.</p>
 
 <!--more-->
-
-<h2>Enhancements</h2>
-
-<h3>⚙ Authentication via user roles (<a href="https://github.com/DevExpress/testcafe/issues/243">#243</a>)</h3>
-
+<h2><a class="anchor" name="enhancements"></a>Enhancements <a class="permalink" href="#enhancements">#</a></h2><h3><a class="anchor" name="authentication-via-user-roles-243"></a>⚙ Authentication via user roles (<a href="https://github.com/DevExpress/testcafe/issues/243">#243</a>) <a class="permalink" href="#authentication-via-user-roles-243">#</a></h3>
 <p>Many test scenarios involve the activity of more than one user. TestCafe addresses these scenarios by providing a convenient way
 to isolate authentication test actions and apply them easily whenever you need to switch the user account.</p>
 
@@ -276,25 +271,25 @@ to isolate authentication test actions and apply them easily whenever you need t
 <p>Create roles via the <code>Role</code> constructor. You can keep them in a separate helper file.</p>
 
 <p><em>helper.js</em></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Role</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Role</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="kr">export</span> <span class="kd">var</span> <span class="nx">regularAccUser</span> <span class="o">=</span> <span class="nx">Role</span><span class="p">(</span><span class="s1">'http://example.com/login'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
+<span class="k">export</span> <span class="kd">var</span> <span class="nx">regularAccUser</span> <span class="o">=</span> <span class="nx">Role</span><span class="p">(</span><span class="s1">'http://example.com/login'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="s1">'#login'</span><span class="p">,</span> <span class="s1">'TestUser'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="s1">'#password'</span><span class="p">,</span> <span class="s1">'testpass'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#sign-in'</span><span class="p">);</span>
 <span class="p">});</span>
 
-<span class="kr">export</span> <span class="kd">var</span> <span class="nx">facebookAccUser</span> <span class="o">=</span> <span class="nx">Role</span><span class="p">(</span><span class="s1">'http://example.com/login'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
+<span class="k">export</span> <span class="kd">var</span> <span class="nx">facebookAccUser</span> <span class="o">=</span> <span class="nx">Role</span><span class="p">(</span><span class="s1">'http://example.com/login'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#sign-in-with-facebook'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="s1">'#email'</span><span class="p">,</span> <span class="s1">'testuser@mycompany.com'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="s1">'#pass'</span><span class="p">,</span> <span class="s1">'testpass'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#submit'</span><span class="p">);</span>
 <span class="p">});</span>
 
-<span class="kr">export</span> <span class="kd">var</span> <span class="nx">admin</span> <span class="o">=</span> <span class="nx">Role</span><span class="p">(</span><span class="s1">'http://example.com/login'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
+<span class="k">export</span> <span class="kd">var</span> <span class="nx">admin</span> <span class="o">=</span> <span class="nx">Role</span><span class="p">(</span><span class="s1">'http://example.com/login'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="s1">'#login'</span><span class="p">,</span> <span class="s1">'Admin'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="s1">'#password'</span><span class="p">,</span> <span class="s1">'adminpass'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#sign-in'</span><span class="p">);</span>
@@ -303,17 +298,17 @@ to isolate authentication test actions and apply them easily whenever you need t
 <p>In test code, use the <code>t.useRole</code> method to switch between roles.</p>
 
 <p><em>test.js</em></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">regularAccUser</span><span class="p">,</span> <span class="nx">admin</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'./helper'</span><span class="p">;</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">regularAccUser</span><span class="p">,</span> <span class="nx">admin</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'./helper'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">entry</span>        <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#entry'</span><span class="p">);</span>
-<span class="kr">const</span> <span class="nx">removeButton</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#remove-entry'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">entry</span>        <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#entry'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">removeButton</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#remove-entry'</span><span class="p">);</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">Fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//example.com`;</span>
+<span class="nx">fixture</span> <span class="s2">`My Fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://example.com`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'test that involves two users'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'test that involves two users'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">useRole</span><span class="p">(</span><span class="nx">regularAccUser</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">entry</span><span class="p">.</span><span class="nx">exists</span><span class="p">).</span><span class="nx">ok</span><span class="p">()</span>
         <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">removeButton</span><span class="p">.</span><span class="nx">visible</span><span class="p">).</span><span class="nx">notOk</span><span class="p">()</span>
@@ -324,30 +319,26 @@ to isolate authentication test actions and apply them easily whenever you need t
 <span class="p">});</span>
 </code></pre></div>
 <p>To learn more, see <a href="https://devexpress.github.io/testcafe/documentation/test-api/authentication/user-roles.html">User Roles</a>.</p>
-
-<h3>⚙ BrowserStack support</h3>
-
+<h3><a class="anchor" name="browserstack-support"></a>⚙ BrowserStack support <a class="permalink" href="#browserstack-support">#</a></h3>
 <p>We have released the <a href="https://www.browserstack.com/">BrowserStack</a> browser provider <a href="https://github.com/DevExpress/testcafe-browser-provider-browserstack">plugin</a>.</p>
 
 <p>Install this plugin from <code>npm</code>.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm install testcafe-browser-provider-browserstack
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm <span class="nb">install </span>testcafe-browser-provider-browserstack
 </code></pre></div>
 <p>And save the BrowserStack username and access key to environment variables <code>BROWSERSTACK_USERNAME</code> and <code>BROWSERSTACK_ACCESS_KEY</code>.</p>
 
 <p>Now you can run tests on any virtual machine available on BrowserStack.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"browserstack:Chrome@53.0:Windows 10"</span> <span class="s2">"path/to/test/file.js"</span>
-</code></pre></div>
-<h3>⚙ Client-side debugging (<a href="https://github.com/DevExpress/testcafe/issues/918">#918</a>)</h3>
-
+</code></pre></div><h3><a class="anchor" name="client-side-debugging-918"></a>⚙ Client-side debugging (<a href="https://github.com/DevExpress/testcafe/issues/918">#918</a>) <a class="permalink" href="#client-side-debugging-918">#</a></h3>
 <p>We have added a new <code>t.debug</code> method to debug test behavior on the client.</p>
 
 <p>When test execution reaches <code>t.debug</code>, it pauses so that you can open browser&#39;s developer tools
 and check the web page state, DOM elements location, their CSS styles.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">https</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example`;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`https://devexpress.github.io/testcafe/example`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">debug</span><span class="p">()</span>
         <span class="p">.</span><span class="nx">setNativeDialogHandler</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#populate'</span><span class="p">)</span>
@@ -361,53 +352,45 @@ and check the web page state, DOM elements location, their CSS styles.</p>
 <p>TestCafe logs points in code where the debugger stopped.</p>
 
 <p><img src="../images/debugging/log-debugger.png" alt="Logging Debugger Breakpoints"></p>
-
-<h3>⚙ Testing local webpages (<a href="https://github.com/DevExpress/testcafe/issues/1286">#1286</a>)</h3>
-
+<h3><a class="anchor" name="testing-local-webpages-1286"></a>⚙ Testing local webpages (<a href="https://github.com/DevExpress/testcafe/issues/1286">#1286</a>) <a class="permalink" href="#testing-local-webpages-1286">#</a></h3>
 <p>You can now run tests against local webpages. To do this, specify a URL with the <code>file://</code> scheme or a relative path when calling the <a href="https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#specifying-the-start-webpage">page</a> function.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">MyFixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">file</span><span class="err">:</span><span class="c1">///user/my-website/index.html`;</span>
-</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">MyFixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="p">..</span><span class="o">/</span><span class="nx">my</span><span class="o">-</span><span class="nx">project</span><span class="o">/</span><span class="nx">index</span><span class="p">.</span><span class="nx">html</span><span class="err">`</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`MyFixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`file:///user/my-website/index.html`</span><span class="p">;</span>
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`MyFixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`../my-project/index.html`</span><span class="p">;</span>
 </code></pre></div>
 <p>You can also navigate to local pages with the <a href="https://devexpress.github.io/testcafe/documentation/test-api/actions/navigate.html">t.navigateTo</a> action.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//www.example.com/`;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://www.example.com/`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Navigate to local pages'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Navigate to local pages'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">navigateTo</span><span class="p">(</span><span class="s1">'file:///user/my-website/index.html'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">navigateTo</span><span class="p">(</span><span class="s1">'../my-project/index.html'</span><span class="p">);</span>
 <span class="p">});</span>
-</code></pre></div>
-<h3>⚙ Adding custom methods to the selector (<a href="https://github.com/DevExpress/testcafe/issues/1212">#1212</a>)</h3>
-
+</code></pre></div><h3><a class="anchor" name="adding-custom-methods-to-the-selector-1212"></a>⚙ Adding custom methods to the selector (<a href="https://github.com/DevExpress/testcafe/issues/1212">#1212</a>) <a class="permalink" href="#adding-custom-methods-to-the-selector-1212">#</a></h3>
 <p>You can now extend selectors with custom methods executed on the client. Use the <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#custom-methods">addCustomMethods</a> method to provide custom methods.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">myTable</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'.my-table'</span><span class="p">).</span><span class="nx">addCustomMethods</span><span class="p">({</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">myTable</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'.my-table'</span><span class="p">).</span><span class="nx">addCustomMethods</span><span class="p">({</span>
     <span class="na">getCellText</span><span class="p">:</span> <span class="p">(</span><span class="nx">table</span><span class="p">,</span> <span class="nx">rowIndex</span><span class="p">,</span> <span class="nx">columnIndex</span><span class="p">)</span> <span class="o">=&gt;</span>
         <span class="nx">table</span><span class="p">.</span><span class="nx">rows</span><span class="p">[</span><span class="nx">rowIndex</span><span class="p">].</span><span class="nx">cells</span><span class="p">[</span><span class="nx">columnIndex</span><span class="p">].</span><span class="nx">innerText</span>
 <span class="p">});</span>
 
-<span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">myTable</span><span class="p">.</span><span class="nx">getCellText</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)).</span><span class="nx">contains</span><span class="p">(</span><span class="s1">'hey!'</span><span class="p">);</span>
+<span class="kr">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">myTable</span><span class="p">.</span><span class="nx">getCellText</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)).</span><span class="nx">contains</span><span class="p">(</span><span class="s1">'hey!'</span><span class="p">);</span>
 </code></pre></div>
 <p>Use this feature to build selectors that reflect the specifics of your web app.</p>
-
-<h3>⚙ Removing the native dialog handler (<a href="https://github.com/DevExpress/testcafe/issues/243">#243</a>)</h3>
-
+<h3><a class="anchor" name="removing-the-native-dialog-handler-243"></a>⚙ Removing the native dialog handler (<a href="https://github.com/DevExpress/testcafe/issues/243">#243</a>) <a class="permalink" href="#removing-the-native-dialog-handler-243">#</a></h3>
 <p>We have added the capability to remove a <a href="https://devexpress.github.io/testcafe/documentation/test-api/handling-native-dialogs.html">native dialog handler</a> by passing <code>null</code> to the <code>t.setNativeDialogHandler</code> method.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">https</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example`;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`https://devexpress.github.io/testcafe/example`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">setNativeDialogHandler</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#populate'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">setNativeDialogHandler</span><span class="p">(</span><span class="kc">null</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">);</span>
 <span class="p">});</span>
-</code></pre></div>
-<h2>Bug Fixes</h2>
-
+</code></pre></div><h2><a class="anchor" name="bug-fixes"></a>Bug Fixes <a class="permalink" href="#bug-fixes">#</a></h2>
 <ul>
 <li>Fixed a bug that led to an incorrect callstack in test run report (<a href="https://github.com/DevExpress/testcafe/issues/1226">#1226</a>)</li>
 <li>Cursor is now hidden on screenshots created using the <code>t.takeScreenshot</code> action (<a href="https://github.com/DevExpress/testcafe/issues/1245">#1245</a>)</li>

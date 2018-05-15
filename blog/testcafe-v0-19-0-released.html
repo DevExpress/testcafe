@@ -259,31 +259,24 @@
         </div>
         <article class="post-content">
             <h1>TestCafe v0.19.0 Released - Rapid Test Development Tool, Screenshots of Page Elements, etc</h1>
-
 <p>Welcome TestCafe Live, a tool for rapid test development. We have also added a couple of new features like taking screenshots of individual page elements and filtering visible and hidden elements in the selector chain.</p>
 
 <!--more-->
-
-<h2>TestCafe Live: See instant feedback when working on tests (<a href="https://github.com/DevExpress/testcafe/issues/1624">#1624</a>)</h2>
-
+<h2><a class="anchor" name="testcafe-live-see-instant-feedback-when-working-on-tests-1624"></a>TestCafe Live: See instant feedback when working on tests (<a href="https://github.com/DevExpress/testcafe/issues/1624">#1624</a>) <a class="permalink" href="#testcafe-live-see-instant-feedback-when-working-on-tests-1624">#</a></h2>
 <p>TestCafe Live provides a service that keeps the TestCafe process and browsers opened the whole time you are working on tests. Changes you make in code immediately restart the tests. That is, TestCafe Live allows you to see test results instantly.</p>
 
 <p><a href="https://www.youtube.com/watch?v=RWQtB6Xv01Q"><img src="https://raw.githubusercontent.com/DevExpress/testcafe/master/media/changelog/testcafe-live-video.png" alt="TestCafe Live Video"></a></p>
 
 <p>For more information, see <a href="https://github.com/DevExpress/testcafe-live">the TestCafe Live repository</a>.</p>
-
-<h2>Enhancements</h2>
-
-<h3>⚙ Taking Screenshots of Individual Page Elements (<a href="https://github.com/DevExpress/testcafe/issues/1496">#1496</a>)</h3>
-
+<h2><a class="anchor" name="enhancements"></a>Enhancements <a class="permalink" href="#enhancements">#</a></h2><h3><a class="anchor" name="taking-screenshots-of-individual-page-elements-1496"></a>⚙ Taking Screenshots of Individual Page Elements (<a href="https://github.com/DevExpress/testcafe/issues/1496">#1496</a>) <a class="permalink" href="#taking-screenshots-of-individual-page-elements-1496">#</a></h3>
 <p>We have added the <a href="https://devexpress.github.io/testcafe/documentation/test-api/actions/take-screenshot.html#take-a-screenshot-of-a-page-element">t.takeElementScreenshot</a> action that allows you to take a screenshot of an individual page element.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`;</span>
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://devexpress.github.io/testcafe/example/`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Take a screenshot of a fieldset'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Take a screenshot of a fieldset'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#reusing-js-code'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#continuous-integration-embedding'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">takeElementScreenshot</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="s1">'fieldset'</span><span class="p">).</span><span class="nx">nth</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="s1">'my-fixture/important-features.png'</span><span class="p">);</span>
@@ -292,51 +285,43 @@
 <p>This action provides additional customization that allows you to position the center of the screenshot or crop it. For more information, see the <a href="https://devexpress.github.io/testcafe/documentation/test-api/actions/take-screenshot.html#take-a-screenshot-of-a-page-element">documentation</a>.</p>
 
 <p>Note that if the screenshot directory is not specified with the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#screenshots">runner.screenshots</a> API method or the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-s-path---screenshots-path">screenshots</a> command line option, the <code>t.takeElementScreenshot</code> action will be ignored.</p>
-
-<h3>⚙ Filtering Elements by Their Visibility (<a href="https://github.com/DevExpress/testcafe/issues/1018">#1018</a>)</h3>
-
+<h3><a class="anchor" name="filtering-elements-by-their-visibility-1018"></a>⚙ Filtering Elements by Their Visibility (<a href="https://github.com/DevExpress/testcafe/issues/1018">#1018</a>) <a class="permalink" href="#filtering-elements-by-their-visibility-1018">#</a></h3>
 <p>You can now filter the selector&#39;s matching set to leave only visible or hidden elements. To do this, use the <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#filtervisible">filterVisible</a> and <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#filterhidden">filterHidden</a> methods.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`;</span>
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://devexpress.github.io/testcafe/example/`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Filter visible and hidden elements'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">inputs</span>        <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'input'</span><span class="p">);</span>
-    <span class="kr">const</span> <span class="nx">hiddenInput</span>   <span class="o">=</span> <span class="nx">inputs</span><span class="p">.</span><span class="nx">filterHidden</span><span class="p">();</span>
-    <span class="kr">const</span> <span class="nx">visibleInputs</span> <span class="o">=</span> <span class="nx">inputs</span><span class="p">.</span><span class="nx">filterVisible</span><span class="p">();</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Filter visible and hidden elements'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">inputs</span>        <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'input'</span><span class="p">);</span>
+    <span class="kd">const</span> <span class="nx">hiddenInput</span>   <span class="o">=</span> <span class="nx">inputs</span><span class="p">.</span><span class="nx">filterHidden</span><span class="p">();</span>
+    <span class="kd">const</span> <span class="nx">visibleInputs</span> <span class="o">=</span> <span class="nx">inputs</span><span class="p">.</span><span class="nx">filterVisible</span><span class="p">();</span>
 
-    <span class="nx">await</span> <span class="nx">t</span>
+    <span class="kr">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">hiddenInput</span><span class="p">.</span><span class="nx">count</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">visibleInputs</span><span class="p">.</span><span class="nx">count</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="mi">11</span><span class="p">);</span>
 <span class="p">});</span>
-</code></pre></div>
-<h3>⚙ Finding Elements by the Exact Matching Text (<a href="https://github.com/DevExpress/testcafe/issues/1292">#1292</a>)</h3>
-
+</code></pre></div><h3><a class="anchor" name="finding-elements-by-the-exact-matching-text-1292"></a>⚙ Finding Elements by the Exact Matching Text (<a href="https://github.com/DevExpress/testcafe/issues/1292">#1292</a>) <a class="permalink" href="#finding-elements-by-the-exact-matching-text-1292">#</a></h3>
 <p>The current selector&#39;s <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#withtext">withText</a> method looks for elements whose text content <em>contains</em> the specified string. With this release, we have added the <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#withexacttext">withExactText</a> method that performs search by <em>strict match</em>.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`;</span>
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://devexpress.github.io/testcafe/example/`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Search by exact text'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">labels</span>       <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'label'</span><span class="p">);</span>
-    <span class="kr">const</span> <span class="nx">winLabel</span>     <span class="o">=</span> <span class="nx">labels</span><span class="p">.</span><span class="nx">withExactText</span><span class="p">(</span><span class="s1">'Windows'</span><span class="p">);</span>
-    <span class="kr">const</span> <span class="nx">reusingLabel</span> <span class="o">=</span> <span class="nx">labels</span><span class="p">.</span><span class="nx">withText</span><span class="p">(</span><span class="s1">'JavaScript'</span><span class="p">);</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Search by exact text'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">labels</span>       <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'label'</span><span class="p">);</span>
+    <span class="kd">const</span> <span class="nx">winLabel</span>     <span class="o">=</span> <span class="nx">labels</span><span class="p">.</span><span class="nx">withExactText</span><span class="p">(</span><span class="s1">'Windows'</span><span class="p">);</span>
+    <span class="kd">const</span> <span class="nx">reusingLabel</span> <span class="o">=</span> <span class="nx">labels</span><span class="p">.</span><span class="nx">withText</span><span class="p">(</span><span class="s1">'JavaScript'</span><span class="p">);</span>
 
-    <span class="nx">await</span> <span class="nx">t</span>
+    <span class="kr">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">winLabel</span><span class="p">.</span><span class="nx">exists</span><span class="p">).</span><span class="nx">ok</span><span class="p">()</span>
         <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">reusingLabel</span><span class="p">.</span><span class="nx">exists</span><span class="p">).</span><span class="nx">ok</span><span class="p">();</span>
 <span class="p">});</span>
-</code></pre></div>
-<h3>⚙ Using Decorators in TypeScript Code (<a href="https://github.com/DevExpress/testcafe/issues/2117">#2117</a>) by <a href="https://github.com/pietrovich">@pietrovich</a></h3>
-
+</code></pre></div><h3><a class="anchor" name="using-decorators-in-typescript-code-2117-by-pietrovich"></a>⚙ Using Decorators in TypeScript Code (<a href="https://github.com/DevExpress/testcafe/issues/2117">#2117</a>) by <a href="https://github.com/pietrovich">@pietrovich</a> <a class="permalink" href="#using-decorators-in-typescript-code-2117-by-pietrovich">#</a></h3>
 <p>TestCafe now allows you to use <a href="https://www.typescriptlang.org/docs/handbook/decorators.html">decorators</a> when <a href="https://devexpress.github.io/testcafe/documentation/test-api/typescript-support.html">writing tests in TypeScript</a>.</p>
 
 <p>Note that decorators are still an experimental feature in TypeScript.</p>
-
-<h2>Bug Fixes</h2>
-
+<h2><a class="anchor" name="bug-fixes"></a>Bug Fixes <a class="permalink" href="#bug-fixes">#</a></h2>
 <ul>
 <li>TestCafe can now scroll a webpage when <code>body</code> has a scroll bar (<a href="https://github.com/DevExpress/testcafe/issues/1940">#1940</a>)</li>
 <li>Firefox no longer hangs with a dialog asking to set it as the default browser (<a href="https://github.com/DevExpress/testcafe/issues/1926">#1926</a>)</li>

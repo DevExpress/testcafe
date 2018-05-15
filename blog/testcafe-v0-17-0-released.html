@@ -259,34 +259,29 @@
         </div>
         <article class="post-content">
             <h1>TestCafe v0.17.0 Released: Testing Electron Apps and Concurrent Test Execution</h1>
-
 <p>With this release, we have prepared a bunch of new features. Two big news are the Electron browser provider and concurrent test execution.</p>
 
 <p>Read on to learn more.</p>
 
 <!--more-->
-
-<h2>Enhancements</h2>
-
-<h3>⚙ Testing Electron applications (<a href="https://github.com/DevExpress/testcafe-browser-provider-electron">testcafe-browser-provider-electron</a>)</h3>
-
+<h2><a class="anchor" name="enhancements"></a>Enhancements <a class="permalink" href="#enhancements">#</a></h2><h3><a class="anchor" name="testing-electron-applications-testcafe-browser-provider-electron"></a>⚙ Testing Electron applications (<a href="https://github.com/DevExpress/testcafe-browser-provider-electron">testcafe-browser-provider-electron</a>) <a class="permalink" href="#testing-electron-applications-testcafe-browser-provider-electron">#</a></h3>
 <p>We have created a browser provider that allows you to test Electron applications with TestCafe.</p>
 
 <p>Getting it to work is simple. First, install the browser provider plugin from npm.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm install testcafe-browser-provider-electron
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm <span class="nb">install </span>testcafe-browser-provider-electron
 </code></pre></div>
 <p>We assume that you have a JavaScript application that you wish to run in Electron.</p>
 
 <p>Create a <code>.testcafe-electron-rc</code> file that contains configurations for the Electron plugin.
 The only required setting here is <code>mainWindowUrl</code>. It&#39;s a URL (or path) to the main window page relative to the application directory.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"mainWindowUrl"</span><span class="p">:</span><span class="w"> </span><span class="s2">"./index.html"</span><span class="w">
+    </span><span class="s2">"mainWindowUrl"</span><span class="p">:</span><span class="w"> </span><span class="s2">"./index.html"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>Place this file into the application root directory.</p>
 
 <p>At the next step, install the Electron module.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm install electron@latest
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm <span class="nb">install </span>electron@latest
 </code></pre></div>
 <p>Now you are ready to run tests. Specify the <code>electron</code> browser name and the application path
 at the test launch.</p>
@@ -298,9 +293,7 @@ at the test launch.</p>
     <span class="p">.</span><span class="nx">run</span><span class="p">();</span>
 </code></pre></div>
 <p>To learn more about the Electron browser provider, see the plugin <a href="https://github.com/DevExpress/testcafe-browser-provider-electron">readme</a>.</p>
-
-<h3>⚙ Concurrent test execution (<a href="https://github.com/DevExpress/testcafe/issues/1165">#1165</a>)</h3>
-
+<h3><a class="anchor" name="concurrent-test-execution-1165"></a>⚙ Concurrent test execution (<a href="https://github.com/DevExpress/testcafe/issues/1165">#1165</a>) <a class="permalink" href="#concurrent-test-execution-1165">#</a></h3>
 <p>We&#39;ve added concurrent test launch. This makes a test batch complete faster.</p>
 
 <p>By default TestCafe launches one instance of each specified browser. Tests run one by one in each of them.</p>
@@ -317,9 +310,7 @@ Specify the number of instances to invoke for each browser.</p>
     <span class="p">.</span><span class="nx">run</span><span class="p">();</span>
 </code></pre></div>
 <p>For details, see <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/concurrent-test-execution.html">Concurrent Test Execution</a>.</p>
-
-<h3>⚙ Output test run reports to Slack and TeamCity (<a href="https://github.com/Shafied/testcafe-reporter-slack">testcafe-reporter-slack</a>, <a href="https://github.com/Soluto/testcafe-reporter-teamcity">testcafe-reporter-teamcity</a>)</h3>
-
+<h3><a class="anchor" name="output-test-run-reports-to-slack-and-teamcity-testcafe-reporter-slack-testcafe-reporter-teamcity"></a>⚙ Output test run reports to Slack and TeamCity (<a href="https://github.com/Shafied/testcafe-reporter-slack">testcafe-reporter-slack</a>, <a href="https://github.com/Soluto/testcafe-reporter-teamcity">testcafe-reporter-teamcity</a>) <a class="permalink" href="#output-test-run-reports-to-slack-and-teamcity-testcafe-reporter-slack-testcafe-reporter-teamcity">#</a></h3>
 <p>Thanks to <a href="https://github.com/Shafied">@Shafied</a> and <a href="https://github.com/nirsky">@nirsky</a>, TestCafe ecosystem has gained two new reporter plugins.</p>
 
 <p>The Slack reporter allows you to create a chat bot that posts test run results to a Slack channel.</p>
@@ -329,20 +320,14 @@ Specify the number of instances to invoke for each browser.</p>
 <p>The TeamCity reporter enables you to display reports inside the TeamCity UI.</p>
 
 <p><img src="../images/testcafe-reporter-teamcity.png" alt="TeamCity Reporter"></p>
-
-<h3>⚙ Further improvements in automatic waiting mechanism (<a href="https://github.com/DevExpress/testcafe/issues/1521">#1521</a>)</h3>
-
+<h3><a class="anchor" name="further-improvements-in-automatic-waiting-mechanism-1521"></a>⚙ Further improvements in automatic waiting mechanism (<a href="https://github.com/DevExpress/testcafe/issues/1521">#1521</a>) <a class="permalink" href="#further-improvements-in-automatic-waiting-mechanism-1521">#</a></h3>
 <p>We have enhanced the waiting mechanism behavior in certain scenarios where you still used to need <code>wait</code> actions.
 Now automatic waiting is much smarter and chances that you need to wait manually are diminished.</p>
-
-<h3>⚙ User roles preserve the local storage (<a href="https://github.com/DevExpress/testcafe/issues/1454">#1454</a>)</h3>
-
+<h3><a class="anchor" name="user-roles-preserve-the-local-storage-1454"></a>⚙ User roles preserve the local storage (<a href="https://github.com/DevExpress/testcafe/issues/1454">#1454</a>) <a class="permalink" href="#user-roles-preserve-the-local-storage-1454">#</a></h3>
 <p>TestCafe now saves the local storage state when switching between roles. You get the same local storage content you left when you switch back.</p>
 
 <p>This is useful for testing websites that perform authentication via local storage instead of cookies.</p>
-
-<h2>Bug Fixes</h2>
-
+<h2><a class="anchor" name="bug-fixes"></a>Bug Fixes <a class="permalink" href="#bug-fixes">#</a></h2>
 <ul>
 <li>Selector&#39;s <code>withAttribute</code> method supports search by strict match (<a href="https://github.com/DevExpress/testcafe/issues/1548">#1548</a>)</li>
 <li>Description for the <code>path</code> parameter of the <code>t.takeScreenshot</code> action has been corrected (<a href="https://github.com/DevExpress/testcafe/issues/1515">#1515</a>)</li>

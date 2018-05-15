@@ -266,67 +266,7 @@
             <div class="post-extract">
                 
                 <p>
-
 <p>Intercepting HTTP requests, specifying resources accessed by bypassing a proxy server, specifying testing metadata, deprecated passing a regular promise to assertions.</p>
-
-<h2>Request Hooks: Intercepting HTTP requests (<a href="https://github.com/DevExpress/testcafe/issues/1341">#1341</a>)</h2>
-
-<p>TestCafe now allows you to record HTTP request data or mock responses. You can also create a custom HTTP request hook to emulate authentications like  <strong>Kerberos</strong> or <strong>Client Certificate Authentication</strong>.</p>
-
-<p>See <a href="docs/articles/documentation/test-api/intercepting-and-mocking-http-requests/README.html">Intercepting HTTP Requests</a> for more information.</p>
-
-<h2>Enhancements</h2>
-
-<h3>⚙ Specifying resources accessed by bypassing a proxy server (<a href="https://github.com/DevExpress/testcafe/issues/1791">#1791</a>)</h3>
-
-<p>TestCafe now allows you to bypass the proxy server when accessing specific resources.</p>
-
-<p>To specify resources that require direct access, use the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--proxy-bypass-rules">--proxy-bypass</a> flag in the command line or the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html">useProxy</a> API method&#39;s parameters.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests/<span class="k">**</span>/<span class="k">*</span>.js --proxy proxy.corp.mycompany.com --proxy-bypass localhost:8080,internal-resource.corp.mycompany.com
-</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">useProxy</span><span class="p">(</span><span class="s1">'172.0.10.10:8080'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'localhost:8080'</span><span class="p">,</span> <span class="s1">'internal-resource.corp.mycompany.com'</span><span class="p">]);</span>
-</code></pre></div>
-<h3>⚙ Specifying testing metadata (<a href="https://github.com/DevExpress/testcafe/issues/2242">#2242</a>)</h3>
-
-<p>TestCafe allows you to specify additional information for tests in the form of key-value metadata and use it in reports.</p>
-
-<p>You can define metadata for a fixture or a test using the <a href="https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#specifying-testing-metadata">meta</a> method:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">Fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">meta</span><span class="p">(</span><span class="s1">'fixtureID'</span><span class="p">,</span> <span class="s1">'f-0001'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">meta</span><span class="p">({</span> <span class="na">author</span><span class="p">:</span> <span class="s1">'John'</span><span class="p">,</span> <span class="na">creationDate</span><span class="p">:</span> <span class="s1">'05/03/2018'</span> <span class="p">});</span>
-</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">test</span>
-    <span class="p">.</span><span class="nx">meta</span><span class="p">(</span><span class="s1">'testID'</span><span class="p">,</span> <span class="s1">'t-0005'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">meta</span><span class="p">({</span> <span class="na">severity</span><span class="p">:</span> <span class="s1">'critical'</span><span class="p">,</span> <span class="na">testedAPIVersion</span><span class="p">:</span> <span class="s1">'1.0'</span> <span class="p">})</span>
-    <span class="p">(</span><span class="s1">'MyTest'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/* ... */</span><span class="p">});</span>
-</code></pre></div>
-<p>To include testing metadata to reports, use the <a href="https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html">custom reporter methods</a>.</p>
-
-<h3>⚙ Passing a regular promise to <code>t.expect</code> is deprecated now (<a href="https://github.com/DevExpress/testcafe/issues/2207">#2207</a>)</h3>
-
-<p>TestCafe now throws an error if you pass a regular promise to the assertion&#39;s <code>expect</code> method.</p>
-
-<p>If you need to assert a regular promise, set the <a href="docs/articles/documentation/test-api/assertions/README.html#allowunawaitedpromise">allowUnawaitedPromise</a> option to <code>true</code>.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">doSomethingAsync</span><span class="p">()).</span><span class="nx">ok</span><span class="p">(</span><span class="s1">'check that a promise is returned'</span><span class="p">,</span> <span class="p">{</span> <span class="na">allowUnawaitedPromise</span><span class="p">:</span> <span class="kc">true</span> <span class="p">});</span>
-</code></pre></div>
-<h2>Bug Fixes</h2>
-
-<ul>
-<li>The session recovery bubble in Firefox is disabled (<a href="https://github.com/DevExpress/testcafe/pull/2341">#2341</a>)</li>
-<li>TestCafe works properly if a <code>body</code> element has the <code>pointer-events: none;</code> css style rule (<a href="https://github.com/DevExpress/testcafe/issues/2251">#2251</a>)</li>
-<li>Resizing Chrome in the emulation mode works correctly (<a href="https://github.com/DevExpress/testcafe/issues/2154">#2154</a>)</li>
-<li>The location port is used for service messages (<a href="https://github.com/DevExpress/testcafe/pull/2308">#2308</a>)</li>
-<li>A browser instance shuts down correctly on Unix systems (<a href="https://github.com/DevExpress/testcafe/issues/2226">#2226</a>)</li>
-<li>An <code>Integrity</code> attribute is removed from <code>script</code> and <code>link</code> tags (<a href="https://github.com/DevExpress/testcafe-hammerhead/issues/235">testcafe-hammerhead/#235</a>)</li>
-<li>The <code>event.preventDefault()</code> method call changes the <code>event.defaultPrevented</code> property value (<a href="https://github.com/DevExpress/testcafe-hammerhead/issues/1588">testcafe-hammerhead/#1588</a>)</li>
-<li>It is possible to set the <code>meta</code> element&#39;s <code>content</code> attribute (<a href="https://github.com/DevExpress/testcafe-hammerhead/issues/1586">testcafe-hammerhead/#1586</a>)</li>
-<li>TestCafe no longer overrides attributes used in a non-standard way with <code>null</code> (<a href="https://github.com/DevExpress/testcafe-hammerhead/pull/1583">testcafe-hammerhead/#1583</a>)</li>
-<li>The <code>Change</code> event fires correctly if the <code>target.value</code> changes (<a href="https://github.com/DevExpress/testcafe/issues/2319">#2319</a>)</li>
-<li><code>MouseEvent.screenX</code> and <code>MouseEvent.screenY</code> are added to the emulated events (<a href="https://github.com/DevExpress/testcafe/issues/2325">#2325</a>)</li>
-<li>Cookies on <code>localhost</code> are processed correctly (<a href="https://github.com/DevExpress/testcafe-hammerhead/issues/1491">testcafe-hammerhead/#1491</a>)</li>
-<li>Setting the <code>//</code> url for an image works correctly (<a href="https://github.com/DevExpress/testcafe/issues/2312">#2312</a>)</li>
-<li><code>shadowUI</code> internal elements are no longer processed (<a href="https://github.com/DevExpress/testcafe/issues/2281">#2281</a>)</li>
-<li><code>typeInput</code> event is raised correctly (<a href="https://github.com/DevExpress/testcafe/issues/1956">#1956</a>)</li>
-<li>Selecting text in contenteditable elements works properly (<a href="https://github.com/DevExpress/testcafe/issues/2301">#2301</a>)</li>
-</ul>
 </p>
                 <p class="read-more">
                     <a href="/testcafe/blog/testcafe-v0-20-0-released.html">Read More</a>
@@ -342,7 +282,6 @@
             <div class="post-extract">
                 
                 <p>
-
 <p>Welcome TestCafe Live, a tool for rapid test development. We have also added a couple of new features like taking screenshots of individual page elements and filtering visible and hidden elements in the selector chain.</p>
 </p>
                 <p class="read-more">
@@ -359,7 +298,6 @@
             <div class="post-extract">
                 
                 <p>
-
 <p>With this release, we have prepared a bunch of useful things. We have put finishing touches on Angular selectors to let you address page elements on Angular websites using the component tree. We have also made it possible to output reports to multiple channels (like console + file). Read on to learn about more things we have for you.</p>
 </p>
                 <p class="read-more">
@@ -376,7 +314,6 @@
             <div class="post-extract">
                 
                 <p>
-
 <p>This early release supports headless mode in Firefox v56.0 which was launched on September 28th.</p>
 </p>
                 <p class="read-more">
@@ -393,7 +330,6 @@
             <div class="post-extract">
                 
                 <p>
-
 <p>With this release, we have prepared a bunch of new features. Two big news are the Electron browser provider and concurrent test execution.</p>
 
 <p>Read on to learn more.</p>
@@ -412,7 +348,6 @@
             <div class="post-extract">
                 
                 <p>
-
 <p>TypeScript support, seamless testing in headless Chrome and device emulator, and numerous bug fixes.</p>
 </p>
                 <p class="read-more">
@@ -429,7 +364,6 @@
             <div class="post-extract">
                 
                 <p>
-
 <p>Plugins for React and Vue.js, TestCafe Docker image, support for Internet access proxies and lots of bug fixes.</p>
 </p>
                 <p class="read-more">
@@ -446,7 +380,6 @@
             <div class="post-extract">
                 
                 <p>
-
 <p>Authentication via user roles, client-side debugging and numerous bug fixes.</p>
 </p>
                 <p class="read-more">
@@ -463,7 +396,6 @@
             <div class="post-extract">
                 
                 <p>
-
 <p>IDE plugins, fixture hooks, speed setting for actions, a couple of API enhancements and lots of bug fixes.</p>
 </p>
                 <p class="read-more">
@@ -480,7 +412,6 @@
             <div class="post-extract">
                 
                 <p>
-
 <p>HTTP authentication support, a CI-friendly way to start and stop the tested app and lots of API enhancements.</p>
 </p>
                 <p class="read-more">
@@ -497,7 +428,6 @@
             <div class="post-extract">
                 
                 <p>
-
 <p>Redesigned selector system, built-in assertions and lots of bug fixes! 🚀🚀🚀</p>
 </p>
                 <p class="read-more">
@@ -514,7 +444,6 @@
             <div class="post-extract">
                 
                 <p>
-
 <p>First of all, we would like to thank everyone who&#39;s reading this for your interest and support for TestCafe.
 And we especially appreciate those of you who reached us to say thank you, offer help or share feedback.
 Let&#39;s keep building a better testing framework together!</p>
@@ -535,7 +464,6 @@ Let&#39;s keep building a better testing framework together!</p>
             <div class="post-extract">
                 
                 <p>
-
 <p>We are happy to announce that DevExpress has released the core library of TestCafe – our automated in-browser
 testing tool – as an open-source framework for node.js. Now everyone in the open-source community can benefit
 from the technologies we developed for the commercial version.</p>

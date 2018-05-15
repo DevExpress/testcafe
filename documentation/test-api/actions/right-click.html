@@ -885,7 +885,6 @@
 		<div class="post-content">
 
 			<h1>Right Click</h1>
-
 <p>Right-clicks a webpage element.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">t.rightClick( selector [, options] )
 </code></pre></div>
@@ -899,32 +898,29 @@
 <tr>
 <td><code>selector</code></td>
 <td>Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise</td>
-<td>Identifies the webpage element being right-clicked. See <a href="README.md#selecting-target-elements">Selecting Target Elements</a>.</td>
+<td>Identifies the webpage element being right-clicked. See <a href=".#selecting-target-elements">Selecting Target Elements</a>.</td>
 </tr>
 <tr>
 <td><code>options</code>&#160;<em>(optional)</em></td>
 <td>Object</td>
-<td>A set of options that provide additional parameters for the action. See <a href="action-options.md#click-action-options">Click Action Options</a>.</td>
+<td>A set of options that provide additional parameters for the action. See <a href="action-options.html#click-action-options">Click Action Options</a>.</td>
 </tr>
 </tbody></table>
 
 <p>The following example shows how to use the <code>t.rightClick</code> action to invoke a grid&#39;s popup menu.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//www.example.com/`;</span>
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://www.example.com/`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Popup Menu'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Popup Menu'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">rightClick</span><span class="p">(</span><span class="s1">'#cell-1-1'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="s1">'#cell-popup-menu'</span><span class="p">).</span><span class="nx">exists</span><span class="p">).</span><span class="nx">notOk</span><span class="p">();</span>
 <span class="p">});</span>
-</code></pre></div>
-<blockquote>
-<p>The <code>t.rightClick</code> action will not invoke integrated browser context menus, native editor menus, etc.
+</code></pre></div><blockquote><div class="blockquote-content"><p>The <code>t.rightClick</code> action will not invoke integrated browser context menus, native editor menus, etc.
 Use it to perform right clicks that are processed by webpage elements, not the browser.</p>
-</blockquote>
-
+</div></blockquote>
 
 		</div>
 		<div class="widget-container hidden">

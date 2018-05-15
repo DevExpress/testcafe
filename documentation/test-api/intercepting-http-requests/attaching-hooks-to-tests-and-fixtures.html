@@ -885,7 +885,6 @@
 		<div class="post-content">
 
 			<h1>Attaching Hooks to Tests and Fixtures</h1>
-
 <p>To attach a hook to a test or fixture, use the <code>fixture.requestHooks</code> and <code>test.requestHooks</code> methods. A hook attached to a fixture handles requests from all tests in the fixture.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">fixture.requestHooks(...hook)
 test.requestHooks(...hook)
@@ -909,21 +908,21 @@ t.removeRequestHooks(...hooks)
 </tbody></table>
 
 <p>The <code>fixture.requestHooks</code>, <code>test.requestHooks</code> <code>t.addRequestHooks</code> and <code>t.removeRequestHooks</code> methods use the rest operator which allows you to pass multiple hooks as parameters or arrays of hooks.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">RequestLogger</span><span class="p">,</span> <span class="nx">RequestMock</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">RequestLogger</span><span class="p">,</span> <span class="nx">RequestMock</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">logger</span> <span class="o">=</span> <span class="nx">RequestLogger</span><span class="p">(</span><span class="s1">'http://example.com'</span><span class="p">);</span>
-<span class="kr">const</span> <span class="nx">mock</span>   <span class="o">=</span> <span class="nx">RequestMock</span><span class="p">()</span>
+<span class="kd">const</span> <span class="nx">logger</span> <span class="o">=</span> <span class="nx">RequestLogger</span><span class="p">(</span><span class="s1">'http://example.com'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">mock</span>   <span class="o">=</span> <span class="nx">RequestMock</span><span class="p">()</span>
     <span class="p">.</span><span class="nx">onRequestTo</span><span class="p">(</span><span class="s1">'http://external-service.com/api/'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">respond</span><span class="p">({</span> <span class="na">data</span><span class="p">:</span> <span class="s1">'value'</span> <span class="p">});</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
     <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="s1">'http://example.com'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">requestHooks</span><span class="p">(</span><span class="nx">logger</span><span class="p">);</span>
 
 <span class="nx">test</span>
     <span class="p">.</span><span class="nx">requestHooks</span><span class="p">(</span><span class="nx">mock</span><span class="p">)</span>
-    <span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
+    <span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span>
          <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#send-logged-request'</span><span class="p">)</span>
          <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">logger</span><span class="p">.</span><span class="nx">count</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">)).</span><span class="nx">eql</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
          <span class="p">.</span><span class="nx">removeRequestHooks</span><span class="p">(</span><span class="nx">logger</span><span class="p">)</span>

@@ -471,8 +471,7 @@
 		<div class="post-content">
 
 			<h1>Reporter Plugin</h1>
-
-<p>TestCafe has a number of <a href="../../using-testcafe/common-concepts/reporters.md">built-in reporters</a> to generate test reports in different formats.
+<p>TestCafe has a number of <a href="../../using-testcafe/common-concepts/reporters.html">built-in reporters</a> to generate test reports in different formats.
 You can also create a <strong>custom reporter</strong> that will output information in your own format and style.
 For this purpose, you can use the <a href="https://github.com/DevExpress/generator-testcafe-reporter">TestCafe reporter generator</a>.
 The generator will scaffold out a reporter plugin, so that you only need to write a few lines of code.</p>
@@ -488,37 +487,30 @@ The generator will scaffold out a reporter plugin, so that you only need to writ
 <li><a href="#using-the-reporter-development-version">Using the Reporter Development Version</a></li>
 <li><a href="#publishing-the-reporter-to-npm">Publishing the Reporter to npm</a></li>
 </ul>
-
-<h2>Generating a Reporter Project</h2>
-
+<h2><a class="anchor" name="generating-a-reporter-project"></a>Generating a Reporter Project <a class="permalink" href="#generating-a-reporter-project">#</a></h2>
 <p>First, install <a href="http://yeoman.io">Yeoman</a> and <code>generator-testcafe-reporter</code> using <a href="https://www.npmjs.com/">npm</a>.</p>
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">npm install -g yo
-npm install -g generator-testcafe-reporter
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">npm <span class="nb">install</span> <span class="nt">-g</span> yo
+npm <span class="nb">install</span> <span class="nt">-g</span> generator-testcafe-reporter
 </code></pre></div>
 <p>Create a new directory where the generator should place your scaffolded project files and go into it.</p>
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">mkdir my-reporter
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">mkdir </span>my-reporter
 <span class="nb">cd </span>my-reporter
-</code></pre></div>
-<blockquote>
-<p>It is recommended that you name the directory as you would name your reporter project. When you run the generator,
+</code></pre></div><blockquote><div class="blockquote-content"><p>It is recommended that you name the directory as you would name your reporter project. When you run the generator,
 it will automatically suggest the reporter name that matches the reporter directory name.</p>
 
 <p>The generator will also automatically create the reporter package name that consists of two parts - the <code>testcafe-reporter-</code> prefix and the name of the reporter itself, for example, <code>testcafe-reporter-my-reporter</code>.</p>
 
 <p><strong>Important:</strong> If you name the reporter package manually, its name must begin with the <code>testcafe-reporter-</code> prefix. Otherwise, TestCafe will be unable to recognize the plugin.</p>
-</blockquote>
-
+</div></blockquote>
 <p>Then, run the reporter generator to create a new project.</p>
 <div class="highlight"><pre><code class="language-bash" data-lang="bash">yo testcafe-reporter
 </code></pre></div>
 <p>The generator will ask you a few questions about the reporter.
 Then Yeoman will automatically scaffold out your reporter, install the required dependencies, and pull in several useful Gulp tasks for your workflow.</p>
-
-<h2>Implementing the Reporter</h2>
-
+<h2><a class="anchor" name="implementing-the-reporter"></a>Implementing the Reporter <a class="permalink" href="#implementing-the-reporter">#</a></h2>
 <p>Once the reporter has been scaffolded out, go to the reporter directory and open the <code>src/index.js</code> file.</p>
 
-<p>You would need to implement four <a href="reporter-methods.md">reporter methods</a>.</p>
+<p>You would need to implement four <a href="reporter-methods.html">reporter methods</a>.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">reportTaskStart</span> <span class="p">(</span><span class="cm">/* startTime, userAgents, testCount */</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">'Not implemented'</span><span class="p">);</span>
 <span class="p">},</span>
@@ -538,11 +530,11 @@ Then Yeoman will automatically scaffold out your reporter, install the required 
 <p>These methods should output the desired information at certain moments during the test run.
 All the required data is provided for these methods through their parameters.</p>
 
-<p>To output this information, use <a href="helpers.md">helper methods and libraries</a>.
+<p>To output this information, use <a href="helpers.html">helper methods and libraries</a>.
 TestCafe will mix in the helper methods to the reporter, so that you can access the helper methods by using <code>this</code>.</p>
 
 <p>In the <code>src/index.js</code> file, you can also enable or disable the coloring of the reporter output by using the <code>noColors</code> property.
-To color the output, use the <a href="helpers.md#chalk">chalk</a> methods.</p>
+To color the output, use the <a href="helpers.html#chalk">chalk</a> methods.</p>
 
 <p><strong>Example</strong></p>
 
@@ -554,7 +546,7 @@ and the overall duration of the tests.</p>
     <span class="k">this</span><span class="p">.</span><span class="nx">startTime</span> <span class="o">=</span> <span class="nx">startTime</span><span class="p">;</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">testCount</span> <span class="o">=</span> <span class="nx">testCount</span><span class="p">;</span>
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="err">`</span><span class="nx">Running</span> <span class="nx">tests</span> <span class="k">in</span><span class="err">:</span> <span class="nx">$</span><span class="p">{</span><span class="nx">userAgents</span><span class="p">}</span><span class="err">`</span><span class="p">)</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s2">`Running tests in: </span><span class="p">${</span><span class="nx">userAgents</span><span class="p">}</span><span class="s2">`</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">newline</span><span class="p">()</span>
         <span class="p">.</span><span class="nx">newline</span><span class="p">();</span>
 <span class="p">},</span>
@@ -564,27 +556,27 @@ and the overall duration of the tests.</p>
 <span class="p">},</span>
 
 <span class="nx">reportTestDone</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">errs</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">hasErr</span> <span class="o">=</span> <span class="o">!!</span><span class="nx">errs</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
-    <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">hasErr</span> <span class="p">?</span> <span class="err">`</span><span class="nx">passed</span><span class="err">`</span> <span class="p">:</span> <span class="err">`</span><span class="nx">failed</span><span class="err">`</span><span class="p">;</span>
+    <span class="kd">const</span> <span class="nx">hasErr</span> <span class="o">=</span> <span class="o">!!</span><span class="nx">errs</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+    <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">hasErr</span> <span class="p">?</span> <span class="s2">`passed`</span> <span class="p">:</span> <span class="s2">`failed`</span><span class="p">;</span>
 
-    <span class="nx">name</span> <span class="o">=</span> <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">currentFixtureName</span><span class="p">}</span> <span class="o">-</span> <span class="nx">$</span><span class="p">{</span><span class="nx">name</span><span class="p">}</span><span class="err">`</span><span class="p">;</span>
+    <span class="nx">name</span> <span class="o">=</span> <span class="s2">`</span><span class="p">${</span><span class="k">this</span><span class="p">.</span><span class="nx">currentFixtureName</span><span class="p">}</span><span class="s2"> - </span><span class="p">${</span><span class="nx">name</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
 
-    <span class="kr">const</span> <span class="nx">title</span> <span class="o">=</span> <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="nx">result</span><span class="p">}</span> <span class="nx">$</span><span class="p">{</span><span class="nx">name</span><span class="p">}</span><span class="err">`</span><span class="p">;</span>
+    <span class="kd">const</span> <span class="nx">title</span> <span class="o">=</span> <span class="s2">`</span><span class="p">${</span><span class="nx">result</span><span class="p">}</span><span class="s2"> </span><span class="p">${</span><span class="nx">name</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
 
     <span class="k">this</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">title</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">newline</span><span class="p">();</span>
 <span class="p">},</span>
 
 <span class="nx">reportTaskDone</span> <span class="p">(</span><span class="nx">endTime</span><span class="p">,</span> <span class="nx">passed</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">durationMs</span>  <span class="o">=</span> <span class="nx">endTime</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">startTime</span><span class="p">;</span>
-    <span class="kr">const</span> <span class="nx">durationStr</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">moment</span>
+    <span class="kd">const</span> <span class="nx">durationMs</span>  <span class="o">=</span> <span class="nx">endTime</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">startTime</span><span class="p">;</span>
+    <span class="kd">const</span> <span class="nx">durationStr</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">moment</span>
                             <span class="p">.</span><span class="nx">duration</span><span class="p">(</span><span class="nx">durationMs</span><span class="p">)</span>
                             <span class="p">.</span><span class="nx">format</span><span class="p">(</span><span class="s1">'h[h] mm[m] ss[s]'</span><span class="p">);</span>
     <span class="kd">let</span> <span class="nx">footer</span> <span class="o">=</span> <span class="nx">passed</span> <span class="o">===</span> <span class="k">this</span><span class="p">.</span><span class="nx">testCount</span> <span class="p">?</span>
-                 <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">testCount</span><span class="p">}</span> <span class="nx">passed</span><span class="err">`</span> <span class="p">:</span>
-                 <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">testCount</span> <span class="o">-</span> <span class="nx">passed</span><span class="p">}</span><span class="sr">/${this.testCount} failed`</span><span class="err">;
-</span>
-    <span class="nx">footer</span> <span class="o">+=</span> <span class="err">`</span> <span class="p">(</span><span class="nx">Duration</span><span class="err">:</span> <span class="nx">$</span><span class="p">{</span><span class="nx">durationStr</span><span class="p">})</span><span class="err">`</span><span class="p">;</span>
+                 <span class="s2">`</span><span class="p">${</span><span class="k">this</span><span class="p">.</span><span class="nx">testCount</span><span class="p">}</span><span class="s2"> passed`</span> <span class="p">:</span>
+                 <span class="s2">`</span><span class="p">${</span><span class="k">this</span><span class="p">.</span><span class="nx">testCount</span> <span class="o">-</span> <span class="nx">passed</span><span class="p">}</span><span class="s2">/</span><span class="p">${</span><span class="k">this</span><span class="p">.</span><span class="nx">testCount</span><span class="p">}</span><span class="s2"> failed`</span><span class="p">;</span>
+
+    <span class="nx">footer</span> <span class="o">+=</span> <span class="s2">` (Duration: </span><span class="p">${</span><span class="nx">durationStr</span><span class="p">}</span><span class="s2">)`</span><span class="p">;</span>
 
     <span class="k">this</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">footer</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">newline</span><span class="p">();</span>
@@ -600,14 +592,10 @@ failed Second fixture - First test in second fixture
 failed Second fixture - Second test in second fixture
 failed Third fixture - First test in third fixture
 2/6 failed (Duration: 15m 25s)
-</code></pre></div>
-<h2>Building the Reporter</h2>
-
+</code></pre></div><h2><a class="anchor" name="building-the-reporter"></a>Building the Reporter <a class="permalink" href="#building-the-reporter">#</a></h2>
 <p>You can build the reporter project by using the <code>build</code> Gulp task.</p>
 <div class="highlight"><pre><code class="language-bash" data-lang="bash">gulp build
-</code></pre></div>
-<h2>Testing the Reporter</h2>
-
+</code></pre></div><h2><a class="anchor" name="testing-the-reporter"></a>Testing the Reporter <a class="permalink" href="#testing-the-reporter">#</a></h2>
 <p>To make sure your reporter operates well, you can use the <code>test</code> Gulp task.
 To get this task to work, provide reference reports in your format.
 During testing, reports generated by the reporter will be compared with these reference reports.</p>
@@ -633,35 +621,29 @@ Put this JSON file into <code>/test/data/</code> and name it <code>report-with-c
 
 <p>After the reference reports are ready, you can use the <code>test</code> task.</p>
 <div class="highlight"><pre><code class="language-bash" data-lang="bash">gulp <span class="nb">test</span>
-</code></pre></div>
-<h2>Previewing the Report</h2>
-
+</code></pre></div><h2><a class="anchor" name="previewing-the-report"></a>Previewing the Report <a class="permalink" href="#previewing-the-report">#</a></h2>
 <p>You can preview the report built by your reporter using the <code>preview</code> Gulp task.</p>
 <div class="highlight"><pre><code class="language-bash" data-lang="bash">gulp preview
-</code></pre></div>
-<h2>Using the Reporter Development Version</h2>
-
+</code></pre></div><h2><a class="anchor" name="using-the-reporter-development-version"></a>Using the Reporter Development Version <a class="permalink" href="#using-the-reporter-development-version">#</a></h2>
 <p>If you are still developing the reporter, but need to test it within TestCafe, there is no need to publish the reporter package to npm.
 You can link the reporter to TestCafe by using the <a href="https://docs.npmjs.com/cli/link">npm link</a> command.
 This allows you to work on the reporter project and test it iteratively without having to re-publish the project every time you make a change to it.</p>
 
 <p>To link the reporter package, navigate to the reporter directory and run <code>npm link</code>:</p>
 <div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">cd </span>my-reporter
-npm link
+npm <span class="nb">link</span>
 </code></pre></div>
 <p>After that, TestCafe will use the reporter version you are currently developing.</p>
 
-<p>For information on how to specify a reporter in tests, see <a href="../../using-testcafe/common-concepts/reporters.md#using-the-reporters">Using Reporters</a>.</p>
-
-<h2>Publishing the Reporter to npm</h2>
-
+<p>For information on how to specify a reporter in tests, see <a href="../../using-testcafe/common-concepts/reporters.html#using-the-reporters">Using Reporters</a>.</p>
+<h2><a class="anchor" name="publishing-the-reporter-to-npm"></a>Publishing the Reporter to npm <a class="permalink" href="#publishing-the-reporter-to-npm">#</a></h2>
 <p>When you finish developing the reporter, you can publish it to npm by running the <code>publish-please</code> npm script.
 This script builds the package, tests the reporter and then uses <a href="https://github.com/inikulin/publish-please">publish-please</a> to publish it to npm.
 That is why using the <code>publish-please</code> script instead of <code>npm publish</code> is what is recommended.</p>
 <div class="highlight"><pre><code class="language-bash" data-lang="bash">npm run publish-please
 </code></pre></div>
-<p>After that, you can install the reporter plugin as you would <a href="../README.md#installing-plugins">install any other plugin</a> and use it in the same manner
-as you would use <a href="../../using-testcafe/common-concepts/reporters.md#using-the-reporters">built-in reporters</a>.</p>
+<p>After that, you can install the reporter plugin as you would <a href="../#installing-plugins">install any other plugin</a> and use it in the same manner
+as you would use <a href="../../using-testcafe/common-concepts/reporters.html#using-the-reporters">built-in reporters</a>.</p>
 
 
 		</div>

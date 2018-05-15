@@ -885,7 +885,6 @@
 		<div class="post-content">
 
 			<h1>Logging HTTP Requests</h1>
-
 <p>You can use the <code>RequestLogger</code> to log HTTP requests sent during test execution. This object stores all requests sent and responses received while the test is running.</p>
 
 <ul>
@@ -894,9 +893,7 @@
 <li><a href="#logger-properties">Logger Properties</a></li>
 <li><a href="#the-request-object">The Request Object</a></li>
 </ul>
-
-<h2>Creating a Logger</h2>
-
+<h2><a class="anchor" name="creating-a-logger"></a>Creating a Logger <a class="permalink" href="#creating-a-logger">#</a></h2>
 <p>Use the <code>RequestLogger</code> constructor to create a request logger.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">RequestLogger([filter] [, options])
 </code></pre></div>
@@ -911,7 +908,7 @@
 <tr>
 <td><code>filter</code>&#160;<em>(optional)</em></td>
 <td>String &#124; RegExp &#124; Object &#124; Predicate</td>
-<td>Specifies which requests the logger should track. See <a href="specifying-which-requests-are-handled-by-the-hook.md">Specifying Which Requests are Handled by the Hook</a>.</td>
+<td>Specifies which requests the logger should track. See <a href="specifying-which-requests-are-handled-by-the-hook.html">Specifying Which Requests are Handled by the Hook</a>.</td>
 <td>All requests are tracked</td>
 </tr>
 <tr>
@@ -969,15 +966,15 @@
 <td><code>false</code></td>
 </tr>
 </tbody></table>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">RequestLogger</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">RequestLogger</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">simpleLogger</span> <span class="o">=</span> <span class="nx">RequestLogger</span><span class="p">(</span><span class="s1">'http://example.com'</span><span class="p">);</span>
-<span class="kr">const</span> <span class="nx">headerLogger</span> <span class="o">=</span> <span class="nx">RequestLogger</span><span class="p">(</span><span class="sr">/testcafe/</span><span class="p">,</span> <span class="p">{</span>
+<span class="kd">const</span> <span class="nx">simpleLogger</span> <span class="o">=</span> <span class="nx">RequestLogger</span><span class="p">(</span><span class="s1">'http://example.com'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">headerLogger</span> <span class="o">=</span> <span class="nx">RequestLogger</span><span class="p">(</span><span class="sr">/testcafe/</span><span class="p">,</span> <span class="p">{</span>
     <span class="na">logRequestHeaders</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
     <span class="na">logResponseHeaders</span><span class="p">:</span> <span class="kc">true</span>
 <span class="p">});</span>
 </code></pre></div>
-<p>To enable the logger to track the requests, <a href="attaching-hooks-to-tests-and-fixtures.md">attach it to a test or fixture</a>.</p>
+<p>To enable the logger to track the requests, <a href="attaching-hooks-to-tests-and-fixtures.html">attach it to a test or fixture</a>.</p>
 
 <p>The <code>RequestLogger</code> stores the following parameters by default:</p>
 
@@ -989,9 +986,7 @@
 </ul>
 
 <p>Use the logger&#39;s API to access the data it stores.</p>
-
-<h2>Logger Methods</h2>
-
+<h2><a class="anchor" name="logger-methods"></a>Logger Methods <a class="permalink" href="#logger-methods">#</a></h2>
 <table><thead>
 <tr>
 <th>Method</th>
@@ -1018,10 +1013,8 @@
 
 <p>The <code>predicate</code> functions take a single parameter - the <code>Request</code> object.</p>
 
-<p>If you use the <code>contains(predicate)</code> or <code>count(predicate)</code> methods in assertions, TestCafe uses the <a href="../assertions/README.md#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a>.</p>
-
-<h2>Logger Properties</h2>
-
+<p>If you use the <code>contains(predicate)</code> or <code>count(predicate)</code> methods in assertions, TestCafe uses the <a href="../assertions/#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a>.</p>
+<h2><a class="anchor" name="logger-properties"></a>Logger Properties <a class="permalink" href="#logger-properties">#</a></h2>
 <table><thead>
 <tr>
 <th>Property</th>
@@ -1035,9 +1028,7 @@
 <td>Returns an array of logged requests.</td>
 </tr>
 </tbody></table>
-
-<h2>The Request Object</h2>
-
+<h2><a class="anchor" name="the-request-object"></a>The Request Object <a class="permalink" href="#the-request-object">#</a></h2>
 <p>This object represents a request-response pair.</p>
 
 <table><thead>
@@ -1088,17 +1079,17 @@
 <td>The response body. A <a href="https://nodejs.org/api/buffer.html">Buffer</a> or string depending on the <code>stringifyResponseBody</code> option. Logged if the <code>logResponseBody</code> option is set to <code>true</code>.</td>
 </tr>
 </tbody></table>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">RequestLogger</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">RequestLogger</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">logger</span> <span class="o">=</span> <span class="nx">RequestLogger</span><span class="p">(</span><span class="s1">'http://api.example.com'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">logger</span> <span class="o">=</span> <span class="nx">RequestLogger</span><span class="p">(</span><span class="s1">'http://api.example.com'</span><span class="p">);</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">test</span><span class="err">`</span>
+<span class="nx">fixture</span> <span class="s2">`test`</span>
     <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="s1">'http://example.com'</span><span class="p">);</span>
 
 <span class="nx">test</span>
     <span class="p">.</span><span class="nx">requestHooks</span><span class="p">(</span><span class="nx">logger</span><span class="p">)</span>
-    <span class="p">(</span><span class="s1">'test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="kr">const</span> <span class="nx">logRecord</span> <span class="o">=</span> <span class="nx">logger</span><span class="p">.</span><span class="nx">requests</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+    <span class="p">(</span><span class="s1">'test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">logRecord</span> <span class="o">=</span> <span class="nx">logger</span><span class="p">.</span><span class="nx">requests</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
 
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">logRecord</span><span class="p">.</span><span class="nx">userAgent</span><span class="p">);</span>           <span class="c1">// Chrome 63.0.3239 / Windows 8.1.0.0</span>
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">logRecord</span><span class="p">.</span><span class="nx">request</span><span class="p">.</span><span class="nx">url</span><span class="p">);</span>         <span class="c1">// http://api.example.com</span>
@@ -1107,17 +1098,17 @@
     <span class="p">});</span>
 </code></pre></div>
 <p><strong>Example</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">RequestLogger</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">RequestLogger</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">logger</span> <span class="o">=</span> <span class="nx">RequestLogger</span><span class="p">(</span><span class="s1">'http://api.example.com'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">logger</span> <span class="o">=</span> <span class="nx">RequestLogger</span><span class="p">(</span><span class="s1">'http://api.example.com'</span><span class="p">);</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">test</span><span class="err">`</span>
+<span class="nx">fixture</span> <span class="s2">`test`</span>
     <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="s1">'http://example.com'</span><span class="p">);</span>
 
 <span class="nx">test</span>
     <span class="p">.</span><span class="nx">requestHooks</span><span class="p">(</span><span class="nx">logger</span><span class="p">)</span>
-    <span class="p">(</span><span class="s1">'test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">logger</span><span class="p">.</span><span class="nx">contains</span><span class="p">(</span><span class="nx">record</span> <span class="o">=&gt;</span> <span class="nx">record</span><span class="p">.</span><span class="nx">response</span><span class="p">.</span><span class="nx">statusCode</span> <span class="o">===</span> <span class="mi">200</span><span class="p">)).</span><span class="nx">ok</span><span class="p">();</span>
+    <span class="p">(</span><span class="s1">'test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="kr">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">logger</span><span class="p">.</span><span class="nx">contains</span><span class="p">(</span><span class="nx">record</span> <span class="o">=&gt;</span> <span class="nx">record</span><span class="p">.</span><span class="nx">response</span><span class="p">.</span><span class="nx">statusCode</span> <span class="o">===</span> <span class="mi">200</span><span class="p">)).</span><span class="nx">ok</span><span class="p">();</span>
     <span class="p">});</span>
 </code></pre></div>
 

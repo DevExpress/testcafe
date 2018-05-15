@@ -885,11 +885,10 @@
 		<div class="post-content">
 
 			<h1>Assertions</h1>
-
 <p>You can use <em>assertions</em> to check if the tested webpage&#39;s state matches the expected state.</p>
 
 <p>TestCafe provides a comprehensive set of assertions that are based on the Behavior Driven Development style (BDD-style).
-See <a href="assertion-api.md">Assertion API</a> for more information.</p>
+See <a href="assertion-api.html">Assertion API</a> for more information.</p>
 
 <p>This topic consists of the following sections:</p>
 
@@ -903,45 +902,38 @@ See <a href="assertion-api.md">Assertion API</a> for more information.</p>
 <li><a href="#optionsallowunawaitedpromise">options.allowUnawaitedPromise</a></li>
 </ul></li>
 </ul>
-
-<h2>Assertion Structure</h2>
-
+<h2><a class="anchor" name="assertion-structure"></a>Assertion Structure <a class="permalink" href="#assertion-structure">#</a></h2>
 <p>To construct assertions, use the <a href="../test-code-structure.html#test-controller">test controller</a>&#39;s <code>expect</code> method.</p>
 
-<p>This method accepts the actual value. You can pass a value, a <a href="../selecting-page-elements/selectors/using-selectors.md#define-assertion-actual-value">Selector&#39;s DOM node state property</a>
-or a <a href="../obtaining-data-from-the-client/README.md">client function</a> promise.
+<p>This method accepts the actual value. You can pass a value, a <a href="../selecting-page-elements/selectors/using-selectors.html#define-assertion-actual-value">Selector&#39;s DOM node state property</a>
+or a <a href="../obtaining-data-from-the-client/">client function</a> promise.
 TestCafe automatically waits for node state properties to obtain a value and for client functions to execute.
 See <a href="#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a> for details.</p>
-
-<blockquote>
-<p>You cannot pass a regular promise to the <code>expect</code> method unless the <a href="#optionsallowunawaitedpromise">options.allowUnawaitedPromise</a> option is enabled.</p>
-</blockquote>
-
-<p>Next is an <a href="assertion-api.md">assertion method</a> that accepts an expected value
+<blockquote><div class="blockquote-content"><p>You cannot pass a regular promise to the <code>expect</code> method unless the <a href="#optionsallowunawaitedpromise">options.allowUnawaitedPromise</a> option is enabled.</p>
+</div></blockquote>
+<p>Next is an <a href="assertion-api.html">assertion method</a> that accepts an expected value
 and, optionally, other arguments.</p>
 
 <p>For instance, the deep equality assertion has the following structure:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">await t.expect( actual ).eql( expected, message, options );
 </code></pre></div>
 <p>The sample below demonstrates how to use assertions:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">Example</span> <span class="nx">page</span><span class="err">`</span>
-   <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`;</span>
+<span class="nx">fixture</span> <span class="s2">`Example page`</span>
+   <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://devexpress.github.io/testcafe/example/`</span><span class="p">;</span>
 
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Check property of element'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-   <span class="kr">const</span> <span class="nx">developerNameInput</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">);</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Check property of element'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+   <span class="kd">const</span> <span class="nx">developerNameInput</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">);</span>
 
-   <span class="nx">await</span> <span class="nx">t</span>
+   <span class="kr">await</span> <span class="nx">t</span>
        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">developerNameInput</span><span class="p">.</span><span class="nx">value</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="s1">''</span><span class="p">,</span> <span class="s1">'input is empty'</span><span class="p">)</span>
        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">developerNameInput</span><span class="p">,</span> <span class="s1">'Peter Parker'</span><span class="p">)</span>
        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">developerNameInput</span><span class="p">.</span><span class="nx">value</span><span class="p">).</span><span class="nx">contains</span><span class="p">(</span><span class="s1">'Peter'</span><span class="p">,</span> <span class="s1">'input contains text "Peter"'</span><span class="p">);</span>
 <span class="p">});</span>
-</code></pre></div>
-<h2>Smart Assertion Query Mechanism</h2>
-
+</code></pre></div><h2><a class="anchor" name="smart-assertion-query-mechanism"></a>Smart Assertion Query Mechanism <a class="permalink" href="#smart-assertion-query-mechanism">#</a></h2>
 <p>You can perform the required assertions immediately after test action is executed in synchronous functional testing.</p>
 
 <p><img src="../../../images/assertions/synchronous-testing.png" alt="Synchronous Functional Testing"></p>
@@ -960,8 +952,8 @@ network connection speed, etc. In this case, if we perform assertions immediatel
 <p>To stabilize such tests, you need to add a timeout that enables the required changes to be applied successfully.
 Note that adding such timeouts can increase the test&#39;s duration.</p>
 
-<p>TestCafe uses the smart assertion query mechanism if the assertion receives a <a href="../selecting-page-elements/selectors/using-selectors.md#define-assertion-actual-value">Selector&#39;s DOM node state property</a>
-or <a href="../obtaining-data-from-the-client/README.md">client function</a> promise
+<p>TestCafe uses the smart assertion query mechanism if the assertion receives a <a href="../selecting-page-elements/selectors/using-selectors.html#define-assertion-actual-value">Selector&#39;s DOM node state property</a>
+or <a href="../obtaining-data-from-the-client/">client function</a> promise
 as an actual value:
 if an assertion did not pass, the test does not fail immediately. The assertion retries to pass multiple times, and
 each time it requests the actual property value. The test fails if the assertion could not complete successfully
@@ -984,10 +976,10 @@ within a timeout:</p>
 <span class="nt">&lt;/script&gt;</span>
 </code></pre></div>
 <p>Test code for this page can be as follows.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">test</span><span class="p">(</span><span class="s1">'Button click'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">btn</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#btn'</span><span class="p">);</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">test</span><span class="p">(</span><span class="s1">'Button click'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">btn</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#btn'</span><span class="p">);</span>
 
-    <span class="nx">await</span> <span class="nx">t</span>
+    <span class="kr">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">btn</span><span class="p">)</span>
         <span class="c1">// A regular assertion fails immediately, but TestCafe retries to run DOM state</span>
         <span class="c1">// assertions many times within the timeout until this assertion passes successfully.</span>
@@ -998,36 +990,27 @@ within a timeout:</p>
 <p>The approach described above allows you to create stable tests with a fast run-time that do not contain random errors.</p>
 
 <p>You can specify the assertion query timeout in test code by using the <a href="#assertion-options">options.timeout</a> option.
-To set the timeout when launching tests, pass the timeout value to the <a href="../../using-testcafe/programming-interface/runner.md#run">runner.run</a>
-method if you use an API or specify the <a href="../../using-testcafe/command-line-interface.md#--assertion-timeout-ms">assertion-timeout</a> option
+To set the timeout when launching tests, pass the timeout value to the <a href="../../using-testcafe/programming-interface/runner.html#run">runner.run</a>
+method if you use an API or specify the <a href="../../using-testcafe/command-line-interface.html#--assertion-timeout-ms">assertion-timeout</a> option
 if you run TestCafe from the command line.</p>
-
-<h2>Assertion options</h2>
-
-<h3>options.timeout</h3>
-
+<h2><a class="anchor" name="assertion-options"></a>Assertion options <a class="permalink" href="#assertion-options">#</a></h2><h3><a class="anchor" name="optionstimeout"></a>options.timeout <a class="permalink" href="#optionstimeout">#</a></h3>
 <p><strong>Type</strong>: Number</p>
 
 <p>The time (in milliseconds) an assertion can take to pass before the test fails if
-<a href="../selecting-page-elements/selectors/using-selectors.md#define-assertion-actual-value">a selector property</a>
-or <a href="../obtaining-data-from-the-client/README.md">client function</a> promise was used in assertion.</p>
+<a href="../selecting-page-elements/selectors/using-selectors.html#define-assertion-actual-value">a selector property</a>
+or <a href="../obtaining-data-from-the-client/">client function</a> promise was used in assertion.</p>
 
-<p><strong>Default value</strong>: The timeout is specified using the <a href="../../using-testcafe/programming-interface/runner.md#run">runner.run</a> API method
-or the <a href="../../using-testcafe/command-line-interface.md#--assertion-timeout-ms">assertion-timeout</a> command line option.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="s1">'#elementId'</span><span class="p">).</span><span class="nx">innerText</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="s1">'text'</span><span class="p">,</span> <span class="s1">'check element text'</span><span class="p">,</span> <span class="p">{</span> <span class="na">timeout</span><span class="p">:</span> <span class="mi">500</span> <span class="p">});</span>
-</code></pre></div>
-<blockquote>
-<p>In addition to built-in assertions, you also can use assertions from Node&#39;s built-in <a href="https://nodejs.org/api/assert.html">assert</a> module or 3rd-party library (for example <a href="http://chaijs.com/">chai</a>).
-In this case, specify the time required to complete asynchronous actions using the <a href="../pausing-the-test.md">t.wait(timeout)</a> method.</p>
-</blockquote>
-
-<h3>options.allowUnawaitedPromise</h3>
-
-<p>By default, only promises the <a href="../selecting-page-elements/selectors/using-selectors.md#define-assertion-actual-value">selectors</a>
-and <a href="../obtaining-data-from-the-client/README.md">client functions</a> return can be passed as the assertion&#39;s actual value. If you pass a regular unawaited promise, TestCafe throws an error.</p>
+<p><strong>Default value</strong>: The timeout is specified using the <a href="../../using-testcafe/programming-interface/runner.html#run">runner.run</a> API method
+or the <a href="../../using-testcafe/command-line-interface.html#--assertion-timeout-ms">assertion-timeout</a> command line option.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="s1">'#elementId'</span><span class="p">).</span><span class="nx">innerText</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="s1">'text'</span><span class="p">,</span> <span class="s1">'check element text'</span><span class="p">,</span> <span class="p">{</span> <span class="na">timeout</span><span class="p">:</span> <span class="mi">500</span> <span class="p">});</span>
+</code></pre></div><blockquote><div class="blockquote-content"><p>In addition to built-in assertions, you also can use assertions from Node&#39;s built-in <a href="https://nodejs.org/api/assert.html">assert</a> module or 3rd-party library (for example <a href="http://chaijs.com/">chai</a>).
+In this case, specify the time required to complete asynchronous actions using the <a href="../pausing-the-test.html">t.wait(timeout)</a> method.</p>
+</div></blockquote><h3><a class="anchor" name="optionsallowunawaitedpromise"></a>options.allowUnawaitedPromise <a class="permalink" href="#optionsallowunawaitedpromise">#</a></h3>
+<p>By default, only promises the <a href="../selecting-page-elements/selectors/using-selectors.html#define-assertion-actual-value">selectors</a>
+and <a href="../obtaining-data-from-the-client/">client functions</a> return can be passed as the assertion&#39;s actual value. If you pass a regular unawaited promise, TestCafe throws an error.</p>
 
 <p>If you need to assert a regular promise, set the <code>allowUnawaitedPromise</code> option to <code>true</code>.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">doSomethingAsync</span><span class="p">()).</span><span class="nx">ok</span><span class="p">(</span><span class="s1">'check that a promise is returned'</span><span class="p">,</span> <span class="p">{</span> <span class="na">allowUnawaitedPromise</span><span class="p">:</span> <span class="kc">true</span> <span class="p">});</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">doSomethingAsync</span><span class="p">()).</span><span class="nx">ok</span><span class="p">(</span><span class="s1">'check that a promise is returned'</span><span class="p">,</span> <span class="p">{</span> <span class="na">allowUnawaitedPromise</span><span class="p">:</span> <span class="kc">true</span> <span class="p">});</span>
 </code></pre></div>
 
 		</div>

@@ -545,7 +545,6 @@
 		<div class="post-content">
 
 			<h1>Concurrent Test Execution</h1>
-
 <p>To save time spent on testing, TestCafe allows you to execute tests <em>concurrently</em>.</p>
 
 <p>Normally, you run tests with a command similar to the following one.</p>
@@ -556,15 +555,12 @@
 <p><em>Concurrency</em> is an optional mode that allows you to invoke multiple instances of the same browser.
 These instances constitute the pool of browsers against which tests run concurrently, i.e. each test runs in the first free instance.</p>
 
-<p>To enable concurrency, use the <a href="../command-line-interface.md#-c-n---concurrency-n">-c or --concurrency</a>
-command line option or the <a href="../programming-interface/runner.md#concurrency">runner.concurrency</a> method of the programming interface.</p>
-
-<blockquote>
-<p>Important! Concurrent test execution is not supported in Microsoft Edge. This is because there is no known way to start Edge in a new window and make it open a particular URL.</p>
-</blockquote>
-
+<p>To enable concurrency, use the <a href="../command-line-interface.html#-c-n---concurrency-n">-c or --concurrency</a>
+command line option or the <a href="../programming-interface/runner.html#concurrency">runner.concurrency</a> method of the programming interface.</p>
+<blockquote class="important"><div class="blockquote-content"><p>Concurrent test execution is not supported in Microsoft Edge. This is because there is no known way to start Edge in a new window and make it open a particular URL.</p>
+</div></blockquote>
 <p>The following command invokes three Chrome instances and runs tests concurrently.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe -c 3 chrome tests/test.js
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="nt">-c</span> 3 chrome tests/test.js
 </code></pre></div>
 <p>This is how the same thing can be done through the API.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">var</span> <span class="nx">testRunPromise</span> <span class="o">=</span> <span class="nx">runner</span>
@@ -574,18 +570,18 @@ command line option or the <a href="../programming-interface/runner.md#concurren
     <span class="p">.</span><span class="nx">run</span><span class="p">();</span>
 </code></pre></div>
 <p>Note that you can also use concurrency when testing against multiple browsers.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe -c 4 safari,firefox tests/test.js
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="nt">-c</span> 4 safari,firefox tests/test.js
 </code></pre></div>
 <p>In this case, tests will be distributed across four Safari instances and the same tests will also run in four Firefox instances.</p>
 
-<p>When you run tests on <a href="../command-line-interface.md#remote-browsers">remote devices</a>,
+<p>When you run tests on <a href="../command-line-interface.html#remote-browsers">remote devices</a>,
 create connections for each instance of each browser you test against. When using
 the command line interface, specify this number after the <code>remote:</code> keyword. In API, create
-a <a href="../programming-interface/browserconnection.md">browser connection</a> for each instance.</p>
+a <a href="../programming-interface/browserconnection.html">browser connection</a> for each instance.</p>
 
 <p>On a remote device, invoke all the required instances manually. The total number of instances
 should divide by the concurrency parameter <code>n</code>. Otherwise, an exception will be thrown.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe -c 2 remote:4 tests/test.js
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="nt">-c</span> 2 remote:4 tests/test.js
 </code></pre></div>
 <p>If you test against multiple remote browsers, open and connect all instances of one browser before connecting the next browser.</p>
 

@@ -885,7 +885,6 @@
 		<div class="post-content">
 
 			<h1>Mocking HTTP Responses</h1>
-
 <p>Mocking is useful when the tested app uses infrastructure that is difficult to deploy during the test run. In this instance, you can intercept requests to this resource and mock the responses using TestCafe.</p>
 
 <ul>
@@ -897,9 +896,7 @@
 <li><a href="#a-custom-response-function">A Custom Response Function</a></li>
 </ul></li>
 </ul>
-
-<h2>Creating a Mocker</h2>
-
+<h2><a class="anchor" name="creating-a-mocker"></a>Creating a Mocker <a class="permalink" href="#creating-a-mocker">#</a></h2>
 <p>To create a response mocker, use the <code>RequestMock</code> constructor.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">var</span> <span class="nx">mock</span> <span class="o">=</span> <span class="nx">RequestMock</span><span class="p">()</span>
 </code></pre></div>
@@ -910,10 +907,8 @@
     <span class="p">.</span><span class="nx">onRequestTo</span><span class="p">(</span><span class="nx">request2</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">respond</span><span class="p">(</span><span class="nx">responseMock2</span><span class="p">);</span>
 </code></pre></div>
-<p>Next, <a href="attaching-hooks-to-tests-and-fixtures.md">attach it to a test or fixture</a>.</p>
-
-<h2>The onRequestTo Method</h2>
-<div class="highlight"><pre><code class="language-text" data-lang="text">onRequestTo(filter)
+<p>Next, <a href="attaching-hooks-to-tests-and-fixtures.html">attach it to a test or fixture</a>.</p>
+<h2><a class="anchor" name="the-onrequestto-method"></a>The onRequestTo Method <a class="permalink" href="#the-onrequestto-method">#</a></h2><div class="highlight"><pre><code class="language-text" data-lang="text">onRequestTo(filter)
 </code></pre></div>
 <table><thead>
 <tr>
@@ -926,7 +921,7 @@
 <tr>
 <td><code>filter</code>&#160;<em>(required)</em></td>
 <td>String &#124; RegExp &#124; Object &#124; Predicate</td>
-<td>Specifies which requests should be mocked with a response that follows in the <code>respond</code> method. See <a href="specifying-which-requests-are-handled-by-the-hook.md">Specifying Which Requests are Handled by the Hook</a>.</td>
+<td>Specifies which requests should be mocked with a response that follows in the <code>respond</code> method. See <a href="specifying-which-requests-are-handled-by-the-hook.html">Specifying Which Requests are Handled by the Hook</a>.</td>
 <td>All requests are mocked.</td>
 </tr>
 </tbody></table>
@@ -935,9 +930,7 @@
     <span class="p">.</span><span class="nx">respond</span><span class="p">(</span><span class="cm">/*...*/</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">onRequestTo</span><span class="p">(</span><span class="sr">/</span><span class="se">\/</span><span class="sr">users</span><span class="se">\/</span><span class="sr">/</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">respond</span><span class="p">(</span><span class="cm">/*...*/</span><span class="p">);</span>
-</code></pre></div>
-<h2>The respond Method</h2>
-<div class="highlight"><pre><code class="language-text" data-lang="text">respond([body] [, statusCode] [, headers])
+</code></pre></div><h2><a class="anchor" name="the-respond-method"></a>The respond Method <a class="permalink" href="#the-respond-method">#</a></h2><div class="highlight"><pre><code class="language-text" data-lang="text">respond([body] [, statusCode] [, headers])
 </code></pre></div>
 <table><thead>
 <tr>
@@ -978,19 +971,17 @@
         <span class="s1">'server'</span><span class="p">:</span> <span class="s1">'nginx/1.10.3'</span>
     <span class="p">})</span>
     <span class="p">.</span><span class="nx">onRequestTo</span><span class="p">(</span><span class="cm">/*...*/</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">respond</span><span class="p">(</span><span class="nx">Buffer</span><span class="p">.</span><span class="nx">from</span><span class="p">([</span><span class="mh">0x62</span><span class="p">,</span> <span class="mh">0x75</span><span class="p">,</span> <span class="mh">0x66</span><span class="p">,</span> <span class="mh">0x66</span><span class="p">,</span> <span class="mh">0x65</span><span class="p">,</span> <span class="mh">0x72</span><span class="p">]))</span> <span class="c1">// a response with binary data</span>
+    <span class="p">.</span><span class="nx">respond</span><span class="p">(</span><span class="nx">Buffer</span><span class="p">.</span><span class="k">from</span><span class="p">([</span><span class="mh">0x62</span><span class="p">,</span> <span class="mh">0x75</span><span class="p">,</span> <span class="mh">0x66</span><span class="p">,</span> <span class="mh">0x66</span><span class="p">,</span> <span class="mh">0x65</span><span class="p">,</span> <span class="mh">0x72</span><span class="p">]))</span> <span class="c1">// a response with binary data</span>
     <span class="p">.</span><span class="nx">onRequestTo</span><span class="p">(</span><span class="cm">/*...*/</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">respond</span><span class="p">((</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="c1">// a custom response</span>
         <span class="nx">res</span><span class="p">.</span><span class="nx">headers</span><span class="p">[</span><span class="s1">'x-calculated-header'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'calculated-value'</span><span class="p">;</span>
         <span class="nx">res</span><span class="p">.</span><span class="nx">statusCode</span> <span class="o">=</span> <span class="s1">'200'</span><span class="p">;</span>
 
-        <span class="kr">const</span> <span class="nx">parsedUrl</span> <span class="o">=</span> <span class="nx">url</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">path</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+        <span class="kd">const</span> <span class="nx">parsedUrl</span> <span class="o">=</span> <span class="nx">url</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">path</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
 
         <span class="nx">res</span><span class="p">.</span><span class="nx">setBody</span><span class="p">(</span><span class="s1">'calculated body'</span> <span class="o">+</span> <span class="nx">parsedUrl</span><span class="p">.</span><span class="nx">query</span><span class="p">[</span><span class="s1">'param'</span><span class="p">]);</span>
     <span class="p">});</span>
-</code></pre></div>
-<h3>A Custom Response Function</h3>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">var</span> <span class="nx">mock</span> <span class="o">=</span> <span class="nx">RequestMock</span><span class="p">()</span>
+</code></pre></div><h3><a class="anchor" name="a-custom-response-function"></a>A Custom Response Function <a class="permalink" href="#a-custom-response-function">#</a></h3><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">var</span> <span class="nx">mock</span> <span class="o">=</span> <span class="nx">RequestMock</span><span class="p">()</span>
     <span class="p">.</span><span class="nx">onRequestTo</span><span class="p">(</span><span class="cm">/*...*/</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">respond</span><span class="p">((</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
         <span class="c1">// ...</span>
@@ -1007,7 +998,7 @@
 </thead><tbody>
 <tr>
 <td><code>req</code></td>
-<td><a href="requestoptions-object.md">RequestOptions</a></td>
+<td><a href="requestoptions-object.html">RequestOptions</a></td>
 <td>A request to be mocked.</td>
 </tr>
 <tr>

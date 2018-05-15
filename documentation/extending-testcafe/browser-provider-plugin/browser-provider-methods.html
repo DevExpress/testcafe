@@ -471,17 +471,9 @@
 		<div class="post-content">
 
 			<h1>Browser Provider Methods</h1>
-
-<p>To create a <a href="README.md#implementing-the-browser-provider">browser provider</a>, implement the following methods.</p>
-
-<blockquote>
-<p>While implementing the methods, you can utilize the <a href="https://github.com/DevExpress/testcafe-browser-tools">testcafe-browser-tools</a> library that contains methods for performing platform-dependent actions on browser windows. To do this, add this library as a dependency into your browser provider project.</p>
-</blockquote>
-
-<h2>Required Methods</h2>
-
-<h3>openBrowser</h3>
-
+<p>To create a <a href=".#implementing-the-browser-provider">browser provider</a>, implement the following methods.</p>
+<blockquote><div class="blockquote-content"><p>While implementing the methods, you can utilize the <a href="https://github.com/DevExpress/testcafe-browser-tools">testcafe-browser-tools</a> library that contains methods for performing platform-dependent actions on browser windows. To do this, add this library as a dependency into your browser provider project.</p>
+</div></blockquote><h2><a class="anchor" name="required-methods"></a>Required Methods <a class="permalink" href="#required-methods">#</a></h2><h3><a class="anchor" name="openbrowser"></a>openBrowser <a class="permalink" href="#openbrowser">#</a></h3>
 <p>Runs the specified browser and opens the specified page in it.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">async openBrowser ( id, pageUrl, browserName )
 </code></pre></div>
@@ -509,10 +501,8 @@
 </tr>
 </tbody></table>
 
-<p>See <a href="README.md#example">Example</a>.</p>
-
-<h3>closeBrowser</h3>
-
+<p>See <a href=".#example">Example</a>.</p>
+<h3><a class="anchor" name="closebrowser"></a>closeBrowser <a class="permalink" href="#closebrowser">#</a></h3>
 <p>Closes the specified browser.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">async closeBrowser ( id )
 </code></pre></div>
@@ -530,31 +520,21 @@
 </tr>
 </tbody></table>
 
-<p>See <a href="README.md#example">Example</a>.</p>
-
-<h2>Optional Methods</h2>
-
-<h3>init</h3>
-
+<p>See <a href=".#example">Example</a>.</p>
+<h2><a class="anchor" name="optional-methods"></a>Optional Methods <a class="permalink" href="#optional-methods">#</a></h2><h3><a class="anchor" name="init"></a>init <a class="permalink" href="#init">#</a></h3>
 <p>Performs initialization actions the provider may require. This method is called once before other provider methods are called.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">async init ()
 </code></pre></div>
 <p>For example, the <a href="https://github.com/ryx/testcafe-browser-provider-nightmare">Nightmare browser provider</a> uses this method to create a Nightmare instance.</p>
-
-<h3>dispose</h3>
-
+<h3><a class="anchor" name="dispose"></a>dispose <a class="permalink" href="#dispose">#</a></h3>
 <p>Performs cleanup actions for the provider data. This method is called before the <code>testcafe</code> process is finished.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">async dispose ()
-</code></pre></div>
-<h3>getBrowserList</h3>
-
+</code></pre></div><h3><a class="anchor" name="getbrowserlist"></a>getBrowserList <a class="permalink" href="#getbrowserlist">#</a></h3>
 <p>Returns the array of names used to identify the browsers. This method is used if the provider supports multiple browsers.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">async getBrowserList ()
 </code></pre></div>
-<p>See <a href="README.md#example">Example</a>.</p>
-
-<h3>isValidBrowserName</h3>
-
+<p>See <a href=".#example">Example</a>.</p>
+<h3><a class="anchor" name="isvalidbrowsername"></a>isValidBrowserName <a class="permalink" href="#isvalidbrowsername">#</a></h3>
 <p>Checks if the specified browser name exists. This method is used if the provider supports multiple browsers.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">async isValidBrowserName ( browserName )
 </code></pre></div>
@@ -574,10 +554,8 @@
 
 <p>Returns <code>true</code> if the specified name exists, or <code>false</code> otherwise.</p>
 
-<p>See <a href="README.md#example">Example</a>.</p>
-
-<h3>resizeWindow</h3>
-
+<p>See <a href=".#example">Example</a>.</p>
+<h3><a class="anchor" name="resizewindow"></a>resizeWindow <a class="permalink" href="#resizewindow">#</a></h3>
 <p>Resizes the browser window&#39;s client area to the specified width and height.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">async resizeWindow ( id, width, height, currentWidth, currentHeight )
 </code></pre></div>
@@ -615,10 +593,8 @@
 </tr>
 </tbody></table>
 
-<p>See <a href="README.md#example">Example</a>.</p>
-
-<h3>maximizeWindow</h3>
-
+<p>See <a href=".#example">Example</a>.</p>
+<h3><a class="anchor" name="maximizewindow"></a>maximizeWindow <a class="permalink" href="#maximizewindow">#</a></h3>
 <p>Maximizes the browser window.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">async maximizeWindow ( id )
 </code></pre></div>
@@ -636,10 +612,8 @@
 </tr>
 </tbody></table>
 
-<p>See <a href="README.md#example">Example</a>.</p>
-
-<h3>canResizeWindowToDimensions</h3>
-
+<p>See <a href=".#example">Example</a>.</p>
+<h3><a class="anchor" name="canresizewindowtodimensions"></a>canResizeWindowToDimensions <a class="permalink" href="#canresizewindowtodimensions">#</a></h3>
 <p>Checks if the browser window can be resized to the specified dimensions.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">async canResizeWindowToDimensions ( id, width, height )
 </code></pre></div>
@@ -669,10 +643,8 @@
 
 <p>Returns <code>true</code> if the window can be resized to the specified <code>width</code> and <code>height</code>, or <code>false</code> otherwise.</p>
 
-<p>See <a href="README.md#example">Example</a>.</p>
-
-<h3>takeScreenshot</h3>
-
+<p>See <a href=".#example">Example</a>.</p>
+<h3><a class="anchor" name="takescreenshot"></a>takeScreenshot <a class="permalink" href="#takescreenshot">#</a></h3>
 <p>Takes a screenshot of the browser window&#39;s client area.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">async takeScreenshot ( id, screenshotPath, pageWidth, pageHeight )
 </code></pre></div>
@@ -705,7 +677,7 @@
 </tr>
 </tbody></table>
 
-<p>See <a href="README.md#example">Example</a>.</p>
+<p>See <a href=".#example">Example</a>.</p>
 
 
 		</div>

@@ -544,7 +544,6 @@
 		<div class="post-content">
 
 			<h1>Using TestCafe with Gulp</h1>
-
 <p>If you are using Gulp to organize your build process,
 you can easily integrate TestCafe into the workflow.</p>
 
@@ -555,18 +554,14 @@ you can easily integrate TestCafe into the workflow.</p>
 <li><a href="#step-2---create-a-testcafe-gulp-task">Step 2 - Create a TestCafe Gulp Task</a></li>
 <li><a href="#step-3---run-the-testcafe-task">Step 3 - Run the TestCafe Task</a></li>
 </ul>
-
-<h2>Step 1 - Install TestCafe Gulp Plugin</h2>
-
+<h2><a class="anchor" name="step-1---install-testcafe-gulp-plugin"></a>Step 1 - Install TestCafe Gulp Plugin <a class="permalink" href="#step-1---install-testcafe-gulp-plugin">#</a></h2>
 <p>To install the <a href="https://github.com/DevExpress/gulp-testcafe">TestCafe Gulp plugin</a>,
 execute the following command from your project&#39;s root directory.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm install --save-dev gulp-testcafe
-</code></pre></div>
-<h2>Step 2 - Create a TestCafe Gulp Task</h2>
-
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm <span class="nb">install</span> <span class="nt">--save-dev</span> gulp-testcafe
+</code></pre></div><h2><a class="anchor" name="step-2---create-a-testcafe-gulp-task"></a>Step 2 - Create a TestCafe Gulp Task <a class="permalink" href="#step-2---create-a-testcafe-gulp-task">#</a></h2>
 <p>Open <code>Gulpfile.js</code> and add a task that runs TestCafe tests.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">gulp</span>     <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'gulp'</span><span class="p">);</span>
-<span class="kr">const</span> <span class="nx">testcafe</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'gulp-testcafe'</span><span class="p">);</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">gulp</span>     <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'gulp'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">testcafe</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'gulp-testcafe'</span><span class="p">);</span>
 
 <span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">'run-testcafe-tests'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">gulp</span>
@@ -577,16 +572,11 @@ execute the following command from your project&#39;s root directory.</p>
 <p>This task runs tests from the <code>tests/test.js</code> file in Chrome and Firefox.</p>
 
 <p>For a complete API Reference, see <a href="https://github.com/DevExpress/gulp-testcafe#gulp-testcafe">the plugin page</a>.</p>
-
-<h2>Step 3 - Run the TestCafe Task</h2>
-
+<h2><a class="anchor" name="step-3---run-the-testcafe-task"></a>Step 3 - Run the TestCafe Task <a class="permalink" href="#step-3---run-the-testcafe-task">#</a></h2>
 <p>Run this task through the command line.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">gulp run-testcafe-tests
-</code></pre></div>
-<blockquote>
-<p>Gulp must be installed globally to run tasks from the command line.</p>
-</blockquote>
-
+</code></pre></div><blockquote><div class="blockquote-content"><p>Gulp must be installed globally to run tasks from the command line.</p>
+</div></blockquote>
 <p>Alternatively, you can create and run a dependent task.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">'publish'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'run-testcafe-tests'</span><span class="p">],</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="cm">/* ... */</span>

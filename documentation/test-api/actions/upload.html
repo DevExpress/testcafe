@@ -885,16 +885,13 @@
 		<div class="post-content">
 
 			<h1>Upload</h1>
-
 <p>Use the following actions to work with file upload input elements.</p>
 
 <ul>
 <li><a href="#populate-file-upload-input">Populate File Upload Input</a></li>
 <li><a href="#clear-file-upload-input">Clear File Upload Input</a></li>
 </ul>
-
-<h2>Populate File Upload Input</h2>
-
+<h2><a class="anchor" name="populate-file-upload-input"></a>Populate File Upload Input <a class="permalink" href="#populate-file-upload-input">#</a></h2>
 <p>Populates the specified file upload input with file paths.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">t.setFilesToUpload( selector, filePath )
 </code></pre></div>
@@ -908,7 +905,7 @@
 <tr>
 <td><code>selector</code></td>
 <td>Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise</td>
-<td>Identifies the input field to which file paths are written. See <a href="README.md#selecting-target-elements">Selecting Target Elements</a>.</td>
+<td>Identifies the input field to which file paths are written. See <a href=".#selecting-target-elements">Selecting Target Elements</a>.</td>
 </tr>
 <tr>
 <td><code>filePath</code></td>
@@ -918,11 +915,11 @@
 </tbody></table>
 
 <p>The following example illustrates how to use the <code>t.setFilesToUpload</code> action.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//www.example.com/`;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://www.example.com/`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Uploading'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Uploading'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">setFilesToUpload</span><span class="p">(</span><span class="s1">'#upload-input'</span><span class="p">,</span> <span class="p">[</span>
             <span class="s1">'./uploads/1.jpg'</span><span class="p">,</span>
             <span class="s1">'./uploads/2.jpg'</span><span class="p">,</span>
@@ -932,13 +929,8 @@
 <span class="p">});</span>
 </code></pre></div>
 <p>The <code>t.setFilesToUpload</code> action removes all file paths from the input before populating it with new ones.</p>
-
-<blockquote>
-<p>If an error occurs while uploading files, the test will fail.</p>
-</blockquote>
-
-<h2>Clear File Upload Input</h2>
-
+<blockquote><div class="blockquote-content"><p>If an error occurs while uploading files, the test will fail.</p>
+</div></blockquote><h2><a class="anchor" name="clear-file-upload-input"></a>Clear File Upload Input <a class="permalink" href="#clear-file-upload-input">#</a></h2>
 <p>Removes all file paths from the specified file upload input.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">t.clearUpload( selector )
 </code></pre></div>
@@ -952,20 +944,20 @@
 <tr>
 <td><code>selector</code></td>
 <td>Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise</td>
-<td>Identifies the input field that needs to be cleared. See <a href="README.md#selecting-target-elements">Selecting Target Elements</a>.</td>
+<td>Identifies the input field that needs to be cleared. See <a href=".#selecting-target-elements">Selecting Target Elements</a>.</td>
 </tr>
 </tbody></table>
 
 <p>The example below shows how to use the <code>t.clearUpload</code> action.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">uploadBtn</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#upload-button'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">uploadBtn</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#upload-button'</span><span class="p">);</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//www.example.com/`;</span>
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://www.example.com/`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Trying to upload with no files specified'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Trying to upload with no files specified'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">setFilesToUpload</span><span class="p">(</span><span class="s1">'#upload-input'</span><span class="p">,</span> <span class="p">[</span>
             <span class="s1">'./uploads/1.jpg'</span><span class="p">,</span>
             <span class="s1">'./uploads/2.jpg'</span><span class="p">,</span>
