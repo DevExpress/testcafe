@@ -863,6 +863,122 @@ interface ResizeToFitDeviceOptions {
     portraitOrientation?: boolean;
 }
 
+// Request Hooks
+//----------------------------------------------------------------------------
+interface RequestLogger {
+    /**
+     * Returns whether the logger contains a request that matches the predicate.
+     * @param predicate - The predicate
+     */
+    contains(predicate: Function): Promise<boolean>;
+    /**
+     * Returns the number of requests that match the predicate.
+     * @param predicate - The predicate
+     */
+    count(predicate: Function): Promise<number>;
+    /**
+     * Clears all logged requests.
+     */
+    clear(): void;
+    /**
+     * Returns an array of logged requests.
+     */
+    requests: Array<Request>;
+}
+
+interface RequestLoggerOptions {
+    /**
+     *  Specifies whether the request headers should be logged.
+     */
+    logRequestHeaders?: boolean;
+    /**
+     * Specifies whether the request body should be logged.
+     */
+   logRequestBody?: boolean;
+    /**
+     * Specifies whether the request body should be stored as a String or a Buffer.
+     */
+    stringifyRequestBody?: boolean;
+    /**
+     * Specifies whether the response headers should be logged.
+     */
+    logResponseHeaders?: boolean;
+    /**
+     * Specifies whether the response body should be logged.
+     */
+    logResponseBody?: boolean;
+    /**
+     * Specifies whether the response body should be stored as a string or a Buffer.
+     */
+    stringifyResponseBody?: boolean;
+}
+
+interface RequestMock {
+    /**
+     * Specifies requests to intercept
+     * @param filter - Specifies which requests should be mocked with a response that follows in the `respond` method.
+     */
+    onRequestTo(filter: string | RegExp | object | ((req, res) => boolean)): RequestMock;
+    /**
+     * Specifies the mocked response.
+     * @param body - The mocked response body.
+     * @param statusCode - The response status code.
+     * @param headers - Custom headers added to the response in the property-value form.
+     */
+    respond(body?: object | string | ((req, res) => any), statusCode?: number, headers?: object): RequestMock;
+}
+
+interface Request {
+    /**
+     * The user agent that sent the request.
+     */
+    userAgent: string;
+    /**
+     * Request part of the logged request
+     */
+    request: RequestData;
+    /**
+     * Response part of the logged request
+     */
+    response: ResponseData;
+}
+
+interface RequestData {
+    /**
+     * The URL where the request is sent.
+     */
+    url: string;
+    /**
+     * The request's HTTP method.
+     */
+    method: string;
+    /**
+     * Request headers in the property-value form. Logged if the `logRequestHeaders` option is set to `true`.
+     */
+    headers: object;
+    /**
+     * The response body. Logged if the `logResponseBody` option is set to `true`.
+     * A [Buffer](https://nodejs.org/api/buffer.html) or string depending on the `stringifyResponseBody` option.
+     */
+    body: string | any;
+}
+
+interface ResponseData {
+    /**
+     * The status code received in the response.
+     */
+    statusCode: string;
+    /**
+     * Response headers in the property-value form. Logged if the `logResponseHeaders` option is set to true.
+     */
+    headers: object;
+    /**
+     * The response body.
+     * Logged if the `logResponseBody` option is set to true.
+     * A Buffer or string depending on the `stringifyResponseBody` option.
+     */
+    body: string | any;
+}
 
 // TestController
 //----------------------------------------------------------------------------
@@ -870,7 +986,7 @@ interface NativeDialogHistoryItem {
     /**
      * The type of the native dialog.
      */
-        type: 'alert' | 'confirm' | 'beforeunload' | 'prompt';
+    type: 'alert' | 'confirm' | 'beforeunload' | 'prompt';
     /**
      * Text of the dialog message.
      */
@@ -1151,6 +1267,18 @@ interface TestController {
      * @param role - The role you need to use further in the test.
      */
     useRole(role: Role): TestControllerPromise;
+    /**
+     * Attach the hooks during a test run
+     *
+     * @param hook - The set of RequestHook subclasses
+     */
+    addRequestHooks(...hook: object[]): TestControllerPromise;
+    /**
+     * Detaches the hooks during a test run
+     *
+     * @param hook - The set of RequestHook subclasses
+     */
+    removeRequestHooks(...hook: object[]): TestControllerPromise;
 }
 
 interface TestControllerPromise extends TestController, Promise<any> {
@@ -1434,6 +1562,37 @@ declare module 'testcafe' {
      */
     export function ClientFunction(fn: Function, options?: ClientFunctionOptions): ClientFunction;
 
+    /**
+     * Creates a RequestMock
+     */
+    export function RequestMock(): RequestMock;
+
+    /**
+     * Creates a RequestLogger
+     */
+    export function RequestLogger(filter?: string | RegExp | object | ((req, res) => boolean), options?: RequestLoggerOptions): RequestLogger;
+
+    /** The RequestHook class used to create a custom HTTP Request Hook **/
+    export class RequestHook {
+        /**
+         * Creates a Request Hook
+         * @param requestFilterRules - determines which requests the hook handles
+         * @param responseEventConfigureOpts - defines whether to pass the response headers and body to the onResponse method
+         * @returns {RequestHook}
+         */
+        constructor(requestFilterRules?: Array<any>, responseEventConfigureOpts?: object);
+
+        /**
+         * The `onRequest` method is called before sending the request.
+         */
+        onRequest(requestEvent: object): void;
+
+        /**
+         * The `onResponse` method is called after sending the request
+         */
+        onResponse(responseEvent: object): void;
+    };
+
     export var Role: {
         /**
          * Creates a user role.
@@ -1491,7 +1650,7 @@ interface FixtureFn {
      * @param url - The URL of the webpage at this tests start.
      * To test webpages in local directories, you can use the `file://` scheme or relative paths.
      */
-    page(url: string  | TemplateStringsArray): this;
+    page(url: string | TemplateStringsArray): this;
     /**
      * Specifies HTTP Basic or Windows (NTLM) authentication credentials for all tests in the fixture.
      *
@@ -1534,6 +1693,25 @@ interface FixtureFn {
      * Skips execution of all tests, except whose that are in this fixture.
      */
     only: this;
+    /**
+     * Specifies the additional information for all tests in the fixture that can be used in reports
+     *
+     * @param key - The name of the metadata entry
+     * @param value - The value of the metadata entry
+     */
+    meta(key: string, value: string): this;
+    /**
+     * Specifies the additional information for all tests in the fixture that can be used in reports
+     *
+     * @param data - Key-value pairs
+     */
+    meta(data: object): this;
+    /**
+     * Attaches hooks to all tests in the fixture
+     *
+     * @param hook - The set of RequestHook subclasses
+     */
+    requestHooks(...hook: object[]): this;
 }
 
 interface TestFn {
@@ -1580,6 +1758,25 @@ interface TestFn {
      * Skips execution of all tests, except this one.
      */
     only: this;
+    /**
+     * Specifies the additional information for the test that can be used in reports
+     *
+     * @param key - The name of the metadata entry
+     * @param value - The value of the metadata entry
+     */
+    meta(key: string, value: string): this;
+    /**
+     * Specifies the additional information for the test that can be used in reports
+     *
+     * @param data - Key-value pairs
+     */
+    meta(data: object): this;
+    /**
+     * Attaches hooks to the test
+     *
+     * @param hook - The set of RequestHook subclasses
+     */
+    requestHooks(...hook: object[]): this;
 }
 
 declare var fixture: FixtureFn;
