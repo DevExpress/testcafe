@@ -1,6 +1,6 @@
 {
   "validations": {
-    "vulnerableDependencies": false,
+    "vulnerableDependencies": true,
     "uncommittedChanges": true,
     "untrackedFiles": true,
     "sensitiveData": true,
@@ -8,7 +8,7 @@
     "gitTag": true
   },
   "confirm": true,
-  "publishTag": "latest",
+  "publishTag": "alpha",
   "prePublishScript": "gulp test-server",
   "postPublishScript": "gulp docker-publish"
 }
