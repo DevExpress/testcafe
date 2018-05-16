@@ -36,6 +36,7 @@ async function generatePrefs (profileDir, port) {
         'user_pref("datareporting.policy.dataSubmissionEnabled", false);',
         'user_pref("datareporting.policy.dataSubmissionPolicyBypassNotification", true);',
         'user_pref("app.shield.optoutstudies.enabled", false);',
+        'user_pref("extensions.shield-recipe-client.enabled", false);',
         'user_pref("extensions.shield-recipe-client.first_run", false);',
         'user_pref("extensions.shield-recipe-client.startupExperimentPrefs.browser.newtabpage.activity-stream.enabled", false);',
         'user_pref("devtools.toolbox.host", "window");',
