@@ -114,8 +114,9 @@ $(document).ready(function () {
 
     if (!browserUtils.isFirefox) {
         asyncTest('textInput eventArgs.data should contain space but not &nbsp;)', function () {
+            var result = '';
             var editor = document.createElement('div');
-            var text   = ' ';
+            var text   = 'Hello World';
             var type   = new TypeAutomation(editor, text, {});
 
             editor.className       = TEST_ELEMENT_CLASS;
@@ -124,10 +125,7 @@ $(document).ready(function () {
             document.body.appendChild(editor);
 
             var onTextInput = function (e) {
-                equal(e.data, text);
-
-                document.removeEventListener('textInput', onTextInput, true);
-                document.removeEventListener('textinput', onTextInput, true);
+                result += e.data;
             };
 
             document.addEventListener('textInput', onTextInput, true);
@@ -136,9 +134,12 @@ $(document).ready(function () {
             type
                 .run()
                 .then(function () {
+                    document.removeEventListener('textInput', onTextInput, true);
+                    document.removeEventListener('textinput', onTextInput, true);
+                    equal(result, text);
+                    equal(editor.textContent, text.replace(' ', String.fromCharCode(160)));
                     startNext();
                 });
         });
     }
-
 });

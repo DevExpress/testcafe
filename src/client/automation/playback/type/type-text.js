@@ -11,6 +11,7 @@ var domUtils        = testCafeCore.domUtils;
 var contentEditable = testCafeCore.contentEditable;
 var textSelection   = testCafeCore.textSelection;
 
+const WHITE_SPACES_RE = / /g;
 
 function _getSelectionInElement (element) {
     var currentSelection   = textSelection.getSelectionByElement(element);
@@ -147,7 +148,7 @@ function _typeTextToContentEditable (element, text) {
     var needRaiseInputEvent = true;
     var textInputData       = text;
 
-    text = text === ' ' ? String.fromCharCode(160) : text;
+    text = text.replace(WHITE_SPACES_RE, String.fromCharCode(160));
 
     // NOTE: some browsers raise the 'input' event after the element
     // content is changed, but in others we should do it manually.
@@ -156,11 +157,21 @@ function _typeTextToContentEditable (element, text) {
         needRaiseInputEvent = false;
     };
 
+    // NOTE: IE11 raises the 'textinput' event many times after the element changed.
+    // The 'textinput' should be called only once
+
+    function onTextInput (event, dispatched, preventEvent) {
+        preventEvent();
+    }
+
     // NOTE: IE11 does not raise input event when type to contenteditable
 
     var beforeContentChanged = () => {
         needProcessInput    = simulateTextInput(element, textInputData);
         needRaiseInputEvent = needProcessInput && !browserUtils.isIE11;
+
+        listeners.addInternalEventListener(window, ['input'], onInput);
+        listeners.addInternalEventListener(window, ['textinput'], onTextInput);
     };
 
     var afterContentChanged = () => {
@@ -170,10 +181,9 @@ function _typeTextToContentEditable (element, text) {
                     eventSimulator.input(element);
 
                 listeners.removeInternalEventListener(window, ['input'], onInput);
+                listeners.removeInternalEventListener(window, ['textinput'], onTextInput);
             });
     };
-
-    listeners.addInternalEventListener(window, ['input'], onInput);
 
     if (!startNode || !endNode || !domUtils.isContentEditableElement(startNode) ||
         !domUtils.isContentEditableElement(endNode))
