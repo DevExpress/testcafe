@@ -934,11 +934,11 @@ interface Request {
      */
     userAgent: string;
     /**
-     * Request part of the logged request
+     * The request part of the logged request
      */
     request: RequestData;
     /**
-     * Response part of the logged request
+     * The response part of the logged request
      */
     response: ResponseData;
 }
@@ -1268,7 +1268,7 @@ interface TestController {
      */
     useRole(role: Role): TestControllerPromise;
     /**
-     * Attach the hooks during a test run
+     * Attaches the hooks during a test run
      *
      * @param hook - The set of RequestHook subclasses
      */
@@ -1572,10 +1572,10 @@ declare module 'testcafe' {
      */
     export function RequestLogger(filter?: string | RegExp | object | ((req, res) => boolean), options?: RequestLoggerOptions): RequestLogger;
 
-    /** The RequestHook class used to create a custom HTTP Request Hook **/
+    /** The RequestHook class used to create a custom HTTP request hook **/
     export class RequestHook {
         /**
-         * Creates a Request Hook
+         * Creates a request hook
          * @param requestFilterRules - determines which requests the hook handles
          * @param responseEventConfigureOpts - defines whether to pass the response headers and body to the onResponse method
          * @returns {RequestHook}
@@ -1647,7 +1647,7 @@ interface FixtureFn {
     /**
      * Specifies a webpage at which all tests in a fixture start.
      *
-     * @param url - The URL of the webpage at this tests start.
+     * @param url - The URL of the webpage where tests start.
      * To test webpages in local directories, you can use the `file://` scheme or relative paths.
      */
     page(url: string | TemplateStringsArray): this;
@@ -1694,14 +1694,14 @@ interface FixtureFn {
      */
     only: this;
     /**
-     * Specifies the additional information for all tests in the fixture that can be used in reports
+     * Specifies the additional information for all tests in the fixture. This information can be used in reports.
      *
      * @param key - The name of the metadata entry
      * @param value - The value of the metadata entry
      */
     meta(key: string, value: string): this;
     /**
-     * Specifies the additional information for all tests in the fixture that can be used in reports
+     * Specifies the additional information for all tests in the fixture. This information can be used in reports.
      *
      * @param data - Key-value pairs
      */
@@ -1709,7 +1709,7 @@ interface FixtureFn {
     /**
      * Attaches hooks to all tests in the fixture
      *
-     * @param hook - The set of RequestHook subclasses
+     * @param hook - The set of the RequestHook subclasses
      */
     requestHooks(...hook: object[]): this;
 }
@@ -1759,14 +1759,14 @@ interface TestFn {
      */
     only: this;
     /**
-     * Specifies the additional information for the test that can be used in reports
+     * Specifies the additional information for the test. This information can be used in reports.
      *
      * @param key - The name of the metadata entry
      * @param value - The value of the metadata entry
      */
     meta(key: string, value: string): this;
     /**
-     * Specifies the additional information for the test that can be used in reports
+     * Specifies the additional information for the test. This information can be used in reports.
      *
      * @param data - Key-value pairs
      */
@@ -1774,7 +1774,7 @@ interface TestFn {
     /**
      * Attaches hooks to the test
      *
-     * @param hook - The set of RequestHook subclasses
+     * @param hook - The set of the RequestHook subclasses
      */
     requestHooks(...hook: object[]): this;
 }
