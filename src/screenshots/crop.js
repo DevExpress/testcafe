@@ -45,7 +45,7 @@ function markSeedToId (markSeed) {
 }
 
 export default async function (screenshotPath, markSeed, clientAreaDimensions, cropDimensions) {
-    var mark = new Buffer(markSeed);
+    var mark = Buffer.from(markSeed);
 
     var srcImage  = await readPng(screenshotPath);
 
