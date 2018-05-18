@@ -18,23 +18,27 @@
             background-color: red;
         }
 
-        button {
+        #button1 {
             margin-top: 500px;
         }
     </style>
 </head>
 <body>
     <div style="height: 9000px">
-        <button onclick="onClick()">Click me</button>
+        <button id="button1" onclick="onClick('button1', event)">Click me</button>
         <div id="result"></div>
     </div>
-    <div id="fixed">
-        <div></div>
+    <div id="fixed" onclick="onClick('fixed', event)">
+        <div>
+            <button id="button2" onclick="onClick('button2', event)">Click me</button>
+        </div>
     </div>
     <script type="text/javascript">
 
-        function onClick () {
-            document.getElementById('result').innerHTML = 'success';
+        function onClick (text, event) {
+            document.getElementById('result').innerHTML += text + ' ';
+
+            event.stopPropagation()
         }
 
         setTimeout(function () {

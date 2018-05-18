@@ -1,11 +1,17 @@
 import { Selector } from 'testcafe';
 
 fixture `GH-2391 - should scroll to element if it is hidden by fixed`
-    .page `http://localhost:3000/fixtures/regression/gh-2391/pages/index.html`;
+    .page `../pages/index.html`;
 
-test('click on button hidden by fixed div', async t => {
+const button1  = Selector('#button1');
+const button2  = Selector('#button2');
+const fixedDiv = Selector('#fixed');
+const result   = Selector('#result');
+
+test('click on elements', async t => {
     await t
-        .click('button')
-        .expect(Selector('#result').innerText).eql('success');
+        .click(button1)
+        .click(button2)
+        .click(fixedDiv)
+        .expect(result.innerText).eql('button1 button2 fixed');
 });
-
