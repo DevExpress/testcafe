@@ -62,7 +62,7 @@ $(document).ready(function () {
     };
 
     var setInnerHTML = function ($element, innerHTML) {
-        window.setProperty($element[0], 'innerHTML', innerHTML);
+        $element[0].innerHTML = innerHTML;
     };
 
     var selectByNodesAndOffsets = function (startNode, startOffset, endNode, endOffset) {

@@ -45,7 +45,7 @@ $(document).ready(function () {
     };
 
     var setInnerHTML = function ($el, innerHTML) {
-        window.setProperty($el[0], 'innerHTML', innerHTML);
+        $el[0].innerHTML = innerHTML;
     };
 
     var stateHelper = {
