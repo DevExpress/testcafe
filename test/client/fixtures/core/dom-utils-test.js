@@ -1,6 +1,5 @@
 var hammerhead    = window.getTestCafeModule('hammerhead');
 var browserUtils  = hammerhead.utils.browser;
-var processScript = hammerhead.processScript;
 
 asyncTest('isIFrameWindowInDOM', function () {
     expect(browserUtils.isIE ? 2 : 1);
@@ -14,7 +13,7 @@ asyncTest('isIFrameWindowInDOM', function () {
 
     function onMessage (event) {
         if (messageCounter === 0) {
-            equal(eval(processScript('event.data')), 'true');
+            equal(event.data, 'true');
 
             var iFramePostMessage = iframe.contentWindow.postMessage.bind(iframe.contentWindow);
 

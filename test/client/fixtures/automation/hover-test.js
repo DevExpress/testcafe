@@ -113,7 +113,7 @@ $(document).ready(function () {
 
             $el.mouseover(function (e) {
                 mouseoverRaised     = true;
-                mouseoverWhichParam = window.getProperty(e, 'which');
+                mouseoverWhichParam = e.which;
 
                 equal(e.button, 0);
 
