@@ -1,7 +1,8 @@
 function getOptsForPresetEnv () {
     return {
         targets: { node: 'current' },
-        loose:   true
+        loose:   true,
+        exclude: ['transform-regenerator']
     };
 }
 
