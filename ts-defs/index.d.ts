@@ -1563,12 +1563,12 @@ declare module 'testcafe' {
     export function ClientFunction(fn: Function, options?: ClientFunctionOptions): ClientFunction;
 
     /**
-     * Creates a RequestMock
+     * Creates a request mock
      */
     export function RequestMock(): RequestMock;
 
     /**
-     * Creates a RequestLogger
+     * Creates a request logger
      */
     export function RequestLogger(filter?: string | RegExp | object | ((req, res) => boolean), options?: RequestLoggerOptions): RequestLogger;
 
