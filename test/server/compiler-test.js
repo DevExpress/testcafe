@@ -5,7 +5,6 @@ var Promise           = require('pinkie');
 var renderers         = require('callsite-record').renderers;
 var ERR_TYPE          = require('../../lib/errors/test-run/type');
 var exportableLib     = require('../../lib/api/exportable-lib');
-var NODE_VER          = require('../../lib/utils/node-version');
 var createStackFilter = require('../../lib/errors/create-stack-filter.js');
 var assertError       = require('./helpers/assert-error').assertError;
 var compile           = require('./helpers/compile');
@@ -343,15 +342,6 @@ describe('Compiler', function () {
         }
 
         function getExpected (testDir) {
-            if (NODE_VER < 4) {
-                try {
-                    return readFile(testDir + '/expected-node10.js').toString();
-                }
-                catch (err) {
-                    // NOTE: ignore error - we don't have version-specific data
-                }
-            }
-
             return readFile(testDir + '/expected.js').toString();
         }
 
