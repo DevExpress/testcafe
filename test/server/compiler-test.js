@@ -5,7 +5,6 @@ const Promise           = require('pinkie');
 const renderers         = require('callsite-record').renderers;
 const ERR_TYPE          = require('../../lib/errors/test-run/type');
 const exportableLib     = require('../../lib/api/exportable-lib');
-const NODE_VER          = require('../../lib/utils/node-version');
 const createStackFilter = require('../../lib/errors/create-stack-filter.js');
 const assertError       = require('./helpers/assert-error').assertError;
 const compile           = require('./helpers/compile');
