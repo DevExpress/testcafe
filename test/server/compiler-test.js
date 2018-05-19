@@ -1,13 +1,14 @@
-var expect            = require('chai').expect;
-var resolve           = require('path').resolve;
-var readFile          = require('fs').readFileSync;
-var Promise           = require('pinkie');
-var renderers         = require('callsite-record').renderers;
-var ERR_TYPE          = require('../../lib/errors/test-run/type');
-var exportableLib     = require('../../lib/api/exportable-lib');
-var createStackFilter = require('../../lib/errors/create-stack-filter.js');
-var assertError       = require('./helpers/assert-error').assertError;
-var compile           = require('./helpers/compile');
+const expect            = require('chai').expect;
+const path              = require('path');
+const fs                = require('fs');
+const Promise           = require('pinkie');
+const renderers         = require('callsite-record').renderers;
+const ERR_TYPE          = require('../../lib/errors/test-run/type');
+const exportableLib     = require('../../lib/api/exportable-lib');
+const NODE_VER          = require('../../lib/utils/node-version');
+const createStackFilter = require('../../lib/errors/create-stack-filter.js');
+const assertError       = require('./helpers/assert-error').assertError;
+const compile           = require('./helpers/compile');
 
 describe('Compiler', function () {
     var testRunMock = { id: 'yo' };
@@ -15,8 +16,8 @@ describe('Compiler', function () {
     this.timeout(20000);
 
     // FIXME: Babel errors always contain POSIX-format file paths.
-    function posixResolve (path) {
-        return resolve(path).replace(new RegExp('\\\\', 'g'), '/');
+    function posixResolve (pathname) {
+        return path.resolve(pathname).replace(new RegExp('\\\\', 'g'), '/');
     }
 
     it('Should compile mixed content', function () {
@@ -48,8 +49,8 @@ describe('Compiler', function () {
 
             return compile(sources)
                 .then(function (compiled) {
-                    var testfile1 = resolve('test/server/data/test-suites/basic/testfile1.js');
-                    var testfile2 = resolve('test/server/data/test-suites/basic/testfile2.js');
+                    var testfile1 = path.resolve('test/server/data/test-suites/basic/testfile1.js');
+                    var testfile2 = path.resolve('test/server/data/test-suites/basic/testfile2.js');
                     var tests     = compiled.tests;
                     var fixtures  = compiled.fixtures;
 
@@ -141,8 +142,8 @@ describe('Compiler', function () {
 
             return compile(sources)
                 .then(function (compiled) {
-                    var testfile1 = resolve('test/server/data/test-suites/typescript-basic/testfile1.ts');
-                    var testfile2 = resolve('test/server/data/test-suites/typescript-basic/testfile2.ts');
+                    var testfile1 = path.resolve('test/server/data/test-suites/typescript-basic/testfile1.ts');
+                    var testfile2 = path.resolve('test/server/data/test-suites/typescript-basic/testfile2.ts');
                     var tests     = compiled.tests;
                     var fixtures  = compiled.fixtures;
 
@@ -198,13 +199,12 @@ describe('Compiler', function () {
         });
 
         it('Should provide API definitions', function () {
-            var src = [
-                'test/server/data/test-suites/typescript-defs/structure.ts',
-                'test/server/data/test-suites/typescript-defs/selectors.ts',
-                'test/server/data/test-suites/typescript-defs/client-functions.ts',
-                'test/server/data/test-suites/typescript-defs/roles.ts',
-                'test/server/data/test-suites/typescript-defs/test-controller.ts'
-            ];
+            const typescriptDefsFolder = 'test/server/data/test-suites/typescript-defs/';
+            const src                  = [];
+
+            fs.readdirSync(typescriptDefsFolder).forEach(file => {
+                src.push(path.join(typescriptDefsFolder, file));
+            });
 
             return compile(src).then(function (compiled) {
                 expect(compiled.tests.length).gt(0);
@@ -231,7 +231,7 @@ describe('Compiler', function () {
 
             return compile(sources)
                 .then(function (compiled) {
-                    var testfile = resolve('test/server/data/test-suites/raw/test.testcafe');
+                    var testfile = path.resolve('test/server/data/test-suites/raw/test.testcafe');
                     var tests    = compiled.tests;
                     var fixtures = compiled.fixtures;
 
@@ -258,8 +258,8 @@ describe('Compiler', function () {
         });
 
         it('Should raise an error if it cannot parse a raw file', function () {
-            var testfile1 = resolve('test/server/data/test-suites/raw/invalid.testcafe');
-            var testfile2 = resolve('test/server/data/test-suites/raw/invalid2.testcafe');
+            var testfile1 = path.resolve('test/server/data/test-suites/raw/invalid.testcafe');
+            var testfile2 = path.resolve('test/server/data/test-suites/raw/invalid2.testcafe');
 
             return compile(testfile1)
                 .then(function () {
@@ -342,7 +342,7 @@ describe('Compiler', function () {
         }
 
         function getExpected (testDir) {
-            return readFile(testDir + '/expected.js').toString();
+            return fs.readFileSync(testDir + '/expected.js').toString();
         }
 
         function testClientFnCompilation (testName) {
@@ -395,12 +395,12 @@ describe('Compiler', function () {
                 })
                 .catch(function (err) {
                     expect(err.message).eql('Cannot find a test source file at "' +
-                                            resolve('does/not/exists.js') + '".');
+                                            path.resolve('does/not/exists.js') + '".');
                 });
         });
 
         it('Should raise an error if test dependency has a syntax error', function () {
-            var testfile = resolve('test/server/data/test-suites/syntax-error-in-dep/testfile.js');
+            var testfile = path.resolve('test/server/data/test-suites/syntax-error-in-dep/testfile.js');
             var dep      = posixResolve('test/server/data/test-suites/syntax-error-in-dep/dep.js');
 
             return compile(testfile)
@@ -418,8 +418,8 @@ describe('Compiler', function () {
         });
 
         it("Should raise an error if dependency can't require a module", function () {
-            var testfile = resolve('test/server/data/test-suites/require-error-in-dep/testfile.js');
-            var dep      = resolve('test/server/data/test-suites/require-error-in-dep/dep.js');
+            var testfile = path.resolve('test/server/data/test-suites/require-error-in-dep/testfile.js');
+            var dep      = path.resolve('test/server/data/test-suites/require-error-in-dep/dep.js');
 
             return compile(testfile)
                 .then(function () {
@@ -439,8 +439,8 @@ describe('Compiler', function () {
         });
 
         it('Should raise an error if dependency throws runtime error', function () {
-            var testfile = resolve('test/server/data/test-suites/runtime-error-in-dep/testfile.js');
-            var dep      = resolve('test/server/data/test-suites/runtime-error-in-dep/dep.js');
+            var testfile = path.resolve('test/server/data/test-suites/runtime-error-in-dep/testfile.js');
+            var dep      = path.resolve('test/server/data/test-suites/runtime-error-in-dep/dep.js');
 
             return compile(testfile)
                 .then(function () {
@@ -460,7 +460,7 @@ describe('Compiler', function () {
         });
 
         it("Should raise an error if test file can't require a module", function () {
-            var testfile = resolve('test/server/data/test-suites/require-error-in-testfile/testfile.js');
+            var testfile = path.resolve('test/server/data/test-suites/require-error-in-testfile/testfile.js');
 
             return compile(testfile)
                 .then(function () {
@@ -477,7 +477,7 @@ describe('Compiler', function () {
         });
 
         it('Should raise an error if test file throws runtime error', function () {
-            var testfile = resolve('test/server/data/test-suites/runtime-error-in-testfile/testfile.js');
+            var testfile = path.resolve('test/server/data/test-suites/runtime-error-in-testfile/testfile.js');
 
             return compile(testfile)
                 .then(function () {

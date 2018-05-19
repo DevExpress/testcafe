@@ -17,7 +17,7 @@ export default function () {
     // It happens on Retina displays, because they have more than 1 physical pixel in a CSS pixel.
     // So increase mark size by prepending transparent pixels before the actual mark.
     var imageData       = times(MARK_BYTES_PER_PIXEL * MARK_LENGTH * (MARK_HEIGHT - 1), constant(0)).concat(markSeed);
-    var imageDataBuffer = new Buffer(imageData);
+    var imageDataBuffer = Buffer.from(imageData);
     var pngImage        = new PNG({ width: MARK_LENGTH, height: MARK_HEIGHT });
 
     imageDataBuffer.copy(pngImage.data);
