@@ -23,7 +23,6 @@ var serveStatic          = require('serve-static');
 var Promise              = require('pinkie');
 var markdownlint         = require('markdownlint');
 var prompt               = require('gulp-prompt');
-var nodeVer              = require('node-version');
 var functionalTestConfig = require('./test/functional/config');
 var assignIn             = require('lodash').assignIn;
 var runSequence          = require('run-sequence');
@@ -153,11 +152,6 @@ gulp.task('clean', function () {
 
 // Lint
 gulp.task('lint', function () {
-    // TODO: eslint supports node version 4 or higher.
-    // Remove this condition once we get rid of node 0.10 support.
-    if (nodeVer.major === '0')
-        return null;
-
     var eslint = require('gulp-eslint');
 
     return gulp

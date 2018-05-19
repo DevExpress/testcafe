@@ -2,7 +2,6 @@ import hammerhead from 'testcafe-hammerhead';
 import asyncToGenerator from 'babel-runtime/helpers/asyncToGenerator';
 import { noop, escapeRegExp as escapeRe } from 'lodash';
 import loadBabelLibs from './load-babel-libs';
-import NODE_VER from '../utils/node-version';
 import { ClientFunctionAPIError } from '../errors/runtime';
 import MESSAGE from '../errors/runtime/message';
 
@@ -29,12 +28,6 @@ var babelArtifactPolyfills = {
     'JSON.stringify()': {
         re:                 /_stringify(\d+)\.default/,
         getCode:            match => `var _stringify${match[1]} = { default: JSON.stringify };`,
-        removeMatchingCode: false
-    },
-
-    'typeof (Node.js 10)': {
-        re:                 /_typeof(\d+)\.default/,
-        getCode:            match => `var _typeof${match[1]} = { default: function(obj) { return typeof obj; } };`,
         removeMatchingCode: false
     },
 
@@ -126,9 +119,7 @@ export default function compileClientFunction (fnCode, dependencies, instantiati
     fnCode = makeFnCodeSuitableForParsing(fnCode);
 
     // NOTE: we need to recompile ES6 code for the browser if we are on newer versions of Node.
-    if (NODE_VER >= 4)
-        fnCode = downgradeES(fnCode);
-
+    fnCode = downgradeES(fnCode);
     fnCode = hammerhead.processScript(fnCode, false);
 
     // NOTE: check compiled code for regenerator injection: we have either generator

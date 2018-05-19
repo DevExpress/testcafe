@@ -1,15 +1,9 @@
-import NODE_VER from '../utils/node-version';
-
 function getOptsForPresetEnv () {
-    var opts = { targets: { node: 'current' }, loose: true };
-
-    // NOTE: Disable transforming generators into state-machine for node>=4, because this versions have native generators.
-    // Also this versions have native template literals, regenerator do not work with them:
-    // https://github.com/facebook/regenerator/issues/276
-    if (NODE_VER >= 4)
-        opts.exclude = ['transform-regenerator'];
-
-    return opts;
+    return {
+        targets: { node: 'current' },
+        loose:   true,
+        exclude: ['transform-regenerator']
+    };
 }
 
 // NOTE: lazy load heavy dependencies
