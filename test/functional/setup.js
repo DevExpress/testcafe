@@ -158,6 +158,9 @@ before(function () {
             global.testCafe   = testCafe;
 
             global.runTests = function (fixture, testName, opts) {
+                os.freemem();
+                os.totalmem();
+
                 var report             = '';
                 var runner             = testCafe.createRunner();
                 var fixturePath        = typeof fixture !== 'string' || path.isAbsolute(fixture) ? fixture : path.join(path.dirname(caller()), fixture);
