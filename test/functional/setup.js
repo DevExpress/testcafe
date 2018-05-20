@@ -158,8 +158,10 @@ before(function () {
             global.testCafe   = testCafe;
 
             global.runTests = function (fixture, testName, opts) {
-                os.freemem();
-                os.totalmem();
+                /*eslint-disable*/
+                console.log(os.freemem());
+                console.log(os.totalmem());
+                /*eslint-enable*/
 
                 var report             = '';
                 var runner             = testCafe.createRunner();
