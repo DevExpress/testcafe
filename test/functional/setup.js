@@ -158,9 +158,11 @@ before(function () {
             global.testCafe   = testCafe;
 
             global.runTests = function (fixture, testName, opts) {
+                var byteCountInMB = 1024 * 1024;
+
                 /*eslint-disable*/
-                console.log(os.freemem());
-                console.log(os.totalmem());
+                console.log(os.freemem() % byteCountInMB);
+                console.log(os.totalmem() % byteCountInMB);
                 /*eslint-enable*/
 
                 var report             = '';
