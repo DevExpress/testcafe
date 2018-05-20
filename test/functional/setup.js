@@ -161,8 +161,8 @@ before(function () {
                 var byteCountInMB = 1024 * 1024;
 
                 /*eslint-disable*/
-                console.log('freemem (Mb): ', os.freemem() % byteCountInMB);
-                console.log('totalmem (Mb): ', os.totalmem() % byteCountInMB);
+                console.log('freemem (Mb): ', os.freemem() / byteCountInMB);
+                console.log('totalmem (Mb): ', os.totalmem() / byteCountInMB);
                 /*eslint-enable*/
 
                 var report             = '';
