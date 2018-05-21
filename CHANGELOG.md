@@ -1,5 +1,15 @@
 # Changelog
 
+## v0.20.1 (2018-5-21)
+
+#### :gear: Typescript definitions for new features from v0.20.0 have been added (#2428)
+
+### Bug fixes
+
+* Now sites with the overridden `Element.prototype.matches` method work properly [#2241](https://github.com/DevExpress/testcafe/issues/2241)
+* `window.Blob` now returns a correct result when Array of `ArrayBuffer` is passed as a parameter ([testcafe-hammerhead/#1599](https://github.com/DevExpress/testcafe-hammerhead/issues/1599))
+* Firefox Shield popup is not shown during test execution now ([#2421](https://github.com/DevExpress/testcafe/pull/2421))
+
 ## v0.20.0 (2018-5-15)
 
 ### Request Hooks: Intercepting HTTP requests ([#1341](https://github.com/DevExpress/testcafe/issues/1341))
