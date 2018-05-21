@@ -17,7 +17,7 @@ TestCafe has adopted a [Contributor Code of Conduct](CODE_OF_CONDUCT.md), abide 
 ## General Discussion
 
 If you have a question about TestCafe or want to share your opinion,
-please visit our [discussion board](https://testcafe-discuss.devexpress.com/).
+please visit our [Support Center](https://www.devexpress.com/Support/Center/Question/List/1).
 
 ## Reporting a Problem
 
