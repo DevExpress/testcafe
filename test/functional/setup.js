@@ -123,6 +123,9 @@ function closeLocalBrowsers () {
 }
 
 before(function () {
+    /*eslint-disable*/
+    console.log('Setup started');
+    /*eslint-enable*/
     var mocha = this;
 
     mocha.timeout(60000);
@@ -265,6 +268,9 @@ before(function () {
 });
 
 after(function () {
+    /*eslint-disable*/
+    console.log('Setup ended');
+    /*eslint-enable*/
     this.timeout(60000);
 
     testCafe.close();
