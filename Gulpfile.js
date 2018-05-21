@@ -1,37 +1,42 @@
 var babel                = require('babel-core');
 var gulp                 = require('gulp');
+var gulpStep             = require('gulp-step');
 var gulpBabel            = require('gulp-babel');
 var less                 = require('gulp-less');
-var globby               = require('globby');
 var qunitHarness         = require('gulp-qunit-harness');
 var git                  = require('gulp-git');
-var mocha                = require('gulp-mocha');
+var ghpages              = require('gulp-gh-pages');
+var mocha                = require('gulp-mocha-simple');
 var mustache             = require('gulp-mustache');
 var rename               = require('gulp-rename');
 var webmake              = require('gulp-webmake');
-var util                 = require('gulp-util');
 var gulpif               = require('gulp-if');
 var uglify               = require('gulp-uglify');
-var ll                   = require('gulp-ll');
+var ll                   = require('gulp-ll-next');
 var del                  = require('del');
 var fs                   = require('fs');
+var os                   = require('os');
 var path                 = require('path');
+var globby               = require('globby');
 var opn                  = require('opn');
 var connect              = require('connect');
 var spawn                = require('cross-spawn');
 var serveStatic          = require('serve-static');
 var Promise              = require('pinkie');
 var markdownlint         = require('markdownlint');
+var minimist             = require('minimist');
 var prompt               = require('gulp-prompt');
 var functionalTestConfig = require('./test/functional/config');
 var assignIn             = require('lodash').assignIn;
-var runSequence          = require('run-sequence');
 var yaml                 = require('js-yaml');
 var childProcess         = require('child_process');
 var listBrowsers         = require('testcafe-browser-tools').getInstallations;
 var checkLicenses        = require('./test/dependency-licenses-checker');
 
+gulpStep.install();
+
 ll
+    .install()
     .tasks([
         'lint',
         'check-licenses',
@@ -42,6 +47,9 @@ ll
         'client-scripts',
         'client-scripts-bundle'
     ]);
+
+var ARGS     = minimist(process.argv.slice(2));
+var DEV_MODE = ARGS.dev;
 
 var CLIENT_TESTS_PATH        = 'test/client/fixtures';
 var CLIENT_TESTS_LEGACY_PATH = 'test/client/legacy-fixtures';
@@ -147,6 +155,43 @@ var PUBLISH_TAG = JSON.parse(fs.readFileSync(path.join(__dirname, '.publishrc'))
 
 var websiteServer = null;
 
+gulp.task('audit', function (done) {
+    let npmCommand = 'npm';
+
+    const npmVer = childProcess.execSync(`${npmCommand} -v`).toString().replace(/\s/, '').split('.');
+
+    if (Number(npmVer[0]) < 6) {
+        const tempNpmPath = path.join(os.tmpdir(), 'testcafe-npm-audit');
+
+        if (!fs.existsSync(tempNpmPath)) {
+            fs.mkdirSync(tempNpmPath);
+            fs.mkdirSync(path.join(tempNpmPath, 'node_modules'));
+
+            childProcess.spawnSync(`${npmCommand} i npm`, { shell: true, stdio: 'inherit', cwd: tempNpmPath });
+        }
+
+        npmCommand = path.join(tempNpmPath, 'node_modules/.bin/npm');
+    }
+
+    const hasPackageLock = fs.existsSync('package-lock.json');
+
+    if (!hasPackageLock)
+        childProcess.spawnSync(`${npmCommand} i --package-lock-only`, { shell: true, stdio: 'inherit' });
+
+    try {
+        const results = childProcess.spawnSync(`${npmCommand} audit`, { shell: true, stdio: 'inherit' });
+
+        if (results.status !== 0)
+            throw new Error('Audit check failed!');
+    }
+    finally {
+        if (!hasPackageLock)
+            fs.unlinkSync('package-lock.json');
+    }
+
+    done();
+});
+
 gulp.task('clean', function () {
     return del('lib');
 });
@@ -175,26 +220,8 @@ gulp.task('check-licenses', function () {
 });
 
 // Build
-gulp.task('client-scripts', ['client-scripts-bundle'], function () {
-    var scripts = [
-        { wrapper: 'src/client/core/index.js.wrapper.mustache', src: 'lib/client/core/index.js' },
-        { wrapper: 'src/client/ui/index.js.wrapper.mustache', src: 'lib/client/ui/index.js' },
-        { wrapper: 'src/client/automation/index.js.wrapper.mustache', src: 'lib/client/automation/index.js' },
-        { wrapper: 'src/client/driver/index.js.wrapper.mustache', src: 'lib/client/driver/index.js' }
-    ];
 
-    return Promise
-        .all(scripts.map(function (script) {
-            return gulp
-                .src(script.wrapper)
-                .pipe(mustache({ source: fs.readFileSync(script.src).toString() }))
-                .pipe(rename(path.basename(script.src)))
-                .pipe(gulpif(!util.env.dev, uglify()))
-                .pipe(gulp.dest(path.dirname(script.src)));
-        }));
-});
-
-gulp.task('client-scripts-bundle', ['clean'], function () {
+gulp.step('client-scripts-bundle', function () {
     return gulp
         .src([
             'src/client/core/index.js',
@@ -223,11 +250,32 @@ gulp.task('client-scripts-bundle', ['clean'], function () {
                 return { code: transformed.code.replace(/^('|")use strict('|");?/, '') };
             }
         }))
-        .pipe(gulpif(!util.env.dev, uglify()))
+        .pipe(gulpif(!DEV_MODE, uglify()))
         .pipe(gulp.dest('lib'));
 });
 
-gulp.task('server-scripts', ['clean'], function () {
+gulp.step('client-scripts-templates-render', function () {
+    var scripts = [
+        { wrapper: 'src/client/core/index.js.wrapper.mustache', src: 'lib/client/core/index.js' },
+        { wrapper: 'src/client/ui/index.js.wrapper.mustache', src: 'lib/client/ui/index.js' },
+        { wrapper: 'src/client/automation/index.js.wrapper.mustache', src: 'lib/client/automation/index.js' },
+        { wrapper: 'src/client/driver/index.js.wrapper.mustache', src: 'lib/client/driver/index.js' }
+    ];
+
+    return Promise
+        .all(scripts.map(function (script) {
+            return gulp
+                .src(script.wrapper)
+                .pipe(mustache({ source: fs.readFileSync(script.src).toString() }))
+                .pipe(rename(path.basename(script.src)))
+                .pipe(gulpif(!DEV_MODE, uglify()))
+                .pipe(gulp.dest(path.dirname(script.src)));
+        }));
+});
+
+gulp.step('client-scripts', gulp.series('client-scripts-bundle', 'client-scripts-templates-render'));
+
+gulp.step('server-scripts', function () {
     return gulp
         .src([
             'src/**/*.js',
@@ -237,14 +285,14 @@ gulp.task('server-scripts', ['clean'], function () {
         .pipe(gulp.dest('lib'));
 });
 
-gulp.task('styles', ['clean'], function () {
+gulp.step('styles', function () {
     return gulp
         .src('src/**/*.less')
         .pipe(less())
         .pipe(gulp.dest('lib'));
 });
 
-gulp.task('templates', ['clean'], function () {
+gulp.step('templates', function () {
     return gulp
         .src([
             'src/**/*.mustache',
@@ -253,7 +301,7 @@ gulp.task('templates', ['clean'], function () {
         .pipe(gulp.dest('lib'));
 });
 
-gulp.task('images', ['clean'], function () {
+gulp.step('images', function () {
     return gulp
         .src([
             'src/**/*.png',
@@ -263,23 +311,39 @@ gulp.task('images', ['clean'], function () {
         .pipe(gulp.dest('lib'));
 });
 
-gulp.task('ts-definitions', ['clean'], function () {
-    return gulp
-        .src('src/**/*.d.ts')
-        .pipe(gulp.dest('lib'));
-});
+gulp.task('fast-build',
+    gulp.series(
+        'clean',
+        gulp.parallel(
+            'server-scripts',
+            'client-scripts',
+            'styles',
+            'images',
+            'templates'
+        )
+    )
+);
 
-gulp.task('fast-build', ['server-scripts', 'client-scripts', 'styles', 'images', 'templates', 'ts-definitions']);
-gulp.task('build', ['lint', 'fast-build']);
+gulp.task('build', gulp.parallel('lint', 'fast-build'));
 
 // Test
-gulp.task('test-server', ['build', 'check-licenses'], function () {
+gulp.step('test-server-run', function () {
     return gulp
         .src('test/server/*-test.js', { read: false })
         .pipe(mocha({
             timeout: typeof v8debug !== 'undefined' || !!process.debugPort ? Infinity : 2000 // NOTE: disable timeouts in debug
         }));
 });
+
+gulp.task('test-server',
+    gulp.parallel(
+        'check-licenses',
+        gulp.series(
+            'build',
+            'test-server-run'
+        )
+    )
+);
 
 function testClient (tests, settings, envSettings, cliMode) {
     function runTests (env, runOpts) {
@@ -304,19 +368,25 @@ function testClient (tests, settings, envSettings, cliMode) {
     });
 }
 
-gulp.task('test-client', ['build'], function () {
+gulp.step('test-client-run', function () {
     return testClient('test/client/fixtures/**/*-test.js', CLIENT_TESTS_SETTINGS);
 });
 
-gulp.task('test-client-local', ['build'], function () {
+gulp.task('test-client', gulp.series('build', 'test-client-run'));
+
+gulp.step('test-client-local-run', function () {
     return testClient('test/client/fixtures/**/*-test.js', CLIENT_TESTS_LOCAL_SETTINGS, {}, true);
 });
 
-gulp.task('test-client-legacy', ['build'], function () {
+gulp.task('test-client-local', gulp.series('build', 'test-client-local-run'));
+
+gulp.step('test-client-legacy-run', function () {
     return testClient('test/client/legacy-fixtures/**/*-test.js', CLIENT_TESTS_LEGACY_SETTINGS);
 });
 
-gulp.task('test-client-travis', ['build'], function () {
+gulp.task('test-client-legacy', gulp.series('build', 'test-client-legacy-run'));
+
+gulp.step('test-client-travis-run', function () {
     var saucelabsSettings = CLIENT_TESTS_SAUCELABS_SETTINGS;
 
     saucelabsSettings.browsers = CLIENT_TESTS_DESKTOP_BROWSERS;
@@ -324,7 +394,9 @@ gulp.task('test-client-travis', ['build'], function () {
     return testClient('test/client/fixtures/**/*-test.js', CLIENT_TESTS_SETTINGS, saucelabsSettings);
 });
 
-gulp.task('test-client-old-browsers-travis', ['build'], function () {
+gulp.task('test-client-travis', gulp.series('build', 'test-client-travis-run'));
+
+gulp.step('test-client-old-browsers-travis-run', function () {
     var saucelabsSettings = CLIENT_TESTS_SAUCELABS_SETTINGS;
 
     saucelabsSettings.browsers = CLIENT_TESTS_OLD_BROWSERS;
@@ -332,7 +404,9 @@ gulp.task('test-client-old-browsers-travis', ['build'], function () {
     return testClient('test/client/fixtures/**/*-test.js', CLIENT_TESTS_SETTINGS, saucelabsSettings);
 });
 
-gulp.task('test-client-travis-mobile', ['build'], function () {
+gulp.task('test-client-old-browsers-travis', gulp.series('build', 'test-client-old-browsers-travis-run'));
+
+gulp.step('test-client-travis-mobile-run', function () {
     var saucelabsSettings = CLIENT_TESTS_SAUCELABS_SETTINGS;
 
     saucelabsSettings.browsers = CLIENT_TESTS_MOBILE_BROWSERS;
@@ -340,7 +414,9 @@ gulp.task('test-client-travis-mobile', ['build'], function () {
     return testClient('test/client/fixtures/**/*-test.js', CLIENT_TESTS_SETTINGS, saucelabsSettings);
 });
 
-gulp.task('test-client-legacy-travis', ['build'], function () {
+gulp.task('test-client-travis-mobile', gulp.series('build', 'test-client-travis-mobile-run'));
+
+gulp.step('test-client-legacy-travis-run', function () {
     var saucelabsSettings = CLIENT_TESTS_SAUCELABS_SETTINGS;
 
     saucelabsSettings.browsers = CLIENT_TESTS_DESKTOP_BROWSERS;
@@ -348,7 +424,9 @@ gulp.task('test-client-legacy-travis', ['build'], function () {
     return testClient('test/client/legacy-fixtures/**/*-test.js', CLIENT_TESTS_LEGACY_SETTINGS, saucelabsSettings);
 });
 
-gulp.task('test-client-legacy-travis-mobile', ['build'], function () {
+gulp.task('test-client-legacy-travis', gulp.series('build', 'test-client-legacy-travis-run'));
+
+gulp.step('test-client-legacy-travis-mobile-run', function () {
     var saucelabsSettings = CLIENT_TESTS_SAUCELABS_SETTINGS;
 
     saucelabsSettings.browsers = CLIENT_TESTS_MOBILE_BROWSERS;
@@ -356,10 +434,10 @@ gulp.task('test-client-legacy-travis-mobile', ['build'], function () {
     return testClient('test/client/legacy-fixtures/**/*-test.js', CLIENT_TESTS_LEGACY_SETTINGS, saucelabsSettings);
 });
 
-gulp.task('travis', [process.env.GULP_TASK || '']);
+gulp.task('test-client-legacy-travis-mobile', gulp.series('build', 'test-client-legacy-travis-mobile-run'));
 
 //Documentation
-gulp.task('generate-docs-readme', function () {
+gulp.task('generate-docs-readme', function (done) {
     function generateItem (name, url, level) {
         return ' '.repeat(level * 2) + '* [' + name + '](articles' + url + ')\n';
     }
@@ -391,6 +469,8 @@ gulp.task('generate-docs-readme', function () {
     var readme = generateReadme(toc);
 
     fs.writeFileSync('docs/README.md', readme);
+
+    done();
 });
 
 gulp.task('lint-docs', function () {
@@ -438,42 +518,57 @@ gulp.task('clean-website', function () {
     return del('site');
 });
 
-gulp.task('fetch-assets-repo', ['clean-website'], function (cb) {
+gulp.step('fetch-assets-repo', function (cb) {
     git.clone('https://github.com/DevExpress/testcafe-gh-page-assets.git', { args: 'site' }, cb);
 });
 
-gulp.task('put-in-articles', ['fetch-assets-repo'], function () {
+gulp.step('put-in-articles', function () {
     return gulp
         .src(['docs/articles/**/*', '!docs/articles/blog/**/*'])
         .pipe(gulp.dest('site/src'));
 });
 
-gulp.task('put-in-posts', ['fetch-assets-repo'], function () {
+gulp.step('put-in-posts', function () {
     return gulp
         .src('docs/articles/blog/**/*')
         .pipe(gulp.dest('site/src/_posts'));
 });
 
-gulp.task('put-in-navigation', ['fetch-assets-repo'], function () {
+gulp.step('put-in-navigation', function () {
     return gulp
         .src('docs/nav/**/*')
         .pipe(gulp.dest('site/src/_data'));
 });
 
-gulp.task('put-in-publications', ['fetch-assets-repo'], function () {
+gulp.step('put-in-publications', function () {
     return gulp
         .src('docs/publications/**/*')
         .pipe(gulp.dest('site/src/_data'));
 });
 
-gulp.task('put-in-tweets', ['fetch-assets-repo'], function () {
+gulp.step('put-in-tweets', function () {
     return gulp
         .src('docs/tweets/**/*')
         .pipe(gulp.dest('site/src/_data'));
 });
 
 
-gulp.task('prepare-website', ['put-in-articles', 'put-in-navigation', 'put-in-posts', 'put-in-publications', 'put-in-tweets', 'lint-docs']);
+gulp.step('prepare-website',
+    gulp.parallel(
+        'lint-docs',
+        gulp.series(
+            'clean-website',
+            'fetch-assets-repo',
+            gulp.parallel(
+                'put-in-articles',
+                'put-in-navigation',
+                'put-in-posts',
+                'put-in-publications',
+                'put-in-tweets'
+            )
+        )
+    )
+);
 
 function buildWebsite (mode, cb) {
     var options = mode ? { stdio: 'inherit', env: { JEKYLL_ENV: mode } } : { stdio: 'inherit' };
@@ -496,21 +591,29 @@ function buildWebsite (mode, cb) {
 //   - In production mode, public comment threads are displayed.
 // * Google Analytics is enabled in production mode only.
 
-gulp.task('build-website-production', ['prepare-website'], function (cb) {
+gulp.step('build-website-production-run', function (cb) {
     buildWebsite('production', cb);
 });
 
-gulp.task('build-website-development', ['prepare-website'], function (cb) {
+gulp.task('build-website-production', gulp.series('prepare-website', 'build-website-production-run'));
+
+gulp.step('build-website-development-run', function (cb) {
     buildWebsite('development', cb);
 });
 
-gulp.task('build-website-testing', ['prepare-website'], function (cb) {
+gulp.task('build-website-development', gulp.series('prepare-website', 'build-website-development-run'));
+
+gulp.step('build-website-testing-run', function (cb) {
     buildWebsite('testing', cb);
 });
 
-gulp.task('build-website', ['prepare-website'], function (cb) {
+gulp.task('build-website-testing', gulp.series('prepare-website', 'build-website-testing-run'));
+
+gulp.step('build-website-run', function (cb) {
     buildWebsite('', cb);
 });
+
+gulp.task('build-website', gulp.series('prepare-website', 'build-website-run'));
 
 gulp.task('serve-website', function (cb) {
     var app = connect()
@@ -519,27 +622,18 @@ gulp.task('serve-website', function (cb) {
     websiteServer = app.listen(8080, cb);
 });
 
-gulp.task('preview-website', function () {
-    return new Promise(function (resolve) {
-        runSequence('build-website-development', 'serve-website', resolve);
-    })
-        .then(function () {
-            return opn('http://localhost:8080/testcafe');
-        });
+gulp.step('preview-website-open', function () {
+    return opn('http://localhost:8080/testcafe');
 });
 
-function testWebsite (isTravis) {
-    return new Promise(function (resolve) {
-        var buildTask = isTravis ? 'build-website' : 'build-website-testing';
+gulp.task('preview-website', gulp.series('build-website-development', 'serve-website', 'preview-website-open'));
 
-        runSequence(buildTask, 'serve-website', resolve);
-    })
-        .then(function () {
-            var WebsiteTester = require('./test/website/test.js');
-            var websiteTester = new WebsiteTester();
+gulp.step('test-website-run', function () {
+    var WebsiteTester = require('./test/website/test.js');
+    var websiteTester = new WebsiteTester();
 
-            return websiteTester.checkLinks();
-        })
+    return websiteTester
+        .checkLinks()
         .then(function (failed) {
             return new Promise(function (resolve, reject) {
                 websiteServer.close(function () {
@@ -550,21 +644,16 @@ function testWebsite (isTravis) {
                 });
             });
         });
-}
-
-gulp.task('test-website', function () {
-    return testWebsite(false);
 });
 
-gulp.task('test-website-travis', function () {
-    return testWebsite(true);
-});
+gulp.task('test-website', gulp.series('build-website-testing', 'serve-website', 'test-website-run'));
 
-gulp.task('publish-website', ['build-website-production'], function () {
+gulp.task('test-website-travis', gulp.series('build-website', 'serve-website', 'test-website-run'));
+
+gulp.step('website-publish-run', function () {
     // NOTE: it's accidentally stopped being compatible with node 0.10 without
     // major version bump due to https://github.com/floridoo/gulp-sourcemaps/issues/236,
     // so we require it here.
-    var ghpages = require('gulp-gh-pages');
 
     return gulp
         .src('site/deploy/**/*')
@@ -580,7 +669,9 @@ gulp.task('publish-website', ['build-website-production'], function () {
         .pipe(ghpages());
 });
 
-gulp.task('test-docs-travis', ['test-website-travis', 'lint']);
+gulp.task('publish-website', gulp.series('build-website-production', 'website-publish-run'));
+
+gulp.task('test-docs-travis', gulp.parallel('test-website-travis', 'lint'));
 
 
 function testFunctional (fixturesDir, testingEnvironmentName, browserProviderName) {
@@ -596,37 +687,53 @@ function testFunctional (fixturesDir, testingEnvironmentName, browserProviderNam
         }));
 }
 
-gulp.task('test-functional-travis-desktop-osx-and-ms-edge', ['build'], function () {
+gulp.step('test-functional-travis-desktop-osx-and-ms-edge-run', function () {
     return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers, functionalTestConfig.browserProviderNames.browserstack);
 });
 
-gulp.task('test-functional-travis-mobile', ['build'], function () {
+gulp.task('test-functional-travis-desktop-osx-and-ms-edge', gulp.series('build', 'test-functional-travis-desktop-osx-and-ms-edge-run'));
+
+gulp.step('test-functional-travis-mobile-run', function () {
     return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.mobileBrowsers, functionalTestConfig.browserProviderNames.browserstack);
 });
 
-gulp.task('test-functional-local', ['build'], function () {
+gulp.task('test-functional-travis-mobile', gulp.series('build', 'test-functional-travis-mobile-run'));
+
+gulp.step('test-functional-local-run', function () {
     return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.localBrowsers);
 });
 
-gulp.task('test-functional-local-ie', ['build'], function () {
+gulp.task('test-functional-local', gulp.series('build', 'test-functional-local-run'));
+
+gulp.step('test-functional-local-ie-run', function () {
     return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.localBrowsersIE);
 });
 
-gulp.task('test-functional-local-chrome-firefox', ['build'], function () {
+gulp.task('test-functional-local-ie', gulp.series('build', 'test-functional-local-ie-run'));
+
+gulp.step('test-functional-local-chrome-firefox-run', function () {
     return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.localBrowsersChromeFirefox);
 });
 
-gulp.task('test-functional-local-headless', ['build'], function () {
+gulp.task('test-functional-local-chrome-firefox', gulp.series('build', 'test-functional-local-chrome-firefox-run'));
+
+gulp.step('test-functional-local-headless-run', function () {
     return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.localHeadlessBrowsers);
 });
 
-gulp.task('test-functional-local-legacy', ['build'], function () {
+gulp.task('test-functional-local-headless', gulp.series('build', 'test-functional-local-headless-run'));
+
+gulp.step('test-functional-local-legacy-run', function () {
     return testFunctional('test/functional/legacy-fixtures', functionalTestConfig.testingEnvironmentNames.legacy);
 });
 
-gulp.task('test-functional-travis-old-browsers', ['build'], function () {
+gulp.task('test-functional-local-legacy', gulp.series('build', 'test-functional-local-legacy-run'));
+
+gulp.step('test-functional-travis-old-browsers-run', function () {
     return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.oldBrowsers, functionalTestConfig.browserProviderNames.sauceLabs);
 });
+
+gulp.task('test-functional-travis-old-browsers', gulp.series('build', 'test-functional-travis-old-browsers-run'));
 
 function getDockerEnv (machineName) {
     return childProcess
@@ -678,7 +785,7 @@ function startDocker () {
     assignIn(process.env, dockerEnv);
 }
 
-gulp.task('docker-build', function () {
+gulp.task('docker-build', function (done) {
     if (!process.env['DOCKER_HOST']) {
         try {
             startDocker();
@@ -698,8 +805,14 @@ gulp.task('docker-build', function () {
         stdio: 'inherit',
         env:   process.env
     });
+
+    done();
 });
 
-gulp.task('docker-publish', ['docker-build'], function () {
+gulp.step('docker-publish-run', function () {
     childProcess.execSync('docker push testcafe/testcafe:' + PUBLISH_TAG, { stdio: 'inherit', env: process.env });
 });
+
+gulp.task('docker-publish', gulp.series('docker-build', 'docker-publish-run'));
+
+gulp.task('travis', process.env.GULP_TASK ? gulp.series(process.env.GULP_TASK) : () => {});
