@@ -74,8 +74,8 @@ testingEnvironments[testingEnvironmentNames.mobileBrowsers] = {
         },
         {
             os:        'ios',
-            osVersion: '10.0',
-            device:    'iPad Pro (9.7 inch)',
+            osVersion: '11.2',
+            device:    'iPad Pro',
             name:      'Mobile Safari',
             alias:     'ipad'
         },
