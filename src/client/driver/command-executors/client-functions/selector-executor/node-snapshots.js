@@ -5,8 +5,6 @@ import {
     ELEMENT_SNAPSHOT_PROPERTIES
 } from '../../../../../client-functions/selectors/snapshot-properties';
 
-import { getAttrs } from './sandboxed-node-properties';
-
 
 // Node
 var nodeSnapshotPropertyInitializers = {
@@ -63,13 +61,13 @@ var elementSnapshotPropertyInitializers = {
     focused: element => domUtils.getActiveElement() === element,
 
     attributes: element => {
-        var attrs  = getAttrs(element);
+        // eslint-disable-next-line no-restricted-properties
+        var attrs  = element.attributes;
         var result = {};
 
-        /*eslint-disable no-restricted-properties*/
         for (var i = attrs.length - 1; i >= 0; i--)
+            // eslint-disable-next-line no-restricted-properties
             result[attrs[i].name] = attrs[i].value;
-        /*eslint-enable no-restricted-properties*/
 
         return result;
     },

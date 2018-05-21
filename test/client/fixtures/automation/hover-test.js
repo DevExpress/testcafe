@@ -81,17 +81,17 @@ $(document).ready(function () {
             var $el = addInputElement('button', 'button1', 200, 200);
 
             $el.mouseover(function (e) {
-                equal(window.getProperty(e, 'which'), browserUtils.isWebKit ? 0 : 1);
-                equal(window.getProperty(e.originalEvent, 'which'), browserUtils.isWebKit ? 0 : 1);
+                equal(e.which, browserUtils.isWebKit ? 0 : 1);
+                equal(e.originalEvent.which, browserUtils.isWebKit ? 0 : 1);
             });
 
             $el.mouseenter(function (e) {
-                equal(window.getProperty(e, 'which'), browserUtils.isWebKit ? 0 : 1);
-                equal(window.getProperty(e.originalEvent, 'which'), browserUtils.isWebKit ? 0 : 1);
+                equal(e.which, browserUtils.isWebKit ? 0 : 1);
+                equal(e.originalEvent.which, browserUtils.isWebKit ? 0 : 1);
             });
 
             $el[0].addEventListener('mouseover', function (e) {
-                equal(window.getProperty(e, 'which'), browserUtils.isWebKit ? 0 : 1);
+                equal(e.which, browserUtils.isWebKit ? 0 : 1);
             });
 
             var hover = new HoverAutomation($el[0], new MouseOptions({ offsetX: 5, offsetY: 5 }));
@@ -113,7 +113,7 @@ $(document).ready(function () {
 
             $el.mouseover(function (e) {
                 mouseoverRaised     = true;
-                mouseoverWhichParam = window.getProperty(e, 'which');
+                mouseoverWhichParam = e.which;
 
                 equal(e.button, 0);
 
@@ -123,7 +123,7 @@ $(document).ready(function () {
 
             $el.mouseenter(function (e) {
                 mouseenterRaised     = true;
-                mouseenterWhichParam = window.getProperty(e, 'which');
+                mouseenterWhichParam = e.which;
 
                 equal(e.button, 0);
 
