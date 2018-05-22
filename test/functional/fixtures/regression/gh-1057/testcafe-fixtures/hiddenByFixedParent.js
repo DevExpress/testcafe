@@ -1,7 +1,7 @@
 import { ClientFunction } from 'testcafe';
 
-fixture `gh-1057`
-    .page `http://localhost:3000/fixtures/regression/gh-1057/pages/index.html`;
+fixture `gh-1057 - fixed by hidden parent`
+    .page `http://localhost:3000/fixtures/regression/gh-1057/pages/hiddenByFixedParent.html`;
 
 const targetsClicked = ClientFunction(() => window.target1Clicked && window.target2Clicked);
 

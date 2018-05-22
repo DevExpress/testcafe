@@ -1,7 +1,7 @@
 import { Selector } from 'testcafe';
 
-fixture `GH-2391 - should scroll to element if it is hidden by fixed`
-    .page `../pages/index.html`;
+fixture `gh-1057 - fixed by hidden ancestor`
+    .page `http://localhost:3000/fixtures/regression/gh-1057/pages/hiddenByFixedAncestor.html`;
 
 const button1  = Selector('#button1');
 const button2  = Selector('#button2');
@@ -13,5 +13,5 @@ test('click on elements', async t => {
         .click(button1)
         .click(button2)
         .click(fixedDiv)
-        .expect(result.innerText).eql('button1 button2 fixed');
+        .expect(result.innerText).contains('button1 button2 fixed');
 });

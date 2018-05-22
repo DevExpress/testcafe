@@ -1,9 +1,15 @@
-describe('[Regression](GH-1057)', function () {
+describe('[Regression](GH-1057) - hidden by fixed parent', function () {
     it('The target element should not be under the element with position:fixed after scroll', function () {
-        return runTests('testcafe-fixtures/index-test.js', 'gh-1057', {
+        return runTests('testcafe-fixtures/hiddenByFixedParent.js', 'gh-1057', {
             // NOTE: https://github.com/DevExpress/testcafe/issues/1237
             // TODO: Android disabled because of https://github.com/DevExpress/testcafe/issues/1492
             skip: 'iphone,ipad,android'
         });
+    });
+});
+
+describe('[Regression](GH-1057) - hidden by fixed ancestor', function () {
+    it('Should scroll to element if it is hidden by fixed ancestor', function () {
+        return runTests('testcafe-fixtures/hiddenByFixedAncestor.js');
     });
 });
