@@ -73,7 +73,7 @@ testingEnvironments[testingEnvironmentNames.mobileBrowsers] = {
             alias:      'android'
         },
         {
-            realMobile: true
+            realMobile: true,
             os:         'ios',
             osVersion:  '11.2',
             device:     'iPad Pro',
@@ -81,7 +81,7 @@ testingEnvironments[testingEnvironmentNames.mobileBrowsers] = {
             alias:      'ipad'
         },
         {
-            realMobile: true
+            realMobile: true,
             os:         'ios',
             osVersion:  '10.3',
             device:     'iPhone 7 Plus',
