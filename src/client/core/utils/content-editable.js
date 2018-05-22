@@ -110,24 +110,24 @@ function isNodeAfterNodeBlockWithBreakLine (parent, node) {
     return false;
 }
 
-export function getFirstVisibleTextNode (el) {
+function getFirstTextNode (el, onlyVisible) {
     var children                    = el.childNodes;
     var childrenLength              = domUtils.getChildNodesLength(children);
     var curNode                     = null;
     var child                       = null;
     var isNotContentEditableElement = null;
 
-    if (!childrenLength && isVisibleTextNode(el))
+    if (!childrenLength && checkTextNodeVisibility(el, onlyVisible))
         return el;
 
     for (var i = 0; i < childrenLength; i++) {
         curNode                     = children[i];
         isNotContentEditableElement = domUtils.isElementNode(curNode) && !domUtils.isContentEditableElement(curNode);
 
-        if (isVisibleTextNode(curNode))
+        if (checkTextNodeVisibility(curNode, onlyVisible))
             return curNode;
         else if (domUtils.isRenderedNode(curNode) && hasVisibleChildren(curNode) && !isNotContentEditableElement) {
-            child = getFirstVisibleTextNode(curNode);
+            child = getFirstTextNode(curNode, onlyVisible);
 
             if (child)
                 return child;
@@ -135,6 +135,10 @@ export function getFirstVisibleTextNode (el) {
     }
 
     return child;
+}
+
+export function getFirstVisibleTextNode (el) {
+    return getFirstTextNode(el, true);
 }
 
 export function getLastTextNode (el, onlyVisible) {
@@ -210,8 +214,15 @@ export function isInvisibleTextNode (node) {
     return firstVisibleIndex === nodeValue.length && lastVisibleIndex === 0;
 }
 
+function checkTextNodeVisibility (node, onlyVisible) {
+    if (!domUtils.isTextNode(node))
+        return false;
+
+    return !onlyVisible || !isInvisibleTextNode(node);
+}
+
 function isVisibleTextNode (node) {
-    return domUtils.isTextNode(node) && !isInvisibleTextNode(node);
+    return checkTextNodeVisibility(node, true);
 }
 
 function isSkippableNode (node) {
@@ -532,17 +543,37 @@ export function getFirstVisiblePosition (el) {
 }
 
 export function getLastVisiblePosition (el) {
-    var lastVisibleTextChild = domUtils.isTextNode(el) ? el : getLastTextNode(el, true);
-    var curDocument          = domUtils.findDocument(el);
-    var range                = curDocument.createRange();
+    var lastVisibleTextChild  = domUtils.isTextNode(el) ? el : getLastTextNode(el, true);
 
-    if (lastVisibleTextChild) {
-        range.selectNodeContents(lastVisibleTextChild);
+    if (!lastVisibleTextChild || isResetAnchorOffsetRequired(lastVisibleTextChild, el))
+        return 0;
 
-        return calculatePositionByNodeAndOffset(el, { node: lastVisibleTextChild, offset: range.endOffset });
+    var curDocument = domUtils.findDocument(el);
+    var range       = curDocument.createRange();
+
+    range.selectNodeContents(lastVisibleTextChild);
+
+    return calculatePositionByNodeAndOffset(el, { node: lastVisibleTextChild, offset: range.endOffset });
+}
+
+function isResetAnchorOffsetRequired (lastVisibleTextChild, el) {
+    const firstVisibleTextChild = domUtils.isTextNode(el) ? el : getFirstTextNode(el, false);
+    const isSingleTextNode      = lastVisibleTextChild === firstVisibleTextChild;
+    const isNewLineChar         = lastVisibleTextChild.nodeValue === String.fromCharCode(10);
+
+    return isSingleTextNode && isNewLineChar && hasWhiteSpacePreStyle(lastVisibleTextChild, el);
+}
+
+function hasWhiteSpacePreStyle (el, container) {
+    const whiteSpacePreStyles = ['pre', 'pre-wrap', 'pre-line'];
+
+    while (el !== container) {
+        el = el.parentNode;
+        if (arrayUtils.indexOf(whiteSpacePreStyles, styleUtils.get(el, 'white-space')) > -1)
+            return true;
     }
 
-    return 0;
+    return false;
 }
 
 function getContentEditableNodes (target) {
