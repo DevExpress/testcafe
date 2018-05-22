@@ -73,18 +73,20 @@ testingEnvironments[testingEnvironmentNames.mobileBrowsers] = {
             alias:      'android'
         },
         {
-            os:        'ios',
-            osVersion: '11.2',
-            device:    'iPad Pro',
-            name:      'Mobile Safari',
-            alias:     'ipad'
+            realMobile: true
+            os:         'ios',
+            osVersion:  '11.2',
+            device:     'iPad Pro',
+            name:       'Mobile Safari',
+            alias:      'ipad'
         },
         {
-            os:        'ios',
-            osVersion: '10.0',
-            device:    'iPhone 7 Plus',
-            name:      'Mobile Safari',
-            alias:     'iphone'
+            realMobile: true
+            os:         'ios',
+            osVersion:  '10.3',
+            device:     'iPhone 7 Plus',
+            name:       'Mobile Safari',
+            alias:      'iphone'
         }
     ]
 };
