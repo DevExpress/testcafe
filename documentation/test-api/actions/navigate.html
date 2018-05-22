@@ -310,7 +310,7 @@
         
           
           <div class="site-nav-tab ">
-            <a class="page-link" href="https://testcafe-discuss.devexpress.com/" target="_blank">Forum</a>
+            <a class="page-link" href="https://www.devexpress.com/Support/Center/Question/ChangeFilterSet/1?FavoritesOnly=False&MyItemsOnly=False&MyTeamItemsOnly=False&TechnologyName=Testing+Tools&PlatformName=AllPlatforms&ProductName=AllProducts&TicketType=All" target="_blank">Support</a>
           </div>
         
       <a id="twitter-button" href="https://twitter.com/dxtestcafe" target="_blank"></a>
@@ -903,21 +903,21 @@
 </tbody></table>
 
 <p>The following example shows how to use the <code>t.navigateTo</code> action.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://www.example.com/`</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//www.example.com/`;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Navigate to the main page'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">await</span> <span class="nx">t</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Navigate to the main page'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">navigateTo</span><span class="p">(</span><span class="s1">'http://devexpress.github.io/testcafe'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div>
 <p>You can use the <code>file://</code> scheme or relative paths to navigate to a webpage in a local directory.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://www.example.com/`</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//www.example.com/`;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Navigate to local pages'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">await</span> <span class="nx">t</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Navigate to local pages'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">navigateTo</span><span class="p">(</span><span class="s1">'file:///user/my-website/index.html'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">navigateTo</span><span class="p">(</span><span class="s1">'../my-project/index.html'</span><span class="p">);</span>
 <span class="p">});</span>
