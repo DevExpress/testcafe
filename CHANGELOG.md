@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.20.1 (2018-5-21)
+## v0.20.1 (2018-6-21)
 
 #### :gear: Typescript definitions for new features from v0.20.0 have been added (#2428)
 
