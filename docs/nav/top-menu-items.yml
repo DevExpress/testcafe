@@ -13,6 +13,6 @@
 - text: Issues
   url: https://github.com/DevExpress/testcafe/issues
   external: true
-- text: Forum
-  url: https://testcafe-discuss.devexpress.com/
+- text: Support
+  url: https://www.devexpress.com/Support/Center/Question/ChangeFilterSet/1?FavoritesOnly=False&MyItemsOnly=False&MyTeamItemsOnly=False&TechnologyName=Testing+Tools&PlatformName=AllPlatforms&ProductName=AllProducts&TicketType=All
   external: true
