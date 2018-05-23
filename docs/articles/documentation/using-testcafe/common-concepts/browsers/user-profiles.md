@@ -13,6 +13,12 @@ However, if you need to start a browser with the current user profile, you can d
 testcafe firefox:userProfile tests/test.js
 ```
 
+In some versions of Firefox, you may need to run the following:
+
+```sh
+testcafe "firefox -P userProfile" tests/test.js
+```
+
 ```js
 runner
     .src('tests/fixture1.js')
