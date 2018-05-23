@@ -33,8 +33,8 @@ const hasUnknownLicenses      = license => PERMISSIVE_LICENSES.indexOf(license) 
 const modulePath = path.join(__dirname, '../');
 
 function checkLicense (license, module) {
-    const unknownModuleAssertionMsg       = `The module '${module}' contains an unknown license '${license}'. Update the permissive licenses list only if it's a known permissive license`;
-    const incompatibleLicenseAssertionMsg = `The module '${module}' contains an incompatible license: '${license}' and can't be used with testcafe !!!`;
+    const unknownModuleAssertionMsg       = `The module '${module}' contains an unknown license '${license}'. You can add this license to the list of known permissive licenses. But be cautious and do this only if you are sure that this license is compatible with TestCafe`;
+    const incompatibleLicenseAssertionMsg = `Alert! The module '${module}' contains an incompatible license '${license}' and cannot be used with TestCafe!`;
 
     if (hasUnknownLicenses(license)) throw new Error(unknownModuleAssertionMsg);
     if (hasIncompatibleLicenses(license)) throw new Error(incompatibleLicenseAssertionMsg);
