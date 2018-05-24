@@ -1591,7 +1591,7 @@ declare module 'testcafe' {
          * The `onResponse` method is called after sending the request
          */
         onResponse(responseEvent: object): void;
-    };
+    }
 
     export var Role: {
         /**
