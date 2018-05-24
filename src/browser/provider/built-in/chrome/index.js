@@ -4,6 +4,7 @@ import getRuntimeInfo from './runtime-info';
 import getConfig from './config';
 import { start as startLocalChrome, stop as stopLocalChrome } from './local-chrome';
 import * as cdp from './cdp';
+import getMaximizedHeadlessWindowSize from '../../utils/get-maximized-headless-window-size';
 import { GET_WINDOW_DIMENSIONS_INFO_SCRIPT } from '../../utils/client-functions';
 
 
@@ -74,15 +75,21 @@ export default {
         await cdp.resizeWindow({ width, height }, runtimeInfo);
     },
 
+    async maximizeWindow (browserId) {
+        const maximumSize = getMaximizedHeadlessWindowSize();
+
+        await this.resizeWindow(browserId, maximumSize.width, maximumSize.height, maximumSize.width, maximumSize.height);
+    },
+
     async hasCustomActionForBrowser (browserId) {
         var { config, client } = this.openedBrowsers[browserId];
 
         return {
             hasCloseBrowser:                true,
             hasResizeWindow:                !!client && (config.emulation || config.headless),
+            hasMaximizeWindow:              !!client && config.headless,
             hasTakeScreenshot:              !!client,
-            hasCanResizeWindowToDimensions: false,
-            hasMaximizeWindow:              false
+            hasCanResizeWindowToDimensions: false
         };
     }
 };

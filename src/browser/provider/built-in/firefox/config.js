@@ -1,4 +1,4 @@
-import { findMatch, splitEscaped, parseConfig, getModes, getPathFromParsedModes } from '../../utils/argument-parsing';
+import { findMatch, isMatchTrue, splitEscaped, parseConfig, getModes, getPathFromParsedModes } from '../../utils/argument-parsing';
 
 
 const AVAILABLE_MODES = ['userProfile', 'headless'];
@@ -13,12 +13,14 @@ function parseModes (modesStr, userArgs) {
     var parsed        = splitEscaped(modesStr, ':');
     var path          = getPathFromParsedModes(parsed, AVAILABLE_MODES);
     var detectedModes = getModes(parsed, AVAILABLE_MODES);
+    var options       = parsed.length ? splitEscaped(parsed.join(':'), ';') : [];
 
     return {
-        path:           path,
-        userProfile:    detectedModes.userProfile || hasCustomProfile(userArgs),
-        headless:       detectedModes.headless,
-        marionettePort: findMatch(parsed, /^marionettePort=(.*)/)
+        path:                   path,
+        userProfile:            detectedModes.userProfile || hasCustomProfile(userArgs),
+        headless:               detectedModes.headless,
+        marionettePort:         findMatch(options, /^marionettePort=(.*)/),
+        disableMultiprocessing: isMatchTrue(options, /^disableMultiprocessing=(.*)/)
     };
 }
 

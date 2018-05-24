@@ -5,7 +5,7 @@ skip_commits:
   message: /^\[docs\]/
 
 environment:
-  GULP_TASK: "test-functional-local"
+  GULP_TASK: "test-functional-local-appveyor"
   NODEJS_VERSION: "stable"
 
 install:
@@ -45,7 +45,7 @@ for:
 
   test_script:
   - cmd: >-
-       node node_modules/gulp/bin/gulp test-functional-local
+       node node_modules/gulp/bin/gulp test-functional-local-appveyor
 
        node node_modules/gulp/bin/gulp test-functional-local-legacy
 

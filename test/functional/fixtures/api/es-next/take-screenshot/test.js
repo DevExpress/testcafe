@@ -4,7 +4,7 @@ var config          = require('../../../../config.js');
 var assertionHelper = require('../../../../assertion-helper.js');
 
 
-var SCREENSHOT_PATH_MESSAGE_RE     = /^___test-screenshots___\\\d{4,4}-\d{2,2}-\d{2,2}_\d{2,2}-\d{2,2}-\d{2,2}\\test-1$/;
+var SCREENSHOT_PATH_MESSAGE_RE     = /^___test-screenshots___[\\/]\d{4,4}-\d{2,2}-\d{2,2}_\d{2,2}-\d{2,2}-\d{2,2}[\\/]test-1$/;
 var CUSTOM_SCREENSHOT_PATH_MESSAGE = '___test-screenshots___';
 
 

@@ -14,7 +14,7 @@ import { ScrollOptions, ElementScreenshotOptions } from '../../../../test-run/co
 const messageSandbox = eventSandbox.message;
 
 const HIDING_UI_RELAYOUT_DELAY    = 500;
-const POSSIBLE_RESIZE_ERROR_DELAY = 100;
+const POSSIBLE_RESIZE_ERROR_DELAY = 200;
 
 const MANIPULATION_REQUEST_CMD  = 'driver|browser-manipulation|request';
 const MANIPULATION_RESPONSE_CMD = 'driver|browser-manipulation|response';

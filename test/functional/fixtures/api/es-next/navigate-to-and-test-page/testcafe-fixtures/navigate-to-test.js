@@ -4,7 +4,7 @@ import { ClientFunction } from 'testcafe';
 fixture `NavigateTo`
     .page `http://localhost:3000/fixtures/api/es-next/navigate-to-and-test-page/pages/index.html`;
 
-const getLocation    = ClientFunction(() => window.location.toString().toLowerCase().replace(/\/\/\//g, '//'));
+const getLocation    = ClientFunction(() => window.location.toString().toLowerCase().replace(/\/\/\/(\w):[\\/]/g, '//$1:/'));
 const resolveFileUrl = relativeUrl => `file://${path.join(__dirname, relativeUrl)}`.replace(/\\/g, '/').toLowerCase();
 
 test('Navigate to absolute http page', async t => {

@@ -1,14 +1,15 @@
-var browserTools   = require('testcafe-browser-tools');
-var SlConnector    = require('saucelabs-connector');
-var BsConnector    = require('browserstack-connector');
-var Promise        = require('pinkie');
-var caller         = require('caller');
-var path           = require('path');
-var promisifyEvent = require('promisify-event');
-var createTestCafe = require('../../lib');
-var config         = require('./config.js');
-var site           = require('./site');
-var getTestError   = require('./get-test-error.js');
+var SlConnector         = require('saucelabs-connector');
+var BsConnector         = require('browserstack-connector');
+var Promise             = require('pinkie');
+var caller              = require('caller');
+var path                = require('path');
+var promisifyEvent      = require('promisify-event');
+var createTestCafe      = require('../../lib');
+var browserProviderPool = require('../../lib/browser/provider/pool');
+var BrowserConnection   = require('../../lib/browser/connection');
+var config              = require('./config.js');
+var site                = require('./site');
+var getTestError        = require('./get-test-error.js');
 
 var testCafe     = null;
 var browsersInfo = null;
@@ -25,8 +26,7 @@ const FUNCTIONAL_TESTS_SELECTOR_TIMEOUT  = 200;
 const FUNCTIONAL_TESTS_ASSERTION_TIMEOUT = 1000;
 const FUNCTIONAL_TESTS_PAGE_LOAD_TIMEOUT = 0;
 
-var envName         = process.env.TESTING_ENVIRONMENT || config.testingEnvironmentNames.localBrowsers;
-var environment     = config.testingEnvironments[envName];
+var environment     = config.currentEnvironment;
 var browserProvider = process.env.BROWSER_PROVIDER;
 var isBrowserStack  = browserProvider === config.browserProviderNames.browserstack;
 
@@ -35,8 +35,16 @@ config.browsers = environment.browsers;
 const REQUESTED_MACHINES_COUNT = environment.browsers.length;
 
 function getBrowserInfo (settings) {
-    return testCafe
-        .createBrowserConnection()
+    return Promise
+        .resolve()
+        .then(() => {
+            if (!config.useLocalBrowsers)
+                return testCafe.createBrowserConnection();
+
+            return browserProviderPool
+                .getBrowserInfo(settings.browserName)
+                .then(browserInfo => new BrowserConnection(testCafe.browserConnectionGateway, browserInfo, true));
+        })
         .then(function (connection) {
             return {
                 settings:   settings,
@@ -85,20 +93,12 @@ function openRemoteBrowsers () {
 }
 
 function openLocalBrowsers () {
-    var openBrowserPromises = browsersInfo.map(function (browserInfo) {
-        return browserTools.getBrowserInfo(browserInfo.settings.alias)
-            .then(function (browser) {
-                var browserOpenedPromise = promisifyEvent(browserInfo.connection, 'opened');
+    return Promise.all(browsersInfo.map(browserInfo => {
+        if (browserInfo.connection.opened)
+            return Promise.resolve();
 
-                return browserTools
-                    .open(browser, browserInfo.connection.url)
-                    .then(function () {
-                        return browserOpenedPromise;
-                    });
-            });
-    });
-
-    return Promise.all(openBrowserPromises);
+        return promisifyEvent(browserInfo.connection, 'opened');
+    }));
 }
 
 function closeRemoteBrowsers () {
@@ -114,9 +114,9 @@ function closeRemoteBrowsers () {
 
 function closeLocalBrowsers () {
     var closeBrowserPromises = browsersInfo.map(function (browserInfo) {
-        return browserInfo.connection.getStatus().then(function (status) {
-            return browserTools.close(status.url);
-        });
+        browserInfo.connection.close();
+
+        return promisifyEvent(browserInfo.connection, 'closed');
     });
 
     return Promise.all(closeBrowserPromises);
@@ -178,8 +178,10 @@ before(function () {
                 var customReporters    = opts && opts.reporters;
 
                 var actualBrowsers = browsersInfo.filter(function (browserInfo) {
-                    var only = onlyOption ? onlyOption.indexOf(browserInfo.settings.alias) > -1 : true;
-                    var skip = skipOption ? skipOption.indexOf(browserInfo.settings.alias) > -1 : false;
+                    var { alias, userAgent } = browserInfo.settings;
+
+                    var only = onlyOption ? [alias, userAgent].some(prop => onlyOption.indexOf(prop) > -1) : true;
+                    var skip = skipOption ? [alias, userAgent].some(prop => skipOption.indexOf(prop) > -1) : false;
 
                     return only && !skip;
                 });
@@ -272,7 +274,7 @@ after(function () {
 });
 
 // TODO: Run takeScreenshot tests first because other tests heavily impact them
-if (envName === config.testingEnvironmentNames.localBrowsers) {
+if (config.useLocalBrowsers) {
     require('./fixtures/api/es-next/take-screenshot/test');
     require('./fixtures/screenshots-on-fails/test');
 }

@@ -3,6 +3,7 @@ import getRuntimeInfo from './runtime-info';
 import { start as startLocalFirefox, stop as stopLocalFirefox } from './local-firefox';
 import MarionetteClient from './marionette-client';
 import getConfig from './config';
+import getMaximizedHeadlessWindowSize from '../../utils/get-maximized-headless-window-size';
 
 
 export default {
@@ -65,6 +66,12 @@ export default {
         await marionetteClient.setWindowSize(width, height);
     },
 
+    async maximizeWindow (browserId) {
+        const maximumSize = getMaximizedHeadlessWindowSize();
+
+        await this.resizeWindow(browserId, maximumSize.width, maximumSize.height);
+    },
+
     async hasCustomActionForBrowser (browserId) {
         var { config, marionetteClient } = this.openedBrowsers[browserId];
 
@@ -72,8 +79,8 @@ export default {
             hasCloseBrowser:                true,
             hasResizeWindow:                !!marionetteClient && config.headless,
             hasTakeScreenshot:              !!marionetteClient && config.headless,
-            hasCanResizeWindowToDimensions: false,
-            hasMaximizeWindow:              false
+            hasMaximizeWindow:              !!marionetteClient && config.headless,
+            hasCanResizeWindowToDimensions: false
         };
     }
 };
