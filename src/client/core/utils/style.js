@@ -53,6 +53,10 @@ var isHiddenNode = function (node) {
     return some(ancestors, ancestor => domUtils.isElementNode(ancestor) && get(ancestor, 'display') === 'none');
 };
 
+export function isFixedElement (node) {
+    return domUtils.isElementNode(node) && get(node, 'position') === 'fixed';
+}
+
 export function isNotVisibleNode (node) {
     return !domUtils.isRenderedNode(node) || isHiddenNode(node) || isVisibilityHiddenNode(node);
 }

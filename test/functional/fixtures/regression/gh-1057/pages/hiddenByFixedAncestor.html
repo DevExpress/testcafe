@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #fixed {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 300px;
+        }
+
+        #fixed div {
+            width: 100%;
+            height: 100%;
+            background-color: red;
+        }
+
+        #button1 {
+            margin-top: 500px;
+        }
+    </style>
+</head>
+<body>
+    <div style="height: 9000px">
+        <button id="button1" onclick="onClick('button1', event)">Click me</button>
+        <div id="result"></div>
+    </div>
+    <div id="fixed" onclick="onClick('fixed', event)">
+        <div>
+            <button id="button2" onclick="onClick('button2', event)">Click me</button>
+        </div>
+    </div>
+    <script type="text/javascript">
+
+        function onClick (text, event) {
+            document.getElementById('result').innerHTML += text + ' ';
+
+            event.stopPropagation()
+        }
+
+        setTimeout(function () {
+            window.scrollTo(0, 5000);
+        });
+    </script>
+</body>
+</html>

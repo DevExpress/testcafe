@@ -223,7 +223,17 @@ export default class ScrollAutomation {
         var elementInPoint   = positionUtils.getElementFromPoint(clientDimensions.left +
                                                                  this.offsetX, clientDimensions.top + this.offsetY);
 
-        return elementInPoint && styleUtils.getComputedStyle(elementInPoint).position === 'fixed';
+        let el           = elementInPoint;
+        let fixedElement = null;
+
+        while (el && !fixedElement) {
+            if (styleUtils.isFixedElement(el))
+                fixedElement = el;
+
+            el = el.parentNode;
+        }
+
+        return elementInPoint && fixedElement && !fixedElement.contains(this.element);
     }
 
     _isScrollMarginTooBig () {
