@@ -310,7 +310,7 @@
         
           
           <div class="site-nav-tab ">
-            <a class="page-link" href="https://testcafe-discuss.devexpress.com/" target="_blank">Forum</a>
+            <a class="page-link" href="https://www.devexpress.com/Support/Center/Question/ChangeFilterSet/1?FavoritesOnly=False&MyItemsOnly=False&MyTeamItemsOnly=False&TechnologyName=Testing+Tools&PlatformName=AllPlatforms&ProductName=AllProducts&TicketType=All" target="_blank">Support</a>
           </div>
         
       <a id="twitter-button" href="https://twitter.com/dxtestcafe" target="_blank"></a>
@@ -552,25 +552,25 @@ by infering variable types or analyzing <a href="https://flow.org/en/docs/types/
 <p>To use Flow with TestCafe, you will need two packages.</p>
 
 <p>The first one is the Flow binary responsible for checking your code. Install it locally to the project.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm <span class="nb">install</span> <span class="nt">--save-dev</span> flow-bin
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm install --save-dev flow-bin
 </code></pre></div>
 <p>With this module, you can introduce type annotations in your code (or let Flow infer the types implicitly) and run code checks.</p>
 
 <p>However, this only works for your test code. Flow will still treat TestCafe API as untyped and imply that all API members has the type <code>any</code>.</p>
 
 <p>To provide type information for third-party libraries (including TestCafe), Flow uses a special module - <a href="https://github.com/flowtype/flow-typed">flow-typed</a>. Install it globally.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm <span class="nb">install</span> <span class="nt">-g</span> flow-typed
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm install -g flow-typed
 </code></pre></div><h2><a class="anchor" name="step-2---initialize-flow"></a>Step 2 - Initialize Flow <a class="permalink" href="#step-2---initialize-flow">#</a></h2>
 <p>First, open <code>package.json</code> and configure <code>npm</code> to run Flow.</p>
-<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="s2">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"flow"</span><span class="p">:</span><span class="w"> </span><span class="s2">"flow"</span><span class="w">
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="s2">"scripts"</span><span class="err">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"flow"</span><span class="p">:</span><span class="w"> </span><span class="s2">"flow"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>Run the following command to initialize Flow with default configuration.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">npm run flow init
 </code></pre></div>
 <p>Install the TestCafe <a href="https://flow.org/en/docs/libdefs/">library definition</a> to provide type information for TestCafe API.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">flow-typed <span class="nb">install </span>testcafe@0.x.x
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">flow-typed install testcafe@0.x.x
 </code></pre></div><h2><a class="anchor" name="step-3---prepare-your-test-files"></a>Step 3 - Prepare Your Test Files <a class="permalink" href="#step-3---prepare-your-test-files">#</a></h2>
 <p>At the beginning of each test file that you wish to check with Flow, place the following comment.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">//@flow</span>
@@ -578,10 +578,10 @@ by infering variable types or analyzing <a href="https://flow.org/en/docs/types/
 <p>You can optionally provide <a href="https://flow.org/en/docs/types/">type annotations</a> for variables in test code.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">//@flow</span>
 
-<span class="nx">fixture</span> <span class="s2">`My Fixture`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="s2">`https://example.com`</span><span class="p">;</span>
+<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">Fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">https</span><span class="err">:</span><span class="c1">//example.com`;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My Test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My Test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="kd">function</span> <span class="nx">foo</span><span class="p">(</span><span class="na">bar</span><span class="p">:</span> <span class="nx">number</span><span class="p">):</span> <span class="nx">string</span> <span class="p">{</span>
         <span class="c1">// ...</span>
     <span class="p">};</span>

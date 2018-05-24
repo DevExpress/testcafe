@@ -310,7 +310,7 @@
         
           
           <div class="site-nav-tab ">
-            <a class="page-link" href="https://testcafe-discuss.devexpress.com/" target="_blank">Forum</a>
+            <a class="page-link" href="https://www.devexpress.com/Support/Center/Question/ChangeFilterSet/1?FavoritesOnly=False&MyItemsOnly=False&MyTeamItemsOnly=False&TechnologyName=Testing+Tools&PlatformName=AllPlatforms&ProductName=AllProducts&TicketType=All" target="_blank">Support</a>
           </div>
         
       <a id="twitter-button" href="https://twitter.com/dxtestcafe" target="_blank"></a>
@@ -506,11 +506,11 @@
     <span class="k">this</span><span class="p">.</span><span class="nx">startTime</span> <span class="o">=</span> <span class="nx">startTime</span><span class="p">;</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">testCount</span> <span class="o">=</span> <span class="nx">testCount</span><span class="p">;</span>
 
-    <span class="kd">const</span> <span class="nx">time</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">moment</span><span class="p">(</span><span class="nx">startTime</span><span class="p">).</span><span class="nx">format</span><span class="p">(</span><span class="s1">'M/D/YYYY h:mm:ss a'</span><span class="p">);</span>
+    <span class="kr">const</span> <span class="nx">time</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">moment</span><span class="p">(</span><span class="nx">startTime</span><span class="p">).</span><span class="nx">format</span><span class="p">(</span><span class="s1">'M/D/YYYY h:mm:ss a'</span><span class="p">);</span>
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s2">`Testing started: </span><span class="p">${</span><span class="nx">time</span><span class="p">}</span><span class="s2">`</span><span class="p">)</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="err">`</span><span class="nx">Testing</span> <span class="nx">started</span><span class="err">:</span> <span class="nx">$</span><span class="p">{</span><span class="nx">time</span><span class="p">}</span><span class="err">`</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">newline</span><span class="p">()</span>
-        <span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s2">`Running </span><span class="p">${</span><span class="nx">testCount</span><span class="p">}</span><span class="s2"> tests in: </span><span class="p">${</span><span class="nx">userAgents</span><span class="p">}</span><span class="s2">`</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="err">`</span><span class="nx">Running</span> <span class="nx">$</span><span class="p">{</span><span class="nx">testCount</span><span class="p">}</span> <span class="nx">tests</span> <span class="k">in</span><span class="err">:</span> <span class="nx">$</span><span class="p">{</span><span class="nx">userAgents</span><span class="p">}</span><span class="err">`</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">newline</span><span class="p">();</span>
 <span class="p">}</span>
 
@@ -548,7 +548,7 @@
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">reportFixtureStart</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">path</span><span class="p">,</span> <span class="nx">meta</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">currentFixtureName</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">currentFixtureMeta</span> <span class="o">=</span> <span class="nx">meta</span><span class="p">;</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s2">`Starting fixture: </span><span class="p">${</span><span class="nx">name</span><span class="p">}</span><span class="s2"> </span><span class="p">${</span><span class="nx">meta</span><span class="p">.</span><span class="nx">fixtureID</span><span class="p">}</span><span class="s2">`</span><span class="p">)</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="err">`</span><span class="nx">Starting</span> <span class="nx">fixture</span><span class="err">:</span> <span class="nx">$</span><span class="p">{</span><span class="nx">name</span><span class="p">}</span> <span class="nx">$</span><span class="p">{</span><span class="nx">meta</span><span class="p">.</span><span class="nx">fixtureID</span><span class="p">}</span><span class="err">`</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">newline</span><span class="p">();</span>
 <span class="p">}</span>
 
@@ -619,18 +619,18 @@
 
 <p><strong>Example</strong></p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">reportTestDone</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">testRunInfo</span><span class="p">,</span> <span class="nx">meta</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">const</span> <span class="nx">hasErr</span> <span class="o">=</span> <span class="o">!!</span><span class="nx">testRunInfo</span><span class="p">.</span><span class="nx">errs</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
-    <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">testRunInfo</span><span class="p">.</span><span class="nx">skipped</span> <span class="p">?</span> <span class="s1">'skipped'</span> <span class="p">:</span> <span class="nx">hasErr</span> <span class="p">?</span> <span class="s2">`passed`</span> <span class="p">:</span> <span class="s2">`failed`</span><span class="p">;</span>
+    <span class="kr">const</span> <span class="nx">hasErr</span> <span class="o">=</span> <span class="o">!!</span><span class="nx">testRunInfo</span><span class="p">.</span><span class="nx">errs</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+    <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">testRunInfo</span><span class="p">.</span><span class="nx">skipped</span> <span class="p">?</span> <span class="s1">'skipped'</span> <span class="p">:</span> <span class="nx">hasErr</span> <span class="p">?</span> <span class="err">`</span><span class="nx">passed</span><span class="err">`</span> <span class="p">:</span> <span class="err">`</span><span class="nx">failed</span><span class="err">`</span><span class="p">;</span>
 
-    <span class="nx">name</span> <span class="o">=</span> <span class="s2">`</span><span class="p">${</span><span class="k">this</span><span class="p">.</span><span class="nx">currentFixtureName</span><span class="p">}</span><span class="s2"> - </span><span class="p">${</span><span class="nx">name</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
+    <span class="nx">name</span> <span class="o">=</span> <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">currentFixtureName</span><span class="p">}</span> <span class="o">-</span> <span class="nx">$</span><span class="p">{</span><span class="nx">name</span><span class="p">}</span><span class="err">`</span><span class="p">;</span>
 
-    <span class="kd">let</span> <span class="nx">title</span> <span class="o">=</span> <span class="s2">`</span><span class="p">${</span><span class="nx">result</span><span class="p">}</span><span class="s2"> </span><span class="p">${</span><span class="nx">name</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
+    <span class="kd">let</span> <span class="nx">title</span> <span class="o">=</span> <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="nx">result</span><span class="p">}</span> <span class="nx">$</span><span class="p">{</span><span class="nx">name</span><span class="p">}</span><span class="err">`</span><span class="p">;</span>
 
     <span class="k">if</span> <span class="p">(</span><span class="nx">testRunInfo</span><span class="p">.</span><span class="nx">unstable</span><span class="p">)</span>
         <span class="nx">title</span> <span class="o">+=</span> <span class="s1">' (unstable)'</span><span class="p">;</span>
 
     <span class="k">if</span> <span class="p">(</span><span class="nx">testRunInfo</span><span class="p">.</span><span class="nx">screenshotPath</span><span class="p">)</span>
-        <span class="nx">title</span> <span class="o">+=</span> <span class="s2">` (screenshots: </span><span class="p">${</span><span class="nx">testRunInfo</span><span class="p">.</span><span class="nx">screenshotPath</span><span class="p">}</span><span class="s2">)`</span><span class="p">;</span>
+        <span class="nx">title</span> <span class="o">+=</span> <span class="err">`</span> <span class="p">(</span><span class="nx">screenshots</span><span class="err">:</span> <span class="nx">$</span><span class="p">{</span><span class="nx">testRunInfo</span><span class="p">.</span><span class="nx">screenshotPath</span><span class="p">})</span><span class="err">`</span><span class="p">;</span>
 
     <span class="k">if</span> <span class="p">(</span><span class="nx">meta</span><span class="p">.</span><span class="nx">severity</span><span class="p">)</span>
         <span class="nx">title</span> <span class="o">+=</span> <span class="s1">' (meta.severity)'</span><span class="p">;</span>
@@ -673,16 +673,16 @@
 
 <p><strong>Example</strong></p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">reportTaskDone</span> <span class="p">(</span><span class="nx">endTime</span><span class="p">,</span> <span class="nx">passed</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">const</span> <span class="nx">time</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">moment</span><span class="p">(</span><span class="nx">endTime</span><span class="p">).</span><span class="nx">format</span><span class="p">(</span><span class="s1">'M/D/YYYY h:mm:ss a'</span><span class="p">);</span>
-    <span class="kd">const</span> <span class="nx">durationMs</span>  <span class="o">=</span> <span class="nx">endTime</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">startTime</span><span class="p">;</span>
-    <span class="kd">const</span> <span class="nx">durationStr</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">moment</span><span class="p">.</span><span class="nx">duration</span><span class="p">(</span><span class="nx">durationMs</span><span class="p">).</span><span class="nx">format</span><span class="p">(</span><span class="s1">'h[h] mm[m] ss[s]'</span><span class="p">);</span>
-    <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">passed</span> <span class="o">===</span> <span class="k">this</span><span class="p">.</span><span class="nx">testCount</span> <span class="p">?</span>
-                <span class="s2">`</span><span class="p">${</span><span class="k">this</span><span class="p">.</span><span class="nx">testCount</span><span class="p">}</span><span class="s2"> passed`</span> <span class="p">:</span>
-                <span class="s2">`</span><span class="p">${</span><span class="k">this</span><span class="p">.</span><span class="nx">testCount</span> <span class="o">-</span> <span class="nx">passed</span><span class="p">}</span><span class="s2">/</span><span class="p">${</span><span class="k">this</span><span class="p">.</span><span class="nx">testCount</span><span class="p">}</span><span class="s2"> failed`</span><span class="p">;</span>
-
-    <span class="k">this</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s2">`Testing finished: </span><span class="p">${</span><span class="nx">time</span><span class="p">}</span><span class="s2">`</span><span class="p">)</span>
+    <span class="kr">const</span> <span class="nx">time</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">moment</span><span class="p">(</span><span class="nx">endTime</span><span class="p">).</span><span class="nx">format</span><span class="p">(</span><span class="s1">'M/D/YYYY h:mm:ss a'</span><span class="p">);</span>
+    <span class="kr">const</span> <span class="nx">durationMs</span>  <span class="o">=</span> <span class="nx">endTime</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">startTime</span><span class="p">;</span>
+    <span class="kr">const</span> <span class="nx">durationStr</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">moment</span><span class="p">.</span><span class="nx">duration</span><span class="p">(</span><span class="nx">durationMs</span><span class="p">).</span><span class="nx">format</span><span class="p">(</span><span class="s1">'h[h] mm[m] ss[s]'</span><span class="p">);</span>
+    <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">passed</span> <span class="o">===</span> <span class="k">this</span><span class="p">.</span><span class="nx">testCount</span> <span class="p">?</span>
+                <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">testCount</span><span class="p">}</span> <span class="nx">passed</span><span class="err">`</span> <span class="p">:</span>
+                <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">testCount</span> <span class="o">-</span> <span class="nx">passed</span><span class="p">}</span><span class="sr">/${this.testCount} failed`</span><span class="err">;
+</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="err">`</span><span class="nx">Testing</span> <span class="nx">finished</span><span class="err">:</span> <span class="nx">$</span><span class="p">{</span><span class="nx">time</span><span class="p">}</span><span class="err">`</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">newline</span><span class="p">()</span>
-        <span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s2">`Duration: </span><span class="p">${</span><span class="nx">durationStr</span><span class="p">}</span><span class="s2">`</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="err">`</span><span class="nx">Duration</span><span class="err">:</span> <span class="nx">$</span><span class="p">{</span><span class="nx">durationStr</span><span class="p">}</span><span class="err">`</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">newline</span><span class="p">()</span>
         <span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">newline</span><span class="p">();</span>

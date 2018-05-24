@@ -197,7 +197,7 @@
         
           
           <div class="site-nav-tab ">
-            <a class="page-link" href="https://testcafe-discuss.devexpress.com/" target="_blank">Forum</a>
+            <a class="page-link" href="https://www.devexpress.com/Support/Center/Question/ChangeFilterSet/1?FavoritesOnly=False&MyItemsOnly=False&MyTeamItemsOnly=False&TechnologyName=Testing+Tools&PlatformName=AllPlatforms&ProductName=AllProducts&TicketType=All" target="_blank">Support</a>
           </div>
         
       <a id="twitter-button" href="https://twitter.com/dxtestcafe" target="_blank"></a>
@@ -268,20 +268,20 @@
 <p>We have created a browser provider that allows you to test Electron applications with TestCafe.</p>
 
 <p>Getting it to work is simple. First, install the browser provider plugin from npm.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm <span class="nb">install </span>testcafe-browser-provider-electron
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm install testcafe-browser-provider-electron
 </code></pre></div>
 <p>We assume that you have a JavaScript application that you wish to run in Electron.</p>
 
 <p>Create a <code>.testcafe-electron-rc</code> file that contains configurations for the Electron plugin.
 The only required setting here is <code>mainWindowUrl</code>. It&#39;s a URL (or path) to the main window page relative to the application directory.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="s2">"mainWindowUrl"</span><span class="p">:</span><span class="w"> </span><span class="s2">"./index.html"</span><span class="w">
+    </span><span class="nt">"mainWindowUrl"</span><span class="p">:</span><span class="w"> </span><span class="s2">"./index.html"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>Place this file into the application root directory.</p>
 
 <p>At the next step, install the Electron module.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm <span class="nb">install </span>electron@latest
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm install electron@latest
 </code></pre></div>
 <p>Now you are ready to run tests. Specify the <code>electron</code> browser name and the application path
 at the test launch.</p>

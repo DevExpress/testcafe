@@ -197,7 +197,7 @@
         
           
           <div class="site-nav-tab ">
-            <a class="page-link" href="https://testcafe-discuss.devexpress.com/" target="_blank">Forum</a>
+            <a class="page-link" href="https://www.devexpress.com/Support/Center/Question/ChangeFilterSet/1?FavoritesOnly=False&MyItemsOnly=False&MyTeamItemsOnly=False&TechnologyName=Testing+Tools&PlatformName=AllPlatforms&ProductName=AllProducts&TicketType=All" target="_blank">Support</a>
           </div>
         
       <a id="twitter-button" href="https://twitter.com/dxtestcafe" target="_blank"></a>
@@ -269,27 +269,27 @@
 <h2><a class="anchor" name="enhancements"></a>Enhancements <a class="permalink" href="#enhancements">#</a></h2><h3><a class="anchor" name="specifying-resources-accessed-by-bypassing-a-proxy-server-1791"></a>⚙ Specifying resources accessed by bypassing a proxy server (<a href="https://github.com/DevExpress/testcafe/issues/1791">#1791</a>) <a class="permalink" href="#specifying-resources-accessed-by-bypassing-a-proxy-server-1791">#</a></h3>
 <p>TestCafe now allows you to bypass the proxy server when accessing specific resources.</p>
 
-<p>To specify resources that require direct access, use the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--proxy-bypass-rules">--proxy-bypass</a> flag in the command line or the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html">useProxy</a> API method&#39;s parameters.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests/<span class="k">**</span>/<span class="k">*</span>.js <span class="nt">--proxy</span> proxy.corp.mycompany.com <span class="nt">--proxy-bypass</span> localhost:8080,internal-resource.corp.mycompany.com
+<p>To specify resources that require direct access, use the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--proxy-bypass-rules">--proxy-bypass</a> flag in the command line or the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#useproxy">useProxy</a> API method&#39;s parameters.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests/<span class="k">**</span>/<span class="k">*</span>.js --proxy proxy.corp.mycompany.com --proxy-bypass localhost:8080,internal-resource.corp.mycompany.com
 </code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">useProxy</span><span class="p">(</span><span class="s1">'172.0.10.10:8080'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'localhost:8080'</span><span class="p">,</span> <span class="s1">'internal-resource.corp.mycompany.com'</span><span class="p">]);</span>
 </code></pre></div><h3><a class="anchor" name="specifying-testing-metadata-2242"></a>⚙ Specifying testing metadata (<a href="https://github.com/DevExpress/testcafe/issues/2242">#2242</a>) <a class="permalink" href="#specifying-testing-metadata-2242">#</a></h3>
 <p>TestCafe allows you to specify additional information for tests in the form of key-value metadata and use it in reports.</p>
 
 <p>You can define metadata for a fixture or a test using the <a href="https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#specifying-testing-metadata">meta</a> method:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My Fixture`</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">Fixture</span><span class="err">`</span>
     <span class="p">.</span><span class="nx">meta</span><span class="p">(</span><span class="s1">'fixtureID'</span><span class="p">,</span> <span class="s1">'f-0001'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">meta</span><span class="p">({</span> <span class="na">author</span><span class="p">:</span> <span class="s1">'John'</span><span class="p">,</span> <span class="na">creationDate</span><span class="p">:</span> <span class="s1">'05/03/2018'</span> <span class="p">});</span>
 </code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">test</span>
     <span class="p">.</span><span class="nx">meta</span><span class="p">(</span><span class="s1">'testID'</span><span class="p">,</span> <span class="s1">'t-0005'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">meta</span><span class="p">({</span> <span class="na">severity</span><span class="p">:</span> <span class="s1">'critical'</span><span class="p">,</span> <span class="na">testedAPIVersion</span><span class="p">:</span> <span class="s1">'1.0'</span> <span class="p">})</span>
-    <span class="p">(</span><span class="s1">'MyTest'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/* ... */</span><span class="p">});</span>
+    <span class="p">(</span><span class="s1">'MyTest'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/* ... */</span><span class="p">});</span>
 </code></pre></div>
 <p>To include testing metadata to reports, use the <a href="https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html">custom reporter methods</a>.</p>
 <h3><a class="anchor" name="passing-a-regular-promise-to-texpect-is-deprecated-now-2207"></a>⚙ Passing a regular promise to <code>t.expect</code> is deprecated now (<a href="https://github.com/DevExpress/testcafe/issues/2207">#2207</a>) <a class="permalink" href="#passing-a-regular-promise-to-texpect-is-deprecated-now-2207">#</a></h3>
 <p>TestCafe now throws an error if you pass a regular promise to the assertion&#39;s <code>expect</code> method.</p>
 
 <p>If you need to assert a regular promise, set the <a href="https://devexpress.github.io/testcafe/documentation/test-api/assertions/#optionsallowunawaitedpromise">allowUnawaitedPromise</a> option to <code>true</code>.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">doSomethingAsync</span><span class="p">()).</span><span class="nx">ok</span><span class="p">(</span><span class="s1">'check that a promise is returned'</span><span class="p">,</span> <span class="p">{</span> <span class="na">allowUnawaitedPromise</span><span class="p">:</span> <span class="kc">true</span> <span class="p">});</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">doSomethingAsync</span><span class="p">()).</span><span class="nx">ok</span><span class="p">(</span><span class="s1">'check that a promise is returned'</span><span class="p">,</span> <span class="p">{</span> <span class="na">allowUnawaitedPromise</span><span class="p">:</span> <span class="kc">true</span> <span class="p">});</span>
 </code></pre></div><h2><a class="anchor" name="bug-fixes"></a>Bug Fixes <a class="permalink" href="#bug-fixes">#</a></h2>
 <ul>
 <li>The session recovery bubble in Firefox is disabled (<a href="https://github.com/DevExpress/testcafe/pull/2341">#2341</a>)</li>

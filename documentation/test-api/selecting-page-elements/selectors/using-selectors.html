@@ -310,7 +310,7 @@
         
           
           <div class="site-nav-tab ">
-            <a class="page-link" href="https://testcafe-discuss.devexpress.com/" target="_blank">Forum</a>
+            <a class="page-link" href="https://www.devexpress.com/Support/Center/Question/ChangeFilterSet/1?FavoritesOnly=False&MyItemsOnly=False&MyTeamItemsOnly=False&TechnologyName=Testing+Tools&PlatformName=AllPlatforms&ProductName=AllProducts&TicketType=All" target="_blank">Support</a>
           </div>
         
       <a id="twitter-button" href="https://twitter.com/dxtestcafe" target="_blank"></a>
@@ -922,16 +922,16 @@ elements exist and determine the number of matching elements.</p>
 <td>The number of matching elements.</td>
 </tr>
 </tbody></table>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="s2">`Example page`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://devexpress.github.io/testcafe/example/`</span><span class="p">;</span>
+<span class="nx">fixture</span> <span class="err">`</span><span class="nx">Example</span> <span class="nx">page</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kd">const</span> <span class="nx">osCount</span>            <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'.column.col-2 label'</span><span class="p">).</span><span class="nx">count</span><span class="p">;</span>
-    <span class="kd">const</span> <span class="nx">submitButtonExists</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">).</span><span class="nx">exists</span><span class="p">;</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">const</span> <span class="nx">osCount</span>            <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'.column.col-2 label'</span><span class="p">).</span><span class="nx">count</span><span class="p">;</span>
+    <span class="kr">const</span> <span class="nx">submitButtonExists</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">).</span><span class="nx">exists</span><span class="p">;</span>
 
-    <span class="kr">await</span> <span class="nx">t</span>
+    <span class="nx">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">osCount</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">submitButtonExists</span><span class="p">).</span><span class="nx">ok</span><span class="p">();</span>
 <span class="p">});</span>
@@ -941,34 +941,34 @@ elements exist and determine the number of matching elements.</p>
 <p>Selectors and promises returned by selectors expose API to get the state (size, position, classes, etc.) of the matching element.
 See <a href="../dom-node-state.html">DOM Node State</a>. Note that these methods and property getters
 are asynchronous, so use <code>await</code> to obtain an element&#39;s property.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">headerText</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#header'</span><span class="p">).</span><span class="nx">textContent</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">headerText</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#header'</span><span class="p">).</span><span class="nx">textContent</span><span class="p">;</span>
 </code></pre></div>
 <p><strong>Example</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
     <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="s1">'http://devexpress.github.io/testcafe/example/'</span><span class="p">);</span>
 
-<span class="kd">const</span> <span class="nx">windowsInput</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#windows'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">windowsInput</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#windows'</span><span class="p">);</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Obtain Element State'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">windowsInput</span><span class="p">);</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Obtain Element State'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">windowsInput</span><span class="p">);</span>
 
-    <span class="kd">const</span> <span class="nx">windowsInputChecked</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">windowsInput</span><span class="p">.</span><span class="nx">checked</span><span class="p">;</span> <span class="c1">// returns true</span>
+    <span class="kr">const</span> <span class="nx">windowsInputChecked</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">windowsInput</span><span class="p">.</span><span class="nx">checked</span><span class="p">;</span> <span class="c1">// returns true</span>
 <span class="p">});</span>
 </code></pre></div><h3><a class="anchor" name="dom-node-snapshot"></a>DOM Node Snapshot <a class="permalink" href="#dom-node-snapshot">#</a></h3>
 <p>If you need to get the entire DOM element state, call the selector
 with the <code>await</code> keyword like you would do with regular async functions.
 It returns a <em>DOM Node Snapshot</em> that contains <a href="../dom-node-state.html">all property values</a>
 exposed by the selector in a single object.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://devexpress.github.io/testcafe/example/`</span><span class="p">;</span>
+<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'DOM Node Snapshot'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kd">const</span> <span class="nx">sliderHandle</span>        <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#slider'</span><span class="p">).</span><span class="nx">child</span><span class="p">(</span><span class="s1">'span'</span><span class="p">);</span>
-    <span class="kd">const</span> <span class="nx">sliderHandleSnaphot</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">sliderHandle</span><span class="p">();</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'DOM Node Snapshot'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">const</span> <span class="nx">sliderHandle</span>        <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#slider'</span><span class="p">).</span><span class="nx">child</span><span class="p">(</span><span class="s1">'span'</span><span class="p">);</span>
+    <span class="kr">const</span> <span class="nx">sliderHandleSnaphot</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sliderHandle</span><span class="p">();</span>
 
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">sliderHandleSnaphot</span><span class="p">.</span><span class="nx">hasClass</span><span class="p">(</span><span class="s1">'ui-slider-handle'</span><span class="p">));</span>    <span class="c1">// =&gt; true</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">sliderHandleSnaphot</span><span class="p">.</span><span class="nx">childElementCount</span><span class="p">);</span>               <span class="c1">// =&gt; 0</span>
@@ -982,29 +982,29 @@ To enable <a href="../../assertions/#smart-assertion-query-mechanism">Smart Asse
 pass <a href="../dom-node-state.html#members-common-across-all-nodes">selector&#39;s properties</a> to assertions instead.</p>
 </div></blockquote><h2><a class="anchor" name="define-action-targets"></a>Define Action Targets <a class="permalink" href="#define-action-targets">#</a></h2>
 <p>You can pass selectors to <a href="../../actions/">test actions</a> to use the returned element as the action target.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://devexpress.github.io/testcafe/example/`</span><span class="p">;</span>
+<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`;</span>
 
-<span class="kd">const</span> <span class="nx">label</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#tried-section'</span><span class="p">).</span><span class="nx">child</span><span class="p">(</span><span class="s1">'label'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">label</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#tried-section'</span><span class="p">).</span><span class="nx">child</span><span class="p">(</span><span class="s1">'label'</span><span class="p">);</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My Test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">label</span><span class="p">);</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My Test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">label</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div>
 <p>DOM element snapshots can also be passed to test actions.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://devexpress.github.io/testcafe/example/`</span><span class="p">;</span>
+<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`;</span>
 
-<span class="kd">const</span> <span class="nx">label</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#tried-section'</span><span class="p">).</span><span class="nx">child</span><span class="p">(</span><span class="s1">'label'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">label</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#tried-section'</span><span class="p">).</span><span class="nx">child</span><span class="p">(</span><span class="s1">'label'</span><span class="p">);</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My Test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kd">const</span> <span class="nx">labelSnapshot</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">label</span><span class="p">();</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My Test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">const</span> <span class="nx">labelSnapshot</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">label</span><span class="p">();</span>
 
-    <span class="kr">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">labelSnapshot</span><span class="p">);</span>
+    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">labelSnapshot</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div>
 <p>In this instance, the selector that was used to fetch this snapshot will be called once again.</p>
@@ -1019,15 +1019,15 @@ the action will be executed only for the first node from the matching set.</p>
 <p>You can check whether a particular DOM node has the expected state by passing a selector property directly to <a href="../../assertions/">assertions</a>.
 In this case, TestCafe enables <a href="../../assertions/#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a>
 to avoid accidental errors and unstable tests.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://devexpress.github.io/testcafe/example/`</span><span class="p">;</span>
+<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Assertion with Selector'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kd">const</span> <span class="nx">developerNameInput</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">);</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Assertion with Selector'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">const</span> <span class="nx">developerNameInput</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">);</span>
 
-    <span class="kr">await</span> <span class="nx">t</span>
+    <span class="nx">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">developerNameInput</span><span class="p">.</span><span class="nx">innerText</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="s1">''</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">developerNameInput</span><span class="p">,</span> <span class="s1">'Peter'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">developerNameInput</span><span class="p">.</span><span class="nx">innerText</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="s1">'Peter'</span><span class="p">);</span>
