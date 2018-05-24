@@ -151,6 +151,7 @@
     "gulp-webmake": "0.0.4",
     "http-server": "^0.9.0",
     "js-yaml": "^3.6.1",
+    "license-checker": "^20.0.0",
     "markdownlint": ">=0.0.8",
     "merge-stream": "^1.0.0",
     "multer": "^1.1.0",

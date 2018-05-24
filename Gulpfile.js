@@ -29,10 +29,12 @@ var runSequence          = require('run-sequence');
 var yaml                 = require('js-yaml');
 var childProcess         = require('child_process');
 var listBrowsers         = require('testcafe-browser-tools').getInstallations;
+var checkLicenses        = require('./test/dependency-licenses-checker');
 
 ll
     .tasks([
         'lint',
+        'check-licenses',
         'server-scripts'
     ])
     .onlyInDebug([
@@ -167,6 +169,10 @@ gulp.task('lint', function () {
         .pipe(eslint.failAfterError());
 });
 
+// License checker
+gulp.task('check-licenses', function () {
+    return checkLicenses();
+});
 
 // Build
 gulp.task('client-scripts', ['client-scripts-bundle'], function () {
@@ -267,7 +273,7 @@ gulp.task('fast-build', ['server-scripts', 'client-scripts', 'styles', 'images',
 gulp.task('build', ['lint', 'fast-build']);
 
 // Test
-gulp.task('test-server', ['build'], function () {
+gulp.task('test-server', ['build', 'check-licenses'], function () {
     return gulp
         .src('test/server/*-test.js', { read: false })
         .pipe(mocha({
