@@ -20,6 +20,7 @@ try {
     sideMomentModulePath = resolveFrom(momentDurationFormatPath, 'moment');
 }
 catch (err) {
+    //
 }
 
 if (sideMomentModulePath && sideMomentModulePath !== testcafeMomentModulePath) {
@@ -33,7 +34,8 @@ if (sideMomentModulePath && sideMomentModulePath !== testcafeMomentModulePath) {
 else {
     const momentDurationFormatSetup = require(momentDurationFormatPath);
 
-    momentDurationFormatSetup(moment);
+    if (!sideMomentModulePath)
+        momentDurationFormatSetup(moment);
 }
 
 restoreInitialCacheState(testcafeOriginalMomentModule, testcafeMomentModulePath);
