@@ -116,15 +116,16 @@ function getFirstTextNode (el, onlyVisible) {
     var curNode                     = null;
     var child                       = null;
     var isNotContentEditableElement = null;
+    var checkTextNode               = onlyVisible ? isVisibleTextNode : domUtils.isTextNode;
 
-    if (!childrenLength && checkTextNodeVisibility(el, onlyVisible))
+    if (!childrenLength && checkTextNode(el))
         return el;
 
     for (var i = 0; i < childrenLength; i++) {
         curNode                     = children[i];
         isNotContentEditableElement = domUtils.isElementNode(curNode) && !domUtils.isContentEditableElement(curNode);
 
-        if (checkTextNodeVisibility(curNode, onlyVisible))
+        if (checkTextNode(curNode))
             return curNode;
         else if (domUtils.isRenderedNode(curNode) && hasVisibleChildren(curNode) && !isNotContentEditableElement) {
             child = getFirstTextNode(curNode, onlyVisible);
@@ -214,15 +215,8 @@ export function isInvisibleTextNode (node) {
     return firstVisibleIndex === nodeValue.length && lastVisibleIndex === 0;
 }
 
-function checkTextNodeVisibility (node, onlyVisible) {
-    if (!domUtils.isTextNode(node))
-        return false;
-
-    return !onlyVisible || !isInvisibleTextNode(node);
-}
-
 function isVisibleTextNode (node) {
-    return checkTextNodeVisibility(node, true);
+    return domUtils.isTextNode(node) && !isInvisibleTextNode(node);
 }
 
 function isSkippableNode (node) {
@@ -543,7 +537,7 @@ export function getFirstVisiblePosition (el) {
 }
 
 export function getLastVisiblePosition (el) {
-    var lastVisibleTextChild  = domUtils.isTextNode(el) ? el : getLastTextNode(el, true);
+    var lastVisibleTextChild = domUtils.isTextNode(el) ? el : getLastTextNode(el, true);
 
     if (!lastVisibleTextChild || isResetAnchorOffsetRequired(lastVisibleTextChild, el))
         return 0;
@@ -569,6 +563,7 @@ function hasWhiteSpacePreStyle (el, container) {
 
     while (el !== container) {
         el = el.parentNode;
+
         if (arrayUtils.indexOf(whiteSpacePreStyles, styleUtils.get(el, 'white-space')) > -1)
             return true;
     }
