@@ -16,16 +16,6 @@ function getSideMomentModulePath (sidePath) {
     }
 }
 
-function getCachedAndCleanModules (modulePath) {
-    const cachedModule = require.cache[modulePath];
-
-    delete require.cache[modulePath];
-
-    require(modulePath);
-
-    return { cachedModule, cleanModule: require.cache[modulePath] };
-}
-
 function getModulesPaths () {
     const durationFormatModulePath = require.resolve('moment-duration-format');
 
@@ -35,6 +25,16 @@ function getModulesPaths () {
         mainMomentModulePath: require.resolve('moment'),
         sideMomentModulePath: getSideMomentModulePath(durationFormatModulePath)
     };
+}
+
+function getCachedAndCleanModules (modulePath) {
+    const cachedModule = require.cache[modulePath];
+
+    delete require.cache[modulePath];
+
+    require(modulePath);
+
+    return { cachedModule, cleanModule: require.cache[modulePath] };
 }
 
 function getMomentModules ({ mainMomentModulePath, sideMomentModulePath }) {
