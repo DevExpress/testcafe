@@ -1,8 +1,8 @@
 var hammerhead   = window.getTestCafeModule('hammerhead');
 var browserUtils = hammerhead.utils.browser;
 
-var testCafeCore      = window.getTestCafeModule('testCafeCore');
-var domUtils          = testCafeCore.get('./utils/dom');
+var testCafeCore = window.getTestCafeModule('testCafeCore');
+var domUtils     = testCafeCore.get('./utils/dom');
 
 var testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
 var TypeOptions        = testCafeAutomation.get('../../test-run/commands/options').TypeOptions;
@@ -142,4 +142,48 @@ $(document).ready(function () {
                 });
         });
     }
+
+    asyncTest('selection after mousedown should ignore single new line character', function () {
+
+        function testWithWhiteSpaceStyle (whiteSpace) {
+            var editor = document.createElement('div');
+            var span   = document.createElement('span');
+            var type   = new TypeAutomation(editor, 'Hello World', {});
+
+            editor.className        = TEST_ELEMENT_CLASS;
+            editor.style.whiteSpace = whiteSpace;
+            editor.contentEditable  = true;
+            span.innerHTML          = String.fromCharCode(10);
+
+            editor.appendChild(span);
+            document.body.appendChild(editor);
+
+            var onSelectionChange = function () {
+                equal(document.getSelection().anchorOffset, 0);
+                document.removeEventListener('selectionchange', onSelectionChange, true);
+            };
+
+            document.addEventListener('selectionchange', onSelectionChange, true);
+
+            return type
+                .run()
+                .then(function () {
+                    equal(editor.textContent, 'Hello' + String.fromCharCode(160) + 'World\n', 'white-space: ' + whiteSpace);
+                    removeTestElements();
+                    document.getSelection().removeAllRanges();
+                    return;
+                });
+        }
+
+        testWithWhiteSpaceStyle('pre')
+            .then(function () {
+                return testWithWhiteSpaceStyle('pre-wrap');
+            })
+            .then(function () {
+                return testWithWhiteSpaceStyle('pre-line');
+            })
+            .then(function () {
+                startNext();
+            });
+    });
 });
