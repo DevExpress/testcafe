@@ -1,11 +1,4 @@
-const resolveFrom                  = require('resolve-from');
-const testcafeMomentModulePath     = require.resolve('moment');
-const testcafeOriginalMomentModule = require.cache[testcafeMomentModulePath];
-
-delete require.cache[testcafeMomentModulePath];
-
-const moment                   = require(testcafeMomentModulePath);
-const momentDurationFormatPath = require.resolve('moment-duration-format');
+import resolveFrom from 'resolve-from';
 
 function restoreInitialCacheState (module, path) {
     if (module)
@@ -14,30 +7,65 @@ function restoreInitialCacheState (module, path) {
         delete require.cache[path];
 }
 
-let sideMomentModulePath = '';
-
-try {
-    sideMomentModulePath = resolveFrom(momentDurationFormatPath, 'moment');
-}
-catch (err) {
-    //
-}
-
-if (sideMomentModulePath && sideMomentModulePath !== testcafeMomentModulePath) {
-    const testcafeMomentModule = require.cache[testcafeMomentModulePath];
-    const sideMomentModule     = require.cache[sideMomentModulePath];
-
-    require.cache[sideMomentModulePath] = testcafeMomentModule;
-    require(momentDurationFormatPath);
-    restoreInitialCacheState(sideMomentModule, sideMomentModulePath);
-}
-else {
-    const momentDurationFormatSetup = require(momentDurationFormatPath);
-
-    if (!sideMomentModulePath)
-        momentDurationFormatSetup(moment);
+function getSideMomentModulePath (sidePath) {
+    try {
+        return resolveFrom(sidePath, 'moment');
+    }
+    catch (err) {
+        return '';
+    }
 }
 
-restoreInitialCacheState(testcafeOriginalMomentModule, testcafeMomentModulePath);
+funciton getCachedAndCleanModules (modulePath) {
+    const cachedModule = require.cache[modulePath];
+    
+    delete require.cache[modulePath];
+    
+    require(modulePath);
+    
+    return { cachedModule, cleanModule: require.cache[modulePath] };
+}
 
-export default moment;
+function getModulesPaths () {
+    const durationFormatModulePath = require.resolve('moment-duration-format');
+    
+    return {
+        durationFormatModulePath,
+        
+        mainMomentModulePath: require.resolve('moment'),
+        sideMomentModulePath: getSideMomentModulePath(durationFormatModulePath)
+    };  
+}
+
+function getMomentModules ({ mainMomentModulePath, sideMomentModulePath }) {
+    return { 
+        sideModule: require.cache[sideMomentModulePath], 
+        
+        ...getCachedAndCleanModules(mainMomentModulePath) 
+    };
+}
+
+function getMomentModuleWithDurationFormatPatch () {
+    const modulesPaths  = getModulesPaths();
+    const momentModules = getMomentModules(modulesPaths);
+
+    if (modulesPaths.sideMomentModulePath && (modulesPaths.sideMomentModulePath !== modulesPaths.mainMomentModulePath) {
+        require.cache[modulesPaths.sideMomentModulePath] = momentModules.mainModule;
+        
+        require(modulesPaths.durationFormatModulePath);
+    
+        restoreInitialCacheState(momentModules.sideModule, modulesPaths.sideMomentModulePath);
+    }
+    else {
+        const durationFormatSetup = require(modulesPaths.durationFormatModulePath);
+
+        if (!modulesPaths.sideMomentModulePath)
+            durationFormatSetup(momentModules.mainModule.exports);
+    }
+
+    restoreInitialCacheState(momentModules.cachedModule, modulesPaths.mainMomentModulePath);
+
+    return momentModules.mainModule.exports;
+}
+
+export default getMomentModuleWithDurationFormatPatch();
