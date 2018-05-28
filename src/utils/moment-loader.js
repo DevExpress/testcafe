@@ -1,5 +1,9 @@
 import resolveFrom from 'resolve-from';
 
+
+const MOMENT_MODULE_NAME          = 'moment';
+const DURATION_FORMAT_MODULE_NAME = 'moment-duration-format';
+
 function restoreInitialCacheState (module, path) {
     if (module)
         require.cache[path] = module;
@@ -9,7 +13,7 @@ function restoreInitialCacheState (module, path) {
 
 function getSideMomentModulePath (sidePath) {
     try {
-        return resolveFrom(sidePath, 'moment');
+        return resolveFrom(sidePath, MOMENT_MODULE_NAME);
     }
     catch (err) {
         return '';
@@ -17,12 +21,12 @@ function getSideMomentModulePath (sidePath) {
 }
 
 function getModulesPaths () {
-    const durationFormatModulePath = require.resolve('moment-duration-format');
+    const durationFormatModulePath = require.resolve(DURATION_FORMAT_MODULE_NAME);
 
     return {
         durationFormatModulePath,
 
-        mainMomentModulePath: require.resolve('moment'),
+        mainMomentModulePath: require.resolve(MOMENT_MODULE_NAME),
         sideMomentModulePath: getSideMomentModulePath(durationFormatModulePath)
     };
 }
@@ -48,22 +52,24 @@ function getMomentModules ({ mainMomentModulePath, sideMomentModulePath }) {
 function getMomentModuleWithDurationFormatPatch () {
     const modulesPaths  = getModulesPaths();
     const momentModules = getMomentModules(modulesPaths);
+    
+    const { sideMomentModulePath, mainMomentModulePath, durationFormatModulePath } = modulesPaths;
 
-    if (modulesPaths.sideMomentModulePath && modulesPaths.sideMomentModulePath !== modulesPaths.mainMomentModulePath) {
-        require.cache[modulesPaths.sideMomentModulePath] = momentModules.mainModule;
+    if (sideMomentModulePath && sideMomentModulePath !== mainMomentModulePath) {
+        require.cache[sideMomentModulePath] = momentModules.mainModule;
 
-        require(modulesPaths.durationFormatModulePath);
+        require(durationFormatModulePath);
 
-        restoreInitialCacheState(momentModules.sideModule, modulesPaths.sideMomentModulePath);
+        restoreInitialCacheState(momentModules.sideModule, sideMomentModulePath);
     }
     else {
-        const durationFormatSetup = require(modulesPaths.durationFormatModulePath);
+        const durationFormatSetup = require(durationFormatModulePath);
 
-        if (!modulesPaths.sideMomentModulePath)
+        if (!sideMomentModulePath)
             durationFormatSetup(momentModules.mainModule.exports);
     }
 
-    restoreInitialCacheState(momentModules.cachedModule, modulesPaths.mainMomentModulePath);
+    restoreInitialCacheState(momentModules.cachedModule, mainMomentModulePath);
 
     return momentModules.mainModule.exports;
 }
