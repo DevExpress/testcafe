@@ -52,7 +52,7 @@ function getMomentModules ({ mainMomentModulePath, sideMomentModulePath }) {
 function getMomentModuleWithDurationFormatPatch () {
     const modulesPaths  = getModulesPaths();
     const momentModules = getMomentModules(modulesPaths);
-    
+
     const { sideMomentModulePath, mainMomentModulePath, durationFormatModulePath } = modulesPaths;
 
     if (sideMomentModulePath && sideMomentModulePath !== mainMomentModulePath) {
