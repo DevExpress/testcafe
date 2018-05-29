@@ -77,8 +77,10 @@ export default class BrowserConnection extends EventEmitter {
     _runBrowser () {
         // NOTE: Give caller time to assign event listeners
         process.nextTick(async () => {
+            const { browserName, providerName } = this.browserInfo;
+
             try {
-                await this.provider.openBrowser(this.id, this.url, this.browserInfo.browserName);
+                await this.provider.openBrowser(this.id, this.url, browserName);
 
                 if (!this.ready)
                     await promisifyEvent(this, 'ready');
@@ -89,7 +91,7 @@ export default class BrowserConnection extends EventEmitter {
             catch (err) {
                 this.emit('error', new GeneralError(
                     MESSAGE.unableToOpenBrowser,
-                    this.browserInfo.providerName + ':' + this.browserInfo.browserName,
+                    browserName ? providerName + ':' + browserName : providerName,
                     err.stack
                 ));
             }
