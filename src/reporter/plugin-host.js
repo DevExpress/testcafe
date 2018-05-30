@@ -1,8 +1,7 @@
 import chalk from 'chalk';
 import indentString from 'indent-string';
 import { identity, escape as escapeHtml, assignIn } from 'lodash';
-import moment from 'moment';
-import 'moment-duration-format';
+import moment from '../utils/moment-loader';
 import OS from 'os-family';
 import { wordWrap, removeTTYColors } from '../utils/string';
 import getViewportWidth from '../utils/get-viewport-width';
