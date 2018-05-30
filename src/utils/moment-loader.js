@@ -43,10 +43,10 @@ function getCachedAndCleanModules (modulePath) {
 
 function getMomentModules ({ mainMomentModulePath, sideMomentModulePath }) {
     const { cachedModule, cleanModule } = getCachedAndCleanModules(mainMomentModulePath);
-    
+
     return {
-        sideModule:  require.cache[sideMomentModulePath],
-        mainModule:  cleanModule,
+        sideModule: require.cache[sideMomentModulePath],
+        mainModule: cleanModule,
         cachedModule
     };
 }
