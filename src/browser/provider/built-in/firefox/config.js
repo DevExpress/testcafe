@@ -13,7 +13,8 @@ function parseModes (modesStr, userArgs) {
     var parsed        = splitEscaped(modesStr, ':');
     var path          = getPathFromParsedModes(parsed, AVAILABLE_MODES);
     var detectedModes = getModes(parsed, AVAILABLE_MODES);
-    var options       = parsed.length ? splitEscaped(parsed.join(':'), ';') : [];
+    var optionsString = parsed.filter(item => !!item).join(':');
+    var options       = parsed.length ? splitEscaped(optionsString, ';') : [];
 
     return {
         path:                   path,
