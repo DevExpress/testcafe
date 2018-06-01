@@ -6,7 +6,7 @@ $(function() {
             },
         
             {
-                url: 'https://twitter.com/maeri30/status/963402459141038080'
+                url: 'https://twitter.com/pantvivek28/status/973799993705410560'
             },
         
             {
