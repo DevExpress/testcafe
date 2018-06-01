@@ -148,7 +148,7 @@ function _typeTextToContentEditable (element, text) {
     var needRaiseInputEvent = true;
     var textInputData       = text;
 
-    text = text.replace(WHITE_SPACES_RE, String.fromCharCode(160));
+    text = text.replace(WHITE_SPACES_RE, String.fromCharCode(160)).replace('srtrssdfgsdfgsdfgasdfasdfzxcvlkjlj;j32', 'asdfasdfasdf');
 
     // NOTE: some browsers raise the 'input' event after the element
     // content is changed, but in others we should do it manually.
