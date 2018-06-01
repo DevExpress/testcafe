@@ -2,4 +2,5 @@
 !bin
 !docker
 !lib
+!ts-defs
 !package.json
