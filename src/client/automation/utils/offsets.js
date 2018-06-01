@@ -5,8 +5,8 @@ export function getDefaultAutomationOffsets (element) {
     var rect = positionUtils.getElementRectangle(element);
 
     return {
-        offsetX: Math.round(rect.width / 2),
-        offsetY: Math.round(rect.height / 2)
+        offsetX: Math.floor(rect.width / 2),
+        offsetY: Math.floor(rect.height / 2)
     };
 }
 
