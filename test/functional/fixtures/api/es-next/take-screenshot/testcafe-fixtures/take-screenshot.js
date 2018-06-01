@@ -40,6 +40,12 @@ test('Take a screenshot in quarantine mode', async t => {
         .click('.notExist');
 });
 
+test('Take screenshots with same path', async t => {
+    await t
+        .takeScreenshot('1.png')
+        .takeScreenshot('1.png');
+});
+
 test
     .page('../pages/crop.html')
     .before(async t => {

@@ -44,7 +44,7 @@ export default class TestRunController extends EventEmitter {
 
     _createTestRun (connection) {
         var quarantineAttemptNum = this.quarantine ? this.quarantine.attemptNumber : null;
-        var screenshotCapturer   = this.screenshots.createCapturerFor(this.test, this.index, quarantineAttemptNum, connection);
+        var screenshotCapturer   = this.screenshots.createCapturerFor(this.test, this.index, quarantineAttemptNum, connection, this.warningLog);
         var TestRunCtor          = this.TestRunCtor;
 
         this.testRun = new TestRunCtor(this.test, connection, screenshotCapturer, this.warningLog, this.opts);
