@@ -199,7 +199,9 @@ export default class ClickAutomation extends VisibleElementAutomation {
             return eventArgs.element;
 
         if (this.eventState.clickElement) {
-            if (browserUtils.isFirefox && this.eventState.clickElement.type === 'color')
+            const isColorInput = domUtils.isInputElement(this.eventState.clickElement) && this.eventState.clickElement.type === 'color';
+            
+            if (browserUtils.isFirefox && isColorInput)
                 this._bindClickHandler(this.eventState.clickElement);
 
             eventSimulator.click(this.eventState.clickElement, eventArgs.options);
