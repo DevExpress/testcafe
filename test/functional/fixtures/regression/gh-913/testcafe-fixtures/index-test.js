@@ -1,17 +1,27 @@
 import { expect } from 'chai';
 import { ClientFunction } from 'testcafe';
+import { saveWindowState, restoreWindowState } from '../../../../window-helpers';
+
 
 fixture `gh-913`
     .page `http://localhost:3000/fixtures/regression/gh-913/pages/index.html`;
 
 const getWindowScrollTop = ClientFunction(() => window.pageYOffset);
 
-test("Shouldn't scroll to target parent while performing click", async t => {
-    const oldWindowScrollValue = await getWindowScrollTop();
+test
+    .before(async t => {
+        await saveWindowState(t);
+        await t.maximizeWindow();
+    })
+    .after(async t => {
+        await restoreWindowState(t);
+    })
+    ("Shouldn't scroll to target parent while performing click", async t => {
+        const oldWindowScrollValue = await getWindowScrollTop();
 
-    await t.click('#child');
+        await t.click('#child');
 
-    const newWindowScrollValue = await getWindowScrollTop();
+        const newWindowScrollValue = await getWindowScrollTop();
 
-    expect(newWindowScrollValue).eql(oldWindowScrollValue);
-});
+        expect(newWindowScrollValue).eql(oldWindowScrollValue);
+    });

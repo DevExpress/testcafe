@@ -5,10 +5,15 @@ var config         = require('../../../../config');
 describe('[API] t.eval', function () {
     it('Should execute an anonymous client function', function () {
         function assertUA (errs, alias, expected) {
-            if (!errs[alias])
+            const isErrorsArray = config.currentEnvironment.browsers.length === 1 && Array.isArray(errs);
+
+            if (!isErrorsArray)
+                errs = errs[alias];
+
+            if (!isErrorsArray && !errs)
                 throw new Error('Error for "' + alias + '" haven\'t created');
 
-            var ua = parseUserAgent(errs[alias][0]).toString().toLowerCase();
+            var ua = parseUserAgent(errs[0]).toString().toLowerCase();
 
             expect(ua.indexOf(expected)).eql(0, ua + ' doesn\'t start with "' + expected + '"');
         }
@@ -22,7 +27,7 @@ describe('[API] t.eval', function () {
                         return browsers.indexOf(browser.alias) > -1;
                     })
                     .forEach(function (browser) {
-                        assertUA(errs, browser.alias, browser.alias);
+                        assertUA(errs, browser.alias, browser.userAgent || browser.alias);
                     });
             });
     });

@@ -11,7 +11,7 @@ function createTempProfileDir () {
     return tmp.dirSync({ unsafeCleanup: true });
 }
 
-async function generatePrefs (profileDir, port) {
+async function generatePrefs (profileDir, { marionettePort, config }) {
     var prefsFileName = path.join(profileDir, 'user.js');
 
     var prefs = [
@@ -44,10 +44,17 @@ async function generatePrefs (profileDir, port) {
         'user_pref("signon.rememberSignons", false);'
     ];
 
-    if (port) {
+    if (marionettePort) {
         prefs = prefs.concat([
-            `user_pref("marionette.port", ${port});`,
+            `user_pref("marionette.port", ${marionettePort});`,
             'user_pref("marionette.enabled", true);'
+        ]);
+    }
+
+    if (config.disableMultiprocessing) {
+        prefs = prefs.concat([
+            'user_pref("browser.tabs.remote.autostart", false);',
+            'user_pref("browser.tabs.remote.autostart.2", false);',
         ]);
     }
 
@@ -58,9 +65,10 @@ export default async function (configString) {
     var config         = getConfig(configString);
     var marionettePort = config.headless ? config.marionettePort || await getFreePort() : null;
     var tempProfileDir = !config.userProfile ? createTempProfileDir() : null;
+    var runtimeInfo    = { config, tempProfileDir, marionettePort };
 
     if (!config.userProfile)
-        await generatePrefs(tempProfileDir.name, marionettePort);
+        await generatePrefs(tempProfileDir.name, runtimeInfo);
 
-    return { config, tempProfileDir, marionettePort };
+    return runtimeInfo;
 }

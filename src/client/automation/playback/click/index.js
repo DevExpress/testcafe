@@ -60,6 +60,16 @@ export default class ClickAutomation extends VisibleElementAutomation {
         eventUtils.bind(element, 'blur', onblur, true);
     }
 
+    _bindClickHandler (element) {
+        const onclick = e => {
+            eventUtils.preventDefault(e, true);
+            eventUtils.unbind(element, 'click', onclick);
+        };
+
+        eventUtils.bind(element, 'click', onclick);
+    }
+
+
     _raiseTouchEvents (eventArgs) {
         if (featureDetection.isTouchDevice) {
             eventSimulator.touchstart(eventArgs.element, eventArgs.options);
@@ -188,8 +198,14 @@ export default class ClickAutomation extends VisibleElementAutomation {
         if (domUtils.isOptionElement(eventArgs.element))
             return eventArgs.element;
 
-        if (this.eventState.clickElement)
+        if (this.eventState.clickElement) {
+            const isColorInput = domUtils.isInputElement(this.eventState.clickElement) && this.eventState.clickElement.type === 'color';
+
+            if (browserUtils.isFirefox && isColorInput)
+                this._bindClickHandler(this.eventState.clickElement);
+
             eventSimulator.click(this.eventState.clickElement, eventArgs.options);
+        }
 
         if (!domUtils.isElementFocusable(eventArgs.element))
             focusByRelatedElement(eventArgs.element);

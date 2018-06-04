@@ -1,7 +1,6 @@
 var os = require('os');
 
 var isTravisEnvironment = !!process.env.TRAVIS;
-var isCCNetEnvironment  = !!process.env.CCNET;
 var hostname            = isTravisEnvironment ? os.hostname() : '127.0.0.1';
 
 var browserProviderNames = {
@@ -12,7 +11,9 @@ var browserProviderNames = {
 var testingEnvironmentNames = {
     osXDesktopAndMSEdgeBrowsers: 'osx-desktop-and-ms-edge-browsers',
     mobileBrowsers:              'mobile-browsers',
+    localBrowsersAppveyor:       'local-browsers-appveyor',
     localBrowsers:               'local-browsers',
+    localHeadlessBrowsers:       'local-headless-browsers',
     oldBrowsers:                 'old-browsers',
     legacy:                      'legacy'
 };
@@ -92,6 +93,8 @@ testingEnvironments[testingEnvironmentNames.mobileBrowsers] = {
 };
 
 testingEnvironments[testingEnvironmentNames.localBrowsers] = {
+    isLocalBrowsers: true,
+
     browsers: [
         {
             platform:    'Windows 10',
@@ -100,13 +103,44 @@ testingEnvironments[testingEnvironmentNames.localBrowsers] = {
         },
         {
             platform:    'Windows 10',
-            browserName: 'internet explorer',
+            browserName: 'ie',
             version:     '11.0',
             alias:       'ie'
         },
         {
             platform:    'Windows 10',
             browserName: 'firefox',
+            alias:       'firefox'
+        }
+    ]
+};
+
+testingEnvironments[testingEnvironmentNames.localBrowsersAppveyor] = {
+    isLocalBrowsers: true,
+
+    browsers: [
+        {
+            platform:    'Windows 10',
+            browserName: 'ie',
+            version:     '11.0',
+            alias:       'ie'
+        }
+    ]
+};
+
+testingEnvironments[testingEnvironmentNames.localHeadlessBrowsers] = {
+    isLocalBrowsers: true,
+
+    browsers: [
+        {
+            platform:    'Windows 10',
+            browserName: 'chrome:headless --no-sandbox',
+            userAgent:   'headlesschrome',
+            alias:       'chrome'
+        },
+        {
+            platform:    'Windows 10',
+            browserName: 'firefox:headless:disableMultiprocessing=true',
             alias:       'firefox'
         }
     ]
@@ -138,6 +172,8 @@ testingEnvironments[testingEnvironmentNames.oldBrowsers] = {
 };
 
 testingEnvironments[testingEnvironmentNames.legacy] = {
+    isLocalBrowsers: true,
+
     browsers: [
         {
             platform:    'Windows 10',
@@ -155,7 +191,15 @@ testingEnvironments[testingEnvironmentNames.legacy] = {
 
 
 module.exports = {
-    useLocalBrowsers: !isTravisEnvironment && !isCCNetEnvironment,
+    get currentEnvironment () {
+        var environmentName = process.env.TESTING_ENVIRONMENT || this.testingEnvironmentNames.localBrowsers;
+
+        return this.testingEnvironments[environmentName];
+    },
+
+    get useLocalBrowsers () {
+        return this.currentEnvironment.isLocalBrowsers;
+    },
 
     testingEnvironmentNames: testingEnvironmentNames,
     testingEnvironments:     testingEnvironments,

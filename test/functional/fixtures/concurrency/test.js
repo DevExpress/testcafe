@@ -99,7 +99,7 @@ if (config.useLocalBrowsers) {
         });
 
         it('Should run tests sequentially if concurrency = 1', function () {
-            return run('chrome', 1, './testcafe-fixtures/sequential-test.js')
+            return run('chrome:headless --no-sandbox', 1, './testcafe-fixtures/sequential-test.js')
                 .then(failedCount => {
                     var results = getResults(data);
 
@@ -109,7 +109,7 @@ if (config.useLocalBrowsers) {
         });
 
         it('Should run tests concurrently if concurrency > 1', function () {
-            return run('chrome', 2, './testcafe-fixtures/concurrent-test.js')
+            return run('chrome:headless --no-sandbox', 2, './testcafe-fixtures/concurrent-test.js')
                 .then(failedCount => {
                     var results = getResults(data);
 
@@ -119,7 +119,7 @@ if (config.useLocalBrowsers) {
         });
 
         it('Should run tests concurrently in different browser kinds', function () {
-            return run(['chrome', 'firefox'], 2, './testcafe-fixtures/multibrowser-concurrent-test.js')
+            return run(['chrome:headless --no-sandbox', 'firefox:headless'], 2, './testcafe-fixtures/multibrowser-concurrent-test.js')
                 .then(failedCount => {
                     var results = getResults(data);
 
@@ -129,7 +129,7 @@ if (config.useLocalBrowsers) {
         });
 
         it('Should report fixture start correctly if second fixture finishes before first', function () {
-            return run('chrome', 2, ['./testcafe-fixtures/multifixture-test-a.js', './testcafe-fixtures/multifixture-test-b.js'], customReporter)
+            return run('chrome:headless --no-sandbox', 2, ['./testcafe-fixtures/multifixture-test-a.js', './testcafe-fixtures/multifixture-test-b.js'], customReporter)
                 .then(failedCount => {
                     expect(failedCount).eql(0);
                     expect(data.split('\n')).eql([

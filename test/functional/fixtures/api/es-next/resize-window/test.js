@@ -23,7 +23,7 @@ describe('[API] Resize window actions', function () {
             });
 
             it('Should fail when a js-error appears during resizeWindow execution', function () {
-                return runTests('./testcafe-fixtures/resize-window-test.js', 'Resize the window leads to js-error', { shouldFail: true })
+                return runTests('./testcafe-fixtures/resize-window-test.js', 'Resize the window leads to js-error', { shouldFail: true, skip: 'headlesschrome' })
                     .catch(function (errs) {
                         errorInEachBrowserContains(errs, 'Error on page "http://localhost:3000/fixtures/api/es-next/resize-window/pages/index.html":', 0);
                         errorInEachBrowserContains(errs, 'Resize error', 0);
@@ -53,7 +53,7 @@ describe('[API] Resize window actions', function () {
             });
 
             it('Should fail when a js-error appears during resizeWindowToFitDevice execution', function () {
-                return runTests('./testcafe-fixtures/resize-window-test.js', 'Resize the window to fit a device leads to js-error', { shouldFail: true })
+                return runTests('./testcafe-fixtures/resize-window-test.js', 'Resize the window to fit a device leads to js-error', { shouldFail: true, skip: 'chrome:headless' })
                     .catch(function (errs) {
                         errorInEachBrowserContains(errs, 'Error on page "http://localhost:3000/fixtures/api/es-next/resize-window/pages/index.html":', 0);
                         errorInEachBrowserContains(errs, 'Resize error', 0);

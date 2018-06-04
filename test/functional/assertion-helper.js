@@ -11,7 +11,7 @@ const SCREENSHOTS_PATH               = '___test-screenshots___';
 const THUMBNAILS_DIR_NAME            = 'thumbnails';
 const ERRORS_DIR_NAME                = 'errors';
 const TASK_DIR_RE                    = /\d{4,4}-\d{2,2}-\d{2,2}_\d{2,2}-\d{2,2}-\d{2,2}/;
-const SCREENSHOT_FILE_NAME_RE        = /\\\d+.png$/;
+const SCREENSHOT_FILE_NAME_RE        = /[\\/]\d+.png$/;
 const CUSTOM_SCREENSHOT_FILE_NAME_RE = /\.png$/;
 const TEST_DIR_NAME_RE               = /test-\d+/;
 const RUN_DIR_NAME_RE                = /run-\d+/;
@@ -36,7 +36,7 @@ function getScreenshotFilesCount (dir, customPath) {
     var filePath         = null;
 
     list.forEach(function (file) {
-        filePath = dir + '\\' + file;
+        filePath = path.join(dir, file);
         stat     = fs.statSync(filePath);
 
         if (stat && stat.isDirectory() && file === THUMBNAILS_DIR_NAME)

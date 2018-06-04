@@ -1,4 +1,6 @@
 var expect = require('chai').expect;
+var config = require('../../../../config');
+
 
 // NOTE: we set selectorTimeout to a large value in some tests to wait for
 // an iframe to load on the farm (it is fast locally but can take some time on the farm)
@@ -42,9 +44,14 @@ describe('[API] t.useRole()', function () {
                 only:       'chrome,ie,firefox'
             })
                 .catch(function (errs) {
+                    const testedBrowsers = config.currentEnvironment.browsers;
+
+                    if (testedBrowsers.length === 1 && Array.isArray(errs))
+                        errs = { [testedBrowsers[0].alias]: errs };
+
                     const browsers = Object.keys(errs);
 
-                    expect(browsers.length).eql(3);
+                    expect(browsers.length).eql(config.currentEnvironment.browsers.length);
 
                     browsers.forEach(function (browser) {
                         expect(errs[browser].length).eql(2);

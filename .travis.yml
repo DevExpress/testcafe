@@ -1,3 +1,10 @@
+addons:
+ chrome:  stable
+ firefox: latest
+ apt:
+  packages:
+   - dbus
+
 language: node_js
 matrix:
  include:
@@ -13,11 +20,14 @@ matrix:
     env: GULP_TASK="test-functional-travis-desktop-osx-and-ms-edge"
   - node_js: "stable"
     env: GULP_TASK="test-functional-travis-mobile"
+  - node_js: "stable"
+    env: GULP_TASK="test-functional-local-headless"
  fast_finish: true
 
 cache: yarn
 
 before_install:
+  - export $(dbus-launch)
   - curl -o- -L https://yarnpkg.com/install.sh | bash
   - export PATH=$HOME/.yarn/bin:$PATH
 

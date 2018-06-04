@@ -1,19 +1,18 @@
-var path                = require('path');
-var browserTools        = require('testcafe-browser-tools');
-var expect              = require('chai').expect;
-var config              = require('../../../config');
-var browserProviderPool = require('../../../../../lib/browser/provider/pool');
-var BrowserConnection   = require('../../../../../lib/browser/connection');
+var path                  = require('path');
+var expect                = require('chai').expect;
+var config                = require('../../../config');
+var chromeBrowserProvider = require('../../../../../lib/browser/provider/built-in/chrome');
+var browserProviderPool   = require('../../../../../lib/browser/provider/pool');
+var BrowserConnection     = require('../../../../../lib/browser/connection');
 
 
 if (config.useLocalBrowsers) {
     describe('Browser Provider - Job Results Reporting', function () {
         var BROWSER_OPENING_DELAY = 3000;
 
-        var chromeInfo   = null;
         var mockProvider = null;
 
-        var mockProviderPlugin = {
+        var mockProviderPlugin = Object.assign({}, chromeBrowserProvider, {
             state:     {},
             idNameMap: {},
 
@@ -29,11 +28,11 @@ if (config.useLocalBrowsers) {
                     }, BROWSER_OPENING_DELAY);
                 }
 
-                return browserTools.open(chromeInfo, pageUrl);
+                return chromeBrowserProvider.openBrowser.call(this, browserId, pageUrl, 'headless --no-sandbox');
             },
 
             closeBrowser: function (browserId) {
-                return browserTools.close(browserId);
+                return chromeBrowserProvider.closeBrowser.call(this, browserId);
             },
 
             reportJobResult: function (browserId, result, data) {
@@ -50,7 +49,7 @@ if (config.useLocalBrowsers) {
 
                 bc.emit('error', new Error('Connection error'));
             }
-        };
+        });
 
 
         function run (browsers, file) {
@@ -71,22 +70,17 @@ if (config.useLocalBrowsers) {
         }
 
         before(function () {
-            browserProviderPool.addProvider('mock', mockProviderPlugin);
+            browserProviderPool.addProvider('chrome', mockProviderPlugin);
 
             return browserProviderPool
-                .getProvider('mock')
+                .getProvider('chrome')
                 .then(function (provider) {
                     mockProvider = provider;
-
-                    return browserTools.getBrowserInfo('chrome');
-                })
-                .then(function (info) {
-                    chromeInfo = info;
                 });
         });
 
         after(function () {
-            browserProviderPool.removeProvider('mock');
+            browserProviderPool.addProvider('chrome', chromeBrowserProvider);
         });
 
         beforeEach(function () {
@@ -95,7 +89,7 @@ if (config.useLocalBrowsers) {
         });
 
         it('Should report job results to the providers', function () {
-            return run(['mock:id-1', 'mock:id-2'], './testcafe-fixtures/index-test.js')
+            return run(['chrome:id-1', 'chrome:id-2'], './testcafe-fixtures/index-test.js')
                 .then(function () {
                     expect(mockProvider.plugin.state['id-1'].result).eql(mockProvider.plugin.JOB_RESULT.done);
                     expect(mockProvider.plugin.state['id-1'].data).eql({ total: 2, passed: 1 });
@@ -105,7 +99,7 @@ if (config.useLocalBrowsers) {
         });
 
         it('Should report job error to the providers', function () {
-            return run(['mock:failed-1', 'mock:id-2'], './testcafe-fixtures/long-test.js')
+            return run(['chrome:failed-1', 'chrome:id-2'], './testcafe-fixtures/long-test.js')
                 .then(function () {
                     throw new Error('Promise rejection expected');
                 })
@@ -118,7 +112,7 @@ if (config.useLocalBrowsers) {
         });
 
         it('Should report job cancellation to the providers', function () {
-            return run(['mock:id-1', 'mock:id-2'], './testcafe-fixtures/long-test.js')
+            return run(['chrome:id-1', 'chrome:id-2'], './testcafe-fixtures/long-test.js')
                 .cancel()
                 .then(function () {
                     expect(mockProvider.plugin.state['id-1'].result).eql(mockProvider.plugin.JOB_RESULT.aborted);
