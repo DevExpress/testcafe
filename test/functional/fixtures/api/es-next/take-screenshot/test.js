@@ -4,8 +4,8 @@ var config          = require('../../../../config.js');
 var assertionHelper = require('../../../../assertion-helper.js');
 
 
-var SCREENSHOT_PATH_MESSAGE_RE     = /^___test-screenshots___[\\/]\d{4,4}-\d{2,2}-\d{2,2}_\d{2,2}-\d{2,2}-\d{2,2}[\\/]test-1$/;
-var CUSTOM_SCREENSHOT_PATH_MESSAGE = '___test-screenshots___';
+var SCREENSHOT_PATH_MESSAGE_RE = /^___test-screenshots___[\\/]\d{4,4}-\d{2,2}-\d{2,2}_\d{2,2}-\d{2,2}-\d{2,2}[\\/]test-1$/;
+var CUSTOM_SCREENSHOT_DIR      = '___test-screenshots___';
 
 
 describe('[API] t.takeScreenshot()', function () {
@@ -24,7 +24,7 @@ describe('[API] t.takeScreenshot()', function () {
             return runTests('./testcafe-fixtures/take-screenshot.js', 'Take a screenshot with a custom path (OS separator)',
                 { setScreenshotPath: true })
                 .then(function () {
-                    expect(testReport.screenshotPath).eql(CUSTOM_SCREENSHOT_PATH_MESSAGE);
+                    expect(testReport.screenshotPath).eql(CUSTOM_SCREENSHOT_DIR);
                     expect(assertionHelper.checkScreenshotsCreated(false, 2, 'custom')).eql(true);
                 });
         });
@@ -33,7 +33,7 @@ describe('[API] t.takeScreenshot()', function () {
             return runTests('./testcafe-fixtures/take-screenshot.js', 'Take a screenshot with a custom path (DOS separator)',
                 { setScreenshotPath: true })
                 .then(function () {
-                    expect(testReport.screenshotPath).contains(CUSTOM_SCREENSHOT_PATH_MESSAGE);
+                    expect(testReport.screenshotPath).contains(CUSTOM_SCREENSHOT_DIR);
                     expect(assertionHelper.checkScreenshotsCreated(false, 2, 'custom')).eql(true);
                 });
         });
@@ -92,8 +92,10 @@ describe('[API] t.takeScreenshot()', function () {
             return runTests('./testcafe-fixtures/take-screenshot.js', 'Take screenshots with same path', {
                 setScreenshotPath: true
             }).then(function () {
+                const screenshotFileName = path.join(CUSTOM_SCREENSHOT_DIR, '1.png');
+
                 expect(testReport.warnings).eql([
-                    'The file at "___test-screenshots___\\1.png" already exists. It has just been rewritten ' +
+                    `The file at "${screenshotFileName}" already exists. It has just been rewritten ` +
                     'with a recent screenshot. This situation can possibly cause issues. To avoid them, make sure ' +
                     'that each screenshot has a unique path. If a test runs in multiple browsers, consider ' +
                     'including the user agent in the screenshot path or generate a unique identifier in another way.'
