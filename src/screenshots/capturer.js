@@ -3,13 +3,15 @@ import sanitizeFilename from 'sanitize-filename';
 import { generateThumbnail } from 'testcafe-browser-tools';
 import cropScreenshot from './crop';
 import { ensureDir } from '../utils/promisified-functions';
+import { isInQueue, addToQueue } from '../utils/async-queue';
+import WARNING_MESSAGE from '../notifications/warning-message';
 
 
 const PNG_EXTENSION_RE = /(\.png)$/;
 
 
 export default class Capturer {
-    constructor (baseScreenshotsPath, testEntry, connection, namingOptions) {
+    constructor (baseScreenshotsPath, testEntry, connection, namingOptions, warningLog) {
         this.enabled              = !!baseScreenshotsPath;
         this.baseScreenshotsPath  = baseScreenshotsPath;
         this.testEntry            = testEntry;
@@ -21,6 +23,7 @@ export default class Capturer {
         this.testIndex            = namingOptions.testIndex;
         this.screenshotIndex      = 1;
         this.errorScreenshotIndex = 1;
+        this.warningLog           = warningLog;
 
         var testDirName     = `test-${this.testIndex}`;
         var screenshotsPath = this.enabled ? joinPath(this.baseScreenshotsPath, this.baseDirName, testDirName) : '';
@@ -107,12 +110,17 @@ export default class Capturer {
 
         var screenshotPath = this._getScreenshotPath(fileName, customPath);
 
-        await this._takeScreenshot(screenshotPath, ... pageDimensions ? [pageDimensions.innerWidth, pageDimensions.innerHeight] : []);
+        if (isInQueue(screenshotPath))
+            this.warningLog.addWarning(WARNING_MESSAGE.screenshotRewritingError, screenshotPath);
 
-        if (markSeed)
-            await cropScreenshot(screenshotPath, markSeed, Capturer._getClientAreaDimensions(pageDimensions), Capturer._getCropDimensions(cropDimensions, pageDimensions));
+        await addToQueue(screenshotPath, async () => {
+            await this._takeScreenshot(screenshotPath, ... pageDimensions ? [pageDimensions.innerWidth, pageDimensions.innerHeight] : []);
 
-        await generateThumbnail(screenshotPath);
+            if (markSeed)
+                await cropScreenshot(screenshotPath, markSeed, Capturer._getClientAreaDimensions(pageDimensions), Capturer._getCropDimensions(cropDimensions, pageDimensions));
+
+            await generateThumbnail(screenshotPath);
+        });
 
         // NOTE: if test contains takeScreenshot action with custom path
         // we should specify the most common screenshot folder in report

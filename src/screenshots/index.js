@@ -73,7 +73,7 @@ export default class Screenshots {
         return this._getTestEntry(test).path;
     }
 
-    createCapturerFor (test, testIndex, quarantineAttemptNum, connection) {
+    createCapturerFor (test, testIndex, quarantineAttemptNum, connection, warningLog) {
         var testEntry = this._getTestEntry(test);
 
         if (!testEntry)
@@ -86,6 +86,6 @@ export default class Screenshots {
             userAgentName: this._getUserAgentName(connection.userAgent, testIndex, quarantineAttemptNum)
         };
 
-        return new Capturer(this.screenshotsPath, testEntry, connection, namingOptions);
+        return new Capturer(this.screenshotsPath, testEntry, connection, namingOptions, warningLog);
     }
 }

@@ -88,6 +88,19 @@ describe('[API] t.takeScreenshot()', function () {
                 });
         });
 
+        it('Should throw warning when taking screenshots with same path', function () {
+            return runTests('./testcafe-fixtures/take-screenshot.js', 'Take screenshots with same path', {
+                setScreenshotPath: true
+            }).then(function () {
+                expect(testReport.warnings).eql([
+                    'The file at "___test-screenshots___\\1.png" already exists. It has just been rewritten ' +
+                    'with a recent screenshot. This situation can possibly cause issues. To avoid them, make sure ' +
+                    'that each screenshot has a unique path. If a test runs in multiple browsers, consider ' +
+                    'including the user agent in the screenshot path or generate a unique identifier in another way.'
+                ]);
+            });
+        });
+
         it('Should crop screenshots to a page viewport area', function () {
             return runTests('./testcafe-fixtures/take-screenshot.js', 'Should crop screenshots',
                 { setScreenshotPath: true })
