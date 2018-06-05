@@ -3,7 +3,6 @@ var TYPE                 = require('../../lib/test-run/commands/type');
 var createCommand        = require('../../lib/test-run/commands/from-object');
 var ERROR_TYPE           = require('../../lib/errors/test-run/type');
 var SelectorBuilder      = require('../../lib/client-functions/selectors/selector-builder');
-var MARK_BYTES_PER_PIXEL = require('../../lib/screenshots/constants').MARK_BYTES_PER_PIXEL;
 var assertThrow          = require('./helpers/assert-error').assertThrow;
 
 function assertErrorMessage (fn, expectedErrMessage) {
@@ -831,15 +830,11 @@ describe('Test run commands', function () {
 
             var command = createCommand(commandObj);
 
-            expect(command.markData).contain('data:image/png;base64,');
-            expect(command.markSeed.length % MARK_BYTES_PER_PIXEL).eql(0);
-
-            delete command.markData;
-            delete command.markSeed;
-
             expect(JSON.parse(JSON.stringify(command))).eql({
-                type: TYPE.takeScreenshot,
-                path: 'custom'
+                type:     TYPE.takeScreenshot,
+                markData: '',
+                markSeed: null,
+                path:     'custom'
             });
 
             commandObj = {
@@ -854,12 +849,11 @@ describe('Test run commands', function () {
 
             command = createCommand(commandObj);
 
-            delete command.markData;
-            delete command.markSeed;
-
             expect(JSON.parse(JSON.stringify(command))).eql({
-                type: TYPE.takeScreenshot,
-                path: ''
+                type:     TYPE.takeScreenshot,
+                markData: '',
+                markSeed: null,
+                path:     ''
             });
         });
 
@@ -884,14 +878,10 @@ describe('Test run commands', function () {
 
             var command = createCommand(commandObj);
 
-            expect(command.markData).contain('data:image/png;base64,');
-            expect(command.markSeed.length % MARK_BYTES_PER_PIXEL).eql(0);
-
-            delete command.markData;
-            delete command.markSeed;
-
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.takeElementScreenshot,
+                markData: '',
+                markSeed: null,
                 selector: makeSelector('#yo'),
                 path:     'custom',
 
