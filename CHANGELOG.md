@@ -1,5 +1,19 @@
 # Changelog
 
+## v0.20.3 (2018-6-7)
+
+### Enhancements 
+
+#### ⚙️ Add TS definitions to the Docker image ([#2481](https://github.com/DevExpress/testcafe/pull/2481))
+
+### Bug fixes
+
+* Selection in a `contenteditable` `div` now works properly in a specific scenario ([#2365](https://github.com/DevExpress/testcafe/issues/2365))
+* A collision related to several `moment-duration-format` package versions is now fixed ([#1750](https://github.com/DevExpress/testcafe/issues/1750))
+* TestCafe now reports a warning when saving several screenshots at the same path ([#2213](https://github.com/DevExpress/testcafe/issues/2213))
+* A regression related to wrongly processed `document.write` in IE11 is now fixed ([#2469](https://github.com/DevExpress/testcafe/issues/2469))
+* An out of memory crash on calling console methods is now fixed ([testcafe-hammerhead/#1546](https://github.com/DevExpress/testcafe-hammerhead/issues/1546))
+
 ## v0.20.2 (2018-5-24)
 
 #### :gear: Package dependencies have been upgraded to avoid CVEs reported by Node Security Platform
