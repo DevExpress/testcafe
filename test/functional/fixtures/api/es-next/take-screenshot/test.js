@@ -4,18 +4,20 @@ var config          = require('../../../../config.js');
 var assertionHelper = require('../../../../assertion-helper.js');
 
 var CUSTOM_SCREENSHOT_DIR              = '___test-screenshots___';
-var SCREENSHOT_PATH_BASE               = '^___test-screenshots___[\\\\/]\\d{4,4}-\\d{2,2}-\\d{2,2}_\\d{2,2}-\\d{2,2}-\\d{2,2}[\\\\/]test-1';
-var SCREENSHOT_PATH_MESSAGE_RE         = new RegExp(SCREENSHOT_PATH_BASE + '$');
-var SCREENSHOT_ON_FAIL_PATH_MESSAGE_RE = new RegExp(SCREENSHOT_PATH_BASE + '\\\\run-1');
+var SCREENSHOT_PATH_MESSAGE_RE         = /^___test-screenshots___[\\/]\d{4,4}-\d{2,2}-\d{2,2}_\d{2,2}-\d{2,2}-\d{2,2}[\\/]test-1$/;
+var SCREENSHOT_ON_FAIL_PATH_MESSAGE_RE = /^.*run-1/;
+var SLASH_RE                           = /[\\/]/g;
 
 var getReporter = function (scope) {
     const userAgents = { };
 
+    function patchScreenshotPath (screenshotPath) {
+        return screenshotPath.replace(SCREENSHOT_ON_FAIL_PATH_MESSAGE_RE, '').replace(CUSTOM_SCREENSHOT_DIR, '').replace(SLASH_RE, '_');
+    }
+
     function prepareScreenshot (screenshot) {
-        screenshot.screenshotPath = screenshot.screenshotPath.replace(SCREENSHOT_ON_FAIL_PATH_MESSAGE_RE, '');
-        screenshot.thumbnailPath  = screenshot.thumbnailPath.replace(SCREENSHOT_ON_FAIL_PATH_MESSAGE_RE, '');
-        screenshot.screenshotPath = screenshot.screenshotPath.replace(CUSTOM_SCREENSHOT_DIR, '');
-        screenshot.thumbnailPath  = screenshot.thumbnailPath.replace(CUSTOM_SCREENSHOT_DIR, '');
+        screenshot.screenshotPath = patchScreenshotPath(screenshot.screenshotPath);
+        screenshot.thumbnailPath  = patchScreenshotPath(screenshot.thumbnailPath);
 
         userAgents[screenshot.userAgent] = true;
     }
@@ -106,9 +108,9 @@ describe('[API] t.takeScreenshot()', function () {
                 .catch(function (errs) {
                     expect(errs[0]).to.contains('The "path" argument is expected to be a non-empty string, but it was number.');
                     expect(errs[0]).to.contains(
-                        '33 |test(\'Incorrect action path argument\', async t => {' +
-                        ' > 34 |    await t.takeScreenshot(1); ' +
-                        '35 |});'
+                        '35 |test(\'Incorrect action path argument\', async t => {' +
+                        ' > 36 |    await t.takeScreenshot(1); ' +
+                        '37 |});'
                     );
                 });
         });
@@ -166,8 +168,8 @@ describe('[API] t.takeScreenshot()', function () {
                 .then(function () {
                     var getScreenshotInfo = (screenshotPath, thumbnailPath, attempt, userAgent, forError) => {
                         if (!forError) {
-                            screenshotPath = '\\' + userAgent + attempt + screenshotPath;
-                            thumbnailPath  = '\\thumbnails' + screenshotPath;
+                            screenshotPath = '_' + userAgent + attempt + screenshotPath;
+                            thumbnailPath  = '_thumbnails' + screenshotPath;
                         }
 
                         var isFailed = attempt === 0 || forError;
@@ -181,8 +183,8 @@ describe('[API] t.takeScreenshot()', function () {
                             value.push(getScreenshotInfo('2.png', null, attempt, userAgent, false));
                         }
 
-                        var errorScreenshotPath = '\\' + userAgent + '\\errors\\1.png';
-                        var errorThumbnailPath  = '\\' + userAgent + '\\errors\\thumbnails\\1.png';
+                        var errorScreenshotPath = '_' + userAgent + '_errors_1.png';
+                        var errorThumbnailPath  = '_' + userAgent + '_errors_thumbnails_1.png';
 
                         value.push(getScreenshotInfo(errorScreenshotPath, errorThumbnailPath, attempt, userAgent, true));
 
