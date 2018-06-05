@@ -172,22 +172,10 @@ export default class Driver {
     }
 
     // Console messages
-    _onConsoleMessage (e) {
-        const meth = e.meth;
-
-        const args = e.args.map(arg => {
-            if (arg === null)
-                return 'null';
-
-            if (arg === void 0)
-                return 'undefined';
-
-            return arg.toString();
-        });
-
+    _onConsoleMessage ({ meth, line }) {
         const messages = this.consoleMessages;
 
-        messages.addMessage(meth, Array.prototype.slice.call(args).join(' '));
+        messages.addMessage(meth, line);
 
         this.consoleMessages = messages;
     }
