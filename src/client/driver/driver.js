@@ -173,7 +173,11 @@ export default class Driver {
 
     // Console messages
     _onConsoleMessage ({ meth, line }) {
-        this.consoleMessages = this.consoleMessages.addMessage(meth, line);
+        const messages = this.consoleMessages;
+
+        messages.addMessage(meth, line);
+
+        this.consoleMessages = messages;
     }
 
     // Status
