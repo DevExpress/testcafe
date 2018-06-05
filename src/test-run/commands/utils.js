@@ -31,6 +31,12 @@ export function canSetDebuggerBreakpointBeforeCommand (command) {
     return command.type !== TYPE.debug && !isClientFunctionCommand(command) && !isServiceCommand(command);
 }
 
+export function isScreenshotCommand (command) {
+    return command.type === TYPE.takeScreenshot ||
+           command.type === TYPE.takeElementScreenshot ||
+           command.type === TYPE.takeScreenshotOnFail;
+}
+
 export function isBrowserManipulationCommand (command) {
     return command.type === TYPE.takeScreenshot ||
            command.type === TYPE.takeElementScreenshot ||

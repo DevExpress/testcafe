@@ -15,10 +15,10 @@ function correctOpenParametersForMac (parameters) {
 }
 
 function buildFirefoxArgs (config, platformArgs, profileDir) {
-    return []
+    return ['-marionette']
         .concat(
             !config.userProfile ? ['-no-remote', '-new-instance', `-profile "${profileDir.name}"`] : [],
-            config.headless ? ['-marionette', '-headless'] : [],
+            config.headless ? ['-headless'] : [],
             config.userArgs ? [config.userArgs] : [],
             platformArgs ? [platformArgs] : []
         )

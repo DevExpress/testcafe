@@ -11,7 +11,8 @@ var browserProviderNames = {
 var testingEnvironmentNames = {
     osXDesktopAndMSEdgeBrowsers: 'osx-desktop-and-ms-edge-browsers',
     mobileBrowsers:              'mobile-browsers',
-    localBrowsersAppveyor:       'local-browsers-appveyor',
+    localBrowsersIE:             'local-browsers-ie',
+    localBrowsersChromeFirefox:  'local-browsers-chrome-firefox',
     localBrowsers:               'local-browsers',
     localHeadlessBrowsers:       'local-headless-browsers',
     oldBrowsers:                 'old-browsers',
@@ -115,7 +116,7 @@ testingEnvironments[testingEnvironmentNames.localBrowsers] = {
     ]
 };
 
-testingEnvironments[testingEnvironmentNames.localBrowsersAppveyor] = {
+testingEnvironments[testingEnvironmentNames.localBrowsersIE] = {
     isLocalBrowsers: true,
 
     browsers: [
@@ -124,6 +125,23 @@ testingEnvironments[testingEnvironmentNames.localBrowsersAppveyor] = {
             browserName: 'ie',
             version:     '11.0',
             alias:       'ie'
+        }
+    ]
+};
+
+testingEnvironments[testingEnvironmentNames.localBrowsersChromeFirefox] = {
+    isLocalBrowsers: true,
+
+    browsers: [
+        {
+            platform:    'Windows 10',
+            browserName: 'chrome',
+            alias:       'chrome'
+        },
+        {
+            platform:    'Windows 10',
+            browserName: 'firefox',
+            alias:       'firefox'
         }
     ]
 };

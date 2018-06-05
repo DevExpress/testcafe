@@ -608,8 +608,12 @@ gulp.task('test-functional-local', ['build'], function () {
     return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.localBrowsers);
 });
 
-gulp.task('test-functional-local-appveyor', ['build'], function () {
-    return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.localBrowsersAppveyor);
+gulp.task('test-functional-local-ie', ['build'], function () {
+    return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.localBrowsersIE);
+});
+
+gulp.task('test-functional-local-chrome-firefox', ['build'], function () {
+    return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.localBrowsersChromeFirefox);
 });
 
 gulp.task('test-functional-local-headless', ['build'], function () {

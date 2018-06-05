@@ -1,10 +1,11 @@
-var expect = require('chai').expect;
-var path   = require('path');
-var fs     = require('fs');
-var Promise = require('pinkie');
-var del    = require('del');
-var pngjs  = require('pngjs');
-var config = require('./config.js');
+const expect         = require('chai').expect;
+const path           = require('path');
+const fs             = require('fs');
+const Promise        = require('pinkie');
+const { isFunction } = require('lodash');
+const del            = require('del');
+const pngjs          = require('pngjs');
+const config         = require('./config.js');
 
 
 const SCREENSHOTS_PATH               = '___test-screenshots___';
@@ -228,9 +229,9 @@ exports.isScreenshotDirExists = function () {
     return isDirExists(SCREENSHOTS_PATH);
 };
 
-exports.checkScreenshotsCreated = function checkScreenshotsCreated (forError, count, customPath, runDirCount) {
-    var expectedSubDirCount     = config.browsers.length;
-    var expectedScreenshotCount = count || 2;
+exports.checkScreenshotsCreated = function ({ forError, customPath, screenshotsCount, runDirCount, browsersCount }) {
+    var expectedSubDirCount     = browsersCount || config.browsers.length;
+    var expectedScreenshotCount = screenshotsCount || 2;
 
     if (!isDirExists(SCREENSHOTS_PATH))
         return false;
@@ -294,10 +295,15 @@ exports.checkScreenshotIsNotWhite = function (forError, customPath) {
     return checkScreenshotImages(forError, customPath, checkScreenshotFileIsNotWhite);
 };
 
-exports.isScreenshotsEqual = function (customPath, referenceImagePath) {
+exports.isScreenshotsEqual = function (customPath, referenceImagePathGetter) {
     return checkScreenshotImages(false, customPath, function (screenshotFilePath) {
-        var screenshotContent     = fs.readFileSync(screenshotFilePath);
-        var referenceImageContent = fs.readFileSync(referenceImagePath);
+        const screenshotContent = fs.readFileSync(screenshotFilePath);
+
+        const referenceImagePath = isFunction(referenceImagePathGetter)
+            ? referenceImagePathGetter(screenshotFilePath)
+            : referenceImagePathGetter;
+
+        const referenceImageContent = fs.readFileSync(referenceImagePath);
 
         return screenshotContent.equals(referenceImageContent);
     });

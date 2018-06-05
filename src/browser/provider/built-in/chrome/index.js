@@ -30,8 +30,7 @@ export default {
 
         runtimeInfo.viewportSize = await this.runInitScript(browserId, GET_WINDOW_DIMENSIONS_INFO_SCRIPT);
 
-        if (runtimeInfo.config.headless || runtimeInfo.config.emulation)
-            await cdp.createClient(runtimeInfo);
+        await cdp.createClient(runtimeInfo);
 
         this.openedBrowsers[browserId] = runtimeInfo;
     },
@@ -89,6 +88,7 @@ export default {
             hasResizeWindow:                !!client && (config.emulation || config.headless),
             hasMaximizeWindow:              !!client && config.headless,
             hasTakeScreenshot:              !!client,
+            hasChromelessScreenshots:       !!client,
             hasCanResizeWindowToDimensions: false
         };
     }

@@ -28,7 +28,7 @@ describe('[Legacy] Smoke tests', function () {
                 return runTests('./testcafe-fixtures/screenshots.test.js', 'Take a screenshot', { setScreenshotPath: true })
                     .then(function () {
                         expect(SCREENSHOT_PATH_MESSAGE_RE.test(testReport.screenshotPath)).eql(true);
-                        expect(assertionHelper.checkScreenshotsCreated(false, 2)).eql(true);
+                        expect(assertionHelper.checkScreenshotsCreated({ forError: false, screenshotsCount: 2 })).eql(true);
                     });
             });
 
@@ -37,7 +37,7 @@ describe('[Legacy] Smoke tests', function () {
                     { shouldFail: true, screenshotsOnFails: true, setScreenshotPath: true })
                     .catch(function (errs) {
                         assertionHelper.errorInEachBrowserContainsRegExp(errs, ERROR_SCREENSHOT_PATH_RE, 0);
-                        expect(assertionHelper.checkScreenshotsCreated(true)).eql(true);
+                        expect(assertionHelper.checkScreenshotsCreated({ forError: true })).eql(true);
                     });
             });
         });

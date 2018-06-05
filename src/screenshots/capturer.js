@@ -116,8 +116,7 @@ export default class Capturer {
         await addToQueue(screenshotPath, async () => {
             await this._takeScreenshot(screenshotPath, ... pageDimensions ? [pageDimensions.innerWidth, pageDimensions.innerHeight] : []);
 
-            if (markSeed)
-                await cropScreenshot(screenshotPath, markSeed, Capturer._getClientAreaDimensions(pageDimensions), Capturer._getCropDimensions(cropDimensions, pageDimensions));
+            await cropScreenshot(screenshotPath, markSeed, Capturer._getClientAreaDimensions(pageDimensions), Capturer._getCropDimensions(cropDimensions, pageDimensions));
 
             await generateThumbnail(screenshotPath);
         });
