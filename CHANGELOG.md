@@ -4,7 +4,7 @@
 
 ### Enhancements 
 
-#### ⚙️ Add TS definitions to the Docker image ([#2481](https://github.com/DevExpress/testcafe/pull/2481))
+#### :gear: Add TS definitions to the Docker image ([#2481](https://github.com/DevExpress/testcafe/pull/2481))
 
 ### Bug fixes
 
