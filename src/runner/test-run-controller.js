@@ -6,6 +6,18 @@ import TestRun from '../test-run';
 // Const
 const QUARANTINE_THRESHOLD = 3;
 
+class Quarantine {
+    constructor () {
+        this.passedTimes   = [];
+        this.failedTimes   = [];
+        this.attemptNumber = 1;
+    }
+
+    isFailedAttempt (attemptIndex) {
+        return this.failedTimes.indexOf(attemptIndex) > -1;
+    }
+}
+
 export default class TestRunController extends EventEmitter {
     constructor (test, index, proxy, screenshots, warningLog, fixtureHookController, opts) {
         super();
@@ -21,18 +33,12 @@ export default class TestRunController extends EventEmitter {
 
         this.TestRunCtor = TestRunController._getTestRunCtor(test, opts);
 
-        this.testRun = null;
-        this.done    = false;
+        this.testRun    = null;
+        this.done       = false;
+        this.quarantine = null;
 
-        if (this.opts.quarantineMode) {
-            this.quarantine = {
-                attemptNumber: 1,
-                passedTimes:   0,
-                failedTimes:   0
-            };
-        }
-        else
-            this.quarantine = null;
+        if (this.opts.quarantineMode)
+            this.quarantine = new Quarantine();
     }
 
     static _getTestRunCtor (test, opts) {
@@ -43,9 +49,8 @@ export default class TestRunController extends EventEmitter {
     }
 
     _createTestRun (connection) {
-        var quarantineAttemptNum = this.quarantine ? this.quarantine.attemptNumber : null;
-        var screenshotCapturer   = this.screenshots.createCapturerFor(this.test, this.index, quarantineAttemptNum, connection, this.warningLog);
-        var TestRunCtor          = this.TestRunCtor;
+        var screenshotCapturer = this.screenshots.createCapturerFor(this.test, this.index, this.quarantine, connection, this.warningLog);
+        var TestRunCtor        = this.TestRunCtor;
 
         this.testRun = new TestRunCtor(this.test, connection, screenshotCapturer, this.warningLog, this.opts);
 
@@ -60,22 +65,23 @@ export default class TestRunController extends EventEmitter {
     }
 
     _shouldKeepInQuarantine () {
-        var hasErrors = !!this.testRun.errs.length;
+        var hasErrors     = !!this.testRun.errs.length;
+        var attemptNumber = this.quarantine.attemptNumber;
 
         if (hasErrors)
-            this.quarantine.failedTimes++;
+            this.quarantine.failedTimes.push(attemptNumber);
         else
-            this.quarantine.passedTimes++;
+            this.quarantine.passedTimes.push(attemptNumber);
 
-        var isFirstAttempt         = this.quarantine.attemptNumber === 1;
-        var failedThresholdReached = this.quarantine.failedTimes >= QUARANTINE_THRESHOLD;
-        var passedThresholdReached = this.quarantine.passedTimes >= QUARANTINE_THRESHOLD;
+        var isFirstAttempt         = attemptNumber === 1;
+        var failedThresholdReached = this.quarantine.failedTimes.length >= QUARANTINE_THRESHOLD;
+        var passedThresholdReached = this.quarantine.passedTimes.length >= QUARANTINE_THRESHOLD;
 
         return isFirstAttempt ? hasErrors : !failedThresholdReached && !passedThresholdReached;
     }
 
     _keepInQuarantine () {
-        this.quarantine.attemptNumber = this.quarantine.failedTimes + this.quarantine.passedTimes + 1;
+        this.quarantine.attemptNumber = this.quarantine.failedTimes.length + this.quarantine.passedTimes.length + 1;
 
         this.emit('test-run-restart');
     }

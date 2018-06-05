@@ -51,9 +51,9 @@ export default class Screenshots {
 
     _addTestEntry (test) {
         var testEntry = {
-            test:           test,
-            path:           this.screenshotsPath || '',
-            hasScreenshots: false
+            test:        test,
+            path:        this.screenshotsPath || '',
+            screenshots: []
         };
 
         this.testEntries.push(testEntry);
@@ -65,15 +65,19 @@ export default class Screenshots {
         return find(this.testEntries, entry => entry.test === test);
     }
 
+    getScreenshotInfo (test) {
+        return this._getTestEntry(test).screenshots;
+    }
+
     hasCapturedFor (test) {
-        return this._getTestEntry(test).hasScreenshots;
+        return this.getScreenshotInfo(test).length > 0;
     }
 
     getPathFor (test) {
         return this._getTestEntry(test).path;
     }
 
-    createCapturerFor (test, testIndex, quarantineAttemptNum, connection, warningLog) {
+    createCapturerFor (test, testIndex, quarantine, connection, warningLog) {
         var testEntry = this._getTestEntry(test);
 
         if (!testEntry)
@@ -81,9 +85,9 @@ export default class Screenshots {
 
         var namingOptions = {
             testIndex,
-            quarantineAttemptNum,
+            quarantine,
             baseDirName:   this.screenshotBaseDirName,
-            userAgentName: this._getUserAgentName(connection.userAgent, testIndex, quarantineAttemptNum)
+            userAgentName: this._getUserAgentName(connection.userAgent, testIndex, quarantine ? quarantine.attemptNumber : null)
         };
 
         return new Capturer(this.screenshotsPath, testEntry, connection, namingOptions, warningLog);

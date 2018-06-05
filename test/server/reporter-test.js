@@ -39,20 +39,38 @@ describe('Reporter', function () {
 
     var testMocks = [
         {
-            name:               'fixture1test1',
-            fixture:            fixtureMocks[0],
-            skip:               false,
-            screenshotExpected: true,
-            meta:               {
+            name:        'fixture1test1',
+            fixture:     fixtureMocks[0],
+            skip:        false,
+            screenshots: [{
+                screenshotPath: 'screenshot1.png',
+                thumbnailPath:  'thumbnail1.png',
+                userAgent:      'chrome',
+                forError:       false,
+                isFailed:       false
+            }],
+            meta: {
                 run: 'run-001'
             }
         },
         {
-            name:               'fixture1test2',
-            fixture:            fixtureMocks[0],
-            skip:               false,
-            screenshotExpected: true,
-            meta:               {
+            name:        'fixture1test2',
+            fixture:     fixtureMocks[0],
+            skip:        false,
+            screenshots: [{
+                screenshotPath: 'screenshot1.png',
+                thumbnailPath:  'thumbnail1.png',
+                userAgent:      'chrome',
+                forError:       false,
+                isFailed:       false
+            }, {
+                screenshotPath: 'screenshot2.png',
+                thumbnailPath:  'thumbnail2.png',
+                userAgent:      'chrome',
+                forError:       true,
+                isFailed:       true
+            }],
+            meta: {
                 run: 'run-001'
             }
         },
@@ -206,8 +224,12 @@ describe('Reporter', function () {
     });
 
     var ScreenshotsMock = function () {
+        this.getScreenshotInfo = function (testMock) {
+            return testMock.screenshots;
+        };
+
         this.hasCapturedFor = function (testMock) {
-            return testMock.screenshotExpected;
+            return this.getScreenshotInfo(testMock);
         };
 
         this.getPathFor = function () {
@@ -220,9 +242,9 @@ describe('Reporter', function () {
     var TaskMock = function () {
         EventEmitter.call(this);
 
-        this.tests       = testMocks;
+        this.tests                   = testMocks;
         this.browserConnectionGroups = chunk(browserConnectionMocks, 1);
-        this.screenshots = new ScreenshotsMock();
+        this.screenshots             = new ScreenshotsMock();
 
         this.warningLog = {
             messages: [
@@ -293,7 +315,14 @@ describe('Reporter', function () {
                         durationMs:     74000,
                         unstable:       true,
                         skipped:        false,
-                        screenshotPath: '/screenshots/1445437598847'
+                        screenshotPath: '/screenshots/1445437598847',
+                        screenshots:    [{
+                            screenshotPath: 'screenshot1.png',
+                            thumbnailPath:  'thumbnail1.png',
+                            userAgent:      'chrome',
+                            forError:       false,
+                            isFailed:       false
+                        }]
                     },
                     {
                         run: 'run-001'
@@ -323,7 +352,20 @@ describe('Reporter', function () {
                         durationMs:     74000,
                         unstable:       false,
                         skipped:        false,
-                        screenshotPath: '/screenshots/1445437598847'
+                        screenshotPath: '/screenshots/1445437598847',
+                        screenshots:    [{
+                            screenshotPath: 'screenshot1.png',
+                            thumbnailPath:  'thumbnail1.png',
+                            userAgent:      'chrome',
+                            forError:       false,
+                            isFailed:       false
+                        }, {
+                            screenshotPath: 'screenshot2.png',
+                            thumbnailPath:  'thumbnail2.png',
+                            userAgent:      'chrome',
+                            forError:       true,
+                            isFailed:       true
+                        }]
                     },
                     {
                         run: 'run-001'
@@ -339,7 +381,8 @@ describe('Reporter', function () {
                         durationMs:     74000,
                         unstable:       false,
                         skipped:        false,
-                        screenshotPath: null
+                        screenshotPath: null,
+                        screenshots:    []
                     },
                     {
                         run: 'run-001'
@@ -365,7 +408,8 @@ describe('Reporter', function () {
                         durationMs:     74000,
                         unstable:       false,
                         skipped:        false,
-                        screenshotPath: null
+                        screenshotPath: null,
+                        screenshots:    []
                     },
                     {
                         run: 'run-001'
@@ -381,7 +425,8 @@ describe('Reporter', function () {
                         durationMs:     74000,
                         unstable:       false,
                         skipped:        false,
-                        screenshotPath: null
+                        screenshotPath: null,
+                        screenshots:    []
                     },
                     {
                         run: 'run-001'
@@ -411,7 +456,8 @@ describe('Reporter', function () {
                         durationMs:     74000,
                         unstable:       true,
                         skipped:        false,
-                        screenshotPath: null
+                        screenshotPath: null,
+                        screenshots:    []
                     },
                     {
                         run: 'run-001'

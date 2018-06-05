@@ -25,6 +25,7 @@ export default class Reporter {
             fixture:        test.fixture,
             test:           test,
             screenshotPath: null,
+            screenshots:    [],
             pendingRuns:    runsPerTest,
             errs:           [],
             unstable:       false,
@@ -39,6 +40,7 @@ export default class Reporter {
             durationMs:     new Date() - reportItem.startTime,
             unstable:       reportItem.unstable,
             screenshotPath: reportItem.screenshotPath,
+            screenshots:    reportItem.screenshots,
             skipped:        reportItem.test.skip
         };
     }
@@ -92,8 +94,10 @@ export default class Reporter {
             reportItem.errs     = reportItem.errs.concat(testRun.errs);
 
             if (!reportItem.pendingRuns) {
-                if (task.screenshots.hasCapturedFor(testRun.test))
+                if (task.screenshots.hasCapturedFor(testRun.test)) {
                     reportItem.screenshotPath = task.screenshots.getPathFor(testRun.test);
+                    reportItem.screenshots    = task.screenshots.getScreenshotInfo(testRun.test);
+                }
 
                 if (!reportItem.testRunInfo) {
                     reportItem.testRunInfo = Reporter._createTestRunInfo(reportItem);

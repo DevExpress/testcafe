@@ -3,10 +3,40 @@ var expect          = require('chai').expect;
 var config          = require('../../../../config.js');
 var assertionHelper = require('../../../../assertion-helper.js');
 
+var CUSTOM_SCREENSHOT_DIR              = '___test-screenshots___';
+var SCREENSHOT_PATH_BASE               = '^___test-screenshots___[\\\\/]\\d{4,4}-\\d{2,2}-\\d{2,2}_\\d{2,2}-\\d{2,2}-\\d{2,2}[\\\\/]test-1';
+var SCREENSHOT_PATH_MESSAGE_RE         = new RegExp(SCREENSHOT_PATH_BASE + '$');
+var SCREENSHOT_ON_FAIL_PATH_MESSAGE_RE = new RegExp(SCREENSHOT_PATH_BASE + '\\\\run-1');
 
-var SCREENSHOT_PATH_MESSAGE_RE = /^___test-screenshots___[\\/]\d{4,4}-\d{2,2}-\d{2,2}_\d{2,2}-\d{2,2}-\d{2,2}[\\/]test-1$/;
-var CUSTOM_SCREENSHOT_DIR      = '___test-screenshots___';
+var getReporter = function (scope) {
+    const userAgents = { };
 
+    function prepareScreenshot (screenshot) {
+        screenshot.screenshotPath = screenshot.screenshotPath.replace(SCREENSHOT_ON_FAIL_PATH_MESSAGE_RE, '');
+        screenshot.thumbnailPath  = screenshot.thumbnailPath.replace(SCREENSHOT_ON_FAIL_PATH_MESSAGE_RE, '');
+        screenshot.screenshotPath = screenshot.screenshotPath.replace(CUSTOM_SCREENSHOT_DIR, '');
+        screenshot.thumbnailPath  = screenshot.thumbnailPath.replace(CUSTOM_SCREENSHOT_DIR, '');
+
+        userAgents[screenshot.userAgent] = true;
+    }
+
+    return function () {
+        return {
+            reportTestDone: (name, testRunInfo) => {
+                testRunInfo.screenshots.forEach(screenshot => prepareScreenshot(screenshot));
+
+                scope.screenshots = testRunInfo.screenshots;
+                scope.userAgents  = Object.keys(userAgents);
+            },
+            reportFixtureStart: () => {
+            },
+            reportTaskStart: () => {
+            },
+            reportTaskDone: () => {
+            }
+        };
+    };
+};
 
 describe('[API] t.takeScreenshot()', function () {
     if (config.useLocalBrowsers) {
@@ -120,6 +150,46 @@ describe('[API] t.takeScreenshot()', function () {
                 })
                 .then(function (result) {
                     expect(result).eql(true);
+                });
+        });
+
+        it('Should provide screenshot log to a reporter', function () {
+            var result   = {};
+            var reporter = getReporter(result);
+
+            return runTests('./testcafe-fixtures/take-screenshot.js', 'Take screenshots for reporter', {
+                setScreenshotPath:  true,
+                quarantineMode:     true,
+                screenshotsOnFails: true,
+                reporters:          [{ reporter }]
+            })
+                .then(function () {
+                    var getScreenshotInfo = (screenshotPath, thumbnailPath, attempt, userAgent, forError) => {
+                        if (!forError) {
+                            screenshotPath = '\\' + userAgent + attempt + screenshotPath;
+                            thumbnailPath  = '\\thumbnails' + screenshotPath;
+                        }
+
+                        var isFailed = attempt === 0 || forError;
+
+                        return { screenshotPath, thumbnailPath, forError, isFailed, userAgent };
+                    };
+
+                    var expected = result.userAgents.reduce(function (value, userAgent) {
+                        for (var attempt = 0; attempt < 4; attempt++) {
+                            value.push(getScreenshotInfo('1.png', null, attempt, userAgent, false));
+                            value.push(getScreenshotInfo('2.png', null, attempt, userAgent, false));
+                        }
+
+                        var errorScreenshotPath = '\\' + userAgent + '\\errors\\1.png';
+                        var errorThumbnailPath  = '\\' + userAgent + '\\errors\\thumbnails\\1.png';
+
+                        value.push(getScreenshotInfo(errorScreenshotPath, errorThumbnailPath, attempt, userAgent, true));
+
+                        return value;
+                    }, []);
+
+                    expect(result.screenshots).deep.members(expected);
                 });
         });
     }
