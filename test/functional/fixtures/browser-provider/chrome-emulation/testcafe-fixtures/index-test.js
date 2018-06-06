@@ -1,7 +1,6 @@
 import { ClientFunction } from 'testcafe';
 
-fixture `Touch events`
-    .page `about:blank`;
+fixture `Touch events`;
 
 const EVENT_HANDLERS = ['ontouchstart', 'ontouchend', 'ontouchmove', 'ontouchcancel'];
 
