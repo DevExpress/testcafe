@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+
+        #el1, #el2 {
+            position: absolute;
+            background-color: black;
+            top: 50px;
+            left: 50px;
+        }
+
+        #el1 {
+            height: 1px;
+            width: 100px;
+        }
+
+        #el2 {
+            height: 100px;
+            width: 1px;
+        }
+    </style>
+    <script>
+        function log (text) {
+            document.getElementById('result').innerHTML += text;
+        }
+    </script>
+</head>
+<body>
+<div id="el1" onclick="log('click1')"></div>
+<div id="el2" onclick="log('click2')"></div>
+<div id="result"></div>
+</body>
+</html>

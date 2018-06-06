@@ -1,13 +1,18 @@
 import { positionUtils } from '../deps/testcafe-core';
 import getAutomationPoint from './get-automation-point';
 
-export function getDefaultAutomationOffsets (element) {
-    var rect = positionUtils.getElementRectangle(element);
+function calcOffset (size) {
+    const offset = size / 2;
 
-    return {
-        offsetX: Math.round(rect.width / 2),
-        offsetY: Math.round(rect.height / 2)
-    };
+    return offset < 1 ? 0 : Math.round(offset);
+}
+
+export function getDefaultAutomationOffsets (element) {
+    var rect    = positionUtils.getElementRectangle(element);
+    var offsetX = calcOffset(rect.width);
+    var offsetY = calcOffset(rect.height);
+
+    return { offsetX, offsetY };
 }
 
 export function getOffsetOptions (element, offsetX, offsetY) {
