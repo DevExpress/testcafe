@@ -52,7 +52,7 @@ function detectClippingArea (srcImage, { markSeed, clientAreaDimensions, cropDim
     let clipWidth  = srcImage.width;
     let clipHeight = srcImage.height;
 
-    if (markSeed) {
+    if (markSeed && clientAreaDimensions) {
         var mark = Buffer.from(markSeed);
 
         var markIndex = srcImage.data.indexOf(mark);

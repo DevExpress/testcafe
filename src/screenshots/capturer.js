@@ -52,11 +52,12 @@ export default class Capturer {
         return Math.max(documentDimension, bodyDimension);
     }
 
-    static _getCropDimensions (cropDimensions, { dpr }) {
-        if (!cropDimensions)
+    static _getCropDimensions (cropDimensions, pageDimensions) {
+        if (!cropDimensions || !pageDimensions)
             return null;
 
-        var { top, left, bottom, right } = cropDimensions;
+        const { dpr }                      = pageDimensions;
+        const { top, left, bottom, right } = cropDimensions;
 
         return {
             top:    Math.round(top * dpr),
@@ -66,7 +67,12 @@ export default class Capturer {
         };
     }
 
-    static _getClientAreaDimensions ({ innerWidth, documentWidth, bodyWidth, innerHeight, documentHeight, bodyHeight, dpr }) {
+    static _getClientAreaDimensions (pageDimensions) {
+        if (!pageDimensions)
+            return null;
+
+        const { innerWidth, documentWidth, bodyWidth, innerHeight, documentHeight, bodyHeight, dpr } = pageDimensions;
+
         return {
             width:  Math.floor(Capturer._getDimensionWithoutScrollbar(innerWidth, documentWidth, bodyWidth) * dpr),
             height: Math.floor(Capturer._getDimensionWithoutScrollbar(innerHeight, documentHeight, bodyHeight) * dpr)
