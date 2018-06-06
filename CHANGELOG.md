@@ -13,7 +13,7 @@
 * TestCafe now reports a warning when saving several screenshots at the same path ([#2213](https://github.com/DevExpress/testcafe/issues/2213))
 * A regression related to wrongly processed `document.write` in IE11 is now fixed ([#2469](https://github.com/DevExpress/testcafe/issues/2469))
 * An out of memory crash on calling console methods is now fixed ([testcafe-hammerhead/#1546](https://github.com/DevExpress/testcafe-hammerhead/issues/1546))
-* `Click` action for an element with 1px height or width works properly now ([2020](https://github.com/DevExpress/testcafe/issues/2020))
+* `Click` action for an element with 1px height or width works properly now ([#2020](https://github.com/DevExpress/testcafe/issues/2020))
 * Touch emulation for the latest Google Chrome was fixed ([#2448](https://github.com/DevExpress/testcafe/issues/2448))
 
 ## v0.20.2 (2018-5-24)
