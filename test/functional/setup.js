@@ -10,6 +10,7 @@ var BrowserConnection   = require('../../lib/browser/connection');
 var config              = require('./config.js');
 var site                = require('./site');
 var getTestError        = require('./get-test-error.js');
+var os                  = require('os');
 
 var testCafe     = null;
 var browsersInfo = null;
