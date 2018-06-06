@@ -30,13 +30,15 @@ async function setEmulation (runtimeInfo) {
 
     if (config.touch !== void 0) {
         const touchConfig = {
-            enabled:       config.touch,
-            configuration: config.mobile ? 'mobile' : 'desktop'
+            enabled:        config.touch,
+            configuration:  config.mobile ? 'mobile' : 'desktop',
+            maxTouchPoints: 1
         };
 
         if (client.Emulation.setEmitTouchEventsForMouse)
             await client.Emulation.setEmitTouchEventsForMouse(touchConfig);
-        else if (client.Emulation.setTouchEmulationEnabled)
+
+        if (client.Emulation.setTouchEmulationEnabled)
             await client.Emulation.setTouchEmulationEnabled(touchConfig);
     }
 
