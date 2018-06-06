@@ -182,7 +182,7 @@ testingEnvironments[testingEnvironmentNames.legacy] = {
         },
         {
             platform:    'Windows 10',
-            browserName: 'internet explorer',
+            browserName: 'ie',
             version:     '11.0',
             alias:       'ie'
         }
