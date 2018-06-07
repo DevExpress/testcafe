@@ -166,7 +166,7 @@ describe('[API] t.takeScreenshot()', function () {
                 reporters:          [{ reporter }]
             })
                 .then(function () {
-                    var getScreenshotInfo = (screenshotPath, thumbnailPath, attempt, userAgent, forError) => {
+                    var getScreenshotsInfo = (screenshotPath, thumbnailPath, attempt, userAgent, forError) => {
                         if (!forError) {
                             screenshotPath = '_' + userAgent + attempt + screenshotPath;
                             thumbnailPath  = '_thumbnails' + screenshotPath;
@@ -179,14 +179,14 @@ describe('[API] t.takeScreenshot()', function () {
 
                     var expected = result.userAgents.reduce(function (value, userAgent) {
                         for (var attempt = 0; attempt < 4; attempt++) {
-                            value.push(getScreenshotInfo('1.png', null, attempt, userAgent, false));
-                            value.push(getScreenshotInfo('2.png', null, attempt, userAgent, false));
+                            value.push(getScreenshotsInfo('1.png', null, attempt, userAgent, false));
+                            value.push(getScreenshotsInfo('2.png', null, attempt, userAgent, false));
                         }
 
                         var errorScreenshotPath = '_' + userAgent + '_errors_1.png';
                         var errorThumbnailPath  = '_' + userAgent + '_errors_thumbnails_1.png';
 
-                        value.push(getScreenshotInfo(errorScreenshotPath, errorThumbnailPath, attempt, userAgent, true));
+                        value.push(getScreenshotsInfo(errorScreenshotPath, errorThumbnailPath, attempt, userAgent, true));
 
                         return value;
                     }, []);

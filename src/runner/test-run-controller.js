@@ -8,13 +8,13 @@ const QUARANTINE_THRESHOLD = 3;
 
 class Quarantine {
     constructor () {
-        this.passedTimes   = [];
-        this.failedTimes   = [];
-        this.attemptNumber = 1;
+        this.passedAttempts = [];
+        this.failedAttempts = [];
+        this.attemptNumber  = 1;
     }
 
     isFailedAttempt (attemptIndex) {
-        return this.failedTimes.indexOf(attemptIndex) > -1;
+        return this.failedAttempts.indexOf(attemptIndex) > -1;
     }
 }
 
@@ -59,7 +59,7 @@ export default class TestRunController extends EventEmitter {
 
     async _endQuarantine () {
         if (this.quarantine.attemptNumber > 1)
-            this.testRun.unstable = this.quarantine.passedTimes > 0;
+            this.testRun.unstable = this.quarantine.passedAttempts > 0;
 
         await this._emitTestRunDone();
     }
@@ -69,19 +69,19 @@ export default class TestRunController extends EventEmitter {
         var attemptNumber = this.quarantine.attemptNumber;
 
         if (hasErrors)
-            this.quarantine.failedTimes.push(attemptNumber);
+            this.quarantine.failedAttempts.push(attemptNumber);
         else
-            this.quarantine.passedTimes.push(attemptNumber);
+            this.quarantine.passedAttempts.push(attemptNumber);
 
         var isFirstAttempt         = attemptNumber === 1;
-        var failedThresholdReached = this.quarantine.failedTimes.length >= QUARANTINE_THRESHOLD;
-        var passedThresholdReached = this.quarantine.passedTimes.length >= QUARANTINE_THRESHOLD;
+        var failedThresholdReached = this.quarantine.failedAttempts.length >= QUARANTINE_THRESHOLD;
+        var passedThresholdReached = this.quarantine.passedAttempts.length >= QUARANTINE_THRESHOLD;
 
         return isFirstAttempt ? hasErrors : !failedThresholdReached && !passedThresholdReached;
     }
 
     _keepInQuarantine () {
-        this.quarantine.attemptNumber = this.quarantine.failedTimes.length + this.quarantine.passedTimes.length + 1;
+        this.quarantine.attemptNumber = this.quarantine.failedAttempts.length + this.quarantine.passedAttempts.length + 1;
 
         this.emit('test-run-restart');
     }

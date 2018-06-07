@@ -224,12 +224,12 @@ describe('Reporter', function () {
     });
 
     var ScreenshotsMock = function () {
-        this.getScreenshotInfo = function (testMock) {
+        this.getScreenshotsInfo = function (testMock) {
             return testMock.screenshots;
         };
 
         this.hasCapturedFor = function (testMock) {
-            return this.getScreenshotInfo(testMock);
+            return this.getScreenshotsInfo(testMock);
         };
 
         this.getPathFor = function () {

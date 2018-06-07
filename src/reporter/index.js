@@ -96,7 +96,7 @@ export default class Reporter {
             if (!reportItem.pendingRuns) {
                 if (task.screenshots.hasCapturedFor(testRun.test)) {
                     reportItem.screenshotPath = task.screenshots.getPathFor(testRun.test);
-                    reportItem.screenshots    = task.screenshots.getScreenshotInfo(testRun.test);
+                    reportItem.screenshots    = task.screenshots.getScreenshotsInfo(testRun.test);
                 }
 
                 if (!reportItem.testRunInfo) {

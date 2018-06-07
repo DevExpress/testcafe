@@ -65,12 +65,12 @@ export default class Screenshots {
         return find(this.testEntries, entry => entry.test === test);
     }
 
-    getScreenshotInfo (test) {
+    getScreenshotsInfo (test) {
         return this._getTestEntry(test).screenshots;
     }
 
     hasCapturedFor (test) {
-        return this.getScreenshotInfo(test).length > 0;
+        return this.getScreenshotsInfo(test).length > 0;
     }
 
     getPathFor (test) {
