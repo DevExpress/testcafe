@@ -40,6 +40,7 @@ import {
 import {
     isCommandRejectableByPageError,
     isBrowserManipulationCommand,
+    isScreenshotCommand,
     isServiceCommand,
     canSetDebuggerBreakpointBeforeCommand
 } from './commands/utils';
@@ -452,6 +453,13 @@ export default class TestRun extends Session {
             this.debugging = true;
     }
 
+    async _adjustScreenshotCommand (command) {
+        const browserId                    = this.browserConnection.id;
+        const { hasChromelessScreenshots } = await this.browserConnection.provider.hasCustomActionForBrowser(browserId);
+
+        if (!hasChromelessScreenshots)
+            command.generateScreenshotMark();
+    }
 
     async _setBreakpointIfNecessary (command, callsite) {
         if (!this.disableDebugBreakpoints && this.debugging && canSetDebuggerBreakpointBeforeCommand(command))
@@ -467,6 +475,9 @@ export default class TestRun extends Session {
         this._adjustConfigurationWithCommand(command);
 
         await this._setBreakpointIfNecessary(command, callsite);
+
+        if (isScreenshotCommand(command))
+            await this._adjustScreenshotCommand(command);
 
         if (isBrowserManipulationCommand(command))
             this.browserManipulationQueue.push(command);

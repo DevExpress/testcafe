@@ -223,7 +223,7 @@ export default class BrowserProvider {
 
     async closeBrowser (browserId) {
         var isLocalBrowser         = await this.plugin.isLocalBrowser(browserId);
-        var customActionsInfo      = await this.plugin.hasCustomActionForBrowser(browserId);
+        var customActionsInfo      = await this.hasCustomActionForBrowser(browserId);
         var hasCustomCloseBrowser  = customActionsInfo.hasCloseBrowser;
         var usePluginsCloseBrowser = hasCustomCloseBrowser || !isLocalBrowser;
 
@@ -246,7 +246,7 @@ export default class BrowserProvider {
 
     async resizeWindow (browserId, width, height, currentWidth, currentHeight) {
         var isLocalBrowser        = await this.plugin.isLocalBrowser(browserId);
-        var customActionsInfo     = await this.plugin.hasCustomActionForBrowser(browserId);
+        var customActionsInfo     = await this.hasCustomActionForBrowser(browserId);
         var hasCustomResizeWindow = customActionsInfo.hasResizeWindow;
 
 
@@ -260,7 +260,7 @@ export default class BrowserProvider {
 
     async canResizeWindowToDimensions (browserId, width, height) {
         var isLocalBrowser                 = await this.plugin.isLocalBrowser(browserId);
-        var customActionsInfo              = await this.plugin.hasCustomActionForBrowser(browserId);
+        var customActionsInfo              = await this.hasCustomActionForBrowser(browserId);
         var hasCustomCanResizeToDimensions = customActionsInfo.hasCanResizeWindowToDimensions;
 
 
@@ -272,7 +272,7 @@ export default class BrowserProvider {
 
     async maximizeWindow (browserId) {
         var isLocalBrowser          = await this.plugin.isLocalBrowser(browserId);
-        var customActionsInfo       = await this.plugin.hasCustomActionForBrowser(browserId);
+        var customActionsInfo       = await this.hasCustomActionForBrowser(browserId);
         var hasCustomMaximizeWindow = customActionsInfo.hasMaximizeWindow;
 
         if (isLocalBrowser && !hasCustomMaximizeWindow)
@@ -283,7 +283,7 @@ export default class BrowserProvider {
 
     async takeScreenshot (browserId, screenshotPath, pageWidth, pageHeight) {
         var isLocalBrowser          = await this.plugin.isLocalBrowser(browserId);
-        var customActionsInfo       = await this.plugin.hasCustomActionForBrowser(browserId);
+        var customActionsInfo       = await this.hasCustomActionForBrowser(browserId);
         var hasCustomTakeScreenshot = customActionsInfo.hasTakeScreenshot;
 
         if (isLocalBrowser && !hasCustomTakeScreenshot) {
@@ -292,6 +292,10 @@ export default class BrowserProvider {
         }
 
         await this.plugin.takeScreenshot(browserId, screenshotPath, pageWidth, pageHeight);
+    }
+
+    async hasCustomActionForBrowser (browserId) {
+        return this.plugin.hasCustomActionForBrowser(browserId);
     }
 
     async reportJobResult (browserId, status, data) {

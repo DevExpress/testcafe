@@ -105,7 +105,8 @@ export default class BrowserProviderPluginHost {
             hasResizeWindow:                this.hasOwnProperty('resizeWindow'),
             hasTakeScreenshot:              this.hasOwnProperty('takeScreenshot'),
             hasCanResizeWindowToDimensions: this.hasOwnProperty('canResizeWindowToDimensions'),
-            hasMaximizeWindow:              this.hasOwnProperty('maximizeWindow')
+            hasMaximizeWindow:              this.hasOwnProperty('maximizeWindow'),
+            hasChromelessScreenshots:       false
         };
     }
 

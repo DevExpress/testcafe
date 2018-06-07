@@ -11,6 +11,19 @@ export default {
 
     isMultiBrowser: false,
 
+    async _createMarionetteClient (runtimeInfo) {
+        try {
+            var marionetteClient = new MarionetteClient(runtimeInfo.marionettePort);
+
+            await marionetteClient.connect();
+
+            return marionetteClient;
+        }
+        catch (e) {
+            return null;
+        }
+    },
+
     async openBrowser (browserId, pageUrl, configString) {
         var runtimeInfo = await getRuntimeInfo(configString);
         var browserName = this.providerName.replace(':', '');
@@ -22,13 +35,7 @@ export default {
 
         await this.waitForConnectionReady(runtimeInfo.browserId);
 
-        if (runtimeInfo.config.headless) {
-            var marionetteClient = new MarionetteClient(runtimeInfo.marionettePort);
-
-            await marionetteClient.connect();
-
-            runtimeInfo.marionetteClient = marionetteClient;
-        }
+        runtimeInfo.marionetteClient = await this._createMarionetteClient(runtimeInfo);
 
         this.openedBrowsers[browserId] = runtimeInfo;
     },
@@ -77,8 +84,9 @@ export default {
 
         return {
             hasCloseBrowser:                true,
+            hasTakeScreenshot:              !!marionetteClient,
+            hasChromelessScreenshots:       !!marionetteClient,
             hasResizeWindow:                !!marionetteClient && config.headless,
-            hasTakeScreenshot:              !!marionetteClient && config.headless,
             hasMaximizeWindow:              !!marionetteClient && config.headless,
             hasCanResizeWindowToDimensions: false
         };

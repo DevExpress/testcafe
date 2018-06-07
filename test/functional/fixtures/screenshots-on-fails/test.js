@@ -24,7 +24,7 @@ if (config.useLocalBrowsers) {
                     // Report should contain screenshot path (GH-1269)
                     expect(REPORT_SCREENSHOT_PATH_TEXT_RE.test(global.testReport.screenshotPath)).eql(true);
                     assertionHelper.errorInEachBrowserContainsRegExp(errs, ERROR_SCREENSHOT_PATH_RE, 0);
-                    expect(assertionHelper.checkScreenshotsCreated(true)).eql(true);
+                    expect(assertionHelper.checkScreenshotsCreated({ forError: true })).eql(true);
                 });
         });
 
@@ -33,7 +33,7 @@ if (config.useLocalBrowsers) {
                 { shouldFail: true, screenshotsOnFails: true, setScreenshotPath: true })
                 .catch(function (errs) {
                     assertionHelper.errorInEachBrowserContainsRegExp(errs, ERROR_SCREENSHOT_PATH_RE, 0);
-                    expect(assertionHelper.checkScreenshotsCreated(true)).eql(true);
+                    expect(assertionHelper.checkScreenshotsCreated({ forError: true })).eql(true);
                 });
         });
 
@@ -42,7 +42,7 @@ if (config.useLocalBrowsers) {
                 { shouldFail: true, screenshotsOnFails: true, setScreenshotPath: true })
                 .catch(function (errs) {
                     assertionHelper.errorInEachBrowserContainsRegExp(errs, ERROR_SCREENSHOT_PATH_RE, 0);
-                    expect(assertionHelper.checkScreenshotsCreated(true)).eql(true);
+                    expect(assertionHelper.checkScreenshotsCreated({ forError: true })).eql(true);
                 });
         });
 
@@ -51,7 +51,7 @@ if (config.useLocalBrowsers) {
                 { shouldFail: true, screenshotsOnFails: true, setScreenshotPath: true })
                 .catch(function (errs) {
                     assertionHelper.errorInEachBrowserContainsRegExp(errs, ERROR_SCREENSHOT_PATH_RE, 0);
-                    expect(assertionHelper.checkScreenshotsCreated(true)).eql(true);
+                    expect(assertionHelper.checkScreenshotsCreated({ forError: true })).eql(true);
                 });
         });
 
@@ -60,7 +60,7 @@ if (config.useLocalBrowsers) {
                 { shouldFail: true, screenshotsOnFails: true, setScreenshotPath: true })
                 .catch(function (errs) {
                     assertionHelper.errorInEachBrowserContainsRegExp(errs, ERROR_SCREENSHOT_PATH_RE, 0);
-                    expect(assertionHelper.checkScreenshotsCreated(true)).eql(true);
+                    expect(assertionHelper.checkScreenshotsCreated({ forError: true })).eql(true);
                 });
         });
 
@@ -70,7 +70,7 @@ if (config.useLocalBrowsers) {
                 .catch(function (errs) {
                     assertionHelper.errorInEachBrowserContainsRegExp(errs, ERROR_SCREENSHOT_PATH_RE, 0);
                     assertionHelper.errorInEachBrowserContainsRegExp(errs, ERROR_SCREENSHOT_PATH_RE, 1);
-                    expect(assertionHelper.checkScreenshotsCreated(true, 4)).eql(true);
+                    expect(assertionHelper.checkScreenshotsCreated({ forError: true, screenshotsCount: 4 })).eql(true);
                 });
         });
 
@@ -85,7 +85,10 @@ if (config.useLocalBrowsers) {
                 })
                 .catch(function (errs) {
                     assertionHelper.errorInEachBrowserContainsRegExp(errs, QUARANTINE_MODE_SCREENSHOT_PATH_RE, 0);
-                    expect(assertionHelper.checkScreenshotsCreated(true, 2, null, 3)).eql(true);
+
+                    const screenshotsCheckingOptions = { forError: true, screenshotsCount: 2, runDirCount: 3 };
+
+                    expect(assertionHelper.checkScreenshotsCreated(screenshotsCheckingOptions)).eql(true);
                 });
         });
 

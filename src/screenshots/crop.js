@@ -44,42 +44,56 @@ function markSeedToId (markSeed) {
     return id;
 }
 
-export default async function (screenshotPath, markSeed, clientAreaDimensions, cropDimensions) {
-    var mark = Buffer.from(markSeed);
+function detectClippingArea (srcImage, { markSeed, clientAreaDimensions, cropDimensions, screenshotPath } = {}) {
+    let clipLeft   = 0;
+    let clipTop    = 0;
+    let clipRight  = srcImage.width;
+    let clipBottom = srcImage.height;
+    let clipWidth  = srcImage.width;
+    let clipHeight = srcImage.height;
 
-    var srcImage  = await readPng(screenshotPath);
+    if (markSeed && clientAreaDimensions) {
+        var mark = Buffer.from(markSeed);
 
-    var markIndex = srcImage.data.indexOf(mark);
+        var markIndex = srcImage.data.indexOf(mark);
 
-    if (markIndex < 0)
-        throw new Error(renderTemplate(WARNING_MESSAGES.screenshotMarkNotFound, screenshotPath, markSeedToId(markSeed)));
+        if (markIndex < 0)
+            throw new Error(renderTemplate(WARNING_MESSAGES.screenshotMarkNotFound, screenshotPath, markSeedToId(markSeed)));
 
-    var endPosition = markIndex / MARK_BYTES_PER_PIXEL + MARK_LENGTH + MARK_RIGHT_MARGIN;
-    var right       = endPosition % srcImage.width || srcImage.width;
-    var bottom      = (endPosition - right) / srcImage.width + 1;
-    var left        = right - clientAreaDimensions.width;
-    var top         = bottom - clientAreaDimensions.height;
+        var endPosition = markIndex / MARK_BYTES_PER_PIXEL + MARK_LENGTH + MARK_RIGHT_MARGIN;
 
-    const markLineNumber = bottom;
+        clipRight  = endPosition % srcImage.width || srcImage.width;
+        clipBottom = (endPosition - clipRight) / srcImage.width + 1;
+        clipLeft   = clipRight - clientAreaDimensions.width;
+        clipTop    = clipBottom - clientAreaDimensions.height;
+    }
+
+    const markLineNumber = clipBottom;
 
     if (cropDimensions) {
-        right  = limitNumber(left + cropDimensions.right, left, right);
-        bottom = limitNumber(top + cropDimensions.bottom, top, bottom);
-        left   = limitNumber(left + cropDimensions.left, left, right);
-        top    = limitNumber(top + cropDimensions.top, top, bottom);
+        clipRight  = limitNumber(clipLeft + cropDimensions.right, clipLeft, clipRight);
+        clipBottom = limitNumber(clipTop + cropDimensions.bottom, clipTop, clipBottom);
+        clipLeft   = limitNumber(clipLeft + cropDimensions.left, clipLeft, clipRight);
+        clipTop    = limitNumber(clipTop + cropDimensions.top, clipTop, clipBottom);
     }
 
-    if (bottom === markLineNumber)
-        bottom -= 1;
+    if (markSeed && clipBottom === markLineNumber)
+        clipBottom -= 1;
 
-    var width  = right - left;
-    var height = bottom - top;
+    clipWidth  = clipRight - clipLeft;
+    clipHeight = clipBottom - clipTop;
 
-    if (width <= 0 || height <= 0) {
-        await deleteFile(screenshotPath);
-        throw new InvalidElementScreenshotDimensionsError(width, height);
-    }
+    return {
+        left:   clipLeft,
+        top:    clipTop,
+        right:  clipRight,
+        bottom: clipBottom,
+        width:  clipWidth,
+        height: clipHeight
+    };
+}
 
+function copyImagePart (srcImage, { left, top, width, height }) {
     var dstImage = new PNG({ width, height });
     var stride   = dstImage.width * MARK_BYTES_PER_PIXEL;
 
@@ -88,6 +102,24 @@ export default async function (screenshotPath, markSeed, clientAreaDimensions, c
 
         srcImage.data.copy(dstImage.data, stride * i, srcStartIndex, srcStartIndex + stride);
     }
+
+    return dstImage;
+}
+
+export default async function (screenshotPath, markSeed, clientAreaDimensions, cropDimensions) {
+    var srcImage  = await readPng(screenshotPath);
+
+    const clippingArea = detectClippingArea(srcImage, { markSeed, clientAreaDimensions, cropDimensions, screenshotPath });
+
+    if (clippingArea.width <= 0 || clippingArea.height <= 0) {
+        await deleteFile(screenshotPath);
+        throw new InvalidElementScreenshotDimensionsError(clippingArea.width, clippingArea.height);
+    }
+
+    if (!markSeed && !cropDimensions)
+        return true;
+
+    const dstImage = copyImagePart(srcImage, clippingArea);
 
     await writePng(screenshotPath, dstImage);
 

@@ -48,12 +48,12 @@ async function setEmulation (runtimeInfo) {
 export async function createClient (runtimeInfo) {
     var { browserId, config, cdpPort } = runtimeInfo;
 
-    var tab = await getActiveTab(cdpPort, browserId);
-
-    if (!tab)
-        return;
-
     try {
+        var tab = await getActiveTab(cdpPort, browserId);
+
+        if (!tab)
+            return;
+
         var client = await remoteChrome({ target: tab, port: cdpPort });
     }
     catch (e) {
@@ -96,8 +96,18 @@ export async function updateMobileViewportSize (runtimeInfo) {
     runtimeInfo.viewportSize.height = windowDimensions.outerHeight;
 }
 
-export async function takeScreenshot (path, { client, config }) {
-    var screenshot = await client.Page.captureScreenshot({ fromSurface: config.headless });
+export async function takeScreenshot (path, { client }) {
+    const { visualViewport } = await client.Page.getLayoutMetrics();
+
+    const clipRegion = {
+        x:      visualViewport.pageX,
+        y:      visualViewport.pageY,
+        width:  visualViewport.clientWidth,
+        height: visualViewport.clientHeight,
+        scale:  visualViewport.scale
+    };
+
+    const screenshot = await client.Page.captureScreenshot({ fromSurface: true, clip: clipRegion });
 
     await writeFile(path, screenshot.data, { encoding: 'base64' });
 }

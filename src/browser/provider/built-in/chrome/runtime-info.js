@@ -65,7 +65,7 @@ async function getTempProfileDir (proxyHostName, config) {
 export default async function (proxyHostName, configString) {
     var config         = getConfig(configString);
     var tempProfileDir = !config.userProfile ? await getTempProfileDir(proxyHostName, config) : null;
-    var cdpPort        = config.headless || config.emulation ? config.cdpPort || await getFreePort() : null;
+    var cdpPort        = config.cdpPort || await getFreePort();
 
     return { config, cdpPort, tempProfileDir };
 }

@@ -26,13 +26,18 @@ class TakeScreenshotBaseCommand extends Assignable {
     constructor (obj) {
         super(obj);
 
-        Object.assign(this, generateScreenshotMark());
+        this.markSeed = null;
+        this.markData = '';
 
         this._assignFrom(obj, true);
     }
 
     _getAssignableProperties () {
         return [];
+    }
+
+    generateScreenshotMark () {
+        Object.assign(this, generateScreenshotMark());
     }
 }
 
