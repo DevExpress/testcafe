@@ -191,10 +191,16 @@ testingEnvironments[testingEnvironmentNames.legacy] = {
 
 
 module.exports = {
-    get currentEnvironment () {
-        var environmentName = process.env.TESTING_ENVIRONMENT || this.testingEnvironmentNames.localBrowsers;
+    get currentEnvironmentName () {
+        return process.env.TESTING_ENVIRONMENT || this.testingEnvironmentNames.localBrowsers;
+    },
 
-        return this.testingEnvironments[environmentName];
+    get currentEnvironment () {
+        return this.testingEnvironments[this.currentEnvironmentName];
+    },
+
+    get isLegacyEnvironment () {
+        return this.currentEnvironmentName === this.testingEnvironmentNames.legacy;
     },
 
     get useLocalBrowsers () {
