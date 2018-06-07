@@ -18,7 +18,7 @@
 
 ## v0.20.2 (2018-5-24)
 
-#### :gear: Package dependencies have been upgraded to avoid CVEs reported by Node Security Platform
+### :gear: Package dependencies have been upgraded to avoid CVEs reported by Node Security Platform
 
 ### Bug fixes
 
@@ -26,7 +26,7 @@
 
 ## v0.20.1 (2018-5-21)
 
-#### :gear: Typescript definitions for new features from v0.20.0 have been added ([#2428](https://github.com/DevExpress/testcafe/issues/2428))
+### :gear: Typescript definitions for new features from v0.20.0 have been added ([#2428](https://github.com/DevExpress/testcafe/issues/2428))
 
 ### Bug fixes
 

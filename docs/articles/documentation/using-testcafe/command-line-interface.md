@@ -62,7 +62,7 @@ The `browser-list-comma-separated` argument specifies the list of browsers (sepa
 ### Local Browsers
 
 You can specify [locally installed browsers](common-concepts/browsers/browser-support.md#locally-installed-browsers) using browser aliases or paths (with the `path:` prefix).
-The list of all the available browsers can be obtained by calling the [--list-browsers](#-b---list-browsers) command.
+Use the [--list-browsers](#-b---list-browsers) command to output aliases for automatically detected browsers.
 
 The following example demonstrates how to run a test in several browsers.
 The browsers are specified differently: one using an alias, the other using a path.
@@ -181,7 +181,7 @@ For `cmd.exe`:
 testcafe "path:`C:\Program Files (x86)\Google\Chrome\Application\chrome.exe` --start-fullscreen" tests/sample-fixture.js
 ```
 
-You can specify arguments for local browsers only.
+Only installed and portable browsers located on the current machine can be launched with arguments.
 
 ## File Path/Glob Pattern
 
@@ -228,7 +228,7 @@ testcafe --version
 
 ### -b, --list-browsers
 
-Lists the aliases of the [local browsers](common-concepts/browsers/browser-support.md#locally-installed-browsers) on your computer.
+Lists the aliases of the [auto-detected browsers](common-concepts/browsers/browser-support.md#locally-installed-browsers) installed on the local machine.
 
 ```sh
 testcafe --list-browsers
