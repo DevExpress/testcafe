@@ -27,6 +27,8 @@ const FUNCTIONAL_TESTS_SELECTOR_TIMEOUT  = 200;
 const FUNCTIONAL_TESTS_ASSERTION_TIMEOUT = 1000;
 const FUNCTIONAL_TESTS_PAGE_LOAD_TIMEOUT = 0;
 
+const BYTE_COUNT_IN_MB = 1024 * 1024;
+
 var environment     = config.currentEnvironment;
 var browserProvider = process.env.BROWSER_PROVIDER;
 var isBrowserStack  = browserProvider === config.browserProviderNames.browserstack;
@@ -123,10 +125,14 @@ function closeLocalBrowsers () {
     return Promise.all(closeBrowserPromises);
 }
 
-before(function () {
+function printFreeMemory () {
     /*eslint-disable*/
-    console.log('Setup started');
+    console.log('freemem (Mb): ', os.freemem() / BYTE_COUNT_IN_MB);
+    console.log('totalmem (Mb): ', os.totalmem() / BYTE_COUNT_IN_MB);
     /*eslint-enable*/
+}
+
+before(function () {
     var mocha = this;
 
     mocha.timeout(60000);
@@ -162,16 +168,10 @@ before(function () {
             global.testCafe   = testCafe;
 
             global.runTests = function (fixture, testName, opts) {
-                var byteCountInMB = 1024 * 1024;
-
-                /*eslint-disable*/
-                console.log('freemem (Mb): ', os.freemem() / byteCountInMB);
-                console.log('totalmem (Mb): ', os.totalmem() / byteCountInMB);
-                /*eslint-enable*/
-
                 var report             = '';
                 var runner             = testCafe.createRunner();
-                var fixturePath        = typeof fixture !== 'string' || path.isAbsolute(fixture) ? fixture : path.join(path.dirname(caller()), fixture);
+                var fixturePath        = typeof fixture !== 'string' ||
+                                         path.isAbsolute(fixture) ? fixture : path.join(path.dirname(caller()), fixture);
                 var skipJsErrors       = opts && opts.skipJsErrors;
                 var quarantineMode     = opts && opts.quarantineMode;
                 var selectorTimeout    = opts && opts.selectorTimeout || FUNCTIONAL_TESTS_SELECTOR_TIMEOUT;
@@ -212,8 +212,12 @@ before(function () {
                     if (shouldFail && !err)
                         throw new Error('Test should have failed but it succeeded');
 
-                    if (err)
+                    if (err) {
+                        printFreeMemory();
+
                         throw err;
+                    }
+
                 };
 
                 if (customReporters)
@@ -269,9 +273,6 @@ before(function () {
 });
 
 after(function () {
-    /*eslint-disable*/
-    console.log('Setup ended');
-    /*eslint-enable*/
     this.timeout(60000);
 
     testCafe.close();
