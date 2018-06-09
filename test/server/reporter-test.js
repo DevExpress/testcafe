@@ -43,11 +43,11 @@ describe('Reporter', function () {
             fixture:     fixtureMocks[0],
             skip:        false,
             screenshots: [{
-                screenshotPath: 'screenshot1.png',
-                thumbnailPath:  'thumbnail1.png',
-                userAgent:      'chrome',
-                forError:       false,
-                isFailed:       false
+                screenshotPath:      'screenshot1.png',
+                thumbnailPath:       'thumbnail1.png',
+                userAgent:           'chrome',
+                onFail:              false,
+                quarantineAttemptID: 2
             }],
             meta: {
                 run: 'run-001'
@@ -58,17 +58,17 @@ describe('Reporter', function () {
             fixture:     fixtureMocks[0],
             skip:        false,
             screenshots: [{
-                screenshotPath: 'screenshot1.png',
-                thumbnailPath:  'thumbnail1.png',
-                userAgent:      'chrome',
-                forError:       false,
-                isFailed:       false
+                screenshotPath:      'screenshot1.png',
+                thumbnailPath:       'thumbnail1.png',
+                userAgent:           'chrome',
+                onFail:              false,
+                quarantineAttemptID: null
             }, {
-                screenshotPath: 'screenshot2.png',
-                thumbnailPath:  'thumbnail2.png',
-                userAgent:      'chrome',
-                forError:       true,
-                isFailed:       true
+                screenshotPath:      'screenshot2.png',
+                thumbnailPath:       'thumbnail2.png',
+                userAgent:           'chrome',
+                onFail:              true,
+                quarantineAttemptID: null
             }],
             meta: {
                 run: 'run-001'
@@ -116,7 +116,10 @@ describe('Reporter', function () {
             test:              testMocks[0],
             unstable:          true,
             browserConnection: browserConnectionMocks[0],
-            errs:              []
+            errs:              [],
+            quarantine:        {
+                attempts: [['1', '2'], []]
+            }
         },
 
         //fixture1test2
@@ -172,7 +175,10 @@ describe('Reporter', function () {
             test:              testMocks[0],
             unstable:          true,
             browserConnection: browserConnectionMocks[1],
-            errs:              []
+            errs:              [],
+            quarantine:        {
+                attempts: [['1', '2'], []]
+            }
         },
 
         // 'fixture1test2
@@ -311,17 +317,21 @@ describe('Reporter', function () {
                 args:   [
                     'fixture1test1',
                     {
-                        errs:           [],
-                        durationMs:     74000,
-                        unstable:       true,
-                        skipped:        false,
+                        errs:       [],
+                        durationMs: 74000,
+                        unstable:   true,
+                        skipped:    false,
+                        quarantine: {
+                            1: { isPassed: false },
+                            2: { isPassed: true }
+                        },
                         screenshotPath: '/screenshots/1445437598847',
                         screenshots:    [{
-                            screenshotPath: 'screenshot1.png',
-                            thumbnailPath:  'thumbnail1.png',
-                            userAgent:      'chrome',
-                            forError:       false,
-                            isFailed:       false
+                            screenshotPath:      'screenshot1.png',
+                            thumbnailPath:       'thumbnail1.png',
+                            userAgent:           'chrome',
+                            onFail:              false,
+                            quarantineAttemptID: 2
                         }]
                     },
                     {
@@ -352,19 +362,20 @@ describe('Reporter', function () {
                         durationMs:     74000,
                         unstable:       false,
                         skipped:        false,
+                        quarantine:     null,
                         screenshotPath: '/screenshots/1445437598847',
                         screenshots:    [{
-                            screenshotPath: 'screenshot1.png',
-                            thumbnailPath:  'thumbnail1.png',
-                            userAgent:      'chrome',
-                            forError:       false,
-                            isFailed:       false
+                            screenshotPath:      'screenshot1.png',
+                            thumbnailPath:       'thumbnail1.png',
+                            userAgent:           'chrome',
+                            onFail:              false,
+                            quarantineAttemptID: null
                         }, {
-                            screenshotPath: 'screenshot2.png',
-                            thumbnailPath:  'thumbnail2.png',
-                            userAgent:      'chrome',
-                            forError:       true,
-                            isFailed:       true
+                            screenshotPath:      'screenshot2.png',
+                            thumbnailPath:       'thumbnail2.png',
+                            userAgent:           'chrome',
+                            onFail:              true,
+                            quarantineAttemptID: null
                         }]
                     },
                     {
@@ -381,6 +392,7 @@ describe('Reporter', function () {
                         durationMs:     74000,
                         unstable:       false,
                         skipped:        false,
+                        quarantine:     null,
                         screenshotPath: null,
                         screenshots:    []
                     },
@@ -408,6 +420,7 @@ describe('Reporter', function () {
                         durationMs:     74000,
                         unstable:       false,
                         skipped:        false,
+                        quarantine:     null,
                         screenshotPath: null,
                         screenshots:    []
                     },
@@ -425,6 +438,7 @@ describe('Reporter', function () {
                         durationMs:     74000,
                         unstable:       false,
                         skipped:        false,
+                        quarantine:     null,
                         screenshotPath: null,
                         screenshots:    []
                     },
@@ -456,6 +470,7 @@ describe('Reporter', function () {
                         durationMs:     74000,
                         unstable:       true,
                         skipped:        false,
+                        quarantine:     null,
                         screenshotPath: null,
                         screenshots:    []
                     },

@@ -54,7 +54,7 @@ test('Take screenshots for reporter', async t => {
 
     quarantineScope[safeUserAgent] = quarantineScope[safeUserAgent] || {};
 
-    const attemptNumber = quarantineScope[safeUserAgent].attemptNumber || 0;
+    const attemptNumber = quarantineScope[safeUserAgent].attemptNumber || 1;
 
     const getFileName = fileName => {
         return safeUserAgent + attemptNumber + fileName;
@@ -66,7 +66,7 @@ test('Take screenshots for reporter', async t => {
 
     quarantineScope[safeUserAgent].attemptNumber = attemptNumber + 1;
 
-    if (attemptNumber === 0)
+    if (attemptNumber === 1)
         throw new Error('Quarantine error');
 });
 

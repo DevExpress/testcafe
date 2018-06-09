@@ -103,6 +103,8 @@ export default class TestRun extends Session {
 
         this.debugLog = new TestRunDebugLog(this.browserConnection.userAgent);
 
+        this.quarantine = null;
+
         this.injectable.scripts.push('/testcafe-core.js');
         this.injectable.scripts.push('/testcafe-ui.js');
         this.injectable.scripts.push('/testcafe-automation.js');
@@ -112,6 +114,10 @@ export default class TestRun extends Session {
         this.requestHooks = Array.from(this.test.requestHooks);
 
         this._initRequestHooks();
+    }
+
+    addQuarantineInfo (quarantine) {
+        this.quarantine = quarantine;
     }
 
     addRequestHook (hook) {

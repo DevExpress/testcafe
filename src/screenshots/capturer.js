@@ -20,7 +20,7 @@ export default class Capturer {
         this.baseDirName          = namingOptions.baseDirName;
         this.userAgentName        = namingOptions.userAgentName;
         this.quarantine           = namingOptions.quarantine;
-        this.attemptNumber        = this.quarantine ? this.quarantine.attemptNumber : null;
+        this.attemptNumber        = this.quarantine ? this.quarantine.getNextAttemptNumber() : null;
         this.testIndex            = namingOptions.testIndex;
         this.screenshotIndex      = 1;
         this.errorScreenshotIndex = 1;
@@ -142,18 +142,12 @@ export default class Capturer {
 
         this.testEntry.path = this.screenshotPathForReport;
 
-        const isFailed = () => {
-            return this.quarantine && this.quarantine.isFailedAttempt(this.attemptNumber);
-        };
-
         const screenshot = {
             screenshotPath,
             thumbnailPath,
-            userAgent: this.userAgentName,
-            forError,
-            get isFailed () {
-                return isFailed();
-            }
+            userAgent:           this.userAgentName,
+            quarantineAttemptID: this.attemptNumber,
+            onFail:              forError,
         };
 
         this.testEntry.screenshots.push(screenshot);

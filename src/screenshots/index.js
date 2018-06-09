@@ -83,11 +83,13 @@ export default class Screenshots {
         if (!testEntry)
             testEntry = this._addTestEntry(test);
 
+        const quarantineAttemptNum = quarantine ? quarantine.getNextAttemptNumber() : null;
+
         var namingOptions = {
             testIndex,
             quarantine,
             baseDirName:   this.screenshotBaseDirName,
-            userAgentName: this._getUserAgentName(connection.userAgent, testIndex, quarantine ? quarantine.attemptNumber : null)
+            userAgentName: this._getUserAgentName(connection.userAgent, testIndex, quarantineAttemptNum)
         };
 
         return new Capturer(this.screenshotsPath, testEntry, connection, namingOptions, warningLog);

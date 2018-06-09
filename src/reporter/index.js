@@ -26,6 +26,7 @@ export default class Reporter {
             test:           test,
             screenshotPath: null,
             screenshots:    [],
+            quarantine:     null,
             pendingRuns:    runsPerTest,
             errs:           [],
             unstable:       false,
@@ -41,6 +42,7 @@ export default class Reporter {
             unstable:       reportItem.unstable,
             screenshotPath: reportItem.screenshotPath,
             screenshots:    reportItem.screenshots,
+            quarantine:     reportItem.quarantine,
             skipped:        reportItem.test.skip
         };
     }
@@ -97,6 +99,17 @@ export default class Reporter {
                 if (task.screenshots.hasCapturedFor(testRun.test)) {
                     reportItem.screenshotPath = task.screenshots.getPathFor(testRun.test);
                     reportItem.screenshots    = task.screenshots.getScreenshotsInfo(testRun.test);
+                }
+
+                if (testRun.quarantine) {
+                    reportItem.quarantine = testRun.quarantine.attempts.reduce((result, errors, index) => {
+                        const isPassed = !errors.length;
+                        const quarantineAttemptID = index + 1;
+
+                        result[quarantineAttemptID] = { isPassed };
+
+                        return result;
+                    }, {});
                 }
 
                 if (!reportItem.testRunInfo) {

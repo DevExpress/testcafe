@@ -15,9 +15,10 @@ var getReporter = function (scope) {
         return screenshotPath.replace(SCREENSHOT_ON_FAIL_PATH_MESSAGE_RE, '').replace(CUSTOM_SCREENSHOT_DIR, '').replace(SLASH_RE, '_');
     }
 
-    function prepareScreenshot (screenshot) {
-        screenshot.screenshotPath = patchScreenshotPath(screenshot.screenshotPath);
-        screenshot.thumbnailPath  = patchScreenshotPath(screenshot.thumbnailPath);
+    function prepareScreenshot (screenshot, quarantine) {
+        screenshot.screenshotPath  = patchScreenshotPath(screenshot.screenshotPath);
+        screenshot.thumbnailPath   = patchScreenshotPath(screenshot.thumbnailPath);
+        screenshot.isPassedAttempt = quarantine[screenshot.quarantineAttemptID].isPassed;
 
         userAgents[screenshot.userAgent] = true;
     }
@@ -25,7 +26,7 @@ var getReporter = function (scope) {
     return function () {
         return {
             reportTestDone: (name, testRunInfo) => {
-                testRunInfo.screenshots.forEach(screenshot => prepareScreenshot(screenshot));
+                testRunInfo.screenshots.forEach(screenshot => prepareScreenshot(screenshot, testRunInfo.quarantine));
 
                 scope.screenshots = testRunInfo.screenshots;
                 scope.userAgents  = Object.keys(userAgents);
@@ -166,19 +167,24 @@ describe('[API] t.takeScreenshot()', function () {
                 reporters:          [{ reporter }]
             })
                 .then(function () {
-                    var getScreenshotsInfo = (screenshotPath, thumbnailPath, attempt, userAgent, forError) => {
-                        if (!forError) {
+                    var getScreenshotsInfo = (screenshotPath, thumbnailPath, attempt, userAgent, onFail) => {
+                        if (!onFail) {
                             screenshotPath = '_' + userAgent + attempt + screenshotPath;
                             thumbnailPath  = '_thumbnails' + screenshotPath;
                         }
 
-                        var isFailed = attempt === 0 || forError;
-
-                        return { screenshotPath, thumbnailPath, forError, isFailed, userAgent };
+                        return {
+                            screenshotPath,
+                            thumbnailPath,
+                            onFail:              onFail,
+                            quarantineAttemptID: attempt,
+                            isPassedAttempt:     attempt > 1,
+                            userAgent
+                        };
                     };
 
                     var expected = result.userAgents.reduce(function (value, userAgent) {
-                        for (var attempt = 0; attempt < 4; attempt++) {
+                        for (var attempt = 1; attempt <= 4; attempt++) {
                             value.push(getScreenshotsInfo('1.png', null, attempt, userAgent, false));
                             value.push(getScreenshotsInfo('2.png', null, attempt, userAgent, false));
                         }
@@ -186,7 +192,7 @@ describe('[API] t.takeScreenshot()', function () {
                         var errorScreenshotPath = '_' + userAgent + '_errors_1.png';
                         var errorThumbnailPath  = '_' + userAgent + '_errors_thumbnails_1.png';
 
-                        value.push(getScreenshotsInfo(errorScreenshotPath, errorThumbnailPath, attempt, userAgent, true));
+                        value.push(getScreenshotsInfo(errorScreenshotPath, errorThumbnailPath, 1, userAgent, true));
 
                         return value;
                     }, []);
