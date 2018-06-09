@@ -127,8 +127,8 @@ function closeLocalBrowsers () {
 
 function printFreeMemory () {
     /*eslint-disable*/
-    console.log('freemem (Mb): ', os.freemem() / BYTE_COUNT_IN_MB);
-    console.log('totalmem (Mb): ', os.totalmem() / BYTE_COUNT_IN_MB);
+    console.log('freemem (Mb): ', Math.floor(os.freemem() / BYTE_COUNT_IN_MB));
+    console.log('totalmem (Mb): ', Math.floor(os.totalmem() / BYTE_COUNT_IN_MB));
     /*eslint-enable*/
 }
 
