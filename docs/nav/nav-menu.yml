@@ -18,6 +18,8 @@
       url: /documentation/using-testcafe/programming-interface/runner.md
     - name: createTestCafe Factory
       url: /documentation/using-testcafe/programming-interface/createtestcafe.md
+  - name: Using TestCafe Docker Image
+    url: /documentation/using-testcafe/using-testcafe-docker-image.md
   - name: Common Concepts
     url: /documentation/using-testcafe/common-concepts/README.md
     content:
@@ -147,7 +149,7 @@
     - name: Attaching Hooks to Tests and Fixtures
       url: /documentation/test-api/intercepting-http-requests/attaching-hooks-to-tests-and-fixtures.md
     - name: requestOptions Object
-      url: /documentation/test-api/intercepting-http-requests/requestoptions-object.html
+      url: /documentation/test-api/intercepting-http-requests/requestoptions-object.md
   - name: Waiting for Page Elements to Appear
     url: /documentation/test-api/waiting-for-page-elements-to-appear.md
   - name: Authentication

@@ -1,6 +1,6 @@
 # Documentation
 
-> This is the documentation's development version. The functionality described here may not be included in the current release version. Unreleased functionality may change or be dropped before the next release. The release version's documentation is available on the [TestCafe website](https://devexpress.github.io/testcafe/documentation/getting-started/).
+> This is the documentation's development version. The functionality described here may not be included in the current release version. Unreleased functionality may change or be dropped before the next release. The release version's documentation is available at the [TestCafe website](https://devexpress.github.io/testcafe/documentation/getting-started/).
 
 * [GETTING STARTED](articles/documentation/getting-started/README.md)
 * [USING TESTCAFE](articles/documentation/using-testcafe/README.md)
@@ -11,6 +11,7 @@
     * [BrowserConnection Class](articles/documentation/using-testcafe/programming-interface/browserconnection.md)
     * [Runner Class](articles/documentation/using-testcafe/programming-interface/runner.md)
     * [createTestCafe Factory](articles/documentation/using-testcafe/programming-interface/createtestcafe.md)
+  * [Using TestCafe Docker Image](articles/documentation/using-testcafe/using-testcafe-docker-image.md)
   * [Common Concepts](articles/documentation/using-testcafe/common-concepts/README.md)
     * [Browsers](articles/documentation/using-testcafe/common-concepts/browsers/README.md)
       * [Browser Support](articles/documentation/using-testcafe/common-concepts/browsers/browser-support.md)
@@ -27,6 +28,8 @@
       * [Test Controller](articles/documentation/test-api/test-code-structure.md#test-controller)
       * [Setting Test Speed](articles/documentation/test-api/test-code-structure.md#setting-test-speed)
     * [Specifying the Start Webpage](articles/documentation/test-api/test-code-structure.md#specifying-the-start-webpage)
+    * [Specifying Testing Metadata](articles/documentation/test-api/test-code-structure.md#specifying-testing-metadata)
+      * [Using Metadata in Reports](articles/documentation/test-api/test-code-structure.md#using-metadata-in-reports)
     * [Initialization and Clean-Up](articles/documentation/test-api/test-code-structure.md#initialization-and-clean-up)
       * [Test Hooks](articles/documentation/test-api/test-code-structure.md#test-hooks)
       * [Fixture Hooks](articles/documentation/test-api/test-code-structure.md#fixture-hooks)
