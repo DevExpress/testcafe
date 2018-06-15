@@ -10,4 +10,5 @@ This section provides general information on TestCafe and describes the ways you
 * [Installing TestCafe](installing-testcafe.md)
 * [Command Line Interface](command-line-interface.md)
 * [Programming Interface](programming-interface/README.md)
+* [Using TestCafe Docker Image](using-testcafe-docker-image.md)
 * [Common Concepts](common-concepts/README.md)
