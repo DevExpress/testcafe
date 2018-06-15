@@ -51,6 +51,7 @@ const IFRAME_TEST_RUN_TEMPLATE        = read('../client/test-run/iframe.js.musta
 const TEST_DONE_CONFIRMATION_RESPONSE = 'test-done-confirmation';
 const MAX_RESPONSE_DELAY              = 2 * 60 * 1000;
 
+const DRIVER_TASK_ADDED_EVENT = 'driver-task-added';
 
 export default class TestRun extends Session {
     constructor (test, browserConnection, screenshotCapturer, warningLog, opts) {
@@ -93,6 +94,8 @@ export default class TestRun extends Session {
 
         this.fileDownloadingHandled               = false;
         this.resolveWaitForFileDownloadingPromise = null;
+
+        this.isDriverTaskAddition = false;
 
         this.debugging               = this.opts.debugMode;
         this.debugOnFail             = this.opts.debugOnFail;
@@ -306,7 +309,17 @@ export default class TestRun extends Session {
         if (this.pendingRequest)
             this._resolvePendingRequest(command);
 
-        return new Promise((resolve, reject) => this.driverTaskQueue.push({ command, resolve, reject, callsite }));
+        this.isDriverTaskAddition = true;
+
+        return new Promise((resolve, reject) => {
+            this.isDriverTaskAddition = false;
+            this.driverTaskQueue.push({ command, resolve, reject, callsite });
+            this.emit(DRIVER_TASK_ADDED_EVENT);
+        });
+    }
+
+    get driverTaskQueueLength () {
+        return this.isDriverTaskAddition ? promisifyEvent(this, DRIVER_TASK_ADDED_EVENT) : Promise.resolve();
     }
 
     async _enqueueBrowserConsoleMessagesCommand (command, callsite) {
