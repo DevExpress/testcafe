@@ -123,7 +123,7 @@ Before executing an action, TestCafe waits for the target element to appear
 in the DOM and become visible. If this does not happen
 within the [selector timeout](../selecting-page-elements/selectors/using-selectors.md#selector-timeout), the test fails.
 
-Note that TestCafe cannot interact with page elements overlayed by a different element.
+Note that TestCafe cannot interact with page elements overlaid by a different element.
 If the target element is not on top when an action is triggered, TestCafe waits for this element to appear in the foreground.
 If this does not happen within the [selector timeout](../selecting-page-elements/selectors/using-selectors.md#selector-timeout),
 the action is performed with an overlaying element.
