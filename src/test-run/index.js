@@ -331,7 +331,7 @@ export default class TestRun extends Session {
     async _enqueueSetBreakpointCommand (callsite, error) {
         debugLogger.showBreakpoint(this.id, this.browserConnection.userAgent, callsite, error);
 
-        this.debugging = await this._enqueueCommand(new SetBreakpointCommand(!!error), callsite);
+        this.debugging = await this.executeCommand(new SetBreakpointCommand(!!error), callsite);
     }
 
     _removeAllNonServiceTasks () {
@@ -435,8 +435,8 @@ export default class TestRun extends Session {
         var assertionTimeout = command.options.timeout === void 0 ? this.opts.assertionTimeout : command.options.timeout;
         var executor         = new AssertionExecutor(command, assertionTimeout, callsite);
 
-        executor.once('start-assertion-retries', timeout => this._enqueueCommand(new ShowAssertionRetriesStatusCommand(timeout)));
-        executor.once('end-assertion-retries', success => this._enqueueCommand(new HideAssertionRetriesStatusCommand(success)));
+        executor.once('start-assertion-retries', timeout => this.executeCommand(new ShowAssertionRetriesStatusCommand(timeout)));
+        executor.once('end-assertion-retries', success => this.executeCommand(new HideAssertionRetriesStatusCommand(success)));
 
         return executor.run();
     }

@@ -5,7 +5,7 @@ describe('Code Evaluation', function () {
 });
 
 describe('Driver task queue', function () {
-    it('Should return real queue lengh after all commands are added', function () {
+    it('Should return real queue length after all commands are added', function () {
         return runTests('testcafe-fixtures/get-real-queue-length.js', 'Check real driver task queue length');
     });
 });
