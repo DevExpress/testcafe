@@ -128,6 +128,9 @@ If the target element is not on top when an action is triggered, TestCafe waits 
 If this does not happen within the [selector timeout](../selecting-page-elements/selectors/using-selectors.md#selector-timeout),
 the action is performed with an overlaying element.
 
+> An exception is the [Upload action](upload.md). It does not require the target `input` to be visible.
+> You can also perform the upload action when the `input` is overlaid.
+
 ## Remarks for Touch Devices
 
 On touch devices, TestCafe emulates touch events instead of mouse events.
