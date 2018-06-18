@@ -51,7 +51,7 @@ const IFRAME_TEST_RUN_TEMPLATE        = read('../client/test-run/iframe.js.musta
 const TEST_DONE_CONFIRMATION_RESPONSE = 'test-done-confirmation';
 const MAX_RESPONSE_DELAY              = 2 * 60 * 1000;
 
-const DRIVER_TASK_ADDED_EVENT = 'driver-task-added';
+const ALL_DRIVER_TASKS_ADDED_TO_QUEUE_EVENT = 'all-driver-tasks-added-to-queue';
 
 export default class TestRun extends Session {
     constructor (test, browserConnection, screenshotCapturer, warningLog, opts) {
@@ -95,7 +95,7 @@ export default class TestRun extends Session {
         this.fileDownloadingHandled               = false;
         this.resolveWaitForFileDownloadingPromise = null;
 
-        this.isDriverTaskAddition = false;
+        this.addingDriverTasksCount = 0;
 
         this.debugging               = this.opts.debugMode;
         this.debugOnFail             = this.opts.debugOnFail;
@@ -309,17 +309,17 @@ export default class TestRun extends Session {
         if (this.pendingRequest)
             this._resolvePendingRequest(command);
 
-        this.isDriverTaskAddition = true;
-
         return new Promise((resolve, reject) => {
-            this.isDriverTaskAddition = false;
+            this.addingDriverTasksCount--;
             this.driverTaskQueue.push({ command, resolve, reject, callsite });
-            this.emit(DRIVER_TASK_ADDED_EVENT);
+
+            if (!this.addingDriverTasksCount)
+                this.emit(ALL_DRIVER_TASKS_ADDED_TO_QUEUE_EVENT, this.driverTaskQueue.length);
         });
     }
 
     get driverTaskQueueLength () {
-        return this.isDriverTaskAddition ? promisifyEvent(this, DRIVER_TASK_ADDED_EVENT) : Promise.resolve();
+        return this.addingDriverTasksCount ? promisifyEvent(this, ALL_DRIVER_TASKS_ADDED_TO_QUEUE_EVENT) : Promise.resolve(this.driverTaskQueue.length);
     }
 
     async _enqueueBrowserConsoleMessagesCommand (command, callsite) {
@@ -480,6 +480,8 @@ export default class TestRun extends Session {
     }
 
     async executeCommand (command, callsite) {
+        this.addingDriverTasksCount++;
+
         this.debugLog.command(command);
 
         if (this.pendingPageError && isCommandRejectableByPageError(command))
