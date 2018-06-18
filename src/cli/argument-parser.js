@@ -157,7 +157,6 @@ export default class CLIArgumentParser {
         }
     }
 
-
     _parseSelectorTimeout () {
         if (this.opts.selectorTimeout) {
             assertType(is.nonNegativeNumberString, null, 'Selector timeout', this.opts.selectorTimeout);
@@ -185,11 +184,6 @@ export default class CLIArgumentParser {
     _parseSpeed () {
         if (this.opts.speed)
             this.opts.speed = parseFloat(this.opts.speed);
-    }
-
-    _parseScreenshotsPattern () {
-        if (!this.opts.screenshotPathPattern)
-            this.opts.screenshotPathPattern = '${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${TEST_INDEX}';
     }
 
     _parseConcurrency () {
@@ -325,7 +319,6 @@ export default class CLIArgumentParser {
         this._parsePorts();
         this._parseBrowserList();
         this._parseConcurrency();
-        this._parseScreenshotsPattern();
 
         await Promise.all([
             this._parseScreenshotsPath(),

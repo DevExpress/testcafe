@@ -1,10 +1,10 @@
-var path            = require('path');
-var expect          = require('chai').expect;
-var config          = require('../../../../config.js');
-var assertionHelper = require('../../../../assertion-helper.js');
+const path            = require('path');
+const expect          = require('chai').expect;
+const config          = require('../../../../config.js');
+const assertionHelper = require('../../../../assertion-helper.js');
 
-var SCREENSHOT_PATH_MESSAGE_RE = /^___test-screenshots___$/;
-var CUSTOM_SCREENSHOT_DIR      = '___test-screenshots___';
+const SCREENSHOT_PATH_MESSAGE_RE = /^___test-screenshots___$/;
+const CUSTOM_SCREENSHOT_DIR      = '___test-screenshots___';
 
 describe('[API] t.takeScreenshot()', function () {
     if (config.useLocalBrowsers) {
@@ -118,6 +118,18 @@ describe('[API] t.takeScreenshot()', function () {
                 })
                 .then(function (result) {
                     expect(result).eql(true);
+                });
+        });
+
+        it('Should allow to use a custom path pattern', function () {
+            return runTests('./testcafe-fixtures/take-screenshot.js', 'Take a screenshot',
+                {
+                    setScreenshotPath:     true,
+                    screenshotPathPattern: '${TEST}-${FILE_INDEX}'
+                })
+                .then(function () {
+                    expect(SCREENSHOT_PATH_MESSAGE_RE.test(testReport.screenshotPath)).eql(true);
+                    expect(assertionHelper.checkScreenshotsCreated({ forError: false, screenshotsCount: 4 })).eql(true);
                 });
         });
     }
@@ -312,8 +324,8 @@ describe('[API] t.takeElementScreenshot()', function () {
             })
                 .catch(function (errs) {
                     expect(errs[0]).to.contains('Unable to scroll to the specified point because a point ' +
-                                                'with the specified scrollTargetX and scrollTargetY properties ' +
-                                                'is not located inside the element\'s cropping region');
+                        'with the specified scrollTargetX and scrollTargetY properties ' +
+                        'is not located inside the element\'s cropping region');
                     expect(errs[0]).to.contains(
                         ' 53 |test(\'Invalid scroll target\', async t => {' +
                         ' > 54 |    await t.takeElementScreenshot(\'table\', \'custom/\' + t.ctx.parsedUA.family + \'.png\', { scrollTargetX: -2000, scrollTargetY: -3000 });' +

@@ -11,11 +11,9 @@ import { GeneralError } from '../errors/runtime';
 import MESSAGE from '../errors/runtime/message';
 import { assertType, is } from '../errors/runtime/type-assertions';
 
-
 const DEFAULT_SELECTOR_TIMEOUT  = 10000;
 const DEFAULT_ASSERTION_TIMEOUT = 3000;
 const DEFAULT_PAGE_LOAD_TIMEOUT = 3000;
-
 
 export default class Runner extends EventEmitter {
     constructor (proxy, browserConnectionGateway) {
@@ -30,7 +28,7 @@ export default class Runner extends EventEmitter {
             proxyBypass:            null,
             screenshotPath:         null,
             takeScreenshotsOnFails: false,
-            screenshotsPattern:     null,
+            screenshotPathPattern:  null,
             skipJsErrors:           false,
             quarantineMode:         false,
             debugMode:              false,
@@ -202,7 +200,7 @@ export default class Runner extends EventEmitter {
     screenshots (path, takeOnFails = false, pattern) {
         this.opts.takeScreenshotsOnFails = takeOnFails;
         this.opts.screenshotPath         = path;
-        this.opts.screenshotsPattern     = pattern;
+        this.opts.screenshotPathPattern  = pattern;
 
         return this;
     }

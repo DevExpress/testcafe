@@ -1,46 +1,25 @@
 import { join as joinPath, dirname } from 'path';
-import sanitizeFilename from 'sanitize-filename';
 import { generateThumbnail } from 'testcafe-browser-tools';
 import cropScreenshot from './crop';
 import { ensureDir } from '../utils/promisified-functions';
 import { isInQueue, addToQueue } from '../utils/async-queue';
 import WARNING_MESSAGE from '../notifications/warning-message';
-import * as patternParser from './pattern-parser';
-
-const PNG_EXTENSION_RE = /(\.png)$/;
-const FILENAME_EXT = '.png';
+import correctFilePath from '../utils/correct-file-path';
 
 export default class Capturer {
-    constructor (baseScreenshotsPath, testEntry, connection, namingOptions, warningLog) {
+    constructor (baseScreenshotsPath, testEntry, connection, pathPattern, warningLog) {
         this.enabled              = !!baseScreenshotsPath;
         this.baseScreenshotsPath  = baseScreenshotsPath;
         this.testEntry            = testEntry;
         this.provider             = connection.provider;
         this.browserId            = connection.id;
-        this.quarantineAttemptNum = namingOptions.quarantineAttemptNum;
-        this.testIndex            = namingOptions.testIndex;
-        this.screenshotIndex      = 1;
-        this.errorScreenshotIndex = 1;
         this.warningLog           = warningLog;
+        this.pathPattern          = pathPattern;
 
-        var screenshotsPath = this.enabled ? this.baseScreenshotsPath : '';
+        const screenshotsPath = this.enabled ? this.baseScreenshotsPath : '';
 
         this.screenshotsPath         = screenshotsPath;
         this.screenshotPathForReport = screenshotsPath;
-        this.screenshotsPatternName  = namingOptions.patternName;
-
-        this.patternMap = namingOptions.patternMap;
-        this.patternOptions = namingOptions;
-    }
-
-    static _correctFilePath (path) {
-        var correctedPath = path
-            .replace(/\\/g, '/')
-            .split('/')
-            .map(str => sanitizeFilename(str))
-            .join('/');
-
-        return PNG_EXTENSION_RE.test(correctedPath) ? correctedPath : `${correctedPath}.png`;
     }
 
     static _getDimensionWithoutScrollbar (fullDimension, documentDimension, bodyDimension) {
@@ -80,38 +59,16 @@ export default class Capturer {
         };
     }
 
-    _getFileName (forError) {
-        let fileName = '';
-
-        if (this.screenshotsPatternName)
-            fileName = `${this.screenshotsPatternName}`;
-        else
-            fileName = `${forError ? this.errorScreenshotIndex : this.screenshotIndex}.png`;
-
-        if (forError)
-            this.errorScreenshotIndex++;
-        else
-            this.screenshotIndex++;
-
-        return fileName;
+    _getCustomScreenshotPath (customPath) {
+        return joinPath(this.baseScreenshotsPath, correctFilePath(customPath));
     }
 
-    _parsePattern (namePattern) {
-        for (const pattern in this.patternMap)
-            namePattern = namePattern.replace(new RegExp(`\\$\\{${pattern}\\}`, 'g'), this.patternMap[pattern]);
+    _getScreenshotPath (forError) {
+        const parsedPath = this.pathPattern.getPath(forError);
 
-        return namePattern;
-    }
+        this.pathPattern.incrementFileIndexes(forError);
 
-    _getScreenshotPath (fileName, customPath) {
-        if (customPath)
-            return joinPath(this.baseScreenshotsPath, Capturer._correctFilePath(patternParser.parse(customPath, this.patternMap, this.patternOptions)));
-
-        var screenshotPath = this.quarantineAttemptNum !== null ?
-            joinPath(this.screenshotsPath, `run-${this.quarantineAttemptNum}`) :
-            this.screenshotsPath;
-
-        return joinPath(screenshotPath, fileName);
+        return joinPath(this.baseScreenshotsPath, parsedPath);
     }
 
     async _takeScreenshot (filePath, pageWidth, pageHeight) {
@@ -123,11 +80,7 @@ export default class Capturer {
         if (!this.enabled)
             return null;
 
-        var fileName = patternParser.parseFileIndex(this._getFileName(forError), this.screenshotIndex) + FILENAME_EXT;
-
-        fileName = forError ? joinPath('errors', fileName) : fileName;
-
-        var screenshotPath = this._getScreenshotPath(fileName, customPath);
+        const screenshotPath = customPath ? this._getCustomScreenshotPath(customPath) : this._getScreenshotPath(forError);
 
         if (isInQueue(screenshotPath))
             this.warningLog.addWarning(WARNING_MESSAGE.screenshotRewritingError, screenshotPath);
