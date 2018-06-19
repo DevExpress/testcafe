@@ -126,7 +126,8 @@ within the [selector timeout](../selecting-page-elements/selectors/using-selecto
 Note that TestCafe cannot interact with page elements overlaid by a different element.
 If the target element is not on top when an action is triggered, TestCafe waits for this element to appear in the foreground.
 If this does not happen within the [selector timeout](../selecting-page-elements/selectors/using-selectors.md#selector-timeout),
-the action is performed with an overlaying element.
+the action is performed with an overlaying element. To learn why the target element can be overlaid,
+see the *stacking* description in the [z-index](https://developer.mozilla.org/en-US/docs/Web/CSS/z-index) topic.
 
 > An exception is the [Upload action](upload.md). It does not require the target `input` to be visible.
 > You can also perform the upload action when the `input` is overlaid.
