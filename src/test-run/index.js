@@ -51,6 +51,7 @@ const IFRAME_TEST_RUN_TEMPLATE        = read('../client/test-run/iframe.js.musta
 const TEST_DONE_CONFIRMATION_RESPONSE = 'test-done-confirmation';
 const MAX_RESPONSE_DELAY              = 2 * 60 * 1000;
 
+const ALL_DRIVER_TASKS_ADDED_TO_QUEUE_EVENT = 'all-driver-tasks-added-to-queue';
 
 export default class TestRun extends Session {
     constructor (test, browserConnection, screenshotCapturer, warningLog, opts) {
@@ -93,6 +94,8 @@ export default class TestRun extends Session {
 
         this.fileDownloadingHandled               = false;
         this.resolveWaitForFileDownloadingPromise = null;
+
+        this.addingDriverTasksCount = 0;
 
         this.debugging               = this.opts.debugMode;
         this.debugOnFail             = this.opts.debugOnFail;
@@ -306,7 +309,17 @@ export default class TestRun extends Session {
         if (this.pendingRequest)
             this._resolvePendingRequest(command);
 
-        return new Promise((resolve, reject) => this.driverTaskQueue.push({ command, resolve, reject, callsite }));
+        return new Promise((resolve, reject) => {
+            this.addingDriverTasksCount--;
+            this.driverTaskQueue.push({ command, resolve, reject, callsite });
+
+            if (!this.addingDriverTasksCount)
+                this.emit(ALL_DRIVER_TASKS_ADDED_TO_QUEUE_EVENT, this.driverTaskQueue.length);
+        });
+    }
+
+    get driverTaskQueueLength () {
+        return this.addingDriverTasksCount ? promisifyEvent(this, ALL_DRIVER_TASKS_ADDED_TO_QUEUE_EVENT) : Promise.resolve(this.driverTaskQueue.length);
     }
 
     async _enqueueBrowserConsoleMessagesCommand (command, callsite) {
@@ -318,7 +331,7 @@ export default class TestRun extends Session {
     async _enqueueSetBreakpointCommand (callsite, error) {
         debugLogger.showBreakpoint(this.id, this.browserConnection.userAgent, callsite, error);
 
-        this.debugging = await this._enqueueCommand(new SetBreakpointCommand(!!error), callsite);
+        this.debugging = await this.executeCommand(new SetBreakpointCommand(!!error), callsite);
     }
 
     _removeAllNonServiceTasks () {
@@ -422,8 +435,8 @@ export default class TestRun extends Session {
         var assertionTimeout = command.options.timeout === void 0 ? this.opts.assertionTimeout : command.options.timeout;
         var executor         = new AssertionExecutor(command, assertionTimeout, callsite);
 
-        executor.once('start-assertion-retries', timeout => this._enqueueCommand(new ShowAssertionRetriesStatusCommand(timeout)));
-        executor.once('end-assertion-retries', success => this._enqueueCommand(new HideAssertionRetriesStatusCommand(success)));
+        executor.once('start-assertion-retries', timeout => this.executeCommand(new ShowAssertionRetriesStatusCommand(timeout)));
+        executor.once('end-assertion-retries', success => this.executeCommand(new HideAssertionRetriesStatusCommand(success)));
 
         return executor.run();
     }
@@ -467,6 +480,8 @@ export default class TestRun extends Session {
     }
 
     async executeCommand (command, callsite) {
+        this.addingDriverTasksCount++;
+
         this.debugLog.command(command);
 
         if (this.pendingPageError && isCommandRejectableByPageError(command))
