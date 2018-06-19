@@ -24,8 +24,8 @@ class IdlePage {
     _checkStatus () {
         browser
             .checkStatus(this.statusUrl, createXHR)
-            .then(cmd => {
-                if (cmd === COMMAND.idle)
+            .then(({ command }) => {
+                if (command.cmd === COMMAND.idle)
                     window.setTimeout(() => this._checkStatus(), CHECK_STATUS_DELAY);
             })
             .catch(() => this.statusIndicator.showDisconnection());

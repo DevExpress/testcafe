@@ -32,6 +32,9 @@ export default class RawTestFileCompiler extends TestFileCompilerBase {
         if (src.authCredentials)
             dest.httpAuth(src.authCredentials);
 
+        if (src.disableReloading !== void 0)
+            dest.disableReloading = src.disableReloading;
+
         /* eslint-disable no-unused-expressions */
         if (src.only)
             dest.only;

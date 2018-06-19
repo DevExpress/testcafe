@@ -1,6 +1,7 @@
 import EventEmitter from 'events';
 import { TestRun as LegacyTestRun } from 'testcafe-legacy-api';
 import TestRun from '../test-run';
+import SessionController from '../test-run/session-controller';
 
 
 // Const
@@ -101,8 +102,6 @@ export default class TestRunController extends EventEmitter {
     }
 
     async _testRunDone () {
-        this.proxy.closeSession(this.testRun);
-
         if (this.quarantine)
             await this._testRunDoneInQuarantineMode();
         else
@@ -139,17 +138,6 @@ export default class TestRunController extends EventEmitter {
 
         testRun.start();
 
-        const pageUrl             = testRun.test.pageUrl;
-        const externalProxyHost   = this.opts.externalProxyHost;
-        let externalProxySettings = null;
-
-        if (externalProxyHost) {
-            externalProxySettings = {
-                url:         externalProxyHost,
-                bypassRules: this.opts.proxyBypass
-            };
-        }
-
-        return this.proxy.openSession(pageUrl, testRun, externalProxySettings);
+        return SessionController.getSessionUrl(testRun, this.proxy);
     }
 }

@@ -81,15 +81,22 @@ export function stopInitScriptExecution () {
     allowInitScriptExecution = false;
 }
 
-export function checkStatus (statusUrl, createXHR) {
+export function redirect (command) {
+    stopInitScriptExecution();
+    document.location = command.url;
+}
+
+export function checkStatus (statusUrl, createXHR, opts) {
+    const { manualRedirect } = opts || {};
+
     return sendXHR(statusUrl, createXHR)
         .then(res => {
-            if (res.cmd === COMMAND.run || res.cmd === COMMAND.idle && !isCurrentLocation(res.url)) {
-                stopInitScriptExecution();
-                document.location = res.url;
-            }
+            const redirecting = (res.cmd === COMMAND.run || res.cmd === COMMAND.idle) && !isCurrentLocation(res.url);
 
-            return res.cmd;
+            if (redirecting && !manualRedirect)
+                redirect(res);
+
+            return { command: res, redirecting };
         });
 }
 

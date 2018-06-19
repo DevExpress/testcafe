@@ -212,8 +212,9 @@ export default class Runner extends EventEmitter {
         return this;
     }
 
-    run ({ skipJsErrors, quarantineMode, debugMode, selectorTimeout, assertionTimeout, pageLoadTimeout, speed = 1, debugOnFail } = {}) {
+    run ({ skipJsErrors, disableReloading, quarantineMode, debugMode, selectorTimeout, assertionTimeout, pageLoadTimeout, speed = 1, debugOnFail } = {}) {
         this.opts.skipJsErrors     = !!skipJsErrors;
+        this.opts.disableReloading = !!disableReloading;
         this.opts.quarantineMode   = !!quarantineMode;
         this.opts.debugMode        = !!debugMode;
         this.opts.debugOnFail      = !!debugOnFail;

@@ -162,6 +162,7 @@ before(function () {
                 var runner             = testCafe.createRunner();
                 var fixturePath        = typeof fixture !== 'string' || path.isAbsolute(fixture) ? fixture : path.join(path.dirname(caller()), fixture);
                 var skipJsErrors       = opts && opts.skipJsErrors;
+                var disableReloading   = opts && opts.disableReloading;
                 var quarantineMode     = opts && opts.quarantineMode;
                 var selectorTimeout    = opts && opts.selectorTimeout || FUNCTIONAL_TESTS_SELECTOR_TIMEOUT;
                 var assertionTimeout   = opts && opts.assertionTimeout || FUNCTIONAL_TESTS_ASSERTION_TIMEOUT;
@@ -230,6 +231,7 @@ before(function () {
                     .startApp(appCommand, appInitDelay)
                     .run({
                         skipJsErrors:     skipJsErrors,
+                        disableReloading: disableReloading,
                         quarantineMode:   quarantineMode,
                         selectorTimeout:  selectorTimeout,
                         assertionTimeout: assertionTimeout,
