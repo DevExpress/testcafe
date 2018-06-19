@@ -158,24 +158,25 @@ before(function () {
             global.testCafe   = testCafe;
 
             global.runTests = function (fixture, testName, opts) {
-                var report             = '';
-                var runner             = testCafe.createRunner();
-                var fixturePath        = typeof fixture !== 'string' || path.isAbsolute(fixture) ? fixture : path.join(path.dirname(caller()), fixture);
-                var skipJsErrors       = opts && opts.skipJsErrors;
-                var quarantineMode     = opts && opts.quarantineMode;
-                var selectorTimeout    = opts && opts.selectorTimeout || FUNCTIONAL_TESTS_SELECTOR_TIMEOUT;
-                var assertionTimeout   = opts && opts.assertionTimeout || FUNCTIONAL_TESTS_ASSERTION_TIMEOUT;
-                var pageLoadTimeout    = opts && opts.pageLoadTimeout || FUNCTIONAL_TESTS_PAGE_LOAD_TIMEOUT;
-                var onlyOption         = opts && opts.only;
-                var skipOption         = opts && opts.skip;
-                var screenshotPath     = opts && opts.setScreenshotPath ? '___test-screenshots___' : '';
-                var screenshotsOnFails = opts && opts.screenshotsOnFails;
-                var speed              = opts && opts.speed;
-                var appCommand         = opts && opts.appCommand;
-                var appInitDelay       = opts && opts.appInitDelay;
-                var externalProxyHost  = opts && opts.useProxy;
-                var proxyBypass        = opts && opts.proxyBypass;
-                var customReporters    = opts && opts.reporters;
+                var report                = '';
+                var runner                = testCafe.createRunner();
+                var fixturePath           = typeof fixture !== 'string' || path.isAbsolute(fixture) ? fixture : path.join(path.dirname(caller()), fixture);
+                var skipJsErrors          = opts && opts.skipJsErrors;
+                var quarantineMode        = opts && opts.quarantineMode;
+                var selectorTimeout       = opts && opts.selectorTimeout || FUNCTIONAL_TESTS_SELECTOR_TIMEOUT;
+                var assertionTimeout      = opts && opts.assertionTimeout || FUNCTIONAL_TESTS_ASSERTION_TIMEOUT;
+                var pageLoadTimeout       = opts && opts.pageLoadTimeout || FUNCTIONAL_TESTS_PAGE_LOAD_TIMEOUT;
+                var onlyOption            = opts && opts.only;
+                var skipOption            = opts && opts.skip;
+                var screenshotPath        = opts && opts.setScreenshotPath ? '___test-screenshots___' : '';
+                var screenshotPathPattern = opts && opts.screenshotPathPattern;
+                var screenshotsOnFails    = opts && opts.screenshotsOnFails;
+                var speed                 = opts && opts.speed;
+                var appCommand            = opts && opts.appCommand;
+                var appInitDelay          = opts && opts.appInitDelay;
+                var externalProxyHost     = opts && opts.useProxy;
+                var proxyBypass           = opts && opts.proxyBypass;
+                var customReporters       = opts && opts.reporters;
 
                 var actualBrowsers = browsersInfo.filter(function (browserInfo) {
                     var { alias, userAgent } = browserInfo.settings;
@@ -226,7 +227,7 @@ before(function () {
                         return testName ? test === testName : true;
                     })
                     .src(fixturePath)
-                    .screenshots(screenshotPath, screenshotsOnFails)
+                    .screenshots(screenshotPath, screenshotsOnFails, screenshotPathPattern)
                     .startApp(appCommand, appInitDelay)
                     .run({
                         skipJsErrors:     skipJsErrors,

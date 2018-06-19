@@ -1,12 +1,11 @@
-var path            = require('path');
-var expect          = require('chai').expect;
-var config          = require('../../../../config.js');
-var assertionHelper = require('../../../../assertion-helper.js');
+const path            = require('path');
+const fs              = require('fs');
+const expect          = require('chai').expect;
+const config          = require('../../../../config.js');
+const assertionHelper = require('../../../../assertion-helper.js');
 
-
-var SCREENSHOT_PATH_MESSAGE_RE = /^___test-screenshots___[\\/]\d{4,4}-\d{2,2}-\d{2,2}_\d{2,2}-\d{2,2}-\d{2,2}[\\/]test-1$/;
-var CUSTOM_SCREENSHOT_DIR      = '___test-screenshots___';
-
+const SCREENSHOT_PATH_MESSAGE_RE = /^___test-screenshots___$/;
+const CUSTOM_SCREENSHOT_DIR      = '___test-screenshots___';
 
 describe('[API] t.takeScreenshot()', function () {
     if (config.useLocalBrowsers) {
@@ -120,6 +119,28 @@ describe('[API] t.takeScreenshot()', function () {
                 })
                 .then(function (result) {
                     expect(result).eql(true);
+                });
+        });
+
+        it('Should allow to use a custom path pattern', function () {
+            return runTests('./testcafe-fixtures/take-screenshot.js', 'Take a screenshot',
+                {
+                    setScreenshotPath:     true,
+                    screenshotPathPattern: '${TEST}-${FILE_INDEX}',
+                    only:                  'chrome'
+                })
+                .then(function () {
+                    expect(SCREENSHOT_PATH_MESSAGE_RE.test(testReport.screenshotPath)).eql(true);
+
+                    const screenshot1Path = path.join(assertionHelper.SCREENSHOTS_PATH, 'Take a screenshot-1.png');
+                    const screenshot2Path = path.join(assertionHelper.SCREENSHOTS_PATH, 'Take a screenshot-2.png');
+                    const thumbnail1Path  = path.join(assertionHelper.SCREENSHOTS_PATH, assertionHelper.THUMBNAILS_DIR_NAME, 'Take a screenshot-1.png');
+                    const thumbnail2Path  = path.join(assertionHelper.SCREENSHOTS_PATH, assertionHelper.THUMBNAILS_DIR_NAME, 'Take a screenshot-2.png');
+
+                    expect(fs.existsSync(screenshot1Path)).eql(true);
+                    expect(fs.existsSync(screenshot2Path)).eql(true);
+                    expect(fs.existsSync(thumbnail1Path)).eql(true);
+                    expect(fs.existsSync(thumbnail2Path)).eql(true);
                 });
         });
     }
@@ -314,8 +335,8 @@ describe('[API] t.takeElementScreenshot()', function () {
             })
                 .catch(function (errs) {
                     expect(errs[0]).to.contains('Unable to scroll to the specified point because a point ' +
-                                                'with the specified scrollTargetX and scrollTargetY properties ' +
-                                                'is not located inside the element\'s cropping region');
+                        'with the specified scrollTargetX and scrollTargetY properties ' +
+                        'is not located inside the element\'s cropping region');
                     expect(errs[0]).to.contains(
                         ' 53 |test(\'Invalid scroll target\', async t => {' +
                         ' > 54 |    await t.takeElementScreenshot(\'table\', \'custom/\' + t.ctx.parsedUA.family + \'.png\', { scrollTargetX: -2000, scrollTargetY: -3000 });' +

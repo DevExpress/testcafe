@@ -1,45 +1,25 @@
 import { join as joinPath, dirname } from 'path';
-import sanitizeFilename from 'sanitize-filename';
 import { generateThumbnail } from 'testcafe-browser-tools';
 import cropScreenshot from './crop';
 import { ensureDir } from '../utils/promisified-functions';
 import { isInQueue, addToQueue } from '../utils/async-queue';
 import WARNING_MESSAGE from '../notifications/warning-message';
-
-
-const PNG_EXTENSION_RE = /(\.png)$/;
-
+import correctFilePath from '../utils/correct-file-path';
 
 export default class Capturer {
-    constructor (baseScreenshotsPath, testEntry, connection, namingOptions, warningLog) {
+    constructor (baseScreenshotsPath, testEntry, connection, pathPattern, warningLog) {
         this.enabled              = !!baseScreenshotsPath;
         this.baseScreenshotsPath  = baseScreenshotsPath;
         this.testEntry            = testEntry;
         this.provider             = connection.provider;
         this.browserId            = connection.id;
-        this.baseDirName          = namingOptions.baseDirName;
-        this.userAgentName        = namingOptions.userAgentName;
-        this.quarantineAttemptNum = namingOptions.quarantineAttemptNum;
-        this.testIndex            = namingOptions.testIndex;
-        this.screenshotIndex      = 1;
-        this.errorScreenshotIndex = 1;
         this.warningLog           = warningLog;
+        this.pathPattern          = pathPattern;
 
-        var testDirName     = `test-${this.testIndex}`;
-        var screenshotsPath = this.enabled ? joinPath(this.baseScreenshotsPath, this.baseDirName, testDirName) : '';
+        const screenshotsPath = this.enabled ? this.baseScreenshotsPath : '';
 
         this.screenshotsPath         = screenshotsPath;
         this.screenshotPathForReport = screenshotsPath;
-    }
-
-    static _correctFilePath (path) {
-        var correctedPath = path
-            .replace(/\\/g, '/')
-            .split('/')
-            .map(str => sanitizeFilename(str))
-            .join('/');
-
-        return PNG_EXTENSION_RE.test(correctedPath) ? correctedPath : `${correctedPath}.png`;
     }
 
     static _getDimensionWithoutScrollbar (fullDimension, documentDimension, bodyDimension) {
@@ -79,26 +59,16 @@ export default class Capturer {
         };
     }
 
-    _getFileName (forError) {
-        var fileName = `${forError ? this.errorScreenshotIndex : this.screenshotIndex}.png`;
-
-        if (forError)
-            this.errorScreenshotIndex++;
-        else
-            this.screenshotIndex++;
-
-        return fileName;
+    _getCustomScreenshotPath (customPath) {
+        return joinPath(this.baseScreenshotsPath, correctFilePath(customPath));
     }
 
-    _getScreenshotPath (fileName, customPath) {
-        if (customPath)
-            return joinPath(this.baseScreenshotsPath, Capturer._correctFilePath(customPath));
+    _getScreenshotPath (forError) {
+        const parsedPath = this.pathPattern.getPath(forError);
 
-        var screenshotPath = this.quarantineAttemptNum !== null ?
-            joinPath(this.screenshotsPath, `run-${this.quarantineAttemptNum}`) :
-            this.screenshotsPath;
+        this.pathPattern.incrementFileIndexes(forError);
 
-        return joinPath(screenshotPath, this.userAgentName, fileName);
+        return joinPath(this.baseScreenshotsPath, parsedPath);
     }
 
     async _takeScreenshot (filePath, pageWidth, pageHeight) {
@@ -110,11 +80,7 @@ export default class Capturer {
         if (!this.enabled)
             return null;
 
-        var fileName = this._getFileName(forError);
-
-        fileName = forError ? joinPath('errors', fileName) : fileName;
-
-        var screenshotPath = this._getScreenshotPath(fileName, customPath);
+        const screenshotPath = customPath ? this._getCustomScreenshotPath(customPath) : this._getScreenshotPath(forError);
 
         if (isInQueue(screenshotPath))
             this.warningLog.addWarning(WARNING_MESSAGE.screenshotRewritingError, screenshotPath);
@@ -137,7 +103,6 @@ export default class Capturer {
 
         return screenshotPath;
     }
-
 
     async captureAction (options) {
         return await this._capture(false, options);

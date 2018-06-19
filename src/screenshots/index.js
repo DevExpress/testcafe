@@ -1,52 +1,15 @@
 import { find } from 'lodash';
-import sanitizeFilename from 'sanitize-filename';
 import moment from 'moment';
 import Capturer from './capturer';
+import PathPattern from './path-pattern';
 
 export default class Screenshots {
-    constructor (path) {
+    constructor (path, pattern) {
         this.enabled               = !!path;
         this.screenshotsPath       = path;
+        this.screenshotsPattern    = pattern;
         this.testEntries           = [];
-        this.screenshotBaseDirName = Screenshots._getScreenshotBaseDirName();
-        this.userAgentNames        = [];
-    }
-
-    static _getScreenshotBaseDirName () {
-        var now = Date.now();
-
-        return moment(now).format('YYYY-MM-DD_hh-mm-ss');
-    }
-
-    static _escapeUserAgent (userAgent) {
-        return sanitizeFilename(userAgent.toString()).replace(/\s+/g, '_');
-    }
-
-    _getUsedUserAgent (name, testIndex, quarantineAttemptNum) {
-        var userAgent = null;
-
-        for (var i = 0; i < this.userAgentNames.length; i++) {
-            userAgent = this.userAgentNames[i];
-
-            if (userAgent.name === name && userAgent.testIndex === testIndex &&
-                userAgent.quarantineAttemptNum === quarantineAttemptNum)
-                return userAgent;
-        }
-
-        return null;
-    }
-
-    _getUserAgentName (userAgent, testIndex, quarantineAttemptNum) {
-        var userAgentName = Screenshots._escapeUserAgent(userAgent);
-        var usedUserAgent = this._getUsedUserAgent(userAgentName, testIndex, quarantineAttemptNum);
-
-        if (usedUserAgent) {
-            usedUserAgent.index++;
-            return `${userAgentName}_${usedUserAgent.index}`;
-        }
-
-        this.userAgentNames.push({ name: userAgentName, index: 0, testIndex, quarantineAttemptNum });
-        return userAgentName;
+        this.now                   = moment();
     }
 
     _addTestEntry (test) {
@@ -73,19 +36,21 @@ export default class Screenshots {
         return this._getTestEntry(test).path;
     }
 
-    createCapturerFor (test, testIndex, quarantineAttemptNum, connection, warningLog) {
-        var testEntry = this._getTestEntry(test);
+    createCapturerFor (test, testIndex, quarantineAttempt, connection, warningLog) {
+        let testEntry   = this._getTestEntry(test);
 
         if (!testEntry)
             testEntry = this._addTestEntry(test);
 
-        var namingOptions = {
+        const pathPattern = new PathPattern(this.screenshotsPattern, {
             testIndex,
-            quarantineAttemptNum,
-            baseDirName:   this.screenshotBaseDirName,
-            userAgentName: this._getUserAgentName(connection.userAgent, testIndex, quarantineAttemptNum)
-        };
+            quarantineAttempt,
+            now:             this.now,
+            fixture:         test.fixture.name,
+            test:            test.name,
+            parsedUserAgent: connection.browserInfo.parsedUserAgent,
+        });
 
-        return new Capturer(this.screenshotsPath, testEntry, connection, namingOptions, warningLog);
+        return new Capturer(this.screenshotsPath, testEntry, connection, pathPattern, warningLog);
     }
 }

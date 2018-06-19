@@ -202,7 +202,11 @@ export default class BrowserConnection extends EventEmitter {
     establish (userAgent) {
         this.ready = true;
 
-        this.browserInfo.userAgent = parseUserAgent(userAgent).toString();
+        const parsedUserAgent = parseUserAgent(userAgent);
+
+        this.browserInfo.userAgent       = parsedUserAgent.toString();
+        this.browserInfo.fullUserAgent   = userAgent;
+        this.browserInfo.parsedUserAgent = parsedUserAgent;
 
         this._waitForHeartbeat();
         this.emit('ready');
