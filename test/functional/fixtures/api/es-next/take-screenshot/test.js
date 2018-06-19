@@ -1,4 +1,5 @@
 const path            = require('path');
+const fs              = require('fs');
 const expect          = require('chai').expect;
 const config          = require('../../../../config.js');
 const assertionHelper = require('../../../../assertion-helper.js');
@@ -125,11 +126,21 @@ describe('[API] t.takeScreenshot()', function () {
             return runTests('./testcafe-fixtures/take-screenshot.js', 'Take a screenshot',
                 {
                     setScreenshotPath:     true,
-                    screenshotPathPattern: '${TEST}-${FILE_INDEX}'
+                    screenshotPathPattern: '${TEST}-${FILE_INDEX}',
+                    only:                  'chrome'
                 })
                 .then(function () {
                     expect(SCREENSHOT_PATH_MESSAGE_RE.test(testReport.screenshotPath)).eql(true);
-                    expect(assertionHelper.checkScreenshotsCreated({ forError: false, screenshotsCount: 4 })).eql(true);
+
+                    const screenshot1Path = path.join(assertionHelper.SCREENSHOTS_PATH, 'Take a screenshot-1.png');
+                    const screenshot2Path = path.join(assertionHelper.SCREENSHOTS_PATH, 'Take a screenshot-2.png');
+                    const thumbnail1Path  = path.join(assertionHelper.SCREENSHOTS_PATH, assertionHelper.THUMBNAILS_DIR_NAME, 'Take a screenshot-1.png');
+                    const thumbnail2Path  = path.join(assertionHelper.SCREENSHOTS_PATH, assertionHelper.THUMBNAILS_DIR_NAME, 'Take a screenshot-2.png');
+
+                    expect(fs.existsSync(screenshot1Path)).eql(true);
+                    expect(fs.existsSync(screenshot2Path)).eql(true);
+                    expect(fs.existsSync(thumbnail1Path)).eql(true);
+                    expect(fs.existsSync(thumbnail2Path)).eql(true);
                 });
         });
     }
