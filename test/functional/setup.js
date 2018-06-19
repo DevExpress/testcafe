@@ -10,6 +10,7 @@ var BrowserConnection   = require('../../lib/browser/connection');
 var config              = require('./config.js');
 var site                = require('./site');
 var getTestError        = require('./get-test-error.js');
+var os                  = require('os');
 
 var testCafe     = null;
 var browsersInfo = null;
@@ -25,6 +26,8 @@ const BROWSER_OPENING_TIMEOUT = 90000;
 const FUNCTIONAL_TESTS_SELECTOR_TIMEOUT  = 200;
 const FUNCTIONAL_TESTS_ASSERTION_TIMEOUT = 1000;
 const FUNCTIONAL_TESTS_PAGE_LOAD_TIMEOUT = 0;
+
+const BYTE_COUNT_IN_MB = 1024 * 1024;
 
 var environment     = config.currentEnvironment;
 var browserProvider = process.env.BROWSER_PROVIDER;
@@ -122,6 +125,13 @@ function closeLocalBrowsers () {
     return Promise.all(closeBrowserPromises);
 }
 
+function printFreeMemory () {
+    /*eslint-disable*/
+    console.log('freemem (Mb): ', Math.floor(os.freemem() / BYTE_COUNT_IN_MB));
+    console.log('totalmem (Mb): ', Math.floor(os.totalmem() / BYTE_COUNT_IN_MB));
+    /*eslint-enable*/
+}
+
 before(function () {
     var mocha = this;
 
@@ -160,7 +170,8 @@ before(function () {
             global.runTests = function (fixture, testName, opts) {
                 var report             = '';
                 var runner             = testCafe.createRunner();
-                var fixturePath        = typeof fixture !== 'string' || path.isAbsolute(fixture) ? fixture : path.join(path.dirname(caller()), fixture);
+                var fixturePath        = typeof fixture !== 'string' ||
+                                         path.isAbsolute(fixture) ? fixture : path.join(path.dirname(caller()), fixture);
                 var skipJsErrors       = opts && opts.skipJsErrors;
                 var quarantineMode     = opts && opts.quarantineMode;
                 var selectorTimeout    = opts && opts.selectorTimeout || FUNCTIONAL_TESTS_SELECTOR_TIMEOUT;
@@ -201,8 +212,12 @@ before(function () {
                     if (shouldFail && !err)
                         throw new Error('Test should have failed but it succeeded');
 
-                    if (err)
+                    if (err) {
+                        printFreeMemory();
+
                         throw err;
+                    }
+
                 };
 
                 if (customReporters)
