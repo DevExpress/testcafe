@@ -91,10 +91,12 @@ Property | Type | Description
 `response.headers`    | Object | Response headers in the property-value form. Logged if the `logResponseHeaders` option is set to `true`.
 `response.body`    | [Buffer](https://nodejs.org/api/buffer.html) &#124; String | The response body. A [Buffer](https://nodejs.org/api/buffer.html) or string depending on the `stringifyResponseBody` option. Logged if the `logResponseBody` option is set to `true`.
 
+**Example**
+
 ```js
 import { RequestLogger } from 'testcafe';
 
-const logger = RequestLogger('http://api.example.com');
+const logger = RequestLogger('http://example.com');
 
 fixture `test`
     .page('http://example.com');
@@ -102,28 +104,16 @@ fixture `test`
 test
     .requestHooks(logger)
     ('test', async t => {
+
+        // Wait for the response using the Smart Assertion Query mechanism
+        // and confirm that it has been received.
+        await t.expect(logger.contains(record => record.response.statusCode === 200)).ok();
+
         const logRecord = logger.requests[0];
 
         console.log(logRecord.userAgent);           // Chrome 63.0.3239 / Windows 8.1.0.0
         console.log(logRecord.request.url);         // http://api.example.com
         console.log(logRecord.request.method);      // get
         console.log(logRecord.response.statusCode); // 304
-    });
-```
-
-**Example**
-
-```js
-import { RequestLogger } from 'testcafe';
-
-const logger = RequestLogger('http://api.example.com');
-
-fixture `test`
-    .page('http://example.com');
-
-test
-    .requestHooks(logger)
-    ('test', async t => {
-        await t.expect(logger.contains(record => record.response.statusCode === 200)).ok();
     });
 ```
