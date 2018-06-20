@@ -59,12 +59,13 @@ You can initialize a selector with any of these objects.
     ```js
     import { Selector } from 'testcafe';
 
-    // This selector is created from a function that returns all elements of a specified class.
-    const cta-button = Selector('.cta-button');
+    // This selector is created from a CSS selector
+    // that matches all elements of a specified class.
+    const ctaButton = Selector('.cta-button');
 
     // This selector is created based on the previous selector and inherits
     // its initializer, but overwrites the `visibilityCheck` parameter.
-    Selector(cta-button, { visibilityCheck: true });
+    Selector(ctaButton, { visibilityCheck: true });
     ```
 
 * A [DOM Node Snapshot](using-selectors.md#dom-node-snapshot) returned by selector execution.
