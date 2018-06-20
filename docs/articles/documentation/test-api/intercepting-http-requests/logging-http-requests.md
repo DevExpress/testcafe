@@ -105,8 +105,7 @@ test
     .requestHooks(logger)
     ('test', async t => {
 
-        // Wait for the response using the Smart Assertion Query mechanism
-        // and confirm that it has been received.
+        // Ensure that the response has been received and that its status code is 200.
         await t.expect(logger.contains(record => record.response.statusCode === 200)).ok();
 
         const logRecord = logger.requests[0];
