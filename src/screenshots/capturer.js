@@ -1,4 +1,4 @@
-import { join as joinPath, dirname } from 'path';
+import { join as joinPath, dirname, basename } from 'path';
 import sanitizeFilename from 'sanitize-filename';
 import { generateThumbnail } from 'testcafe-browser-tools';
 import cropScreenshot from './crop';
@@ -19,7 +19,8 @@ export default class Capturer {
         this.browserId            = connection.id;
         this.baseDirName          = namingOptions.baseDirName;
         this.userAgentName        = namingOptions.userAgentName;
-        this.quarantineAttemptNum = namingOptions.quarantineAttemptNum;
+        this.quarantine           = namingOptions.quarantine;
+        this.attemptNumber        = this.quarantine ? this.quarantine.getNextAttemptNumber() : null;
         this.testIndex            = namingOptions.testIndex;
         this.screenshotIndex      = 1;
         this.errorScreenshotIndex = 1;
@@ -94,11 +95,17 @@ export default class Capturer {
         if (customPath)
             return joinPath(this.baseScreenshotsPath, Capturer._correctFilePath(customPath));
 
-        var screenshotPath = this.quarantineAttemptNum !== null ?
-            joinPath(this.screenshotsPath, `run-${this.quarantineAttemptNum}`) :
-            this.screenshotsPath;
+        var screenshotPath = this.attemptNumber !== null ?
+            joinPath(this.screenshotsPath, `run-${this.attemptNumber}`) : this.screenshotsPath;
 
         return joinPath(screenshotPath, this.userAgentName, fileName);
+    }
+
+    _getThumbnailPath (screenshotPath) {
+        var imageName = basename(screenshotPath);
+        var imageDir  = dirname(screenshotPath);
+
+        return joinPath(imageDir, 'thumbnails', imageName);
     }
 
     async _takeScreenshot (filePath, pageWidth, pageHeight) {
@@ -115,6 +122,7 @@ export default class Capturer {
         fileName = forError ? joinPath('errors', fileName) : fileName;
 
         var screenshotPath = this._getScreenshotPath(fileName, customPath);
+        var thumbnailPath  = this._getThumbnailPath(screenshotPath);
 
         if (isInQueue(screenshotPath))
             this.warningLog.addWarning(WARNING_MESSAGE.screenshotRewritingError, screenshotPath);
@@ -124,7 +132,7 @@ export default class Capturer {
 
             await cropScreenshot(screenshotPath, markSeed, Capturer._getClientAreaDimensions(pageDimensions), Capturer._getCropDimensions(cropDimensions, pageDimensions));
 
-            await generateThumbnail(screenshotPath);
+            await generateThumbnail(screenshotPath, thumbnailPath);
         });
 
         // NOTE: if test contains takeScreenshot action with custom path
@@ -132,8 +140,17 @@ export default class Capturer {
         if (customPath)
             this.screenshotPathForReport = this.baseScreenshotsPath;
 
-        this.testEntry.hasScreenshots = true;
-        this.testEntry.path           = this.screenshotPathForReport;
+        this.testEntry.path = this.screenshotPathForReport;
+
+        const screenshot = {
+            screenshotPath,
+            thumbnailPath,
+            userAgent:           this.userAgentName,
+            quarantineAttemptID: this.attemptNumber,
+            takenOnFail:         forError,
+        };
+
+        this.testEntry.screenshots.push(screenshot);
 
         return screenshotPath;
     }

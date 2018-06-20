@@ -6,6 +6,24 @@ import TestRun from '../test-run';
 // Const
 const QUARANTINE_THRESHOLD = 3;
 
+class Quarantine {
+    constructor () {
+        this.attempts = [];
+    }
+
+    getFailedAttempts () {
+        return this.attempts.filter(errors => !!errors.length);
+    }
+
+    getPassedAttempts () {
+        return this.attempts.filter(errors => errors.length === 0);
+    }
+
+    getNextAttemptNumber () {
+        return this.attempts.length + 1;
+    }
+}
+
 export default class TestRunController extends EventEmitter {
     constructor (test, index, proxy, screenshots, warningLog, fixtureHookController, opts) {
         super();
@@ -21,18 +39,12 @@ export default class TestRunController extends EventEmitter {
 
         this.TestRunCtor = TestRunController._getTestRunCtor(test, opts);
 
-        this.testRun = null;
-        this.done    = false;
+        this.testRun    = null;
+        this.done       = false;
+        this.quarantine = null;
 
-        if (this.opts.quarantineMode) {
-            this.quarantine = {
-                attemptNumber: 1,
-                passedTimes:   0,
-                failedTimes:   0
-            };
-        }
-        else
-            this.quarantine = null;
+        if (this.opts.quarantineMode)
+            this.quarantine = new Quarantine();
     }
 
     static _getTestRunCtor (test, opts) {
@@ -43,40 +55,41 @@ export default class TestRunController extends EventEmitter {
     }
 
     _createTestRun (connection) {
-        var quarantineAttemptNum = this.quarantine ? this.quarantine.attemptNumber : null;
-        var screenshotCapturer   = this.screenshots.createCapturerFor(this.test, this.index, quarantineAttemptNum, connection, this.warningLog);
-        var TestRunCtor          = this.TestRunCtor;
+        var screenshotCapturer = this.screenshots.createCapturerFor(this.test, this.index, this.quarantine, connection, this.warningLog);
+        var TestRunCtor        = this.TestRunCtor;
 
         this.testRun = new TestRunCtor(this.test, connection, screenshotCapturer, this.warningLog, this.opts);
+
+        if (this.testRun.addQuarantineInfo)
+            this.testRun.addQuarantineInfo(this.quarantine);
 
         return this.testRun;
     }
 
     async _endQuarantine () {
-        if (this.quarantine.attemptNumber > 1)
-            this.testRun.unstable = this.quarantine.passedTimes > 0;
+        if (this.quarantine.attempts.length > 1)
+            this.testRun.unstable = this.quarantine.getPassedAttempts().length > 0;
 
         await this._emitTestRunDone();
     }
 
     _shouldKeepInQuarantine () {
-        var hasErrors = !!this.testRun.errs.length;
+        const errors   = this.testRun.errs;
+        const attempts = this.quarantine.attempts;
 
-        if (hasErrors)
-            this.quarantine.failedTimes++;
-        else
-            this.quarantine.passedTimes++;
+        attempts.push(errors);
 
-        var isFirstAttempt         = this.quarantine.attemptNumber === 1;
-        var failedThresholdReached = this.quarantine.failedTimes >= QUARANTINE_THRESHOLD;
-        var passedThresholdReached = this.quarantine.passedTimes >= QUARANTINE_THRESHOLD;
+        const failedTimes            = this.quarantine.getFailedAttempts().length;
+        const passedTimes            = this.quarantine.getPassedAttempts().length;
+        const hasErrors              = !!errors.length;
+        const isFirstAttempt         = attempts.length === 1;
+        const failedThresholdReached = failedTimes >= QUARANTINE_THRESHOLD;
+        const passedThresholdReached = passedTimes >= QUARANTINE_THRESHOLD;
 
         return isFirstAttempt ? hasErrors : !failedThresholdReached && !passedThresholdReached;
     }
 
     _keepInQuarantine () {
-        this.quarantine.attemptNumber = this.quarantine.failedTimes + this.quarantine.passedTimes + 1;
-
         this.emit('test-run-restart');
     }
 

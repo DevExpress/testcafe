@@ -51,9 +51,9 @@ export default class Screenshots {
 
     _addTestEntry (test) {
         var testEntry = {
-            test:           test,
-            path:           this.screenshotsPath || '',
-            hasScreenshots: false
+            test:        test,
+            path:        this.screenshotsPath || '',
+            screenshots: []
         };
 
         this.testEntries.push(testEntry);
@@ -65,23 +65,29 @@ export default class Screenshots {
         return find(this.testEntries, entry => entry.test === test);
     }
 
+    getScreenshotsInfo (test) {
+        return this._getTestEntry(test).screenshots;
+    }
+
     hasCapturedFor (test) {
-        return this._getTestEntry(test).hasScreenshots;
+        return this.getScreenshotsInfo(test).length > 0;
     }
 
     getPathFor (test) {
         return this._getTestEntry(test).path;
     }
 
-    createCapturerFor (test, testIndex, quarantineAttemptNum, connection, warningLog) {
+    createCapturerFor (test, testIndex, quarantine, connection, warningLog) {
         var testEntry = this._getTestEntry(test);
 
         if (!testEntry)
             testEntry = this._addTestEntry(test);
 
+        const quarantineAttemptNum = quarantine ? quarantine.getNextAttemptNumber() : null;
+
         var namingOptions = {
             testIndex,
-            quarantineAttemptNum,
+            quarantine,
             baseDirName:   this.screenshotBaseDirName,
             userAgentName: this._getUserAgentName(connection.userAgent, testIndex, quarantineAttemptNum)
         };
