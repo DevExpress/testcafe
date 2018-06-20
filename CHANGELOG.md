@@ -2,7 +2,7 @@
 
 ## v0.20.3 (2018-6-6)
 
-### Enhancements 
+### Enhancements
 
 #### :gear: Add TS definitions to the Docker image ([#2481](https://github.com/DevExpress/testcafe/pull/2481))
 

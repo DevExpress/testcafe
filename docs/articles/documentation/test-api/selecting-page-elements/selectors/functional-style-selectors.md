@@ -119,9 +119,16 @@ fixture `Example page`
     .page `http://devexpress.github.io/testcafe/example/`;
 
 test('My test', async t => {
-    const secondCheckBox = Selector('input[type=checkbox]').nth(1);
-    const checkedInputs  = Selector('input[type=checkbox]').filter(node => node.checked);
-    const windowsLabel   = Selector('label').withText('Windows');
+    const secondCheckBox = Selector('input')
+        .withAttribute('type', 'checkbox')
+        .nth(1);
+
+    const checkedInputs = Selector('input')
+        .withAttribute('type', 'checkbox')
+        .filter(node => node.checked);
+
+    const windowsLabel = Selector('label')
+        .withText('Windows');
 
     await t
         .click(secondCheckBox)
