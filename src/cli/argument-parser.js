@@ -107,7 +107,7 @@ export default class CLIArgumentParser {
             .option('--ports <port1,port2>', 'specify custom port numbers')
             .option('--hostname <name>', 'specify the hostname')
             .option('--proxy <host>', 'specify the host of the proxy server')
-            .option('--ssl', 'run TestCafe proxy server over HTTPS protocol')
+            .option('--ssl', 'run the TestCafe proxy server over the HTTPS protocol')
             .option('--proxy-bypass <rules>', 'specify a comma-separated list of rules that define URLs accessed bypassing the proxy server')
             .option('--disable-page-reloads', 'disable page reloads between tests')
             .option('--qr-code', 'outputs QR-code that repeats URLs used to connect the remote browsers')
