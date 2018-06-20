@@ -379,6 +379,8 @@ describe('CLI argument parser', function () {
             { long: '--hostname' },
             { long: '--proxy' },
             { long: '--proxy-bypass' },
+            { long: '--ssl' },
+            { long: '--certificate' },
             { long: '--qr-code' },
             { long: '--color' },
             { long: '--no-color' }

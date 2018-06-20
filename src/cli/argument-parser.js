@@ -12,6 +12,7 @@ import { assertType, is } from '../errors/runtime/type-assertions';
 import getViewPortWidth from '../utils/get-viewport-width';
 import { wordWrap, splitQuotedText } from '../utils/string';
 import { stat, ensureDir } from '../utils/promisified-functions';
+import fs from 'fs';
 
 
 const REMOTE_ALIAS_RE          = /^remote(?::(\d*))?$/;
@@ -106,6 +107,8 @@ export default class CLIArgumentParser {
             .option('--speed <factor>', 'set the speed of test execution (0.01 ... 1)')
             .option('--ports <port1,port2>', 'specify custom port numbers')
             .option('--hostname <name>', 'specify the hostname')
+            .option('--ssl', 'enable HTTPS for the proxy server')
+            .option('--certificate <key,crt>', 'specify SSL certificate files')
             .option('--proxy <host>', 'specify the host of the proxy server')
             .option('--proxy-bypass <rules>', 'specify a comma-separated list of rules that define URLs accessed bypassing the proxy server')
             .option('--qr-code', 'outputs QR-code that repeats URLs used to connect the remote browsers')
@@ -199,6 +202,20 @@ export default class CLIArgumentParser {
 
             if (this.opts.ports.length < 2)
                 throw new GeneralError(MESSAGE.portsOptionRequiresTwoNumbers);
+        }
+    }
+
+    _parseCertificate () {
+        if (this.opts.certificate) {
+            const parts = this.opts.certificate.split(',');
+
+            if (parts.length < 2)
+                throw new GeneralError(MESSAGE.certificateOptionRequiresTwoPaths);
+
+            this.opts.certificate = {
+                key:  fs.readFileSync(resolve(this.cwd, parts[0])),
+                cert: fs.readFileSync(resolve(this.cwd, parts[1]))
+            };
         }
     }
 
@@ -317,6 +334,7 @@ export default class CLIArgumentParser {
         this._parseAppInitDelay();
         this._parseSpeed();
         this._parsePorts();
+        this._parseCertificate();
         this._parseBrowserList();
         this._parseConcurrency();
 
