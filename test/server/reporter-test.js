@@ -46,7 +46,7 @@ describe('Reporter', function () {
                 screenshotPath:      'screenshot1.png',
                 thumbnailPath:       'thumbnail1.png',
                 userAgent:           'chrome',
-                onFail:              false,
+                takenOnFail:         false,
                 quarantineAttemptID: 2
             }],
             meta: {
@@ -61,13 +61,13 @@ describe('Reporter', function () {
                 screenshotPath:      'screenshot1.png',
                 thumbnailPath:       'thumbnail1.png',
                 userAgent:           'chrome',
-                onFail:              false,
+                takenOnFail:         false,
                 quarantineAttemptID: null
             }, {
                 screenshotPath:      'screenshot2.png',
                 thumbnailPath:       'thumbnail2.png',
                 userAgent:           'chrome',
-                onFail:              true,
+                takenOnFail:         true,
                 quarantineAttemptID: null
             }],
             meta: {
@@ -322,15 +322,15 @@ describe('Reporter', function () {
                         unstable:   true,
                         skipped:    false,
                         quarantine: {
-                            1: { isPassed: false },
-                            2: { isPassed: true }
+                            1: { passed: false },
+                            2: { passed: true }
                         },
                         screenshotPath: '/screenshots/1445437598847',
                         screenshots:    [{
                             screenshotPath:      'screenshot1.png',
                             thumbnailPath:       'thumbnail1.png',
                             userAgent:           'chrome',
-                            onFail:              false,
+                            takenOnFail:         false,
                             quarantineAttemptID: 2
                         }]
                     },
@@ -368,13 +368,13 @@ describe('Reporter', function () {
                             screenshotPath:      'screenshot1.png',
                             thumbnailPath:       'thumbnail1.png',
                             userAgent:           'chrome',
-                            onFail:              false,
+                            takenOnFail:         false,
                             quarantineAttemptID: null
                         }, {
                             screenshotPath:      'screenshot2.png',
                             thumbnailPath:       'thumbnail2.png',
                             userAgent:           'chrome',
-                            onFail:              true,
+                            takenOnFail:         true,
                             quarantineAttemptID: null
                         }]
                     },

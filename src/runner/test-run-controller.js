@@ -67,7 +67,7 @@ export default class TestRunController extends EventEmitter {
     }
 
     async _endQuarantine () {
-        if (this.quarantine.attempts > 1)
+        if (this.quarantine.attempts.length > 1)
             this.testRun.unstable = this.quarantine.getPassedAttempts().length > 0;
 
         await this._emitTestRunDone();

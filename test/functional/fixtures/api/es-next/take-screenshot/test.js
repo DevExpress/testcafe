@@ -18,7 +18,7 @@ var getReporter = function (scope) {
     function prepareScreenshot (screenshot, quarantine) {
         screenshot.screenshotPath  = patchScreenshotPath(screenshot.screenshotPath);
         screenshot.thumbnailPath   = patchScreenshotPath(screenshot.thumbnailPath);
-        screenshot.isPassedAttempt = quarantine[screenshot.quarantineAttemptID].isPassed;
+        screenshot.isPassedAttempt = quarantine[screenshot.quarantineAttemptID].passed;
 
         userAgents[screenshot.userAgent] = true;
     }
@@ -30,6 +30,7 @@ var getReporter = function (scope) {
 
                 scope.screenshots = testRunInfo.screenshots;
                 scope.userAgents  = Object.keys(userAgents);
+                scope.unstable    = testRunInfo.unstable;
             },
             reportFixtureStart: () => {
             },
@@ -123,6 +124,7 @@ describe('[API] t.takeScreenshot()', function () {
             })
                 .catch(function () {
                     expect(SCREENSHOT_PATH_MESSAGE_RE.test(testReport.screenshotPath)).eql(true);
+                    expect(testReport.unstable).eql(false);
 
                     const screenshotsCheckingOptions = { forError: false, screenshotsCount: 2, runDirCount: 3 };
 
@@ -167,8 +169,8 @@ describe('[API] t.takeScreenshot()', function () {
                 reporters:          [{ reporter }]
             })
                 .then(function () {
-                    var getScreenshotsInfo = (screenshotPath, thumbnailPath, attempt, userAgent, onFail) => {
-                        if (!onFail) {
+                    var getScreenshotsInfo = (screenshotPath, thumbnailPath, attempt, userAgent, takenOnFail) => {
+                        if (!takenOnFail) {
                             screenshotPath = '_' + userAgent + attempt + screenshotPath;
                             thumbnailPath  = '_thumbnails' + screenshotPath;
                         }
@@ -176,7 +178,7 @@ describe('[API] t.takeScreenshot()', function () {
                         return {
                             screenshotPath,
                             thumbnailPath,
-                            onFail:              onFail,
+                            takenOnFail,
                             quarantineAttemptID: attempt,
                             isPassedAttempt:     attempt > 1,
                             userAgent
@@ -198,6 +200,7 @@ describe('[API] t.takeScreenshot()', function () {
                     }, []);
 
                     expect(result.screenshots).deep.members(expected);
+                    expect(result.unstable).eql(true);
                 });
         });
     }

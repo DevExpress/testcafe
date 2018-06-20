@@ -147,7 +147,7 @@ export default class Capturer {
             thumbnailPath,
             userAgent:           this.userAgentName,
             quarantineAttemptID: this.attemptNumber,
-            onFail:              forError,
+            takenOnFail:         forError,
         };
 
         this.testEntry.screenshots.push(screenshot);
