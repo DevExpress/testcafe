@@ -11,13 +11,9 @@ import STATUS from './status';
 import { GeneralError } from '../../errors/runtime';
 import MESSAGE from '../../errors/runtime/message';
 
-
-// Const
 const IDLE_PAGE_TEMPLATE = read('../../client/browser/idle-page/index.html.mustache');
 
-
 var connections = {};
-
 
 export default class BrowserConnection extends EventEmitter {
     constructor (gateway, browserInfo, permanent) {
@@ -202,7 +198,11 @@ export default class BrowserConnection extends EventEmitter {
     establish (userAgent) {
         this.ready = true;
 
-        this.browserInfo.userAgent = parseUserAgent(userAgent).toString();
+        const parsedUserAgent = parseUserAgent(userAgent);
+
+        this.browserInfo.userAgent       = parsedUserAgent.toString();
+        this.browserInfo.fullUserAgent   = userAgent;
+        this.browserInfo.parsedUserAgent = parsedUserAgent;
 
         this._waitForHeartbeat();
         this.emit('ready');

@@ -1,7 +1,6 @@
 import { resolve, join as pathJoin, dirname } from 'path';
 import { Command } from 'commander';
 import Promise from 'pinkie';
-import dedent from 'dedent';
 import isGlob from 'is-glob';
 import globby from 'globby';
 import { readSync as read } from 'read-file-relative';
@@ -18,8 +17,8 @@ const REMOTE_ALIAS_RE          = /^remote(?::(\d*))?$/;
 const DEFAULT_TEST_LOOKUP_DIRS = ['test/', 'tests/'];
 const TEST_FILE_GLOB_PATTERN   = `./**/*@(${Compiler.getSupportedTestFileExtensions().join('|')})`;
 
-const DESCRIPTION = dedent(`
-    In the browser list, you can use browser names (e.g. "ie9", "chrome", etc.) as well as paths to executables.
+const DESCRIPTION = `
+    In the browser list, you can use browser names (e.g. "ie", "chrome", etc.) as well as paths to executables.
 
     To run tests against all installed browsers, use the "all" alias.
 
@@ -31,8 +30,7 @@ const DESCRIPTION = dedent(`
     You can use one or more file paths or glob patterns to specify which tests to run.
 
     More info: https://devexpress.github.io/testcafe/documentation
-`);
-
+`;
 
 export default class CLIArgumentParser {
     constructor (cwd) {
@@ -89,6 +87,7 @@ export default class CLIArgumentParser {
             .option('-r, --reporter <name[:outputFile][,...]>', 'specify the reporters and optionally files where reports are saved')
             .option('-s, --screenshots <path>', 'enable screenshot capturing and specify the path to save the screenshots to')
             .option('-S, --screenshots-on-fails', 'take a screenshot whenever a test fails')
+            .option('-p, --screenshot-path-pattern <pattern>', 'use patterns to compose screenshot file names and paths: ${BROWSER}, ${BROWSER_VERSION}, ${OS}, ${OS_VERSION}, ${USERAGENT}, ${DATE}, ${TIME}, ${FIXTURE}, ${TEST}, ${TEST_INDEX}, ${FILE_INDEX}, ${QUARANTINE_ATTEMPT}')
             .option('-q, --quarantine-mode', 'enable the quarantine mode')
             .option('-d, --debug-mode', 'execute test steps one by one pausing the test after each step')
             .option('-e, --skip-js-errors', 'make tests not fail when a JS error happens on a page')
