@@ -41,3 +41,6 @@ test('Navigate to local pages', async t => {
         .navigateTo('../my-project/index.html');
 });
 ```
+
+TestCafe automatically waits for the server to respond after a redirect happens.
+The test is resumed if the server does not respond within **15** seconds.

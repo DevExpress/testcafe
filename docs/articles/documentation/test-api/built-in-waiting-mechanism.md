@@ -1,14 +1,14 @@
 ---
 layout: docs
-title: Waiting for Page Elements to Appear
-permalink: /documentation/test-api/waiting-for-page-elements-to-appear.html
+title: Built-In Waiting Mechanism 
+permalink: /documentation/test-api/built-in-waiting-mechanism.html
 ---
-# Waiting for Page Elements to Appear
+# Built-In Waiting Mechanism
 
-TestCafe has a built-in automatic waiting mechanism, so that it does not need dedicated API to wait for page elements to appear.
+TestCafe has a built-in automatic waiting mechanism, so that it does not need dedicated API to wait for page elements to appear or redirects to happen.
 
 This topic describes how the automatic waiting mechanism works with [test actions](actions/README.md),
-[assertions](assertions/README.md) and [selectors](selecting-page-elements/selectors/README.md).
+[assertions](assertions/README.md), [selectors](selecting-page-elements/selectors/README.md) and navigation.
 
 ## Waiting for Action Target Elements
 
@@ -110,3 +110,8 @@ test('My test', async t => {
         .expect(nameInput.value).eql('Peter Parker');
 });
 ```
+
+## Waiting for Redirects
+
+When an action triggers a redirect, TestCafe automatically waits for the server to respond.
+The test is resumed if the server does not respond within **15** seconds.
