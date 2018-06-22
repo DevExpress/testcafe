@@ -5,7 +5,6 @@ const tmp               = require('tmp');
 const find              = require('lodash').find;
 const CliArgumentParser = require('../../lib/cli/argument-parser');
 const nanoid            = require('nanoid');
-const os                = require('os');
 
 describe('CLI argument parser', function () {
     this.timeout(10000);
@@ -294,16 +293,23 @@ describe('CLI argument parser', function () {
                     });
             });
 
-            if (os.type() === 'Windows_NT') {
-                it('Should interpret a long path as a certificate content', () => {
-                    const keyFileContent = nanoid(1000);
+            it('Should not read file content if file does not exists', () => {
+                const dummyFilePath = '/dummy-file-path';
 
-                    return parse(`--ssl key=${keyFileContent}`)
-                        .then(parser => {
-                            expect(parser.opts.ssl.key).eql(keyFileContent);
-                        });
-                });
-            }
+                return parse(`--ssl key=${dummyFilePath}`)
+                    .then(parser => {
+                        expect(parser.opts.ssl.key).eql(dummyFilePath);
+                    });
+            });
+
+            it('Should interpret a long path as a certificate content', () => {
+                const keyFileContent = nanoid(5000);
+
+                return parse(`--ssl key=${keyFileContent}`)
+                    .then(parser => {
+                        expect(parser.opts.ssl.key).eql(keyFileContent);
+                    });
+            });
         });
     });
 

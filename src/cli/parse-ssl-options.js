@@ -1,7 +1,13 @@
 import fs from 'fs';
 import os from 'os';
 
-const MAX_PATH_LENGTH = os.type() === 'Windows_NT' ? 260 : Infinity;
+const MAX_PATH_LENGTH = {
+    'Linux':      4096,
+    'Windows_NT': 260,
+    'Darwin':     1024
+};
+
+const OS_MAX_PATH_LENGTH = MAX_PATH_LENGTH[os.type()];
 
 const OPTIONS_SEPARATOR          = ';';
 const OPTION_KEY_VALUE_SEPARATOR = '=';
@@ -27,7 +33,7 @@ export default function (optionsStr = '') {
 
         value = convertToBestFitType(value);
 
-        if (FILE_OPTION_NAMES.includes(key) && value.length < MAX_PATH_LENGTH)
+        if (FILE_OPTION_NAMES.includes(key) && value.length < OS_MAX_PATH_LENGTH && fs.existsSync(value))
             value = fs.readFileSync(value);
 
         parsedOptions[key] = value;
@@ -51,3 +57,4 @@ function convertToBestFitType (valueStr) {
 
     return valueStr;
 }
+
