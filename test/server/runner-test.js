@@ -349,22 +349,16 @@ describe('Runner', function () {
         });
 
         it('Should raise an error if the browser connections are not ready', function () {
-            var origWaitConnOpened  = BrowserSet.prototype._waitConnectionsOpened;
             var origGetReadyTimeout = BrowserSet.prototype._getReadyTimeout;
 
             BrowserSet.prototype._getReadyTimeout = function () {
-                return Promise.resolve(0);
-            };
-
-            BrowserSet.prototype._waitConnectionsOpened = function () {
-                return origWaitConnOpened.call(this);
+                return Promise.resolve(100);
             };
 
             //NOTE: Restore original in prototype in test timeout callback
             var testCallback = this.test.callback;
 
             this.test.callback = function (err) {
-                BrowserSet.prototype._waitConnectionsOpened = origWaitConnOpened;
                 BrowserSet.prototype._getReadyTimeout       = origGetReadyTimeout;
                 testCallback(err);
             };
@@ -379,12 +373,10 @@ describe('Runner', function () {
                         .run();
                 })
                 .then(function () {
-                    BrowserSet.prototype._waitConnectionsOpened = origWaitConnOpened;
                     throw new Error('Promise rejection expected');
                 })
                 .catch(function (err) {
-                    BrowserSet.prototype._waitConnectionsOpened = origWaitConnOpened;
-                    BrowserSet.prototype._getReadyTimeout       = origGetReadyTimeout;
+                    BrowserSet.prototype._getReadyTimeout = origGetReadyTimeout;
 
                     expect(err.message).eql('Unable to establish one or more of the specified browser connections. ' +
                                             'This can be caused by network issues or remote device failure.');

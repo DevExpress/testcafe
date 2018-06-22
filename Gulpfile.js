@@ -2,6 +2,7 @@ var babel                = require('babel-core');
 var gulp                 = require('gulp');
 var gulpStep             = require('gulp-step');
 var gulpBabel            = require('gulp-babel');
+var data                 = require('gulp-data');
 var less                 = require('gulp-less');
 var qunitHarness         = require('gulp-qunit-harness');
 var git                  = require('gulp-git');
@@ -15,7 +16,6 @@ var uglify               = require('gulp-uglify');
 var ll                   = require('gulp-ll-next');
 var del                  = require('del');
 var fs                   = require('fs');
-var os                   = require('os');
 var path                 = require('path');
 var globby               = require('globby');
 var opn                  = require('opn');
@@ -50,7 +50,7 @@ ll
     ]);
 
 var ARGS     = minimist(process.argv.slice(2));
-var DEV_MODE = ARGS.dev;
+var DEV_MODE = 'dev' in ARGS;
 
 var CLIENT_TESTS_PATH        = 'test/client/fixtures';
 var CLIENT_TESTS_LEGACY_PATH = 'test/client/legacy-fixtures';
@@ -158,7 +158,13 @@ var websiteServer = null;
 
 gulp.task('audit', function () {
     return npmAuditor()
-        .then(result => process.stdout.write(result.report));
+        .then(result => {
+            process.stdout.write(result.report);
+            process.stdout.write('\n');
+
+            if (result.exitCode !== 0)
+                throw new Error('Security audit failed');
+        });
 });
 
 gulp.task('clean', function () {
@@ -179,7 +185,7 @@ gulp.task('lint', function () {
             'Gulpfile.js'
         ])
         .pipe(eslint())
-        .pipe(eslint.format())
+        .pipe(eslint.format(process.env.ESLINT_FORMATTER))
         .pipe(eslint.failAfterError());
 });
 
@@ -224,22 +230,21 @@ gulp.step('client-scripts-bundle', function () {
 });
 
 gulp.step('client-scripts-templates-render', function () {
-    var scripts = [
-        { wrapper: 'src/client/core/index.js.wrapper.mustache', src: 'lib/client/core/index.js' },
-        { wrapper: 'src/client/ui/index.js.wrapper.mustache', src: 'lib/client/ui/index.js' },
-        { wrapper: 'src/client/automation/index.js.wrapper.mustache', src: 'lib/client/automation/index.js' },
-        { wrapper: 'src/client/driver/index.js.wrapper.mustache', src: 'lib/client/driver/index.js' }
-    ];
-
-    return Promise
-        .all(scripts.map(function (script) {
-            return gulp
-                .src(script.wrapper)
-                .pipe(mustache({ source: fs.readFileSync(script.src).toString() }))
-                .pipe(rename(path.basename(script.src)))
-                .pipe(gulpif(!DEV_MODE, uglify()))
-                .pipe(gulp.dest(path.dirname(script.src)));
-        }));
+    return gulp
+        .src([
+            'src/client/core/index.js.wrapper.mustache',
+            'src/client/ui/index.js.wrapper.mustache',
+            'src/client/automation/index.js.wrapper.mustache',
+            'src/client/driver/index.js.wrapper.mustache'
+        ], { base: 'src' })
+        .pipe(rename(wrapperPath => {
+            wrapperPath.extname  = '';
+            wrapperPath.basename = wrapperPath.basename.replace('.wrapper', '');
+        }))
+        .pipe(data(file => ({ source: fs.readFileSync(path.resolve('lib', file.relative)) })))
+        .pipe(mustache())
+        .pipe(gulpif(!DEV_MODE, uglify()))
+        .pipe(gulp.dest('lib'));
 });
 
 gulp.step('client-scripts', gulp.series('client-scripts-bundle', 'client-scripts-templates-render'));
@@ -284,7 +289,7 @@ gulp.step('package-content', gulp.parallel('server-scripts', 'client-scripts', '
 
 gulp.task('fast-build', gulp.series('clean', 'package-content'));
 
-gulp.task('build', gulp.parallel('lint', 'fast-build'));
+gulp.task('build', DEV_MODE ? gulp.registry().get('fast-build') : gulp.parallel('lint', 'fast-build'));
 
 // Test
 gulp.step('test-server-run', function () {
@@ -592,10 +597,6 @@ gulp.task('test-website', gulp.series('build-website-testing', 'serve-website', 
 gulp.task('test-website-travis', gulp.series('build-website', 'serve-website', 'test-website-run'));
 
 gulp.step('website-publish-run', function () {
-    // NOTE: it's accidentally stopped being compatible with node 0.10 without
-    // major version bump due to https://github.com/floridoo/gulp-sourcemaps/issues/236,
-    // so we require it here.
-
     return gulp
         .src('site/deploy/**/*')
         .pipe(rename(function (filePath) {

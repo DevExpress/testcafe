@@ -21,6 +21,8 @@ export default class BrowserSet extends EventEmitter {
         this.browserConnectionGroups = browserConnectionGroups;
         this.browserConnections      = flatten(browserConnectionGroups);
 
+        this.connectionsReadyTimeout = null;
+
         this.browserErrorHandler = error => this.emit('error', error);
 
         this.browserConnections.forEach(bc => bc.on('error', this.browserErrorHandler));
@@ -53,6 +55,25 @@ export default class BrowserSet extends EventEmitter {
         return remoteBrowsersExist ? REMOTE_BROWSERS_READY_TIMEOUT : LOCAL_BROWSERS_READY_TIMEOUT;
     }
 
+    _createPendingConnectionPromise (readyPromise, timeout, timeoutError) {
+        const timeoutPromise = new Promise((_, reject) => {
+            this.connectionsReadyTimeout = setTimeout(() => reject(timeoutError), timeout);
+        });
+
+        return Promise
+            .race([readyPromise, timeoutPromise])
+            .then(
+                value => {
+                    this.connectionsReadyTimeout.unref();
+                    return value;
+                },
+                error => {
+                    this.connectionsReadyTimeout.unref();
+                    throw error;
+                }
+            );
+    }
+
     async _waitConnectionsOpened () {
         var connectionsReadyPromise = Promise.all(
             this.browserConnections
@@ -63,7 +84,7 @@ export default class BrowserSet extends EventEmitter {
         var timeoutError = new GeneralError(MESSAGE.cantEstablishBrowserConnection);
         var readyTimeout = await this._getReadyTimeout();
 
-        await timeLimit(connectionsReadyPromise, readyTimeout, { rejectWith: timeoutError });
+        await this._createPendingConnectionPromise(connectionsReadyPromise, readyTimeout, timeoutError);
     }
 
     _checkForDisconnections () {
@@ -123,6 +144,9 @@ export default class BrowserSet extends EventEmitter {
         // the this.connections array, which leads to shifting indexes
         // towards the beginning. So, we must copy the array in order to iterate it,
         // or we can perform iteration from the end to the beginning.
+        if (this.connectionsReadyTimeout)
+            this.connectionsReadyTimeout.unref();
+
         mapReverse(this.browserConnections, bc => this.releaseConnection(bc));
 
         await Promise.all(this.pendingReleases);
