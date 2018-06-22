@@ -446,6 +446,11 @@ export default class TestRun extends EventEmitter {
     }
 
     // Execute command
+    static _shouldAddCommandToQueue (command) {
+        return command.type !== COMMAND_TYPE.wait && command.type !== COMMAND_TYPE.setPageLoadTimeout &&
+               command.type !== COMMAND_TYPE.debug && command.type !== COMMAND_TYPE.useRole && command.type !== COMMAND_TYPE.assertion;
+    }
+
     async _executeAssertion (command, callsite) {
         var assertionTimeout = command.options.timeout === void 0 ? this.opts.assertionTimeout : command.options.timeout;
         var executor         = new AssertionExecutor(command, assertionTimeout, callsite);
@@ -495,12 +500,13 @@ export default class TestRun extends EventEmitter {
     }
 
     async executeCommand (command, callsite) {
-        this.addingDriverTasksCount++;
-
         this.debugLog.command(command);
 
         if (this.pendingPageError && isCommandRejectableByPageError(command))
             return this._rejectCommandWithPageError(callsite);
+
+        if (TestRun._shouldAddCommandToQueue(command))
+            this.addingDriverTasksCount++;
 
         this._adjustConfigurationWithCommand(command);
 
