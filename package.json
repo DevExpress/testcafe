@@ -159,6 +159,7 @@
     "merge-stream": "^1.0.0",
     "minimist": "^1.2.0",
     "multer": "^1.1.0",
+    "npm-auditor": "^1.1.1",
     "opn": "^4.0.2",
     "publish-please": "^3.0.2",
     "recursive-copy": "^2.0.5",

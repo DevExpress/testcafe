@@ -31,6 +31,7 @@ var assignIn             = require('lodash').assignIn;
 var yaml                 = require('js-yaml');
 var childProcess         = require('child_process');
 var listBrowsers         = require('testcafe-browser-tools').getInstallations;
+var npmAuditor           = require('npm-auditor');
 var checkLicenses        = require('./test/dependency-licenses-checker');
 
 gulpStep.install();
@@ -155,41 +156,9 @@ var PUBLISH_TAG = JSON.parse(fs.readFileSync(path.join(__dirname, '.publishrc'))
 
 var websiteServer = null;
 
-gulp.task('audit', function (done) {
-    let npmCommand = 'npm';
-
-    const npmVer = childProcess.execSync(`${npmCommand} -v`).toString().replace(/\s/, '').split('.');
-
-    if (Number(npmVer[0]) < 6) {
-        const tempNpmPath = path.join(os.tmpdir(), 'testcafe-npm-audit');
-
-        if (!fs.existsSync(tempNpmPath)) {
-            fs.mkdirSync(tempNpmPath);
-            fs.mkdirSync(path.join(tempNpmPath, 'node_modules'));
-
-            childProcess.spawnSync(`${npmCommand} i npm`, { shell: true, stdio: 'inherit', cwd: tempNpmPath });
-        }
-
-        npmCommand = path.join(tempNpmPath, 'node_modules/.bin/npm');
-    }
-
-    const hasPackageLock = fs.existsSync('package-lock.json');
-
-    if (!hasPackageLock)
-        childProcess.spawnSync(`${npmCommand} i --package-lock-only`, { shell: true, stdio: 'inherit' });
-
-    try {
-        const results = childProcess.spawnSync(`${npmCommand} audit`, { shell: true, stdio: 'inherit' });
-
-        if (results.status !== 0)
-            throw new Error('Audit check failed!');
-    }
-    finally {
-        if (!hasPackageLock)
-            fs.unlinkSync('package-lock.json');
-    }
-
-    done();
+gulp.task('audit', function () {
+    return npmAuditor()
+        .then(result => process.stdout.write(result.report));
 });
 
 gulp.task('clean', function () {
@@ -311,18 +280,9 @@ gulp.step('images', function () {
         .pipe(gulp.dest('lib'));
 });
 
-gulp.task('fast-build',
-    gulp.series(
-        'clean',
-        gulp.parallel(
-            'server-scripts',
-            'client-scripts',
-            'styles',
-            'images',
-            'templates'
-        )
-    )
-);
+gulp.step('package-content', gulp.parallel('server-scripts', 'client-scripts', 'styles', 'images', 'templates'));
+
+gulp.task('fast-build', gulp.series('clean', 'package-content'));
 
 gulp.task('build', gulp.parallel('lint', 'fast-build'));
 
@@ -335,15 +295,9 @@ gulp.step('test-server-run', function () {
         }));
 });
 
-gulp.task('test-server',
-    gulp.parallel(
-        'check-licenses',
-        gulp.series(
-            'build',
-            'test-server-run'
-        )
-    )
-);
+gulp.step('test-server-bootstrap', gulp.series('build', 'test-server-run'));
+
+gulp.task('test-server', gulp.parallel('check-licenses', 'test-server-bootstrap'));
 
 function testClient (tests, settings, envSettings, cliMode) {
     function runTests (env, runOpts) {
@@ -552,23 +506,10 @@ gulp.step('put-in-tweets', function () {
         .pipe(gulp.dest('site/src/_data'));
 });
 
+gulp.step('put-in-website-content', gulp.parallel('put-in-articles', 'put-in-navigation', 'put-in-posts', 'put-in-publications', 'put-in-tweets'));
+gulp.step('prepare-website-content', gulp.series('clean-website', 'fetch-assets-repo', 'put-in-website-content'));
 
-gulp.step('prepare-website',
-    gulp.parallel(
-        'lint-docs',
-        gulp.series(
-            'clean-website',
-            'fetch-assets-repo',
-            gulp.parallel(
-                'put-in-articles',
-                'put-in-navigation',
-                'put-in-posts',
-                'put-in-publications',
-                'put-in-tweets'
-            )
-        )
-    )
-);
+gulp.step('prepare-website', gulp.parallel('lint-docs', 'prepare-website-content'));
 
 function buildWebsite (mode, cb) {
     var options = mode ? { stdio: 'inherit', env: { JEKYLL_ENV: mode } } : { stdio: 'inherit' };
