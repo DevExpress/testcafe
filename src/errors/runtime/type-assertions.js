@@ -15,8 +15,9 @@ function isNonNegativeValue (value) {
 
 export var is = {
     number: {
-        name:      'number',
-        predicate: isFiniteNumber
+        name:              'number',
+        predicate:         isFiniteNumber,
+        getActualValueMsg: (value, type) => type === 'number' ? value : type
     },
 
     nonNegativeNumber: {
