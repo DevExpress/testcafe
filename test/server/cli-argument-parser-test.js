@@ -1,9 +1,10 @@
-var expect            = require('chai').expect;
-var path              = require('path');
-var fs                = require('fs');
-var tmp               = require('tmp');
-var find              = require('lodash').find;
-var CliArgumentParser = require('../../lib/cli/argument-parser');
+const expect            = require('chai').expect;
+const path              = require('path');
+const fs                = require('fs');
+const tmp               = require('tmp');
+const find              = require('lodash').find;
+const CliArgumentParser = require('../../lib/cli/argument-parser');
+const nanoid            = require('nanoid');
 
 describe('CLI argument parser', function () {
     this.timeout(10000);
@@ -260,6 +261,58 @@ describe('CLI argument parser', function () {
         });
     });
 
+    describe('Ssl options', () => {
+        it('Should parse ssl options', () => {
+            return parse('--ssl passphrase=sample;sessionTimeout=1000;rejectUnauthorized=false;=onlyValue;onlyKey=')
+                .then(parser => {
+                    expect(parser.opts.ssl.passphrase).eql('sample');
+                    expect(parser.opts.ssl.sessionTimeout).eql(1000);
+                    expect(parser.opts.ssl.rejectUnauthorized).eql(false);
+                    expect(parser.opts.ssl.onlyKey).to.be.undefined;
+                });
+        });
+
+        describe('`key`, `cert` and `pfx` keys', () => {
+            it('Should parse keys as file paths and read its content', () => {
+                const keyFile         = tmp.fileSync();
+                const certFile        = tmp.fileSync();
+                const pfxFile         = tmp.fileSync();
+                const keyFileContent  = Buffer.from(nanoid());
+                const certFileContent = Buffer.from(nanoid());
+                const pfxFileContent  = Buffer.from(nanoid());
+
+                fs.writeFileSync(keyFile.name, keyFileContent);
+                fs.writeFileSync(certFile.name, certFileContent);
+                fs.writeFileSync(pfxFile.name, pfxFileContent);
+
+                return parse(`--ssl key=${keyFile.name};cert=${certFile.name};pfx=${pfxFile.name}`)
+                    .then(parser => {
+                        expect(parser.opts.ssl.key).deep.eql(keyFileContent);
+                        expect(parser.opts.ssl.cert).deep.eql(certFileContent);
+                        expect(parser.opts.ssl.pfx).deep.eql(pfxFileContent);
+                    });
+            });
+
+            it('Should not read file content if file does not exists', () => {
+                const dummyFilePath = '/dummy-file-path';
+
+                return parse(`--ssl key=${dummyFilePath}`)
+                    .then(parser => {
+                        expect(parser.opts.ssl.key).eql(dummyFilePath);
+                    });
+            });
+
+            it('Should interpret a long path as a certificate content', () => {
+                const keyFileContent = nanoid(5000);
+
+                return parse(`--ssl key=${keyFileContent}`)
+                    .then(parser => {
+                        expect(parser.opts.ssl.key).eql(keyFileContent);
+                    });
+            });
+        });
+    });
+
     it('Should accept globs and paths as source files', function () {
         var cwd = process.cwd();
 
@@ -381,6 +434,7 @@ describe('CLI argument parser', function () {
             { long: '--proxy' },
             { long: '--proxy-bypass' },
             { long: '--disable-page-reloads' },
+            { long: '--ssl' },
             { long: '--qr-code' },
             { long: '--color' },
             { long: '--no-color' }

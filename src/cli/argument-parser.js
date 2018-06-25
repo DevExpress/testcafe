@@ -12,7 +12,7 @@ import { assertType, is } from '../errors/runtime/type-assertions';
 import getViewPortWidth from '../utils/get-viewport-width';
 import { wordWrap, splitQuotedText } from '../utils/string';
 import { stat, ensureDir } from '../utils/promisified-functions';
-
+import parseSslOptions from './parse-ssl-options';
 
 const REMOTE_ALIAS_RE          = /^remote(?::(\d*))?$/;
 const DEFAULT_TEST_LOOKUP_DIRS = ['test/', 'tests/'];
@@ -107,6 +107,7 @@ export default class CLIArgumentParser {
             .option('--ports <port1,port2>', 'specify custom port numbers')
             .option('--hostname <name>', 'specify the hostname')
             .option('--proxy <host>', 'specify the host of the proxy server')
+            .option('--ssl', 'specify SSL options to run TestCafe proxy server over the HTTPS protocol')
             .option('--proxy-bypass <rules>', 'specify a comma-separated list of rules that define URLs accessed bypassing the proxy server')
             .option('--disable-page-reloads', 'disable page reloads between tests')
             .option('--qr-code', 'outputs QR-code that repeats URLs used to connect the remote browsers')
@@ -156,7 +157,6 @@ export default class CLIArgumentParser {
             this.opts.appInitDelay = parseInt(this.opts.appInitDelay, 10);
         }
     }
-
 
     _parseSelectorTimeout () {
         if (this.opts.selectorTimeout) {
@@ -208,6 +208,11 @@ export default class CLIArgumentParser {
 
         this.browsers = splitQuotedText(browsersArg, ',')
             .filter(browser => browser && this._filterAndCountRemotes(browser));
+    }
+
+    _parseSslOptions () {
+        if (this.opts.ssl)
+            this.opts.ssl = parseSslOptions(this.program.args[0]);
     }
 
     async _parseReporters () {
@@ -320,6 +325,7 @@ export default class CLIArgumentParser {
         this._parsePorts();
         this._parseBrowserList();
         this._parseConcurrency();
+        this._parseSslOptions();
 
         await Promise.all([
             this._parseScreenshotsPath(),

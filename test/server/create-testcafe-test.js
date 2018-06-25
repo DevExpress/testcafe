@@ -1,17 +1,17 @@
-var expect         = require('chai').expect;
-var url            = require('url');
-var net            = require('net');
-var createTestCafe = require('../../lib/');
-var exportableLib  = require('../../lib/api/exportable-lib');
-var Promise        = require('pinkie');
-
+const expect                = require('chai').expect;
+const url                   = require('url');
+const net                   = require('net');
+const createTestCafe        = require('../../lib/');
+const exportableLib         = require('../../lib/api/exportable-lib');
+const Promise               = require('pinkie');
+const selfSignedCertificate = require('openssl-self-signed-certificate');
 
 describe('TestCafe factory function', function () {
     var testCafe = null;
     var server   = null;
 
-    function getTestCafe (hostname, port1, port2) {
-        return createTestCafe(hostname, port1, port2)
+    function getTestCafe (hostname, port1, port2, sslOptions) {
+        return createTestCafe(hostname, port1, port2, sslOptions)
             .then(function (tc) {
                 testCafe = tc;
             });
@@ -92,5 +92,20 @@ describe('TestCafe factory function', function () {
         expect(createTestCafe.embeddingUtils).to.be.an.object;
         expect(createTestCafe.Role).eql(exportableLib.Role);
         expect(createTestCafe.ClientFunction).eql(exportableLib.ClientFunction);
+    });
+
+    it('Should pass sslOptions to proxy', () => {
+        const sslOptions = {
+            key:  selfSignedCertificate.key,
+            cert: selfSignedCertificate.cert
+        };
+
+        return getTestCafe('localhost', 1338, 1339, sslOptions)
+            .then(() => {
+                expect(testCafe.proxy.server1.key).eql(sslOptions.key);
+                expect(testCafe.proxy.server1.cert).eql(sslOptions.cert);
+                expect(testCafe.proxy.server2.key).eql(sslOptions.key);
+                expect(testCafe.proxy.server2.cert).eql(sslOptions.cert);
+            });
     });
 });
