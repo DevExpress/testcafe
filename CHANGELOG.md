@@ -4,12 +4,6 @@
 
 ### Enhancements
 
-#### Additional information about screenshots and quarantine run attempts is added to reports ([#2216](https://github.com/DevExpress/testcafe/issues/2216))
-
-When writing custom reporters, you can now use more information about screenshots taken during test run and quarantine test runs. The new information includes quarantine attempts' results, path to screenshots and their thumbnails, etc.
-
-To learn more, see [the reportTestDone reporter method](https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reporttestdone).
-
 #### TestCafe now takes screenshots using browsers' debug protocols ([#2492](https://github.com/DevExpress/testcafe/pull/2492))
 
 ### Bug fixes
