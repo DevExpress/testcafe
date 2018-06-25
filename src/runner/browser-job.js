@@ -2,6 +2,7 @@ import Promise from 'pinkie';
 import { EventEmitter } from 'events';
 import { remove } from 'lodash';
 import TestRunController from './test-run-controller';
+import SessionController from '../test-run/session-controller';
 import RESULT from './browser-job-result';
 
 
@@ -79,6 +80,8 @@ export default class BrowserJob extends EventEmitter {
         }
 
         if (!this.completionQueue.length && !this.hasQueuedTestRuns) {
+            SessionController.closeSession(testRunController.testRun);
+
             this
                 ._setResult(RESULT.done, { total: this.total, passed: this.passed })
                 .then(() => this.emit('done'));

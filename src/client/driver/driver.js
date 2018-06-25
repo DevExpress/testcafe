@@ -452,6 +452,26 @@ export default class Driver {
             .then(() => this._onReady(new DriverStatus({ isCommandResult: true })));
     }
 
+    _checkStatus () {
+        return browser
+            .checkStatus(this.browserStatusDoneUrl, hammerhead.createNativeXHR, { manualRedirect: true })
+            .then(({ command, redirecting }) => {
+                const isSessionChange = redirecting && command.url.indexOf(this.testRunId) < 0;
+
+                if (isSessionChange) {
+                    storages.clear();
+                    storages.lock();
+                }
+                else
+                    this.contextStorage.setItem(TEST_DONE_SENT_FLAG, false);
+
+                if (redirecting)
+                    browser.redirect(command);
+                else
+                    this._onReady({ isCommandResult: false });
+            });
+    }
+
     _onCustomCommand (command) {
         var handler = this.customCommandHandlers[command.type].handler;
 
@@ -463,12 +483,9 @@ export default class Driver {
     _onTestDone (status) {
         this.contextStorage.setItem(TEST_DONE_SENT_FLAG, true);
 
-        storages.clear();
-        storages.lock();
-
         this
             ._sendStatus(status)
-            .then(() => browser.checkStatus(this.browserStatusDoneUrl, hammerhead.createNativeXHR));
+            .then(() => this._checkStatus());
     }
 
     _onBackupStoragesCommand () {
@@ -630,7 +647,7 @@ export default class Driver {
             if (pendingStatus)
                 this._onTestDone(pendingStatus);
             else
-                browser.checkStatus(this.browserStatusUrl, hammerhead.createNativeXHR);
+                this._checkStatus();
 
             return;
         }

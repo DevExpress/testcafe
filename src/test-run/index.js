@@ -1,19 +1,19 @@
-import path from 'path';
+import EventEmitter from 'events';
 import { pull as remove } from 'lodash';
 import { readSync as read } from 'read-file-relative';
 import promisifyEvent from 'promisify-event';
 import Promise from 'pinkie';
 import Mustache from 'mustache';
 import debugLogger from '../notifications/debug-logger';
-import { Session } from 'testcafe-hammerhead';
+import SessionController from './session-controller';
 import TestRunDebugLog from './debug-log';
 import TestRunErrorFormattableAdapter from '../errors/test-run/formattable-adapter';
 import TestCafeErrorList from '../errors/error-list';
 import { executeJsExpression } from './execute-js-expression';
 import { PageLoadError, RoleSwitchInRoleInitializerError } from '../errors/test-run/';
 import BrowserManipulationQueue from './browser-manipulation-queue';
-import CLIENT_MESSAGES from './client-messages';
 import PHASE from './phase';
+import CLIENT_MESSAGES from './client-messages';
 import COMMAND_TYPE from './commands/type';
 import AssertionExecutor from '../assertions/executor';
 import delay from '../utils/delay';
@@ -53,11 +53,9 @@ const MAX_RESPONSE_DELAY              = 2 * 60 * 1000;
 
 const ALL_DRIVER_TASKS_ADDED_TO_QUEUE_EVENT = 'all-driver-tasks-added-to-queue';
 
-export default class TestRun extends Session {
+export default class TestRun extends EventEmitter {
     constructor (test, browserConnection, screenshotCapturer, warningLog, opts) {
-        var uploadsRoot = path.dirname(test.fixture.path);
-
-        super(uploadsRoot);
+        super();
 
         this[testRunMarker] = true;
 
@@ -74,6 +72,10 @@ export default class TestRun extends Session {
         this.activeIframeSelector = null;
         this.speed                = this.opts.speed;
         this.pageLoadTimeout      = this.opts.pageLoadTimeout;
+
+        this.disablePageReloads = test.disablePageReloads || opts.disablePageReloads && test.disablePageReloads !== false;
+
+        this.session = SessionController.getSession(this);
 
         this.consoleMessages = new BrowserConsoleMessages();
 
@@ -119,6 +121,14 @@ export default class TestRun extends Session {
         this._initRequestHooks();
     }
 
+    get id () {
+        return this.session.id;
+    }
+
+    get injectable () {
+        return this.session.injectable;
+    }
+
     addQuarantineInfo (quarantine) {
         this.quarantine = quarantine;
     }
@@ -142,7 +152,7 @@ export default class TestRun extends Session {
     _initRequestHook (hook) {
         hook._instantiateRequestFilterRules();
         hook._instantiatedRequestFilterRules.forEach(rule => {
-            this.addRequestEventListeners(rule, {
+            this.session.addRequestEventListeners(rule, {
                 onRequest:           hook.onRequest.bind(hook),
                 onConfigureResponse: hook._onConfigureResponse.bind(hook),
                 onResponse:          hook.onResponse.bind(hook)
@@ -152,7 +162,7 @@ export default class TestRun extends Session {
 
     _disposeRequestHook (hook) {
         hook._instantiatedRequestFilterRules.forEach(rule => {
-            this.removeRequestEventListeners(rule);
+            this.session.removeRequestEventListeners(rule);
         });
     }
 
@@ -167,7 +177,7 @@ export default class TestRun extends Session {
         this.resolveWaitForFileDownloadingPromise = null;
 
         return Mustache.render(TEST_RUN_TEMPLATE, {
-            testRunId:                    JSON.stringify(this.id),
+            testRunId:                    JSON.stringify(this.session.id),
             browserId:                    JSON.stringify(this.browserConnection.id),
             browserHeartbeatRelativeUrl:  JSON.stringify(this.browserConnection.heartbeatRelativeUrl),
             browserStatusRelativeUrl:     JSON.stringify(this.browserConnection.statusRelativeUrl),
@@ -185,7 +195,7 @@ export default class TestRun extends Session {
 
     _getIframePayloadScript () {
         return Mustache.render(IFRAME_TEST_RUN_TEMPLATE, {
-            testRunId:       JSON.stringify(this.id),
+            testRunId:       JSON.stringify(this.session.id),
             selectorTimeout: this.opts.selectorTimeout,
             pageLoadTimeout: this.pageLoadTimeout,
             speed:           this.speed,
@@ -213,7 +223,6 @@ export default class TestRun extends Session {
 
         ctx.redirect(ctx.toProxyUrl('about:error'));
     }
-
 
     // Test function execution
     async _executeTestFn (phase, fn) {
@@ -256,7 +265,7 @@ export default class TestRun extends Session {
     }
 
     async start () {
-        testRunTracker.activeTestRuns[this.id] = this;
+        testRunTracker.activeTestRuns[this.session.id] = this;
 
         this.emit('start');
 
@@ -271,7 +280,7 @@ export default class TestRun extends Session {
         await this.executeCommand(new TestDoneCommand());
         this._addPendingPageErrorIfAny();
 
-        delete testRunTracker.activeTestRuns[this.id];
+        delete testRunTracker.activeTestRuns[this.session.id];
 
         this.emit('done');
     }
@@ -335,7 +344,7 @@ export default class TestRun extends Session {
     }
 
     async _enqueueSetBreakpointCommand (callsite, error) {
-        debugLogger.showBreakpoint(this.id, this.browserConnection.userAgent, callsite, error);
+        debugLogger.showBreakpoint(this.session.id, this.browserConnection.userAgent, callsite, error);
 
         this.debugging = await this.executeCommand(new SetBreakpointCommand(!!error), callsite);
     }
@@ -431,12 +440,17 @@ export default class TestRun extends Session {
         const command = this.currentDriverTask.command;
 
         if (command.type === COMMAND_TYPE.navigateTo && command.stateSnapshot)
-            this.useStateSnapshot(JSON.parse(command.stateSnapshot));
+            this.session.useStateSnapshot(JSON.parse(command.stateSnapshot));
 
         return command;
     }
 
     // Execute command
+    static _shouldAddCommandToQueue (command) {
+        return command.type !== COMMAND_TYPE.wait && command.type !== COMMAND_TYPE.setPageLoadTimeout &&
+               command.type !== COMMAND_TYPE.debug && command.type !== COMMAND_TYPE.useRole && command.type !== COMMAND_TYPE.assertion;
+    }
+
     async _executeAssertion (command, callsite) {
         var assertionTimeout = command.options.timeout === void 0 ? this.opts.assertionTimeout : command.options.timeout;
         var executor         = new AssertionExecutor(command, assertionTimeout, callsite);
@@ -450,7 +464,7 @@ export default class TestRun extends Session {
     _adjustConfigurationWithCommand (command) {
         if (command.type === COMMAND_TYPE.testDone) {
             this.testDoneCommandQueued = true;
-            debugLogger.hideBreakpoint(this.id);
+            debugLogger.hideBreakpoint(this.session.id);
         }
 
         else if (command.type === COMMAND_TYPE.setNativeDialogHandler)
@@ -486,12 +500,13 @@ export default class TestRun extends Session {
     }
 
     async executeCommand (command, callsite) {
-        this.addingDriverTasksCount++;
-
         this.debugLog.command(command);
 
         if (this.pendingPageError && isCommandRejectableByPageError(command))
             return this._rejectCommandWithPageError(callsite);
+
+        if (TestRun._shouldAddCommandToQueue(command))
+            this.addingDriverTasksCount++;
 
         this._adjustConfigurationWithCommand(command);
 
@@ -535,7 +550,7 @@ export default class TestRun extends Session {
 
     // Role management
     async getStateSnapshot () {
-        var state = super.getStateSnapshot();
+        var state = this.session.getStateSnapshot();
 
         state.storages = await this.executeCommand(new BackupStoragesCommand());
 
@@ -547,7 +562,7 @@ export default class TestRun extends Session {
         this.fixtureCtx      = Object.create(null);
         this.consoleMessages = new BrowserConsoleMessages();
 
-        this.useStateSnapshot(null);
+        this.session.useStateSnapshot(null);
 
         if (this.activeDialogHandler) {
             var removeDialogHandlerCommand = new SetNativeDialogHandlerCommand({ dialogHandler: { fn: null } });
@@ -602,7 +617,7 @@ export default class TestRun extends Session {
 
         var stateSnapshot = this.usedRoleStates[role.id] || await this._getStateSnapshotFromRole(role);
 
-        this.useStateSnapshot(stateSnapshot);
+        this.session.useStateSnapshot(stateSnapshot);
 
         this.currentRoleId = role.id;
 

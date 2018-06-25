@@ -108,6 +108,7 @@ export default class CLIArgumentParser {
             .option('--hostname <name>', 'specify the hostname')
             .option('--proxy <host>', 'specify the host of the proxy server')
             .option('--proxy-bypass <rules>', 'specify a comma-separated list of rules that define URLs accessed bypassing the proxy server')
+            .option('--disable-page-reloads', 'disable page reloads between tests')
             .option('--qr-code', 'outputs QR-code that repeats URLs used to connect the remote browsers')
 
             // NOTE: these options will be handled by chalk internally

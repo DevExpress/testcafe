@@ -16,6 +16,8 @@ export default class TestingUnit {
         this.only            = false;
         this.skip            = false;
 
+        this.disablePageReloads = void 0;
+
         var unit = this;
 
         this.apiOrigin = function apiOrigin (...args) {
@@ -37,6 +39,18 @@ export default class TestingUnit {
 
     _skip$getter () {
         this.skip = true;
+
+        return this.apiOrigin;
+    }
+
+    _disablePageReloads$getter () {
+        this.disablePageReloads = true;
+
+        return this.apiOrigin;
+    }
+
+    _enablePageReloads$getter () {
+        this.disablePageReloads = false;
 
         return this.apiOrigin;
     }

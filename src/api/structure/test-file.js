@@ -8,10 +8,13 @@ export default class TestFile {
     }
 
     getTests () {
-        BORROWED_TEST_PROPERTIES.forEach(prop => {
-            this.collectedTests.forEach(test => {
+        this.collectedTests.forEach(test => {
+            BORROWED_TEST_PROPERTIES.forEach(prop => {
                 test[prop] = test[prop] || test.fixture[prop];
             });
+
+            if (test.disablePageReloads === void 0)
+                test.disablePageReloads = test.fixture.disablePageReloads;
         });
 
         return this.collectedTests;
