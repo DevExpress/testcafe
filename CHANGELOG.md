@@ -1,5 +1,23 @@
 # Changelog
 
+## v0.20.4 (2018-6-25)
+
+### Enhancements
+
+#### Additional information about screenshots and quarantine run attempts is added to reports ([#2216](https://github.com/DevExpress/testcafe/issues/2216))
+
+When writing custom reporters, you can now use more information about screenshots taken during test run and quarantine test runs. The new information includes quarantine attempts' results, path to screenshots and their thumbnails, etc.
+
+To learn more, see [the reportTestDone reporter method](https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reporttestdone).
+
+#### TestCafe now takes screenshots using browsers' debug protocols ([#2492](https://github.com/DevExpress/testcafe/pull/2492))
+
+### Bug fixes
+* `fetch` requests are now correctly proxied in a specific case ([testcafe-hammerhead/#1613](https://github.com/DevExpress/testcafe-hammerhead/issues/1613))
+* Resources responding with `304` HTTP status code and with the 'content-length: ' header are proxied correctly now ([testcafe-hammerhead/#1602](https://github.com/DevExpress/testcafe-hammerhead/issues/1602))
+* The `transfer` argument of `window.postMessage` is passed correctly now ([testcafe-hammerhead/#1535](https://github.com/DevExpress/testcafe-hammerhead/issues/1535))
+* Incorrect focus events order in IE has been fixed ([#2072](https://github.com/DevExpress/testcafe/issues/2072))
+
 ## v0.20.3 (2018-6-6)
 
 ### Enhancements
