@@ -162,7 +162,7 @@ before(function () {
                 var runner             = testCafe.createRunner();
                 var fixturePath        = typeof fixture !== 'string' || path.isAbsolute(fixture) ? fixture : path.join(path.dirname(caller()), fixture);
                 var skipJsErrors       = opts && opts.skipJsErrors;
-                var noPageReload       = opts && opts.noPageReload;
+                var disablePageReloads = opts && opts.disablePageReloads;
                 var quarantineMode     = opts && opts.quarantineMode;
                 var selectorTimeout    = opts && opts.selectorTimeout || FUNCTIONAL_TESTS_SELECTOR_TIMEOUT;
                 var assertionTimeout   = opts && opts.assertionTimeout || FUNCTIONAL_TESTS_ASSERTION_TIMEOUT;
@@ -229,15 +229,7 @@ before(function () {
                     .src(fixturePath)
                     .screenshots(screenshotPath, screenshotsOnFails)
                     .startApp(appCommand, appInitDelay)
-                    .run({
-                        skipJsErrors:     skipJsErrors,
-                        noPageReload:     noPageReload,
-                        quarantineMode:   quarantineMode,
-                        selectorTimeout:  selectorTimeout,
-                        assertionTimeout: assertionTimeout,
-                        pageLoadTimeout:  pageLoadTimeout,
-                        speed:            speed
-                    })
+                    .run({ skipJsErrors, disablePageReloads, quarantineMode, selectorTimeout, assertionTimeout, pageLoadTimeout, speed })
                     .then(function () {
                         if (customReporters)
                             return;

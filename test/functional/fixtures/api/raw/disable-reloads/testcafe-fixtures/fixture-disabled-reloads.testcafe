@@ -1,0 +1,32 @@
+{
+    "fixtures": [
+        {
+            "name": "Disable page reloads",
+            "disablePageReloads": true,
+            "tests": [
+                {
+                    "name": "Set",
+                    "commands": [
+                        {
+                            "type": "assertion",
+                            "assertionType": "eql",
+                            "actual": { "type" : "js-expr", "value" : "ClientFunction(() => window.testData = 42)()" },
+                            "expected": 42
+                        }
+                    ]
+                },
+                {
+                    "name": "Check",
+                    "commands": [
+                        {
+                            "type": "assertion",
+                            "assertionType": "eql",
+                            "actual": { "type" : "js-expr", "value" : "ClientFunction(() => window.testData)()" },
+                            "expected": 42
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
