@@ -753,7 +753,7 @@ gulp.task('docker-build', function (done) {
 
 gulp.step('docker-publish-run', function (done) {
     childProcess.execSync('docker push testcafe/testcafe:' + PUBLISH_TAG, { stdio: 'inherit', env: process.env });
-    
+
     done();
 });
 
