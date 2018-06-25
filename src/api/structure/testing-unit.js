@@ -16,7 +16,7 @@ export default class TestingUnit {
         this.only            = false;
         this.skip            = false;
 
-        this.disableReloading = void 0;
+        this.disablePageReloads = void 0;
 
         var unit = this;
 
@@ -43,14 +43,14 @@ export default class TestingUnit {
         return this.apiOrigin;
     }
 
-    _disableReloading$getter () {
-        this.disableReloading = true;
+    _disablePageReloads$getter () {
+        this.disablePageReloads = true;
 
         return this.apiOrigin;
     }
 
-    _enableReloading$getter () {
-        this.disableReloading = false;
+    _enablePageReloads$getter () {
+        this.disablePageReloads = false;
 
         return this.apiOrigin;
     }

@@ -45,7 +45,7 @@ export default class SessionController extends Session {
     static getSession (testRun) {
         let sessionInfo = ACTIVE_SESSIONS_MAP[testRun.browserConnection.id];
 
-        if (!sessionInfo || !testRun.disableReloading) {
+        if (!sessionInfo || !testRun.disablePageReloads) {
             if (sessionInfo && sessionInfo.url)
                 SessionController.closeSession(testRun);
 

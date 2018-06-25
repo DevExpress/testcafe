@@ -1,6 +1,6 @@
 import { checkPageTestData, setPageTestData } from './helpers';
 
-fixture.enableReloading `Default`;
+fixture.enablePageReloads `Default`;
 
 test('1', () => setPageTestData());
 

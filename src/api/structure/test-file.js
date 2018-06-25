@@ -13,8 +13,8 @@ export default class TestFile {
                 test[prop] = test[prop] || test.fixture[prop];
             });
 
-            if (test.disableReloading === void 0)
-                test.disableReloading = test.fixture.disableReloading;
+            if (test.disablePageReloads === void 0)
+                test.disablePageReloads = test.fixture.disablePageReloads;
         });
 
         return this.collectedTests;

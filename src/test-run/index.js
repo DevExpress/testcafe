@@ -73,7 +73,7 @@ export default class TestRun extends EventEmitter {
         this.speed                = this.opts.speed;
         this.pageLoadTimeout      = this.opts.pageLoadTimeout;
 
-        this.disableReloading = test.disableReloading || opts.disableReloading && test.disableReloading !== false;
+        this.disablePageReloads = test.disablePageReloads || opts.noPageReload && test.disablePageReloads !== false;
 
         this.session = SessionController.getSession(this);
 
