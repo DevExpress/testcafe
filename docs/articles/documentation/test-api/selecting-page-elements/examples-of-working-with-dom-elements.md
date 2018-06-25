@@ -129,5 +129,6 @@ test('My test', async t => {
 ## More Examples
 
 If you encounter a difficult situation while working with DOM elements,
-let us know by posting on [StackOverflow](https://stackoverflow.com/questions/tagged/testcafe)
-and if you are not alone we will add an example to this topic.
+let us know by posting on StackOverflow. We review and answer questions
+with the [TestCafe](https://stackoverflow.com/questions/tagged/testcafe) tag.
+If you are not alone we will add an example to this topic.

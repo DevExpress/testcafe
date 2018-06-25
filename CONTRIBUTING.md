@@ -16,7 +16,7 @@ TestCafe has adopted a [Contributor Code of Conduct](CODE_OF_CONDUCT.md), abide 
 
 ## General Discussion
 
-If you have a question about TestCafe feel free to ask us on [StackOverflow](https://stackoverflow.com/questions/tagged/testcafe).
+If you have a question about TestCafe feel free to ask us on StackOverflow. We review and answer questions with the [TestCafe](https://stackoverflow.com/questions/tagged/testcafe) tag.
 
 ## Reporting a Problem
 
