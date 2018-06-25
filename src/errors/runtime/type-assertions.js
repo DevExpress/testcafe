@@ -13,17 +13,30 @@ function isNonNegativeValue (value) {
     return isFiniteNumber(value) && value >= 0;
 }
 
+function getNumberTypeActualValueMsg (value, type) {
+    if (type !== 'number')
+        return type;
+
+    if (Number.isNaN(value))
+        return NaN;
+
+    if (!isFiniteNumber(value))
+        return Infinity;
+
+    return value;
+}
+
 export var is = {
     number: {
         name:              'number',
         predicate:         isFiniteNumber,
-        getActualValueMsg: (value, type) => type === 'number' ? value : type
+        getActualValueMsg: getNumberTypeActualValueMsg
     },
 
     nonNegativeNumber: {
         name:              'non-negative number',
         predicate:         isNonNegativeValue,
-        getActualValueMsg: (value, type) => type === 'number' ? value : type
+        getActualValueMsg: getNumberTypeActualValueMsg
     },
 
     nonNegativeNumberString: {
