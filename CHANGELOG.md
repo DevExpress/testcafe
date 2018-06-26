@@ -7,6 +7,7 @@
 #### TestCafe now takes screenshots using browsers' debug protocols ([#2492](https://github.com/DevExpress/testcafe/pull/2492))
 
 ### Bug fixes
+
 * `fetch` requests are now correctly proxied in a specific case ([testcafe-hammerhead/#1613](https://github.com/DevExpress/testcafe-hammerhead/issues/1613))
 * Resources responding with `304` HTTP status code and with the 'content-length: ' header are proxied correctly now ([testcafe-hammerhead/#1602](https://github.com/DevExpress/testcafe-hammerhead/issues/1602))
 * The `transfer` argument of `window.postMessage` is passed correctly now ([testcafe-hammerhead/#1535](https://github.com/DevExpress/testcafe-hammerhead/issues/1535))
