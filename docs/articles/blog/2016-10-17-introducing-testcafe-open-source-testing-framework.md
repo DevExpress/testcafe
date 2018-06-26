@@ -43,4 +43,4 @@ Learn more about TestCafe – take a look at the [feature list](https://devexpre
 and the [getting started](https://devexpress.github.io/testcafe/documentation/getting-started/) section.
 If you want to hack with us, visit our [GitHub page](https://github.com/DevExpress/testcafe).
 
-Try TestCafe now and tell us what you think at our [Support Center](https://www.devexpress.com/Support/Center/Question/ChangeFilterSet/1?FavoritesOnly=False&MyItemsOnly=False&MyTeamItemsOnly=False&TechnologyName=Testing+Tools&PlatformName=AllPlatforms&ProductName=AllProducts&TicketType=All).
+Try TestCafe now and tell us what you think on StackOverflow. We review and answer questions with the [TestCafe](https://stackoverflow.com/questions/tagged/testcafe) tag.

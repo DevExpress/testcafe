@@ -13,6 +13,6 @@
 - text: Issues
   url: https://github.com/DevExpress/testcafe/issues
   external: true
-- text: Support
-  url: https://www.devexpress.com/Support/Center/Question/ChangeFilterSet/1?FavoritesOnly=False&MyItemsOnly=False&MyTeamItemsOnly=False&TechnologyName=Testing+Tools&PlatformName=AllPlatforms&ProductName=AllProducts&TicketType=All
+- text: Q&amp;A
+  url: https://stackoverflow.com/questions/tagged/testcafe
   external: true
