@@ -517,7 +517,7 @@ test('Combination of filter methods', async t => {
     expect(el.id).eql('el4');
 
     // Selector should maintain filter when used as parameter
-    const getId = ClientFunction(getEl => getEl().id);
+    const getId = ClientFunction((getEl: Function) => getEl().id);
 
     let id = await getId(selector);
 
@@ -708,30 +708,30 @@ test('Selector "count" and "exists" properties', async() => {
     expect(await Selector('form').find('input').count).eql(2);
     expect(await Selector('.notexists').count).eql(0);
 
-    const witClass = Selector(className => document.getElementsByClassName(className));
+    const withClass = Selector(className => document.getElementsByClassName(className));
 
-    expect(await witClass('idxEl').count).eql(4);
-    expect(await witClass('idxEl').withText('Hey?!').count).eql(2);
+    expect(await withClass('idxEl').count).eql(4);
+    expect(await withClass('idxEl').withText('Hey?!').count).eql(2);
 
     expect(await Selector('.idxEl').exists).to.be.true;
     expect(await Selector('.idxEl').nth(2).exists).to.be.true;
     expect(await Selector('form').find('input').exists).to.be.true;
     expect(await Selector('.notexists').exists).to.be.false;
-    expect(await witClass('idxEl').exists).to.be.true;
-    expect(await witClass('idxEl').withText('Hey?!').exists).to.be.true;
-    expect(await witClass('idxEl').withText('testtesttest').exists).to.be.false;
+    expect(await withClass('idxEl').exists).to.be.true;
+    expect(await withClass('idxEl').withText('Hey?!').exists).to.be.true;
+    expect(await withClass('idxEl').withText('testtesttest').exists).to.be.false;
 });
 
 test('Selector filter dependencies and index argument', async t => {
-    const isOne = ClientFunction(i => i === 1);
-    const isTwo = ClientFunction(i => i === 2);
-    const firstNode = ClientFunction((node, i) => isOne(i));
+    const isOne = ClientFunction((i: number) => i === 1);
+    const isTwo = ClientFunction((i: number) => i === 2);
+    const firstNode = ClientFunction((node: Node, i: number) => isOne(i));
 
     await t
-        .expect(Selector('.idxEl').filter((node, i) => !!isTwo(i), {isTwo}).id).eql('el3')
-        .expect(Selector('.find-parent').find((node, i) => !!isOne(i), {isOne}).id).eql('find-child2')
-        .expect(Selector('#childDiv').parent((node, i) => !!isTwo(i), {isTwo}).id).eql('p2')
-        .expect(Selector('.find-parent').child((node, i) => !!isOne(i), {isOne}).id).eql('find-child3');
+        .expect(Selector('.idxEl').filter((node: Node, i: number) => !!isTwo(i), {isTwo}).id).eql('el3')
+        .expect(Selector('.find-parent').find((node: Node, i: number) => !!isOne(i), {isOne}).id).eql('find-child2')
+        .expect(Selector('#childDiv').parent((node: Node, i: number) => !!isTwo(i), {isTwo}).id).eql('p2')
+        .expect(Selector('.find-parent').child((node: Node, i: number) => !!isOne(i), {isOne}).id).eql('find-child3');
 });
 
 test('Selector filter origin node argument', async t => {

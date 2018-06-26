@@ -26,7 +26,7 @@ test('Fixture2Test1', async() => {
 
 // Decorators
 function foo () {
-    return function (target, propertyKey: string, descriptor: PropertyDescriptor) {
+    return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
         Object.assign({}, { msg: `target is ${target}` });
     };
 }

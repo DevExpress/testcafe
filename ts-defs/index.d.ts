@@ -918,14 +918,14 @@ interface RequestMock {
      * Specifies requests to intercept
      * @param filter - Specifies which requests should be mocked with a response that follows in the `respond` method.
      */
-    onRequestTo(filter: string | RegExp | object | ((req, res) => boolean)): RequestMock;
+    onRequestTo(filter: string | RegExp | object | ((req: any) => boolean)): RequestMock;
     /**
      * Specifies the mocked response.
      * @param body - The mocked response body.
      * @param statusCode - The response status code.
      * @param headers - Custom headers added to the response in the property-value form.
      */
-    respond(body?: object | string | ((req, res) => any), statusCode?: number, headers?: object): RequestMock;
+    respond(body?: object | string | ((req: any, res: any) => any), statusCode?: number, headers?: object): RequestMock;
 }
 
 interface Request {
@@ -1570,7 +1570,7 @@ declare module 'testcafe' {
     /**
      * Creates a request logger
      */
-    export function RequestLogger(filter?: string | RegExp | object | ((req, res) => boolean), options?: RequestLoggerOptions): RequestLogger;
+    export function RequestLogger(filter?: string | RegExp | object | ((req: any) => boolean), options?: RequestLoggerOptions): RequestLogger;
 
     /** The RequestHook class used to create a custom HTTP request hook **/
     export class RequestHook {
