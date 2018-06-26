@@ -326,6 +326,9 @@
 <loc>http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/using-selectors.html</loc>
 </url>
 <url>
+<loc>http://devexpress.github.io/testcafe/documentation/using-testcafe/using-testcafe-docker-image.html</loc>
+</url>
+<url>
 <loc>http://devexpress.github.io/testcafe/documentation/recipes/using-testcafe-with-grunt.html</loc>
 </url>
 <url>
@@ -339,10 +342,10 @@
 </url>
 <url>
 <loc>http://devexpress.github.io/testcafe/example/index.html</loc>
-<lastmod>2018-06-01T14:36:18+03:00</lastmod>
+<lastmod>2018-06-26T17:18:34+03:00</lastmod>
 </url>
 <url>
 <loc>http://devexpress.github.io/testcafe/example/thank-you.html</loc>
-<lastmod>2018-06-01T14:36:18+03:00</lastmod>
+<lastmod>2018-06-26T17:18:34+03:00</lastmod>
 </url>
 </urlset>

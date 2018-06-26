@@ -311,7 +311,7 @@
         
           
           <div class="site-nav-tab ">
-            <a class="page-link" href="https://www.devexpress.com/Support/Center/Question/ChangeFilterSet/1?FavoritesOnly=False&MyItemsOnly=False&MyTeamItemsOnly=False&TechnologyName=Testing+Tools&PlatformName=AllPlatforms&ProductName=AllProducts&TicketType=All" target="_blank">Support</a>
+            <a class="page-link" href="https://stackoverflow.com/questions/tagged/testcafe" target="_blank">Q&amp;A</a>
           </div>
         
       <a id="twitter-button" href="https://twitter.com/dxtestcafe" target="_blank"></a>
@@ -462,6 +462,13 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/using-testcafe/using-testcafe-docker-image.html"  >Using TestCafe Docker Image</a>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/using-testcafe/common-concepts/"  >Common Concepts</a>
 		
 			<ul>
@@ -551,7 +558,6 @@
 <ul>
 <li><a href="#globally">Globally</a></li>
 <li><a href="#locally">Locally</a></li>
-<li><a href="#using-testcafe-docker-image">Using TestCafe Docker Image</a></li>
 </ul>
 <h2><a class="anchor" name="globally"></a>Globally <a class="permalink" href="#globally">#</a></h2><div class="highlight"><pre><code class="language-bash" data-lang="bash">npm install -g testcafe
 </code></pre></div>
@@ -580,46 +586,6 @@
 <li><p>If TestCafe is installed locally as well as globally, you can simply use the <code>testcafe</code> command. The local version will run automatically.</p>
 <div class="highlight"><pre><code class="language-bash" data-lang="bash">testcafe chrome tests/
 </code></pre></div></li>
-</ul>
-<h2><a class="anchor" name="using-testcafe-docker-image"></a>Using TestCafe Docker Image <a class="permalink" href="#using-testcafe-docker-image">#</a></h2>
-<p>TestCafe provides a preconfigured Docker image with Chromium and Firefox installed.
-Therefore, you can avoid manual installation of browsers and the testing framework on the server.</p>
-
-<p>To learn how to install Docker to your system, see <a href="https://docs.docker.com/engine/installation/">Install Docker</a>.</p>
-
-<p>After Docker is installed, download the TestCafe Docker image from the repository.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">docker pull testcafe/testcafe
-</code></pre></div>
-<p>The command above installs a stable version of the image. If you need an alpha version, run the following command.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">docker pull testcafe/testcafe:alpha
-</code></pre></div>
-<p>Now you can run TestCafe from the docker image.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">docker run -v <span class="k">${</span><span class="nv">TEST_FOLDER</span><span class="k">}</span>:/tests -it testcafe/testcafe <span class="k">${</span><span class="nv">TESTCAFE_ARGS</span><span class="k">}</span>
-</code></pre></div>
-<p>This command takes the following parameters:</p>
-
-<ul>
-<li><p><code>-v ${TEST_FOLDER}:/tests</code> - maps the <code>TEST_FOLDER</code> directory on the host machine to the <code>/tests</code> directory in the container. You can map any host directory to any container directory:</p>
-
-<p><code>-v //c/Users/Username/tests:/tests</code></p>
-
-<p><code>-v //d/tests:/myTests</code></p></li>
-<li><p><code>-it testcafe/testcafe</code> - runs TestCafe in the interactive mode with the console enabled;</p></li>
-<li><p><code>${TESTCAFE_ARGS}</code> - arguments passed to the <code>testcafe</code> command. You can use any arguments from the TestCafe <a href="command-line-interface.html">CLI</a>;</p>
-
-<p><code>-it testcafe/testcafe &#39;chromium --no-sandbox,firefox&#39; /tests/test.js</code></p>
-
-<p>You can run tests in the Chromium and Firefox browsers preinstalled to the Docker image. Add the <code>--no-sandbox</code> flag to Chromium if the container is run in the unprivileged mode.</p>
-
-<p>Use the <a href="command-line-interface.html#remote-browsers">remote browser</a> to run tests on a mobile device. To do this, you need to add the <code>-P</code> flag to the <code>docker run</code> command and specify the <code>remote</code> keyword as the browser name.</p>
-
-<p><code>docker run -v //d/tests:/tests -P -it testcafe/testcafe remote /tests/test.js</code></p>
-
-<p>You can pass a glob instead of the directory path in TestCafe parameters.</p>
-
-<p><code>docker run -v //d/tests:/tests -it testcafe/testcafe firefox /tests/**/*.js</code></p>
-<blockquote><div class="blockquote-content"><p>If tests use other Node.js modules, these modules should be located in the tests directory or its child directories. TestCafe will not be able to find modules in the parent directories.</p>
-</div></blockquote></li>
 </ul>
 
 

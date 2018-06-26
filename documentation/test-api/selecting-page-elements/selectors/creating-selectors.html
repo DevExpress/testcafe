@@ -311,7 +311,7 @@
         
           
           <div class="site-nav-tab ">
-            <a class="page-link" href="https://www.devexpress.com/Support/Center/Question/ChangeFilterSet/1?FavoritesOnly=False&MyItemsOnly=False&MyTeamItemsOnly=False&TechnologyName=Testing+Tools&PlatformName=AllPlatforms&ProductName=AllProducts&TicketType=All" target="_blank">Support</a>
+            <a class="page-link" href="https://stackoverflow.com/questions/tagged/testcafe" target="_blank">Q&amp;A</a>
           </div>
         
       <a id="twitter-button" href="https://twitter.com/dxtestcafe" target="_blank"></a>
@@ -938,12 +938,13 @@ This is convenient when you need to use some client-side logic to get an element
 <li><p>A selector.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="c1">// This selector is created from a function that returns all elements of a specified class.</span>
-<span class="kr">const</span> <span class="nx">cta</span><span class="o">-</span><span class="nx">button</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'.cta-button'</span><span class="p">);</span>
+<span class="c1">// This selector is created from a CSS selector</span>
+<span class="c1">// that matches all elements of a specified class.</span>
+<span class="kr">const</span> <span class="nx">ctaButton</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'.cta-button'</span><span class="p">);</span>
 
 <span class="c1">// This selector is created based on the previous selector and inherits</span>
 <span class="c1">// its initializer, but overwrites the `visibilityCheck` parameter.</span>
-<span class="nx">Selector</span><span class="p">(</span><span class="nx">cta</span><span class="o">-</span><span class="nx">button</span><span class="p">,</span> <span class="p">{</span> <span class="na">visibilityCheck</span><span class="p">:</span> <span class="kc">true</span> <span class="p">});</span>
+<span class="nx">Selector</span><span class="p">(</span><span class="nx">ctaButton</span><span class="p">,</span> <span class="p">{</span> <span class="na">visibilityCheck</span><span class="p">:</span> <span class="kc">true</span> <span class="p">});</span>
 </code></pre></div></li>
 <li><p>A <a href="using-selectors.html#dom-node-snapshot">DOM Node Snapshot</a> returned by selector execution.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>

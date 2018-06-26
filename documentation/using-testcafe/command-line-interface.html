@@ -311,7 +311,7 @@
         
           
           <div class="site-nav-tab ">
-            <a class="page-link" href="https://www.devexpress.com/Support/Center/Question/ChangeFilterSet/1?FavoritesOnly=False&MyItemsOnly=False&MyTeamItemsOnly=False&TechnologyName=Testing+Tools&PlatformName=AllPlatforms&ProductName=AllProducts&TicketType=All" target="_blank">Support</a>
+            <a class="page-link" href="https://stackoverflow.com/questions/tagged/testcafe" target="_blank">Q&amp;A</a>
           </div>
         
       <a id="twitter-button" href="https://twitter.com/dxtestcafe" target="_blank"></a>
@@ -462,6 +462,13 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/using-testcafe/using-testcafe-docker-image.html"  >Using TestCafe Docker Image</a>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/using-testcafe/common-concepts/"  >Common Concepts</a>
 		
 			<ul>
@@ -601,7 +608,7 @@ where tests do not always execute correctly.</p>
 <blockquote><div class="blockquote-content"><p>You can specify different browser types in one command call.</p>
 </div></blockquote><h3><a class="anchor" name="local-browsers"></a>Local Browsers <a class="permalink" href="#local-browsers">#</a></h3>
 <p>You can specify <a href="common-concepts/browsers/browser-support.html#locally-installed-browsers">locally installed browsers</a> using browser aliases or paths (with the <code>path:</code> prefix).
-The list of all the available browsers can be obtained by calling the <a href="#-b---list-browsers">--list-browsers</a> command.</p>
+Use the <a href="#-b---list-browsers">--list-browsers</a> command to output aliases for automatically detected browsers.</p>
 
 <p>The following example demonstrates how to run a test in several browsers.
 The browsers are specified differently: one using an alias, the other using a path.</p>
@@ -665,7 +672,7 @@ specify the browser&#39;s alias that consists of the <code>{browser-provider-nam
 <p>For <code>cmd.exe</code>:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"path:</span><span class="sb">`</span>C:<span class="se">\P</span>rogram Files <span class="o">(</span>x86<span class="o">)</span><span class="se">\G</span>oogle<span class="se">\C</span>hrome<span class="se">\A</span>pplication<span class="se">\c</span>hrome.exe<span class="sb">`</span><span class="s2"> --start-fullscreen"</span> tests/sample-fixture.js
 </code></pre></div>
-<p>You can specify arguments for local browsers only.</p>
+<p>Only installed and portable browsers located on the current machine can be launched with arguments.</p>
 <h2><a class="anchor" name="file-pathglob-pattern"></a>File Path/Glob Pattern <a class="permalink" href="#file-pathglob-pattern">#</a></h2>
 <p>The <code>file-or-glob ...</code> argument specifies the files or directories (separated by a space) from which to run these tests.</p>
 
@@ -687,7 +694,7 @@ For example, this command runs tests from files that match <code>tests/*page*</c
 <p>Displays the TestCafe version.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe --version
 </code></pre></div><h3><a class="anchor" name="-b---list-browsers"></a>-b, --list-browsers <a class="permalink" href="#-b---list-browsers">#</a></h3>
-<p>Lists the aliases of the <a href="common-concepts/browsers/browser-support.html#locally-installed-browsers">local browsers</a> on your computer.</p>
+<p>Lists the aliases of the <a href="common-concepts/browsers/browser-support.html#locally-installed-browsers">auto-detected browsers</a> installed on the local machine.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe --list-browsers
 </code></pre></div><h3><a class="anchor" name="-r-namefile---reporter-namefile"></a>-r &lt;name[:file],[...]&gt;, --reporter &lt;name[:file],[...]&gt; <a class="permalink" href="#-r-namefile---reporter-namefile">#</a></h3>
 <p>Specifies the name of a <a href="common-concepts/reporters.html">built-in</a> or <a href="../extending-testcafe/reporter-plugin/">custom reporter</a> that is used to generate test reports.</p>

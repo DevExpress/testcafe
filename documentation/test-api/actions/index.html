@@ -311,7 +311,7 @@
         
           
           <div class="site-nav-tab ">
-            <a class="page-link" href="https://www.devexpress.com/Support/Center/Question/ChangeFilterSet/1?FavoritesOnly=False&MyItemsOnly=False&MyTeamItemsOnly=False&TechnologyName=Testing+Tools&PlatformName=AllPlatforms&ProductName=AllProducts&TicketType=All" target="_blank">Support</a>
+            <a class="page-link" href="https://stackoverflow.com/questions/tagged/testcafe" target="_blank">Q&amp;A</a>
           </div>
         
       <a id="twitter-button" href="https://twitter.com/dxtestcafe" target="_blank"></a>
@@ -987,7 +987,15 @@
 <p>Before executing an action, TestCafe waits for the target element to appear
 in the DOM and become visible. If this does not happen
 within the <a href="../selecting-page-elements/selectors/using-selectors.html#selector-timeout">selector timeout</a>, the test fails.</p>
-<h2><a class="anchor" name="remarks-for-touch-devices"></a>Remarks for Touch Devices <a class="permalink" href="#remarks-for-touch-devices">#</a></h2>
+
+<p>Note that TestCafe cannot interact with page elements overlaid by a different element.
+If the target element is not on top when an action is triggered, TestCafe waits for this element to appear in the foreground.
+If this does not happen within the <a href="../selecting-page-elements/selectors/using-selectors.html#selector-timeout">selector timeout</a>,
+the action is performed with an overlaying element. To learn why the target element can be overlaid,
+see the <em>stacking</em> description in the <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/z-index">z-index</a> topic.</p>
+<blockquote><div class="blockquote-content"><p>An exception is the <a href="upload.html">Upload action</a>. It does not require the target <code>input</code> to be visible.
+You can also perform the upload action when the <code>input</code> is overlaid.</p>
+</div></blockquote><h2><a class="anchor" name="remarks-for-touch-devices"></a>Remarks for Touch Devices <a class="permalink" href="#remarks-for-touch-devices">#</a></h2>
 <p>On touch devices, TestCafe emulates touch events instead of mouse events.</p>
 
 <table><thead>
