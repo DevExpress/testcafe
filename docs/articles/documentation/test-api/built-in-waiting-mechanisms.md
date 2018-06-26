@@ -1,9 +1,9 @@
 ---
 layout: docs
-title: Built-In Waiting Mechanism 
-permalink: /documentation/test-api/built-in-waiting-mechanism.html
+title: Built-In Waiting Mechanisms 
+permalink: /documentation/test-api/built-in-waiting-mechanisms.html
 ---
-# Built-In Waiting Mechanism
+# Built-In Waiting Mechanisms
 
 TestCafe has a built-in automatic waiting mechanism, so that it does not need dedicated API to wait for page elements to appear or redirects to happen.
 

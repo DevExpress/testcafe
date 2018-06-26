@@ -70,7 +70,7 @@
     * [Specifying Which Requests are Handled by the Hook](articles/documentation/test-api/intercepting-http-requests/specifying-which-requests-are-handled-by-the-hook.md)
     * [Attaching Hooks to Tests and Fixtures](articles/documentation/test-api/intercepting-http-requests/attaching-hooks-to-tests-and-fixtures.md)
     * [requestOptions Object](articles/documentation/test-api/intercepting-http-requests/requestoptions-object.md)
-  * [Built-In Waiting Mechanism](articles/documentation/test-api/built-in-waiting-mechanism.md)
+  * [Built-In Waiting Mechanisms](articles/documentation/test-api/built-in-waiting-mechanisms.md)
   * [Authentication](articles/documentation/test-api/authentication/README.md)
     * [User Roles](articles/documentation/test-api/authentication/user-roles.md)
     * [HTTP Authentication](articles/documentation/test-api/authentication/http-authentication.md)
