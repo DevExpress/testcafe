@@ -5,9 +5,9 @@ permalink: /documentation/test-api/built-in-waiting-mechanisms.html
 ---
 # Built-In Waiting Mechanisms
 
-TestCafe has a built-in automatic waiting mechanism, so that it does not need dedicated API to wait for page elements to appear or redirects to happen.
+TestCafe has built-in automatic waiting mechanisms, so that it does not need dedicated API to wait for page elements to appear or redirects to happen.
 
-This topic describes how the automatic waiting mechanism works with [test actions](actions/README.md),
+This topic describes how these mechanisms work with [test actions](actions/README.md),
 [assertions](assertions/README.md), [selectors](selecting-page-elements/selectors/README.md) and navigation.
 
 ## Waiting for Action Target Elements
