@@ -4,7 +4,8 @@ const expect          = require('chai').expect;
 const config          = require('../../../../config.js');
 const assertionHelper = require('../../../../assertion-helper.js');
 
-const CUSTOM_SCREENSHOT_DIR              = '___test-screenshots___';
+const SCREENSHOTS_PATH                   = assertionHelper.SCREENSHOTS_PATH;
+const THUMBNAILS_DIR_NAME                = assertionHelper.THUMBNAILS_DIR_NAME;
 const SCREENSHOT_PATH_MESSAGE_RE         = /^___test-screenshots___[\\/]\d{4,4}-\d{2,2}-\d{2,2}_\d{2,2}-\d{2,2}-\d{2,2}[\\/]test-1$/;
 const SCREENSHOT_ON_FAIL_PATH_MESSAGE_RE = /^.*run-1/;
 const SLASH_RE                           = /[\\/]/g;
@@ -13,7 +14,7 @@ var getReporter = function (scope) {
     const userAgents = { };
 
     function patchScreenshotPath (screenshotPath) {
-        return screenshotPath.replace(SCREENSHOT_ON_FAIL_PATH_MESSAGE_RE, '').replace(CUSTOM_SCREENSHOT_DIR, '').replace(SLASH_RE, '_');
+        return screenshotPath.replace(SCREENSHOT_ON_FAIL_PATH_MESSAGE_RE, '').replace(SCREENSHOTS_PATH, '').replace(SLASH_RE, '_');
     }
 
     function prepareScreenshot (screenshot, quarantine) {
@@ -59,7 +60,7 @@ describe('[API] t.takeScreenshot()', function () {
             return runTests('./testcafe-fixtures/take-screenshot.js', 'Take a screenshot with a custom path (OS separator)',
                 { setScreenshotPath: true })
                 .then(function () {
-                    expect(testReport.screenshotPath).eql(CUSTOM_SCREENSHOT_DIR);
+                    expect(testReport.screenshotPath).eql(SCREENSHOTS_PATH);
 
                     const screenshotsCheckingOptions = { forError: false, screenshotsCount: 2, customPath: 'custom' };
 
@@ -71,7 +72,7 @@ describe('[API] t.takeScreenshot()', function () {
             return runTests('./testcafe-fixtures/take-screenshot.js', 'Take a screenshot with a custom path (DOS separator)',
                 { setScreenshotPath: true })
                 .then(function () {
-                    expect(testReport.screenshotPath).contains(CUSTOM_SCREENSHOT_DIR);
+                    expect(testReport.screenshotPath).contains(SCREENSHOTS_PATH);
 
                     const screenshotsCheckingOptions = { forError: false, screenshotsCount: 2, customPath: 'custom' };
 
@@ -137,7 +138,7 @@ describe('[API] t.takeScreenshot()', function () {
             return runTests('./testcafe-fixtures/take-screenshot.js', 'Take screenshots with same path', {
                 setScreenshotPath: true
             }).then(function () {
-                const screenshotFileName = path.join(CUSTOM_SCREENSHOT_DIR, '1.png');
+                const screenshotFileName = path.join(SCREENSHOTS_PATH, '1.png');
 
                 expect(testReport.warnings).eql([
                     `The file at "${screenshotFileName}" already exists. It has just been rewritten ` +
@@ -217,8 +218,8 @@ describe('[API] t.takeScreenshot()', function () {
 
                     const screenshot1Path = path.join(assertionHelper.SCREENSHOTS_PATH, 'Take a screenshot-1.png');
                     const screenshot2Path = path.join(assertionHelper.SCREENSHOTS_PATH, 'Take a screenshot-2.png');
-                    const thumbnail1Path  = path.join(assertionHelper.SCREENSHOTS_PATH, assertionHelper.THUMBNAILS_DIR_NAME, 'Take a screenshot-1.png');
-                    const thumbnail2Path  = path.join(assertionHelper.SCREENSHOTS_PATH, assertionHelper.THUMBNAILS_DIR_NAME, 'Take a screenshot-2.png');
+                    const thumbnail1Path  = path.join(assertionHelper.SCREENSHOTS_PATH, THUMBNAILS_DIR_NAME, 'Take a screenshot-1.png');
+                    const thumbnail2Path  = path.join(assertionHelper.SCREENSHOTS_PATH, THUMBNAILS_DIR_NAME, 'Take a screenshot-2.png');
 
                     expect(fs.existsSync(screenshot1Path)).eql(true);
                     expect(fs.existsSync(screenshot2Path)).eql(true);
