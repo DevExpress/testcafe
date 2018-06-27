@@ -28,6 +28,15 @@ export default class Screenshots {
         return find(this.testEntries, entry => entry.test === test);
     }
 
+    _ensureTestEntry (test) {
+        let testEntry = this._getTestEntry(test);
+
+        if (!testEntry)
+            testEntry = this._addTestEntry(test);
+
+        return testEntry;
+    }
+
     getScreenshotsInfo (test) {
         return this._getTestEntry(test).screenshots;
     }
@@ -41,11 +50,7 @@ export default class Screenshots {
     }
 
     createCapturerFor (test, testIndex, quarantine, connection, warningLog) {
-        let testEntry = this._getTestEntry(test);
-
-        if (!testEntry)
-            testEntry = this._addTestEntry(test);
-
+        const testEntry   = this._ensureTestEntry(test);
         const pathPattern = new PathPattern(this.screenshotsPattern, {
             testIndex,
             quarantineAttempt: quarantine ? quarantine.getNextAttemptNumber() : null,
