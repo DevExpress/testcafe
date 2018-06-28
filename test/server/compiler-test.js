@@ -212,21 +212,6 @@ describe('Compiler', function () {
                 expect(value.stdout).eql('');
                 expect(value.error).is.null;
             });
-
-        it('Should fail on compile the test with implicit any declaration with the `--noImplicitAny` option enabled', function () {
-            var tscPath  = path.resolve('node_modules/typescript/bin/tsc');
-            var defsPath = path.resolve('test/server/data/test-suites/typescript-compile-errors/implicitAny.d.ts');
-            var args     = '--noImplicitAny';
-            var command  = `node ${tscPath} ${defsPath} ${args}`;
-
-            return new Promise((resolve, reject) => {
-                exec(command, (error, stdout) => {
-                    reject({ error, stdout });
-                });
-            }).catch(reason => {
-                expect(reason.error).is.not.null;
-                expect(reason.stdout).contains('error TS7006: Parameter \'text\' implicitly has an \'any\' type.');
-            });
         });
 
         it('Should provide API definitions', function () {
