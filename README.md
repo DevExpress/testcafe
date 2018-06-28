@@ -165,7 +165,7 @@ To display this badge, add the following code to your repository readme:
 ## Contributing
 
 Report bugs and request features on our [issues page](https://github.com/DevExpress/testcafe/issues).<br/>
-Ask and answer questions on StackOverflow. We review and answer questions with the [TestCafe](https://stackoverflow.com/questions/tagged/testcafe) tag.<br/>
+Ask and answer questions on StackOverflow. We review and answer [questions with the TestCafe tag](https://stackoverflow.com/questions/tagged/testcafe).<br/>
 For more information on how to help us improve TestCafe, see the [CONTRIBUTING.md](https://github.com/DevExpress/testcafe/blob/master/CONTRIBUTING.md).
 
 You can use these plugin generators to create your own plugins:
