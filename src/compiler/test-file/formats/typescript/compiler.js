@@ -17,14 +17,14 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
             allowJs:                 true,
             pretty:                  true,
             inlineSourceMap:         true,
-            noImplicitAny:           true,
+            noImplicitAny:           false,
             module:                  ts.ModuleKind.CommonJS,
             target:                  2 /* ES6 */,
             lib:                     ['lib.es6.d.ts'],
             baseUrl:                 __dirname,
             paths:                   { testcafe: ['../../../../../ts-defs/index.d.ts'] },
             suppressOutputPathCheck: true,
-            skipLibCheck:            false
+            skipLibCheck:            true
         };
     }
 

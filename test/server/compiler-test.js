@@ -8,6 +8,7 @@ const exportableLib     = require('../../lib/api/exportable-lib');
 const createStackFilter = require('../../lib/errors/create-stack-filter.js');
 const assertError       = require('./helpers/assert-error').assertError;
 const compile           = require('./helpers/compile');
+const { exec }          = require('child_process');
 
 describe('Compiler', function () {
     var testRunMock = { id: 'yo' };
@@ -195,6 +196,37 @@ describe('Compiler', function () {
                 .then(function (results) {
                     expect(results).eql([8, 8]);
                 });
+        });
+
+        it('Should complile ts-definitions successfully with the `--noImplicitAny` option enabled', function () {
+            var tscPath  = path.resolve('node_modules/typescript/bin/tsc');
+            var defsPath = path.resolve('ts-defs/index.d.ts');
+            var args     = '--noImplicitAny';
+            var command  = `node ${tscPath} ${defsPath} ${args}`;
+
+            return new Promise(resolve => {
+                exec(command, (error, stdout) => {
+                    expect(error).is.null;
+                    expect(stdout).eql('');
+                    resolve();
+                });
+            });
+        });
+
+        it('Should fail on compile the test with implicit any declaration with the `--noImplicitAny` option enabled', function () {
+            var tscPath  = path.resolve('node_modules/typescript/bin/tsc');
+            var defsPath = path.resolve('test/server/data/test-suites/typescript-compile-errors/implicitAny.d.ts');
+            var args     = '--noImplicitAny';
+            var command  = `node ${tscPath} ${defsPath} ${args}`;
+
+            return new Promise((resolve, reject) => {
+                exec(command, (error, stdout) => {
+                    reject({ error, stdout });
+                });
+            }).catch(reason => {
+                expect(reason.error).is.not.null;
+                expect(reason.stdout).contains('error TS7006: Parameter \'text\' implicitly has an \'any\' type.');
+            });
         });
 
         it('Should provide API definitions', function () {
