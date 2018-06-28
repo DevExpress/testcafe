@@ -30,7 +30,7 @@ export default class ProgressPanel {
         this.animationInterval = null;
 
         this.panelDiv = document.createElement('div');
-        uiRoot.element().appendChild(this.panelDiv);
+        //uiRoot.element().appendChild(this.panelDiv);
 
         this.titleDiv = document.createElement('div');
         this.panelDiv.appendChild(this.titleDiv);

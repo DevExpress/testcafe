@@ -16,6 +16,10 @@ import moveEventSequence from './event-sequence';
 import dragAndDropMoveEventSequence from './event-sequence/drag-and-drop-move';
 import dragAndDropFirstMoveEventSequence from './event-sequence/drag-and-drop-first-move';
 
+import MESSAGE from '../../../../test-run/client-messages';
+
+var transport = hammerhead.transport;
+
 var Promise          = hammerhead.Promise;
 var nativeMethods    = hammerhead.nativeMethods;
 var browserUtils     = hammerhead.utils.browser;
@@ -76,6 +80,9 @@ export default class MoveAutomation {
 
         this.holdLeftButton = moveOptions.holdLeftButton;
         this.dragElement    = null;
+
+        this.keepMods = moveOptions.keepMods;
+        this.clearMods = moveOptions.clearMods;
 
         this.dragAndDropState = new DragAndDropState();
 
@@ -463,7 +470,12 @@ export default class MoveAutomation {
 
                     return this
                         ._moveToCurrentFrame()
-                        .then(() => this._move());
+                        .then(() => {
+                            if(window['%testCafeMarionette%'])
+                                return transport.queuedAsyncServiceMsg({ cmd: MESSAGE.performActions, type: 'move', x, y, modifiers: this.modifiers, keepMods: this.keepMods, clearMods: this.clearMods });
+
+                            return this._move()
+                        });
                 }
 
                 return null;

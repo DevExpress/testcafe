@@ -1,9 +1,13 @@
 import hammerhead from '../deps/hammerhead';
 import testCafeCore from '../deps/testcafe-core';
 import VisibleElementAutomation from './visible-element-automation';
-import { focusAndSetSelection, focusByRelatedElement } from '../utils/utils';
+import { focusAndSetSelection, focusByRelatedElement, setCaretPosition } from '../utils/utils';
 import cursor from '../cursor';
 import nextTick from '../utils/next-tick';
+
+import MESSAGE from '../../../test-run/client-messages';
+
+var transport = hammerhead.transport;
 
 var Promise = hammerhead.Promise;
 
@@ -93,6 +97,11 @@ export default class RClickAutomation extends VisibleElementAutomation {
                     }, this.modifiers)
                 };
 
+                if(window['%testCafeMarionette%']) {
+
+                    return transport.queuedAsyncServiceMsg({ cmd: MESSAGE.performActions, type: 'right-click', modifiers: this.modifiers, id: Math.random() })
+                        .then(() => setCaretPosition(element, this.caretPos));
+                }
                 // NOTE: we should raise mouseup event with 'mouseActionStepDelay' after we trigger
                 // mousedown event regardless of how long mousedown event handlers were executing
                 return Promise.all([delay(this.automationSettings.mouseActionStepDelay), this._mousedown(eventArgs)]);

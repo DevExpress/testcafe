@@ -2,11 +2,16 @@ import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
 import testCafeUI from '../../deps/testcafe-ui';
 import VisibleElementAutomation from '../visible-element-automation';
-import { focusAndSetSelection, focusByRelatedElement } from '../../utils/utils';
+import { focusAndSetSelection, focusByRelatedElement, setCaretPosition } from '../../utils/utils';
 import cursor from '../../cursor';
 import nextTick from '../../utils/next-tick';
+import MESSAGE from '../../../../test-run/client-messages';
+
+var transport = hammerhead.transport;
+
 
 var Promise = hammerhead.Promise;
+
 
 var extend           = hammerhead.utils.extend;
 var browserUtils     = hammerhead.utils.browser;
@@ -245,6 +250,12 @@ export default class ClickAutomation extends VisibleElementAutomation {
 
                 // NOTE: we should raise mouseup event with 'mouseActionStepDelay' after we trigger
                 // mousedown event regardless of how long mousedown event handlers were executing
+
+                if(window['%testCafeMarionette%']) {
+                    return transport.queuedAsyncServiceMsg({ disableResending: true, cmd: MESSAGE.performActions, type: 'click', id: Math.random() })
+                        .then(() => setCaretPosition(element, this.caretPos));
+                }
+
                 return Promise.all([delay(this.automationSettings.mouseActionStepDelay), this._mousedown(eventArgs)]);
             })
             .then(() => this._mouseup(eventArgs))

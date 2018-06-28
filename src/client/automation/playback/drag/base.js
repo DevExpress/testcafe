@@ -10,6 +10,9 @@ import VisibleElementAutomation from '../visible-element-automation';
 import MoveAutomation from '../move';
 import { MoveOptions } from '../../../../test-run/commands/options';
 import cursor from '../../cursor';
+import MESSAGE from '../../../../test-run/client-messages';
+
+var transport = hammerhead.transport;
 
 const MIN_MOVING_TIME = 25;
 
@@ -77,6 +80,9 @@ export default class DragAutomationBase extends VisibleElementAutomation {
             minMovingTime:  MIN_MOVING_TIME,
             holdLeftButton: true
         }, false);
+
+        dragOptions.keepMods  = true;
+        dragOptions.clearMods = true;
 
         var moveAutomation = new MoveAutomation(element, dragOptions);
 
@@ -146,9 +152,19 @@ export default class DragAutomationBase extends VisibleElementAutomation {
 
                 // NOTE: we should raise start drag with 'mouseActionStepDelay' after we trigger
                 // mousedown event regardless of how long mousedown event handlers were executing
+                if(window['%testCafeMarionette%']) {
+                    return transport.queuedAsyncServiceMsg({ cmd: MESSAGE.performActions, type: 'mouse-down', modifiers: this.modifiers, keepMods: true, id: Math.random() })
+                }
+
                 return Promise.all([delay(this.automationSettings.mouseActionStepDelay), this._mousedown(eventArgs)]);
             })
             .then(() => this._drag())
-            .then(() => this._mouseup());
+            .then(() => {
+                if(window['%testCafeMarionette%']) {
+                    return transport.queuedAsyncServiceMsg({ cmd: MESSAGE.performActions, type: 'mouse-up', modifiers: this.modifiers, clearMods: true, id: Math.random() })
+                }
+
+                return this._mouseup()
+            });
     }
 }

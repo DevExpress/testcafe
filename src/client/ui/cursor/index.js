@@ -71,7 +71,7 @@ var CursorUI = {
             this.pointerOffsetY = Math.ceil(styleUtils.getHeight(this.cursorElement) / 2);
         }
 
-        uiRoot.element().appendChild(this.cursorElement);
+        //uiRoot.element().appendChild(this.cursorElement);
     },
 
     isVisible () {
@@ -89,7 +89,7 @@ var CursorUI = {
         if (!this.cursorElement)
             this._createElement();
 
-        styleUtils.set(this.cursorElement, 'visibility', '');
+        styleUtils.set(this.cursorElement, 'visibility', 'hidden');
     },
 
     move (x, y) {

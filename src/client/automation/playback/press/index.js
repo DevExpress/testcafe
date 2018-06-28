@@ -5,6 +5,10 @@ import supportedShortcutHandlers from './shortcuts';
 import { getActualKeysAndEventKeyProperties, getDeepActiveElement } from './utils';
 import AutomationSettings from '../../settings';
 
+import MESSAGE from '../../../../test-run/client-messages';
+
+var transport = hammerhead.transport;
+
 var Promise        = hammerhead.Promise;
 var browserUtils   = hammerhead.utils.browser;
 var messageSandbox = hammerhead.eventSandbox.message;
@@ -136,6 +140,7 @@ export default class PressAutomation {
     }
 
     _runCombination (keyCombination) {
+
         this.modifiersState   = { ctrl: false, alt: false, shift: false, meta: false };
         this.isSelectElement  = domUtils.isSelectElement(getDeepActiveElement(this.topSameDomainDocument));
         this.pressedKeyString = '';
@@ -168,6 +173,8 @@ export default class PressAutomation {
 
             return sendRequestToFrame(msg, PRESS_RESPONSE_CMD, activeElement.contentWindow);
         }
+        if(window['%testCafeMarionette%'])
+            return transport.queuedAsyncServiceMsg({ cmd: MESSAGE.performActions, type: 'press', combinations: this.keyCombinations, id: Math.random() });
 
         return promiseUtils.each(this.keyCombinations, combination => {
             return this

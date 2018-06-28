@@ -12,6 +12,30 @@ const MAX_CONNECTION_RETRY_COUNT = 100;
 const MAX_RESIZE_RETRY_COUNT     = 2;
 const HEADER_SEPARATOR           = ':';
 
+const MARIONETTE_KEYMAP = {
+    left:      '\uE012',
+    down:      '\uE015',
+    right:     '\uE014',
+    up:        '\uE013',
+    backspace: '\uE003',
+    capslock:  '\uE008',
+    delete:    '\uE017',
+    end:       '\uE010',
+    enter:     '\uE007',
+    esc:       '\uE00C',
+    home:      '\uE011',
+    ins:       '\uE016',
+    pagedown:  '\uE00F',
+    pageup:    '\uE00E',
+    space:     '\uE00D',
+    tab:       '\uE004',
+    alt:       '\uE052',
+    ctrl:      '\uE051',
+    meta:      '\uE03D',
+    shift:     '\uE008',
+    plus:      '\uE025'
+};
+
 module.exports = class MarionetteClient {
     constructor (port = 2828, host = '127.0.0.1') {
         this.currentPacketNumber = 1;
@@ -22,6 +46,7 @@ module.exports = class MarionetteClient {
         this.buffer              = Buffer.alloc(0);
         this.getPacketPromise    = Promise.resolve();
         this.sendPacketPromise   = Promise.resolve();
+        this.getResponsePromise   = Promise.resolve();
 
         this.protocolInfo = {
             applicationType:    '',
@@ -124,20 +149,25 @@ module.exports = class MarionetteClient {
         throw new Error(`${error.error}${error.message ? ': ' + error.message : ''}`);
     }
 
-    async _getResponse (packet) {
-        var packetNumber = this.currentPacketNumber;
+    _getResponse (packet) {
+        this.getResponsePromise = this.getResponsePromise
+            .then(async () => {
+                var packetNumber = this.currentPacketNumber;
 
-        await this._sendPacket(packet);
+                await this._sendPacket(packet);
 
-        var responsePacket = await this._getPacket();
+                var responsePacket = await this._getPacket();
 
-        while (!responsePacket.body || responsePacket.body[1] !== packetNumber)
-            responsePacket = await this._getPacket();
+                while (!responsePacket.body || responsePacket.body[1] !== packetNumber)
+                    responsePacket = await this._getPacket();
 
-        if (responsePacket.body[2])
-            this._throwMarionetteError(responsePacket.body[2]);
+                if (responsePacket.body[2])
+                    this._throwMarionetteError(responsePacket.body[2]);
 
-        return responsePacket.body[3];
+                return responsePacket.body[3];
+            });
+
+        return this.getResponsePromise;
     }
 
     async connect () {
@@ -190,8 +220,118 @@ module.exports = class MarionetteClient {
         }
     }
 
+    async performActions (actions) {
+        await this._getResponse({ command: 'WebDriver:PerformActions', parameters: { actions } });
+    }
+
     async quit () {
         await this._getResponse({ command: 'quit' });
+    }
+
+    async executeCommand (msg) {
+        try {
+            let mods = null;
+
+            if (msg.modifiers && !msg.clearMods) {
+                mods = ['ctrl', 'alt', 'shift', 'meta'].filter(key => msg.modifiers[key]);
+
+                await this.performActions([{
+                    id: 'keyboard',
+                    type:    'key',
+                    actions: mods.map(key => ({ type: 'keyDown', value: MARIONETTE_KEYMAP[key]}))
+                }]);
+            }
+
+            if (msg.type === 'move') {
+                await this.performActions([{
+                    id: 'mouse',
+                    type:    'pointer',
+                    parameters: { pointerType: 'mouse' },
+                    actions: [
+                        {
+                            type:     'pointerMove',
+                            duration: 1,
+                            x:        msg.x,
+                            y:        msg.y
+                        }
+                    ]
+                }]);
+
+            }
+            else if (msg.type === 'click' || msg.type === 'right-click' || msg.type === 'double-click' || msg.type === 'mouse-down' || msg.type === 'mouse-up') {
+                const button = msg.type === 'right-click' ? 2 : 0;
+                const actions = [];
+
+                if (msg.type !== 'mouse-up')
+                    actions.push({ type:   'pointerDown', button });
+
+                if (msg.type !== 'mouse-down')
+                    actions.push({ type:   'pointerUp', button });
+
+                if (msg.type === 'double-click')
+                    actions.push(...actions);
+
+                await this.performActions([{
+                    id: 'mouse',
+                    type:    'pointer',
+                    parameters: { pointerType: 'mouse' },
+                    actions
+                }])
+            }
+            else if (msg.type === 'text') {
+                const actions = [];
+
+                if (msg.replace)
+                    actions.push(
+                        { type: 'keyDown', value: '\uE009' },
+                        { type: 'keyDown', value: 'a' },
+                        { type: 'keyUp', value: 'a' },
+                        { type: 'keyUp', value: '\uE009' }
+                    );
+
+                Array.prototype.forEach.call(msg.text, char => {
+                    actions.push({ type: 'keyDown', value: char }, { type: 'keyUp', value: char });
+                });
+
+                await this.performActions([{
+                    id: 'keyboard',
+                    type:    'key',
+                    actions
+                }])
+            }
+            else if (msg.type === 'press') {
+                const actions = [];
+
+                msg.combinations.forEach(comb => {
+                    comb = comb.replace(/^\+/,'plus').replace('++', '+plus');
+
+                    const keys = comb.split(/\+/);
+
+                    actions.push(...keys.map(key => ({ type: 'keyDown', value: MARIONETTE_KEYMAP[key] || key })));
+                    actions.push(...keys.map(key => ({ type: 'keyUp', value: MARIONETTE_KEYMAP[key] || key })));
+                });
+
+                await this.performActions([{
+                    id: 'keyboard',
+                    type:    'key',
+                    actions
+                }])
+            }
+
+            if (msg.modifiers && !msg.keepMods) {
+                if (!mods)
+                    mods = ['ctrl', 'alt', 'shift', 'meta'].filter(key => msg.modifiers[key]);
+
+                await this.performActions([{
+                    id:      'keyboard',
+                    type:    'key',
+                    actions: mods.map(key => ({ type: 'keyUp', value: MARIONETTE_KEYMAP[key] }))
+                }])
+            }
+        }
+        catch (e) {
+            console.log(e);
+        }
     }
 };
 

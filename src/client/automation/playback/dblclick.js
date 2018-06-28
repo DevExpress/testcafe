@@ -4,6 +4,10 @@ import { ClickOptions } from '../../../test-run/commands/options';
 import VisibleElementAutomation from './visible-element-automation';
 import ClickAutomation from './click';
 import AutomationSettings from '../settings';
+import {  setCaretPosition } from '../utils/utils';
+import MESSAGE from '../../../test-run/client-messages';
+
+var transport = hammerhead.transport;
 
 var featureDetection = hammerhead.utils.featureDetection;
 var browserUtils     = hammerhead.utils.browser;
@@ -86,6 +90,18 @@ export default class DblClickAutomation extends VisibleElementAutomation {
 
     run (useStrictElementCheck) {
         // NOTE: If the target element is out of viewport the firstClick sub-automation raises an error
+        if(window['%testCafeMarionette%']) {
+            let element = null;
+
+            return this._ensureElement(useStrictElementCheck)
+                .then(el => {
+                    element = el;
+
+                    return transport.queuedAsyncServiceMsg({ cmd: MESSAGE.performActions, type: 'double-click', modifiers: this.modifiers, id: Math.random() })
+                })
+                .then(() => setCaretPosition(element, this.caretPos));
+        }
+
         return this
             ._firstClick(useStrictElementCheck)
             .then(eventArgs => this._secondClick(eventArgs))

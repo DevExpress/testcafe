@@ -116,7 +116,7 @@ export default class Driver {
         this._initChildDriverListening();
 
         pageUnloadBarrier.init();
-        preventRealEvents();
+        //preventRealEvents();
 
         hammerhead.on(hammerhead.EVENTS.uncaughtJsError, err => this._onJsError(err));
         hammerhead.on(hammerhead.EVENTS.unhandledRejection, err => this._onJsError(err));

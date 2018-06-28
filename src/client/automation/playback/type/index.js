@@ -9,6 +9,10 @@ import keyIdentifierRequiredForEvent from '../../utils/key-identifier-required-f
 import { getDefaultAutomationOffsets } from '../../utils/offsets';
 import AutomationSettings from '../../settings';
 
+import MESSAGE from '../../../../test-run/client-messages';
+
+var transport = hammerhead.transport;
+
 var Promise               = hammerhead.Promise;
 var extend                = hammerhead.utils.extend;
 var eventSimulator        = hammerhead.eventSandbox.eventSimulator;
@@ -157,6 +161,9 @@ export default class TypeAutomation {
     _type () {
         if (this.eventState.skipType)
             return Promise.resolve();
+
+        if(window['%testCafeMarionette%'])
+            return transport.queuedAsyncServiceMsg({ cmd: MESSAGE.performActions, type: 'text', text: this.typingText, replace: this.replace, id: Math.random() });
 
         var isContentEditable = domUtils.isContentEditableElement(this.element);
 

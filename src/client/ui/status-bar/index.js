@@ -245,7 +245,7 @@ export default class StatusBar extends serviceUtils.EventEmitter {
         this.progressBar.indeterminateIndicator.start();
         this.progressBar.show();
 
-        uiRoot.element().appendChild(this.statusBar);
+        //uiRoot.element().appendChild(this.statusBar);
 
         this._recalculateSizes();
         this._bindHandlers();

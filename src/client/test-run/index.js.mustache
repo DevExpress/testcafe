@@ -18,6 +18,8 @@
     var fixtureName          = {{{fixtureName}}};
     var testName             = {{{testName}}};
 
+    window['%testCafeMarionette%'] = {{{hasMarionette}}};
+
     var ClientDriver = window['%testCafeDriver%'];
     var driver       = new ClientDriver(testRunId,
         { heartbeat: browserHeartbeatUrl, status: browserStatusUrl, statusDone: browserStatusDoneUrl },
