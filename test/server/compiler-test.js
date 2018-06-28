@@ -198,20 +198,20 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Should complile ts-definitions successfully with the `--noImplicitAny` option enabled', function () {
+        it('Should complile ts-definitions successfully with the `--strict` option enabled', function () {
             var tscPath  = path.resolve('node_modules/typescript/bin/tsc');
             var defsPath = path.resolve('ts-defs/index.d.ts');
-            var args     = '--noImplicitAny';
+            var args     = '--strict';
             var command  = `node ${tscPath} ${defsPath} ${args}`;
 
             return new Promise(resolve => {
                 exec(command, (error, stdout) => {
-                    expect(error).is.null;
-                    expect(stdout).eql('');
-                    resolve();
+                    resolve({ error, stdout });
                 });
+            }).then(value => {
+                expect(value.stdout).eql('');
+                expect(value.error).is.null;
             });
-        });
 
         it('Should fail on compile the test with implicit any declaration with the `--noImplicitAny` option enabled', function () {
             var tscPath  = path.resolve('node_modules/typescript/bin/tsc');
