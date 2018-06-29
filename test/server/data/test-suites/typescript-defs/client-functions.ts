@@ -17,7 +17,7 @@ test('Dispatch', async() => {
 });
 
 test('Call with arguments', async() => {
-    const getElementText = ClientFunction((className, idx) => {
+    const getElementText = ClientFunction((className: string, idx: number) => {
         return document.querySelectorAll('.' + className)[idx].textContent;
     });
 
@@ -91,11 +91,11 @@ test('Error in Promise', async() => {
     await fn();
 });
 
-const selectByClassName = ClientFunction(className => document.querySelectorAll('.' + className));
-const nthByClass = ClientFunction((className, n) => selectByClassName(className)[n], {dependencies: {selectByClassName}});
+const selectByClassName: any = ClientFunction((className: string) => document.querySelectorAll('.' + className));
+const nthByClass = ClientFunction((className: string, n: number) => selectByClassName(className)[n], {dependencies: {selectByClassName}});
 
 test('ClientFunction call with complex argument types', async() => {
-    const fn = ClientFunction((re, err, undef, nan) => {
+    const fn = ClientFunction((re: any, err: any, undef: any, nan: any) => {
         return re instanceof RegExp &&
             re.source === '\\S+' &&
             err instanceof Error &&
@@ -131,20 +131,20 @@ test('ClientFunction with function argument', async() => {
         });
     }
 
-    const hfn = ClientFunction(fn => fn());
+    const hfn = ClientFunction((fn: Function) => fn());
     const answer = await hfn(getAnswer);
 
     expect(answer).eql(42);
 });
 
 test('Async/await in function argument of ClientFunction', async() => {
-    const hfn = ClientFunction(fn => fn());
+    const hfn = ClientFunction((fn: Function) => fn());
 
     await hfn(async() => Promise.resolve());
 });
 
 test('ClientFunction with ClientFunction argument', async() => {
-    const hfn = ClientFunction(fn => fn());
+    const hfn = ClientFunction((fn: Function) => fn());
     const location = await hfn(getLocation);
 
     expect(location).eql('http://localhost:3000/fixtures/api/es-next/client-function/pages/index.html');

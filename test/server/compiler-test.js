@@ -8,6 +8,7 @@ const exportableLib     = require('../../lib/api/exportable-lib');
 const createStackFilter = require('../../lib/errors/create-stack-filter.js');
 const assertError       = require('./helpers/assert-error').assertError;
 const compile           = require('./helpers/compile');
+const { exec }          = require('child_process');
 
 describe('Compiler', function () {
     var testRunMock = { id: 'yo' };
@@ -195,6 +196,22 @@ describe('Compiler', function () {
                 .then(function (results) {
                     expect(results).eql([8, 8]);
                 });
+        });
+
+        it('Should complile ts-definitions successfully with the `--strict` option enabled', function () {
+            var tscPath  = path.resolve('node_modules/typescript/bin/tsc');
+            var defsPath = path.resolve('ts-defs/index.d.ts');
+            var args     = '--strict';
+            var command  = `node ${tscPath} ${defsPath} ${args}`;
+
+            return new Promise(resolve => {
+                exec(command, (error, stdout) => {
+                    resolve({ error, stdout });
+                });
+            }).then(value => {
+                expect(value.stdout).eql('');
+                expect(value.error).is.null;
+            });
         });
 
         it('Should provide API definitions', function () {

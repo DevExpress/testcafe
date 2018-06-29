@@ -216,7 +216,7 @@ test('Get UA', async t => {
     throw await t.eval(() => navigator.userAgent);
 });
 
-const getById = ClientFunction(id => document.getElementById(id));
+const getById = ClientFunction((id: string) => document.getElementById(id));
 
 
 test('Eval with dependencies', async t => {
@@ -463,7 +463,7 @@ test('Expected confirm after an action', async t => {
 });
 
 test('Expected confirm after an action (with dependencies)', async t => {
-    var dialogHandler = ClientFunction((type, text) => {
+    var dialogHandler = ClientFunction((type: string, text: string) => {
         if (type === 'confirm' && text === 'Confirm?')
             return true;
 
@@ -478,7 +478,7 @@ test('Expected confirm after an action (with dependencies)', async t => {
 });
 
 test('Expected confirm after an action (client function)', async t => {
-    var dialogHandler = ClientFunction((type, text) => {
+    var dialogHandler = ClientFunction((type: string, text: string) => {
         if (type === 'confirm' && text === 'Confirm?')
             return true;
 
