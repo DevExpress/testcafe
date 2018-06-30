@@ -103,7 +103,7 @@ docker pull testcafe/testcafe
 docker run -v //user/tests:/tests -it testcafe/testcafe firefox tests/**/*.js
 ```
 
-To learn more, see [Using TestCafe Docker Image](https://devexpress.github.io/testcafe/documentation/using-testcafe/installing-testcafe.html#using-testcafe-docker-image)
+To learn more, see [Using TestCafe Docker Image](https://devexpress.github.io/testcafe/documentation/using-testcafe/using-testcafe-docker-image.html)
 
 ### ⚙ Support for Internet access proxies ([#1206](https://github.com/DevExpress/testcafe/issues/1206))
 

@@ -150,8 +150,8 @@
       url: /documentation/test-api/intercepting-http-requests/attaching-hooks-to-tests-and-fixtures.md
     - name: requestOptions Object
       url: /documentation/test-api/intercepting-http-requests/requestoptions-object.md
-  - name: Waiting for Page Elements to Appear
-    url: /documentation/test-api/waiting-for-page-elements-to-appear.md
+  - name: Built-In Waiting Mechanisms
+    url: /documentation/test-api/built-in-waiting-mechanisms.md
   - name: Authentication
     url: /documentation/test-api/authentication/README.md
     content:
