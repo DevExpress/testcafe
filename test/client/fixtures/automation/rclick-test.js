@@ -127,7 +127,7 @@ $(document).ready(function () {
 
             equal(e.button, 2);
 
-            if (browserUtils.isIE || browserUtils.isFirefox)
+            if (browserUtils.isSafari)
                 equal(e.buttons, 2);
 
             ok(mousedownRaised && mouseupRaised, 'click event was raised third ');
@@ -155,10 +155,12 @@ $(document).ready(function () {
             .then(function () {
                 ok(mousedownRaised && mousedownRaised && contextmenu, 'mouse events were raised');
 
-                if (browserUtils.isFirefox || browserUtils.isIE9)
-                    expect(10);
+                if (browserUtils.isFirefox)
+                    expect(9);
                 else if (browserUtils.isIE)
-                    expect(16);
+                    expect(15);
+                else if (browserUtils.isSafari)
+                    expect(8);
                 else
                     expect(7);
 

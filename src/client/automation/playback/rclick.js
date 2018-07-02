@@ -87,9 +87,7 @@ export default class RClickAutomation extends VisibleElementAutomation {
                         clientY: clientPoint.y,
                         screenX: devicePoint.x,
                         screenY: devicePoint.y,
-                        button:  eventUtils.BUTTON.right,
-                        which:   eventUtils.WHICH_PARAMETER.rightButton,
-                        buttons: eventUtils.BUTTONS_PARAMETER.rightButton
+                        button:  eventUtils.BUTTON.right
                     }, this.modifiers)
                 };
 
