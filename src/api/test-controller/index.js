@@ -102,6 +102,20 @@ export default class TestController {
                 throw err;
             }
 
+            if (this.testRun.recordScreenCapture && apiMethodName !== 'takeScreenshot') {
+                return () => this.testRun.executeCommand(command, callsite).then( async () => {
+                    if (this.testRun.recordScreenCapture && apiMethodName !== 'takeScreenshot') {
+                        const date = new Date();
+                        const dateFolder = `${date.getMonth() + 1}_${date.getDate()}_${date.getFullYear()}`;
+                        const sessionId = this.testRun.session.id;
+                        const testName = this.testRun.test.name;
+                        const path = `${dateFolder}/${sessionId}/${Date.now()}_${testName}_${apiMethodName}_auto.png`;
+
+                        await this.testRun.executeCommand(new TakeScreenshotCommand({ path: path }));
+                    }
+                });
+            }
+
             return () => this.testRun.executeCommand(command, callsite);
         });
     }
