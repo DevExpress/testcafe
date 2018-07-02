@@ -586,16 +586,52 @@ Therefore, you can avoid manual installation of browsers and the testing framewo
 
 <p>You can run tests in the Chromium and Firefox browsers preinstalled to the Docker image. Add the <code>--no-sandbox</code> flag to Chromium if the container is run in the unprivileged mode.</p>
 
-<p>Use the <a href="command-line-interface.html#remote-browsers">remote browser</a> to run tests on a mobile device. To do this, you need to add the <code>-P</code> flag to the <code>docker run</code> command and specify the <code>remote</code> keyword as the browser name.</p>
-
-<p><code>docker run -v //d/tests:/tests -P -it testcafe/testcafe remote /tests/test.js</code></p>
-
 <p>You can pass a glob instead of the directory path in TestCafe parameters.</p>
 
 <p><code>docker run -v //d/tests:/tests -it testcafe/testcafe firefox /tests/**/*.js</code></p>
 <blockquote><div class="blockquote-content"><p>If tests use other Node.js modules, these modules should be located in the tests directory or its child directories. TestCafe will not be able to find modules in the parent directories.</p>
 </div></blockquote></li>
 </ul>
+<h2><a class="anchor" name="testing-in-remote-browsers"></a>Testing in Remote Browsers <a class="permalink" href="#testing-in-remote-browsers">#</a></h2>
+<p>You need to add the following options to the <code>docker run</code> command to run tests in a <a href="command-line-interface.html#remote-browsers">remote browser</a>, e.g. on a mobile device.</p>
+
+<ul>
+<li>add the <code>-P</code> flag to publish all exposed ports;</li>
+<li>use the <a href="command-line-interface.html#--hostname-name">--hostname</a> TestCafe flag to specify the host machine name;</li>
+<li>specify the <code>remote</code> keyword as the browser name.</li>
+</ul>
+
+<p>The example below shows a command that runs tests in a remote browser.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">docker run -v /d/tests:/tests -P -it testcafe/testcafe --hostname <span class="nv">$EXTERNAL_HOSTNAME</span> remote /tests/test.js
+</code></pre></div>
+<p>where <code>$EXTERNAL_HOSTNAME</code> is the host machine name.</p>
+
+<p>If Docker reports that the default ports <code>1337</code> and <code>1338</code> are occupied by some other process, kill this process or choose different ports. Use the <code>netstat</code> command to determine which process occupies the default ports.</p>
+
+<table><thead>
+<tr>
+<th>OS</th>
+<th>Command</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Windows</td>
+<td><code>netstat -ano</code></td>
+</tr>
+<tr>
+<td>macOS</td>
+<td><code>netstat -anv</code></td>
+</tr>
+<tr>
+<td>Linux</td>
+<td><code>netstat -anp</code></td>
+</tr>
+</tbody></table>
+
+<p>If you choose to use different ports, publish them in the Docker container (use the <code>-p</code> flag) and specify them to TestCafe (use the <a href="command-line-interface.html#--ports-port1port2">--ports</a> option).</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">docker run -v /d/tests:/tests -p <span class="nv">$PORT1</span> -p <span class="nv">$PORT2</span> -it testcafe/testcafe --hostname <span class="nv">$EXTERNAL_HOSTNAME</span> --ports <span class="nv">$PORT1</span>,<span class="nv">$PORT2</span> remote /tests/test.js
+</code></pre></div>
+<p>where <code>$PORT1</code> and <code>$PORT2</code> are vacant container&#39;s ports, <code>$EXTERNAL_HOSTNAME</code> is the host machine name.</p>
 <h2><a class="anchor" name="testing-heavy-websites"></a>Testing Heavy Websites <a class="permalink" href="#testing-heavy-websites">#</a></h2>
 <p>If you are testing a heavy website, you may need to allocate extra resources for the Docker image.</p>
 
