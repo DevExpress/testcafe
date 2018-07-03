@@ -18,7 +18,6 @@ import dragAndDropFirstMoveEventSequence from './event-sequence/drag-and-drop-fi
 
 var Promise          = hammerhead.Promise;
 var nativeMethods    = hammerhead.nativeMethods;
-var browserUtils     = hammerhead.utils.browser;
 var featureDetection = hammerhead.utils.featureDetection;
 var htmlUtils        = hammerhead.utils.html;
 var urlUtils         = hammerhead.utils.url;
@@ -270,7 +269,6 @@ export default class MoveAutomation {
     }
 
     _emulateEvents (currentElement) {
-        var whichButton = this.holdLeftButton ? eventUtils.WHICH_PARAMETER.leftButton : eventUtils.WHICH_PARAMETER.noButton;
         var button      = this.holdLeftButton ? eventUtils.BUTTONS_PARAMETER.leftButton : eventUtils.BUTTONS_PARAMETER.noButton;
         var devicePoint = getDevicePoint({ x: this.x, y: this.y });
 
@@ -279,8 +277,6 @@ export default class MoveAutomation {
             clientY:      this.y,
             screenX:      devicePoint.x,
             screenY:      devicePoint.y,
-            button:       0,
-            which:        browserUtils.isWebKit ? whichButton : 1,
             buttons:      button,
             ctrl:         this.modifiers.ctrl,
             alt:          this.modifiers.alt,
