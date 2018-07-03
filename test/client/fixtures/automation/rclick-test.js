@@ -104,9 +104,7 @@ $(document).ready(function () {
             mousedownRaised = true;
 
             equal(e.button, 2);
-
-            if (browserUtils.isIE || browserUtils.isFirefox)
-                equal(e.buttons, 2);
+            equal(e.buttons, 2);
 
             ok(!mouseupRaised && !contextmenu, 'mousedown event was raised first');
         });
@@ -115,9 +113,7 @@ $(document).ready(function () {
             mouseupRaised = true;
 
             equal(e.button, 2);
-
-            if (browserUtils.isIE || browserUtils.isFirefox)
-                equal(e.buttons, 2);
+            equal(e.buttons, 0);
 
             ok(mousedownRaised && !contextmenu, 'mouseup event was raised second');
         });
@@ -135,8 +131,12 @@ $(document).ready(function () {
 
         var pointerHandler = function (e) {
             equal(e.pointerType, browserUtils.version > 10 ? 'mouse' : 4);
-            equal(e.button, 2);
-            equal(e.buttons, 2);
+
+            if (e.type === 'pointerdown')
+                equal(e.buttons, 2);
+
+            if (e.type === 'pointerup')
+                equal(e.buttons, 0);
         };
 
         if (browserUtils.isIE && browserUtils.version > 11) {
@@ -155,14 +155,12 @@ $(document).ready(function () {
             .then(function () {
                 ok(mousedownRaised && mousedownRaised && contextmenu, 'mouse events were raised');
 
-                if (browserUtils.isFirefox)
-                    expect(9);
-                else if (browserUtils.isIE)
-                    expect(15);
+                if (browserUtils.isIE)
+                    expect(13);
                 else if (browserUtils.isSafari)
-                    expect(8);
+                    expect(10);
                 else
-                    expect(7);
+                    expect(9);
 
                 startNext();
             });
