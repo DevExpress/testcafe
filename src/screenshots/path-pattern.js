@@ -44,8 +44,8 @@ export default class PathPattern {
 
     _addDefaultFields (data) {
         const defaultFields = {
-            date:           data.now.format(DATE_FORMAT),
-            time:           data.now.format(TIME_FORMAT),
+            formattedDate:  data.now.format(DATE_FORMAT),
+            formattedTime:  data.now.format(TIME_FORMAT),
             fileIndex:      1,
             errorFileIndex: 1
         };
@@ -55,8 +55,8 @@ export default class PathPattern {
 
     _createPlaceholderToDataMap () {
         return {
-            [PLACEHOLDERS.DATE]:               this.data.date,
-            [PLACEHOLDERS.TIME]:               this.data.time,
+            [PLACEHOLDERS.DATE]:               this.data.formattedDate,
+            [PLACEHOLDERS.TIME]:               this.data.formattedTime,
             [PLACEHOLDERS.TEST_INDEX]:         this.data.testIndex,
             [PLACEHOLDERS.QUARANTINE_ATTEMPT]: this.data.quarantineAttempt || 1,
             [PLACEHOLDERS.FIXTURE]:            this.data.fixture,
