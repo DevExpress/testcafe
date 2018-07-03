@@ -106,7 +106,7 @@
     "source-map-support": "^0.5.5",
     "strip-bom": "^2.0.0",
     "testcafe-browser-tools": "1.6.3",
-    "testcafe-hammerhead": "https://github.com/AlexKamaev/testcafe-hammerhead/raw/WIP/testcafe-hammerhead-14.1.0.tgz",
+    "testcafe-hammerhead": "./src/testcafe-hammerhead-14.1.0.tgz",
     "testcafe-legacy-api": "3.1.7",
     "testcafe-reporter-json": "^2.1.0",
     "testcafe-reporter-list": "^2.1.0",
