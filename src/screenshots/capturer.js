@@ -82,9 +82,7 @@ export default class Capturer {
     }
 
     _getCustomScreenshotPath (customPath) {
-        const correctedCustomPath = correctFilePath(customPath);
-
-        return this._joinWithBaseScreenshotPath(correctedCustomPath);
+        return this._joinWithBaseScreenshotPath(customPath);
     }
 
     _getScreenshotPath (forError) {
@@ -96,8 +94,8 @@ export default class Capturer {
     }
 
     _getThumbnailPath (screenshotPath) {
-        var imageName = basename(screenshotPath);
-        var imageDir  = dirname(screenshotPath);
+        const imageName = basename(screenshotPath);
+        const imageDir  = dirname(screenshotPath);
 
         return joinPath(imageDir, 'thumbnails', imageName);
     }
