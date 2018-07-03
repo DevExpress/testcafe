@@ -4,7 +4,7 @@ import cropScreenshot from './crop';
 import { ensureDir } from '../utils/promisified-functions';
 import { isInQueue, addToQueue } from '../utils/async-queue';
 import WARNING_MESSAGE from '../notifications/warning-message';
-import correctFilePath from '../utils/correct-file-path';
+import escapeUserAgent from '../utils/escape-user-agent';
 
 export default class Capturer {
     constructor (baseScreenshotsPath, testEntry, connection, pathPattern, warningLog) {
@@ -128,7 +128,7 @@ export default class Capturer {
         const screenshot = {
             screenshotPath,
             thumbnailPath,
-            userAgent:           this.pathPattern.data.parsedUserAgent.toString(),
+            userAgent:           escapeUserAgent(this.pathPattern.data.parsedUserAgent),
             quarantineAttemptID: this.pathPattern.data.quarantineAttempt,
             takenOnFail:         forError,
         };

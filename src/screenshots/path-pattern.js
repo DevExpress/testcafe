@@ -1,6 +1,6 @@
 import { escapeRegExp as escapeRe } from 'lodash';
-import sanitizeFilename from 'sanitize-filename';
 import correctFilePath from '../utils/correct-file-path';
+import escapeUserAgent from '../utils/escape-user-agent';
 
 const DATE_FORMAT = 'YYYY-MM-DD';
 const TIME_FORMAT = 'HH-mm-ss';
@@ -70,10 +70,6 @@ export default class PathPattern {
         };
     }
 
-    static _escapeUserAgent (userAgent) {
-        return sanitizeFilename(userAgent.toString()).replace(/\s+/g, '_');
-    }
-
     static _buildPath (pattern, placeholderToDataMap, forError) {
         let resultFilePath = pattern;
 
@@ -94,7 +90,7 @@ export default class PathPattern {
                 else if (placeholder === PLACEHOLDERS.USERAGENT) {
                     const userAgent = placeholderToDataMap[placeholder];
 
-                    return PathPattern._escapeUserAgent(userAgent);
+                    return escapeUserAgent(userAgent);
                 }
 
                 return placeholderToDataMap[placeholder];
