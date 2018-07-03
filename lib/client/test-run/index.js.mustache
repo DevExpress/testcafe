@@ -1,0 +1,40 @@
+(function () {
+    if (window !== window.top)
+        return;
+
+    var origin = location.origin;
+
+    var testRunId            = {{{testRunId}}};
+    var browserId            = {{{browserId}}};
+    var selectorTimeout      = {{{selectorTimeout}}};
+    var pageLoadTimeout      = {{{pageLoadTimeout}}};
+    var speed                = {{{speed}}};
+    var browserHeartbeatUrl  = origin + {{{browserHeartbeatRelativeUrl}}};
+    var browserStatusUrl     = origin + {{{browserStatusRelativeUrl}}};
+    var browserStatusDoneUrl = origin + {{{browserStatusDoneRelativeUrl}}};
+    var skipJsErrors         = {{{skipJsErrors}}};
+    var dialogHandler        = {{{dialogHandler}}};
+    var userAgent            = {{{userAgent}}};
+    var fixtureName          = {{{fixtureName}}};
+    var testName             = {{{testName}}};
+
+    var ClientDriver = window['%testCafeDriver%'];
+    var driver       = new ClientDriver(testRunId,
+        { heartbeat: browserHeartbeatUrl, status: browserStatusUrl, statusDone: browserStatusDoneUrl },
+        { userAgent: userAgent, fixtureName: fixtureName, testName: testName },
+        {
+            selectorTimeout: selectorTimeout,
+            pageLoadTimeout: pageLoadTimeout,
+            skipJsErrors:    skipJsErrors,
+            dialogHandler:   dialogHandler,
+            speed:           speed
+        }
+    );
+
+    Object.defineProperty(window, '%testCafeDriverInstance%', {
+        configurable: true,
+        value:        driver
+    });
+
+    driver.start();
+})();
