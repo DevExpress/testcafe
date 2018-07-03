@@ -761,9 +761,7 @@ $(document).ready(function () {
                 mousedownRaised = true;
 
                 equal(e.button, 0);
-
-                if (browserUtils.isIE || browserUtils.isFirefox)
-                    equal(e.buttons, 1);
+                equal(e.buttons, 1);
 
                 ok(!mouseupRaised && !clickRaised, 'mousedown event was raised first');
             })
@@ -771,9 +769,7 @@ $(document).ready(function () {
                 mouseupRaised = true;
 
                 equal(e.button, 0);
-
-                if (browserUtils.isIE || browserUtils.isFirefox)
-                    equal(e.buttons, 1);
+                equal(e.buttons, 0);
 
                 ok(mousedownRaised && !clickRaised, 'mouseup event was raised second');
             })
@@ -781,9 +777,7 @@ $(document).ready(function () {
                 clickRaised = true;
 
                 equal(e.button, 0);
-
-                if (browserUtils.isIE || browserUtils.isFirefox)
-                    equal(e.buttons, 1);
+                equal(e.buttons, 0);
 
                 ok(mousedownRaised && mouseupRaised, 'click event was raised third ');
             });
@@ -791,7 +785,12 @@ $(document).ready(function () {
         var pointerHandler = function (e) {
             equal(e.pointerType, browserUtils.version > 10 ? 'mouse' : 4);
             equal(e.button, 0);
-            equal(e.buttons, 1);
+
+            if (e.type === 'pointerdown')
+                equal(e.buttons, 1);
+
+            if (e.type === 'pointerup')
+                equal(e.buttons, 0);
         };
 
         if (browserUtils.isIE && browserUtils.version > 11) {
@@ -803,13 +802,10 @@ $(document).ready(function () {
             $el[0].onmspointerup   = pointerHandler;
         }
 
-
-        if (browserUtils.isFirefox || browserUtils.isIE9)
-            expect(10);
-        else if (browserUtils.isIE)
+        if (browserUtils.isIE)
             expect(16);
         else
-            expect(7);
+            expect(10);
 
         var click = new ClickAutomation($el[0], new ClickOptions({ offsetX: 5, offsetY: 5 }));
 

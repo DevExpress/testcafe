@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+
+        #el1, #el2, #el3 {
+            position: absolute;
+            background-color: black;
+            display: inline-block;
+            height: 50px;
+            width: 50px;
+            top: 0;
+            left: 0;
+        }
+        #el2 {
+            top: 200px;
+            left: 200px;
+        }
+
+        #el3 {
+            top: 0;
+            left: 200px;
+        }
+    </style>
+    <script>
+        function log (text) {
+            document.getElementById('result').innerHTML += text;
+        }
+
+        function onMove (e) {
+            window.removeEventListener('mousemove', onMove);
+
+            log('onMove:' + e.button + e.buttons + e.which);
+        }
+
+        function onMoveWithLeftButtonPressed (e) {
+            window.removeEventListener('mousemove', onMoveWithLeftButtonPressed);
+
+            log('onMoveWithLeftButtonPressed:' + e.button + e.buttons + e.which);
+        }
+
+        function listenMouseMove(e) {
+            window.addEventListener('mousemove', onMove);
+        }
+
+        function listenMouseMoveWithLeftButtonPressed(e) {
+            window.addEventListener('mousemove', onMoveWithLeftButtonPressed);
+        }
+    </script>
+</head>
+<body>
+<div id="el1"></div>
+<div id="el2"></div>
+<div id="el3"></div>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<div id="result"></div>
+
+<script type="text/javascript">
+    var el1 = document.getElementById('el1');
+    var el2 = document.getElementById('el2');
+    var el3 = document.getElementById('el3');
+    var el4 = document.getElementById('el4');
+
+    el1.addEventListener('click', listenMouseMove);
+    el2.addEventListener('click', listenMouseMoveWithLeftButtonPressed);
+</script>
+</body>
+</html>
