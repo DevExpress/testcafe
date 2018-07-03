@@ -5,6 +5,7 @@ import { ensureDir } from '../utils/promisified-functions';
 import { isInQueue, addToQueue } from '../utils/async-queue';
 import WARNING_MESSAGE from '../notifications/warning-message';
 import escapeUserAgent from '../utils/escape-user-agent';
+import correctFilePath from '../utils/correct-file-path';
 
 export default class Capturer {
     constructor (baseScreenshotsPath, testEntry, connection, pathPattern, warningLog) {
@@ -82,7 +83,9 @@ export default class Capturer {
     }
 
     _getCustomScreenshotPath (customPath) {
-        return this._joinWithBaseScreenshotPath(customPath);
+        const correctedCustomPath = correctFilePath(customPath);
+
+        return this._joinWithBaseScreenshotPath(correctedCustomPath);
     }
 
     _getScreenshotPath (forError) {
