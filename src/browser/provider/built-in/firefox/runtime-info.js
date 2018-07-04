@@ -63,7 +63,7 @@ async function generatePrefs (profileDir, { marionettePort, config }) {
 
 export default async function (configString) {
     var config         = getConfig(configString);
-    var marionettePort = config.marionettePort || await getFreePort();
+    var marionettePort = !config.userProfile ? config.marionettePort || await getFreePort() : null;
     var tempProfileDir = !config.userProfile ? createTempProfileDir() : null;
     var runtimeInfo    = { config, tempProfileDir, marionettePort };
 
