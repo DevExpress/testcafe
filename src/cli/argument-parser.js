@@ -1,6 +1,7 @@
 import { resolve, join as pathJoin, dirname } from 'path';
 import { Command } from 'commander';
 import Promise from 'pinkie';
+import dedent from 'dedent';
 import isGlob from 'is-glob';
 import globby from 'globby';
 import { readSync as read } from 'read-file-relative';
@@ -17,7 +18,7 @@ const REMOTE_ALIAS_RE          = /^remote(?::(\d*))?$/;
 const DEFAULT_TEST_LOOKUP_DIRS = ['test/', 'tests/'];
 const TEST_FILE_GLOB_PATTERN   = `./**/*@(${Compiler.getSupportedTestFileExtensions().join('|')})`;
 
-const DESCRIPTION = `
+const DESCRIPTION = dedent(`
     In the browser list, you can use browser names (e.g. "ie", "chrome", etc.) as well as paths to executables.
 
     To run tests against all installed browsers, use the "all" alias.
@@ -30,7 +31,7 @@ const DESCRIPTION = `
     You can use one or more file paths or glob patterns to specify which tests to run.
 
     More info: https://devexpress.github.io/testcafe/documentation
-`;
+`);
 
 export default class CLIArgumentParser {
     constructor (cwd) {
