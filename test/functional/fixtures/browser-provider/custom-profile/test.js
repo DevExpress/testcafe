@@ -3,8 +3,8 @@ const { expect }           = require('chai');
 const Promise              = require('pinkie');
 const config               = require('../../../config');
 const nullStream           = require('../../../utils/null-stream');
-const createChromeProfile  = require('../../../../../lib/browser/provider/built-in/chrome/create-temp-user-dir');
-const createFirefoxProfile = require('../../../../../lib/browser/provider/built-in/firefox/create-temp-profile-dir');
+const createChromeProfile  = require('../../../../../lib/browser/provider/built-in/chrome/create-temp-profile');
+const createFirefoxProfile = require('../../../../../lib/browser/provider/built-in/firefox/create-temp-profile');
 
 
 if (config.useLocalBrowsers && !config.isTravisEnvironment) {

@@ -1,6 +1,6 @@
 import { getFreePort } from 'endpoint-utils';
 import getConfig from './config';
-import createTempProfileDir from './create-temp-profile-dir';
+import createTempProfile from './create-temp-profile';
 
 
 export default async function (configString) {
@@ -8,7 +8,7 @@ export default async function (configString) {
     const marionettePort = config.marionettePort || (!config.userProfile ? await getFreePort() : null);
     const runtimeInfo    = { config, marionettePort };
 
-    runtimeInfo.tempProfileDir = !config.userProfile ? await createTempProfileDir(runtimeInfo) : null;
+    runtimeInfo.tempProfileDir = !config.userProfile ? await createTempProfile(runtimeInfo) : null;
 
     return runtimeInfo;
 }

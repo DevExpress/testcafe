@@ -53,7 +53,7 @@ async function generatePreferences (profileDir, { marionettePort, config }) {
     await writeFile(prefsFileName, prefs.join('\n'));
 }
 
-export default async function createTempProfileDir (runtimeInfo) {
+export default async function (runtimeInfo) {
     tmp.setGracefulCleanup();
 
     const tmpDir = tmp.dirSync({ unsafeCleanup: true });

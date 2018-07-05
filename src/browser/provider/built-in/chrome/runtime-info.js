@@ -1,17 +1,17 @@
 import { getFreePort } from 'endpoint-utils';
 import getConfig from './config';
-import createTempUserDir from './create-temp-user-dir';
+import createTempProfile from './create-temp-profile';
 
 
 var commonTempProfile = null;
 
-async function getTempProfileDir (proxyHostName, config) {
+async function getTempProfile (proxyHostName, config) {
 
     var tempProfile            = commonTempProfile;
     var shouldUseCommonProfile = !config.headless && !config.emulation;
 
     if (!shouldUseCommonProfile || !commonTempProfile)
-        tempProfile = await createTempUserDir(proxyHostName);
+        tempProfile = await createTempProfile(proxyHostName);
 
     if (shouldUseCommonProfile && !commonTempProfile)
         commonTempProfile = tempProfile;
@@ -21,7 +21,7 @@ async function getTempProfileDir (proxyHostName, config) {
 
 export default async function (proxyHostName, configString) {
     var config         = getConfig(configString);
-    var tempProfileDir = !config.userProfile ? await getTempProfileDir(proxyHostName, config) : null;
+    var tempProfileDir = !config.userProfile ? await getTempProfile(proxyHostName, config) : null;
     var cdpPort        = config.cdpPort || (!config.userProfile ? await getFreePort() : null);
 
     return { config, cdpPort, tempProfileDir };
