@@ -97,6 +97,8 @@ export default class TestRun extends EventEmitter {
         this.fileDownloadingHandled               = false;
         this.resolveWaitForFileDownloadingPromise = null;
 
+        this.recordScreenCapture = this.opts.recordScreenCapture;
+
         this.addingDriverTasksCount = 0;
 
         this.debugging               = this.opts.debugMode;
@@ -234,7 +236,7 @@ export default class TestRun extends EventEmitter {
         catch (err) {
             var screenshotPath = null;
 
-            if (this.opts.takeScreenshotsOnFails)
+            if (this.opts.takeScreenshotsOnFails || this.opts.recordScreenCapture)
                 screenshotPath = await this.executeCommand(new TakeScreenshotOnFailCommand());
 
             this.addError(err, screenshotPath);

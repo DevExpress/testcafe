@@ -1,0 +1,16 @@
+(function () {
+    var IframeDriver = window['%testCafeIframeDriver%'];
+    var driver       = new IframeDriver({{{testRunId}}}, {
+        selectorTimeout: {{{selectorTimeout}}},
+        pageLoadTimeout: {{{pageLoadTimeout}}},
+        dialogHandler:   {{{dialogHandler}}},
+        speed:           {{{speed}}}
+    });
+
+    driver.start();
+
+    Object.defineProperty(window, '%testCafeDriverInstance%', {
+        configurable: true,
+        value:        driver
+    });
+})();

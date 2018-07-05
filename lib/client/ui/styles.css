@@ -1,0 +1,577 @@
+#root.root {
+  position: absolute;
+  display: block;
+  left: 0px;
+  top: 0px;
+  margin: 0 !important;
+  overflow: visible;
+  transition: none !important;
+  -webkit-transition: none !important;
+  -moz-transition: none !important;
+  -o-transition: none !important;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  /*Mixins*/
+  /*Const*/
+  /*Make z-index context*/
+  z-index: 2147483647;
+  /*Reset*/
+  /* Clear */
+  /* Cursor */
+  /* Modal background and loading text */
+  /*Progress panel*/
+  /* Actions Emulating */
+}
+#root.root fieldset,
+#root.root img {
+  border: 0;
+}
+#root.root ol,
+#root.root ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+#root.root h1,
+#root.root h2,
+#root.root h3,
+#root.root h4,
+#root.root h5,
+#root.root h6 {
+  font-size: 100%;
+  font-weight: normal;
+}
+#root.root table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  font-size: 100%;
+  font: inherit;
+}
+#root.root * {
+  width: auto;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  vertical-align: baseline;
+  background: transparent;
+  text-align: left !important;
+  line-height: normal;
+  border-radius: 0px;
+  font-variant: normal !important;
+  font-weight: normal;
+  font-size: inherit;
+  cursor: default;
+  font-family: Segoe UI, Helvetica, sans-serif !important;
+  letter-spacing: normal;
+  clear: none;
+  box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  transition: none !important;
+  -webkit-transition: none !important;
+  -moz-transition: none !important;
+  -o-transition: none !important;
+  zoom: 1 !important;
+  text-indent: 0 !important;
+  text-shadow: none;
+  overflow: visible;
+  float: none !important;
+  pointer-events: auto;
+}
+#root.root textarea,
+#root.root input,
+#root.root select,
+#root.root input:focus,
+#root.root input[type="text"],
+#root.root input[type="text"]:hover,
+#root.root input[type="text"]:focus,
+#root.root input[type="text"]:active,
+#root.root input[type="button"],
+#root.root input[type="button"]:hover,
+#root.root input[type="button"]:focus,
+#root.root input[type="button"]:active {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-family: Segoe UI, Helvetica, sans-serif;
+  cursor: text;
+  font-weight: normal;
+  vertical-align: baseline;
+  background-color: white;
+  background-image: none;
+  background-position: 0 0;
+  background-repeat: no-repeat;
+  text-align: left !important;
+  line-height: normal;
+  border-radius: 0px;
+  min-height: 0;
+  min-width: 0;
+  box-shadow: none;
+  box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  -moz-user-select: auto;
+  -webkit-user-select: auto;
+  transition: none !important;
+  -webkit-transition: none !important;
+  -moz-transition: none !important;
+  -o-transition: none !important;
+  letter-spacing: normal;
+  text-shadow: none;
+  text-transform: none;
+}
+#root.root ::-ms-clear {
+  display: none;
+}
+#root.root label {
+  display: inline;
+  color: #ffffff !important;
+}
+#root.root button::-moz-focus-inner {
+  margin-top: -1px;
+}
+#root.root .clear {
+  display: block;
+  clear: both;
+  height: 0;
+  width: 0;
+  font-size: 0;
+  line-height: 0;
+  overflow: hidden;
+  visibility: hidden;
+}
+#root.root.hidden .cursor {
+  display: none;
+}
+#root.root.blind .cursor {
+  opacity: 0.4;
+}
+#root.root .cursor {
+  background-image: url("/testcafe-ui-sprite.png") !important;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  display: block;
+  position: fixed;
+  -webkit-transform: translate3d(0px, 0px, 0px) !important;
+  left: 0;
+  top: 0;
+  width: 35px;
+  height: 57px;
+  background-position: 0 0;
+  z-index: 2147483644;
+}
+#root.root .cursor.l-mouse-down {
+  background-position: -64px 0;
+}
+#root.root .cursor.r-mouse-down {
+  background-position: -130px 0;
+}
+#root.root .cursor.touch {
+  width: 50px;
+  height: 50px;
+  background-position: -190px 0;
+}
+#root.root .cursor.touch.l-mouse-down,
+#root.root .cursor.touch.r-mouse-down {
+  background-position: -264px 0;
+}
+#root.root .modal-background {
+  display: none;
+  position: fixed;
+  -webkit-transform: translate3d(0px, 0px, 0px) !important;
+  top: 0;
+  left: 0;
+  z-index: 2147483645;
+  background-color: #000000;
+}
+#root.root .loading-text {
+  font-family: Segoe UI, Helvetica, sans-serif;
+  font-size: 40px;
+  color: #ffffff;
+  text-shadow: 0 0 10px #000000;
+  display: none;
+  position: fixed;
+  -webkit-transform: translate3d(0px, 0px, 0px) !important;
+  top: 0;
+  left: 0;
+  z-index: 2147483646;
+}
+#root.root .loading-icon {
+  background-image: url("/testcafe-ui-sprite.png") !important;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  display: block;
+  width: 218px;
+  height: 218px;
+  background-position: -465px 0;
+  position: fixed;
+  -webkit-transform: translate3d(0px, 0px, 0px) !important;
+  z-index: 2147483647;
+}
+#root.root .progress-panel {
+  -webkit-box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.5) !important;
+  -moz-box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.5) !important;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.5) !important;
+  border-radius: 7px !important;
+  -webkit-border-radius: 7px !important;
+  -moz-border-radius: 7px !important;
+  -o-border-radius: 7px !important;
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 92px 120px 110px;
+  width: 500px;
+  position: fixed;
+  display: none;
+}
+#root.root .progress-panel .title {
+  font-weight: lighter;
+  font-family: 'Segoe UI Light', 'Segoe UI', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Verdana, sans-serif;
+  font-size: 33px;
+  text-align: center !important;
+  margin: 0 25px 31px;
+  color: white;
+}
+#root.root .progress-panel .content {
+  max-width: 498px;
+  height: 17px;
+}
+#root.root .progress-bar {
+  border-radius: 2px !important;
+  -webkit-border-radius: 2px !important;
+  -moz-border-radius: 2px !important;
+  -o-border-radius: 2px !important;
+  width: 100%;
+  height: 15px;
+  background-color: transparent;
+  border: 1px solid #df5679;
+  padding: 0;
+  overflow: hidden;
+}
+#root.root .progress-bar .value {
+  background-color: #df5679;
+  height: 15px;
+}
+#root.root .progress-bar.success {
+  border-color: #6ab779;
+}
+#root.root .progress-bar.success .value {
+  background-color: #6ab779;
+}
+#root.root .tcOptionList {
+  overflow-y: auto;
+  background-color: white;
+  border: 1px solid #7F9DB9;
+  z-index: 2147483643;
+}
+#root.root .tcOptionList .tcOptionGroup {
+  font-weight: bolder;
+}
+#root.root .tcOptionList .tcOptionGroup .tcOption {
+  margin: 1px 20px;
+}
+#root.root .tcOptionList .tcOption {
+  margin: 1px 5px;
+}
+#root.root .status-bar {
+  position: fixed;
+  -webkit-transform: translate3d(0px, 0px, 0px) !important;
+  bottom: 0 !important;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 2147483644;
+  left: 0;
+  height: 50px;
+  font-family: 'Segoe UI Light', 'Segoe UI', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Verdana, sans-serif !important;
+  /* Views */
+  /* --- */
+}
+#root.root .status-bar .container {
+  margin-left: 14px;
+  height: 47px;
+}
+#root.root .status-bar .container .info-container {
+  display: inline-block;
+  height: 47px;
+  width: 40%;
+}
+#root.root .status-bar .container .info-container .icon {
+  background-image: url("/testcafe-ui-sprite.png") !important;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  display: block;
+  display: inline-block;
+  width: 40px;
+  height: 25px;
+  background-position: -319px 0;
+  margin: 11px 21px 0 0;
+}
+#root.root .status-bar .container .info-container .fixture-container {
+  display: inline-block;
+  vertical-align: top;
+  font-size: 12px;
+}
+#root.root .status-bar .container .info-container .fixture-container .fixture {
+  color: white;
+  margin-top: 7px;
+  overflow: hidden;
+  max-height: 16px;
+  line-height: 16px;
+}
+#root.root .status-bar .container .info-container .fixture-container .user-agent {
+  color: #A8A8A8;
+  overflow: hidden;
+  max-height: 16px;
+  margin-top: -1px;
+  line-height: 16px;
+}
+#root.root .status-bar .container .status-container {
+  display: inline-block;
+  vertical-align: top;
+  height: 47px;
+  font-size: 20px;
+  width: 60%;
+}
+#root.root .status-bar .container .status-container .status {
+  display: inline-block;
+  margin-top: 7px;
+  color: #36B6E5;
+  line-height: 27px;
+}
+#root.root .status-bar .container .status-container .unlock-page-area {
+  display: inline-block;
+  margin: 7px 0 0 21px;
+  border: 1px solid #38A3D5;
+  border-radius: 3px !important;
+  -webkit-border-radius: 3px !important;
+  -moz-border-radius: 3px !important;
+  -o-border-radius: 3px !important;
+  position: relative;
+  top: 3px;
+}
+#root.root .status-bar .container .status-container .unlock-page-area .unlock-page-container {
+  padding: 0 17px 1px 8px;
+  height: 27px;
+}
+#root.root .status-bar .container .status-container .unlock-page-area .unlock-page-container.locked {
+  background-color: #38A3D5;
+  cursor: pointer;
+}
+#root.root .status-bar .container .status-container .unlock-page-area .unlock-page-container.locked .unlock-icon {
+  cursor: pointer;
+  background-position: -54px -64px;
+}
+#root.root .status-bar .container .status-container .unlock-page-area .unlock-page-container.locked span {
+  cursor: pointer;
+  color: #ffffff;
+  margin-left: 24px;
+}
+#root.root .status-bar .container .status-container .unlock-page-area .unlock-page-container.locked .icon-separator {
+  background-color: #333333;
+}
+#root.root .status-bar .container .status-container .unlock-page-area .unlock-page-container.unlocked {
+  padding-right: 10px;
+}
+#root.root .status-bar .container .status-container .unlock-page-area .unlock-page-container.unlocked .unlock-icon {
+  background-position: -69px -64px;
+}
+#root.root .status-bar .container .status-container .unlock-page-area .unlock-page-container.unlocked .icon-separator {
+  background-color: #38A3D5;
+}
+#root.root .status-bar .container .status-container .unlock-page-area .unlock-page-container.unlocked span {
+  color: #38A3D5;
+  margin-left: 18px;
+}
+#root.root .status-bar .container .status-container .unlock-page-area .unlock-page-container .unlock-icon {
+  background-image: url("/testcafe-ui-sprite.png") !important;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  display: block;
+  display: inline-block;
+  width: 12px;
+  height: 16px;
+}
+#root.root .status-bar .container .status-container .unlock-page-area .unlock-page-container .icon-separator {
+  position: absolute;
+  cursor: pointer;
+  width: 1px;
+  height: 30px;
+  top: -1px;
+  left: 29px;
+}
+#root.root .status-bar .container .status-container .unlock-page-area .unlock-page-container span {
+  position: relative;
+  top: -3px;
+  font-size: 13px;
+}
+#root.root .status-bar .container .status-container .buttons {
+  height: 47px;
+  margin-top: 10px;
+  position: absolute;
+  right: 10px;
+  line-height: 0;
+  display: inline-block;
+}
+#root.root .status-bar .container .status-container .buttons .button {
+  border-radius: 3px !important;
+  -webkit-border-radius: 3px !important;
+  -moz-border-radius: 3px !important;
+  -o-border-radius: 3px !important;
+  font-size: 13px;
+  width: auto;
+  padding: 0 16px;
+  float: none;
+  display: inline-block;
+  height: 30px;
+  line-height: 26px;
+  border: none !important;
+  white-space: pre;
+  word-wrap: normal;
+  text-transform: none;
+  font-family: Segoe UI, Helvetica, sans-serif;
+  color: #ffffff !important;
+  text-align: center !important;
+  cursor: pointer !important;
+}
+#root.root .status-bar .container .status-container .buttons .button * {
+  cursor: pointer !important;
+}
+#root.root .status-bar .container .status-container .buttons .button .button-icon {
+  background-image: url("/testcafe-ui-sprite.png") !important;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  display: block;
+  vertical-align: middle;
+  display: inline-block;
+  cursor: pointer;
+  margin: 6px 4px 6px 0;
+}
+#root.root .status-bar .container .status-container .buttons .button span {
+  position: relative;
+  top: 2px;
+}
+#root.root .status-bar .container .status-container .buttons .button.resume {
+  background-color: #51B7E7;
+}
+#root.root .status-bar .container .status-container .buttons .button.resume span {
+  padding-right: 7px;
+}
+#root.root .status-bar .container .status-container .buttons .button.resume .button-icon {
+  width: 18px;
+  height: 18px;
+  background-position: 0 -64px;
+}
+#root.root .status-bar .container .status-container .buttons .button.step {
+  background-color: #38A3D5;
+  margin-left: 5px;
+  padding: 0 14px;
+}
+#root.root .status-bar .container .status-container .buttons .button.step span {
+  padding-left: 4px;
+  padding-right: 1px;
+}
+#root.root .status-bar .container .status-container .buttons .button.step .button-icon {
+  width: 29px;
+  height: 18px;
+  background-position: -20px -64px;
+}
+#root.root .status-bar.waiting-element-success .container .status-container .status {
+  color: #6ab779;
+}
+#root.root .status-bar.waiting-element-success .progress-bar.determinate .value {
+  background-color: #6ab779;
+}
+#root.root .status-bar.waiting-element-failed .container .status-container .status {
+  color: #df5679;
+}
+#root.root .status-bar.waiting-element-failed .progress-bar.determinate .value {
+  background-color: #df5679;
+}
+#root.root .status-bar.icon-status-view .container .info-container .fixture-container,
+#root.root .status-bar.icon-unlock-buttons-view .container .info-container .fixture-container,
+#root.root .status-bar.icon-buttons-view .container .info-container .fixture-container,
+#root.root .status-bar.only-buttons-view .container .info-container .fixture-container,
+#root.root .status-bar.only-icon-view .container .info-container .fixture-container {
+  display: none;
+}
+#root.root .status-bar.icon-unlock-buttons-view .status-container > .status,
+#root.root .status-bar.icon-buttons-view .status-container > .status,
+#root.root .status-bar.only-buttons-view .status-container > .status,
+#root.root .status-bar.only-icon-view .status-container > .status {
+  display: none;
+}
+#root.root .status-bar.icon-buttons-view .status-container .unlock-page-area,
+#root.root .status-bar.only-buttons-view .status-container .unlock-page-area,
+#root.root .status-bar.only-icon-view .status-container .unlock-page-area {
+  display: none;
+}
+#root.root .status-bar.only-buttons-view .info-container {
+  display: none;
+}
+#root.root .status-bar.icon-status-view .info-container {
+  width: 20%;
+}
+#root.root .status-bar.icon-status-view .status-container {
+  width: 80%;
+}
+#root.root .status-bar.icon-unlock-buttons-view .container .info-container {
+  width: 40px;
+}
+#root.root .status-bar.icon-unlock-buttons-view .container .info-container .icon {
+  margin-right: 0;
+}
+#root.root .status-bar.icon-unlock-buttons-view .container .status-container .unlock-page-area .unlock-page-container.unlocked {
+  border-left: none !important;
+}
+#root.root .status-bar.icon-buttons-view .container .info-container {
+  width: 40px;
+}
+#root.root .status-bar.icon-buttons-view .container .info-container .icon {
+  margin-right: 0;
+}
+#root.root .status-bar.only-buttons-view .status-container .buttons {
+  left: 0;
+  right: 0;
+  text-align: center !important;
+}
+#root.root .status-bar.only-icon-view .container {
+  margin-left: 0;
+  text-align: center !important;
+}
+#root.root .status-bar.only-icon-view .container .info-container {
+  width: 40px;
+}
+#root.root .status-bar.only-icon-view .container .info-container .icon {
+  margin-right: 0;
+}
+#root.root .status-bar .progress-bar {
+  width: 100%;
+  height: 3px;
+  background-color: #345B69;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  visibility: hidden;
+}
+#root.root .status-bar .progress-bar.determinate .value {
+  background-color: #36B6E5;
+  height: 3px;
+  width: 0;
+}
+#root.root .status-bar .progress-bar.indeterminate .value-container {
+  background-color: #36B6E5;
+  position: relative;
+}
+#root.root .status-bar .progress-bar.indeterminate .value-container .value {
+  position: absolute;
+  background-color: inherit;
+  top: 0;
+  left: 0;
+  bottom: 0;
+}
+#root.root .screenshot-mark {
+  bottom: 0;
+  right: 0;
+  position: fixed;
+}
