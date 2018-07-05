@@ -197,7 +197,7 @@ export default class Runner extends EventEmitter {
         return this;
     }
 
-    screenshots (path, takeOnFails = false, pattern) {
+    screenshots (path, takeOnFails = false, pattern = null) {
         this.opts.takeScreenshotsOnFails = takeOnFails;
         this.opts.screenshotPath         = path;
         this.opts.screenshotPathPattern  = pattern;
