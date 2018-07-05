@@ -38,37 +38,44 @@ export function unbind (el, event, handler, useCapture) {
 
 // Document ready
 const waitForDomContentLoaded = () => {
-    return new Promise(resolve => {
-        var isReady = false;
+    // NOTE: We can't use a regular Promise here, because window.load event can happen in the same event loop pass
+    // The default Promise will call resolve handlers in the next pass, and load event will be lost.
+    const resolveHandlers = [];
 
-        function ready () {
-            if (isReady)
-                return;
+    function createPromiseResolver (resolveHandler) {
+        return new Promise(resolve => resolveHandlers.push(() => resolve(resolveHandler())));
+    }
 
-            if (!document.body) {
-                nativeMethods.setTimeout.call(window, ready, 1);
-                return;
-            }
+    let isReady = false;
 
-            isReady = true;
+    function ready () {
+        if (isReady)
+            return;
 
-            resolve();
+        if (!document.body) {
+            nativeMethods.setTimeout.call(window, ready, 1);
+            return;
         }
 
-        function onContentLoaded () {
-            if (!domUtils.isIFrameWindowInDOM(window) && !domUtils.isTopWindow(window))
-                return;
+        isReady = true;
 
-            unbind(document, 'DOMContentLoaded', onContentLoaded);
-            ready();
-        }
+        resolveHandlers.forEach(handler => handler());
+    }
 
+    function onContentLoaded () {
+        if (!domUtils.isIFrameWindowInDOM(window) && !domUtils.isTopWindow(window))
+            return;
 
-        if (document.readyState === 'complete')
-            nativeMethods.setTimeout.call(window, onContentLoaded, 1);
-        else
-            bind(document, 'DOMContentLoaded', onContentLoaded);
-    });
+        unbind(document, 'DOMContentLoaded', onContentLoaded);
+        ready();
+    }
+
+    if (document.readyState === 'complete')
+        nativeMethods.setTimeout.call(window, onContentLoaded, 1);
+    else
+        bind(document, 'DOMContentLoaded', onContentLoaded);
+
+    return { then: handler => createPromiseResolver(handler) };
 };
 
 const waitForWindowLoad = () => new Promise(resolve => bind(window, 'load', resolve));
