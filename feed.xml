@@ -5,8 +5,8 @@
     <description></description>
     <link>http://devexpress.github.io/testcafe/</link>
     <atom:link href="http://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 05 Jul 2018 15:26:47 +0300</pubDate>
-    <lastBuildDate>Thu, 05 Jul 2018 15:26:47 +0300</lastBuildDate>
+    <pubDate>Fri, 29 Jun 2018 18:51:18 +0300</pubDate>
+    <lastBuildDate>Fri, 29 Jun 2018 18:51:18 +0300</lastBuildDate>
     <generator>Jekyll v3.6.2</generator>
     
       <item>
@@ -604,7 +604,7 @@ Pull the Docker image from the repository and run TestCafe immediately.&lt;/p&gt
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;docker pull testcafe/testcafe
 docker run -v //user/tests:/tests -it testcafe/testcafe firefox tests/&lt;span class=&quot;k&quot;&gt;**&lt;/span&gt;/&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.js
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;To learn more, see &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/using-testcafe-docker-image.html&quot;&gt;Using TestCafe Docker Image&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;To learn more, see &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/installing-testcafe.html#using-testcafe-docker-image&quot;&gt;Using TestCafe Docker Image&lt;/a&gt;&lt;/p&gt;
 &lt;h3&gt;&lt;a class=&quot;anchor&quot; name=&quot;support-for-internet-access-proxies-1206&quot;&gt;&lt;/a&gt;⚙ Support for Internet access proxies (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1206&quot;&gt;#1206&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#support-for-internet-access-proxies-1206&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;If your local network uses a proxy server to access the Internet, TestCafe can use it reach the external webpages.&lt;/p&gt;
 
