@@ -88,9 +88,10 @@ export default class MoveAutomation {
         this.speed       = moveOptions.speed;
         this.cursorSpeed = this.holdLeftButton ? this.automationSettings.draggingSpeed : this.automationSettings.cursorSpeed;
 
-        this.minMovingTime = moveOptions.minMovingTime || null;
-        this.modifiers     = moveOptions.modifiers || {};
-        this.skipScrolling = moveOptions.skipScrolling;
+        this.minMovingTime           = moveOptions.minMovingTime || null;
+        this.modifiers               = moveOptions.modifiers || {};
+        this.skipScrolling           = moveOptions.skipScrolling;
+        this.skipDefaultDragBehavior = moveOptions.skipDefaultDragBehavior;
 
         this.endPoint = null;
 
@@ -263,8 +264,10 @@ export default class MoveAutomation {
         var isDocumentBody = this.element.tagName && domUtils.isBodyElement(this.element);
 
         return {
-            x: Math.floor(isDocumentBody ? clientPosition.x + this.offsetX : clientPosition.x + this.offsetX - scroll.left),
-            y: Math.floor(isDocumentBody ? clientPosition.y + this.offsetY : clientPosition.y + this.offsetY - scroll.top)
+            x: Math.floor(isDocumentBody ? clientPosition.x + this.offsetX : clientPosition.x + this.offsetX -
+                                                                             scroll.left),
+            y: Math.floor(isDocumentBody ? clientPosition.y + this.offsetY : clientPosition.y + this.offsetY -
+                                                                             scroll.top)
         };
     }
 
@@ -426,7 +429,8 @@ export default class MoveAutomation {
 
                 var draggable = findDraggableElement(this.dragElement);
 
-                if (draggable && featureDetection.hasDataTransfer) {
+                // NOTE: we should skip simulating drag&drop's native behavior if the mousedown event was prevented (GH - 2529)
+                if (draggable && featureDetection.hasDataTransfer && !this.skipDefaultDragBehavior) {
                     this.dragAndDropState.enabled      = true;
                     this.dragElement                   = draggable;
                     this.dragAndDropState.element      = this.dragElement;

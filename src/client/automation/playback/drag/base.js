@@ -29,7 +29,9 @@ export default class DragAutomationBase extends VisibleElementAutomation {
         this.offsetX   = mouseOptions.offsetX;
         this.offsetY   = mouseOptions.offsetY;
 
-        this.endPoint  = null;
+        this.endPoint                = null;
+        this.simulateDefaultBehavior = true;
+
         this.downEvent = featureDetection.isTouchDevice ? 'touchstart' : 'mousedown';
         this.upEvent   = featureDetection.isTouchDevice ? 'touchend' : 'mouseup';
 
@@ -44,7 +46,7 @@ export default class DragAutomationBase extends VisibleElementAutomation {
         return cursor
             .leftButtonDown()
             .then(() => {
-                eventSimulator[this.downEvent](eventArgs.element, eventArgs.options);
+                this.simulateDefaultBehavior = eventSimulator[this.downEvent](eventArgs.element, eventArgs.options);
 
                 return this._focus(eventArgs);
             });
@@ -70,12 +72,13 @@ export default class DragAutomationBase extends VisibleElementAutomation {
         this.endPoint = endPoint;
 
         var dragOptions = new MoveOptions({
-            offsetX:        offsets.offsetX,
-            offsetY:        offsets.offsetY,
-            modifiers:      this.modifiers,
-            speed:          this.speed,
-            minMovingTime:  MIN_MOVING_TIME,
-            holdLeftButton: true
+            offsetX:                 offsets.offsetX,
+            offsetY:                 offsets.offsetY,
+            modifiers:               this.modifiers,
+            speed:                   this.speed,
+            minMovingTime:           MIN_MOVING_TIME,
+            holdLeftButton:          true,
+            skipDefaultDragBehavior: this.simulateDefaultBehavior === false
         }, false);
 
         var moveAutomation = new MoveAutomation(element, dragOptions);

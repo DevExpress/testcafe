@@ -126,12 +126,13 @@ describe('Test run command options', function () {
             }, false);
 
             expect(JSON.parse(JSON.stringify(options))).eql({
-                offsetX:        null,
-                offsetY:        15,
-                speed:          20,
-                minMovingTime:  null,
-                holdLeftButton: true,
-                skipScrolling:  false,
+                offsetX:                 null,
+                offsetY:                 15,
+                speed:                   20,
+                minMovingTime:           null,
+                holdLeftButton:          true,
+                skipDefaultDragBehavior: false,
+                skipScrolling:           false,
 
                 modifiers: {
                     ctrl:  true,
