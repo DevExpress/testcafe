@@ -33,6 +33,7 @@
 ## Table of contents
 
 * [Features](#features)
+* [IDE for End-to-End Web Testing](#ide-for-end-to-end-web-testing)
 * [Getting Started](#getting-started)
 * [Documentation](#documentation)
 * [Community](#community)
@@ -80,6 +81,18 @@ const macOSInput = Selector('.column').find('label').withText('MacOS').child('in
 **Easy to include in a continuous integration system**<br/>
 You can run TestCafe from a console, and its reports can be viewed in a CI system's interface
 (TeamCity, Jenkins, Travis & etc.)
+
+## IDE for End-to-End Web Testing
+
+We've got one more tool for you!
+
+Check out [TestCafe Studio](https://testcafe-studio.devexpress.com): all the perks of TestCafe + GUI + Visual Test Recorder
+
+![Get Started with TestCafe Studio](https://raw.githubusercontent.com/DevExpress/testcafe/master/media/testcafe-studio-get-started.gif)
+
+<p align="center">
+<i>Record and Run a Test in TestCafe Studio</i>
+</p>
 
 ## Getting Started
 
