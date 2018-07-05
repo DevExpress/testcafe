@@ -21,7 +21,7 @@ See [Intercepting HTTP Requests](https://devexpress.github.io/testcafe/documenta
 
 TestCafe now allows you to bypass the proxy server when accessing specific resources.
 
-To specify resources that require direct access, use the [--proxy-bypass](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--proxy-bypass-rules) flag in the command line or the [useProxy](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html) API method's parameters.
+To specify resources that require direct access, use the [--proxy-bypass](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--proxy-bypass-rules) flag in the command line or the [useProxy](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#useproxy) API method's parameters.
 
 ```sh
 testcafe chrome my-tests/**/*.js --proxy proxy.corp.mycompany.com --proxy-bypass localhost:8080,internal-resource.corp.mycompany.com
