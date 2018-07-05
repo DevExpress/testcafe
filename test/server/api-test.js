@@ -1336,4 +1336,37 @@ describe('API', function () {
                 });
         });
     });
+
+    describe('Request Hooks', () => {
+        describe('Should raise errors for wrong RequestLogger construction', () => {
+            it.only('Cannot stringify the request body', () => {
+                const testFile = resolve('test/server/data/test-suites/request-hooks/cannot-stringify-request-body.js');
+
+                return compile(testFile)
+                    .then(() => {
+                        throw new Error('Promise rejection expected');
+                    })
+                    .catch(err => {
+                        assertAPIError(err, {
+                            stackTop: testFile,
+
+                            message: 'Cannot prepare tests due to an error.\n\n' +
+                                     'The test name is expected to be a string, but it was number.',
+
+                            callsite: '    4 |// (to treat a file as a test, it requires at least one fixture definition\n' +
+                                      '    5 |//  with the string argument).\n' +
+                                      "    6 |test('TheAnswer', () => {\n    7 |});\n" +
+                                      '    8 |\n' +
+                                      ' >  9 |test(42, () => {\n' +
+                                      '   10 |});\n' +
+                                      '   11 |'
+                        });
+                    });
+            });
+
+            it('Cannot stringify the response body', () => {
+
+            });
+        });
+    });
 });
