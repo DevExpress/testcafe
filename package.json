@@ -1,19 +1,24 @@
 {
-  "name": "testcafe",
-  "description": "Automated browser testing for the modern web development stack.",
+  "name": "prodperfect-testcafe",
+  "description": "A fork of TestCafe that adds in screenshot recording after every action",
   "license": "MIT",
-  "version": "0.20.4",
+  "version": "1.0.0",
+  "testcafe-upstream-version": "0.20.4",
   "author": {
+    "name": "ProdPerfect, Inc.",
+    "url": "https://www.prodperfect.com"
+  },
+  "testcafe-author": {
     "name": "Developer Express Inc.",
     "url": "https://www.devexpress.com/"
   },
   "bugs": {
-    "url": "https://github.com/DevExpress/testcafe/issues"
+    "url": "https://github.com/ProdPerfect/testcafe/issues"
   },
   "homepage": "https://devexpress.github.io/testcafe/",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DevExpress/testcafe.git"
+    "url": "git+https://github.com/ProdPerfect/testcafe.git"
   },
   "engines": {
     "node": ">=6.0.0"

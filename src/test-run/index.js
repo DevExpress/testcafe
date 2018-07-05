@@ -98,8 +98,6 @@ export default class TestRun extends EventEmitter {
         this.resolveWaitForFileDownloadingPromise = null;
 
         this.recordScreenCapture = this.opts.recordScreenCapture;
-        if (this.recordScreenCapture)
-            this.streamRecorder = new StreamRecorder(this);
 
         this.addingDriverTasksCount = 0;
 
