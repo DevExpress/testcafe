@@ -35,7 +35,7 @@ export default {
 
         await this.waitForConnectionReady(runtimeInfo.browserId);
 
-        if (runtimeInfo.config.marionettePort)
+        if (runtimeInfo.marionettePort)
             runtimeInfo.marionetteClient = await this._createMarionetteClient(runtimeInfo);
 
         this.openedBrowsers[browserId] = runtimeInfo;

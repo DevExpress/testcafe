@@ -1,9 +1,8 @@
-const path    = require('path');
-const expect  = require('chai').expect;
-const config  = require('../../../config');
+const path       = require('path');
+const expect     = require('chai').expect;
+const config     = require('../../../config');
+const nullStream = require('../../../utils/null-stream');
 
-
-const NULL_STREAM = { write: () => {}, end: () => {} };
 
 if (config.useLocalBrowsers) {
     describe('Browser Provider - Chrome Emulation Mode', function () {
@@ -12,7 +11,7 @@ if (config.useLocalBrowsers) {
                 .createRunner()
                 .src(path.join(__dirname, './testcafe-fixtures/index-test.js'))
                 .filter(fixtureName => fixtureName === 'Check presence of touch event handlers')
-                .reporter('minimal', NULL_STREAM)
+                .reporter('minimal', nullStream)
                 .browsers('chrome:headless:emulation:device=iphone 6 --no-sandbox')
                 .run()
                 .then(failedCount => {

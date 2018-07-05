@@ -130,7 +130,8 @@ testingEnvironments[testingEnvironmentNames.localBrowsersIE] = {
 };
 
 testingEnvironments[testingEnvironmentNames.localBrowsersChromeFirefox] = {
-    isLocalBrowsers: true,
+    isLocalBrowsers:    true,
+    isHeadlessBrowsers: true,
 
     browsers: [
         {
@@ -225,9 +226,11 @@ module.exports = {
         return this.currentEnvironment.isLocalBrowsers;
     },
 
-    testingEnvironmentNames: testingEnvironmentNames,
-    testingEnvironments:     testingEnvironments,
-    browserProviderNames:    browserProviderNames,
+    isTravisEnvironment,
+
+    testingEnvironmentNames,
+    testingEnvironments,
+    browserProviderNames,
 
     testCafe: {
         hostname: hostname,

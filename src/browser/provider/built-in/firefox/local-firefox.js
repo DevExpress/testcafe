@@ -14,10 +14,11 @@ function correctOpenParametersForMac (parameters) {
     parameters.macOpenCmdTemplate += ' {{{pageUrl}}}';
 }
 
-function buildFirefoxArgs (config, platformArgs, profileDir) {
-    return ['-marionette']
+function buildFirefoxArgs (config, platformArgs, { marionettePort, tempProfileDir }) {
+    return []
         .concat(
-            !config.userProfile ? ['-no-remote', '-new-instance', `-profile "${profileDir.name}"`] : [],
+            marionettePort ? ['-marionette'] : [],
+            !config.userProfile ? ['-no-remote', '-new-instance', `-profile "${tempProfileDir.name}"`] : [],
             config.headless ? ['-headless'] : [],
             config.userArgs ? [config.userArgs] : [],
             platformArgs ? [platformArgs] : []
@@ -26,14 +27,15 @@ function buildFirefoxArgs (config, platformArgs, profileDir) {
 }
 
 export async function start (pageUrl, runtimeInfo) {
-    const { browserName, config, tempProfileDir } = runtimeInfo;
-    const firefoxInfo                             = await browserTools.getBrowserInfo(config.path || browserName);
-    const firefoxOpenParameters                   = Object.assign({}, firefoxInfo);
+    const { browserName, config } = runtimeInfo;
+
+    const firefoxInfo           = await browserTools.getBrowserInfo(config.path || browserName);
+    const firefoxOpenParameters = Object.assign({}, firefoxInfo);
 
     if (OS.mac && !config.userProfile)
         correctOpenParametersForMac(firefoxOpenParameters);
 
-    firefoxOpenParameters.cmd = buildFirefoxArgs(config, firefoxOpenParameters.cmd, tempProfileDir, runtimeInfo.newInstance);
+    firefoxOpenParameters.cmd = buildFirefoxArgs(config, firefoxOpenParameters.cmd, runtimeInfo, runtimeInfo.newInstance);
 
     await browserStarter.startBrowser(firefoxOpenParameters, pageUrl);
 }
