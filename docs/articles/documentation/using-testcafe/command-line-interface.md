@@ -288,12 +288,7 @@ testcafe all tests/sample-fixture.js -S -s screenshots
 
 ### -q, --quarantine-mode
 
-Enables the quarantine mode for tests that fail.
-In this mode, a failed test is executed several times.
-The test result depends on the outcome (*passed* or *failed*) that occurs most often.
-That is, if the test fails on most attempts, the result is *failed*.
-
-If the test result differs between test runs, the test is marked as unstable.
+Enables the [quarantine mode](programming-interface/runner.md#quarantine-mode) for tests that fail.
 
 ```sh
 testcafe all tests/sample-fixture.js -q
