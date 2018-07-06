@@ -189,9 +189,11 @@ table > tbody > tr > td {
   .site-header.fixed {
     position: fixed; }
   .site-header .star-button {
+    display: inline-block;
     height: 28px;
-    margin: 24px 0 0 26px;
-    float: right; }
+    width: 112px;
+    margin: 0 0 2px 26px;
+    vertical-align: text-bottom; }
   .site-header .site-logo {
     background-image: url("/testcafe/images/landing-page/testcafe-logo.png");
     background-repeat: no-repeat;
@@ -210,11 +212,11 @@ table > tbody > tr > td {
     display: inline-block;
     height: 21px;
     width: 25px;
-    margin: 31px 12px -2px 10px; }
+    margin: 31px 12px 0 10px; }
   .site-header #search-panel {
     position: relative;
-    top: -47px;
-    right: 0px;
+    top: -40px;
+    right: -8px;
     background-color: #a4cada;
     opacity: 1; }
     .site-header #search-panel.hidden {
@@ -239,7 +241,6 @@ table > tbody > tr > td {
   display: inline-block;
   height: 21px;
   width: 21px;
-  margin-bottom: -2px;
   cursor: pointer; }
 
 #search {
@@ -250,7 +251,7 @@ table > tbody > tr > td {
   border: none;
   outline: none;
   height: 40px;
-  width: 840px; }
+  width: 825px; }
   @media (max-width: 1310px) {
     #search {
       width: 770px; } }
@@ -260,14 +261,13 @@ table > tbody > tr > td {
   min-width: calc(1230px - 200px); }
 
 .site-nav {
-  line-height: 50px;
   float: right;
   height: 70px; }
   .site-nav .menu-icon {
     display: none; }
   .site-nav .site-nav-tab {
     display: inline-block;
-    line-height: 1.5;
+    vertical-align: super;
     padding: 5px 15px 7px; }
     @media (max-width: 1310px) {
       .site-nav .site-nav-tab {
@@ -549,10 +549,6 @@ html, body {
 
 .post-subheader {
   color: #b3b3b3; }
-
-.star-button {
-  display: inline-block;
-  width: 120px; }
 
 .cookie-notice {
   display: none;
