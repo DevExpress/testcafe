@@ -43,11 +43,11 @@ describe('Reporter', function () {
             fixture:     fixtureMocks[0],
             skip:        false,
             screenshots: [{
-                screenshotPath:      'screenshot1.png',
-                thumbnailPath:       'thumbnail1.png',
-                userAgent:           'chrome',
-                takenOnFail:         false,
-                quarantineAttemptID: 2
+                screenshotPath:    'screenshot1.png',
+                thumbnailPath:     'thumbnail1.png',
+                userAgent:         'chrome',
+                takenOnFail:       false,
+                quarantineAttempt: 2
             }],
             meta: {
                 run: 'run-001'
@@ -58,17 +58,17 @@ describe('Reporter', function () {
             fixture:     fixtureMocks[0],
             skip:        false,
             screenshots: [{
-                screenshotPath:      'screenshot1.png',
-                thumbnailPath:       'thumbnail1.png',
-                userAgent:           'chrome',
-                takenOnFail:         false,
-                quarantineAttemptID: null
+                screenshotPath:    'screenshot1.png',
+                thumbnailPath:     'thumbnail1.png',
+                userAgent:         'chrome',
+                takenOnFail:       false,
+                quarantineAttempt: null
             }, {
-                screenshotPath:      'screenshot2.png',
-                thumbnailPath:       'thumbnail2.png',
-                userAgent:           'chrome',
-                takenOnFail:         true,
-                quarantineAttemptID: null
+                screenshotPath:    'screenshot2.png',
+                thumbnailPath:     'thumbnail2.png',
+                userAgent:         'chrome',
+                takenOnFail:       true,
+                quarantineAttempt: null
             }],
             meta: {
                 run: 'run-001'
@@ -327,11 +327,11 @@ describe('Reporter', function () {
                         },
                         screenshotPath: '/screenshots/1445437598847',
                         screenshots:    [{
-                            screenshotPath:      'screenshot1.png',
-                            thumbnailPath:       'thumbnail1.png',
-                            userAgent:           'chrome',
-                            takenOnFail:         false,
-                            quarantineAttemptID: 2
+                            screenshotPath:    'screenshot1.png',
+                            thumbnailPath:     'thumbnail1.png',
+                            userAgent:         'chrome',
+                            takenOnFail:       false,
+                            quarantineAttempt: 2
                         }]
                     },
                     {
@@ -365,17 +365,17 @@ describe('Reporter', function () {
                         quarantine:     null,
                         screenshotPath: '/screenshots/1445437598847',
                         screenshots:    [{
-                            screenshotPath:      'screenshot1.png',
-                            thumbnailPath:       'thumbnail1.png',
-                            userAgent:           'chrome',
-                            takenOnFail:         false,
-                            quarantineAttemptID: null
+                            screenshotPath:    'screenshot1.png',
+                            thumbnailPath:     'thumbnail1.png',
+                            userAgent:         'chrome',
+                            takenOnFail:       false,
+                            quarantineAttempt: null
                         }, {
-                            screenshotPath:      'screenshot2.png',
-                            thumbnailPath:       'thumbnail2.png',
-                            userAgent:           'chrome',
-                            takenOnFail:         true,
-                            quarantineAttemptID: null
+                            screenshotPath:    'screenshot2.png',
+                            thumbnailPath:     'thumbnail2.png',
+                            userAgent:         'chrome',
+                            takenOnFail:       true,
+                            quarantineAttempt: null
                         }]
                     },
                     {

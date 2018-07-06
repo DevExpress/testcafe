@@ -20,7 +20,7 @@ var getReporter = function (scope) {
     function prepareScreenshot (screenshot, quarantine) {
         screenshot.screenshotPath  = patchScreenshotPath(screenshot.screenshotPath);
         screenshot.thumbnailPath   = patchScreenshotPath(screenshot.thumbnailPath);
-        screenshot.isPassedAttempt = quarantine[screenshot.quarantineAttemptID].passed;
+        screenshot.isPassedAttempt = quarantine[screenshot.quarantineAttempt].passed;
 
         userAgents[screenshot.userAgent] = true;
     }
@@ -181,8 +181,8 @@ describe('[API] t.takeScreenshot()', function () {
                             screenshotPath,
                             thumbnailPath,
                             takenOnFail,
-                            quarantineAttemptID: attempt,
-                            isPassedAttempt:     attempt > 1,
+                            quarantineAttempt: attempt,
+                            isPassedAttempt:   attempt > 1,
                             userAgent
                         };
                     };

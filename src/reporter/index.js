@@ -104,9 +104,9 @@ export default class Reporter {
                 if (testRun.quarantine) {
                     reportItem.quarantine = testRun.quarantine.attempts.reduce((result, errors, index) => {
                         const passed              = !errors.length;
-                        const quarantineAttemptID = index + 1;
+                        const quarantineAttempt = index + 1;
 
-                        result[quarantineAttemptID] = { passed };
+                        result[quarantineAttempt] = { passed };
 
                         return result;
                     }, {});
