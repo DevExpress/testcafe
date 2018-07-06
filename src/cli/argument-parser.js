@@ -19,7 +19,7 @@ const DEFAULT_TEST_LOOKUP_DIRS = ['test/', 'tests/'];
 const TEST_FILE_GLOB_PATTERN   = `./**/*@(${Compiler.getSupportedTestFileExtensions().join('|')})`;
 
 const DESCRIPTION = dedent(`
-    In the browser list, you can use browser names (e.g. "ie9", "chrome", etc.) as well as paths to executables.
+    In the browser list, you can use browser names (e.g. "ie", "chrome", etc.) as well as paths to executables.
 
     To run tests against all installed browsers, use the "all" alias.
 
@@ -32,7 +32,6 @@ const DESCRIPTION = dedent(`
 
     More info: https://devexpress.github.io/testcafe/documentation
 `);
-
 
 export default class CLIArgumentParser {
     constructor (cwd) {
@@ -89,6 +88,7 @@ export default class CLIArgumentParser {
             .option('-r, --reporter <name[:outputFile][,...]>', 'specify the reporters and optionally files where reports are saved')
             .option('-s, --screenshots <path>', 'enable screenshot capturing and specify the path to save the screenshots to')
             .option('-S, --screenshots-on-fails', 'take a screenshot whenever a test fails')
+            .option('-p, --screenshot-path-pattern <pattern>', 'use patterns to compose screenshot file names and paths: ${BROWSER}, ${BROWSER_VERSION}, ${OS}, etc.')
             .option('-q, --quarantine-mode', 'enable the quarantine mode')
             .option('-d, --debug-mode', 'execute test steps one by one pausing the test after each step')
             .option('-e, --skip-js-errors', 'make tests not fail when a JS error happens on a page')

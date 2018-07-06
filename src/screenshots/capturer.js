@@ -1,46 +1,21 @@
 import { join as joinPath, dirname, basename } from 'path';
-import sanitizeFilename from 'sanitize-filename';
 import { generateThumbnail } from 'testcafe-browser-tools';
 import cropScreenshot from './crop';
 import { ensureDir } from '../utils/promisified-functions';
 import { isInQueue, addToQueue } from '../utils/async-queue';
 import WARNING_MESSAGE from '../notifications/warning-message';
-
-
-const PNG_EXTENSION_RE = /(\.png)$/;
-
+import escapeUserAgent from '../utils/escape-user-agent';
+import correctFilePath from '../utils/correct-file-path';
 
 export default class Capturer {
-    constructor (baseScreenshotsPath, testEntry, connection, namingOptions, warningLog) {
-        this.enabled              = !!baseScreenshotsPath;
-        this.baseScreenshotsPath  = baseScreenshotsPath;
-        this.testEntry            = testEntry;
-        this.provider             = connection.provider;
-        this.browserId            = connection.id;
-        this.baseDirName          = namingOptions.baseDirName;
-        this.userAgentName        = namingOptions.userAgentName;
-        this.quarantine           = namingOptions.quarantine;
-        this.attemptNumber        = this.quarantine ? this.quarantine.getNextAttemptNumber() : null;
-        this.testIndex            = namingOptions.testIndex;
-        this.screenshotIndex      = 1;
-        this.errorScreenshotIndex = 1;
-        this.warningLog           = warningLog;
-
-        var testDirName     = `test-${this.testIndex}`;
-        var screenshotsPath = this.enabled ? joinPath(this.baseScreenshotsPath, this.baseDirName, testDirName) : '';
-
-        this.screenshotsPath         = screenshotsPath;
-        this.screenshotPathForReport = screenshotsPath;
-    }
-
-    static _correctFilePath (path) {
-        var correctedPath = path
-            .replace(/\\/g, '/')
-            .split('/')
-            .map(str => sanitizeFilename(str))
-            .join('/');
-
-        return PNG_EXTENSION_RE.test(correctedPath) ? correctedPath : `${correctedPath}.png`;
+    constructor (baseScreenshotsPath, testEntry, connection, pathPattern, warningLog) {
+        this.enabled             = !!baseScreenshotsPath;
+        this.baseScreenshotsPath = baseScreenshotsPath;
+        this.testEntry           = testEntry;
+        this.provider            = connection.provider;
+        this.browserId           = connection.id;
+        this.warningLog          = warningLog;
+        this.pathPattern         = pathPattern;
     }
 
     static _getDimensionWithoutScrollbar (fullDimension, documentDimension, bodyDimension) {
@@ -80,30 +55,50 @@ export default class Capturer {
         };
     }
 
-    _getFileName (forError) {
-        var fileName = `${forError ? this.errorScreenshotIndex : this.screenshotIndex}.png`;
-
-        if (forError)
-            this.errorScreenshotIndex++;
-        else
-            this.screenshotIndex++;
-
-        return fileName;
+    _joinWithBaseScreenshotPath (path) {
+        return joinPath(this.baseScreenshotsPath, path);
     }
 
-    _getScreenshotPath (fileName, customPath) {
-        if (customPath)
-            return joinPath(this.baseScreenshotsPath, Capturer._correctFilePath(customPath));
+    _updateScreenshotPathForTestEntry (customPath) {
+        // NOTE: if test contains takeScreenshot action with custom path
+        // we should specify the most common screenshot folder in report
+        let screenshotPathForTestEntry = this.baseScreenshotsPath;
 
-        var screenshotPath = this.attemptNumber !== null ?
-            joinPath(this.screenshotsPath, `run-${this.attemptNumber}`) : this.screenshotsPath;
+        if (!customPath) {
+            const pathForReport = this.pathPattern.getPathForReport();
 
-        return joinPath(screenshotPath, this.userAgentName, fileName);
+            screenshotPathForTestEntry = this._joinWithBaseScreenshotPath(pathForReport);
+        }
+
+
+        this.testEntry.path = screenshotPathForTestEntry;
+    }
+
+    _incrementFileIndexes (forError) {
+        if (forError)
+            this.pathPattern.data.errorFileIndex++;
+
+        else
+            this.pathPattern.data.fileIndex++;
+    }
+
+    _getCustomScreenshotPath (customPath) {
+        const correctedCustomPath = correctFilePath(customPath);
+
+        return this._joinWithBaseScreenshotPath(correctedCustomPath);
+    }
+
+    _getScreenshotPath (forError) {
+        const path = this.pathPattern.getPath(forError);
+
+        this._incrementFileIndexes(forError);
+
+        return this._joinWithBaseScreenshotPath(path);
     }
 
     _getThumbnailPath (screenshotPath) {
-        var imageName = basename(screenshotPath);
-        var imageDir  = dirname(screenshotPath);
+        const imageName = basename(screenshotPath);
+        const imageDir  = dirname(screenshotPath);
 
         return joinPath(imageDir, 'thumbnails', imageName);
     }
@@ -117,12 +112,8 @@ export default class Capturer {
         if (!this.enabled)
             return null;
 
-        var fileName = this._getFileName(forError);
-
-        fileName = forError ? joinPath('errors', fileName) : fileName;
-
-        var screenshotPath = this._getScreenshotPath(fileName, customPath);
-        var thumbnailPath  = this._getThumbnailPath(screenshotPath);
+        const screenshotPath = customPath ? this._getCustomScreenshotPath(customPath) : this._getScreenshotPath(forError);
+        const thumbnailPath  = this._getThumbnailPath(screenshotPath);
 
         if (isInQueue(screenshotPath))
             this.warningLog.addWarning(WARNING_MESSAGE.screenshotRewritingError, screenshotPath);
@@ -135,18 +126,13 @@ export default class Capturer {
             await generateThumbnail(screenshotPath, thumbnailPath);
         });
 
-        // NOTE: if test contains takeScreenshot action with custom path
-        // we should specify the most common screenshot folder in report
-        if (customPath)
-            this.screenshotPathForReport = this.baseScreenshotsPath;
-
-        this.testEntry.path = this.screenshotPathForReport;
+        this._updateScreenshotPathForTestEntry(customPath);
 
         const screenshot = {
             screenshotPath,
             thumbnailPath,
-            userAgent:           this.userAgentName,
-            quarantineAttemptID: this.attemptNumber,
+            userAgent:           escapeUserAgent(this.pathPattern.data.parsedUserAgent),
+            quarantineAttemptID: this.pathPattern.data.quarantineAttempt,
             takenOnFail:         forError,
         };
 
@@ -154,7 +140,6 @@ export default class Capturer {
 
         return screenshotPath;
     }
-
 
     async captureAction (options) {
         return await this._capture(false, options);

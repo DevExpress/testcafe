@@ -244,7 +244,7 @@ exports.checkScreenshotsCreated = function ({ forError, customPath, screenshotsC
     var taskDirPath = path.join(SCREENSHOTS_PATH, taskDirs[0]);
 
     if (customPath) {
-        var customDirExists = taskDirPath.indexOf(customPath) !== -1;
+        var customDirExists = taskDirPath.includes(customPath);
         var hasScreenshots  = getScreenshotFilesCount(taskDirPath, customPath) ===
                               expectedScreenshotCount * expectedSubDirCount;
 
@@ -313,4 +313,8 @@ exports.removeScreenshotDir = function () {
     if (isDirExists(SCREENSHOTS_PATH))
         del(SCREENSHOTS_PATH);
 };
+
+exports.SCREENSHOTS_PATH = SCREENSHOTS_PATH;
+
+exports.THUMBNAILS_DIR_NAME = THUMBNAILS_DIR_NAME;
 
