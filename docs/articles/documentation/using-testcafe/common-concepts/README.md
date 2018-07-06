@@ -8,3 +8,4 @@ permalink: /documentation/using-testcafe/common-concepts/
 * [Browsers](browsers/README.md)
 * [Concurrent Test Execution](concurrent-test-execution.md)
 * [Reporters](reporters.md)
+* [Connect to TestCafe Server over HTTPS](connect-to-testcafe-server-over-https.md)
