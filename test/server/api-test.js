@@ -1339,8 +1339,8 @@ describe('API', function () {
 
     describe('Request Hooks', () => {
         describe('Should raise errors for wrong RequestLogger construction', () => {
-            it.only('Cannot stringify the request body', () => {
-                const testFile = resolve('test/server/data/test-suites/request-hooks/cannot-stringify-request-body.js');
+            it('Cannot stringify the request body', () => {
+                const testFile = resolve('test/server/data/test-suites/request-hooks/request-logger/cannot-stringify-request-body.js');
 
                 return compile(testFile)
                     .then(() => {
@@ -1351,21 +1351,102 @@ describe('API', function () {
                             stackTop: testFile,
 
                             message: 'Cannot prepare tests due to an error.\n\n' +
-                                     'The test name is expected to be a string, but it was number.',
+                                     'There was an error while configuring the request hook:\n\n' +
+                                     'RequestLogger: Cannot stringify the request body because it is not logged. Specify { logRequestBody: true } in log options.',
 
-                            callsite: '    4 |// (to treat a file as a test, it requires at least one fixture definition\n' +
-                                      '    5 |//  with the string argument).\n' +
-                                      "    6 |test('TheAnswer', () => {\n    7 |});\n" +
-                                      '    8 |\n' +
-                                      ' >  9 |test(42, () => {\n' +
-                                      '   10 |});\n' +
-                                      '   11 |'
+                            callsite: '    1 |import { RequestLogger } from \'testcafe\';\n' +
+                                      '    2 |\n' +
+                                      '    3 |fixture `Fixture`;\n' +
+                                      '    4 |\n' +
+                                      " >  5 |const logger = new RequestLogger('', {\n" +
+                                      '    6 |    logRequestBody:       false,\n' +
+                                      '    7 |    stringifyRequestBody: true\n' +
+                                      '    8 |});'
                         });
                     });
             });
 
             it('Cannot stringify the response body', () => {
+                const testFile = resolve('test/server/data/test-suites/request-hooks/request-logger/cannot-stringify-response-body.js');
 
+                return compile(testFile)
+                    .then(() => {
+                        throw new Error('Promise rejection expected');
+                    })
+                    .catch(err => {
+                        assertAPIError(err, {
+                            stackTop: testFile,
+
+                            message: 'Cannot prepare tests due to an error.\n\n' +
+                                     'There was an error while configuring the request hook:\n\n' +
+                                     'RequestLogger: Cannot stringify the response body because it is not logged. Specify { logResponseBody: true } in log options.',
+
+                            callsite: '    1 |import { RequestLogger } from \'testcafe\';\n' +
+                                      '    2 |\n' +
+                                      '    3 |fixture `Fixture`;\n' +
+                                      '    4 |\n' +
+                                      " >  5 |const logger = new RequestLogger('', {\n" +
+                                      '    6 |    logResponseBody:       false,\n' +
+                                      '    7 |    stringifyResponseBody: true\n' +
+                                      '    8 |});'
+                        });
+                    });
+            });
+        });
+
+        describe('Should raise errors for wrong RequestMock api order call', () => {
+            it("The 'respond' method was not called after 'onRequestTo'", () => {
+                const testFile = resolve('test/server/data/test-suites/request-hooks/request-mock/respond-was-not-called-after-on-request-to.js');
+
+                return compile(testFile)
+                    .then(() => {
+                        throw new Error('Promise rejection expected');
+                    })
+                    .catch(err => {
+                        assertAPIError(err, {
+                            stackTop: testFile,
+
+                            message: 'Cannot prepare tests due to an error.\n\n' +
+                                     'There was an error while configuring the request hook:\n\n' +
+                                     "RequestMock: The 'respond' method was not called after 'onRequestTo'. You must call the 'respond' method to provide the mocked response.",
+
+                            callsite: '   1 |import { RequestMock } from \'testcafe\';\n' +
+                                      '   2 |\n' +
+                                      '   3 |fixture `Fixture`;\n' +
+                                      '   4 |\n' +
+                                      ' > 5 |const mock = RequestMock().onRequestTo({}).onRequestTo({});\n' +
+                                      '   6 |\n' +
+                                      '   7 |test(\'test\', async t => {});\n' +
+                                      '   8 |\n'
+                        });
+                    });
+            });
+
+            it("The 'onRequestTo' method was not called before 'respond'", () => {
+                const testFile = resolve('test/server/data/test-suites/request-hooks/request-mock/on-request-to-was-not-called-before-respond.js');
+
+                return compile(testFile)
+                    .then(() => {
+                        throw new Error('Promise rejection expected');
+                    })
+                    .catch(err => {
+                        assertAPIError(err, {
+                            stackTop: testFile,
+
+                            message: 'Cannot prepare tests due to an error.\n\n' +
+                                     'There was an error while configuring the request hook:\n\n' +
+                                     "RequestMock: The 'onRequestTo' method was not called before 'respond'. You must call the 'onRequestTo' method to provide the URL requests to which are mocked.",
+
+                            callsite: '   1 |import { RequestMock } from \'testcafe\';\n' +
+                                      '   2 |\n' +
+                                      '   3 |fixture `Fixture`;\n' +
+                                      '   4 |\n' +
+                                      ' > 5 |const mock = RequestMock().respond(() => {}).onRequestTo({});\n' +
+                                      '   6 |\n' +
+                                      '   7 |test(\'test\', async t => {});\n' +
+                                      '   8 |'
+                        });
+                    });
             });
         });
     });
