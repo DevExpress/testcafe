@@ -34,6 +34,7 @@ var childProcess         = require('child_process');
 var listBrowsers         = require('testcafe-browser-tools').getInstallations;
 var npmAuditor           = require('npm-auditor');
 var checkLicenses        = require('./test/dependency-licenses-checker');
+var sourcemaps           = require('gulp-sourcemaps');
 
 gulpStep.install();
 
@@ -259,7 +260,12 @@ gulp.step('server-scripts', function () {
             'src/**/*.js',
             '!src/client/**/*.js'
         ])
+        .pipe(sourcemaps.init())
         .pipe(gulpBabel())
+        .pipe(sourcemaps.mapSources(function (sourcePath, file) {
+            return file.path;
+        }))
+        .pipe(sourcemaps.write())
         .pipe(gulp.dest('lib'));
 });
 

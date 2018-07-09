@@ -28,6 +28,8 @@ var UncaughtErrorInTestCode                           = require('../../lib/error
 var UncaughtErrorInClientFunctionCode                 = require('../../lib/errors/test-run').UncaughtErrorInClientFunctionCode;
 var UncaughtNonErrorObjectInTestCode                  = require('../../lib/errors/test-run').UncaughtNonErrorObjectInTestCode;
 var UncaughtErrorInCustomDOMPropertyCode              = require('../../lib/errors/test-run').UncaughtErrorInCustomDOMPropertyCode;
+var UnhandledPromiseRejectionError                    = require('../../lib/errors/test-run').UnhandledPromiseRejectionError;
+var UncaughtExceptionError                            = require('../../lib/errors/test-run').UncaughtExceptionError;
 var ActionElementNotFoundError                        = require('../../lib/errors/test-run').ActionElementNotFoundError;
 var ActionElementIsInvisibleError                     = require('../../lib/errors/test-run').ActionElementIsInvisibleError;
 var ActionSelectorMatchesWrongNodeTypeError           = require('../../lib/errors/test-run').ActionSelectorMatchesWrongNodeTypeError;
@@ -171,6 +173,14 @@ describe('Error formatting', function () {
 
         it('Should format "uncaughtErrorInAddCustomDOMProperties" message', function () {
             assertErrorMessage('uncaught-error-in-add-custom-dom-properties-code', new UncaughtErrorInCustomDOMPropertyCode(testCallsite, new Error('Custom script error'), 'prop'));
+        });
+
+        it('Should format "unhandledPromiseRejectionError" message', function () {
+            assertErrorMessage('unhandled-promise-rejection-error', new UnhandledPromiseRejectionError('Hey ya!'));
+        });
+
+        it('Should format "uncaughtExceptionError" message', function () {
+            assertErrorMessage('uncaught-exception-error', new UncaughtExceptionError('Hey ya!'));
         });
 
         it('Should format "actionElementNotFoundError" message', function () {

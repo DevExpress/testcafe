@@ -103,6 +103,7 @@ export default class CLIArgumentParser {
             .option('--disable-page-reloads', 'disable page reloads between tests')
             .option('--dev', 'enables mechanisms to log and diagnose errors')
             .option('--qr-code', 'outputs QR-code that repeats URLs used to connect the remote browsers')
+            .option('--ignore-uncaught-errors', 'ignore uncaught errors')
 
             // NOTE: these options will be handled by chalk internally
             .option('--color', 'force colors in command line')

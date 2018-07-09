@@ -137,6 +137,22 @@ export class UncaughtErrorInCustomDOMPropertyCode extends TestRunErrorBase {
     }
 }
 
+export class UnhandledPromiseRejectionError extends TestRunErrorBase {
+    constructor (err) {
+        super(TYPE.unhandledPromiseRejection);
+
+        this.errMsg = String(err);
+    }
+}
+
+export class UncaughtExceptionError extends TestRunErrorBase {
+    constructor (err) {
+        super(TYPE.uncaughtException);
+
+        this.errMsg = String(err);
+    }
+}
+
 
 // Assertion errors
 //--------------------------------------------------------------------
