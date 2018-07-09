@@ -338,6 +338,55 @@ code {
             text-decoration: none;
             background-color: #ffffff; }
 
+.testcafe-studio-promo-gradient {
+  background: linear-gradient(#2ca8d4, #36b6e4);
+  height: 45px; }
+
+.testcafe-studio-promo {
+  background: #36b6e4;
+  min-height: 255px; }
+  .testcafe-studio-promo .testcafe-studio-promo-content {
+    max-width: 1500px;
+    min-height: 255px;
+    margin: 0 auto;
+    padding: 10px 100px 0;
+    display: flex;
+    justify-content: space-between; }
+    .testcafe-studio-promo .testcafe-studio-promo-content .testcafe-studio-promo-description {
+      margin: 23px 20px 0 0; }
+      .testcafe-studio-promo .testcafe-studio-promo-content .testcafe-studio-promo-description .testcafe-studio-promo-header {
+        font-weight: bold;
+        font-size: 30px;
+        color: #0a3e51; }
+      .testcafe-studio-promo .testcafe-studio-promo-content .testcafe-studio-promo-description .testcafe-studio-promo-subheader {
+        font-size: 14px;
+        color: #fff;
+        margin-top: 5px; }
+      .testcafe-studio-promo .testcafe-studio-promo-content .testcafe-studio-promo-description .check-it-out-button {
+        width: 240px;
+        height: 60px;
+        margin-top: 27px;
+        display: block;
+        background-color: #006a90;
+        border-radius: 5px;
+        color: #fff;
+        font-size: 18px;
+        font-weight: bold;
+        text-align: center;
+        line-height: 60px;
+        margin-bottom: 40px; }
+        .testcafe-studio-promo .testcafe-studio-promo-content .testcafe-studio-promo-description .check-it-out-button:hover {
+          text-decoration: none;
+          background-color: #ffffff;
+          color: #0a3e51; }
+    .testcafe-studio-promo .testcafe-studio-promo-content .testcafe-studio-promo-screenshot {
+      background: url("/testcafe/images/landing-page/studio-promo.png") no-repeat 0 0;
+      width: 732px;
+      min-width: 732px;
+      height: 240px;
+      margin: 15px -16px 0 0;
+      align-self: flex-end; }
+
 .tweets-section {
   margin: 55px 0 45px;
   background-color: #ffffff; }

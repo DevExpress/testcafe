@@ -795,7 +795,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/waiting-for-page-elements-to-appear.html"  >Waiting for Page Elements to Appear</a>
+<a href="/testcafe/documentation/test-api/built-in-waiting-mechanisms.html"  >Built-In Waiting Mechanisms</a>
 		
     </li>
 
@@ -900,21 +900,21 @@ When called right from the test function, they implicitly obtain the test contro
 you have to manually bind it to the test controller.</p>
 
 <p>Use the <a href="selector-options.html#optionsboundtestrun">boundTestRun</a> option for this.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">http</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'http'</span><span class="p">;</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">http</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'http'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//www.example.com/`;</span>
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://www.example.com/`</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">elementWithId</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">id</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">id</span><span class="p">));</span>
+<span class="kd">const</span> <span class="nx">elementWithId</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">id</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">id</span><span class="p">));</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Title changed'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">boundSelector</span> <span class="o">=</span> <span class="nx">elementWithId</span><span class="p">.</span><span class="kd">with</span><span class="p">({</span> <span class="na">boundTestRun</span><span class="p">:</span> <span class="nx">t</span> <span class="p">});</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Title changed'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">boundSelector</span> <span class="o">=</span> <span class="nx">elementWithId</span><span class="p">.</span><span class="kd">with</span><span class="p">({</span> <span class="na">boundTestRun</span><span class="p">:</span> <span class="nx">t</span> <span class="p">});</span>
 
     <span class="c1">// Performs an HTTP request that changes the article title on the page.</span>
     <span class="c1">// Resolves to a value indicating whether the title has been changed.</span>
-    <span class="kr">const</span> <span class="nx">match</span> <span class="o">=</span> <span class="nx">await</span> <span class="k">new</span> <span class="nx">Promise</span><span class="p">(</span><span class="nx">resolve</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="kr">const</span> <span class="nx">req</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">request</span><span class="p">(</span><span class="cm">/* request options */</span><span class="p">,</span> <span class="nx">res</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">match</span> <span class="o">=</span> <span class="kr">await</span> <span class="k">new</span> <span class="nb">Promise</span><span class="p">(</span><span class="nx">resolve</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">req</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">request</span><span class="p">(</span><span class="cm">/* request options */</span><span class="p">,</span> <span class="nx">res</span> <span class="o">=&gt;</span> <span class="p">{</span>
             <span class="k">if</span><span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">statusCode</span> <span class="o">===</span> <span class="mi">200</span><span class="p">)</span> <span class="p">{</span>
                 <span class="nx">boundSelector</span><span class="p">(</span><span class="s1">'article-title'</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">titleEl</span> <span class="o">=&gt;</span> <span class="p">{</span>
                     <span class="nx">resolve</span><span class="p">(</span><span class="nx">titleEl</span><span class="p">.</span><span class="nx">textContent</span> <span class="o">===</span> <span class="s1">'New title'</span><span class="p">);</span>
@@ -926,7 +926,7 @@ you have to manually bind it to the test controller.</p>
         <span class="nx">req</span><span class="p">.</span><span class="nx">end</span><span class="p">();</span>
     <span class="p">});</span>
 
-    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">match</span><span class="p">).</span><span class="nx">ok</span><span class="p">();</span>
+    <span class="kr">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">match</span><span class="p">).</span><span class="nx">ok</span><span class="p">();</span>
 <span class="p">});</span>
 </code></pre></div>
 <p>This approach only works for Node.js callbacks that fire during the test run. To ensure that the test function

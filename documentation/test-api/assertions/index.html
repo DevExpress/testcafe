@@ -795,7 +795,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/waiting-for-page-elements-to-appear.html"  >Waiting for Page Elements to Appear</a>
+<a href="/testcafe/documentation/test-api/built-in-waiting-mechanisms.html"  >Built-In Waiting Mechanisms</a>
 		
     </li>
 
@@ -919,17 +919,17 @@ and, optionally, other arguments.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">await t.expect( actual ).eql( expected, message, options );
 </code></pre></div>
 <p>The sample below demonstrates how to use assertions:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">Example</span> <span class="nx">page</span><span class="err">`</span>
-   <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`;</span>
+<span class="nx">fixture</span> <span class="s2">`Example page`</span>
+   <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://devexpress.github.io/testcafe/example/`</span><span class="p">;</span>
 
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Check property of element'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-   <span class="kr">const</span> <span class="nx">developerNameInput</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">);</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Check property of element'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+   <span class="kd">const</span> <span class="nx">developerNameInput</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">);</span>
 
-   <span class="nx">await</span> <span class="nx">t</span>
+   <span class="kr">await</span> <span class="nx">t</span>
        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">developerNameInput</span><span class="p">.</span><span class="nx">value</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="s1">''</span><span class="p">,</span> <span class="s1">'input is empty'</span><span class="p">)</span>
        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">developerNameInput</span><span class="p">,</span> <span class="s1">'Peter Parker'</span><span class="p">)</span>
        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">developerNameInput</span><span class="p">.</span><span class="nx">value</span><span class="p">).</span><span class="nx">contains</span><span class="p">(</span><span class="s1">'Peter'</span><span class="p">,</span> <span class="s1">'input contains text "Peter"'</span><span class="p">);</span>
@@ -977,10 +977,10 @@ within a timeout:</p>
 <span class="nt">&lt;/script&gt;</span>
 </code></pre></div>
 <p>Test code for this page can be as follows.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">test</span><span class="p">(</span><span class="s1">'Button click'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">btn</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#btn'</span><span class="p">);</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">test</span><span class="p">(</span><span class="s1">'Button click'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">btn</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#btn'</span><span class="p">);</span>
 
-    <span class="nx">await</span> <span class="nx">t</span>
+    <span class="kr">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">btn</span><span class="p">)</span>
         <span class="c1">// A regular assertion fails immediately, but TestCafe retries to run DOM state</span>
         <span class="c1">// assertions many times within the timeout until this assertion passes successfully.</span>
@@ -1003,7 +1003,7 @@ or <a href="../obtaining-data-from-the-client/">client function</a> promise was 
 
 <p><strong>Default value</strong>: The timeout is specified using the <a href="../../using-testcafe/programming-interface/runner.html#run">runner.run</a> API method
 or the <a href="../../using-testcafe/command-line-interface.html#--assertion-timeout-ms">assertion-timeout</a> command line option.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="s1">'#elementId'</span><span class="p">).</span><span class="nx">innerText</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="s1">'text'</span><span class="p">,</span> <span class="s1">'check element text'</span><span class="p">,</span> <span class="p">{</span> <span class="na">timeout</span><span class="p">:</span> <span class="mi">500</span> <span class="p">});</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="s1">'#elementId'</span><span class="p">).</span><span class="nx">innerText</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="s1">'text'</span><span class="p">,</span> <span class="s1">'check element text'</span><span class="p">,</span> <span class="p">{</span> <span class="na">timeout</span><span class="p">:</span> <span class="mi">500</span> <span class="p">});</span>
 </code></pre></div><blockquote><div class="blockquote-content"><p>In addition to built-in assertions, you also can use assertions from Node&#39;s built-in <a href="https://nodejs.org/api/assert.html">assert</a> module or 3rd-party library (for example <a href="http://chaijs.com/">chai</a>).
 In this case, specify the time required to complete asynchronous actions using the <a href="../pausing-the-test.html">t.wait(timeout)</a> method.</p>
 </div></blockquote><h3><a class="anchor" name="optionsallowunawaitedpromise"></a>options.allowUnawaitedPromise <a class="permalink" href="#optionsallowunawaitedpromise">#</a></h3>
@@ -1011,7 +1011,7 @@ In this case, specify the time required to complete asynchronous actions using t
 and <a href="../obtaining-data-from-the-client/">client functions</a> return can be passed as the assertion&#39;s actual value. If you pass a regular unawaited promise, TestCafe throws an error.</p>
 
 <p>If you need to assert a regular promise, set the <code>allowUnawaitedPromise</code> option to <code>true</code>.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">doSomethingAsync</span><span class="p">()).</span><span class="nx">ok</span><span class="p">(</span><span class="s1">'check that a promise is returned'</span><span class="p">,</span> <span class="p">{</span> <span class="na">allowUnawaitedPromise</span><span class="p">:</span> <span class="kc">true</span> <span class="p">});</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">doSomethingAsync</span><span class="p">()).</span><span class="nx">ok</span><span class="p">(</span><span class="s1">'check that a promise is returned'</span><span class="p">,</span> <span class="p">{</span> <span class="na">allowUnawaitedPromise</span><span class="p">:</span> <span class="kc">true</span> <span class="p">});</span>
 </code></pre></div>
 
 		</div>

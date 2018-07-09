@@ -795,7 +795,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/waiting-for-page-elements-to-appear.html"  >Waiting for Page Elements to Appear</a>
+<a href="/testcafe/documentation/test-api/built-in-waiting-mechanisms.html"  >Built-In Waiting Mechanisms</a>
 		
     </li>
 
@@ -915,13 +915,13 @@ the screenshot actions are ignored.</p>
 </ul>
 
 <p>The following example shows how to use the <code>t.takeScreenshot</code> action.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`;</span>
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://devexpress.github.io/testcafe/example/`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Take a screenshot of a fieldset'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Take a screenshot of a fieldset'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">,</span> <span class="s1">'Peter Parker'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">takeScreenshot</span><span class="p">(</span><span class="s1">'my-fixture/thank-you-page.png'</span><span class="p">);</span>
@@ -953,13 +953,13 @@ the screenshot actions are ignored.</p>
 <td>Options that define how the screenshot will be taken. See details below.</td>
 </tr>
 </tbody></table>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`;</span>
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://devexpress.github.io/testcafe/example/`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Take a screenshot of a fieldset'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Take a screenshot of a fieldset'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#reusing-js-code'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#continuous-integration-embedding'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">takeElementScreenshot</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="s1">'fieldset'</span><span class="p">).</span><span class="nx">nth</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="s1">'my-fixture/important-features.png'</span><span class="p">);</span>
@@ -1048,11 +1048,11 @@ the screenshot actions are ignored.</p>
 <p><img src="../../../images/screenshot-crop.png" alt="Crop Rectangle"></p>
 
 <p><strong>Example</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//www.example.com/`;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://www.example.com/`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Take a screenshot of my new avatar'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Take a screenshot of my new avatar'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#change-avatar'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">setFilesToUpload</span><span class="p">(</span><span class="s1">'#upload-input'</span><span class="p">,</span> <span class="s1">'img/portrait.jpg'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#submit'</span><span class="p">)</span>

@@ -327,29 +327,29 @@ which means it should work with any browser with HTML5 support released in the l
 <p>You can import third-party modules to test files in the same way as a regular node.js module.</p>
 
 <p>On the server side, use the <code>import</code> statement.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="nx">fs</span> <span class="nx">from</span> <span class="s1">'fs'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="nx">fs</span> <span class="k">from</span> <span class="s1">'fs'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">fixture</span><span class="err">`</span>
+<span class="nx">fixture</span> <span class="s2">`fixture`</span>
    <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="s1">'http://localhost/testcafe/'</span><span class="p">);</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
    <span class="kd">var</span> <span class="nx">filePath</span> <span class="o">=</span> <span class="s1">'filepath.js'</span><span class="p">;</span>
 
-   <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">fs</span><span class="p">.</span><span class="nx">existsSync</span><span class="p">(</span><span class="nx">filePath</span><span class="p">)).</span><span class="nx">ok</span><span class="p">();</span>
+   <span class="kr">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">fs</span><span class="p">.</span><span class="nx">existsSync</span><span class="p">(</span><span class="nx">filePath</span><span class="p">)).</span><span class="nx">ok</span><span class="p">();</span>
 <span class="p">});</span>
 </code></pre></div>
 <p>On the client side, use <code>t.eval</code> to include the desired module in the test.
 Then you can use this module inside client functions and selectors.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">test</span><span class="p">(</span><span class="s1">'test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">test</span><span class="p">(</span><span class="s1">'test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="c1">// eval jquery code to add jQuery to the page</span>
-    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nb">eval</span><span class="p">(</span><span class="k">new</span> <span class="nb">Function</span><span class="p">(</span><span class="nx">fs</span><span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="s1">'./jquery.js'</span><span class="p">).</span><span class="nx">toString</span><span class="p">()));</span>
+    <span class="kr">await</span> <span class="nx">t</span><span class="p">.</span><span class="kr">eval</span><span class="p">(</span><span class="k">new</span> <span class="nb">Function</span><span class="p">(</span><span class="nx">fs</span><span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="s1">'./jquery.js'</span><span class="p">).</span><span class="nx">toString</span><span class="p">()));</span>
 
     <span class="kd">var</span> <span class="nx">clientFunction</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
         <span class="c1">// You can use $ here</span>
         <span class="k">return</span> <span class="nx">$</span><span class="p">(</span><span class="s1">'div'</span><span class="p">).</span><span class="nx">text</span><span class="p">();</span>
     <span class="p">});</span>
 
-    <span class="kd">var</span> <span class="nx">text</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">clientFunction</span><span class="p">();</span>
+    <span class="kd">var</span> <span class="nx">text</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">clientFunction</span><span class="p">();</span>
 <span class="p">});</span>
 </code></pre></div><h3><a class="anchor" name="how-do-i-work-with-configuration-files-and-environment-variables"></a>How do I work with configuration files and environment variables? <a class="permalink" href="#how-do-i-work-with-configuration-files-and-environment-variables">#</a></h3>
 <p>TestCafe works without any configuration.
@@ -358,30 +358,30 @@ However, you can introduce your own configuration file and import it to the test
 
 <p>For example, you need to pass a website&#39;s base URL to test code. In this instance, you can create the following <code>config.json</code> file:</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"baseUrl"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://localhost/testcafe"</span><span class="w">
+    </span><span class="s2">"baseUrl"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://localhost/testcafe"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>In the test code, import it as you would do with a regular JavaScript module.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="nx">config</span> <span class="nx">from</span> <span class="s1">'./config'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="nx">config</span> <span class="k">from</span> <span class="s1">'./config'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">Fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="nx">config</span><span class="p">.</span><span class="nx">baseUrl</span><span class="p">}</span><span class="sr">/test1/i</span><span class="nx">ndex</span><span class="p">.</span><span class="nx">html</span><span class="err">`</span><span class="p">;</span>
+<span class="nx">fixture</span> <span class="s2">`Fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`</span><span class="p">${</span><span class="nx">config</span><span class="p">.</span><span class="nx">baseUrl</span><span class="p">}</span><span class="s2">/test1/index.html`</span><span class="p">;</span>
 </code></pre></div>
 <p>Alternatively, you can use custom command line parameters or environment variables.</p>
 
 <p>The following command passes the <code>env</code> argument to the test code:</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js --env<span class="o">=</span>development
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js <span class="nt">--env</span><span class="o">=</span>development
 </code></pre></div>
 <p>In the test, use an argument parser library (like <code>minimist</code>) to parse custom arguments.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="nx">minimist</span> <span class="nx">from</span> <span class="s1">'minimist'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="nx">minimist</span> <span class="k">from</span> <span class="s1">'minimist'</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">args</span> <span class="o">=</span> <span class="nx">minimist</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">argv</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">2</span><span class="p">));</span>
-<span class="kr">const</span> <span class="nx">environment</span> <span class="o">=</span> <span class="nx">args</span><span class="p">.</span><span class="nx">env</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">args</span> <span class="o">=</span> <span class="nx">minimist</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">argv</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">2</span><span class="p">));</span>
+<span class="kd">const</span> <span class="nx">environment</span> <span class="o">=</span> <span class="nx">args</span><span class="p">.</span><span class="nx">env</span><span class="p">;</span>
 
 <span class="nx">fixture</span><span class="p">(</span><span class="s1">'example'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="s1">'http://example.com'</span><span class="p">);</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'check environment'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'check environment'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Environment:'</span><span class="p">,</span> <span class="nx">environment</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div>
@@ -430,11 +430,11 @@ If you use a locally installed TestCafe, try installing it globally and running 
 outside of the project to eliminate the influence of third-party modules.</p>
 <h3><a class="anchor" name="i-have-installed-testcafe-plugins-but-they-do-not-work-what-have-i-done-wrong"></a>I have installed TestCafe plugins but they do not work. What have I done wrong? <a class="permalink" href="#i-have-installed-testcafe-plugins-but-they-do-not-work-what-have-i-done-wrong">#</a></h3>
 <p>Plugins should also be installed locally if you are using a locally installed TestCafe.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm install --save-dev <span class="o">{</span>pluginName<span class="o">}</span>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm <span class="nb">install</span> <span class="nt">--save-dev</span> <span class="o">{</span>pluginName<span class="o">}</span>
 </code></pre></div>
 <p>If you are going to use a global TestCafe installation, or you wish
 to use the plugin in other projects as well, install it globally.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm install -g <span class="o">{</span>pluginName<span class="o">}</span>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm <span class="nb">install</span> <span class="nt">-g</span> <span class="o">{</span>pluginName<span class="o">}</span>
 </code></pre></div><h3><a class="anchor" name="my-test-fails-because-testcafe-could-not-find-the-required-webpage-element-why-does-this-happen"></a>My test fails because TestCafe could not find the required webpage element. Why does this happen? <a class="permalink" href="#my-test-fails-because-testcafe-could-not-find-the-required-webpage-element-why-does-this-happen">#</a></h3>
 <p>First, try debugging the tested page with the TestCafe&#39;s built-in debugger by adding
 the <a href="../documentation/test-api/debugging.html">t.debug()</a> method to test code.

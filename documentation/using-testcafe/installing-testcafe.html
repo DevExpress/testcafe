@@ -559,13 +559,13 @@
 <li><a href="#globally">Globally</a></li>
 <li><a href="#locally">Locally</a></li>
 </ul>
-<h2><a class="anchor" name="globally"></a>Globally <a class="permalink" href="#globally">#</a></h2><div class="highlight"><pre><code class="language-bash" data-lang="bash">npm install -g testcafe
+<h2><a class="anchor" name="globally"></a>Globally <a class="permalink" href="#globally">#</a></h2><div class="highlight"><pre><code class="language-bash" data-lang="bash">npm <span class="nb">install</span> <span class="nt">-g</span> testcafe
 </code></pre></div>
 <p>After that, you can run TestCafe from a <a href="command-line-interface.html">command line</a> by using the <code>testcafe</code> command.</p>
 <div class="highlight"><pre><code class="language-bash" data-lang="bash">testcafe chrome tests/
 </code></pre></div><h2><a class="anchor" name="locally"></a>Locally <a class="permalink" href="#locally">#</a></h2>
 <p>The following command will install TestCafe into your project directory and save it on the dependencies list.</p>
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">npm install --save-dev testcafe
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">npm <span class="nb">install</span> <span class="nt">--save-dev</span> testcafe
 </code></pre></div>
 <p>The local installation is preferred for continuous integration scenarios or if you are going to use TestCafe from a Node.js application (see <a href="programming-interface/">Programming Interface</a>). This kind of installation has two advantages.</p>
 
@@ -580,7 +580,7 @@
 <li><p>By using <a href="https://docs.npmjs.com/misc/scripts">npm scripts</a>.</p>
 
 <p>For example, you can add the <code>testcafe</code> command to the <code>scripts</code> section of the package.json file in the following way.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="s2">"scripts"</span><span class="err">:</span> <span class="p">{</span> <span class="s2">"test"</span><span class="err">:</span> <span class="s2">"testcafe chrome tests/"</span> <span class="p">}</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="s2">"scripts"</span><span class="p">:</span> <span class="p">{</span> <span class="s2">"test"</span><span class="p">:</span> <span class="s2">"testcafe chrome tests/"</span> <span class="p">}</span>
 </code></pre></div>
 <p>After that, you can run TestCafe by using the <code>npm test</code> command.</p></li>
 <li><p>If TestCafe is installed locally as well as globally, you can simply use the <code>testcafe</code> command. The local version will run automatically.</p>

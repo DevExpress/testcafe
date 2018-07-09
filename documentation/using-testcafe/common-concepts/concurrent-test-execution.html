@@ -568,7 +568,7 @@ command line option or the <a href="../programming-interface/runner.html#concurr
 <blockquote class="important"><div class="blockquote-content"><p>Concurrent test execution is not supported in Microsoft Edge. This is because there is no known way to start Edge in a new window and make it open a particular URL.</p>
 </div></blockquote>
 <p>The following command invokes three Chrome instances and runs tests concurrently.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe -c 3 chrome tests/test.js
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="nt">-c</span> 3 chrome tests/test.js
 </code></pre></div>
 <p>This is how the same thing can be done through the API.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">var</span> <span class="nx">testRunPromise</span> <span class="o">=</span> <span class="nx">runner</span>
@@ -578,7 +578,7 @@ command line option or the <a href="../programming-interface/runner.html#concurr
     <span class="p">.</span><span class="nx">run</span><span class="p">();</span>
 </code></pre></div>
 <p>Note that you can also use concurrency when testing against multiple browsers.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe -c 4 safari,firefox tests/test.js
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="nt">-c</span> 4 safari,firefox tests/test.js
 </code></pre></div>
 <p>In this case, tests will be distributed across four Safari instances and the same tests will also run in four Firefox instances.</p>
 
@@ -589,7 +589,7 @@ a <a href="../programming-interface/browserconnection.html">browser connection</
 
 <p>On a remote device, invoke all the required instances manually. The total number of instances
 should divide by the concurrency parameter <code>n</code>. Otherwise, an exception will be thrown.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe -c 2 remote:4 tests/test.js
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="nt">-c</span> 2 remote:4 tests/test.js
 </code></pre></div>
 <p>If you test against multiple remote browsers, open and connect all instances of one browser before connecting the next browser.</p>
 

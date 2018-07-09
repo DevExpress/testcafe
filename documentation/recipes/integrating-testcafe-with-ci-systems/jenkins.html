@@ -564,7 +564,7 @@
 <p><img src="../../../images/jenkins/add-batch-command.png" alt="Add a Batch Command"></p>
 
 <p>In the <strong>Command</strong> box, type the following.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm install testcafe testcafe-reporter-xunit
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm <span class="nb">install </span>testcafe testcafe-reporter-xunit
 </code></pre></div>
 <p>This command installs the main <code>testcafe</code> module and a plugin that saves test run reports in the xUnit format.</p>
 
@@ -573,7 +573,7 @@
 <p>Add another step that executes a shell command after the previous one. This step will run TestCafe.</p>
 
 <p>Type the following command.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">node_modules/.bin/testcafe chrome tests/<span class="k">**</span>/<span class="k">*</span> -r xunit:res.xml
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">node_modules/.bin/testcafe chrome tests/<span class="k">**</span>/<span class="k">*</span> <span class="nt">-r</span> xunit:res.xml
 </code></pre></div>
 <p>This runs TestCafe tests from the <code>tests</code> directory in Google Chrome. Test results are saved to the <code>res.xml</code> file in the xUnit format.</p>
 

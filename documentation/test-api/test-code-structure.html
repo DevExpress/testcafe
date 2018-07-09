@@ -795,7 +795,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/waiting-for-page-elements-to-appear.html"  >Waiting for Page Elements to Appear</a>
+<a href="/testcafe/documentation/test-api/built-in-waiting-mechanisms.html"  >Built-In Waiting Mechanisms</a>
 		
     </li>
 
@@ -966,13 +966,13 @@ fixture `fixtureName`
 <td>The <a href="#test-controller">test controller</a> used to access the test run API.</td>
 </tr>
 </tbody></table>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">MyFixture</span><span class="err">`</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`MyFixture`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Test1'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Test1'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="cm">/* Test 1 Code */</span>
 <span class="p">});</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Test2'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Test2'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="cm">/* Test 2 Code */</span>
 <span class="p">});</span>
 </code></pre></div>
@@ -990,18 +990,18 @@ passed to each function that is expected to contain server-side test code (like 
 
 <p>Use the test controller to call <a href="actions/">test actions</a>, handle <a href="handling-native-dialogs.html">browser dialogs</a>,
 use the <a href="pausing-the-test.html">wait function</a> or <a href="assertions/">execute assertions</a>.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//www.example.com/`;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://www.example.com/`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My Test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My Test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">setNativeDialogHandler</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#populate'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">);</span>
 
-    <span class="kr">const</span> <span class="nx">location</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nb">eval</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">);</span>
+    <span class="kd">const</span> <span class="nx">location</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">t</span><span class="p">.</span><span class="kr">eval</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">);</span>
 
-    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">location</span><span class="p">.</span><span class="nx">pathname</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="s1">'/testcafe/example/thank-you.html'</span><span class="p">);</span>
+    <span class="kr">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">location</span><span class="p">.</span><span class="nx">pathname</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="s1">'/testcafe/example/thank-you.html'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div>
 <p>The test controller also provides access to the internal context the test API requires to operate.
@@ -1011,16 +1011,16 @@ called from Node.js callbacks.</p>
 <h4><a class="anchor" name="using-test-controller-outside-of-test-code"></a>Using Test Controller Outside of Test Code <a class="permalink" href="#using-test-controller-outside-of-test-code">#</a></h4>
 <p>You may sometimes need to call the test API from outside the test code. For instance, your <a href="../recipes/using-page-model.html">page model</a>
 can contain methods that perform common operations used in different tests (like authentication).</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="kr">export</span> <span class="k">default</span> <span class="kr">class</span> <span class="nx">Page</span> <span class="p">{</span>
-    <span class="nx">constructor</span> <span class="p">()</span> <span class="p">{</span>
+<span class="k">export</span> <span class="k">default</span> <span class="kd">class</span> <span class="nx">Page</span> <span class="p">{</span>
+    <span class="kd">constructor</span> <span class="p">()</span> <span class="p">{</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">loginInput</span>    <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#login'</span><span class="p">);</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">passwordInput</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#password'</span><span class="p">);</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">signInButton</span>  <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#sign-in-button'</span><span class="p">);</span>
     <span class="p">}</span>
-    <span class="nx">async</span> <span class="nx">login</span> <span class="p">(</span><span class="nx">t</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">await</span> <span class="nx">t</span>
+    <span class="k">async</span> <span class="nx">login</span> <span class="p">(</span><span class="nx">t</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kr">await</span> <span class="nx">t</span>
             <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">loginInput</span><span class="p">,</span> <span class="s1">'MyLogin'</span><span class="p">)</span>
             <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">passwordInput</span><span class="p">,</span> <span class="s1">'Pa$$word'</span><span class="p">)</span>
             <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">signInButton</span><span class="p">);</span>
@@ -1031,16 +1031,16 @@ can contain methods that perform common operations used in different tests (like
 
 <p>TestCafe allows you to avoid passing the test controller to the method explicitly.
 Instead, you can import <code>t</code> to the page model file.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span><span class="p">,</span> <span class="nx">t</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span><span class="p">,</span> <span class="nx">t</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="kr">export</span> <span class="k">default</span> <span class="kr">class</span> <span class="nx">Page</span> <span class="p">{</span>
-    <span class="nx">constructor</span> <span class="p">()</span> <span class="p">{</span>
+<span class="k">export</span> <span class="k">default</span> <span class="kd">class</span> <span class="nx">Page</span> <span class="p">{</span>
+    <span class="kd">constructor</span> <span class="p">()</span> <span class="p">{</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">loginInput</span>    <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#login'</span><span class="p">);</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">passwordInput</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#password'</span><span class="p">);</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">signInButton</span>  <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#sign-in-button'</span><span class="p">);</span>
     <span class="p">}</span>
-    <span class="nx">async</span> <span class="nx">login</span> <span class="p">()</span> <span class="p">{</span>
-        <span class="nx">await</span> <span class="nx">t</span>
+    <span class="k">async</span> <span class="nx">login</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="kr">await</span> <span class="nx">t</span>
             <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">loginInput</span><span class="p">,</span> <span class="s1">'MyLogin'</span><span class="p">)</span>
             <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">passwordInput</span><span class="p">,</span> <span class="s1">'Pa$$word'</span><span class="p">)</span>
             <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">signInButton</span><span class="p">);</span>
@@ -1072,15 +1072,15 @@ to specify the speed.</p>
 <p>If the speed is also specified for an <a href="actions/action-options.html#basic-action-options">individual action</a>, the action&#39;s speed setting overrides the test speed.</p>
 
 <p><strong>Example</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">Test</span> <span class="nx">Speed</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`;</span>
+<span class="nx">fixture</span> <span class="s2">`Test Speed`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://devexpress.github.io/testcafe/example/`</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">nameInput</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">nameInput</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">);</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="err">`</span><span class="nx">Test</span> <span class="nx">Speed</span><span class="err">`</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
+<span class="nx">test</span><span class="p">(</span><span class="s2">`Test Speed`</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">,</span> <span class="s1">'Peter'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">setTestSpeed</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">,</span> <span class="s1">' Parker'</span><span class="p">);</span>
@@ -1110,11 +1110,11 @@ to specify the speed.</p>
 <p>You can also set the page load timeout when launching tests via the <a href="../using-testcafe/command-line-interface.html#--page-load-timeout-ms">command line</a> or <a href="../using-testcafe/programming-interface/runner.html#run">API</a>.</p>
 
 <p><strong>Example</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">Page</span> <span class="nx">load</span> <span class="nx">timeout</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`Page load timeout`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://devexpress.github.io/testcafe/example/`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="err">`</span><span class="nx">Page</span> <span class="nx">load</span> <span class="nx">timeout</span><span class="err">`</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
+<span class="nx">test</span><span class="p">(</span><span class="s2">`Page load timeout`</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">setPageLoadTimeout</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">navigateTo</span><span class="p">(</span><span class="s1">'http://devexpress.github.io/testcafe/'</span><span class="p">);</span>
 <span class="p">});</span>
@@ -1142,26 +1142,26 @@ test.page `url`
 <td>The URL of the webpage at which this test starts.</td>
 </tr>
 </tbody></table>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">MyFixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example`;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`MyFixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://devexpress.github.io/testcafe/example`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Test1'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Test1'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="c1">// Starts at http://devexpress.github.io/testcafe/example</span>
 <span class="p">});</span>
 
 <span class="nx">test</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/blog/`</span>
-    <span class="p">(</span><span class="s1">'Test2'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://devexpress.github.io/testcafe/blog/`</span>
+    <span class="p">(</span><span class="s1">'Test2'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
         <span class="c1">// Starts at http://devexpress.github.io/testcafe/blog/</span>
     <span class="p">});</span>
 </code></pre></div>
 <p>If the start page is not specified, it defaults to <code>about:blank</code>.</p>
 
 <p>You can use the <code>file://</code> scheme or relative paths to test web pages in local directories.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">MyFixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">file</span><span class="err">:</span><span class="c1">///user/my-website/index.html`;</span>
-</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">MyFixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="p">..</span><span class="o">/</span><span class="nx">my</span><span class="o">-</span><span class="nx">project</span><span class="o">/</span><span class="nx">index</span><span class="p">.</span><span class="nx">html</span><span class="err">`</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`MyFixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`file:///user/my-website/index.html`</span><span class="p">;</span>
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`MyFixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`../my-project/index.html`</span><span class="p">;</span>
 </code></pre></div><h2><a class="anchor" name="specifying-testing-metadata"></a>Specifying Testing Metadata <a class="permalink" href="#specifying-testing-metadata">#</a></h2>
 <p>TestCafe allows you to specify additional information for tests in the form of <em>key-value metadata</em> and use it in reports.</p>
 
@@ -1212,24 +1212,24 @@ test.page `url`
 </ul>
 
 <p><strong>Examples</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
     <span class="p">.</span><span class="nx">meta</span><span class="p">(</span><span class="s1">'fixtureID'</span><span class="p">,</span> <span class="s1">'f-0001'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">meta</span><span class="p">({</span> <span class="na">author</span><span class="p">:</span> <span class="s1">'John'</span><span class="p">,</span> <span class="na">creationDate</span><span class="p">:</span> <span class="s1">'05/03/2018'</span> <span class="p">});</span>
 </code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">test</span>
     <span class="p">.</span><span class="nx">meta</span><span class="p">(</span><span class="s1">'testID'</span><span class="p">,</span> <span class="s1">'t-0005'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">meta</span><span class="p">({</span> <span class="na">severity</span><span class="p">:</span> <span class="s1">'critical'</span><span class="p">,</span> <span class="na">testedAPIVersion</span><span class="p">:</span> <span class="s1">'1.0'</span> <span class="p">})</span>
-    <span class="p">(</span><span class="s1">'MyTest'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/* ... */</span><span class="p">});</span>
+    <span class="p">(</span><span class="s1">'MyTest'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/* ... */</span><span class="p">});</span>
 </code></pre></div>
 <p>All metadata entries specified for a fixture are applied to tests included in this fixture.</p>
 
 <p>If you specified the same entries in the <code>test.meta</code> and <code>fixture.meta</code> methods, the <code>test.meta</code> method call overrides values of these entries. The following example demonstrates a <code>test.meta</code> method call that overrides the <strong>creationDate</strong> entry:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
     <span class="p">.</span><span class="nx">meta</span><span class="p">(</span><span class="s1">'creationDate'</span><span class="p">,</span> <span class="s1">'05/03/2018'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//www.example.com/`;</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://www.example.com/`</span><span class="p">;</span>
 
 <span class="nx">test</span>
     <span class="p">.</span><span class="nx">meta</span><span class="p">(</span><span class="s1">'creationDate'</span><span class="p">,</span> <span class="s1">'05/04/2018'</span><span class="p">);</span> <span class="c1">// The value of the creationDate entry is '05/04/2018'</span>
-    <span class="p">(</span><span class="s1">'MyTest'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/* ... */</span><span class="p">});</span>
+    <span class="p">(</span><span class="s1">'MyTest'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/* ... */</span><span class="p">});</span>
 </code></pre></div><h3><a class="anchor" name="using-metadata-in-reports"></a>Using Metadata in Reports <a class="permalink" href="#using-metadata-in-reports">#</a></h3>
 <p>You can include testing metadata to reports using a <a href="../extending-testcafe/reporter-plugin/">custom reporter</a>. The reporter&#39;s <a href="../extending-testcafe/reporter-plugin/reporter-methods.html#reportfixturestart">reportFixtureStart</a> and <a href="../extending-testcafe/reporter-plugin/reporter-methods.html#reporttestdone">reportTestDone</a> methods can access the fixture and test metadata.</p>
 <h2><a class="anchor" name="initialization-and-clean-up"></a>Initialization and Clean-Up <a class="permalink" href="#initialization-and-clean-up">#</a></h2>
@@ -1272,21 +1272,21 @@ These functions are called <em>hook functions</em> or <em>hooks</em>.</p>
 </tbody></table>
 
 <p><strong>Example</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//example.com`</span>
-    <span class="p">.</span><span class="nx">beforeEach</span><span class="p">(</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://example.com`</span>
+    <span class="p">.</span><span class="nx">beforeEach</span><span class="p">(</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
         <span class="cm">/* test initialization code */</span>
     <span class="p">})</span>
-    <span class="p">.</span><span class="nx">afterEach</span><span class="p">(</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="p">.</span><span class="nx">afterEach</span><span class="p">(</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
         <span class="cm">/* test finalization code */</span>
     <span class="p">});</span>
 
 <span class="nx">test</span>
-    <span class="p">.</span><span class="nx">before</span><span class="p">(</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="p">.</span><span class="nx">before</span><span class="p">(</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
         <span class="cm">/* test initialization code */</span>
     <span class="p">})</span>
-    <span class="p">(</span><span class="s1">'MyTest'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">})</span>
-    <span class="p">.</span><span class="nx">after</span><span class="p">(</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="p">(</span><span class="s1">'MyTest'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">})</span>
+    <span class="p">.</span><span class="nx">after</span><span class="p">(</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
         <span class="cm">/* test finalization code */</span>
     <span class="p">});</span>
 </code></pre></div><h4><a class="anchor" name="sharing-variables-between-test-hooks-and-test-code"></a>Sharing Variables Between Test Hooks and Test Code <a class="permalink" href="#sharing-variables-between-test-hooks-and-test-code">#</a></h4>
@@ -1297,16 +1297,16 @@ by using the <em>test context</em> object.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">t.ctx
 </code></pre></div>
 <p>Instead of using a global variable, assign the object you want to share directly to <code>t.ctx</code> or create a property as in the following example:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">Fixture1</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">beforeEach</span><span class="p">(</span><span class="nx">async</span> <span class="nx">t</span>  <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`Fixture1`</span>
+    <span class="p">.</span><span class="nx">beforeEach</span><span class="p">(</span><span class="k">async</span> <span class="nx">t</span>  <span class="o">=&gt;</span> <span class="p">{</span>
         <span class="nx">t</span><span class="p">.</span><span class="nx">ctx</span><span class="p">.</span><span class="nx">someProp</span> <span class="o">=</span> <span class="mi">123</span><span class="p">;</span>
     <span class="p">});</span>
 
 <span class="nx">test</span>
-    <span class="p">(</span><span class="s1">'Test1'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="p">(</span><span class="s1">'Test1'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">ctx</span><span class="p">.</span><span class="nx">someProp</span><span class="p">);</span> <span class="c1">// &gt; 123</span>
     <span class="p">})</span>
-    <span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
          <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">ctx</span><span class="p">.</span><span class="nx">someProp</span><span class="p">);</span> <span class="c1">// &gt; 123</span>
     <span class="p">});</span>
 </code></pre></div>
@@ -1342,22 +1342,22 @@ Use them to perform server-side operations like preparing the server that hosts 
 </tbody></table>
 
 <p><strong>Example</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//example.com`</span>
-    <span class="p">.</span><span class="nx">before</span><span class="p">(</span> <span class="nx">async</span> <span class="nx">ctx</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://example.com`</span>
+    <span class="p">.</span><span class="nx">before</span><span class="p">(</span> <span class="k">async</span> <span class="nx">ctx</span> <span class="o">=&gt;</span> <span class="p">{</span>
         <span class="cm">/* fixture initialization code */</span>
     <span class="p">})</span>
-    <span class="p">.</span><span class="nx">after</span><span class="p">(</span> <span class="nx">async</span> <span class="nx">ctx</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="p">.</span><span class="nx">after</span><span class="p">(</span> <span class="k">async</span> <span class="nx">ctx</span> <span class="o">=&gt;</span> <span class="p">{</span>
         <span class="cm">/* fixture finalization code */</span>
     <span class="p">});</span>
 </code></pre></div><h4><a class="anchor" name="sharing-variables-between-fixture-hooks-and-test-code"></a>Sharing Variables Between Fixture Hooks and Test Code <a class="permalink" href="#sharing-variables-between-fixture-hooks-and-test-code">#</a></h4>
 <p>Hook functions passed to <code>fixture.before</code> and <code>fixture.after</code> methods take a <code>ctx</code> parameter that contains <em>fixture context</em>.
 You can add properties to this parameter to share the value or object with test code.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">Fixture1</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">before</span><span class="p">(</span><span class="nx">async</span> <span class="nx">ctx</span>  <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`Fixture1`</span>
+    <span class="p">.</span><span class="nx">before</span><span class="p">(</span><span class="k">async</span> <span class="nx">ctx</span>  <span class="o">=&gt;</span> <span class="p">{</span>
         <span class="nx">ctx</span><span class="p">.</span><span class="nx">someProp</span> <span class="o">=</span> <span class="mi">123</span><span class="p">;</span>
     <span class="p">})</span>
-    <span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="nx">async</span> <span class="nx">ctx</span>  <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="k">async</span> <span class="nx">ctx</span>  <span class="o">=&gt;</span> <span class="p">{</span>
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">ctx</span><span class="p">.</span><span class="nx">someProp</span><span class="p">);</span> <span class="c1">// &gt; 123</span>
     <span class="p">});</span>
 </code></pre></div>
@@ -1367,19 +1367,19 @@ You can add properties to this parameter to share the value or object with test 
 <p>Test code can read from <code>t.fixtureCtx</code>, assign to its properties or add new ones, but it cannot overwrite the entire <code>t.fixtureCtx</code> object.</p>
 
 <p><strong>Example</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">Fixture1</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">before</span><span class="p">(</span><span class="nx">async</span> <span class="nx">ctx</span>  <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`Fixture1`</span>
+    <span class="p">.</span><span class="nx">before</span><span class="p">(</span><span class="k">async</span> <span class="nx">ctx</span>  <span class="o">=&gt;</span> <span class="p">{</span>
         <span class="nx">ctx</span><span class="p">.</span><span class="nx">someProp</span> <span class="o">=</span> <span class="mi">123</span><span class="p">;</span>
     <span class="p">})</span>
-    <span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="nx">async</span> <span class="nx">ctx</span>  <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="k">async</span> <span class="nx">ctx</span>  <span class="o">=&gt;</span> <span class="p">{</span>
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">ctx</span><span class="p">.</span><span class="nx">newProp</span><span class="p">);</span> <span class="c1">// &gt; abc</span>
     <span class="p">});</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Test1'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Test1'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">fixtureCtx</span><span class="p">.</span><span class="nx">someProp</span><span class="p">);</span> <span class="c1">// &gt; 123</span>
 <span class="p">});</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Test2'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Test2'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">t</span><span class="p">.</span><span class="nx">fixtureCtx</span><span class="p">.</span><span class="nx">newProp</span> <span class="o">=</span> <span class="s1">'abc'</span><span class="p">;</span>
 <span class="p">});</span>
 </code></pre></div><h2><a class="anchor" name="skipping-tests"></a>Skipping Tests <a class="permalink" href="#skipping-tests">#</a></h2>
@@ -1395,21 +1395,21 @@ Use the <code>fixture.skip</code> and <code>test.skip</code> methods for this.</
 <p>If several tests or fixtures are marked with <code>only</code>, all the marked tests and fixtures are run.</p>
 
 <p><strong>Examples</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span><span class="p">.</span><span class="nx">skip</span> <span class="err">`</span><span class="nx">Fixture1</span><span class="err">`</span><span class="p">;</span> <span class="c1">// All tests in this fixture are skipped</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span><span class="p">.</span><span class="nx">skip</span> <span class="s2">`Fixture1`</span><span class="p">;</span> <span class="c1">// All tests in this fixture are skipped</span>
 
 <span class="nx">test</span><span class="p">(</span><span class="s1">'Fixture1Test1'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{});</span>
 <span class="nx">test</span><span class="p">(</span><span class="s1">'Fixture1Test2'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{});</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">Fixture2</span><span class="err">`</span><span class="p">;</span>
+<span class="nx">fixture</span> <span class="s2">`Fixture2`</span><span class="p">;</span>
 
 <span class="nx">test</span><span class="p">(</span><span class="s1">'Fixture2Test1'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{});</span>
 <span class="nx">test</span><span class="p">.</span><span class="nx">skip</span><span class="p">(</span><span class="s1">'Fixture2Test2'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{});</span> <span class="c1">// This test is skipped</span>
 <span class="nx">test</span><span class="p">(</span><span class="s1">'Fixture2Test3'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{});</span>
-</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span><span class="p">.</span><span class="nx">only</span> <span class="err">`</span><span class="nx">Fixture1</span><span class="err">`</span><span class="p">;</span>
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span><span class="p">.</span><span class="nx">only</span> <span class="s2">`Fixture1`</span><span class="p">;</span>
 <span class="nx">test</span><span class="p">(</span><span class="s1">'Fixture1Test1'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{});</span>
 <span class="nx">test</span><span class="p">(</span><span class="s1">'Fixture1Test2'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{});</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">Fixture2</span><span class="err">`</span><span class="p">;</span>
+<span class="nx">fixture</span> <span class="s2">`Fixture2`</span><span class="p">;</span>
 
 <span class="nx">test</span><span class="p">(</span><span class="s1">'Fixture2Test1'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{});</span>
 <span class="nx">test</span><span class="p">.</span><span class="nx">only</span><span class="p">(</span><span class="s1">'Fixture2Test2'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{});</span>

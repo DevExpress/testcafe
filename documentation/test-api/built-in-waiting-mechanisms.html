@@ -8,20 +8,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <title>Attaching Hooks to Tests and Fixtures | TestCafe</title>
+  <title>Built-In Waiting Mechanisms | TestCafe</title>
 
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
   
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/attaching-hooks-to-tests-and-fixtures.html" />
-  <meta property="og:title" content="Attaching Hooks to Tests and Fixtures | TestCafe" />
+  <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/test-api/built-in-waiting-mechanisms.html" />
+  <meta property="og:title" content="Built-In Waiting Mechanisms | TestCafe" />
 
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
-  <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/attaching-hooks-to-tests-and-fixtures.html">
+  <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/test-api/built-in-waiting-mechanisms.html">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="http://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
@@ -777,7 +777,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/intercepting-http-requests/attaching-hooks-to-tests-and-fixtures.html" class="active" >Attaching Hooks to Tests and Fixtures</a>
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/attaching-hooks-to-tests-and-fixtures.html"  >Attaching Hooks to Tests and Fixtures</a>
 		
     </li>
 
@@ -795,7 +795,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/built-in-waiting-mechanisms.html"  >Built-In Waiting Mechanisms</a>
+<a href="/testcafe/documentation/test-api/built-in-waiting-mechanisms.html" class="active" >Built-In Waiting Mechanisms</a>
 		
     </li>
 
@@ -885,55 +885,98 @@
 	<article class="doc">
 		<div class="post-content">
 
-			<h1>Attaching Hooks to Tests and Fixtures</h1>
-<p>To attach a hook to a test or fixture, use the <code>fixture.requestHooks</code> and <code>test.requestHooks</code> methods. A hook attached to a fixture handles requests from all tests in the fixture.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">fixture.requestHooks(...hook)
-test.requestHooks(...hook)
-</code></pre></div>
-<p>You can also attach and detach hooks during test run using the <code>t.addRequestHooks</code> and <code>t.removeRequestHooks</code> methods.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">t.addRequestHooks(...hook)
-t.removeRequestHooks(...hooks)
-</code></pre></div>
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><code>hook</code></td>
-<td>RequestHook subclass</td>
-<td>A <code>RequestLogger</code>, <code>RequestMock</code> or custom user-defined hook.</td>
-</tr>
-</tbody></table>
+			<h1>Built-In Waiting Mechanisms</h1>
+<p>TestCafe has built-in automatic waiting mechanisms, so that it does not need dedicated API to wait for page elements to appear or redirects to happen.</p>
 
-<p>The <code>fixture.requestHooks</code>, <code>test.requestHooks</code> <code>t.addRequestHooks</code> and <code>t.removeRequestHooks</code> methods use the rest operator which allows you to pass multiple hooks as parameters or arrays of hooks.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">RequestLogger</span><span class="p">,</span> <span class="nx">RequestMock</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
-
-<span class="kd">const</span> <span class="nx">logger</span> <span class="o">=</span> <span class="nx">RequestLogger</span><span class="p">(</span><span class="s1">'http://example.com'</span><span class="p">);</span>
-<span class="kd">const</span> <span class="nx">mock</span>   <span class="o">=</span> <span class="nx">RequestMock</span><span class="p">()</span>
-    <span class="p">.</span><span class="nx">onRequestTo</span><span class="p">(</span><span class="s1">'http://external-service.com/api/'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">respond</span><span class="p">({</span> <span class="na">data</span><span class="p">:</span> <span class="s1">'value'</span> <span class="p">});</span>
+<p>This topic describes how these mechanisms work with <a href="actions/">test actions</a>,
+<a href="assertions/">assertions</a>, <a href="selecting-page-elements/selectors/">selectors</a> and navigation.</p>
+<h2><a class="anchor" name="waiting-for-action-target-elements"></a>Waiting for Action Target Elements <a class="permalink" href="#waiting-for-action-target-elements">#</a></h2>
+<p>TestCafe automatically waits for the target element to become visible when an action is executed.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
 <span class="nx">fixture</span> <span class="s2">`My fixture`</span>
-    <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="s1">'http://example.com'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">requestHooks</span><span class="p">(</span><span class="nx">logger</span><span class="p">);</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`https://devexpress.github.io/testcafe/example`</span><span class="p">;</span>
 
-<span class="nx">test</span>
-    <span class="p">.</span><span class="nx">requestHooks</span><span class="p">(</span><span class="nx">mock</span><span class="p">)</span>
-    <span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="kd">const</span> <span class="nx">nameInput</span>    <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">submitButton</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">);</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="kr">await</span> <span class="nx">t</span>
-         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#send-logged-request'</span><span class="p">)</span>
-         <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">logger</span><span class="p">.</span><span class="nx">count</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">)).</span><span class="nx">eql</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-         <span class="p">.</span><span class="nx">removeRequestHooks</span><span class="p">(</span><span class="nx">logger</span><span class="p">)</span>
-         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#send-unlogged-request'</span><span class="p">)</span>
-         <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">logger</span><span class="p">.</span><span class="nx">count</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">)).</span><span class="nx">eql</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-         <span class="p">.</span><span class="nx">addRequestHooks</span><span class="p">(</span><span class="nx">logger</span><span class="p">)</span>
-         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#send-logged-request'</span><span class="p">)</span>
-         <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">logger</span><span class="p">.</span><span class="nx">count</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">)).</span><span class="nx">eql</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
-<span class="p">})</span>
+        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">,</span> <span class="s1">'Peter Parker'</span><span class="p">)</span> <span class="c1">// Waits for `#developer-name`</span>
+        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">submitButton</span><span class="p">);</span>                <span class="c1">// Waits for '#submit-button'</span>
+<span class="p">});</span>
 </code></pre></div>
+<p>TestCafe tries to evaluate the specified selector multiple times within the <a href="selecting-page-elements/selectors/using-selectors.html#selector-timeout">timeout</a>.
+If the element does not appear, the test will fail.</p>
+
+<p>The exceptions are <a href="actions/upload.html#populate-file-upload-input">t.setFilesToUpload</a> and <a href="actions/upload.html#clear-file-upload-input">t.clearUpload</a> actions that do not require that the target element is visible.</p>
+<h2><a class="anchor" name="waiting-for-elements-when-evaluating-selectors"></a>Waiting for Elements When Evaluating Selectors <a class="permalink" href="#waiting-for-elements-when-evaluating-selectors">#</a></h2>
+<p>When evaluating a selector, TestCafe automatically waits for the element to appear in the DOM.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`https://devexpress.github.io/testcafe/example`</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">nameInput</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">);</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+
+    <span class="c1">// Waits for '#developer-name' to appear in the DOM.</span>
+    <span class="kd">const</span> <span class="nx">nameInputElement</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">nameInput</span><span class="p">();</span>
+<span class="p">});</span>
+</code></pre></div>
+<p>TestCafe keeps trying to evaluate the selector until the element appears in the DOM or the <a href="selecting-page-elements/selectors/using-selectors.html#selector-timeout">timeout</a> passes.</p>
+
+<p>You can additionally require that TestCafe should wait for an element to become visible.
+Use the <a href="selecting-page-elements/selectors/selector-options.html#optionsvisibilitycheck">visibilityCheck</a> selector option for this.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`https://devexpress.github.io/testcafe/example`</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">nameInput</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">);</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+
+    <span class="c1">// Waits for '#developer-name' to appear in the DOM and become visible.</span>
+    <span class="kd">const</span> <span class="nx">nameInputElement</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">nameInput</span><span class="p">.</span><span class="kd">with</span><span class="p">({</span> <span class="na">visibilityCheck</span><span class="p">:</span> <span class="kc">true</span> <span class="p">})();</span>
+<span class="p">});</span>
+</code></pre></div><h2><a class="anchor" name="waiting-for-assertions-to-pass"></a>Waiting for Assertions to Pass <a class="permalink" href="#waiting-for-assertions-to-pass">#</a></h2>
+<p>TestCafe assertions feature the <a href="assertions/#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a>.
+This mechanism is activated when you pass a <a href="selecting-page-elements/selectors/using-selectors.html#obtain-element-state">selector property</a>
+or a <a href="obtaining-data-from-the-client/">client function</a> as an actual value. In this instance, TestCafe keeps recalculating the actual
+value until it matches the expected value or the <a href="assertions/#optionstimeout">assertion timeout</a> passes.</p>
+
+<p>Note that the Smart Assertion Query Mechanism does not wait for page elements to appear.
+If you need to wait for an element before executing an assertion,
+add another assertion that checks the selector&#39;s <a href="selecting-page-elements/selectors/using-selectors.html#check-if-an-element-exists">count</a>
+or <a href="selecting-page-elements/selectors/using-selectors.html#check-if-an-element-exists">exists</a> property.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`https://devexpress.github.io/testcafe/example`</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">nameInput</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">populate</span>  <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#populate'</span><span class="p">);</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span>
+        <span class="p">.</span><span class="nx">setNativeDialogHandler</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">populate</span><span class="p">)</span>
+
+        <span class="c1">// Waits for the '#developer-name'</span>
+        <span class="c1">// element to appear in DOM.</span>
+        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">.</span><span class="nx">exists</span><span class="p">).</span><span class="nx">ok</span><span class="p">()</span>
+
+        <span class="c1">// Keeps trying to obtain nameInput.value</span>
+        <span class="c1">// until it equals 'Peter Parker'</span>
+        <span class="c1">// or the timeout passes.</span>
+        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">.</span><span class="nx">value</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="s1">'Peter Parker'</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div><h2><a class="anchor" name="waiting-for-redirects"></a>Waiting for Redirects <a class="permalink" href="#waiting-for-redirects">#</a></h2>
+<p>When an action triggers a redirect, TestCafe automatically waits for the server to respond.
+The test is resumed if the server does not respond within <strong>15</strong> seconds.</p>
+
 
 		</div>
 		<div class="widget-container hidden">

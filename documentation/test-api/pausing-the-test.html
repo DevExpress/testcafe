@@ -795,7 +795,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/waiting-for-page-elements-to-appear.html"  >Waiting for Page Elements to Appear</a>
+<a href="/testcafe/documentation/test-api/built-in-waiting-mechanisms.html"  >Built-In Waiting Mechanisms</a>
 		
     </li>
 
@@ -904,15 +904,15 @@
 </tbody></table>
 
 <p>The following example uses the <code>t.wait</code> function to pause the test while animation is playing.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">header</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#article-header'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">header</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#article-header'</span><span class="p">);</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//www.example.com/`;</span>
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://www.example.com/`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Wait Example'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Wait Example'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#play-1-sec-animation'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">wait</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
  <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">header</span><span class="p">.</span><span class="nx">getStyleProperty</span><span class="p">(</span><span class="s1">'opacity'</span><span class="p">)).</span><span class="nx">eql</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
