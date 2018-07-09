@@ -565,7 +565,7 @@ Therefore, you can avoid manual installation of browsers and the testing framewo
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">docker pull testcafe/testcafe:alpha
 </code></pre></div>
 <p>Now you can run TestCafe from the docker image.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">docker run -v <span class="k">${</span><span class="nv">TEST_FOLDER</span><span class="k">}</span>:/tests -it testcafe/testcafe <span class="k">${</span><span class="nv">TESTCAFE_ARGS</span><span class="k">}</span>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">docker run <span class="nt">-v</span> <span class="k">${</span><span class="nv">TEST_FOLDER</span><span class="k">}</span>:/tests <span class="nt">-it</span> testcafe/testcafe <span class="k">${</span><span class="nv">TESTCAFE_ARGS</span><span class="k">}</span>
 </code></pre></div>
 <p>This command takes the following parameters:</p>
 
@@ -602,7 +602,7 @@ Therefore, you can avoid manual installation of browsers and the testing framewo
 </ul>
 
 <p>The example below shows a command that runs tests in a remote browser.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">docker run -v /d/tests:/tests -P -it testcafe/testcafe --hostname <span class="nv">$EXTERNAL_HOSTNAME</span> remote /tests/test.js
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">docker run <span class="nt">-v</span> /d/tests:/tests <span class="nt">-P</span> <span class="nt">-it</span> testcafe/testcafe <span class="nt">--hostname</span> <span class="nv">$EXTERNAL_HOSTNAME</span> remote /tests/test.js
 </code></pre></div>
 <p>where <code>$EXTERNAL_HOSTNAME</code> is the host machine name.</p>
 
@@ -629,14 +629,14 @@ Therefore, you can avoid manual installation of browsers and the testing framewo
 </tbody></table>
 
 <p>If you choose to use different ports, publish them in the Docker container (use the <code>-p</code> flag) and specify them to TestCafe (use the <a href="command-line-interface.html#--ports-port1port2">--ports</a> option).</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">docker run -v /d/tests:/tests -p <span class="nv">$PORT1</span> -p <span class="nv">$PORT2</span> -it testcafe/testcafe --hostname <span class="nv">$EXTERNAL_HOSTNAME</span> --ports <span class="nv">$PORT1</span>,<span class="nv">$PORT2</span> remote /tests/test.js
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">docker run <span class="nt">-v</span> /d/tests:/tests <span class="nt">-p</span> <span class="nv">$PORT1</span> <span class="nt">-p</span> <span class="nv">$PORT2</span> <span class="nt">-it</span> testcafe/testcafe <span class="nt">--hostname</span> <span class="nv">$EXTERNAL_HOSTNAME</span> <span class="nt">--ports</span> <span class="nv">$PORT1</span>,<span class="nv">$PORT2</span> remote /tests/test.js
 </code></pre></div>
 <p>where <code>$PORT1</code> and <code>$PORT2</code> are vacant container&#39;s ports, <code>$EXTERNAL_HOSTNAME</code> is the host machine name.</p>
 <h2><a class="anchor" name="testing-heavy-websites"></a>Testing Heavy Websites <a class="permalink" href="#testing-heavy-websites">#</a></h2>
 <p>If you are testing a heavy website, you may need to allocate extra resources for the Docker image.</p>
 
 <p>The most common case is when the temporary file storage <code>/dev/shm</code> runs out of free space. It usually happens when you run tests in Chromium. The following example shows how to allow additional space (1GB) for this storage using the <code>--shm-size</code> option.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">docker run --shm-size<span class="o">=</span>1g -v <span class="k">${</span><span class="nv">TEST_FOLDER</span><span class="k">}</span>:/tests -it testcafe/testcafe <span class="k">${</span><span class="nv">TESTCAFE_ARGS</span><span class="k">}</span>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">docker run <span class="nt">--shm-size</span><span class="o">=</span>1g <span class="nt">-v</span> <span class="k">${</span><span class="nv">TEST_FOLDER</span><span class="k">}</span>:/tests <span class="nt">-it</span> testcafe/testcafe <span class="k">${</span><span class="nv">TESTCAFE_ARGS</span><span class="k">}</span>
 </code></pre></div>
 <p>You can find a complete list of options that manage runtime constraints on resources in the <a href="https://docs.docker.com/engine/reference/run/#runtime-constraints-on-resources">Docker documentation</a>.</p>
 

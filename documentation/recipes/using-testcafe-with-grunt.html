@@ -550,7 +550,7 @@ This recipe shows how to configure a Grunt task to run TestCafe tests.</p>
 <blockquote><div class="blockquote-content"><p>You need to have Grunt v0.4 or newer to use it with TestCafe.</p>
 </div></blockquote><h2><a class="anchor" name="step-1---install-testcafe-grunt-plugin"></a>Step 1 - Install TestCafe Grunt Plugin <a class="permalink" href="#step-1---install-testcafe-grunt-plugin">#</a></h2>
 <p>Assuming that you already have Grunt installed in your project, you also need to install the <a href="https://github.com/crudo/grunt-testcafe">TestCafe Grunt plugin</a>.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm install grunt-testcafe --save-dev
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm <span class="nb">install </span>grunt-testcafe <span class="nt">--save-dev</span>
 </code></pre></div><h2><a class="anchor" name="step-2---adding-a-testcafe-task-to-gruntfile"></a>Step 2 - Adding a TestCafe Task to Gruntfile <a class="permalink" href="#step-2---adding-a-testcafe-task-to-gruntfile">#</a></h2>
 <p>In <code>Gruntfile.js</code>, add a property named <code>testcafe</code> to the data object passed to the <code>grunt.initConfig</code> method.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span>

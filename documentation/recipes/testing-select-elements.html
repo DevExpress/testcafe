@@ -560,50 +560,50 @@
 and checks that the <code>&lt;select&gt;</code> element contains the right city.</p>
 
 <p>Here is the full test code and further we will reproduce it step by step.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">Test</span> <span class="nx">select</span> <span class="nx">element</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//localhost:8080`;</span>
+<span class="nx">fixture</span> <span class="s2">`Test select element`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://localhost:8080`</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">citySelect</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#city'</span><span class="p">);</span>
-<span class="kr">const</span> <span class="nx">cityOption</span> <span class="o">=</span> <span class="nx">citySelect</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">'option'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">citySelect</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#city'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">cityOption</span> <span class="o">=</span> <span class="nx">citySelect</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">'option'</span><span class="p">);</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="err">`</span><span class="nx">Select</span> <span class="nx">an</span> <span class="nx">option</span> <span class="nx">from</span> <span class="nx">the</span> <span class="nx">drop</span><span class="o">-</span><span class="nx">down</span> <span class="nx">menu</span><span class="err">`</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
+<span class="nx">test</span><span class="p">(</span><span class="s2">`Select an option from the drop-down menu`</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">citySelect</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">cityOption</span><span class="p">.</span><span class="nx">withText</span><span class="p">(</span><span class="s1">'London'</span><span class="p">))</span>
         <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">citySelect</span><span class="p">.</span><span class="nx">value</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="s1">'London'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div>
 <p>Begin with an empty test.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">Test</span> <span class="nx">select</span> <span class="nx">element</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//localhost:8080`;</span>
+<span class="nx">fixture</span> <span class="s2">`Test select element`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://localhost:8080`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="err">`</span><span class="nx">Select</span> <span class="nx">an</span> <span class="nx">option</span> <span class="nx">from</span> <span class="nx">the</span> <span class="nx">drop</span><span class="o">-</span><span class="nx">down</span> <span class="nx">menu</span><span class="err">`</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">test</span><span class="p">(</span><span class="s2">`Select an option from the drop-down menu`</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="c1">// Here you will put test code.</span>
 <span class="p">});</span>
 </code></pre></div>
 <p>First, you need a <a href="../test-api/selecting-page-elements/selectors/">selector</a> that picks the <code>&lt;select&gt;</code> element.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">citySelect</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#city'</span><span class="p">);</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">citySelect</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#city'</span><span class="p">);</span>
 </code></pre></div>
 <p>Use this selector to click the element and invoke the drop-down menu.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">citySelect</span><span class="p">);</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">citySelect</span><span class="p">);</span>
 </code></pre></div>
 <p>Next, write code that selects <code>London</code> from the drop-down list. To this end, introduce a selector that identifies options.
 This selector uses the <a href="../test-api/selecting-page-elements/selectors/functional-style-selectors.html#find">find</a> function to locate <code>&lt;option&gt;</code> elements inside <code>&lt;select&gt;</code>.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">cityOption</span> <span class="o">=</span> <span class="nx">citySelect</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">'option'</span><span class="p">);</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">cityOption</span> <span class="o">=</span> <span class="nx">citySelect</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">'option'</span><span class="p">);</span>
 </code></pre></div>
 <p>To find the <code>London</code> value, use the selector&#39;s filter methods that include <a href="../test-api/selecting-page-elements/selectors/functional-style-selectors.html#withtext">withText</a>, <a href="../test-api/selecting-page-elements/selectors/functional-style-selectors.html#nth">nth</a> and
 <a href="../test-api/selecting-page-elements/selectors/functional-style-selectors.html#withattribute">withAttribute</a>.
 Then pass this selector to the <code>click</code> method.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">await</span> <span class="nx">t</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">await</span> <span class="nx">t</span>
     <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">citySelect</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">cityOption</span><span class="p">.</span><span class="nx">withText</span><span class="p">(</span><span class="s1">'London'</span><span class="p">));</span>
 </code></pre></div>
 <p>Finally, add an assertion that checks that the <code>&lt;select&gt;</code> element has the <code>London</code> value selected.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">await</span> <span class="nx">t</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">await</span> <span class="nx">t</span>
     <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">citySelect</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">cityOption</span><span class="p">.</span><span class="nx">withText</span><span class="p">(</span><span class="s1">'London'</span><span class="p">))</span>
     <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">citySelect</span><span class="p">.</span><span class="nx">value</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="s1">'London'</span><span class="p">);</span>
