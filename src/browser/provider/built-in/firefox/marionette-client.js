@@ -7,10 +7,10 @@ import delay from '../../../../utils/delay';
 import { GET_WINDOW_DIMENSIONS_INFO_SCRIPT } from '../../utils/client-functions';
 
 
-const CONNECTION_READY_TIMEOUT   = 300;
-const MAX_CONNECTION_RETRY_COUNT = 100;
-const MAX_RESIZE_RETRY_COUNT     = 2;
-const HEADER_SEPARATOR           = ':';
+const CONNECTION_TIMEOUT     = 30000;
+const CONNECTION_RETRY_DELAY = 300;
+const MAX_RESIZE_RETRY_COUNT = 2;
+const HEADER_SEPARATOR       = ':';
 
 module.exports = class MarionetteClient {
     constructor (port = 2828, host = '127.0.0.1') {
@@ -43,14 +43,16 @@ module.exports = class MarionetteClient {
             .then(() => true)
             .catch(() => {
                 this.socket.removeAllListeners('connect');
-                return delay(CONNECTION_READY_TIMEOUT);
+                return delay(CONNECTION_RETRY_DELAY);
             });
     }
 
     async _connectSocket (port, host) {
+        const connectionStartTime = Date.now();
+
         var connected = await this._attemptToConnect(port, host);
 
-        for (var i = 0; !connected && i < MAX_CONNECTION_RETRY_COUNT; i++)
+        while (!connected && Date.now() - connectionStartTime < CONNECTION_TIMEOUT)
             connected = await this._attemptToConnect(port, host);
 
         if (!connected)

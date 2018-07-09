@@ -13,7 +13,7 @@ export default {
 
     async _createMarionetteClient (runtimeInfo) {
         try {
-            var marionetteClient = new MarionetteClient(runtimeInfo.marionettePort);
+            const marionetteClient = new MarionetteClient(runtimeInfo.marionettePort);
 
             await marionetteClient.connect();
 
@@ -35,7 +35,8 @@ export default {
 
         await this.waitForConnectionReady(runtimeInfo.browserId);
 
-        runtimeInfo.marionetteClient = await this._createMarionetteClient(runtimeInfo);
+        if (runtimeInfo.marionettePort)
+            runtimeInfo.marionetteClient = await this._createMarionetteClient(runtimeInfo);
 
         this.openedBrowsers[browserId] = runtimeInfo;
     },
