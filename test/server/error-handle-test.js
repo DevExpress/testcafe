@@ -34,9 +34,11 @@ describe('Global error handlers', () => {
                 handleErrors.addRunningTest(testRunMock);
                 handleErrors.startHandlingTests();
 
+                /* eslint-disable no-new */
                 new Promise((resolve, reject) => {
                     reject(new Error());
                 });
+                /* eslint-enable no-new */
 
                 return testCafe.close();
             })
