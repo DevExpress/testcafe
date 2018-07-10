@@ -3,7 +3,8 @@ import RequestHook from './hook';
 import { parse as parseUserAgent } from 'useragent';
 import testRunTracker from '../test-run-tracker';
 import ReExecutablePromise from '../../utils/re-executable-promise';
-import { RequestHookConfigureAPIError } from '../../errors/test-run/index';
+import { APIError } from '../../errors/runtime';
+import MESSAGE from '../../errors/runtime/message';
 
 const DEFAULT_OPTIONS = {
     logRequestHeaders:     false,
@@ -14,10 +15,10 @@ const DEFAULT_OPTIONS = {
     stringifyResponseBody: false
 };
 
-class RequestLogger extends RequestHook {
+class RequestLoggerImplementation extends RequestHook {
     constructor (requestFilterRuleInit, options) {
         options = Object.assign({}, DEFAULT_OPTIONS, options);
-        RequestLogger._assertLogOptions(options);
+        RequestLoggerImplementation._assertLogOptions(options);
 
         const configureResponseEventOptions = new ConfigureResponseEventOptions(options.logResponseHeaders, options.logResponseBody);
 
@@ -30,10 +31,10 @@ class RequestLogger extends RequestHook {
 
     static _assertLogOptions (logOptions) {
         if (!logOptions.logRequestBody && logOptions.stringifyRequestBody)
-            throw new RequestHookConfigureAPIError(RequestLogger.name, 'Cannot stringify the request body because it is not logged. Specify { logRequestBody: true } in log options.');
+            throw new APIError('RequestLogger', MESSAGE.requestHookConfigureAPIError, 'RequestLogger', 'Cannot stringify the request body because it is not logged. Specify { logRequestBody: true } in log options.');
 
         if (!logOptions.logResponseBody && logOptions.stringifyResponseBody)
-            throw new RequestHookConfigureAPIError(RequestLogger.name, 'Cannot stringify the response body because it is not logged. Specify { logResponseBody: true } in log options.');
+            throw new APIError('RequestLogger', MESSAGE.requestHookConfigureAPIError, 'RequestLogger', 'Cannot stringify the response body because it is not logged. Specify { logResponseBody: true } in log options.');
     }
 
     onRequest (event) {
@@ -120,6 +121,6 @@ class RequestLogger extends RequestHook {
 }
 
 export default function createRequestLogger (requestFilterRuleInit, logOptions) {
-    return new RequestLogger(requestFilterRuleInit, logOptions);
+    return new RequestLoggerImplementation(requestFilterRuleInit, logOptions);
 }
 

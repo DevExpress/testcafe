@@ -6,10 +6,7 @@ const RequestLogger     = exportableLib.RequestLogger;
 const RequestHook       = exportableLib.RequestHook;
 const Promise           = require('pinkie');
 const nanoid            = require('nanoid');
-
-const assertThrow = require('./helpers/assert-error').assertThrow;
-const expect      = require('chai').expect;
-const noop        = require('lodash').noop;
+const expect            = require('chai').expect;
 
 describe('RequestLogger', () => {
     const createProxyRequestEventMock = (testRunId, requestId) => {
@@ -102,32 +99,6 @@ describe('RequestLogger', () => {
         });
     });
 
-    describe('Assert log options', () => {
-        it('Related to request body', () => {
-            assertThrow(() => {
-                RequestLogger('http://example.com', { stringifyRequestBody: true });
-            }, {
-                isTestCafeError: true,
-                requestHookName: 'RequestLogger',
-                errMsg:          'Cannot stringify the request body because it is not logged. Specify { logRequestBody: true } in log options.',
-                type:            'requestHookConfigureAPIError',
-                callsite:        null
-            });
-        });
-
-        it('Related to response body', () => {
-            assertThrow(() => {
-                RequestLogger('http://example.com', { stringifyResponseBody: true });
-            }, {
-                isTestCafeError: true,
-                requestHookName: 'RequestLogger',
-                errMsg:          'Cannot stringify the response body because it is not logged. Specify { logResponseBody: true } in log options.',
-                type:            'requestHookConfigureAPIError',
-                callsite:        null
-            });
-        });
-    });
-
     it('.clear method', () => {
         const logger = new RequestLogger('http://example.com');
 
@@ -206,46 +177,18 @@ describe('RequestLogger', () => {
 });
 
 describe('RequestMock', () => {
-    describe('Throwing errors', () => {
-        describe('Chaining', () => {
-            it('.respond().onRequestTo()', () => {
-                assertThrow(() => {
-                    RequestMock().respond(noop).onRequestTo({});
-                }, {
-                    isTestCafeError: true,
-                    requestHookName: 'RequestMock',
-                    errMsg:          "The 'onRequestTo' method was not called before 'respond'. You must call the 'onRequestTo' method to provide the URL requests to which are mocked.",
-                    type:            'requestHookConfigureAPIError',
-                    callsite:        null
-                });
-            });
-
-            it('onRequestTo().onRequestTo()', () => {
-                assertThrow(() => {
-                    RequestMock().onRequestTo({}).onRequestTo({});
-                }, {
-                    isTestCafeError: true,
-                    requestHookName: 'RequestMock',
-                    errMsg:          "The 'respond' method was not called after 'onRequestTo'. You must call the 'respond' method to provide the mocked response.",
-                    type:            'requestHookConfigureAPIError',
-                    callsite:        null
-                });
-            });
+    describe('Throwing errors on construction', () => {
+        it('Without configure', () => {
+            expect(() => {
+                RequestMock();
+            }).to.not.throw;
         });
-
-        describe('Construction', () => {
-            it('Without configure', () => {
-                expect(() => {
-                    RequestMock();
-                }).to.not.throw;
-            });
-            it('With configure', () => {
-                expect(() => {
-                    RequestMock()
-                        .onRequestTo('http://example.com')
-                        .respond('<html></html>');
-                }).to.not.throw;
-            });
+        it('With configure', () => {
+            expect(() => {
+                RequestMock()
+                    .onRequestTo('http://example.com')
+                    .respond('<html></html>');
+            }).to.not.throw;
         });
     });
 
