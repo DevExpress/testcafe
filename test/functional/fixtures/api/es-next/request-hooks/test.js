@@ -1,3 +1,5 @@
+const expect = require('chai').expect;
+
 describe('Request Hooks', () => {
     describe('RequestMock', () => {
         it('Basic', () => {
