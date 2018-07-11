@@ -645,7 +645,7 @@ gulp.step('test-functional-local-run', function () {
     return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.localBrowsers);
 });
 
-gulp.task('test-functional-local', gulp.series(/*'build',*/ 'test-functional-local-run'));
+gulp.task('test-functional-local', gulp.series('build', 'test-functional-local-run'));
 
 gulp.step('test-functional-local-ie-run', function () {
     return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.localBrowsersIE);

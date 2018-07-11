@@ -101,7 +101,7 @@ testingEnvironments[testingEnvironmentNames.localBrowsers] = {
             platform:    'Windows 10',
             browserName: 'chrome',
             alias:       'chrome'
-        }/*,
+        },
         {
             platform:    'Windows 10',
             browserName: 'ie',
@@ -112,7 +112,7 @@ testingEnvironments[testingEnvironmentNames.localBrowsers] = {
             platform:    'Windows 10',
             browserName: 'firefox',
             alias:       'firefox'
-        }*/
+        }
     ]
 };
 
