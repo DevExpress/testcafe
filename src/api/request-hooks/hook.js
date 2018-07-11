@@ -6,6 +6,8 @@ export default class RequestHook {
         this.requestFilterRules              = this._prepareRequestFilterRules(requestFilterRules);
         this._instantiatedRequestFilterRules = [];
         this.responseEventConfigureOpts      = responseEventConfigureOpts;
+
+        this.warningLog = null;
     }
 
     _prepareRequestFilterRules (rules) {

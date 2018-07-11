@@ -110,6 +110,8 @@ export default class TestRun extends EventEmitter {
 
         this.quarantine = null;
 
+        this.warningLog = warningLog;
+
         this.injectable.scripts.push('/testcafe-core.js');
         this.injectable.scripts.push('/testcafe-ui.js');
         this.injectable.scripts.push('/testcafe-automation.js');
@@ -150,6 +152,8 @@ export default class TestRun extends EventEmitter {
     }
 
     _initRequestHook (hook) {
+        hook.warningLog = this.warningLog;
+
         hook._instantiateRequestFilterRules();
         hook._instantiatedRequestFilterRules.forEach(rule => {
             this.session.addRequestEventListeners(rule, {
@@ -161,6 +165,8 @@ export default class TestRun extends EventEmitter {
     }
 
     _disposeRequestHook (hook) {
+        hook.warningLog = null;
+
         hook._instantiatedRequestFilterRules.forEach(rule => {
             this.session.removeRequestEventListeners(rule);
         });
