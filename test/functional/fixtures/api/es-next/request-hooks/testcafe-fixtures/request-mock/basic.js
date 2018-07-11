@@ -21,7 +21,7 @@ const testPageMarkup = `
     </html>
 `;
 
-const basic = RequestMock()
+const requestMock = RequestMock()
     .onRequestTo('http://dummy-url.com')
     .respond(testPageMarkup)
     .onRequestTo('http://dummy-url.com/get')
@@ -32,7 +32,7 @@ const basic = RequestMock()
 fixture `Basic`;
 
 test
-    .requestHooks(basic)
+    .requestHooks(requestMock)
     ('Basic', async t => {
         await t
             .navigateTo('http://dummy-url.com')
