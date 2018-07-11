@@ -376,7 +376,8 @@ export default class TestRun extends EventEmitter {
     }
 
     _rejectCurrentDriverTask (err) {
-        err.callsite = err.callsite || this.driverTaskQueue[0].callsite;
+        err.callsite             = err.callsite || this.driverTaskQueue[0].callsite;
+        err.isRejectedDriverTask = true;
 
         this.currentDriverTask.reject(err);
         this._removeAllNonServiceTasks();

@@ -23,6 +23,9 @@ function handleError (ErrorCtor, message) {
 }
 
 function onUnhandledRejection (reason) {
+    if (reason.isRejectedDriverTask)
+        return;
+
     const message = reason instanceof Error ? reason.stack : reason;
 
     handleError(UnhandledPromiseRejectionError, message);
