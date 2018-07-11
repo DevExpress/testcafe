@@ -227,7 +227,6 @@ gulp.step('client-scripts-bundle', function () {
                 return { code: transformed.code.replace(/^('|")use strict('|");?/, '') };
             }
         }))
-        .pipe(gulpif(!DEV_MODE, uglify()))
         .pipe(gulp.dest('lib'));
 });
 
@@ -243,8 +242,7 @@ gulp.step('client-scripts-templates-render', function () {
             wrapperPath.extname  = '';
             wrapperPath.basename = wrapperPath.basename.replace('.wrapper', '');
         }))
-        .pipe(data(file => ({ source: fs.readFileSync(path.resolve('lib', file.relative)) })))
-        .pipe(mustache());
+        .pipe(mustache({ source: fs.readFileSync(path.resolve('lib', file.relative)) }));
 
     const bundledScripts = scripts
         .pipe(clone())
