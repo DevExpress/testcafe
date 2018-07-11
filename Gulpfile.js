@@ -14,6 +14,8 @@ var webmake              = require('gulp-webmake');
 var gulpif               = require('gulp-if');
 var uglify               = require('gulp-uglify');
 var ll                   = require('gulp-ll-next');
+const clone              = require('gulp-clone');
+const mergeStreams       = require('merge-stream');
 var del                  = require('del');
 var fs                   = require('fs');
 var path                 = require('path');
@@ -230,7 +232,7 @@ gulp.step('client-scripts-bundle', function () {
 });
 
 gulp.step('client-scripts-templates-render', function () {
-    return gulp
+    const scripts = gulp
         .src([
             'src/client/core/index.js.wrapper.mustache',
             'src/client/ui/index.js.wrapper.mustache',
@@ -242,8 +244,13 @@ gulp.step('client-scripts-templates-render', function () {
             wrapperPath.basename = wrapperPath.basename.replace('.wrapper', '');
         }))
         .pipe(data(file => ({ source: fs.readFileSync(path.resolve('lib', file.relative)) })))
-        .pipe(mustache())
-        .pipe(gulpif(!DEV_MODE, uglify()))
+        .pipe(mustache());
+
+    const bundledScripts = scripts
+        .pipe(clone())
+        .pipe(uglify());
+
+    return mergeStreams(scripts, bundledScripts)
         .pipe(gulp.dest('lib'));
 });
 
