@@ -270,7 +270,7 @@ after(function () {
 
 // TODO: Run takeScreenshot tests first because other tests heavily impact them
 if (config.useLocalBrowsers && !config.isLegacyEnvironment) {
-    require('./fixtures/api/es-next/take-screenshot/test');
-    require('./fixtures/screenshots-on-fails/test');
+    //require('./fixtures/api/es-next/take-screenshot/test');
+    //require('./fixtures/screenshots-on-fails/test');
 }
 

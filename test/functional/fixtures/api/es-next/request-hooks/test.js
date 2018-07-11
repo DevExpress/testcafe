@@ -1,6 +1,17 @@
 describe('Request Hooks', () => {
-    it('RequestMock', () => {
-        return runTests('./testcafe-fixtures/request-mock.js', 'Basic', { only: 'chrome' });
+    describe('RequestMock', () => {
+        it('Basic', () => {
+            return runTests('./testcafe-fixtures/request-mock/basic.js', 'Basic', { only: 'chrome' });
+        });
+
+        it('Request failed the CORS validation', () => {
+            return runTests('./testcafe-fixtures/request-mock/failed-cors-validation.js', 'Failed CORS validation', { only: 'chrome' })
+                .then(() => {
+                    expect(testReport.warnings).eql([
+                        'RequestMock: CORS validation failed for a request specified as { url: "http://dummy-url.com/get" }'
+                    ]);
+                });
+        });
     });
 
     describe('RequestLogger', () => {

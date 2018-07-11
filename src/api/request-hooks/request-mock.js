@@ -2,6 +2,7 @@ import RequestHook from './hook';
 import { ResponseMock, RequestFilterRule } from 'testcafe-hammerhead';
 import { APIError } from '../../errors/runtime';
 import MESSAGE from '../../errors/runtime/message';
+import WARNING_MESSAGE from '../../notifications/warning-message';
 
 class RequestMock extends RequestHook {
     constructor () {
@@ -17,7 +18,9 @@ class RequestMock extends RequestHook {
         event.setMock(mock);
     }
 
-    onResponse () {}
+    onResponse (event) {
+        this.warningLog.addWarning(WARNING_MESSAGE.requestMockCORSValidationFailed, RequestMock.name, event._requestFilterRule);
+    }
 
     // API
     onRequestTo (requestFilterRuleInit) {

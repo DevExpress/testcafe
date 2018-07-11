@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <button id="btnSendFetch">Send fetch request</button>
+    <span>Request status:</span><span id="requestStatusText">Not send</span>
+    <script>
+        var btnSendFetch = document.getElementById('btnSendFetch');
+
+        btnSendFetch.addEventListener('click', function () {
+            fetch('http://dummy-url.com/get')
+            .then(res => {
+                return res.text();
+            })
+            .then(() => {
+                document.getElementById('requestStatusText').textContent = 'Sent';
+            });
+        });
+    </script>
+</body>
+</html>
