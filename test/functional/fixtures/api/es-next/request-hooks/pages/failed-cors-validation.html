@@ -12,12 +12,12 @@
 
         btnSendFetch.addEventListener('click', function () {
             fetch('http://dummy-url.com/get')
-            .then(res => {
-                return res.text();
-            })
-            .then(() => {
-                document.getElementById('requestStatusText').textContent = 'Sent';
-            });
+                .then(res => {
+                    return res.text();
+                })
+                .then(() => {
+                    document.getElementById('requestStatusText').textContent = 'Sent';
+                });
         });
     </script>
 </body>
