@@ -1,5 +1,5 @@
 import RequestHook from './hook';
-import { ResponseMock, RequestFilterRule } from 'testcafe-hammerhead';
+import { ResponseMock, RequestFilterRule, SAME_ORIGIN_CHECK_FAILED_STATUS_CODE } from 'testcafe-hammerhead';
 import { APIError } from '../../errors/runtime';
 import MESSAGE from '../../errors/runtime/message';
 import WARNING_MESSAGE from '../../notifications/warning-message';
@@ -19,7 +19,8 @@ class RequestMock extends RequestHook {
     }
 
     onResponse (event) {
-        this.warningLog.addWarning(WARNING_MESSAGE.requestMockCORSValidationFailed, RequestMock.name, event._requestFilterRule);
+        if (event.statusCode === SAME_ORIGIN_CHECK_FAILED_STATUS_CODE)
+            this.warningLog.addWarning(WARNING_MESSAGE.requestMockCORSValidationFailed, RequestMock.name, event._requestFilterRule);
     }
 
     // API
