@@ -141,7 +141,7 @@ Property            | Type             | Description
 ------------------- | ---------------- | --------------------------------------------------------
 `screenshotPath`    | String           | The directory path where the screenshot was saved to.
 `thumbnailPath`     | String           | The directory path where the screenshot's thumbnail was saved to.
-`userAgent`         | String           | The browser where the screenshot was captured.
+`userAgent`         | String           | The user agent string of the browser where the screenshot was captured.
 `quarantineAttempt` | Number           | The [quarantine](../../using-testcafe/programming-interface/runner.md#quarantine-mode) attempt's number.
 `takenOnFail`       | Boolean          | Specifies if the screenshot was captured when the test failed.
 
