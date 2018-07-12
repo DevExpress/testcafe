@@ -462,9 +462,7 @@ You can also cancel all pending tasks at once using the [runner.stop](#stop) fun
 The quarantine mode is designed to isolate *non-deterministic* tests (that is, tests that sometimes pass and fail without a clear reason)
 from the rest of the test base (*healthy* tests).
 
-When quarantine mode is enabled, tests are not marked as *failed* after the first unsuccessful run but rather sent to quarantine.
-After that, these tests are run again several times. The outcome of the most runs (*passed* or *failed*) is recorded as the test result.
-A test is separately marked *unstable* if the outcome varies between runs. The test counts the run that was quarantined.
+In this mode, a failed test is executed several times. The test result depends on the outcome (passed or failed) that occurs most often. That is, if the test fails on most attempts, the result is failed. If the test result differs between test runs, the test is marked as unstable.
 
 To learn more about non-deterministic tests, see Martin Fowler's [Eradicating Non-Determinism in Tests](http://martinfowler.com/articles/nonDeterminism.html) article.
 

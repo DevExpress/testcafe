@@ -6,7 +6,12 @@ checked: false
 ---
 # Reporter Methods
 
-You should implement the following methods to create a [reporter](README.md#implementing-the-reporter).
+You should implement the following methods to create a [reporter](README.md#implementing-the-reporter):
+
+* [reportTaskStart](#reporttaskstart)
+* [reportFixtureStart](#reportfixturestart)
+* [reportTestDone](#reporttestdone)
+* [reportTaskDone](#reporttaskdone)
 
 > You can use the [helper methods and libraries](helpers.md) within the reporter methods to output the required data.
 
@@ -81,18 +86,8 @@ reportTestDone (name, testRunInfo, meta)
 Parameter     | Type   | Description
 ------------- | ------ | -------------------------------------------------------------
 `name`        | String | The test name.
-`testRunInfo` | Object | The object providing detailed information about the test run.
+`testRunInfo` | Object | The [testRunInfo](#testruninfo-object) object.
 `meta`        | Object | The test metadata. See [Specifying Testing Metadata](../../test-api/test-code-structure.md#specifying-testing-metadata) for more information.
-
-The `testRunInfo` object has the following properties.
-
-Property         | Type             | Description
----------------- | ---------------- | --------------------------------------------------------
-`errs`           | Array or Strings | An array of errors that occurred during a test run.
-`durationMs`     | Number           | The time spent on test execution (in milliseconds).
-`unstable`       | Boolean          | Specifies if the test is marked as unstable.
-`screenshotPath` | String           | The directory path where screenshots have been saved to.
-`skipped`        | Boolean          | Specifies if the test was skipped.
 
 **Example**
 
@@ -123,6 +118,40 @@ reportTestDone (name, testRunInfo, meta) {
 //=> failed First fixture - Third test in first fixture
 //=> skipped First fixture - Fourth test in first fixture
 ```
+
+### testRunInfo Object
+
+The `testRunInfo` object provides detailed information about the test run. The object has the following properties:
+
+Property            | Type             | Description
+------------------- | ---------------- | --------------------------------------------------------
+`errs`              | Array of Strings | An array of errors that occurred during the test run.
+`durationMs`        | Number           | The time spent on test execution (in milliseconds).
+`unstable`          | Boolean          | Specifies if the test is marked as unstable.
+`screenshotPath`    | String           | The directory path where screenshots are saved to.
+`screenshots`       | Array of Objects | An array of [screenshot](#screenshots-object) objects.
+`quarantine`        | Object           | A [quarantine](#quarantine-object) object.
+`skipped`           | Boolean          | Specifies if the test was skipped.
+
+### screenshots Object
+
+The `screenshot` object provides information about the screenshot captured during the test run. The object has the following properties:
+
+Property            | Type             | Description
+------------------- | ---------------- | --------------------------------------------------------
+`screenshotPath`    | String           | The directory path where the screenshot was saved to.
+`thumbnailPath`     | String           | The directory path where the screenshot's thumbnail was saved to.
+`userAgent`         | String           | The user agent string of the browser where the screenshot was captured.
+`quarantineAttempt` | Number           | The [quarantine](../../using-testcafe/programming-interface/runner.md#quarantine-mode) attempt's number.
+`takenOnFail`       | Boolean          | Specifies if the screenshot was captured when the test failed.
+
+### quarantine Object
+
+The `quarantine` object provides information about [quarantine](../../using-testcafe/programming-interface/runner.md#quarantine-mode)'s attempts in the form of key-value pairs.
+
+Key                               | Value
+----------------------------------| ------------------------------------------------
+The&nbsp;quarantine&nbsp;attempt's&nbsp;number. |  The object that provides information about the attempt. The object has the boolean `passed` property that specifies if the test passed in the current attempt.
 
 ## reportTaskDone
 
