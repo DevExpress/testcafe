@@ -2,7 +2,6 @@ var babel                = require('babel-core');
 var gulp                 = require('gulp');
 var gulpStep             = require('gulp-step');
 var gulpBabel            = require('gulp-babel');
-var data                 = require('gulp-data');
 var less                 = require('gulp-less');
 var qunitHarness         = require('gulp-qunit-harness');
 var git                  = require('gulp-git');
@@ -11,11 +10,11 @@ var mocha                = require('gulp-mocha-simple');
 var mustache             = require('gulp-mustache');
 var rename               = require('gulp-rename');
 var webmake              = require('gulp-webmake');
-var gulpif               = require('gulp-if');
 var uglify               = require('gulp-uglify');
 var ll                   = require('gulp-ll-next');
 const clone              = require('gulp-clone');
 const mergeStreams       = require('merge-stream');
+const through2           = require('through2');
 var del                  = require('del');
 var fs                   = require('fs');
 var path                 = require('path');
@@ -63,10 +62,10 @@ var CLIENT_TESTS_SETTINGS_BASE = {
 
     scripts: [
         { src: '/async.js', path: 'test/client/vendor/async.js' },
-        { src: '/hammerhead.js', path: 'node_modules/testcafe-hammerhead/lib/client/hammerhead.js' },
-        { src: '/core.js', path: 'lib/client/core/index.js' },
-        { src: '/ui.js', path: 'lib/client/ui/index.js' },
-        { src: '/automation.js', path: 'lib/client/automation/index.js' },
+        { src: '/hammerhead.js', path: 'node_modules/testcafe-hammerhead/lib/client/hammerhead.min.js' },
+        { src: '/core.js', path: 'lib/client/core/index.min.js' },
+        { src: '/ui.js', path: 'lib/client/ui/index.min.js' },
+        { src: '/automation.js', path: 'lib/client/automation/index.min.js' },
         { src: '/driver.js', path: 'lib/client/driver/index.js' },
         { src: '/legacy-runner.js', path: 'node_modules/testcafe-legacy-api/lib/client/index.js' },
         { src: '/before-test.js', path: 'test/client/before-test.js' }
@@ -238,15 +237,28 @@ gulp.step('client-scripts-templates-render', function () {
             'src/client/automation/index.js.wrapper.mustache',
             'src/client/driver/index.js.wrapper.mustache'
         ], { base: 'src' })
-        .pipe(rename(wrapperPath => {
-            wrapperPath.extname  = '';
-            wrapperPath.basename = wrapperPath.basename.replace('.wrapper', '');
+        .pipe(through2.obj((file, enc, callback) => {
+            file.basename = file.basename.replace('.js.wrapper.mustache', '');
+
+            const sourceFilePath = path.resolve('lib', file.relative + '.js');
+
+            file.data = {
+                source: fs.readFileSync(sourceFilePath)
+            };
+
+            callback(null, file);
         }))
-        .pipe(mustache({ source: fs.readFileSync(path.resolve('lib', file.relative)) }));
+        .pipe(mustache())
+        .pipe(rename(file => {
+            file.extname = '.js';
+        }));
 
     const bundledScripts = scripts
         .pipe(clone())
-        .pipe(uglify());
+        .pipe(uglify())
+        .pipe(rename(file => {
+            file.extname = '.min.js';
+        }));
 
     return mergeStreams(scripts, bundledScripts)
         .pipe(gulp.dest('lib'));

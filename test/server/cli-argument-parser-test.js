@@ -386,7 +386,7 @@ describe('CLI argument parser', function () {
     });
 
     it('Should parse command line arguments', function () {
-        return parse('-r list -S -q -e --hostname myhost --proxy localhost:1234 --proxy-bypass localhost:5678 --qr-code --app run-app --speed 0.5 --debug-on-fail --disable-page-reloads ie test/server/data/file-list/file-1.js')
+        return parse('-r list -S -q -e --hostname myhost --proxy localhost:1234 --proxy-bypass localhost:5678 --qr-code --app run-app --speed 0.5 --debug-on-fail --disable-page-reloads --development-mode ie test/server/data/file-list/file-1.js')
             .then(function (parser) {
                 expect(parser.browsers).eql(['ie']);
                 expect(parser.src).eql([path.resolve(process.cwd(), 'test/server/data/file-list/file-1.js')]);
@@ -398,6 +398,7 @@ describe('CLI argument parser', function () {
                 expect(parser.opts.quarantineMode).to.be.ok;
                 expect(parser.opts.skipJsErrors).to.be.ok;
                 expect(parser.opts.disablePageReloads).to.be.ok;
+                expect(parser.opts.developmentMode).to.be.ok;
                 expect(parser.opts.speed).eql(0.5);
                 expect(parser.opts.qrCode).to.be.ok;
                 expect(parser.opts.proxy).to.be.ok;
@@ -435,6 +436,7 @@ describe('CLI argument parser', function () {
             { long: '--proxy' },
             { long: '--proxy-bypass' },
             { long: '--disable-page-reloads' },
+            { long: '--development-mode' },
             { long: '--ssl' },
             { long: '--qr-code' },
             { long: '--color' },
