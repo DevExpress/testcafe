@@ -2,6 +2,7 @@ var babel                = require('babel-core');
 var gulp                 = require('gulp');
 var gulpStep             = require('gulp-step');
 var gulpBabel            = require('gulp-babel');
+var data                 = require('gulp-data');
 var less                 = require('gulp-less');
 var qunitHarness         = require('gulp-qunit-harness');
 var git                  = require('gulp-git');
@@ -14,7 +15,6 @@ var uglify               = require('gulp-uglify');
 var ll                   = require('gulp-ll-next');
 const clone              = require('gulp-clone');
 const mergeStreams       = require('merge-stream');
-const through2           = require('through2');
 var del                  = require('del');
 var fs                   = require('fs');
 var path                 = require('path');
@@ -237,16 +237,16 @@ gulp.step('client-scripts-templates-render', function () {
             'src/client/automation/index.js.wrapper.mustache',
             'src/client/driver/index.js.wrapper.mustache'
         ], { base: 'src' })
-        .pipe(through2.obj((file, enc, callback) => {
-            file.basename = file.basename.replace('.js.wrapper.mustache', '');
-
+        .pipe(rename(file => {
+            file.extname  = '';
+            file.basename = file.basename.replace('.js.wrapper', '');
+        }))
+        .pipe(data(file => {
             const sourceFilePath = path.resolve('lib', file.relative + '.js');
 
-            file.data = {
+            return {
                 source: fs.readFileSync(sourceFilePath)
             };
-
-            callback(null, file);
         }))
         .pipe(mustache())
         .pipe(rename(file => {
