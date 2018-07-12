@@ -15,7 +15,7 @@ const FAVICON   = read('./client/ui/favicon.ico', true);
 export default class TestCafe {
     constructor (hostname, port1, port2, sslOptions, developmentMode) {
         this.closed                   = false;
-        this.proxy                    = new Proxy(hostname, port1, port2, sslOptions);
+        this.proxy                    = new Proxy(hostname, port1, port2, sslOptions, developmentMode);
         this.browserConnectionGateway = new BrowserConnectionGateway(this.proxy);
         this.runners                  = [];
 
