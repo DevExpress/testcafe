@@ -279,9 +279,9 @@ testcafe all tests/sample-fixture.js -s screenshots
 
 The captured screenshots are organized into subdirectories within the root directory. The screenshots' relative path and name are defined using the default screenshot path patterns:
 
-* `{currentDate}\test-{testIndex}\{userAgent}\{screenshotIndex}.png` if the [quarantine mode](../../using-testcafe/command-line-interface.md#-q---quarantine-mode) is disabled;
-* `{currentDate}\test-{testIndex}\run-{quarantineAttempt}\{userAgent}\{screenshotIndex}.png` if the [quarantine mode](../../using-testcafe/command-line-interface.md#-q---quarantine-mode) is enabled.
-* `{currentDate}\test-{testIndex}\{userAgent}\errors\{screenshotIndex}.png` if the [--screenshots-on-fails](#-s---screenshots-on-fails) option is specified.
+* `${DATE}\test-${TEST_INDEX}\${USERAGENT}\{$SCREENSHOT_INDEX}.png` if the [quarantine mode](../../using-testcafe/command-line-interface.md#-q---quarantine-mode) is disabled;
+* `${DATE}\test-${TEST_INDEX}\run-${QUARANTINE_ATTEMPT}\${USERAGENT}\{$SCREENSHOT_INDEX}.png` if the [quarantine mode](../../using-testcafe/command-line-interface.md#-q---quarantine-mode) is enabled.
+* `${DATE}\test-${TEST_INDEX}\${USERAGENT}\errors\{$SCREENSHOTINDEX}.png` if the [--screenshots-on-fails](#-s---screenshots-on-fails) option is specified.
 
 You can also specify a custom pattern using the [--screenshot-path-pattern](#-p---screenshot-path-pattern) option.
 
