@@ -299,7 +299,7 @@ testcafe all tests/sample-fixture.js -S -s screenshots
 
 ### -p, --screenshot-path-pattern
 
-Specifies a custom pattern to compose screenshot files' relative path and name. This pattern ovverrides the default [path pattern](#path-patterns).
+Specifies a custom pattern to compose screenshot files' relative path and name. This pattern overrides the default [path pattern](#path-patterns).
 
 You can use the following placeholders in the pattern:
 
@@ -308,11 +308,11 @@ Placeholder | Description
 `${DATE}` | The test run's start date (YYYY-MM-DD).
 `${TIME}` | The test run's start time (HH-mm-ss).
 `${TEST_INDEX}` | The test's index.
-`${FILE_INDEX}` | Numbers a file in NNN format for files of the same name in the same folder.
+`${FILE_INDEX}` | The screenshot file's index.
 `${QUARANTINE_ATTEMPT}` | The [quarantine](programming-interface/runner.md#quarantine-mode) attempt's number. If the quarantine mode is disabled, the `${QUARANTINE_ATTEMPT}` placeholder's value is 1.
 `${FIXTURE}` | The fixture's name.
 `${TEST}` | The test's name.
-`${USERAGENT}` | Concatenation of `${BROWSER}`, `${BROWSER_VERSION}`, `${OS}`, and `${OS_VERSION}`.
+`${USERAGENT}` | The combination of `${BROWSER}`, `${BROWSER_VERSION}`, `${OS}`, and `${OS_VERSION}`.
 `${BROWSER}` | The browser's name.
 `${BROWSER_VERSION}` | The browser's version.
 `${OS}` | The operation system's name.

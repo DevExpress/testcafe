@@ -21,7 +21,7 @@ t.takeScreenshot( [path] )
 
 Parameter           | Type   | Description
 ------------------- | ------ | -----------------------------------------------------------------------------------------------------
-`path`&#160;*(optional)* | String | The screenshot file's relative path and name. The path is resolved relative to the root directory specified by the [runner.screenshots](../../using-testcafe/programming-interface/runner.md#screenshots) API method or the [screenshots](../../using-testcafe/command-line-interface.md#-s-path---screenshots-path) command line option. This path ovverrides the relative path specified by the default or custom [path patterns](../../using-testcafe/command-line-interface.md#path-patterns).
+`path`&#160;*(optional)* | String | The screenshot file's relative path and name. The path is resolved relative to the root directory specified by the [runner.screenshots](../../using-testcafe/programming-interface/runner.md#screenshots) API method or the [screenshots](../../using-testcafe/command-line-interface.md#-s-path---screenshots-path) command line option. This path overrides the relative path specified by the default or custom [path patterns](../../using-testcafe/command-line-interface.md#path-patterns).
 
 The following example shows how to use the `t.takeScreenshot` action.
 
@@ -50,7 +50,7 @@ Takes a screenshot of the specified page element.
 Parameter                | Type   | Description
 ------------------------ | ------ | -----------------------------------------------------------------------------------------------------
 `selector`               | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the webpage element whose screenshot will be taken. See [Selecting Target Elements](README.md#selecting-target-elements).
-`path`&#160;*(optional)* | String | The screenshot file's relative path and name. The path is resolved relative to the root directory specified by using the [runner.screenshots](../../using-testcafe/programming-interface/runner.md#screenshots) API method or the [screenshots](../../using-testcafe/command-line-interface.md#-s-path---screenshots-path) command line option. This path ovverrides the relative path specified by the default or custom [path patterns](../../using-testcafe/command-line-interface.md#path-patterns).
+`path`&#160;*(optional)* | String | The screenshot file's relative path and name. The path is resolved relative to the root directory specified by using the [runner.screenshots](../../using-testcafe/programming-interface/runner.md#screenshots) API method or the [screenshots](../../using-testcafe/command-line-interface.md#-s-path---screenshots-path) command line option. This path overrides the relative path specified by the default or custom [path patterns](../../using-testcafe/command-line-interface.md#path-patterns).
 `options`&#160;*(optional)*   | Object | Options that define how the screenshot will be taken. See details below.
 
 ```js
