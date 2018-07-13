@@ -26,6 +26,7 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [-r \<name\[:file\],\[...\]\>, --reporter \<name\[:file\],\[...\]\>](#-r-namefile---reporter-namefile)
   * [-s \<path\>, --screenshots \<path\>](#-s-path---screenshots-path)
   * [-S, --screenshots-on-fails](#-s---screenshots-on-fails)
+  * [-p, --screenshot-path-pattern](#-p---screenshot-path-pattern)
   * [-q, --quarantine-mode](#-q---quarantine-mode)
   * [-e, --skip-js-errors](#-e---skip-js-errors)
   * [-c \<n\>, --concurrency \<n\>](#-c-n---concurrency-n)
@@ -268,11 +269,21 @@ Note that only one reporter can write to `stdout`. All other reporters must outp
 
 ### -s \<path\>, --screenshots \<path\>
 
-Enables screenshot capturing and specifies the directory where screenshots are saved.
+Enables screenshot capturing and specifies the root directory where screenshots are saved.
 
 ```sh
 testcafe all tests/sample-fixture.js -s screenshots
 ```
+
+#### Path Patterns
+
+The captured screenshots are organized into subdirectories within the root directory. The screenshots' relative path and name are defined using the default screenshot path patterns:
+
+* `{currentDate}\test-{testIndex}\{userAgent}\{screenshotIndex}.png` if the [quarantine mode](../../using-testcafe/command-line-interface.md#-q---quarantine-mode) is disabled;
+* `{currentDate}\test-{testIndex}\run-{quarantineAttempt}\{userAgent}\{screenshotIndex}.png` if the [quarantine mode](../../using-testcafe/command-line-interface.md#-q---quarantine-mode) is enabled.
+* `{currentDate}\test-{testIndex}\{userAgent}\errors\{screenshotIndex}.png` if the [--screenshots-on-fails](#-s---screenshots-on-fails) option is specified.
+
+You can also specify a custom pattern using the [--screenshot-path-pattern](#-p---screenshot-path-pattern) option.
 
 ### -S, --screenshots-on-fails
 
@@ -284,6 +295,31 @@ For example, the following command runs tests from the
 
 ```sh
 testcafe all tests/sample-fixture.js -S -s screenshots
+```
+
+### -p, --screenshot-path-pattern
+
+Specifies a custom pattern to compose screenshot files' relative path and name. This pattern ovverrides the default [path pattern](#path-patterns).
+
+You can use the following placeholders in the pattern:
+
+Placeholder | Description
+----------- | -----------
+`${DATE}` | The test run's start date (YYYY-MM-DD).
+`${TIME}` | The test run's start time (HH-mm-ss).
+`${TEST_INDEX}` | The test's index.
+`${FILE_INDEX}` | Numbers a file in NNN format for files of the same name in the same folder.
+`${QUARANTINE_ATTEMPT}` | The [quarantine](programming-interface/runner.md#quarantine-mode) attempt's number. If the quarantine mode is disabled, the `${QUARANTINE_ATTEMPT}` placeholder's value is 1.
+`${FIXTURE}` | The fixture's name.
+`${TEST}` | The test's name.
+`${USERAGENT}` | Concatenation of `${BROWSER}`, `${BROWSER_VERSION}`, `${OS}`, and `${OS_VERSION}`.
+`${BROWSER}` | The browser's name.
+`${BROWSER_VERSION}` | The browser's version.
+`${OS}` | The operation system's name.
+`${OS_VERSION}` | The operation system's version.
+
+```sh
+testcafe all tests/sample-fixture.js -s screenshots -p "${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png"
 ```
 
 ### -q, --quarantine-mode
