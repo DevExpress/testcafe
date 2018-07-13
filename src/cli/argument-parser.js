@@ -110,7 +110,7 @@ export default class CLIArgumentParser {
             .option('--ssl', 'specify SSL options to run TestCafe proxy server over the HTTPS protocol')
             .option('--proxy-bypass <rules>', 'specify a comma-separated list of rules that define URLs accessed bypassing the proxy server')
             .option('--disable-page-reloads', 'disable page reloads between tests')
-            .option('--development-mode', 'launch TestCafe with non-minified service scripts')
+            .option('--dev', 'enables the mechanisms for error logging and diagnosing')
             .option('--qr-code', 'outputs QR-code that repeats URLs used to connect the remote browsers')
 
             // NOTE: these options will be handled by chalk internally
