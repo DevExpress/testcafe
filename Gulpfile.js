@@ -11,9 +11,10 @@ var mocha                = require('gulp-mocha-simple');
 var mustache             = require('gulp-mustache');
 var rename               = require('gulp-rename');
 var webmake              = require('gulp-webmake');
-var gulpif               = require('gulp-if');
 var uglify               = require('gulp-uglify');
 var ll                   = require('gulp-ll-next');
+const clone              = require('gulp-clone');
+const mergeStreams       = require('merge-stream');
 var del                  = require('del');
 var fs                   = require('fs');
 var path                 = require('path');
@@ -61,10 +62,10 @@ var CLIENT_TESTS_SETTINGS_BASE = {
 
     scripts: [
         { src: '/async.js', path: 'test/client/vendor/async.js' },
-        { src: '/hammerhead.js', path: 'node_modules/testcafe-hammerhead/lib/client/hammerhead.js' },
-        { src: '/core.js', path: 'lib/client/core/index.js' },
-        { src: '/ui.js', path: 'lib/client/ui/index.js' },
-        { src: '/automation.js', path: 'lib/client/automation/index.js' },
+        { src: '/hammerhead.js', path: 'node_modules/testcafe-hammerhead/lib/client/hammerhead.min.js' },
+        { src: '/core.js', path: 'lib/client/core/index.min.js' },
+        { src: '/ui.js', path: 'lib/client/ui/index.min.js' },
+        { src: '/automation.js', path: 'lib/client/automation/index.min.js' },
         { src: '/driver.js', path: 'lib/client/driver/index.js' },
         { src: '/legacy-runner.js', path: 'node_modules/testcafe-legacy-api/lib/client/index.js' },
         { src: '/before-test.js', path: 'test/client/before-test.js' }
@@ -225,25 +226,41 @@ gulp.step('client-scripts-bundle', function () {
                 return { code: transformed.code.replace(/^('|")use strict('|");?/, '') };
             }
         }))
-        .pipe(gulpif(!DEV_MODE, uglify()))
         .pipe(gulp.dest('lib'));
 });
 
 gulp.step('client-scripts-templates-render', function () {
-    return gulp
+    const scripts = gulp
         .src([
             'src/client/core/index.js.wrapper.mustache',
             'src/client/ui/index.js.wrapper.mustache',
             'src/client/automation/index.js.wrapper.mustache',
             'src/client/driver/index.js.wrapper.mustache'
         ], { base: 'src' })
-        .pipe(rename(wrapperPath => {
-            wrapperPath.extname  = '';
-            wrapperPath.basename = wrapperPath.basename.replace('.wrapper', '');
+        .pipe(rename(file => {
+            file.extname  = '';
+            file.basename = file.basename.replace('.js.wrapper', '');
         }))
-        .pipe(data(file => ({ source: fs.readFileSync(path.resolve('lib', file.relative)) })))
+        .pipe(data(file => {
+            const sourceFilePath = path.resolve('lib', file.relative + '.js');
+
+            return {
+                source: fs.readFileSync(sourceFilePath)
+            };
+        }))
         .pipe(mustache())
-        .pipe(gulpif(!DEV_MODE, uglify()))
+        .pipe(rename(file => {
+            file.extname = '.js';
+        }));
+
+    const bundledScripts = scripts
+        .pipe(clone())
+        .pipe(uglify())
+        .pipe(rename(file => {
+            file.extname = '.min.js';
+        }));
+
+    return mergeStreams(scripts, bundledScripts)
         .pipe(gulp.dest('lib'));
 });
 

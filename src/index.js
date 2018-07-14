@@ -36,14 +36,14 @@ async function getValidPort (port) {
 }
 
 // API
-async function createTestCafe (hostname, port1, port2, sslOptions) {
+async function createTestCafe (hostname, port1, port2, sslOptions, developmentMode) {
     [hostname, port1, port2] = await Promise.all([
         getValidHostname(hostname),
         getValidPort(port1),
         getValidPort(port2)
     ]);
 
-    var testcafe = new TestCafe(hostname, port1, port2, sslOptions);
+    const testcafe = new TestCafe(hostname, port1, port2, sslOptions, developmentMode);
 
     setupExitHook(cb => testcafe.close().then(cb));
 

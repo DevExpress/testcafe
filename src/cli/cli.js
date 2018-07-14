@@ -72,7 +72,7 @@ async function runTests (argParser) {
 
     log.showSpinner();
 
-    var testCafe       = await createTestCafe(opts.hostname, port1, port2, opts.ssl);
+    const testCafe     = await createTestCafe(opts.hostname, port1, port2, opts.ssl, opts.dev);
     var concurrency    = argParser.concurrency || 1;
     var remoteBrowsers = await remotesWizard(testCafe, argParser.remoteCount, opts.qrCode);
     var browsers       = argParser.browsers.concat(remoteBrowsers);

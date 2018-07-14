@@ -24,7 +24,6 @@ describe('Browser connection', function () {
         }
     };
 
-    // Fixture setup/teardown
     before(function () {
         this.timeout(20000);
 
@@ -47,8 +46,6 @@ describe('Browser connection', function () {
         return testCafe.close();
     });
 
-
-    // Test setup/teardown
     beforeEach(function () {
         return testCafe
             .createBrowserConnection()
@@ -62,8 +59,6 @@ describe('Browser connection', function () {
         connection.close();
     });
 
-
-    // Tests
     it('Should fire "ready" event and redirect to idle page once established', function () {
         var eventFired = false;
 
