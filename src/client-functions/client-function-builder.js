@@ -59,11 +59,15 @@ export default class ClientFunctionBuilder {
         return null;
     }
 
+    _getTestRun () {
+        return this.getBoundTestRun() || testRunTracker.resolveContextTestRun();
+    }
+
     getFunction () {
         var builder = this;
 
         var clientFn = function __$$clientFunction$$ () {
-            var testRun  = builder.getBoundTestRun() || testRunTracker.resolveContextTestRun();
+            var testRun  = builder._getTestRun();
             var callsite = getCallsiteForMethod(builder.callsiteNames.execution);
             var args     = [];
 
@@ -98,7 +102,7 @@ export default class ClientFunctionBuilder {
             fnCode:                    this.compiledFnCode,
             args:                      encodedArgs,
             dependencies:              encodedDependencies
-        });
+        }, this._getTestRun());
     }
 
     _getCompiledFnCode () {

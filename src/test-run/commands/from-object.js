@@ -19,7 +19,8 @@ import {
     SwitchToMainWindowCommand,
     SetNativeDialogHandlerCommand,
     SetTestSpeedCommand,
-    SetPageLoadTimeoutCommand
+    SetPageLoadTimeoutCommand,
+    ExecuteExpressionCommand
 } from './actions';
 
 import AssertionCommand from './assertion';
@@ -34,91 +35,100 @@ import {
 
 import { WaitCommand, DebugCommand } from './observation';
 
-
-// Create command from object
-export default function createCommandFromObject (obj) {
-    switch (obj.type) {
+function getCmdCtor (type) {
+    switch (type) {
         case TYPE.click:
-            return new ClickCommand(obj);
+            return ClickCommand;
 
         case TYPE.rightClick:
-            return new RightClickCommand(obj);
+            return RightClickCommand;
 
         case TYPE.doubleClick:
-            return new DoubleClickCommand(obj);
+            return DoubleClickCommand;
 
         case TYPE.hover:
-            return new HoverCommand(obj);
+            return HoverCommand;
 
         case TYPE.drag:
-            return new DragCommand(obj);
+            return DragCommand;
 
         case TYPE.dragToElement:
-            return new DragToElementCommand(obj);
+            return DragToElementCommand;
 
         case TYPE.typeText:
-            return new TypeTextCommand(obj);
+            return TypeTextCommand;
 
         case TYPE.selectText:
-            return new SelectTextCommand(obj);
+            return SelectTextCommand;
 
         case TYPE.selectTextAreaContent:
-            return new SelectTextAreaContentCommand(obj);
+            return SelectTextAreaContentCommand;
 
         case TYPE.selectEditableContent:
-            return new SelectEditableContentCommand(obj);
+            return SelectEditableContentCommand;
 
         case TYPE.pressKey:
-            return new PressKeyCommand(obj);
+            return PressKeyCommand;
 
         case TYPE.wait:
-            return new WaitCommand(obj);
+            return WaitCommand;
 
         case TYPE.navigateTo:
-            return new NavigateToCommand(obj);
+            return NavigateToCommand;
 
         case TYPE.setFilesToUpload:
-            return new SetFilesToUploadCommand(obj);
+            return SetFilesToUploadCommand;
 
         case TYPE.clearUpload:
-            return new ClearUploadCommand(obj);
+            return ClearUploadCommand;
 
         case TYPE.takeScreenshot:
-            return new TakeScreenshotCommand(obj);
+            return TakeScreenshotCommand;
 
         case TYPE.takeElementScreenshot:
-            return new TakeElementScreenshotCommand(obj);
+            return TakeElementScreenshotCommand;
 
         case TYPE.resizeWindow:
-            return new ResizeWindowCommand(obj);
+            return ResizeWindowCommand;
 
         case TYPE.resizeWindowToFitDevice:
-            return new ResizeWindowToFitDeviceCommand(obj);
+            return ResizeWindowToFitDeviceCommand;
 
         case TYPE.maximizeWindow:
-            return new MaximizeWindowCommand(obj);
+            return MaximizeWindowCommand;
 
         case TYPE.switchToIframe:
-            return new SwitchToIframeCommand(obj);
+            return SwitchToIframeCommand;
 
         case TYPE.switchToMainWindow:
-            return new SwitchToMainWindowCommand();
+            return SwitchToMainWindowCommand;
 
         case TYPE.setNativeDialogHandler:
-            return new SetNativeDialogHandlerCommand(obj);
+            return SetNativeDialogHandlerCommand;
 
         case TYPE.setTestSpeed:
-            return new SetTestSpeedCommand(obj);
+            return SetTestSpeedCommand;
 
         case TYPE.setPageLoadTimeout:
-            return new SetPageLoadTimeoutCommand(obj);
+            return SetPageLoadTimeoutCommand;
 
         case TYPE.assertion:
-            return new AssertionCommand(obj);
+            return AssertionCommand;
 
         case TYPE.debug:
-            return new DebugCommand(obj);
-    }
+            return DebugCommand;
 
-    return null;
+        case TYPE.executeExpression:
+            return ExecuteExpressionCommand;
+
+        default:
+            return null;
+    }
+}
+
+// Create command from object
+export default function createCommandFromObject (obj, testRun) {
+    const CmdCtor = getCmdCtor(obj.type);
+
+    return CmdCtor && new CmdCtor(obj, testRun);
 }

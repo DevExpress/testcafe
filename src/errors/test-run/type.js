@@ -15,6 +15,7 @@ export default {
     actionBooleanOptionError:                          'actionBooleanOptionError',
     actionSpeedOptionError:                            'actionSpeedOptionError',
     actionOptionsTypeError:                            'actionOptionsTypeError',
+    actionBooleanArgumentError:                        'actionBooleanArgumentError',
     actionStringArgumentError:                         'actionStringArgumentError',
     actionNullableStringArgumentError:                 'actionNullableStringArgumentError',
     actionStringOrStringArrayArgumentError:            'actionStringOrStringArrayArgumentError',

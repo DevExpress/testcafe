@@ -1,0 +1,90 @@
+{
+    "fixtures": [
+        {
+            "name": "RAW API Shared context",
+            "pageUrl": "http://localhost:3000/fixtures/api/raw/execute-expression/pages/index.html",
+            "tests": [
+                {
+                    "name": "Execute async expression",
+                    "commands": [
+                        {
+                            "type": "execute-expression",
+                            "expression": "ClientFunction(() => window.testData = 'test')()",
+                            "isAsyncExpression": true
+                        },
+                        {
+                            "type": "assertion",
+                            "assertionType": "eql",
+                            "actual": { "type" : "js-expr", "value" : "ClientFunction(() => window.testData)()" },
+                            "expected": "test"
+                        }
+                    ]
+                },
+                {
+                    "name": "Execute sync expression and save to a variable",
+                    "commands": [
+                        {
+                            "type": "execute-expression",
+                            "expression": "Selector('body').count",
+                            "resultVariableName": "bodyCount"
+                        },
+                        {
+                            "type": "assertion",
+                            "assertionType": "eql",
+                            "actual": { "type" : "js-expr", "value" : "bodyCount" },
+                            "expected": 1
+                        }
+                    ]
+                },
+                {
+                    "name": "Share variables between commands",
+                    "commands": [
+                        {
+                            "type": "execute-expression",
+                            "expression": "shared = 'initial value';"                           
+                        },
+                        {
+                            "type": "execute-expression",
+                            "expression": "ClientFunction(new Function('window.testData =\"' + shared + '\"'))()",
+                            "isAsyncExpression": true
+                        },
+                        {
+                            "type": "assertion",
+                            "assertionType": "eql",
+                            "actual": { "type" : "js-expr", "value" : "ClientFunction(() => window.testData)()" },
+                            "expected": "initial value"
+                        },
+                        {
+                            "type": "assertion",
+                            "assertionType": "eql",
+                            "actual": { "type" : "js-expr", "value" : "shared" },
+                            "expected": "initial value"
+                        }
+                    ]
+                },
+                {
+                    "name": "Store execution result to a variable",
+                    "commands": [
+                        {
+                            "type": "execute-expression",
+                            "expression": "Selector('body').count",
+                            "isAsyncExpression": true,
+                            "resultVariableName": "bodyCount"
+                        },
+                        {
+                            "type": "execute-expression",
+                            "expression": "1+1",
+                            "resultVariableName": "simpleValue"
+                        },
+                        {
+                            "type": "assertion",
+                            "assertionType": "eql",
+                            "actual": { "type" : "js-expr", "value" : "simpleValue + bodyCount" },
+                            "expected": 3
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

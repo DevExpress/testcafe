@@ -95,7 +95,7 @@ export default class TestController {
             var command = null;
 
             try {
-                command = new CmdCtor(cmdArgs);
+                command = new CmdCtor(cmdArgs, this.testRun);
             }
             catch (err) {
                 err.callsite = callsite;

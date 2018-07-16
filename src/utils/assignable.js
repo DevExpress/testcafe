@@ -8,14 +8,14 @@ export default class Assignable {
         throw new Error('Not implemented');
     }
 
-    _assignFrom (obj, validate) {
+    _assignFrom (obj, validate, initOptions = {}) {
         if (!obj)
             return;
 
         var props = this._getAssignableProperties();
 
         for (var i = 0; i < props.length; i++) {
-            var { name, type, required, init } = props[i];
+            var { name, type, required, init, defaultValue } = props[i];
 
             var path    = name.split('.');
             var lastIdx = path.length - 1;
@@ -28,6 +28,9 @@ export default class Assignable {
                 destObj = destObj[path[j]];
             }
 
+            if (destObj && 'defaultValue' in props[i])
+                destObj[name] = defaultValue;
+
             if (srcObj && destObj) {
                 var srcVal = srcObj[last];
 
@@ -35,7 +38,7 @@ export default class Assignable {
                     if (validate && type)
                         type(name, srcVal);
 
-                    destObj[last] = init ? init(name, srcVal) : srcVal;
+                    destObj[last] = init ? init(name, srcVal, initOptions) : srcVal;
                 }
             }
         }

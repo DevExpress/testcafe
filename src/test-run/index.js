@@ -293,7 +293,7 @@ export default class TestRun extends EventEmitter {
 
     _evaluate (code) {
         try {
-            return executeJsExpression(code, false, this);
+            return executeJsExpression(code, this, false);
         }
         catch (err) {
             return { err };
@@ -457,6 +457,23 @@ export default class TestRun extends EventEmitter {
                command.type !== COMMAND_TYPE.debug && command.type !== COMMAND_TYPE.useRole && command.type !== COMMAND_TYPE.assertion;
     }
 
+    async _executeExpression (command) {
+        var { expression, resultVariableName, isAsyncExpression } = command;
+
+        if (isAsyncExpression)
+            expression = `await ${expression}`;
+
+        if (resultVariableName)
+            expression = `${resultVariableName} = ${expression}, ${resultVariableName}`;
+
+        if (isAsyncExpression)
+            expression = `(async () => { return ${expression}; }).apply(this);`;
+
+        var result = this._evaluate(expression);
+
+        return isAsyncExpression ? await result : result;
+    }
+
     async _executeAssertion (command, callsite) {
         var assertionTimeout = command.options.timeout === void 0 ? this.opts.assertionTimeout : command.options.timeout;
         var executor         = new AssertionExecutor(command, assertionTimeout, callsite);
@@ -538,6 +555,9 @@ export default class TestRun extends EventEmitter {
 
         if (command.type === COMMAND_TYPE.assertion)
             return this._executeAssertion(command, callsite);
+
+        if (command.type === COMMAND_TYPE.executeExpression)
+            return await this._executeExpression(command, callsite);
 
         if (command.type === COMMAND_TYPE.getBrowserConsoleMessages)
             return await this._enqueueBrowserConsoleMessagesCommand(command, callsite);

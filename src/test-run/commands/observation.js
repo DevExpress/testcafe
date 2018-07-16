@@ -1,15 +1,11 @@
 import TYPE from './type';
-import Assignable from '../../utils/assignable';
+import CommandBase from './base';
 import { positiveIntegerArgument } from './validations/argument';
 
 // Commands
-export class WaitCommand extends Assignable {
-    constructor (obj) {
-        super(obj);
-
-        this.type    = TYPE.wait;
-        this.timeout = null;
-        this._assignFrom(obj, true);
+export class WaitCommand extends CommandBase {
+    constructor (obj, testRun) {
+        super(obj, testRun, TYPE.wait);
     }
 
     _getAssignableProperties () {
@@ -19,52 +15,37 @@ export class WaitCommand extends Assignable {
     }
 }
 
-class ExecuteClientFunctionCommandBase extends Assignable {
-    constructor (type, obj) {
-        super();
-
-        this.type = type;
-
-        this.instantiationCallsiteName = '';
-        this.fnCode                    = '';
-        this.args                      = [];
-        this.dependencies              = [];
-
-        this._assignFrom(obj, false);
+class ExecuteClientFunctionCommandBase extends CommandBase {
+    constructor (obj, testRun, type) {
+        super(obj, testRun, type, false);
     }
 
     _getAssignableProperties () {
         return [
-            { name: 'instantiationCallsiteName' },
-            { name: 'fnCode' },
-            { name: 'args' },
-            { name: 'dependencies' }
+            { name: 'instantiationCallsiteName', defaultValue: '' },
+            { name: 'fnCode', defaultValue: '' },
+            { name: 'args', defaultValue: [] },
+            { name: 'dependencies', defaultValue: [] }
         ];
     }
 }
 
 export class ExecuteClientFunctionCommand extends ExecuteClientFunctionCommandBase {
-    constructor (obj) {
-        super(TYPE.executeClientFunction, obj);
+    constructor (obj, testRun) {
+        super(obj, testRun, TYPE.executeClientFunction);
     }
 }
 
 export class ExecuteSelectorCommand extends ExecuteClientFunctionCommandBase {
-    constructor (obj) {
-        super(TYPE.executeSelector);
-
-        this.visibilityCheck = false;
-        this.timeout         = null;
-        this.index           = 0;
-
-        this._assignFrom(obj, false);
+    constructor (obj, testRun) {
+        super(obj, testRun, TYPE.executeSelector);
     }
 
     _getAssignableProperties () {
         return super._getAssignableProperties().concat([
-            { name: 'visibilityCheck' },
-            { name: 'timeout' },
-            { name: 'index' }
+            { name: 'visibilityCheck', defaultValue: false },
+            { name: 'timeout', defaultValue: null },
+            { name: 'index', defaultValue: 0 }
         ]);
     }
 }
