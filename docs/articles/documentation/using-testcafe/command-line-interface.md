@@ -282,6 +282,7 @@ The captured screenshots are organized into subdirectories within the root direc
 * `${DATE}\test-${TEST_INDEX}\${USERAGENT}\{$SCREENSHOT_INDEX}.png` if the [quarantine mode](../../using-testcafe/command-line-interface.md#-q---quarantine-mode) is disabled;
 * `${DATE}\test-${TEST_INDEX}\run-${QUARANTINE_ATTEMPT}\${USERAGENT}\{$SCREENSHOT_INDEX}.png` if the [quarantine mode](../../using-testcafe/command-line-interface.md#-q---quarantine-mode) is enabled.
 * `${DATE}\test-${TEST_INDEX}\${USERAGENT}\errors\{$SCREENSHOTINDEX}.png` if the [--screenshots-on-fails](#-s---screenshots-on-fails) option is specified.
+* `${DATE}\test-${TEST_INDEX}\run-${QUARANTINE_ATTEMPT}\${USERAGENT}\errors\{$SCREENSHOT_INDEX}.png` if the [quarantine mode](../../using-testcafe/command-line-interface.md#-q---quarantine-mode) and [--screenshots-on-fails](#-s---screenshots-on-fails) option are enabled.
 
 You can also specify a custom pattern using the [--screenshot-path-pattern](#-p---screenshot-path-pattern) option.
 
