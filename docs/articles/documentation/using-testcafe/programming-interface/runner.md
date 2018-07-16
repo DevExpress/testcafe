@@ -208,7 +208,7 @@ Parameter                  | Type    | Description                              
 -------------------------- | ------- | ----------------------------------------------------------------------------- | -------
 `path`                     | String  | The root path where the screenshots are saved. The relative path is specified by the default [path patterns](../command-line-interface.md#path-patterns) or by the method's `screenshotPathPattern` parameter.
 `takeOnFails`&#160;*(optional)* | Boolean | Specifies if screenshots should be taken automatically when a test fails. | `false`
-`sceenshotPathPattern`&#160;*(optional)* | String | The pattern to compose screenshot files' relative path and name. See [--screenshot-path-pattern](../command-line-interface.md#-s---screenshot-path-pattern) for information about available placeholders.
+`sceenshotPathPattern`&#160;*(optional)* | String | The pattern to compose screenshot files' relative path and name. See [--screenshot-path-pattern](../command-line-interface.md#-p---screenshot-path-pattern) for information about available placeholders.
 
 The `screenshots` function should be called to allow TestCafe to take screenshots
 when the [t.takeScreenshot](../../test-api/actions/take-screenshot.md) action is called from test code.
