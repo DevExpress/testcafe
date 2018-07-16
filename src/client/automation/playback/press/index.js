@@ -1,5 +1,15 @@
 import hammerhead from '../../deps/hammerhead';
-import { arrayUtils, domUtils, promiseUtils, delay, getKeyArray, sendRequestToFrame } from '../../deps/testcafe-core';
+
+import {
+    arrayUtils,
+    domUtils,
+    promiseUtils,
+    marionetteUtils,
+    delay,
+    getKeyArray,
+    sendRequestToFrame
+} from '../../deps/testcafe-core';
+
 import KeyPressSimulator from './key-press-simulator';
 import supportedShortcutHandlers from './shortcuts';
 import { getActualKeysAndEventKeyProperties, getDeepActiveElement } from './utils';
@@ -136,6 +146,7 @@ export default class PressAutomation {
     }
 
     _runCombination (keyCombination) {
+
         this.modifiersState   = { ctrl: false, alt: false, shift: false, meta: false };
         this.isSelectElement  = domUtils.isSelectElement(getDeepActiveElement(this.topSameDomainDocument));
         this.pressedKeyString = '';
@@ -168,6 +179,9 @@ export default class PressAutomation {
 
             return sendRequestToFrame(msg, PRESS_RESPONSE_CMD, activeElement.contentWindow);
         }
+
+        if (marionetteUtils.enabled)
+            return marionetteUtils.performAction({ type: 'press', combinations: this.keyCombinations });
 
         return promiseUtils.each(this.keyCombinations, combination => {
             return this

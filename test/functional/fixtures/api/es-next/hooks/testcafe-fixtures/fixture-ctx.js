@@ -1,5 +1,8 @@
 import { expect } from 'chai';
+import config from '../../../../../config';
 
+
+const BROWSERS_COUNT = config.currentEnvironment.browsers.length;
 
 fixture `Fixture1`
     .before(ctx => {
@@ -9,8 +12,8 @@ fixture `Fixture1`
         var items = ctx.prop.split('|');
 
         expect(items.filter(item => item === 'before').length).eql(1);
-        expect(items.filter(item => item === 'test1').length).eql(2);
-        expect(items.filter(item => item === 'test2').length).eql(2);
+        expect(items.filter(item => item === 'test1').length).eql(BROWSERS_COUNT);
+        expect(items.filter(item => item === 'test2').length).eql(BROWSERS_COUNT);
     });
 
 test('Test1', async t => {

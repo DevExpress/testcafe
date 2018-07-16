@@ -1,10 +1,13 @@
 import hammerhead from '../../deps/hammerhead';
+
 import {
     contentEditable,
     positionUtils,
     domUtils,
+    marionetteUtils,
     delay
 } from '../../deps/testcafe-core';
+
 import { fromPoint as getElementFromPoint } from '../../get-element';
 import VisibleElementAutomation from '../visible-element-automation';
 import MoveAutomation from '../move';
@@ -44,6 +47,9 @@ export default class DragAutomationBase extends VisibleElementAutomation {
         return cursor
             .leftButtonDown()
             .then(() => {
+                if (marionetteUtils.enabled)
+                    return marionetteUtils.performAction({ type: 'mouse-down', modifiers: this.modifiers, keepMods: true });
+
                 eventSimulator[this.downEvent](eventArgs.element, eventArgs.options);
 
                 return this._focus(eventArgs);
@@ -78,6 +84,9 @@ export default class DragAutomationBase extends VisibleElementAutomation {
             holdLeftButton: true
         }, false);
 
+        dragOptions.keepMods  = true;
+        dragOptions.clearMods = true;
+
         var moveAutomation = new MoveAutomation(element, dragOptions);
 
         return moveAutomation
@@ -92,6 +101,7 @@ export default class DragAutomationBase extends VisibleElementAutomation {
     _mouseup () {
         return cursor
             .buttonUp()
+            .then(() => marionetteUtils.enabled && marionetteUtils.performAction({ type: 'mouse-up', modifiers: this.modifiers, clearMods: true }))
             .then(() => {
                 var point      = positionUtils.offsetToClientCoords(this.endPoint);
                 var topElement = null;
@@ -104,6 +114,7 @@ export default class DragAutomationBase extends VisibleElementAutomation {
                     .then(({ element }) => {
                         topElement = element;
 
+
                         if (!topElement)
                             return topElement;
 
@@ -114,16 +125,18 @@ export default class DragAutomationBase extends VisibleElementAutomation {
                                 eventSimulator.drop(topElement, options);
 
                             eventSimulator.dragend(this.dragAndDropState.element, options);
-                            this.dragAndDropState.dataStore.setProtectedMode();
+
+                            if (this.dragAndDropState.dataStore)
+                                this.dragAndDropState.dataStore.setProtectedMode();
                         }
-                        else
+                        else if (!marionetteUtils.enabled)
                             eventSimulator[this.upEvent](topElement, options);
 
                         return getElementFromPoint(point.x, point.y);
                     })
                     .then(({ element }) => {
                         //B231323
-                        if (topElement && element === topElement && !this.dragAndDropState.enabled)
+                        if (!marionetteUtils.enabled && topElement && element === topElement && !this.dragAndDropState.enabled)
                             eventSimulator.click(topElement, options);
                     });
             });

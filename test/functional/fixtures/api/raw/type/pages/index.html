@@ -32,6 +32,8 @@
         var allRaised = keydownRaised && keypressRaised && inputRaised;
         var exactlyOneKeystroke = keydownCount === 1 && keypressCount === 1;
 
+        debugger;
+
         if (allRaised && this.value === 'a') {
             throw new Error('Type in input raised');
         } else if (allRaised && exactlyOneKeystroke && containsAllText) {

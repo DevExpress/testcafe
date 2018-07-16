@@ -53,6 +53,21 @@ const MAX_RESPONSE_DELAY              = 2 * 60 * 1000;
 
 const ALL_DRIVER_TASKS_ADDED_TO_QUEUE_EVENT = 'all-driver-tasks-added-to-queue';
 
+function getMarionetteClient (connection) {
+    const id = connection.id;
+    const provider = connection.provider;
+
+    if (!provider.plugin || !provider.plugin.openedBrowsers)
+        return null;
+
+    const runtimeInfo = provider.plugin.openedBrowsers[id];
+
+    if (!runtimeInfo || !runtimeInfo.marionetteClient)
+        return null;
+
+    return runtimeInfo.marionetteClient;
+}
+
 export default class TestRun extends EventEmitter {
     constructor (test, browserConnection, screenshotCapturer, warningLog, opts) {
         super();
@@ -62,6 +77,8 @@ export default class TestRun extends EventEmitter {
         this.opts              = opts;
         this.test              = test;
         this.browserConnection = browserConnection;
+
+        this.marionetteClient = getMarionetteClient(browserConnection);
 
         this.phase = PHASE.initial;
 
@@ -189,7 +206,8 @@ export default class TestRun extends EventEmitter {
             pageLoadTimeout:              this.pageLoadTimeout,
             skipJsErrors:                 this.opts.skipJsErrors,
             speed:                        this.speed,
-            dialogHandler:                JSON.stringify(this.activeDialogHandler)
+            dialogHandler:                JSON.stringify(this.activeDialogHandler),
+            marionetteEnabled:            !!this.marionetteClient
         });
     }
 
@@ -639,6 +657,11 @@ export default class TestRun extends EventEmitter {
 
         return await getLocation();
     }
+
+    async [CLIENT_MESSAGES.performActions] (msg) {
+        await this.marionetteClient.executeCommand(msg);
+    }
+
 }
 
 

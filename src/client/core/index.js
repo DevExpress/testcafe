@@ -23,6 +23,7 @@ import getKeyArray from './utils/get-key-array';
 import getSanitizedKey from './utils/get-sanitized-key';
 import parseKeySequence from './utils/parse-key-sequence';
 import sendRequestToFrame from './utils/send-request-to-frame';
+import marionetteUtils from './utils/marionnette';
 
 import * as browser from '../browser';
 
@@ -44,6 +45,7 @@ exports.eventUtils             = eventUtils;
 exports.arrayUtils             = arrayUtils;
 exports.promiseUtils           = promiseUtils;
 exports.textSelection          = textSelection;
+exports.marionetteUtils        = marionetteUtils;
 exports.waitFor                = waitFor;
 exports.delay                  = delay;
 exports.noop                   = noop;

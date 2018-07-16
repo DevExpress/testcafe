@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html>
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -12,7 +13,7 @@
         }
         function log (eventName, target, relatedTarget) {
             var logger = document.getElementById('logger');
-            
+
             logger.innerHTML += eventName + ' ' + target.id + ' ' + (relatedTarget ? relatedTarget.id : 'none') + ' <br/>';
         }
     </script>
@@ -33,7 +34,7 @@
 </head>
 <body id="body">
     <div id="dropTarget" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)">
-            <p id='dragElement' draggable="true">Drag me!</p>
+            <p id='dragElement' draggable="true" ondragstart="event.dataTransfer.setData('text/plain', 'Text')">Drag me!</p>
     </div>
     <div id="logger"></div>
 </body>

@@ -6,21 +6,26 @@ import { focusAndSetSelection, focusByRelatedElement } from '../../utils/utils';
 import cursor from '../../cursor';
 import nextTick from '../../utils/next-tick';
 
+
 var Promise = hammerhead.Promise;
+
 
 var extend           = hammerhead.utils.extend;
 var browserUtils     = hammerhead.utils.browser;
 var featureDetection = hammerhead.utils.featureDetection;
 var eventSimulator   = hammerhead.eventSandbox.eventSimulator;
 
-var domUtils   = testCafeCore.domUtils;
-var styleUtils = testCafeCore.styleUtils;
-var eventUtils = testCafeCore.eventUtils;
-var arrayUtils = testCafeCore.arrayUtils;
-var delay      = testCafeCore.delay;
+const domUtils   = testCafeCore.domUtils;
+const styleUtils = testCafeCore.styleUtils;
+const eventUtils = testCafeCore.eventUtils;
+const arrayUtils = testCafeCore.arrayUtils;
+const marionetteUtils = testCafeCore.marionetteUtils;
+const delay      = testCafeCore.delay;
 
 var selectElementUI = testCafeUI.selectElement;
 
+
+const DIALOG_INPUT_TYPES = ['upload', 'color', 'date'];
 
 export default class ClickAutomation extends VisibleElementAutomation {
     constructor (element, clickOptions) {
@@ -39,6 +44,12 @@ export default class ClickAutomation extends VisibleElementAutomation {
             simulateDefaultBehavior: true,
             clickElement:            null
         };
+    }
+
+    static _isDialogInput (element) {
+        return domUtils.isInputElement(element) &&
+               element.getAttribute('type') &&
+               DIALOG_INPUT_TYPES.some(type => element.getAttribute('type').toLowerCase() === type);
     }
 
     _bindMousedownHandler () {
@@ -69,6 +80,28 @@ export default class ClickAutomation extends VisibleElementAutomation {
         eventUtils.bind(element, 'click', onclick);
     }
 
+    _bindMouseUpListener () {
+        let mouseUpHandled = false;
+
+        const onclick = e => {
+            if (!mouseUpHandled)
+                e.stopPropagation();
+
+            eventUtils.unbind(window, 'click', onclick);
+        };
+
+        const onmouseup = e => {
+            if (mouseUpHandled)
+                e.stopPropagation();
+
+            mouseUpHandled = true;
+
+            hammerhead.nativeMethods.setTimeout.call(window, () => eventUtils.unbind(window, 'mouseup', onmouseup), 10);
+        };
+
+        eventUtils.bind(window, 'mouseup', onmouseup, true);
+        eventUtils.bind(window, 'click', onclick, true);
+    }
 
     _raiseTouchEvents (eventArgs) {
         if (featureDetection.isTouchDevice) {
@@ -245,6 +278,18 @@ export default class ClickAutomation extends VisibleElementAutomation {
 
                 // NOTE: we should raise mouseup event with 'mouseActionStepDelay' after we trigger
                 // mousedown event regardless of how long mousedown event handlers were executing
+
+                if (marionetteUtils.enabled && !domUtils.isAnchorElement(element)) {
+                    if (ClickAutomation._isDialogInput(element))
+                        this._bindClickHandler(element);
+
+                    this._bindMouseUpListener(element);
+
+                    return marionetteUtils.performAction({ type: 'click', modifiers: this.modifiers })
+                        .then(() => focusAndSetSelection(element, false, this.caretPos))
+                        .then(() => delay(this.automationSettings.mouseActionStepDelay));
+                }
+
                 return Promise.all([delay(this.automationSettings.mouseActionStepDelay), this._mousedown(eventArgs)]);
             })
             .then(() => this._mouseup(eventArgs))

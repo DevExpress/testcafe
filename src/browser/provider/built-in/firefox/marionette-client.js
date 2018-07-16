@@ -12,6 +12,31 @@ const CONNECTION_RETRY_DELAY = 300;
 const MAX_RESIZE_RETRY_COUNT = 2;
 const HEADER_SEPARATOR       = ':';
 
+const MARIONETTE_KEYMAP = {
+    left:      '\uE012',
+    escape:    '\uE00C',
+    down:      '\uE015',
+    right:     '\uE014',
+    up:        '\uE013',
+    backspace: '\uE003',
+    capslock:  '\uE008',
+    delete:    '\uE017',
+    end:       '\uE010',
+    enter:     '\uE007',
+    esc:       '\uE00C',
+    home:      '\uE011',
+    ins:       '\uE016',
+    pagedown:  '\uE00F',
+    pageup:    '\uE00E',
+    space:     '\uE00D',
+    tab:       '\uE004',
+    alt:       '\uE052',
+    ctrl:      '\uE051',
+    meta:      '\uE03D',
+    shift:     '\uE008',
+    plus:      '\uE025'
+};
+
 module.exports = class MarionetteClient {
     constructor (port = 2828, host = '127.0.0.1') {
         this.currentPacketNumber = 1;
@@ -20,13 +45,17 @@ module.exports = class MarionetteClient {
         this.host                = host;
         this.socket              = new Socket();
         this.buffer              = Buffer.alloc(0);
+        this.getNewDataPromise = Promise.resolve();
         this.getPacketPromise    = Promise.resolve();
         this.sendPacketPromise   = Promise.resolve();
+        this.getResponsePromise   = Promise.resolve();
 
         this.protocolInfo = {
             applicationType:    '',
             marionetteProtocol: '',
         };
+
+        this.newDataCount = 0;
 
         this.sessionInfo = null;
     }
@@ -72,15 +101,58 @@ module.exports = class MarionetteClient {
 
         this.buffer = Buffer.concat([this.buffer, data]);
 
+        this.newDataCount++;
+
         this.events.emit('new-data');
     }
 
+    _chainCancelablePromise (chainPromise, cancelableAction) {
+        let returnPromiseControl = null;
+
+        const returnPromise = new Promise((resolve, reject) => {
+            returnPromiseControl = { resolve, reject };
+        });
+
+        chainPromise = chainPromise
+            .then(() => {
+                const cancelPromise = promisifyEvent(this.events, 'cancel');
+
+                cancelPromise.then(() => {
+
+                    returnPromiseControl.resolve = () => {};
+                    returnPromiseControl.reject  = () => {};
+                });
+
+                const actionPromise = cancelableAction()
+                    .then(value => returnPromiseControl.resolve(value))
+                    .catch(error => returnPromiseControl.reject(error))
+                    .then(() => cancelPromise.cancel());
+
+                return Promise.race([cancelPromise, actionPromise]);
+            });
+
+        return { chainPromise, returnPromise };
+    }
+
+    _getNewData () {
+        const { chainPromise, returnPromise } = this._chainCancelablePromise(this.getNewDataPromise, async () => {
+            if (!this.newDataCount)
+                await promisifyEvent(this.events, 'new-data');
+
+            this.newDataCount--;
+        });
+
+        this.getNewDataPromise = chainPromise;
+
+        return returnPromise;
+    }
+
     _getPacket () {
-        this.getPacketPromise = this.getPacketPromise.then(async () => {
+        const { chainPromise, returnPromise } = this._chainCancelablePromise(this.getPacketPromise, async () => {
             var headerEndIndex = this.buffer.indexOf(HEADER_SEPARATOR);
 
             while (headerEndIndex < 0) {
-                await promisifyEvent(this.events, 'new-data');
+                await this._getNewData();
 
                 headerEndIndex = this.buffer.indexOf(HEADER_SEPARATOR);
             }
@@ -97,7 +169,7 @@ module.exports = class MarionetteClient {
 
             if (packet.length) {
                 while (this.buffer.length < bodyEndIndex)
-                    await promisifyEvent(this.events, 'new-data');
+                    await this._getNewData();
 
                 packet.body = JSON.parse(this.buffer.toString('utf8', bodyStartIndex, bodyEndIndex));
             }
@@ -107,39 +179,49 @@ module.exports = class MarionetteClient {
             return packet;
         });
 
-        return this.getPacketPromise;
+        this.getPacketPromise = chainPromise;
+
+        return returnPromise;
     }
 
     _sendPacket (payload) {
-        this.sendPacketPromise = this.sendPacketPromise.then(async () => {
+        const { chainPromise, returnPromise } = this._chainCancelablePromise(this.sendPacketPromise, async () => {
             var body       = [0, this.currentPacketNumber++, payload.command, payload.parameters];
             var serialized = JSON.stringify(body);
             var message    = Buffer.byteLength(serialized, 'utf8') + HEADER_SEPARATOR + serialized;
 
-            this._writeSocket(message);
+            await this._writeSocket(message);
         });
 
-        return this.sendPacketPromise;
+        this.sendPacketPromise = chainPromise;
+
+        return returnPromise;
     }
 
     _throwMarionetteError (error) {
         throw new Error(`${error.error}${error.message ? ': ' + error.message : ''}`);
     }
 
-    async _getResponse (packet) {
-        var packetNumber = this.currentPacketNumber;
+    _getResponse (packet) {
+        const { chainPromise, returnPromise } = this._chainCancelablePromise(this.getResponsePromise, async () => {
+            var packetNumber = this.currentPacketNumber;
 
-        await this._sendPacket(packet);
+            await this._sendPacket(packet);
 
-        var responsePacket = await this._getPacket();
+            var responsePacket = await this._getPacket();
 
-        while (!responsePacket.body || responsePacket.body[1] !== packetNumber)
-            responsePacket = await this._getPacket();
+            while (!responsePacket.body || responsePacket.body[1] !== packetNumber)
+                responsePacket = await this._getPacket();
 
-        if (responsePacket.body[2])
-            this._throwMarionetteError(responsePacket.body[2]);
+            if (responsePacket.body[2])
+                this._throwMarionetteError(responsePacket.body[2]);
 
-        return responsePacket.body[3];
+            return responsePacket.body[3];
+        });
+
+        this.getResponsePromise = chainPromise;
+
+        return returnPromise;
     }
 
     async connect () {
@@ -192,8 +274,124 @@ module.exports = class MarionetteClient {
         }
     }
 
+    async performActions (actions) {
+        await this._getResponse({ command: 'WebDriver:PerformActions', parameters: { actions } });
+    }
+
     async quit () {
         await this._getResponse({ command: 'quit' });
+    }
+
+    async cancelAction () {
+        this.events.emit('cancel');
+    }
+
+    async executeCommand (msg) {
+        if (this.executingAction)
+            this.cancelAction();
+
+        this.executingAction = true;
+
+        let mods = null;
+
+        if (msg.modifiers && !msg.clearMods) {
+            mods = ['ctrl', 'alt', 'shift', 'meta'].filter(key => msg.modifiers[key]);
+
+            if (mods.length) {
+                await this.performActions([{
+                    id:      'keyboard',
+                    type:    'key',
+                    actions: mods.map(key => ({ type: 'keyDown', value: MARIONETTE_KEYMAP[key] }))
+                }]);
+            }
+        }
+
+        if (msg.type === 'move') {
+            await this.performActions([{
+                id:         'mouse',
+                type:       'pointer',
+                parameters: { pointerType: 'mouse' },
+
+                actions: [
+                    {
+                        type:     'pointerMove',
+                        duration: 1000,
+                        x:        msg.x,
+                        y:        msg.y
+                    }
+                ]
+            }]);
+
+        }
+        else if (msg.type === 'click' || msg.type === 'right-click' || msg.type === 'double-click' || msg.type === 'mouse-down' || msg.type === 'mouse-up') {
+            const button = msg.type === 'right-click' ? 2 : 0;
+            const actions = [];
+
+            if (msg.type !== 'mouse-up')
+                actions.push({ type: 'pointerDown', button });
+
+            if (msg.type !== 'mouse-down')
+                actions.push({ type: 'pointerUp', button });
+
+            if (msg.type === 'double-click')
+                actions.push(...actions);
+
+            await this.performActions([{
+                id:         'mouse',
+                type:       'pointer',
+                parameters: { pointerType: 'mouse' },
+
+                actions
+            }]);
+        }
+        else if (msg.type === 'text') {
+            const actions = [];
+
+            Array.prototype.forEach.call(msg.text, char => {
+                actions.push({ type: 'keyDown', value: char }, { type: 'keyUp', value: char });
+            });
+
+            await this.performActions([{
+                id:   'keyboard',
+                type: 'key',
+
+                actions
+            }]);
+        }
+        else if (msg.type === 'press') {
+            const actions = [];
+
+            msg.combinations.forEach(comb => {
+                comb = comb.replace(/^\+/, 'plus').replace('++', '+plus');
+
+                const keys = comb.split(/\+/);
+
+                actions.push(...keys.map(key => ({ type: 'keyDown', value: MARIONETTE_KEYMAP[key] || key })));
+                actions.push(...keys.map(key => ({ type: 'keyUp', value: MARIONETTE_KEYMAP[key] || key })));
+            });
+
+            await this.performActions([{
+                id:   'keyboard',
+                type: 'key',
+
+                actions
+            }]);
+        }
+
+        if (msg.modifiers && !msg.keepMods) {
+            if (!mods)
+                mods = ['ctrl', 'alt', 'shift', 'meta'].filter(key => msg.modifiers[key]);
+
+            if (mods.length) {
+                await this.performActions([{
+                    id:      'keyboard',
+                    type:    'key',
+                    actions: mods.map(key => ({ type: 'keyUp', value: MARIONETTE_KEYMAP[key] }))
+                }]);
+            }
+        }
+
+        this.executingAction = false;
     }
 };
 

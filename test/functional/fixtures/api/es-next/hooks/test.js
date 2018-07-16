@@ -1,6 +1,6 @@
-var expect = require('chai').expect;
-var uniq   = require('lodash').uniq;
-var config = require('../../../../config');
+var expect           = require('chai').expect;
+var { values, uniq } = require('lodash');
+var config           = require('../../../../config');
 
 
 // NOTE: we run tests in chrome only, because we mainly test server API functionality.
@@ -123,9 +123,16 @@ describe('[API] fixture.before/fixture.after hooks', function () {
             shouldFail: true,
             only:       'chrome, firefox'
         }).catch(function (errs) {
-            var allErrors = errs['chrome'].concat(errs['firefox']);
+            const browsersCount = config.currentEnvironment.browsers.length;
 
-            expect(allErrors.length).eql(6);
+            let allErrors = null;
+
+            if (browsersCount === 1 && Array.isArray(errs))
+                allErrors = errs;
+            else
+                allErrors = [].concat(...values(errs));
+
+            expect(allErrors.length).eql(3 * browsersCount);
 
             allErrors.forEach(function (err) {
                 expect(err).contains('Error in fixture.before hook');

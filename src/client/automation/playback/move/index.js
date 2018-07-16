@@ -26,12 +26,13 @@ var messageSandbox   = hammerhead.eventSandbox.message;
 var DataTransfer     = hammerhead.eventSandbox.DataTransfer;
 var DragDataStore    = hammerhead.eventSandbox.DragDataStore;
 
-var positionUtils      = testCafeCore.positionUtils;
-var domUtils           = testCafeCore.domUtils;
-var styleUtils         = testCafeCore.styleUtils;
-var eventUtils         = testCafeCore.eventUtils;
-var promiseUtils       = testCafeCore.promiseUtils;
-var sendRequestToFrame = testCafeCore.sendRequestToFrame;
+const positionUtils      = testCafeCore.positionUtils;
+const domUtils           = testCafeCore.domUtils;
+const styleUtils         = testCafeCore.styleUtils;
+const eventUtils         = testCafeCore.eventUtils;
+const promiseUtils       = testCafeCore.promiseUtils;
+const marionetteUtils = testCafeCore.marionetteUtils;
+const sendRequestToFrame = testCafeCore.sendRequestToFrame;
 
 
 const MOVE_REQUEST_CMD  = 'automation|move|request';
@@ -75,6 +76,9 @@ export default class MoveAutomation {
 
         this.holdLeftButton = moveOptions.holdLeftButton;
         this.dragElement    = null;
+
+        this.keepMods = moveOptions.keepMods;
+        this.clearMods = moveOptions.clearMods;
 
         this.dragAndDropState = new DragAndDropState();
 
@@ -370,6 +374,95 @@ export default class MoveAutomation {
         return scrollAutomation.run();
     }
 
+    _bindEventHandlers () {
+        let shouldRaiseDrag = false;
+        let dragStarted = false;
+        let dragElement = null;
+
+        this.onmousemove = e => {
+            cursor.move(e.clientX, e.clientY);
+
+            if (!this.dragAndDropState.enabled || !dragElement)
+                return;
+
+            if (!shouldRaiseDrag) {
+                shouldRaiseDrag = true;
+                return;
+            }
+
+            e.stopPropagation();
+            e.preventDefault();
+
+            eventSimulator.drag(dragElement, e);
+
+            if (!dragStarted) {
+                dragStarted = true;
+
+                eventSimulator.dragenter(e.target, e);
+            }
+
+            this.dragAndDropState.dropAllowed = !eventSimulator.dragover(e.target, e);
+        };
+
+        const preventHandler = e => {
+            if (this.dragAndDropState.enabled)
+                e.stopPropagation();
+        };
+
+        const onmouseover = e => {
+            if (!this.dragAndDropState.enabled)
+                return;
+
+            e.stopPropagation();
+            e.preventDefault();
+
+            eventSimulator.dragenter(e.target, e);
+            eventSimulator.dragleave(e.relatedTarget, e);
+        };
+
+        const ondragend = () => {
+            eventUtils.unbind(window, 'mousemove', this.onmousemove);
+
+            this.onmousemove = null;
+
+            eventUtils.unbind(window, 'mouseover', onmouseover);
+            eventUtils.unbind(window, 'mouseleave', preventHandler);
+            eventUtils.unbind(window, 'mouseenter', preventHandler);
+            eventUtils.unbind(window, 'mouseout', preventHandler);
+            eventUtils.unbind(window, 'dragend', ondragend);
+        };
+
+        const ondragstart = e => {
+            this.dragAndDropState.dataTransfer = e.dataTransfer;
+            this.dragAndDropState.element = e.target;
+            this.dragAndDropState.enabled = true;
+
+            dragElement = e.target;
+
+            e.preventDefault();
+
+            e.preventDefault = () => {
+                this.dragAndDropState.enabled = false;
+
+                eventUtils.unbind(window, 'mouseover', onmouseover);
+                eventUtils.unbind(window, 'dragend', ondragend);
+                eventUtils.unbind(window, 'mouseleave', preventHandler, true);
+                eventUtils.unbind(window, 'mouseenter', preventHandler, true);
+                eventUtils.unbind(window, 'mouseout', preventHandler, true);
+            };
+
+            eventUtils.unbind(window, 'dragstart', ondragstart);
+
+            eventUtils.bind(window, 'mouseover', onmouseover, true);
+            eventUtils.bind(window, 'mouseleave', preventHandler, true);
+            eventUtils.bind(window, 'mouseenter', preventHandler, true);
+            eventUtils.bind(window, 'mouseout', preventHandler, true);
+        };
+
+        eventUtils.bind(window, 'mousemove', this.onmousemove, true);
+        eventUtils.bind(window, 'dragstart', ondragstart, true);
+    }
+
     _moveToCurrentFrame () {
         if (cursor.active)
             return Promise.resolve();
@@ -459,7 +552,28 @@ export default class MoveAutomation {
 
                     return this
                         ._moveToCurrentFrame()
-                        .then(() => this._move());
+                        .then(() => {
+                            if (marionetteUtils.enabled) {
+                                testCafeCore.disableRealEventsPreventing();
+
+                                this._bindEventHandlers();
+
+                                const marionetteOptions = {
+                                    type:      'move',
+                                    x:         this.endPoint.x,
+                                    y:         this.endPoint.y,
+                                    modifiers: this.modifiers,
+                                    keepMods:  this.keepMods,
+                                    clearMods: this.clearMods
+                                };
+
+                                return marionetteUtils
+                                    .performAction(marionetteOptions)
+                                    .then(() => this.onmousemove && eventUtils.unbind(window, 'mousemove', this.onmousemove));
+                            }
+
+                            return this._move();
+                        });
                 }
 
                 return null;

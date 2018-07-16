@@ -7,7 +7,8 @@ import {
     preventRealEvents,
     disableRealEventsPreventing,
     waitFor,
-    browser
+    browser,
+    marionetteUtils
 } from './deps/testcafe-core';
 import { StatusBar } from './deps/testcafe-ui';
 
@@ -106,6 +107,9 @@ export default class Driver {
         this.activeChildDriverLink = null;
 
         this.statusBar = null;
+
+        if (options.marionetteEnabled)
+            marionetteUtils.enabled = true;
 
         this.pageInitialRequestBarrier = new RequestBarrier();
 

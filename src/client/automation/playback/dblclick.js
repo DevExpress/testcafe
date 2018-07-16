@@ -9,8 +9,9 @@ var featureDetection = hammerhead.utils.featureDetection;
 var browserUtils     = hammerhead.utils.browser;
 var eventSimulator   = hammerhead.eventSandbox.eventSimulator;
 
-var eventUtils = testCafeCore.eventUtils;
-var delay      = testCafeCore.delay;
+const eventUtils      = testCafeCore.eventUtils;
+const marionetteUtils = testCafeCore.marionetteUtils;
+const delay           = testCafeCore.delay;
 
 const FIRST_CLICK_DELAY = featureDetection.isTouchDevice ? 0 : 160;
 
@@ -86,6 +87,15 @@ export default class DblClickAutomation extends VisibleElementAutomation {
 
     run (useStrictElementCheck) {
         // NOTE: If the target element is out of viewport the firstClick sub-automation raises an error
+        if (marionetteUtils.enabled) {
+            return this._ensureElement(useStrictElementCheck)
+                .then(() => {
+                    return marionetteUtils
+                        .performAction({ type: 'double-click', modifiers: this.modifiers })
+                        .then(() => delay(this.automationSettings.mouseActionStepDelay));
+                });
+        }
+
         return this
             ._firstClick(useStrictElementCheck)
             .then(eventArgs => this._secondClick(eventArgs))

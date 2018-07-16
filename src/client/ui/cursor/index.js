@@ -89,7 +89,7 @@ var CursorUI = {
         if (!this.cursorElement)
             this._createElement();
 
-        styleUtils.set(this.cursorElement, 'visibility', '');
+        styleUtils.set(this.cursorElement, 'visibility', 'hidden');
     },
 
     move (x, y) {

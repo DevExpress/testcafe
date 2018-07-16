@@ -11,7 +11,7 @@ var textSelection   = testCafeCore.textSelection;
 var domUtils        = testCafeCore.domUtils;
 
 
-function setCaretPosition (element, caretPos) {
+export function setCaretPosition (element, caretPos) {
     var isTextEditable    = domUtils.isTextEditableElement(element);
     var isContentEditable = domUtils.isContentEditableElement(element);
 

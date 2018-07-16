@@ -14,13 +14,16 @@ var extend                = hammerhead.utils.extend;
 var eventSimulator        = hammerhead.eventSandbox.eventSimulator;
 var elementEditingWatcher = hammerhead.eventSandbox.elementEditingWatcher;
 
-var domUtils        = testCafeCore.domUtils;
-var promiseUtils    = testCafeCore.promiseUtils;
-var contentEditable = testCafeCore.contentEditable;
-var textSelection   = testCafeCore.textSelection;
-var delay           = testCafeCore.delay;
-var SPECIAL_KEYS    = testCafeCore.KEY_MAPS.specialKeys;
+const domUtils        = testCafeCore.domUtils;
+const promiseUtils    = testCafeCore.promiseUtils;
+const marionetteUtils = testCafeCore.marionetteUtils;
+const contentEditable = testCafeCore.contentEditable;
+const textSelection   = testCafeCore.textSelection;
+const delay           = testCafeCore.delay;
+const SPECIAL_KEYS    = testCafeCore.KEY_MAPS.specialKeys;
 
+
+const SIMPLE_INPUT_TYPES = ['button', 'checkbox', 'email', 'number', 'password', 'radio', 'search', 'text', 'url'];
 
 export default class TypeAutomation {
     constructor (element, text, typeOptions) {
@@ -71,6 +74,14 @@ export default class TypeAutomation {
         }
 
         return innerElement;
+    }
+
+    static _isSimpleInput (element) {
+        if (!domUtils.isInputElement(element))
+            return false;
+
+        return !element.getAttribute('type') ||
+               SIMPLE_INPUT_TYPES.some(type => element.getAttribute('type').toLowerCase() === type);
     }
 
     _calculateEventArguments (isPressEvent) {
@@ -166,6 +177,9 @@ export default class TypeAutomation {
             else if (isContentEditable)
                 textSelection.deleteSelectionContents(this.element, true);
         }
+
+        if (marionetteUtils.enabled && !this.paste && TypeAutomation._isSimpleInput(this.element))
+            return marionetteUtils.performAction({ type: 'text', text: this.typingText });
 
         return promiseUtils.whilst(() => !this._isTypingFinished(), () => this._typingStep());
     }

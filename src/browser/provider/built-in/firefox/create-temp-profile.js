@@ -1,6 +1,7 @@
 import path from 'path';
 import tmp from 'tmp';
 import { writeFile } from '../../../../utils/promisified-functions';
+import MIME_TYPES from './mime-types';
 
 
 async function generatePreferences (profileDir, { marionettePort, config }) {
@@ -8,6 +9,7 @@ async function generatePreferences (profileDir, { marionettePort, config }) {
 
     var prefs = [
         'user_pref("browser.link.open_newwindow.override.external", 2);',
+        `user_pref("browser.browser.helperApps.neverAsk.saveToDisk", ${MIME_TYPES});`,
         'user_pref("app.update.enabled", false);',
         'user_pref("app.update.auto", false);',
         'user_pref("app.update.mode", 0);',

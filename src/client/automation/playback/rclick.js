@@ -11,9 +11,10 @@ var extend         = hammerhead.utils.extend;
 var browserUtils   = hammerhead.utils.browser;
 var eventSimulator = hammerhead.eventSandbox.eventSimulator;
 
-var domUtils   = testCafeCore.domUtils;
-var eventUtils = testCafeCore.eventUtils;
-var delay      = testCafeCore.delay;
+const domUtils        = testCafeCore.domUtils;
+const eventUtils      = testCafeCore.eventUtils;
+const marionetteUtils = testCafeCore.marionetteUtils;
+const delay           = testCafeCore.delay;
 
 
 export default class RClickAutomation extends VisibleElementAutomation {
@@ -27,6 +28,15 @@ export default class RClickAutomation extends VisibleElementAutomation {
             simulateDefaultBehavior:      true,
             activeElementBeforeMouseDown: null
         };
+    }
+
+    _bindContextMenuHandler (element) {
+        const onclick = e => {
+            eventUtils.preventDefault(e, true);
+            eventUtils.unbind(element, 'contextmenu', onclick);
+        };
+
+        eventUtils.bind(element, 'contextmenu', onclick);
     }
 
     _mousedown (eventArgs) {
@@ -91,6 +101,13 @@ export default class RClickAutomation extends VisibleElementAutomation {
                     }, this.modifiers)
                 };
 
+                if (marionetteUtils.enabled) {
+                    this._bindContextMenuHandler(element);
+
+                    return marionetteUtils.performAction({ type: 'right-click', modifiers: this.modifiers })
+                        .then(() => focusAndSetSelection(element, false, this.caretPos))
+                        .then(() => delay(this.automationSettings.mouseActionStepDelay));
+                }
                 // NOTE: we should raise mouseup event with 'mouseActionStepDelay' after we trigger
                 // mousedown event regardless of how long mousedown event handlers were executing
                 return Promise.all([delay(this.automationSettings.mouseActionStepDelay), this._mousedown(eventArgs)]);

@@ -16,7 +16,6 @@ const selectOptionInExpandingList = async () => {
 
 const selectOptionInScrollingList = async () => {
     await t
-        .click(scrollingSelect)
         .click(scrollingSelect.find('option').nth(2))
         .expect(scrollingSelect.value).eql('Tres');
 };
