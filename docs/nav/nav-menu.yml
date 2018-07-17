@@ -38,8 +38,8 @@
       url: /documentation/using-testcafe/common-concepts/concurrent-test-execution.md
     - name: Reporters
       url: /documentation/using-testcafe/common-concepts/reporters.md
-    - name: Connect to TestCafe Server over HTTPS
-      url: /documentation/using-testcafe/common-concepts/connect-to-testcafe-server-over-https.md
+    - name: Connect to the TestCafe Server over HTTPS
+      url: /documentation/using-testcafe/common-concepts/connect-to-the-testcafe-server-over-https.md
 - name: TEST API
   url: /documentation/test-api/README.md
   content:

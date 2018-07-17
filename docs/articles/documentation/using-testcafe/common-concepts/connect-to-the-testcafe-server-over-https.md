@@ -1,7 +1,7 @@
 ---
 layout: docs
-title: Connect to TestCafe Server over HTTPS
-permalink: /documentation/using-testcafe/common-concepts/connect-to-testcafe-server-over-https.html
+title: Connect to the TestCafe Server over HTTPS
+permalink: /documentation/using-testcafe/common-concepts/connect-to-the-testcafe-server-over-https.html
 ---
 # Connect to TestCafe Server over HTTPS
 
@@ -14,7 +14,7 @@ Some browser features (like
 [Geolocation API](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API),
 [ApplePaySession](https://developer.apple.com/documentation/apple_pay_on_the_web/applepaysession), or
 [SubtleCrypto](https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto))
-require secure origin. This means that the website should be served over the HTTPS protocol. If you run tests against pages with this kind of browser API in a regular way, they will fail with JavaScript errors.
+require secure origin. This means that the website should be served over the HTTPS protocol. If you run tests against pages with this kind of browser API in a regular way, these tests fail with JavaScript errors.
 
 TestCafe allows you to connect to the proxy server over the HTTPS protocol to support secure origin testing.
 
