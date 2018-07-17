@@ -539,7 +539,7 @@ If the hostname is not specified, TestCafe uses the operating system hostname or
 
 ### --ssl \<options\>
 
-Provides options that allow you to establish HTTPS connection between the client browser and TestCafe server.
+Provides options that allow you to establish HTTPS connection between the client browser and the TestCafe server.
 
 The `options` parameter contains options required to initialize
 [a Node.js HTTPS server](https://nodejs.org/api/https.html#https_https_createserver_options_requestlistener).

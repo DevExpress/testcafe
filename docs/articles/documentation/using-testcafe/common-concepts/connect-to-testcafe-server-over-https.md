@@ -5,7 +5,7 @@ permalink: /documentation/using-testcafe/common-concepts/connect-to-testcafe-ser
 ---
 # Connect to TestCafe Server over HTTPS
 
-TestCafe is a proxy-based testing tool. Browser requests are sent via the TestCafe proxy server to the tested website. All requests between the browser and TestCafe server are sent over the HTTP protocol.
+TestCafe is a proxy-based testing tool. Browser requests are sent via the TestCafe proxy server to the tested website. All requests between the browser and the TestCafe server are sent over the HTTP protocol.
 
 ![Connection Protocols](../../../images/proxy-connection-protocols.svg)
 

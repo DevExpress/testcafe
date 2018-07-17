@@ -32,7 +32,7 @@ createTestCafe('localhost', 1337, 1338)
     });
 ```
 
-Establish HTTPS connection with TestCafe server. The [openssl-self-signed-certificate](https://www.npmjs.com/package/openssl-self-signed-certificate) module is used to generate a self-signed certificate for development use.
+Establish HTTPS connection with the TestCafe server. The [openssl-self-signed-certificate](https://www.npmjs.com/package/openssl-self-signed-certificate) module is used to generate a self-signed certificate for development use.
 
 ```js
 'use strict';
