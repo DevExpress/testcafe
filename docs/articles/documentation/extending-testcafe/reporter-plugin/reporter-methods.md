@@ -128,7 +128,7 @@ Property            | Type             | Description
 `errs`              | Array of Strings | An array of errors that occurred during the test run.
 `durationMs`        | Number           | The time spent on test execution (in milliseconds).
 `unstable`          | Boolean          | Specifies if the test is marked as unstable.
-`screenshotPath`    | String           | The directory path where screenshots are saved to.
+`screenshotPath`    | String           | The path where screenshots are saved.
 `screenshots`       | Array of Objects | An array of [screenshot](#screenshots-object) objects.
 `quarantine`        | Object           | A [quarantine](#quarantine-object) object.
 `skipped`           | Boolean          | Specifies if the test was skipped.
@@ -139,8 +139,8 @@ The `screenshot` object provides information about the screenshot captured durin
 
 Property            | Type             | Description
 ------------------- | ---------------- | --------------------------------------------------------
-`screenshotPath`    | String           | The directory path where the screenshot was saved to.
-`thumbnailPath`     | String           | The directory path where the screenshot's thumbnail was saved to.
+`screenshotPath`    | String           | The path where the screenshot was saved.
+`thumbnailPath`     | String           | The path where the screenshot's thumbnail was saved.
 `userAgent`         | String           | The user agent string of the browser where the screenshot was captured.
 `quarantineAttempt` | Number           | The [quarantine](../../using-testcafe/programming-interface/runner.md#quarantine-mode) attempt's number.
 `takenOnFail`       | Boolean          | Specifies if the screenshot was captured when the test failed.
