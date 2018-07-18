@@ -300,7 +300,7 @@ concurrency(n) → this
 ```
 
 TestCafe opens `n` instances of the same browser and creates a pool of browser instances.
-Tests are run concurrently against this pool, that is, each test is run in the first free instance.
+Tests are run concurrently against this pool, that is, each test is run in the first available instance.
 
 The `concurrency` function takes the following parameters:
 
@@ -460,12 +460,12 @@ You can also cancel all pending tasks at once using the [runner.stop](#stop) fun
 
 #### Quarantine Mode
 
-The quarantine mode is designed to isolate *non-deterministic* tests (that is, tests that sometimes pass and fail without a clear reason)
+The quarantine mode is designed to isolate *non-deterministic* tests (that is, tests that sometimes pass and fail without any apparent reason)
 from the rest of the test base (*healthy* tests).
 
 In this mode, a failed test is executed several times. The test result depends on the outcome (passed or failed) that occurs most often. That is, if the test fails on most attempts, the result is failed. If the test result differs between test runs, the test is marked as unstable.
 
-To learn more about non-deterministic tests, see Martin Fowler's [Eradicating Non-Determinism in Tests](http://martinfowler.com/articles/nonDeterminism.html) article.
+See Martin Fowler's [Eradicating Non-Determinism in Tests](http://martinfowler.com/articles/nonDeterminism.html) article for more information about non-deterministic tests.
 
 ### stop
 

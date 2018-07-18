@@ -348,7 +348,7 @@ Specifies that tests should run concurrently.
 TestCafe opens `n` instances of the same browser and creates a pool of browser instances.
 Tests are run concurrently against this pool, that is, each test is run in the first free instance.
 
-See [Concurrent Test Execution](common-concepts/concurrent-test-execution.md) to learn more about concurrent test execution.
+See [Concurrent Test Execution](common-concepts/concurrent-test-execution.md) for more information about concurrent test execution.
 
 The following example shows how to run tests in three Chrome instances:
 
@@ -425,7 +425,7 @@ You can also use the **Unlock page** switch in the footer to unlock the tested p
 
 Specifies whether to automatically enter the [debug mode](#-d---debug-mode) when a test fails.
 
-If this option is enabled, TestCafe pauses the test at the moment it fails. This allows you to view the tested page and determine the cause of the fail.
+If this option is enabled, TestCafe pauses the test when it fails. This allows you to view the tested page and determine the cause of the fail.
 
 When you are done, click the **Finish** button in the footer to end test execution.
 
@@ -443,7 +443,7 @@ testcafe chrome my-tests --app "node server.js" --app-init-delay 4000
 
 ### --selector-timeout \<ms\>
 
-Specifies the time (in milliseconds) within which [selectors](../test-api/selecting-page-elements/selectors/README.md) attempts to obtain a node to be returned. See [Selector Timeout](../test-api/selecting-page-elements/selectors/using-selectors.md#selector-timeout).
+Specifies the time (in milliseconds) within which [selectors](../test-api/selecting-page-elements/selectors/README.md) attempt to obtain a node to be returned. See [Selector Timeout](../test-api/selecting-page-elements/selectors/using-selectors.md#selector-timeout).
 
 **Default value**: `10000`
 
@@ -453,7 +453,7 @@ testcafe ie my-tests --selector-timeout 500000
 
 ### --assertion-timeout \<ms\>
 
-Specifies the time (in milliseconds) within which TestCafe makes attempts to successfully execute an [assertion](../test-api/assertions/README.md)
+Specifies the time (in milliseconds) TestCafe attempts to successfully execute an [assertion](../test-api/assertions/README.md)
 if a [selector property](../test-api/selecting-page-elements/selectors/using-selectors.md#define-assertion-actual-value)
 or a [client function](../test-api/obtaining-data-from-the-client/README.md) was passed as an actual value.
 See [Smart Assertion Query Mechanism](../test-api/assertions/README.md#smart-assertion-query-mechanism).
@@ -504,7 +504,7 @@ Specifies the resources accessed bypassing the proxy server.
 
 When you access the Internet through a proxy server specified using the [--proxy](#--proxy-host) option, you may still need some local or external resources to be accessed directly. In this instance, provide their URLs to the `--proxy-bypass` option.
 
-The `rules` parameter takes a comma-separated list (without spaces) of URLs that require direct access. You can replace parts of the URL with wildcards `*`. TestCafe will correspond these symbols to any number of characters in the URL. Wildcards at the beginning and end of the rules can be omitted (`*.mycompany.com` and `.mycompany.com` have the same effect).
+The `rules` parameter takes a comma-separated list (without spaces) of URLs that require direct access. You can replace parts of the URL with the `*` wildcard that matches any number of characters. Wildcards at the beginning and end of the rules can be omitted (`*.mycompany.com` and `.mycompany.com` have the same effect).
 
 The following example uses the proxy server at `proxy.corp.mycompany.com` with the `localhost:8080` address accessed directly:
 
@@ -563,8 +563,8 @@ testcafe remote my-tests --qr-code
 
 ### --color
 
-Enables colors on the command line.
+Enables colors in the command line.
 
 ### --no-color
 
-Disables colors on the command line.
+Disables colors in the command line.
