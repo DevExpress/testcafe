@@ -574,7 +574,7 @@ If the speed is also specified for an [individual action](../test-api/actions/ac
 
 ### --dev
 
-Enables mechanisms to log and diagnose errors.
+Enables mechanisms to log and diagnose errors. It is recommended to run TestCafe with this option enabled if you are going to contact TestCafe Support and report an issue.
 
 ```sh
 testcafe chrome my-tests --dev
