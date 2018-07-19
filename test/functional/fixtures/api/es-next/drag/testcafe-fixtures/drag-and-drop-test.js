@@ -80,7 +80,7 @@ test.page `http://localhost:3000/fixtures/api/es-next/drag/pages/invalid-drag-an
         .expect(ClientFunction(() => window.dradendRaised)()).eql(true);
 });
 
-test('Default drag events should not be simulated if the mousedown event is prevented', async t => {
+test('Default drag events should not be simulated if the mousedown event was prevented', async t => {
     const link   = Selector('#link');
     const target = Selector('#to-display-values');
 
