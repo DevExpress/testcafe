@@ -53,21 +53,6 @@ const MAX_RESPONSE_DELAY              = 2 * 60 * 1000;
 
 const ALL_DRIVER_TASKS_ADDED_TO_QUEUE_EVENT = 'all-driver-tasks-added-to-queue';
 
-function getMarionetteClient (connection) {
-    const id = connection.id;
-    const provider = connection.provider;
-
-    if (!provider.plugin || !provider.plugin.openedBrowsers)
-        return null;
-
-    const runtimeInfo = provider.plugin.openedBrowsers[id];
-
-    if (!runtimeInfo || !runtimeInfo.marionetteClient)
-        return null;
-
-    return runtimeInfo.marionetteClient;
-}
-
 export default class TestRun extends EventEmitter {
     constructor (test, browserConnection, screenshotCapturer, warningLog, opts) {
         super();
@@ -78,7 +63,7 @@ export default class TestRun extends EventEmitter {
         this.test              = test;
         this.browserConnection = browserConnection;
 
-        this.marionetteClient = getMarionetteClient(browserConnection);
+        this.marionetteClient = browserConnection.provider.getDebugClient(browserConnection.id);
 
         this.phase = PHASE.initial;
 
@@ -658,66 +643,66 @@ export default class TestRun extends EventEmitter {
         return await getLocation();
     }
 
-    async [CLIENT_MESSAGES.performActions] (msg) {
-        await this.marionetteClient.executeCommand(msg);
+    // Service message handlers
+    [CLIENT_MESSAGES.ready] (msg) {
+        this.debugLog.driverMessage(msg);
+
+        this._clearPendingRequest();
+
+        // NOTE: the driver sends the status for the second time if it didn't get a response at the
+        // first try. This is possible when the page was unloaded after the driver sent the status.
+        if (msg.status.id === this.lastDriverStatusId)
+            return this.lastDriverStatusResponse;
+
+        this.lastDriverStatusId       = msg.status.id;
+        this.lastDriverStatusResponse = this._handleDriverRequest(msg.status);
+
+        if (this.lastDriverStatusResponse)
+            return this.lastDriverStatusResponse;
+
+        // NOTE: browsers abort an opened xhr request after a certain timeout (the actual duration depends on the browser).
+        // To avoid this, we send an empty response after 2 minutes if we didn't get any command.
+        var responseTimeout = setTimeout(() => this._resolvePendingRequest(null), MAX_RESPONSE_DELAY);
+
+        return new Promise((resolve, reject) => {
+            this.pendingRequest = { resolve, reject, responseTimeout };
+        });
+    }
+
+    async [CLIENT_MESSAGES.readyForBrowserManipulation] (msg) {
+        this.debugLog.driverMessage(msg);
+
+        var result = null;
+        var error  = null;
+
+        try {
+            result = await this.browserManipulationQueue.executePendingManipulation(msg);
+        }
+        catch (err) {
+            error = err;
+        }
+
+        return { result, error };
+    }
+
+    [CLIENT_MESSAGES.waitForFileDownload] (msg) {
+        this.debugLog.driverMessage(msg);
+
+        return new Promise(resolve => {
+            if (this.fileDownloadingHandled) {
+                this.fileDownloadingHandled = false;
+                resolve(true);
+            }
+            else
+                this.resolveWaitForFileDownloadingPromise = resolve;
+        });
+    }
+
+    async [CLIENT_MESSAGES.performMarionetteAction] (msg) {
+        this.debugLog.driverMessage(msg);
+
+        await this.marionetteClient.performAction(msg);
     }
 
 }
 
-
-// Service message handlers
-var ServiceMessages = TestRun.prototype;
-
-ServiceMessages[CLIENT_MESSAGES.ready] = function (msg) {
-    this.debugLog.driverMessage(msg);
-
-    this._clearPendingRequest();
-
-    // NOTE: the driver sends the status for the second time if it didn't get a response at the
-    // first try. This is possible when the page was unloaded after the driver sent the status.
-    if (msg.status.id === this.lastDriverStatusId)
-        return this.lastDriverStatusResponse;
-
-    this.lastDriverStatusId       = msg.status.id;
-    this.lastDriverStatusResponse = this._handleDriverRequest(msg.status);
-
-    if (this.lastDriverStatusResponse)
-        return this.lastDriverStatusResponse;
-
-    // NOTE: browsers abort an opened xhr request after a certain timeout (the actual duration depends on the browser).
-    // To avoid this, we send an empty response after 2 minutes if we didn't get any command.
-    var responseTimeout = setTimeout(() => this._resolvePendingRequest(null), MAX_RESPONSE_DELAY);
-
-    return new Promise((resolve, reject) => {
-        this.pendingRequest = { resolve, reject, responseTimeout };
-    });
-};
-
-ServiceMessages[CLIENT_MESSAGES.readyForBrowserManipulation] = async function (msg) {
-    this.debugLog.driverMessage(msg);
-
-    var result = null;
-    var error  = null;
-
-    try {
-        result = await this.browserManipulationQueue.executePendingManipulation(msg);
-    }
-    catch (err) {
-        error = err;
-    }
-
-    return { result, error };
-};
-
-ServiceMessages[CLIENT_MESSAGES.waitForFileDownload] = function (msg) {
-    this.debugLog.driverMessage(msg);
-
-    return new Promise(resolve => {
-        if (this.fileDownloadingHandled) {
-            this.fileDownloadingHandled = false;
-            resolve(true);
-        }
-        else
-            this.resolveWaitForFileDownloadingPromise = resolve;
-    });
-};

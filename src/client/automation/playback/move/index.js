@@ -31,7 +31,7 @@ const domUtils           = testCafeCore.domUtils;
 const styleUtils         = testCafeCore.styleUtils;
 const eventUtils         = testCafeCore.eventUtils;
 const promiseUtils       = testCafeCore.promiseUtils;
-const marionetteUtils = testCafeCore.marionetteUtils;
+const marionetteClient   = testCafeCore.marionetteClient;
 const sendRequestToFrame = testCafeCore.sendRequestToFrame;
 
 
@@ -77,8 +77,8 @@ export default class MoveAutomation {
         this.holdLeftButton = moveOptions.holdLeftButton;
         this.dragElement    = null;
 
-        this.keepMods = moveOptions.keepMods;
-        this.clearMods = moveOptions.clearMods;
+        this.keepModifiers    = moveOptions.keepModifiers;
+        this.releaseModifiers = moveOptions.releaseModifiers;
 
         this.dragAndDropState = new DragAndDropState();
 
@@ -553,21 +553,21 @@ export default class MoveAutomation {
                     return this
                         ._moveToCurrentFrame()
                         .then(() => {
-                            if (marionetteUtils.enabled) {
+                            if (marionetteClient.enabled) {
                                 testCafeCore.disableRealEventsPreventing();
 
                                 this._bindEventHandlers();
 
                                 const marionetteOptions = {
-                                    type:      'move',
-                                    x:         this.endPoint.x,
-                                    y:         this.endPoint.y,
-                                    modifiers: this.modifiers,
-                                    keepMods:  this.keepMods,
-                                    clearMods: this.clearMods
+                                    type:             marionetteClient.actionTypes.move,
+                                    x:                this.endPoint.x,
+                                    y:                this.endPoint.y,
+                                    modifiers:        this.modifiers,
+                                    keepModifiers:    this.keepModifiers,
+                                    releaseModifiers: this.releaseModifiers
                                 };
 
-                                return marionetteUtils
+                                return marionetteClient
                                     .performAction(marionetteOptions)
                                     .then(() => this.onmousemove && eventUtils.unbind(window, 'mousemove', this.onmousemove));
                             }

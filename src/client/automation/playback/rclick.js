@@ -11,10 +11,10 @@ var extend         = hammerhead.utils.extend;
 var browserUtils   = hammerhead.utils.browser;
 var eventSimulator = hammerhead.eventSandbox.eventSimulator;
 
-const domUtils        = testCafeCore.domUtils;
-const eventUtils      = testCafeCore.eventUtils;
-const marionetteUtils = testCafeCore.marionetteUtils;
-const delay           = testCafeCore.delay;
+const domUtils         = testCafeCore.domUtils;
+const eventUtils       = testCafeCore.eventUtils;
+const marionetteClient = testCafeCore.marionetteClient;
+const delay            = testCafeCore.delay;
 
 
 export default class RClickAutomation extends VisibleElementAutomation {
@@ -101,10 +101,10 @@ export default class RClickAutomation extends VisibleElementAutomation {
                     }, this.modifiers)
                 };
 
-                if (marionetteUtils.enabled) {
+                if (marionetteClient.enabled) {
                     this._bindContextMenuHandler(element);
 
-                    return marionetteUtils.performAction({ type: 'right-click', modifiers: this.modifiers })
+                    return marionetteClient.performAction({ type: marionetteClient.actionTypes.rightClick, modifiers: this.modifiers })
                         .then(() => focusAndSetSelection(element, false, this.caretPos))
                         .then(() => delay(this.automationSettings.mouseActionStepDelay));
                 }

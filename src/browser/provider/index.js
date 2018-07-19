@@ -301,4 +301,11 @@ export default class BrowserProvider {
     async reportJobResult (browserId, status, data) {
         await this.plugin.reportJobResult(browserId, status, data);
     }
+
+    getDebugClient (browserId) {
+        if (!this.plugin.getDebugClient)
+            return null;
+
+        return this.plugin.getDebugClient(browserId);
+    }
 }

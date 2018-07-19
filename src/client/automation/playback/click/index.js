@@ -15,12 +15,12 @@ var browserUtils     = hammerhead.utils.browser;
 var featureDetection = hammerhead.utils.featureDetection;
 var eventSimulator   = hammerhead.eventSandbox.eventSimulator;
 
-const domUtils   = testCafeCore.domUtils;
-const styleUtils = testCafeCore.styleUtils;
-const eventUtils = testCafeCore.eventUtils;
-const arrayUtils = testCafeCore.arrayUtils;
-const marionetteUtils = testCafeCore.marionetteUtils;
-const delay      = testCafeCore.delay;
+const domUtils         = testCafeCore.domUtils;
+const styleUtils       = testCafeCore.styleUtils;
+const eventUtils       = testCafeCore.eventUtils;
+const arrayUtils       = testCafeCore.arrayUtils;
+const marionetteClient = testCafeCore.marionetteClient;
+const delay            = testCafeCore.delay;
 
 var selectElementUI = testCafeUI.selectElement;
 
@@ -279,13 +279,13 @@ export default class ClickAutomation extends VisibleElementAutomation {
                 // NOTE: we should raise mouseup event with 'mouseActionStepDelay' after we trigger
                 // mousedown event regardless of how long mousedown event handlers were executing
 
-                if (marionetteUtils.enabled && !domUtils.isAnchorElement(element)) {
+                if (marionetteClient.enabled && !domUtils.isAnchorElement(element)) {
                     if (ClickAutomation._isDialogInput(element))
                         this._bindClickHandler(element);
 
                     this._bindMouseUpListener(element);
 
-                    return marionetteUtils.performAction({ type: 'click', modifiers: this.modifiers })
+                    return marionetteClient.performAction({ type: marionetteClient.actionTypes.click, modifiers: this.modifiers })
                         .then(() => focusAndSetSelection(element, false, this.caretPos))
                         .then(() => delay(this.automationSettings.mouseActionStepDelay));
                 }

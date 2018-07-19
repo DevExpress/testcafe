@@ -91,5 +91,12 @@ export default {
             hasMaximizeWindow:              !!marionetteClient && config.headless,
             hasCanResizeWindowToDimensions: false
         };
+    },
+
+    getDebugClient (browserId) {
+        if (!this.openedBrowsers[browserId])
+            return null;
+
+        return this.openedBrowsers[browserId].marionetteClient;
     }
 };

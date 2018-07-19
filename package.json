@@ -84,6 +84,7 @@
     "lodash": "^4.17.10",
     "log-update-async-hook": "^2.0.2",
     "map-reverse": "^1.0.1",
+    "mime-db": "^1.35.0",
     "mkdirp": "^0.5.1",
     "moment": "^2.10.3",
     "moment-duration-format": "^2.2.2",

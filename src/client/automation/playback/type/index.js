@@ -14,13 +14,13 @@ var extend                = hammerhead.utils.extend;
 var eventSimulator        = hammerhead.eventSandbox.eventSimulator;
 var elementEditingWatcher = hammerhead.eventSandbox.elementEditingWatcher;
 
-const domUtils        = testCafeCore.domUtils;
-const promiseUtils    = testCafeCore.promiseUtils;
-const marionetteUtils = testCafeCore.marionetteUtils;
-const contentEditable = testCafeCore.contentEditable;
-const textSelection   = testCafeCore.textSelection;
-const delay           = testCafeCore.delay;
-const SPECIAL_KEYS    = testCafeCore.KEY_MAPS.specialKeys;
+const domUtils         = testCafeCore.domUtils;
+const promiseUtils     = testCafeCore.promiseUtils;
+const marionetteClient = testCafeCore.marionetteClient;
+const contentEditable  = testCafeCore.contentEditable;
+const textSelection    = testCafeCore.textSelection;
+const delay            = testCafeCore.delay;
+const SPECIAL_KEYS     = testCafeCore.KEY_MAPS.specialKeys;
 
 
 const SIMPLE_INPUT_TYPES = ['button', 'checkbox', 'email', 'number', 'password', 'radio', 'search', 'text', 'url'];
@@ -178,8 +178,8 @@ export default class TypeAutomation {
                 textSelection.deleteSelectionContents(this.element, true);
         }
 
-        if (marionetteUtils.enabled && !this.paste && TypeAutomation._isSimpleInput(this.element))
-            return marionetteUtils.performAction({ type: 'text', text: this.typingText });
+        if (marionetteClient.enabled && !this.paste && TypeAutomation._isSimpleInput(this.element))
+            return marionetteClient.performAction({ type: marionetteClient.actionTypes.typeText, text: this.typingText });
 
         return promiseUtils.whilst(() => !this._isTypingFinished(), () => this._typingStep());
     }

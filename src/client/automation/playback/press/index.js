@@ -4,7 +4,7 @@ import {
     arrayUtils,
     domUtils,
     promiseUtils,
-    marionetteUtils,
+    marionetteClient,
     delay,
     getKeyArray,
     sendRequestToFrame
@@ -180,8 +180,8 @@ export default class PressAutomation {
             return sendRequestToFrame(msg, PRESS_RESPONSE_CMD, activeElement.contentWindow);
         }
 
-        if (marionetteUtils.enabled)
-            return marionetteUtils.performAction({ type: 'press', combinations: this.keyCombinations });
+        if (marionetteClient.enabled)
+            return marionetteClient.performAction({ type: marionetteClient.actionTypes.pressKey, combinations: this.keyCombinations });
 
         return promiseUtils.each(this.keyCombinations, combination => {
             return this

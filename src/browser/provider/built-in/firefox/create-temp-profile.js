@@ -1,8 +1,10 @@
 import path from 'path';
 import tmp from 'tmp';
 import { writeFile } from '../../../../utils/promisified-functions';
-import MIME_TYPES from './mime-types';
+import mimeDatabase from 'mime-db';
 
+
+const MIME_TYPES = Object.keys(mimeDatabase).join(',');
 
 async function generatePreferences (profileDir, { marionettePort, config }) {
     var prefsFileName = path.join(profileDir, 'user.js');

@@ -4,7 +4,7 @@ import {
     contentEditable,
     positionUtils,
     domUtils,
-    marionetteUtils,
+    marionetteClient,
     delay
 } from '../../deps/testcafe-core';
 
@@ -47,8 +47,13 @@ export default class DragAutomationBase extends VisibleElementAutomation {
         return cursor
             .leftButtonDown()
             .then(() => {
-                if (marionetteUtils.enabled)
-                    return marionetteUtils.performAction({ type: 'mouse-down', modifiers: this.modifiers, keepMods: true });
+                if (marionetteClient.enabled) {
+                    return marionetteClient.performAction({
+                        type:          marionetteClient.actionTypes.mouseDown,
+                        modifiers:     this.modifiers,
+                        keepModifiers: true
+                    });
+                }
 
                 eventSimulator[this.downEvent](eventArgs.element, eventArgs.options);
 
@@ -84,8 +89,8 @@ export default class DragAutomationBase extends VisibleElementAutomation {
             holdLeftButton: true
         }, false);
 
-        dragOptions.keepMods  = true;
-        dragOptions.clearMods = true;
+        dragOptions.keepModifiers    = true;
+        dragOptions.releaseModifiers = true;
 
         var moveAutomation = new MoveAutomation(element, dragOptions);
 
@@ -101,7 +106,11 @@ export default class DragAutomationBase extends VisibleElementAutomation {
     _mouseup () {
         return cursor
             .buttonUp()
-            .then(() => marionetteUtils.enabled && marionetteUtils.performAction({ type: 'mouse-up', modifiers: this.modifiers, clearMods: true }))
+            .then(() => marionetteClient.enabled && marionetteClient.performAction({
+                type:             marionetteClient.actionTypes.mouseUp,
+                modifiers:        this.modifiers,
+                releaseModifiers: true
+            }))
             .then(() => {
                 var point      = positionUtils.offsetToClientCoords(this.endPoint);
                 var topElement = null;
@@ -129,14 +138,14 @@ export default class DragAutomationBase extends VisibleElementAutomation {
                             if (this.dragAndDropState.dataStore)
                                 this.dragAndDropState.dataStore.setProtectedMode();
                         }
-                        else if (!marionetteUtils.enabled)
+                        else if (!marionetteClient.enabled)
                             eventSimulator[this.upEvent](topElement, options);
 
                         return getElementFromPoint(point.x, point.y);
                     })
                     .then(({ element }) => {
                         //B231323
-                        if (!marionetteUtils.enabled && topElement && element === topElement && !this.dragAndDropState.enabled)
+                        if (!marionetteClient.enabled && topElement && element === topElement && !this.dragAndDropState.enabled)
                             eventSimulator.click(topElement, options);
                     });
             });
