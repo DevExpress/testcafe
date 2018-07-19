@@ -543,7 +543,8 @@ Provides options that allow you to establish HTTPS connection between the client
 
 The `options` parameter contains options required to initialize
 [a Node.js HTTPS server](https://nodejs.org/api/https.html#https_https_createserver_options_requestlistener).
-These options are specified in a semicolon-separated string.
+The most commonly used SSL options are described in the [TLS topic](https://nodejs.org/api/tls.html#tls_tls_createsecurecontext_options) in Node.js documentation.
+Options are specified in a semicolon-separated string.
 
 ```sh
 testcafe --ssl pfx=path/to/file.pfx;rejectUnauthorized=true;...

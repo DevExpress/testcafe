@@ -16,10 +16,10 @@ Some browser features (like
 [SubtleCrypto](https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto))
 require secure origin. This means that the website should be served over the HTTPS protocol. If you run tests against pages with this kind of browser API in a regular way, these tests fail with JavaScript errors.
 
-TestCafe allows you to connect to the proxy server over the HTTPS protocol to support secure origin testing.
+TestCafe can serve the proxied tested page over the HTTPS protocol. When this option is enabled, the client browser connects to the TestCafe proxy server over HTTPS. This allows you to test webpages that use browser features that require secure origin.
 
-Use the [--ssl](../command-line-interface.md#--ssl-options) flag when you run tests from the command line. Specify options required to initialize
-[a Node.js HTTPS server](https://nodejs.org/api/https.html#https_https_createserver_options_requestlistener) after this flag in a semicolon-separated string.
+Use the [--ssl](../command-line-interface.md#--ssl-options) flag when you run tests from the command line to enable HTTPS. Specify options required to initialize
+[a Node.js HTTPS server](https://nodejs.org/api/https.html#https_https_createserver_options_requestlistener) after this flag in a semicolon-separated string. The most commonly used SSL options are described in the [TLS topic](https://nodejs.org/api/tls.html#tls_tls_createsecurecontext_options) in Node.js documentation.
 
 The example below uses the PFX encoded private key and certificate chain to create an HTTPS server.
 
@@ -46,6 +46,15 @@ const sslOptions = {
 createTestCafe('localhost', 1337, 1338, sslOptions)
     .then(testcafe => {
         runner = testcafe.createRunner();
-        /* ... */
     })
+    .then(() => {
+        return runner
+            .src('test.js')
+
+            // Browsers restrict self-signed certificate usage unless you
+            // explicitly set a flag specific to each browser.
+            // For Chrome, this is '--allow-insecure-localhost'.
+            .browsers('chrome --allow-insecure-localhost')
+            .run();
+    });
 ```
