@@ -305,7 +305,7 @@ Specifies a custom pattern to compose screenshot files' relative path and name. 
 You can use the following placeholders in the pattern:
 
 Placeholder | Description
------------ | -----------
+----------- | ------------
 `${DATE}` | The test run's start date (YYYY-MM-DD).
 `${TIME}` | The test run's start time (HH-mm-ss).
 `${TEST_INDEX}` | The test's index.

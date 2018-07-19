@@ -403,7 +403,7 @@ async run(options) → Promise<Number>
 You can pass the following options to the `runner.run` function.
 
 Parameter         | Type    | Description                                                                                                                                                                           | Default
------------------ | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------
+----------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------
 `skipJsErrors`    | Boolean | Defines whether to continue running a test after a JavaScript error occurs on a page (`true`), or consider such a test failed (`false`).                                              | `false`
 `quarantineMode`  | Boolean | Defines whether to enable the [quarantine mode](#quarantine-mode).                                                                                                                    | `false`
 `selectorTimeout` | Number  | Specifies the time (in milliseconds) within which [selectors](../../test-api/selecting-page-elements/selectors/README.md) make attempts to obtain a node to be returned. See [Selector Timeout](../../test-api/selecting-page-elements/selectors/using-selectors.md#selector-timeout). | `10000`
