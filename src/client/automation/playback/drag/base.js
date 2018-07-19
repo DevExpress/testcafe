@@ -4,6 +4,7 @@ import {
     contentEditable,
     positionUtils,
     domUtils,
+    eventUtils,
     marionetteClient,
     delay
 } from '../../deps/testcafe-core';
@@ -37,10 +38,31 @@ export default class DragAutomationBase extends VisibleElementAutomation {
         this.upEvent   = featureDetection.isTouchDevice ? 'touchend' : 'mouseup';
 
         this.dragAndDropState = null;
+
+        this.mouseUpPreventionHandler = null;
     }
 
     _getEndPoint () {
         throw new Error('Not implemented');
+    }
+
+    _bindMouseUpPreventionHandler () {
+        const onmouseup = e => {
+            e.stopPropagation();
+        };
+
+        eventUtils.bind(window, 'mouseup', onmouseup, true);
+
+        this.mouseUpPreventionHandler = onmouseup;
+    }
+
+    _unbindMouseUpPreventionHandler () {
+        if (!this.mouseUpPreventionHandler)
+            return;
+
+        eventUtils.unbind(window, 'mouseup', this.mouseUpPreventionHandler);
+
+        this.mouseUpPreventionHandler = null;
     }
 
     _mousedown (eventArgs) {
@@ -106,12 +128,22 @@ export default class DragAutomationBase extends VisibleElementAutomation {
     _mouseup () {
         return cursor
             .buttonUp()
-            .then(() => marionetteClient.enabled && marionetteClient.performAction({
-                type:             marionetteClient.actionTypes.mouseUp,
-                modifiers:        this.modifiers,
-                releaseModifiers: true
-            }))
             .then(() => {
+                if (!marionetteClient.enabled)
+                    return Promise.resolve();
+
+                this._bindMouseUpPreventionHandler();
+
+                return marionetteClient.performAction({
+                    type:             marionetteClient.actionTypes.mouseUp,
+                    modifiers:        this.modifiers,
+                    releaseModifiers: true
+                });
+            })
+            .then(() => {
+                if (marionetteClient.enabled)
+                    this._unbindMouseUpPreventionHandler();
+
                 var point      = positionUtils.offsetToClientCoords(this.endPoint);
                 var topElement = null;
                 var options    = extend({

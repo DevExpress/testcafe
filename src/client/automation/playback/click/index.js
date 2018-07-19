@@ -44,6 +44,9 @@ export default class ClickAutomation extends VisibleElementAutomation {
             simulateDefaultBehavior: true,
             clickElement:            null
         };
+
+        this.eventDuplicatesPreventionHandlers = null;
+        this.clickPreventionHandler            = null;
     }
 
     static _isDialogInput (element) {
@@ -71,16 +74,28 @@ export default class ClickAutomation extends VisibleElementAutomation {
         eventUtils.bind(element, 'blur', onblur, true);
     }
 
-    _bindClickHandler (element) {
+    _bindClickPreventionHandler (element) {
         const onclick = e => {
             eventUtils.preventDefault(e, true);
-            eventUtils.unbind(element, 'click', onclick);
+
+            this._unbindClickPreventionHandler();
         };
 
         eventUtils.bind(element, 'click', onclick);
+
+        this.clickPreventionHandler = onclick;
     }
 
-    _bindMouseUpListener () {
+    _unbindClickPreventionHandler () {
+        if (!this.clickPreventionHandler)
+            return;
+
+        eventUtils.unbind(this.clickPreventionHandler);
+
+        this.clickPreventionHandler = null;
+    }
+
+    _bindEventDuplicatesPreventionHandlers () {
         let mouseUpHandled = false;
 
         const onclick = e => {
@@ -95,12 +110,29 @@ export default class ClickAutomation extends VisibleElementAutomation {
                 e.stopPropagation();
 
             mouseUpHandled = true;
-
-            hammerhead.nativeMethods.setTimeout.call(window, () => eventUtils.unbind(window, 'mouseup', onmouseup), 10);
         };
 
         eventUtils.bind(window, 'mouseup', onmouseup, true);
         eventUtils.bind(window, 'click', onclick, true);
+
+        this.eventDuplicatesPreventionHandlers = { onclick, onmouseup };
+    }
+
+    _unbindEventDuplicatesPreventionHandlers () {
+        if (!this.eventDuplicatesPreventionHandlers)
+            return;
+
+        const { onclick, onmouseup } = this.eventDuplicatesPreventionHandlers;
+
+        eventUtils.unbind(window, 'mouseup', onmouseup);
+        eventUtils.unbind(window, 'click', onclick);
+
+        this.eventDuplicatesPreventionHandlers = null;
+    }
+
+    _unbindServiceEventHandlers () {
+        this._unbindClickPreventionHandler();
+        this._unbindEventDuplicatesPreventionHandlers();
     }
 
     _raiseTouchEvents (eventArgs) {
@@ -281,11 +313,12 @@ export default class ClickAutomation extends VisibleElementAutomation {
 
                 if (marionetteClient.enabled && !domUtils.isAnchorElement(element)) {
                     if (ClickAutomation._isDialogInput(element))
-                        this._bindClickHandler(element);
+                        this._bindClickPreventionHandler(element);
 
-                    this._bindMouseUpListener(element);
+                    this._bindEventDuplicatesPreventionHandlers(element);
 
                     return marionetteClient.performAction({ type: marionetteClient.actionTypes.click, modifiers: this.modifiers })
+                        .then(() => this._unbindServiceEventHandlers())
                         .then(() => focusAndSetSelection(element, false, this.caretPos))
                         .then(() => delay(this.automationSettings.mouseActionStepDelay));
                 }

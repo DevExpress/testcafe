@@ -108,6 +108,9 @@ export default class MoveAutomation {
         this.distanceY  = null;
 
         this.firstMovingStepOccured = false;
+
+        this.mainServiceEventHandlers      = null;
+        this.mouseToDragConversionHandlers = null;
     }
 
     static getTarget (el, offsetX, offsetY) {
@@ -374,12 +377,37 @@ export default class MoveAutomation {
         return scrollAutomation.run();
     }
 
-    _bindEventHandlers () {
+    _bindMouseToDragConversionHandlers () {
+        const onmouseover = e => {
+            if (!this.dragAndDropState.enabled)
+                return;
+
+            e.stopPropagation();
+            e.preventDefault();
+
+            eventSimulator.dragenter(e.target, e);
+            eventSimulator.dragleave(e.relatedTarget, e);
+        };
+
+        const generalEventPreventionHandler = e => {
+            if (this.dragAndDropState.enabled)
+                e.stopPropagation();
+        };
+
+        eventUtils.bind(window, 'mouseover', onmouseover, true);
+        eventUtils.bind(window, 'mouseleave', generalEventPreventionHandler, true);
+        eventUtils.bind(window, 'mouseenter', generalEventPreventionHandler, true);
+        eventUtils.bind(window, 'mouseout', generalEventPreventionHandler, true);
+
+        this.mouseToDragConversionHandlers = { onmouseover, generalEventPreventionHandler };
+    }
+
+    _bindMainServiceEventHandlers () {
         let shouldRaiseDrag = false;
         let dragStarted = false;
         let dragElement = null;
 
-        this.onmousemove = e => {
+        const onmousemove = e => {
             cursor.move(e.clientX, e.clientY);
 
             if (!this.dragAndDropState.enabled || !dragElement)
@@ -404,34 +432,6 @@ export default class MoveAutomation {
             this.dragAndDropState.dropAllowed = !eventSimulator.dragover(e.target, e);
         };
 
-        const preventHandler = e => {
-            if (this.dragAndDropState.enabled)
-                e.stopPropagation();
-        };
-
-        const onmouseover = e => {
-            if (!this.dragAndDropState.enabled)
-                return;
-
-            e.stopPropagation();
-            e.preventDefault();
-
-            eventSimulator.dragenter(e.target, e);
-            eventSimulator.dragleave(e.relatedTarget, e);
-        };
-
-        const ondragend = () => {
-            eventUtils.unbind(window, 'mousemove', this.onmousemove);
-
-            this.onmousemove = null;
-
-            eventUtils.unbind(window, 'mouseover', onmouseover);
-            eventUtils.unbind(window, 'mouseleave', preventHandler);
-            eventUtils.unbind(window, 'mouseenter', preventHandler);
-            eventUtils.unbind(window, 'mouseout', preventHandler);
-            eventUtils.unbind(window, 'dragend', ondragend);
-        };
-
         const ondragstart = e => {
             this.dragAndDropState.dataTransfer = e.dataTransfer;
             this.dragAndDropState.element = e.target;
@@ -444,23 +444,47 @@ export default class MoveAutomation {
             e.preventDefault = () => {
                 this.dragAndDropState.enabled = false;
 
-                eventUtils.unbind(window, 'mouseover', onmouseover);
-                eventUtils.unbind(window, 'dragend', ondragend);
-                eventUtils.unbind(window, 'mouseleave', preventHandler, true);
-                eventUtils.unbind(window, 'mouseenter', preventHandler, true);
-                eventUtils.unbind(window, 'mouseout', preventHandler, true);
+                this._unbindMouseToDragConversionHandlers();
             };
 
-            eventUtils.unbind(window, 'dragstart', ondragstart);
-
-            eventUtils.bind(window, 'mouseover', onmouseover, true);
-            eventUtils.bind(window, 'mouseleave', preventHandler, true);
-            eventUtils.bind(window, 'mouseenter', preventHandler, true);
-            eventUtils.bind(window, 'mouseout', preventHandler, true);
+            this._bindMouseToDragConversionHandlers();
         };
 
-        eventUtils.bind(window, 'mousemove', this.onmousemove, true);
+        eventUtils.bind(window, 'mousemove', onmousemove, true);
         eventUtils.bind(window, 'dragstart', ondragstart, true);
+
+        this.mainServiceEventHandlers = { onmousemove, ondragstart };
+    }
+
+    _unbindMainServiceHandlers () {
+        if (!this.mainServiceEventHandlers)
+            return;
+
+        const { onmousemove, ondragstart } = this.mainServiceEventHandlers;
+
+        eventUtils.unbind(window, 'mousemove', onmousemove);
+        eventUtils.unbind(window, 'dragstart', ondragstart);
+
+        this.mainServiceEventHandlers = null;
+    }
+
+    _unbindMouseToDragConversionHandlers () {
+        if (!this.mouseToDragConversionHandlers)
+            return;
+
+        const { onmouseover, generalEventPreventionHandler } = this.mouseToDragConversionHandlers;
+
+        eventUtils.unbind(window, 'mouseover', onmouseover);
+        eventUtils.unbind(window, 'mouseleave', generalEventPreventionHandler);
+        eventUtils.unbind(window, 'mouseenter', generalEventPreventionHandler);
+        eventUtils.unbind(window, 'mouseout', generalEventPreventionHandler);
+
+        this.mouseToDragConversionHandlers = null;
+    }
+
+    _unbindServiceEventHandlers () {
+        this._unbindMainServiceHandlers();
+        this._unbindMouseToDragConversionHandlers();
     }
 
     _moveToCurrentFrame () {
@@ -556,7 +580,7 @@ export default class MoveAutomation {
                             if (marionetteClient.enabled) {
                                 testCafeCore.disableRealEventsPreventing();
 
-                                this._bindEventHandlers();
+                                this._bindMainServiceEventHandlers();
 
                                 const marionetteOptions = {
                                     type:             marionetteClient.actionTypes.move,
@@ -569,7 +593,7 @@ export default class MoveAutomation {
 
                                 return marionetteClient
                                     .performAction(marionetteOptions)
-                                    .then(() => this.onmousemove && eventUtils.unbind(window, 'mousemove', this.onmousemove));
+                                    .then(() => this._unbindServiceEventHandlers());
                             }
 
                             return this._move();
