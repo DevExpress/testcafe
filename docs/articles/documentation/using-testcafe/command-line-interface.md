@@ -46,6 +46,7 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [--ports \<port1,port2\>](#--ports-port1port2)
   * [--hostname \<name\>](#--hostname-name)
   * [--speed \<factor\>](#--speed-factor)
+  * [--disable-page-reloads](#--disable-page-reloads)
   * [--qr-code](#--qr-code)
   * [--color](#--color)
   * [--no-color](#--no-color)
@@ -552,6 +553,14 @@ testcafe chrome my-tests --speed 0.1
 If the speed is also specified for an [individual action](../test-api/actions/action-options.md#basic-action-options), the action's speed setting overrides the test speed.
 
 **Default value**: `1`
+
+### --disable-page-reloads
+
+Disables page reloads between tests. See [Enabling and Disabling Page Reloads](../test-api/test-code-structure.md#enabling-and-disabling-page-reloads).
+
+```sh
+testcafe chrome my-tests --disable-page-reloads
+```
 
 ### --qr-code
 
