@@ -56,7 +56,7 @@ createTestCafe('localhost', 1337, 1338, sslOptions)
             .src('test.js')
 
             // Browsers restrict self-signed certificate usage unless you
-            // explicitly set a flag specific to each browser.f
+            // explicitly set a flag specific to each browser.
             // For Chrome, this is '--allow-insecure-localhost'.
             .browsers('chrome --allow-insecure-localhost')
             .run();
