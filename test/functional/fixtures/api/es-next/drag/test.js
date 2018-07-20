@@ -139,5 +139,9 @@ describe('[API] Drag actions', function () {
         it('Should reproduce native browser behavior', function () {
             return runTests('./testcafe-fixtures/drag-and-drop-test.js', 'drag link and image', { only: ['chrome'] });
         });
+
+        it('Should not raise the drag and drop events if the mousedown event was prevented', function () {
+            return runTests('./testcafe-fixtures/drag-and-drop-test.js', 'Default drag events should not be simulated if the mousedown event was prevented', { skip: ['iphone', 'ipad', 'android'] });
+        });
     });
 });

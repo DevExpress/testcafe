@@ -79,3 +79,72 @@ test.page `http://localhost:3000/fixtures/api/es-next/drag/pages/invalid-drag-an
         .expect(draggable.parent(0).id).eql('from')
         .expect(ClientFunction(() => window.dradendRaised)()).eql(true);
 });
+
+test('Default drag events should not be simulated if the mousedown event was prevented', async t => {
+    const link   = Selector('#link');
+    const target = Selector('#to-display-values');
+
+    const setEventHandlers = ClientFunction(shouldPreventMousedown => {
+        function handler (e) {
+            window[e.type + 'Raised'] = true;
+
+            if (shouldPreventMousedown && e.type === 'mousedown')
+                e.preventDefault();
+        }
+
+        document.ondragstart = handler;
+        document.ondragend   = handler;
+
+        document.onmousedown = handler;
+        document.onmouseup   = handler;
+
+        // NOTE: we should reset the onclick handler because of GH-2640
+        document.onclick = () => {
+        };
+    });
+
+    const getEventsResult = ClientFunction(() => {
+        return {
+            dragstart: window.dragstartRaised,
+            dragend:   window.dragendRaised,
+
+            mousedown: window.mousedownRaised,
+            mouseup:   window.mouseupRaised
+        };
+    });
+
+    const clearEventsResult = ClientFunction(() => {
+        window.dragstartRaised = false;
+        window.dragendRaised   = false;
+
+        window.mousedownRaised = false;
+        window.mouseupRaised   = false;
+    });
+
+
+    await clearEventsResult();
+    await setEventHandlers();
+
+    await t
+        .dragToElement(link, target)
+        .expect(getEventsResult()).eql({
+            dragstart: true,
+            dragend:   true,
+
+            mousedown: true,
+            mouseup:   false
+        });
+
+    await clearEventsResult();
+    await setEventHandlers(true);
+
+    await t
+        .dragToElement(link, target)
+        .expect(getEventsResult()).eql({
+            dragstart: false,
+            dragend:   false,
+
+            mousedown: true,
+            mouseup:   true
+        });
+});

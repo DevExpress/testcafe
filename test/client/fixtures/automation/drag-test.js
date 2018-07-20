@@ -202,7 +202,7 @@ $(document).ready(function () {
     });
 
     if (!featureDetection.isTouchDevice) {
-        asyncTest('GH372-"mousemove" event sent to wrong element during dragging', function () {
+        asyncTest('GH372 - The mousemove event is sent to a wrong element during dragging', function () {
             var $firstTarget  = createTarget(10, 10);
             var $secondTarget = createTarget(110, 110);
             var elementCenter = getCenter($firstTarget[0]);
