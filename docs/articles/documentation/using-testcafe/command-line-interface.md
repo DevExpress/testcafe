@@ -45,6 +45,7 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [--proxy-bypass \<rules\>](#--proxy-bypass-rules)
   * [--ports \<port1,port2\>](#--ports-port1port2)
   * [--hostname \<name\>](#--hostname-name)
+  * [--ssl \<options\>](#--ssl-options)
   * [--speed \<factor\>](#--speed-factor)
   * [--qr-code](#--qr-code)
   * [--color](#--color)
@@ -535,6 +536,23 @@ TestCafe automatically selects ports if ports are not specified.
 Specifies your computer's hostname. It is used when running tests in [remote browsers](#remote-browsers).
 
 If the hostname is not specified, TestCafe uses the operating system hostname or network IP address of the current machine.
+
+### --ssl \<options\>
+
+Provides options that allow you to establish HTTPS connection between the client browser and the TestCafe server.
+
+The `options` parameter contains options required to initialize
+[a Node.js HTTPS server](https://nodejs.org/api/https.html#https_https_createserver_options_requestlistener).
+The most commonly used SSL options are described in the [TLS topic](https://nodejs.org/api/tls.html#tls_tls_createsecurecontext_options) in Node.js documentation.
+Options are specified in a semicolon-separated string.
+
+```sh
+testcafe --ssl pfx=path/to/file.pfx;rejectUnauthorized=true;...
+```
+
+Provide the `--ssl` flag if the tested webpage uses browser features that require
+secure origin ([Service Workers](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API), [Geolocation API](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API), [ApplePaySession](https://developer.apple.com/documentation/apple_pay_on_the_web/applepaysession), [SubtleCrypto](https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto), etc).
+See [Connect to the TestCafe Server over HTTPS](common-concepts/connect-to-the-testcafe-server-over-https.md) for more information.
 
 ### --speed \<factor\>
 
