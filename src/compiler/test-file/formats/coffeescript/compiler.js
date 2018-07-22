@@ -1,4 +1,5 @@
 import CoffeeScript from 'coffeescript';
+import loadBabelLibs from '../../../load-babel-libs';
 import ESNextTestFileCompiler from '../es-next/compiler.js';
 
 const FIXTURE_RE = /(^|;|\s+)fixture\s*(\.|\(|'|")/;
@@ -13,17 +14,20 @@ export default class CoffeeScriptTestFileCompiler extends ESNextTestFileCompiler
         if (this.cache[filename])
             return this.cache[filename];
 
-        var compiled = CoffeeScript.compile(code, {
+        var transpiled = CoffeeScript.compile(code, {
+            filename,
             sourceMap: true,
             inlineMap: true,
-            filename,
-            header:    false,
-            transpile: ESNextTestFileCompiler.getBabelOptions(filename, code)
+            header:    false
         });
 
-        this.cache[filename] = compiled.js;
+        var { babel }    = loadBabelLibs();
+        var babelOptions = ESNextTestFileCompiler.getBabelOptions(filename, code);
+        var compiled     = babel.transform(transpiled.js, babelOptions);
 
-        return compiled.js;
+        this.cache[filename] = compiled.code;
+
+        return compiled.code;
     }
 
     _getRequireCompilers () {
