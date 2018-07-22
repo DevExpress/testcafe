@@ -17,7 +17,7 @@ const TOKEN_TYPE = {
     VariableDeclaration:      'VariableDeclaration'
 };
 
-class EsNextTestFileParser extends TestFileParserBase {
+export class EsNextTestFileParser extends TestFileParserBase {
     constructor () {
         super(TOKEN_TYPE);
     }
