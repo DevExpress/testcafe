@@ -47,6 +47,7 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [--hostname \<name\>](#--hostname-name)
   * [--ssl \<options\>](#--ssl-options)
   * [--speed \<factor\>](#--speed-factor)
+  * [--dev](#--dev)
   * [--qr-code](#--qr-code)
   * [--color](#--color)
   * [--no-color](#--no-color)
@@ -570,6 +571,14 @@ testcafe chrome my-tests --speed 0.1
 If the speed is also specified for an [individual action](../test-api/actions/action-options.md#basic-action-options), the action's speed setting overrides the test speed.
 
 **Default value**: `1`
+
+### --dev
+
+Enables mechanisms to log and diagnose errors. You should enable this option if you are going to contact TestCafe Support to report an issue.
+
+```sh
+testcafe chrome my-tests --dev
+```
 
 ### --qr-code
 
