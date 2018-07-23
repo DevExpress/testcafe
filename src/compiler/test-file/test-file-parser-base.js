@@ -122,6 +122,9 @@ export class TestFileParserBase {
             case tokenType.PropertyAccessExpression:
             case tokenType.TaggedTemplateExpression:
                 return this.analyzeFnCall(token);
+
+            case tokenType.ReturnStatement:
+                return token.argument ? this.analyzeToken(token.argument) : null;
         }
 
         return null;

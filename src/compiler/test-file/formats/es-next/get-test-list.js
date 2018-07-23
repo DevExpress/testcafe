@@ -13,6 +13,7 @@ const TOKEN_TYPE = {
     ArrowFunctionExpression:  'ArrowFunctionExpression',
     FunctionExpression:       'FunctionExpression',
     ExpressionStatement:      'ExpressionStatement',
+    ReturnStatement:          'ReturnStatement',
     FunctionDeclaration:      'FunctionDeclaration',
     VariableDeclaration:      'VariableDeclaration'
 };
