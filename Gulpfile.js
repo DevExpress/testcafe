@@ -79,36 +79,36 @@ var CLIENT_TESTS_LOCAL_SETTINGS  = assignIn({}, CLIENT_TESTS_SETTINGS);
 var CLIENT_TESTS_LEGACY_SETTINGS = assignIn({}, CLIENT_TESTS_SETTINGS_BASE, { basePath: CLIENT_TESTS_LEGACY_PATH });
 
 var CLIENT_TESTS_DESKTOP_BROWSERS = [
-    // {
-    //     platform:    'Windows 10',
-    //     browserName: 'microsoftedge'
-    // },
-    // {
-    //     platform:    'Windows 10',
-    //     browserName: 'chrome'
-    // },
-    // {
-    //     platform:    'Windows 10',
-    //     browserName: 'firefox'
-    // },
-    // {
-    //     platform:    'Windows 10',
-    //     browserName: 'internet explorer',
-    //     version:     '11.0'
-    // },
+    {
+        platform:    'Windows 10',
+        browserName: 'microsoftedge'
+    },
+    {
+        platform:    'Windows 10',
+        browserName: 'chrome'
+    },
+    {
+        platform:    'Windows 10',
+        browserName: 'firefox'
+    },
+    {
+        platform:    'Windows 10',
+        browserName: 'internet explorer',
+        version:     '11.0'
+    },
     {
         platform:    'macOS 10.13',
         browserName: 'safari',
         version:     '11.1'
     },
-    // {
-    //     platform:    'OS X 10.11',
-    //     browserName: 'chrome'
-    // },
-    // {
-    //     platform:    'OS X 10.11',
-    //     browserName: 'firefox'
-    // }
+    {
+        platform:    'OS X 10.11',
+        browserName: 'chrome'
+    },
+    {
+        platform:    'OS X 10.11',
+        browserName: 'firefox'
+    }
 ];
 
 var CLIENT_TESTS_OLD_BROWSERS = [
