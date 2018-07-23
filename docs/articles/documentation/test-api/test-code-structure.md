@@ -21,6 +21,7 @@ This topic contains the following sections:
     * [Sharing Variables Between Test Hooks and Test Code](#sharing-variables-between-test-hooks-and-test-code)
   * [Fixture Hooks](#fixture-hooks)
     * [Sharing Variables Between Fixture Hooks and Test Code](#sharing-variables-between-fixture-hooks-and-test-code)
+* [Enabling and Disabling Page Reloads](#enabling-and-disabling-page-reloads)
 * [Skipping Tests](#skipping-tests)
 
 > If you use [eslint](http://eslint.org/) in your project, use  the [TestCafe plugin](https://www.npmjs.com/package/eslint-plugin-testcafe)
@@ -518,6 +519,54 @@ test('Test2', async t => {
     t.fixtureCtx.newProp = 'abc';
 });
 ```
+
+## Enabling and Disabling Page Reloads
+
+TestCafe tests are independent from each other: each test opens a tested webpage in a browser, simulates test action, and closes the webpage. If you run an entire fixture or a set of tests for the same page, the browser loads this page every time an individual test starts. However, there are cases when you may need to not reload a tested page for each test, but save the page's state between tests. For example, if you test a single-page application or have a group of tests that should be run in a desired order with saving the page's state.
+
+To address these scenarios, TestCafe provides options that allow you to disable or enable page reloads between tests: the [--disable-page-reloads](../using-testcafe/command-line-interface.md#--disable-page-reloads) command line option and the [runner.run](../using-testcafe/programming-interface/runner.md#run) method's `disablePageReloads` option. These options affect all tests to be run.
+
+You can also use the `disablePageReloads` and `enablePageReloads` methods in test code to disable/enable page reloads for fixture's tests or an individual test.
+
+```text
+fixture.disablePageReloads
+```
+
+```text
+fixture.enablePageReloads
+```
+
+```text
+text.disablePageReloads
+```
+
+```text
+text.enablePageReloads
+```
+
+The following example demonstrates how to disable the page reload before the second test in the fixture.
+
+```js
+import { Selector } from 'testcafe';
+
+fixture `My Fixture`
+    .page `http://devexpress.github.io/testcafe/example`;
+
+test('Test1', async t => {
+    await t
+        .typeText('#developer-name', 'John Smith')
+        .click('#windows')
+        .click('#tried-section');
+});
+
+test.disablePageReloads('Test2', async t => {
+    await t
+        .click('#submit-button')
+        .expect(Selector('#article-header').innerText).eql('Thank you, John Smith!');
+});
+```
+
+> You can disable page reloads for your tests if you are completely sure that the page's state doesn't change between tests. Otherwise, errors can occur during test execution.
 
 ## Skipping Tests
 
