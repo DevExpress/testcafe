@@ -11,6 +11,7 @@ export class CoffeeScriptTestFileParser extends EsNextTestFileParser {
         babelOptions.ast = true;
 
         code = CoffeeScript.compile(code, {
+            bare:      true,
             sourceMap: false,
             inlineMap: false,
             header:    false

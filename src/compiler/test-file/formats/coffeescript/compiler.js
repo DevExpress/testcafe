@@ -16,6 +16,7 @@ export default class CoffeeScriptTestFileCompiler extends ESNextTestFileCompiler
 
         var transpiled = CoffeeScript.compile(code, {
             filename,
+            bare:      true,
             sourceMap: true,
             inlineMap: true,
             header:    false
