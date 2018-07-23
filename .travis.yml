@@ -8,20 +8,9 @@ addons:
 language: node_js
 matrix:
  include:
-  - node_js: "6"
-    env: GULP_TASK="test-server"
-  - node_js: "stable"
-    env: GULP_TASK="test-server"
   - node_js: "stable"
     env: GULP_TASK="test-client-travis"
-  - node_js: "stable"
-    env: GULP_TASK="test-client-travis-mobile"
-  - node_js: "stable"
-    env: GULP_TASK="test-functional-travis-desktop-osx-and-ms-edge"
-  - node_js: "stable"
-    env: GULP_TASK="test-functional-travis-mobile"
-  - node_js: "stable"
-    env: GULP_TASK="test-functional-local-headless"
+
  fast_finish: true
 
 cache: yarn
