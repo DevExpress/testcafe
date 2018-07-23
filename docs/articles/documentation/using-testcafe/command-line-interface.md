@@ -269,7 +269,7 @@ Note that only one reporter can write to `stdout`. All other reporters must outp
 
 ### -s \<path\>, --screenshots \<path\>
 
-Enables screenshots and specifies the root directory where they are saved.
+Enables screenshots and specifies the base directory where they are saved.
 
 ```sh
 testcafe all tests/sample-fixture.js -s screenshots
@@ -277,7 +277,7 @@ testcafe all tests/sample-fixture.js -s screenshots
 
 #### Path Patterns
 
-The captured screenshots are organized into subdirectories within the root directory. The default screenshot path patterns are used to define screenshots' relative path and name:
+The captured screenshots are organized into subdirectories within the base directory. The following path patterns are used to define screenshots' relative path and name:
 
 * `${DATE}_${TIME}\test-${TEST_INDEX}\${USERAGENT}\{$FILE_INDEX}.png` if the [quarantine mode](#-q---quarantine-mode) is disabled;
 * `${DATE}_${TIME}\test-${TEST_INDEX}\run-${QUARANTINE_ATTEMPT}\${USERAGENT}\{$FILE_INDEX}.png` if the [quarantine mode](#-q---quarantine-mode) is enabled.
