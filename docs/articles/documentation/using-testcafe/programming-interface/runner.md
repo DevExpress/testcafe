@@ -206,9 +206,9 @@ screenshots(path [, takeOnFails, pathPattern]) → this
 
 Parameter                  | Type    | Description                                                                   | Default
 -------------------------- | ------- | ----------------------------------------------------------------------------- | -------
-`path`                     | String  | The root path where the screenshots are saved. The relative path is specified by the default [path patterns](../command-line-interface.md#path-patterns) or by the method's `screenshotPathPattern` parameter.
+`path`                     | String  | The base path where the screenshots are saved. Note that to construct a complete path to these screenshots, TestCafe uses default [path patterns](../command-line-interface.md#path-patterns). You can override these patterns using the method's `screenshotPathPattern` parameter.
 `takeOnFails`&#160;*(optional)* | Boolean | Specifies if screenshots should be taken automatically when a test fails. | `false`
-`sceenshotPathPattern`&#160;*(optional)* | String | The pattern to compose screenshot files' relative path and name. See [--screenshot-path-pattern](../command-line-interface.md#-p---screenshot-path-pattern) for information about available placeholders.
+`sceenshotPathPattern`&#160;*(optional)* | String | The pattern to compose screenshot files' relative path and name. See [--screenshot-path-pattern](../command-line-interface.md#-p---screenshot-path-pattern) for information about the available placeholders.
 
 The `screenshots` function should be called to allow TestCafe to take screenshots
 when the [t.takeScreenshot](../../test-api/actions/take-screenshot.md) action is called from test code.
@@ -403,7 +403,7 @@ async run(options) → Promise<Number>
 You can pass the following options to the `runner.run` function.
 
 Parameter         | Type    | Description                                                                                                                                                                           | Default
------------------ | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------
+----------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------
 `skipJsErrors`    | Boolean | Defines whether to continue running a test after a JavaScript error occurs on a page (`true`), or consider such a test failed (`false`).                                              | `false`
 `quarantineMode`  | Boolean | Defines whether to enable the [quarantine mode](#quarantine-mode).                                                                                                                    | `false`
 `selectorTimeout` | Number  | Specifies the time (in milliseconds) within which [selectors](../../test-api/selecting-page-elements/selectors/README.md) make attempts to obtain a node to be returned. See [Selector Timeout](../../test-api/selecting-page-elements/selectors/using-selectors.md#selector-timeout). | `10000`
