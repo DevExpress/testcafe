@@ -9,7 +9,7 @@ checked: true
 Creates a [TestCafe](testcafe.md) server instance.
 
 ```text
-async createTestCafe([hostname], [port1], [port2], [sslOptions], developmentMode) → Promise<TestCafe>
+async createTestCafe([hostname], [port1], [port2], [sslOptions], [developmentMode]) → Promise<TestCafe>
 ```
 
 Parameter                     | Type   | Description                                                                                                                                                                                                  | Default
