@@ -46,8 +46,8 @@ for:
   test_script:
   - cmd: >-
        node node_modules/gulp/bin/gulp test-functional-local-ie
-       
+
        node node_modules/gulp/bin/gulp test-functional-local-chrome-firefox
-       
+
        node node_modules/gulp/bin/gulp test-functional-local-legacy
 
