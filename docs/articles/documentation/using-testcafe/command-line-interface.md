@@ -318,7 +318,7 @@ Placeholder | Description
 `${QUARANTINE_ATTEMPT}` | The [quarantine](programming-interface/runner.md#quarantine-mode) attempt's number. If the quarantine mode is disabled, the `${QUARANTINE_ATTEMPT}` placeholder's value is 1.
 `${FIXTURE}` | The fixture's name.
 `${TEST}` | The test's name.
-`${USERAGENT}` | The combination of `${BROWSER}`, `${BROWSER_VERSION}`, `${OS}`, and `${OS_VERSION}`.
+`${USERAGENT}` | The combination of `${BROWSER}`, `${BROWSER_VERSION}`, `${OS}`, and `${OS_VERSION}` (separated by underscores).
 `${BROWSER}` | The browser's name.
 `${BROWSER_VERSION}` | The browser's version.
 `${OS}` | The operation system's name.
