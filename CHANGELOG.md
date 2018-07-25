@@ -50,9 +50,9 @@ See [Connect to TestCafe Server over HTTPS](https://devexpress.github.io/testcaf
 
 #### :gear: Construct Screenshot Paths with Patterns ([#2152](https://github.com/DevExpress/testcafe/issues/2152))
 
-You can now use patterns to construct paths to screenshots. TestCafe provides a number of variables you can include in the path. For instance, these are `${DATE}`, `${TIME}`, `${USERAGENT}`, etc. For a complete list, refer to the command line [--screenshot-path-pattern flag description](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-p---screenshot-path-pattern).
+You can now use patterns to construct paths to screenshots. TestCafe provides a number of placeholders you can include in the path. For instance, these are `${DATE}`, `${TIME}`, `${USERAGENT}`, etc. For a complete list, refer to the command line [--screenshot-path-pattern flag description](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-p---screenshot-path-pattern).
 
-You specify a screenshot path pattern when you run tests. Each time TestCafe takes a screenshot, it substitutes the variables with their values and saves the screenshot to the resulting path.
+You specify a screenshot path pattern when you run tests. Each time TestCafe takes a screenshot, it substitutes the placeholders with actual values and saves the screenshot to the resulting path.
 
 The following example shows how to specify a screenshot path pattern through the command line.
 
@@ -74,7 +74,7 @@ The following info about screenshots is now available:
 
 * the path to the screenshot file,
 * the path to the thumbnail image,
-* the user agent in which the screenshot was taken,
+* the user agent of the browser in which the screenshot was taken,
 * the quarantine attempt number (if the screenshot was taken in the quarantine mode),
 * whether the screenshot was taken because the test failed.
 
