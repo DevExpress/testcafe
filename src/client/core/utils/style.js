@@ -3,7 +3,8 @@ import * as domUtils from './dom';
 import { filter, some } from './array';
 
 
-var styleUtils = hammerhead.utils.style;
+const styleUtils   = hammerhead.utils.style;
+const browserUtils = hammerhead.utils.browser;
 
 export var getBordersWidth      = hammerhead.utils.style.getBordersWidth;
 export var getComputedStyle     = hammerhead.utils.style.getComputedStyle;
@@ -24,7 +25,27 @@ export var setScrollLeft        = hammerhead.utils.style.setScrollLeft;
 export var setScrollTop         = hammerhead.utils.style.setScrollTop;
 export var get                  = hammerhead.utils.style.get;
 
-const SCROLLABLE_OVERFLOW_STYLE_RE = /auto|scroll/i;
+const SCROLLABLE_OVERFLOW_STYLE_RE               = /auto|scroll/i;
+const DEFAULT_IE_SCROLLABLE_OVERFLOW_STYLE_VALUE = 'visible';
+
+const getScrollable = function (el) {
+    const overflowX            = get(el, 'overflowX');
+    const overflowY            = get(el, 'overflowY');
+    let scrollableHorizontally = SCROLLABLE_OVERFLOW_STYLE_RE.test(overflowX);
+    let scrollableVertically   = SCROLLABLE_OVERFLOW_STYLE_RE.test(overflowY);
+
+    // IE11 bug: There are two properties: overflow-x and overflow-y.
+    // If one property is set so that the browser may show scrollbars (`auto` or `scroll`) and the second one is set to 'visible',
+    // then the second one will work as if it had the 'auto' value.
+    if (browserUtils.isIE11) {
+        if (!scrollableHorizontally && scrollableVertically && overflowX === DEFAULT_IE_SCROLLABLE_OVERFLOW_STYLE_VALUE)
+            scrollableHorizontally = true;
+        if (!scrollableVertically && scrollableHorizontally && overflowY === DEFAULT_IE_SCROLLABLE_OVERFLOW_STYLE_VALUE)
+            scrollableVertically = true;
+    }
+
+    return { scrollableHorizontally, scrollableVertically };
+};
 
 var getAncestors = function (node) {
     var ancestors = [];
@@ -115,10 +136,7 @@ function hasHTMLElementScroll (el) {
 }
 
 export function hasScroll (el) {
-    var overflowX              = get(el, 'overflowX');
-    var overflowY              = get(el, 'overflowY');
-    var scrollableHorizontally = SCROLLABLE_OVERFLOW_STYLE_RE.test(overflowX);
-    var scrollableVertically   = SCROLLABLE_OVERFLOW_STYLE_RE.test(overflowY);
+    const { scrollableHorizontally, scrollableVertically } = getScrollable(el);
 
     if (domUtils.isBodyElement(el))
         return hasBodyScroll(el);
@@ -129,8 +147,8 @@ export function hasScroll (el) {
     if (!scrollableHorizontally && !scrollableVertically)
         return false;
 
-    var hasHorizontalScroll = scrollableVertically && el.scrollHeight > el.clientHeight;
-    var hasVerticalScroll   = scrollableHorizontally && el.scrollWidth > el.clientWidth;
+    var hasVerticalScroll   = scrollableVertically && el.scrollHeight > el.clientHeight;
+    var hasHorizontalScroll = scrollableHorizontally && el.scrollWidth > el.clientWidth;
 
     return hasHorizontalScroll || hasVerticalScroll;
 }
