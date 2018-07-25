@@ -21,17 +21,11 @@ var isIE11 = !!(navigator.appCodeName === 'Mozilla' &&
 
             eq(e.pointerType, isIE11 || isMSEdge ? 'mouse' : 4);
             eq(e.button, 0);
-            eq(e.buttons, 1);
+            eq(e.buttons, e.type === 'pointerdown' ? 1 : 0);
         }
 
-        if (isMSEdge) {
-            input.onpointerdown = pointerHandler;
-            input.onpointerup   = pointerHandler;
-        }
-        else {
-            input.onmspointerdown = pointerHandler;
-            input.onmspointerup   = pointerHandler;
-        }
+        input.onpointerdown = pointerHandler;
+        input.onpointerup   = pointerHandler;
 
         act.click(input);
     },

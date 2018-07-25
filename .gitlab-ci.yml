@@ -1,0 +1,24 @@
+image: node:latest
+
+cache:
+  paths:
+  - node_modules/
+
+stages:
+- test
+
+test-client:
+  stage: test
+  script:
+  - npm install
+  - export PATH=$HOME/.yarn/bin:$PATH:$PWD/node_modules/.bin
+  - export GULP_TASK="test-client-travis"
+  - if [[ $CI_COMMIT_REF_NAME == "master" ]]; then retry -n 3 -- npm test; else npm test; fi
+
+test-client-mobile:
+  stage: test
+  script:
+  - npm install
+  - export PATH=$HOME/.yarn/bin:$PATH:$PWD/node_modules/.bin
+  - export GULP_TASK="test-client-travis-mobile"
+  - if [[ $CI_COMMIT_REF_NAME == "master" ]]; then retry -n 3 -- npm test; else npm test; fi

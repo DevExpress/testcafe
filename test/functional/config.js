@@ -1,6 +1,6 @@
 var os = require('os');
 
-var isTravisEnvironment = !!process.env.TRAVIS;
+var isTravisEnvironment = !!process.env.TRAVIS || !!process.env.SEMAPHORE || !!process.env.GITLAB_CI;
 var hostname            = isTravisEnvironment ? os.hostname() : '127.0.0.1';
 
 var browserProviderNames = {
@@ -32,19 +32,19 @@ testingEnvironments[testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers] = {
     browsers: [
         {
             os:        'OS X',
-            osVersion: 'Sierra',
+            osVersion: 'High Sierra',
             name:      'safari',
             alias:     'safari'
         },
         {
             os:        'OS X',
-            osVersion: 'Sierra',
+            osVersion: 'High Sierra',
             name:      'chrome',
             alias:     'chrome-osx'
         },
         {
             os:        'OS X',
-            osVersion: 'Sierra',
+            osVersion: 'High Sierra',
             name:      'firefox',
             alias:     'firefox-osx'
         },
@@ -69,7 +69,7 @@ testingEnvironments[testingEnvironmentNames.mobileBrowsers] = {
         {
             realMobile: true,
             os:         'android',
-            osVersion:  '7.1',
+            osVersion:  '8.0',
             device:     'Google Pixel',
             name:       'Android',
             alias:      'android'
