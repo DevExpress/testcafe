@@ -14,11 +14,11 @@ Some browser features (like
 [Geolocation API](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API),
 [ApplePaySession](https://developer.apple.com/documentation/apple_pay_on_the_web/applepaysession), or
 [SubtleCrypto](https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto))
-require secure origin. This means that the website should be served over the HTTPS protocol. If you run tests against pages with this kind of browser API in a regular way, these tests fail with JavaScript errors.
+require a secure origin. This means that the website should use the HTTPS protocol. If TestCafe proxies such websites through HTTP, tests fail because of JavaScript errors.
 
-TestCafe can serve the proxied tested page over the HTTPS protocol. When this option is enabled, the client browser connects to the TestCafe proxy server over HTTPS. This allows you to test webpages that use browser features that require secure origin.
+TestCafe can serve the proxied tested page over the HTTPS protocol. When this option is enabled, the client browser uses HTTPS to connect to the TestCafe proxy server. This allows you to test web pages with browser features that require a secure origin.
 
-Use the [--ssl](../command-line-interface.md#--ssl-options) flag when you run tests from the command line to enable HTTPS. Specify options required to initialize
+To enable HTTPS, use the [--ssl](../command-line-interface.md#--ssl-options) flag when you run tests from the command line. Specify options required to initialize
 [a Node.js HTTPS server](https://nodejs.org/api/https.html#https_https_createserver_options_requestlistener) after this flag in a semicolon-separated string. The most commonly used SSL options are described in the [TLS topic](https://nodejs.org/api/tls.html#tls_tls_createsecurecontext_options) in Node.js documentation.
 
 The example below uses the PFX encoded private key and certificate chain to create an HTTPS server.
@@ -27,9 +27,9 @@ The example below uses the PFX encoded private key and certificate chain to crea
 testcafe --ssl pfx=path/to/file.pfx;rejectUnauthorized=true;...
 ```
 
-When you use the programming interface, pass HTTPS server options to the [createTestCafe](../programming-interface/createtestcafe.md) method.
+When you use the programming interface, pass the HTTPS server options to the [createTestCafe](../programming-interface/createtestcafe.md) method.
 
-The following example uses the [openssl-self-signed-certificate](https://www.npmjs.com/package/openssl-self-signed-certificate) module to generate a self-signed certificate for development use.
+The following example uses the [openssl-self-signed-certificate](https://www.npmjs.com/package/openssl-self-signed-certificate) module to generate a self-signed certificate:
 
 ```js
 'use strict';
