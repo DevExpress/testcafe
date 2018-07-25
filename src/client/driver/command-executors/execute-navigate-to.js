@@ -1,19 +1,61 @@
 import hammerhead from '../deps/hammerhead';
-import testCafeCore from '../deps/testcafe-core';
+import  { RequestBarrier, pageUnloadBarrier, browser } from '../deps/testcafe-core';
 import DriverStatus from '../status';
 
-var Promise = hammerhead.Promise;
+const { Promise, createNativeXHR, nativeMethods, utils } = hammerhead;
 
-var RequestBarrier    = testCafeCore.RequestBarrier;
-var pageUnloadBarrier = testCafeCore.pageUnloadBarrier;
+const STORAGE_PREFIX = 'hammerhead|storage-wrapper';
 
+function findStorageKey (storage) {
+    for(let i = 0; i < storage.length; i++) {
+        const key = storage.key(i);
+
+        if (key.indexOf(STORAGE_PREFIX) === 0)
+            return key;
+    }
+
+    return '';
+}
+
+function restoreStorage (storageGetter, savedStorage) {
+    const storage = storageGetter.call(window);
+    const storageKey = findStorageKey(storage);
+
+    if (!storageKey)
+        return;
+
+    storage.setItem(storageKey, savedStorage);
+}
 
 export default function executeNavigateTo (command) {
-    var requestBarrier = new RequestBarrier();
+    const proxyUrl = utils.url.getProxyUrl(command.url);
 
-    hammerhead.navigateTo(command.url);
+    if (command.stateSnapshot) {
+        let stateSnapshot = JSON.parse(command.stateSnapshot);
 
-    return Promise.all([requestBarrier.wait(), pageUnloadBarrier.wait()])
+        if (!stateSnapshot)
+            stateSnapshot = { storages: { localStorage: '[[],[]]', sessionStorage: '[[],[]]' } };
+
+        hammerhead.sandbox.storageSandbox.lock();
+
+        restoreStorage(nativeMethods.winSessionStorageGetter, stateSnapshot.storages.sessionStorage);
+        restoreStorage(nativeMethods.winLocalStorageGetter, stateSnapshot.storages.localStorage);
+    }
+
+    const ensurePagePromise = browser
+            .sendXHR(proxyUrl, createNativeXHR, { parseResponse: false, addAcceptHeader: true })
+            .catch(() => (new Promise(r => setTimeout(r, 300))).then(() => browser.sendXHR(proxyUrl, createNativeXHR, { parseResponse: false, addAcceptHeader: true })))
+            .catch(() => (new Promise(r => setTimeout(r, 300))).then(() => browser.sendXHR(proxyUrl, createNativeXHR, { parseResponse: false, addAcceptHeader: true })))
+            .catch(() => {});
+
+    return ensurePagePromise
+        .then(() => {
+            var requestBarrier = new RequestBarrier();
+
+            hammerhead.navigateTo(command.url);
+
+            return Promise.all([requestBarrier.wait(), pageUnloadBarrier.wait()])
+        })
         .then(() => new DriverStatus({ isCommandResult: true }))
         .catch(err => new DriverStatus({ isCommandResult: true, executionError: err }));
 }

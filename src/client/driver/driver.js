@@ -222,6 +222,26 @@ export default class Driver {
                 status:           status,
                 disableResending: true
             }))
+            .catch(() => (new Promise(r => setTimeout(r, 300))).then(() => transport.queuedAsyncServiceMsg({
+                cmd:              TEST_RUN_MESSAGES.ready,
+                status:           status,
+                disableResending: true
+            })))
+            .catch(() => (new Promise(r => setTimeout(r, 300))).then(() => transport.queuedAsyncServiceMsg({
+                cmd:              TEST_RUN_MESSAGES.ready,
+                status:           status,
+                disableResending: true
+            })))
+            .catch(() => (new Promise(r => setTimeout(r, 300))).then(() => transport.queuedAsyncServiceMsg({
+                cmd:              TEST_RUN_MESSAGES.ready,
+                status:           status,
+                disableResending: true
+            })))
+            .catch(() => (new Promise(r => setTimeout(r, 300))).then(() => transport.queuedAsyncServiceMsg({
+                cmd:              TEST_RUN_MESSAGES.ready,
+                status:           status,
+                disableResending: true
+            })))
 
             //NOTE: do not execute the next command if the page is unloading
             .then(res => {
@@ -469,6 +489,9 @@ export default class Driver {
                     browser.redirect(command);
                 else
                     this._onReady({ isCommandResult: false });
+            })
+            .catch(() => {
+                window.setTimeout(() => this._checkStatus(), 1000); //eslint-disable-line hammerhead/use-native-methods
             });
     }
 

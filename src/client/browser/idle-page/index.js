@@ -28,7 +28,11 @@ class IdlePage {
                 if (command.cmd === COMMAND.idle)
                     window.setTimeout(() => this._checkStatus(), CHECK_STATUS_DELAY);
             })
-            .catch(() => this.statusIndicator.showDisconnection());
+            .catch(() => {
+                this.statusIndicator.showDisconnection();
+
+                window.setTimeout(() => this._checkStatus(), CHECK_STATUS_DELAY);
+            });
     }
 }
 

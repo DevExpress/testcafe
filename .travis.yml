@@ -13,11 +13,7 @@ matrix:
   - node_js: "stable"
     env: GULP_TASK="test-server"
   - node_js: "stable"
-    env: GULP_TASK="test-client-travis"
-  - node_js: "stable"
-    env: GULP_TASK="test-client-travis-mobile"
-  - node_js: "stable"
-    env: GULP_TASK="test-functional-travis-desktop-osx-and-ms-edge"
+    env: GULP_TASK="test-functional-travis"
   - node_js: "stable"
     env: GULP_TASK="test-functional-travis-mobile"
   - node_js: "stable"
@@ -28,10 +24,12 @@ cache: yarn
 
 before_install:
   - export $(dbus-launch)
-  - curl -o- -L https://yarnpkg.com/install.sh | bash
-  - export PATH=$HOME/.yarn/bin:$PATH
+  - travis_retry curl -o- -L https://yarnpkg.com/install.sh | bash
 
-install: yarn
+install: travis_retry yarn
+
+script:
+  - if [[ $TRAVIS_BRANCH == "master" ]]; then retry -n 3 -- gulp travis; else gulp travis; fi
 
 branches:
   except:
