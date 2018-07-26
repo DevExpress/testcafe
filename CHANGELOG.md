@@ -85,6 +85,7 @@ Refer to the [reportTestDone method description](https://devexpress.github.io/te
 ### Bug Fixes
 
 * The Drag action now works correctly in specific cases ([#2529](https://github.com/DevExpress/testcafe/issues/2529))
+* The `load` event listener is no longer triggered when added to an image ([testcafe-hammerhead/#1688](https://github.com/DevExpress/testcafe-hammerhead/issues/1688))
 
 ## v0.20.5 (2018-7-18)
 
