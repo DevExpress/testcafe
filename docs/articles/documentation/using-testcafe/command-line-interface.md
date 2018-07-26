@@ -279,12 +279,15 @@ testcafe all tests/sample-fixture.js -s screenshots
 
 #### Path Patterns
 
-The captured screenshots are organized into subdirectories within the base directory. The following path patterns are used to define screenshots' relative path and name:
+The captured screenshots are organized into subdirectories within the base directory. The following path patterns are used to define a relative path and name for screenshots the [Take Screenshot](../test-api/actions/take-screenshot.md) actions take:
 
 * `${DATE}_${TIME}\test-${TEST_INDEX}\${USERAGENT}\{$FILE_INDEX}.png` if the [quarantine mode](#-q---quarantine-mode) is disabled;
 * `${DATE}_${TIME}\test-${TEST_INDEX}\run-${QUARANTINE_ATTEMPT}\${USERAGENT}\{$FILE_INDEX}.png` if the [quarantine mode](#-q---quarantine-mode) is enabled.
-* `${DATE}_${TIME}\test-${TEST_INDEX}\${USERAGENT}\errors\{$FILE_INDEX}.png` if the [--screenshots-on-fails](#-s---screenshots-on-fails) option is specified.
-* `${DATE}_${TIME}\test-${TEST_INDEX}\run-${QUARANTINE_ATTEMPT}\${USERAGENT}\errors\{$FILE_INDEX}.png` if the [quarantine mode](#-q---quarantine-mode) and [--screenshots-on-fails](#-s---screenshots-on-fails) option are enabled.
+
+If TestCafe takes screenshots when a test fails (see [--screenshots-on-fails](#-s---screenshots-on-fails) option), the following path patterns are used:
+
+* `${DATE}_${TIME}\test-${TEST_INDEX}\${USERAGENT}\errors\{$FILE_INDEX}.png`;
+* `${DATE}_${TIME}\test-${TEST_INDEX}\run-${QUARANTINE_ATTEMPT}\${USERAGENT}\errors\{$FILE_INDEX}.png` if the [quarantine mode](#-q---quarantine-mode) is enabled.
 
 You can also use the [--screenshot-path-pattern](#-p---screenshot-path-pattern) option to specify a custom pattern.
 
@@ -315,7 +318,7 @@ Placeholder | Description
 `${QUARANTINE_ATTEMPT}` | The [quarantine](programming-interface/runner.md#quarantine-mode) attempt's number. If the quarantine mode is disabled, the `${QUARANTINE_ATTEMPT}` placeholder's value is 1.
 `${FIXTURE}` | The fixture's name.
 `${TEST}` | The test's name.
-`${USERAGENT}` | The combination of `${BROWSER}`, `${BROWSER_VERSION}`, `${OS}`, and `${OS_VERSION}`.
+`${USERAGENT}` | The combination of `${BROWSER}`, `${BROWSER_VERSION}`, `${OS}`, and `${OS_VERSION}` (separated by underscores).
 `${BROWSER}` | The browser's name.
 `${BROWSER_VERSION}` | The browser's version.
 `${OS}` | The operation system's name.
