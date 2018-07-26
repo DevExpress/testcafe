@@ -32,10 +32,10 @@ Option | Type | Description   | Default
 ------ | ---- | ------------- | ---------
 `logRequestHeaders` | Boolean | Specifies whether the request headers should be logged. | `false`
 `logRequestBody` | Boolean | Specifies whether the request body should be logged. | `false`
-`stringifyRequestBody` | Boolean | Specifies whether the request body should be stored as a String or a [Buffer](https://nodejs.org/api/buffer.html). | `false`
+`stringifyRequestBody` | Boolean | Specifies whether the request body should be stored as a String or a [Buffer](https://nodejs.org/api/buffer.html). When you set `stringifyRequestBody` to `true`, make sure that the request body is logged (`logRequestBody` is also `true`). Otherwise, an error is thrown. | `false`
 `logResponseHeaders` | Boolean | Specifies whether the response headers should be logged. | `false`
 `logResponseBody` | Boolean | Specifies whether the response body should be logged. | `false`
-`stringifyResponseBody` | Boolean | Specifies whether the response body should be stored as a string or a [Buffer](https://nodejs.org/api/buffer.html). | `false`
+`stringifyResponseBody` | Boolean | Specifies whether the response body should be stored as a string or a [Buffer](https://nodejs.org/api/buffer.html). When you set `stringifyResponseBody` to `true`, make sure that the response body is logged (`logResponseBody` is also `true`). Otherwise, an error is thrown. | `false`
 
 ```js
 import { RequestLogger } from 'testcafe';
