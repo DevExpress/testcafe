@@ -17,13 +17,13 @@ Some browser features (like [Service Workers](https://developer.mozilla.org/en-U
 
 Starting with v0.21.0, TestCafe can serve proxied web pages over HTTPS. This allows you to test pages that require a secure origin.
 
-To enable HTTPS when you use TestCafe through the command line, specify the [--ssl](../documentation/using-testcafe/command-line-interface.md#--ssl-options) flag followed by the [HTTPS server options](https://nodejs.org/api/https.html#https_https_createserver_options_requestlistener). The most commonly used options are described in the [TLS topic](https://nodejs.org/api/tls.html#tls_tls_createsecurecontext_options) in the Node.js documentation.
+To enable HTTPS when you use TestCafe through the command line, specify the [--ssl](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--ssl-options) flag followed by the [HTTPS server options](https://nodejs.org/api/https.html#https_https_createserver_options_requestlistener). The most commonly used options are described in the [TLS topic](https://nodejs.org/api/tls.html#tls_tls_createsecurecontext_options) in the Node.js documentation.
 
 ```sh
 testcafe --ssl pfx=path/to/file.pfx;rejectUnauthorized=true;...
 ```
 
-When you use a programming API, pass the HTTPS server options to the [createTestCafe](../documentation/using-testcafe/programming-interface/createtestcafe.md) method.
+When you use a programming API, pass the HTTPS server options to the [createTestCafe](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/createtestcafe.html) method.
 
 ```js
 'use strict';
@@ -53,11 +53,11 @@ createTestCafe('localhost', 1337, 1338, sslOptions)
     });
 ```
 
-See [Connect to TestCafe Server over HTTPS](../documentation/using-testcafe/common-concepts/connect-to-the-testcafe-server-over-https.md) for more information.
+See [Connect to TestCafe Server over HTTPS](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/connect-to-the-testcafe-server-over-https.html) for more information.
 
 ### ⚙ Construct Screenshot Paths with Patterns ([#2152](https://github.com/DevExpress/testcafe/issues/2152))
 
-You can now use patterns to construct paths to screenshots. TestCafe provides a number of placeholders you can include in the path, for example, `${DATE}`, `${TIME}`, `${USERAGENT}`, etc. For a complete list, refer to the command line [--screenshot-path-pattern flag description](../documentation/using-testcafe/command-line-interface.md#-p---screenshot-path-pattern).
+You can now use patterns to construct paths to screenshots. TestCafe provides a number of placeholders you can include in the path, for example, `${DATE}`, `${TIME}`, `${USERAGENT}`, etc. For a complete list, refer to the command line [--screenshot-path-pattern flag description](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-p---screenshot-path-pattern).
 
 You specify a screenshot path pattern when you run tests. Each time TestCafe takes a screenshot, it substitutes the placeholders with actual values and saves the screenshot to the resulting path.
 
@@ -67,7 +67,7 @@ The following example shows how to specify a screenshot path pattern through the
 testcafe all test.js -s screenshots -p "${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png"
 ```
 
-When you use a programming API, pass the screenshot path pattern to the [runner.screenshots method](../documentation/using-testcafe/programming-interface/runner.md#screenshots).
+When you use a programming API, pass the screenshot path pattern to the [runner.screenshots method](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#screenshots).
 
 ```js
 runner.screenshots('reports/screenshots/', true, '${TEST_INDEX}/${OS}/${BROWSER}-v${BROWSER_VERSION}/${FILE_INDEX}.png');
@@ -87,7 +87,7 @@ The following information about screenshots is now available:
 
 If the test was run in the quarantine mode, you can also determine which attempts failed and passed.
 
-Refer to the [reportTestDone method description](../documentation/extending-testcafe/reporter-plugin/reporter-methods.md#reporttestdone) for details on how to access this information.
+Refer to the [reportTestDone method description](https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reporttestdone) for details on how to access this information.
 
 ## Bug Fixes
 
