@@ -34,10 +34,10 @@ const getScrollable = function (el) {
     let scrollableHorizontally = SCROLLABLE_OVERFLOW_STYLE_RE.test(overflowX);
     let scrollableVertically   = SCROLLABLE_OVERFLOW_STYLE_RE.test(overflowY);
 
-    // IE11 bug: There are two properties: overflow-x and overflow-y.
+    // IE11 and MS Edge bug: There are two properties: overflow-x and overflow-y.
     // If one property is set so that the browser may show scrollbars (`auto` or `scroll`) and the second one is set to 'visible',
     // then the second one will work as if it had the 'auto' value.
-    if (browserUtils.isIE11) {
+    if (browserUtils.isIE) {
         if (!scrollableHorizontally && scrollableVertically && overflowX === DEFAULT_IE_SCROLLABLE_OVERFLOW_STYLE_VALUE)
             scrollableHorizontally = true;
         if (!scrollableVertically && scrollableHorizontally && overflowY === DEFAULT_IE_SCROLLABLE_OVERFLOW_STYLE_VALUE)
