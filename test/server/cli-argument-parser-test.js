@@ -313,52 +313,21 @@ describe('CLI argument parser', function () {
         });
     });
 
-    it('Should accept globs and paths as source files', function () {
-        var cwd = process.cwd();
+    it('Should accept globs and paths as source files', () => {
+        const cwd = process.cwd();
 
-        var expected = [
+        const expectedFiles = [
             'test/server/data/file-list/file-1.js',
-            'test/server/data/file-list/file-2.js',
             'test/server/data/file-list/dir1/dir1-1/file-1-1-1.js',
-            'test/server/data/file-list/dir1/file-1-1.js',
-            'test/server/data/file-list/dir1/file-1-2.js',
-            'test/server/data/file-list/dir1/file-1-3.testcafe',
-            'test/server/data/file-list/dir1/file-1-4.ts',
-            'test/server/data/file-list/dir2/file-2-2.js',
             'test/server/data/file-list/dir2/file-2-3.js'
-        ];
-
-        expected = expected.map(function (file) {
-            return path.resolve(cwd, file);
-        });
+        ].map(file => path.resolve(cwd, file));
 
         return parse('chrome ' +
                      'test/server/data/file-list/file-1.js ' +
-                     path.join(cwd, 'test/server/data/file-list/file-2.js') + ' ' +
-                     'test/server/data/file-list/dir1 ' +
-                     'test/server/data/file-list/dir2/*.js ' +
-                     '!test/server/data/file-list/dir2/file-2-1.js ' +
-                     'test/server/data/file-list/dir3')
-            .then(function (parser) {
-                expect(parser.src).eql(expected);
-            });
-    });
-
-    it('Should use "test" and "tests" dirs if source files are not specified', function () {
-        var workingDir = path.join(__dirname, './data/file-list');
-
-        var expected = [
-            'test/test-dir-file.js',
-            'tests/tests-dir-file.js'
-        ];
-
-        expected = expected.map(function (file) {
-            return path.resolve(workingDir, file);
-        });
-
-        return parse('chrome', workingDir)
-            .then(function (parser) {
-                expect(parser.src).eql(expected);
+                     'test/server/data/file-list/dir1/dir1-1 ' +
+                     'test/server/data/file-list/dir2/*3.js')
+            .then(parser => {
+                expect(parser.src).eql(expectedFiles);
             });
     });
 

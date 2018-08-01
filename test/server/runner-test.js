@@ -1,17 +1,16 @@
-var path                = require('path');
-var expect              = require('chai').expect;
-var request             = require('request');
-var Promise             = require('pinkie');
-var noop                = require('lodash').noop;
-var times               = require('lodash').times;
-var createTestCafe      = require('../../lib/');
-var COMMAND             = require('../../lib/browser/connection/command');
-var Task                = require('../../lib/runner/task');
-var BrowserConnection   = require('../../lib/browser/connection');
-var BrowserSet          = require('../../lib/runner/browser-set');
-var browserProviderPool = require('../../lib/browser/provider/pool');
-var delay               = require('../../lib/utils/delay');
-
+const path                = require('path');
+const expect              = require('chai').expect;
+const request             = require('request');
+const Promise             = require('pinkie');
+const noop                = require('lodash').noop;
+const times               = require('lodash').times;
+const createTestCafe      = require('../../lib/');
+const COMMAND             = require('../../lib/browser/connection/command');
+const Task                = require('../../lib/runner/task');
+const BrowserConnection   = require('../../lib/browser/connection');
+const BrowserSet          = require('../../lib/runner/browser-set');
+const browserProviderPool = require('../../lib/browser/provider/pool');
+const delay               = require('../../lib/utils/delay');
 
 describe('Runner', function () {
     var testCafe                  = null;
@@ -29,8 +28,7 @@ describe('Runner', function () {
         }
     };
 
-    // Fixture setup/teardown
-    before(function () {
+    before(() => {
         return createTestCafe('127.0.0.1', 1335, 1336)
             .then(function (tc) {
                 testCafe = tc;
@@ -52,19 +50,16 @@ describe('Runner', function () {
             });
     });
 
-    after(function () {
+    after(() => {
         browserProviderPool.addProvider('remote', origRemoteBrowserProvider);
 
         connection.close();
         return testCafe.close();
     });
 
-
-    // Test setup/teardown
-    beforeEach(function () {
+    beforeEach(() => {
         runner = testCafe.createRunner();
     });
-
 
     describe('.browsers()', function () {
         it('Should accept target browsers in different forms', function () {
@@ -194,31 +189,26 @@ describe('Runner', function () {
     });
 
     describe('.src()', function () {
-        it('Should accept source files in different forms', function () {
-            var cwd = process.cwd();
+        it('Should accept source files in different forms', () => {
+            const cwd = process.cwd();
 
-            var expected = [
-                './test1.js',
-                './test2.js',
-                './dir/test3.js',
-                '../test4.js',
-                './test5.js',
-                './test6.js',
-                './test7.js'
-            ];
+            const expectedFiles = [
+                'test/server/data/file-list/file-1.js',
+                'test/server/data/file-list/dir1/dir1-1/file-1-1-1.js',
+                'test/server/data/file-list/dir2/file-2-3.js'
+            ].map(file => path.resolve(cwd, file));
 
-            expected = expected.map(function (filePath) {
-                return path.resolve(cwd, filePath);
-            });
+            runner.src(
+                'test/server/data/file-list/file-1.js',
+                [
+                    'test/server/data/file-list/dir1/dir1-1',
+                    'test/server/data/file-list/dir2/*3.js'
+                ]);
 
-            runner.src('./test1.js', './test2.js');
-            runner.src('./dir/test3.js');
-            runner.src('../test4.js', ['./test5.js'], ['./test6.js', './test7.js']);
-
-            expect(runner.bootstrapper.sources).eql(expected);
+            expect(runner.bootstrapper.sources).eql(expectedFiles);
         });
 
-        it('Should raise an error if the source was not set', function () {
+        it('Should raise an error if the source was not set', () => {
             return runner
                 .browsers(connection)
                 .reporter('list')
@@ -229,6 +219,14 @@ describe('Runner', function () {
                 .catch(function (err) {
                     expect(err.message).eql('No test file specified.');
                 });
+        });
+
+        it('Should search tests in default folders', () => {
+            const testFullPathPrefix = path.resolve(process.cwd(), 'test');
+
+            runner.src();
+
+            expect(runner.bootstrapper.sources.every(file => file.startsWith(testFullPathPrefix))).to.be.true;
         });
     });
 
