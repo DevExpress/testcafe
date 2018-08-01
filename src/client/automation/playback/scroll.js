@@ -114,8 +114,10 @@ export default class ScrollAutomation {
 
         if (canShowFullElementWidth) {
             var availableLeftScrollMargin = parentDimensions.width - childDimensions.width;
-            var leftScrollMargin          = this.scrollToCenter ? availableLeftScrollMargin /
-                                                                  2 : Math.min(this.maxScrollMarginLeft, availableLeftScrollMargin);
+            var leftScrollMargin          = Math.min(this.maxScrollMarginLeft, availableLeftScrollMargin);
+
+            if (this.scrollToCenter)
+                leftScrollMargin = availableLeftScrollMargin / 2;
 
             if (relativePosition.left < leftScrollMargin) {
                 fullViewScrollLeft = Math.round(parentDimensions.scroll.left + relativePosition.left -
@@ -130,8 +132,10 @@ export default class ScrollAutomation {
 
         if (canShowFullElementHeight) {
             var availableTopScrollMargin = parentDimensions.height - childDimensions.height;
-            var topScrollMargin          = this.scrollToCenter ? availableTopScrollMargin /
-                                                                 2 : Math.min(this.maxScrollMarginTop, availableTopScrollMargin);
+            var topScrollMargin          = Math.min(this.maxScrollMarginTop, availableTopScrollMargin);
+
+            if (this.scrollToCenter)
+                topScrollMargin = availableTopScrollMargin / 2;
 
             if (relativePosition.top < topScrollMargin)
                 fullViewScrollTop = Math.round(parentDimensions.scroll.top + relativePosition.top - topScrollMargin);
@@ -185,8 +189,8 @@ export default class ScrollAutomation {
         while (needScroll) {
             scrollPos = this._getScrollPosition(parentDimensions, childDimensions, offsetX, offsetY);
 
-            const { x, y }        = this._getChildPointAfterScroll(parentDimensions, childDimensions, scrollPos.left, scrollPos.top);
-            const isHiddenByFixed = this._isElementOnPointHiddenByFixed(x, y);
+            const { x, y }         = this._getChildPointAfterScroll(parentDimensions, childDimensions, scrollPos.left, scrollPos.top);
+            const isTargetObscured = this._isTargetElementObscuredInPoint(x, y);
 
             this.maxScrollMarginLeft += SCROLL_MARGIN_INCREASE_STEP;
 
@@ -195,7 +199,7 @@ export default class ScrollAutomation {
                 this.maxScrollMarginTop += SCROLL_MARGIN_INCREASE_STEP;
             }
 
-            needScroll = isHiddenByFixed && this.maxScrollMarginTop < windowHeight;
+            needScroll = isTargetObscured && this.maxScrollMarginTop < windowHeight;
         }
 
         this.maxScrollMarginLeft = DEFAULT_MAX_SCROLL_MARGIN;
@@ -260,7 +264,7 @@ export default class ScrollAutomation {
             });
     }
 
-    _isElementOnPointHiddenByFixed (x, y) {
+    _isTargetElementObscuredInPoint (x, y) {
         const elementInPoint = positionUtils.getElementFromPoint(x, y);
         let el               = elementInPoint;
         let fixedElement     = null;
