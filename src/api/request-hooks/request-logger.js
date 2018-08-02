@@ -63,7 +63,7 @@ class RequestLoggerImplementation extends RequestHook {
         const loggerReq = this._internalRequests[event.requestId];
 
         if (!loggerReq)
-            throw new TypeError(`Cannot find a recorded request with id=${event.id}. This is an internal TestCafe problem. Please contact the TestCafe team and provide an example to reproduce the problem.`);
+            return;
 
         loggerReq.response            = {};
         loggerReq.response.statusCode = event.statusCode;

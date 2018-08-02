@@ -174,6 +174,16 @@ describe('RequestLogger', () => {
                 expect(data[2]).eql(false);
             });
     });
+
+    it('Should not raise an error if during a long running request the ".clear" method will be called (GH-2688)', () => {
+        const logger = new RequestLogger();
+
+        logger.onRequest(requestEventMock);
+        logger.clear();
+        logger.onResponse(responseEventMock);
+
+        expect(logger.requests.length).eql(0);
+    });
 });
 
 describe('RequestMock', () => {
