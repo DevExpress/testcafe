@@ -2,9 +2,8 @@ import hammerhead from '../deps/hammerhead';
 import { domUtils, styleUtils, positionUtils, promiseUtils, scrollController, sendRequestToFrame } from '../deps/testcafe-core';
 
 
-var Promise            = hammerhead.Promise;
-var messageSandbox     = hammerhead.eventSandbox.message;
-
+const Promise        = hammerhead.Promise;
+const messageSandbox = hammerhead.eventSandbox.message;
 
 const DEFAULT_MAX_SCROLL_MARGIN   = 50;
 const SCROLL_MARGIN_INCREASE_STEP = 20;
@@ -16,16 +15,11 @@ const SCROLL_RESPONSE_CMD = 'automation|scroll|response';
 // Setup cross-iframe interaction
 messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
     if (e.message.cmd === SCROLL_REQUEST_CMD) {
-        var element             = domUtils.findIframeByWindow(e.source);
-        var offsetX             = e.message.offsetX;
-        var offsetY             = e.message.offsetY;
-        var maxScrollMarginLeft = e.message.maxScrollMarginLeft;
-        var maxScrollMarginTop  = e.message.maxScrollMarginTop;
+        const { offsetX, offsetY, maxScrollMargin } = e.message;
+        const element                               = domUtils.findIframeByWindow(e.source);
+        const scroll                                = new ScrollAutomation(element, { offsetX, offsetY });
 
-        var scroll = new ScrollAutomation(element, { offsetX, offsetY });
-
-        scroll.maxScrollMarginLeft = maxScrollMarginLeft;
-        scroll.maxScrollMarginTop  = maxScrollMarginTop;
+        scroll.maxScrollMargin = maxScrollMargin;
 
         scroll
             .run()
@@ -41,8 +35,7 @@ export default class ScrollAutomation {
         this.scrollToCenter   = scrollOptions.scrollToCenter;
         this.skipParentFrames = scrollOptions.skipParentFrames;
 
-        this.maxScrollMarginLeft = DEFAULT_MAX_SCROLL_MARGIN;
-        this.maxScrollMarginTop  = DEFAULT_MAX_SCROLL_MARGIN;
+        this.maxScrollMargin = { left: DEFAULT_MAX_SCROLL_MARGIN, top: DEFAULT_MAX_SCROLL_MARGIN };
     }
 
     _isScrollValuesChanged (scrollElement, originalScroll) {
@@ -51,9 +44,9 @@ export default class ScrollAutomation {
     }
 
     _setScroll (element, { left, top }) {
-        var scrollElement = domUtils.isHtmlElement(element) ? domUtils.findDocument(element) : element;
+        const scrollElement = domUtils.isHtmlElement(element) ? domUtils.findDocument(element) : element;
 
-        var originalScroll = {
+        const originalScroll = {
             left: styleUtils.getScrollLeft(scrollElement),
             top:  styleUtils.getScrollTop(scrollElement)
         };
@@ -61,7 +54,7 @@ export default class ScrollAutomation {
         left = Math.max(left, 0);
         top  = Math.max(top, 0);
 
-        var scrollPromise = scrollController.waitForScroll();
+        const scrollPromise = scrollController.waitForScroll();
 
         styleUtils.setScrollLeft(scrollElement, left);
         styleUtils.setScrollTop(scrollElement, top);
@@ -76,19 +69,19 @@ export default class ScrollAutomation {
     }
 
     _getScrollToPoint (elementDimensions, { x, y }) {
-        var horizontalCenter = Math.floor(elementDimensions.width / 2);
-        var verticalCenter   = Math.floor(Math.floor(elementDimensions.height / 2));
-        var leftScrollMargin = this.scrollToCenter ? horizontalCenter : Math.min(this.maxScrollMarginLeft, horizontalCenter);
-        var topScrollMargin  = this.scrollToCenter ? verticalCenter : Math.min(this.maxScrollMarginTop, verticalCenter);
+        const horizontalCenter = Math.floor(elementDimensions.width / 2);
+        const verticalCenter   = Math.floor(Math.floor(elementDimensions.height / 2));
+        const leftScrollMargin = this.scrollToCenter ? horizontalCenter : Math.min(this.maxScrollMargin.left, horizontalCenter);
+        const topScrollMargin  = this.scrollToCenter ? verticalCenter : Math.min(this.maxScrollMargin.top, verticalCenter);
 
-        var needForwardScrollLeft  = x >= elementDimensions.scroll.left + elementDimensions.width - leftScrollMargin;
-        var needBackwardScrollLeft = x <= elementDimensions.scroll.left + leftScrollMargin;
+        const needForwardScrollLeft  = x >= elementDimensions.scroll.left + elementDimensions.width - leftScrollMargin;
+        const needBackwardScrollLeft = x <= elementDimensions.scroll.left + leftScrollMargin;
 
-        var needForwardScrollTop  = y >= elementDimensions.scroll.top + elementDimensions.height - topScrollMargin;
-        var needBackwardScrollTop = y <= elementDimensions.scroll.top + topScrollMargin;
+        const needForwardScrollTop  = y >= elementDimensions.scroll.top + elementDimensions.height - topScrollMargin;
+        const needBackwardScrollTop = y <= elementDimensions.scroll.top + topScrollMargin;
 
-        var left = elementDimensions.scroll.left;
-        var top  = elementDimensions.scroll.top;
+        let left = elementDimensions.scroll.left;
+        let top  = elementDimensions.scroll.top;
 
         if (needForwardScrollLeft)
             left = x - elementDimensions.width + leftScrollMargin;
@@ -104,17 +97,17 @@ export default class ScrollAutomation {
     }
 
     _getScrollToFullChildView (parentDimensions, childDimensions) {
-        var fullViewScrollLeft = null;
-        var fullViewScrollTop  = null;
+        let fullViewScrollLeft = null;
+        let fullViewScrollTop  = null;
 
-        var canShowFullElementWidth  = parentDimensions.width >= childDimensions.width;
-        var canShowFullElementHeight = parentDimensions.height >= childDimensions.height;
+        const canShowFullElementWidth  = parentDimensions.width >= childDimensions.width;
+        const canShowFullElementHeight = parentDimensions.height >= childDimensions.height;
 
-        var relativePosition = positionUtils.calcRelativePosition(childDimensions, parentDimensions);
+        const relativePosition = positionUtils.calcRelativePosition(childDimensions, parentDimensions);
 
         if (canShowFullElementWidth) {
-            var availableLeftScrollMargin = parentDimensions.width - childDimensions.width;
-            var leftScrollMargin          = Math.min(this.maxScrollMarginLeft, availableLeftScrollMargin);
+            const availableLeftScrollMargin = parentDimensions.width - childDimensions.width;
+            let leftScrollMargin            = Math.min(this.maxScrollMargin.left, availableLeftScrollMargin);
 
             if (this.scrollToCenter)
                 leftScrollMargin = availableLeftScrollMargin / 2;
@@ -131,8 +124,8 @@ export default class ScrollAutomation {
         }
 
         if (canShowFullElementHeight) {
-            var availableTopScrollMargin = parentDimensions.height - childDimensions.height;
-            var topScrollMargin          = Math.min(this.maxScrollMarginTop, availableTopScrollMargin);
+            const availableTopScrollMargin = parentDimensions.height - childDimensions.height;
+            let topScrollMargin            = Math.min(this.maxScrollMargin.top, availableTopScrollMargin);
 
             if (this.scrollToCenter)
                 topScrollMargin = availableTopScrollMargin / 2;
@@ -192,18 +185,18 @@ export default class ScrollAutomation {
             const { x, y }         = this._getChildPointAfterScroll(parentDimensions, childDimensions, scrollPos.left, scrollPos.top);
             const isTargetObscured = this._isTargetElementObscuredInPoint(x, y);
 
-            this.maxScrollMarginLeft += SCROLL_MARGIN_INCREASE_STEP;
+            this.maxScrollMargin.left += SCROLL_MARGIN_INCREASE_STEP;
 
-            if (this.maxScrollMarginLeft >= windowWidth) {
-                this.maxScrollMarginLeft = DEFAULT_MAX_SCROLL_MARGIN;
-                this.maxScrollMarginTop += SCROLL_MARGIN_INCREASE_STEP;
+            if (this.maxScrollMargin.left >= windowWidth) {
+                this.maxScrollMargin.left = DEFAULT_MAX_SCROLL_MARGIN;
+
+                this.maxScrollMargin.top += SCROLL_MARGIN_INCREASE_STEP;
             }
 
-            needScroll = isTargetObscured && this.maxScrollMarginTop < windowHeight;
+            needScroll = isTargetObscured && this.maxScrollMargin.top < windowHeight;
         }
 
-        this.maxScrollMarginLeft = DEFAULT_MAX_SCROLL_MARGIN;
-        this.maxScrollMarginTop  = DEFAULT_MAX_SCROLL_MARGIN;
+        this.maxScrollMargin = { left: DEFAULT_MAX_SCROLL_MARGIN, top: DEFAULT_MAX_SCROLL_MARGIN };
 
         return this._setScroll(parent, scrollPos);
     }
@@ -212,8 +205,8 @@ export default class ScrollAutomation {
         if (!styleUtils.hasScroll(this.element))
             return Promise.resolve();
 
-        var elementDimensions = positionUtils.getClientDimensions(this.element);
-        var scroll            = this._getScrollToPoint(elementDimensions, {
+        const elementDimensions = positionUtils.getClientDimensions(this.element);
+        const scroll            = this._getScrollToPoint(elementDimensions, {
             x: this.offsetX,
             y: this.offsetY
         });
@@ -222,16 +215,15 @@ export default class ScrollAutomation {
     }
 
     _scrollParents () {
-        var parents = styleUtils.getScrollableParents(this.element);
+        const parents = styleUtils.getScrollableParents(this.element);
 
-        var currentChild   = this.element;
-        var currentOffsetX = this.offsetX - Math.round(styleUtils.getScrollLeft(currentChild));
-        var currentOffsetY = this.offsetY - Math.round(styleUtils.getScrollTop(currentChild));
+        let currentChild     = this.element;
+        let currentOffsetX   = this.offsetX - Math.round(styleUtils.getScrollLeft(currentChild));
+        let currentOffsetY   = this.offsetY - Math.round(styleUtils.getScrollTop(currentChild));
+        let childDimensions  = null;
+        let parentDimensions = null;
 
-        var childDimensions  = null;
-        var parentDimensions = null;
-
-        var scrollParentsPromise = promiseUtils.times(parents.length, i => {
+        const scrollParentsPromise = promiseUtils.times(parents.length, i => {
             return this
                 ._scrollToChild(parents[i], currentChild, {
                     offsetX: currentOffsetX,
@@ -252,11 +244,10 @@ export default class ScrollAutomation {
             .then(() => {
                 if (window.top !== window && !this.skipParentFrames) {
                     return sendRequestToFrame({
-                        cmd:                 SCROLL_REQUEST_CMD,
-                        offsetX:             currentOffsetX,
-                        offsetY:             currentOffsetY,
-                        maxScrollMarginLeft: this.maxScrollMarginLeft,
-                        maxScrollMarginTop:  this.maxScrollMarginTop
+                        cmd:             SCROLL_REQUEST_CMD,
+                        offsetX:         currentOffsetX,
+                        offsetY:         currentOffsetY,
+                        maxScrollMargin: this.maxScrollMargin
                     }, SCROLL_RESPONSE_CMD, window.parent);
                 }
 
