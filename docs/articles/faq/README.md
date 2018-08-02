@@ -58,7 +58,7 @@ All three versions share the same core features:
 [TestCafe Studio](https://testcafe-studio.devexpress.com)  
 *2018, commercial desktop application*  
 
-* Supports all features of the open-source TestCafe.
+* Based on the open-source TestCafe, and supports its major features.
 * You can record tests or edit them as JavaScript or TypeScript code.
 * New [Visual Test Recorder](https://testcafe-studio.devexpress.com/documentation/guides/record-tests/) and [IDE-like GUI](https://testcafe-studio.devexpress.com/documentation/guides/write-test-code.html) to record, edit, run and debug tests.
 * Currently available as a free preview version.
