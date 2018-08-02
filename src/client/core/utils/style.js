@@ -38,10 +38,8 @@ const getScrollable = function (el) {
     // If one property is set so that the browser may show scrollbars (`auto` or `scroll`) and the second one is set to 'visible',
     // then the second one will work as if it had the 'auto' value.
     if (browserUtils.isIE) {
-        if (!scrollableHorizontally && scrollableVertically && overflowX === DEFAULT_IE_SCROLLABLE_OVERFLOW_STYLE_VALUE)
-            scrollableHorizontally = true;
-        if (!scrollableVertically && scrollableHorizontally && overflowY === DEFAULT_IE_SCROLLABLE_OVERFLOW_STYLE_VALUE)
-            scrollableVertically = true;
+        scrollableHorizontally = scrollableHorizontally || scrollableVertically && overflowX === DEFAULT_IE_SCROLLABLE_OVERFLOW_STYLE_VALUE;
+        scrollableVertically   = scrollableVertically || scrollableHorizontally && overflowY === DEFAULT_IE_SCROLLABLE_OVERFLOW_STYLE_VALUE;
     }
 
     return { scrollableHorizontally, scrollableVertically };
@@ -147,8 +145,8 @@ export function hasScroll (el) {
     if (!scrollableHorizontally && !scrollableVertically)
         return false;
 
-    var hasVerticalScroll   = scrollableVertically && el.scrollHeight > el.clientHeight;
-    var hasHorizontalScroll = scrollableHorizontally && el.scrollWidth > el.clientWidth;
+    const hasVerticalScroll   = scrollableVertically && el.scrollHeight > el.clientHeight;
+    const hasHorizontalScroll = scrollableHorizontally && el.scrollWidth > el.clientWidth;
 
     return hasHorizontalScroll || hasVerticalScroll;
 }
