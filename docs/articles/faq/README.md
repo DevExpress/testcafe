@@ -48,7 +48,7 @@ All three versions share the same core features:
 [TestCafe](https://devexpress.github.io/testcafe)  
 *2016,  free and open-source node.js application*
 
-* You can write tests in latest JavaScript or TypeScript.
+* You can write tests in the latest JavaScript or TypeScript.
 * Clearer and more flexible [API](https://devexpress.github.io/testcafe/documentation/test-api/) supports ES6 and [PageModel pattern](https://devexpress.github.io/testcafe/documentation/recipes/using-page-model.html).
 * More stable tests due to the [Smart Assertion Query Mechanism](https://devexpress.github.io/testcafe/documentation/test-api/assertions/#smart-assertion-query-mechanism).
 * Tests run faster due to improved [Automatic Waiting Mechanism](https://devexpress.github.io/testcafe/documentation/test-api/waiting-for-page-elements-to-appear.html) and [Concurrent Test Execution](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/concurrent-test-execution.html).
