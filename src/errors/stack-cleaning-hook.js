@@ -5,6 +5,7 @@ import createStackFilter from './create-stack-filter';
 const ORIGINAL_STACK_TRACE_LIMIT = Error.stackTraceLimit;
 const STACK_TRACE_LIMIT          = 200;
 const TOP_ANONYMOUS_FRAME_RE     = /\s+at\s<anonymous>$/;
+const GENERATOR_NEXT_FRAME_RE    = /\s+at\sgenerator.next\s\(<anonymous>\)$/im;
 
 
 export default {
@@ -43,6 +44,7 @@ export default {
 
     cleanError (error) {
         error.stack = error.stack.replace(TOP_ANONYMOUS_FRAME_RE, '');
+        error.stack = error.stack.replace(GENERATOR_NEXT_FRAME_RE, '');
 
         let frames = this._getFrames(error);
 
