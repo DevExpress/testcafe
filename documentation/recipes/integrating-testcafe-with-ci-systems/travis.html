@@ -573,10 +573,10 @@ There are Linux versions of Chrome and Firefox browsers available for Travis CI 
 <li><p>Add a <code>.travis.yml</code> configuration file to the root of your project. This file contains parameters and commands that instruct Travis CI how to execute your builds. For more information, see <a href="https://docs.travis-ci.com/user/customizing-the-build">Customizing the Build</a>.</p>
 
 <p>For Node.js projects, the <code>.travis.yml</code> file can have the following content.</p>
-<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"> <span class="na">language</span><span class="pi">:</span> <span class="s">node_js</span>
- <span class="na">node_js</span><span class="pi">:</span> <span class="s2">"</span><span class="s">stable"</span>
+<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"> <span class="s">language</span><span class="pi">:</span> <span class="s">node_js</span>
+ <span class="s">node_js</span><span class="pi">:</span> <span class="s2">"</span><span class="s">stable"</span>
 
- <span class="na">before_install</span><span class="pi">:</span>
+ <span class="s">before_install</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="s">stty cols 80</span>
 </code></pre></div>
 <p>Commit and push this file to your repository.</p></li>
@@ -585,18 +585,18 @@ There are Linux versions of Chrome and Firefox browsers available for Travis CI 
 <p>Travis CI uses Ubuntu Server virtual machines, that do not have regular graphical environment like Unity, GNOME or KDE installed, So you have to setup and use <a href="https://www.x.org/archive/X11R7.6/doc/man/man1/Xvfb.1.xhtml">Xvfb</a> to run browsers headlessly.</p>
 
 <p>The following sections are required in your <code>.travis.yml</code> to start <code>Xvfb</code>:</p>
-<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="na">dist</span><span class="pi">:</span> <span class="s">trusty</span>
-<span class="na">sudo</span><span class="pi">:</span> <span class="s">required</span>
+<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="s">dist</span><span class="pi">:</span> <span class="s">trusty</span>
+<span class="s">sudo</span><span class="pi">:</span> <span class="s">required</span>
 
-<span class="na">addons</span><span class="pi">:</span>
-  <span class="na">firefox</span><span class="pi">:</span> <span class="s">latest</span>
-  <span class="na">apt</span><span class="pi">:</span>
-    <span class="na">sources</span><span class="pi">:</span>
+<span class="s">addons</span><span class="pi">:</span>
+  <span class="s">firefox</span><span class="pi">:</span> <span class="s">latest</span>
+  <span class="s">apt</span><span class="pi">:</span>
+    <span class="s">sources</span><span class="pi">:</span>
      <span class="pi">-</span> <span class="s">google-chrome</span>
-    <span class="na">packages</span><span class="pi">:</span>
+    <span class="s">packages</span><span class="pi">:</span>
      <span class="pi">-</span> <span class="s">google-chrome-stable fluxbox</span>
 
-<span class="na">before_script</span><span class="pi">:</span>
+<span class="s">before_script</span><span class="pi">:</span>
   <span class="pi">-</span> <span class="s2">"</span><span class="s">export</span><span class="nv"> </span><span class="s">DISPLAY=:99.0"</span>
   <span class="pi">-</span> <span class="s2">"</span><span class="s">sh</span><span class="nv"> </span><span class="s">-e</span><span class="nv"> </span><span class="s">/etc/init.d/xvfb</span><span class="nv"> </span><span class="s">start"</span>
   <span class="pi">-</span> <span class="s">sleep 3</span>

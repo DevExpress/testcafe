@@ -526,6 +526,13 @@
 		
     </li>
 
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/common-concepts/connect-to-the-testcafe-server-over-https.html"  >Connect to the TestCafe Server over HTTPS</a>
+		
+    </li>
+
 </ul>
 		
     </li>
@@ -554,7 +561,7 @@
 
 			<h1>createTestCafe Factory</h1>
 <p>Creates a <a href="testcafe.html">TestCafe</a> server instance.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">async createTestCafe([hostname], [port1], [port2]) → Promise&lt;TestCafe&gt;
+<div class="highlight"><pre><code class="language-text" data-lang="text">async createTestCafe([hostname], [port1], [port2], [sslOptions], [developmentMode]) → Promise&lt;TestCafe&gt;
 </code></pre></div>
 <table><thead>
 <tr>
@@ -567,7 +574,7 @@
 <tr>
 <td><code>hostname</code>&#160;<em>(optional)</em></td>
 <td>String</td>
-<td>The hostname or IP you will use to address the TestCafe server. Must resolve to the current machine. To test on external devices, use the hostname that is visible in the network shared with these devices.</td>
+<td>The hostname or IP on which the TestCafe server is running. Must resolve to the current machine. To test on external devices, use the hostname that is visible in the network shared with these devices.</td>
 <td>Hostname of the OS. If the hostname does not resolve to the current machine - its network IP address.</td>
 </tr>
 <tr>
@@ -576,14 +583,56 @@
 <td>Ports that will be used to serve tested webpages.</td>
 <td>Free ports selected automatically.</td>
 </tr>
+<tr>
+<td><code>sslOptions</code>&#160;<em>(optional)</em></td>
+<td>Object</td>
+<td>Options that allow you to establish an HTTPS connection between the TestCafe server and the client browser. This object should contain options required to initialize <a href="https://nodejs.org/api/https.html#https_https_createserver_options_requestlistener">a Node.js HTTPS server</a>. The most commonly used SSL options are described in the <a href="https://nodejs.org/api/tls.html#tls_tls_createsecurecontext_options">TLS topic</a> in Node.js documentation. See <a href="../common-concepts/connect-to-the-testcafe-server-over-https.html">Connect to the TestCafe Server over HTTPS</a> for more information.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>developmentMode</code>&#160;<em>(optional)</em></td>
+<td>Boolean</td>
+<td>Enables/disables mechanisms to log and diagnose errors. You should enable this option if you are going to contact TestCafe Support to report an issue.</td>
+<td><code>false</code></td>
+</tr>
 </tbody></table>
 
 <p><strong>Example</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">createTestCafe</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'testcafe'</span><span class="p">);</span>
+
+<p>Create a <code>TestCafe</code> instance with the <code>createTestCafe</code> function.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">createTestCafe</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'testcafe'</span><span class="p">);</span>
 
 <span class="nx">createTestCafe</span><span class="p">(</span><span class="s1">'localhost'</span><span class="p">,</span> <span class="mi">1337</span><span class="p">,</span> <span class="mi">1338</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">testcafe</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nx">runner</span> <span class="o">=</span> <span class="nx">testcafe</span><span class="p">.</span><span class="nx">createRunner</span><span class="p">();</span>
         <span class="cm">/* ... */</span>
+    <span class="p">});</span>
+</code></pre></div>
+<p>Establish an HTTPS connection with the TestCafe server. The <a href="https://www.npmjs.com/package/openssl-self-signed-certificate">openssl-self-signed-certificate</a> module is used to generate a self-signed certificate for development use.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="s1">'use strict'</span><span class="p">;</span>
+
+<span class="kr">const</span> <span class="nx">createTestCafe</span>        <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'testcafe'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">selfSignedSertificate</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'openssl-self-signed-certificate'</span><span class="p">);</span>
+<span class="kd">let</span> <span class="nx">runner</span>                  <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+
+<span class="kr">const</span> <span class="nx">sslOptions</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">key</span><span class="p">:</span>  <span class="nx">selfSignedSertificate</span><span class="p">.</span><span class="nx">key</span><span class="p">,</span>
+    <span class="na">cert</span><span class="p">:</span> <span class="nx">selfSignedSertificate</span><span class="p">.</span><span class="nx">cert</span>
+<span class="p">};</span>
+
+<span class="nx">createTestCafe</span><span class="p">(</span><span class="s1">'localhost'</span><span class="p">,</span> <span class="mi">1337</span><span class="p">,</span> <span class="mi">1338</span><span class="p">,</span> <span class="nx">sslOptions</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">testcafe</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nx">runner</span> <span class="o">=</span> <span class="nx">testcafe</span><span class="p">.</span><span class="nx">createRunner</span><span class="p">();</span>
+    <span class="p">})</span>
+    <span class="p">.</span><span class="nx">then</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">runner</span>
+            <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">'test.js'</span><span class="p">)</span>
+
+            <span class="c1">// Browsers restrict self-signed certificate usage unless you</span>
+            <span class="c1">// explicitly set a flag specific to each browser.</span>
+            <span class="c1">// For Chrome, this is '--allow-insecure-localhost'.</span>
+            <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="s1">'chrome --allow-insecure-localhost'</span><span class="p">)</span>
+            <span class="p">.</span><span class="nx">run</span><span class="p">();</span>
     <span class="p">});</span>
 </code></pre></div><h2><a class="anchor" name="see-also"></a>See Also <a class="permalink" href="#see-also">#</a></h2>
 <ul>

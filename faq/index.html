@@ -263,7 +263,7 @@
 
 <ul>
 <li><a href="#i-have-heard-that-testcafe-does-not-use-selenium-how-does-it-operate">I have heard that TestCafe does not use Selenium. How does it operate?</a></li>
-<li><a href="#what-is-the-difference-between-a-paid-and-an-open-source-testcafe-version">What is the difference between a paid and an open-source TestCafe version?</a></li>
+<li><a href="#what-is-the-difference-between-a-paid-and-an-open-source-testcafe-version-what-is-testcafe-studio">What is the difference between a paid and an open-source TestCafe version? What is TestCafe Studio?</a></li>
 <li><a href="#which-browsers-does-testcafe-support-what-are-the-exact-supported-versions">Which browsers does TestCafe support? What are the exact supported versions?</a></li>
 <li><a href="#can-i-use-third-party-modules-in-tests">Can I use third-party modules in tests?</a></li>
 <li><a href="#how-do-i-work-with-configuration-files-and-environment-variables">How do I work with configuration files and environment variables?</a></li>
@@ -288,33 +288,43 @@ This proxy injects the driver script that emulates user actions into the tested 
 
 <p>You can read about this in our <a href="https://testcafe-discuss.devexpress.com/t/why-not-use-selenium/47">forum</a>.
 Feel free to ask for more details.</p>
-<h3><a class="anchor" name="what-is-the-difference-between-a-paid-and-an-open-source-testcafe-version"></a>What is the difference between a <a href="https://testcafe.devexpress.com">paid</a> and an <a href="https://devexpress.github.io/testcafe">open-source</a> TestCafe version? <a class="permalink" href="#what-is-the-difference-between-a-paid-and-an-open-source-testcafe-version">#</a></h3>
-<p>TestCafe first appeared as a paid, standalone tool. It had several features besides the test runner: the
-<a href="https://testcafe.devexpress.com/Documentation/Using_TestCafe/Control_Panel/">Control Panel</a>,
-a visual interface for creating, modifying and running your tests, and the
-<a href="https://testcafe.devexpress.com/Documentation/Using_TestCafe/Visual_Test_Recorder/">Visual Test Recorder</a>
-for recording tests by pointing and clicking through the test scenario in the browser.</p>
-
-<p>In 2015 we decided to release the TestCafe core as an open-source project.
-The last major paid version release (v15.1) was in summer 2015.
-After that, it switched to a maintenance-only mode.
-You can find the latest paid version at <a href="https://testcafe.devexpress.com">https://testcafe.devexpress.com</a>.</p>
-
-<p>We released the open-source TestCafe in late 2016.
-It has the same name but contains lots of new functionality and improvements:</p>
+<h3><a class="anchor" name="what-is-the-difference-between-a-paid-and-an-open-source-testcafe-version-what-is-testcafe-studio"></a>What is the difference between a <a href="https://testcafe.devexpress.com">paid</a> and an <a href="https://devexpress.github.io/testcafe">open-source</a> TestCafe version? What is <a href="https://testcafe-studio.devexpress.com/">TestCafe Studio</a>? <a class="permalink" href="#what-is-the-difference-between-a-paid-and-an-open-source-testcafe-version-what-is-testcafe-studio">#</a></h3>
+<p>All three versions share the same core features:</p>
 
 <ul>
-<li>a new API and offers a new approach to writing tests;</li>
-<li>no UI to manage and run tests. You can run tests from the CLI or node.js module;</li>
-<li>it is more convenient to integrate into node.js development workflow;</li>
-<li>es6 support, flexible selectors and smart assertions, authentication features, etc.</li>
+<li>No need for WebDriver, browser plugins or other tools.</li>
+<li>Cross-platform and cross-browser out of the box.</li>
 </ul>
 
-<p>You can learn more about the open-source version at <a href="https://devexpress.github.io/testcafe">https://devexpress.github.io/testcafe</a>.</p>
+<p><a href="https://testcafe.devexpress.com">TestCafe</a><br>
+<em>2013, commercial web application</em>  </p>
 
-<p>We have not abandoned our aspirations to create a competitive proprietary product.
-We plan to release a new commercial version called <strong><em>TestCafe Studio</em></strong>, based on the revised open-source TestCafe.
-Follow us on <a href="https://twitter.com/DXTestCafe">Twitter</a> for the news about TestCafe Studio.</p>
+<ul>
+<li>Visual Test Recorder and web GUI to create, edit and run tests.</li>
+<li>You can record tests or edit them as JavaScript code.</li>
+</ul>
+
+<p><a href="https://devexpress.github.io/testcafe">TestCafe</a><br>
+<em>2016,  free and open-source node.js application</em></p>
+
+<ul>
+<li>You can write tests in the latest JavaScript or TypeScript.</li>
+<li>Clearer and more flexible <a href="https://devexpress.github.io/testcafe/documentation/test-api/">API</a> supports ES6 and <a href="https://devexpress.github.io/testcafe/documentation/recipes/using-page-model.html">PageModel pattern</a>.</li>
+<li>More stable tests due to the <a href="https://devexpress.github.io/testcafe/documentation/test-api/assertions/#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a>.</li>
+<li>Tests run faster due to improved <a href="https://devexpress.github.io/testcafe/documentation/test-api/waiting-for-page-elements-to-appear.html">Automatic Waiting Mechanism</a> and <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/concurrent-test-execution.html">Concurrent Test Execution</a>.</li>
+<li>Easy integration: it is a node.js solution with CLI and reporters for popular CI systems.</li>
+<li>You can extend it with <a href="https://github.com/DevExpress/testcafe#plugins">plugins</a> and other Node.js modules.</li>
+</ul>
+
+<p><a href="https://testcafe-studio.devexpress.com">TestCafe Studio</a><br>
+<em>2018, commercial desktop application</em>  </p>
+
+<ul>
+<li>Based on the open-source TestCafe, and supports its major features.</li>
+<li>You can record tests or edit them as JavaScript or TypeScript code.</li>
+<li>New <a href="https://testcafe-studio.devexpress.com/documentation/guides/record-tests/">Visual Test Recorder</a> and <a href="https://testcafe-studio.devexpress.com/documentation/guides/write-test-code.html">IDE-like GUI</a> to record, edit, run and debug tests.</li>
+<li>Currently available as a free preview version.</li>
+</ul>
 <h3><a class="anchor" name="which-browsers-does-testcafe-support-what-are-the-exact-supported-versions"></a>Which browsers does TestCafe support? What are the exact supported versions? <a class="permalink" href="#which-browsers-does-testcafe-support-what-are-the-exact-supported-versions">#</a></h3>
 <p>You can find a list of supported browsers in
 <a href="../documentation/using-testcafe/common-concepts/browsers/browser-support.html">our documentation</a>.
@@ -327,29 +337,29 @@ which means it should work with any browser with HTML5 support released in the l
 <p>You can import third-party modules to test files in the same way as a regular node.js module.</p>
 
 <p>On the server side, use the <code>import</code> statement.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="nx">fs</span> <span class="k">from</span> <span class="s1">'fs'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="nx">fs</span> <span class="nx">from</span> <span class="s1">'fs'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="s2">`fixture`</span>
+<span class="nx">fixture</span> <span class="err">`</span><span class="nx">fixture</span><span class="err">`</span>
    <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="s1">'http://localhost/testcafe/'</span><span class="p">);</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
    <span class="kd">var</span> <span class="nx">filePath</span> <span class="o">=</span> <span class="s1">'filepath.js'</span><span class="p">;</span>
 
-   <span class="kr">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">fs</span><span class="p">.</span><span class="nx">existsSync</span><span class="p">(</span><span class="nx">filePath</span><span class="p">)).</span><span class="nx">ok</span><span class="p">();</span>
+   <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">fs</span><span class="p">.</span><span class="nx">existsSync</span><span class="p">(</span><span class="nx">filePath</span><span class="p">)).</span><span class="nx">ok</span><span class="p">();</span>
 <span class="p">});</span>
 </code></pre></div>
 <p>On the client side, use <code>t.eval</code> to include the desired module in the test.
 Then you can use this module inside client functions and selectors.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">test</span><span class="p">(</span><span class="s1">'test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">test</span><span class="p">(</span><span class="s1">'test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="c1">// eval jquery code to add jQuery to the page</span>
-    <span class="kr">await</span> <span class="nx">t</span><span class="p">.</span><span class="kr">eval</span><span class="p">(</span><span class="k">new</span> <span class="nb">Function</span><span class="p">(</span><span class="nx">fs</span><span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="s1">'./jquery.js'</span><span class="p">).</span><span class="nx">toString</span><span class="p">()));</span>
+    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nb">eval</span><span class="p">(</span><span class="k">new</span> <span class="nb">Function</span><span class="p">(</span><span class="nx">fs</span><span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="s1">'./jquery.js'</span><span class="p">).</span><span class="nx">toString</span><span class="p">()));</span>
 
     <span class="kd">var</span> <span class="nx">clientFunction</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
         <span class="c1">// You can use $ here</span>
         <span class="k">return</span> <span class="nx">$</span><span class="p">(</span><span class="s1">'div'</span><span class="p">).</span><span class="nx">text</span><span class="p">();</span>
     <span class="p">});</span>
 
-    <span class="kd">var</span> <span class="nx">text</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">clientFunction</span><span class="p">();</span>
+    <span class="kd">var</span> <span class="nx">text</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">clientFunction</span><span class="p">();</span>
 <span class="p">});</span>
 </code></pre></div><h3><a class="anchor" name="how-do-i-work-with-configuration-files-and-environment-variables"></a>How do I work with configuration files and environment variables? <a class="permalink" href="#how-do-i-work-with-configuration-files-and-environment-variables">#</a></h3>
 <p>TestCafe works without any configuration.
@@ -358,30 +368,30 @@ However, you can introduce your own configuration file and import it to the test
 
 <p>For example, you need to pass a website&#39;s base URL to test code. In this instance, you can create the following <code>config.json</code> file:</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="s2">"baseUrl"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://localhost/testcafe"</span><span class="w">
+    </span><span class="nt">"baseUrl"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://localhost/testcafe"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>In the test code, import it as you would do with a regular JavaScript module.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="nx">config</span> <span class="k">from</span> <span class="s1">'./config'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="nx">config</span> <span class="nx">from</span> <span class="s1">'./config'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="s2">`Fixture`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="s2">`</span><span class="p">${</span><span class="nx">config</span><span class="p">.</span><span class="nx">baseUrl</span><span class="p">}</span><span class="s2">/test1/index.html`</span><span class="p">;</span>
+<span class="nx">fixture</span> <span class="err">`</span><span class="nx">Fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="nx">config</span><span class="p">.</span><span class="nx">baseUrl</span><span class="p">}</span><span class="sr">/test1/i</span><span class="nx">ndex</span><span class="p">.</span><span class="nx">html</span><span class="err">`</span><span class="p">;</span>
 </code></pre></div>
 <p>Alternatively, you can use custom command line parameters or environment variables.</p>
 
 <p>The following command passes the <code>env</code> argument to the test code:</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js <span class="nt">--env</span><span class="o">=</span>development
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js --env<span class="o">=</span>development
 </code></pre></div>
 <p>In the test, use an argument parser library (like <code>minimist</code>) to parse custom arguments.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="nx">minimist</span> <span class="k">from</span> <span class="s1">'minimist'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="nx">minimist</span> <span class="nx">from</span> <span class="s1">'minimist'</span><span class="p">;</span>
 
-<span class="kd">const</span> <span class="nx">args</span> <span class="o">=</span> <span class="nx">minimist</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">argv</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">2</span><span class="p">));</span>
-<span class="kd">const</span> <span class="nx">environment</span> <span class="o">=</span> <span class="nx">args</span><span class="p">.</span><span class="nx">env</span><span class="p">;</span>
+<span class="kr">const</span> <span class="nx">args</span> <span class="o">=</span> <span class="nx">minimist</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">argv</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">2</span><span class="p">));</span>
+<span class="kr">const</span> <span class="nx">environment</span> <span class="o">=</span> <span class="nx">args</span><span class="p">.</span><span class="nx">env</span><span class="p">;</span>
 
 <span class="nx">fixture</span><span class="p">(</span><span class="s1">'example'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="s1">'http://example.com'</span><span class="p">);</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'check environment'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'check environment'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Environment:'</span><span class="p">,</span> <span class="nx">environment</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div>
@@ -430,11 +440,11 @@ If you use a locally installed TestCafe, try installing it globally and running 
 outside of the project to eliminate the influence of third-party modules.</p>
 <h3><a class="anchor" name="i-have-installed-testcafe-plugins-but-they-do-not-work-what-have-i-done-wrong"></a>I have installed TestCafe plugins but they do not work. What have I done wrong? <a class="permalink" href="#i-have-installed-testcafe-plugins-but-they-do-not-work-what-have-i-done-wrong">#</a></h3>
 <p>Plugins should also be installed locally if you are using a locally installed TestCafe.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm <span class="nb">install</span> <span class="nt">--save-dev</span> <span class="o">{</span>pluginName<span class="o">}</span>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm install --save-dev <span class="o">{</span>pluginName<span class="o">}</span>
 </code></pre></div>
 <p>If you are going to use a global TestCafe installation, or you wish
 to use the plugin in other projects as well, install it globally.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm <span class="nb">install</span> <span class="nt">-g</span> <span class="o">{</span>pluginName<span class="o">}</span>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm install -g <span class="o">{</span>pluginName<span class="o">}</span>
 </code></pre></div><h3><a class="anchor" name="my-test-fails-because-testcafe-could-not-find-the-required-webpage-element-why-does-this-happen"></a>My test fails because TestCafe could not find the required webpage element. Why does this happen? <a class="permalink" href="#my-test-fails-because-testcafe-could-not-find-the-required-webpage-element-why-does-this-happen">#</a></h3>
 <p>First, try debugging the tested page with the TestCafe&#39;s built-in debugger by adding
 the <a href="../documentation/test-api/debugging.html">t.debug()</a> method to test code.

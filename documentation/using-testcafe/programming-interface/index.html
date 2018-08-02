@@ -526,6 +526,13 @@
 		
     </li>
 
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/common-concepts/connect-to-the-testcafe-server-over-https.html"  >Connect to the TestCafe Server over HTTPS</a>
+		
+    </li>
+
 </ul>
 		
     </li>
@@ -557,7 +564,7 @@
 
 <p>Begin with creating the <a href="testcafe.html">TestCafe server</a> instance using
 the <a href="createtestcafe.html">createTestCafe</a> factory function.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">createTestCafe</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'testcafe'</span><span class="p">);</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">createTestCafe</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'testcafe'</span><span class="p">);</span>
 
 <span class="nx">createTestCafe</span><span class="p">(</span><span class="s1">'localhost'</span><span class="p">,</span> <span class="mi">1337</span><span class="p">,</span> <span class="mi">1338</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">testcafe</span> <span class="o">=&gt;</span> <span class="p">{</span>
@@ -567,7 +574,7 @@ the <a href="createtestcafe.html">createTestCafe</a> factory function.</p>
 <p>Use this instance to create other entities required to execute tests:
 <a href="browserconnection.html">remote browser connections</a>
 and the <a href="runner.html">test runner</a>.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">createTestCafe</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'testcafe'</span><span class="p">);</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">createTestCafe</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'testcafe'</span><span class="p">);</span>
 <span class="kd">let</span> <span class="nx">runner</span>           <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
 
 <span class="nx">createTestCafe</span><span class="p">(</span><span class="s1">'localhost'</span><span class="p">,</span> <span class="mi">1337</span><span class="p">,</span> <span class="mi">1338</span><span class="p">)</span>
