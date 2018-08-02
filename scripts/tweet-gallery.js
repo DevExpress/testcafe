@@ -2,7 +2,7 @@ $(function() {
     var tweets = [
         
             {
-                url: 'https://twitter.com/martin_hotell/status/971339016888029184'
+                url: 'https://twitter.com/martin_hotell/status/958079928574119941'
             },
         
             {

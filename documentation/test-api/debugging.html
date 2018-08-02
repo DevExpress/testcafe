@@ -920,11 +920,11 @@ command line option to pause the test before the first action or assertion.</p>
 <p><img src="../../images/debugging/log-debugger.png" alt="Logging Debugger Breakpoints"></p>
 
 <p><strong>Example</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`Debugger example`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://devexpress.github.io/testcafe/example/`</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">Debugger</span> <span class="nx">example</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Debugger'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">await</span> <span class="nx">t</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Debugger'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">debug</span><span class="p">()</span>
         <span class="p">.</span><span class="nx">setNativeDialogHandler</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#populate'</span><span class="p">)</span>
@@ -934,12 +934,12 @@ command line option to pause the test before the first action or assertion.</p>
 <p>TestCafe includes features that help you locate the cause of issues in your tests.</p>
 <h3><a class="anchor" name="screenshots"></a>Screenshots <a class="permalink" href="#screenshots">#</a></h3>
 <p>You can specify that a screenshot should be taken in a particular place in a test using the <a href="actions/take-screenshot.html">t.takeScreenshot</a> action.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="s2">`https://devexpress.github.io/testcafe/example`</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">https</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example`;</span>
 
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">await</span> <span class="nx">t</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">setNativeDialogHandler</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">takeScreenshot</span><span class="p">(</span><span class="s1">'./screenshots'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#populate'</span><span class="p">)</span>
@@ -949,7 +949,7 @@ command line option to pause the test before the first action or assertion.</p>
 </code></pre></div>
 <p>You can also turn on the <a href="../using-testcafe/command-line-interface.html#-s---screenshots-on-fails">--screenshots-on-fails</a>
 option to automatically take a screenshot when a test fails.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome ./my-tests <span class="nt">--screenshots</span> ./screenshots <span class="nt">--screenshots-on-fails</span>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome ./my-tests --screenshots ./screenshots --screenshots-on-fails
 </code></pre></div>
 <p>Analyzing these screenshots reduces debugging time and allows you to determine the reason of issues earlier.</p>
 <h3><a class="anchor" name="test-speed"></a>Test Speed <a class="permalink" href="#test-speed">#</a></h3>
@@ -957,7 +957,7 @@ option to automatically take a screenshot when a test fails.</p>
 
 <p>To slow down the test, use the <a href="../using-testcafe/command-line-interface.html#--speed-factor">--speed</a>
 CLI flag. You can use values from <code>1</code> to <code>0.01</code>.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome ./my-tests <span class="nt">--speed</span> 0.1
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome ./my-tests --speed 0.1
 </code></pre></div>
 <p>When tests run slower, you can monitor test execution and notice when the test&#39;s behavior differs from what is expected.</p>
 

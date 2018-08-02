@@ -900,15 +900,15 @@
 <h2><a class="anchor" name="understanding-how-testcafe-request-hooks-operate"></a>Understanding How TestCafe Request Hooks Operate <a class="permalink" href="#understanding-how-testcafe-request-hooks-operate">#</a></h2>
 <ul>
 <li><p>All TestCafe request hooks inherit from the <code>RequestHook</code> class.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">RequestHook</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">RequestHook</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="kd">class</span> <span class="nx">MyRequestHook</span> <span class="kd">extends</span> <span class="nx">RequestHook</span> <span class="p">{</span>
+<span class="kr">class</span> <span class="nx">MyRequestHook</span> <span class="kr">extends</span> <span class="nx">RequestHook</span> <span class="p">{</span>
     <span class="c1">// ...</span>
 <span class="p">}</span>
 </code></pre></div>
 <p>This class has the following public interface:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">class</span> <span class="nx">RequestHook</span> <span class="p">{</span>
-    <span class="kd">constructor</span> <span class="p">(</span><span class="nx">requestFilterRules</span><span class="p">,</span> <span class="nx">responseEventConfigureOpts</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">class</span> <span class="nx">RequestHook</span> <span class="p">{</span>
+    <span class="nx">constructor</span> <span class="p">(</span><span class="nx">requestFilterRules</span><span class="p">,</span> <span class="nx">responseEventConfigureOpts</span><span class="p">)</span> <span class="p">{</span>
         <span class="c1">// ...</span>
     <span class="p">}</span>
 
@@ -922,8 +922,8 @@
 <span class="p">}</span>
 </code></pre></div></li>
 <li><p>The base class constructor receives an array of <a href="specifying-which-requests-are-handled-by-the-hook.html">filtering rules</a> as the first parameter to determine which requests the hook handles. All requests are handled if no rules are passed.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">class</span> <span class="nx">RequestHook</span> <span class="p">{</span>
-    <span class="kd">constructor</span> <span class="p">(</span><span class="nx">requestFilterRules</span><span class="p">,</span> <span class="cm">/* other params */</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">class</span> <span class="nx">RequestHook</span> <span class="p">{</span>
+    <span class="nx">constructor</span> <span class="p">(</span><span class="nx">requestFilterRules</span><span class="p">,</span> <span class="cm">/* other params */</span><span class="p">)</span> <span class="p">{</span>
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">requestFilterRules</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span> <span class="c1">// http://example.com</span>
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">requestFilterRules</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span> <span class="c1">// /\/api\/users\//</span>
     <span class="p">}</span>
@@ -939,8 +939,8 @@
 <li><p>When a response is received, the hook starts preparing to call the <code>onResponse</code> method that handles the response.</p>
 
 <p>At this moment, the hook processes settings that define whether to pass the response headers and body to the <code>onResponse</code> method. These settings are specified in the second constructor parameter. This parameter takes an object with the <code>includeHeaders</code> and <code>includeBody</code> properties that have the <code>false</code> value by default.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">class</span> <span class="nx">RequestHook</span> <span class="p">{</span>
-    <span class="kd">constructor</span> <span class="p">(</span><span class="nx">requestFilterRules</span><span class="p">,</span> <span class="nx">responseEventConfigureOpts</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">class</span> <span class="nx">RequestHook</span> <span class="p">{</span>
+    <span class="nx">constructor</span> <span class="p">(</span><span class="nx">requestFilterRules</span><span class="p">,</span> <span class="nx">responseEventConfigureOpts</span><span class="p">)</span> <span class="p">{</span>
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">responseEventConfigureOpts</span><span class="p">.</span><span class="nx">includeHeaders</span><span class="p">);</span> <span class="c1">// false</span>
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">responseEventConfigureOpts</span><span class="p">.</span><span class="nx">includeBody</span><span class="p">);</span>    <span class="c1">// false</span>
     <span class="p">}</span>
@@ -960,11 +960,11 @@
 <li>override the <code>onRequest</code> method to handle sending the request,</li>
 <li>override the <code>onResponse</code> method to handle receiving the response.</li>
 </ul>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">RequestHook</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">RequestHook</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="kd">class</span> <span class="nx">MyRequestHook</span> <span class="kd">extends</span> <span class="nx">RequestHook</span> <span class="p">{</span>
-    <span class="kd">constructor</span> <span class="p">(</span><span class="nx">requestFilterRules</span><span class="p">,</span> <span class="nx">responseEventConfigureOpts</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">super</span><span class="p">(</span><span class="nx">requestFilterRules</span><span class="p">,</span> <span class="nx">responseEventConfigureOpts</span><span class="p">);</span>
+<span class="kr">class</span> <span class="nx">MyRequestHook</span> <span class="kr">extends</span> <span class="nx">RequestHook</span> <span class="p">{</span>
+    <span class="nx">constructor</span> <span class="p">(</span><span class="nx">requestFilterRules</span><span class="p">,</span> <span class="nx">responseEventConfigureOpts</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kr">super</span><span class="p">(</span><span class="nx">requestFilterRules</span><span class="p">,</span> <span class="nx">responseEventConfigureOpts</span><span class="p">);</span>
         <span class="c1">// ...</span>
     <span class="p">}</span>
     <span class="nx">onRequest</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
@@ -1037,15 +1037,15 @@
 <span class="p">}</span>
 </code></pre></div>
 <p>Now you can <a href="attaching-hooks-to-tests-and-fixtures.html">attach this hook to a test or fixture</a> in your test suite and start using it.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">MyRequestHook</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'./my-request-hook'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">MyRequestHook</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'./my-request-hook'</span><span class="p">;</span>
 
-<span class="kd">const</span> <span class="nx">customHook</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyRequestHook</span><span class="p">(</span><span class="s1">'http://example.com'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">customHook</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyRequestHook</span><span class="p">(</span><span class="s1">'http://example.com'</span><span class="p">);</span>
 
-<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
     <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="s1">'http://example.com'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">requestHooks</span><span class="p">(</span><span class="nx">customHook</span><span class="p">);</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
         <span class="c1">// test actions</span>
 <span class="p">});</span>
 </code></pre></div>
