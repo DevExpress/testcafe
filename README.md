@@ -40,6 +40,7 @@
 * [Badge](#badge)
 * [Contributing](#contributing)
 * [Plugins](#plugins)
+* [Different versions of TestCafe](#different-versions-of-testcafe)
 * [License](#license)
 * [Creators](#creators)
 
@@ -239,6 +240,35 @@ TestCafe developers and community members made these plugins:
 * **ESLint**<br/>
   Use ESLint when writing and editing TestCafe tests.
   * [ESLint plugin](https://github.com/miherlosev/eslint-plugin-testcafe) (by [@miherlosev](https://github.com/miherlosev))
+  
+## Different versions of TestCafe
+
+There is a line of products called `TestCafe`. Below are the similarities and key differences between them.
+
+* All three versions share the same core features:
+  * No need for WebDriver, browser plugins or other tools.
+  * Cross-platform and cross-browser out of the box.
+
+* [**TestCafe**](https://testcafe.devexpress.com/)<br/>
+  *first released in 2013, commercial web application*
+  * Visual Test Recorder and web GUI to create, edit and run tests.
+  * You can record tests or edit them as JavaScript code.
+
+* [**TestCafe**](https://devexpress.github.io/testcafe) - you are here<br/>
+  *first released in 2016, free and open-source node.js application*
+  * You can write tests in the latest JavaScript or TypeScript.
+  * Clearer and more flexible [API](https://devexpress.github.io/testcafe/documentation/test-api/) supports ES6 and [PageModel pattern](https://devexpress.github.io/testcafe/documentation/recipes/using-page-model.html).
+  * More stable tests due to the [Smart Assertion Query Mechanism](https://devexpress.github.io/testcafe/documentation/test-api/assertions/#smart-assertion-query-mechanism).
+  * Tests run faster due to improved [Automatic Waiting Mechanism](https://devexpress.github.io/testcafe/documentation/test-api/waiting-for-page-elements-to-appear.html) and [Concurrent Test Execution](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/concurrent-test-execution.html).
+  * Easy integration: it is a node.js solution with CLI and reporters for popular CI systems.
+  * You can extend it with [plugins](#plugins) and other Node.js modules.
+
+* [**TestCafe Studio**](https://testcafe-studio.devexpress.com/)<br/>
+  *first released in 2018, commercial desktop application*
+  * Based on the open-source TestCafe, and supports its major features.
+  * You can record tests or edit them as JavaScript or TypeScript code.
+  * New [Visual Test Recorder](https://testcafe-studio.devexpress.com/documentation/guides/record-tests/) and [IDE-like GUI](https://testcafe-studio.devexpress.com/documentation/guides/write-test-code.html) to record, edit, run and debug tests.
+  * Currently available as a free preview version. The release version will replace the 2013 version of TestCafe.
 
 ## Thanks to BrowserStack
 
