@@ -19,13 +19,13 @@ function RequestLogger (requestFilterRuleInit, logOptions) {
 }
 
 function ClientFunction (fn, options) {
-    var builder = new ClientFunctionBuilder(fn, options, { instantiation: 'ClientFunction' });
+    const builder = new ClientFunctionBuilder(fn, options, { instantiation: 'ClientFunction' });
 
     return builder.getFunction();
 }
 
 function Selector (fn, options) {
-    var builder = new SelectorBuilder(fn, options, { instantiation: 'Selector' });
+    const builder = new SelectorBuilder(fn, options, { instantiation: 'Selector' });
 
     return builder.getFunction();
 }
