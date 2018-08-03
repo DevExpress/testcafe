@@ -250,12 +250,12 @@ There is a line of products called `TestCafe`. Below are the similarities and ke
   * Cross-platform and cross-browser out of the box.
 
 * [**TestCafe**](https://testcafe.devexpress.com/)<br/>
-  *2013, commercial web application*
+  *first released in 2013, commercial web application*
   * Visual Test Recorder and web GUI to create, edit and run tests.
   * You can record tests or edit them as JavaScript code.
 
 * [**TestCafe**](https://devexpress.github.io/testcafe) - you are here<br/>
-  *2016, free and open-source node.js application*
+  *first released in 2016, free and open-source node.js application*
   * You can write tests in the latest JavaScript or TypeScript.
   * Clearer and more flexible [API](https://devexpress.github.io/testcafe/documentation/test-api/) supports ES6 and [PageModel pattern](https://devexpress.github.io/testcafe/documentation/recipes/using-page-model.html).
   * More stable tests due to the [Smart Assertion Query Mechanism](https://devexpress.github.io/testcafe/documentation/test-api/assertions/#smart-assertion-query-mechanism).
@@ -264,7 +264,7 @@ There is a line of products called `TestCafe`. Below are the similarities and ke
   * You can extend it with [plugins](#plugins) and other Node.js modules.
 
 * [**TestCafe Studio**](https://testcafe-studio.devexpress.com/)<br/>
-  *2018, commercial desktop application*
+  *first released in 2018, commercial desktop application*
   * Based on the open-source TestCafe, and supports its major features.
   * You can record tests or edit them as JavaScript or TypeScript code.
   * New [Visual Test Recorder](https://testcafe-studio.devexpress.com/documentation/guides/record-tests/) and [IDE-like GUI](https://testcafe-studio.devexpress.com/documentation/guides/write-test-code.html) to record, edit, run and debug tests.
