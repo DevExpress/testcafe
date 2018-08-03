@@ -1,15 +1,16 @@
 import path from 'path';
+import Promise from 'pinkie';
 import globby from 'globby';
-import { statSync } from 'fs';
 import isGlob from 'is-glob';
 import Compiler from '../compiler';
 import { isEmpty } from 'lodash';
+import { stat } from '../utils/promisified-functions';
 
 const DEFAULT_TEST_LOOKUP_DIRS = ['test/', 'tests/'];
 const TEST_FILE_GLOB_PATTERN   = `./**/*@(${Compiler.getSupportedTestFileExtensions().join('|')})`;
 
-function getDefaultDirs (cwd) {
-    return globby.sync(DEFAULT_TEST_LOOKUP_DIRS, {
+async function getDefaultDirs (cwd) {
+    return await globby(DEFAULT_TEST_LOOKUP_DIRS, {
         cwd:             cwd,
         nocase:          true,
         onlyDirectories: true,
@@ -17,14 +18,14 @@ function getDefaultDirs (cwd) {
     });
 }
 
-function convertDirsToGlobs (fileList, cwd) {
-    return fileList.map(file => {
+async function convertDirsToGlobs (fileList, cwd) {
+    fileList = await Promise.all(fileList.map(async file => {
         if (!isGlob(file)) {
             const absPath = path.resolve(cwd, file);
             let fileStat  = null;
 
             try {
-                fileStat = statSync(absPath);
+                fileStat = await stat(absPath);
             }
             catch (err) {
                 return null;
@@ -35,16 +36,17 @@ function convertDirsToGlobs (fileList, cwd) {
         }
 
         return file;
-    }).filter(file => !!file);
+    }));
+
+    return fileList.filter(file => !!file);
 }
 
-export default function parseFileList (fileList, cwd) {
+export default async function parseFileList (fileList, cwd) {
     if (isEmpty(fileList))
-        fileList = getDefaultDirs(cwd);
+        fileList = await getDefaultDirs(cwd);
 
-    fileList = convertDirsToGlobs(fileList, cwd);
+    fileList = await convertDirsToGlobs(fileList, cwd);
+    fileList = await globby(fileList, { cwd: cwd });
 
-    return globby
-        .sync(fileList, { cwd: cwd })
-        .map(file => path.resolve(cwd, file));
+    return fileList.map(file => path.resolve(cwd, file));
 }

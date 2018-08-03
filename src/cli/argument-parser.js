@@ -10,7 +10,6 @@ import getViewPortWidth from '../utils/get-viewport-width';
 import { wordWrap, splitQuotedText } from '../utils/string';
 import { ensureDir } from '../utils/promisified-functions';
 import parseSslOptions from './parse-ssl-options';
-import parseFileList from '../utils/parse-file-list';
 
 const REMOTE_ALIAS_RE = /^remote(?::(\d*))?$/;
 
@@ -42,10 +41,6 @@ export default class CLIArgumentParser {
         this.opts        = null;
 
         this._describeProgram();
-    }
-
-    static _isInteger (value) {
-        return !isNaN(value) && isFinite(value);
     }
 
     static _parsePortNumber (value) {
@@ -242,9 +237,7 @@ export default class CLIArgumentParser {
     }
 
     _parseFileList () {
-        const fileList = this.program.args.slice(1);
-
-        this.src = parseFileList(fileList, this.cwd);
+        this.src = this.program.args.slice(1);
     }
 
     async _parseScreenshotsPath () {

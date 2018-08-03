@@ -86,6 +86,7 @@ async function runTests (argParser) {
     });
 
     reporters.forEach(r => runner.reporter(r.name, r.outStream));
+    runner.bootstrapper.cwd = argParser.cwd;
 
     runner
         .useProxy(externalProxyHost, proxyBypass)

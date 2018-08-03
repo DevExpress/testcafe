@@ -9,7 +9,6 @@ import Task from './task';
 import { GeneralError } from '../errors/runtime';
 import MESSAGE from '../errors/runtime/message';
 import { assertType, is } from '../errors/runtime/type-assertions';
-import parseFileList from '../utils/parse-file-list';
 
 const DEFAULT_SELECTOR_TIMEOUT  = 10000;
 const DEFAULT_ASSERTION_TIMEOUT = 3000;
@@ -155,15 +154,7 @@ export default class Runner extends EventEmitter {
     }
 
     src (...sources) {
-        // NOTE: the behavior here is consistent with the CLI
-        // src([]) won't search for tests in default folders, while
-        // src() will.
-        sources = arguments.length === 0 ? void 0 : flatten(sources);
-
-        if (!sources || sources.length)
-            sources = parseFileList(sources, process.cwd());
-
-        this.bootstrapper.sources = this.bootstrapper.sources.concat(sources);
+        this.bootstrapper.sources = this.bootstrapper.sources.concat(flatten(sources));
 
         return this;
     }
@@ -232,6 +223,7 @@ export default class Runner extends EventEmitter {
         var runTaskPromise = Promise.resolve()
             .then(() => {
                 this._validateRunOptions();
+
                 return this.bootstrapper.createRunnableConfiguration();
             })
             .then(({ reporterPlugins, browserSet, tests, testedApp }) => {

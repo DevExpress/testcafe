@@ -27,9 +27,10 @@ describe('Utils', () => {
                 return path.resolve(workingDir, file);
             });
 
-            const actualFiles = parseFileList(void 0, workingDir);
-
-            expect(actualFiles).eql(expectedFiles);
+            return parseFileList(void 0, workingDir)
+                .then(actualFiles => {
+                    expect(actualFiles).eql(expectedFiles);
+                });
         });
 
         it('File, directory and glob pattern', () => {
@@ -49,16 +50,16 @@ describe('Utils', () => {
                 return path.resolve(cwd, file);
             });
 
-            const actualFiles = parseFileList([
+            return parseFileList([
                 'test/server/data/file-list/file-1.js',
                 path.join(cwd, 'test/server/data/file-list/file-2.js'),
                 'test/server/data/file-list/dir1',
                 'test/server/data/file-list/dir2/*.js',
                 '!test/server/data/file-list/dir2/file-2-1.js',
                 'test/server/data/file-list/dir3'
-            ], cwd);
-
-            expect(actualFiles).eql(expectedFiles);
+            ], cwd).then(actualFiles => {
+                expect(actualFiles).eql(expectedFiles);
+            });
         });
     });
 });

@@ -4,6 +4,7 @@ const request             = require('request');
 const Promise             = require('pinkie');
 const noop                = require('lodash').noop;
 const times               = require('lodash').times;
+const uniqBy              = require('lodash').uniqBy;
 const createTestCafe      = require('../../lib/');
 const COMMAND             = require('../../lib/browser/connection/command');
 const Task                = require('../../lib/runner/task');
@@ -18,7 +19,7 @@ describe('Runner', function () {
     var connection                = null;
     var origRemoteBrowserProvider = null;
 
-    var remoteBrowserProviderMock = {
+    const remoteBrowserProviderMock = {
         openBrowser: function () {
             return Promise.resolve();
         },
@@ -27,6 +28,7 @@ describe('Runner', function () {
             return Promise.resolve();
         }
     };
+    const browserMock               = { path: '/non/exist' };
 
     before(() => {
         return createTestCafe('127.0.0.1', 1335, 1336)
@@ -170,13 +172,17 @@ describe('Runner', function () {
         });
 
         it('Should fallback to the default reporter if reporter was not set', function () {
-            runner._runTask = function (reporters) {
-                var reporterPlugin = reporters[0].plugin;
+            const storedRunTaskFn = runner._runTask;
+
+            runner._runTask = reporters => {
+                const reporterPlugin = reporters[0].plugin;
 
                 expect(reporterPlugin.reportFixtureStart).to.be.a('function');
                 expect(reporterPlugin.reportTestDone).to.be.a('function');
                 expect(reporterPlugin.reportTaskStart).to.be.a('function');
                 expect(reporterPlugin.reportTaskDone).to.be.a('function');
+
+                runner._runTask = storedRunTaskFn;
 
                 return Promise.resolve({});
             };
@@ -190,22 +196,40 @@ describe('Runner', function () {
 
     describe('.src()', function () {
         it('Should accept source files in different forms', () => {
-            const cwd = process.cwd();
+            const cwd                         = process.cwd();
+            const storedRunTaskFn             = runner._runTask;
+            const storedGetBrowserConnections = runner.bootstrapper._getBrowserConnections;
 
             const expectedFiles = [
-                'test/server/data/file-list/file-1.js',
-                'test/server/data/file-list/dir1/dir1-1/file-1-1-1.js',
-                'test/server/data/file-list/dir2/file-2-3.js'
+                'test/server/data/test-suites/basic/testfile1.js',
+                'test/server/data/test-suites/basic/testfile2.js',
             ].map(file => path.resolve(cwd, file));
 
-            runner.src(
-                'test/server/data/file-list/file-1.js',
-                [
-                    'test/server/data/file-list/dir1/dir1-1',
-                    'test/server/data/file-list/dir2/*3.js'
-                ]);
+            runner.bootstrapper._getBrowserConnections = () => {
+                runner.bootstrapper._getBrowserConnections = storedGetBrowserConnections;
 
-            expect(runner.bootstrapper.sources).eql(expectedFiles);
+                return Promise.resolve();
+            };
+
+            runner._runTask = (reporterPlugin, browserSet, tests) => {
+                const actualFiles = uniqBy(tests.map(test => test.testFile.filename));
+
+                expect(actualFiles).eql(expectedFiles);
+
+                runner._runTask = storedRunTaskFn;
+
+                return Promise.resolve({});
+            };
+
+            return runner
+                .browsers(browserMock)
+                .src('test/server/data/test-suites/basic/testfile1.js',
+                    [
+                        'test/server/data/test-suites/basic/*.js',
+                        'test/server/data/test-suites/basic'
+                    ]
+                )
+                .run();
         });
 
         it('Should raise an error if the source was not set', () => {
@@ -220,20 +244,10 @@ describe('Runner', function () {
                     expect(err.message).eql('No test file specified.');
                 });
         });
-
-        it('Should search tests in default folders', () => {
-            const testFullPathPrefix = path.resolve(process.cwd(), 'test');
-
-            runner.src();
-
-            expect(runner.bootstrapper.sources.every(file => file.startsWith(testFullPathPrefix))).to.be.true;
-        });
     });
 
     describe('.filter()', function () {
-
-        // Test setup
-        beforeEach(function () {
+        beforeEach(() => {
             runner
                 .browsers(connection)
                 .reporter('list')
@@ -244,18 +258,18 @@ describe('Runner', function () {
         });
 
         function testFilter (filterFn, expectedTestNames) {
+            const storedRunTaskFn = runner._runTask;
+
             runner.filter(filterFn);
 
-            runner._runTask = function (reporterPlugin, browserSet, tests) {
-                var actualTestNames = tests
-                    .map(function (test) {
-                        return test.name;
-                    })
-                    .sort();
+            runner._runTask = (reporterPlugin, browserSet, tests) => {
+                const actualTestNames = tests.map(test =>test.name).sort();
 
                 expectedTestNames = expectedTestNames.sort();
 
                 expect(actualTestNames).eql(expectedTestNames);
+
+                runner._runTask = storedRunTaskFn;
 
                 return Promise.resolve({});
             };
@@ -264,12 +278,10 @@ describe('Runner', function () {
         }
 
 
-        it('Should filter by test name', function () {
-            var filter = function (testName) {
-                return testName.indexOf('Fixture2') < 0;
-            };
+        it('Should filter by test name', () => {
+            const filter = testName => !testName.includes('Fixture2');
 
-            var expectedTestNames = [
+            const expectedTestNames = [
                 'Fixture1Test1',
                 'Fixture1Test2',
                 'Fixture3Test1'
@@ -278,12 +290,10 @@ describe('Runner', function () {
             return testFilter(filter, expectedTestNames);
         });
 
-        it('Should filter by fixture name', function () {
-            var filter = function (testName, fixtureName) {
-                return fixtureName === 'Fixture1';
-            };
+        it('Should filter by fixture name', () => {
+            const filter = (testName, fixtureName) => fixtureName === 'Fixture1';
 
-            var expectedTestNames = [
+            const expectedTestNames = [
                 'Fixture1Test1',
                 'Fixture1Test2'
             ];
@@ -291,12 +301,10 @@ describe('Runner', function () {
             return testFilter(filter, expectedTestNames);
         });
 
-        it('Should filter by fixture path', function () {
-            var filter = function (testName, fixtureName, fixturePath) {
-                return fixturePath.indexOf('testfile2.js') > -1;
-            };
+        it('Should filter by fixture path', () => {
+            const filter = (testName, fixtureName, fixturePath) => fixturePath.includes('testfile2.js');
 
-            var expectedTestNames = ['Fixture3Test1'];
+            const expectedTestNames = ['Fixture3Test1'];
 
             return testFilter(filter, expectedTestNames);
         });
@@ -328,7 +336,7 @@ describe('Runner', function () {
             };
 
             return runner
-                .browsers({ path: '/non/exist' })
+                .browsers(browserMock)
                 .reporter('list')
                 .src([])
                 .run()
@@ -557,7 +565,7 @@ describe('Runner', function () {
             });
 
             return runner
-                .browsers({ path: '/non/exist' })
+                .browsers(browserMock)
                 .src([])
                 .run()
                 .then(function () {
