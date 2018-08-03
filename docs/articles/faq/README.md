@@ -40,13 +40,13 @@ All three versions share the same core features:
 * Cross-platform and cross-browser out of the box.
 
 [TestCafe](https://testcafe.devexpress.com)  
-*2013, commercial web application*  
+*first released in 2013, commercial web application*  
 
 * Visual Test Recorder and web GUI to create, edit and run tests.
 * You can record tests or edit them as JavaScript code.
 
 [TestCafe](https://devexpress.github.io/testcafe)  
-*2016,  free and open-source node.js application*
+*first released in 2016,  free and open-source node.js application*
 
 * You can write tests in the latest JavaScript or TypeScript.
 * Clearer and more flexible [API](https://devexpress.github.io/testcafe/documentation/test-api/) supports ES6 and [PageModel pattern](https://devexpress.github.io/testcafe/documentation/recipes/using-page-model.html).
@@ -56,7 +56,7 @@ All three versions share the same core features:
 * You can extend it with [plugins](https://github.com/DevExpress/testcafe#plugins) and other Node.js modules.
 
 [TestCafe Studio](https://testcafe-studio.devexpress.com)  
-*2018, commercial desktop application*  
+*first released in 2018, commercial desktop application*  
 
 * Based on the open-source TestCafe, and supports its major features.
 * You can record tests or edit them as JavaScript or TypeScript code.
