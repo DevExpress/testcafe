@@ -196,9 +196,9 @@ describe('Runner', function () {
 
     describe('.src()', function () {
         it('Should accept source files in different forms', () => {
-            const cwd                         = process.cwd();
-            const storedRunTaskFn             = runner._runTask;
-            const storedGetBrowserConnections = runner.bootstrapper._getBrowserConnections;
+            const cwd                           = process.cwd();
+            const storedRunTaskFn               = runner._runTask;
+            const storedGetBrowserConnectionsFn = runner.bootstrapper._getBrowserConnections;
 
             const expectedFiles = [
                 'test/server/data/test-suites/basic/testfile1.js',
@@ -206,7 +206,7 @@ describe('Runner', function () {
             ].map(file => path.resolve(cwd, file));
 
             runner.bootstrapper._getBrowserConnections = () => {
-                runner.bootstrapper._getBrowserConnections = storedGetBrowserConnections;
+                runner.bootstrapper._getBrowserConnections = storedGetBrowserConnectionsFn;
 
                 return Promise.resolve();
             };
