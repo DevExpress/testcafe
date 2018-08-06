@@ -63,7 +63,7 @@ class RequestLoggerImplementation extends RequestHook {
         const loggerReq = this._internalRequests[event.requestId];
 
         // NOTE: If the 'clear' method is called during a long running request,
-        // we should not save a response part - this part has been already removed.
+        // we should not save a response part - request part has been already removed.
         if (!loggerReq)
             return;
 
