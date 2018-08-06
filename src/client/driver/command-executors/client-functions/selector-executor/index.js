@@ -34,6 +34,19 @@ export default class SelectorExecutor extends ClientFunctionExecutor {
         ]);
     }
 
+    _getTimeoutErrorMessage () {
+        const errorSelectorIndex = window['%testCafeSelectorFilter%'].error;
+        const apiFnChain         = this.command.apiFnChain;
+
+        if (typeof errorSelectorIndex !== 'undefined') {
+            apiFnChain[errorSelectorIndex] = `>>>${apiFnChain[errorSelectorIndex]}`;
+
+            return apiFnChain.join('');
+        }
+
+        return null;
+    }
+
     _validateElement (args, startTime) {
         return Promise.resolve()
             .then(() => this.fn.apply(window, args))
@@ -50,7 +63,7 @@ export default class SelectorExecutor extends ClientFunctionExecutor {
                     return delay(CHECK_ELEMENT_DELAY).then(() => this._validateElement(args, startTime));
 
                 if (createTimeoutError)
-                    throw createTimeoutError();
+                    throw createTimeoutError(this._getTimeoutErrorMessage());
 
                 return null;
             });

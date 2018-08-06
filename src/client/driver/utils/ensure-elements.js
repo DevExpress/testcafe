@@ -55,7 +55,7 @@ export function ensureElements (elementDescriptors, globalSelectorTimeout) {
 export function createElementDescriptor (selector) {
     return {
         selector:                    selector,
-        createNotFoundError:         () => new ActionElementNotFoundError(),
+        createNotFoundError:         fnCode => new ActionElementNotFoundError(fnCode),
         createIsInvisibleError:      () => new ActionElementIsInvisibleError(),
         createHasWrongNodeTypeError: nodeDescription => new ActionSelectorMatchesWrongNodeTypeError(nodeDescription)
     };

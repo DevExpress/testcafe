@@ -11,6 +11,7 @@ import selectorTextFilter from './selector-text-filter';
 import selectorAttributeFilter from './selector-attribute-filter';
 
 const SNAPSHOT_PROPERTIES = NODE_SNAPSHOT_PROPERTIES.concat(ELEMENT_SNAPSHOT_PROPERTIES);
+let apiFn                 = null;
 
 
 var filterNodes = (new ClientFunctionBuilder((nodes, filter, querySelectorRoot, originNode, ...filterArgs) => {
@@ -282,7 +283,7 @@ function createDerivativeSelectorWithFilter (getSelector, SelectorBuilder, selec
         filterNodes: filterNodes
     };
 
-    var { boundTestRun, timeout, visibilityCheck } = collectionModeSelectorBuilder.options;
+    var { boundTestRun, timeout, visibilityCheck, apiFnChain } = collectionModeSelectorBuilder.options;
 
     dependencies = assign(dependencies, additionalDependencies);
 
@@ -292,7 +293,9 @@ function createDerivativeSelectorWithFilter (getSelector, SelectorBuilder, selec
         customMethods,
         boundTestRun,
         timeout,
-        visibilityCheck
+        visibilityCheck,
+        apiFnChain,
+        apiFn
     }, { instantiation: 'Selector' });
 
     return builder.getFunction();
@@ -310,11 +313,36 @@ function ensureRegExpContext (str) {
     return str;
 }
 
+function wrapApiChainFunctions (o, fn) {
+    var originalFn = o[fn];
+
+    var prepareApiFnArgs = function (args) {
+        args = [].slice.call(args);
+
+        args = args.map(arg => {
+            if (typeof arg === 'string')
+                return `'${arg}'`;
+            if (typeof arg === 'function')
+                return '[function]';
+            return arg;
+        });
+        args = args.join(', ');
+
+        return `.${fn}(${args})`;
+    };
+
+    return function () {
+        apiFn = prepareApiFnArgs(arguments);
+
+        return originalFn.apply(0, arguments);
+    };
+}
+
 function addFilterMethods (obj, getSelector, SelectorBuilder) {
     obj.nth = index => {
         assertType(is.number, 'nth', '"index" argument', index);
 
-        var builder = new SelectorBuilder(getSelector(), { index: index }, { instantiation: 'Selector' });
+        var builder = new SelectorBuilder(getSelector(), { index, apiFn }, { instantiation: 'Selector' });
 
         return builder.getFunction();
     };
@@ -406,13 +434,13 @@ function addFilterMethods (obj, getSelector, SelectorBuilder) {
     };
 
     obj.filterVisible = () => {
-        const builder = new SelectorBuilder(getSelector(), { filterVisible: true }, { instantiation: 'Selector' });
+        const builder = new SelectorBuilder(getSelector(), { filterVisible: true, apiFn }, { instantiation: 'Selector' });
 
         return builder.getFunction();
     };
 
     obj.filterHidden = () => {
-        const builder = new SelectorBuilder(getSelector(), { filterHidden: true }, { instantiation: 'Selector' });
+        const builder = new SelectorBuilder(getSelector(), { filterHidden: true, apiFn }, { instantiation: 'Selector' });
 
         return builder.getFunction();
     };
@@ -646,11 +674,20 @@ function addHierarchicalSelectors (obj, getSelector, SelectorBuilder) {
 
 }
 
-export function addAPI (obj, getSelector, SelectorBuilder, customDOMProperties, customMethods) {
-    addSnapshotPropertyShorthands(obj, getSelector, SelectorBuilder, customDOMProperties, customMethods);
-    addCustomDOMPropertiesMethod(obj, getSelector, SelectorBuilder);
-    addCustomMethodsMethod(obj, getSelector, SelectorBuilder);
+export function addAPI (selector, getSelector, SelectorBuilder, customDOMProperties, customMethods) {
+    addSnapshotPropertyShorthands(selector, getSelector, SelectorBuilder, customDOMProperties, customMethods);
+    addCustomDOMPropertiesMethod(selector, getSelector, SelectorBuilder);
+    addCustomMethodsMethod(selector, getSelector, SelectorBuilder);
+    addCounterProperties(selector, getSelector, SelectorBuilder);
+
+    const obj = {};
+
     addFilterMethods(obj, getSelector, SelectorBuilder);
     addHierarchicalSelectors(obj, getSelector, SelectorBuilder);
-    addCounterProperties(obj, getSelector, SelectorBuilder);
+
+    Object.keys(obj).forEach(fnName => {
+        obj[fnName] = wrapApiChainFunctions(obj, fnName);
+    });
+
+    Object.assign(selector, obj);
 }

@@ -45,6 +45,7 @@ export class ExecuteSelectorCommand extends ExecuteClientFunctionCommandBase {
         return super._getAssignableProperties().concat([
             { name: 'visibilityCheck', defaultValue: false },
             { name: 'timeout', defaultValue: null },
+            { name: 'apiFnChain' },
             { name: 'index', defaultValue: 0 }
         ]);
     }
