@@ -9,19 +9,19 @@ import { stat } from '../utils/promisified-functions';
 const DEFAULT_TEST_LOOKUP_DIRS = ['test/', 'tests/'];
 const TEST_FILE_GLOB_PATTERN   = `./**/*@(${Compiler.getSupportedTestFileExtensions().join('|')})`;
 
-async function getDefaultDirs (cwd) {
+async function getDefaultDirs (baseDir) {
     return await globby(DEFAULT_TEST_LOOKUP_DIRS, {
-        cwd:             cwd,
+        cwd:             baseDir,
         nocase:          true,
         onlyDirectories: true,
         onlyFiles:       false
     });
 }
 
-async function convertDirsToGlobs (fileList, cwd) {
+async function convertDirsToGlobs (fileList, baseDir) {
     fileList = await Promise.all(fileList.map(async file => {
         if (!isGlob(file)) {
-            const absPath = path.resolve(cwd, file);
+            const absPath = path.resolve(baseDir, file);
             let fileStat  = null;
 
             try {
@@ -41,12 +41,12 @@ async function convertDirsToGlobs (fileList, cwd) {
     return fileList.filter(file => !!file);
 }
 
-export default async function parseFileList (fileList, cwd) {
+export default async function parseFileList (fileList, baseDir) {
     if (isEmpty(fileList))
-        fileList = await getDefaultDirs(cwd);
+        fileList = await getDefaultDirs(baseDir);
 
-    fileList = await convertDirsToGlobs(fileList, cwd);
-    fileList = await globby(fileList, { cwd: cwd });
+    fileList = await convertDirsToGlobs(fileList, baseDir);
+    fileList = await globby(fileList, { cwd: baseDir });
 
-    return fileList.map(file => path.resolve(cwd, file));
+    return fileList.map(file => path.resolve(baseDir, file));
 }

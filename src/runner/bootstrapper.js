@@ -22,7 +22,6 @@ export default class Bootstrapper {
         this.filter       = null;
         this.appCommand   = null;
         this.appInitDelay = DEFAULT_APP_INIT_DELAY;
-        this.cwd          = null;
     }
 
     static _splitBrowserInfo (browserInfo) {
@@ -70,12 +69,10 @@ export default class Bootstrapper {
     }
 
     async _getTests () {
-        this.cwd = this.cwd || process.cwd();
-
         if (!this.sources.length)
             throw new GeneralError(MESSAGE.testSourcesNotSet);
 
-        const parsedFileList = await parseFileList(this.sources, this.cwd);
+        const parsedFileList = await parseFileList(this.sources, process.cwd());
         const compiler       = new Compiler(parsedFileList);
         let tests            = await compiler.getTests();
 
