@@ -469,6 +469,9 @@ export default class Driver {
                     browser.redirect(command);
                 else
                     this._onReady({ isCommandResult: false });
+            })
+            .catch(() => {
+                window.setTimeout(() => this._checkStatus(), 1000); //eslint-disable-line hammerhead/use-native-methods
             });
     }
 
