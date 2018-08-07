@@ -142,7 +142,7 @@ export default {
     `),
 
     [TYPE.actionElementNotFoundError]: err => markup(err, `
-        The specified selector does not match any element in the DOM tree.
+        The specified selector "${err.fn}" does not match any element in the DOM tree.
     `),
 
     [TYPE.actionElementIsInvisibleError]: err => markup(err, `
@@ -154,7 +154,7 @@ export default {
     `),
 
     [TYPE.actionAdditionalElementNotFoundError]: err => markup(err, `
-        The specified "${err.argumentName}" does not match any element in the DOM tree.
+        The specified "${err.argumentName}" : "${err.fn}" does not match any element in the DOM tree.
     `),
 
     [TYPE.actionAdditionalElementIsInvisibleError]: err => markup(err, `

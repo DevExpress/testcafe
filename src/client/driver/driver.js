@@ -302,7 +302,7 @@ export default class Driver {
         var commandSelectorTimeout = hasSpecificTimeout ? selector.timeout : this.selectorTimeout;
 
         return getExecuteSelectorResult(selector, commandSelectorTimeout, null,
-            () => new iframeErrorCtors.NotFoundError(), () => iframeErrorCtors.IsInvisibleError(), this.statusBar)
+            fn => new iframeErrorCtors.NotFoundError(fn), () => iframeErrorCtors.IsInvisibleError(), this.statusBar)
             .then(iframe => {
                 if (!domUtils.isIframeElement(iframe))
                     throw new ActionElementNotIframeError();

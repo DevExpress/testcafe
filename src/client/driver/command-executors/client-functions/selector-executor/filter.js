@@ -4,72 +4,120 @@ import testCafeCore from '../../../deps/testcafe-core';
 import hammerhead from '../../../deps/hammerhead';
 
 // NOTE: save original ctors and methods because they may be overwritten by page code
-var isArray        = Array.isArray;
-var Node           = window.Node;
-var HTMLCollection = window.HTMLCollection;
-var NodeList       = window.NodeList;
-var arrayUtils     = testCafeCore.arrayUtils;
+const isArray        = Array.isArray;
+const Node           = window.Node;
+const HTMLCollection = window.HTMLCollection;
+const NodeList       = window.NodeList;
+const arrayUtils     = testCafeCore.arrayUtils;
 
-function isArrayOfNodes (obj) {
-    if (!isArray(obj))
-        return false;
+const SELECTOR_FILTER_ERROR = {
+    filterVisible: 1,
+    filterHidden:  2,
+    nth:           3
+};
 
-    for (var i = 0; i < obj.length; i++) {
-        if (!(obj[i] instanceof Node))
-            return false;
+const FILTER_ERROR_TO_API_RE = { };
+
+FILTER_ERROR_TO_API_RE[SELECTOR_FILTER_ERROR.filterVisible] = /^\.filterVisible\(\)$/;
+FILTER_ERROR_TO_API_RE[SELECTOR_FILTER_ERROR.filterHidden]  = /^\.filterHidden\(\)$/;
+FILTER_ERROR_TO_API_RE[SELECTOR_FILTER_ERROR.nth]           = /^\.nth\(\d+\)$/;
+
+class SelectorFilter {
+    constructor () {
+        this.err = null;
     }
+    get error () {
+        return this.err;
+    }
+    set error (message) {
+        if (this.err === null)
+            this.err = message;
+    }
+    filter (node, options, apiInfo) {
+        var filtered = arrayUtils.filter(node, n => exists(n));
 
-    return true;
-}
+        if (options.filterVisible) {
+            filtered = filtered.filter(n => visible(n));
 
-function getNodeByIndex (collection, index) {
-    return index < 0 ? collection[collection.length + index] : collection[index];
-}
+            this.assertFilterError(filtered, apiInfo, SELECTOR_FILTER_ERROR.filterVisible);
+        }
 
+        if (options.filterHidden) {
+            filtered = filtered.filter(n => !visible(n));
 
-// Selector filter
-hammerhead.nativeMethods.objectDefineProperty.call(window, window, '%testCafeSelectorFilter%', {
-    value: (node, options) => {
-        var filtered = [];
+            this.assertFilterError(filtered, apiInfo, SELECTOR_FILTER_ERROR.filterHidden);
+        }
+
+        if (options.counterMode) {
+            if (options.index !== null)
+                filtered = this.getNodeByIndex(filtered, options.index) ? 1 : 0;
+            else
+                filtered = filtered.length;
+        }
+        else if (options.collectionMode) {
+            if (options.index !== null) {
+                var nodeOnIndex = this.getNodeByIndex(filtered, options.index);
+
+                filtered = nodeOnIndex ? [nodeOnIndex] : [];
+            }
+        }
+        else {
+            filtered = this.getNodeByIndex(filtered, options.index || 0);
+
+            if (typeof options.index === 'number')
+                this.assertFilterError(filtered, apiInfo, SELECTOR_FILTER_ERROR.nth);
+        }
+
+        return filtered;
+    }
+    cast (node) {
+        var result = null;
 
         if (node === null || node === void 0)
-            filtered = [];
+            result = [];
 
         else if (node instanceof Node)
-            filtered = [node];
+            result = [node];
 
-        else if (node instanceof HTMLCollection || node instanceof NodeList || isArrayOfNodes(node))
-            filtered = node;
+        else if (node instanceof HTMLCollection || node instanceof NodeList || this.isArrayOfNodes(node))
+            result = node;
 
         else
             throw new InvalidSelectorResultError();
 
-        filtered = arrayUtils.filter(filtered, n => exists(n));
-
-        if (options.filterVisible)
-            filtered = filtered.filter(n => visible(n));
-
-        if (options.filterHidden)
-            filtered = filtered.filter(n => !visible(n));
-
-        if (options.counterMode) {
-            if (options.index !== null)
-                return getNodeByIndex(filtered, options.index) ? 1 : 0;
-
-            return filtered.length;
-        }
-
-        if (options.collectionMode) {
-            if (options.index !== null) {
-                var nodeOnIndex = getNodeByIndex(filtered, options.index);
-
-                return nodeOnIndex ? [nodeOnIndex] : [];
+        return result;
+    }
+    assertFilterError (filtered, apiInfo, filterError) {
+        if (!filtered || filtered.length === 0)
+            this.error = this.getErrorItem(apiInfo, filterError);
+    }
+    getErrorItem ({ apiFnChain, apiFnID }, err) {
+        if (err) {
+            for (var i = apiFnID; i < apiFnChain.length; i++) {
+                if (FILTER_ERROR_TO_API_RE[err].test(apiFnChain[i]))
+                    return i;
             }
+        }
+        return null;
+    }
+    isArrayOfNodes (obj) {
+        if (!isArray(obj))
+            return false;
 
-            return filtered;
+        for (var i = 0; i < obj.length; i++) {
+            if (!(obj[i] instanceof Node))
+                return false;
         }
 
-        return getNodeByIndex(filtered, options.index || 0);
-    },
+        return true;
+    }
+    getNodeByIndex (collection, index) {
+        return index < 0 ? collection[collection.length + index] : collection[index];
+    }
+}
+
+// Selector filter
+hammerhead.nativeMethods.objectDefineProperty.call(window, window, '%testCafeSelectorFilter%', {
+    value:        new SelectorFilter(),
     configurable: true
 });
