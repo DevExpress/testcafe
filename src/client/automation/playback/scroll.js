@@ -163,10 +163,8 @@ export default class ScrollAutomation {
     }
 
     _getChildPointAfterScroll (parentDimensions, childDimensions, left, top) {
-        const x = childDimensions.left + parentDimensions.scroll.left - left +
-                  Math.round(childDimensions.width / 2);
-        const y = childDimensions.top + parentDimensions.scroll.top - top +
-                  Math.round(childDimensions.height / 2);
+        const x = Math.round(childDimensions.left + parentDimensions.scroll.left - left + childDimensions.width / 2);
+        const y = Math.round(childDimensions.top + parentDimensions.scroll.top - top + childDimensions.height / 2);
 
         return { x, y };
     }
