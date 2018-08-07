@@ -14,6 +14,7 @@ var ActionPositiveIntegerOptionError                  = require('../../lib/error
 var ActionIntegerArgumentError                        = require('../../lib/errors/test-run').ActionIntegerArgumentError;
 var ActionPositiveIntegerArgumentError                = require('../../lib/errors/test-run').ActionPositiveIntegerArgumentError;
 var ActionBooleanOptionError                          = require('../../lib/errors/test-run').ActionBooleanOptionError;
+var ActionBooleanArgumentError                        = require('../../lib/errors/test-run').ActionBooleanArgumentError;
 var ActionSpeedOptionError                            = require('../../lib/errors/test-run').ActionSpeedOptionError;
 var ActionSelectorError                               = require('../../lib/errors/test-run').ActionSelectorError;
 var ActionOptionsTypeError                            = require('../../lib/errors/test-run').ActionOptionsTypeError;
@@ -142,6 +143,10 @@ describe('Error formatting', function () {
 
         it('Should format "actionBooleanOptionError" message', function () {
             assertErrorMessage('action-boolean-option-error', new ActionBooleanOptionError('modifier.ctrl', 'object'));
+        });
+
+        it('Should format "actionBooleanArgumentError" message', function () {
+            assertErrorMessage('action-boolean-argument-error', new ActionBooleanArgumentError('isAsyncExpression', 'object'));
         });
 
         it('Should format "actionSpeedOptionError" message', function () {

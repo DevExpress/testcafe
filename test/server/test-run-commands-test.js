@@ -1,9 +1,13 @@
-var expect               = require('chai').expect;
-var TYPE                 = require('../../lib/test-run/commands/type');
-var createCommand        = require('../../lib/test-run/commands/from-object');
-var ERROR_TYPE           = require('../../lib/errors/test-run/type');
-var SelectorBuilder      = require('../../lib/client-functions/selectors/selector-builder');
-var assertThrow          = require('./helpers/assert-error').assertThrow;
+var expect                  = require('chai').expect;
+var TYPE                    = require('../../lib/test-run/commands/type');
+var createCommandFromObject = require('../../lib/test-run/commands/from-object');
+var ERROR_TYPE              = require('../../lib/errors/test-run/type');
+var SelectorBuilder         = require('../../lib/client-functions/selectors/selector-builder');
+var assertThrow             = require('./helpers/assert-error').assertThrow;
+
+function createCommand (obj) {
+    return createCommandFromObject(obj, {});
+}
 
 function assertErrorMessage (fn, expectedErrMessage) {
     var actualErr = null;
@@ -1060,6 +1064,41 @@ describe('Test run commands', function () {
                 options: {
                     allowUnawaitedPromise: false
                 }
+            });
+        });
+
+        it('Should create ExecuteExpressionCommand from object', function () {
+            var commandObj = {
+                type: TYPE.executeExpression,
+
+                expression:         'js-expression',
+                isAsyncExpression:  true,
+                resultVariableName: 'variable'
+            };
+
+            var command = createCommand(commandObj);
+
+            expect(JSON.parse(JSON.stringify(command))).eql({
+                type: TYPE.executeExpression,
+
+                expression:         'js-expression',
+                isAsyncExpression:  true,
+                resultVariableName: 'variable'
+            });
+
+            commandObj = {
+                type:       TYPE.executeExpression,
+                expression: 'js-expression'
+            };
+
+            command = createCommand(commandObj);
+
+            expect(JSON.parse(JSON.stringify(command))).eql({
+                type: TYPE.executeExpression,
+
+                expression:         'js-expression',
+                isAsyncExpression:  false,
+                resultVariableName: null
             });
         });
 
@@ -2798,6 +2837,92 @@ describe('Test run commands', function () {
                     actualValue:     'invalid js code',
                     errMsg:          'Unexpected identifier',
                     type:            ERROR_TYPE.assertionExecutableArgumentError,
+                    callsite:        null
+                }
+            );
+        });
+
+        it('Should validate ExecuteExpressionСommand', function () {
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type: TYPE.executeExpression
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    type:            ERROR_TYPE.actionStringArgumentError,
+                    argumentName:    'expression',
+                    actualValue:     'undefined',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:       TYPE.executeExpression,
+                        expression: 123
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    type:            ERROR_TYPE.actionStringArgumentError,
+                    argumentName:    'expression',
+                    actualValue:     'number',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:              TYPE.executeExpression,
+                        expression:        'js-expression',
+                        isAsyncExpression: 123
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    type:            ERROR_TYPE.actionBooleanArgumentError,
+                    actualValue:     'number',
+                    argumentName:    'isAsyncExpression',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:               TYPE.executeExpression,
+                        expression:         'js-expression',
+                        isAsyncExpression:  true,
+                        resultVariableName: 123
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    type:            ERROR_TYPE.actionStringArgumentError,
+                    argumentName:    'resultVariableName',
+                    actualValue:     'number',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:               TYPE.executeExpression,
+                        expression:         'js-expression',
+                        isAsyncExpression:  true,
+                        resultVariableName: ''
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    type:            ERROR_TYPE.actionStringArgumentError,
+                    argumentName:    'resultVariableName',
+                    actualValue:     '""',
                     callsite:        null
                 }
             );

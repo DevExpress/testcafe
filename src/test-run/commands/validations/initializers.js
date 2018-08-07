@@ -5,14 +5,19 @@ import { ExecuteSelectorCommand } from '../observation';
 import { executeJsExpression } from '../../execute-js-expression';
 import { isJSExpression } from '../utils';
 
+export function initUploadSelector (name, val, initOptions) {
+    initOptions.skipVisibilityCheck = true;
 
-export function initSelector (name, val, skipVisibilityCheck) {
+    return initSelector(name, val, initOptions);
+}
+
+export function initSelector (name, val, { skipVisibilityCheck, testRun }) {
     if (val instanceof ExecuteSelectorCommand)
         return val;
 
     try {
         if (isJSExpression(val))
-            val = executeJsExpression(val.value, skipVisibilityCheck);
+            val = executeJsExpression(val.value, testRun, skipVisibilityCheck);
 
         var builder = new SelectorBuilder(val, { visibilityCheck: !skipVisibilityCheck }, { instantiation: 'Selector' });
 

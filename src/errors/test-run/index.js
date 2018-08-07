@@ -186,6 +186,12 @@ export class ActionBooleanOptionError extends ActionOptionErrorBase {
     }
 }
 
+export class ActionBooleanArgumentError extends ActionArgumentErrorBase {
+    constructor (argumentName, actualValue) {
+        super(TYPE.actionBooleanArgumentError, argumentName, actualValue);
+    }
+}
+
 export class ActionSpeedOptionError extends ActionOptionErrorBase {
     constructor (optionName, actualValue) {
         super(TYPE.actionSpeedOptionError, optionName, actualValue);
