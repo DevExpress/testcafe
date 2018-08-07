@@ -60,7 +60,7 @@ describe('[Raw API] Click action', function () {
     it("Should fail if an action target doesn't exist", function () {
         return runTests('./testcafe-fixtures/click.testcafe', 'Click non-existent button', { shouldFail: true })
             .catch(function (errs) {
-                expect(errs[0]).contains('The specified selector does not match any element in the DOM tree.');
+                expect(errs[0]).contains('The specified selector ">>>#new-button" does not match any element in the DOM tree.');
                 expect(errs[0]).contains('[[Click non-existent button callsite]]');
             });
     });

@@ -44,7 +44,7 @@ describe('[Raw API] Upload', function () {
     it('Should clear the upload', function () {
         return runTests('./testcafe-fixtures/upload.testcafe', 'Clear the upload', { shouldFail: true })
             .catch(function (errs) {
-                expect(errs[0]).contains('The specified selector does not match any element in the DOM tree.');
+                expect(errs[0]).contains('The specified selector ">>>#button" does not match any element in the DOM tree.');
             });
     });
 
