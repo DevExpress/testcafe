@@ -2,7 +2,7 @@ const API_IMPLEMENTATION_METHOD_RE = /^_(\S+)\$(getter|setter)?$/;
 
 export function getDelegatedAPIList (src) {
     return Object
-        .keys(src)
+        .getOwnPropertyNames(src)
         .map(prop => {
             var match = prop.match(API_IMPLEMENTATION_METHOD_RE);
 

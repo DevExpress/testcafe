@@ -18,22 +18,26 @@ function RequestLogger (requestFilterRuleInit, logOptions) {
     return createRequestLogger(requestFilterRuleInit, logOptions);
 }
 
+function ClientFunction (fn, options) {
+    const builder = new ClientFunctionBuilder(fn, options, { instantiation: 'ClientFunction' });
+
+    return builder.getFunction();
+}
+
+function Selector (fn, options) {
+    const builder = new SelectorBuilder(fn, options, { instantiation: 'Selector' });
+
+    return builder.getFunction();
+}
+
 Role.anonymous = createAnonymousRole;
 
 export default {
     Role,
 
-    ClientFunction (fn, options) {
-        var builder = new ClientFunctionBuilder(fn, options, { instantiation: 'ClientFunction' });
+    ClientFunction,
 
-        return builder.getFunction();
-    },
-
-    Selector (fn, options) {
-        var builder = new SelectorBuilder(fn, options, { instantiation: 'Selector' });
-
-        return builder.getFunction();
-    },
+    Selector,
 
     RequestLogger,
 
@@ -43,4 +47,3 @@ export default {
 
     t: testControllerProxy
 };
-
