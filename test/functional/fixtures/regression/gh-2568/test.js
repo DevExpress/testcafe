@@ -120,4 +120,11 @@ describe('[Regression](GH-2568)', function () {
                 expect(errs[0]).to.contains('The specified selector "body>>>.find(\'div.not-existing\').nextSibling().parent(\'div\').child(\'span\')" does not match any element in the DOM tree.');
             });
     });
+
+    it('drag', function () {
+        return runTests('testcafe-fixtures/index.js', 'drag', { selectorTimeout: 100, shouldFail: true, })
+            .catch(function (errs) {
+                expect(errs[0]).to.contains('The specified "destinationSelector" : "div.parent>>>.child(\'ul\')" does not match any element in the DOM tree.');
+            });
+    });
 });

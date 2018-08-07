@@ -28,7 +28,7 @@ test('nested client function selector', async t => {
 });
 
 test('nth', async t => {
-    var selector = Selector('div')
+    const selector = Selector('div')
         .filter('.filtered')
         .withText('loren')
         .withExactText('loren ipsum')
@@ -40,7 +40,7 @@ test('nth', async t => {
 });
 
 test('filterVisible', async t => {
-    var selector = Selector('div')
+    const selector = Selector('div')
         .filter('.filtered')
         .withText('loren')
         .withExactText('loren ipsum')
@@ -52,7 +52,7 @@ test('filterVisible', async t => {
 });
 
 test('filterHidden', async t => {
-    var selector = Selector('div')
+    const selector = Selector('div')
         .filter('.filtered')
         .withText('loren')
         .withExactText('loren ipsum')
@@ -64,7 +64,7 @@ test('filterHidden', async t => {
 });
 
 test('withAttribute', async t => {
-    var selector = Selector('div')
+    const selector = Selector('div')
         .filter('.filtered')
         .withText('loren')
         .withExactText('loren ipsum')
@@ -76,7 +76,7 @@ test('withAttribute', async t => {
 });
 
 test('withExactText', async t => {
-    var selector = Selector('div')
+    const selector = Selector('div')
         .filter('.filtered')
         .withText('loren')
         .withExactText('loren ipsums')
@@ -88,7 +88,7 @@ test('withExactText', async t => {
 });
 
 test('withText', async t => {
-    var selector = Selector('div')
+    const selector = Selector('div')
         .filter('.filtered')
         .withText('lorenps')
         .withExactText('loren ipsums')
@@ -100,7 +100,7 @@ test('withText', async t => {
 });
 
 test('filter', async t => {
-    var selector = Selector('div')
+    const selector = Selector('div')
         .filter('.filteredddddd')
         .withText('loren')
         .withExactText('loren ipsum')
@@ -112,7 +112,7 @@ test('filter', async t => {
 });
 
 test('root', async t => {
-    var selector = Selector('divf')
+    const selector = Selector('divf')
         .filter('.filtered')
         .withText('loren')
         .withExactText('loren ipsum')
@@ -124,7 +124,7 @@ test('root', async t => {
 });
 
 test('child', async t => {
-    var selector = Selector('body')
+    const selector = Selector('body')
         .find('div.parent > div')
         .nextSibling()
         .parent('div')
@@ -134,7 +134,7 @@ test('child', async t => {
 });
 
 test('parent', async t => {
-    var selector = Selector('body')
+    const selector = Selector('body')
         .find('div.parent > div')
         .nextSibling()
         .parent('span')
@@ -144,7 +144,7 @@ test('parent', async t => {
 });
 
 test('nextSibling', async t => {
-    var selector = Selector('body')
+    const selector = Selector('body')
         .find('div.parent > div:last-child')
         .nextSibling()
         .parent('div')
@@ -154,7 +154,7 @@ test('nextSibling', async t => {
 });
 
 test('prevSibling', async t => {
-    var selector = Selector('body')
+    const selector = Selector('body')
         .find('div.parent > div:first-child')
         .prevSibling()
         .parent('div')
@@ -164,7 +164,7 @@ test('prevSibling', async t => {
 });
 
 test('sibling', async t => {
-    var selector = Selector('body')
+    const selector = Selector('body')
         .find('div.parent > div:first-child > div')
         .sibling()
         .parent('div')
@@ -174,11 +174,17 @@ test('sibling', async t => {
 });
 
 test('find', async t => {
-    var selector = Selector('body')
+    const selector = Selector('body')
         .find('div.not-existing')
         .nextSibling()
         .parent('div')
         .child('span');
 
     await t.click(selector);
+});
+
+test('drag', async t => {
+    const selector = Selector('div.parent').child('ul');
+
+    await t.dragToElement('div.parent', selector);
 });

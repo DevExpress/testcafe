@@ -214,7 +214,7 @@ describe('Error formatting', function () {
         });
 
         it('Should format "actionAdditionalElementNotFoundError" message', function () {
-            assertErrorMessage('action-additional-element-not-found-error', new ActionAdditionalElementNotFoundError('startSelector'));
+            assertErrorMessage('action-additional-element-not-found-error', new ActionAdditionalElementNotFoundError('startSelector', 'text'));
         });
 
         it('Should format "actionAdditionalElementIsInvisibleError" message', function () {
