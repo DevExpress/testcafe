@@ -174,7 +174,7 @@ describe('Error formatting', function () {
         });
 
         it('Should format "actionElementNotFoundError" message', function () {
-            assertErrorMessage('action-element-not-found-error', new ActionElementNotFoundError());
+            assertErrorMessage('action-element-not-found-error', new ActionElementNotFoundError('text'));
         });
 
         it('Should format "actionElementIsInvisibleError" message', function () {
