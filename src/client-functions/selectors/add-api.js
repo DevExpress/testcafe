@@ -1,7 +1,6 @@
 import { assign } from 'lodash';
 import clientFunctionBuilderSymbol from '../builder-symbol';
 import { ELEMENT_SNAPSHOT_PROPERTIES, NODE_SNAPSHOT_PROPERTIES } from './snapshot-properties';
-import { CantObtainInfoForElementSpecifiedBySelectorError } from '../../errors/test-run';
 import { getCallsiteForMethod } from '../../errors/get-callsite';
 import ClientFunctionBuilder from '../client-function-builder';
 import ReExecutablePromise from '../../utils/re-executable-promise';
@@ -82,9 +81,6 @@ async function getSnapshot (getSelector, callsite) {
         err.callsite = callsite;
         throw err;
     }
-
-    if (!node)
-        throw new CantObtainInfoForElementSpecifiedBySelectorError(callsite);
 
     return node;
 }

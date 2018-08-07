@@ -127,4 +127,18 @@ describe('[Regression](GH-2568)', function () {
                 expect(errs[0]).to.contains('The specified "destinationSelector" : "div.parent>>>.child(\'ul\')" does not match any element in the DOM tree.');
             });
     });
+
+    it('snapshot', function () {
+        return runTests('testcafe-fixtures/index.js', 'snapshot', { selectorTimeout: 100, shouldFail: true, })
+            .catch(function (errs) {
+                expect(errs[0]).to.contains('Cannot obtain information about the node because the specified selector ">>>ul li.filter(\'test\')" does not match any node in the DOM tree.');
+            });
+    });
+
+    it('custom DOM properties', function () {
+        return runTests('testcafe-fixtures/index.js', 'custom DOM properties', { selectorTimeout: 100, shouldFail: true, })
+            .catch(function (errs) {
+                expect(errs[0]).to.contains('Cannot obtain information about the node because the specified selector ">>>ul li" does not match any node in the DOM tree.');
+            });
+    });
 });

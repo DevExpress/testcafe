@@ -27,7 +27,8 @@ import {
     ActionElementIsInvisibleError,
     CurrentIframeIsNotLoadedError,
     CurrentIframeNotFoundError,
-    CurrentIframeIsInvisibleError
+    CurrentIframeIsInvisibleError,
+    CantObtainInfoForElementSpecifiedBySelectorError
 } from '../../errors/test-run';
 
 import BrowserConsoleMessages from '../../test-run/browser-console-messages';
@@ -390,7 +391,12 @@ export default class Driver {
     _onExecuteSelectorCommand (command) {
         var startTime = this.contextStorage.getItem(SELECTOR_EXECUTION_START_TIME) || new Date();
 
-        getExecuteSelectorResultDriverStatus(command, this.selectorTimeout, startTime, null, null, this.statusBar)
+        getExecuteSelectorResultDriverStatus(command,
+            this.selectorTimeout,
+            startTime,
+            fn => new CantObtainInfoForElementSpecifiedBySelectorError(null, fn),
+            null,
+            this.statusBar)
             .then(driverStatus => {
                 this.contextStorage.setItem(SELECTOR_EXECUTION_START_TIME, null);
                 this._onReady(driverStatus);

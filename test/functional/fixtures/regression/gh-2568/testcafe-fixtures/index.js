@@ -188,3 +188,16 @@ test('drag', async t => {
 
     await t.dragToElement('div.parent', selector);
 });
+
+test('snapshot', async () => {
+    await Selector('ul li').filter('test').hasClass('yo');
+});
+
+test('custom DOM properties', async t => {
+    const selector = Selector('ul li').addCustomDOMProperties({
+        innerHTML: el => el.innerHTML
+    });
+
+    await t.expect(selector.innerHTML).eql('test');
+});
+

@@ -314,7 +314,7 @@ describe('Error formatting', function () {
         });
 
         it('Should format "cantObtainInfoForElementSpecifiedBySelectorError"', function () {
-            assertErrorMessage('cant-obtain-info-for-element-specified-by-selector-error', new CantObtainInfoForElementSpecifiedBySelectorError(testCallsite));
+            assertErrorMessage('cant-obtain-info-for-element-specified-by-selector-error', new CantObtainInfoForElementSpecifiedBySelectorError(testCallsite, 'text'));
         });
 
         it('Should format "windowDimensionsOverflowError"', function () {

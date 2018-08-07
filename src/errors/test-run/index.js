@@ -70,10 +70,11 @@ export class InvalidSelectorResultError extends TestRunErrorBase {
 }
 
 export class CantObtainInfoForElementSpecifiedBySelectorError extends TestRunErrorBase {
-    constructor (callsite) {
+    constructor (callsite, fn) {
         super(TYPE.cantObtainInfoForElementSpecifiedBySelectorError);
 
         this.callsite = callsite;
+        this.fn       = fn;
     }
 }
 
