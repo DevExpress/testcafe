@@ -1,4 +1,5 @@
-The specified "startSelector" does not match any element in the DOM tree.
+The specified "startSelector" : "text" does not match any element in the DOM
+tree.
 
 Browser: Chrome 15.0.874 / Mac OS X 10.8.1
 Screenshot: /unix/path/with/<tag>

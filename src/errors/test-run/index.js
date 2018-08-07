@@ -299,10 +299,11 @@ export class ActionSelectorMatchesWrongNodeTypeError extends TestRunErrorBase {
 }
 
 export class ActionAdditionalElementNotFoundError extends TestRunErrorBase {
-    constructor (argumentName) {
+    constructor (argumentName, fn) {
         super(TYPE.actionAdditionalElementNotFoundError);
 
         this.argumentName = argumentName;
+        this.fn           = fn;
     }
 }
 

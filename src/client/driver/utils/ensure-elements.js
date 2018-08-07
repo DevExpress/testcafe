@@ -64,7 +64,7 @@ export function createElementDescriptor (selector) {
 export function createAdditionalElementDescriptor (selector, elementName) {
     return {
         selector:                    selector,
-        createNotFoundError:         () => new ActionAdditionalElementNotFoundError(elementName),
+        createNotFoundError:         fn => new ActionAdditionalElementNotFoundError(elementName, fn),
         createIsInvisibleError:      () => new ActionAdditionalElementIsInvisibleError(elementName),
         createHasWrongNodeTypeError: nodeDescription => new ActionAdditionalSelectorMatchesWrongNodeTypeError(elementName, nodeDescription)
     };
