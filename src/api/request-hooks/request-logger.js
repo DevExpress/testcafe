@@ -62,8 +62,10 @@ class RequestLoggerImplementation extends RequestHook {
     onResponse (event) {
         const loggerReq = this._internalRequests[event.requestId];
 
+        // NOTE: If the 'clear' method is called during a long running request,
+        // we should not save a response part - request part has been already removed.
         if (!loggerReq)
-            throw new TypeError(`Cannot find a recorded request with id=${event.id}. This is an internal TestCafe problem. Please contact the TestCafe team and provide an example to reproduce the problem.`);
+            return;
 
         loggerReq.response            = {};
         loggerReq.response.statusCode = event.statusCode;
