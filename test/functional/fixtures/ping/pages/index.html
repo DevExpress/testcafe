@@ -6,6 +6,8 @@
     <body>
         <div id="logger"></div>
         <script>
+            let url = "http://localhost:3000/fixtures/ping/pages/test.html";
+
             function log (text) {
                 const textDiv = document.createElement('div');
 
@@ -19,7 +21,7 @@
             interval = setInterval(() => {
                 var oXHR = new XMLHttpRequest();
 
-                oXHR.open("GET", "http://localhost:3000/fixtures/ping/pages/test.html", true);
+                oXHR.open("GET", url, true);
 
                 oXHR.onreadystatechange = function () {
                     if (oXHR.readyState === 4) {
@@ -27,7 +29,7 @@
                             log(oXHR.responseText)
                         } else {
                              clearInterval(interval);
-
+                             debugger;
                              log("Error", oXHR.statusText);
                              if (window.resolver)
                                  window.resolver(oXHR.statusText)
