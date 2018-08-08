@@ -69,9 +69,9 @@ var expandSelectorResults = (new ClientFunctionBuilder((selector, populateDeriva
 
 })).getFunction();
 
-async function getSnapshot (getSelector, callsite) {
-    var node     = null;
-    var selector = getSelector();
+async function getSnapshot (getSelector, callsite, SelectorBuilder) {
+    let node       = null;
+    const selector = new SelectorBuilder(getSelector(), { needError: true }, { instantiation: 'Selector' }).getFunction();
 
     try {
         node = await selector();
@@ -104,14 +104,14 @@ function assertAddCustomMethods (properties, opts) {
     });
 }
 
-function addSnapshotProperties (obj, getSelector, properties) {
+function addSnapshotProperties (obj, getSelector, SelectorBuilder, properties) {
     properties.forEach(prop => {
         Object.defineProperty(obj, prop, {
             get: () => {
                 var callsite = getCallsiteForMethod('get');
 
                 return ReExecutablePromise.fromFn(async () => {
-                    var snapshot = await getSnapshot(getSelector, callsite);
+                    var snapshot = await getSnapshot(getSelector, callsite, SelectorBuilder);
 
                     return snapshot[prop];
                 });
@@ -167,14 +167,14 @@ function addSnapshotPropertyShorthands (obj, getSelector, SelectorBuilder, custo
     if (customDOMProperties)
         properties = properties.concat(Object.keys(customDOMProperties));
 
-    addSnapshotProperties(obj, getSelector, properties);
+    addSnapshotProperties(obj, getSelector, SelectorBuilder, properties);
     addCustomMethods(obj, getSelector, SelectorBuilder, customMethods);
 
     obj.getStyleProperty = prop => {
         var callsite = getCallsiteForMethod('getStyleProperty');
 
         return ReExecutablePromise.fromFn(async () => {
-            var snapshot = await getSnapshot(getSelector, callsite);
+            var snapshot = await getSnapshot(getSelector, callsite, SelectorBuilder);
 
             return snapshot.style ? snapshot.style[prop] : void 0;
         });
@@ -184,7 +184,7 @@ function addSnapshotPropertyShorthands (obj, getSelector, SelectorBuilder, custo
         var callsite = getCallsiteForMethod('getAttribute');
 
         return ReExecutablePromise.fromFn(async () => {
-            var snapshot = await getSnapshot(getSelector, callsite);
+            var snapshot = await getSnapshot(getSelector, callsite, SelectorBuilder);
 
             return snapshot.attributes ? snapshot.attributes[attrName] : void 0;
         });
@@ -194,7 +194,7 @@ function addSnapshotPropertyShorthands (obj, getSelector, SelectorBuilder, custo
         var callsite = getCallsiteForMethod('hasAttribute');
 
         return ReExecutablePromise.fromFn(async () => {
-            var snapshot = await getSnapshot(getSelector, callsite);
+            var snapshot = await getSnapshot(getSelector, callsite, SelectorBuilder);
 
             return snapshot.attributes ? snapshot.attributes.hasOwnProperty(attrName) : false;
         });
@@ -204,7 +204,7 @@ function addSnapshotPropertyShorthands (obj, getSelector, SelectorBuilder, custo
         var callsite = getCallsiteForMethod('getBoundingClientRectProperty');
 
         return ReExecutablePromise.fromFn(async () => {
-            var snapshot = await getSnapshot(getSelector, callsite);
+            var snapshot = await getSnapshot(getSelector, callsite, SelectorBuilder);
 
             return snapshot.boundingClientRect ? snapshot.boundingClientRect[prop] : void 0;
         });
@@ -214,7 +214,7 @@ function addSnapshotPropertyShorthands (obj, getSelector, SelectorBuilder, custo
         var callsite = getCallsiteForMethod('hasClass');
 
         return ReExecutablePromise.fromFn(async () => {
-            var snapshot = await getSnapshot(getSelector, callsite);
+            var snapshot = await getSnapshot(getSelector, callsite, SelectorBuilder);
 
             return snapshot.classNames ? snapshot.classNames.indexOf(name) > -1 : false;
         });

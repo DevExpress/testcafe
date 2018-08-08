@@ -389,13 +389,15 @@ export default class Driver {
     }
 
     _onExecuteSelectorCommand (command) {
-        var startTime = this.contextStorage.getItem(SELECTOR_EXECUTION_START_TIME) || new Date();
+        const startTime                   = this.contextStorage.getItem(SELECTOR_EXECUTION_START_TIME) || new Date();
+        const elementNotFoundOrNotVisible = fn => new CantObtainInfoForElementSpecifiedBySelectorError(null, fn);
+        const createError                 = command.needError ? elementNotFoundOrNotVisible : null;
 
         getExecuteSelectorResultDriverStatus(command,
             this.selectorTimeout,
             startTime,
-            fn => new CantObtainInfoForElementSpecifiedBySelectorError(null, fn),
-            null,
+            createError,
+            createError,
             this.statusBar)
             .then(driverStatus => {
                 this.contextStorage.setItem(SELECTOR_EXECUTION_START_TIME, null);

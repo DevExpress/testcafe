@@ -187,7 +187,7 @@ describe('[API] Selector', function () {
             })
                 .catch(function (errs) {
                     expect(errs[0]).contains(
-                        'Cannot obtain information about the node because the specified selector does not match any node in the DOM tree.'
+                        'Cannot obtain information about the node because the specified selector ">>>#someUnknownElement" does not match any node in the DOM tree.'
                     );
                     expect(errs[0]).contains("> 23 |    await Selector('#someUnknownElement').tagName;");
                 });
@@ -200,7 +200,7 @@ describe('[API] Selector', function () {
             })
                 .catch(function (errs) {
                     expect(errs[0]).contains(
-                        'Cannot obtain information about the node because the specified selector does not match any node in the DOM tree.'
+                        'Cannot obtain information about the node because the specified selector ">>>#someUnknownElement" does not match any node in the DOM tree.'
                     );
                     expect(errs[0]).contains("> 27 |    await Selector('#someUnknownElement').getStyleProperty('width');");
                 });

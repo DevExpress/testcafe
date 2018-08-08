@@ -133,6 +133,7 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
             fnCode:                    this.compiledFnCode,
             args:                      encodedArgs,
             dependencies:              encodedDependencies,
+            needError:                 this.options.needError,
             apiFnChain:                this.options.apiFnChain,
             visibilityCheck:           !!this.options.visibilityCheck,
             timeout:                   this.options.timeout

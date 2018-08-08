@@ -402,7 +402,7 @@ describe('[API] t.takeElementScreenshot()', function () {
                 only:              'chrome'
             })
                 .catch(function (errs) {
-                    expect(errs[0]).to.contains('The specified selector does not match any element in the DOM tree.');
+                    expect(errs[0]).to.contains('The specified selector ">>>table" does not match any element in the DOM tree.');
                     expect(errs[0]).to.contains(
                         ' 49 |        .click(\'#remove\')' +
                         ' > 50 |        .takeElementScreenshot(\'table\', \'custom/\' + t.ctx.parsedUA.family + \'.png\');' +

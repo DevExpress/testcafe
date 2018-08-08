@@ -46,6 +46,7 @@ export class ExecuteSelectorCommand extends ExecuteClientFunctionCommandBase {
             { name: 'visibilityCheck', defaultValue: false },
             { name: 'timeout', defaultValue: null },
             { name: 'apiFnChain' },
+            { name: 'needError' },
             { name: 'index', defaultValue: 0 }
         ]);
     }
