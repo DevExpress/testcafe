@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #fixedTop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 70%;
+        }
+
+        #fixedTop.inversed {
+            top: auto;
+            bottom: 0;
+        }
+
+        #fixedTop div {
+            width: 100%;
+            height: 100%;
+            background-color: red;
+        }
+
+        #fixedLeft {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            background-color: yellow;
+            width: 70%;
+        }
+
+        #fixedLeft.inversed {
+            left: auto;
+            right: 0;
+        }
+
+        #button1 {
+            margin-top: 3000px;
+            margin-left: 3000px;
+        }
+    </style>
+</head>
+<body>
+<div style="height: 9000px; width: 9000px;">
+    <button id="button1" onclick="onClick('button1', event)">button1</button>
+    <div id="result"></div>
+</div>
+<div id="fixedLeft"></div>
+<div id="fixedTop" onclick="onClick('fixedTop', event)"><div></div></div>
+<script type="text/javascript">
+    function onClick (text, event) {
+        document.getElementById('result').innerHTML += text;
+
+        event.stopPropagation()
+    }
+</script>
+</body>
+</html>
