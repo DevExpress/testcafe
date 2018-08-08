@@ -1,7 +1,6 @@
 import Promise from 'pinkie';
 import promisifyEvent from 'promisify-event';
 import mapReverse from 'map-reverse';
-import { resolve as resolvePath } from 'path';
 import { EventEmitter } from 'events';
 import { flattenDeep as flatten, pull as remove } from 'lodash';
 import Bootstrapper from './bootstrapper';
@@ -146,7 +145,6 @@ export default class Runner extends EventEmitter {
         }
     }
 
-
     // API
     embeddingOptions (opts) {
         this._registerAssets(opts.assets);
@@ -156,9 +154,7 @@ export default class Runner extends EventEmitter {
     }
 
     src (...sources) {
-        sources = flatten(sources).map(path => resolvePath(path));
-
-        this.bootstrapper.sources = this.bootstrapper.sources.concat(sources);
+        this.bootstrapper.sources = this.bootstrapper.sources.concat(flatten(sources));
 
         return this;
     }
@@ -227,6 +223,7 @@ export default class Runner extends EventEmitter {
         var runTaskPromise = Promise.resolve()
             .then(() => {
                 this._validateRunOptions();
+
                 return this.bootstrapper.createRunnableConfiguration();
             })
             .then(({ reporterPlugins, browserSet, tests, testedApp }) => {

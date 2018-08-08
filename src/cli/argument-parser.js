@@ -1,22 +1,17 @@
-import { resolve, join as pathJoin, dirname } from 'path';
+import { resolve, dirname } from 'path';
 import { Command } from 'commander';
 import Promise from 'pinkie';
 import dedent from 'dedent';
-import isGlob from 'is-glob';
-import globby from 'globby';
 import { readSync as read } from 'read-file-relative';
 import { GeneralError } from '../errors/runtime';
 import MESSAGE from '../errors/runtime/message';
-import Compiler from '../compiler';
 import { assertType, is } from '../errors/runtime/type-assertions';
 import getViewPortWidth from '../utils/get-viewport-width';
 import { wordWrap, splitQuotedText } from '../utils/string';
-import { stat, ensureDir } from '../utils/promisified-functions';
+import { ensureDir } from '../utils/promisified-functions';
 import parseSslOptions from './parse-ssl-options';
 
-const REMOTE_ALIAS_RE          = /^remote(?::(\d*))?$/;
-const DEFAULT_TEST_LOOKUP_DIRS = ['test/', 'tests/'];
-const TEST_FILE_GLOB_PATTERN   = `./**/*@(${Compiler.getSupportedTestFileExtensions().join('|')})`;
+const REMOTE_ALIAS_RE = /^remote(?::(\d*))?$/;
 
 const DESCRIPTION = dedent(`
     In the browser list, you can use browser names (e.g. "ie", "chrome", etc.) as well as paths to executables.
@@ -46,10 +41,6 @@ export default class CLIArgumentParser {
         this.opts        = null;
 
         this._describeProgram();
-    }
-
-    static _isInteger (value) {
-        return !isNaN(value) && isFinite(value);
     }
 
     static _parsePortNumber (value) {
@@ -245,52 +236,8 @@ export default class CLIArgumentParser {
         }
     }
 
-    async _convertDirsToGlobs (fileList) {
-        fileList = await Promise.all(fileList.map(async file => {
-            if (!isGlob(file)) {
-                var absPath  = resolve(this.cwd, file);
-                var fileStat = null;
-
-                try {
-                    fileStat = await stat(absPath);
-                }
-                catch (err) {
-                    return null;
-                }
-
-                if (fileStat.isDirectory())
-                    return pathJoin(file, TEST_FILE_GLOB_PATTERN);
-            }
-
-            return file;
-        }));
-
-        return fileList.filter(file => !!file);
-    }
-
-    async _getDefaultDirs () {
-        return await globby(DEFAULT_TEST_LOOKUP_DIRS, {
-            cwd:    this.cwd,
-            silent: true,
-            nocase: true
-        });
-    }
-
-    async _parseFileList () {
-        var fileList = this.program.args.slice(1);
-
-        if (!fileList.length)
-            fileList = await this._getDefaultDirs();
-
-        fileList = await this._convertDirsToGlobs(fileList);
-
-        this.src = await globby(fileList, {
-            cwd:    this.cwd,
-            silent: true,
-            nodir:  true
-        });
-
-        this.src = this.src.map(file => resolve(this.cwd, file));
+    _parseFileList () {
+        this.src = this.program.args.slice(1);
     }
 
     async _parseScreenshotsPath () {
@@ -327,10 +274,10 @@ export default class CLIArgumentParser {
         this._parseBrowserList();
         this._parseConcurrency();
         this._parseSslOptions();
+        this._parseFileList();
 
         await Promise.all([
             this._parseScreenshotsPath(),
-            this._parseFileList(),
             this._parseReporters()
         ]);
     }

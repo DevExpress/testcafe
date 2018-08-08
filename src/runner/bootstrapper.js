@@ -7,6 +7,7 @@ import browserProviderPool from '../browser/provider/pool';
 import MESSAGE from '../errors/runtime/message';
 import BrowserSet from './browser-set';
 import TestedApp from './tested-app';
+import parseFileList from '../utils/parse-file-list';
 
 const DEFAULT_APP_INIT_DELAY = 1000;
 
@@ -71,10 +72,11 @@ export default class Bootstrapper {
         if (!this.sources.length)
             throw new GeneralError(MESSAGE.testSourcesNotSet);
 
-        var compiler = new Compiler(this.sources);
-        var tests    = await compiler.getTests();
+        const parsedFileList = await parseFileList(this.sources, process.cwd());
+        const compiler       = new Compiler(parsedFileList);
+        let tests            = await compiler.getTests();
 
-        var testsWithOnlyFlag = tests.filter(test => test.only);
+        const testsWithOnlyFlag = tests.filter(test => test.only);
 
         if (testsWithOnlyFlag.length)
             tests = testsWithOnlyFlag;

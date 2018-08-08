@@ -313,55 +313,6 @@ describe('CLI argument parser', function () {
         });
     });
 
-    it('Should accept globs and paths as source files', function () {
-        var cwd = process.cwd();
-
-        var expected = [
-            'test/server/data/file-list/file-1.js',
-            'test/server/data/file-list/file-2.js',
-            'test/server/data/file-list/dir1/dir1-1/file-1-1-1.js',
-            'test/server/data/file-list/dir1/file-1-1.js',
-            'test/server/data/file-list/dir1/file-1-2.js',
-            'test/server/data/file-list/dir1/file-1-3.testcafe',
-            'test/server/data/file-list/dir1/file-1-4.ts',
-            'test/server/data/file-list/dir2/file-2-2.js',
-            'test/server/data/file-list/dir2/file-2-3.js'
-        ];
-
-        expected = expected.map(function (file) {
-            return path.resolve(cwd, file);
-        });
-
-        return parse('chrome ' +
-                     'test/server/data/file-list/file-1.js ' +
-                     path.join(cwd, 'test/server/data/file-list/file-2.js') + ' ' +
-                     'test/server/data/file-list/dir1 ' +
-                     'test/server/data/file-list/dir2/*.js ' +
-                     '!test/server/data/file-list/dir2/file-2-1.js ' +
-                     'test/server/data/file-list/dir3')
-            .then(function (parser) {
-                expect(parser.src).eql(expected);
-            });
-    });
-
-    it('Should use "test" and "tests" dirs if source files are not specified', function () {
-        var workingDir = path.join(__dirname, './data/file-list');
-
-        var expected = [
-            'test/test-dir-file.js',
-            'tests/tests-dir-file.js'
-        ];
-
-        expected = expected.map(function (file) {
-            return path.resolve(workingDir, file);
-        });
-
-        return parse('chrome', workingDir)
-            .then(function (parser) {
-                expect(parser.src).eql(expected);
-            });
-    });
-
     it('Should parse the screenshot path and ensure it exists', function () {
         var dir = path.join(tmp.dirSync().name, 'my/screenshots');
 
@@ -389,7 +340,7 @@ describe('CLI argument parser', function () {
         return parse('-r list -S -q -e --hostname myhost --proxy localhost:1234 --proxy-bypass localhost:5678 --qr-code --app run-app --speed 0.5 --debug-on-fail --disable-page-reloads --dev ie test/server/data/file-list/file-1.js')
             .then(function (parser) {
                 expect(parser.browsers).eql(['ie']);
-                expect(parser.src).eql([path.resolve(process.cwd(), 'test/server/data/file-list/file-1.js')]);
+                expect(parser.src).eql(['test/server/data/file-list/file-1.js']);
                 expect(parser.opts.reporters[0].name).eql('list');
                 expect(parser.opts.hostname).eql('myhost');
                 expect(parser.opts.app).eql('run-app');
