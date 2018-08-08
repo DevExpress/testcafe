@@ -7,8 +7,8 @@ permalink: /documentation/recipes/
 
 This section provides examples and recipes of how to use TestCafe in different scenarios.
 
-* [Debugging with Chrome Developer Tools](debugging-with-chrome-dev-tools.md)
-* [Debugging with Visual Studio Code](debugging-with-visual-studio-code.md)
+* [Debug in Chrome Developer Tools](debug-in-chrome-dev-tools.md)
+* [Debug in Visual Studio Code](debug-in-visual-studio-code.md)
 * [Finding Code Issues with Flow Type Checker](finding-code-issues-with-flow-type-checker.md)
 * [Integrating TestCafe with CI Systems](integrating-testcafe-with-ci-systems/README.md)
 * [Running Tests Using Travis CI and Sauce Labs](running-tests-using-travis-ci-and-sauce-labs.md)

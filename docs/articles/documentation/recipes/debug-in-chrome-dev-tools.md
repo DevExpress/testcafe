@@ -1,9 +1,9 @@
 ---
 layout: docs
-title: Debugging with Chrome Developer Tools
-permalink: /documentation/recipes/debugging-with-chrome-dev-tools.html
+title: Debug in Chrome Developer Tools
+permalink: /documentation/recipes/debug-in-chrome-dev-tools.html
 ---
-# Debugging with Chrome Developer Tools
+# Debug in Chrome Developer Tools
 
 Starting with version 6.3.0, Node.js allows you to debug applications in Chrome Developer Tools.
 If you have Chrome and an appropriate version of Node.js installed on your machine,
