@@ -11,17 +11,19 @@ export function initUploadSelector (name, val, initOptions) {
     return initSelector(name, val, initOptions);
 }
 
-export function initSelector (name, val, { skipVisibilityCheck, testRun, collectionMode }) {
+export function initSelector (name, val, { testRun, ...options }) {
     if (val instanceof ExecuteSelectorCommand)
         return val;
 
     try {
         if (isJSExpression(val))
-            val = executeJsExpression(val.value, testRun, skipVisibilityCheck, collectionMode);
+            val = executeJsExpression(val.value, testRun, options);
+
+        const { skipVisibilityCheck, ...builderOptions } = options;
 
         const builder = new SelectorBuilder(val, {
             visibilityCheck: !skipVisibilityCheck,
-            collectionMode
+            ...builderOptions
         }, { instantiation: 'Selector' });
 
         return builder.getCommand([]);

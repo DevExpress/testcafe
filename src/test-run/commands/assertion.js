@@ -17,7 +17,7 @@ function initAssertionOptions (name, val) {
 function initAssertionParameter (name, val, { skipVisibilityCheck, testRun }) {
     try {
         if (isJSExpression(val))
-            val = executeJsExpression(val.value, testRun, skipVisibilityCheck);
+            val = executeJsExpression(val.value, testRun, { skipVisibilityCheck });
 
         return val;
     }

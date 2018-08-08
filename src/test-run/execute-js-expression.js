@@ -56,8 +56,8 @@ function createExecutionContext (testRun) {
     return createContext(sandbox);
 }
 
-export function executeJsExpression (expression, testRun, skipVisibilityCheck, collectionMode) {
-    const context = getContext(testRun, { skipVisibilityCheck, collectionMode });
+export function executeJsExpression (expression, testRun, options) {
+    const context = getContext(testRun, options);
 
     return runInContext(expression, context, { displayErrors: false });
 }
