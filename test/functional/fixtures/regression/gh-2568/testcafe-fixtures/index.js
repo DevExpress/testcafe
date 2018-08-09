@@ -201,3 +201,11 @@ test('custom DOM properties', async t => {
     await t.expect(selector.innerHTML).eql('test');
 });
 
+test('long selector', async t => {
+    let selector = '';
+
+    for (let i = 0; i < 1000; i++)
+        selector += 'a';
+
+    await t.click(selector);
+});

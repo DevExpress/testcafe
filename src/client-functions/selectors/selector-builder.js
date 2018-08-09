@@ -31,9 +31,10 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
 
         if (!this.options.apiFnChain) {
             const fnType = typeof this.fn;
-            const item = fnType === 'string' ? this.fn : `[${fnType}]`;
+            let item     = fnType === 'string' ? `'${this.fn}'` : `[${fnType}]`;
 
-            this.options.apiFn    = item;
+            item                    = `Selector(${item})`;
+            this.options.apiFn      = item;
             this.options.apiFnChain = [item];
         }
 
@@ -97,7 +98,7 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
     }
 
     getFunctionDependencies () {
-        const dependencies   = super.getFunctionDependencies();
+        const dependencies = super.getFunctionDependencies();
 
         const { filterVisible, filterHidden, counterMode, collectionMode, index } = this.options;
         const { customDOMProperties, customMethods, apiFnChain, boundArgs }       = this.options;

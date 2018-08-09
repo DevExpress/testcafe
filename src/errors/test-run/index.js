@@ -70,11 +70,12 @@ export class InvalidSelectorResultError extends TestRunErrorBase {
 }
 
 export class CantObtainInfoForElementSpecifiedBySelectorError extends TestRunErrorBase {
-    constructor (callsite, fn) {
+    constructor (callsite, { apiFnChain, apiFnIndex }) {
         super(TYPE.cantObtainInfoForElementSpecifiedBySelectorError);
 
-        this.callsite = callsite;
-        this.fn       = fn;
+        this.callsite   = callsite;
+        this.apiFnChain = apiFnChain;
+        this.apiFnIndex = apiFnIndex;
     }
 }
 
@@ -278,10 +279,11 @@ export class ActionSelectorError extends TestRunErrorBase {
 // Action execution errors
 //--------------------------------------------------------------------
 export class ActionElementNotFoundError extends TestRunErrorBase {
-    constructor (fn) {
+    constructor ({ apiFnChain, apiFnIndex }) {
         super(TYPE.actionElementNotFoundError);
 
-        this.fn = fn;
+        this.apiFnChain = apiFnChain;
+        this.apiFnIndex = apiFnIndex;
     }
 }
 
@@ -300,11 +302,12 @@ export class ActionSelectorMatchesWrongNodeTypeError extends TestRunErrorBase {
 }
 
 export class ActionAdditionalElementNotFoundError extends TestRunErrorBase {
-    constructor (argumentName, fn) {
+    constructor (argumentName, { apiFnChain, apiFnIndex }) {
         super(TYPE.actionAdditionalElementNotFoundError);
 
         this.argumentName = argumentName;
-        this.fn           = fn;
+        this.apiFnChain   = apiFnChain;
+        this.apiFnIndex   = apiFnIndex;
     }
 }
 

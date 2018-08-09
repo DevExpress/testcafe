@@ -8,7 +8,10 @@ describe('[TypeScript] Smoke tests', function () {
     it('Should produce correct callsites on error', function () {
         return runTests('./testcafe-fixtures/callsite-test.ts', null, { shouldFail: true })
             .catch(function (errs) {
-                expect(errs[0]).contains('The specified selector ">>>#heyheyhey" does not match any element in the DOM tree.');
+                expect(errs[0]).contains(
+                    'The specified selector does not match any element in the DOM tree.' +
+                    '  > | Selector(\'#heyheyhey\')'
+                );
                 expect(errs[0]).contains('>  5 |async function doSmthg(selector: string, t: any): Promise<any> { await (<TestController>t).click(selector); }');
             });
     });

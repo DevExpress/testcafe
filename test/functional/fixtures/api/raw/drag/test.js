@@ -22,7 +22,10 @@ describe('[Raw API] Drag actions', function () {
         it("Should fail if a dragged element doesn't exist", function () {
             return runTests('./testcafe-fixtures/drag.testcafe', 'Drag non-existent element to another element', { shouldFail: true })
                 .catch(function (errs) {
-                    expect(errs[0]).contains('The specified selector ">>>#non-existent" does not match any element in the DOM tree.');
+                    expect(errs[0]).contains(
+                        'The specified selector does not match any element in the DOM tree.' +
+                        '  > | Selector(\'#non-existent\')'
+                    );
                     expect(errs[0]).contains('[[Drag non-existent element to another element callsite]]');
                 });
         });
@@ -38,7 +41,10 @@ describe('[Raw API] Drag actions', function () {
         it("Should fail if a destination element doesn't exist", function () {
             return runTests('./testcafe-fixtures/drag.testcafe', 'Drag to non-existent element', { shouldFail: true })
                 .catch(function (errs) {
-                    expect(errs[0]).contains('The specified "destinationSelector" : ">>>#non-existent" does not match any element in the DOM tree.');
+                    expect(errs[0]).contains(
+                        'The specified "destinationSelector" does not match any element in the DOM tree.' +
+                        '  > | Selector(\'#non-existent\')'
+                    );
                     expect(errs[0]).contains('[[Drag to non-existent element callsite]]');
                 });
         });

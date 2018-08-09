@@ -2,6 +2,7 @@ import dedent from 'dedent';
 import { escape as escapeHtml } from 'lodash';
 import TYPE from './type';
 import TEST_RUN_PHASE from '../../test-run/phase';
+import getViewportWidth from '../../utils/get-viewport-width';
 
 const SUBTITLES = {
     [TEST_RUN_PHASE.initial]:                 '',
@@ -15,6 +16,30 @@ const SUBTITLES = {
     [TEST_RUN_PHASE.inRoleInitializer]:       '<span class="subtitle">Error in Role initializer</span>\n',
     [TEST_RUN_PHASE.inBookmarkRestore]:       '<span class="subtitle">Error while restoring configuration after Role switch</span>\n'
 };
+
+function prepareSelectorCallstack (apiFnChain, apiFnIndex) {
+    if (typeof apiFnIndex === 'undefined')
+        return '';
+
+    const emptySpaces    = 10;
+    const elipsis        = '...)';
+    const viewportWidth  = getViewportWidth(process.stdout);
+    const availableWidth = viewportWidth - emptySpaces;
+
+    return apiFnChain.map((apiFn, index) => {
+        let formattedApiFn = String.fromCharCode(160);
+
+        formattedApiFn += index === apiFnIndex ? '>' : ' ';
+        formattedApiFn += ' | ';
+        formattedApiFn += index !== 0 ? '  ' : '';
+        formattedApiFn += apiFn;
+
+        if (formattedApiFn.length > availableWidth)
+            return formattedApiFn.substr(0, availableWidth - emptySpaces) + elipsis;
+
+        return formattedApiFn;
+    }).join('\n');
+}
 
 function markup (err, msgMarkup, opts = {}) {
     msgMarkup = dedent(`
@@ -142,7 +167,9 @@ export default {
     `),
 
     [TYPE.actionElementNotFoundError]: err => markup(err, `
-        The specified selector "${err.fn}" does not match any element in the DOM tree.
+        The specified selector does not match any element in the DOM tree.
+        
+        ${ prepareSelectorCallstack(err.apiFnChain, err.apiFnIndex) }
     `),
 
     [TYPE.actionElementIsInvisibleError]: err => markup(err, `
@@ -154,7 +181,9 @@ export default {
     `),
 
     [TYPE.actionAdditionalElementNotFoundError]: err => markup(err, `
-        The specified "${err.argumentName}" : "${err.fn}" does not match any element in the DOM tree.
+        The specified "${err.argumentName}" does not match any element in the DOM tree.
+        
+        ${ prepareSelectorCallstack(err.apiFnChain, err.apiFnIndex) }
     `),
 
     [TYPE.actionAdditionalElementIsInvisibleError]: err => markup(err, `
@@ -245,7 +274,9 @@ export default {
     `),
 
     [TYPE.cantObtainInfoForElementSpecifiedBySelectorError]: err => markup(err, `
-        Cannot obtain information about the node because the specified selector "${err.fn}" does not match any node in the DOM tree.
+        Cannot obtain information about the node because the specified selector does not match any node in the DOM tree.
+        
+        ${ prepareSelectorCallstack(err.apiFnChain, err.apiFnIndex) }
     `),
 
     [TYPE.windowDimensionsOverflowError]: err => markup(err, `

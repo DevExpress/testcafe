@@ -34,15 +34,12 @@ export default class SelectorExecutor extends ClientFunctionExecutor {
         ]);
     }
 
-    _getTimeoutErrorMessage () {
-        const errorSelectorIndex = window['%testCafeSelectorFilter%'].error;
-        const apiFnChain         = this.command.apiFnChain;
+    _getTimeoutErrorParams () {
+        const apiFnIndex = window['%testCafeSelectorFilter%'].error;
+        const apiFnChain = this.command.apiFnChain;
 
-        if (typeof errorSelectorIndex !== 'undefined') {
-            apiFnChain[errorSelectorIndex] = `>>>${apiFnChain[errorSelectorIndex]}`;
-
-            return apiFnChain.join('');
-        }
+        if (typeof apiFnIndex !== 'undefined')
+            return { apiFnIndex, apiFnChain };
 
         return null;
     }
@@ -63,7 +60,7 @@ export default class SelectorExecutor extends ClientFunctionExecutor {
                     return delay(CHECK_ELEMENT_DELAY).then(() => this._validateElement(args, startTime));
 
                 if (createTimeoutError)
-                    throw createTimeoutError(this._getTimeoutErrorMessage());
+                    throw createTimeoutError(this._getTimeoutErrorParams());
 
                 return null;
             });
