@@ -10,7 +10,7 @@ var allowInitScriptExecution = false;
 //Utils
 // NOTE: the window.XMLHttpRequest may have been wrapped by Hammerhead, while we should send a request to
 // the original URL. That's why we need the XMLHttpRequest argument to send the request via native methods.
-function sendXHR (url, createXHR,  { method = 'GET', data = null, parseResponse = true, addAcceptHeader = false } = {}) {
+export function sendXHR (url, createXHR,  { method = 'GET', data = null, parseResponse = true, addAcceptHeader = false } = {}) {
     return new Promise((resolve, reject) => {
         var xhr = createXHR();
 
