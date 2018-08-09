@@ -174,7 +174,7 @@ describe('Error formatting', function () {
         });
 
         it('Should format "actionElementNotFoundError" message', function () {
-            assertErrorMessage('action-element-not-found-error', new ActionElementNotFoundError('text'));
+            assertErrorMessage('action-element-not-found-error', new ActionElementNotFoundError({ apiFnChain: ['one', 'two', 'three'], apiFnIndex: 1 }));
         });
 
         it('Should format "actionElementIsInvisibleError" message', function () {
@@ -214,7 +214,7 @@ describe('Error formatting', function () {
         });
 
         it('Should format "actionAdditionalElementNotFoundError" message', function () {
-            assertErrorMessage('action-additional-element-not-found-error', new ActionAdditionalElementNotFoundError('startSelector', 'text'));
+            assertErrorMessage('action-additional-element-not-found-error', new ActionAdditionalElementNotFoundError('startSelector', { apiFnChain: ['one', 'two', 'three'], apiFnIndex: 1 }));
         });
 
         it('Should format "actionAdditionalElementIsInvisibleError" message', function () {
@@ -314,7 +314,7 @@ describe('Error formatting', function () {
         });
 
         it('Should format "cantObtainInfoForElementSpecifiedBySelectorError"', function () {
-            assertErrorMessage('cant-obtain-info-for-element-specified-by-selector-error', new CantObtainInfoForElementSpecifiedBySelectorError(testCallsite, 'text'));
+            assertErrorMessage('cant-obtain-info-for-element-specified-by-selector-error', new CantObtainInfoForElementSpecifiedBySelectorError(testCallsite, { apiFnChain: ['one', 'two', 'three'], apiFnIndex: 1 }));
         });
 
         it('Should format "windowDimensionsOverflowError"', function () {
