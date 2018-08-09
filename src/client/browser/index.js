@@ -10,16 +10,19 @@ var allowInitScriptExecution = false;
 //Utils
 // NOTE: the window.XMLHttpRequest may have been wrapped by Hammerhead, while we should send a request to
 // the original URL. That's why we need the XMLHttpRequest argument to send the request via native methods.
-function sendXHR (url, createXHR, method = 'GET', data = null) {
+function sendXHR (url, createXHR,  { method = 'GET', data = null, parseResponse = true, addAcceptHeader = false } = {}) {
     return new Promise((resolve, reject) => {
         var xhr = createXHR();
 
         xhr.open(method, url, true);
 
+        if (addAcceptHeader)
+            xhr.setRequestHeader('accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8');
+
         xhr.onreadystatechange = () => {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200)
-                    resolve(xhr.responseText ? JSON.parse(xhr.responseText) : ''); //eslint-disable-line no-restricted-globals
+                    resolve(xhr.responseText ? (parseResponse ? JSON.parse(xhr.responseText) : xhr.responseText) : ''); //eslint-disable-line no-restricted-globals
                 else
                     reject('disconnected');
             }
@@ -63,7 +66,7 @@ function executeInitScript (initScriptUrl, createXHR) {
                 return null;
 
             /* eslint-disable no-eval,  no-restricted-globals*/
-            return sendXHR(initScriptUrl, createXHR, 'POST', JSON.stringify(eval(res.code)));
+            return sendXHR(initScriptUrl, createXHR, { method: 'POST', data: JSON.stringify(eval(res.code)) });
             /* eslint-enable no-eval, no-restricted-globals */
         })
         .then(() => {
@@ -89,14 +92,27 @@ export function redirect (command) {
 export function checkStatus (statusUrl, createXHR, opts) {
     const { manualRedirect } = opts || {};
 
+    let result = null;
+
     return sendXHR(statusUrl, createXHR)
         .then(res => {
-            const redirecting = (res.cmd === COMMAND.run || res.cmd === COMMAND.idle) && !isCurrentLocation(res.url);
+            result = res;
+
+            if (!result.url)
+                return Promise.resolve();
+
+            return sendXHR(result.url, createXHR, { parseResponse: false, addAcceptHeader: true })
+                .catch(() => (new Promise(r => setTimeout(r, 300))).then(() => sendXHR(result.url, createXHR, { parseResponse: false, addAcceptHeader: true })))
+                .catch(() => (new Promise(r => setTimeout(r, 300))).then(() => sendXHR(result.url, createXHR, { parseResponse: false, addAcceptHeader: true })))
+                .catch(() => {});
+        })
+        .then(() => {
+            redirecting = (result.cmd === COMMAND.run || result.cmd === COMMAND.idle) && !isCurrentLocation(result.url);
 
             if (redirecting && !manualRedirect)
-                redirect(res);
+                redirect(result);
 
-            return { command: res, redirecting };
+            return { command: result, redirecting };
         });
 }
 
