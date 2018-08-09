@@ -148,6 +148,8 @@ export function addCustomMethods (obj, getSelector, SelectorBuilder, customMetho
                     customMethod: method
                 });
             };
+
+            obj[prop] = wrapApiChainFunction(obj, prop);
         }
         else {
             obj[prop] = (new ClientFunctionBuilder((...args) => {
@@ -309,7 +311,7 @@ function ensureRegExpContext (str) {
     return str;
 }
 
-function wrapApiChainFunctions (o, fn) {
+function wrapApiChainFunction (o, fn) {
     var originalFn = o[fn];
 
     var prepareApiFnArgs = function (args) {
@@ -682,7 +684,7 @@ export function addAPI (selector, getSelector, SelectorBuilder, customDOMPropert
     addHierarchicalSelectors(obj, getSelector, SelectorBuilder);
 
     Object.keys(obj).forEach(fnName => {
-        obj[fnName] = wrapApiChainFunctions(obj, fnName);
+        obj[fnName] = wrapApiChainFunction(obj, fnName);
     });
 
     Object.assign(selector, obj);

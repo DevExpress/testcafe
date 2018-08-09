@@ -209,3 +209,15 @@ test('long selector', async t => {
 
     await t.click(selector);
 });
+
+test('custom methods', async t => {
+    let selector = Selector('div').addCustomMethods({
+        customFilter: nodes => nodes.filter(node => !!node.id)
+    }, { returnDOMNodes: true });
+
+    selector = selector
+        .customFilter('1', 2, { key: 'value' }, new RegExp('regexp'), () => {})
+        .withText('loren');
+
+    await t.click(selector);
+});

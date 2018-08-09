@@ -10,7 +10,7 @@ function assertSelectorCallstack (actual, expected) {
 
 describe('[Regression](GH-2568)', function () {
     it('nested selector', function () {
-        return runTests('testcafe-fixtures/index.js', 'nested selector', { selectorTimeout: 100, shouldFail: true, })
+        return runTests('testcafe-fixtures/index.js', 'nested selector', { selectorTimeout: 100, shouldFail: true })
             .catch(function (errs) {
                 assertSelectorCallstack(errs[0], `
                     The specified selector does not match any element in the DOM tree.
@@ -33,7 +33,7 @@ describe('[Regression](GH-2568)', function () {
     });
 
     it('nested client function selector', function () {
-        return runTests('testcafe-fixtures/index.js', 'nested client function selector', { selectorTimeout: 100, shouldFail: true, })
+        return runTests('testcafe-fixtures/index.js', 'nested client function selector', { selectorTimeout: 100, shouldFail: true })
             .catch(function (errs) {
                 assertSelectorCallstack(errs[0], `
                     The specified selector does not match any element in the DOM tree.
@@ -48,7 +48,7 @@ describe('[Regression](GH-2568)', function () {
 
 
     it('nth', function () {
-        return runTests('testcafe-fixtures/index.js', 'nth', { selectorTimeout: 100, shouldFail: true, })
+        return runTests('testcafe-fixtures/index.js', 'nth', { selectorTimeout: 100, shouldFail: true })
             .catch(function (errs) {
                 assertSelectorCallstack(errs[0], `
                     The specified selector does not match any element in the DOM tree.
@@ -64,7 +64,7 @@ describe('[Regression](GH-2568)', function () {
     });
 
     it('filterVisible', function () {
-        return runTests('testcafe-fixtures/index.js', 'filterVisible', { selectorTimeout: 100, shouldFail: true, })
+        return runTests('testcafe-fixtures/index.js', 'filterVisible', { selectorTimeout: 100, shouldFail: true })
             .catch(function (errs) {
                 assertSelectorCallstack(errs[0], `
                     The specified selector does not match any element in the DOM tree.
@@ -80,7 +80,7 @@ describe('[Regression](GH-2568)', function () {
     });
 
     it('filterHidden', function () {
-        return runTests('testcafe-fixtures/index.js', 'filterHidden', { selectorTimeout: 100, shouldFail: true, })
+        return runTests('testcafe-fixtures/index.js', 'filterHidden', { selectorTimeout: 100, shouldFail: true })
             .catch(function (errs) {
                 assertSelectorCallstack(errs[0], `
                     The specified selector does not match any element in the DOM tree.
@@ -96,7 +96,7 @@ describe('[Regression](GH-2568)', function () {
     });
 
     it('withAttribute', function () {
-        return runTests('testcafe-fixtures/index.js', 'withAttribute', { selectorTimeout: 100, shouldFail: true, })
+        return runTests('testcafe-fixtures/index.js', 'withAttribute', { selectorTimeout: 100, shouldFail: true })
             .catch(function (errs) {
                 assertSelectorCallstack(errs[0], `
                     The specified selector does not match any element in the DOM tree.
@@ -112,7 +112,7 @@ describe('[Regression](GH-2568)', function () {
     });
 
     it('withExactText', function () {
-        return runTests('testcafe-fixtures/index.js', 'withExactText', { selectorTimeout: 100, shouldFail: true, })
+        return runTests('testcafe-fixtures/index.js', 'withExactText', { selectorTimeout: 100, shouldFail: true })
             .catch(function (errs) {
                 assertSelectorCallstack(errs[0], `
                     The specified selector does not match any element in the DOM tree.
@@ -128,7 +128,7 @@ describe('[Regression](GH-2568)', function () {
     });
 
     it('withText', function () {
-        return runTests('testcafe-fixtures/index.js', 'withText', { selectorTimeout: 100, shouldFail: true, })
+        return runTests('testcafe-fixtures/index.js', 'withText', { selectorTimeout: 100, shouldFail: true })
             .catch(function (errs) {
                 assertSelectorCallstack(errs[0], `
                     The specified selector does not match any element in the DOM tree.
@@ -144,7 +144,7 @@ describe('[Regression](GH-2568)', function () {
     });
 
     it('filter', function () {
-        return runTests('testcafe-fixtures/index.js', 'filter', { selectorTimeout: 100, shouldFail: true, })
+        return runTests('testcafe-fixtures/index.js', 'filter', { selectorTimeout: 100, shouldFail: true })
             .catch(function (errs) {
                 assertSelectorCallstack(errs[0], `
                     The specified selector does not match any element in the DOM tree.
@@ -160,7 +160,7 @@ describe('[Regression](GH-2568)', function () {
     });
 
     it('root', function () {
-        return runTests('testcafe-fixtures/index.js', 'root', { selectorTimeout: 100, shouldFail: true, })
+        return runTests('testcafe-fixtures/index.js', 'root', { selectorTimeout: 100, shouldFail: true })
             .catch(function (errs) {
                 assertSelectorCallstack(errs[0], `
                     The specified selector does not match any element in the DOM tree.
@@ -176,7 +176,7 @@ describe('[Regression](GH-2568)', function () {
     });
 
     it('child', function () {
-        return runTests('testcafe-fixtures/index.js', 'child', { selectorTimeout: 100, shouldFail: true, })
+        return runTests('testcafe-fixtures/index.js', 'child', { selectorTimeout: 100, shouldFail: true })
             .catch(function (errs) {
                 assertSelectorCallstack(errs[0], `
                     The specified selector does not match any element in the DOM tree.
@@ -190,7 +190,7 @@ describe('[Regression](GH-2568)', function () {
     });
 
     it('parent', function () {
-        return runTests('testcafe-fixtures/index.js', 'parent', { selectorTimeout: 100, shouldFail: true, })
+        return runTests('testcafe-fixtures/index.js', 'parent', { selectorTimeout: 100, shouldFail: true })
             .catch(function (errs) {
                 assertSelectorCallstack(errs[0], `
                     The specified selector does not match any element in the DOM tree.
@@ -204,7 +204,7 @@ describe('[Regression](GH-2568)', function () {
     });
 
     it('nextSibling', function () {
-        return runTests('testcafe-fixtures/index.js', 'nextSibling', { selectorTimeout: 100, shouldFail: true, })
+        return runTests('testcafe-fixtures/index.js', 'nextSibling', { selectorTimeout: 100, shouldFail: true })
             .catch(function (errs) {
                 assertSelectorCallstack(errs[0], `
                     The specified selector does not match any element in the DOM tree.
@@ -218,7 +218,7 @@ describe('[Regression](GH-2568)', function () {
     });
 
     it('prevSibling', function () {
-        return runTests('testcafe-fixtures/index.js', 'prevSibling', { selectorTimeout: 100, shouldFail: true, })
+        return runTests('testcafe-fixtures/index.js', 'prevSibling', { selectorTimeout: 100, shouldFail: true })
             .catch(function (errs) {
                 assertSelectorCallstack(errs[0], `
                     The specified selector does not match any element in the DOM tree.
@@ -232,7 +232,7 @@ describe('[Regression](GH-2568)', function () {
     });
 
     it('sibling', function () {
-        return runTests('testcafe-fixtures/index.js', 'sibling', { selectorTimeout: 100, shouldFail: true, })
+        return runTests('testcafe-fixtures/index.js', 'sibling', { selectorTimeout: 100, shouldFail: true })
             .catch(function (errs) {
                 assertSelectorCallstack(errs[0], `
                     The specified selector does not match any element in the DOM tree.
@@ -246,7 +246,7 @@ describe('[Regression](GH-2568)', function () {
     });
 
     it('find', function () {
-        return runTests('testcafe-fixtures/index.js', 'find', { selectorTimeout: 100, shouldFail: true, })
+        return runTests('testcafe-fixtures/index.js', 'find', { selectorTimeout: 100, shouldFail: true })
             .catch(function (errs) {
                 assertSelectorCallstack(errs[0], `
                     The specified selector does not match any element in the DOM tree.
@@ -260,7 +260,7 @@ describe('[Regression](GH-2568)', function () {
     });
 
     it('drag', function () {
-        return runTests('testcafe-fixtures/index.js', 'drag', { selectorTimeout: 100, shouldFail: true, })
+        return runTests('testcafe-fixtures/index.js', 'drag', { selectorTimeout: 100, shouldFail: true })
             .catch(function (errs) {
                 assertSelectorCallstack(errs[0], `
                     The specified "destinationSelector" does not match any element in the DOM tree.
@@ -271,7 +271,7 @@ describe('[Regression](GH-2568)', function () {
     });
 
     it('snapshot', function () {
-        return runTests('testcafe-fixtures/index.js', 'snapshot', { selectorTimeout: 100, shouldFail: true, })
+        return runTests('testcafe-fixtures/index.js', 'snapshot', { selectorTimeout: 100, shouldFail: true })
             .catch(function (errs) {
                 assertSelectorCallstack(errs[0], `
                     Cannot obtain information about the node because the specified selector does not match any node in the DOM tree.
@@ -282,7 +282,7 @@ describe('[Regression](GH-2568)', function () {
     });
 
     it('custom DOM properties', function () {
-        return runTests('testcafe-fixtures/index.js', 'custom DOM properties', { selectorTimeout: 100, shouldFail: true, })
+        return runTests('testcafe-fixtures/index.js', 'custom DOM properties', { selectorTimeout: 100, shouldFail: true })
             .catch(function (errs) {
                 assertSelectorCallstack(errs[0], `
                     Cannot obtain information about the node because the specified selector does not match any node in the DOM tree.
@@ -292,9 +292,21 @@ describe('[Regression](GH-2568)', function () {
     });
 
     it('long selector', function () {
-        return runTests('testcafe-fixtures/index.js', 'long selector', { selectorTimeout: 100, shouldFail: true, })
+        return runTests('testcafe-fixtures/index.js', 'long selector', { selectorTimeout: 100, shouldFail: true })
             .catch(function (errs) {
                 expect(/Selector\('a+\.\.\.\)/.test(errs[0])).to.be.true;
+            });
+    });
+
+    it('custom methods', function () {
+        return runTests('testcafe-fixtures/index.js', 'custom methods', { selectorTimeout: 100, shouldFail: true })
+            .catch(function (errs) {
+                assertSelectorCallstack(errs[0], `
+                    The specified selector does not match any element in the DOM tree.
+                        | Selector('div')
+                      > |   .customFilter('1', 2, [object Object], /regexp/, [function])
+                        |   .withText('loren')
+                `);
             });
     });
 });
