@@ -9,11 +9,13 @@ export default function executeNavigateTo (command) {
 
     const proxyUrl = utils.url.getProxyUrl(command.url);
 
-    return browser
-        .sendXHR(proxyUrl, createNativeXHR, { parseResponse: false, addAcceptHeader: true })
-        .catch(() => (new Promise(r => setTimeout(r, 300))).then(() => browser.sendXHR(proxyUrl, createNativeXHR, { parseResponse: false, addAcceptHeader: true })))
-        .catch(() => (new Promise(r => setTimeout(r, 300))).then(() => browser.sendXHR(proxyUrl, createNativeXHR, { parseResponse: false, addAcceptHeader: true })))
-        .catch(() => {})
+    const ensurePagePromise = command.stateSnapshot ? Promise.resolve() : browser
+            .sendXHR(proxyUrl, createNativeXHR, { parseResponse: false, addAcceptHeader: true })
+            .catch(() => (new Promise(r => setTimeout(r, 300))).then(() => browser.sendXHR(proxyUrl, createNativeXHR, { parseResponse: false, addAcceptHeader: true })))
+            .catch(() => (new Promise(r => setTimeout(r, 300))).then(() => browser.sendXHR(proxyUrl, createNativeXHR, { parseResponse: false, addAcceptHeader: true })))
+            .catch(() => {});
+
+    return ensurePagePromise
         .then(() => {
             var requestBarrier = new RequestBarrier();
 
