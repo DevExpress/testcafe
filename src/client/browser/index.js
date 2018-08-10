@@ -16,8 +16,10 @@ export function sendXHR (url, createXHR,  { method = 'GET', data = null, parseRe
 
         xhr.open(method, url, true);
 
-        if (addAcceptHeader)
+        if (addAcceptHeader) {
+            xhr.setRequestHeader('x-testcafe-cache-page-request', 'true');
             xhr.setRequestHeader('accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8');
+        }
 
         xhr.onreadystatechange = () => {
             if (xhr.readyState === 4) {
