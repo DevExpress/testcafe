@@ -27,7 +27,7 @@ function getContext (testRun, options = {}) {
 function createExecutionContext (testRun) {
     var sandbox = {
         Selector: (fn, options = {}) => {
-            var skipVisibilityCheck = getContextInfo(testRun).options.skipVisibilityCheck;
+            const { skipVisibilityCheck, collectionMode } = getContextInfo(testRun).options;
 
             if (skipVisibilityCheck)
                 options.visibilityCheck = false;
@@ -35,7 +35,10 @@ function createExecutionContext (testRun) {
             if (testRun && testRun.id)
                 options.boundTestRun = testRun;
 
-            var builder = new SelectorBuilder(fn, options, { instantiation: 'Selector' });
+            if (collectionMode)
+                options.collectionMode = collectionMode;
+
+            const builder = new SelectorBuilder(fn, options, { instantiation: 'Selector' });
 
             return builder.getFunction();
         },
@@ -44,7 +47,7 @@ function createExecutionContext (testRun) {
             if (testRun && testRun.id)
                 options.boundTestRun = testRun;
 
-            var builder = new ClientFunctionBuilder(fn, options, { instantiation: 'ClientFunction' });
+            const builder = new ClientFunctionBuilder(fn, options, { instantiation: 'ClientFunction' });
 
             return builder.getFunction();
         }
@@ -53,8 +56,8 @@ function createExecutionContext (testRun) {
     return createContext(sandbox);
 }
 
-export function executeJsExpression (expression, testRun, skipVisibilityCheck) {
-    const context = getContext(testRun, { skipVisibilityCheck });
+export function executeJsExpression (expression, testRun, options) {
+    const context = getContext(testRun, options);
 
     return runInContext(expression, context, { displayErrors: false });
 }

@@ -293,7 +293,7 @@ export default class TestRun extends EventEmitter {
 
     _evaluate (code) {
         try {
-            return executeJsExpression(code, this, false);
+            return executeJsExpression(code, this, { skipVisibilityCheck: false });
         }
         catch (err) {
             return { err };

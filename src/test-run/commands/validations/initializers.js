@@ -11,20 +11,25 @@ export function initUploadSelector (name, val, initOptions) {
     return initSelector(name, val, initOptions);
 }
 
-export function initSelector (name, val, { skipVisibilityCheck, testRun }) {
+export function initSelector (name, val, { testRun, ...options }) {
     if (val instanceof ExecuteSelectorCommand)
         return val;
 
     try {
         if (isJSExpression(val))
-            val = executeJsExpression(val.value, testRun, skipVisibilityCheck);
+            val = executeJsExpression(val.value, testRun, options);
 
-        var builder = new SelectorBuilder(val, { visibilityCheck: !skipVisibilityCheck }, { instantiation: 'Selector' });
+        const { skipVisibilityCheck, ...builderOptions } = options;
+
+        const builder = new SelectorBuilder(val, {
+            visibilityCheck: !skipVisibilityCheck,
+            ...builderOptions
+        }, { instantiation: 'Selector' });
 
         return builder.getCommand([]);
     }
     catch (err) {
-        var msg = err.constructor === APIError ? err.rawMessage : err.message;
+        const msg = err.constructor === APIError ? err.rawMessage : err.message;
 
         throw new ActionSelectorError(name, msg);
     }
