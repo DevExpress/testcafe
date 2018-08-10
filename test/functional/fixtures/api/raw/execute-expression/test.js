@@ -1,6 +1,6 @@
 describe('[Raw API] Execute expression action', function () {
     it('Should execute async expressions', function () {
-        return runTests('./testcafe-fixtures/shared-context.testcafe', 'Execute async expression');
+        return runTests('./testcafe-fixtures/shared-context.testcafe', 'Execute an async expression');
     });
 
     it('Should execute simple sync expressions', function () {
