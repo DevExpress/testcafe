@@ -389,7 +389,7 @@ export default class Driver {
     }
 
     _onExecuteSelectorCommand (command) {
-        const startTime                   = this.contextStorage.getItem(SELECTOR_EXECUTION_START_TIME) || new Date();
+        const startTime                   = this.contextStorage.getItem(SELECTOR_EXECUTION_START_TIME) || hammerhead.nativeMethods.date();
         const elementNotFoundOrNotVisible = fn => new CantObtainInfoForElementSpecifiedBySelectorError(null, fn);
         const createError                 = command.needError ? elementNotFoundOrNotVisible : null;
 

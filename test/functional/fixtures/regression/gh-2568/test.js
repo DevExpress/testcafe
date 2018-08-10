@@ -291,13 +291,6 @@ describe('[Regression](GH-2568)', function () {
             });
     });
 
-    it('long selector', function () {
-        return runTests('testcafe-fixtures/index.js', 'long selector', { selectorTimeout: 100, shouldFail: true })
-            .catch(function (errs) {
-                expect(/Selector\('a+\.\.\.\)/.test(errs[0])).to.be.true;
-            });
-    });
-
     it('custom methods', function () {
         return runTests('testcafe-fixtures/index.js', 'custom methods', { selectorTimeout: 100, shouldFail: true })
             .catch(function (errs) {

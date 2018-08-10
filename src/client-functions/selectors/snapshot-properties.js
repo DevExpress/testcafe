@@ -40,3 +40,5 @@ export const ELEMENT_SNAPSHOT_PROPERTIES = [
     'clientLeft',
     'clientTop'
 ];
+
+export const SNAPSHOT_PROPERTIES = NODE_SNAPSHOT_PROPERTIES.concat(ELEMENT_SNAPSHOT_PROPERTIES);

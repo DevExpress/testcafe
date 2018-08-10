@@ -34,7 +34,7 @@ class SelectorFilter {
             this.err = message;
     }
     filter (node, options, apiInfo) {
-        var filtered = arrayUtils.filter(node, n => exists(n));
+        let filtered = arrayUtils.filter(node, n => exists(n));
 
         if (options.filterVisible) {
             filtered = filtered.filter(n => visible(n));
@@ -56,7 +56,7 @@ class SelectorFilter {
         }
         else if (options.collectionMode) {
             if (options.index !== null) {
-                var nodeOnIndex = this.getNodeByIndex(filtered, options.index);
+                const nodeOnIndex = this.getNodeByIndex(filtered, options.index);
 
                 filtered = nodeOnIndex ? [nodeOnIndex] : [];
             }
@@ -71,9 +71,9 @@ class SelectorFilter {
         return filtered;
     }
     cast (node) {
-        var result = null;
+        let result = null;
 
-        if (node === null || node === void 0)
+        if (hammerhead.utils.types.isNullOrUndefined(node))
             result = [];
 
         else if (node instanceof Node)
@@ -93,7 +93,7 @@ class SelectorFilter {
     }
     getErrorItem ({ apiFnChain, apiFnID }, err) {
         if (err) {
-            for (var i = apiFnID; i < apiFnChain.length; i++) {
+            for (let i = apiFnID; i < apiFnChain.length; i++) {
                 if (FILTER_ERROR_TO_API_RE[err].test(apiFnChain[i]))
                     return i;
             }
@@ -104,7 +104,7 @@ class SelectorFilter {
         if (!isArray(obj))
             return false;
 
-        for (var i = 0; i < obj.length; i++) {
+        for (let i = 0; i < obj.length; i++) {
             if (!(obj[i] instanceof Node))
                 return false;
         }

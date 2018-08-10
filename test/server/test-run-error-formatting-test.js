@@ -82,6 +82,8 @@ var testAssertionError = (function () {
     return null;
 })();
 
+const longSelector = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua';
+
 // Output stream and errorDecorator mocks
 function createOutStreamMock () {
     return {
@@ -174,7 +176,7 @@ describe('Error formatting', function () {
         });
 
         it('Should format "actionElementNotFoundError" message', function () {
-            assertErrorMessage('action-element-not-found-error', new ActionElementNotFoundError({ apiFnChain: ['one', 'two', 'three'], apiFnIndex: 1 }));
+            assertErrorMessage('action-element-not-found-error', new ActionElementNotFoundError({ apiFnChain: [longSelector, 'one', 'two', 'three'], apiFnIndex: 1 }));
         });
 
         it('Should format "actionElementIsInvisibleError" message', function () {
@@ -214,7 +216,7 @@ describe('Error formatting', function () {
         });
 
         it('Should format "actionAdditionalElementNotFoundError" message', function () {
-            assertErrorMessage('action-additional-element-not-found-error', new ActionAdditionalElementNotFoundError('startSelector', { apiFnChain: ['one', 'two', 'three'], apiFnIndex: 1 }));
+            assertErrorMessage('action-additional-element-not-found-error', new ActionAdditionalElementNotFoundError('startSelector', { apiFnChain: [longSelector, 'one', 'two', 'three'], apiFnIndex: 1 }));
         });
 
         it('Should format "actionAdditionalElementIsInvisibleError" message', function () {
@@ -314,7 +316,7 @@ describe('Error formatting', function () {
         });
 
         it('Should format "cantObtainInfoForElementSpecifiedBySelectorError"', function () {
-            assertErrorMessage('cant-obtain-info-for-element-specified-by-selector-error', new CantObtainInfoForElementSpecifiedBySelectorError(testCallsite, { apiFnChain: ['one', 'two', 'three'], apiFnIndex: 1 }));
+            assertErrorMessage('cant-obtain-info-for-element-specified-by-selector-error', new CantObtainInfoForElementSpecifiedBySelectorError(testCallsite, { apiFnChain: [longSelector, 'one', 'two', 'three'], apiFnIndex: 1 }));
         });
 
         it('Should format "windowDimensionsOverflowError"', function () {
