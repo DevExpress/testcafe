@@ -64,7 +64,7 @@ src(source) → this
 
 Parameter | Type                | Description
 --------- | ------------------- | ----------------------------------------------------------------------------
-`source`  | String &#124; Array | The relative or absolute path to a test fixture file, or several such paths. You can use `glob` patterns to include (or exclude) multiple files.
+`source`  | String &#124; Array | The relative or absolute path to a test fixture file, or several such paths. You can use [glob patterns](https://github.com/isaacs/node-glob#glob-primer) to include (or exclude) multiple files.
 
 Concatenates the settings when called several times.
 
