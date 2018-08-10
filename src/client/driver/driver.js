@@ -49,11 +49,11 @@ import {
 } from './command-executors/execute-selector';
 import ClientFunctionExecutor from './command-executors/client-functions/client-function-executor';
 
-var transport      = hammerhead.transport;
-var Promise        = hammerhead.Promise;
-var messageSandbox = hammerhead.eventSandbox.message;
-var storages       = hammerhead.storages;
-
+const transport      = hammerhead.transport;
+const Promise        = hammerhead.Promise;
+const messageSandbox = hammerhead.eventSandbox.message;
+const storages       = hammerhead.storages;
+const DateCtor       = hammerhead.nativeMethods.date;
 
 const TEST_DONE_SENT_FLAG                  = 'testcafe|driver|test-done-sent-flag';
 const PENDING_STATUS                       = 'testcafe|driver|pending-status';
@@ -389,7 +389,7 @@ export default class Driver {
     }
 
     _onExecuteSelectorCommand (command) {
-        const startTime                   = this.contextStorage.getItem(SELECTOR_EXECUTION_START_TIME) || hammerhead.nativeMethods.date();
+        const startTime                   = this.contextStorage.getItem(SELECTOR_EXECUTION_START_TIME) || new DateCtor();
         const elementNotFoundOrNotVisible = fn => new CantObtainInfoForElementSpecifiedBySelectorError(null, fn);
         const createError                 = command.needError ? elementNotFoundOrNotVisible : null;
 
