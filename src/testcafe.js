@@ -17,7 +17,8 @@ const FAVICON   = read('./client/ui/favicon.ico', true);
 export default class TestCafe {
     constructor (hostname, port1, port2, sslOptions, developmentMode) {
         this._setupSourceMapsSupport();
-        this._registerErrorHandlers();
+
+        registerErrorHandlers();
 
         this.closed                   = false;
         this.proxy                    = new Proxy(hostname, port1, port2, sslOptions, developmentMode);
@@ -58,10 +59,6 @@ export default class TestCafe {
             handleUncaughtExceptions: false,
             environment:              'node'
         });
-    }
-
-    _registerErrorHandlers () {
-        registerErrorHandlers();
     }
 
     // API

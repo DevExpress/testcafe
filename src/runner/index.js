@@ -9,7 +9,7 @@ import Task from './task';
 import { GeneralError } from '../errors/runtime';
 import MESSAGE from '../errors/runtime/message';
 import { assertType, is } from '../errors/runtime/type-assertions';
-import { addRunningTest, removeRunningTest, startHandlingTests, stopHandlingTests } from '../utils/handle-errors';
+import { addRunningTest, removeRunningTest, startHandlingTestErrors, stopHandlingTestErrors } from '../utils/handle-errors';
 
 const DEFAULT_SELECTOR_TIMEOUT  = 10000;
 const DEFAULT_ASSERTION_TIMEOUT = 3000;
@@ -99,14 +99,14 @@ export default class Runner extends EventEmitter {
         var reporters         = reporterPlugins.map(reporter => new Reporter(reporter.plugin, task, reporter.outStream));
         var completionPromise = this._getTaskResult(task, browserSet, reporters[0], testedApp);
 
-        task.once('start', startHandlingTests);
+        task.once('start', startHandlingTestErrors);
 
         if (!this.opts.ignoreUncaughtErrors) {
             task.on('test-run-start', addRunningTest);
             task.on('test-run-done', removeRunningTest);
         }
 
-        task.once('done', stopHandlingTests);
+        task.once('done', stopHandlingTestErrors);
 
         var setCompleted = () => {
             completed = true;

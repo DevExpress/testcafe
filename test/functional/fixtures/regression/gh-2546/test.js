@@ -8,10 +8,10 @@ describe('[Regression](GH-2546)', function () {
     it('Should fail on uncaught promise rejection when ignoreUncaughtErrors is false', function () {
         return runTests('./testcafe-fixtures/index.js', 'Unhandled promise rejection', { shouldFail: true })
             .catch(function (errs) {
-                var allErrors = [];
+                const allErrors = [];
 
                 if (!Array.isArray(errs)) {
-                    var browsers = Object.keys(errs);
+                    const browsers = Object.keys(errs);
 
                     browsers.forEach(browser => {
                         allErrors.push(errs[browser][0]);
@@ -48,10 +48,10 @@ describe('[Regression](GH-2546)', function () {
     });
 
     it('Should fail on uncaught exception when ignoreUncaughtErrors is false', function () {
-        var testcafePath = path.resolve('bin/testcafe');
-        var testFilePath = path.resolve('test/functional/fixtures/regression/gh-2546/testcafe-fixtures/uncaughtException.js');
-        var browsers     = '"chrome:headless --no-sandbox"';
-        var command  = `node ${testcafePath} ${browsers} ${testFilePath}`;
+        const testcafePath = path.resolve('bin/testcafe');
+        const testFilePath = path.resolve('test/functional/fixtures/regression/gh-2546/testcafe-fixtures/uncaughtException.js');
+        const browsers     = '"chrome:headless --no-sandbox"';
+        const command  = `node ${testcafePath} ${browsers} ${testFilePath}`;
 
         return new Promise(resolve => {
             exec(command, (error, stdout) => {
@@ -65,11 +65,11 @@ describe('[Regression](GH-2546)', function () {
     });
 
     it('Should not fail on uncaught promise rejection when ignoreUncaughtErrors is true', function () {
-        var testcafePath = path.resolve('bin/testcafe');
-        var testFilePath = path.resolve('test/functional/fixtures/regression/gh-2546/testcafe-fixtures/uncaughtException.js');
-        var browsers     = '"chrome:headless --no-sandbox"';
-        var args         = '--ignore-uncaught-errors';
-        var command      = `node ${testcafePath} ${browsers} ${testFilePath} ${args}`;
+        const testcafePath = path.resolve('bin/testcafe');
+        const testFilePath = path.resolve('test/functional/fixtures/regression/gh-2546/testcafe-fixtures/uncaughtException.js');
+        const browsers     = '"chrome:headless --no-sandbox"';
+        const args         = '--ignore-uncaught-errors';
+        const command      = `node ${testcafePath} ${browsers} ${testFilePath} ${args}`;
 
         return new Promise(resolve => {
             exec(command, (error, stdout) => {

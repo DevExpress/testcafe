@@ -1,14 +1,15 @@
-var Promise        = require('pinkie');
-var expect         = require('chai').expect;
-var createTestCafe = require('../../lib/');
-var types          = require('../../lib/errors/test-run/type');
-var handleErrors   = require('../../lib/utils/handle-errors');
+const Promise        = require('pinkie');
+const expect         = require('chai').expect;
+const createTestCafe = require('../../lib/');
+const types          = require('../../lib/errors/test-run/type');
+const handleErrors   = require('../../lib/utils/handle-errors');
 
 
 class TestRunMock {
-    constructor (id) {
+    constructor (id, reason) {
         this.id     = id;
         this.errors = [];
+        this.reason = reason;
     }
 
     addError (err) {
@@ -17,6 +18,27 @@ class TestRunMock {
 }
 
 describe('Global error handlers', () => {
+    it('format UnhandledPromiseRejection reason', () => {
+        handleErrors.registerErrorHandlers();
+        handleErrors.startHandlingTestErrors();
+
+        const reasons        = [new Error('test'), null, void 0, 1, 'string message', true, { a: 1 }];
+        const testRunMocks   = reasons.map((reason, index) => new TestRunMock(index, reason));
+        const expectedErrors = ['Error: test', '[object Null]', 'undefined', '1', 'string message', 'true', '[object Object]'];
+
+        testRunMocks.forEach(testRun => {
+            handleErrors.addRunningTest(testRun);
+
+            process.emit('unhandledRejection', testRun.reason);
+        });
+
+        const actualErrors = testRunMocks.map(testRun => testRun.errors[0].errMsg);
+
+        actualErrors[0] = actualErrors[0].substr(0, expectedErrors[0].length);
+
+        expect(actualErrors).eql(expectedErrors);
+    });
+
     it('Should add error to testRun on UnhandledPromiseRejection', () => {
         var testCafe                 = null;
         var unhandledRejectionRaised = false;
@@ -32,7 +54,7 @@ describe('Global error handlers', () => {
                 });
 
                 handleErrors.addRunningTest(testRunMock);
-                handleErrors.startHandlingTests();
+                handleErrors.startHandlingTestErrors();
 
                 /* eslint-disable no-new */
                 new Promise((resolve, reject) => {

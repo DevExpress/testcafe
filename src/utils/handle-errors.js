@@ -1,10 +1,10 @@
 import { UnhandledPromiseRejectionError, UncaughtExceptionError } from '../errors/test-run';
 
-const runningTests = {};
-let handlingTests  = false;
+const runningTests     = {};
+let handlingTestErrors = false;
 
 function handleError (ErrorCtor, message) {
-    if (handlingTests) {
+    if (handlingTestErrors) {
         Object.values(runningTests).forEach(testRun => {
             testRun.addError(new ErrorCtor(message));
 
@@ -22,11 +22,24 @@ function handleError (ErrorCtor, message) {
     }
 }
 
+function formatUnhandledRejectionReason (reason) {
+    const reasonType      = typeof reason;
+    const isPrimitiveType = reasonType !== 'object' && reasonType !== 'function';
+
+    if (isPrimitiveType)
+        return String(reason);
+
+    if (reason instanceof Error)
+        return reason.stack;
+
+    return Object.prototype.toString.call(reason);
+}
+
 function onUnhandledRejection (reason) {
-    if (reason.isRejectedDriverTask)
+    if (reason && reason.isRejectedDriverTask)
         return;
 
-    const message = reason instanceof Error ? reason.stack : reason;
+    const message = formatUnhandledRejectionReason(reason);
 
     handleError(UnhandledPromiseRejectionError, message);
 }
@@ -48,10 +61,10 @@ export function removeRunningTest (testRun) {
     delete runningTests[testRun.id];
 }
 
-export function startHandlingTests () {
-    handlingTests = true;
+export function startHandlingTestErrors () {
+    handlingTestErrors = true;
 }
 
-export function stopHandlingTests () {
-    handlingTests = false;
+export function stopHandlingTestErrors () {
+    handlingTestErrors = false;
 }
