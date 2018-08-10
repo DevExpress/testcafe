@@ -13,6 +13,8 @@ matrix:
   - node_js: "stable"
     env: GULP_TASK="test-server"
   - node_js: "stable"
+    env: GULP_TASK="test-functional-travis"
+  - node_js: "stable"
     env: GULP_TASK="test-functional-travis-mobile"
   - node_js: "stable"
     env: GULP_TASK="test-functional-local-headless"
