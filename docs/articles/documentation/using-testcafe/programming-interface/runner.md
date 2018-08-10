@@ -65,14 +65,18 @@ src(source) → this
 
 Parameter | Type                | Description
 --------- | ------------------- | ----------------------------------------------------------------------------
-`source`  | String &#124; Array | The relative or absolute path to a test fixture file, or several such paths.
+`source`  | String &#124; Array | The relative or absolute path to a test fixture file, or several such paths. You can use [glob patterns](https://github.com/isaacs/node-glob#glob-primer) to include (or exclude) multiple files.
 
 If you call the method several times, all the specified sources are added to the test runner.
 
-**Example**
+**Examples**
 
 ```js
 runner.src(['/home/user/tests/fixture1.js', 'fixture5.js']);
+```
+
+```js
+runner.src(['/home/user/tests/**/*.js', '!/home/user/tests/foo.js']);
 ```
 
 ### filter
