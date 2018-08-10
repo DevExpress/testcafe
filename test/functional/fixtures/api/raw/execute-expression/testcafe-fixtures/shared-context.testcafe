@@ -5,7 +5,7 @@
             "pageUrl": "http://localhost:3000/fixtures/api/raw/execute-expression/pages/index.html",
             "tests": [
                 {
-                    "name": "Execute async expression",
+                    "name": "Execute an async expression",
                     "commands": [
                         {
                             "type": "execute-expression",
@@ -21,7 +21,7 @@
                     ]
                 },
                 {
-                    "name": "Execute sync expression and save to a variable",
+                    "name": "Execute a sync expression and save to a variable",
                     "commands": [
                         {
                             "type": "execute-expression",
@@ -63,7 +63,7 @@
                     ]
                 },
                 {
-                    "name": "Store execution result to a variable",
+                    "name": "Store an execution result to a variable",
                     "commands": [
                         {
                             "type": "execute-expression",
