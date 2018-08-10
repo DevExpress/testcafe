@@ -13,11 +13,12 @@ const TOKEN_TYPE = {
     ArrowFunctionExpression:  'ArrowFunctionExpression',
     FunctionExpression:       'FunctionExpression',
     ExpressionStatement:      'ExpressionStatement',
+    ReturnStatement:          'ReturnStatement',
     FunctionDeclaration:      'FunctionDeclaration',
     VariableDeclaration:      'VariableDeclaration'
 };
 
-class EsNextTestFileParser extends TestFileParserBase {
+export class EsNextTestFileParser extends TestFileParserBase {
     constructor () {
         super(TOKEN_TYPE);
     }

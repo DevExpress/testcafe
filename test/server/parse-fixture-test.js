@@ -1,13 +1,15 @@
-var expect                        = require('chai').expect;
-var fs                            = require('fs');
-var path                          = require('path');
-var assign                        = require('lodash').assign;
-var getTestList                   = require('../../lib/embedding-utils').getTestList;
-var getTypeScriptTestList         = require('../../lib/embedding-utils').getTypeScriptTestList;
-var getTestListFromCode           = require('../../lib/embedding-utils').getTestListFromCode;
-var getTypeScriptTestListFromCode = require('../../lib/embedding-utils').getTypeScriptTestListFromCode;
-var Promise                       = require('pinkie');
-var parserBase                    = require('../../lib/compiler/test-file/test-file-parser-base');
+var expect                          = require('chai').expect;
+var fs                              = require('fs');
+var path                            = require('path');
+var assign                          = require('lodash').assign;
+var getTestList                     = require('../../lib/embedding-utils').getTestList;
+var getTypeScriptTestList           = require('../../lib/embedding-utils').getTypeScriptTestList;
+var getCoffeeScriptTestList         = require('../../lib/embedding-utils').getCoffeeScriptTestList;
+var getTestListFromCode             = require('../../lib/embedding-utils').getTestListFromCode;
+var getTypeScriptTestListFromCode   = require('../../lib/embedding-utils').getTypeScriptTestListFromCode;
+var getCoffeeScriptTestListFromCode = require('../../lib/embedding-utils').getCoffeeScriptTestListFromCode;
+var Promise                         = require('pinkie');
+var parserBase                      = require('../../lib/compiler/test-file/test-file-parser-base');
 
 var Test    = parserBase.Test;
 var Fixture = function (name, start, end, loc, tests) {
@@ -50,6 +52,10 @@ function testJSFilesParser (dir, expectedStructure) {
 
 function testTypeScriptFilesParser (dir, expectedStructure) {
     return testFixtureParser(dir, expectedStructure, getTypeScriptTestList, getTypeScriptTestListFromCode);
+}
+
+function testCoffeeScriptFilesParser (dir, expectedStructure) {
+    return testFixtureParser(dir, expectedStructure, getCoffeeScriptTestList, getCoffeeScriptTestListFromCode);
 }
 
 describe('Should get structure of files (esnext and typescript common cases)', function () {
@@ -200,8 +206,7 @@ describe('Should get structure of files (esnext and typescript common cases)', f
     });
 });
 
-
-describe('Should get structure of typescript files', function () {
+describe('Should get structure of TypeScript files', function () {
     it('Smoke test', () => {
         var expectedStructure = [
             [
@@ -228,6 +233,36 @@ describe('Should get structure of typescript files', function () {
         ];
 
         return testTypeScriptFilesParser('./data/test-suites/typescript-parser-smoke', expectedStructure);
+    });
+});
+
+describe('Should get structure of CoffeeScript files', function () {
+    it('Smoke test', () => {
+        var expectedStructure = [
+            [
+                new Fixture('fixture 1', 94, 138, new Loc(7, 0, 7, 44),
+                    [
+                        new Test('test 1', 221, 291, new Loc(13, 0, 15, 2))
+                    ]
+                ),
+
+                new Fixture('<computed name>(line: 18)', 331, 373, new Loc(18, 2, 18, 44),
+                    [
+                        new Test('<computed name>(line: 19)', 384, 409, new Loc(19, 9, 19, 34))
+                    ]
+                )
+            ],
+
+            [
+                new Fixture('fixture 1', 0, 41, new Loc(1, 0, 1, 41),
+                    [
+                        new Test('test 1', 44, 110, new Loc(3, 0, 5, 12))
+                    ]
+                )
+            ]
+        ];
+
+        return testCoffeeScriptFilesParser('./data/test-suites/coffeescript-parser-smoke', expectedStructure);
     });
 });
 

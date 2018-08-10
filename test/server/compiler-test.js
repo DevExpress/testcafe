@@ -241,6 +241,64 @@ describe('Compiler', function () {
     });
 
 
+    describe('CoffeeScript', function () {
+        it('Should compile test files and their dependencies', function () {
+            var sources = [
+                'test/server/data/test-suites/coffeescript-basic/testfile1.coffee',
+                'test/server/data/test-suites/coffeescript-basic/testfile2.coffee'
+            ];
+
+            return compile(sources)
+                .then(function (compiled) {
+                    var testfile1 = path.resolve('test/server/data/test-suites/coffeescript-basic/testfile1.coffee');
+                    var testfile2 = path.resolve('test/server/data/test-suites/coffeescript-basic/testfile2.coffee');
+
+                    var tests     = compiled.tests;
+                    var fixtures  = compiled.fixtures;
+
+                    expect(tests.length).eql(4);
+                    expect(fixtures.length).eql(3);
+
+                    expect(fixtures[0].name).eql('Fixture1');
+                    expect(fixtures[0].path).eql(testfile1);
+                    expect(fixtures[0].pageUrl).eql('about:blank');
+
+                    expect(fixtures[1].name).eql('Fixture2');
+                    expect(fixtures[1].path).eql(testfile1);
+                    expect(fixtures[1].pageUrl).eql('http://example.org');
+
+                    expect(fixtures[2].name).eql('Fixture3');
+                    expect(fixtures[2].path).eql(testfile2);
+                    expect(fixtures[2].pageUrl).eql('https://example.com');
+
+                    expect(tests[0].name).eql('Fixture1Test1');
+                    expect(tests[0].fixture).eql(fixtures[0]);
+
+                    expect(tests[1].name).eql('Fixture1Test2');
+                    expect(tests[1].fixture).eql(fixtures[0]);
+
+                    expect(tests[2].name).eql('Fixture2Test1');
+                    expect(tests[2].fixture).eql(fixtures[1]);
+
+                    expect(tests[3].name).eql('Fixture3Test1');
+                    expect(tests[3].fixture).eql(fixtures[2]);
+
+                    return Promise.all(tests.map(function (test) {
+                        return test.fn(testRunMock);
+                    }));
+                })
+                .then(function (results) {
+                    expect(results).eql([
+                        'F1T1: Hey from dep1',
+                        'F1T2',
+                        'F2T1',
+                        'F3T1: Hey from dep1 and dep2'
+                    ]);
+                });
+        });
+    });
+
+
     describe('RAW file', function () {
         it('Should compile test files', function () {
             var sources = ['test/server/data/test-suites/raw/test.testcafe'];

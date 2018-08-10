@@ -112,13 +112,19 @@ export class TestFileParserBase {
 
                 return this.getFunctionBody(token).map(this.analyzeToken, this);
 
-            case tokenType.VariableDeclaration:
-                return this.analyzeToken(this.getRValue(token));
+            case tokenType.VariableDeclaration: {
+                const variableValue = this.getRValue(token); // Skip variable declarations like `var foo;`
+
+                return variableValue ? this.analyzeToken(variableValue) : null;
+            }
 
             case tokenType.CallExpression:
             case tokenType.PropertyAccessExpression:
             case tokenType.TaggedTemplateExpression:
                 return this.analyzeFnCall(token);
+
+            case tokenType.ReturnStatement:
+                return token.argument ? this.analyzeToken(token.argument) : null;
         }
 
         return null;
