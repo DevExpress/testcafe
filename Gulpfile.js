@@ -111,19 +111,6 @@ var CLIENT_TESTS_DESKTOP_BROWSERS = [
     }
 ];
 
-var CLIENT_TESTS_OLD_BROWSERS = [
-    {
-        platform:    'Windows 8',
-        browserName: 'internet explorer',
-        version:     '10.0'
-    },
-    {
-        platform:    'Windows 7',
-        browserName: 'internet explorer',
-        version:     '9.0'
-    }
-];
-
 var CLIENT_TESTS_MOBILE_BROWSERS = [
     {
         platform:    'Linux',
@@ -371,16 +358,6 @@ gulp.step('test-client-travis-run', function () {
 });
 
 gulp.task('test-client-travis', gulp.series('build', 'test-client-travis-run'));
-
-gulp.step('test-client-old-browsers-travis-run', function () {
-    var saucelabsSettings = CLIENT_TESTS_SAUCELABS_SETTINGS;
-
-    saucelabsSettings.browsers = CLIENT_TESTS_OLD_BROWSERS;
-
-    return testClient('test/client/fixtures/**/*-test.js', CLIENT_TESTS_SETTINGS, saucelabsSettings);
-});
-
-gulp.task('test-client-old-browsers-travis', gulp.series('build', 'test-client-old-browsers-travis-run'));
 
 gulp.step('test-client-travis-mobile-run', function () {
     var saucelabsSettings = CLIENT_TESTS_SAUCELABS_SETTINGS;
