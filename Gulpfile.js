@@ -306,7 +306,7 @@ gulp.step('package-content', gulp.parallel('server-scripts', 'client-scripts', '
 
 gulp.task('fast-build', gulp.series('clean', 'package-content'));
 
-gulp.task('build', DEV_MODE ? gulp.registry().get('fast-build') : gulp.parallel('lint', 'fast-build'));
+gulp.task('build', DEV_MODE ? gulp.registry().get('fast-build') : gulp.parallel('fast-build'));
 
 // Test
 gulp.step('test-server-run', function () {
@@ -637,12 +637,15 @@ function testFunctional (fixturesDir, testingEnvironmentName, browserProviderNam
     process.env.TESTING_ENVIRONMENT = testingEnvironmentName;
     process.env.BROWSER_PROVIDER    = browserProviderName;
 
+    if (DEV_MODE)
+        process.env.DEV_MODE = true;
+
     return gulp
         .src(['test/functional/setup.js', fixturesDir + '/**/test.js'])
         .pipe(mocha({
             ui:       'bdd',
             reporter: 'spec',
-            timeout:  typeof v8debug === 'undefined' ? 30000 : Infinity // NOTE: disable timeouts in debug
+            timeout:  typeof v8debug === 'undefined' ? 1000000 : Infinity // NOTE: disable timeouts in debug
         }));
 }
 

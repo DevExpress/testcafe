@@ -30,6 +30,8 @@ var environment     = config.currentEnvironment;
 var browserProvider = process.env.BROWSER_PROVIDER;
 var isBrowserStack  = browserProvider === config.browserProviderNames.browserstack;
 
+const devMode = !!process.env.DEV_MODE;
+
 config.browsers = environment.browsers;
 
 const REQUESTED_MACHINES_COUNT = environment.browsers.length;
@@ -127,7 +129,7 @@ before(function () {
 
     mocha.timeout(60000);
 
-    return createTestCafe(config.testCafe.hostname, config.testCafe.port1, config.testCafe.port2)
+    return createTestCafe(config.testCafe.hostname, config.testCafe.port1, config.testCafe.port2, null, devMode)
         .then(function (tc) {
             testCafe = tc;
 
