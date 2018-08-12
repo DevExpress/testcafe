@@ -119,6 +119,9 @@ describe('Reporter', function () {
             errs:              [],
             quarantine:        {
                 attempts: [['1', '2'], []]
+            },
+            ctx: {
+                account: 'chromeAccountTest1'
             }
         },
 
@@ -131,7 +134,10 @@ describe('Reporter', function () {
             errs: [
                 { text: 'err1' },
                 { text: 'err2' }
-            ]
+            ],
+            ctx: {
+                tag: 'chrome'
+            }
         },
 
         //fixture1test3
@@ -139,8 +145,19 @@ describe('Reporter', function () {
             test:              testMocks[2],
             unstable:          false,
             browserConnection: browserConnectionMocks[0],
-            errs:              []
-
+            errs:              [],
+            ctx:               {
+                logs: [
+                    {
+                        message: 'verify password hint',
+                        browser: 'chrome'
+                    },
+                    {
+                        message: 'verify username hint',
+                        browser: 'chrome',
+                    }
+                ]
+            }
         },
 
         //fixture2test1
@@ -148,7 +165,8 @@ describe('Reporter', function () {
             test:              testMocks[3],
             unstable:          false,
             browserConnection: browserConnectionMocks[0],
-            errs:              []
+            errs:              [],
+            ctx:               {}
         },
 
         //fixture2test2
@@ -156,7 +174,8 @@ describe('Reporter', function () {
             test:              testMocks[4],
             unstable:          false,
             browserConnection: browserConnectionMocks[0],
-            errs:              []
+            errs:              [],
+            ctx:               {}
         },
 
         //fixture3test1
@@ -164,7 +183,8 @@ describe('Reporter', function () {
             test:              testMocks[5],
             unstable:          false,
             browserConnection: browserConnectionMocks[0],
-            errs:              []
+            errs:              [],
+            ctx:               {}
         }
     ];
 
@@ -178,6 +198,9 @@ describe('Reporter', function () {
             errs:              [],
             quarantine:        {
                 attempts: [['1', '2'], []]
+            },
+            ctx: {
+                account: 'firefoxAccountTest1'
             }
         },
 
@@ -187,7 +210,10 @@ describe('Reporter', function () {
             unstable:          false,
             browserConnection: browserConnectionMocks[1],
 
-            errs: [{ text: 'err1' }]
+            errs: [{ text: 'err1' }],
+            ctx:  {
+                tag: 'firefox'
+            }
         },
 
         //fixture1test3
@@ -195,7 +221,19 @@ describe('Reporter', function () {
             test:              testMocks[2],
             unstable:          false,
             browserConnection: browserConnectionMocks[1],
-            errs:              []
+            errs:              [],
+            ctx:               {
+                logs: [
+                    {
+                        message: 'verify password hint',
+                        browser: 'firefox'
+                    },
+                    {
+                        message: 'verify username hint',
+                        browser: 'firefox',
+                    }
+                ]
+            }
         },
 
         //fixture2test1
@@ -203,7 +241,8 @@ describe('Reporter', function () {
             test:              testMocks[3],
             unstable:          false,
             browserConnection: browserConnectionMocks[1],
-            errs:              []
+            errs:              [],
+            ctx:               {}
         },
 
         //fixture2test2
@@ -211,7 +250,8 @@ describe('Reporter', function () {
             test:              testMocks[4],
             unstable:          false,
             browserConnection: browserConnectionMocks[1],
-            errs:              []
+            errs:              [],
+            ctx:               {}
         },
 
         //fixture3test1
@@ -219,7 +259,8 @@ describe('Reporter', function () {
             test:              testMocks[5],
             unstable:          true,
             browserConnection: browserConnectionMocks[1],
-            errs:              [{ text: 'err1' }]
+            errs:              [{ text: 'err1' }],
+            ctx:               {}
         }
     ];
 
@@ -332,7 +373,17 @@ describe('Reporter', function () {
                             userAgent:         'chrome',
                             takenOnFail:       false,
                             quarantineAttempt: 2
-                        }]
+                        }],
+                        contexts: [
+                            {
+                                account:   'chromeAccountTest1',
+                                userAgent: 'Chrome'
+                            },
+                            {
+                                account:   'firefoxAccountTest1',
+                                userAgent: 'Firefox',
+                            }
+                        ]
                     },
                     {
                         run: 'run-001'
@@ -376,7 +427,17 @@ describe('Reporter', function () {
                             userAgent:         'chrome',
                             takenOnFail:       true,
                             quarantineAttempt: null
-                        }]
+                        }],
+                        contexts: [
+                            {
+                                tag:       'chrome',
+                                userAgent: 'Chrome'
+                            },
+                            {
+                                tag:       'firefox',
+                                userAgent: 'Firefox'
+                            }
+                        ]
                     },
                     {
                         run: 'run-001'
@@ -394,11 +455,39 @@ describe('Reporter', function () {
                         skipped:        false,
                         quarantine:     null,
                         screenshotPath: null,
-                        screenshots:    []
+                        screenshots:    [],
+                        contexts:       [
+                            {
+                                logs: [
+                                    {
+                                        browser: 'chrome',
+                                        message: 'verify password hint'
+                                    },
+                                    {
+                                        browser: 'chrome',
+                                        message: 'verify username hint'
+                                    }
+                                ],
+                                userAgent: 'Chrome'
+                            },
+                            {
+                                logs: [
+                                    {
+                                        browser: 'firefox',
+                                        message: 'verify password hint'
+                                    },
+                                    {
+                                        browser: 'firefox',
+                                        message: 'verify username hint'
+                                    }
+                                ],
+                                userAgent: 'Firefox'
+                            }
+                        ]
                     },
                     {
                         run: 'run-001'
-                    }
+                    },
                 ]
             },
             {
@@ -422,7 +511,15 @@ describe('Reporter', function () {
                         skipped:        false,
                         quarantine:     null,
                         screenshotPath: null,
-                        screenshots:    []
+                        screenshots:    [],
+                        contexts:       [
+                            {
+                                userAgent: 'Chrome'
+                            },
+                            {
+                                userAgent: 'Firefox'
+                            }
+                        ]
                     },
                     {
                         run: 'run-001'
@@ -440,7 +537,15 @@ describe('Reporter', function () {
                         skipped:        false,
                         quarantine:     null,
                         screenshotPath: null,
-                        screenshots:    []
+                        screenshots:    [],
+                        contexts:       [
+                            {
+                                userAgent: 'Chrome'
+                            },
+                            {
+                                userAgent: 'Firefox'
+                            }
+                        ]
                     },
                     {
                         run: 'run-001'
@@ -472,7 +577,15 @@ describe('Reporter', function () {
                         skipped:        false,
                         quarantine:     null,
                         screenshotPath: null,
-                        screenshots:    []
+                        screenshots:    [],
+                        contexts:       [
+                            {
+                                userAgent: 'Chrome'
+                            },
+                            {
+                                userAgent: 'Firefox'
+                            }
+                        ]
                     },
                     {
                         run: 'run-001'
