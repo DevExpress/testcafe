@@ -184,6 +184,16 @@ describe('RequestLogger', () => {
 
         expect(logger.requests.length).eql(0);
     });
+
+    it('Should not fail when logger logs and stringifies a response body and it equals null (GH-2718)', () => {
+        const logger                  = new RequestLogger('http://example.com/', { logResponseBody: true, stringifyResponseBody: true });
+        const clonedResponseEventMock = Object.assign({}, responseEventMock, { body: null });
+
+        logger.onRequest(requestEventMock);
+        logger.onResponse(clonedResponseEventMock);
+
+        expect(logger.requests[0].response.body).eql(null);
+    });
 });
 
 describe('RequestMock', () => {
