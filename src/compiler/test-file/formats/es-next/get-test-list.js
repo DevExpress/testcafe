@@ -1,4 +1,4 @@
-import { assign } from 'lodash';
+import { assign, merge } from 'lodash';
 import { transform } from 'babel-core';
 import ESNextTestFileCompiler from './compiler';
 import { TestFileParserBase } from '../../test-file-parser-base';
@@ -15,7 +15,13 @@ const TOKEN_TYPE = {
     ExpressionStatement:      'ExpressionStatement',
     ReturnStatement:          'ReturnStatement',
     FunctionDeclaration:      'FunctionDeclaration',
-    VariableDeclaration:      'VariableDeclaration'
+    VariableDeclaration:      'VariableDeclaration',
+    ObjectLiteralExpression:  'ObjectExpression',
+    ArrayExpression:          'ArrayExpression',
+    BooleanLiteral:           'BooleanLiteral',
+    NumericLiteral:           'NumericLiteral',
+    NullLiteral:              'NullLiteral',
+    UnaryExpression:          'UnaryExpression',
 };
 
 export class EsNextTestFileParser extends TestFileParserBase {
@@ -44,13 +50,31 @@ export class EsNextTestFileParser extends TestFileParserBase {
         return token.body && token.body.body ? token.body.body : [];
     }
 
-    formatFnData (name, value, token) {
+    getCalleeToken (token) {
+        return token.callee;
+    }
+
+    getMemberFnName (token) {
+        return token.callee.property.name;
+    }
+
+    formatFnData (name, value, token, meta = [{}]) {
         return {
             fnName: name,
             value:  value,
             loc:    token.loc,
             start:  token.start,
-            end:    token.end
+            end:    token.end,
+            meta:   merge({}, ...meta)
+        };
+    }
+
+    getKeyValue (prop) {
+        const { key, value } = prop;
+
+        return {
+            key:   key.name || this.formatFnArg(key),
+            value: this.formatFnArg(value)
         };
     }
 
@@ -78,13 +102,15 @@ export class EsNextTestFileParser extends TestFileParserBase {
 
         if (!this.isApiFn(exp.name)) return null;
 
+        const meta = this.getMetaInfo(callStack.slice());
+
         let parentExp = callStack.pop();
 
         if (parentExp.type === tokenType.CallExpression)
-            return this.formatFnData(exp.name, this.formatFnArg(parentExp.arguments[0]), token);
+            return this.formatFnData(exp.name, this.formatFnArg(parentExp.arguments[0]), token, meta);
 
         if (parentExp.type === tokenType.TaggedTemplateExpression)
-            return this.formatFnData(exp.name, EsNextTestFileParser.getTagStrValue(parentExp.quasi), token);
+            return this.formatFnData(exp.name, EsNextTestFileParser.getTagStrValue(parentExp.quasi), token, meta);
 
         if (parentExp.type === tokenType.PropertyAccessExpression) {
             while (parentExp) {
@@ -93,7 +119,7 @@ export class EsNextTestFileParser extends TestFileParserBase {
                     const calleeMemberFn = parentExp.callee.property && parentExp.callee.property.name;
 
                     if (this.checkExpDefineTargetName(calleeType, calleeMemberFn))
-                        return this.formatFnData(exp.name, this.formatFnArg(parentExp.arguments[0]), token);
+                        return this.formatFnData(exp.name, this.formatFnArg(parentExp.arguments[0]), token, meta);
                 }
 
                 if (parentExp.type === tokenType.TaggedTemplateExpression && parentExp.tag) {
@@ -101,7 +127,7 @@ export class EsNextTestFileParser extends TestFileParserBase {
                     const tagMemberFn = parentExp.tag.property && parentExp.tag.property.name;
 
                     if (this.checkExpDefineTargetName(tagType, tagMemberFn))
-                        return this.formatFnData(exp.name, EsNextTestFileParser.getTagStrValue(parentExp.quasi), token);
+                        return this.formatFnData(exp.name, EsNextTestFileParser.getTagStrValue(parentExp.quasi), token, meta);
                 }
 
                 parentExp = callStack.pop();
@@ -120,6 +146,30 @@ export class EsNextTestFileParser extends TestFileParserBase {
 
         if (arg.type === this.tokenType.StringLiteral)
             return arg.value;
+
+        if (arg.type === this.tokenType.BooleanLiteral)
+            return arg.value;
+
+        if (arg.type === this.tokenType.NumericLiteral)
+            return arg.value;
+
+        if (arg.type === this.tokenType.NullLiteral)
+            return null;
+
+        if (arg.type === this.tokenType.UnaryExpression && arg.operator === 'void')
+            return void 0;
+
+        if ([this.tokenType.FunctionExpression, this.tokenType.ArrowFunctionExpression].indexOf(arg.type) > -1)
+            return '[Function]';
+
+        if ([this.tokenType.CallExpression, this.tokenType.PropertyAccessExpression].indexOf(arg.type) > -1)
+            return EsNextTestFileParser.formatComputedName(arg.loc.start.line);
+
+        if (arg.type === this.tokenType.ObjectLiteralExpression)
+            return this.serializeObjExp(arg);
+
+        if (arg.type === this.tokenType.ArrayExpression)
+            return arg.elements.map(this.formatFnArg, this);
 
         return null;
     }
