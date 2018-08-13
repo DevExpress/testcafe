@@ -1,7 +1,7 @@
 const expect = require('chai').expect;
 
 function removeWhitespaces (str) {
-    return str.replace(/\s/g, '');
+    return str.replace(/\s+|\n/g, ' ').trim();
 }
 
 function assertSelectorCallstack (actual, expected) {
@@ -45,7 +45,6 @@ describe('[Regression](GH-2568)', function () {
                 `);
             });
     });
-
 
     it('nth', function () {
         return runTests('testcafe-fixtures/index.js', 'nth', { selectorTimeout: 100, shouldFail: true })
@@ -111,54 +110,6 @@ describe('[Regression](GH-2568)', function () {
             });
     });
 
-    it('withExactText', function () {
-        return runTests('testcafe-fixtures/index.js', 'withExactText', { selectorTimeout: 100, shouldFail: true })
-            .catch(function (errs) {
-                assertSelectorCallstack(errs[0], `
-                    The specified selector does not match any element in the DOM tree.
-                        | Selector('div')
-                        |   .filter('.filtered')
-                        |   .withText('loren')
-                      > |   .withExactText('loren ipsums')
-                        |   .withAttribute('attr', '3')
-                        |   .filterVisible()
-                        |   .nth(500)
-                `);
-            });
-    });
-
-    it('withText', function () {
-        return runTests('testcafe-fixtures/index.js', 'withText', { selectorTimeout: 100, shouldFail: true })
-            .catch(function (errs) {
-                assertSelectorCallstack(errs[0], `
-                    The specified selector does not match any element in the DOM tree.
-                        | Selector('div')
-                        |   .filter('.filtered')
-                      > |   .withText('lorenps')
-                        |   .withExactText('loren ipsums')
-                        |   .withAttribute('attr', '3')
-                        |   .filterVisible()
-                        |   .nth(500)
-                `);
-            });
-    });
-
-    it('filter', function () {
-        return runTests('testcafe-fixtures/index.js', 'filter', { selectorTimeout: 100, shouldFail: true })
-            .catch(function (errs) {
-                assertSelectorCallstack(errs[0], `
-                    The specified selector does not match any element in the DOM tree.
-                        | Selector('div')
-                      > |   .filter('.filteredddddd')
-                        |   .withText('loren')
-                        |   .withExactText('loren ipsum')
-                        |   .withAttribute('attr', '3')
-                        |   .filterVisible()
-                        |   .nth(500)
-                `);
-            });
-    });
-
     it('root', function () {
         return runTests('testcafe-fixtures/index.js', 'root', { selectorTimeout: 100, shouldFail: true })
             .catch(function (errs) {
@@ -175,20 +126,6 @@ describe('[Regression](GH-2568)', function () {
             });
     });
 
-    it('child', function () {
-        return runTests('testcafe-fixtures/index.js', 'child', { selectorTimeout: 100, shouldFail: true })
-            .catch(function (errs) {
-                assertSelectorCallstack(errs[0], `
-                    The specified selector does not match any element in the DOM tree.
-                        | Selector('body')
-                        |   .find('div.parent > div')
-                        |   .nextSibling()
-                        |   .parent('div')
-                      > |   .child('p')
-                `);
-            });
-    });
-
     it('parent', function () {
         return runTests('testcafe-fixtures/index.js', 'parent', { selectorTimeout: 100, shouldFail: true })
             .catch(function (errs) {
@@ -199,73 +136,6 @@ describe('[Regression](GH-2568)', function () {
                         |   .nextSibling()
                       > |   .parent('span')
                         |   .child('p')
-                `);
-            });
-    });
-
-    it('nextSibling', function () {
-        return runTests('testcafe-fixtures/index.js', 'nextSibling', { selectorTimeout: 100, shouldFail: true })
-            .catch(function (errs) {
-                assertSelectorCallstack(errs[0], `
-                    The specified selector does not match any element in the DOM tree.
-                        | Selector('body')
-                        |   .find('div.parent > div:last-child')
-                      > |   .nextSibling()
-                        |   .parent('div')
-                        |   .child('span')
-                `);
-            });
-    });
-
-    it('prevSibling', function () {
-        return runTests('testcafe-fixtures/index.js', 'prevSibling', { selectorTimeout: 100, shouldFail: true })
-            .catch(function (errs) {
-                assertSelectorCallstack(errs[0], `
-                    The specified selector does not match any element in the DOM tree.
-                        | Selector('body')
-                        |   .find('div.parent > div:first-child')
-                      > |   .prevSibling()
-                        |   .parent('div')
-                        |   .child('span')
-                `);
-            });
-    });
-
-    it('sibling', function () {
-        return runTests('testcafe-fixtures/index.js', 'sibling', { selectorTimeout: 100, shouldFail: true })
-            .catch(function (errs) {
-                assertSelectorCallstack(errs[0], `
-                    The specified selector does not match any element in the DOM tree.
-                        | Selector('body')
-                        |   .find('div.parent > div:first-child > div')
-                      > |   .sibling()
-                        |   .parent('div')
-                        |   .child('span')
-                `);
-            });
-    });
-
-    it('find', function () {
-        return runTests('testcafe-fixtures/index.js', 'find', { selectorTimeout: 100, shouldFail: true })
-            .catch(function (errs) {
-                assertSelectorCallstack(errs[0], `
-                    The specified selector does not match any element in the DOM tree.
-                        | Selector('body')
-                      > |   .find('div.not-existing')
-                        |   .nextSibling()
-                        |   .parent('div')
-                        |   .child('span')
-                `);
-            });
-    });
-
-    it('drag', function () {
-        return runTests('testcafe-fixtures/index.js', 'drag', { selectorTimeout: 100, shouldFail: true })
-            .catch(function (errs) {
-                assertSelectorCallstack(errs[0], `
-                    The specified "destinationSelector" does not match any element in the DOM tree.
-                        | Selector('div.parent')
-                      > |   .child('ul')
                 `);
             });
     });

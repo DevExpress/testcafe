@@ -75,42 +75,6 @@ test('withAttribute', async t => {
     await t.click(selector);
 });
 
-test('withExactText', async t => {
-    const selector = Selector('div')
-        .filter('.filtered')
-        .withText('loren')
-        .withExactText('loren ipsums')
-        .withAttribute('attr', '3')
-        .filterVisible()
-        .nth(500);
-
-    await t.click(selector);
-});
-
-test('withText', async t => {
-    const selector = Selector('div')
-        .filter('.filtered')
-        .withText('lorenps')
-        .withExactText('loren ipsums')
-        .withAttribute('attr', '3')
-        .filterVisible()
-        .nth(500);
-
-    await t.click(selector);
-});
-
-test('filter', async t => {
-    const selector = Selector('div')
-        .filter('.filteredddddd')
-        .withText('loren')
-        .withExactText('loren ipsum')
-        .withAttribute('attr', '3')
-        .filterVisible()
-        .nth(500);
-
-    await t.click(selector);
-});
-
 test('root', async t => {
     const selector = Selector('divf')
         .filter('.filtered')
@@ -123,62 +87,12 @@ test('root', async t => {
     await t.click(selector);
 });
 
-test('child', async t => {
-    const selector = Selector('body')
-        .find('div.parent > div')
-        .nextSibling()
-        .parent('div')
-        .child('p');
-
-    await t.click(selector);
-});
-
 test('parent', async t => {
     const selector = Selector('body')
         .find('div.parent > div')
         .nextSibling()
         .parent('span')
         .child('p');
-
-    await t.click(selector);
-});
-
-test('nextSibling', async t => {
-    const selector = Selector('body')
-        .find('div.parent > div:last-child')
-        .nextSibling()
-        .parent('div')
-        .child('span');
-
-    await t.click(selector);
-});
-
-test('prevSibling', async t => {
-    const selector = Selector('body')
-        .find('div.parent > div:first-child')
-        .prevSibling()
-        .parent('div')
-        .child('span');
-
-    await t.click(selector);
-});
-
-test('sibling', async t => {
-    const selector = Selector('body')
-        .find('div.parent > div:first-child > div')
-        .sibling()
-        .parent('div')
-        .child('span');
-
-    await t.click(selector);
-});
-
-test('find', async t => {
-    const selector = Selector('body')
-        .find('div.not-existing')
-        .nextSibling()
-        .parent('div')
-        .child('span');
 
     await t.click(selector);
 });
