@@ -145,7 +145,7 @@ describe('Error formatting', function () {
             assertErrorMessage('action-boolean-option-error', new ActionBooleanOptionError('modifier.ctrl', 'object'));
         });
 
-        it('Should format "actionBooleanArgumentError" message', function () {
+        it('Should format the "actionBooleanArgumentError" message', function () {
             assertErrorMessage('action-boolean-argument-error', new ActionBooleanArgumentError('isAsyncExpression', 'object'));
         });
 
