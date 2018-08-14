@@ -12,12 +12,12 @@ TestCafe allows you to write tests with [CoffeeScript](https://coffeescript.org/
 ```coffee
 import { Selector } from 'testcafe'
 
-fixture 'Basic'
+fixture 'CoffeeScript Example'
     .page 'https://devexpress.github.io/testcafe/example/'
 
 nameInput = Selector '#developer-name'
 
-test 'Text typing basics', (t) =>
+test 'Test', (t) =>
     await t
         .typeText(nameInput, 'Peter')
         .typeText(nameInput, 'Paker', { replace: true })
