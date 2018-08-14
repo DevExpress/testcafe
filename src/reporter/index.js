@@ -31,7 +31,8 @@ export default class Reporter {
             errs:           [],
             unstable:       false,
             startTime:      null,
-            testRunInfo:    null
+            testRunInfo:    null,
+            contexts:       []
         };
     }
 
@@ -43,7 +44,8 @@ export default class Reporter {
             screenshotPath: reportItem.screenshotPath,
             screenshots:    reportItem.screenshots,
             quarantine:     reportItem.quarantine,
-            skipped:        reportItem.test.skip
+            skipped:        reportItem.test.skip,
+            contexts:       sortBy(reportItem.contexts, 'userAgent')
         };
     }
 
@@ -94,6 +96,7 @@ export default class Reporter {
             reportItem.pendingRuns--;
             reportItem.unstable = reportItem.unstable || testRun.unstable;
             reportItem.errs     = reportItem.errs.concat(testRun.errs);
+            reportItem.contexts = reportItem.contexts.concat(Object.assign({}, testRun.ctx, { userAgent: testRun.browserConnection.userAgent }));
 
             if (!reportItem.pendingRuns) {
                 if (task.screenshots.hasCapturedFor(testRun.test)) {
