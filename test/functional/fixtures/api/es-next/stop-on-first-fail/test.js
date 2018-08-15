@@ -11,7 +11,7 @@ const getCountExecutedTests = () => {
 
 describe('Stop test task on first failed test', () => {
     it('Basic', () => {
-        return runTests('./testcafe-fixtures/stop-on-first-fail-test.js', void 0, { shouldFail: true, bail: true })
+        return runTests('./testcafe-fixtures/stop-on-first-fail-test.js', void 0, { shouldFail: true, stopOnFirstFail: true })
             .catch(() => {
                 expect(getCountExecutedTests()).eql(1);
 
@@ -19,8 +19,8 @@ describe('Stop test task on first failed test', () => {
             });
     });
 
-    it.only('Quarantine', () => {
-        return runTests('./testcafe-fixtures/stop-on-first-fail-test.js', void 0, { shouldFail: true, bail: true, quarantineMode: true })
+    it('Quarantine', () => {
+        return runTests('./testcafe-fixtures/stop-on-first-fail-test.js', void 0, { shouldFail: true, stopOnFirstFail: true, quarantineMode: true })
             .catch(() => {
                 expect(getCountExecutedTests()).eql(2);
 
