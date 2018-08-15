@@ -5,7 +5,7 @@ const { exec } = require('child_process');
 describe('[Regression](GH-2546)', function () {
     this.timeout(60000);
 
-    it('Should fail on uncaught promise rejection when ignoreUncaughtErrors is false', function () {
+    it('Should fail on uncaught promise rejection when skipUncaughtErrors is false', function () {
         return runTests('./testcafe-fixtures/index.js', 'Unhandled promise rejection', { shouldFail: true })
             .catch(function (errs) {
                 const allErrors = [];
@@ -28,7 +28,7 @@ describe('[Regression](GH-2546)', function () {
             });
     });
 
-    it('Should not fail on uncaught exception when ignoreUncaughtErrors is true', function () {
+    it('Should not fail on uncaught exception when skipUncaughtErrors is true', function () {
         let unhandledRejectionRaiseCount = 0;
 
         const listener = err => {
@@ -39,7 +39,7 @@ describe('[Regression](GH-2546)', function () {
 
         process.on('unhandledRejection', listener);
 
-        return runTests('./testcafe-fixtures/index.js', 'Unhandled promise rejection', { ignoreUncaughtErrors: true })
+        return runTests('./testcafe-fixtures/index.js', 'Unhandled promise rejection', { skipUncaughtErrors: true })
             .then(() => {
                 process.removeListener('unhandledRejection', listener);
 
@@ -47,7 +47,7 @@ describe('[Regression](GH-2546)', function () {
             });
     });
 
-    it('Should fail on uncaught exception when ignoreUncaughtErrors is false', function () {
+    it('Should fail on uncaught exception when skipUncaughtErrors is false', function () {
         const testcafePath = path.resolve('bin/testcafe');
         const testFilePath = path.resolve('test/functional/fixtures/regression/gh-2546/testcafe-fixtures/uncaughtException.js');
         const browsers     = '"chrome:headless --no-sandbox"';
@@ -64,11 +64,11 @@ describe('[Regression](GH-2546)', function () {
         });
     });
 
-    it('Should not fail on uncaught promise rejection when ignoreUncaughtErrors is true', function () {
+    it('Should not fail on uncaught promise rejection when skipUncaughtErrors is true', function () {
         const testcafePath = path.resolve('bin/testcafe');
         const testFilePath = path.resolve('test/functional/fixtures/regression/gh-2546/testcafe-fixtures/uncaughtException.js');
         const browsers     = '"chrome:headless --no-sandbox"';
-        const args         = '--ignore-uncaught-errors';
+        const args         = '--skip-uncaught-errors';
         const command      = `node ${testcafePath} ${browsers} ${testFilePath} ${args}`;
 
         return new Promise(resolve => {

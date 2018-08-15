@@ -101,7 +101,7 @@ export default class Runner extends EventEmitter {
 
         task.once('start', startHandlingTestErrors);
 
-        if (!this.opts.ignoreUncaughtErrors) {
+        if (!this.opts.skipUncaughtErrors) {
             task.on('test-run-start', addRunningTest);
             task.on('test-run-done', removeRunningTest);
         }
@@ -218,7 +218,7 @@ export default class Runner extends EventEmitter {
         return this;
     }
 
-    run ({ skipJsErrors, disablePageReloads, quarantineMode, debugMode, selectorTimeout, assertionTimeout, pageLoadTimeout, speed = 1, debugOnFail, ignoreUncaughtErrors } = {}) {
+    run ({ skipJsErrors, disablePageReloads, quarantineMode, debugMode, selectorTimeout, assertionTimeout, pageLoadTimeout, speed = 1, debugOnFail, skipUncaughtErrors } = {}) {
         this.opts.skipJsErrors         = !!skipJsErrors;
         this.opts.disablePageReloads   = !!disablePageReloads;
         this.opts.quarantineMode       = !!quarantineMode;
@@ -228,7 +228,7 @@ export default class Runner extends EventEmitter {
         this.opts.assertionTimeout     = assertionTimeout === void 0 ? DEFAULT_ASSERTION_TIMEOUT : assertionTimeout;
         this.opts.pageLoadTimeout      = pageLoadTimeout === void 0 ? DEFAULT_PAGE_LOAD_TIMEOUT : pageLoadTimeout;
         this.opts.speed                = speed;
-        this.opts.ignoreUncaughtErrors = !!ignoreUncaughtErrors;
+        this.opts.skipUncaughtErrors = !!skipUncaughtErrors;
 
         var runTaskPromise = Promise.resolve()
             .then(() => {

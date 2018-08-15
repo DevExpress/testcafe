@@ -390,7 +390,7 @@ describe('CLI argument parser', function () {
             { long: '--dev' },
             { long: '--ssl' },
             { long: '--qr-code' },
-            { long: '--ignore-uncaught-errors' },
+            { long: '--skip-uncaught-errors' },
             { long: '--color' },
             { long: '--no-color' }
         ];
