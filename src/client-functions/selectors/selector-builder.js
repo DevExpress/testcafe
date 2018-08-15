@@ -97,18 +97,29 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
         return resultPromise;
     }
 
-    getFunctionDependencies () {
-        const dependencies = super.getFunctionDependencies();
-
-        const { filterVisible, filterHidden, counterMode, collectionMode, index } = this.options;
-        const { customDOMProperties, customMethods, apiFnChain, boundArgs }       = this.options;
-
+    _getSourceSelectorBuilderApiFnID () {
         let selectorAncestor = this;
 
         while (selectorAncestor.options.sourceSelectorBuilder)
             selectorAncestor = selectorAncestor.options.sourceSelectorBuilder;
 
-        const apiFnID = selectorAncestor.options.apiFnID;
+        return selectorAncestor.options.apiFnID;
+    }
+
+    getFunctionDependencies () {
+        const dependencies = super.getFunctionDependencies();
+
+        const {
+            filterVisible,
+            filterHidden,
+            counterMode,
+            collectionMode,
+            index,
+            customDOMProperties,
+            customMethods,
+            apiFnChain,
+            boundArgs
+        } = this.options;
 
         return merge({}, dependencies, {
             filterOptions: {
@@ -120,7 +131,7 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
             },
             apiInfo: {
                 apiFnChain,
-                apiFnID
+                apiFnID: this._getSourceSelectorBuilderApiFnID()
             },
             boundArgs,
             customDOMProperties,

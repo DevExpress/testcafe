@@ -1,14 +1,11 @@
 import { InvalidSelectorResultError } from '../../../../../errors/test-run';
-import { exists, visible } from '../element-utils';
+import { exists, visible, IsNodeCollection } from '../../../utils/element-utils';
 import testCafeCore from '../../../deps/testcafe-core';
 import hammerhead from '../../../deps/hammerhead';
 
-// NOTE: save original ctors and methods because they may be overwritten by page code
-const isArray        = Array.isArray;
-const Node           = window.Node;
-const HTMLCollection = window.HTMLCollection;
-const NodeList       = window.NodeList;
 const arrayUtils     = testCafeCore.arrayUtils;
+const typeUtils      = hammerhead.utils.types;
+const nativeMethods  = hammerhead.nativeMethods;
 
 const SELECTOR_FILTER_ERROR = {
     filterVisible: 1,
@@ -26,18 +23,21 @@ class SelectorFilter {
     constructor () {
         this.err = null;
     }
+
     get error () {
         return this.err;
     }
+
     set error (message) {
         if (this.err === null)
             this.err = message;
     }
+
     filter (node, options, apiInfo) {
-        let filtered = arrayUtils.filter(node, n => exists(n));
+        let filtered = arrayUtils.filter(node, exists);
 
         if (options.filterVisible) {
-            filtered = filtered.filter(n => visible(n));
+            filtered = filtered.filter(visible);
 
             this.assertFilterError(filtered, apiInfo, SELECTOR_FILTER_ERROR.filterVisible);
         }
@@ -70,16 +70,17 @@ class SelectorFilter {
 
         return filtered;
     }
+
     cast (node) {
         let result = null;
 
-        if (hammerhead.utils.types.isNullOrUndefined(node))
+        if (typeUtils.isNullOrUndefined(node))
             result = [];
 
         else if (node instanceof Node)
             result = [node];
 
-        else if (node instanceof HTMLCollection || node instanceof NodeList || this.isArrayOfNodes(node))
+        else if (IsNodeCollection(node))
             result = node;
 
         else
@@ -87,10 +88,12 @@ class SelectorFilter {
 
         return result;
     }
+
     assertFilterError (filtered, apiInfo, filterError) {
         if (!filtered || filtered.length === 0)
             this.error = this.getErrorItem(apiInfo, filterError);
     }
+
     getErrorItem ({ apiFnChain, apiFnID }, err) {
         if (err) {
             for (let i = apiFnID; i < apiFnChain.length; i++) {
@@ -100,24 +103,14 @@ class SelectorFilter {
         }
         return null;
     }
-    isArrayOfNodes (obj) {
-        if (!isArray(obj))
-            return false;
 
-        for (let i = 0; i < obj.length; i++) {
-            if (!(obj[i] instanceof Node))
-                return false;
-        }
-
-        return true;
-    }
     getNodeByIndex (collection, index) {
         return index < 0 ? collection[collection.length + index] : collection[index];
     }
 }
 
 // Selector filter
-hammerhead.nativeMethods.objectDefineProperty.call(window, window, '%testCafeSelectorFilter%', {
+nativeMethods.objectDefineProperty.call(window, window, '%testCafeSelectorFilter%', {
     value:        new SelectorFilter(),
     configurable: true
 });

@@ -1,7 +1,7 @@
 import { Promise } from '../../../deps/hammerhead';
 import { delay } from '../../../deps/testcafe-core';
 import ClientFunctionExecutor from '../client-function-executor';
-import { exists, visible } from '../element-utils';
+import { exists, visible } from '../../../utils/element-utils';
 import { createReplicator, FunctionTransform, SelectorNodeTransform } from '../replicator';
 import './filter';
 
