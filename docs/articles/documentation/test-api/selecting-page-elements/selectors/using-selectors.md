@@ -185,5 +185,5 @@ DOM node or the timeout exceeds. If TestCafe cannot find the corresponding node 
 
 ![Selector methods in reports](selector-methods-in-reports.png)
 
-> Note that you can additionally require that the node returned by the selector is visible.
+> Note that you can require that the node returned by the selector is visible.
 To do this, use the [visibilityCheck](selector-options.md#optionsvisibilitycheck) option.
