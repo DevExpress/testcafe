@@ -43,8 +43,6 @@
 - name: TEST API
   url: /documentation/test-api/README.md
   content:
-  - name: TypeScript Support
-    url: /documentation/test-api/typescript-support.md
   - name: Test Code Structure
     url: /documentation/test-api/test-code-structure.md
     content:
@@ -171,6 +169,10 @@
     url: /documentation/test-api/debugging.md
   - name: Accessing Console Messages
     url: /documentation/test-api/accessing-console-messages.md
+  - name: TypeScript Support
+    url: /documentation/test-api/typescript-support.md
+  - name: CoffeeScript Support
+    url: /documentation/test-api/coffeescript-support.md
   - name: A-Z Index
     url: /documentation/test-api/a-z.md
 - name: EXTENDING TESTCAFE
