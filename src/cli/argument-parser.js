@@ -67,7 +67,7 @@ export default class CLIArgumentParser {
     }
 
     _describeProgram () {
-        var version = JSON.parse(read('../../package.json')).version;
+        const version = JSON.parse(read('../../package.json')).version;
 
         this.program
 
@@ -104,6 +104,7 @@ export default class CLIArgumentParser {
             .option('--disable-page-reloads', 'disable page reloads between tests')
             .option('--dev', 'enables mechanisms to log and diagnose errors')
             .option('--qr-code', 'outputs QR-code that repeats URLs used to connect the remote browsers')
+            .option('--sf, --stop-on-first-fail', 'stop an entire test run if any test fails')
 
             // NOTE: these options will be handled by chalk internally
             .option('--color', 'force colors in command line')
@@ -111,7 +112,7 @@ export default class CLIArgumentParser {
     }
 
     _filterAndCountRemotes (browser) {
-        var remoteMatch = browser.match(REMOTE_ALIAS_RE);
+        const remoteMatch = browser.match(REMOTE_ALIAS_RE);
 
         if (remoteMatch) {
             this.remoteCount += parseInt(remoteMatch[1], 10) || 1;
@@ -197,7 +198,7 @@ export default class CLIArgumentParser {
     }
 
     _parseBrowserList () {
-        var browsersArg = this.program.args[0] || '';
+        const browsersArg = this.program.args[0] || '';
 
         this.browsers = splitQuotedText(browsersArg, ',')
             .filter(browser => browser && this._filterAndCountRemotes(browser));

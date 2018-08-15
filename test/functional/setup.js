@@ -157,7 +157,7 @@ before(function () {
             global.testReport = null;
             global.testCafe   = testCafe;
 
-            global.runTests = function (fixture, testName, opts) {
+            global.runTests = (fixture, testName, opts) => {
                 let report                  = '';
                 const runner                = testCafe.createRunner();
                 const fixturePath           = typeof fixture !== 'string' || path.isAbsolute(fixture) ? fixture : path.join(path.dirname(caller()), fixture);
@@ -179,12 +179,13 @@ before(function () {
                 const proxyBypass           = opts && opts.proxyBypass;
                 const customReporters       = opts && opts.reporters;
                 const skipUncaughtErrors    = opts && opts.skipUncaughtErrors;
+                const stopOnFirstFail       = opts && opts.stopOnFirstFail;
 
-                var actualBrowsers = browsersInfo.filter(function (browserInfo) {
-                    var { alias, userAgent } = browserInfo.settings;
+                const actualBrowsers = browsersInfo.filter(browserInfo => {
+                    const { alias, userAgent } = browserInfo.settings;
 
-                    var only = onlyOption ? [alias, userAgent].some(prop => onlyOption.indexOf(prop) > -1) : true;
-                    var skip = skipOption ? [alias, userAgent].some(prop => skipOption.indexOf(prop) > -1) : false;
+                    const only = onlyOption ? [alias, userAgent].some(prop => onlyOption.includes(prop)) : true;
+                    const skip = skipOption ? [alias, userAgent].some(prop => skipOption.includes(prop)) : false;
 
                     return only && !skip;
                 });
@@ -194,12 +195,12 @@ before(function () {
                     return Promise.resolve();
                 }
 
-                var connections = actualBrowsers.map(function (browserInfo) {
+                const connections = actualBrowsers.map(browserInfo => {
                     return browserInfo.connection;
                 });
 
-                var handleError = function (err) {
-                    var shouldFail = opts && opts.shouldFail;
+                const handleError = (err) => {
+                    const shouldFail = opts && opts.shouldFail;
 
                     if (shouldFail && !err)
                         throw new Error('Test should have failed but it succeeded');
@@ -212,11 +213,11 @@ before(function () {
                     customReporters.forEach(r => runner.reporter(r.reporter, r.outStream));
                 else {
                     runner.reporter('json', {
-                        write: function (data) {
+                        write: data => {
                             report += data;
                         },
 
-                        end: function (data) {
+                        end: data => {
                             report += data;
                         }
                     });
@@ -225,20 +226,30 @@ before(function () {
                 return runner
                     .useProxy(externalProxyHost, proxyBypass)
                     .browsers(connections)
-                    .filter(function (test) {
+                    .filter(test => {
                         return testName ? test === testName : true;
                     })
                     .src(fixturePath)
                     .screenshots(screenshotPath, screenshotsOnFails, screenshotPathPattern)
                     .startApp(appCommand, appInitDelay)
-                    .run({ skipJsErrors, disablePageReloads, quarantineMode, selectorTimeout, assertionTimeout, pageLoadTimeout, speed, skipUncaughtErrors: skipUncaughtErrors })
-                    .then(function () {
+                    .run({
+                        skipJsErrors,
+                        disablePageReloads,
+                        quarantineMode,
+                        selectorTimeout,
+                        assertionTimeout,
+                        pageLoadTimeout,
+                        speed,
+                        stopOnFirstFail,
+                        skipUncaughtErrors
+                    })
+                    .then(() => {
                         if (customReporters)
                             return;
 
-                        var taskReport = JSON.parse(report);
-                        var errorDescr = getTestError(taskReport, actualBrowsers);
-                        var testReport = taskReport.fixtures.length === 1 ?
+                        const taskReport = JSON.parse(report);
+                        const errorDescr = getTestError(taskReport, actualBrowsers);
+                        const testReport = taskReport.fixtures.length === 1 ?
                             taskReport.fixtures[0].tests[0] :
                             taskReport;
 
