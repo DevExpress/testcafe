@@ -28,25 +28,26 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [-S, --screenshots-on-fails](#-s---screenshots-on-fails)
   * [-p, --screenshot-path-pattern](#-p---screenshot-path-pattern)
   * [-q, --quarantine-mode](#-q---quarantine-mode)
+  * [-d, --debug-mode](#-d---debug-mode)
   * [-e, --skip-js-errors](#-e---skip-js-errors)
-  * [-c \<n\>, --concurrency \<n\>](#-c-n---concurrency-n)
+  * [-u, --skip-uncaught-errors](#-u---skip-uncaught-errors)
   * [-t \<name\>, --test \<name\>](#-t-name---test-name)
   * [-T \<pattern\>, --test-grep \<pattern\>](#-t-pattern---test-grep-pattern)
   * [-f \<name\>, --fixture \<name\>](#-f-name---fixture-name)
   * [-F \<pattern\>, --fixture-grep \<pattern\>](#-f-pattern---fixture-grep-pattern)
   * [-a \<command\>, --app \<command\>](#-a-command---app-command)
-  * [-d, --debug-mode](#-d---debug-mode)
+  * [-c \<n\>, --concurrency \<n\>](#-c-n---concurrency-n)
   * [--debug-on-fail](#--debug-on-fail)
   * [--app-init-delay \<ms\>](#--app-init-delay-ms)
   * [--selector-timeout \<ms\>](#--selector-timeout-ms)
   * [--assertion-timeout \<ms\>](#--assertion-timeout-ms)
   * [--page-load-timeout \<ms\>](#--page-load-timeout-ms)
-  * [--proxy \<host\>](#--proxy-host)
-  * [--proxy-bypass \<rules\>](#--proxy-bypass-rules)
+  * [--speed \<factor\>](#--speed-factor)
   * [--ports \<port1,port2\>](#--ports-port1port2)
   * [--hostname \<name\>](#--hostname-name)
+  * [--proxy \<host\>](#--proxy-host)
   * [--ssl \<options\>](#--ssl-options)
-  * [--speed \<factor\>](#--speed-factor)
+  * [--proxy-bypass \<rules\>](#--proxy-bypass-rules)
   * [--dev](#--dev)
   * [--qr-code](#--qr-code)
   * [--color](#--color)
@@ -336,6 +337,19 @@ Enables the [quarantine mode](programming-interface/runner.md#quarantine-mode) f
 testcafe all tests/sample-fixture.js -q
 ```
 
+### -d, --debug-mode
+
+Specify this option to run tests in the debugging mode. In this mode, test execution is paused before the first action or assertion allowing you to invoke the developer tools and debug.
+
+The footer displays a status bar in which you can resume test execution or skip to the next action or assertion.
+
+![Debugging status bar](../../images/debugging/client-debugging-footer.png)
+
+> If the test you run in the debugging mode contains a [test hook](../test-api/test-code-structure.md#test-hooks),
+> it is paused within this hook before the first action.
+
+You can also use the **Unlock page** switch in the footer to unlock the tested page and interact with its elements.
+
 ### -e, --skip-js-errors
 
 When a JavaScript error occurs on a tested web page, TestCafe stops test execution and posts an error message to a report. To ignore JavaScript errors, use the `-e`(`--skip-js-errors`) option.
@@ -346,19 +360,14 @@ For example, the following command runs tests from the specified file and forces
 testcafe ie tests/sample-fixture.js -e
 ```
 
-### -c \<n\>, --concurrency \<n\>
+### -u, --skip-uncaught-errors
 
-Specifies that tests should run concurrently.
+When an uncaught error or unhandled promise rejection occurs on the server during test execution, TestCafe stops the test and posts an error message to a report. To ignore these errors, use the `-u`(`--skip-uncaught-errors`) option.
 
-TestCafe opens `n` instances of the same browser and creates a pool of browser instances.
-Tests are run concurrently against this pool, that is, each test is run in the first free instance.
-
-See [Concurrent Test Execution](common-concepts/concurrent-test-execution.md) for more information about concurrent test execution.
-
-The following example shows how to run tests in three Chrome instances:
+For example, the following command runs tests from the specified file and forces TestCafe to ignore uncaught errors and unhandled promise rejections:
 
 ```sh
-testcafe -c 3 chrome tests/sample-fixture.js
+testcafe ie tests/sample-fixture.js -u
 ```
 
 ### -t \<name\>, --test \<name\>
@@ -413,18 +422,20 @@ testcafe chrome my-tests --app "node server.js"
 
 Use the [--app-init-delay](#--app-init-delay-ms) option to specify the amount of time allowed for this command to initialize the tested application.
 
-### -d, --debug-mode
+### -c \<n\>, --concurrency \<n\>
 
-Specify this option to run tests in the debugging mode. In this mode, test execution is paused before the first action or assertion allowing you to invoke the developer tools and debug.
+Specifies that tests should run concurrently.
 
-The footer displays a status bar in which you can resume test execution or skip to the next action or assertion.
+TestCafe opens `n` instances of the same browser and creates a pool of browser instances.
+Tests are run concurrently against this pool, that is, each test is run in the first free instance.
 
-![Debugging status bar](../../images/debugging/client-debugging-footer.png)
+See [Concurrent Test Execution](common-concepts/concurrent-test-execution.md) for more information about concurrent test execution.
 
-> If the test you run in the debugging mode contains a [test hook](../test-api/test-code-structure.md#test-hooks),
-> it is paused within this hook before the first action.
+The following example shows how to run tests in three Chrome instances:
 
-You can also use the **Unlock page** switch in the footer to unlock the tested page and interact with its elements.
+```sh
+testcafe -c 3 chrome tests/sample-fixture.js
+```
 
 ### --debug-on-fail
 
@@ -485,6 +496,35 @@ You can set the page load timeout to `0` to skip waiting for the `window.load` e
 testcafe ie my-tests --page-load-timeout 0
 ```
 
+### --speed \<factor\>
+
+Specifies the test execution speed.
+
+Tests are run at the maximum speed by default. You can use this option
+to slow the test down.
+
+`factor` should be a number between `1` (the fastest) and `0.01` (the slowest).
+
+```sh
+testcafe chrome my-tests --speed 0.1
+```
+
+If the speed is also specified for an [individual action](../test-api/actions/action-options.md#basic-action-options), the action's speed setting overrides the test speed.
+
+**Default value**: `1`
+
+### --ports \<port1,port2\>
+
+Specifies custom port numbers TestCafe uses to perform testing. The number range is [0-65535].
+
+TestCafe automatically selects ports if ports are not specified.
+
+### --hostname \<name\>
+
+Specifies your computer's hostname. It is used when running tests in [remote browsers](#remote-browsers).
+
+If the hostname is not specified, TestCafe uses the operating system's hostname or the current machine's network IP address.
+
 ### --proxy \<host\>
 
 Specifies the proxy server used in your local network to access the Internet.
@@ -502,6 +542,23 @@ You can also specify authentication credentials with the proxy host.
 ```js
 testcafe chrome my-tests/**/*.js --proxy username:password@proxy.mycorp.com
 ```
+
+### --ssl \<options\>
+
+Provides options that allow you to establish an HTTPS connection between the client browser and the TestCafe server.
+
+The `options` parameter contains options required to initialize
+[a Node.js HTTPS server](https://nodejs.org/api/https.html#https_https_createserver_options_requestlistener).
+The most commonly used SSL options are described in the [TLS topic](https://nodejs.org/api/tls.html#tls_tls_createsecurecontext_options) in Node.js documentation.
+Options are specified in a semicolon-separated string.
+
+```sh
+testcafe --ssl pfx=path/to/file.pfx;rejectUnauthorized=true;...
+```
+
+Provide the `--ssl` flag if the tested webpage uses browser features that require
+secure origin ([Service Workers](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API), [Geolocation API](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API), [ApplePaySession](https://developer.apple.com/documentation/apple_pay_on_the_web/applepaysession), [SubtleCrypto](https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto), etc).
+See [Connect to the TestCafe Server over HTTPS](common-concepts/connect-to-the-testcafe-server-over-https.md) for more information.
 
 ### --proxy-bypass \<rules\>
 
@@ -528,52 +585,6 @@ The `*.mycompany.com` value means that all URLs in the `mycompany.com` subdomain
 ```sh
 testcafe chrome my-tests/**/*.js --proxy proxy.corp.mycompany.com --proxy-bypass *.mycompany.com
 ```
-
-### --ports \<port1,port2\>
-
-Specifies custom port numbers TestCafe uses to perform testing. The number range is [0-65535].
-
-TestCafe automatically selects ports if ports are not specified.
-
-### --hostname \<name\>
-
-Specifies your computer's hostname. It is used when running tests in [remote browsers](#remote-browsers).
-
-If the hostname is not specified, TestCafe uses the operating system's hostname or the current machine's network IP address.
-
-### --ssl \<options\>
-
-Provides options that allow you to establish an HTTPS connection between the client browser and the TestCafe server.
-
-The `options` parameter contains options required to initialize
-[a Node.js HTTPS server](https://nodejs.org/api/https.html#https_https_createserver_options_requestlistener).
-The most commonly used SSL options are described in the [TLS topic](https://nodejs.org/api/tls.html#tls_tls_createsecurecontext_options) in Node.js documentation.
-Options are specified in a semicolon-separated string.
-
-```sh
-testcafe --ssl pfx=path/to/file.pfx;rejectUnauthorized=true;...
-```
-
-Provide the `--ssl` flag if the tested webpage uses browser features that require
-secure origin ([Service Workers](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API), [Geolocation API](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API), [ApplePaySession](https://developer.apple.com/documentation/apple_pay_on_the_web/applepaysession), [SubtleCrypto](https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto), etc).
-See [Connect to the TestCafe Server over HTTPS](common-concepts/connect-to-the-testcafe-server-over-https.md) for more information.
-
-### --speed \<factor\>
-
-Specifies the test execution speed.
-
-Tests are run at the maximum speed by default. You can use this option
-to slow the test down.
-
-`factor` should be a number between `1` (the fastest) and `0.01` (the slowest).
-
-```sh
-testcafe chrome my-tests --speed 0.1
-```
-
-If the speed is also specified for an [individual action](../test-api/actions/action-options.md#basic-action-options), the action's speed setting overrides the test speed.
-
-**Default value**: `1`
 
 ### --dev
 
