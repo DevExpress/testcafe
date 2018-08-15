@@ -73,8 +73,11 @@ class RequestLoggerImplementation extends RequestHook {
         if (this.options.logResponseHeaders)
             loggerReq.response.headers = Object.assign({}, event.headers);
 
-        if (this.options.logResponseBody)
-            loggerReq.response.body = this.options.stringifyResponseBody ? event.body.toString() : event.body;
+        if (this.options.logResponseBody) {
+            loggerReq.response.body = this.options.stringifyResponseBody && event.body
+                ? event.body.toString()
+                : event.body;
+        }
     }
 
     _prepareInternalRequestInfo () {
