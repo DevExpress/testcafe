@@ -362,7 +362,9 @@ testcafe ie tests/sample-fixture.js -e
 
 ### -u, --skip-uncaught-errors
 
-When an uncaught error or unhandled promise rejection occurs on the server during test execution, TestCafe stops the test and posts an error message to a report. To ignore these errors, use the `-u`(`--skip-uncaught-errors`) option.
+When an uncaught error or unhandled promise rejection occurs on the server during test execution, TestCafe stops the test and posts an error message to a report. Note that if you run tests [concurrently](#-c-n---concurrency-n) and such an error occurs in any test, all tests that are running at this moment will fail.
+
+To ignore these errors, use the `-u`(`--skip-uncaught-errors`) option.
 
 For example, the following command runs tests from the specified file and forces TestCafe to ignore uncaught errors and unhandled promise rejections:
 
