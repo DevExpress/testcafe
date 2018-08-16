@@ -1,7 +1,6 @@
 import Promise from 'pinkie';
 import { flattenDeep as flatten, find, chunk, uniq } from 'lodash';
 import stripBom from 'strip-bom';
-import sourceMapSupport from 'source-map-support';
 import { Compiler as LegacyTestFileCompiler } from 'testcafe-legacy-api';
 import hammerhead from 'testcafe-hammerhead';
 import EsNextTestFileCompiler from './test-file/formats/es-next/compiler';
@@ -26,20 +25,10 @@ var testFileCompilers = [
 export default class Compiler {
     constructor (sources) {
         this.sources = sources;
-
-        Compiler._setupSourceMapsSupport();
     }
 
     static getSupportedTestFileExtensions () {
         return uniq(testFileCompilers.map(c => c.getSupportedExtension()));
-    }
-
-    static _setupSourceMapsSupport () {
-        sourceMapSupport.install({
-            hookRequire:              true,
-            handleUncaughtExceptions: false,
-            environment:              'node'
-        });
     }
 
     async _compileTestFile (filename) {

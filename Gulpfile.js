@@ -1,39 +1,40 @@
-var babel                = require('babel-core');
-var gulp                 = require('gulp');
-var gulpStep             = require('gulp-step');
-var gulpBabel            = require('gulp-babel');
-var data                 = require('gulp-data');
-var less                 = require('gulp-less');
-var qunitHarness         = require('gulp-qunit-harness');
-var git                  = require('gulp-git');
-var ghpages              = require('gulp-gh-pages');
-var mocha                = require('gulp-mocha-simple');
-var mustache             = require('gulp-mustache');
-var rename               = require('gulp-rename');
-var webmake              = require('gulp-webmake');
-var uglify               = require('gulp-uglify');
-var ll                   = require('gulp-ll-next');
+const babel                = require('babel-core');
+const gulp                 = require('gulp');
+const gulpStep             = require('gulp-step');
+const gulpBabel            = require('gulp-babel');
+const data                 = require('gulp-data');
+const less                 = require('gulp-less');
+const qunitHarness         = require('gulp-qunit-harness');
+const git                  = require('gulp-git');
+const ghpages              = require('gulp-gh-pages');
+const mocha                = require('gulp-mocha-simple');
+const mustache             = require('gulp-mustache');
+const rename               = require('gulp-rename');
+const webmake              = require('gulp-webmake');
+const uglify               = require('gulp-uglify');
+const ll                   = require('gulp-ll-next');
 const clone              = require('gulp-clone');
 const mergeStreams       = require('merge-stream');
-var del                  = require('del');
-var fs                   = require('fs');
-var path                 = require('path');
-var globby               = require('globby');
-var opn                  = require('opn');
-var connect              = require('connect');
-var spawn                = require('cross-spawn');
-var serveStatic          = require('serve-static');
-var Promise              = require('pinkie');
-var markdownlint         = require('markdownlint');
-var minimist             = require('minimist');
-var prompt               = require('gulp-prompt');
-var functionalTestConfig = require('./test/functional/config');
-var assignIn             = require('lodash').assignIn;
-var yaml                 = require('js-yaml');
-var childProcess         = require('child_process');
-var listBrowsers         = require('testcafe-browser-tools').getInstallations;
-var npmAuditor           = require('npm-auditor');
-var checkLicenses        = require('./test/dependency-licenses-checker');
+const del                  = require('del');
+const fs                   = require('fs');
+const path                 = require('path');
+const globby               = require('globby');
+const opn                  = require('opn');
+const connect              = require('connect');
+const spawn                = require('cross-spawn');
+const serveStatic          = require('serve-static');
+const Promise              = require('pinkie');
+const markdownlint         = require('markdownlint');
+const minimist             = require('minimist');
+const prompt               = require('gulp-prompt');
+const functionalTestConfig = require('./test/functional/config');
+const assignIn             = require('lodash').assignIn;
+const yaml                 = require('js-yaml');
+const childProcess         = require('child_process');
+const listBrowsers         = require('testcafe-browser-tools').getInstallations;
+const npmAuditor           = require('npm-auditor');
+const checkLicenses        = require('./test/dependency-licenses-checker');
+const sourcemaps           = require('gulp-sourcemaps');
 
 gulpStep.install();
 
@@ -50,13 +51,13 @@ ll
         'client-scripts-bundle'
     ]);
 
-var ARGS     = minimist(process.argv.slice(2));
-var DEV_MODE = 'dev' in ARGS;
+const ARGS     = minimist(process.argv.slice(2));
+const DEV_MODE = 'dev' in ARGS;
 
-var CLIENT_TESTS_PATH        = 'test/client/fixtures';
-var CLIENT_TESTS_LEGACY_PATH = 'test/client/legacy-fixtures';
+const CLIENT_TESTS_PATH        = 'test/client/fixtures';
+const CLIENT_TESTS_LEGACY_PATH = 'test/client/legacy-fixtures';
 
-var CLIENT_TESTS_SETTINGS_BASE = {
+const CLIENT_TESTS_SETTINGS_BASE = {
     port:            2000,
     crossDomainPort: 2001,
 
@@ -74,11 +75,11 @@ var CLIENT_TESTS_SETTINGS_BASE = {
     configApp: require('./test/client/config-qunit-server-app')
 };
 
-var CLIENT_TESTS_SETTINGS        = assignIn({}, CLIENT_TESTS_SETTINGS_BASE, { basePath: CLIENT_TESTS_PATH });
-var CLIENT_TESTS_LOCAL_SETTINGS  = assignIn({}, CLIENT_TESTS_SETTINGS);
-var CLIENT_TESTS_LEGACY_SETTINGS = assignIn({}, CLIENT_TESTS_SETTINGS_BASE, { basePath: CLIENT_TESTS_LEGACY_PATH });
+const CLIENT_TESTS_SETTINGS        = assignIn({}, CLIENT_TESTS_SETTINGS_BASE, { basePath: CLIENT_TESTS_PATH });
+const CLIENT_TESTS_LOCAL_SETTINGS  = assignIn({}, CLIENT_TESTS_SETTINGS);
+const CLIENT_TESTS_LEGACY_SETTINGS = assignIn({}, CLIENT_TESTS_SETTINGS_BASE, { basePath: CLIENT_TESTS_LEGACY_PATH });
 
-var CLIENT_TESTS_DESKTOP_BROWSERS = [
+const CLIENT_TESTS_DESKTOP_BROWSERS = [
     {
         platform:    'Windows 10',
         browserName: 'microsoftedge'
@@ -111,7 +112,7 @@ var CLIENT_TESTS_DESKTOP_BROWSERS = [
     }
 ];
 
-var CLIENT_TESTS_MOBILE_BROWSERS = [
+const CLIENT_TESTS_MOBILE_BROWSERS = [
     {
         platform:    'Linux',
         browserName: 'android',
@@ -129,7 +130,7 @@ var CLIENT_TESTS_MOBILE_BROWSERS = [
     }
 ];
 
-var CLIENT_TESTS_SAUCELABS_SETTINGS = {
+const CLIENT_TESTS_SAUCELABS_SETTINGS = {
     username:  process.env.SAUCE_USERNAME,
     accessKey: process.env.SAUCE_ACCESS_KEY,
     build:     process.env.TRAVIS_BUILD_ID || '',
@@ -138,11 +139,11 @@ var CLIENT_TESTS_SAUCELABS_SETTINGS = {
     timeout:   720
 };
 
-var CLIENT_TEST_LOCAL_BROWSERS_ALIASES = ['ie', 'edge', 'chrome', 'firefox', 'safari'];
+const CLIENT_TEST_LOCAL_BROWSERS_ALIASES = ['ie', 'edge', 'chrome', 'firefox', 'safari'];
 
-var PUBLISH_TAG = JSON.parse(fs.readFileSync(path.join(__dirname, '.publishrc')).toString()).publishTag;
+const PUBLISH_TAG = JSON.parse(fs.readFileSync(path.join(__dirname, '.publishrc')).toString()).publishTag;
 
-var websiteServer = null;
+let websiteServer = null;
 
 gulp.task('audit', function () {
     return npmAuditor()
@@ -162,7 +163,7 @@ gulp.task('clean', function () {
 
 // Lint
 gulp.task('lint', function () {
-    var eslint = require('gulp-eslint');
+    const eslint = require('gulp-eslint');
 
     return gulp
         .src([
@@ -196,7 +197,7 @@ gulp.step('client-scripts-bundle', function () {
         .pipe(webmake({
             sourceMap: false,
             transform: function (filename, code) {
-                var transformed = babel.transform(code, {
+                const transformed = babel.transform(code, {
                     sourceMap: false,
                     ast:       false,
                     filename:  filename,
@@ -259,7 +260,12 @@ gulp.step('server-scripts', function () {
             'src/**/*.js',
             '!src/client/**/*.js'
         ])
+        .pipe(sourcemaps.init())
         .pipe(gulpBabel())
+        .pipe(sourcemaps.mapSources(function (sourcePath, file) {
+            return file.path;
+        }))
+        .pipe(sourcemaps.write())
         .pipe(gulp.dest('lib'));
 });
 
@@ -350,7 +356,7 @@ gulp.step('test-client-legacy-run', function () {
 gulp.task('test-client-legacy', gulp.series('build', 'test-client-legacy-run'));
 
 gulp.step('test-client-travis-run', function () {
-    var saucelabsSettings = CLIENT_TESTS_SAUCELABS_SETTINGS;
+    const saucelabsSettings = CLIENT_TESTS_SAUCELABS_SETTINGS;
 
     saucelabsSettings.browsers = CLIENT_TESTS_DESKTOP_BROWSERS;
 
@@ -360,7 +366,7 @@ gulp.step('test-client-travis-run', function () {
 gulp.task('test-client-travis', gulp.series('build', 'test-client-travis-run'));
 
 gulp.step('test-client-travis-mobile-run', function () {
-    var saucelabsSettings = CLIENT_TESTS_SAUCELABS_SETTINGS;
+    const saucelabsSettings = CLIENT_TESTS_SAUCELABS_SETTINGS;
 
     saucelabsSettings.browsers = CLIENT_TESTS_MOBILE_BROWSERS;
 
@@ -370,7 +376,7 @@ gulp.step('test-client-travis-mobile-run', function () {
 gulp.task('test-client-travis-mobile', gulp.series('build', 'test-client-travis-mobile-run'));
 
 gulp.step('test-client-legacy-travis-run', function () {
-    var saucelabsSettings = CLIENT_TESTS_SAUCELABS_SETTINGS;
+    const saucelabsSettings = CLIENT_TESTS_SAUCELABS_SETTINGS;
 
     saucelabsSettings.browsers = CLIENT_TESTS_DESKTOP_BROWSERS;
 
@@ -380,7 +386,7 @@ gulp.step('test-client-legacy-travis-run', function () {
 gulp.task('test-client-legacy-travis', gulp.series('build', 'test-client-legacy-travis-run'));
 
 gulp.step('test-client-legacy-travis-mobile-run', function () {
-    var saucelabsSettings = CLIENT_TESTS_SAUCELABS_SETTINGS;
+    const saucelabsSettings = CLIENT_TESTS_SAUCELABS_SETTINGS;
 
     saucelabsSettings.browsers = CLIENT_TESTS_MOBILE_BROWSERS;
 
@@ -396,7 +402,7 @@ gulp.task('generate-docs-readme', function (done) {
     }
 
     function generateDirectory (tocItems, level) {
-        var res = '';
+        let res = '';
 
         tocItems.forEach(function (item) {
             res += generateItem(item.name ? item.name : item.url, item.url, level);
@@ -409,7 +415,7 @@ gulp.task('generate-docs-readme', function (done) {
     }
 
     function generateReadme (toc) {
-        var tocList = generateDirectory(toc, 0);
+        const tocList = generateDirectory(toc, 0);
 
         return '# Documentation\n\n> This is the documentation\'s development version. ' +
                'The functionality described here may not be included in the current release version. ' +
@@ -418,8 +424,8 @@ gulp.task('generate-docs-readme', function (done) {
                tocList;
     }
 
-    var toc    = yaml.safeLoad(fs.readFileSync('docs/nav/nav-menu.yml', 'utf8'));
-    var readme = generateReadme(toc);
+    const toc    = yaml.safeLoad(fs.readFileSync('docs/nav/nav-menu.yml', 'utf8'));
+    const readme = generateReadme(toc);
 
     fs.writeFileSync('docs/README.md', readme);
 
@@ -430,7 +436,7 @@ gulp.task('lint-docs', function () {
     function lintFiles (files, config) {
         return new Promise(function (resolve, reject) {
             markdownlint({ files: files, config: config }, function (err, result) {
-                var lintErr = err || result && result.toString();
+                const lintErr = err || result && result.toString();
 
                 if (lintErr)
                     reject(lintErr);
@@ -440,7 +446,7 @@ gulp.task('lint-docs', function () {
         });
     }
 
-    var lintDocsAndExamples = globby([
+    const lintDocsAndExamples = globby([
         'docs/articles/**/*.md',
         '!docs/articles/faq/**/*.md',
         '!docs/articles/documentation/recipes/**/*.md',
@@ -449,20 +455,20 @@ gulp.task('lint-docs', function () {
         return lintFiles(files, require('./.md-lint/docs.json'));
     });
 
-    var lintFaq = globby([
+    const lintFaq = globby([
         'docs/articles/faq/**/*.md'
     ]).then(function (files) {
         return lintFiles(files, require('./.md-lint/faq.json'));
     });
 
-    var lintRecipes = globby([
+    const lintRecipes = globby([
         'docs/articles/documentation/recipes/**/*.md'
     ]).then(function (files) {
         return lintFiles(files, require('./.md-lint/recipes.json'));
     });
 
-    var lintReadme    = lintFiles('README.md', require('./.md-lint/readme.json'));
-    var lintChangelog = lintFiles('CHANGELOG.md', require('./.md-lint/changelog.json'));
+    const lintReadme    = lintFiles('README.md', require('./.md-lint/readme.json'));
+    const lintChangelog = lintFiles('CHANGELOG.md', require('./.md-lint/changelog.json'));
 
     return Promise.all([lintDocsAndExamples, lintReadme, lintChangelog, lintRecipes, lintFaq]);
 });
@@ -511,7 +517,7 @@ gulp.step('prepare-website-content', gulp.series('clean-website', 'fetch-assets-
 gulp.step('prepare-website', gulp.parallel('lint-docs', 'prepare-website-content'));
 
 function buildWebsite (mode, cb) {
-    var options = mode ? { stdio: 'inherit', env: { JEKYLL_ENV: mode } } : { stdio: 'inherit' };
+    const options = mode ? { stdio: 'inherit', env: { JEKYLL_ENV: mode } } : { stdio: 'inherit' };
 
     spawn('jekyll', ['build', '--source', 'site/src/', '--destination', 'site/deploy'], options)
         .on('exit', cb);
@@ -556,7 +562,7 @@ gulp.step('build-website-run', function (cb) {
 gulp.task('build-website', gulp.series('prepare-website', 'build-website-run'));
 
 gulp.task('serve-website', function (cb) {
-    var app = connect()
+    const app = connect()
         .use('/testcafe', serveStatic('site/deploy'));
 
     websiteServer = app.listen(8080, cb);
@@ -569,8 +575,8 @@ gulp.step('preview-website-open', function () {
 gulp.task('preview-website', gulp.series('build-website-development', 'serve-website', 'preview-website-open'));
 
 gulp.step('test-website-run', function () {
-    var WebsiteTester = require('./test/website/test.js');
-    var websiteTester = new WebsiteTester();
+    const WebsiteTester = require('./test/website/test.js');
+    const websiteTester = new WebsiteTester();
 
     return websiteTester
         .checkLinks()
@@ -708,7 +714,7 @@ function isDockerMachineExist (machineName) {
 }
 
 function startDocker () {
-    var dockerMachineName = process.env['DOCKER_MACHINE_NAME'] || 'default';
+    const dockerMachineName = process.env['DOCKER_MACHINE_NAME'] || 'default';
 
     if (!isDockerMachineExist(dockerMachineName))
         childProcess.execSync('docker-machine create -d virtualbox ' + dockerMachineName);
@@ -716,7 +722,7 @@ function startDocker () {
     if (!isDockerMachineRunning(dockerMachineName))
         childProcess.execSync('docker-machine start ' + dockerMachineName);
 
-    var dockerEnv = getDockerEnv(dockerMachineName);
+    const dockerEnv = getDockerEnv(dockerMachineName);
 
     assignIn(process.env, dockerEnv);
 }
@@ -732,7 +738,7 @@ gulp.task('docker-build', function (done) {
         }
     }
 
-    var imageId = childProcess
+    const imageId = childProcess
         .execSync('docker build -q -t testcafe -f docker/Dockerfile .', { env: process.env })
         .toString()
         .replace(/\n/g, '');

@@ -83,6 +83,7 @@ export default class CLIArgumentParser {
             .option('-q, --quarantine-mode', 'enable the quarantine mode')
             .option('-d, --debug-mode', 'execute test steps one by one pausing the test after each step')
             .option('-e, --skip-js-errors', 'make tests not fail when a JS error happens on a page')
+            .option('-u, --skip-uncaught-errors', 'ignore uncaught errors and unhandled promise rejections, which occur during test execution')
             .option('-t, --test <name>', 'run only tests with the specified name')
             .option('-T, --test-grep <pattern>', 'run only tests matching the specified pattern')
             .option('-f, --fixture <name>', 'run only fixtures with the specified name')

@@ -178,6 +178,7 @@ before(function () {
                 const externalProxyHost     = opts && opts.useProxy;
                 const proxyBypass           = opts && opts.proxyBypass;
                 const customReporters       = opts && opts.reporters;
+                const skipUncaughtErrors    = opts && opts.skipUncaughtErrors;
 
                 var actualBrowsers = browsersInfo.filter(function (browserInfo) {
                     var { alias, userAgent } = browserInfo.settings;
@@ -230,7 +231,7 @@ before(function () {
                     .src(fixturePath)
                     .screenshots(screenshotPath, screenshotsOnFails, screenshotPathPattern)
                     .startApp(appCommand, appInitDelay)
-                    .run({ skipJsErrors, disablePageReloads, quarantineMode, selectorTimeout, assertionTimeout, pageLoadTimeout, speed })
+                    .run({ skipJsErrors, disablePageReloads, quarantineMode, selectorTimeout, assertionTimeout, pageLoadTimeout, speed, skipUncaughtErrors: skipUncaughtErrors })
                     .then(function () {
                         if (customReporters)
                             return;

@@ -105,6 +105,18 @@ export default {
         Uncaught ${err.objType} "${escapeHtml(err.objStr)}" was thrown. Throw Error instead.
     `, { withoutCallsite: true }),
 
+    [TYPE.unhandledPromiseRejection]: err => markup(err, `
+        Unhandled promise rejection:
+        
+        ${escapeHtml(err.errMsg)}
+    `, { withoutCallsite: true }),
+
+    [TYPE.uncaughtException]: err => markup(err, `
+        Uncaught exception:
+        
+        ${escapeHtml(err.errMsg)}
+    `, { withoutCallsite: true }),
+
     [TYPE.actionOptionsTypeError]: err => markup(err, `
         Action options is expected to be an object, null or undefined but it was ${err.actualType}.
     `),

@@ -1,4 +1,5 @@
 import Promise from 'pinkie';
+import sourceMapSupport from 'source-map-support';
 import { readSync as read } from 'read-file-relative';
 import { Proxy } from 'testcafe-hammerhead';
 import { CLIENT_RUNNER_SCRIPT as LEGACY_RUNNER_SCRIPT } from 'testcafe-legacy-api';
@@ -6,6 +7,7 @@ import BrowserConnectionGateway from './browser/connection/gateway';
 import BrowserConnection from './browser/connection';
 import browserProviderPool from './browser/provider/pool';
 import Runner from './runner';
+import { registerErrorHandlers } from './utils/handle-errors';
 
 // Const
 const UI_STYLE  = read('./client/ui/styles.css');
@@ -14,6 +16,10 @@ const FAVICON   = read('./client/ui/favicon.ico', true);
 
 export default class TestCafe {
     constructor (hostname, port1, port2, sslOptions, developmentMode) {
+        this._setupSourceMapsSupport();
+
+        registerErrorHandlers();
+
         this.closed                   = false;
         this.proxy                    = new Proxy(hostname, port1, port2, sslOptions, developmentMode);
         this.browserConnectionGateway = new BrowserConnectionGateway(this.proxy);
@@ -47,6 +53,13 @@ export default class TestCafe {
         });
     }
 
+    _setupSourceMapsSupport () {
+        sourceMapSupport.install({
+            hookRequire:              true,
+            handleUncaughtExceptions: false,
+            environment:              'node'
+        });
+    }
 
     // API
     async createBrowserConnection () {
