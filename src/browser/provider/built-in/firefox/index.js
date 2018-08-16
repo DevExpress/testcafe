@@ -53,6 +53,9 @@ export default {
         if (OS.mac && !config.headless)
             await stopLocalFirefox(runtimeInfo);
 
+        if (runtimeInfo.tempProfileDir)
+            runtimeInfo.tempProfileDir.dispose();
+
         delete this.openedBrowsers[browserId];
     },
 

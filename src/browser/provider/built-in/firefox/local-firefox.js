@@ -18,7 +18,7 @@ function buildFirefoxArgs (config, platformArgs, { marionettePort, tempProfileDi
     return []
         .concat(
             marionettePort ? ['-marionette'] : [],
-            !config.userProfile ? ['-no-remote', '-new-instance', `-profile "${tempProfileDir.name}"`] : [],
+            !config.userProfile ? ['-no-remote', '-new-instance', `-profile "${tempProfileDir.path}"`] : [],
             config.headless ? ['-headless'] : [],
             config.userArgs ? [config.userArgs] : [],
             platformArgs ? [platformArgs] : []

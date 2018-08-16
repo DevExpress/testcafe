@@ -46,6 +46,9 @@ export default {
         if (OS.mac || runtimeInfo.config.headless)
             await stopLocalChrome(runtimeInfo);
 
+        if (runtimeInfo.tempProfileDir)
+            runtimeInfo.tempProfileDir.dispose();
+
         delete this.openedBrowsers[browserId];
     },
 

@@ -1,13 +1,11 @@
 import path from 'path';
-import tmp from 'tmp';
+import TempDirectory from '../../../../utils/temp-directory';
 import { writeFile, ensureDir } from '../../../../utils/promisified-functions';
 
 
 export default async function (proxyHostName) {
-    tmp.setGracefulCleanup();
-
-    const tempDir        = tmp.dirSync({ unsafeCleanup: true });
-    const profileDirName = path.join(tempDir.name, 'Default');
+    const tempDir        = await TempDirectory.createDirectory('chrome-profile');
+    const profileDirName = path.join(tempDir.path, 'Default');
 
     await ensureDir(profileDirName);
 
@@ -39,7 +37,7 @@ export default async function (proxyHostName) {
     };
 
     await writeFile(path.join(profileDirName, 'Preferences'), JSON.stringify(preferences));
-    await writeFile(path.join(tempDir.name, 'First Run'), '');
+    await writeFile(path.join(tempDir.path, 'First Run'), '');
 
     return tempDir;
 }

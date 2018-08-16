@@ -1,5 +1,5 @@
 import path from 'path';
-import tmp from 'tmp';
+import TempDirectory from '../../../../utils/temp-directory';
 import { writeFile } from '../../../../utils/promisified-functions';
 
 
@@ -54,11 +54,9 @@ async function generatePreferences (profileDir, { marionettePort, config }) {
 }
 
 export default async function (runtimeInfo) {
-    tmp.setGracefulCleanup();
+    const tmpDir = await TempDirectory.createDirectory('firefox-profile');
 
-    const tmpDir = tmp.dirSync({ unsafeCleanup: true });
-
-    await generatePreferences(tmpDir.name, runtimeInfo);
+    await generatePreferences(tmpDir.path, runtimeInfo);
 
     return tmpDir;
 }
