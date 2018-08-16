@@ -41,7 +41,7 @@ export default class Task extends EventEmitter {
 
     _createBrowserJobs (proxy, opts) {
         return this.browserConnectionGroups.map(browserConnectionGroup => {
-            var job = new BrowserJob(this.tests, browserConnectionGroup, proxy, this.screenshots, this.warningLog, this.fixtureHookController, opts);
+            const job = new BrowserJob(this.tests, browserConnectionGroup, proxy, this.screenshots, this.warningLog, this.fixtureHookController, opts);
 
             this._assignBrowserJobEventHandlers(job);
             browserConnectionGroup.map(bc => bc.addJob(job));
@@ -52,6 +52,8 @@ export default class Task extends EventEmitter {
 
     // API
     abort () {
-        this.pendingBrowserJobs.forEach(job => job.abort());
+        this.pendingBrowserJobs.forEach(async job => {
+            await job.abort();
+        });
     }
 }
