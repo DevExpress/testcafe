@@ -4,7 +4,8 @@ import os from 'os';
 import path from 'path';
 import setupExitHook from 'async-exit-hook';
 import tmp from 'tmp';
-import { ensureDir, readDir } from '../utils/promisified-functions';
+import cleanupProcess from './cleanup-process';
+import { ensureDir, readDir } from '../../utils/promisified-functions';
 
 
 // NOTE: mutable for testing purposes
@@ -24,9 +25,9 @@ class LockFile {
         this.path   = path.join(dirPath, LOCKFILE_NAME);
     }
 
-    _openLockFile () {
+    _openLockFile ({ force = false } = {}) {
         try {
-            const fd = fs.openSync(this.path, 'wx');
+            const fd = fs.openSync(this.path, force ? 'w' : 'wx');
 
             fs.closeSync(fd);
 
@@ -57,7 +58,13 @@ class LockFile {
     }
 
     init () {
-        return this._openLockFile() || this._isStaleLockFile();
+        if (this._openLockFile())
+            return true;
+
+        if (this._isStaleLockFile())
+            return this._openLockFile({ force: true });
+
+        return false;
     }
 
     dispose () {
@@ -122,8 +129,8 @@ export default class TempDirectory {
         return tmpDir;
     }
 
-    static disposeDirectories () {
-        Object.values(USED_TEMP_DIRS).forEach(tmpDir => tmpDir.dispose());
+    static disposeDirectoriesSync () {
+        Object.values(USED_TEMP_DIRS).forEach(tmpDir => tmpDir.disposeSync());
     }
 
     async init () {
@@ -140,14 +147,29 @@ export default class TempDirectory {
 
         DEBUG_LOGGER('Temp directory path: ', this.path);
 
+        await cleanupProcess.init();
+
+        await cleanupProcess.addDirectory(this.path);
+
         USED_TEMP_DIRS[this.path] = this;
     }
 
-    dispose () {
+    disposeSync () {
         if (!USED_TEMP_DIRS[this.path])
             return;
 
         this.lockFile.dispose();
+
+        delete USED_TEMP_DIRS[this.path];
+    }
+
+    async dispose () {
+        if (!USED_TEMP_DIRS[this.path])
+            return;
+
+        this.lockFile.dispose();
+
+        await cleanupProcess.removeDirectory(this.path);
 
         delete USED_TEMP_DIRS[this.path];
     }
@@ -164,4 +186,4 @@ export default class TempDirectory {
     }
 }
 
-setupExitHook(TempDirectory.disposeDirectories);
+setupExitHook(TempDirectory.disposeDirectoriesSync);

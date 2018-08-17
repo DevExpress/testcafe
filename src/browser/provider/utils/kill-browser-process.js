@@ -1,12 +1,37 @@
+import { spawn } from 'child_process';
 import OS from 'os-family';
-import { findProcess, killProcess, exec } from '../../../utils/promisified-functions';
+import promisifyEvent from 'promisify-event';
+import Promise from 'pinkie';
+import { findProcess, killProcess } from '../../../utils/promisified-functions';
 
 
 const BROWSER_CLOSING_TIMEOUT = 5;
 
+async function runWMIC (args) {
+    const wmicProcess = spawn('wmic.exe', args, { detached: true });
+
+    let wmicOutput  = '';
+
+    wmicProcess.stdout.on('data', data => {
+        wmicOutput += data.toString();
+    });
+
+    try {
+        await Promise.race([
+            promisifyEvent(wmicProcess.stdout, 'end'),
+            promisifyEvent(wmicProcess, 'error')
+        ]);
+
+        return wmicOutput;
+    }
+    catch (e) {
+        return '';
+    }
+}
+
 async function findProcessWin (processOptions) {
-    var cmd         = `wmic process where "commandline like '%${processOptions.arguments}%' and name <> 'cmd.exe' and name <> 'wmic.exe'" get processid`;
-    var wmicOutput  = await exec(cmd);
+    var wmicArgs    = ['process', 'where', `commandline like '%${processOptions.arguments}%' and name <> 'cmd.exe' and name <> 'wmic.exe'`, 'get', 'processid'];
+    var wmicOutput  = await runWMIC(wmicArgs);
     var processList = wmicOutput.split(/\s*\n/);
 
     processList = processList
@@ -18,7 +43,7 @@ async function findProcessWin (processOptions) {
 }
 
 export default async function (browserId) {
-    var processOptions = { arguments: browserId, psargs: 'aux' };
+    var processOptions = { arguments: browserId, psargs: '-ef' };
     var processList    = OS.win ? await findProcessWin(processOptions) : await findProcess(processOptions);
 
     if (!processList.length)

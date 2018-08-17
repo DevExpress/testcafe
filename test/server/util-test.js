@@ -84,7 +84,7 @@ describe('Utils', () => {
             return del(TMP_ROOT);
         });
 
-        it('Should reuse existing temp directories', function () {
+        it('Should reuse existing temp directories after synchronous disposal', function () {
             const tempDir1 = new TempDirectory();
             const tempDir2 = new TempDirectory();
             const tempDir3 = new TempDirectory();
@@ -92,12 +92,31 @@ describe('Utils', () => {
             return tempDir1
                 .init()
                 .then(() => tempDir2.init())
-                .then(() => tempDir1.dispose())
+                .then(() => tempDir1.disposeSync())
                 .then(() => tempDir3.init())
                 .then(() => {
                     const subDirs = fs.readdirSync(TempDirectory.TEMP_DIRECTORIES_ROOT);
 
                     expect(subDirs.length).eql(2);
+                    expect(tempDir3.path).eql(tempDir1.path);
+                });
+        });
+
+        it('Should remove temp directories after asynchronous disposal', function () {
+            const tempDir = new TempDirectory();
+
+            return tempDir
+                .init()
+                .then(() => {
+                    const subDirs = fs.readdirSync(TempDirectory.TEMP_DIRECTORIES_ROOT);
+
+                    expect(subDirs.length).eql(1);
+                })
+                .then(() => tempDir.dispose())
+                .then(() => {
+                    const subDirs = fs.readdirSync(TempDirectory.TEMP_DIRECTORIES_ROOT);
+
+                    expect(subDirs.length).eql(0);
                 });
         });
     });

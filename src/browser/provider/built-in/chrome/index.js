@@ -47,7 +47,7 @@ export default {
             await stopLocalChrome(runtimeInfo);
 
         if (runtimeInfo.tempProfileDir)
-            runtimeInfo.tempProfileDir.dispose();
+            await runtimeInfo.tempProfileDir.dispose();
 
         delete this.openedBrowsers[browserId];
     },
