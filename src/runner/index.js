@@ -38,7 +38,7 @@ export default class Runner extends EventEmitter {
     }
 
     static async _disposeTaskAndRelatedAssets (task, browserSet, testedApp) {
-        task.abort();
+        await task.abort();
         task.removeAllListeners();
 
         await Runner._disposeBrowserSetAndTestedApp(browserSet, testedApp);
@@ -52,8 +52,8 @@ export default class Runner extends EventEmitter {
     }
 
     _createCancelablePromise (taskPromise) {
-        var promise           = taskPromise.then(({ completionPromise }) => completionPromise);
-        var removeFromPending = () => remove(this.pendingTaskPromises, promise);
+        const promise           = taskPromise.then(({ completionPromise }) => completionPromise);
+        const removeFromPending = () => remove(this.pendingTaskPromises, promise);
 
         promise
             .then(removeFromPending)
@@ -71,7 +71,7 @@ export default class Runner extends EventEmitter {
     async _getTaskResult (task, browserSet, reporter, testedApp) {
         task.on('browser-job-done', job => browserSet.releaseConnection(job.browserConnection));
 
-        var promises = [
+        const promises = [
             promisifyEvent(task, 'done'),
             promisifyEvent(browserSet, 'error')
         ];
@@ -94,10 +94,10 @@ export default class Runner extends EventEmitter {
     }
 
     _runTask (reporterPlugins, browserSet, tests, testedApp) {
-        var completed         = false;
-        var task              = new Task(tests, browserSet.browserConnectionGroups, this.proxy, this.opts);
-        var reporters         = reporterPlugins.map(reporter => new Reporter(reporter.plugin, task, reporter.outStream));
-        var completionPromise = this._getTaskResult(task, browserSet, reporters[0], testedApp);
+        let completed           = false;
+        const task              = new Task(tests, browserSet.browserConnectionGroups, this.proxy, this.opts);
+        const reporters         = reporterPlugins.map(reporter => new Reporter(reporter.plugin, task, reporter.outStream));
+        const completionPromise = this._getTaskResult(task, browserSet, reporters[0], testedApp);
 
         task.once('start', startHandlingTestErrors);
 
@@ -108,7 +108,7 @@ export default class Runner extends EventEmitter {
 
         task.once('done', stopHandlingTestErrors);
 
-        var setCompleted = () => {
+        const setCompleted = () => {
             completed = true;
         };
 
@@ -116,7 +116,7 @@ export default class Runner extends EventEmitter {
             .then(setCompleted)
             .catch(setCompleted);
 
-        var cancelTask = async () => {
+        const cancelTask = async () => {
             if (!completed)
                 await Runner._disposeTaskAndRelatedAssets(task, browserSet, testedApp);
         };
@@ -230,7 +230,7 @@ export default class Runner extends EventEmitter {
         this.opts.speed                = speed;
         this.opts.skipUncaughtErrors = !!skipUncaughtErrors;
 
-        var runTaskPromise = Promise.resolve()
+        const runTaskPromise = Promise.resolve()
             .then(() => {
                 this._validateRunOptions();
 
@@ -250,7 +250,7 @@ export default class Runner extends EventEmitter {
         // the pendingTaskPromises array, which leads to shifting indexes
         // towards the beginning. So, we must copy the array in order to iterate it,
         // or we can perform iteration from the end to the beginning.
-        var cancellationPromises = mapReverse(this.pendingTaskPromises, taskPromise => taskPromise.cancel());
+        const cancellationPromises = mapReverse(this.pendingTaskPromises, taskPromise => taskPromise.cancel());
 
         await Promise.all(cancellationPromises);
     }

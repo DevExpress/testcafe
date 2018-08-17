@@ -1,3 +1,4 @@
+import Promise from 'pinkie';
 import { EventEmitter } from 'events';
 import { pull as remove } from 'lodash';
 import BrowserJob from './browser-job';
@@ -51,9 +52,9 @@ export default class Task extends EventEmitter {
     }
 
     // API
-    abort () {
-        this.pendingBrowserJobs.forEach(async job => {
+    async abort () {
+        await Promise.all(this.pendingBrowserJobs.map(async job => {
             await job.abort();
-        });
+        }));
     }
 }

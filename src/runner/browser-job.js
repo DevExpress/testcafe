@@ -25,8 +25,11 @@ export default class BrowserJob extends EventEmitter {
 
         this.completionQueue = [];
 
-        this.connectionErrorListener = async error => await this._setResult(RESULT.errored, error);
-
+        this.connectionErrorListener = error => {
+            (async () => {
+                await this._setResult(RESULT.errored, error);
+            })();
+        };
         this.browserConnections.map(bc => bc.once('error', this.connectionErrorListener));
     }
 

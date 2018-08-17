@@ -13,38 +13,33 @@ const BrowserSet          = require('../../lib/runner/browser-set');
 const browserProviderPool = require('../../lib/browser/provider/pool');
 const delay               = require('../../lib/utils/delay');
 
-describe('Runner', function () {
-    var testCafe                  = null;
-    var runner                    = null;
-    var connection                = null;
-    var origRemoteBrowserProvider = null;
+describe('Runner', () => {
+    let testCafe                  = null;
+    let runner                    = null;
+    let connection                = null;
+    let origRemoteBrowserProvider = null;
 
     const remoteBrowserProviderMock = {
-        openBrowser: function () {
-            return Promise.resolve();
-        },
-
-        closeBrowser: function () {
-            return Promise.resolve();
-        }
+        openBrowser:  () => Promise.resolve(),
+        closeBrowser: () => Promise.resolve()
     };
     const browserMock               = { path: '/non/exist' };
 
     before(() => {
         return createTestCafe('127.0.0.1', 1335, 1336)
-            .then(function (tc) {
+            .then(tc => {
                 testCafe = tc;
 
                 return browserProviderPool.getProvider('remote');
             })
-            .then(function (remoteBrowserProvider) {
+            .then(remoteBrowserProvider => {
                 origRemoteBrowserProvider = remoteBrowserProvider;
 
                 browserProviderPool.addProvider('remote', remoteBrowserProviderMock);
 
                 return testCafe.createBrowserConnection();
             })
-            .then(function (bc) {
+            .then(bc => {
                 connection = bc;
 
                 connection.establish('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 ' +
@@ -647,7 +642,7 @@ describe('Runner', function () {
                 });
         });
 
-        before(function () {
+        before(() => {
             browserProviderPool.addProvider('mock', MockBrowserProvider);
 
             Task.prototype._createBrowserJobs = function () {
@@ -658,12 +653,16 @@ describe('Runner', function () {
                 });
             };
 
-            Task.prototype.abort = function () {
-                abortCalled = true;
+            Task.prototype.abort = () => {
+                return new Promise(resolve => {
+                    abortCalled = true;
+
+                    resolve();
+                });
             };
         });
 
-        after(function () {
+        after(() => {
             browserProviderPool.removeProvider('mock');
 
             Task.prototype._createBrowserJobs = origCreateBrowserJobs;
