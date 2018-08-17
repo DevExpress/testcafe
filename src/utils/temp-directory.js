@@ -7,8 +7,13 @@ import tmp from 'tmp';
 import { ensureDir, readDir } from '../utils/promisified-functions';
 
 
-const TESTCAFE_TMP_DIRS_ROOT = path.join(os.tmpdir(), 'testcafe-tmp');
+// NOTE: mutable for testing purposes
+let TESTCAFE_TMP_DIRS_ROOT = path.join(os.tmpdir(), 'testcafe-tmp');
+
 const LOCKFILE_NAME          = '.testcafe-lockfile';
+const DEFAULT_NAME_PREFIX    = 'tmp';
+
+const STALE_LOCKFILE_AGE = 2 * 24 * 60 * 60 * 1000;
 
 const USED_TEMP_DIRS = {};
 
@@ -19,7 +24,7 @@ class LockFile {
         this.path   = path.join(dirPath, LOCKFILE_NAME);
     }
 
-    init () {
+    _openLockFile () {
         try {
             const fd = fs.openSync(this.path, 'wx');
 
@@ -35,6 +40,26 @@ class LockFile {
         }
     }
 
+    _isStaleLockFile () {
+        const currentMs = Date.now();
+
+        try {
+            const { mtimeMs } = fs.statSync(this.path);
+
+            return currentMs - mtimeMs > STALE_LOCKFILE_AGE;
+        }
+        catch (e) {
+            DEBUG_LOGGER('Failed to check status of lockfile ' + this.path);
+            DEBUG_LOGGER(e);
+
+            return false;
+        }
+    }
+
+    init () {
+        return this._openLockFile() || this._isStaleLockFile();
+    }
+
     dispose () {
         try {
             fs.unlinkSync(this.path);
@@ -48,7 +73,7 @@ class LockFile {
 
 export default class TempDirectory {
     constructor (namePrefix) {
-        this.namePrefix = namePrefix;
+        this.namePrefix = namePrefix || DEFAULT_NAME_PREFIX;
 
         this.path     = '';
         this.lockFile = null;
@@ -125,6 +150,17 @@ export default class TempDirectory {
         this.lockFile.dispose();
 
         delete USED_TEMP_DIRS[this.path];
+    }
+
+    // NOTE: for testing purposes
+    static get TEMP_DIRECTORIES_ROOT () {
+        return TESTCAFE_TMP_DIRS_ROOT;
+    }
+
+    static set TEMP_DIRECTORIES_ROOT (value) {
+        TESTCAFE_TMP_DIRS_ROOT = value;
+
+        return value;
     }
 }
 
