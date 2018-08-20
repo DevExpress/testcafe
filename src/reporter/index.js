@@ -9,7 +9,6 @@ export default class Reporter {
         this.skipped         = task.tests.filter(test => test.skip).length;
         this.testCount       = task.tests.length - this.skipped;
         this.reportQueue     = Reporter._createReportQueue(task);
-        this.stopOnFirstFail = task.opts.stopOnFirstFail;
 
         this._assignTaskEventHandlers(task);
     }
@@ -77,7 +76,7 @@ export default class Reporter {
             const userAgents = task.browserConnectionGroups.map(group => group[0].userAgent);
             const first      = this.reportQueue[0];
 
-            this.plugin.reportTaskStart(startTime, userAgents, this.testCount, task.opts.stopOnFirstFail);
+            this.plugin.reportTaskStart(startTime, userAgents, this.testCount);
             this.plugin.reportFixtureStart(first.fixture.name, first.fixture.path, first.fixture.meta);
         });
 

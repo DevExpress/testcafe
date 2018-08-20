@@ -244,7 +244,6 @@ describe('Reporter', () => {
         EventEmitter.call(this);
 
         this.tests                   = testMocks;
-        this.opts                    = { stopOnFirstFail: false };
         this.browserConnectionGroups = chunk(browserConnectionMocks, 1);
         this.screenshots             = new ScreenshotsMock();
 
@@ -295,8 +294,7 @@ describe('Reporter', () => {
                         'Chrome',
                         'Firefox'
                     ],
-                    6,
-                    false
+                    6
                 ]
             },
             {
@@ -546,22 +544,5 @@ describe('Reporter', () => {
         var reporter = new Reporter({ noColors: true }, taskMock);
 
         expect(reporter.plugin.chalk.enabled).to.be.false;
-    });
-
-    it("Should pass 'stopOnFirstFail' parameter for 'reportTaskStart' reporter method", done => {
-        const taskMock = new TaskMock();
-
-        taskMock.opts.stopOnFirstFail = true;
-
-        /*eslint-disable-next-line no-unused-vars*/
-        const reporter = new Reporter({
-            reportTaskStart: (startTime, userAgents, testCount, stopOnFirstFail) => {
-                expect(stopOnFirstFail).eql(true);
-
-                done();
-            }
-        }, taskMock);
-
-        taskMock.emit('start');
     });
 });
