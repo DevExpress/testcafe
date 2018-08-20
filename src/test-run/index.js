@@ -376,6 +376,9 @@ export default class TestRun extends EventEmitter {
     }
 
     _rejectCurrentDriverTask (err) {
+        if (!this.currentDriverTask)
+            return;
+
         err.callsite             = err.callsite || this.driverTaskQueue[0].callsite;
         err.isRejectedDriverTask = true;
 
@@ -665,6 +668,11 @@ export default class TestRun extends EventEmitter {
         var getLocation = builder.getFunction();
 
         return await getLocation();
+    }
+
+    stop (err) {
+        this._rejectCurrentDriverTask(err);
+        this.emit('stop');
     }
 }
 

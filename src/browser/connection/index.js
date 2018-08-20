@@ -10,6 +10,7 @@ import COMMAND from './command';
 import STATUS from './status';
 import { GeneralError } from '../../errors/runtime';
 import MESSAGE from '../../errors/runtime/message';
+import testRunTracker from '../../api/test-run-tracker';
 
 const IDLE_PAGE_TEMPLATE = read('../../client/browser/idle-page/index.html.mustache');
 
@@ -98,6 +99,8 @@ export default class BrowserConnection extends EventEmitter {
 
         try {
             await this.provider.closeBrowser(this.id);
+
+            this.opened = false;
         }
         catch (err) {
             // NOTE: A warning would be really nice here, but it can't be done while log is stored in a task.
@@ -112,9 +115,30 @@ export default class BrowserConnection extends EventEmitter {
         }
     }
 
+    _restartBrowser () {
+        this.ready = false;
+
+        this._forceIdle();
+
+        this._closeBrowser()
+            .then(() => {
+                const testRun = this._getActiveTestRun();
+
+                testRun.stop(new GeneralError(MESSAGE.browserDisconnected, this.userAgent));
+
+                this._runBrowser();
+            });
+    }
+
     _waitForHeartbeat () {
         this.heartbeatTimeout = setTimeout(() => {
-            this.emit('error', new GeneralError(MESSAGE.browserDisconnected, this.userAgent));
+            const needRestartBrowser = true; // option
+
+            if (needRestartBrowser)
+                this._restartBrowser();
+            else
+                this.emit('error', new GeneralError(MESSAGE.browserDisconnected, this.userAgent));
+
         }, this.HEARTBEAT_TIMEOUT);
     }
 
@@ -123,6 +147,12 @@ export default class BrowserConnection extends EventEmitter {
             this.pendingTestRunUrl = await this._popNextTestRunUrl();
 
         return this.pendingTestRunUrl;
+    }
+
+    _getActiveTestRun () {
+        const testRuns = Object.values(testRunTracker.activeTestRuns);
+
+        return testRuns.find(tr => tr.browserConnection.id === this.id);
     }
 
     async _popNextTestRunUrl () {

@@ -91,6 +91,10 @@ export default class TestRunController extends EventEmitter {
     }
 
     _keepInQuarantine () {
+        this._restart();
+    }
+
+    _restart () {
         this.emit('test-run-restart');
     }
 
@@ -135,6 +139,7 @@ export default class TestRunController extends EventEmitter {
 
         testRun.once('start', () => this.emit('test-run-start'));
         testRun.once('done', () => this._testRunDone());
+        testRun.once('stop', () => this._restart());
 
         testRun.start();
 
