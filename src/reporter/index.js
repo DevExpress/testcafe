@@ -13,7 +13,6 @@ export default class Reporter {
         this._assignTaskEventHandlers(task);
     }
 
-    // Static
     static _createReportQueue (task) {
         var runsPerTest = task.browserConnectionGroups.length;
 
@@ -77,7 +76,7 @@ export default class Reporter {
             var userAgents = task.browserConnectionGroups.map(group => group[0].userAgent);
             var first      = this.reportQueue[0];
 
-            this.plugin.reportTaskStart(startTime, userAgents, this.testCount);
+            this.plugin.reportTaskStart(startTime, userAgents, this.testCount, task.opts.stopOnFirstFail);
             this.plugin.reportFixtureStart(first.fixture.name, first.fixture.path, first.fixture.meta);
         });
 

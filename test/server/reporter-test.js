@@ -1,12 +1,11 @@
-var expect       = require('chai').expect;
-var EventEmitter = require('events').EventEmitter;
-var util         = require('util');
-var Promise      = require('pinkie');
-var chunk        = require('lodash').chunk;
-var Reporter     = require('../../lib/reporter');
+const expect       = require('chai').expect;
+const EventEmitter = require('events').EventEmitter;
+const util         = require('util');
+const Promise      = require('pinkie');
+const chunk        = require('lodash').chunk;
+const Reporter     = require('../../lib/reporter');
 
-
-describe('Reporter', function () {
+describe('Reporter', () => {
     // Runnable configuration mocks
     var screenshotDir = '/screenshots/1445437598847';
 
@@ -108,7 +107,6 @@ describe('Reporter', function () {
         }
     ];
 
-
     // Test run mocks
     var chromeTestRunMocks = [
         //fixture1test1
@@ -167,7 +165,6 @@ describe('Reporter', function () {
             errs:              []
         }
     ];
-
 
     var firefoxTestRunMocks = [
         //fixture1test1
@@ -243,12 +240,11 @@ describe('Reporter', function () {
         };
     };
 
-
-    // Task mock
     var TaskMock = function () {
         EventEmitter.call(this);
 
         this.tests                   = testMocks;
+        this.opts                    = { stopOnFirstFail: false };
         this.browserConnectionGroups = chunk(browserConnectionMocks, 1);
         this.screenshots             = new ScreenshotsMock();
 
@@ -287,10 +283,10 @@ describe('Reporter', function () {
         }, delay());
     }
 
-    it('Should analyze task progress and call appropriate plugin methods', function () {
-        var taskMock = new TaskMock();
+    it('Should analyze task progress and call appropriate plugin methods', () => {
+        const taskMock = new TaskMock();
 
-        var expectedCalls = [
+        const expectedCalls = [
             {
                 method: 'reportTaskStart',
                 args:   [
@@ -299,7 +295,8 @@ describe('Reporter', function () {
                         'Chrome',
                         'Firefox'
                     ],
-                    6
+                    6,
+                    false
                 ]
             },
             {
@@ -489,7 +486,7 @@ describe('Reporter', function () {
             }
         ];
 
-        var reporter = new Reporter({
+        const reporter = new Reporter({
             calls: [],
 
             reportTaskStart: function () {
@@ -549,5 +546,22 @@ describe('Reporter', function () {
         var reporter = new Reporter({ noColors: true }, taskMock);
 
         expect(reporter.plugin.chalk.enabled).to.be.false;
+    });
+
+    it("Should pass 'stopOnFirstFail' parameter for 'reportTaskStart' reporter method", done => {
+        const taskMock = new TaskMock();
+
+        taskMock.opts.stopOnFirstFail = true;
+
+        /*eslint-disable-next-line no-unused-vars*/
+        const reporter = new Reporter({
+            reportTaskStart: (startTime, userAgents, testCount, stopOnFirstFail) => {
+                expect(stopOnFirstFail).eql(true);
+
+                done();
+            }
+        }, taskMock);
+
+        taskMock.emit('start');
     });
 });
