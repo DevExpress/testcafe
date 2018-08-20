@@ -233,12 +233,12 @@ export default class Runner extends EventEmitter {
         this.opts.quarantineMode     = !!quarantineMode;
         this.opts.debugMode          = !!debugMode;
         this.opts.debugOnFail        = !!debugOnFail;
-        this.opts.stopOnFirstFail    = !!stopOnFirstFail;
         this.opts.selectorTimeout    = selectorTimeout === void 0 ? DEFAULT_SELECTOR_TIMEOUT : selectorTimeout;
         this.opts.assertionTimeout   = assertionTimeout === void 0 ? DEFAULT_ASSERTION_TIMEOUT : assertionTimeout;
         this.opts.pageLoadTimeout    = pageLoadTimeout === void 0 ? DEFAULT_PAGE_LOAD_TIMEOUT : pageLoadTimeout;
         this.opts.speed              = speed;
         this.opts.skipUncaughtErrors = !!skipUncaughtErrors;
+        this.opts.stopOnFirstFail    = !!stopOnFirstFail;
 
         const runTaskPromise = Promise.resolve()
             .then(() => {
