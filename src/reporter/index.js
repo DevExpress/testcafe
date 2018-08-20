@@ -5,16 +5,17 @@ export default class Reporter {
     constructor (plugin, task, outStream) {
         this.plugin = new ReporterPluginHost(plugin, outStream);
 
-        this.passed      = 0;
-        this.skipped     = task.tests.filter(test => test.skip).length;
-        this.testCount   = task.tests.length - this.skipped;
-        this.reportQueue = Reporter._createReportQueue(task);
+        this.passed          = 0;
+        this.skipped         = task.tests.filter(test => test.skip).length;
+        this.testCount       = task.tests.length - this.skipped;
+        this.reportQueue     = Reporter._createReportQueue(task);
+        this.stopOnFirstFail = task.opts.stopOnFirstFail;
 
         this._assignTaskEventHandlers(task);
     }
 
     static _createReportQueue (task) {
-        var runsPerTest = task.browserConnectionGroups.length;
+        const runsPerTest = task.browserConnectionGroups.length;
 
         return task.tests.map(test => Reporter._createReportItem(test, runsPerTest));
     }
@@ -72,9 +73,9 @@ export default class Reporter {
 
     _assignTaskEventHandlers (task) {
         task.once('start', () => {
-            var startTime  = new Date();
-            var userAgents = task.browserConnectionGroups.map(group => group[0].userAgent);
-            var first      = this.reportQueue[0];
+            const startTime  = new Date();
+            const userAgents = task.browserConnectionGroups.map(group => group[0].userAgent);
+            const first      = this.reportQueue[0];
 
             this.plugin.reportTaskStart(startTime, userAgents, this.testCount, task.opts.stopOnFirstFail);
             this.plugin.reportFixtureStart(first.fixture.name, first.fixture.path, first.fixture.meta);
@@ -88,13 +89,14 @@ export default class Reporter {
         });
 
         task.on('test-run-done', testRun => {
-            var reportItem = this._getReportItemForTestRun(testRun);
+            const reportItem                = this._getReportItemForTestRun(testRun);
+            const isAbortedExecutionTestRun = !!testRun.errs.length && this.stopOnFirstFail;
 
             reportItem.pendingRuns--;
             reportItem.unstable = reportItem.unstable || testRun.unstable;
             reportItem.errs     = reportItem.errs.concat(testRun.errs);
 
-            if (!reportItem.pendingRuns) {
+            if (!reportItem.pendingRuns || isAbortedExecutionTestRun) {
                 if (task.screenshots.hasCapturedFor(testRun.test)) {
                     reportItem.screenshotPath = task.screenshots.getPathFor(testRun.test);
                     reportItem.screenshots    = task.screenshots.getScreenshotsInfo(testRun.test);
