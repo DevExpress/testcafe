@@ -2,7 +2,7 @@ import { spawn } from 'child_process';
 import OS from 'os-family';
 import promisifyEvent from 'promisify-event';
 import Promise from 'pinkie';
-import { findProcess, killProcess } from '../../../utils/promisified-functions';
+import { findProcess, killProcess } from './promisified-functions';
 
 
 const BROWSER_CLOSING_TIMEOUT = 5;

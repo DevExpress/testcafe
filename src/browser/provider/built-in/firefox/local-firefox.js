@@ -1,6 +1,6 @@
 import OS from 'os-family';
 import browserTools from 'testcafe-browser-tools';
-import killBrowserProcess from '../../utils/kill-browser-process';
+import killBrowserProcess from '../../../../utils/kill-browser-process';
 import BrowserStarter from '../../utils/browser-starter';
 
 

@@ -2,7 +2,8 @@ import path from 'path';
 import { inspect } from 'util';
 import del from 'del';
 import Promise from 'promise';
-import killBrowserProcess from '../../../browser/provider/utils/kill-browser-process';
+import killBrowserProcess from '../../kill-browser-process';
+import COMMANDS from './commands';
 
 
 const DIRECTORIES_TO_CLEANUP = {};
@@ -32,19 +33,21 @@ async function removeDirectory (dirPath) {
 
 async function dispatchCommand (message) {
     switch (message.command) {
-        case 'add':
+        case COMMANDS.init:
+            return;
+        case COMMANDS.add:
             addDirectory(message.path);
             return;
-        case 'remove':
+        case COMMANDS.remove:
             addDirectory(message.path);
             await removeDirectory(message.path);
+            return;
+        default:
             return;
     }
 }
 
 function init () {
-    process.send({ id: 0 });
-
     process.on('message', async message => {
         let error = '';
 

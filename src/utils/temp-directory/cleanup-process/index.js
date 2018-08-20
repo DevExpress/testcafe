@@ -2,6 +2,7 @@ import { spawn } from 'child_process';
 import debug from 'debug';
 import promisifyEvent from 'promisify-event';
 import Promise from 'pinkie';
+import COMMANDS from './commands';
 
 
 const WORKER_PATH         = require.resolve('./worker');
@@ -15,7 +16,7 @@ class CleanupProcess {
         this.initialized = false;
         this.initPromise = Promise.resolve(void 0);
 
-        this.messageCounter = 1;
+        this.messageCounter = 0;
 
         this.pendingResponses = {};
     }
@@ -88,9 +89,13 @@ class CleanupProcess {
 
                 try {
                     await Promise.race([
-                        this._waitResponse(0),
+                        this._waitResponseForMessage({ command: COMMANDS.init }),
                         promisifyEvent(this.worker, 'error')
                     ]);
+
+                    const channel = this.worker.channel || this.worker._channel;
+
+                    channel.unref();
 
                     this.initialized = true;
                 }
@@ -112,7 +117,7 @@ class CleanupProcess {
             return;
 
         try {
-            await this._waitResponseForMessage({ command: 'add', path });
+            await this._waitResponseForMessage({ command: COMMANDS.add, path });
         }
         catch (e) {
             DEBUG_LOGGER(`Failed to add the ${path} directory to cleanup process`);
@@ -125,7 +130,7 @@ class CleanupProcess {
             return;
 
         try {
-            await this._waitResponseForMessage({ command: 'remove', path });
+            await this._waitResponseForMessage({ command: COMMANDS.remove, path });
         }
         catch (e) {
             DEBUG_LOGGER(`Failed to remove the ${path} directory in cleanup process`);

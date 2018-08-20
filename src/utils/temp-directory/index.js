@@ -1,82 +1,21 @@
 import debug from 'debug';
-import fs from 'fs';
 import os from 'os';
 import path from 'path';
 import setupExitHook from 'async-exit-hook';
 import tmp from 'tmp';
+import LockFile from './lockfile';
 import cleanupProcess from './cleanup-process';
 import { ensureDir, readDir } from '../../utils/promisified-functions';
 
 
 // NOTE: mutable for testing purposes
-let TESTCAFE_TMP_DIRS_ROOT = path.join(os.tmpdir(), 'testcafe-tmp');
+let TESTCAFE_TMP_DIRS_ROOT = path.join(os.tmpdir(), 'testcafe');
 
-const LOCKFILE_NAME          = '.testcafe-lockfile';
 const DEFAULT_NAME_PREFIX    = 'tmp';
-
-const STALE_LOCKFILE_AGE = 2 * 24 * 60 * 60 * 1000;
 
 const USED_TEMP_DIRS = {};
 
 const DEBUG_LOGGER = debug('testcafe:utils:temp-directory');
-
-class LockFile {
-    constructor (dirPath) {
-        this.path   = path.join(dirPath, LOCKFILE_NAME);
-    }
-
-    _openLockFile ({ force = false } = {}) {
-        try {
-            const fd = fs.openSync(this.path, force ? 'w' : 'wx');
-
-            fs.closeSync(fd);
-
-            return true;
-        }
-        catch (e) {
-            DEBUG_LOGGER('Failed to init lockfile ' + this.path);
-            DEBUG_LOGGER(e);
-
-            return false;
-        }
-    }
-
-    _isStaleLockFile () {
-        const currentMs = Date.now();
-
-        try {
-            const { mtimeMs } = fs.statSync(this.path);
-
-            return currentMs - mtimeMs > STALE_LOCKFILE_AGE;
-        }
-        catch (e) {
-            DEBUG_LOGGER('Failed to check status of lockfile ' + this.path);
-            DEBUG_LOGGER(e);
-
-            return false;
-        }
-    }
-
-    init () {
-        if (this._openLockFile())
-            return true;
-
-        if (this._isStaleLockFile())
-            return this._openLockFile({ force: true });
-
-        return false;
-    }
-
-    dispose () {
-        try {
-            fs.unlinkSync(this.path);
-        }
-        catch (e) {
-            DEBUG_LOGGER('Failed to dispose lockfile ' + this.path);
-            DEBUG_LOGGER(e);
-        }
-    }
-}
 
 export default class TempDirectory {
     constructor (namePrefix) {

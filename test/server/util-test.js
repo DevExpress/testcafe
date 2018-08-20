@@ -8,8 +8,6 @@ const parseFileList   = require('../../lib/utils/parse-file-list');
 const TempDirectory   = require('../../lib/utils/temp-directory');
 
 
-const TMP_ROOT = path.join(process.cwd(), '__tmp__');
-
 describe('Utils', () => {
     it('Correct File Path', () => {
         expect(correctFilePath('\\test')).eql('/test');
@@ -70,6 +68,8 @@ describe('Utils', () => {
     });
 
     describe('Temp Directory', function () {
+        const TMP_ROOT = path.join(process.cwd(), '__tmp__');
+
         const savedTmpRoot = TempDirectory.TEMP_DIRECTORIES_ROOT;
 
         beforeEach(() => {
