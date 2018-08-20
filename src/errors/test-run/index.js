@@ -63,22 +63,28 @@ export class DomNodeClientFunctionResultError extends TestRunErrorBase {
 
 // Selector errors
 //--------------------------------------------------------------------
+class SelectorErrorBase extends TestRunErrorBase {
+    constructor (type, { apiFnChain, apiFnIndex }) {
+        super(type);
+
+        this.apiFnChain = apiFnChain;
+        this.apiFnIndex = apiFnIndex;
+    }
+}
+
 export class InvalidSelectorResultError extends TestRunErrorBase {
     constructor () {
         super(TYPE.invalidSelectorResultError);
     }
 }
 
-export class CantObtainInfoForElementSpecifiedBySelectorError extends TestRunErrorBase {
-    constructor (callsite, { apiFnChain, apiFnIndex }) {
-        super(TYPE.cantObtainInfoForElementSpecifiedBySelectorError);
+export class CantObtainInfoForElementSpecifiedBySelectorError extends SelectorErrorBase {
+    constructor (callsite, apiFnArgs) {
+        super(TYPE.cantObtainInfoForElementSpecifiedBySelectorError, apiFnArgs);
 
-        this.callsite   = callsite;
-        this.apiFnChain = apiFnChain;
-        this.apiFnIndex = apiFnIndex;
+        this.callsite = callsite;
     }
 }
-
 
 // Page errors
 //--------------------------------------------------------------------
@@ -278,12 +284,9 @@ export class ActionSelectorError extends TestRunErrorBase {
 
 // Action execution errors
 //--------------------------------------------------------------------
-export class ActionElementNotFoundError extends TestRunErrorBase {
-    constructor ({ apiFnChain, apiFnIndex }) {
-        super(TYPE.actionElementNotFoundError);
-
-        this.apiFnChain = apiFnChain;
-        this.apiFnIndex = apiFnIndex;
+export class ActionElementNotFoundError extends SelectorErrorBase {
+    constructor (apiFnArgs) {
+        super(TYPE.actionElementNotFoundError, apiFnArgs);
     }
 }
 
@@ -301,13 +304,11 @@ export class ActionSelectorMatchesWrongNodeTypeError extends TestRunErrorBase {
     }
 }
 
-export class ActionAdditionalElementNotFoundError extends TestRunErrorBase {
-    constructor (argumentName, { apiFnChain, apiFnIndex }) {
-        super(TYPE.actionAdditionalElementNotFoundError);
+export class ActionAdditionalElementNotFoundError extends SelectorErrorBase {
+    constructor (argumentName, apiFnArgs) {
+        super(TYPE.actionAdditionalElementNotFoundError, apiFnArgs);
 
         this.argumentName = argumentName;
-        this.apiFnChain   = apiFnChain;
-        this.apiFnIndex   = apiFnIndex;
     }
 }
 
