@@ -1,0 +1,129 @@
+{
+    "fixtures": [
+        {
+            "name": "Native dialogs",
+            "pageUrl": "http://localhost:3000/fixtures/api/es-next/native-dialogs-handling/pages/index.html",
+            "tests": [
+                {
+                    "name": "Expected confirm after an action",
+                    "commands": [
+                        {
+                            "type": "set-native-dialog-handler",
+                            "dialogHandler": {
+                                "type": "js-expr",
+                                "value": "(type, text) => {\r\n    if (type === 'confirm' && text === 'Confirm?')\r\n        return true;\r\n\r\n    return null;\r\n}"
+                            }
+                        },
+                        {
+                            "selector": {
+                                "type": "js-expr",
+                                "value": "'#buttonConfirm'"
+                            },
+                            "type": "click"
+                        },
+                        {
+                            "type": "assertion",
+                            "assertionType": "eql",
+                            "actual": {
+                                "type": "js-expr",
+                                "value": "Selector('#result').textContent"
+                            },
+                            "expected": {
+                                "type": "js-expr",
+                                "value": "'true'"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Expected confirm after an action (client function)",
+                    "commands": [
+                        {
+                            "type": "set-native-dialog-handler",
+                            "dialogHandler": {
+                                "type": "js-expr",
+                                "value": "ClientFunction((type, text) => {\r\n    if (type === 'confirm' && text === 'Confirm?')\r\n        return true;\r\n\r\n    return null;\r\n})"
+                            }
+                        },
+                        {
+                            "selector": {
+                                "type": "js-expr",
+                                "value": "'#buttonConfirm'"
+                            },
+                            "type": "click"
+                        },
+                        {
+                            "type": "assertion",
+                            "assertionType": "eql",
+                            "actual": {
+                                "type": "js-expr",
+                                "value": "Selector('#result').textContent"
+                            },
+                            "expected": {
+                                "type": "js-expr",
+                                "value": "'true'"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Selector as dialogHandler",
+                    "commands": [
+                        {
+                            "type": "set-native-dialog-handler",
+                            "dialogHandler": {
+                                "type": "js-expr",
+                                "value": "Selector(() => document.body)"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Dialog handler has wrong type",
+                    "commands": [
+                        {
+                            "type": "set-native-dialog-handler",
+                            "dialogHandler": {
+                                "type": "js-expr",
+                                "value": "42"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Null handler",
+                    "commands": [
+                        {
+                            "type": "set-native-dialog-handler",
+                            "dialogHandler": {
+                                "type": "js-expr",
+                                "value": "() => true"
+                            }
+                        },
+                        {
+                            "selector": {
+                                "type": "js-expr",
+                                "value": "'#buttonAlert'"
+                            },
+                            "type": "click"
+                        },
+                        {
+                            "type": "set-native-dialog-handler",
+                            "dialogHandler": {
+                                "type": "js-expr",
+                                "value": "null"
+                            }
+                        },
+                        {
+                            "selector": {
+                                "type": "js-expr",
+                                "value": "'#buttonAlert'"
+                            },
+                            "type": "click"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
