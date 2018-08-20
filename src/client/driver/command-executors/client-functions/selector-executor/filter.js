@@ -13,11 +13,11 @@ const SELECTOR_FILTER_ERROR = {
     nth:           3
 };
 
-const FILTER_ERROR_TO_API_RE = { };
-
-FILTER_ERROR_TO_API_RE[SELECTOR_FILTER_ERROR.filterVisible] = /^\.filterVisible\(\)$/;
-FILTER_ERROR_TO_API_RE[SELECTOR_FILTER_ERROR.filterHidden]  = /^\.filterHidden\(\)$/;
-FILTER_ERROR_TO_API_RE[SELECTOR_FILTER_ERROR.nth]           = /^\.nth\(\d+\)$/;
+const FILTER_ERROR_TO_API_RE = {
+    [SELECTOR_FILTER_ERROR.filterVisible]: /^\.filterVisible\(\)$/,
+    [SELECTOR_FILTER_ERROR.filterHidden]:  /^\.filterHidden\(\)$/,
+    [SELECTOR_FILTER_ERROR.nth]:           /^\.nth\(\d+\)$/
+};
 
 class SelectorFilter {
     constructor () {
