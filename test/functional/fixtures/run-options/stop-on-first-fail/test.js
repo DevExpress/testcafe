@@ -4,7 +4,7 @@ const { createTestStream } = require('../../../utils/stream');
 
 const TEST_RUN_COUNT_FILENAME = 'testRunCount.txt';
 
-const getCountExecutedTests = () => {
+const getTestRunCount = () => {
     const content = fs.readFileSync(TEST_RUN_COUNT_FILENAME).toString();
 
     return parseInt(content, 10);
@@ -18,7 +18,7 @@ describe('Stop test task on first failed test', () => {
     it('Basic', () => {
         return runTests('./testcafe-fixtures/stop-on-first-fail-test.js', void 0, { shouldFail: true, stopOnFirstFail: true })
             .catch(() => {
-                expect(getCountExecutedTests()).eql(2);
+                expect(getTestRunCount()).eql(2);
                 expect(testReport.failedCount).eql(1);
             });
     });

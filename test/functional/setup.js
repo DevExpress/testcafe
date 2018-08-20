@@ -1,15 +1,16 @@
-var SlConnector         = require('saucelabs-connector');
-var BsConnector         = require('browserstack-connector');
-var Promise             = require('pinkie');
-var caller              = require('caller');
-var path                = require('path');
-var promisifyEvent      = require('promisify-event');
-var createTestCafe      = require('../../lib');
-var browserProviderPool = require('../../lib/browser/provider/pool');
-var BrowserConnection   = require('../../lib/browser/connection');
-var config              = require('./config.js');
-var site                = require('./site');
-var getTestError        = require('./get-test-error.js');
+const SlConnector          = require('saucelabs-connector');
+const BsConnector          = require('browserstack-connector');
+const Promise              = require('pinkie');
+const caller               = require('caller');
+const path                 = require('path');
+const promisifyEvent       = require('promisify-event');
+const createTestCafe       = require('../../lib');
+const browserProviderPool  = require('../../lib/browser/provider/pool');
+const BrowserConnection    = require('../../lib/browser/connection');
+const config               = require('./config.js');
+const site                 = require('./site');
+const getTestError         = require('./get-test-error.js');
+const { createTestStream } = require('./utils/stream');
 
 var testCafe     = null;
 var browsersInfo = null;
@@ -158,7 +159,7 @@ before(function () {
             global.testCafe   = testCafe;
 
             global.runTests = (fixture, testName, opts) => {
-                let report                  = '';
+                const stream                = createTestStream();
                 const runner                = testCafe.createRunner();
                 const fixturePath           = typeof fixture !== 'string' || path.isAbsolute(fixture) ? fixture : path.join(path.dirname(caller()), fixture);
                 const skipJsErrors          = opts && opts.skipJsErrors;
@@ -211,17 +212,8 @@ before(function () {
 
                 if (customReporters)
                     customReporters.forEach(r => runner.reporter(r.reporter, r.outStream));
-                else {
-                    runner.reporter('json', {
-                        write: data => {
-                            report += data;
-                        },
-
-                        end: data => {
-                            report += data;
-                        }
-                    });
-                }
+                else
+                    runner.reporter('json', stream);
 
                 return runner
                     .useProxy(externalProxyHost, proxyBypass)
@@ -247,7 +239,7 @@ before(function () {
                         if (customReporters)
                             return;
 
-                        const taskReport = JSON.parse(report);
+                        const taskReport = JSON.parse(stream.data);
                         const errorDescr = getTestError(taskReport, actualBrowsers);
                         const testReport = taskReport.fixtures.length === 1 ?
                             taskReport.fixtures[0].tests[0] :
