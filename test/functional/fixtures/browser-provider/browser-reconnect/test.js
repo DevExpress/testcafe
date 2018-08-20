@@ -5,12 +5,12 @@ const config              = require('../../../config');
 const browserProviderPool = require('../../../../../lib/browser/provider/pool');
 const BrowserConnection   = require('../../../../../lib/browser/connection');
 
-let hasErrors = true;
+let errors = null;
 
 function customReporter () {
     return {
         reportTestDone (name, testRunInfo) {
-            hasErrors = !!testRunInfo.errs.length;
+            errors = testRunInfo.errs;
         },
         reportFixtureStart () {
         },
@@ -22,8 +22,8 @@ function customReporter () {
 }
 
 if (config.useLocalBrowsers) {
-    describe('Browser reconnect', function () {
-        async function run (pathToTest) {
+    describe.only('Browser reconnect', function () {
+        async function run (pathToTest, filter) {
             const src     = path.join(__dirname, pathToTest);
             const aliases = config.currentEnvironment.browsers.map(browser => browser.alias);
 
@@ -41,16 +41,28 @@ if (config.useLocalBrowsers) {
                     return testCafe
                         .createRunner()
                         .src(src)
+                        .filter(testName => testName === filter)
                         .reporter(customReporter)
                         .browsers(connection)
-                        .run().then(() => {
-                            expect(hasErrors).to.be.false;
-                        });
+                        .run();
                 });
         }
 
-        it.only('Should restart browser when it does not respond', function () {
-            return run('./testcafe-fixtures/index-test.js');
+        it('Should restart browser when it does not respond', function () {
+            return run('./testcafe-fixtures/index-test.js', 'Should restart browser when it does not respond')
+                .then(() => {
+                    expect(errors.length).eql(0);
+                });
+        });
+
+        it('Should fail on 3 disconnects', function () {
+            return run('./testcafe-fixtures/index-test.js', 'Should fail on 3 disconnects')
+                .then(() => {
+                    throw new Error('Test should have failed but it succeeded');
+                })
+                .catch(err => {
+                    expect(err.message).contains('browser disconnected. This problem may appear when a browser hangs or is closed, or due to network issues');
+                });
         });
     });
 }

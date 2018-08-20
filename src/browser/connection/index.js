@@ -12,9 +12,11 @@ import { GeneralError } from '../../errors/runtime';
 import MESSAGE from '../../errors/runtime/message';
 import testRunTracker from '../../api/test-run-tracker';
 
-const IDLE_PAGE_TEMPLATE = read('../../client/browser/idle-page/index.html.mustache');
+const IDLE_PAGE_TEMPLATE   = read('../../client/browser/idle-page/index.html.mustache');
+const DISCONNECT_THRESHOLD = 3;
 
-var connections = {};
+const connections = {};
+
 
 export default class BrowserConnection extends EventEmitter {
     constructor (gateway, browserInfo, permanent) {
@@ -41,6 +43,7 @@ export default class BrowserConnection extends EventEmitter {
         this.idle              = true;
         this.heartbeatTimeout  = null;
         this.pendingTestRunUrl = null;
+        this.disconnectCount = 0;
 
         this.url           = `${gateway.domain}/browser/connect/${this.id}`;
         this.idleUrl       = `${gateway.domain}/browser/idle/${this.id}`;
@@ -54,6 +57,8 @@ export default class BrowserConnection extends EventEmitter {
         this.heartbeatUrl  = `${gateway.domain}${this.heartbeatRelativeUrl}`;
         this.statusUrl     = `${gateway.domain}${this.statusRelativeUrl}`;
         this.statusDoneUrl = `${gateway.domain}${this.statusDoneRelativeUrl}`;
+
+        // this.disconnectCount = {};
 
         this.on('error', () => {
             this._forceIdle();
@@ -115,29 +120,41 @@ export default class BrowserConnection extends EventEmitter {
         }
     }
 
-    _restartBrowser () {
+    _restartBrowser (testRun, error) {
         this.ready = false;
 
         this._forceIdle();
 
         this._closeBrowser()
             .then(() => {
-                const testRun = this._getActiveTestRun();
-
-                testRun.stop(new GeneralError(MESSAGE.browserDisconnected, this.userAgent));
+                testRun.stop(error);
 
                 this._runBrowser();
             });
     }
 
+    _disconnectThresholdExceeded (testRun) {
+        const disconnectedOnSameTest = this.prevTestRun && testRun.test === this.prevTestRun.test;
+
+        if (disconnectedOnSameTest)
+            this.disconnectCount++;
+        else
+            this.disconnectCount = 1;
+
+        this.prevTestRun = testRun;
+
+        return this.disconnectCount === DISCONNECT_THRESHOLD;
+    }
+
     _waitForHeartbeat () {
         this.heartbeatTimeout = setTimeout(() => {
-            const needRestartBrowser = true; // option
+            const error   = new GeneralError(MESSAGE.browserDisconnected, this.userAgent);
+            const testRun = this._getActiveTestRun();
 
-            if (needRestartBrowser)
-                this._restartBrowser();
+            if (!testRun || this._disconnectThresholdExceeded(testRun))
+                this.emit('error', error);
             else
-                this.emit('error', new GeneralError(MESSAGE.browserDisconnected, this.userAgent));
+                this._restartBrowser(testRun, error);
 
         }, this.HEARTBEAT_TIMEOUT);
     }
