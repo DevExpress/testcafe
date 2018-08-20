@@ -100,7 +100,7 @@ export default class TestRunController extends EventEmitter {
     }
 
     async _testRunDone () {
-        if (this.quarantine && !this.opts.stopOnFirstFail)
+        if (this.quarantine)
             await this._testRunDoneInQuarantineMode();
         else
             await this._emitTestRunDone();

@@ -25,8 +25,10 @@ export default class Task extends EventEmitter {
         job.on('test-run-done', testRun => {
             this.emit('test-run-done', testRun);
 
-            if (this.opts.stopOnFirstFail && testRun.errs.length)
+            if (this.opts.stopOnFirstFail && testRun.errs.length) {
+                this.abort();
                 this.emit('done');
+            }
         });
 
         job.once('start', () => {

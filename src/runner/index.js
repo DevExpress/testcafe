@@ -68,6 +68,15 @@ export default class Runner extends EventEmitter {
     }
 
     // Run task
+    _getFailedTestCount (task, reporter) {
+        let failedTestCount = reporter.testCount - reporter.passed;
+
+        if (task.opts.stopOnFirstFail && !!failedTestCount)
+            failedTestCount = 1;
+
+        return failedTestCount;
+    }
+
     async _getTaskResult (task, browserSet, reporter, testedApp) {
         task.on('browser-job-done', job => browserSet.releaseConnection(job.browserConnection));
 
@@ -90,7 +99,7 @@ export default class Runner extends EventEmitter {
 
         await Runner._disposeBrowserSetAndTestedApp(browserSet, testedApp);
 
-        return reporter.testCount - reporter.passed;
+        return this._getFailedTestCount(task, reporter);
     }
 
     _runTask (reporterPlugins, browserSet, tests, testedApp) {
