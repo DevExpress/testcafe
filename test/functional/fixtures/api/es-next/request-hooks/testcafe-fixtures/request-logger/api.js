@@ -11,7 +11,7 @@ test
     ('API', async t => {
         await t
             .expect(logger.contains(r => r.response.statusCode === 200)).ok()
-            .expect(logger.count(r => r.request.url === pageUrl)).eql(1);
+            .expect(logger.count(r => r.request.url === pageUrl)).eql(2);
 
         logger.clear();
 
@@ -24,7 +24,7 @@ test
             .expect(logger.contains(r => r.request.url === pageUrl)).ok();
 
         await t
-            .expect(logger.requests.length).eql(1)
+            .expect(logger.requests.length).eql(2)
             .expect(logger.requests[0].request.url).eql(pageUrl)
             .expect(logger.requests[0].response.statusCode).eql(304);
     });

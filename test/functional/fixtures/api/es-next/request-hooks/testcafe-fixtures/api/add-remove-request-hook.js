@@ -34,29 +34,29 @@ test
     .requestHooks(hook2)
     ('Test', async t => {
         await t
-            .expect(hook1.onResponseCallCount).eql(1)
-            .expect(hook2.onResponseCallCount).eql(1);
+            .expect(hook1.onResponseCallCount).eql(2)
+            .expect(hook2.onResponseCallCount).eql(2);
 
         await t
             .addRequestHooks(hook3)
             .expect(hook3.onResponseCallCount).eql(0)
             .navigateTo(pageUrl)
-            .expect(hook1.onResponseCallCount).eql(2)
-            .expect(hook2.onResponseCallCount).eql(2)
-            .expect(hook3.onResponseCallCount).eql(1);
+            .expect(hook1.onResponseCallCount).eql(4)
+            .expect(hook2.onResponseCallCount).eql(4)
+            .expect(hook3.onResponseCallCount).eql(2);
 
         await t
             .addRequestHooks(hook1, hook2, hook3)
             .navigateTo(pageUrl)
-            .expect(hook1.onResponseCallCount).eql(3)
-            .expect(hook2.onResponseCallCount).eql(3)
-            .expect(hook3.onResponseCallCount).eql(2);
+            .expect(hook1.onResponseCallCount).eql(6)
+            .expect(hook2.onResponseCallCount).eql(6)
+            .expect(hook3.onResponseCallCount).eql(4);
 
         await t
             .removeRequestHooks(hook1)
             .removeRequestHooks(hook1)
             .navigateTo(pageUrl)
-            .expect(hook1.onResponseCallCount).eql(3)
-            .expect(hook2.onResponseCallCount).eql(4)
-            .expect(hook3.onResponseCallCount).eql(3);
+            .expect(hook1.onResponseCallCount).eql(6)
+            .expect(hook2.onResponseCallCount).eql(8)
+            .expect(hook3.onResponseCallCount).eql(6);
     });

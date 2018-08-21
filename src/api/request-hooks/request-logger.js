@@ -54,7 +54,7 @@ class RequestLoggerImplementation extends RequestHook {
             loggedReq.request.headers = Object.assign({}, event._requestInfo.headers);
 
         if (this.options.logRequestBody)
-            loggedReq.request.body = this.options.stringifyRequestBody ? event._requestInfo.body.toString() : event._requestInfo.body;
+            loggedReq.request.body = this.options.stringifyRequestBody ? String(event._requestInfo.body) : event._requestInfo.body;
 
         this._internalRequests[loggedReq.id] = loggedReq;
     }
@@ -72,7 +72,7 @@ class RequestLoggerImplementation extends RequestHook {
             loggerReq.response.headers = Object.assign({}, event.headers);
 
         if (this.options.logResponseBody)
-            loggerReq.response.body = this.options.stringifyResponseBody ? event.body.toString() : event.body;
+            loggerReq.response.body = this.options.stringifyResponseBody ? String(event.body) : event.body;
     }
 
     _prepareInternalRequestInfo () {

@@ -66,7 +66,7 @@ Server.prototype._setupRoutes = function () {
             .then(function (content) {
                 res.setHeader('content-type', CONTENT_TYPES[path.extname(resourcePath)]);
 
-                if (!reqPath.startsWith('/fixtures/api/es-next/roles/pages'))
+                if (!reqPath.startsWith('/fixtures/api/es-next/roles/pages') && !reqPath.startsWith('/fixtures/api/es-next/request-hooks/pages'))
                     res.setHeader('cache-control', 'max-age=3600');
 
                 setTimeout(function () {
