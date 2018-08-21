@@ -6,6 +6,7 @@ import SessionController from '../test-run/session-controller';
 
 // Const
 const QUARANTINE_THRESHOLD = 3;
+const DISCONNECT_THRESHOLD = 3;
 
 class Quarantine {
     constructor () {
@@ -40,9 +41,10 @@ export default class TestRunController extends EventEmitter {
 
         this.TestRunCtor = TestRunController._getTestRunCtor(test, opts);
 
-        this.testRun    = null;
-        this.done       = false;
-        this.quarantine = null;
+        this.testRun      = null;
+        this.done         = false;
+        this.quarantine   = null;
+        this.disconnected = 0;
 
         if (this.opts.quarantineMode)
             this.quarantine = new Quarantine();
@@ -91,11 +93,20 @@ export default class TestRunController extends EventEmitter {
     }
 
     _keepInQuarantine () {
-        this._restart();
+        this._restart(false);
     }
 
-    _restart () {
-        this.emit('test-run-restart');
+    _restart (notifyParent) {
+        this.emit('test-run-restart', notifyParent);
+    }
+
+    _testRunRejected () {
+        this.disconnected++;
+
+        if (this.disconnected < DISCONNECT_THRESHOLD)
+            this._restart(true);
+        else
+            this.emit('disconnected');
     }
 
     async _testRunDoneInQuarantineMode () {
@@ -139,7 +150,7 @@ export default class TestRunController extends EventEmitter {
 
         testRun.once('start', () => this.emit('test-run-start'));
         testRun.once('done', () => this._testRunDone());
-        testRun.once('stop', () => this._restart());
+        testRun.once('rejected', () => this._testRunRejected());
 
         testRun.start();
 

@@ -12,10 +12,8 @@ import { GeneralError } from '../../errors/runtime';
 import MESSAGE from '../../errors/runtime/message';
 import testRunTracker from '../../api/test-run-tracker';
 
-const IDLE_PAGE_TEMPLATE   = read('../../client/browser/idle-page/index.html.mustache');
-const DISCONNECT_THRESHOLD = 3;
-
-const connections = {};
+const IDLE_PAGE_TEMPLATE = read('../../client/browser/idle-page/index.html.mustache');
+const connections        = {};
 
 
 export default class BrowserConnection extends EventEmitter {
@@ -43,7 +41,7 @@ export default class BrowserConnection extends EventEmitter {
         this.idle              = true;
         this.heartbeatTimeout  = null;
         this.pendingTestRunUrl = null;
-        this.disconnectCount = 0;
+        this.disconnectCount   = {};
 
         this.url           = `${gateway.domain}/browser/connect/${this.id}`;
         this.idleUrl       = `${gateway.domain}/browser/idle/${this.id}`;
@@ -120,41 +118,33 @@ export default class BrowserConnection extends EventEmitter {
         }
     }
 
-    _restartBrowser (testRun, error) {
+    _createBrowserDisconnectedError () {
+        return new GeneralError(MESSAGE.browserDisconnected, this.userAgent);
+    }
+
+    _onBrowserDisconnected () {
+        this.emit('error', this._createBrowserDisconnectedError());
+    }
+
+    _restartBrowser () {
         this.ready = false;
 
         this._forceIdle();
 
         this._closeBrowser()
             .then(() => {
-                testRun.stop(error);
-
                 this._runBrowser();
             });
     }
 
-    _disconnectThresholdExceeded (testRun) {
-        const disconnectedOnSameTest = this.prevTestRun && testRun.test === this.prevTestRun.test;
-
-        if (disconnectedOnSameTest)
-            this.disconnectCount++;
-        else
-            this.disconnectCount = 1;
-
-        this.prevTestRun = testRun;
-
-        return this.disconnectCount === DISCONNECT_THRESHOLD;
-    }
-
     _waitForHeartbeat () {
         this.heartbeatTimeout = setTimeout(() => {
-            const error   = new GeneralError(MESSAGE.browserDisconnected, this.userAgent);
             const testRun = this._getActiveTestRun();
 
-            if (!testRun || this._disconnectThresholdExceeded(testRun))
-                this.emit('error', error);
+            if (testRun && testRun.reject)
+                testRun.reject(this._createBrowserDisconnectedError());
             else
-                this._restartBrowser(testRun, error);
+                this._onBrowserDisconnected();
 
         }, this.HEARTBEAT_TIMEOUT);
     }
@@ -216,6 +206,9 @@ export default class BrowserConnection extends EventEmitter {
 
     addJob (job) {
         this.jobQueue.push(job);
+
+        job.on('disconnected', () => this._onBrowserDisconnected());
+        job.on('test-run-restart', () => this._restartBrowser());
     }
 
     removeJob (job) {

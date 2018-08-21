@@ -670,9 +670,9 @@ export default class TestRun extends EventEmitter {
         return await getLocation();
     }
 
-    stop (err) {
+    reject (err) {
         this._rejectCurrentDriverTask(err);
-        this.emit('stop');
+        this.emit('rejected');
     }
 }
 
