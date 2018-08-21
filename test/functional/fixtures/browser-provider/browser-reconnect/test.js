@@ -22,7 +22,7 @@ function customReporter () {
 }
 
 if (config.useLocalBrowsers) {
-    describe.only('Browser reconnect', function () {
+    describe('Browser reconnect', function () {
         async function run (pathToTest, filter) {
             const src     = path.join(__dirname, pathToTest);
             const aliases = config.currentEnvironment.browsers.map(browser => browser.alias);
