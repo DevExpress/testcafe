@@ -1,5 +1,5 @@
 import ts from 'typescript';
-import { repeat } from 'lodash';
+import { repeat, merge } from 'lodash';
 import TypeScriptTestFileCompiler from './compiler';
 import { TestFileParserBase } from '../../test-file-parser-base';
 
@@ -16,8 +16,31 @@ class TypeScriptTestFileParser extends TestFileParserBase {
         super(ts.SyntaxKind);
     }
 
+    getComputedNameString ({ pos, end }) {
+        const templatePos = this.getLocationByOffsets(pos, end);
+
+        return TestFileParserBase.formatComputedName(templatePos.loc.start.line);
+    }
+
     getTokenType (token) {
         return token.kind;
+    }
+
+    getCalleeToken (token) {
+        return token.expression;
+    }
+
+    getMemberFnName (token) {
+        return token.expression.name.text;
+    }
+
+    getKeyValue (prop) {
+        const { name, initializer } = prop;
+
+        return {
+            key:   name.text,
+            value: this.getStringValue(initializer)
+        };
     }
 
     getFixedStartOffset (start) {
@@ -59,6 +82,15 @@ class TypeScriptTestFileParser extends TestFileParserBase {
         return token.initializer;
     }
 
+    getStringValue (token) {
+        const stringTypes = [this.tokenType.StringLiteral, this.tokenType.TemplateExpression];
+
+        if (stringTypes.indexOf(token.kind) > -1 || token.text && token.kind !== this.tokenType.NumericLiteral)
+            return this.formatFnArg(token);
+
+        return null;
+    }
+
     isAsyncFn (token) {
         const isGeneratorFn = !!token.asteriskToken;
         const isAsyncFn     = token.modifiers &&
@@ -71,13 +103,7 @@ class TypeScriptTestFileParser extends TestFileParserBase {
         return token.body.statements;
     }
 
-    formatFnData (name, value, token) {
-        if (value && typeof value === 'object') {
-            const templatePos = this.getLocationByOffsets(value.pos, value.end);
-
-            value = TypeScriptTestFileParser.formatComputedName(templatePos.loc.start.line);
-        }
-
+    formatFnData (name, value, token, meta = [{}]) {
         const loc = this.getLocationByOffsets(token.pos, token.end);
 
         return {
@@ -85,7 +111,8 @@ class TypeScriptTestFileParser extends TestFileParserBase {
             value:  value,
             loc:    loc.loc,
             start:  loc.start,
-            end:    loc.end
+            end:    loc.end,
+            meta:   merge({}, ...meta)
         };
     }
 
@@ -100,6 +127,8 @@ class TypeScriptTestFileParser extends TestFileParserBase {
             callStack.push(exp);
         }
 
+        const meta = this.getMetaInfo(callStack.slice());
+
         if (exp && this.isApiFn(exp.text)) {
             let parentExp = callStack.pop();
 
@@ -110,7 +139,7 @@ class TypeScriptTestFileParser extends TestFileParserBase {
                                            parentExp.expression.name.text;
 
                     if (this.checkExpDefineTargetName(calleeType, calleeMemberFn))
-                        return this.formatFnData(exp.text, this.formatFnArg(parentExp.arguments[0]), token);
+                        return this.formatFnData(exp.text, this.formatFnArg(parentExp.arguments[0]), token, meta);
                 }
 
                 if (parentExp.kind === tokenType.TaggedTemplateExpression && parentExp.tag) {
@@ -118,7 +147,7 @@ class TypeScriptTestFileParser extends TestFileParserBase {
                     const tagMemberFn = tagType === tokenType.PropertyAccessExpression && parentExp.tag.name.text;
 
                     if (this.checkExpDefineTargetName(tagType, tagMemberFn))
-                        return this.formatFnData(exp.text, this.formatFnArg(parentExp), token);
+                        return this.formatFnData(exp.text, this.formatFnArg(parentExp), token, meta);
                 }
 
                 parentExp = callStack.pop();
@@ -129,14 +158,17 @@ class TypeScriptTestFileParser extends TestFileParserBase {
     }
 
     formatFnArg (arg) {
+        if (arg.templateSpans)
+            return this.getComputedNameString({ pos: arg.pos, end: arg.end });
+
         if (arg.head)
-            return { pos: arg.template.pos, end: arg.template.end };
+            return this.getComputedNameString({ pos: arg.template.pos, end: arg.template.end });
 
         if (arg.template)
-            return arg.template.text || { pos: arg.template.pos, end: arg.template.end };
+            return arg.template.text || this.getComputedNameString({ pos: arg.template.pos, end: arg.template.end });
 
         if (arg.kind === this.tokenType.Identifier)
-            return { pos: arg.pos, end: arg.end };
+            return this.getComputedNameString({ pos: arg.pos, end: arg.end });
 
         if (arg.text && arg.kind !== this.tokenType.NumericLiteral)
             return arg.text;

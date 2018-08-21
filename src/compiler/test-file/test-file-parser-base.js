@@ -11,21 +11,23 @@ const METHODS_SPECIFYING_NAME = ['only', 'skip'];
 const COMPUTED_NAME_TEXT_TMP  = '<computed name>(line: %s)';
 
 export class Fixture {
-    constructor (name, start, end, loc) {
+    constructor (name, start, end, loc, meta) {
         this.name  = name;
         this.loc   = loc;
         this.start = start;
         this.end   = end;
+        this.meta  = meta;
         this.tests = [];
     }
 }
 
 export class Test {
-    constructor (name, start, end, loc) {
+    constructor (name, start, end, loc, meta) {
         this.name  = name;
         this.loc   = loc;
         this.start = start;
         this.end   = end;
+        this.meta  = meta;
     }
 }
 
@@ -78,8 +80,81 @@ export class TestFileParserBase {
         throw new Error('Not implemented');
     }
 
+    getTokenType (/* token */) {
+        throw new Error('Not implemented');
+    }
+
+    getCalleeToken (/* token */) {
+        throw new Error('Not implemented');
+    }
+
+    getMemberFnName () {
+        throw new Error('Not implemented');
+    }
+
+    getKeyValue () {
+        throw new Error('Not implemented');
+    }
+
+    getStringValue () {
+        throw new Error('Not implemented');
+    }
+
     isApiFn (fn) {
         return fn === 'fixture' || fn === 'test';
+    }
+
+    serializeObjExp (token) {
+        if (this.getTokenType(token) !== this.tokenType.ObjectLiteralExpression)
+            return {};
+
+        return token.properties.reduce((obj, prop) => {
+            const { key, value } = this.getKeyValue(prop);
+
+            if (typeof value !== 'string') return {};
+
+            obj[key] = value;
+
+            return obj;
+        }, {});
+    }
+
+    processMetaArgs (token) {
+        if (this.getTokenType(token) !== this.tokenType.CallExpression)
+            return null;
+
+        const args = token.arguments;
+
+        let meta = {};
+
+        if (args.length === 2) {
+            const value = this.getStringValue(args[1]);
+
+            if (typeof value !== 'string') return {};
+
+            meta = { [this.formatFnArg(args[0])]: value };
+        }
+
+        else if (args.length === 1)
+            meta = this.serializeObjExp(args[0]);
+
+        return meta;
+    }
+
+    getMetaInfo (callStack) {
+        return callStack.reduce((metaCalls, exp) => {
+            if (this.getTokenType(exp) !== this.tokenType.CallExpression)
+                return metaCalls;
+
+            const callee            = this.getCalleeToken(exp);
+            const calleeType        = this.getTokenType(callee);
+            const isCalleeMemberExp = calleeType === this.tokenType.PropertyAccessExpression;
+
+            if (isCalleeMemberExp && this.getMemberFnName(exp) === 'meta')
+                return [this.processMetaArgs(exp)].concat(metaCalls);
+
+            return metaCalls;
+        }, []);
     }
 
     checkExpDefineTargetName (type, apiFn) {
@@ -151,13 +226,13 @@ export class TestFileParserBase {
             if (!call || typeof call.value !== 'string') return;
 
             if (call.fnName === 'fixture') {
-                fixtures.push(new Fixture(call.value, call.start, call.end, call.loc));
+                fixtures.push(new Fixture(call.value, call.start, call.end, call.loc, call.meta));
                 return;
             }
 
             if (!fixtures.length) return;
 
-            const test = new Test(call.value, call.start, call.end, call.loc);
+            const test = new Test(call.value, call.start, call.end, call.loc, call.meta);
 
             fixtures[fixtures.length - 1].tests.push(test);
         });
