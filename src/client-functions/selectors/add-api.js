@@ -9,8 +9,6 @@ import makeRegExp from '../../utils/make-reg-exp';
 import selectorTextFilter from './selector-text-filter';
 import selectorAttributeFilter from './selector-attribute-filter';
 
-let apiFn = null;
-
 const filterNodes = (new ClientFunctionBuilder((nodes, filter, querySelectorRoot, originNode, ...filterArgs) => {
     if (typeof filter === 'number') {
         const matchingNode = filter < 0 ? nodes[nodes.length + filter] : nodes[filter];
@@ -102,6 +100,23 @@ function assertAddCustomMethods (properties, opts) {
     });
 }
 
+function prepareApiFnArgs (fnName, ...args) {
+    args = args.map(arg => {
+        if (typeof arg === 'string')
+            return `'${arg}'`;
+        if (typeof arg === 'function')
+            return '[function]';
+        return arg;
+    });
+    args = args.join(', ');
+
+    return `.${fnName}(${args})`;
+}
+
+function getDerivativeSelectorArgs (options, selectorFn, apiFn, filter, additionalDependencies) {
+    return Object.assign({}, options, { selectorFn, apiFn, filter, additionalDependencies });
+}
+
 function addSnapshotProperties (obj, getSelector, SelectorBuilder, properties) {
     properties.forEach(prop => {
         Object.defineProperty(obj, prop, {
@@ -141,13 +156,16 @@ export function addCustomMethods (obj, getSelector, SelectorBuilder, customMetho
                     /* eslint-enable no-undef */
                 };
 
-                return createDerivativeSelectorWithFilter(getSelector, SelectorBuilder, selectorFn, () => true, {
+                const apiFn = prepareApiFnArgs(prop, ...args);
+                const filter = () => true;
+
+                const additionalDependencies = {
                     args,
                     customMethod: method
-                });
-            };
+                };
 
-            wrapApiChainFunction(obj, prop);
+                return createDerivativeSelectorWithFilter({ getSelector, SelectorBuilder, selectorFn, apiFn, filter, additionalDependencies });
+            };
         }
         else {
             obj[prop] = (new ClientFunctionBuilder((...args) => {
@@ -161,7 +179,7 @@ export function addCustomMethods (obj, getSelector, SelectorBuilder, customMetho
     });
 }
 
-function addSnapshotPropertyShorthands (obj, getSelector, SelectorBuilder, customDOMProperties, customMethods) {
+function addSnapshotPropertyShorthands ({ obj, getSelector, SelectorBuilder, customDOMProperties, customMethods }) {
     let properties = SNAPSHOT_PROPERTIES;
 
     if (customDOMProperties)
@@ -238,7 +256,7 @@ function createCounter (getSelector, SelectorBuilder) {
     };
 }
 
-function addCounterProperties (obj, getSelector, SelectorBuilder) {
+function addCounterProperties ({ obj, getSelector, SelectorBuilder }) {
     Object.defineProperty(obj, 'count', {
         get: () => {
             const counter = createCounter(getSelector, SelectorBuilder);
@@ -268,7 +286,7 @@ function convertFilterToClientFunctionIfNecessary (callsiteName, filter, depende
     return filter;
 }
 
-function createDerivativeSelectorWithFilter (getSelector, SelectorBuilder, selectorFn, filter, additionalDependencies) {
+function createDerivativeSelectorWithFilter ({ getSelector, SelectorBuilder, selectorFn, apiFn, filter, additionalDependencies }) {
     const collectionModeSelectorBuilder = new SelectorBuilder(getSelector(), { collectionMode: true });
     const customDOMProperties           = collectionModeSelectorBuilder.options.customDOMProperties;
     const customMethods                 = collectionModeSelectorBuilder.options.customMethods;
@@ -309,33 +327,13 @@ function ensureRegExpContext (str) {
     return str;
 }
 
-function wrapApiChainFunction (obj, fn) {
-    const originalFn = obj[fn];
+function addFilterMethods (options) {
+    const { obj, getSelector, SelectorBuilder } = options;
 
-    const prepareApiFnArgs = function (args) {
-        args = args.map(arg => {
-            if (typeof arg === 'string')
-                return `'${arg}'`;
-            if (typeof arg === 'function')
-                return '[function]';
-            return arg;
-        });
-        args = args.join(', ');
-
-        return `.${fn}(${args})`;
-    };
-
-    obj[fn] = function (...args) {
-        apiFn = prepareApiFnArgs(args);
-
-        return originalFn.apply(obj, args);
-    };
-}
-
-function addFilterMethods (obj, getSelector, SelectorBuilder) {
     obj.nth = index => {
         assertType(is.number, 'nth', '"index" argument', index);
 
+        const apiFn   = prepareApiFnArgs('nth', index);
         const builder = new SelectorBuilder(getSelector(), { index, apiFn }, { instantiation: 'Selector' });
 
         return builder.getFunction();
@@ -343,6 +341,8 @@ function addFilterMethods (obj, getSelector, SelectorBuilder) {
 
     obj.withText = text => {
         assertType([is.string, is.regExp], 'withText', '"text" argument', text);
+
+        const apiFn = prepareApiFnArgs('withText', text);
 
         text = ensureRegExpContext(text);
 
@@ -357,9 +357,9 @@ function addFilterMethods (obj, getSelector, SelectorBuilder) {
             /* eslint-enable no-undef */
         };
 
-        return createDerivativeSelectorWithFilter(getSelector, SelectorBuilder, selectorFn, filterByText, {
-            textRe: makeRegExp(text)
-        });
+        const args = getDerivativeSelectorArgs(options, selectorFn, apiFn, filterByText, { textRe: makeRegExp(text) });
+
+        return createDerivativeSelectorWithFilter(args);
     };
 
     obj.withExactText = text => {
@@ -376,13 +376,16 @@ function addFilterMethods (obj, getSelector, SelectorBuilder) {
             /* eslint-enable no-undef */
         };
 
-        return createDerivativeSelectorWithFilter(getSelector, SelectorBuilder, selectorFn, filterByText, {
-            exactText: text
-        });
+        const apiFn = prepareApiFnArgs('withExactText', text);
+        const args  = getDerivativeSelectorArgs(options, selectorFn, apiFn, filterByText, { exactText: text });
+
+        return createDerivativeSelectorWithFilter(args);
     };
 
     obj.withAttribute = (attrName, attrValue) => {
         assertType([is.string, is.regExp], 'withAttribute', '"attrName" argument', attrName);
+
+        const apiFn = prepareApiFnArgs('withAttribute', attrName, attrValue);
 
         attrName = ensureRegExpContext(attrName);
 
@@ -402,14 +405,18 @@ function addFilterMethods (obj, getSelector, SelectorBuilder) {
             /* eslint-enable no-undef */
         };
 
-        return createDerivativeSelectorWithFilter(getSelector, SelectorBuilder, selectorFn, filterByAttr, {
+        const args = getDerivativeSelectorArgs(options, selectorFn, apiFn, filterByAttr, {
             attrName,
             attrValue
         });
+
+        return createDerivativeSelectorWithFilter(args);
     };
 
     obj.filter = (filter, dependencies) => {
         assertType([is.string, is.function], 'filter', '"filter" argument', filter);
+
+        const apiFn = prepareApiFnArgs('filter', filter);
 
         filter = convertFilterToClientFunctionIfNecessary('filter', filter, dependencies);
 
@@ -424,23 +431,28 @@ function addFilterMethods (obj, getSelector, SelectorBuilder) {
             /* eslint-enable no-undef */
         };
 
-        return createDerivativeSelectorWithFilter(getSelector, SelectorBuilder, selectorFn, filter);
+
+        const args = getDerivativeSelectorArgs(options, selectorFn, apiFn, filter);
+
+        return createDerivativeSelectorWithFilter(args);
     };
 
     obj.filterVisible = () => {
+        const apiFn   = prepareApiFnArgs('filterVisible');
         const builder = new SelectorBuilder(getSelector(), { filterVisible: true, apiFn }, { instantiation: 'Selector' });
 
         return builder.getFunction();
     };
 
     obj.filterHidden = () => {
+        const apiFn   = prepareApiFnArgs('filterHidden');
         const builder = new SelectorBuilder(getSelector(), { filterHidden: true, apiFn }, { instantiation: 'Selector' });
 
         return builder.getFunction();
     };
 }
 
-function addCustomDOMPropertiesMethod (obj, getSelector, SelectorBuilder) {
+function addCustomDOMPropertiesMethod ({ obj, getSelector, SelectorBuilder }) {
     obj.addCustomDOMProperties = customDOMProperties => {
         assertAddCustomDOMPropertiesOptions(customDOMProperties);
 
@@ -450,7 +462,7 @@ function addCustomDOMPropertiesMethod (obj, getSelector, SelectorBuilder) {
     };
 }
 
-function addCustomMethodsMethod (obj, getSelector, SelectorBuilder) {
+function addCustomMethodsMethod ({ obj, getSelector, SelectorBuilder }) {
     obj.addCustomMethods = function (methods, opts) {
         assertAddCustomMethods(methods, opts);
 
@@ -469,10 +481,14 @@ function addCustomMethodsMethod (obj, getSelector, SelectorBuilder) {
     };
 }
 
-function addHierarchicalSelectors (obj, getSelector, SelectorBuilder) {
+function addHierarchicalSelectors (options) {
+    const { obj } = options;
+
     // Find
     obj.find = (filter, dependencies) => {
         assertType([is.string, is.function], 'find', '"filter" argument', filter);
+
+        const apiFn = prepareApiFnArgs('find', filter);
 
         filter = convertFilterToClientFunctionIfNecessary('find', filter, dependencies);
 
@@ -506,13 +522,17 @@ function addHierarchicalSelectors (obj, getSelector, SelectorBuilder) {
             /* eslint-enable no-undef */
         };
 
-        return createDerivativeSelectorWithFilter(getSelector, SelectorBuilder, selectorFn, filter, { expandSelectorResults });
+        const args = getDerivativeSelectorArgs(options, selectorFn, apiFn, filter, { expandSelectorResults });
+
+        return createDerivativeSelectorWithFilter(args);
     };
 
     // Parent
     obj.parent = (filter, dependencies) => {
         if (filter !== void 0)
             assertType([is.string, is.function, is.number], 'parent', '"filter" argument', filter);
+
+        const apiFn = prepareApiFnArgs('parent', filter);
 
         filter = convertFilterToClientFunctionIfNecessary('find', filter, dependencies);
 
@@ -529,13 +549,17 @@ function addHierarchicalSelectors (obj, getSelector, SelectorBuilder) {
             /* eslint-enable no-undef */
         };
 
-        return createDerivativeSelectorWithFilter(getSelector, SelectorBuilder, selectorFn, filter, { expandSelectorResults });
+        const args = getDerivativeSelectorArgs(options, selectorFn, apiFn, filter, { expandSelectorResults });
+
+        return createDerivativeSelectorWithFilter(args);
     };
 
     // Child
     obj.child = (filter, dependencies) => {
         if (filter !== void 0)
             assertType([is.string, is.function, is.number], 'child', '"filter" argument', filter);
+
+        const apiFn = prepareApiFnArgs('child', filter);
 
         filter = convertFilterToClientFunctionIfNecessary('find', filter, dependencies);
 
@@ -557,13 +581,17 @@ function addHierarchicalSelectors (obj, getSelector, SelectorBuilder) {
             /* eslint-enable no-undef */
         };
 
-        return createDerivativeSelectorWithFilter(getSelector, SelectorBuilder, selectorFn, filter, { expandSelectorResults });
+        const args = getDerivativeSelectorArgs(options, selectorFn, apiFn, filter, { expandSelectorResults });
+
+        return createDerivativeSelectorWithFilter(args);
     };
 
     // Sibling
     obj.sibling = (filter, dependencies) => {
         if (filter !== void 0)
             assertType([is.string, is.function, is.number], 'sibling', '"filter" argument', filter);
+
+        const apiFn = prepareApiFnArgs('sibling', filter);
 
         filter = convertFilterToClientFunctionIfNecessary('find', filter, dependencies);
 
@@ -590,13 +618,17 @@ function addHierarchicalSelectors (obj, getSelector, SelectorBuilder) {
             /* eslint-enable no-undef */
         };
 
-        return createDerivativeSelectorWithFilter(getSelector, SelectorBuilder, selectorFn, filter, { expandSelectorResults });
+        const args = getDerivativeSelectorArgs(options, selectorFn, apiFn, filter, { expandSelectorResults });
+
+        return createDerivativeSelectorWithFilter(args);
     };
 
     // Next sibling
     obj.nextSibling = (filter, dependencies) => {
         if (filter !== void 0)
             assertType([is.string, is.function, is.number], 'nextSibling', '"filter" argument', filter);
+
+        const apiFn = prepareApiFnArgs('nextSibling', filter);
 
         filter = convertFilterToClientFunctionIfNecessary('find', filter, dependencies);
 
@@ -627,13 +659,17 @@ function addHierarchicalSelectors (obj, getSelector, SelectorBuilder) {
             /* eslint-enable no-undef */
         };
 
-        return createDerivativeSelectorWithFilter(getSelector, SelectorBuilder, selectorFn, filter, { expandSelectorResults });
+        const args = getDerivativeSelectorArgs(options, selectorFn, apiFn, filter, { expandSelectorResults });
+
+        return createDerivativeSelectorWithFilter(args);
     };
 
     // Prev sibling
     obj.prevSibling = (filter, dependencies) => {
         if (filter !== void 0)
             assertType([is.string, is.function, is.number], 'prevSibling', '"filter" argument', filter);
+
+        const apiFn = prepareApiFnArgs('prevSibling', filter);
 
         filter = convertFilterToClientFunctionIfNecessary('find', filter, dependencies);
 
@@ -663,25 +699,19 @@ function addHierarchicalSelectors (obj, getSelector, SelectorBuilder) {
             /* eslint-enable no-undef */
         };
 
-        return createDerivativeSelectorWithFilter(getSelector, SelectorBuilder, selectorFn, filter, { expandSelectorResults });
-    };
+        const args = getDerivativeSelectorArgs(options, selectorFn, apiFn, filter, { expandSelectorResults });
 
+        return createDerivativeSelectorWithFilter(args);
+    };
 }
 
 export function addAPI (selector, getSelector, SelectorBuilder, customDOMProperties, customMethods) {
-    addSnapshotPropertyShorthands(selector, getSelector, SelectorBuilder, customDOMProperties, customMethods);
-    addCustomDOMPropertiesMethod(selector, getSelector, SelectorBuilder);
-    addCustomMethodsMethod(selector, getSelector, SelectorBuilder);
-    addCounterProperties(selector, getSelector, SelectorBuilder);
+    const options = { obj: selector, getSelector, SelectorBuilder, customDOMProperties, customMethods };
 
-    const obj = {};
-
-    addFilterMethods(obj, getSelector, SelectorBuilder);
-    addHierarchicalSelectors(obj, getSelector, SelectorBuilder);
-
-    Object.keys(obj).forEach(fnName => {
-        wrapApiChainFunction(obj, fnName);
-    });
-
-    Object.assign(selector, obj);
+    addFilterMethods(options);
+    addHierarchicalSelectors(options);
+    addSnapshotPropertyShorthands(options);
+    addCustomDOMPropertiesMethod(options);
+    addCustomMethodsMethod(options);
+    addCounterProperties(options);
 }
