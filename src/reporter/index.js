@@ -9,6 +9,7 @@ export default class Reporter {
         this.skipped         = task.tests.filter(test => test.skip).length;
         this.testCount       = task.tests.length - this.skipped;
         this.reportQueue     = Reporter._createReportQueue(task);
+        this.stopOnFirstFail = task.opts.stopOnFirstFail;
 
         this._assignTaskEventHandlers(task);
     }
@@ -51,8 +52,8 @@ export default class Reporter {
     }
 
     _shiftReportQueue (reportItem) {
-        var currentFixture = null;
-        var nextReportItem = null;
+        let currentFixture = null;
+        let nextReportItem = null;
 
         while (this.reportQueue.length && this.reportQueue[0].testRunInfo) {
             reportItem     = this.reportQueue.shift();
@@ -81,21 +82,21 @@ export default class Reporter {
         });
 
         task.on('test-run-start', testRun => {
-            var reportItem = this._getReportItemForTestRun(testRun);
+            const reportItem = this._getReportItemForTestRun(testRun);
 
             if (!reportItem.startTime)
                 reportItem.startTime = new Date();
         });
 
         task.on('test-run-done', testRun => {
-            const reportItem                = this._getReportItemForTestRun(testRun);
-            const isAbortedExecutionTestRun = !!testRun.errs.length && this.stopOnFirstFail;
+            const reportItem                    = this._getReportItemForTestRun(testRun);
+            const isTestRunStoppedTaskExecution = !!testRun.errs.length && this.stopOnFirstFail;
 
-            reportItem.pendingRuns--;
-            reportItem.unstable = reportItem.unstable || testRun.unstable;
-            reportItem.errs     = reportItem.errs.concat(testRun.errs);
+            reportItem.pendingRuns = isTestRunStoppedTaskExecution ? 0 : reportItem.pendingRuns - 1;
+            reportItem.unstable    = reportItem.unstable || testRun.unstable;
+            reportItem.errs        = reportItem.errs.concat(testRun.errs);
 
-            if (!reportItem.pendingRuns || isAbortedExecutionTestRun) {
+            if (!reportItem.pendingRuns) {
                 if (task.screenshots.hasCapturedFor(testRun.test)) {
                     reportItem.screenshotPath = task.screenshots.getPathFor(testRun.test);
                     reportItem.screenshots    = task.screenshots.getScreenshotsInfo(testRun.test);
@@ -124,7 +125,7 @@ export default class Reporter {
         });
 
         task.once('done', () => {
-            var endTime = new Date();
+            const endTime = new Date();
 
             this.plugin.reportTaskDone(endTime, this.passed, task.warningLog.messages);
         });

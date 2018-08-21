@@ -1,11 +1,11 @@
 module.exports.createTestStream = () => {
     const stream = {
         data:  '',
-        write: val => {
-            stream.data += val;
+        write: function (val) {
+            this.data += val;
         },
-        end: val => {
-            stream.data += val;
+        end: function (val) {
+            this.data += val;
         }
     };
 

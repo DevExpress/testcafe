@@ -16,7 +16,11 @@ describe('Stop test task on first failed test', () => {
     });
 
     it('Basic', () => {
-        return runTests('./testcafe-fixtures/stop-on-first-fail-test.js', void 0, { shouldFail: true, stopOnFirstFail: true })
+        return runTests('./testcafe-fixtures/stop-on-first-fail-test.js', void 0, {
+            shouldFail:      true,
+            stopOnFirstFail: true,
+            only:            'chrome'
+        })
             .catch(() => {
                 expect(getTestRunCount()).eql(2);
                 expect(testReport.failedCount).eql(1);
@@ -36,6 +40,7 @@ describe('Stop test task on first failed test', () => {
             expect(stream.data).contains('√ test1');
             expect(stream.data).contains('× test2');
             expect(stream.data).to.not.contains('√ test3');
+            expect(stream.data).contains('2/3 failed');
         });
     });
 });
