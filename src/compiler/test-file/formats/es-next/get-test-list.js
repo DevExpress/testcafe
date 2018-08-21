@@ -15,13 +15,7 @@ const TOKEN_TYPE = {
     ExpressionStatement:      'ExpressionStatement',
     ReturnStatement:          'ReturnStatement',
     FunctionDeclaration:      'FunctionDeclaration',
-    VariableDeclaration:      'VariableDeclaration',
-    ObjectLiteralExpression:  'ObjectExpression',
-    ArrayExpression:          'ArrayExpression',
-    BooleanLiteral:           'BooleanLiteral',
-    NumericLiteral:           'NumericLiteral',
-    NullLiteral:              'NullLiteral',
-    UnaryExpression:          'UnaryExpression',
+    ObjectLiteralExpression:  'ObjectExpression'
 };
 
 export class EsNextTestFileParser extends TestFileParserBase {
@@ -44,6 +38,15 @@ export class EsNextTestFileParser extends TestFileParserBase {
 
     getRValue (token) {
         return token.declarations[0].init;
+    }
+
+    getStringValue (token) {
+        const stringTypes = [this.tokenType.StringLiteral, this.tokenType.TemplateLiteral, this.tokenType.Identifier];
+
+        if (stringTypes.indexOf(token.type) > -1)
+            return this.formatFnArg(token);
+
+        return null;
     }
 
     getFunctionBody (token) {
@@ -74,7 +77,7 @@ export class EsNextTestFileParser extends TestFileParserBase {
 
         return {
             key:   key.name || this.formatFnArg(key),
-            value: this.formatFnArg(value)
+            value: this.getStringValue(value)
         };
     }
 
@@ -146,30 +149,6 @@ export class EsNextTestFileParser extends TestFileParserBase {
 
         if (arg.type === this.tokenType.StringLiteral)
             return arg.value;
-
-        if (arg.type === this.tokenType.BooleanLiteral)
-            return arg.value;
-
-        if (arg.type === this.tokenType.NumericLiteral)
-            return arg.value;
-
-        if (arg.type === this.tokenType.NullLiteral)
-            return null;
-
-        if (arg.type === this.tokenType.UnaryExpression && arg.operator === 'void')
-            return void 0;
-
-        if ([this.tokenType.FunctionExpression, this.tokenType.ArrowFunctionExpression].indexOf(arg.type) > -1)
-            return '[Function]';
-
-        if ([this.tokenType.CallExpression, this.tokenType.PropertyAccessExpression].indexOf(arg.type) > -1)
-            return EsNextTestFileParser.formatComputedName(arg.loc.start.line);
-
-        if (arg.type === this.tokenType.ObjectLiteralExpression)
-            return this.serializeObjExp(arg);
-
-        if (arg.type === this.tokenType.ArrayExpression)
-            return arg.elements.map(this.formatFnArg, this);
 
         return null;
     }

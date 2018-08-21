@@ -96,6 +96,10 @@ export class TestFileParserBase {
         throw new Error('Not implemented');
     }
 
+    getStringValue () {
+        throw new Error('Not implemented');
+    }
+
     isApiFn (fn) {
         return fn === 'fixture' || fn === 'test';
     }
@@ -106,6 +110,8 @@ export class TestFileParserBase {
 
         return token.properties.reduce((obj, prop) => {
             const { key, value } = this.getKeyValue(prop);
+
+            if (typeof value !== 'string') return {};
 
             obj[key] = value;
 
@@ -122,7 +128,9 @@ export class TestFileParserBase {
         let meta = {};
 
         if (args.length === 2) {
-            const value = this.formatFnArg(args[1]) || this.formatMetaValue(args[1]);
+            const value = this.getStringValue(args[1]);
+
+            if (typeof value !== 'string') return {};
 
             meta = { [this.formatFnArg(args[0])]: value };
         }

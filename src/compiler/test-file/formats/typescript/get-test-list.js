@@ -39,7 +39,7 @@ class TypeScriptTestFileParser extends TestFileParserBase {
 
         return {
             key:   name.text,
-            value: this.formatFnArg(initializer)
+            value: this.getStringValue(initializer)
         };
     }
 
@@ -80,6 +80,15 @@ class TypeScriptTestFileParser extends TestFileParserBase {
 
     getRValue (token) {
         return token.initializer;
+    }
+
+    getStringValue (token) {
+        const stringTypes = [this.tokenType.StringLiteral, this.tokenType.TemplateExpression];
+
+        if (stringTypes.indexOf(token.kind) > -1 || token.text && token.kind !== this.tokenType.NumericLiteral)
+            return this.formatFnArg(token);
+
+        return null;
     }
 
     isAsyncFn (token) {
@@ -166,33 +175,6 @@ class TypeScriptTestFileParser extends TestFileParserBase {
 
         if (arg.kind === this.tokenType.TypeAssertionExpression)
             return this.formatFnArg(arg.expression);
-
-        if (arg.kind === this.tokenType.TrueKeyword)
-            return true;
-
-        if (arg.kind === this.tokenType.FalseKeyword)
-            return false;
-
-        if (arg.kind === this.tokenType.NumericLiteral)
-            return Number(arg.text);
-
-        if (arg.kind === this.tokenType.NullKeyword)
-            return null;
-
-        if (arg.kind === this.tokenType.VoidExpression || arg.kind === this.tokenType.UndefinedKeyword)
-            return void 0;
-
-        if ([this.tokenType.FunctionExpression, this.tokenType.ArrowFunction].indexOf(arg.kind) > -1)
-            return '[Function]';
-
-        if ([this.tokenType.CallExpression, this.tokenType.PropertyAccessExpression].indexOf(arg.kind) > -1)
-            return this.getComputedNameString({ pos: arg.pos, end: arg.end });
-
-        if (arg.kind === this.tokenType.ObjectLiteralExpression)
-            return this.serializeObjExp(arg);
-
-        if (arg.kind === this.tokenType.ArrayLiteralExpression)
-            return arg.elements.map(this.formatFnArg, this);
 
         return null;
     }

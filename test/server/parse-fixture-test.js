@@ -25,8 +25,9 @@ function Loc (lineStart, columnStart, lineEnd, columnEnd) {
 }
 
 function testFixtureParser (dir, expectedStructure, fileParser, codeParser) {
-    const dirPath           = path.join(__dirname, dir);
-    const fileList          = fs.readdirSync(dirPath).sort();
+    const dirPath  = path.join(__dirname, dir);
+    const fileList = fs.readdirSync(dirPath).sort();
+
     const parseFilePromises = fileList.map(function (filename, index) {
         const expected    = expectedStructure[index];
         const filePath    = path.join(dirPath, filename);
@@ -241,30 +242,7 @@ describe('Should get structure of files (esnext and typescript common cases)', f
             'field 3': '<computed name>(line: 21)'
         };
 
-        const testComputedMetaData3 = {
-            field1: true,
-            field2: 1,
-            field3: null,
-            field4: void 0,
-            field5: '<computed name>(line: 29)',
-            field6: {},
-
-            field7: {
-                a: 1,
-                b: true,
-                c: '<computed name>(line: 35)',
-                d: '[Function]',
-
-                e: {
-                    f: '<computed name>(line: 40)'
-                },
-            },
-
-            field8:  [],
-            field9:  [1, 'string', '<computed name>(line: 45)', '<computed name>(line: 45)', '[Function]'],
-            field10: '[Function]',
-            field11: '[Function]'
-        };
+        const testComputedMetaData3 = {};
 
         const expectedStructure = [
             [
