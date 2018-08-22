@@ -12,7 +12,7 @@ describe('TestCafe factory function', function () {
 
     function getTestCafe (hostname, port1, port2, sslOptions) {
         return createTestCafe(hostname, port1, port2, sslOptions)
-            .then(function (tc) {
+            .then(tc => {
                 testCafe = tc;
             });
     }

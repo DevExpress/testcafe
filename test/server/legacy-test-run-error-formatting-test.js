@@ -1,36 +1,23 @@
-var expect             = require('chai').expect;
-var read               = require('read-file-relative').readSync;
-var remove             = require('lodash').pull;
-var ReporterPluginHost = require('../../lib/reporter/plugin-host');
-var testCafeLegacyApi  = require('testcafe-legacy-api');
+const expect               = require('chai').expect;
+const read                 = require('read-file-relative').readSync;
+const remove               = require('lodash').pull;
+const ReporterPluginHost   = require('../../lib/reporter/plugin-host');
+const testCafeLegacyApi    = require('testcafe-legacy-api');
+const { createTestStream } = require('../functional/utils/stream');
 
-var TEST_RUN_ERROR_TYPE                  = testCafeLegacyApi.TEST_RUN_ERROR_TYPE;
-var LegacyTestRunErrorFormattableAdapter = testCafeLegacyApi.TestRunErrorFormattableAdapter;
+const TEST_RUN_ERROR_TYPE                  = testCafeLegacyApi.TEST_RUN_ERROR_TYPE;
+const LegacyTestRunErrorFormattableAdapter = testCafeLegacyApi.TestRunErrorFormattableAdapter;
 
+const untestedErrorTypes = Object.keys(TEST_RUN_ERROR_TYPE).map(key => TEST_RUN_ERROR_TYPE[key]);
 
-var untestedErrorTypes = Object.keys(TEST_RUN_ERROR_TYPE).map(function (key) {
-    return TEST_RUN_ERROR_TYPE[key];
-});
-
-var userAgentMock = 'Chrome 15.0.874 / Mac OS X 10.8.1';
-
-// Output stream and errorDecorator mocks
-function createOutStreamMock () {
-    return {
-        data: '',
-
-        write: function (text) {
-            this.data += text;
-        }
-    };
-}
+const userAgentMock = 'Chrome 15.0.874 / Mac OS X 10.8.1';
 
 function assertErrorMessage (file, err, callsite) {
-    var screenshotPath = '/unix/path/with/<tag>';
-    var outStreamMock  = createOutStreamMock();
-    var plugin         = new ReporterPluginHost({}, outStreamMock);
+    const screenshotPath = '/unix/path/with/<tag>';
+    const outStreamMock  = createTestStream();
+    const plugin         = new ReporterPluginHost({}, outStreamMock);
 
-    var errAdapter = new LegacyTestRunErrorFormattableAdapter(err, {
+    const errAdapter = new LegacyTestRunErrorFormattableAdapter(err, {
         userAgent:      userAgentMock,
         screenshotPath: screenshotPath,
         callsite:       callsite
@@ -40,7 +27,7 @@ function assertErrorMessage (file, err, callsite) {
         .useWordWrap(true)
         .write(plugin.formatError(errAdapter));
 
-    var expectedMsg = read('./data/expected-legacy-test-run-errors/' + file)
+    const expectedMsg = read('./data/expected-legacy-test-run-errors/' + file)
         .replace(/(\r\n)/gm, '\n')
         .trim();
 

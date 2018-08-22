@@ -147,7 +147,7 @@ export default class Driver {
         if (this.skipJsErrors || this.contextStorage.getItem(TEST_DONE_SENT_FLAG))
             return Promise.resolve();
 
-        var error = new UncaughtErrorOnPage(err.msg || err.message, err.pageUrl);
+        const error = new UncaughtErrorOnPage(err.stack, err.pageUrl);
 
         if (!this.contextStorage.getItem(PENDING_PAGE_ERROR))
             this.contextStorage.setItem(PENDING_PAGE_ERROR, error);
@@ -158,7 +158,7 @@ export default class Driver {
     _failIfClientCodeExecutionIsInterrupted () {
         // NOTE: ClientFunction should be used primarily for observation. We raise
         // an error if the page was reloaded during ClientFunction execution.
-        var executingClientFnDescriptor = this.contextStorage.getItem(EXECUTING_CLIENT_FUNCTION_DESCRIPTOR);
+        const executingClientFnDescriptor = this.contextStorage.getItem(EXECUTING_CLIENT_FUNCTION_DESCRIPTOR);
 
         if (executingClientFnDescriptor) {
             this._onReady(new DriverStatus({
@@ -183,7 +183,7 @@ export default class Driver {
 
     // Status
     _addPendingErrorToStatus (status) {
-        var pendingPageError = this.contextStorage.getItem(PENDING_PAGE_ERROR);
+        const pendingPageError = this.contextStorage.getItem(PENDING_PAGE_ERROR);
 
         if (pendingPageError) {
             this.contextStorage.setItem(PENDING_PAGE_ERROR, null);
@@ -192,7 +192,7 @@ export default class Driver {
     }
 
     _addUnexpectedDialogErrorToStatus (status) {
-        var dialogError = this.nativeDialogsTracker.getUnexpectedDialogError();
+        const dialogError = this.nativeDialogsTracker.getUnexpectedDialogError();
 
         status.pageError = status.pageError || dialogError;
     }
@@ -213,7 +213,7 @@ export default class Driver {
 
         this.contextStorage.setItem(PENDING_STATUS, status);
 
-        var readyCommandResponse = null;
+        let readyCommandResponse = null;
 
         // NOTE: postpone status sending if the page is unloading
         return pageUnloadBarrier
@@ -241,14 +241,14 @@ export default class Driver {
     // Iframes interaction
     _initChildDriverListening () {
         messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
-            var msg          = e.message;
-            var iframeWindow = e.source;
+            const msg          = e.message;
+            const iframeWindow = e.source;
 
             if (msg.type === MESSAGE_TYPE.establishConnection) {
-                var childDriverLink = this._getChildDriverLinkByWindow(iframeWindow);
+                let childDriverLink = this._getChildDriverLinkByWindow(iframeWindow);
 
                 if (!childDriverLink) {
-                    var driverId = `${this.testRunId}-${generateId()}`;
+                    const driverId = `${this.testRunId}-${generateId()}`;
 
                     childDriverLink = new ChildDriverLink(iframeWindow, driverId);
                     this.childDriverLinks.push(childDriverLink);
@@ -264,8 +264,8 @@ export default class Driver {
     }
 
     _runInActiveIframe (command) {
-        var runningChain         = Promise.resolve();
-        var activeIframeSelector = this.contextStorage.getItem(ACTIVE_IFRAME_SELECTOR);
+        let runningChain           = Promise.resolve();
+        const activeIframeSelector = this.contextStorage.getItem(ACTIVE_IFRAME_SELECTOR);
 
         // NOTE: if the page was reloaded we restore the active child driver link via the iframe selector
         if (!this.activeChildDriverLink && activeIframeSelector)
@@ -299,8 +299,8 @@ export default class Driver {
     }
 
     _switchToIframe (selector, iframeErrorCtors) {
-        var hasSpecificTimeout     = typeof selector.timeout === 'number';
-        var commandSelectorTimeout = hasSpecificTimeout ? selector.timeout : this.selectorTimeout;
+        const hasSpecificTimeout     = typeof selector.timeout === 'number';
+        const commandSelectorTimeout = hasSpecificTimeout ? selector.timeout : this.selectorTimeout;
 
         return getExecuteSelectorResult(selector, commandSelectorTimeout, null,
             fn => new iframeErrorCtors.NotFoundError(fn), () => iframeErrorCtors.IsInvisibleError(), this.statusBar)
@@ -326,16 +326,16 @@ export default class Driver {
     }
 
     _setNativeDialogHandlerInIframes (dialogHandler) {
-        var msg = new SetNativeDialogHandlerMessage(dialogHandler);
+        const msg = new SetNativeDialogHandlerMessage(dialogHandler);
 
-        for (var i = 0; i < this.childDriverLinks.length; i++)
+        for (let i = 0; i < this.childDriverLinks.length; i++)
             messageSandbox.sendServiceMsg(msg, this.childDriverLinks[i].driverWindow);
     }
 
 
     // Commands handling
     _onActionCommand (command) {
-        var { startPromise, completionPromise } = executeActionCommand(command, this.selectorTimeout, this.statusBar, this.speed);
+        const { startPromise, completionPromise } = executeActionCommand(command, this.selectorTimeout, this.statusBar, this.speed);
 
         startPromise.then(() => this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, true));
 
@@ -379,7 +379,7 @@ export default class Driver {
     _onExecuteClientFunctionCommand (command) {
         this.contextStorage.setItem(EXECUTING_CLIENT_FUNCTION_DESCRIPTOR, { instantiationCallsiteName: command.instantiationCallsiteName });
 
-        var executor = new ClientFunctionExecutor(command);
+        const executor = new ClientFunctionExecutor(command);
 
         executor.getResultDriverStatus()
             .then(driverStatus => {
@@ -481,7 +481,7 @@ export default class Driver {
     }
 
     _onCustomCommand (command) {
-        var handler = this.customCommandHandlers[command.type].handler;
+        const handler = this.customCommandHandlers[command.type].handler;
 
         handler(command).then(result => {
             this._onReady(new DriverStatus({ isCommandResult: true, result }));
@@ -586,8 +586,8 @@ export default class Driver {
             .then(() => {
                 // NOTE: we should not execute a command if we already have a pending page error and this command is
                 // rejectable by page errors. In this case, we immediately send status with this error to the server.
-                var isCommandRejectableByError = isCommandRejectableByPageError(command);
-                var pendingPageError           = this.contextStorage.getItem(PENDING_PAGE_ERROR);
+                const isCommandRejectableByError = isCommandRejectableByPageError(command);
+                const pendingPageError           = this.contextStorage.getItem(PENDING_PAGE_ERROR);
 
                 if (pendingPageError && isCommandRejectableByError) {
                     this._onReady(new DriverStatus({ isCommandResult: true }));
@@ -596,7 +596,7 @@ export default class Driver {
 
                 // NOTE: we should execute a command in an iframe if the current execution context belongs to
                 // this iframe and the command is not one of those that can be executed only in the top window.
-                var isThereActiveIframe = this.activeChildDriverLink ||
+                const isThereActiveIframe = this.activeChildDriverLink ||
                                           this.contextStorage.getItem(ACTIVE_IFRAME_SELECTOR);
 
                 if (!this._isExecutableInTopWindowOnly(command) && isThereActiveIframe) {
@@ -633,18 +633,18 @@ export default class Driver {
         this.readyPromise.then(() => {
             this.statusBar.hidePageLoadingStatus();
 
-            var assertionRetriesTimeout = this.contextStorage.getItem(ASSERTION_RETRIES_TIMEOUT);
+            const assertionRetriesTimeout = this.contextStorage.getItem(ASSERTION_RETRIES_TIMEOUT);
 
             if (assertionRetriesTimeout) {
-                var startTime = this.contextStorage.getItem(ASSERTION_RETRIES_START_TIME);
-                var timeLeft  = assertionRetriesTimeout - (new Date() - startTime);
+                const startTime = this.contextStorage.getItem(ASSERTION_RETRIES_START_TIME);
+                const timeLeft  = assertionRetriesTimeout - (new Date() - startTime);
 
                 if (timeLeft > 0)
                     this.statusBar.showWaitingAssertionRetriesStatus(assertionRetriesTimeout, startTime);
             }
         });
 
-        var pendingStatus = this.contextStorage.getItem(PENDING_STATUS);
+        const pendingStatus = this.contextStorage.getItem(PENDING_STATUS);
 
         if (pendingStatus)
             pendingStatus.resent = true;
@@ -663,10 +663,10 @@ export default class Driver {
         if (this._failIfClientCodeExecutionIsInterrupted())
             return;
 
-        var inCommandExecution = this.contextStorage.getItem(this.COMMAND_EXECUTING_FLAG) ||
+        const inCommandExecution = this.contextStorage.getItem(this.COMMAND_EXECUTING_FLAG) ||
                                  this.contextStorage.getItem(this.EXECUTING_IN_IFRAME_FLAG);
 
-        var status = pendingStatus || new DriverStatus({ isCommandResult: inCommandExecution });
+        const status = pendingStatus || new DriverStatus({ isCommandResult: inCommandExecution });
 
         this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, false);
         this.contextStorage.setItem(this.EXECUTING_IN_IFRAME_FLAG, false);

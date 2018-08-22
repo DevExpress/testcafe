@@ -43,7 +43,10 @@ async function createTestCafe (hostname, port1, port2, sslOptions, developmentMo
         getValidPort(port2)
     ]);
 
-    const testcafe = new TestCafe(hostname, port1, port2, sslOptions, developmentMode);
+    const testcafe = new TestCafe(hostname, port1, port2, {
+        ssl: sslOptions,
+        developmentMode
+    });
 
     setupExitHook(cb => testcafe.close().then(cb));
 
