@@ -63,20 +63,28 @@ export class DomNodeClientFunctionResultError extends TestRunErrorBase {
 
 // Selector errors
 //--------------------------------------------------------------------
+class SelectorErrorBase extends TestRunErrorBase {
+    constructor (type, { apiFnChain, apiFnIndex }) {
+        super(type);
+
+        this.apiFnChain = apiFnChain;
+        this.apiFnIndex = apiFnIndex;
+    }
+}
+
 export class InvalidSelectorResultError extends TestRunErrorBase {
     constructor () {
         super(TYPE.invalidSelectorResultError);
     }
 }
 
-export class CantObtainInfoForElementSpecifiedBySelectorError extends TestRunErrorBase {
-    constructor (callsite) {
-        super(TYPE.cantObtainInfoForElementSpecifiedBySelectorError);
+export class CantObtainInfoForElementSpecifiedBySelectorError extends SelectorErrorBase {
+    constructor (callsite, apiFnArgs) {
+        super(TYPE.cantObtainInfoForElementSpecifiedBySelectorError, apiFnArgs);
 
         this.callsite = callsite;
     }
 }
-
 
 // Page errors
 //--------------------------------------------------------------------
@@ -292,9 +300,9 @@ export class ActionSelectorError extends TestRunErrorBase {
 
 // Action execution errors
 //--------------------------------------------------------------------
-export class ActionElementNotFoundError extends TestRunErrorBase {
-    constructor () {
-        super(TYPE.actionElementNotFoundError);
+export class ActionElementNotFoundError extends SelectorErrorBase {
+    constructor (apiFnArgs) {
+        super(TYPE.actionElementNotFoundError, apiFnArgs);
     }
 }
 
@@ -312,9 +320,9 @@ export class ActionSelectorMatchesWrongNodeTypeError extends TestRunErrorBase {
     }
 }
 
-export class ActionAdditionalElementNotFoundError extends TestRunErrorBase {
-    constructor (argumentName) {
-        super(TYPE.actionAdditionalElementNotFoundError);
+export class ActionAdditionalElementNotFoundError extends SelectorErrorBase {
+    constructor (argumentName, apiFnArgs) {
+        super(TYPE.actionAdditionalElementNotFoundError, apiFnArgs);
 
         this.argumentName = argumentName;
     }

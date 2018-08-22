@@ -11,7 +11,11 @@ describe('[Regression](GH-1907)', function () {
             shouldFail:      true
         })
             .catch(function (errs) {
-                expect(errs[0]).contains('Cannot obtain information about the node because the specified selector does not match any node in the DOM tree.');
+                expect(errs[0]).contains(
+                    'Cannot obtain information about the node because the specified selector does not match any node in the DOM tree. ' +
+                    ' | Selector(\'#hidden\')' +
+                    ' |   .withText(\'Hidden\')'
+                );
                 expect(errs[0]).contains('> 40 |    await t.expect(div.textContent).eql(\'Hidden\');');
             });
     });

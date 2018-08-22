@@ -56,7 +56,9 @@ describe('[API] t.switchToIframe(), t.switchToMainWindow()', function () {
             return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Switch to a non-existent iframe',
                 { shouldFail: true })
                 .catch(function (errs) {
-                    expect(errs[0]).to.contains('The specified selector does not match any element in the DOM tree.');
+                    expect(errs[0]).to.contains(
+                        'The specified selector does not match any element in the DOM tree.' +
+                        '  > | Selector(\'#non-existent\')');
                     expect(errs[0]).to.contains("> 56 |    await t.switchToIframe('#non-existent');");
                 });
         });

@@ -12,7 +12,10 @@ describe('[Raw API] Select editable content', function () {
     it("Should fail if a start element doesn't exist", function () {
         return runTests('./testcafe-fixtures/select-editable-content.testcafe', 'Select editable content in non-existent div', { shouldFail: true })
             .catch(function (errs) {
-                expect(errs[0]).contains('The specified "startSelector" does not match any element in the DOM tree.');
+                expect(errs[0]).contains(
+                    'The specified "startSelector" does not match any element in the DOM tree.' +
+                    '  > | Selector(\'#new-div\')'
+                );
                 expect(errs[0]).contains('[[Select editable content in non-existent div callsite]]');
             });
     });

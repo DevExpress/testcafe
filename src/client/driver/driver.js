@@ -27,7 +27,8 @@ import {
     ActionElementIsInvisibleError,
     CurrentIframeIsNotLoadedError,
     CurrentIframeNotFoundError,
-    CurrentIframeIsInvisibleError
+    CurrentIframeIsInvisibleError,
+    CantObtainInfoForElementSpecifiedBySelectorError
 } from '../../errors/test-run';
 
 import BrowserConsoleMessages from '../../test-run/browser-console-messages';
@@ -48,11 +49,11 @@ import {
 } from './command-executors/execute-selector';
 import ClientFunctionExecutor from './command-executors/client-functions/client-function-executor';
 
-var transport      = hammerhead.transport;
-var Promise        = hammerhead.Promise;
-var messageSandbox = hammerhead.eventSandbox.message;
-var storages       = hammerhead.storages;
-
+const transport      = hammerhead.transport;
+const Promise        = hammerhead.Promise;
+const messageSandbox = hammerhead.eventSandbox.message;
+const storages       = hammerhead.storages;
+const DateCtor       = hammerhead.nativeMethods.date;
 
 const TEST_DONE_SENT_FLAG                  = 'testcafe|driver|test-done-sent-flag';
 const PENDING_STATUS                       = 'testcafe|driver|pending-status';
@@ -302,7 +303,7 @@ export default class Driver {
         var commandSelectorTimeout = hasSpecificTimeout ? selector.timeout : this.selectorTimeout;
 
         return getExecuteSelectorResult(selector, commandSelectorTimeout, null,
-            () => new iframeErrorCtors.NotFoundError(), () => iframeErrorCtors.IsInvisibleError(), this.statusBar)
+            fn => new iframeErrorCtors.NotFoundError(fn), () => iframeErrorCtors.IsInvisibleError(), this.statusBar)
             .then(iframe => {
                 if (!domUtils.isIframeElement(iframe))
                     throw new ActionElementNotIframeError();
@@ -388,9 +389,16 @@ export default class Driver {
     }
 
     _onExecuteSelectorCommand (command) {
-        var startTime = this.contextStorage.getItem(SELECTOR_EXECUTION_START_TIME) || new Date();
+        const startTime                   = this.contextStorage.getItem(SELECTOR_EXECUTION_START_TIME) || new DateCtor();
+        const elementNotFoundOrNotVisible = fn => new CantObtainInfoForElementSpecifiedBySelectorError(null, fn);
+        const createError                 = command.needError ? elementNotFoundOrNotVisible : null;
 
-        getExecuteSelectorResultDriverStatus(command, this.selectorTimeout, startTime, null, null, this.statusBar)
+        getExecuteSelectorResultDriverStatus(command,
+            this.selectorTimeout,
+            startTime,
+            createError,
+            createError,
+            this.statusBar)
             .then(driverStatus => {
                 this.contextStorage.setItem(SELECTOR_EXECUTION_START_TIME, null);
                 this._onReady(driverStatus);

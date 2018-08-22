@@ -13,9 +13,10 @@ import createSnapshotMethods from './create-snapshot-methods';
 
 export default class SelectorBuilder extends ClientFunctionBuilder {
     constructor (fn, options, callsiteNames) {
-        var builderFromSelector          = fn && fn[functionBuilderSymbol];
-        var builderFromPromiseOrSnapshot = fn && fn.selector && fn.selector[functionBuilderSymbol];
-        var builder                      = builderFromSelector || builderFromPromiseOrSnapshot;
+        const apiFn                        = options && options.apiFn;
+        const builderFromSelector          = fn && fn[functionBuilderSymbol];
+        const builderFromPromiseOrSnapshot = fn && fn.selector && fn.selector[functionBuilderSymbol];
+        let builder                        = builderFromSelector || builderFromPromiseOrSnapshot;
 
         builder = builder instanceof SelectorBuilder ? builder : null;
 
@@ -27,20 +28,34 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
         }
 
         super(fn, options, callsiteNames);
+
+        if (!this.options.apiFnChain) {
+            const fnType = typeof this.fn;
+            let item     = fnType === 'string' ? `'${this.fn}'` : `[${fnType}]`;
+
+            item                    = `Selector(${item})`;
+            this.options.apiFn      = item;
+            this.options.apiFnChain = [item];
+        }
+
+        if (apiFn)
+            this.options.apiFnChain.push(apiFn);
+
+        this.options.apiFnID = this.options.apiFnChain.length - 1;
     }
 
     _getCompiledFnCode () {
         // OPTIMIZATION: if selector was produced from another selector and
         // it has same dependencies as source selector, then we can
         // avoid recompilation and just re-use already compiled code.
-        var hasSameDependenciesAsSourceSelector = this.options.sourceSelectorBuilder &&
-                                                  this.options.sourceSelectorBuilder.options.dependencies ===
-                                                  this.options.dependencies;
+        const hasSameDependenciesAsSourceSelector = this.options.sourceSelectorBuilder &&
+                                                    this.options.sourceSelectorBuilder.options.dependencies ===
+                                                    this.options.dependencies;
 
         if (hasSameDependenciesAsSourceSelector)
             return this.options.sourceSelectorBuilder.compiledFnCode;
 
-        var code = typeof this.fn === 'string' ?
+        const code = typeof this.fn === 'string' ?
             `(function(){return document.querySelectorAll(${JSON.stringify(this.fn)});});` :
             super._getCompiledFnCode();
 
@@ -49,8 +64,16 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
                 `(function(){
                     var __f$=${code};
                     return function(){
-                        var args = __dependencies$.boundArgs || arguments;
-                        return window['%testCafeSelectorFilter%'](__f$.apply(this, args), __dependencies$.filterOptions);
+                        var args           = __dependencies$.boundArgs || arguments;
+                        var selectorFilter = window['%testCafeSelectorFilter%'];
+                        
+                        var nodes = __f$.apply(this, args);
+                        nodes     = selectorFilter.cast(nodes);
+                        
+                        if (!nodes.length && !selectorFilter.error)
+                            selectorFilter.error = __dependencies$.apiInfo.apiFnID;
+
+                        return selectorFilter.filter(nodes, __dependencies$.filterOptions, __dependencies$.apiInfo);
                     };
                  })();`
             );
@@ -64,7 +87,7 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
     }
 
     _executeCommand (args, testRun, callsite) {
-        var resultPromise = super._executeCommand(args, testRun, callsite);
+        const resultPromise = super._executeCommand(args, testRun, callsite);
 
         this._addBoundArgsSelectorGetter(resultPromise, args);
 
@@ -74,23 +97,45 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
         return resultPromise;
     }
 
+    _getSourceSelectorBuilderApiFnID () {
+        let selectorAncestor = this;
+
+        while (selectorAncestor.options.sourceSelectorBuilder)
+            selectorAncestor = selectorAncestor.options.sourceSelectorBuilder;
+
+        return selectorAncestor.options.apiFnID;
+    }
+
     getFunctionDependencies () {
-        var dependencies        = super.getFunctionDependencies();
-        var customDOMProperties = this.options.customDOMProperties;
-        var customMethods       = this.options.customMethods;
+        const dependencies = super.getFunctionDependencies();
+
+        const {
+            filterVisible,
+            filterHidden,
+            counterMode,
+            collectionMode,
+            index,
+            customDOMProperties,
+            customMethods,
+            apiFnChain,
+            boundArgs
+        } = this.options;
 
         return merge({}, dependencies, {
             filterOptions: {
-                filterVisible:  this.options.filterVisible,
-                filterHidden:   this.options.filterHidden,
-                counterMode:    this.options.counterMode,
-                collectionMode: this.options.collectionMode,
-                index:          isNullOrUndefined(this.options.index) ? null : this.options.index
+                filterVisible,
+                filterHidden,
+                counterMode,
+                collectionMode,
+                index: isNullOrUndefined(index) ? null : index
             },
-
-            boundArgs:           this.options.boundArgs,
-            customDOMProperties: customDOMProperties,
-            customMethods:       customMethods
+            apiInfo: {
+                apiFnChain,
+                apiFnID: this._getSourceSelectorBuilderApiFnID()
+            },
+            boundArgs,
+            customDOMProperties,
+            customMethods
         });
     }
 
@@ -100,6 +145,8 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
             fnCode:                    this.compiledFnCode,
             args:                      encodedArgs,
             dependencies:              encodedDependencies,
+            needError:                 this.options.needError,
+            apiFnChain:                this.options.apiFnChain,
             visibilityCheck:           !!this.options.visibilityCheck,
             timeout:                   this.options.timeout
         });
@@ -116,7 +163,7 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
     }
 
     _getReplicatorTransforms () {
-        var transforms = super._getReplicatorTransforms();
+        const transforms = super._getReplicatorTransforms();
 
         transforms.push(new SelectorNodeTransform());
 
@@ -125,7 +172,7 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
 
     _addBoundArgsSelectorGetter (obj, selectorArgs) {
         defineLazyProperty(obj, 'selector', () => {
-            var builder = new SelectorBuilder(this.getFunction(), { boundArgs: selectorArgs });
+            const builder = new SelectorBuilder(this.getFunction(), { boundArgs: selectorArgs });
 
             return builder.getFunction();
         });
@@ -138,7 +185,7 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
     }
 
     _processResult (result, selectorArgs) {
-        var snapshot = super._processResult(result, selectorArgs);
+        const snapshot = super._processResult(result, selectorArgs);
 
         if (snapshot && !this.options.counterMode) {
             this._addBoundArgsSelectorGetter(snapshot, selectorArgs);
@@ -151,3 +198,4 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
         return snapshot;
     }
 }
+

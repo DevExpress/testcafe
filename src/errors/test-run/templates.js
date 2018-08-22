@@ -16,6 +16,29 @@ const SUBTITLES = {
     [TEST_RUN_PHASE.inBookmarkRestore]:       '<span class="subtitle">Error while restoring configuration after Role switch</span>\n'
 };
 
+function formatSelectorCallstack (apiFnChain, apiFnIndex, viewportWidth) {
+    if (typeof apiFnIndex === 'undefined')
+        return '';
+
+    const emptySpaces    = 10;
+    const ellipsis       = '...)';
+    const availableWidth = viewportWidth - emptySpaces;
+
+    return apiFnChain.map((apiFn, index) => {
+        let formattedApiFn = String.fromCharCode(160);
+
+        formattedApiFn += index === apiFnIndex ? '>' : ' ';
+        formattedApiFn += ' | ';
+        formattedApiFn += index !== 0 ? '  ' : '';
+        formattedApiFn += apiFn;
+
+        if (formattedApiFn.length > availableWidth)
+            return formattedApiFn.substr(0, availableWidth - emptySpaces) + ellipsis;
+
+        return formattedApiFn;
+    }).join('\n');
+}
+
 function markup (err, msgMarkup, opts = {}) {
     msgMarkup = dedent(`
         ${SUBTITLES[err.testRunPhase]}<div class="message">${dedent(msgMarkup)}</div>
@@ -153,8 +176,10 @@ export default {
         The "${err.argumentName}" argument is expected to be a positive integer, but it was ${err.actualValue}.
     `),
 
-    [TYPE.actionElementNotFoundError]: err => markup(err, `
+    [TYPE.actionElementNotFoundError]: (err, viewportWidth) => markup(err, `
         The specified selector does not match any element in the DOM tree.
+        
+        ${ formatSelectorCallstack(err.apiFnChain, err.apiFnIndex, viewportWidth) }
     `),
 
     [TYPE.actionElementIsInvisibleError]: err => markup(err, `
@@ -165,8 +190,10 @@ export default {
         The specified selector is expected to match a DOM element, but it matches a ${err.nodeDescription} node.
     `),
 
-    [TYPE.actionAdditionalElementNotFoundError]: err => markup(err, `
+    [TYPE.actionAdditionalElementNotFoundError]: (err, viewportWidth) => markup(err, `
         The specified "${err.argumentName}" does not match any element in the DOM tree.
+        
+        ${ formatSelectorCallstack(err.apiFnChain, err.apiFnIndex, viewportWidth) }
     `),
 
     [TYPE.actionAdditionalElementIsInvisibleError]: err => markup(err, `
@@ -256,8 +283,10 @@ export default {
         ${escapeHtml(err.errMsg)}
     `),
 
-    [TYPE.cantObtainInfoForElementSpecifiedBySelectorError]: err => markup(err, `
+    [TYPE.cantObtainInfoForElementSpecifiedBySelectorError]: (err, viewportWidth) => markup(err, `
         Cannot obtain information about the node because the specified selector does not match any node in the DOM tree.
+        
+        ${ formatSelectorCallstack(err.apiFnChain, err.apiFnIndex, viewportWidth) }
     `),
 
     [TYPE.windowDimensionsOverflowError]: err => markup(err, `

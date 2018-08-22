@@ -1,7 +1,7 @@
 import { Promise } from '../../../deps/hammerhead';
 import { delay } from '../../../deps/testcafe-core';
 import ClientFunctionExecutor from '../client-function-executor';
-import { exists, visible } from '../element-utils';
+import { exists, visible } from '../../../utils/element-utils';
 import { createReplicator, FunctionTransform, SelectorNodeTransform } from '../replicator';
 import './filter';
 
@@ -34,6 +34,16 @@ export default class SelectorExecutor extends ClientFunctionExecutor {
         ]);
     }
 
+    _getTimeoutErrorParams () {
+        const apiFnIndex = window['%testCafeSelectorFilter%'].error;
+        const apiFnChain = this.command.apiFnChain;
+
+        if (typeof apiFnIndex !== 'undefined')
+            return { apiFnIndex, apiFnChain };
+
+        return null;
+    }
+
     _validateElement (args, startTime) {
         return Promise.resolve()
             .then(() => this.fn.apply(window, args))
@@ -50,7 +60,7 @@ export default class SelectorExecutor extends ClientFunctionExecutor {
                     return delay(CHECK_ELEMENT_DELAY).then(() => this._validateElement(args, startTime));
 
                 if (createTimeoutError)
-                    throw createTimeoutError();
+                    throw createTimeoutError(this._getTimeoutErrorParams());
 
                 return null;
             });
