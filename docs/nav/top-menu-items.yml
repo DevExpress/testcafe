@@ -19,3 +19,4 @@
 - text: TestCafe Studio
   url: https://testcafe-studio.devexpress.com
   external: true
+  id: studio-link
