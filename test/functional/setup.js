@@ -235,7 +235,7 @@ before(function () {
                         stopOnFirstFail,
                         skipUncaughtErrors
                     })
-                    .then(() => {
+                    .then(failedCount => {
                         if (customReporters)
                             return;
 
@@ -245,7 +245,8 @@ before(function () {
                             taskReport.fixtures[0].tests[0] :
                             taskReport;
 
-                        testReport.warnings = taskReport.warnings;
+                        testReport.warnings   = taskReport.warnings;
+                        testReport.failedCount = failedCount;
 
                         global.testReport = testReport;
 
