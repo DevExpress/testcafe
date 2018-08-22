@@ -6,8 +6,8 @@
   external: true
 - text: FAQ
   url: /faq/
-- text: Publications
-  url: /publications/
+# - text: Publications
+#   url: /publications/
 - text: Release Notes
   url: /blog/
 - text: Issues
@@ -15,4 +15,7 @@
   external: true
 - text: Q&amp;A
   url: https://stackoverflow.com/questions/tagged/testcafe
+  external: true
+- text: TestCafe Studio
+  url: https://testcafe-studio.devexpress.com
   external: true
