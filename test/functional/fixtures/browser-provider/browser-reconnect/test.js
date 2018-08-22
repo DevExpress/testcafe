@@ -21,33 +21,37 @@ function customReporter () {
     };
 }
 
-if (config.useLocalBrowsers) {
-    describe('Browser reconnect', function () {
-        async function run (pathToTest, filter) {
-            const src     = path.join(__dirname, pathToTest);
-            const aliases = config.currentEnvironment.browsers.map(browser => browser.alias);
+function createConnection (browser) {
+    return browserProviderPool
+        .getBrowserInfo(browser)
+        .then(browserInfo => new BrowserConnection(testCafe.browserConnectionGateway, browserInfo, true));
+}
 
-            return Promise.all(aliases.map(alias => browserProviderPool.getBrowserInfo(alias)))
-                .then(browsers => {
-                    const connections = browsers.map(browser => new BrowserConnection(testCafe.browserConnectionGateway, browser, true));
+async function run (pathToTest, filter) {
+    const src          = path.join(__dirname, pathToTest);
+    const browserNames = config.currentEnvironment.browsers.map(browser => browser.browserName || browser.alias);
 
-                    connections.forEach(connection => {
-                        connection.HEARTBEAT_TIMEOUT = 4000;
-                    });
+    return Promise.all(browserNames.map(browser => createConnection(browser)))
+        .then(connections => {
+            connections.forEach(connection => {
+                connection.HEARTBEAT_TIMEOUT = 4000;
+            });
 
-                    return connections;
-                })
-                .then(connection => {
-                    return testCafe
-                        .createRunner()
-                        .src(src)
-                        .filter(testName => testName === filter)
-                        .reporter(customReporter)
-                        .browsers(connection)
-                        .run();
-                });
-        }
+            return connections;
+        })
+        .then(connection => {
+            return testCafe
+                .createRunner()
+                .src(src)
+                .filter(testName => testName === filter)
+                .reporter(customReporter)
+                .browsers(connection)
+                .run();
+        });
+}
 
+describe('Browser reconnect', function () {
+    if (config.useLocalBrowsers) {
         it('Should restart browser when it does not respond', function () {
             return run('./testcafe-fixtures/index-test.js', 'Should restart browser when it does not respond')
                 .then(() => {
@@ -64,6 +68,5 @@ if (config.useLocalBrowsers) {
                     expect(err.message).contains('browser disconnected. This problem may appear when a browser hangs or is closed, or due to network issues');
                 });
         });
-    });
-}
-
+    }
+});
