@@ -99,7 +99,7 @@ Check out [TestCafe Studio](https://testcafe-studio.devexpress.com): all the per
 
 ### Installation
 
-Ensure that [Node.js](https://nodejs.org/) (version 4 or newer) and [npm](https://www.npmjs.com/) are installed on your computer before running it:
+Ensure that [Node.js](https://nodejs.org/) (version 6 or newer) and [npm](https://www.npmjs.com/) are installed on your computer before running it:
 
 ```sh
 npm install -g testcafe
