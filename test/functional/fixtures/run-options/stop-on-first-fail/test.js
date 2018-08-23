@@ -1,6 +1,7 @@
 const expect               = require('chai').expect;
 const fs                   = require('fs');
 const { createTestStream } = require('../../../utils/stream');
+const ReporterPluginHost   = require('../../../../../lib/reporter/plugin-host');
 
 const TEST_RUN_COUNT_FILENAME = 'testRunCount.txt';
 
@@ -37,9 +38,11 @@ describe('Stop test task on first failed test', () => {
                 outStream: stream
             }]
         }).then(() => {
-            expect(stream.data).contains('√ test1');
-            expect(stream.data).contains('× test2');
-            expect(stream.data).to.not.contains('√ test3');
+            const pluginHost = new ReporterPluginHost();
+
+            expect(stream.data).contains(`${pluginHost.symbols.ok} test1`);
+            expect(stream.data).contains(`${pluginHost.symbols.err} test2`);
+            expect(stream.data).to.not.contains(`${pluginHost.symbols.ok} test3`);
             expect(stream.data).contains('2/3 failed');
         });
     });
