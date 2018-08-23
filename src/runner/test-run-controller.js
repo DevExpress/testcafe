@@ -58,8 +58,8 @@ export default class TestRunController extends EventEmitter {
     }
 
     _createTestRun (connection) {
-        var screenshotCapturer = this.screenshots.createCapturerFor(this.test, this.index, this.quarantine, connection, this.warningLog);
-        var TestRunCtor        = this.TestRunCtor;
+        const screenshotCapturer = this.screenshots.createCapturerFor(this.test, this.index, this.quarantine, connection, this.warningLog);
+        const TestRunCtor        = this.TestRunCtor;
 
         this.testRun = new TestRunCtor(this.test, connection, screenshotCapturer, this.warningLog, this.opts);
 
@@ -138,9 +138,9 @@ export default class TestRunController extends EventEmitter {
     }
 
     async start (connection) {
-        var testRun = this._createTestRun(connection);
+        const testRun = this._createTestRun(connection);
 
-        var hookOk = await this.fixtureHookController.runFixtureBeforeHookIfNecessary(testRun);
+        const hookOk = await this.fixtureHookController.runFixtureBeforeHookIfNecessary(testRun);
 
         if (this.test.skip || !hookOk) {
             this.emit('test-run-start');

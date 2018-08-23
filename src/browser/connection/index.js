@@ -183,7 +183,7 @@ export default class BrowserConnection extends EventEmitter {
     }
 
     get userAgent () {
-        var userAgent = this.browserInfo.userAgent;
+        let userAgent = this.browserInfo.userAgent;
 
         if (this.browserInfo.userAgentProviderMetaInfo)
             userAgent += ` (${this.browserInfo.userAgentProviderMetaInfo})`;
@@ -268,13 +268,13 @@ export default class BrowserConnection extends EventEmitter {
     }
 
     getInitScript () {
-        var initScriptPromise = this.initScriptsQueue[0];
+        const initScriptPromise = this.initScriptsQueue[0];
 
         return { code: initScriptPromise ? initScriptPromise.code : null };
     }
 
     handleInitScriptResult (data) {
-        var initScriptPromise = this.initScriptsQueue.shift();
+        const initScriptPromise = this.initScriptsQueue.shift();
 
         if (initScriptPromise)
             initScriptPromise.resolve(JSON.parse(data));
@@ -291,7 +291,7 @@ export default class BrowserConnection extends EventEmitter {
         }
 
         if (this.opened) {
-            var testRunUrl = await this._getTestRunUrl(isTestDone);
+            const testRunUrl = await this._getTestRunUrl(isTestDone);
 
             if (testRunUrl) {
                 this.idle = false;

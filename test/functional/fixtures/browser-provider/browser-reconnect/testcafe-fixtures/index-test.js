@@ -34,7 +34,7 @@ test('Should fail on 3 disconnects', async t => {
 
     counter[userAgent]++;
 
-    await t.expect(counter[userAgent]) < 3;
+    await t.expect(counter[userAgent]).lte(3);
 
     await hang();
 });
