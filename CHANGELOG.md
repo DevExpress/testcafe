@@ -1,5 +1,59 @@
 # Changelog
 
+## v0.22.0 (2018-8-27)
+
+### Enhancements
+
+#### :gear: CoffeeScript Support ([#1556](https://github.com/DevExpress/testcafe/issues/1556)) by [@GeoffreyBooth](https://github.com/GeoffreyBooth)
+
+TestCafe now allows you to write tests in CoffeeScript. You do not need to compile CoffeeScript manually or make any customizations, everything works out-of-the-box.
+
+```coffee
+import { Selector } from 'testcafe'
+
+fixture 'CoffeeScript Example'
+    .page 'https://devexpress.github.io/testcafe/example/'
+
+nameInput = Selector '#developer-name'
+
+test 'Test', (t) =>
+    await t
+        .typeText(nameInput, 'Peter')
+        .typeText(nameInput, 'Paker', { replace: true })
+        .typeText(nameInput, 'r', { caretPos: 2 })
+        .expect(nameInput.value).eql 'Parker';
+```
+
+#### :gear: Failed Selector Method Pinpointed in the Report ([#2568](https://github.com/DevExpress/testcafe/issues/2568))
+
+When an incorrect call occurs in a chain of selector methods, the test run report now identifies the exact method that failed to match any DOM element.
+
+![Failed Selector Report](docs/articles/images/failed-selector-report.png)
+
+#### :gear: Ignore Uncaught Server Errors ([#2546](https://github.com/DevExpress/testcafe/issues/2546))
+
+TestCafe can now ignore uncaught errors and unhandled promise rejections that occur on the server during test execution.
+To enable this behavior, use the `--skipUncaughtErrors` flag
+in the command line or the `skipUncaughtErrors` option in the API.
+
+```sh
+testcafe chrome tests/fixture.js --skipUncaughtErrors
+```
+
+```js
+runner.run({skipUncaughtErrors:true})
+```
+
+#### :gear: Use Glob Patterns in `runner.src` ([#980](https://github.com/DevExpress/testcafe/issues/980))
+
+You can now use [glob patterns](https://github.com/isaacs/node-glob#glob-primer) in the [runner.src](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#src) method to specify a set of test files.
+
+```js
+runner.src(['/home/user/tests/**/*.js', '!/home/user/tests/foo.js']);
+```
+
+### Bug Fixes
+
 ## v0.21.1 (2018-8-8)
 
 ### Bug fixes
