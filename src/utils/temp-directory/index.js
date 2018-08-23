@@ -9,13 +9,10 @@ import { ensureDir, readDir } from '../../utils/promisified-functions';
 
 
 // NOTE: mutable for testing purposes
-let TESTCAFE_TMP_DIRS_ROOT = path.join(os.tmpdir(), 'testcafe');
-
+const TESTCAFE_TMP_DIRS_ROOT = path.join(os.tmpdir(), 'testcafe');
 const DEFAULT_NAME_PREFIX    = 'tmp';
-
-const USED_TEMP_DIRS = {};
-
-const DEBUG_LOGGER = debug('testcafe:utils:temp-directory');
+const USED_TEMP_DIRS         = {};
+const DEBUG_LOGGER           = debug('testcafe:utils:temp-directory');
 
 export default class TempDirectory {
     constructor (namePrefix) {
@@ -26,7 +23,7 @@ export default class TempDirectory {
     }
 
     async _getTmpDirsList () {
-        const tmpDirNames = await readDir(TESTCAFE_TMP_DIRS_ROOT);
+        const tmpDirNames = await readDir(TempDirectory.TEMP_DIRECTORIES_ROOT);
 
         return tmpDirNames
             .filter(tmpDir => !USED_TEMP_DIRS[tmpDir])
@@ -35,7 +32,7 @@ export default class TempDirectory {
 
     async _findFreeTmpDir (tmpDirNames) {
         for (const tmpDirName of tmpDirNames) {
-            const tmpDirPath = path.join(TESTCAFE_TMP_DIRS_ROOT, tmpDirName);
+            const tmpDirPath = path.join(TempDirectory.TEMP_DIRECTORIES_ROOT, tmpDirName);
 
             const lockFile = new LockFile(tmpDirPath);
 
@@ -51,13 +48,22 @@ export default class TempDirectory {
     }
 
     async _createNewTmpDir () {
-        this.path = tmp.tmpNameSync({ dir: TESTCAFE_TMP_DIRS_ROOT, prefix: this.namePrefix + '-' });
+        this.path = tmp.tmpNameSync({ dir: TempDirectory.TEMP_DIRECTORIES_ROOT, prefix: this.namePrefix + '-' });
 
         await ensureDir(this.path);
 
         this.lockFile = new LockFile(this.path);
 
         this.lockFile.init();
+    }
+
+    _disposeSync () {
+        if (!USED_TEMP_DIRS[this.path])
+            return;
+
+        this.lockFile.dispose();
+
+        delete USED_TEMP_DIRS[this.path];
     }
 
     static async createDirectory (prefix) {
@@ -69,11 +75,11 @@ export default class TempDirectory {
     }
 
     static disposeDirectoriesSync () {
-        Object.values(USED_TEMP_DIRS).forEach(tmpDir => tmpDir.disposeSync());
+        Object.values(USED_TEMP_DIRS).forEach(tmpDir => tmpDir._disposeSync());
     }
 
     async init () {
-        await ensureDir(TESTCAFE_TMP_DIRS_ROOT);
+        await ensureDir(TempDirectory.TEMP_DIRECTORIES_ROOT);
 
         const tmpDirNames = await this._getTmpDirsList(this.namePrefix);
 
@@ -87,19 +93,9 @@ export default class TempDirectory {
         DEBUG_LOGGER('Temp directory path: ', this.path);
 
         await cleanupProcess.init();
-
         await cleanupProcess.addDirectory(this.path);
 
         USED_TEMP_DIRS[this.path] = this;
-    }
-
-    disposeSync () {
-        if (!USED_TEMP_DIRS[this.path])
-            return;
-
-        this.lockFile.dispose();
-
-        delete USED_TEMP_DIRS[this.path];
     }
 
     async dispose () {
@@ -112,17 +108,9 @@ export default class TempDirectory {
 
         delete USED_TEMP_DIRS[this.path];
     }
-
-    // NOTE: for testing purposes
-    static get TEMP_DIRECTORIES_ROOT () {
-        return TESTCAFE_TMP_DIRS_ROOT;
-    }
-
-    static set TEMP_DIRECTORIES_ROOT (value) {
-        TESTCAFE_TMP_DIRS_ROOT = value;
-
-        return value;
-    }
 }
+
+// NOTE: exposed for testing purposes
+TempDirectory.TEMP_DIRECTORIES_ROOT = TESTCAFE_TMP_DIRS_ROOT;
 
 setupExitHook(TempDirectory.disposeDirectoriesSync);

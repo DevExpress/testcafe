@@ -1,7 +1,8 @@
 import path from 'path';
 import { inspect } from 'util';
 import del from 'del';
-import Promise from 'promise';
+import Promise from 'pinkie';
+import { noop } from 'lodash';
 import killBrowserProcess from '../../kill-browser-process';
 import COMMANDS from './commands';
 
@@ -20,7 +21,7 @@ async function removeDirectory (dirPath) {
     let delPromise = DIRECTORIES_TO_CLEANUP[dirPath].delPromise;
 
     if (!delPromise) {
-        delPromise  = killBrowserProcess(path.basename(dirPath))
+        delPromise = killBrowserProcess(path.basename(dirPath))
             .then(() => del(dirPath, { force: true }));
 
         DIRECTORIES_TO_CLEANUP[dirPath].delPromise = delPromise;
@@ -42,35 +43,30 @@ async function dispatchCommand (message) {
             addDirectory(message.path);
             await removeDirectory(message.path);
             return;
-        default:
-            return;
     }
 }
 
-function init () {
-    process.on('message', async message => {
-        let error = '';
+process.on('message', async message => {
+    let error = '';
 
-        try {
-            await dispatchCommand(message);
-        }
-        catch (e) {
-            error = inspect(e);
-        }
+    try {
+        await dispatchCommand(message);
+    }
+    catch (e) {
+        error = inspect(e);
+    }
 
-        process.send({ id: message.id, error });
-    });
+    process.send({ id: message.id, error });
+});
 
-    process.on('disconnect', async () => {
-        const removePromises = Object
-            .keys(DIRECTORIES_TO_CLEANUP)
-            .map(dirPath => removeDirectory(dirPath).catch(() => {}));
+process.on('disconnect', async () => {
+    const removePromises = Object
+        .keys(DIRECTORIES_TO_CLEANUP)
+        .map(dirPath => removeDirectory(dirPath).catch(noop));
 
-        await Promise.all(removePromises);
+    await Promise.all(removePromises);
 
-        process.exit(0); //eslint-disable-line no-process-exit
-    });
-}
+    process.exit(0); //eslint-disable-line no-process-exit
+});
 
-init();
 

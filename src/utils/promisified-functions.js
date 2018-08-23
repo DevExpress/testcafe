@@ -16,3 +16,5 @@ export const findProcess = promisify(psNode.lookup);
 export const killProcess = promisify(psNode.kill);
 
 export const exec = promisify(childProcess.exec);
+
+export const sendMessageToChildProcess = promisify((process, ...args) => process.send(...args));

@@ -3,22 +3,18 @@ import debug from 'debug';
 import fs from 'fs';
 
 
-const LOCKFILE_NAME = '.testcafe-lockfile';
-
+const LOCKFILE_NAME      = '.testcafe-lockfile';
 const STALE_LOCKFILE_AGE = 2 * 24 * 60 * 60 * 1000;
-
-const DEBUG_LOGGER = debug('testcafe:utils:temp-directory:lockfile');
+const DEBUG_LOGGER       = debug('testcafe:utils:temp-directory:lockfile');
 
 export default class LockFile {
     constructor (dirPath) {
-        this.path   = path.join(dirPath, LOCKFILE_NAME);
+        this.path = path.join(dirPath, LOCKFILE_NAME);
     }
 
     _open ({ force = false } = {}) {
         try {
-            const fd = fs.openSync(this.path, force ? 'w' : 'wx');
-
-            fs.closeSync(fd);
+            fs.writeFileSync(this.path, '', { flag: force ? 'w' : 'wx' });
 
             return true;
         }

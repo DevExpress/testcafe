@@ -2,6 +2,7 @@ import { spawn } from 'child_process';
 import debug from 'debug';
 import promisifyEvent from 'promisify-event';
 import Promise from 'pinkie';
+import { sendMessageToChildProcess } from '../../promisified-functions';
 import COMMANDS from './commands';
 
 
@@ -22,14 +23,7 @@ class CleanupProcess {
     }
 
     _sendMessage (id, msg) {
-        return new Promise((resolve, reject) => {
-            this.worker.send({ id, ...msg }, err => {
-                if (err)
-                    reject(err);
-                else
-                    resolve();
-            });
-        });
+        return sendMessageToChildProcess(this.worker, { id, ...msg });
     }
 
     _onResponse (response) {

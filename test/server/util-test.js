@@ -92,7 +92,7 @@ describe('Utils', () => {
             return tempDir1
                 .init()
                 .then(() => tempDir2.init())
-                .then(() => tempDir1.disposeSync())
+                .then(() => tempDir1._disposeSync())
                 .then(() => tempDir3.init())
                 .then(() => {
                     const subDirs = fs.readdirSync(TempDirectory.TEMP_DIRECTORIES_ROOT);
