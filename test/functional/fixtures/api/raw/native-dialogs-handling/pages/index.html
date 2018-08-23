@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<button id="buttonAlert">Alert</button>
+<button id="buttonConfirm">Confirm</button>
+
+<div id="result"></div>
+<script>
+    document.getElementById('buttonAlert').addEventListener('click', function () {
+        window.alert('Alert!');
+    });
+
+    document.getElementById('buttonConfirm').addEventListener('click', function () {
+        document.getElementById('result').textContent = window.confirm('Confirm?');
+    });
+</script>
+</body>
+</html>

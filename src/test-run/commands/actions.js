@@ -5,6 +5,8 @@ import functionBuilderSymbol from '../../client-functions/builder-symbol';
 import CommandBase from './base';
 import { ActionOptions, ClickOptions, MouseOptions, TypeOptions, DragToElementOptions } from './options';
 import { initSelector, initUploadSelector } from './validations/initializers';
+import { executeJsExpression } from '../execute-js-expression';
+import { isJSExpression } from './utils';
 
 import {
     actionOptions,
@@ -44,8 +46,13 @@ function initDragToElementOptions (name, val) {
     return new DragToElementOptions(val, true);
 }
 
-function initDialogHandler (name, val) {
-    var fn = val.fn;
+function initDialogHandler (name, val, { skipVisibilityCheck, testRun }) {
+    var fn;
+
+    if (isJSExpression(val))
+        fn = executeJsExpression(val.value, testRun, { skipVisibilityCheck });
+    else
+        fn = val.fn;
 
     if (fn === null || fn instanceof ExecuteClientFunctionCommand)
         return fn;
