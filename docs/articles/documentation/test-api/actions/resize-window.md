@@ -8,11 +8,11 @@ checked: true
 
 There are three ways of resizing a browser window.
 
-**Note**: these actions require a [ICCCM/EWMH-compliant window manager](https://en.wikipedia.org/wiki/Comparison_of_X_window_managers) on Linux.
-
 * [Setting the Window Size](#setting-the-window-size)
 * [Fitting the Window into a Particular Device](#fitting-the-window-into-a-particular-device)
 * [Maximizing the Window](#maximizing-the-window)
+
+**Note**: these actions require .NET 4.0 or newer installed on Windows machines and an [ICCCM/EWMH-compliant window manager](https://en.wikipedia.org/wiki/Comparison_of_X_window_managers) on Linux.
 
 ## Setting the Window Size
 
