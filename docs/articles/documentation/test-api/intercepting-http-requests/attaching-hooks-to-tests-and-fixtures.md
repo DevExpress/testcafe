@@ -9,20 +9,20 @@ checked: true
 To attach a hook to a test or fixture, use the `fixture.requestHooks` and `test.requestHooks` methods. A hook attached to a fixture handles requests from all tests in the fixture.
 
 ```text
-fixture.requestHooks(...hook)
-test.requestHooks(...hook)
+fixture.requestHooks(...hooks)
+test.requestHooks(...hooks)
 ```
 
 You can also attach and detach hooks during test run using the `t.addRequestHooks` and `t.removeRequestHooks` methods.
 
 ```text
-t.addRequestHooks(...hook)
+t.addRequestHooks(...hooks)
 t.removeRequestHooks(...hooks)
 ```
 
 Parameter | Type | Description
 --------- | ---- | ------------
-`hook`    | RequestHook subclass | A `RequestLogger`, `RequestMock` or custom user-defined hook.
+`hooks`    | RequestHook subclass | A `RequestLogger`, `RequestMock` or custom user-defined hook.
 
 The `fixture.requestHooks`, `test.requestHooks` `t.addRequestHooks` and `t.removeRequestHooks` methods use the rest operator which allows you to pass multiple hooks as parameters or arrays of hooks.
 
