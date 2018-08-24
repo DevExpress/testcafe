@@ -33,8 +33,8 @@ When an incorrect call occurs in a chain of selector methods, the test run repor
 #### :gear: Ignore Uncaught Server Errors ([#2546](https://github.com/DevExpress/testcafe/issues/2546))
 
 TestCafe can now ignore uncaught errors and unhandled promise rejections that occur on the server during test execution.
-To enable this behavior, use the `--skipUncaughtErrors` flag
-in the command line or the `skipUncaughtErrors` option in the API.
+To enable this behavior, use the [--skipUncaughtErrors](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-u---skip-uncaught-errors) flag
+in the command line or the [skipUncaughtErrors](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#run) option in the API.
 
 ```sh
 testcafe chrome tests/fixture.js --skipUncaughtErrors
