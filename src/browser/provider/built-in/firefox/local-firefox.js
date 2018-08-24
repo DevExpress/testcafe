@@ -1,6 +1,6 @@
 import OS from 'os-family';
 import browserTools from 'testcafe-browser-tools';
-import killBrowserProcess from '../../utils/kill-browser-process';
+import killBrowserProcess from '../../../../utils/kill-browser-process';
 import BrowserStarter from '../../utils/browser-starter';
 
 
@@ -18,7 +18,7 @@ function buildFirefoxArgs (config, platformArgs, { marionettePort, tempProfileDi
     return []
         .concat(
             marionettePort ? ['-marionette'] : [],
-            !config.userProfile ? ['-no-remote', '-new-instance', `-profile "${tempProfileDir.name}"`] : [],
+            !config.userProfile ? ['-no-remote', '-new-instance', `-profile "${tempProfileDir.path}"`] : [],
             config.headless ? ['-headless'] : [],
             config.userArgs ? [config.userArgs] : [],
             platformArgs ? [platformArgs] : []

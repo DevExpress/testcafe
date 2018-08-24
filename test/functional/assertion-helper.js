@@ -311,7 +311,9 @@ exports.isScreenshotsEqual = function (customPath, referenceImagePathGetter) {
 
 exports.removeScreenshotDir = function () {
     if (isDirExists(SCREENSHOTS_PATH))
-        del(SCREENSHOTS_PATH);
+        return del(SCREENSHOTS_PATH);
+
+    return Promise.resolve();
 };
 
 exports.SCREENSHOTS_PATH = SCREENSHOTS_PATH;

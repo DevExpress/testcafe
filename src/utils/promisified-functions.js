@@ -6,6 +6,7 @@ import promisify from './promisify';
 
 
 export const ensureDir  = promisify(mkdirp);
+export const readDir    = promisify(fs.readdir);
 export const stat       = promisify(fs.stat);
 export const writeFile  = promisify(fs.writeFile);
 export const readFile   = promisify(fs.readFile);
@@ -15,3 +16,5 @@ export const findProcess = promisify(psNode.lookup);
 export const killProcess = promisify(psNode.kill);
 
 export const exec = promisify(childProcess.exec);
+
+export const sendMessageToChildProcess = promisify((process, ...args) => process.send(...args));
