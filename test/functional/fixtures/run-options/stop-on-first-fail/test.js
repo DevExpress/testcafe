@@ -38,7 +38,7 @@ describe('Stop test task on first failed test', () => {
                 outStream: stream
             }]
         }).then(() => {
-            const pluginHost = new ReporterPluginHost();
+            const pluginHost = new ReporterPluginHost({ noColors: true });
 
             expect(stream.data).contains(`${pluginHost.symbols.ok} test1`);
             expect(stream.data).contains(`${pluginHost.symbols.err} test2`);
