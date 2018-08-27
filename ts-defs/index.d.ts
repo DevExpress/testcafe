@@ -1270,15 +1270,15 @@ interface TestController {
     /**
      * Attaches the hooks during a test run
      *
-     * @param hook - The set of RequestHook subclasses
+     * @param hooks - The set of RequestHook subclasses
      */
-    addRequestHooks(...hook: object[]): TestControllerPromise;
+    addRequestHooks(...hooks: object[]): TestControllerPromise;
     /**
      * Detaches the hooks during a test run
      *
-     * @param hook - The set of RequestHook subclasses
+     * @param hooks - The set of RequestHook subclasses
      */
-    removeRequestHooks(...hook: object[]): TestControllerPromise;
+    removeRequestHooks(...hooks: object[]): TestControllerPromise;
 }
 
 interface TestControllerPromise extends TestController, Promise<any> {
@@ -1709,9 +1709,9 @@ interface FixtureFn {
     /**
      * Attaches hooks to all tests in the fixture
      *
-     * @param hook - The set of the RequestHook subclasses
+     * @param hooks - The set of the RequestHook subclasses
      */
-    requestHooks(...hook: object[]): this;
+    requestHooks(...hooks: object[]): this;
 }
 
 interface TestFn {
@@ -1774,9 +1774,9 @@ interface TestFn {
     /**
      * Attaches hooks to the test
      *
-     * @param hook - The set of the RequestHook subclasses
+     * @param hooks - The set of the RequestHook subclasses
      */
-    requestHooks(...hook: object[]): this;
+    requestHooks(...hooks: object[]): this;
 }
 
 declare var fixture: FixtureFn;
