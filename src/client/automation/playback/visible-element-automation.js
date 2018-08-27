@@ -10,8 +10,7 @@ import ScrollAutomation from './scroll';
 import MoveAutomation from './move';
 import { MoveOptions, ScrollOptions } from '../../../test-run/commands/options';
 
-const extend       = hammerhead.utils.extend;
-const browserUtils = hammerhead.utils.browser;
+const extend = hammerhead.utils.extend;
 
 class ElementState {
     constructor ({ element = null, clientPoint = null, screenPoint = null, isTarget = false, inMoving = false }) {
@@ -60,15 +59,14 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
     }
 
     _wrapAction (action) {
-        const roundFn                    = browserUtils.isFirefox ? Math.ceil : Math.round;
         const offsetX                    = this.options.offsetX;
         const offsetY                    = this.options.offsetY;
-        const screenPointBeforeAction    = getAutomationPoint(this.element, offsetX, offsetY, roundFn);
+        const screenPointBeforeAction    = getAutomationPoint(this.element, offsetX, offsetY);
         const clientPositionBeforeAction = positionUtils.getClientPosition(this.element);
 
         return action()
             .then(() => {
-                const screenPointAfterAction    = getAutomationPoint(this.element, offsetX, offsetY, roundFn);
+                const screenPointAfterAction    = getAutomationPoint(this.element, offsetX, offsetY);
                 const clientPositionAfterAction = positionUtils.getClientPosition(this.element);
                 const clientPoint               = screenPointToClient(this.element, screenPointAfterAction);
                 const expectedElement           = positionUtils.containsOffset(this.element, offsetX, offsetY) ? this.element : null;

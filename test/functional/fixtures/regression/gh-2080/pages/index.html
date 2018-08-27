@@ -4,6 +4,15 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <style>
+
+        #drag {
+            width: 5px;
+            height: 5px;
+            background-color: black;
+            position: absolute;
+            top: -50px;
+            left: -50px;
+        }
         #parent {
             width: 100px;
             height: 100px;
@@ -53,6 +62,7 @@
     <div id="parent">
         <div id="child1" class="child">
             <div id="leaf1" class="leaf"></div>
+            <div id="drag"></div>
         </div>
 
         <div id="child2" class="child">
@@ -67,7 +77,6 @@
             <div id="leaf4" class="leaf"></div>
         </div>
     </div>
-
     <div id="result"></div>
     <script>
         function log(e) {
