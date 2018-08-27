@@ -471,7 +471,7 @@ from the rest of the test base (*healthy* tests).
 When the quarantine mode is enabled, tests run according to the following logic:
 
 1. A test runs at the first time. If it passes, TestCafe proceeds to the next test.
-2. If the test fails, it runs over and over until it shows the same result (passed or failed) three times in total.
+2. If the test fails, it runs over and over until it shows the same result (passed or failed) three times.
 3. The result seen most often (i.e., three times) is recorded as the test result.
 4. If the test result differs between test runs, the test is marked as unstable.
 
