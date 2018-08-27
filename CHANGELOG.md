@@ -30,10 +30,11 @@ When an incorrect call occurs in a chain of selector methods, the test run repor
 
 ![Failed Selector Report](docs/articles/images/failed-selector-report.png)
 
-#### :gear: Ignore Uncaught Server Errors ([#2546](https://github.com/DevExpress/testcafe/issues/2546))
+#### :gear: Fail on Uncaught Server Errors ([#2546](https://github.com/DevExpress/testcafe/issues/2546))
 
-TestCafe can now ignore uncaught errors and unhandled promise rejections that occur on the server during test execution.
-To enable this behavior, use the [--skipUncaughtErrors](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-u---skip-uncaught-errors) flag
+Previously, TestCafe ignored uncaught errors and unhandled promise rejections occurred on the server. Whenever an error or a promise rejection happened, tests continued execution.
+
+Starting from v0.22.0, tests fail if a server error or a promise rejection is unhandled. To return to the previous behavior, we have introduced a `skipUncaughtErrors` option. Use the [--skipUncaughtErrors](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-u---skip-uncaught-errors) flag
 in the command line or the [skipUncaughtErrors](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#run) option in the API.
 
 ```sh
@@ -66,6 +67,7 @@ runner.src(['/home/user/tests/**/*.js', '!/home/user/tests/foo.js']);
 * Tests no longer lose connection ([testcafe-hammerhead/#1647](https://github.com/DevExpress/testcafe-hammerhead/issues/1647))
 * The case when both the `X-Frame-Options` header and a CSP with `frame-ancestors` are set is now handled correctly ([testcafe-hammerhead/#1666](https://github.com/DevExpress/testcafe-hammerhead/issues/1666))
 * A mechanism that resolves URLs on the client now works correctly ([testcafe-hammerhead/#1701](https://github.com/DevExpress/testcafe-hammerhead/issues/1701))
+* `LiveNodeListWrapper` now imitates native behavior correctly ([testcafe-hammerhead/#1376](https://github.com/DevExpress/testcafe-hammerhead/issues/1376))
 
 ## v0.21.1 (2018-8-8)
 
