@@ -280,6 +280,14 @@ export default class TestRun extends EventEmitter {
             await this._runAfterHook();
         }
 
+        if (this.disconnected) {
+            await promisifyEvent(this, 'restart-on-disconnect');
+
+            await this.executeCommand(new TestDoneCommand());
+
+            return;
+        }
+
         if (this.errs.length && this.debugOnFail)
             await this._enqueueSetBreakpointCommand(null, this.debugReporterPluginHost.formatError(this.errs[0]));
 
@@ -376,9 +384,6 @@ export default class TestRun extends EventEmitter {
     }
 
     _rejectCurrentDriverTask (err) {
-        if (!this.currentDriverTask)
-            return;
-
         err.callsite             = err.callsite || this.driverTaskQueue[0].callsite;
         err.isRejectedDriverTask = true;
 
@@ -424,14 +429,17 @@ export default class TestRun extends EventEmitter {
     }
 
     _handleDriverRequest (driverStatus) {
-        const pageError = this.pendingPageError || driverStatus.pageError;
-
+        const isTestDone                 = this.currentDriverTask && this.currentDriverTask.command.type === COMMAND_TYPE.testDone;
+        const pageError                  = this.pendingPageError || driverStatus.pageError;
         const currentTaskRejectedByError = pageError && this._handlePageErrorStatus(pageError);
+
+        if (this.disconnected && !isTestDone)
+            return null;
 
         this.consoleMessages.concat(driverStatus.consoleMessages);
 
         if (!currentTaskRejectedByError && driverStatus.isCommandResult) {
-            if (this.currentDriverTask.command.type === COMMAND_TYPE.testDone) {
+            if (isTestDone) {
                 this._resolveCurrentDriverTask();
 
                 return TEST_DONE_CONFIRMATION_RESPONSE;
@@ -672,9 +680,12 @@ export default class TestRun extends EventEmitter {
         return await getLocation();
     }
 
-    reject (err) {
+    disconnect (err) {
+        this.disconnected = true;
+
+        delete testRunTracker.activeTestRuns[this.session.id];
         this._rejectCurrentDriverTask(err);
-        this.emit('rejected');
+        this.emit('disconnected');
     }
 }
 

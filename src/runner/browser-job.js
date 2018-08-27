@@ -37,9 +37,9 @@ export default class BrowserJob extends EventEmitter {
             this.fixtureHookController, this.opts);
 
         testRunController.on('test-run-start', () => this.emit('test-run-start', testRunController.testRun));
-        testRunController.on('test-run-restart', notifyParent => this._onTestRunRestart(testRunController, notifyParent));
+        testRunController.on('test-run-restart', restartBrowser => this._onTestRunRestart(testRunController, restartBrowser));
         testRunController.on('test-run-done', () => this._onTestRunDone(testRunController));
-        testRunController.on('disconnected', () => this._onDisconnected(testRunController));
+        testRunController.on('disconnected', () => this._onDisconnected());
 
         return testRunController;
     }
@@ -63,12 +63,12 @@ export default class BrowserJob extends EventEmitter {
         remove(this.completionQueue, testRunInfo);
     }
 
-    _onTestRunRestart (testRunController, notifyParent) {
+    _onTestRunRestart (testRunController, restartBrowser) {
+        if (restartBrowser)
+            this.emit('restart-browser');
+
         this._removeFromCompletionQueue(testRunController);
         this.testRunControllerQueue.unshift(testRunController);
-
-        if (notifyParent)
-            this.emit('test-run-restart');
     }
 
     async _onTestRunDone (testRunController) {
@@ -92,8 +92,8 @@ export default class BrowserJob extends EventEmitter {
         }
     }
 
-    _onDisconnected (testRunController) {
-        this.emit('disconnected', testRunController);
+    _onDisconnected () {
+        this.emit('disconnected');
     }
 
     // API

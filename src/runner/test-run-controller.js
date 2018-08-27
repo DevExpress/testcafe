@@ -93,20 +93,11 @@ export default class TestRunController extends EventEmitter {
     }
 
     _keepInQuarantine () {
-        this._restart(false);
+        this._restartTest(false);
     }
 
-    _restart (notifyParent) {
-        this.emit('test-run-restart', notifyParent);
-    }
-
-    _testRunRejected () {
-        this.disconnected++;
-
-        if (this.disconnected < DISCONNECT_THRESHOLD)
-            this._restart(true);
-        else
-            this.emit('disconnected');
+    _restartTest (restartBrowser) {
+        this.emit('test-run-restart', restartBrowser);
     }
 
     async _testRunDoneInQuarantineMode () {
@@ -133,6 +124,15 @@ export default class TestRunController extends EventEmitter {
         this.emit('test-run-done');
     }
 
+    _testRunDisconnected () {
+        this.disconnected++;
+
+        if (this.disconnected < DISCONNECT_THRESHOLD)
+            this._restartTest(true);
+        else
+            this.emit('disconnected');
+    }
+
     get blocked () {
         return this.fixtureHookController.isTestBlocked(this.test);
     }
@@ -150,7 +150,7 @@ export default class TestRunController extends EventEmitter {
 
         testRun.once('start', () => this.emit('test-run-start'));
         testRun.once('done', () => this._testRunDone());
-        testRun.once('rejected', () => this._testRunRejected());
+        testRun.once('disconnected', () => this._testRunDisconnected());
 
         testRun.start();
 

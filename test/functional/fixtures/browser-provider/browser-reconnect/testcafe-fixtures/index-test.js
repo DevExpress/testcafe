@@ -9,8 +9,8 @@ const getUserAgent = ClientFunction(() => navigator.userAgent.toString());
 const hang = ClientFunction(() => {
     const now = Date.now();
 
-    while (Date.now() < now + 5000) {
-        // hang for 5s
+    while (Date.now() < now + 10000) {
+        // hang for 10s
     }
 });
 

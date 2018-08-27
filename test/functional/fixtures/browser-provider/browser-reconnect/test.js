@@ -5,7 +5,8 @@ const config              = require('../../../config');
 const browserProviderPool = require('../../../../../lib/browser/provider/pool');
 const BrowserConnection   = require('../../../../../lib/browser/connection');
 
-let errors = null;
+let errors            = null;
+let globalConnections = [];
 
 function customReporter () {
     return {
@@ -27,15 +28,23 @@ function createConnection (browser) {
         .then(browserInfo => new BrowserConnection(testCafe.browserConnectionGateway, browserInfo, true));
 }
 
-async function run (pathToTest, filter) {
+async function run (pathToTest, filter, initConnection) {
     const src          = path.join(__dirname, pathToTest);
     const browserNames = config.currentEnvironment.browsers.map(browser => browser.browserName || browser.alias);
 
     return Promise.all(browserNames.map(browser => createConnection(browser)))
         .then(connections => {
+
+            globalConnections = connections;
+
             connections.forEach(connection => {
                 connection.HEARTBEAT_TIMEOUT = 4000;
+
+                if (typeof initConnection === 'function')
+                    initConnection(connection);
             });
+
+            globalConnections = connections;
 
             return connections;
         })
@@ -60,7 +69,16 @@ describe('Browser reconnect', function () {
         });
 
         it('Should fail on 3 disconnects', function () {
-            return run('./testcafe-fixtures/index-test.js', 'Should fail on 3 disconnects')
+            return run('./testcafe-fixtures/index-test.js', 'Should fail on 3 disconnects', connection => {
+                connection.once('error', err => {
+
+                    globalConnections.filter(con => con !== connection).forEach(con => {
+                        con.emit('error', err);
+                    });
+
+                    globalConnections = [];
+                });
+            })
                 .then(() => {
                     throw new Error('Test should have failed but it succeeded');
                 })

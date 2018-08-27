@@ -41,7 +41,6 @@ export default class BrowserConnection extends EventEmitter {
         this.idle              = true;
         this.heartbeatTimeout  = null;
         this.pendingTestRunUrl = null;
-        this.disconnectCount   = {};
 
         this.url           = `${gateway.domain}/browser/connect/${this.id}`;
         this.idleUrl       = `${gateway.domain}/browser/idle/${this.id}`;
@@ -55,8 +54,6 @@ export default class BrowserConnection extends EventEmitter {
         this.heartbeatUrl  = `${gateway.domain}${this.heartbeatRelativeUrl}`;
         this.statusUrl     = `${gateway.domain}${this.statusRelativeUrl}`;
         this.statusDoneUrl = `${gateway.domain}${this.statusDoneRelativeUrl}`;
-
-        // this.disconnectCount = {};
 
         this.on('error', () => {
             this._forceIdle();
@@ -102,8 +99,6 @@ export default class BrowserConnection extends EventEmitter {
 
         try {
             await this.provider.closeBrowser(this.id);
-
-            this.opened = false;
         }
         catch (err) {
             // NOTE: A warning would be really nice here, but it can't be done while log is stored in a task.
@@ -139,10 +134,15 @@ export default class BrowserConnection extends EventEmitter {
 
     _waitForHeartbeat () {
         this.heartbeatTimeout = setTimeout(() => {
+            this.opened = false;
+
             const testRun = this._getActiveTestRun();
 
-            if (testRun && testRun.reject)
-                testRun.reject(this._createBrowserDisconnectedError());
+            if (testRun && testRun.disconnect) {
+                this.once('opened', () => testRun.emit('restart-on-disconnect'));
+
+                testRun.disconnect(this._createBrowserDisconnectedError());
+            }
             else
                 this._onBrowserDisconnected();
 
@@ -208,7 +208,7 @@ export default class BrowserConnection extends EventEmitter {
         this.jobQueue.push(job);
 
         job.on('disconnected', () => this._onBrowserDisconnected());
-        job.on('test-run-restart', () => this._restartBrowser());
+        job.on('restart-browser', () => this._restartBrowser());
     }
 
     removeJob (job) {
