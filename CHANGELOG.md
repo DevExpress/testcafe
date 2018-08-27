@@ -32,7 +32,7 @@ When an incorrect call occurs in a chain of selector methods, the test run repor
 
 #### :gear: Fail on Uncaught Server Errors ([#2546](https://github.com/DevExpress/testcafe/issues/2546))
 
-Previously, TestCafe ignored uncaught errors and unhandled promise rejections occurred on the server. Whenever an error or a promise rejection happened, tests continued execution.
+Previously, TestCafe ignored uncaught errors and unhandled promise rejections occurred on the server. Whenever an error or a promise rejection happened, test execution continued.
 
 Starting from v0.22.0, tests fail if a server error or a promise rejection is unhandled. To return to the previous behavior, we have introduced a `skipUncaughtErrors` option. Use the [--skipUncaughtErrors](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-u---skip-uncaught-errors) flag
 in the command line or the [skipUncaughtErrors](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#run) option in the API.
