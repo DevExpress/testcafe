@@ -78,6 +78,7 @@ const CURRENT_IFRAME_ERROR_CTORS = {
     IsInvisibleError: CurrentIframeIsInvisibleError
 };
 
+const delay = ms => new Promise(r => setTimeout(r, ms));
 
 export default class Driver {
     constructor (testRunId, communicationUrls, runInfo, options) {
@@ -217,31 +218,36 @@ export default class Driver {
         // NOTE: postpone status sending if the page is unloading
         return pageUnloadBarrier
             .wait(0)
-            .then(() => Promise.race([new Promise((_, r) => setTimeout(r, 2000)), transport.asyncServiceMsg({
+            .then(() => transport.asyncServiceMsg({
                 cmd:              TEST_RUN_MESSAGES.ready,
                 status:           status,
-                disableResending: true
-            })]))
-            .catch(() => (new Promise(r => setTimeout(r, 300))).then(() => Promise.race([new Promise((_, r) => setTimeout(r, 2000)), transport.asyncServiceMsg({
+                disableResending: true,
+                allowRejecting:   true
+            }))
+            .catch(() => delay(300).then(() => transport.asyncServiceMsg({
                 cmd:              TEST_RUN_MESSAGES.ready,
                 status:           status,
-                disableResending: true
-            })])) )
-            .catch(() => (new Promise(r => setTimeout(r, 300))).then(() => Promise.race([new Promise((_, r) => setTimeout(r, 2000)), transport.asyncServiceMsg({
+                disableResending: true,
+                allowRejecting:   true
+            })))
+            .catch(() => delay(300).then(() => transport.asyncServiceMsg({
                 cmd:              TEST_RUN_MESSAGES.ready,
                 status:           status,
-                disableResending: true
-            })])))
-            .catch(() => (new Promise(r => setTimeout(r, 300))).then(() => Promise.race([new Promise((_, r) => setTimeout(r, 2000)), transport.asyncServiceMsg({
+                disableResending: true,
+                allowRejecting:   true
+            })))
+            .catch(() => delay(300).then(() => transport.asyncServiceMsg({
                 cmd:              TEST_RUN_MESSAGES.ready,
                 status:           status,
-                disableResending: true
-            })])))
-            .catch(() => (new Promise(r => setTimeout(r, 300))).then(() => Promise.race([new Promise((_, r) => setTimeout(r, 2000)), transport.asyncServiceMsg({
+                disableResending: true,
+                allowRejecting:   true
+            })))
+            .catch(() => delay(300).then(() => transport.asyncServiceMsg({
                 cmd:              TEST_RUN_MESSAGES.ready,
                 status:           status,
-                disableResending: true
-            })])))
+                disableResending: true,
+                allowRejecting:   true
+            })))
 
             //NOTE: do not execute the next command if the page is unloading
             .then(res => {

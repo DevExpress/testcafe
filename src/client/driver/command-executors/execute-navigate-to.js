@@ -5,12 +5,12 @@ import DriverStatus from '../status';
 const { Promise, createNativeXHR, utils } = hammerhead;
 
 export default function executeNavigateTo (command) {
-    const proxyUrl = utils.url.getProxyUrl(command.url);
+    const navigationUrl = utils.url.getNavigationUrl(command.url, window);
 
     const ensurePagePromise = browser
-            .sendXHR(proxyUrl, createNativeXHR, { parseResponse: false, addAcceptHeader: true })
-            .catch(() => (new Promise(r => setTimeout(r, 300))).then(() => browser.sendXHR(proxyUrl, createNativeXHR, { parseResponse: false, addAcceptHeader: true })))
-            .catch(() => (new Promise(r => setTimeout(r, 300))).then(() => browser.sendXHR(proxyUrl, createNativeXHR, { parseResponse: false, addAcceptHeader: true })))
+            .sendXHR(navigationUrl, createNativeXHR, { parseResponse: false, addAcceptHeader: true })
+            .catch(() => (new Promise(r => setTimeout(r, 300))).then(() => browser.sendXHR(navigationUrl, createNativeXHR, { parseResponse: false, addAcceptHeader: true })))
+            .catch(() => (new Promise(r => setTimeout(r, 300))).then(() => browser.sendXHR(navigationUrl, createNativeXHR, { parseResponse: false, addAcceptHeader: true })))
             .catch(() => {});
 
     return ensurePagePromise
