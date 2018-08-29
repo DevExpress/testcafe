@@ -263,7 +263,9 @@ gulp.step('server-scripts', function () {
         .pipe(sourcemaps.init())
         .pipe(gulpBabel())
         .pipe(sourcemaps.mapSources(function (sourcePath) {
-            return path.basename(sourcePath);
+            const libPath = 'src/' + sourcePath;
+
+            return path.relative(sourcePath, libPath);
         }))
         .pipe(sourcemaps.write())
         .pipe(gulp.dest('lib'));
