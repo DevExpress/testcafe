@@ -7,7 +7,7 @@ import COMMANDS from './commands';
 
 
 const WORKER_PATH         = require.resolve('./worker');
-const WORKER_STDIO_CONFIG = ['ignore', 'ignore', 'ignore', 'ipc'];
+const WORKER_STDIO_CONFIG = ['ignore', 'pipe', 'pipe', 'ipc'];
 
 const DEBUG_LOGGER = debug('testcafe:utils:temp-directory:cleanup-process');
 
@@ -23,7 +23,10 @@ class CleanupProcess {
     }
 
     _sendMessage (id, msg) {
-        return sendMessageToChildProcess(this.worker, { id, ...msg });
+        return Promise.race([
+            sendMessageToChildProcess(this.worker, { id, ...msg }),
+            promisifyEvent(this.worker, 'error')
+        ]);
     }
 
     _onResponse (response) {
@@ -69,6 +72,34 @@ class CleanupProcess {
         await this._waitResponse(currentId);
     }
 
+    _waitProcessExit () {
+        return promisifyEvent(this.worker, 'exit')
+            .then(exitCode => Promise.reject(new Error(`Worker process terminated with code ${exitCode}`)));
+    }
+
+    _setupWorkerEventHandlers () {
+        this.worker.on('message', message => this._onResponse(message));
+
+        this.worker.stdout.on('data', data => DEBUG_LOGGER('Worker process stdout:\n', String(data)));
+        this.worker.stderr.on('data', data => DEBUG_LOGGER('Worker process stderr:\n', String(data)));
+    }
+
+    _unrefWorkerProcess () {
+        this.worker.unref();
+        this.worker.stdout.unref();
+        this.worker.stderr.unref();
+
+        const channel = this.worker.channel || this.worker._channel;
+
+        channel.unref();
+    }
+
+    _handleProcessError (error) {
+        this.initialized = false;
+
+        DEBUG_LOGGER(error);
+    }
+
     init () {
         this.initPromise = this.initPromise
             .then(async initialized => {
@@ -77,21 +108,23 @@ class CleanupProcess {
 
                 this.worker = spawn(process.argv[0], [WORKER_PATH], { detached: true, stdio: WORKER_STDIO_CONFIG });
 
-                this.worker.on('message', message => this._onResponse(message));
+                this._setupWorkerEventHandlers();
+                this._unrefWorkerProcess();
 
-                this.worker.unref();
+                const exitPromise = this._waitProcessExit();
 
                 try {
                     await Promise.race([
                         this._waitResponseForMessage({ command: COMMANDS.init }),
-                        promisifyEvent(this.worker, 'error')
+                        promisifyEvent(this.worker, 'error'),
+                        exitPromise
                     ]);
 
-                    const channel = this.worker.channel || this.worker._channel;
-
-                    channel.unref();
-
                     this.initialized = true;
+
+                    exitPromise.catch(error => this._handleProcessError(error));
+
+                    this.worker.on('error', error => this._handleProcessError(error));
                 }
                 catch (e) {
                     DEBUG_LOGGER('Failed to start cleanup process');

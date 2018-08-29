@@ -20,6 +20,7 @@ const PERMISSIVE_LICENSES = [
     'Unlicense',
     'Apache 2.0',
     'WTFPL OR ISC',
+    '(WTFPL OR MIT)',
     'Public Domain',
     'WTFPL',
     'Apache-2.0'
