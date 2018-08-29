@@ -33,7 +33,7 @@ test 'Test', (t) =>
 
 ### ⚙ Failed Selector Method Pinpointed in the Report ([#2568](https://github.com/DevExpress/testcafe/issues/2568))
 
-When an incorrect call occurs in a chain of selector methods, the test run report now identifies the exact method that failed to match any DOM element.
+Now the test run report can identify which selector's method does not match any DOM element.
 
 ![Failed Selector Report](../images/failed-selector-report.png)
 
