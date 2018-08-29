@@ -124,6 +124,7 @@
     "@types/chai": "^3.5.2",
     "babel-eslint": "^7.1.1",
     "babel-plugin-add-module-exports": "^0.2.0",
+    "babel-plugin-transform-for-of-as-array": "^1.1.1",
     "basic-auth": "^1.1.0",
     "body-parser": "^1.17.1",
     "broken-link-checker": "^0.7.0",
