@@ -5,6 +5,7 @@ fixture `Browser reconnect`
 
 const counter      = {};
 const getUserAgent = ClientFunction(() => navigator.userAgent.toString());
+let ctx            = null;
 
 const hang = ClientFunction(() => {
     const now = Date.now();
@@ -37,4 +38,25 @@ test('Should fail on 3 disconnects', async t => {
     await t.expect(counter[userAgent]).lte(3);
 
     await hang();
+
+    throw new Error('browser has not restarted');
 });
+
+test('Should fail on 3 disconnects in one browser', async t => {
+    const userAgent = await getUserAgent();
+
+    counter[userAgent] = counter[userAgent] || 0;
+
+    counter[userAgent]++;
+
+    ctx = ctx || userAgent;
+
+    if (ctx === userAgent) {
+        await hang();
+
+        throw new Error('browser has not restarted');
+    }
+
+    await t.expect(counter[userAgent]).eql(1);
+});
+

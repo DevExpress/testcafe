@@ -121,6 +121,10 @@ export default class TestRun extends EventEmitter {
         this.requestHooks = Array.from(this.test.requestHooks);
 
         this._initRequestHooks();
+
+        this.browserConnection.once('disconnected', err => this.disconnect(err));
+        this.browserConnection.once('opened', () => this.emit('stop-waiting'));
+        this.browserConnection.once('error', () => this.emit('stop-waiting'));
     }
 
     get id () {
@@ -281,7 +285,7 @@ export default class TestRun extends EventEmitter {
         }
 
         if (this.disconnected) {
-            await promisifyEvent(this, 'restart-on-disconnect');
+            await promisifyEvent(this, 'stop-waiting');
 
             await this.executeCommand(new TestDoneCommand());
 

@@ -10,7 +10,6 @@ import COMMAND from './command';
 import STATUS from './status';
 import { GeneralError } from '../../errors/runtime';
 import MESSAGE from '../../errors/runtime/message';
-import testRunTracker from '../../api/test-run-tracker';
 
 const IDLE_PAGE_TEMPLATE = read('../../client/browser/idle-page/index.html.mustache');
 const connections        = {};
@@ -127,23 +126,14 @@ export default class BrowserConnection extends EventEmitter {
         this._forceIdle();
 
         this._closeBrowser()
-            .then(() => {
-                this._runBrowser();
-            });
+            .then(() => this._runBrowser());
     }
 
     _waitForHeartbeat () {
         this.heartbeatTimeout = setTimeout(() => {
             this.opened = false;
 
-            const testRun = this._getActiveTestRun();
-
-            if (testRun && testRun.disconnect) {
-                this.once('opened', () => testRun.emit('restart-on-disconnect'));
-
-                testRun.disconnect(this._createBrowserDisconnectedError());
-            }
-            else
+            if (!this.emit('disconnected', this._createBrowserDisconnectedError()))
                 this._onBrowserDisconnected();
 
         }, this.HEARTBEAT_TIMEOUT);
@@ -154,12 +144,6 @@ export default class BrowserConnection extends EventEmitter {
             this.pendingTestRunUrl = await this._popNextTestRunUrl();
 
         return this.pendingTestRunUrl;
-    }
-
-    _getActiveTestRun () {
-        const testRuns = Object.values(testRunTracker.activeTestRuns);
-
-        return testRuns.find(tr => tr.browserConnection.id === this.id);
     }
 
     async _popNextTestRunUrl () {

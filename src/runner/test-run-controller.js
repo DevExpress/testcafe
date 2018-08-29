@@ -41,10 +41,10 @@ export default class TestRunController extends EventEmitter {
 
         this.TestRunCtor = TestRunController._getTestRunCtor(test, opts);
 
-        this.testRun      = null;
-        this.done         = false;
-        this.quarantine   = null;
-        this.disconnected = 0;
+        this.testRun            = null;
+        this.done               = false;
+        this.quarantine         = null;
+        this.disconnectionCount = 0;
 
         if (this.opts.quarantineMode)
             this.quarantine = new Quarantine();
@@ -125,9 +125,9 @@ export default class TestRunController extends EventEmitter {
     }
 
     _testRunDisconnected () {
-        this.disconnected++;
+        this.disconnectionCount++;
 
-        if (this.disconnected < DISCONNECT_THRESHOLD)
+        if (this.disconnectionCount < DISCONNECT_THRESHOLD)
             this._restartTest(true);
         else
             this.emit('disconnected');
