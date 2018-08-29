@@ -262,8 +262,8 @@ gulp.step('server-scripts', function () {
         ])
         .pipe(sourcemaps.init())
         .pipe(gulpBabel())
-        .pipe(sourcemaps.mapSources(function (sourcePath, file) {
-            return file.path;
+        .pipe(sourcemaps.mapSources(function (sourcePath) {
+            return path.basename(sourcePath);
         }))
         .pipe(sourcemaps.write())
         .pipe(gulp.dest('lib'));
