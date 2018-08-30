@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #parent {
+            width: 100px;
+            height: 100px;
+            background-color: red;
+            margin: 100px;
+            position: relative;
+        }
+
+        .child {
+            width: 10px;
+            height: 10px;
+            background-color: blue;
+            position: absolute;
+        }
+
+        #child1 {
+            top: 5.1px;
+            left: 5.1px;
+        }
+
+        #child2 {
+            top: 25.3px;
+            left: 25.3px;
+        }
+
+        #child3 {
+            top: 45.5px;
+            left: 45.5px;
+        }
+
+        #child4 {
+            top: 65.7px;
+            left: 65.7px;
+        }
+
+        .leaf {
+            width: 1px;
+            height: 1px;
+            background-color: white;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="parent">
+        <div id="child1" class="child">
+            <div id="leaf1" class="leaf"></div>
+        </div>
+
+        <div id="child2" class="child">
+            <div id="leaf2" class="leaf"></div>
+        </div>
+
+        <div id="child3" class="child">
+            <div id="leaf3" class="leaf"></div>
+        </div>
+
+        <div id="child4" class="child">
+            <div id="leaf4" class="leaf"></div>
+        </div>
+    </div>
+    <div id="result"></div>
+    <script>
+        function log(e) {
+            document.querySelector('#result').innerHTML += e.currentTarget.id + ' ';
+        }
+
+        var divs = document.querySelectorAll('div');
+
+        for (var i = 0; i < divs.length; i++)
+            divs[i].addEventListener('click', log);
+    </script>
+</body>
+</html>

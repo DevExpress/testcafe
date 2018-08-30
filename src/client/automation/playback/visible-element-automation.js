@@ -10,7 +10,7 @@ import ScrollAutomation from './scroll';
 import MoveAutomation from './move';
 import { MoveOptions, ScrollOptions } from '../../../test-run/commands/options';
 
-var extend = hammerhead.utils.extend;
+const extend = hammerhead.utils.extend;
 
 class ElementState {
     constructor ({ element = null, clientPoint = null, screenPoint = null, isTarget = false, inMoving = false }) {
@@ -35,15 +35,15 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
     }
 
     _getElementForEvent (eventArgs) {
-        var { x, y }        = eventArgs.point;
-        var expectedElement = positionUtils.containsOffset(this.element, this.options.offsetX, this.options.offsetY) ? this.element : null;
+        const { x, y }        = eventArgs.point;
+        const expectedElement = positionUtils.containsOffset(this.element, this.options.offsetX, this.options.offsetY) ? this.element : null;
 
         return getElementFromPoint(x, y, expectedElement).then(({ element }) => element);
     }
 
     _moveToElement () {
-        var moveOptions    = new MoveOptions(extend({ skipScrolling: true }, this.options), false);
-        var moveAutomation = new MoveAutomation(this.element, moveOptions);
+        const moveOptions    = new MoveOptions(extend({ skipScrolling: true }, this.options), false);
+        const moveAutomation = new MoveAutomation(this.element, moveOptions);
 
         return moveAutomation
             .run()
@@ -51,7 +51,7 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
     }
 
     _scrollToElement () {
-        var scrollAutomation = new ScrollAutomation(this.element, new ScrollOptions(this.options));
+        const scrollAutomation = new ScrollAutomation(this.element, new ScrollOptions(this.options));
 
         return scrollAutomation
             .run()
@@ -59,42 +59,42 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
     }
 
     _wrapAction (action) {
-        var offsetX                    = this.options.offsetX;
-        var offsetY                    = this.options.offsetY;
-        var screenPointBeforeAction    = getAutomationPoint(this.element, offsetX, offsetY);
-        var clientPositionBeforeAction = positionUtils.getClientPosition(this.element);
+        const offsetX                    = this.options.offsetX;
+        const offsetY                    = this.options.offsetY;
+        const screenPointBeforeAction    = getAutomationPoint(this.element, offsetX, offsetY);
+        const clientPositionBeforeAction = positionUtils.getClientPosition(this.element);
 
         return action()
             .then(() => {
-                var screenPointAfterAction    = getAutomationPoint(this.element, offsetX, offsetY);
-                var clientPositionAfterAction = positionUtils.getClientPosition(this.element);
-                var clientPoint               = screenPointToClient(this.element, screenPointAfterAction);
-                var expectedElement           = positionUtils.containsOffset(this.element, offsetX, offsetY) ? this.element : null;
+                const screenPointAfterAction    = getAutomationPoint(this.element, offsetX, offsetY);
+                const clientPositionAfterAction = positionUtils.getClientPosition(this.element);
+                const clientPoint               = screenPointToClient(this.element, screenPointAfterAction);
+                const expectedElement           = positionUtils.containsOffset(this.element, offsetX, offsetY) ? this.element : null;
 
                 return getElementFromPoint(clientPoint.x, clientPoint.y, expectedElement)
                     .then(({ element, corrected }) => {
-                        var foundElement = element;
+                        const foundElement = element;
 
                         if (!foundElement)
                             return new ElementState({});
 
-                        var isTarget = !expectedElement || corrected || foundElement === this.element;
+                        let isTarget = !expectedElement || corrected || foundElement === this.element;
 
                         if (!isTarget) {
                             // NOTE: perform an operation with searching in dom only if necessary
                             isTarget = arrayUtils.indexOf(domUtils.getParents(foundElement), this.element) > -1;
                         }
 
-                        var offsetPositionChanged = screenPointBeforeAction.x !== screenPointAfterAction.x ||
+                        const offsetPositionChanged = screenPointBeforeAction.x !== screenPointAfterAction.x ||
                                                     screenPointBeforeAction.y !== screenPointAfterAction.y;
-                        var clientPositionChanged = clientPositionBeforeAction.x !== clientPositionAfterAction.x ||
+                        const clientPositionChanged = clientPositionBeforeAction.x !== clientPositionAfterAction.x ||
                                                     clientPositionBeforeAction.y !== clientPositionAfterAction.y;
 
                         // NOTE: We consider the element moved if its offset position and client position
                         // are changed both. If only client position was changed it means the page was
                         // scrolled and the element keeps its position on the page. If only offset position was
                         // changed it means the element is fixed on the page (it can be implemented via script).
-                        var targetElementIsMoving = offsetPositionChanged && clientPositionChanged;
+                        const targetElementIsMoving = offsetPositionChanged && clientPositionChanged;
 
                         return new ElementState({
                             element,

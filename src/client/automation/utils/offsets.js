@@ -1,5 +1,4 @@
 import { positionUtils } from '../deps/testcafe-core';
-import getAutomationPoint from './get-automation-point';
 
 function calcOffset (size) {
     const offset = size / 2;
@@ -33,19 +32,5 @@ export function getOffsetOptions (element, offsetX, offsetY) {
     return {
         offsetX: offsetX < 0 ? maxX + offsetX : offsetX,
         offsetY: offsetY < 0 ? maxY + offsetY : offsetY
-    };
-}
-
-export function getMoveAutomationOffsets (element, offsetX, offsetY) {
-    var clickOnElement = positionUtils.containsOffset(element, offsetX, offsetY);
-
-    if (clickOnElement)
-        return { offsetX, offsetY };
-
-    var actionPoint = getAutomationPoint(element, offsetX, offsetY);
-
-    return {
-        offsetX: actionPoint.x,
-        offsetY: actionPoint.y
     };
 }
