@@ -25,6 +25,7 @@ export default class BrowserConnection extends EventEmitter {
         this.jobQueue                 = [];
         this.initScriptsQueue         = [];
         this.browserConnectionGateway = gateway;
+        this.errorSupressed           = false;
 
         this.browserInfo                           = browserInfo;
         this.browserInfo.userAgent                 = '';
@@ -112,29 +113,17 @@ export default class BrowserConnection extends EventEmitter {
         }
     }
 
-    _createBrowserDisconnectedError () {
-        return new GeneralError(MESSAGE.browserDisconnected, this.userAgent);
-    }
-
-    _onBrowserDisconnected () {
-        this.emit('error', this._createBrowserDisconnectedError());
-    }
-
-    _restartBrowser () {
-        this.ready = false;
-
-        this._forceIdle();
-
-        this._closeBrowser()
-            .then(() => this._runBrowser());
-    }
-
     _waitForHeartbeat () {
         this.heartbeatTimeout = setTimeout(() => {
-            this.opened = false;
+            const err = new GeneralError(MESSAGE.browserDisconnected, this.userAgent);
 
-            if (!this.emit('disconnected', this._createBrowserDisconnectedError()))
-                this._onBrowserDisconnected();
+            this.opened         = false;
+            this.errorSupressed = false;
+
+            this.emit('disconnected', err);
+
+            if (!this.errorSupressed)
+                this.emit('error', err);
 
         }, this.HEARTBEAT_TIMEOUT);
     }
@@ -155,6 +144,19 @@ export default class BrowserConnection extends EventEmitter {
 
     static getById (id) {
         return connections[id] || null;
+    }
+
+    restartBrowser () {
+        this.ready = false;
+
+        this._forceIdle();
+
+        this._closeBrowser()
+            .then(() => this._runBrowser());
+    }
+
+    supressError () {
+        this.errorSupressed = true;
     }
 
     addWarning (...args) {
@@ -190,9 +192,6 @@ export default class BrowserConnection extends EventEmitter {
 
     addJob (job) {
         this.jobQueue.push(job);
-
-        job.on('disconnected', () => this._onBrowserDisconnected());
-        job.on('restart-browser', () => this._restartBrowser());
     }
 
     removeJob (job) {

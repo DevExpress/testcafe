@@ -93,11 +93,11 @@ export default class TestRunController extends EventEmitter {
     }
 
     _keepInQuarantine () {
-        this._restartTest(false);
+        this._restartTest();
     }
 
-    _restartTest (restartBrowser) {
-        this.emit('test-run-restart', restartBrowser);
+    _restartTest () {
+        this.emit('test-run-restart');
     }
 
     async _testRunDoneInQuarantineMode () {
@@ -124,13 +124,15 @@ export default class TestRunController extends EventEmitter {
         this.emit('test-run-done');
     }
 
-    _testRunDisconnected () {
+    _testRunDisconnected (connection) {
         this.disconnectionCount++;
 
-        if (this.disconnectionCount < DISCONNECT_THRESHOLD)
-            this._restartTest(true);
-        else
-            this.emit('disconnected');
+        if (this.disconnectionCount < DISCONNECT_THRESHOLD) {
+            connection.supressError();
+            connection.restartBrowser();
+
+            this._restartTest();
+        }
     }
 
     get blocked () {
@@ -150,7 +152,7 @@ export default class TestRunController extends EventEmitter {
 
         testRun.once('start', () => this.emit('test-run-start'));
         testRun.once('done', () => this._testRunDone());
-        testRun.once('disconnected', () => this._testRunDisconnected());
+        testRun.once('disconnected', () => this._testRunDisconnected(connection));
 
         testRun.start();
 
