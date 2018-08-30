@@ -41,7 +41,7 @@ Now the test run report can identify which selector's method does not match any 
 
 Previously, TestCafe ignored uncaught errors and unhandled promise rejections that occurred on the server. Whenever an error or a promise rejection happened, test execution continued.
 
-Starting from v0.22.0, tests fail if a server error or promise rejection is unhandled. To return to the previous behavior, we have introduced the `skipUncaughtErrors` option. Use the [--skipUncaughtErrors](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-u---skip-uncaught-errors) flag in the command line or the [skipUncaughtErrors](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#run) option in the API.
+Starting from v0.22.0, tests fail if a server error or promise rejection is unhandled. To return to the previous behavior, we have introduced the `skipUncaughtErrors` option. Use the [--skip-uncaught-errors](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-u---skip-uncaught-errors) flag in the command line or the [skipUncaughtErrors](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#run) option in the API.
 
 ```sh
 testcafe chrome tests/fixture.js --skipUncaughtErrors
