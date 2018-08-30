@@ -263,7 +263,7 @@ gulp.step('server-scripts', () => {
         .pipe(sourcemaps.init())
         .pipe(gulpBabel())
         .pipe(sourcemaps.mapSources(sourcePath => {
-            const libPath = path.join('src/', sourcePath);
+            const libPath = path.join('src', sourcePath);
 
             return path.relative(sourcePath, libPath);
         }))
