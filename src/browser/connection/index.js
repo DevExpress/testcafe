@@ -64,33 +64,30 @@ export default class BrowserConnection extends EventEmitter {
 
         this.browserConnectionGateway.startServingConnection(this);
 
-        this._runBrowser();
+        process.nextTick(() => this._runBrowser());
     }
 
     static _generateId () {
         return nanoid(7);
     }
 
-    _runBrowser () {
-        // NOTE: Give caller time to assign event listeners
-        process.nextTick(async () => {
-            try {
-                await this.provider.openBrowser(this.id, this.url, this.browserInfo.browserName);
+    async _runBrowser () {
+        try {
+            await this.provider.openBrowser(this.id, this.url, this.browserInfo.browserName);
 
-                if (!this.ready)
-                    await promisifyEvent(this, 'ready');
+            if (!this.ready)
+                await promisifyEvent(this, 'ready');
 
-                this.opened = true;
-                this.emit('opened');
-            }
-            catch (err) {
-                this.emit('error', new GeneralError(
-                    MESSAGE.unableToOpenBrowser,
-                    this.browserInfo.providerName + ':' + this.browserInfo.browserName,
-                    err.stack
-                ));
-            }
-        });
+            this.opened = true;
+            this.emit('opened');
+        }
+        catch (err) {
+            this.emit('error', new GeneralError(
+                MESSAGE.unableToOpenBrowser,
+                this.browserInfo.providerName + ':' + this.browserInfo.browserName,
+                err.stack
+            ));
+        }
     }
 
     async _closeBrowser () {
@@ -146,13 +143,13 @@ export default class BrowserConnection extends EventEmitter {
         return connections[id] || null;
     }
 
-    restartBrowser () {
+    async restartBrowser () {
         this.ready = false;
 
         this._forceIdle();
 
-        this._closeBrowser()
-            .then(() => this._runBrowser());
+        await this._closeBrowser();
+        await this._runBrowser();
     }
 
     supressError () {

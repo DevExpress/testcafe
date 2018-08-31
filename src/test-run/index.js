@@ -123,8 +123,6 @@ export default class TestRun extends EventEmitter {
         this._initRequestHooks();
 
         this.browserConnection.once('disconnected', err => this.disconnect(err));
-        this.browserConnection.once('opened', () => this.emit('stop-waiting'));
-        this.browserConnection.once('error', () => this.emit('stop-waiting'));
     }
 
     get id () {
@@ -284,18 +282,14 @@ export default class TestRun extends EventEmitter {
             await this._runAfterHook();
         }
 
-        if (this.disconnected) {
-            await promisifyEvent(this, 'stop-waiting');
-
-            await this.executeCommand(new TestDoneCommand());
-
+        if (this.disconnected)
             return;
-        }
 
         if (this.errs.length && this.debugOnFail)
             await this._enqueueSetBreakpointCommand(null, this.debugReporterPluginHost.formatError(this.errs[0]));
 
-        await this.executeCommand(new TestDoneCommand());
+        await this.executeTestDoneCommand();
+
         this._addPendingPageErrorIfAny();
 
         delete testRunTracker.activeTestRuns[this.session.id];
@@ -687,9 +681,15 @@ export default class TestRun extends EventEmitter {
     disconnect (err) {
         this.disconnected = true;
 
-        delete testRunTracker.activeTestRuns[this.session.id];
         this._rejectCurrentDriverTask(err);
-        this.emit('disconnected');
+
+        this.emit('disconnected', err);
+
+        delete testRunTracker.activeTestRuns[this.session.id];
+    }
+
+    async executeTestDoneCommand () {
+        await this.executeCommand(new TestDoneCommand());
     }
 }
 
