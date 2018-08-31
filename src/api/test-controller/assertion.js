@@ -7,8 +7,8 @@ export default class Assertion {
     }
 
     _enqueueAssertion (apiMethodName, assertionArgs) {
-        var options = assertionArgs.opts || {};
-        var message = assertionArgs.message;
+        let options = assertionArgs.opts || {};
+        let message = assertionArgs.message;
 
         if (typeof message === 'object') {
             options = assertionArgs.message;

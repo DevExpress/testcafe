@@ -16,7 +16,7 @@ function isAbsolutePath (url) {
 }
 
 function resolveFileUrl (url, testFileName) {
-    var testFileDir = path.dirname(testFileName);
+    const testFileDir = path.dirname(testFileName);
 
     if (RELATIVE_PATH_RE.test(url))
         url = path.join(testFileDir, url);
@@ -25,9 +25,9 @@ function resolveFileUrl (url, testFileName) {
 }
 
 export function assertUrl (url, callsiteName) {
-    var protocol               = url.match(PROTOCOL_RE);
-    var hasUnsupportedProtocol = protocol && !SUPPORTED_PROTOCOL_RE.test(url);
-    var isWinAbsolutePath      = OS.win && WIN_ABSOLUTE_PATH_RE.test(url);
+    const protocol               = url.match(PROTOCOL_RE);
+    const hasUnsupportedProtocol = protocol && !SUPPORTED_PROTOCOL_RE.test(url);
+    const isWinAbsolutePath      = OS.win && WIN_ABSOLUTE_PATH_RE.test(url);
 
     if (hasUnsupportedProtocol && !isWinAbsolutePath && url !== 'about:blank')
         throw new APIError(callsiteName, MESSAGE.unsupportedUrlProtocol, url, protocol[0]);
@@ -40,7 +40,7 @@ export function resolvePageUrl (url, testFileName) {
     if (isAbsolutePath(url) || RELATIVE_PATH_RE.test(url))
         return resolveFileUrl(url, testFileName);
 
-    var protocol = IMPLICIT_PROTOCOL_RE.test(url) ? 'http:' : 'http://';
+    const protocol = IMPLICIT_PROTOCOL_RE.test(url) ? 'http:' : 'http://';
 
     return protocol + url;
 }

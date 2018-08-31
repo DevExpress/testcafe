@@ -19,8 +19,8 @@ export default class AssertionExecutor extends EventEmitter {
         this.passed    = false;
         this.inRetry   = false;
 
-        var fn            = getFn(this.command);
-        var actualCommand = this.command.actual;
+        const fn            = getFn(this.command);
+        const actualCommand = this.command.actual;
 
         if (actualCommand instanceof ReExecutablePromise)
             this.fn = this._wrapFunction(fn);
@@ -41,7 +41,7 @@ export default class AssertionExecutor extends EventEmitter {
 
     _wrapFunction (fn) {
         return async () => {
-            var resultPromise = this.command.actual;
+            const resultPromise = this.command.actual;
 
             while (!this.passed) {
                 this.command.actual = await resultPromise._reExecute();

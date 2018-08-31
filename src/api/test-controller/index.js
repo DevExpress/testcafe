@@ -61,9 +61,9 @@ export default class TestController {
     // t.click('#btn2');          // <-- stores new callsiteWithoutAwait
     // await t2.click('#btn3');   // <-- without check it will set callsiteWithoutAwait = null, so we will lost tracking
     _createExtendedPromise (promise, callsite) {
-        var extendedPromise     = promise.then(identity);
-        var originalThen        = extendedPromise.then;
-        var markCallsiteAwaited = () => this.callsitesWithoutAwait.delete(callsite);
+        const extendedPromise     = promise.then(identity);
+        const originalThen        = extendedPromise.then;
+        const markCallsiteAwaited = () => this.callsitesWithoutAwait.delete(callsite);
 
 
         extendedPromise.then = function () {
@@ -80,8 +80,8 @@ export default class TestController {
     }
 
     _enqueueTask (apiMethodName, createTaskExecutor) {
-        var callsite = getCallsiteForMethod(apiMethodName);
-        var executor = createTaskExecutor(callsite);
+        const callsite = getCallsiteForMethod(apiMethodName);
+        const executor = createTaskExecutor(callsite);
 
         this.executionChain = this.executionChain.then(executor);
 
@@ -92,7 +92,7 @@ export default class TestController {
 
     _enqueueCommand (apiMethodName, CmdCtor, cmdArgs) {
         return this._enqueueTask(apiMethodName, callsite => {
-            var command = null;
+            let command = null;
 
             try {
                 command = new CmdCtor(cmdArgs, this.testRun);
@@ -200,7 +200,7 @@ export default class TestController {
     }
 
     _takeElementScreenshot$ (selector, ...args) {
-        var commandArgs = { selector };
+        const commandArgs = { selector };
 
         if (args[1]) {
             commandArgs.path    = args[0];
@@ -238,8 +238,8 @@ export default class TestController {
         if (!isNullOrUndefined(options))
             options = assign({}, options, { boundTestRun: this });
 
-        var builder  = new ClientFunctionBuilder(fn, options, { instantiation: 'eval', execution: 'eval' });
-        var clientFn = builder.getFunction();
+        const builder  = new ClientFunctionBuilder(fn, options, { instantiation: 'eval', execution: 'eval' });
+        const clientFn = builder.getFunction();
 
         return clientFn();
     }
@@ -251,13 +251,13 @@ export default class TestController {
     }
 
     _getNativeDialogHistory$ () {
-        var callsite = getCallsiteForMethod('getNativeDialogHistory');
+        const callsite = getCallsiteForMethod('getNativeDialogHistory');
 
         return this.testRun.executeCommand(new GetNativeDialogHistoryCommand(), callsite);
     }
 
     _getBrowserConsoleMessages$ () {
-        var callsite = getCallsiteForMethod('getBrowserConsoleMessages');
+        const callsite = getCallsiteForMethod('getBrowserConsoleMessages');
 
         return this.testRun.executeCommand(new GetBrowserConsoleMessagesCommand(), callsite);
     }

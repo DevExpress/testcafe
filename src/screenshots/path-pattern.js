@@ -63,10 +63,10 @@ export default class PathPattern {
             [PLACEHOLDERS.TEST]:               this.data.test,
             [PLACEHOLDERS.FILE_INDEX]:         forError => forError ? this.data.errorFileIndex : this.data.fileIndex,
             [PLACEHOLDERS.USERAGENT]:          this.data.parsedUserAgent.toString(),
-            [PLACEHOLDERS.BROWSER]:            this.data.parsedUserAgent.browser,
-            [PLACEHOLDERS.BROWSER_VERSION]:    this.data.parsedUserAgent.browserVersion,
-            [PLACEHOLDERS.OS]:                 this.data.parsedUserAgent.os,
-            [PLACEHOLDERS.OS_VERSION]:         this.data.parsedUserAgent.osVersion
+            [PLACEHOLDERS.BROWSER]:            this.data.parsedUserAgent.family,
+            [PLACEHOLDERS.BROWSER_VERSION]:    this.data.parsedUserAgent.toVersion(),
+            [PLACEHOLDERS.OS]:                 this.data.parsedUserAgent.os.family,
+            [PLACEHOLDERS.OS_VERSION]:         this.data.parsedUserAgent.os.toVersion()
         };
     }
 
