@@ -116,6 +116,7 @@ export default class BrowserConnection extends EventEmitter {
 
             this.opened         = false;
             this.errorSupressed = false;
+            this.cancelTestRun  = true;
 
             this.emit('disconnected', err);
 
@@ -125,8 +126,8 @@ export default class BrowserConnection extends EventEmitter {
         }, this.HEARTBEAT_TIMEOUT);
     }
 
-    async _getTestRunUrl (isTestDone) {
-        if (isTestDone || !this.pendingTestRunUrl)
+    async _getTestRunUrl (needPopNext) {
+        if (needPopNext || !this.pendingTestRunUrl)
             this.pendingTestRunUrl = await this._popNextTestRunUrl();
 
         return this.pendingTestRunUrl;
@@ -271,7 +272,9 @@ export default class BrowserConnection extends EventEmitter {
         }
 
         if (this.opened) {
-            const testRunUrl = await this._getTestRunUrl(isTestDone);
+            const testRunUrl = await this._getTestRunUrl(isTestDone || this.cancelTestRun);
+
+            this.cancelTestRun = false;
 
             if (testRunUrl) {
                 this.idle = false;

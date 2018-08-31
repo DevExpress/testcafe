@@ -124,15 +124,13 @@ export default class TestRunController extends EventEmitter {
         this.emit('test-run-done');
     }
 
-    async _testRunDisconnected (connection, testRun) {
+    async _testRunDisconnected (connection) {
         this.disconnectionCount++;
 
         if (this.disconnectionCount < DISCONNECT_THRESHOLD) {
             connection.supressError();
 
             await connection.restartBrowser();
-
-            await testRun.executeTestDoneCommand();
 
             this._restartTest();
         }

@@ -282,7 +282,7 @@ export default class TestRun extends EventEmitter {
             await this._runAfterHook();
         }
 
-        if (this.disconnected)
+        if (!this.connected)
             return;
 
         if (this.errs.length && this.debugOnFail)
@@ -367,6 +367,9 @@ export default class TestRun extends EventEmitter {
         this.browserManipulationQueue.removeAllNonServiceManipulations();
     }
 
+    get connected () {
+        return this.browserConnection.opened;
+    }
 
     // Current driver task
     get currentDriverTask () {
@@ -431,7 +434,7 @@ export default class TestRun extends EventEmitter {
         const pageError                  = this.pendingPageError || driverStatus.pageError;
         const currentTaskRejectedByError = pageError && this._handlePageErrorStatus(pageError);
 
-        if (this.disconnected && !isTestDone)
+        if (!this.connected)
             return null;
 
         this.consoleMessages.concat(driverStatus.consoleMessages);
@@ -679,8 +682,6 @@ export default class TestRun extends EventEmitter {
     }
 
     disconnect (err) {
-        this.disconnected = true;
-
         this._rejectCurrentDriverTask(err);
 
         this.emit('disconnected', err);
