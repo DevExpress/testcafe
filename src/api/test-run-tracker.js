@@ -11,13 +11,13 @@ export default {
     activeTestRuns: {},
 
     _createContextSwitchingFunctionHook (ctxSwitchingFn, patchedArgsCount) {
-        var tracker = this;
+        const tracker = this;
 
         return function () {
-            var testRunId = tracker.getContextTestRunId();
+            const testRunId = tracker.getContextTestRunId();
 
             if (testRunId) {
-                for (var i = 0; i < patchedArgsCount; i++) {
+                for (let i = 0; i < patchedArgsCount; i++) {
                     if (typeof arguments[i] === 'function')
                         arguments[i] = tracker.addTrackingMarkerToFunction(testRunId, arguments[i]);
                 }
@@ -29,11 +29,11 @@ export default {
 
     _getStackFrames () {
         // NOTE: increase stack capacity to seek deep stack entries
-        var savedLimit = Error.stackTraceLimit;
+        const savedLimit = Error.stackTraceLimit;
 
         Error.stackTraceLimit = STACK_CAPACITY;
 
-        var frames = getStackFrames();
+        const frames = getStackFrames();
 
         Error.stackTraceLimit = savedLimit;
 
@@ -60,7 +60,7 @@ export default {
     },
 
     addTrackingMarkerToFunction (testRunId, fn) {
-        var markerFactoryBody = `
+        const markerFactoryBody = `
             return function $$testcafe_test_run$$${testRunId}$$ () {
                 switch (arguments.length) {
                     case 0: return fn.call(this);
@@ -77,16 +77,16 @@ export default {
     },
 
     getContextTestRunId () {
-        var frames = this._getStackFrames();
+        const frames = this._getStackFrames();
 
         // OPTIMIZATION: we start traversing from the bottom of the stack,
         // because we'll more likely encounter a marker there.
         // Async/await and Promise machinery executes lots of intrinsics
         // on timers (where we have a marker). And, since a timer initiates a new
         // stack, the marker will be at the very bottom of it.
-        for (var i = frames.length - 1; i >= 0; i--) {
-            var fnName = frames[i].getFunctionName();
-            var match  = fnName && fnName.match(TRACKING_MARK_RE);
+        for (let i = frames.length - 1; i >= 0; i--) {
+            const fnName = frames[i].getFunctionName();
+            const match  = fnName && fnName.match(TRACKING_MARK_RE);
 
             if (match)
                 return match[1];
@@ -96,7 +96,7 @@ export default {
     },
 
     resolveContextTestRun () {
-        var testRunId = this.getContextTestRunId();
+        const testRunId = this.getContextTestRunId();
 
         return this.activeTestRuns[testRunId];
     }

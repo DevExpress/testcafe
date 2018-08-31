@@ -11,8 +11,8 @@ import WARNING_MESSAGES from '../notifications/warning-message';
 
 
 function readPng (filePath) {
-    var png           = new PNG();
-    var parsedPromise = Promise.race([
+    const png           = new PNG();
+    const parsedPromise = Promise.race([
         promisifyEvent(png, 'parsed'),
         promisifyEvent(png, 'error')
     ]);
@@ -24,8 +24,8 @@ function readPng (filePath) {
 }
 
 function writePng (filePath, png) {
-    var outStream     = fs.createWriteStream(filePath);
-    var finishPromise = Promise.race([
+    const outStream     = fs.createWriteStream(filePath);
+    const finishPromise = Promise.race([
         promisifyEvent(outStream, 'finish'),
         promisifyEvent(outStream, 'error')
     ]);
@@ -53,14 +53,14 @@ function detectClippingArea (srcImage, { markSeed, clientAreaDimensions, cropDim
     let clipHeight = srcImage.height;
 
     if (markSeed && clientAreaDimensions) {
-        var mark = Buffer.from(markSeed);
+        const mark = Buffer.from(markSeed);
 
-        var markIndex = srcImage.data.indexOf(mark);
+        const markIndex = srcImage.data.indexOf(mark);
 
         if (markIndex < 0)
             throw new Error(renderTemplate(WARNING_MESSAGES.screenshotMarkNotFound, screenshotPath, markSeedToId(markSeed)));
 
-        var endPosition = markIndex / MARK_BYTES_PER_PIXEL + MARK_LENGTH + MARK_RIGHT_MARGIN;
+        const endPosition = markIndex / MARK_BYTES_PER_PIXEL + MARK_LENGTH + MARK_RIGHT_MARGIN;
 
         clipRight  = endPosition % srcImage.width || srcImage.width;
         clipBottom = (endPosition - clipRight) / srcImage.width + 1;
@@ -94,11 +94,11 @@ function detectClippingArea (srcImage, { markSeed, clientAreaDimensions, cropDim
 }
 
 function copyImagePart (srcImage, { left, top, width, height }) {
-    var dstImage = new PNG({ width, height });
-    var stride   = dstImage.width * MARK_BYTES_PER_PIXEL;
+    const dstImage = new PNG({ width, height });
+    const stride   = dstImage.width * MARK_BYTES_PER_PIXEL;
 
     for (let i = 0; i < height; i++) {
-        var srcStartIndex = (srcImage.width * (i + top) + left) * MARK_BYTES_PER_PIXEL;
+        const srcStartIndex = (srcImage.width * (i + top) + left) * MARK_BYTES_PER_PIXEL;
 
         srcImage.data.copy(dstImage.data, stride * i, srcStartIndex, srcStartIndex + stride);
     }
@@ -107,7 +107,7 @@ function copyImagePart (srcImage, { left, top, width, height }) {
 }
 
 export default async function (screenshotPath, markSeed, clientAreaDimensions, cropDimensions) {
-    var srcImage  = await readPng(screenshotPath);
+    const srcImage  = await readPng(screenshotPath);
 
     const clippingArea = detectClippingArea(srcImage, { markSeed, clientAreaDimensions, cropDimensions, screenshotPath });
 

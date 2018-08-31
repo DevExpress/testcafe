@@ -4,14 +4,14 @@ import testRunTracker from '../test-run-tracker';
 import { APIError } from '../../errors/runtime';
 import MESSAGE from '../../errors/runtime/message';
 
-var testControllerProxy = Object.create(null);
+const testControllerProxy = Object.create(null);
 
 delegateAPI(testControllerProxy, TestController.API_LIST, {
     getHandler (propName, accessor) {
-        var testRun = testRunTracker.resolveContextTestRun();
+        const testRun = testRunTracker.resolveContextTestRun();
 
         if (!testRun) {
-            var callsiteName = null;
+            let callsiteName = null;
 
             if (accessor === 'getter')
                 callsiteName = 'get';

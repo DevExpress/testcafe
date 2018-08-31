@@ -1,12 +1,18 @@
 const PathPattern = require('../../lib/screenshots/path-pattern');
 const expect      = require('chai').expect;
 const moment      = require('moment');
+const userAgent   = require('useragent');
 
 describe('Screenshot path pattern', () => {
+    const parsedUserAgentMock = {
+        toVersion: () => {},
+        os:        { toVersion: () => {} }
+    };
+
     const createPathPattern = (pattern, data) => {
         data                   = data || {};
         data.now               = data.now || moment();
-        data.parsedUserAgent   = data.parsedUserAgent || {};
+        data.parsedUserAgent   = data.parsedUserAgent || parsedUserAgentMock;
         data.quarantineAttempt = data.quarantineAttempt || null;
 
         return new PathPattern(pattern, data);
@@ -27,39 +33,32 @@ describe('Screenshot path pattern', () => {
     });
 
     it('Should replace all placeholders', () => {
-        const pattern = Object.getOwnPropertyNames(PathPattern.PLACEHOLDERS).map(name => PathPattern.PLACEHOLDERS[name]).join('#');
-        const dateStr = '2010-01-02';
-        const timeStr = '11:12:13';
+        const pattern         = Object.getOwnPropertyNames(PathPattern.PLACEHOLDERS).map(name => PathPattern.PLACEHOLDERS[name]).join('#');
+        const dateStr         = '2010-01-02';
+        const timeStr         = '11:12:13';
+        const parsedUserAgent = userAgent.parse('Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36');
         const data = {
             now:               moment(dateStr + ' ' + timeStr),
             testIndex:         12,
             fileIndex:         34,
-            quarantineAttempt: 56,
+            quarantineAttempt: 2,
             fixture:           'fixture',
             test:              'test',
-            parsedUserAgent:   {
-                browser:        'Chrome',
-                browserVersion: '67.0.3396',
-                os:             'Windows',
-                osVersion:      '8.1.0.0',
-                toString:       function () {
-                    return 'full_user_agent';
-                }
-            }
+            parsedUserAgent
         };
         const expectedParsedPattern = [
-            dateStr,
-            timeStr.replace(/:/g, '-'),
-            data.testIndex,
-            data.fileIndex,
-            data.quarantineAttempt,
-            data.fixture,
-            data.test,
-            data.parsedUserAgent.toString(),
-            data.parsedUserAgent.browser,
-            data.parsedUserAgent.browserVersion,
-            data.parsedUserAgent.os,
-            data.parsedUserAgent.osVersion
+            '2010-01-02',
+            '11-12-13',
+            '12',
+            '34',
+            '2',
+            'fixture',
+            'test',
+            'Chrome_68.0.3440_Windows_8.1.0.0',
+            'Chrome',
+            '68.0.3440',
+            'Windows',
+            '8.1.0.0'
         ].join('#') + '.png';
 
         const pathPattern = createPathPattern(pattern, data);

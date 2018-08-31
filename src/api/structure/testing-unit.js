@@ -18,7 +18,7 @@ export default class TestingUnit {
 
         this.disablePageReloads = void 0;
 
-        var unit = this;
+        const unit = this;
 
         this.apiOrigin = function apiOrigin (...args) {
             return unit._add(...args);
