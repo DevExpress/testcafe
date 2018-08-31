@@ -65,7 +65,7 @@ describe('Screenshot path pattern', () => {
 
         const path = pathPattern.getPath(false);
 
-        expect(path).contains(expectedParsedPattern);
+        expect(path).eql(expectedParsedPattern);
     });
 
     it('Should add `errors` folder before filename', () => {
