@@ -6,6 +6,13 @@ function getOptsForPresetEnv () {
     };
 }
 
+function getOptsForPresetFallback () {
+    return {
+        loose:   true,
+        exclude: ['transform-es2015-typeof-symbol']
+    };
+}
+
 // NOTE: lazy load heavy dependencies
 export default function loadBabelLibs () {
     return {
@@ -14,7 +21,8 @@ export default function loadBabelLibs () {
         presetFlow:               require('babel-preset-flow'),
         transformClassProperties: require('babel-plugin-transform-class-properties'),
         transformRuntime:         require('babel-plugin-transform-runtime'),
-        presetFallback:           require('babel-preset-env').default(null, { loose: true }),
+        transformForOfAsArray:    require('babel-plugin-transform-for-of-as-array').default,
+        presetFallback:           require('babel-preset-env').default(null, getOptsForPresetFallback()),
         presetEnv:                require('babel-preset-env').default(null, getOptsForPresetEnv())
     };
 }

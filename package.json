@@ -57,6 +57,7 @@
     "async-exit-hook": "^1.1.2",
     "babel-core": "^6.22.1",
     "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-for-of-as-array": "^1.1.1",
     "babel-plugin-transform-runtime": "^6.22.0",
     "babel-preset-env": "^1.1.8",
     "babel-preset-flow": "^6.23.0",

@@ -455,10 +455,6 @@ describe('Compiler', function () {
             return testClientFnCompilation('json-stringify');
         });
 
-        it('Should polyfill Babel `typeof` artifacts', function () {
-            return testClientFnCompilation('typeof');
-        });
-
         describe('Regression', function () {
             it('Should compile ES6 object method (GH-1279)', function () {
                 return testClientFnCompilation('gh1279');

@@ -1,6 +1,6 @@
 import hammerhead from 'testcafe-hammerhead';
 import asyncToGenerator from 'babel-runtime/helpers/asyncToGenerator';
-import { noop, escapeRegExp as escapeRe } from 'lodash';
+import { noop } from 'lodash';
 import loadBabelLibs from './load-babel-libs';
 import { ClientFunctionAPIError } from '../errors/runtime';
 import MESSAGE from '../errors/runtime/message';
@@ -29,27 +29,15 @@ var babelArtifactPolyfills = {
         re:                 /_stringify(\d+)\.default/,
         getCode:            match => `var _stringify${match[1]} = { default: JSON.stringify };`,
         removeMatchingCode: false
-    },
-
-    'typeof': {
-        re: new RegExp(escapeRe(
-            'var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? ' +
-            'function (obj) {return typeof obj;} : ' +
-            'function (obj) {return obj && typeof Symbol === "function" && obj.constructor === Symbol ' +
-            '&& obj !== Symbol.prototype ? "symbol" : typeof obj;};'
-        ), 'g'),
-
-        getCode:            () => 'var _typeof = function(obj) { return typeof obj; };',
-        removeMatchingCode: true
     }
 };
 
 
 function getBabelOptions () {
-    var { presetFallback } = loadBabelLibs();
+    var { presetFallback, transformForOfAsArray } = loadBabelLibs();
 
     return {
-        presets:       [presetFallback],
+        presets:       [{ plugins: [transformForOfAsArray] }, presetFallback],
         sourceMaps:    false,
         retainLines:   true,
         ast:           false,
