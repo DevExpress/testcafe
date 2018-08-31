@@ -39,6 +39,18 @@ test('nth', async t => {
     await t.click(selector);
 });
 
+test('nth in collectionMode', async t => {
+    const selector = Selector('div')
+        .nth(500)
+        .filter('.filtered')
+        .withText('loren')
+        .withExactText('loren ipsum')
+        .withAttribute('attr', '3')
+        .filterVisible();
+
+    await t.click(selector);
+});
+
 test('filterVisible', async t => {
     const selector = Selector('div')
         .filter('.filtered')

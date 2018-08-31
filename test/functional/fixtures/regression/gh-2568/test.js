@@ -62,6 +62,22 @@ describe('[Regression](GH-2568)', function () {
             });
     });
 
+    it('nth in collectionMode', function () {
+        return runTests('testcafe-fixtures/index.js', 'nth in collectionMode', { selectorTimeout: 100, shouldFail: true })
+            .catch(function (errs) {
+                assertSelectorCallstack(errs[0], `
+                    The specified selector does not match any element in the DOM tree.
+                        | Selector('div')
+                      > |   .nth(500)
+                        |   .filter('.filtered')
+                        |   .withText('loren')
+                        |   .withExactText('loren ipsum')
+                        |   .withAttribute('attr', '3')
+                        |   .filterVisible()
+                `);
+            });
+    });
+
     it('filterVisible', function () {
         return runTests('testcafe-fixtures/index.js', 'filterVisible', { selectorTimeout: 100, shouldFail: true })
             .catch(function (errs) {

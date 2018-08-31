@@ -54,15 +54,16 @@ class SelectorFilter {
             else
                 filtered = filtered.length;
         }
-        else if (options.collectionMode) {
-            if (options.index !== null) {
-                const nodeOnIndex = this.getNodeByIndex(filtered, options.index);
-
-                filtered = nodeOnIndex ? [nodeOnIndex] : [];
-            }
-        }
         else {
-            filtered = this.getNodeByIndex(filtered, options.index || 0);
+            if (options.collectionMode) {
+                if (options.index !== null) {
+                    const nodeOnIndex = this.getNodeByIndex(filtered, options.index);
+
+                    filtered = nodeOnIndex ? [nodeOnIndex] : [];
+                }
+            }
+            else
+                filtered = this.getNodeByIndex(filtered, options.index || 0);
 
             if (typeof options.index === 'number')
                 this.assertFilterError(filtered, apiInfo, SELECTOR_FILTER_ERROR.nth);
