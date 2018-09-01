@@ -41,7 +41,7 @@ gulpStep.install();
 ll
     .install()
     .tasks([
-        'lint',
+        // 'lint',
         'check-licenses',
         'server-scripts'
     ])
@@ -299,7 +299,7 @@ gulp.step('package-content', gulp.parallel('server-scripts', 'client-scripts', '
 
 gulp.task('fast-build', gulp.series('clean', 'package-content'));
 
-gulp.task('build', DEV_MODE ? gulp.registry().get('fast-build') : gulp.parallel('lint', 'fast-build'));
+gulp.task('build', DEV_MODE ? gulp.registry().get('fast-build') : gulp.parallel('fast-build'));
 
 // Test
 gulp.step('test-server-run', function () {
@@ -613,7 +613,7 @@ gulp.step('website-publish-run', function () {
 
 gulp.task('publish-website', gulp.series('build-website-production', 'website-publish-run'));
 
-gulp.task('test-docs-travis', gulp.parallel('test-website-travis', 'lint'));
+gulp.task('test-docs-travis', gulp.parallel('test-website-travis'));
 
 
 function testFunctional (fixturesDir, testingEnvironmentName, browserProviderName) {

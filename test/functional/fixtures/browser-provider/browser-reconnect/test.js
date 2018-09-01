@@ -59,7 +59,7 @@ describe('Browser reconnect', function () {
                 });
         });
 
-        it('Should fail on 3 disconnects', function () {
+        it.only('Should fail on 3 disconnects', function () {
             return run('./testcafe-fixtures/index-test.js', 'Should fail on 3 disconnects')
                 .then(() => {
                     throw new Error('Test should have failed but it succeeded');

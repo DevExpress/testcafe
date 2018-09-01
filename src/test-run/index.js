@@ -288,7 +288,7 @@ export default class TestRun extends EventEmitter {
         if (this.errs.length && this.debugOnFail)
             await this._enqueueSetBreakpointCommand(null, this.debugReporterPluginHost.formatError(this.errs[0]));
 
-        await this.executeTestDoneCommand();
+        await this.executeCommand(new TestDoneCommand());
 
         this._addPendingPageErrorIfAny();
 
@@ -368,7 +368,8 @@ export default class TestRun extends EventEmitter {
     }
 
     get connected () {
-        return this.browserConnection.opened;
+        // return this.browserConnection.opened;
+        return !this.disconnected;
     }
 
     // Current driver task
@@ -385,6 +386,10 @@ export default class TestRun extends EventEmitter {
     }
 
     _rejectCurrentDriverTask (err) {
+        if (!this.driverTaskQueue[0]) {
+            console.log('no task');
+            console.log('connection: ' + this.browserConnection.id + ' ' + this.browserConnection.userAgent);
+        }
         err.callsite             = err.callsite || this.driverTaskQueue[0].callsite;
         err.isRejectedDriverTask = true;
 
@@ -682,6 +687,8 @@ export default class TestRun extends EventEmitter {
     }
 
     disconnect (err) {
+        this.disconnected = true;
+        console.log('_rejectCurrentDriverTask: ' + this.browserConnection.userAgent);
         this._rejectCurrentDriverTask(err);
 
         this.emit('disconnected', err);

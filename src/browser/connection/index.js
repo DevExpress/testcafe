@@ -112,6 +112,7 @@ export default class BrowserConnection extends EventEmitter {
 
     _waitForHeartbeat () {
         this.heartbeatTimeout = setTimeout(() => {
+            console.log('disconnected: ' + this.id + ' ' + this.userAgent);
             const err = new GeneralError(MESSAGE.browserDisconnected, this.userAgent);
 
             this.opened         = false;

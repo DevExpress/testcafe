@@ -16,6 +16,9 @@ const hang = ClientFunction(() => {
 });
 
 test('Should restart browser when it does not respond', async t => {
+    console.log('***1***');
+
+
     const userAgent = await getUserAgent();
 
     counter[userAgent] = counter[userAgent] || 0;
@@ -29,6 +32,9 @@ test('Should restart browser when it does not respond', async t => {
 });
 
 test('Should fail on 3 disconnects', async t => {
+
+    console.log('***2***');
+
     const userAgent = await getUserAgent();
 
     counter[userAgent] = counter[userAgent] || 0;
@@ -43,6 +49,9 @@ test('Should fail on 3 disconnects', async t => {
 });
 
 test('Should fail on 3 disconnects in one browser', async t => {
+
+    console.log('***3***');
+
     const userAgent = await getUserAgent();
 
     counter[userAgent] = counter[userAgent] || 0;
