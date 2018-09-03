@@ -42,11 +42,13 @@ fixture(`TypeScript smoke tests`)
 
 
 test('Clear configuration', async() => {
+    console.log('*');
     await initConfiguration();
     await t.useRole(role1);
 });
 
 test('Restore configuration', async() => {
+    console.log('**');
     await initConfiguration();
 
     await t

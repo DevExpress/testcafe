@@ -1,6 +1,6 @@
 var expect = require('chai').expect;
 
-describe('[TypeScript] Smoke tests', function () {
+describe.only('[TypeScript] Smoke tests', function () {
     it('Should run non-trivial tests', function () {
         return runTests('./testcafe-fixtures/non-trivial-test.ts', null, { selectorTimeout: 5000 });
     });

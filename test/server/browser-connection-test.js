@@ -132,6 +132,10 @@ describe('Browser connection', function () {
 
                 once: function () {
                     // Do nothing =)
+                },
+
+                on: function () {
+                    // Do nothing
                 }
             };
         }

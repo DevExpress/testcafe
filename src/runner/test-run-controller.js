@@ -6,6 +6,7 @@ import SessionController from '../test-run/session-controller';
 
 // Const
 const QUARANTINE_THRESHOLD = 3;
+const DISCONNECT_THRESHOLD = 3;
 
 class Quarantine {
     constructor () {
@@ -40,9 +41,10 @@ export default class TestRunController extends EventEmitter {
 
         this.TestRunCtor = TestRunController._getTestRunCtor(test, opts);
 
-        this.testRun    = null;
-        this.done       = false;
-        this.quarantine = null;
+        this.testRun            = null;
+        this.done               = false;
+        this.quarantine         = null;
+        this.disconnectionCount = 0;
 
         if (this.opts.quarantineMode)
             this.quarantine = new Quarantine();
@@ -56,8 +58,8 @@ export default class TestRunController extends EventEmitter {
     }
 
     _createTestRun (connection) {
-        var screenshotCapturer = this.screenshots.createCapturerFor(this.test, this.index, this.quarantine, connection, this.warningLog);
-        var TestRunCtor        = this.TestRunCtor;
+        const screenshotCapturer = this.screenshots.createCapturerFor(this.test, this.index, this.quarantine, connection, this.warningLog);
+        const TestRunCtor        = this.TestRunCtor;
 
         this.testRun = new TestRunCtor(this.test, connection, screenshotCapturer, this.warningLog, this.opts);
 
@@ -91,6 +93,10 @@ export default class TestRunController extends EventEmitter {
     }
 
     _keepInQuarantine () {
+        this._restartTest();
+    }
+
+    _restartTest () {
         this.emit('test-run-restart');
     }
 
@@ -118,14 +124,31 @@ export default class TestRunController extends EventEmitter {
         this.emit('test-run-done');
     }
 
+    async _testRunDisconnected (connection) {
+        this.disconnectionCount++;
+
+        if (this.disconnectionCount < DISCONNECT_THRESHOLD) {
+            connection.supressError();
+
+            console.log('restart browser');
+
+            await connection.restartBrowser();
+
+            console.log('browser restarted');
+
+            this._restartTest();
+        }
+
+    }
+
     get blocked () {
         return this.fixtureHookController.isTestBlocked(this.test);
     }
 
     async start (connection) {
-        var testRun = this._createTestRun(connection);
+        const testRun = this._createTestRun(connection);
 
-        var hookOk = await this.fixtureHookController.runFixtureBeforeHookIfNecessary(testRun);
+        const hookOk = await this.fixtureHookController.runFixtureBeforeHookIfNecessary(testRun);
 
         if (this.test.skip || !hookOk) {
             this.emit('test-run-start');
@@ -135,6 +158,7 @@ export default class TestRunController extends EventEmitter {
 
         testRun.once('start', () => this.emit('test-run-start'));
         testRun.once('done', () => this._testRunDone());
+        testRun.once('disconnected', () => this._testRunDisconnected(connection));
 
         testRun.start();
 

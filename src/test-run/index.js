@@ -121,6 +121,8 @@ export default class TestRun extends EventEmitter {
         this.requestHooks = Array.from(this.test.requestHooks);
 
         this._initRequestHooks();
+
+        this.browserConnection.once('disconnected', err => this.disconnect(err));
     }
 
     get id () {
@@ -238,7 +240,7 @@ export default class TestRun extends EventEmitter {
             await fn(this);
         }
         catch (err) {
-            var screenshotPath = null;
+            let screenshotPath = null;
 
             if (this.opts.takeScreenshotsOnFails)
                 screenshotPath = await this.executeCommand(new TakeScreenshotOnFailCommand());
@@ -280,10 +282,14 @@ export default class TestRun extends EventEmitter {
             await this._runAfterHook();
         }
 
+        if (!this.connected)
+            return;
+
         if (this.errs.length && this.debugOnFail)
             await this._enqueueSetBreakpointCommand(null, this.debugReporterPluginHost.formatError(this.errs[0]));
 
         await this.executeCommand(new TestDoneCommand());
+
         this._addPendingPageErrorIfAny();
 
         delete testRunTracker.activeTestRuns[this.session.id];
@@ -312,10 +318,10 @@ export default class TestRun extends EventEmitter {
     }
 
     addError (err, screenshotPath) {
-        var errList = err instanceof TestCafeErrorList ? err.items : [err];
+        const errList = err instanceof TestCafeErrorList ? err.items : [err];
 
         errList.forEach(item => {
-            var adapter = new TestRunErrorFormattableAdapter(item, {
+            const adapter = new TestRunErrorFormattableAdapter(item, {
                 userAgent:      this.browserConnection.userAgent,
                 screenshotPath: screenshotPath || '',
                 testRunPhase:   this.phase
@@ -361,6 +367,10 @@ export default class TestRun extends EventEmitter {
         this.browserManipulationQueue.removeAllNonServiceManipulations();
     }
 
+    get connected () {
+        // return this.browserConnection.opened;
+        return !this.disconnected;
+    }
 
     // Current driver task
     get currentDriverTask () {
@@ -376,6 +386,10 @@ export default class TestRun extends EventEmitter {
     }
 
     _rejectCurrentDriverTask (err) {
+        if (!this.driverTaskQueue[0]) {
+            console.log('no task');
+            console.log('connection: ' + this.browserConnection.id + ' ' + this.browserConnection.userAgent);
+        }
         err.callsite             = err.callsite || this.driverTaskQueue[0].callsite;
         err.isRejectedDriverTask = true;
 
@@ -421,14 +435,17 @@ export default class TestRun extends EventEmitter {
     }
 
     _handleDriverRequest (driverStatus) {
-        var pageError = this.pendingPageError || driverStatus.pageError;
+        const isTestDone                 = this.currentDriverTask && this.currentDriverTask.command.type === COMMAND_TYPE.testDone;
+        const pageError                  = this.pendingPageError || driverStatus.pageError;
+        const currentTaskRejectedByError = pageError && this._handlePageErrorStatus(pageError);
 
-        var currentTaskRejectedByError = pageError && this._handlePageErrorStatus(pageError);
+        if (!this.connected)
+            return null;
 
         this.consoleMessages.concat(driverStatus.consoleMessages);
 
         if (!currentTaskRejectedByError && driverStatus.isCommandResult) {
-            if (this.currentDriverTask.command.type === COMMAND_TYPE.testDone) {
+            if (isTestDone) {
                 this._resolveCurrentDriverTask();
 
                 return TEST_DONE_CONFIRMATION_RESPONSE;
@@ -459,7 +476,9 @@ export default class TestRun extends EventEmitter {
     }
 
     async _executeExpression (command) {
-        var { expression, resultVariableName, isAsyncExpression } = command;
+        const { resultVariableName, isAsyncExpression } = command;
+
+        let expression = command.expression;
 
         if (isAsyncExpression)
             expression = `await ${expression}`;
@@ -470,14 +489,14 @@ export default class TestRun extends EventEmitter {
         if (isAsyncExpression)
             expression = `(async () => { return ${expression}; }).apply(this);`;
 
-        var result = this._evaluate(expression);
+        const result = this._evaluate(expression);
 
         return isAsyncExpression ? await result : result;
     }
 
     async _executeAssertion (command, callsite) {
-        var assertionTimeout = command.options.timeout === void 0 ? this.opts.assertionTimeout : command.options.timeout;
-        var executor         = new AssertionExecutor(command, assertionTimeout, callsite);
+        const assertionTimeout = command.options.timeout === void 0 ? this.opts.assertionTimeout : command.options.timeout;
+        const executor         = new AssertionExecutor(command, assertionTimeout, callsite);
 
         executor.once('start-assertion-retries', timeout => this.executeCommand(new ShowAssertionRetriesStatusCommand(timeout)));
         executor.once('end-assertion-retries', success => this.executeCommand(new HideAssertionRetriesStatusCommand(success)));
@@ -567,7 +586,7 @@ export default class TestRun extends EventEmitter {
     }
 
     _rejectCommandWithPageError (callsite) {
-        var err = this.pendingPageError;
+        const err = this.pendingPageError;
 
         err.callsite          = callsite;
         this.pendingPageError = null;
@@ -577,7 +596,7 @@ export default class TestRun extends EventEmitter {
 
     // Role management
     async getStateSnapshot () {
-        var state = this.session.getStateSnapshot();
+        const state = this.session.getStateSnapshot();
 
         state.storages = await this.executeCommand(new BackupStoragesCommand());
 
@@ -592,26 +611,26 @@ export default class TestRun extends EventEmitter {
         this.session.useStateSnapshot(null);
 
         if (this.activeDialogHandler) {
-            var removeDialogHandlerCommand = new SetNativeDialogHandlerCommand({ dialogHandler: { fn: null } });
+            const removeDialogHandlerCommand = new SetNativeDialogHandlerCommand({ dialogHandler: { fn: null } });
 
             await this.executeCommand(removeDialogHandlerCommand);
         }
 
         if (this.speed !== this.opts.speed) {
-            var setSpeedCommand = new SetTestSpeedCommand({ speed: this.opts.speed });
+            const setSpeedCommand = new SetTestSpeedCommand({ speed: this.opts.speed });
 
             await this.executeCommand(setSpeedCommand);
         }
 
         if (this.pageLoadTimeout !== this.opts.pageLoadTimeout) {
-            var setPageLoadTimeoutCommand = new SetPageLoadTimeoutCommand({ duration: this.opts.pageLoadTimeout });
+            const setPageLoadTimeoutCommand = new SetPageLoadTimeoutCommand({ duration: this.opts.pageLoadTimeout });
 
             await this.executeCommand(setPageLoadTimeoutCommand);
         }
     }
 
     async _getStateSnapshotFromRole (role) {
-        var prevPhase = this.phase;
+        const prevPhase = this.phase;
 
         this.phase = PHASE.inRoleInitializer;
 
@@ -635,14 +654,14 @@ export default class TestRun extends EventEmitter {
 
         this.disableDebugBreakpoints = true;
 
-        var bookmark = new TestRunBookmark(this, role);
+        const bookmark = new TestRunBookmark(this, role);
 
         await bookmark.init();
 
         if (this.currentRoleId)
             this.usedRoleStates[this.currentRoleId] = await this.getStateSnapshot();
 
-        var stateSnapshot = this.usedRoleStates[role.id] || await this._getStateSnapshotFromRole(role);
+        const stateSnapshot = this.usedRoleStates[role.id] || await this._getStateSnapshotFromRole(role);
 
         this.session.useStateSnapshot(stateSnapshot);
 
@@ -656,21 +675,35 @@ export default class TestRun extends EventEmitter {
 
     // Get current URL
     async getCurrentUrl () {
-        var builder = new ClientFunctionBuilder(() => {
+        const builder = new ClientFunctionBuilder(() => {
             /* eslint-disable no-undef */
             return window.location.href;
             /* eslint-enable no-undef */
         }, { boundTestRun: this });
 
-        var getLocation = builder.getFunction();
+        const getLocation = builder.getFunction();
 
         return await getLocation();
+    }
+
+    disconnect (err) {
+        this.disconnected = true;
+        console.log('_rejectCurrentDriverTask: ' + this.browserConnection.userAgent);
+        this._rejectCurrentDriverTask(err);
+
+        this.emit('disconnected', err);
+
+        delete testRunTracker.activeTestRuns[this.session.id];
+    }
+
+    async executeTestDoneCommand () {
+        await this.executeCommand(new TestDoneCommand());
     }
 }
 
 
 // Service message handlers
-var ServiceMessages = TestRun.prototype;
+const ServiceMessages = TestRun.prototype;
 
 ServiceMessages[CLIENT_MESSAGES.ready] = function (msg) {
     this.debugLog.driverMessage(msg);
@@ -690,7 +723,7 @@ ServiceMessages[CLIENT_MESSAGES.ready] = function (msg) {
 
     // NOTE: browsers abort an opened xhr request after a certain timeout (the actual duration depends on the browser).
     // To avoid this, we send an empty response after 2 minutes if we didn't get any command.
-    var responseTimeout = setTimeout(() => this._resolvePendingRequest(null), MAX_RESPONSE_DELAY);
+    const responseTimeout = setTimeout(() => this._resolvePendingRequest(null), MAX_RESPONSE_DELAY);
 
     return new Promise((resolve, reject) => {
         this.pendingRequest = { resolve, reject, responseTimeout };
@@ -700,8 +733,8 @@ ServiceMessages[CLIENT_MESSAGES.ready] = function (msg) {
 ServiceMessages[CLIENT_MESSAGES.readyForBrowserManipulation] = async function (msg) {
     this.debugLog.driverMessage(msg);
 
-    var result = null;
-    var error  = null;
+    let result = null;
+    let error  = null;
 
     try {
         result = await this.browserManipulationQueue.executePendingManipulation(msg);
