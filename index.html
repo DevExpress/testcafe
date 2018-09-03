@@ -52,60 +52,6 @@
   
   
 
-  <script>
-    (function () {
-        var VISIT_DAY = {
-            first: 1,
-            second: 2,
-            more: 3
-        };
-
-        var isLandingPage = true;
-        var isGettingStarted = false;
-        var isDocumentation = false;
-
-        function updateVisitDay () {
-            var FIRST_VISIT_DAY_ITEM_NAME = 'first-visit-day';
-            var SECOND_VISIT_DAY_ITEM_NAME = 'second-visit-day';
-            var DIFFERENT_VISITS_DELAY = 12 * 60 * 60 * 1000; 
-            
-            // TODO: ignore old visits
-            var now = Date.now();
-            var firstVisit = window.localStorage.getItem(FIRST_VISIT_DAY_ITEM_NAME);
-            var secondVisit = window.localStorage.getItem(SECOND_VISIT_DAY_ITEM_NAME);
-
-            if(!firstVisit) {
-                window.localStorage.setItem(FIRST_VISIT_DAY_ITEM_NAME, now);
-                return VISIT_DAY.first;
-            }
-
-            firstVisit = parseInt(firstVisit);
-
-            if(!secondVisit) {
-                if(!isLandingPage && now - firstVisit >=DIFFERENT_VISITS_DELAY) {
-                    window.localStorage.setItem(SECOND_VISIT_DAY_ITEM_NAME, now);
-                    return VISIT_DAY.second;
-                }
-
-                return VISIT_DAY.first;
-            }
-            
-            secondVisit = parseInt(secondVisit);
-
-            return now - secondVisit >= DIFFERENT_VISITS_DELAY ? VISIT_DAY.more : VISIT_DAY.second;
-        }
-
-        window.needShowShareWidget = function () {
-            if(!isDocumentation || isGettingStarted)
-                return false;
-
-            var visitDay = updateVisitDay();
-
-            return visitDay === VISIT_DAY.more;
-        };
-    })();
-  </script>
-
   
     <script defer type="text/javascript" src="https://platform.twitter.com/widgets.js"></script>
     <script defer type="text/javascript" src="https://cdn3.devexpress.com/jslib/17.1.4/js/dx.all.js"></script>
@@ -200,11 +146,6 @@
         
           
           <div class="site-nav-tab ">
-            <a class="page-link" href="/testcafe/publications/">Publications</a>
-          </div>
-        
-          
-          <div class="site-nav-tab ">
             <a class="page-link" href="/testcafe/blog/">Release Notes</a>
           </div>
         
@@ -216,6 +157,11 @@
           
           <div class="site-nav-tab ">
             <a class="page-link" href="https://stackoverflow.com/questions/tagged/testcafe" target="_blank">Q&amp;A</a>
+          </div>
+        
+          
+          <div class="site-nav-tab ">
+            <a class="page-link" id="studio-link" href="https://testcafe-studio.devexpress.com" target="_blank">TestCafe Studio</a>
           </div>
         
       <a id="twitter-button" href="https://twitter.com/dxtestcafe" target="_blank"></a>
@@ -248,10 +194,10 @@
           searchPanel.className += ' hidden';
   }
 
-  var searchButton      = document.querySelector('#search-icon');
-  var searchPanel       = document.querySelector('#search-panel');
-  var searchInput       = document.querySelector('#search');
-  var closeSearchButton = document.querySelector('#close-search');
+  var searchButton      = document.getElementById('search-icon');
+  var searchPanel       = document.getElementById('search-panel');
+  var searchInput       = document.getElementById('search');
+  var closeSearchButton = document.getElementById('close-search');
 
   searchButton.addEventListener('click', function () {
       searchPanel.className = searchPanel.className.replace(/hidden/,'');
@@ -265,6 +211,15 @@
   window.addEventListener('mousedown', closeSearchBox);        
   window.addEventListener('touchstart', closeSearchBox);
 </script>
+
+<script>
+  var studioLink = document.getElementById('studio-link');
+
+  studioLink.addEventListener('click', function () {
+      ga('send', 'event', 'topMenu', 'studioLinkClicked');
+  });
+</script>
+
 
 
 

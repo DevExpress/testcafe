@@ -8,20 +8,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <title>Testing on Remote Computers and Mobile Devices | TestCafe</title>
+  <title>CoffeeScript Support | TestCafe</title>
 
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
   
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/recipes/testing-on-remote-computers-and-mobile-devices.html" />
-  <meta property="og:title" content="Testing on Remote Computers and Mobile Devices | TestCafe" />
+  <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/test-api/coffeescript-support.html" />
+  <meta property="og:title" content="CoffeeScript Support | TestCafe" />
 
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
-  <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/recipes/testing-on-remote-computers-and-mobile-devices.html">
+  <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/test-api/coffeescript-support.html">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="http://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
@@ -329,7 +329,7 @@
             <a href="/testcafe/documentation/using-testcafe/">Using TestCafe</a>      
           </div>
         
-          <div class="doc-top-nav-tab " >
+          <div class="doc-top-nav-tab active" >
             <a href="/testcafe/documentation/test-api/">Test API</a>      
           </div>
         
@@ -337,7 +337,7 @@
             <a href="/testcafe/documentation/extending-testcafe/">Extending TestCafe</a>      
           </div>
         
-          <div class="doc-top-nav-tab active" >
+          <div class="doc-top-nav-tab " >
             <a href="/testcafe/documentation/recipes/">Recipes</a>      
           </div>
         
@@ -357,12 +357,6 @@
 
 	
 	
-
-	
-	
-
-	
-	
 	<nav class="doc-nav">	
 		<div class="doc-nav-content">
 			<ul>
@@ -372,56 +366,35 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/recipes/debugging-with-chrome-dev-tools.html"  >Debugging with Chrome Developer Tools</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/recipes/debugging-with-visual-studio-code.html"  >Debugging with Visual Studio Code</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/recipes/integrating-testcafe-with-ci-systems/"  >Integrating TestCafe with CI Systems</a>
+<a href="/testcafe/documentation/test-api/test-code-structure.html"  >Test Code Structure</a>
 		
 			<ul>
 
     <li>
 		    
 		
-<a href="/testcafe/documentation/recipes/integrating-testcafe-with-ci-systems/appveyor.html"  >AppVeyor</a>
+<a href="/testcafe/documentation/test-api/test-code-structure.html#fixtures"  >Fixtures</a>
 		
     </li>
 
     <li>
 		    
 		
-<a href="/testcafe/documentation/recipes/integrating-testcafe-with-ci-systems/circleci.html"  >CircleCI</a>
+<a href="/testcafe/documentation/test-api/test-code-structure.html#tests"  >Tests</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#test-controller"  >Test Controller</a>
 		
     </li>
 
     <li>
 		    
 		
-<a href="/testcafe/documentation/recipes/integrating-testcafe-with-ci-systems/jenkins.html"  >Jenkins</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/recipes/integrating-testcafe-with-ci-systems/teamcity.html"  >TeamCity</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/recipes/integrating-testcafe-with-ci-systems/travis.html"  >Travis</a>
+<a href="/testcafe/documentation/test-api/test-code-structure.html#setting-test-speed"  >Setting Test Speed</a>
 		
     </li>
 
@@ -432,56 +405,425 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/recipes/finding-code-issues-with-flow-type-checker.html"  >Finding Code Issues with Flow Type Checker</a>
+<a href="/testcafe/documentation/test-api/test-code-structure.html#specifying-the-start-webpage"  >Specifying the Start Webpage</a>
 		
     </li>
 
     <li>
 		    
 		
-<a href="/testcafe/documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.html"  >Running Tests Using Travis CI and Sauce Labs</a>
+<a href="/testcafe/documentation/test-api/test-code-structure.html#specifying-testing-metadata"  >Specifying Testing Metadata</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#using-metadata-in-reports"  >Using Metadata in Reports</a>
+		
+    </li>
+
+</ul>
 		
     </li>
 
     <li>
 		    
 		
-<a href="/testcafe/documentation/recipes/testing-select-elements.html"  >Testing &lt;select&gt; Elements</a>
+<a href="/testcafe/documentation/test-api/test-code-structure.html#initialization-and-clean-up"  >Initialization and Clean-Up</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#test-hooks"  >Test Hooks</a>
 		
     </li>
 
     <li>
 		    
 		
-<a href="/testcafe/documentation/recipes/test-static-html-pages.html"  >Test Static HTML Pages</a>
+<a href="/testcafe/documentation/test-api/test-code-structure.html#fixture-hooks"  >Fixture Hooks</a>
+		
+    </li>
+
+</ul>
 		
     </li>
 
     <li>
 		    
 		
-<a href="/testcafe/documentation/recipes/testing-on-remote-computers-and-mobile-devices.html" class="active" >Testing on Remote Computers and Mobile Devices</a>
+<a href="/testcafe/documentation/test-api/test-code-structure.html#skipping-tests"  >Skipping Tests</a>
+		
+    </li>
+
+</ul>
 		
     </li>
 
     <li>
 		    
 		
-<a href="/testcafe/documentation/recipes/using-page-model.html"  >Using Page Model</a>
+<a href="/testcafe/documentation/test-api/selecting-page-elements/"  >Selecting Page Elements</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/"  >Selectors</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/creating-selectors.html"  >Creating Selectors</a>
 		
     </li>
 
     <li>
 		    
 		
-<a href="/testcafe/documentation/recipes/using-testcafe-with-grunt.html"  >Using TestCafe with Grunt</a>
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/using-selectors.html"  >Using Selectors</a>
 		
     </li>
 
     <li>
 		    
 		
-<a href="/testcafe/documentation/recipes/using-testcafe-with-gulp.html"  >Using TestCafe with Gulp</a>
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html"  >Functional-Style Selectors</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/selector-options.html"  >Selector Options</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/extending-selectors.html"  >Extending Selectors</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/edge-cases-and-limitations.html"  >Edge Cases and Limitations</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/dom-node-state.html"  >DOM Node State</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/framework-specific-selectors.html"  >Framework-Specific Selectors</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/examples-of-working-with-dom-elements.html"  >Examples of Working with DOM Elements</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/"  >Actions</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/click.html"  >Click</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/double-click.html"  >Double Click</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/right-click.html"  >Right Click</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/drag-element.html"  >Drag Element</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/hover.html"  >Hover</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/select-text.html"  >Select Text</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/type-text.html"  >Type Text</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/press-key.html"  >Press Key</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/navigate.html"  >Navigate</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/take-screenshot.html"  >Take Screenshot</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/upload.html"  >Upload</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/resize-window.html"  >Resize Window</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/action-options.html"  >Action Options</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/assertions/"  >Assertions</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/assertions/assertion-api.html"  >Assertion API</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/obtaining-data-from-the-client/"  >Obtaining Data from the Client</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/obtaining-data-from-the-client/examples-of-using-client-functions.html"  >Examples of Using Client Functions</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/"  >Intercepting HTTP Requests</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/logging-http-requests.html"  >Logging HTTP Requests</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/mocking-http-responses.html"  >Mocking HTTP Responses</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html"  >Creating a Custom HTTP Request Hook</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/specifying-which-requests-are-handled-by-the-hook.html"  >Specifying Which Requests are Handled by the Hook</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/attaching-hooks-to-tests-and-fixtures.html"  >Attaching Hooks to Tests and Fixtures</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/requestoptions-object.html"  >requestOptions Object</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/built-in-waiting-mechanisms.html"  >Built-In Waiting Mechanisms</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/authentication/"  >Authentication</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/authentication/user-roles.html"  >User Roles</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/authentication/http-authentication.html"  >HTTP Authentication</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/pausing-the-test.html"  >Pausing the Test</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/handling-native-dialogs.html"  >Handling Native Dialogs</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/working-with-iframes.html"  >Working with &lt;iframes&gt;</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/debugging.html"  >Debugging</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/accessing-console-messages.html"  >Accessing Console Messages</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/typescript-support.html"  >TypeScript Support</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/coffeescript-support.html" class="active" >CoffeeScript Support</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/a-z.html"  >A-Z Index</a>
 		
     </li>
 
@@ -491,6 +833,12 @@
 		</div>
 	</nav>
 	
+
+	
+	
+
+	
+	
 	
 
 
@@ -498,42 +846,25 @@
 	<article class="doc">
 		<div class="post-content">
 
-			<h1>Testing on Remote Computers and Mobile Devices</h1>
-<p>TestCafe allows you to run tests on any device that has network access to the machine where TestCafe is installed.</p>
+			<h1>CoffeeScript Support</h1>
+<p>TestCafe allows you to write tests with <a href="https://coffeescript.org/">CoffeeScript</a>.</p>
 
-<p>This guide demonstrates how to test on a remote computer and a mobile device.
-It assumes that TestCafe is already <a href="../using-testcafe/installing-testcafe.html">installed</a>
-in your project and you have <a href="../getting-started/#creating-a-test">created some tests</a>.</p>
-<h2><a class="anchor" name="run-tests-on-a-remote-computer"></a>Run Tests on a Remote Computer <a class="permalink" href="#run-tests-on-a-remote-computer">#</a></h2>
-<ol>
-<li><p>Open the console and type a command to run tests.
-Use <a href="../using-testcafe/command-line-interface.html#remote-browsers">remote</a> as a browser alias
-to specify that tests should run on a remote machine.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe remote tests/test.js
-</code></pre></div></li>
-<li><p>TestCafe prepares a URL for the remote browser to connect to the server.</p>
+<p><strong>Example</strong></p>
+<div class="highlight"><pre><code class="language-coffee" data-lang="coffee"><span class="nx">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s">'testcafe'</span>
 
-<p><img src="../../images/recipe-remote-computer.png" alt="URL for a remote device"></p></li>
-<li><p>Go to a remote computer that has network access to the machine with TestCafe.
-Open the browser in which you want to test and navigate to the URL generated by TestCafe.
-Testing will start automatically.</p></li>
-</ol>
-<h2><a class="anchor" name="run-tests-on-a-mobile-device"></a>Run Tests on a Mobile Device <a class="permalink" href="#run-tests-on-a-mobile-device">#</a></h2>
-<ol>
-<li><p>Open the console and type a command to run tests with <a href="../using-testcafe/command-line-interface.html#remote-browsers">remote</a> as a browser alias.
-Add the <code>--qr-code</code> flag to generate a QR-code for the mobile device.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe remote tests/test.js --qr-code
-</code></pre></div></li>
-<li><p>TestCafe will output the QR-code to the console.</p>
+<span class="nx">fixture</span> <span class="s">'CoffeeScript Example'</span>
+    <span class="p">.</span><span class="na">page</span> <span class="s">'https://devexpress.github.io/testcafe/example/'</span>
 
-<p><img src="../../images/recipe-remote-mobile.png" alt="QR-code for a mobile device"></p></li>
-<li><p>Scan the QR-code with a mobile device that has network access to the TestCafe machine and open the link.
-TestCafe will start tests in the mobile browser.</p></li>
-</ol>
+<span class="nx">nameInput</span> <span class="o">=</span> <span class="nx">Selector</span> <span class="s">'#developer-name'</span>
 
-<blockquote class="twitter-video" data-lang="en"><p lang="en" dir="ltr">Something <a href="https://twitter.com/hashtag/webdriver?src=hash">#webdriver</a> can’t do...  <a href="https://twitter.com/hashtag/testcafe?src=hash">#testcafe</a> <a href="https://t.co/bgD8cgUwXX">pic.twitter.com/bgD8cgUwXX</a></p>&mdash; TestCafe (@DXTestCafe) <a href="https://twitter.com/DXTestCafe/status/804368394569052160">December 1, 2016</a></blockquote>
-
-<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<span class="nx">test</span> <span class="s">'Test'</span><span class="p">,</span> <span class="p">(</span><span class="nx">t</span><span class="p">)</span> <span class="o">=&gt;</span>
+    <span class="nx">await</span> <span class="nx">t</span>
+        <span class="p">.</span><span class="na">typeText</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">,</span> <span class="s">'Peter'</span><span class="p">)</span>
+        <span class="p">.</span><span class="na">typeText</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">,</span> <span class="s">'Paker'</span><span class="p">,</span> <span class="p">{</span> <span class="na">replace</span><span class="o">:</span> <span class="no">true</span> <span class="p">})</span>
+        <span class="p">.</span><span class="na">typeText</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">,</span> <span class="s">'r'</span><span class="p">,</span> <span class="p">{</span> <span class="na">caretPos</span><span class="o">:</span> <span class="mi">2</span> <span class="p">})</span>
+        <span class="p">.</span><span class="na">expect</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">.</span><span class="na">value</span><span class="p">).</span><span class="na">eql</span> <span class="s">'Parker'</span><span class="p">;</span>
+</code></pre></div>
+<p>You can run CoffeeScript tests in the same manner as JavaScript tests. TestCafe automatically compiles the CoffeeScript code, so you do not need to compile it manually.</p>
 
 
 		</div>
