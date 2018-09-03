@@ -480,65 +480,6 @@ html, body {
   margin: 60px auto 0;
   max-width: 710px; }
 
-.widget-container {
-  position: fixed;
-  bottom: 80px;
-  right: 0;
-  margin-right: -210px;
-  z-index: 2;
-  transition: margin-right 0.3s;
-  -moz-transition: margin-right 0.3s;
-  -o-transition: margin-right 0.3s;
-  -webkit-transition: margin-right 0.3s; }
-  .widget-container.out {
-    margin-right: 0; }
-    .widget-container.out #share-button {
-      background: #0097cf; }
-      .widget-container.out #share-button:hover {
-        cursor: default; }
-    .widget-container.out .widget-panel {
-      background: #0097cf; }
-  .widget-container.hidden {
-    margin-right: -320px; }
-
-.widget-panel {
-  width: 210px;
-  height: 70px;
-  background: #2fa4cf;
-  float: left; }
-  .widget-panel #tweet, .widget-panel #facebook, .widget-panel #collapse {
-    float: left;
-    cursor: pointer;
-    margin-top: 8px;
-    margin-left: 10px; }
-    .widget-panel #tweet:hover, .widget-panel #facebook:hover, .widget-panel #collapse:hover {
-      opacity: 0.6; }
-
-#share-button {
-  cursor: pointer;
-  width: 110px;
-  height: 70px;
-  background: #2fa4cf;
-  float: left;
-  -moz-border-radius: 35px 0px 0px 35px;
-  -webkit-border-radius: 35px 0px 0px 35px;
-  border-radius: 35px 0px 0px 35px; }
-  #share-button:hover {
-    background: #0097cf; }
-  #share-button p {
-    color: white;
-    float: left;
-    padding-left: 24px;
-    line-height: 1;
-    font-weight: bold;
-    margin-top: 14px; }
-
-#graph-icon {
-  position: relative;
-  top: 22px;
-  left: 10px;
-  float: left; }
-
 .faq {
   min-width: 550px;
   max-width: 920px;

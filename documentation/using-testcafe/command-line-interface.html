@@ -52,60 +52,6 @@
   
   
 
-  <script>
-    (function () {
-        var VISIT_DAY = {
-            first: 1,
-            second: 2,
-            more: 3
-        };
-
-        var isLandingPage = false;
-        var isGettingStarted = false;
-        var isDocumentation = true;
-
-        function updateVisitDay () {
-            var FIRST_VISIT_DAY_ITEM_NAME = 'first-visit-day';
-            var SECOND_VISIT_DAY_ITEM_NAME = 'second-visit-day';
-            var DIFFERENT_VISITS_DELAY = 12 * 60 * 60 * 1000; 
-            
-            // TODO: ignore old visits
-            var now = Date.now();
-            var firstVisit = window.localStorage.getItem(FIRST_VISIT_DAY_ITEM_NAME);
-            var secondVisit = window.localStorage.getItem(SECOND_VISIT_DAY_ITEM_NAME);
-
-            if(!firstVisit) {
-                window.localStorage.setItem(FIRST_VISIT_DAY_ITEM_NAME, now);
-                return VISIT_DAY.first;
-            }
-
-            firstVisit = parseInt(firstVisit);
-
-            if(!secondVisit) {
-                if(!isLandingPage && now - firstVisit >=DIFFERENT_VISITS_DELAY) {
-                    window.localStorage.setItem(SECOND_VISIT_DAY_ITEM_NAME, now);
-                    return VISIT_DAY.second;
-                }
-
-                return VISIT_DAY.first;
-            }
-            
-            secondVisit = parseInt(secondVisit);
-
-            return now - secondVisit >= DIFFERENT_VISITS_DELAY ? VISIT_DAY.more : VISIT_DAY.second;
-        }
-
-        window.needShowShareWidget = function () {
-            if(!isDocumentation || isGettingStarted)
-                return false;
-
-            var visitDay = updateVisitDay();
-
-            return visitDay === VISIT_DAY.more;
-        };
-    })();
-  </script>
-
   
 
   
@@ -118,7 +64,6 @@
     </style>
     <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/js/perfect-scrollbar.min.js"></script>
     <script defer type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.3.min.js"></script>
-    <script defer src="/testcafe/scripts/widget.js" type="text/javascript"></script>
 
     <script>
         var MIN_BODY_WIDTH = 1230;
@@ -296,11 +241,6 @@
         
           
           <div class="site-nav-tab ">
-            <a class="page-link" href="/testcafe/publications/">Publications</a>
-          </div>
-        
-          
-          <div class="site-nav-tab ">
             <a class="page-link" href="/testcafe/blog/">Release Notes</a>
           </div>
         
@@ -312,6 +252,11 @@
           
           <div class="site-nav-tab ">
             <a class="page-link" href="https://stackoverflow.com/questions/tagged/testcafe" target="_blank">Q&amp;A</a>
+          </div>
+        
+          
+          <div class="site-nav-tab ">
+            <a class="page-link" id="studio-link" href="https://testcafe-studio.devexpress.com" target="_blank">TestCafe Studio</a>
           </div>
         
       <a id="twitter-button" href="https://twitter.com/dxtestcafe" target="_blank"></a>
@@ -344,10 +289,10 @@
           searchPanel.className += ' hidden';
   }
 
-  var searchButton      = document.querySelector('#search-icon');
-  var searchPanel       = document.querySelector('#search-panel');
-  var searchInput       = document.querySelector('#search');
-  var closeSearchButton = document.querySelector('#close-search');
+  var searchButton      = document.getElementById('search-icon');
+  var searchPanel       = document.getElementById('search-panel');
+  var searchInput       = document.getElementById('search');
+  var closeSearchButton = document.getElementById('close-search');
 
   searchButton.addEventListener('click', function () {
       searchPanel.className = searchPanel.className.replace(/hidden/,'');
@@ -361,6 +306,15 @@
   window.addEventListener('mousedown', closeSearchBox);        
   window.addEventListener('touchstart', closeSearchBox);
 </script>
+
+<script>
+  var studioLink = document.getElementById('studio-link');
+
+  studioLink.addEventListener('click', function () {
+      ga('send', 'event', 'topMenu', 'studioLinkClicked');
+  });
+</script>
+
 
 
   <div class="doc-top-nav">
@@ -585,25 +539,26 @@
 <li><a href="#-s---screenshots-on-fails">-S, --screenshots-on-fails</a></li>
 <li><a href="#-p---screenshot-path-pattern">-p, --screenshot-path-pattern</a></li>
 <li><a href="#-q---quarantine-mode">-q, --quarantine-mode</a></li>
+<li><a href="#-d---debug-mode">-d, --debug-mode</a></li>
 <li><a href="#-e---skip-js-errors">-e, --skip-js-errors</a></li>
-<li><a href="#-c-n---concurrency-n">-c &lt;n&gt;, --concurrency &lt;n&gt;</a></li>
+<li><a href="#-u---skip-uncaught-errors">-u, --skip-uncaught-errors</a></li>
 <li><a href="#-t-name---test-name">-t &lt;name&gt;, --test &lt;name&gt;</a></li>
 <li><a href="#-t-pattern---test-grep-pattern">-T &lt;pattern&gt;, --test-grep &lt;pattern&gt;</a></li>
 <li><a href="#-f-name---fixture-name">-f &lt;name&gt;, --fixture &lt;name&gt;</a></li>
 <li><a href="#-f-pattern---fixture-grep-pattern">-F &lt;pattern&gt;, --fixture-grep &lt;pattern&gt;</a></li>
 <li><a href="#-a-command---app-command">-a &lt;command&gt;, --app &lt;command&gt;</a></li>
-<li><a href="#-d---debug-mode">-d, --debug-mode</a></li>
+<li><a href="#-c-n---concurrency-n">-c &lt;n&gt;, --concurrency &lt;n&gt;</a></li>
 <li><a href="#--debug-on-fail">--debug-on-fail</a></li>
 <li><a href="#--app-init-delay-ms">--app-init-delay &lt;ms&gt;</a></li>
 <li><a href="#--selector-timeout-ms">--selector-timeout &lt;ms&gt;</a></li>
 <li><a href="#--assertion-timeout-ms">--assertion-timeout &lt;ms&gt;</a></li>
 <li><a href="#--page-load-timeout-ms">--page-load-timeout &lt;ms&gt;</a></li>
-<li><a href="#--proxy-host">--proxy &lt;host&gt;</a></li>
-<li><a href="#--proxy-bypass-rules">--proxy-bypass &lt;rules&gt;</a></li>
+<li><a href="#--speed-factor">--speed &lt;factor&gt;</a></li>
 <li><a href="#--ports-port1port2">--ports &lt;port1,port2&gt;</a></li>
 <li><a href="#--hostname-name">--hostname &lt;name&gt;</a></li>
+<li><a href="#--proxy-host">--proxy &lt;host&gt;</a></li>
 <li><a href="#--ssl-options">--ssl &lt;options&gt;</a></li>
-<li><a href="#--speed-factor">--speed &lt;factor&gt;</a></li>
+<li><a href="#--proxy-bypass-rules">--proxy-bypass &lt;rules&gt;</a></li>
 <li><a href="#--dev">--dev</a></li>
 <li><a href="#--qr-code">--qr-code</a></li>
 <li><a href="#--color">--color</a></li>
@@ -814,21 +769,28 @@ For example, this command runs tests from files that match <code>tests/*page*</c
 </code></pre></div><h3><a class="anchor" name="-q---quarantine-mode"></a>-q, --quarantine-mode <a class="permalink" href="#-q---quarantine-mode">#</a></h3>
 <p>Enables the <a href="programming-interface/runner.html#quarantine-mode">quarantine mode</a> for tests that fail.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe all tests/sample-fixture.js -q
-</code></pre></div><h3><a class="anchor" name="-e---skip-js-errors"></a>-e, --skip-js-errors <a class="permalink" href="#-e---skip-js-errors">#</a></h3>
+</code></pre></div><h3><a class="anchor" name="-d---debug-mode"></a>-d, --debug-mode <a class="permalink" href="#-d---debug-mode">#</a></h3>
+<p>Specify this option to run tests in the debugging mode. In this mode, test execution is paused before the first action or assertion allowing you to invoke the developer tools and debug.</p>
+
+<p>The footer displays a status bar in which you can resume test execution or skip to the next action or assertion.</p>
+
+<p><img src="../../images/debugging/client-debugging-footer.png" alt="Debugging status bar"></p>
+<blockquote><div class="blockquote-content"><p>If the test you run in the debugging mode contains a <a href="../test-api/test-code-structure.html#test-hooks">test hook</a>,
+it is paused within this hook before the first action.</p>
+</div></blockquote>
+<p>You can also use the <strong>Unlock page</strong> switch in the footer to unlock the tested page and interact with its elements.</p>
+<h3><a class="anchor" name="-e---skip-js-errors"></a>-e, --skip-js-errors <a class="permalink" href="#-e---skip-js-errors">#</a></h3>
 <p>When a JavaScript error occurs on a tested web page, TestCafe stops test execution and posts an error message to a report. To ignore JavaScript errors, use the <code>-e</code>(<code>--skip-js-errors</code>) option.</p>
 
 <p>For example, the following command runs tests from the specified file and forces TestCafe to ignore JavaScript errors:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe ie tests/sample-fixture.js -e
-</code></pre></div><h3><a class="anchor" name="-c-n---concurrency-n"></a>-c &lt;n&gt;, --concurrency &lt;n&gt; <a class="permalink" href="#-c-n---concurrency-n">#</a></h3>
-<p>Specifies that tests should run concurrently.</p>
+</code></pre></div><h3><a class="anchor" name="-u---skip-uncaught-errors"></a>-u, --skip-uncaught-errors <a class="permalink" href="#-u---skip-uncaught-errors">#</a></h3>
+<p>When an uncaught error or unhandled promise rejection occurs on the server during test execution, TestCafe stops the test and posts an error message to a report. Note that if you run tests <a href="#-c-n---concurrency-n">concurrently</a> and such an error occurs in any test, all tests that are running at this moment will fail.</p>
 
-<p>TestCafe opens <code>n</code> instances of the same browser and creates a pool of browser instances.
-Tests are run concurrently against this pool, that is, each test is run in the first free instance.</p>
+<p>To ignore these errors, use the <code>-u</code>(<code>--skip-uncaught-errors</code>) option.</p>
 
-<p>See <a href="common-concepts/concurrent-test-execution.html">Concurrent Test Execution</a> for more information about concurrent test execution.</p>
-
-<p>The following example shows how to run tests in three Chrome instances:</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe -c 3 chrome tests/sample-fixture.js
+<p>For example, the following command runs tests from the specified file and forces TestCafe to ignore uncaught errors and unhandled promise rejections:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe ie tests/sample-fixture.js -u
 </code></pre></div><h3><a class="anchor" name="-t-name---test-name"></a>-t &lt;name&gt;, --test &lt;name&gt; <a class="permalink" href="#-t-name---test-name">#</a></h3>
 <p>TestCafe runs a test with the specified name.</p>
 
@@ -855,17 +817,17 @@ Tests are run concurrently against this pool, that is, each test is run in the f
 </code></pre></div><blockquote><div class="blockquote-content"><p>TestCafe adds <code>node_modules/.bin</code> to <code>PATH</code> so that you can use the binaries the locally installed dependencies provide without prefixes.</p>
 </div></blockquote>
 <p>Use the <a href="#--app-init-delay-ms">--app-init-delay</a> option to specify the amount of time allowed for this command to initialize the tested application.</p>
-<h3><a class="anchor" name="-d---debug-mode"></a>-d, --debug-mode <a class="permalink" href="#-d---debug-mode">#</a></h3>
-<p>Specify this option to run tests in the debugging mode. In this mode, test execution is paused before the first action or assertion allowing you to invoke the developer tools and debug.</p>
+<h3><a class="anchor" name="-c-n---concurrency-n"></a>-c &lt;n&gt;, --concurrency &lt;n&gt; <a class="permalink" href="#-c-n---concurrency-n">#</a></h3>
+<p>Specifies that tests should run concurrently.</p>
 
-<p>The footer displays a status bar in which you can resume test execution or skip to the next action or assertion.</p>
+<p>TestCafe opens <code>n</code> instances of the same browser and creates a pool of browser instances.
+Tests are run concurrently against this pool, that is, each test is run in the first free instance.</p>
 
-<p><img src="../../images/debugging/client-debugging-footer.png" alt="Debugging status bar"></p>
-<blockquote><div class="blockquote-content"><p>If the test you run in the debugging mode contains a <a href="../test-api/test-code-structure.html#test-hooks">test hook</a>,
-it is paused within this hook before the first action.</p>
-</div></blockquote>
-<p>You can also use the <strong>Unlock page</strong> switch in the footer to unlock the tested page and interact with its elements.</p>
-<h3><a class="anchor" name="--debug-on-fail"></a>--debug-on-fail <a class="permalink" href="#--debug-on-fail">#</a></h3>
+<p>See <a href="common-concepts/concurrent-test-execution.html">Concurrent Test Execution</a> for more information about concurrent test execution.</p>
+
+<p>The following example shows how to run tests in three Chrome instances:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe -c 3 chrome tests/sample-fixture.js
+</code></pre></div><h3><a class="anchor" name="--debug-on-fail"></a>--debug-on-fail <a class="permalink" href="#--debug-on-fail">#</a></h3>
 <p>Specifies whether to automatically enter the <a href="#-d---debug-mode">debug mode</a> when a test fails.</p>
 
 <p>If this option is enabled, TestCafe pauses the test when it fails. This allows you to view the tested page and determine the cause of the fail.</p>
@@ -901,14 +863,46 @@ See <a href="../test-api/assertions/#smart-assertion-query-mechanism">Smart Asse
 
 <p>You can set the page load timeout to <code>0</code> to skip waiting for the <code>window.load</code> event.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe ie my-tests --page-load-timeout 0
-</code></pre></div><h3><a class="anchor" name="--proxy-host"></a>--proxy &lt;host&gt; <a class="permalink" href="#--proxy-host">#</a></h3>
+</code></pre></div><h3><a class="anchor" name="--speed-factor"></a>--speed &lt;factor&gt; <a class="permalink" href="#--speed-factor">#</a></h3>
+<p>Specifies the test execution speed.</p>
+
+<p>Tests are run at the maximum speed by default. You can use this option
+to slow the test down.</p>
+
+<p><code>factor</code> should be a number between <code>1</code> (the fastest) and <code>0.01</code> (the slowest).</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests --speed 0.1
+</code></pre></div>
+<p>If the speed is also specified for an <a href="../test-api/actions/action-options.html#basic-action-options">individual action</a>, the action&#39;s speed setting overrides the test speed.</p>
+
+<p><strong>Default value</strong>: <code>1</code></p>
+<h3><a class="anchor" name="--ports-port1port2"></a>--ports &lt;port1,port2&gt; <a class="permalink" href="#--ports-port1port2">#</a></h3>
+<p>Specifies custom port numbers TestCafe uses to perform testing. The number range is [0-65535].</p>
+
+<p>TestCafe automatically selects ports if ports are not specified.</p>
+<h3><a class="anchor" name="--hostname-name"></a>--hostname &lt;name&gt; <a class="permalink" href="#--hostname-name">#</a></h3>
+<p>Specifies your computer&#39;s hostname. It is used when running tests in <a href="#remote-browsers">remote browsers</a>.</p>
+
+<p>If the hostname is not specified, TestCafe uses the operating system&#39;s hostname or the current machine&#39;s network IP address.</p>
+<h3><a class="anchor" name="--proxy-host"></a>--proxy &lt;host&gt; <a class="permalink" href="#--proxy-host">#</a></h3>
 <p>Specifies the proxy server used in your local network to access the Internet.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests/<span class="k">**</span>/<span class="k">*</span>.js --proxy proxy.corp.mycompany.com
 </code></pre></div><div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests/<span class="k">**</span>/<span class="k">*</span>.js --proxy 172.0.10.10:8080
 </code></pre></div>
 <p>You can also specify authentication credentials with the proxy host.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">testcafe</span> <span class="nx">chrome</span> <span class="nx">my</span><span class="o">-</span><span class="nx">tests</span><span class="cm">/**/</span><span class="o">*</span><span class="p">.</span><span class="nx">js</span> <span class="o">--</span><span class="nx">proxy</span> <span class="nx">username</span><span class="err">:</span><span class="nx">password</span><span class="err">@</span><span class="nx">proxy</span><span class="p">.</span><span class="nx">mycorp</span><span class="p">.</span><span class="nx">com</span>
-</code></pre></div><h3><a class="anchor" name="--proxy-bypass-rules"></a>--proxy-bypass &lt;rules&gt; <a class="permalink" href="#--proxy-bypass-rules">#</a></h3>
+</code></pre></div><h3><a class="anchor" name="--ssl-options"></a>--ssl &lt;options&gt; <a class="permalink" href="#--ssl-options">#</a></h3>
+<p>Provides options that allow you to establish an HTTPS connection between the client browser and the TestCafe server.</p>
+
+<p>The <code>options</code> parameter contains options required to initialize
+<a href="https://nodejs.org/api/https.html#https_https_createserver_options_requestlistener">a Node.js HTTPS server</a>.
+The most commonly used SSL options are described in the <a href="https://nodejs.org/api/tls.html#tls_tls_createsecurecontext_options">TLS topic</a> in Node.js documentation.
+Options are specified in a semicolon-separated string.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe --ssl <span class="nv">pfx</span><span class="o">=</span>path/to/file.pfx;rejectUnauthorized<span class="o">=</span><span class="nb">true</span>;...
+</code></pre></div>
+<p>Provide the <code>--ssl</code> flag if the tested webpage uses browser features that require
+secure origin (<a href="https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API">Service Workers</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API">Geolocation API</a>, <a href="https://developer.apple.com/documentation/apple_pay_on_the_web/applepaysession">ApplePaySession</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto">SubtleCrypto</a>, etc).
+See <a href="common-concepts/connect-to-the-testcafe-server-over-https.html">Connect to the TestCafe Server over HTTPS</a> for more information.</p>
+<h3><a class="anchor" name="--proxy-bypass-rules"></a>--proxy-bypass &lt;rules&gt; <a class="permalink" href="#--proxy-bypass-rules">#</a></h3>
 <p>Specifies the resources accessed bypassing the proxy server.</p>
 
 <p>When you access the Internet through a proxy server specified using the <a href="#--proxy-host">--proxy</a> option, you may still need some local or external resources to be accessed directly. In this instance, provide their URLs to the <code>--proxy-bypass</code> option.</p>
@@ -923,39 +917,7 @@ See <a href="../test-api/assertions/#smart-assertion-query-mechanism">Smart Asse
 </code></pre></div>
 <p>The <code>*.mycompany.com</code> value means that all URLs in the <code>mycompany.com</code> subdomains are accessed directly.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests/<span class="k">**</span>/<span class="k">*</span>.js --proxy proxy.corp.mycompany.com --proxy-bypass <span class="k">*</span>.mycompany.com
-</code></pre></div><h3><a class="anchor" name="--ports-port1port2"></a>--ports &lt;port1,port2&gt; <a class="permalink" href="#--ports-port1port2">#</a></h3>
-<p>Specifies custom port numbers TestCafe uses to perform testing. The number range is [0-65535].</p>
-
-<p>TestCafe automatically selects ports if ports are not specified.</p>
-<h3><a class="anchor" name="--hostname-name"></a>--hostname &lt;name&gt; <a class="permalink" href="#--hostname-name">#</a></h3>
-<p>Specifies your computer&#39;s hostname. It is used when running tests in <a href="#remote-browsers">remote browsers</a>.</p>
-
-<p>If the hostname is not specified, TestCafe uses the operating system&#39;s hostname or the current machine&#39;s network IP address.</p>
-<h3><a class="anchor" name="--ssl-options"></a>--ssl &lt;options&gt; <a class="permalink" href="#--ssl-options">#</a></h3>
-<p>Provides options that allow you to establish an HTTPS connection between the client browser and the TestCafe server.</p>
-
-<p>The <code>options</code> parameter contains options required to initialize
-<a href="https://nodejs.org/api/https.html#https_https_createserver_options_requestlistener">a Node.js HTTPS server</a>.
-The most commonly used SSL options are described in the <a href="https://nodejs.org/api/tls.html#tls_tls_createsecurecontext_options">TLS topic</a> in Node.js documentation.
-Options are specified in a semicolon-separated string.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe --ssl <span class="nv">pfx</span><span class="o">=</span>path/to/file.pfx;rejectUnauthorized<span class="o">=</span><span class="nb">true</span>;...
-</code></pre></div>
-<p>Provide the <code>--ssl</code> flag if the tested webpage uses browser features that require
-secure origin (<a href="https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API">Service Workers</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API">Geolocation API</a>, <a href="https://developer.apple.com/documentation/apple_pay_on_the_web/applepaysession">ApplePaySession</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto">SubtleCrypto</a>, etc).
-See <a href="common-concepts/connect-to-the-testcafe-server-over-https.html">Connect to the TestCafe Server over HTTPS</a> for more information.</p>
-<h3><a class="anchor" name="--speed-factor"></a>--speed &lt;factor&gt; <a class="permalink" href="#--speed-factor">#</a></h3>
-<p>Specifies the test execution speed.</p>
-
-<p>Tests are run at the maximum speed by default. You can use this option
-to slow the test down.</p>
-
-<p><code>factor</code> should be a number between <code>1</code> (the fastest) and <code>0.01</code> (the slowest).</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests --speed 0.1
-</code></pre></div>
-<p>If the speed is also specified for an <a href="../test-api/actions/action-options.html#basic-action-options">individual action</a>, the action&#39;s speed setting overrides the test speed.</p>
-
-<p><strong>Default value</strong>: <code>1</code></p>
-<h3><a class="anchor" name="--dev"></a>--dev <a class="permalink" href="#--dev">#</a></h3>
+</code></pre></div><h3><a class="anchor" name="--dev"></a>--dev <a class="permalink" href="#--dev">#</a></h3>
 <p>Enables mechanisms to log and diagnose errors. You should enable this option if you are going to contact TestCafe Support to report an issue.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests --dev
 </code></pre></div><h3><a class="anchor" name="--qr-code"></a>--qr-code <a class="permalink" href="#--qr-code">#</a></h3>
@@ -967,33 +929,6 @@ to slow the test down.</p>
 <p>Disables colors in the command line.</p>
 
 
-		</div>
-		<div class="widget-container hidden">
-			<div id="share-button">
-				<div id="graph-icon">
-					<img src="/testcafe/images/icon-share.svg"/>
-				</div>
-				<p>TELL<br/>YOUR<br/>FRIENDS</p>
-			</div>
-			<div class="widget-panel">
-				<div id="tweet">
-					<a href="https://twitter.com/intent/tweet?text=Check%20out%20%23TestCafe%20-%20a%20free%20node.js%20tool%20for%20e2e%20testing%20https%3A%2F%2Fdevexpress.github.io%2Ftestcafe%2F"
-					onclick="return !window.open(this.href, 'Twitter', 'width=690,height=450')"
-					target="_blank">
-						<img src="/testcafe/images/icon-tweet.svg"/>
-					</a>
-				</div>
-				<div id="facebook">
-					<a href="https://www.facebook.com/sharer/sharer.php?u=https://devexpress.github.io/testcafe/"
-					onclick="return !window.open(this.href, 'Facebook', 'width=500,height=500')"
-					target="_blank">
-						<image src="/testcafe/images/icon-facebook.svg"/>
-					</a>
-				</div>
-				<div id="collapse">
-					<img src="/testcafe/images/icon-close.svg"/>
-				</div>
-			</div>
 		</div>
 	</article>
 </main>
