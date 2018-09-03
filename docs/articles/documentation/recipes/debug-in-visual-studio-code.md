@@ -23,7 +23,11 @@ Then you need to install TestCafe locally in the tests directory.
 npm install
 ```
 
-The next step adds a launch configuration used to run TestCafe tests. See the [Visual Studio Code documentation](https://code.visualstudio.com/docs/editor/debugging#_launch-configurations) to learn how to create a configuration.
+The next step adds a launch configuration used to run TestCafe tests.
+
+![Configuration File](../../images/recipe-vscode-configuration-file.png)
+
+See the [Visual Studio Code documentation](https://code.visualstudio.com/docs/editor/debugging#_launch-configurations) to learn how to create a configuration.
 
 You need to add the following configuration to the `launch.json` file.
 
@@ -60,5 +64,7 @@ Save the `launch.json` file. The new configuration then appears in the configura
 
 Now you can open a file with TestCafe tests, select the `"Launch test files with TestCafe"` configuration and click the **Run** button.
 Tests run with the debugger attached. You can put breakpoints in test code and the debugger stops at them.
+
+![Stop at a Breakpoint](../../images/recipe-vscode-debugging-breakpoint.png)
 
 > Important! If you do not select the `"Launch test files with TestCafe"` configuration, Visual Studio Code tries to run the test file as a program and throws an error.
