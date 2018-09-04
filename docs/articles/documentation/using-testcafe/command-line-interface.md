@@ -50,7 +50,7 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [--proxy-bypass \<rules\>](#--proxy-bypass-rules)
   * [--dev](#--dev)
   * [--qr-code](#--qr-code)
-  * [--sf, --stop-on-first-fail](#--sf--stop-on-first-fail)
+  * [--sf, --stop-on-first-fail](#--sf---stop-on-first-fail)
   * [--color](#--color)
   * [--no-color](#--no-color)
 
