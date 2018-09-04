@@ -282,13 +282,13 @@ export default class TestRun extends EventEmitter {
             await this._runAfterHook();
         }
 
-        if (!this.connected)
+        if (this.disconnected)
             return;
 
         if (this.errs.length && this.debugOnFail)
             await this._enqueueSetBreakpointCommand(null, this.debugReporterPluginHost.formatError(this.errs[0]));
 
-        await this.executeTestDoneCommand();
+        await this.executeCommand(new TestDoneCommand());
 
         this._addPendingPageErrorIfAny();
 
@@ -367,10 +367,6 @@ export default class TestRun extends EventEmitter {
         this.browserManipulationQueue.removeAllNonServiceManipulations();
     }
 
-    get connected () {
-        return this.browserConnection.opened;
-    }
-
     // Current driver task
     get currentDriverTask () {
         return this.driverTaskQueue[0];
@@ -434,8 +430,8 @@ export default class TestRun extends EventEmitter {
         const pageError                  = this.pendingPageError || driverStatus.pageError;
         const currentTaskRejectedByError = pageError && this._handlePageErrorStatus(pageError);
 
-        if (!this.connected)
-            return null;
+        if (this.disconnected)
+            return new Promise((_, reject) => reject());
 
         this.consoleMessages.concat(driverStatus.consoleMessages);
 
@@ -682,15 +678,13 @@ export default class TestRun extends EventEmitter {
     }
 
     disconnect (err) {
+        this.disconnected = true;
+
         this._rejectCurrentDriverTask(err);
 
         this.emit('disconnected', err);
 
         delete testRunTracker.activeTestRuns[this.session.id];
-    }
-
-    async executeTestDoneCommand () {
-        await this.executeCommand(new TestDoneCommand());
     }
 }
 

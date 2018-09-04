@@ -19,7 +19,8 @@ export default class BrowserConnection extends EventEmitter {
     constructor (gateway, browserInfo, permanent) {
         super();
 
-        this.HEARTBEAT_TIMEOUT = 2 * 60 * 1000;
+        this.HEARTBEAT_TIMEOUT       = 2 * 60 * 1000;
+        this.BROWSER_RESTART_TIMEOUT = 60 * 1000;
 
         this.id                       = BrowserConnection._generateId();
         this.jobQueue                 = [];
@@ -110,9 +111,13 @@ export default class BrowserConnection extends EventEmitter {
         }
     }
 
+    _createBrowserDisconnectedError () {
+        return new GeneralError(MESSAGE.browserDisconnected, this.userAgent);
+    }
+
     _waitForHeartbeat () {
         this.heartbeatTimeout = setTimeout(() => {
-            const err = new GeneralError(MESSAGE.browserDisconnected, this.userAgent);
+            const err = this._createBrowserDisconnectedError();
 
             this.opened         = false;
             this.errorSupressed = false;
@@ -149,8 +154,32 @@ export default class BrowserConnection extends EventEmitter {
 
         this._forceIdle();
 
-        await this._closeBrowser();
-        await this._runBrowser();
+        let resolveTimeout = null;
+        let onTimeout      = false;
+        let timeout        = null;
+
+        const restartPromise = this._closeBrowser()
+            .then(() => this._runBrowser());
+
+        const timeoutPromise = new Promise(resolve => {
+            resolveTimeout = resolve;
+
+            timeout = setTimeout(() => {
+                onTimeout = true;
+
+                resolve();
+            }, this.BROWSER_RESTART_TIMEOUT);
+        });
+
+        Promise.race([ restartPromise, timeoutPromise ])
+            .then(() => {
+                clearTimeout(timeout);
+
+                if (onTimeout)
+                    this.emit('error', this._createBrowserDisconnectedError());
+                else
+                    resolveTimeout();
+            });
     }
 
     supressError () {

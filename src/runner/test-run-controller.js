@@ -153,7 +153,7 @@ export default class TestRunController extends EventEmitter {
 
         testRun.once('start', () => this.emit('test-run-start'));
         testRun.once('done', () => this._testRunDone());
-        testRun.once('disconnected', () => this._testRunDisconnected(connection, testRun));
+        testRun.once('disconnected', () => this._testRunDisconnected(connection));
 
         testRun.start();
 

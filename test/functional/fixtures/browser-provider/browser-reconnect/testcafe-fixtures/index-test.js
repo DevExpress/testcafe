@@ -28,20 +28,6 @@ test('Should restart browser when it does not respond', async t => {
     await t.expect(counter[userAgent]).eql(3);
 });
 
-test('Should fail on 3 disconnects', async t => {
-    const userAgent = await getUserAgent();
-
-    counter[userAgent] = counter[userAgent] || 0;
-
-    counter[userAgent]++;
-
-    await t.expect(counter[userAgent]).lte(3);
-
-    await hang();
-
-    throw new Error('browser has not restarted');
-});
-
 test('Should fail on 3 disconnects in one browser', async t => {
     const userAgent = await getUserAgent();
 

@@ -24,7 +24,7 @@ function customReporter () {
 function createConnection (browser) {
     return browserProviderPool
         .getBrowserInfo(browser)
-        .then(browserInfo => new BrowserConnection(testCafe.browserConnectionGateway, browserInfo, true));
+        .then(browserInfo => new BrowserConnection(testCafe.browserConnectionGateway, browserInfo, false));
 }
 
 async function run (pathToTest, filter) {
@@ -56,16 +56,6 @@ describe('Browser reconnect', function () {
             return run('./testcafe-fixtures/index-test.js', 'Should restart browser when it does not respond')
                 .then(() => {
                     expect(errors.length).eql(0);
-                });
-        });
-
-        it('Should fail on 3 disconnects', function () {
-            return run('./testcafe-fixtures/index-test.js', 'Should fail on 3 disconnects')
-                .then(() => {
-                    throw new Error('Test should have failed but it succeeded');
-                })
-                .catch(err => {
-                    expect(err.message).contains('browser disconnected. This problem may appear when a browser hangs or is closed, or due to network issues');
                 });
         });
 
