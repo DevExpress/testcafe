@@ -17,7 +17,7 @@ Before you debug in Visual Studio Code, ensure that your root test directory con
 
 where `x.y.z` is the TestCafe version you use.
 
-Then you need to install TestCafe locally in the tests directory.
+Then you need to install TestCafe locally in the test directory.
 
 ```sh
 npm install
