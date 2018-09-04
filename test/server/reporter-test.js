@@ -1,21 +1,19 @@
-var expect       = require('chai').expect;
-var EventEmitter = require('events').EventEmitter;
-var util         = require('util');
-var Promise      = require('pinkie');
-var chunk        = require('lodash').chunk;
-var Reporter     = require('../../lib/reporter');
+const expect            = require('chai').expect;
+const EventEmitter      = require('events').EventEmitter;
+const Promise           = require('pinkie');
+const { chunk, random } = require('lodash');
+const Reporter          = require('../../lib/reporter');
 
-
-describe('Reporter', function () {
+describe('Reporter', () => {
     // Runnable configuration mocks
-    var screenshotDir = '/screenshots/1445437598847';
+    const screenshotDir = '/screenshots/1445437598847';
 
-    var browserConnectionMocks = [
+    const browserConnectionMocks = [
         { userAgent: 'Chrome' },
         { userAgent: 'Firefox' }
     ];
 
-    var fixtureMocks = [
+    const fixtureMocks = [
         {
             name: 'fixture1',
             path: './file1.js',
@@ -37,7 +35,7 @@ describe('Reporter', function () {
         }
     ];
 
-    var testMocks = [
+    const testMocks = [
         {
             name:        'fixture1test1',
             fixture:     fixtureMocks[0],
@@ -108,9 +106,8 @@ describe('Reporter', function () {
         }
     ];
 
-
     // Test run mocks
-    var chromeTestRunMocks = [
+    const chromeTestRunMocks = [
         //fixture1test1
         {
             test:              testMocks[0],
@@ -168,8 +165,7 @@ describe('Reporter', function () {
         }
     ];
 
-
-    var firefoxTestRunMocks = [
+    const firefoxTestRunMocks = [
         //fixture1test1
         {
             test:              testMocks[0],
@@ -223,74 +219,71 @@ describe('Reporter', function () {
         }
     ];
 
-    chromeTestRunMocks.concat(firefoxTestRunMocks).forEach(function (testRunMock) {
-        testRunMock.errs.forEach(function (err) {
+    chromeTestRunMocks.concat(firefoxTestRunMocks).forEach(testRunMock => {
+        testRunMock.errs.forEach(err => {
             err.userAgent = testRunMock.browserConnection.userAgent;
         });
     });
 
-    var ScreenshotsMock = function () {
-        this.getScreenshotsInfo = function (testMock) {
+    class ScreenshotsMock {
+        constructor () {}
+
+        getScreenshotsInfo (testMock) {
             return testMock.screenshots;
-        };
+        }
 
-        this.hasCapturedFor = function (testMock) {
+        hasCapturedFor (testMock) {
             return this.getScreenshotsInfo(testMock);
-        };
+        }
 
-        this.getPathFor = function () {
+        getPathFor () {
             return screenshotDir;
-        };
-    };
+        }
+    }
 
+    class TaskMock extends EventEmitter {
+        constructor () {
+            super();
 
-    // Task mock
-    var TaskMock = function () {
-        EventEmitter.call(this);
+            this.tests                   = testMocks;
+            this.opts                    = { stopOnFirstFail: false };
+            this.browserConnectionGroups = chunk(browserConnectionMocks, 1);
+            this.screenshots             = new ScreenshotsMock();
 
-        this.tests                   = testMocks;
-        this.browserConnectionGroups = chunk(browserConnectionMocks, 1);
-        this.screenshots             = new ScreenshotsMock();
-
-        this.warningLog = {
-            messages: [
-                'warning1',
-                'warning2'
-            ]
-        };
-    };
-
-    util.inherits(TaskMock, EventEmitter);
+            this.warningLog = {
+                messages: [
+                    'warning1',
+                    'warning2'
+                ]
+            };
+        }
+    }
 
     // Browser job emulation
     function delay () {
-        var MIN      = 0;
-        var MAX      = 10;
-        var duration = Math.floor(Math.random() * (MAX - MIN + 1)) + MIN;
-
-        return new Promise(function (resolve) {
-            setTimeout(resolve, duration);
+        return new Promise(resolve => {
+            setTimeout(resolve, random(0, 10));
         });
     }
 
     function emulateBrowserJob (taskMock, testRunMocks) {
-        return testRunMocks.reduce(function (chain, testRun) {
+        return testRunMocks.reduce((chain, testRun) => {
             return chain
-                .then(function () {
+                .then(() => {
                     taskMock.emit('test-run-start', testRun);
                 })
                 .then(delay)
-                .then(function () {
+                .then(() => {
                     taskMock.emit('test-run-done', testRun);
                 })
                 .then(delay);
         }, delay());
     }
 
-    it('Should analyze task progress and call appropriate plugin methods', function () {
-        var taskMock = new TaskMock();
+    it('Should analyze task progress and call appropriate plugin methods', () => {
+        const taskMock = new TaskMock();
 
-        var expectedCalls = [
+        const expectedCalls = [
             {
                 method: 'reportTaskStart',
                 args:   [
@@ -489,12 +482,10 @@ describe('Reporter', function () {
             }
         ];
 
-        var reporter = new Reporter({
+        const reporter = new Reporter({
             calls: [],
 
-            reportTaskStart: function () {
-                var args = Array.prototype.slice.call(arguments);
-
+            reportTaskStart: function (...args) {
                 expect(args[0]).to.be.a('date');
 
                 // NOTE: replace startTime
@@ -507,9 +498,7 @@ describe('Reporter', function () {
                 this.calls.push({ method: 'reportFixtureStart', args: Array.prototype.slice.call(arguments) });
             },
 
-            reportTestDone: function () {
-                var args = Array.prototype.slice.call(arguments);
-
+            reportTestDone: function (...args) {
                 expect(args[1].durationMs).to.be.an('number');
 
                 // NOTE: replace durationMs
@@ -518,9 +507,7 @@ describe('Reporter', function () {
                 this.calls.push({ method: 'reportTestDone', args: args });
             },
 
-            reportTaskDone: function () {
-                var args = Array.prototype.slice.call(arguments);
-
+            reportTaskDone: function (...args) {
                 expect(args[0]).to.be.a('date');
 
                 // NOTE: replace endTime
@@ -537,16 +524,16 @@ describe('Reporter', function () {
                 emulateBrowserJob(taskMock, chromeTestRunMocks),
                 emulateBrowserJob(taskMock, firefoxTestRunMocks)
             ])
-            .then(function () {
+            .then(() => {
                 taskMock.emit('done');
 
                 expect(reporter.plugin.calls).eql(expectedCalls);
             });
     });
 
-    it('Should disable colors if plugin has "noColors" flag', function () {
-        var taskMock = new TaskMock();
-        var reporter = new Reporter({ noColors: true }, taskMock);
+    it('Should disable colors if plugin has "noColors" flag', () => {
+        const taskMock = new TaskMock();
+        const reporter = new Reporter({ noColors: true }, taskMock);
 
         expect(reporter.plugin.chalk.enabled).to.be.false;
     });

@@ -337,8 +337,8 @@ describe('CLI argument parser', function () {
     });
 
     it('Should parse command line arguments', function () {
-        return parse('-r list -S -q -e --hostname myhost --proxy localhost:1234 --proxy-bypass localhost:5678 --qr-code --app run-app --speed 0.5 --debug-on-fail --disable-page-reloads --dev ie test/server/data/file-list/file-1.js')
-            .then(function (parser) {
+        return parse('-r list -S -q -e --hostname myhost --proxy localhost:1234 --proxy-bypass localhost:5678 --qr-code --app run-app --speed 0.5 --debug-on-fail --disable-page-reloads --dev --sf ie test/server/data/file-list/file-1.js')
+            .then(parser => {
                 expect(parser.browsers).eql(['ie']);
                 expect(parser.src).eql(['test/server/data/file-list/file-1.js']);
                 expect(parser.opts.reporters[0].name).eql('list');
@@ -355,12 +355,13 @@ describe('CLI argument parser', function () {
                 expect(parser.opts.proxy).to.be.ok;
                 expect(parser.opts.proxyBypass).to.be.ok;
                 expect(parser.opts.debugOnFail).to.be.ok;
+                expect(parser.opts.stopOnFirstFail).to.be.ok;
             });
     });
 
-    it('Should has static CLI', function () {
-        var WARNING          = 'IMPORTANT: Please be sure what you want to change CLI if this test is failing!';
-        var EXPECTED_OPTIONS = [
+    it('Should has static CLI', () => {
+        const WARNING          = 'IMPORTANT: Please be sure what you want to change CLI if this test is failing!';
+        const EXPECTED_OPTIONS = [
             { long: '--version', short: '-v' },
             { long: '--list-browsers', short: '-b' },
             { long: '--reporter', short: '-r' },
@@ -392,15 +393,16 @@ describe('CLI argument parser', function () {
             { long: '--qr-code' },
             { long: '--skip-uncaught-errors' },
             { long: '--color' },
-            { long: '--no-color' }
+            { long: '--no-color' },
+            { long: '--stop-on-first-fail', short: '--sf' }
         ];
 
-        var parser  = new CliArgumentParser('');
-        var options = parser.program.options;
+        const parser  = new CliArgumentParser('');
+        const options = parser.program.options;
 
         expect(options.length).eql(EXPECTED_OPTIONS.length, WARNING);
 
-        for (var i = 0; i < EXPECTED_OPTIONS.length; i++)
+        for (let i = 0; i < EXPECTED_OPTIONS.length; i++)
             expect(find(options, EXPECTED_OPTIONS[i])).not.eql(void 0, WARNING);
     });
 });

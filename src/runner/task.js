@@ -12,16 +12,24 @@ export default class Task extends EventEmitter {
         this.running                 = false;
         this.browserConnectionGroups = browserConnectionGroups;
         this.tests                   = tests;
-        this.screenshots             = new Screenshots(opts.screenshotPath, opts.screenshotPathPattern);
+        this.opts                    = opts;
+        this.screenshots             = new Screenshots(this.opts.screenshotPath, this.opts.screenshotPathPattern);
         this.warningLog              = new WarningLog();
 
         this.fixtureHookController = new FixtureHookController(tests, browserConnectionGroups.length);
-        this.pendingBrowserJobs    = this._createBrowserJobs(proxy, opts);
+        this.pendingBrowserJobs    = this._createBrowserJobs(proxy, this.opts);
     }
 
     _assignBrowserJobEventHandlers (job) {
         job.on('test-run-start', testRun => this.emit('test-run-start', testRun));
-        job.on('test-run-done', testRun => this.emit('test-run-done', testRun));
+        job.on('test-run-done', testRun => {
+            this.emit('test-run-done', testRun);
+
+            if (this.opts.stopOnFirstFail && testRun.errs.length) {
+                this.abort();
+                this.emit('done');
+            }
+        });
 
         job.once('start', () => {
             if (!this.running) {
@@ -41,7 +49,7 @@ export default class Task extends EventEmitter {
 
     _createBrowserJobs (proxy, opts) {
         return this.browserConnectionGroups.map(browserConnectionGroup => {
-            var job = new BrowserJob(this.tests, browserConnectionGroup, proxy, this.screenshots, this.warningLog, this.fixtureHookController, opts);
+            const job = new BrowserJob(this.tests, browserConnectionGroup, proxy, this.screenshots, this.warningLog, this.fixtureHookController, opts);
 
             this._assignBrowserJobEventHandlers(job);
             browserConnectionGroup.map(bc => bc.addJob(job));

@@ -3,8 +3,6 @@ import { TestRun as LegacyTestRun } from 'testcafe-legacy-api';
 import TestRun from '../test-run';
 import SessionController from '../test-run/session-controller';
 
-
-// Const
 const QUARANTINE_THRESHOLD = 3;
 
 class Quarantine {
@@ -123,9 +121,9 @@ export default class TestRunController extends EventEmitter {
     }
 
     async start (connection) {
-        var testRun = this._createTestRun(connection);
+        const testRun = this._createTestRun(connection);
 
-        var hookOk = await this.fixtureHookController.runFixtureBeforeHookIfNecessary(testRun);
+        const hookOk = await this.fixtureHookController.runFixtureBeforeHookIfNecessary(testRun);
 
         if (this.test.skip || !hookOk) {
             this.emit('test-run-start');
