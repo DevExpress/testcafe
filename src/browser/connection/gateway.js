@@ -10,12 +10,14 @@ const IDLE_PAGE_LOGO   = read('../../client/browser/idle-page/logo.svg', true);
 
 // Gateway
 export default class BrowserConnectionGateway {
-    constructor (proxy) {
+    constructor (proxy, options = {}) {
         this.connections  = {};
         this.remotesQueue = new RemotesQueue();
         this.domain       = proxy.server1Info.domain;
 
         this.connectUrl = `${this.domain}/browser/connect`;
+
+        this.retryTestPages = options.retryTestPages;
 
         this._registerRoutes(proxy);
     }

@@ -1,5 +1,6 @@
 import { RequestHook } from 'testcafe';
 import path from 'path';
+import config from '../../../../../../config';
 
 const ResultPromise = require(path.resolve('./lib/utils/re-executable-promise'));
 const pageUrl       = 'http://localhost:3000/fixtures/api/es-next/request-hooks/pages/index.html';
@@ -34,29 +35,29 @@ test
     .requestHooks(hook2)
     ('Test', async t => {
         await t
-            .expect(hook1.onResponseCallCount).eql(1)
-            .expect(hook2.onResponseCallCount).eql(1);
+            .expect(hook1.onResponseCallCount).eql(config.retryTestPages ? 2 : 1)
+            .expect(hook2.onResponseCallCount).eql(config.retryTestPages ? 2 : 1);
 
         await t
             .addRequestHooks(hook3)
             .expect(hook3.onResponseCallCount).eql(0)
             .navigateTo(pageUrl)
-            .expect(hook1.onResponseCallCount).eql(2)
-            .expect(hook2.onResponseCallCount).eql(2)
-            .expect(hook3.onResponseCallCount).eql(1);
+            .expect(hook1.onResponseCallCount).eql(config.retryTestPages ? 4 : 2)
+            .expect(hook2.onResponseCallCount).eql(config.retryTestPages ? 4 : 2)
+            .expect(hook3.onResponseCallCount).eql(config.retryTestPages ? 2 : 1);
 
         await t
             .addRequestHooks(hook1, hook2, hook3)
             .navigateTo(pageUrl)
-            .expect(hook1.onResponseCallCount).eql(3)
-            .expect(hook2.onResponseCallCount).eql(3)
-            .expect(hook3.onResponseCallCount).eql(2);
+            .expect(hook1.onResponseCallCount).eql(config.retryTestPages ? 6 : 3)
+            .expect(hook2.onResponseCallCount).eql(config.retryTestPages ? 6 : 3)
+            .expect(hook3.onResponseCallCount).eql(config.retryTestPages ? 4 : 2);
 
         await t
             .removeRequestHooks(hook1)
             .removeRequestHooks(hook1)
             .navigateTo(pageUrl)
-            .expect(hook1.onResponseCallCount).eql(3)
-            .expect(hook2.onResponseCallCount).eql(4)
-            .expect(hook3.onResponseCallCount).eql(3);
+            .expect(hook1.onResponseCallCount).eql(config.retryTestPages ? 6 : 3)
+            .expect(hook2.onResponseCallCount).eql(config.retryTestPages ? 8 : 4)
+            .expect(hook3.onResponseCallCount).eql(config.retryTestPages ? 6 : 3);
     });

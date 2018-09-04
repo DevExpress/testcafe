@@ -1,5 +1,6 @@
 import path from 'path';
 import { Session } from 'testcafe-hammerhead';
+import { UNSTABLE_NETWORK_MODE_HEADER } from '../browser/connection/unstable-network-mode';
 
 
 const ACTIVE_SESSIONS_MAP = {};
@@ -41,6 +42,18 @@ export default class SessionController extends Session {
         return this.currentTestRun.handlePageError(ctx, err);
     }
 
+    onPageRequest (ctx) {
+        const requireStateSwitch   = this.requireStateSwitch;
+        const pendingStateSnapshot = this.pendingStateSnapshot;
+
+        super.onPageRequest(ctx);
+
+        if (requireStateSwitch && ctx.req.headers[UNSTABLE_NETWORK_MODE_HEADER]) {
+            this.requireStateSwitch = true;
+
+            this.pendingStateSnapshot = pendingStateSnapshot;
+        }
+    }
     // API
     static getSession (testRun) {
         let sessionInfo = ACTIVE_SESSIONS_MAP[testRun.browserConnection.id];

@@ -1,3 +1,9 @@
+// -------------------------------------------------------------
+// WARNING: this file is used by both the client and the server.
+// Do not use any browser or node-specific API!
+// -------------------------------------------------------------
+
+
 export default {
     browserDisconnected:                   'The {userAgent} browser disconnected. This problem may appear when a browser hangs or is closed, or due to network issues.',
     cantRunAgainstDisconnectedBrowsers:    'The following browsers disconnected: {userAgents}. Tests will not be run.',
@@ -29,5 +35,6 @@ export default {
     unsupportedUrlProtocol:                'The specified "{url}" test page URL uses an unsupported {protocol}:// protocol. Only relative URLs or absolute URLs with http://, https:// and file:// protocols are supported.',
     unableToOpenBrowser:                   'Was unable to open the browser "{alias}" due to error.\n\n{errMessage}',
     testControllerProxyCantResolveTestRun: `Cannot implicitly resolve the test run in the context of which the test controller action should be executed. Use test function's 't' argument instead.`,
-    requestHookConfigureAPIError:          'There was an error while configuring the request hook:\n\n{requestHookName}: {errMsg}'
+    requestHookConfigureAPIError:          'There was an error while configuring the request hook:\n\n{requestHookName}: {errMsg}',
+    timeLimitedPromiseTimeoutExpired:      'Timeout expired for a time limited promise'
 };

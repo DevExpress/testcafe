@@ -8,6 +8,7 @@
     var browserId            = {{{browserId}}};
     var selectorTimeout      = {{{selectorTimeout}}};
     var pageLoadTimeout      = {{{pageLoadTimeout}}};
+    var retryTestPages       = {{{retryTestPages}}};
     var speed                = {{{speed}}};
     var browserHeartbeatUrl  = origin + {{{browserHeartbeatRelativeUrl}}};
     var browserStatusUrl     = origin + {{{browserStatusRelativeUrl}}};
@@ -27,6 +28,7 @@
             pageLoadTimeout: pageLoadTimeout,
             skipJsErrors:    skipJsErrors,
             dialogHandler:   dialogHandler,
+            retryTestPages:  retryTestPages,
             speed:           speed
         }
     );

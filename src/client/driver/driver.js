@@ -7,6 +7,8 @@ import {
     preventRealEvents,
     disableRealEventsPreventing,
     waitFor,
+    delay,
+    getTimeLimitedPromise,
     browser
 } from './deps/testcafe-core';
 import { StatusBar } from './deps/testcafe-ui';
@@ -66,6 +68,10 @@ const ASSERTION_RETRIES_TIMEOUT            = 'testcafe|driver|assertion-retries-
 const ASSERTION_RETRIES_START_TIME         = 'testcafe|driver|assertion-retries-start-time';
 const CONSOLE_MESSAGES                     = 'testcafe|driver|console-messages';
 const CHECK_IFRAME_DRIVER_LINK_DELAY       = 500;
+const SEND_STATUS_REQUEST_TIME_LIMIT       = 1000;
+const SEND_STATUS_REQUEST_RETRY_DELAY      = 300;
+const SEND_STATUS_REQUEST_RETRY_COUNT      = 5;
+const CHECK_STATUS_RETRY_DELAY             = 1000;
 
 const ACTION_IFRAME_ERROR_CTORS = {
     NotLoadedError:   ActionIframeIsNotLoadedError,
@@ -107,6 +113,9 @@ export default class Driver {
         this.activeChildDriverLink = null;
 
         this.statusBar = null;
+
+        if (options.retryTestPages)
+            browser.enableRetryingTestPages();
 
         this.pageInitialRequestBarrier = new RequestBarrier();
 
@@ -202,6 +211,25 @@ export default class Driver {
         this.consoleMessages   = null;
     }
 
+    _sendStatusRequest (status) {
+        const statusRequestOptions = {
+            cmd:              TEST_RUN_MESSAGES.ready,
+            status:           status,
+            disableResending: true,
+            allowRejecting:   true
+        };
+
+        const requestAttempt = () => getTimeLimitedPromise(transport.asyncServiceMsg(statusRequestOptions), SEND_STATUS_REQUEST_TIME_LIMIT);
+        const retryRequest   = () => delay(SEND_STATUS_REQUEST_RETRY_DELAY).then(requestAttempt);
+
+        let statusPromise = requestAttempt();
+
+        for (let i = 0; i < SEND_STATUS_REQUEST_RETRY_COUNT; i++)
+            statusPromise = statusPromise.catch(retryRequest);
+
+        return statusPromise;
+    }
+
     _sendStatus (status) {
         // NOTE: We should not modify the status if it is resent after
         // the page load because the server has cached the response
@@ -218,12 +246,7 @@ export default class Driver {
         // NOTE: postpone status sending if the page is unloading
         return pageUnloadBarrier
             .wait(0)
-            .then(() => transport.queuedAsyncServiceMsg({
-                cmd:              TEST_RUN_MESSAGES.ready,
-                status:           status,
-                disableResending: true
-            }))
-
+            .then(() => this._sendStatusRequest(status))
             //NOTE: do not execute the next command if the page is unloading
             .then(res => {
                 readyCommandResponse = res;
@@ -477,6 +500,9 @@ export default class Driver {
                     browser.redirect(command);
                 else
                     this._onReady({ isCommandResult: false });
+            })
+            .catch(() => {
+                return delay(CHECK_STATUS_RETRY_DELAY);
             });
     }
 

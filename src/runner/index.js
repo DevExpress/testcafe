@@ -16,7 +16,7 @@ const DEFAULT_ASSERTION_TIMEOUT = 3000;
 const DEFAULT_PAGE_LOAD_TIMEOUT = 3000;
 
 export default class Runner extends EventEmitter {
-    constructor (proxy, browserConnectionGateway) {
+    constructor (proxy, browserConnectionGateway, options = {}) {
         super();
 
         this.proxy               = proxy;
@@ -32,6 +32,7 @@ export default class Runner extends EventEmitter {
             skipJsErrors:           false,
             quarantineMode:         false,
             debugMode:              false,
+            retryTestPages:         options.retryTestPages,
             selectorTimeout:        DEFAULT_SELECTOR_TIMEOUT,
             pageLoadTimeout:        DEFAULT_PAGE_LOAD_TIMEOUT
         };

@@ -13,9 +13,10 @@ const DEBUG_LOGGER = debug('testcafe:utils:temp-directory:cleanup-process');
 
 class CleanupProcess {
     constructor () {
-        this.worker      = null;
-        this.initialized = false;
-        this.initPromise = Promise.resolve(void 0);
+        this.worker       = null;
+        this.initialized  = false;
+        this.initPromise  = Promise.resolve(void 0);
+        this.errorPromise = null;
 
         this.messageCounter = 0;
 
@@ -25,7 +26,7 @@ class CleanupProcess {
     _sendMessage (id, msg) {
         return Promise.race([
             sendMessageToChildProcess(this.worker, { id, ...msg }),
-            promisifyEvent(this.worker, 'error')
+            this._waitProcessError()
         ]);
     }
 
@@ -77,6 +78,19 @@ class CleanupProcess {
             .then(exitCode => Promise.reject(new Error(`Worker process terminated with code ${exitCode}`)));
     }
 
+    _waitProcessError () {
+        if (this.errorPromise)
+            return this.errorPromise;
+
+        this.errorPromise = promisifyEvent(this.worker, 'error');
+
+        this.errorPromise.then(() => {
+            this.errorPromise = null;
+        });
+
+        return this.errorPromise;
+    }
+
     _setupWorkerEventHandlers () {
         this.worker.on('message', message => this._onResponse(message));
 
@@ -116,7 +130,7 @@ class CleanupProcess {
                 try {
                     await Promise.race([
                         this._waitResponseForMessage({ command: COMMANDS.init }),
-                        promisifyEvent(this.worker, 'error'),
+                        this._waitProcessError(),
                         exitPromise
                     ]);
 

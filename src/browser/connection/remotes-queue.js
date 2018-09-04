@@ -1,7 +1,7 @@
 import Promise from 'pinkie';
 import { EventEmitter } from 'events';
 import promisifyEvent from 'promisify-event';
-import timeLimit from 'time-limit-promise';
+import getTimeLimitedPromise from 'time-limit-promise';
 
 
 const REMOTE_REDIRECT_TIMEOUT           = 10000;
@@ -36,7 +36,7 @@ export default class RemotesQueue {
                 var headId = Object.keys(this.pendingConnections)[0];
 
                 if (!headId)
-                    headId = await timeLimit(promisifyEvent(this.events, 'connection-added'), ADDING_CONNECTION_WAITING_TIMEOUT);
+                    headId = await getTimeLimitedPromise(promisifyEvent(this.events, 'connection-added'), ADDING_CONNECTION_WAITING_TIMEOUT);
 
                 return headId ? this.pendingConnections[headId].connection : null;
             });
@@ -46,7 +46,7 @@ export default class RemotesQueue {
                 if (!connection)
                     return Promise.resolve();
 
-                return timeLimit(this.pendingConnections[connection.id].readyPromise, REMOTE_REDIRECT_TIMEOUT);
+                return getTimeLimitedPromise(this.pendingConnections[connection.id].readyPromise, REMOTE_REDIRECT_TIMEOUT);
             });
 
         return shiftingPromise;

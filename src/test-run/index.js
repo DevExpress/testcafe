@@ -24,6 +24,7 @@ import TestRunBookmark from './bookmark';
 import ClientFunctionBuilder from '../client-functions/client-function-builder';
 import ReporterPluginHost from '../reporter/plugin-host';
 import BrowserConsoleMessages from './browser-console-messages';
+import { UNSTABLE_NETWORK_MODE_HEADER } from '../browser/connection/unstable-network-mode';
 
 import { TakeScreenshotOnFailCommand } from './commands/browser-manipulation';
 import { SetNativeDialogHandlerCommand, SetTestSpeedCommand, SetPageLoadTimeoutCommand } from './commands/actions';
@@ -192,6 +193,7 @@ export default class TestRun extends EventEmitter {
             selectorTimeout:              this.opts.selectorTimeout,
             pageLoadTimeout:              this.pageLoadTimeout,
             skipJsErrors:                 this.opts.skipJsErrors,
+            retryTestPages:               !!this.opts.retryTestPages,
             speed:                        this.speed,
             dialogHandler:                JSON.stringify(this.activeDialogHandler)
         });
@@ -202,6 +204,7 @@ export default class TestRun extends EventEmitter {
             testRunId:       JSON.stringify(this.session.id),
             selectorTimeout: this.opts.selectorTimeout,
             pageLoadTimeout: this.pageLoadTimeout,
+            retryTestPages:  !!this.opts.retryTestPages,
             speed:           this.speed,
             dialogHandler:   JSON.stringify(this.activeDialogHandler)
         });
@@ -222,6 +225,11 @@ export default class TestRun extends EventEmitter {
     }
 
     handlePageError (ctx, err) {
+        if (ctx.req.headers[UNSTABLE_NETWORK_MODE_HEADER]) {
+            ctx.closeWithError(500, err.toString());
+            return;
+        }
+
         this.pendingPageError = new PageLoadError(err);
 
         ctx.redirect(ctx.toProxyUrl('about:error'));
