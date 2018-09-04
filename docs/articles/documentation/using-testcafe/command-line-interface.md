@@ -50,7 +50,7 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [--proxy-bypass \<rules\>](#--proxy-bypass-rules)
   * [--dev](#--dev)
   * [--qr-code](#--qr-code)
-  * [--stop-on-first-fail](#--stop-on-first-fail)
+  * [--sf, --stop-on-first-fail](#--sf--stop-on-first-fail)
   * [--color](#--color)
   * [--no-color](#--no-color)
 
@@ -605,12 +605,12 @@ Outputs a QR-code that represents URLs used to connect the [remote browsers](#re
 testcafe remote my-tests --qr-code
 ```
 
-### --stop-on-first-fail
+### --sf, --stop-on-first-fail
 
 Stops an entire test run if any test fails. This allows you not to wait for all the tests included in the test task to finish and allows focusing on the first error.
 
 ```sh
-testcafe chrome my-tests --stop-on-first-fail
+testcafe chrome my-tests --sf
 ```
 
 ### --color
