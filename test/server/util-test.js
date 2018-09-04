@@ -1,4 +1,5 @@
 const path                             = require('path');
+const Module                           = require('module');
 const fs                               = require('fs');
 const del                              = require('del');
 const expect                           = require('chai').expect;
@@ -8,6 +9,7 @@ const parseFileList                    = require('../../lib/utils/parse-file-lis
 const TempDirectory                    = require('../../lib/utils/temp-directory');
 const { replaceLeadingSpacesWithNbsp } = require('../../lib/utils/string');
 const getCommonPath                    = require('../../lib/utils/get-common-path');
+
 
 describe('Utils', () => {
     it('Correct File Path', () => {
@@ -131,7 +133,7 @@ describe('Utils', () => {
     });
 
     it('Get common path', () => {
-        const pathFragemts = [ 'home', 'user1', 'tmp' ];
+        const pathFragemts = ['home', 'user1', 'tmp'];
         const path1        = path.join(...pathFragemts);
         const path2        = path.join(pathFragemts[0], pathFragemts[1]);
         const path3        = path.join(pathFragemts[0], pathFragemts[2]);
@@ -140,5 +142,56 @@ describe('Utils', () => {
         expect(getCommonPath([path1, path1])).eql(path1);
         expect(getCommonPath([path1, path2])).eql(path2);
         expect(getCommonPath([path1, path2, path3])).eql(pathFragemts[0]);
+    });
+
+    describe('Moment Module Loader', () => {
+        const moduleCacheDesciptor    = Object.getOwnPropertyDescriptor(Module, '_cache');
+        const originalLoad            = Module._load;
+
+        beforeEach(() => {
+            for (const cachedModule of Object.keys(require.cache))
+                delete require.cache[cachedModule];
+        });
+
+        afterEach(() => {
+            Module._load = originalLoad;
+
+            Object.defineProperty(Module, '_cache', moduleCacheDesciptor);
+        });
+
+        it('Should work when multiple moment modules are installed (GH-1750)', () => {
+            const momentModulePath = require.resolve('moment');
+
+            for (const cachedModule of Object.keys(require.cache))
+                delete require.cache[cachedModule];
+
+            Module._load = function (...args) {
+                const modulePath = Module._resolveFilename(...args);
+
+                // NOTE: Remove cached moment module to simulate multiple installations of moment
+                if (modulePath === modulePath)
+                    delete Module._cache[momentModulePath];
+
+                return originalLoad.apply(this, args);
+            };
+
+            const moment = require('../../lib/utils/moment-loader');
+
+            expect(moment.duration.format).to.be.ok;
+        });
+
+        it('Should work when modules cache is disabled (GH-2500)', () => {
+            Object.defineProperty(Module, '_cache', {
+                enumerable:   true,
+                configurable: true,
+
+                get: () => Object.create(null),
+                set: v => v
+            });
+
+            const moment = require('../../lib/utils/moment-loader');
+
+            expect(moment.duration.format).to.be.ok;
+        });
     });
 });
