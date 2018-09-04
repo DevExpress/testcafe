@@ -176,6 +176,7 @@ export default class ScrollAutomation {
         const windowHeight     = styleUtils.getInnerHeight(window);
         let scrollPos          = {};
         let needScroll         = true;
+        let scrollDirection    = "left";
 
         while (needScroll) {
             scrollPos = this._getScrollPosition(parentDimensions, childDimensions, offsetX, offsetY);
@@ -183,11 +184,12 @@ export default class ScrollAutomation {
             const { x, y }         = this._getChildPointAfterScroll(parentDimensions, childDimensions, scrollPos.left, scrollPos.top);
             const isTargetObscured = this._isTargetElementObscuredInPoint(x, y);
 
-            this.maxScrollMargin.left += SCROLL_MARGIN_INCREASE_STEP;
+            this.maxScrollMargin[scrollDirection] += SCROLL_MARGIN_INCREASE_STEP;
+
+            scrollDirection = scrollDirection === "left" ? "top" : "left";
 
             if (this.maxScrollMargin.left >= windowWidth) {
                 this.maxScrollMargin.left = DEFAULT_MAX_SCROLL_MARGIN;
-
                 this.maxScrollMargin.top += SCROLL_MARGIN_INCREASE_STEP;
             }
 
