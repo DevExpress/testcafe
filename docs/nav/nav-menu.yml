@@ -195,10 +195,10 @@
 - name: RECIPES
   url: /documentation/recipes/README.md
   content:
-    - name: Debugging with Chrome Developer Tools
-      url: /documentation/recipes/debugging-with-chrome-dev-tools.md
-    - name: Debugging with Visual Studio Code
-      url: /documentation/recipes/debugging-with-visual-studio-code.md
+    - name: Debug in Chrome Developer Tools
+      url: /documentation/recipes/debug-in-chrome-dev-tools.md
+    - name: Debug in Visual Studio Code
+      url: /documentation/recipes/debug-in-visual-studio-code.md
     - name: Integrating TestCafe with CI Systems
       url: /documentation/recipes/integrating-testcafe-with-ci-systems/README.md
       content:
