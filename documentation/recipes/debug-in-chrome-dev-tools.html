@@ -8,20 +8,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <title>Test Static HTML Pages | TestCafe</title>
+  <title>Debug in Chrome Developer Tools | TestCafe</title>
 
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
   
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/recipes/test-static-html-pages.html" />
-  <meta property="og:title" content="Test Static HTML Pages | TestCafe" />
+  <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/recipes/debug-in-chrome-dev-tools.html" />
+  <meta property="og:title" content="Debug in Chrome Developer Tools | TestCafe" />
 
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
-  <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/recipes/test-static-html-pages.html">
+  <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/recipes/debug-in-chrome-dev-tools.html">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="http://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
@@ -372,7 +372,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/recipes/debug-in-chrome-dev-tools.html"  >Debug in Chrome Developer Tools</a>
+<a href="/testcafe/documentation/recipes/debug-in-chrome-dev-tools.html" class="active" >Debug in Chrome Developer Tools</a>
 		
     </li>
 
@@ -453,7 +453,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/recipes/test-static-html-pages.html" class="active" >Test Static HTML Pages</a>
+<a href="/testcafe/documentation/recipes/test-static-html-pages.html"  >Test Static HTML Pages</a>
 		
     </li>
 
@@ -498,51 +498,35 @@
 	<article class="doc">
 		<div class="post-content">
 
-			<h1>Test Static HTML Pages</h1>
-<p>There are many ways to test your static HTML pages using TestCafe, but in this recipe
-we will focus on two simple methods that use a few other packages and can be easily integrated into your workflow.</p>
-
-<ul>
-<li><a href="#install-testcafe-and-create-tests">Install TestCafe and create tests</a></li>
-<li><a href="#option-1---test-webpages-in-the-local-file-system">Option 1 - Test webpages in the local file system</a></li>
-<li><a href="#option-2---set-up-a-local-http-server">Option 2 - Set up a local HTTP server</a></li>
-</ul>
-<h2><a class="anchor" name="install-testcafe-and-create-tests"></a>Install TestCafe and create tests <a class="permalink" href="#install-testcafe-and-create-tests">#</a></h2>
-<p>Install TestCafe <a href="../using-testcafe/installing-testcafe.html#locally">locally</a> in your project and <a href="../getting-started/#creating-a-test">create tests</a>.</p>
-<h2><a class="anchor" name="option-1---test-webpages-in-the-local-file-system"></a>Option 1 - Test webpages in the local file system <a class="permalink" href="#option-1---test-webpages-in-the-local-file-system">#</a></h2>
-<p><a href="../test-api/test-code-structure.html#specifying-the-start-webpage">Specify the target webpage</a> using a relative path or the <code>file://</code> URL scheme.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">file</span><span class="err">:</span><span class="c1">///user/my-website/index.html`</span>
-</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="p">..</span><span class="o">/</span><span class="nx">my</span><span class="o">-</span><span class="nx">website</span><span class="o">/</span><span class="nx">index</span><span class="p">.</span><span class="nx">html</span><span class="err">`</span>
+			<h1>Debug in Chrome Developer Tools</h1>
+<p>Starting with version 6.3.0, Node.js allows you to debug applications in Chrome Developer Tools.
+If you have Chrome and an appropriate version of Node.js installed on your machine,
+you can debug TestCafe test code.</p>
+<blockquote><div class="blockquote-content"><p>This topic describes steps that apply to Node.js v8 and newer.</p>
+</div></blockquote>
+<p>First, run TestCafe in the Node.js debugging mode. To do this, add the <code>--inspect-brk</code> flag to the test run command.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe --inspect-brk chrome ./tests
 </code></pre></div>
-<p>Add a command that runs tests to the <code>package.json</code> file.</p>
-<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="s2">"scripts"</span><span class="err">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="nt">"test"</span><span class="p">:</span><span class="w"> </span><span class="s2">"testcafe chrome ./test/acceptance/**"</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre></div>
-<p>This script runs tests from the <code>./test/acceptance/</code> directory in Chrome.</p>
-<h2><a class="anchor" name="option-2---set-up-a-local-http-server"></a>Option 2 - Set up a local HTTP server <a class="permalink" href="#option-2---set-up-a-local-http-server">#</a></h2>
-<p>Install <a href="https://github.com/indexzero/http-server">http-server</a> that will be used as a local server.</p>
+<p>Put the <code>debugger</code> keyword in test code where you want to stop.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">https</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example`;</span>
 
-<p>Use the <code>--app</code> TestCafe option to provide a command that starts the local server.
-This command will be automatically executed before running tests. After tests are finished, TestCafe will stop the server.</p>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">debugger</span><span class="p">;</span>
+    <span class="nx">await</span> <span class="nx">t</span>
+        <span class="p">.</span><span class="nx">setNativeDialogHandler</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">);</span>
+        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#populate'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div>
+<p>Navigate to <code>chrome://inspect</code> in Google Chrome. In the <strong>Remote Target</strong> section, find the Node.js debugger and click <strong>Inspect</strong>.</p>
 
-<p>Add the following code to <code>package.json</code>.</p>
-<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="s2">"scripts"</span><span class="err">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="nt">"test"</span><span class="p">:</span><span class="w"> </span><span class="s2">"testcafe chrome ./test/acceptance/** --app \"http-server ./my-website -s\""</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre></div>
-<p>This script contains the following commands.</p>
+<p><img src="../../images/chrome-dev-tools/chrome-inspect.png" alt="Inspect Page in Google Chrome"></p>
 
-<ol>
-<li><p><code>&quot;http-server ./my-website -s&quot;</code> - starts the local server at port <code>8080</code> with files from the <code>./my-website</code> folder in silent mode.
-The contents of the <code>./my-website</code> folder will be served at <code>http://localhost:8080</code>. So, if you want to test the <code>./my-website/dir/page.html</code> page,
-use <code>fixture(&#39;...&#39;).page(&#39;http://localhost:8080/dir/page.html&#39;)</code> in your fixture file.</p></li>
-<li><p><code>&quot;testcafe chrome ./test/acceptance/**&quot;</code> - runs TestCafe tests from the <code>./test/acceptance</code> directory in Chrome after the server starts</p></li>
-</ol>
+<p>Chrome will invoke its Developer Tools and the debugger will stop test execution at the first line.
+Click the <strong>Resume script execution</strong> button or press F5 to continue. After that, text execution will pause at the <code>debugger</code> keyword allowing you to debug test code.</p>
 
-<p>For more information on how to configure a test run using a <code>testcafe</code> command, see <a href="../using-testcafe/command-line-interface.html">Command Line Interface</a>.</p>
+<p><img src="../../images/chrome-dev-tools/chrome-dev-tools.png" alt="Debugging in Chrome Dev Tools"></p>
 
 
 		</div>

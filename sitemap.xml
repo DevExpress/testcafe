@@ -178,10 +178,10 @@
 <loc>http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/creating-selectors.html</loc>
 </url>
 <url>
-<loc>http://devexpress.github.io/testcafe/documentation/recipes/debugging-with-chrome-dev-tools.html</loc>
+<loc>http://devexpress.github.io/testcafe/documentation/recipes/debug-in-chrome-dev-tools.html</loc>
 </url>
 <url>
-<loc>http://devexpress.github.io/testcafe/documentation/recipes/debugging-with-visual-studio-code.html</loc>
+<loc>http://devexpress.github.io/testcafe/documentation/recipes/debug-in-visual-studio-code.html</loc>
 </url>
 <url>
 <loc>http://devexpress.github.io/testcafe/documentation/test-api/debugging.html</loc>
@@ -356,10 +356,10 @@
 </url>
 <url>
 <loc>http://devexpress.github.io/testcafe/example/index.html</loc>
-<lastmod>2018-09-03T19:33:02+03:00</lastmod>
+<lastmod>2018-09-05T12:38:32+03:00</lastmod>
 </url>
 <url>
 <loc>http://devexpress.github.io/testcafe/example/thank-you.html</loc>
-<lastmod>2018-09-03T19:33:02+03:00</lastmod>
+<lastmod>2018-09-05T12:38:32+03:00</lastmod>
 </url>
 </urlset>

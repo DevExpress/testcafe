@@ -8,20 +8,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <title>Test Static HTML Pages | TestCafe</title>
+  <title>Debug in Visual Studio Code | TestCafe</title>
 
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
   
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/recipes/test-static-html-pages.html" />
-  <meta property="og:title" content="Test Static HTML Pages | TestCafe" />
+  <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/recipes/debug-in-visual-studio-code.html" />
+  <meta property="og:title" content="Debug in Visual Studio Code | TestCafe" />
 
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
-  <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/recipes/test-static-html-pages.html">
+  <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/recipes/debug-in-visual-studio-code.html">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="http://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
@@ -379,7 +379,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/recipes/debug-in-visual-studio-code.html"  >Debug in Visual Studio Code</a>
+<a href="/testcafe/documentation/recipes/debug-in-visual-studio-code.html" class="active" >Debug in Visual Studio Code</a>
 		
     </li>
 
@@ -453,7 +453,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/recipes/test-static-html-pages.html" class="active" >Test Static HTML Pages</a>
+<a href="/testcafe/documentation/recipes/test-static-html-pages.html"  >Test Static HTML Pages</a>
 		
     </li>
 
@@ -498,52 +498,63 @@
 	<article class="doc">
 		<div class="post-content">
 
-			<h1>Test Static HTML Pages</h1>
-<p>There are many ways to test your static HTML pages using TestCafe, but in this recipe
-we will focus on two simple methods that use a few other packages and can be easily integrated into your workflow.</p>
+			<h1>Debug in Visual Studio Code</h1>
+<p>Before you debug in Visual Studio Code, ensure that your root test directory contains a <code>package.json</code> file that includes <code>testcafe</code> in the <code>devDependencies</code> section.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+  </span><span class="nt">"devDependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"testcafe"</span><span class="p">:</span><span class="w"> </span><span class="s2">"x.y.z"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>where <code>x.y.z</code> is the TestCafe version you use.</p>
+
+<p>Then you need to install TestCafe locally in the test directory.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm install
+</code></pre></div>
+<p>The next step adds a launch configuration used to run TestCafe tests.</p>
+
+<p><img src="../../images/recipe-vscode-configuration-file.png" alt="Configuration File"></p>
+
+<p>See the <a href="https://code.visualstudio.com/docs/editor/debugging#_launch-configurations">Visual Studio Code documentation</a> to learn how to create a configuration.</p>
+
+<p>You need to add the following configuration to the <code>launch.json</code> file.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"node"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"protocol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"inspector"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"request"</span><span class="p">:</span><span class="w"> </span><span class="s2">"launch"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Launch test files with TestCafe"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"program"</span><span class="p">:</span><span class="w"> </span><span class="s2">"${workspaceRoot}/node_modules/testcafe/bin/testcafe.js"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"args"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="s2">"firefox"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"${file}"</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="nt">"console"</span><span class="p">:</span><span class="w"> </span><span class="s2">"integratedTerminal"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"cwd"</span><span class="p">:</span><span class="w"> </span><span class="s2">"${workspaceRoot}"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>This configuration contains the following attributes:</p>
 
 <ul>
-<li><a href="#install-testcafe-and-create-tests">Install TestCafe and create tests</a></li>
-<li><a href="#option-1---test-webpages-in-the-local-file-system">Option 1 - Test webpages in the local file system</a></li>
-<li><a href="#option-2---set-up-a-local-http-server">Option 2 - Set up a local HTTP server</a></li>
+<li><code>type</code> - specifies the configuration type. Set to <code>node</code> for a Node.js configuration.</li>
+<li><code>protocol</code> - specifies the Node.js <a href="https://code.visualstudio.com/docs/nodejs/nodejs-debugging#_supported-nodelike-runtimes">debugger wire protocol</a>. Note that the inspector protocol is supported in Node.js v6.3 (or v6.9 for Windows) or later. For early versions, omit this property. In that case, Node.js uses a legacy debugger protocol. The legacy protocol has issues with source map support, therefore newer versions of Node.js are recommended.</li>
+<li><code>request</code> - specifies the request type. Set to <code>launch</code> since this configuration launches a program.</li>
+<li><code>name</code> - specifies the configuration name.</li>
+<li><code>program</code> - path to the executed JS file. In this case, this file is the TestCafe module.</li>
+<li><code>args</code> - <a href="../using-testcafe/command-line-interface.html">command line arguments</a> passed to the launched program. In this case, they specify the browser in which the tests should run and the test file.</li>
+<li><code>console</code> - the console where the test run report is printed. In this case, the report is output to the integrated terminal. You can learn about other available values in the <a href="https://code.visualstudio.com/docs/editor/debugging#_launchjson-attributes">Launch.json attributes</a> topic.</li>
+<li><code>cwd</code> - the current working directory. Set to the workspace root.</li>
 </ul>
-<h2><a class="anchor" name="install-testcafe-and-create-tests"></a>Install TestCafe and create tests <a class="permalink" href="#install-testcafe-and-create-tests">#</a></h2>
-<p>Install TestCafe <a href="../using-testcafe/installing-testcafe.html#locally">locally</a> in your project and <a href="../getting-started/#creating-a-test">create tests</a>.</p>
-<h2><a class="anchor" name="option-1---test-webpages-in-the-local-file-system"></a>Option 1 - Test webpages in the local file system <a class="permalink" href="#option-1---test-webpages-in-the-local-file-system">#</a></h2>
-<p><a href="../test-api/test-code-structure.html#specifying-the-start-webpage">Specify the target webpage</a> using a relative path or the <code>file://</code> URL scheme.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">file</span><span class="err">:</span><span class="c1">///user/my-website/index.html`</span>
-</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="p">..</span><span class="o">/</span><span class="nx">my</span><span class="o">-</span><span class="nx">website</span><span class="o">/</span><span class="nx">index</span><span class="p">.</span><span class="nx">html</span><span class="err">`</span>
-</code></pre></div>
-<p>Add a command that runs tests to the <code>package.json</code> file.</p>
-<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="s2">"scripts"</span><span class="err">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="nt">"test"</span><span class="p">:</span><span class="w"> </span><span class="s2">"testcafe chrome ./test/acceptance/**"</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre></div>
-<p>This script runs tests from the <code>./test/acceptance/</code> directory in Chrome.</p>
-<h2><a class="anchor" name="option-2---set-up-a-local-http-server"></a>Option 2 - Set up a local HTTP server <a class="permalink" href="#option-2---set-up-a-local-http-server">#</a></h2>
-<p>Install <a href="https://github.com/indexzero/http-server">http-server</a> that will be used as a local server.</p>
 
-<p>Use the <code>--app</code> TestCafe option to provide a command that starts the local server.
-This command will be automatically executed before running tests. After tests are finished, TestCafe will stop the server.</p>
+<p>Save the <code>launch.json</code> file. The new configuration then appears in the configuration drop-down.</p>
 
-<p>Add the following code to <code>package.json</code>.</p>
-<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="s2">"scripts"</span><span class="err">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="nt">"test"</span><span class="p">:</span><span class="w"> </span><span class="s2">"testcafe chrome ./test/acceptance/** --app \"http-server ./my-website -s\""</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre></div>
-<p>This script contains the following commands.</p>
+<p><img src="../../images/recipe-vscode-select-configuration.png" alt="Select Configuration"></p>
 
-<ol>
-<li><p><code>&quot;http-server ./my-website -s&quot;</code> - starts the local server at port <code>8080</code> with files from the <code>./my-website</code> folder in silent mode.
-The contents of the <code>./my-website</code> folder will be served at <code>http://localhost:8080</code>. So, if you want to test the <code>./my-website/dir/page.html</code> page,
-use <code>fixture(&#39;...&#39;).page(&#39;http://localhost:8080/dir/page.html&#39;)</code> in your fixture file.</p></li>
-<li><p><code>&quot;testcafe chrome ./test/acceptance/**&quot;</code> - runs TestCafe tests from the <code>./test/acceptance</code> directory in Chrome after the server starts</p></li>
-</ol>
+<p>Now you can open a file with TestCafe tests, select the <code>&quot;Launch test files with TestCafe&quot;</code> configuration and click the <strong>Run</strong> button.
+Tests run with the debugger attached. You can put breakpoints in test code and the debugger stops at them.</p>
 
-<p>For more information on how to configure a test run using a <code>testcafe</code> command, see <a href="../using-testcafe/command-line-interface.html">Command Line Interface</a>.</p>
-
+<p><img src="../../images/recipe-vscode-debugging-breakpoint.png" alt="Stop at a Breakpoint"></p>
+<blockquote class="important"><div class="blockquote-content"><p>If you do not select the <code>&quot;Launch test files with TestCafe&quot;</code> configuration, Visual Studio Code tries to run the test file as a program and throws an error.</p>
+</div></blockquote>
 
 		</div>
 	</article>
