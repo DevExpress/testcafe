@@ -36,6 +36,10 @@ test('Incorrect action path argument', async t => {
     await t.takeScreenshot(1);
 });
 
+test('Forbidden characters in the path argument', async t => {
+    await t.takeScreenshot('path:with*forbidden|chars');
+});
+
 test('Take a screenshot in quarantine mode', async t => {
     await t
         .takeScreenshot()

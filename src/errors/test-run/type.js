@@ -57,6 +57,7 @@ export default {
     externalAssertionLibraryError:                     'externalAssertionLibraryError',
     pageLoadError:                                     'pageLoadError',
     windowDimensionsOverflowError:                     'windowDimensionsOverflowError',
+    forbiddenCharactersInScreenshotPathError:          'forbiddenCharactersInScreenshotPathError',
     invalidElementScreenshotDimensionsError:           'invalidElementScreenshotDimensionsError',
     roleSwitchInRoleInitializerError:                  'roleSwitchInRoleInitializerError',
     assertionExecutableArgumentError:                  'assertionExecutableArgumentError',

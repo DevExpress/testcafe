@@ -1,7 +1,7 @@
 import { join as joinPath, dirname, basename } from 'path';
 import { generateThumbnail } from 'testcafe-browser-tools';
 import cropScreenshot from './crop';
-import { ensureDir } from '../utils/promisified-functions';
+import makeDir from 'make-dir';
 import { isInQueue, addToQueue } from '../utils/async-queue';
 import WARNING_MESSAGE from '../notifications/warning-message';
 import escapeUserAgent from '../utils/escape-user-agent';
@@ -89,7 +89,7 @@ export default class Capturer {
     }
 
     async _takeScreenshot (filePath, pageWidth, pageHeight) {
-        await ensureDir(dirname(filePath));
+        await makeDir(dirname(filePath));
         await this.provider.takeScreenshot(this.browserId, filePath, pageWidth, pageHeight);
     }
 

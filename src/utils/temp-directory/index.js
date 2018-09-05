@@ -3,9 +3,10 @@ import os from 'os';
 import path from 'path';
 import setupExitHook from 'async-exit-hook';
 import tmp from 'tmp';
+import makeDir from 'make-dir';
 import LockFile from './lockfile';
 import cleanupProcess from './cleanup-process';
-import { ensureDir, readDir } from '../../utils/promisified-functions';
+import { readDir } from '../../utils/promisified-functions';
 
 
 // NOTE: mutable for testing purposes
@@ -50,7 +51,7 @@ export default class TempDirectory {
     async _createNewTmpDir () {
         this.path = tmp.tmpNameSync({ dir: TempDirectory.TEMP_DIRECTORIES_ROOT, prefix: this.namePrefix + '-' });
 
-        await ensureDir(this.path);
+        await makeDir(this.path);
 
         this.lockFile = new LockFile(this.path);
 
@@ -79,7 +80,7 @@ export default class TempDirectory {
     }
 
     async init () {
-        await ensureDir(TempDirectory.TEMP_DIRECTORIES_ROOT);
+        await makeDir(TempDirectory.TEMP_DIRECTORIES_ROOT);
 
         const tmpDirNames = await this._getTmpDirsList(this.namePrefix);
 

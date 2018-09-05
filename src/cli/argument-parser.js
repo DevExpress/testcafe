@@ -1,14 +1,13 @@
 import { resolve, dirname } from 'path';
 import { Command } from 'commander';
-import Promise from 'pinkie';
 import dedent from 'dedent';
 import { readSync as read } from 'read-file-relative';
+import makeDir from 'make-dir';
 import { GeneralError } from '../errors/runtime';
 import MESSAGE from '../errors/runtime/message';
 import { assertType, is } from '../errors/runtime/type-assertions';
 import getViewPortWidth from '../utils/get-viewport-width';
 import { wordWrap, splitQuotedText } from '../utils/string';
-import { ensureDir } from '../utils/promisified-functions';
 import parseSslOptions from './parse-ssl-options';
 
 const REMOTE_ALIAS_RE = /^remote(?::(\d*))?$/;
@@ -233,21 +232,13 @@ export default class CLIArgumentParser {
             if (reporter.outFile) {
                 reporter.outFile = resolve(this.cwd, reporter.outFile);
 
-                await ensureDir(dirname(reporter.outFile));
+                await makeDir(dirname(reporter.outFile));
             }
         }
     }
 
     _parseFileList () {
         this.src = this.program.args.slice(1);
-    }
-
-    async _parseScreenshotsPath () {
-        if (this.opts.screenshots) {
-            this.opts.screenshots = resolve(this.cwd, this.opts.screenshots);
-
-            await ensureDir(this.opts.screenshots);
-        }
     }
 
     _getProviderName () {
@@ -278,9 +269,6 @@ export default class CLIArgumentParser {
         this._parseSslOptions();
         this._parseFileList();
 
-        await Promise.all([
-            this._parseScreenshotsPath(),
-            this._parseReporters()
-        ]);
+        await this._parseReporters();
     }
 }

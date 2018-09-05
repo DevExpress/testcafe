@@ -36,5 +36,6 @@ export default {
     unableToOpenBrowser:                   'Was unable to open the browser "{alias}" due to error.\n\n{errMessage}',
     testControllerProxyCantResolveTestRun: `Cannot implicitly resolve the test run in the context of which the test controller action should be executed. Use test function's 't' argument instead.`,
     requestHookConfigureAPIError:          'There was an error while configuring the request hook:\n\n{requestHookName}: {errMsg}',
-    timeLimitedPromiseTimeoutExpired:      'Timeout expired for a time limited promise'
+    timeLimitedPromiseTimeoutExpired:      'Timeout expired for a time limited promise',
+    forbiddenCharatersInScreenshotPath:    'There are forbidden characters in the "{screenshotPath}" {screenshotPathType}:\n {forbiddenCharsDescription}'
 };

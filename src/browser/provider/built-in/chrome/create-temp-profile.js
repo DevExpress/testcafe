@@ -1,13 +1,14 @@
 import path from 'path';
+import makeDir from 'make-dir';
 import TempDirectory from '../../../../utils/temp-directory';
-import { writeFile, ensureDir } from '../../../../utils/promisified-functions';
+import { writeFile } from '../../../../utils/promisified-functions';
 
 
 export default async function (proxyHostName) {
     const tempDir        = await TempDirectory.createDirectory('chrome-profile');
     const profileDirName = path.join(tempDir.path, 'Default');
 
-    await ensureDir(profileDirName);
+    await makeDir(profileDirName);
 
     const preferences = {
         'credentials_enable_service': false,

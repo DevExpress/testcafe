@@ -3,8 +3,8 @@ const path             = require('path');
 const config           = require('../../../../config');
 const assertionHelper  = require('../../../../assertion-helper');
 
-const SCREENSHOT_PATH_MESSAGE_RE = /^___test-screenshots___[\\/]\d{4,4}-\d{2,2}-\d{2,2}_\d{2,2}-\d{2,2}-\d{2,2}[\\/]test-1/;
-const ERROR_SCREENSHOT_PATH_RE   = /Screenshot: ___test-screenshots___[\\/]\d{4,4}-\d{2,2}-\d{2,2}_\d{2,2}-\d{2,2}-\d{2,2}[\\/]test-1[\\/]\S+[\\/]errors[\\/]\d.png/;
+const SCREENSHOT_PATH_MESSAGE_RE = /___test-screenshots___[\\/]\d{4,4}-\d{2,2}-\d{2,2}_\d{2,2}-\d{2,2}-\d{2,2}[\\/]test-1/;
+const ERROR_SCREENSHOT_PATH_RE   = /Screenshot: .*?___test-screenshots___[\\/]\d{4,4}-\d{2,2}-\d{2,2}_\d{2,2}-\d{2,2}-\d{2,2}[\\/]test-1[\\/]\S+[\\/]errors[\\/]\d.png/;
 
 if (config.useLocalBrowsers) {
     describe('[Legacy] Smoke tests', () => {

@@ -5,7 +5,7 @@ import { initSelector } from './validations/initializers';
 
 import {
     positiveIntegerArgument,
-    nonEmptyStringArgument,
+    screenshotPathArgument,
     resizeWindowDeviceArgument,
     actionOptions
 } from './validations/argument';
@@ -42,7 +42,7 @@ export class TakeScreenshotCommand extends TakeScreenshotBaseCommand {
 
     _getAssignableProperties () {
         return [
-            { name: 'path', type: nonEmptyStringArgument, defaultValue: '' }
+            { name: 'path', type: screenshotPathArgument, defaultValue: '' }
         ];
     }
 }
@@ -56,7 +56,7 @@ export class TakeElementScreenshotCommand extends TakeScreenshotBaseCommand {
         return [
             { name: 'selector', init: initSelector, required: true },
             { name: 'options', init: initElementScreenshotOptions, required: true },
-            { name: 'path', type: nonEmptyStringArgument, defaultValue: '' }
+            { name: 'path', type: screenshotPathArgument, defaultValue: '' }
         ];
     }
 }

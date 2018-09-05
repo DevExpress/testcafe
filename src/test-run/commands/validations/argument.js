@@ -19,10 +19,12 @@ import {
     ActionStringOrStringArrayArgumentError,
     ActionStringArrayElementError,
     ActionUnsupportedDeviceTypeError,
-    SetTestSpeedArgumentError
+    SetTestSpeedArgumentError,
+    ForbiddenCharactersInScreenshotPathError
 } from '../../../errors/test-run';
 
 import { assertUrl } from '../../../api/test-page-url';
+import checkFilePath from '../../../utils/check-file-path';
 
 
 // Validators
@@ -102,4 +104,13 @@ export function resizeWindowDeviceArgument (name, val) {
 
     if (!isValidDeviceName(val))
         throw new ActionUnsupportedDeviceTypeError(name, val);
+}
+
+export function screenshotPathArgument (name, val) {
+    nonEmptyStringArgument(name, val);
+
+    const forbiddenCharsList = checkFilePath(val);
+
+    if (forbiddenCharsList.length)
+        throw new ForbiddenCharactersInScreenshotPathError(val, forbiddenCharsList);
 }
