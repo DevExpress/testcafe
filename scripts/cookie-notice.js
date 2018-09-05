@@ -6,9 +6,20 @@ $(function(){
         $('.cookie-notice').removeClass('visible');
     }
 
-    if(!window.localStorage.getItem(COOKIE_CONSENT_FLAG)) {
-        $('.cookie-notice').addClass('visible');
+    function isLocalStorageAvailable() {
+        try {
+            window.localStorage.setItem('test', 1);
+            window.localStorage.removeItem('test');
+            return true;
+        } catch(err) {
+            return false;
+        }
     }
+
+    var wasCookieNoticeShown = window.localStorage.getItem(COOKIE_CONSENT_FLAG);
+
+    if(isLocalStorageAvailable() && !wasCookieNoticeShown)
+        $('.cookie-notice').addClass('visible');
 
     $('.close-icon').on('click', closeNotice);
     $('.cookie-notice-button').on('click', closeNotice);

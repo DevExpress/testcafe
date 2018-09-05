@@ -270,8 +270,8 @@ table > tbody > tr > td {
     padding: 5px 15px 7px; }
     @media (max-width: 1310px) {
       .site-nav .site-nav-tab {
-        padding-left: 10px;
-        padding-right: 10px; } }
+        padding-left: 7px;
+        padding-right: 7px; } }
     .site-nav .site-nav-tab.active {
       background-color: #ebeeef;
       border-radius: 5px; }
