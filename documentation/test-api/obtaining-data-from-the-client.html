@@ -12,7 +12,7 @@
 
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
-  
+
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
   <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/test-api/obtaining-data-from-the-client.html" />
@@ -29,6 +29,10 @@
   <script defer src="https://buttons.github.io/buttons.js"></script>
   <script defer type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.3.min.js"></script>
   <script src="/testcafe/scripts/mobile-detect.min.js" type="text/javascript"></script>
+  <script>
+     var md             = new MobileDetect(window.navigator.userAgent);
+     var isMobileDevice = !!md.mobile();
+  </script>
   <script>
       document.addEventListener('DOMContentLoaded', function (e) {
           hljs.initHighlightingOnLoad();
@@ -52,10 +56,87 @@
   
   
 
+  <script>
+    function linkCss (href) {
+        var link  = document.createElement('link');
+        var html  = document.querySelector('html');
+        var head  = document.head;
+
+        link.rel  = 'stylesheet';
+        link.type = 'text/css';
+        link.href = href;
+        link.media = 'all';
+
+        head.appendChild(link);
+
+        window.addEventListener('load', function () {
+            html.style.display = 'block';
+        });
+
+        html.style.display = 'none';
+    }
+  </script>
+    
+    
+    <script>
+        if (isMobileDevice) {
+            document.addEventListener('DOMContentLoaded', function (e) {
+                var siteNav         = document.querySelector('.site-nav');
+                var hamburgerButton = document.querySelector('.hamburger-button');
+
+                hamburgerButton.addEventListener('click', function (e) {
+                    if (hamburgerButton.className.indexOf('active') !== -1) {
+                        hamburgerButton.className = hamburgerButton.className.replace(' active', '');
+                        siteNav.className = siteNav.className.replace(' active', '');
+                        document.documentElement.style.overflowY = 'scroll';
+                    }
+                    else {
+                        hamburgerButton.className += ' active';
+                        siteNav.className += ' active';
+                        document.documentElement.style.overflowY = 'hidden';
+                    }
+                });
+
+                var docTopNav          = document.querySelector('.doc-top-nav');
+                var siteNav            = document.querySelector('.site-nav');
+                var docMenuItem        = document.querySelector('.site-nav-tab');
+                var mainMenuSecondItem = document.querySelector('.site-nav-tab:nth-child(2)');
+
+                siteNav.insertBefore(docTopNav, mainMenuSecondItem);
+
+                var docMenuItemIcon = document.createElement('div');
+
+                docMenuItemIcon.className = 'doc-menu-item-icon';
+                docMenuItem.appendChild(docMenuItemIcon);
+
+                
+                    docMenuItem.className += ' expanded';
+                    docTopNav.className += ' expanded';
+                
+
+                docMenuItem.addEventListener('click', function (e) {
+                    if (docTopNav.className.indexOf('expanded') !== -1) {
+                        docMenuItem.className = docMenuItem.className.replace(' expanded', '');
+                        docTopNav.className = docTopNav.className.replace(' expanded', '');
+                    }
+                    else {
+                        docMenuItem.className += ' expanded';
+                        docTopNav.className += ' expanded';
+                    }
+                    e.preventDefault();
+                });
+            });
+
+            linkCss('/testcafe/css/mobile.css');
+        }
+    </script>
+    
+
   
 
   
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/css/perfect-scrollbar.min.css">
+    <link rel="stylesheet" href="/testcafe/css/docs.css">
     <style>
         .ps-container > .ps-scrollbar-x-rail,
         .ps-container > .ps-scrollbar-y-rail {
@@ -72,23 +153,9 @@
 
         var nav            = null;
         var article        = null;
-        var md             = new MobileDetect(window.navigator.userAgent);
-        var isMobileDevice = !!md.mobile();
 
         function setNavTopPosition () {
-            var isMobileZoomed = isMobileDevice && window.innerWidth !== document.body.scrollWidth;
-            var top            = null;
-
-            if(isMobileDevice) {
-                top = window.pageYOffset >= HEADER_HEIGHT ? window.pageYOffset - HEADER_HEIGHT + 'px' : '0';
-
-                if (nav.style.paddingTop !== top) {
-                    nav.style.paddingTop = top;
-                    Ps.update(nav);
-                }
-
-                return;
-            }
+            var top = null;
 
             if (document.body.clientWidth > MIN_BODY_WIDTH) {
                 if (nav.style.top !== HEADER_HEIGHT + 'px') {
@@ -96,7 +163,7 @@
                     Ps.update(nav);
                 }
             }
-            else if(!isMobileZoomed) {
+            else {
                 top = window.pageYOffset <= HEADER_HEIGHT ? HEADER_HEIGHT - window.pageYOffset + 'px' : '0';
 
                 if (nav.style.top !== top) {
@@ -123,10 +190,7 @@
         }
 
         function updatePosition () {
-            if (isMobileDevice)
-                changeBodyHeight();
-            else
-                nav.style.marginLeft = '-' + window.pageXOffset + 'px';
+            nav.style.marginLeft = '-' + window.pageXOffset + 'px';
 
             setNavBottomPosition();
             setNavTopPosition();
@@ -146,32 +210,44 @@
         }
 
         function initNav() {
-            if(isMobileDevice) {
-                nav.style.position = 'relative';
-                nav.style.float = 'left';
-                nav.style.top = '0px';
-
-                article.style.marginTop = '0px';
-                article.style.paddingTop = '22px';
-            }
-
             initScrollBar();
             updatePosition();
             window.addEventListener('scroll', updatePosition);
             window.addEventListener('resize', updatePosition);
-
-            if(isMobileDevice) {
-                nav.style.height = window.innerHeight + 'px';
-            }
         }
 
         document.addEventListener('DOMContentLoaded', function (e) {
+            if (isMobileDevice)
+                return;
+
             nav     = document.querySelector('.doc-nav');
             article = document.querySelector('.doc');
 
-            if(nav)
+            if (nav)
                 initNav(nav);
         });
+    </script>
+    
+    <script>
+        if (isMobileDevice && false == false) {
+            document.addEventListener('DOMContentLoaded', function (e) {
+                var toggleNavButton = document.querySelector('.toggle-nav-button');
+                var docNav          = document.querySelector('.doc-nav');
+
+                toggleNavButton.addEventListener('click', function (e) {
+                    if (docNav.className.indexOf('active') !== -1) {
+                        docNav.className = docNav.className.replace(' active', '');
+                        document.documentElement.style.overflowY = 'scroll';
+                    }
+                    else {
+                        docNav.className += ' active';
+                        document.documentElement.style.overflowY = 'hidden';
+                    }
+                });
+            });
+
+            linkCss('/testcafe/css/docs.mobile.css');
+        }
     </script>
   
     <script>
@@ -191,10 +267,10 @@
                 if(contentWrapper)
                     contentWrapper.style.paddingTop = bodyMinimized ? '0' : '';
 
-                if(article)
+                if(article && !isMobileDevice)
                     article.style.marginTop = bodyMinimized ? '21px' : '72px';
- 
-                if(gs)
+
+                if(gs && !isMobileDevice)
                     gs.style.paddingTop = bodyMinimized ? '21px' : '72px';
             }
 
@@ -209,7 +285,7 @@
             var article        = document.querySelector('.doc');
             var gs             = document.querySelector('.gs');
 
-            if(siteHeader) 
+            if(siteHeader)
                 initHeader(siteHeader, contentWrapper, docTopMenu, article, gs);
         });
     </script>
@@ -222,6 +298,9 @@
       <header class="site-header fixed">
   <div class="site-header-content">
     <a class="site-logo" href="/testcafe/"></a>
+    <div class="hamburger-button">
+        <div class="hamburger-icon"></div>
+    </div>
     <nav class="site-nav">
         
           
@@ -268,7 +347,7 @@
           <input type="text" placeholder="Search query" id="search"/>
           <div id="close-search"></div>
       </div>
-      </nav>
+    </nav>
   </div>
 </header>
 
@@ -282,10 +361,12 @@
     return false;
   }
 
-  function closeSearchBox(e) {
-      var clickOutsideSearchBox = searchPanel !== e.target && !has(searchPanel, e.target);
+  function clickOutsideBox(e, box) {
+      return box !== e.target && !has(box, e.target);
+  }  
 
-      if(clickOutsideSearchBox && searchPanel.className.indexOf('hidden') === -1) 
+  function closeSearchBox(e) {
+      if(clickOutsideBox(e, searchPanel) && searchPanel.className.indexOf('hidden') === -1) 
           searchPanel.className += ' hidden';
   }
 
@@ -305,6 +386,40 @@
 
   window.addEventListener('mousedown', closeSearchBox);        
   window.addEventListener('touchstart', closeSearchBox);
+
+  if (window.isMobileDevice) {
+      function closeHamburgerMenuBox(e) {
+          if(clickOutsideBox(e, hamburgerMenu) && clickOutsideBox(e, hamburgerButton) && hamburgerMenu.className.indexOf('active') !== -1) {
+              hamburgerMenu.className = hamburgerMenu.className.replace(' active', '');
+              hamburgerButton.className = hamburgerButton.className.replace(' active', '');
+              document.documentElement.style.overflowY = 'scroll';
+          }
+      }
+
+      var hamburgerMenu = document.querySelector('.site-nav');
+      var hamburgerButton = document.querySelector('.hamburger-button');
+
+      window.addEventListener('mousedown', closeHamburgerMenuBox);        
+      window.addEventListener('touchstart', closeHamburgerMenuBox);
+
+      window.addEventListener('DOMContentLoaded', function (e) {
+          var docNav = document.querySelector('.doc-nav');
+
+          if(docNav) {
+              function closeDocNav(e) {
+                  if(clickOutsideBox(e, docNav) && clickOutsideBox(e, toggleNavButton) && docNav.className.indexOf('active') !== -1) {
+                      docNav.className = docNav.className.replace(' active', '');
+                      document.documentElement.style.overflowY = 'scroll';
+                  }
+              }
+
+              var toggleNavButton = document.querySelector('.toggle-nav-button');
+
+              window.addEventListener('mousedown', closeDocNav);        
+              window.addEventListener('touchstart', closeDocNav);
+          }
+      });
+  }
 </script>
 
 <script>
@@ -315,36 +430,33 @@
   });
 </script>
 
-
-
-  <div class="doc-top-nav">
-    <div class="doc-top-nav-content">
-      <div class="doc-top-nav-wrapper">
-        
-          <div class="doc-top-nav-tab " >
-            <a href="/testcafe/documentation/getting-started/">Getting Started</a>      
-          </div>
-        
-          <div class="doc-top-nav-tab " >
-            <a href="/testcafe/documentation/using-testcafe/">Using TestCafe</a>      
-          </div>
-        
-          <div class="doc-top-nav-tab active" >
-            <a href="/testcafe/documentation/test-api/">Test API</a>      
-          </div>
-        
-          <div class="doc-top-nav-tab " >
-            <a href="/testcafe/documentation/extending-testcafe/">Extending TestCafe</a>      
-          </div>
-        
-          <div class="doc-top-nav-tab " >
-            <a href="/testcafe/documentation/recipes/">Recipes</a>      
-          </div>
-        
-      </div>
+<div class="doc-top-nav">
+  <div class="doc-top-nav-content">
+    <div class="doc-top-nav-wrapper">
+      
+        <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/getting-started/">Getting Started</a>      
+        </div>
+      
+        <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/using-testcafe/">Using TestCafe</a>      
+        </div>
+      
+        <div class="doc-top-nav-tab active" >
+          <a href="/testcafe/documentation/test-api/">Test API</a>      
+        </div>
+      
+        <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/extending-testcafe/">Extending TestCafe</a>      
+        </div>
+      
+        <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/recipes/">Recipes</a>      
+        </div>
+      
     </div>
   </div>
-
+</div>
 
 
       <div class="container">
@@ -357,6 +469,9 @@
 
 	
 	
+	<div class="doc-nav-panel">
+		<div class="toggle-nav-button"></div>
+	</div>
 	<nav class="doc-nav">	
 		<div class="doc-nav-content">
 			<ul>
@@ -870,15 +985,12 @@ To interact with the page, use <a href="actions/">test actions</a>.</p>
 <h2><a class="anchor" name="creating-client-functions"></a>Creating Client Functions <a class="permalink" href="#creating-client-functions">#</a></h2>
 <p>To create a client function, use the <code>ClientFunction</code> constructor.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">ClientFunction( fn [, options] )
-</code></pre></div>
-<table><thead>
-<tr>
+</code></pre></div><div class="table-wrapper"><table><thead><tr>
 <th>Parameter</th>
 <th>Type</th>
 <th>Description</th>
 </tr>
-</thead><tbody>
-<tr>
+</thead><tbody><tr>
 <td><code>fn</code></td>
 <td>Function</td>
 <td>A function to be executed on the client side.</td>
@@ -888,35 +1000,34 @@ To interact with the page, use <a href="actions/">test actions</a>.</p>
 <td>Object</td>
 <td>See <a href="#options">Options</a>.</td>
 </tr>
-</tbody></table>
-<blockquote class="important"><div class="blockquote-content"><p>Client functions cannot return DOM nodes. Use <a href="selecting-page-elements/selectors/">selectors</a> for this.</p>
+</tbody></table></div><blockquote class="important"><div class="blockquote-content"><p>Client functions cannot return DOM nodes. Use <a href="selecting-page-elements/selectors/">selectors</a> for this.</p>
 </div></blockquote>
 <p>The following example shows how to create a client function.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">getWindowLocation</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">getWindowLocation</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">);</span>
 </code></pre></div><h3><a class="anchor" name="running-asynchronous-client-code"></a>Running Asynchronous Client Code <a class="permalink" href="#running-asynchronous-client-code">#</a></h3>
 <p>You can create client functions that run asynchronous code.
 To this end, pass a function that returns a Promise to the <code>ClientFunction</code> constructor.
 In this instance, the client function will complete only when this Promise resolves.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">performAsyncOperation</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">Promise</span><span class="p">(</span><span class="nx">resolve</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="kd">const</span> <span class="nx">performAsyncOperation</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nb">Promise</span><span class="p">(</span><span class="nx">resolve</span> <span class="o">=&gt;</span> <span class="p">{</span>
         <span class="nb">window</span><span class="p">.</span><span class="nx">setTimeout</span><span class="p">(</span><span class="nx">resolve</span><span class="p">,</span> <span class="mi">500</span><span class="p">);</span> <span class="c1">// some async operations</span>
     <span class="p">});</span>
 <span class="p">});</span>
 </code></pre></div><h2><a class="anchor" name="executing-client-functions"></a>Executing Client Functions <a class="permalink" href="#executing-client-functions">#</a></h2>
 <p>To execute a client function, call it with the <code>await</code> keyword.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">getWindowLocation</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">getWindowLocation</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">);</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//www.example.com/`;</span>
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://www.example.com/`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My Test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">location</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">getWindowLocation</span><span class="p">();</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My Test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">location</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">getWindowLocation</span><span class="p">();</span>
 <span class="p">});</span>
 </code></pre></div><h2><a class="anchor" name="options"></a>Options <a class="permalink" href="#options">#</a></h2>
 <p>You can pass the following options to the
@@ -931,11 +1042,11 @@ Properties of the <code>dependencies</code> object will be added to the client f
 <p>The following sample demonstrates a client function (<code>getArticleHeaderHTML</code>) that
 calls a <a href="selecting-page-elements/selectors/">selector</a> (<code>articleHeader</code>) internally.
 This selector is passed to <code>getArticleHeaderHTML</code> as a dependency.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span><span class="p">,</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span><span class="p">,</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">articleHeader</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#article-header'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">articleHeader</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#article-header'</span><span class="p">);</span>
 
-<span class="kr">const</span> <span class="nx">getArticleHeaderHTML</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nx">articleHeader</span><span class="p">().</span><span class="nx">innerHTML</span><span class="p">,</span> <span class="p">{</span>
+<span class="kd">const</span> <span class="nx">getArticleHeaderHTML</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nx">articleHeader</span><span class="p">().</span><span class="nx">innerHTML</span><span class="p">,</span> <span class="p">{</span>
      <span class="na">dependencies</span><span class="p">:</span> <span class="p">{</span> <span class="nx">articleHeader</span> <span class="p">}</span>
 <span class="p">});</span>
 </code></pre></div><blockquote><div class="blockquote-content"><p>When a client function calls a <a href="selecting-page-elements/selectors/">selector</a> internally,
@@ -957,34 +1068,31 @@ to the <code>boundTestRun</code> option.</p>
 from the original function and new <code>options</code> that overwrite the original ones.</p>
 
 <p>The sample below shows how to overwrite the client function options.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span><span class="p">,</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span><span class="p">,</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">option</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'option'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">option</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'option'</span><span class="p">);</span>
 
-<span class="kr">const</span> <span class="nx">thirdOption</span> <span class="o">=</span> <span class="nx">option</span><span class="p">.</span><span class="nx">nth</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">thirdOption</span> <span class="o">=</span> <span class="nx">option</span><span class="p">.</span><span class="nx">nth</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
 
-<span class="kr">const</span> <span class="nx">getThirdOptionHTML</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nx">option</span><span class="p">().</span><span class="nx">innerHTML</span><span class="p">,</span> <span class="p">{</span>
+<span class="kd">const</span> <span class="nx">getThirdOptionHTML</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nx">option</span><span class="p">().</span><span class="nx">innerHTML</span><span class="p">,</span> <span class="p">{</span>
      <span class="na">dependencies</span><span class="p">:</span> <span class="p">{</span> <span class="na">option</span><span class="p">:</span> <span class="nx">thirdOption</span> <span class="p">}</span>
 <span class="p">});</span>
 
-<span class="kr">const</span> <span class="nx">fourthOption</span> <span class="o">=</span> <span class="nx">option</span><span class="p">.</span><span class="nx">nth</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">fourthOption</span> <span class="o">=</span> <span class="nx">option</span><span class="p">.</span><span class="nx">nth</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
 
-<span class="kr">const</span> <span class="nx">getFourthOptionHTML</span> <span class="o">=</span> <span class="nx">getThirdOptionHTML</span><span class="p">.</span><span class="kd">with</span><span class="p">({</span>
+<span class="kd">const</span> <span class="nx">getFourthOptionHTML</span> <span class="o">=</span> <span class="nx">getThirdOptionHTML</span><span class="p">.</span><span class="kd">with</span><span class="p">({</span>
     <span class="na">dependencies</span><span class="p">:</span> <span class="p">{</span> <span class="na">option</span><span class="p">:</span> <span class="nx">fourthOption</span> <span class="p">}</span>
 <span class="p">});</span>
 </code></pre></div><h2><a class="anchor" name="one-time-client-code-execution"></a>One-Time Client Code Execution <a class="permalink" href="#one-time-client-code-execution">#</a></h2>
 <p>To create a client function and immediately execute it without saving it,
 use the <code>eval</code> method of the <a href="test-code-structure.html#test-controller">test controller</a>.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">t.eval( fn [, options] )
-</code></pre></div>
-<table><thead>
-<tr>
+</code></pre></div><div class="table-wrapper"><table><thead><tr>
 <th>Parameter</th>
 <th>Type</th>
 <th>Description</th>
 </tr>
-</thead><tbody>
-<tr>
+</thead><tbody><tr>
 <td><code>fn</code></td>
 <td>Function</td>
 <td>A function to be executed on the client side.</td>
@@ -994,14 +1102,13 @@ use the <code>eval</code> method of the <a href="test-code-structure.html#test-c
 <td>Object</td>
 <td>See <a href="#options">Options</a>.</td>
 </tr>
-</tbody></table>
-
+</tbody></table></div>
 <p>The following example shows how to get the document&#39;s URI with <code>t.eval</code>.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//www.example.com/`;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://www.example.com/`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My Test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">docURI</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nb">eval</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">documentURI</span><span class="p">);</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My Test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">docURI</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">t</span><span class="p">.</span><span class="kr">eval</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">documentURI</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div><h2><a class="anchor" name="calling-client-functions-from-nodejs-callbacks"></a>Calling Client Functions from Node.js Callbacks <a class="permalink" href="#calling-client-functions-from-nodejs-callbacks">#</a></h2>
 <p>Client functions need access to the <a href="test-code-structure.html#test-controller">test controller</a> to be executed.
@@ -1011,18 +1118,18 @@ When called right from the test function, they implicitly obtain the test contro
 you will have to manually bind this function to the test controller.</p>
 
 <p>Use the <a href="#optionsboundtestrun">boundTestRun</a> option for this.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="nx">fs</span> <span class="nx">from</span> <span class="s1">'fs'</span><span class="p">;</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="nx">fs</span> <span class="k">from</span> <span class="s1">'fs'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//www.example.com/`;</span>
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://www.example.com/`</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">getDataFromClient</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nx">getSomeData</span><span class="p">());</span>
+<span class="kd">const</span> <span class="nx">getDataFromClient</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nx">getSomeData</span><span class="p">());</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Check client data'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">boundGetDataFromClient</span> <span class="o">=</span> <span class="nx">getDataFromClient</span><span class="p">.</span><span class="kd">with</span><span class="p">({</span> <span class="na">boundTestRun</span><span class="p">:</span> <span class="nx">t</span> <span class="p">});</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Check client data'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">boundGetDataFromClient</span> <span class="o">=</span> <span class="nx">getDataFromClient</span><span class="p">.</span><span class="kd">with</span><span class="p">({</span> <span class="na">boundTestRun</span><span class="p">:</span> <span class="nx">t</span> <span class="p">});</span>
 
-    <span class="kr">const</span> <span class="nx">equal</span> <span class="o">=</span> <span class="nx">await</span> <span class="k">new</span> <span class="nx">Promise</span><span class="p">(</span><span class="nx">resolve</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">equal</span> <span class="o">=</span> <span class="kr">await</span> <span class="k">new</span> <span class="nb">Promise</span><span class="p">(</span><span class="nx">resolve</span> <span class="o">=&gt;</span> <span class="p">{</span>
         <span class="nx">fs</span><span class="p">.</span><span class="nx">readFile</span><span class="p">(</span><span class="s1">'/home/user/tests/reference/clientData.json'</span><span class="p">,</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
             <span class="nx">boundGetDataFromClient</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">clientData</span> <span class="o">=&gt;</span> <span class="p">{</span>
                 <span class="nx">resolve</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">clientData</span><span class="p">)</span> <span class="o">===</span> <span class="nx">data</span><span class="p">);</span>
@@ -1030,7 +1137,7 @@ you will have to manually bind this function to the test controller.</p>
         <span class="p">});</span>
     <span class="p">});</span>
 
-    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">equal</span><span class="p">).</span><span class="nx">ok</span><span class="p">();</span>
+    <span class="kr">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">equal</span><span class="p">).</span><span class="nx">ok</span><span class="p">();</span>
 <span class="p">});</span>
 </code></pre></div>
 <p>This approach only works for Node.js callbacks that fire during the test run. To ensure that the test function

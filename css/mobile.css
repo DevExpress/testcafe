@@ -1,0 +1,117 @@
+html {
+  min-width: 0; }
+  html body {
+    min-width: 0;
+    font-size: 16px; }
+    html body .page-content-wrapper {
+      overflow-x: hidden; }
+      html body .page-content-wrapper .site-header {
+        min-width: 0;
+        height: 60px; }
+        html body .page-content-wrapper .site-header.fixed {
+          position: fixed; }
+        html body .page-content-wrapper .site-header .site-header-content {
+          min-width: 0;
+          padding: 0 0 0 30px;
+          position: relative; }
+          html body .page-content-wrapper .site-header .site-header-content .site-logo {
+            margin: 15px 0; }
+          html body .page-content-wrapper .site-header .site-header-content .hamburger-button {
+            display: block;
+            float: right;
+            padding: 21px 25px 20px 26px; }
+            html body .page-content-wrapper .site-header .site-header-content .hamburger-button .hamburger-icon {
+              height: 20px;
+              width: 24px;
+              background-image: url("/testcafe/images/hamburger-menu.png");
+              cursor: pointer; }
+            html body .page-content-wrapper .site-header .site-header-content .hamburger-button.active {
+              background-color: #fff; }
+              html body .page-content-wrapper .site-header .site-header-content .hamburger-button.active .hamburger-icon {
+                background-image: url("/testcafe/images/hamburger-menu-active.png"); }
+          html body .page-content-wrapper .site-header .site-header-content .site-nav {
+            height: calc(100vh - 60px);
+            width: 100%;
+            position: absolute;
+            background: #fff;
+            top: 60px;
+            right: -100%;
+            transition: right .2s;
+            box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.1); }
+            html body .page-content-wrapper .site-header .site-header-content .site-nav .site-nav-tab {
+              display: block;
+              padding: 0; }
+              html body .page-content-wrapper .site-header .site-header-content .site-nav .site-nav-tab .page-link {
+                display: block;
+                padding: 5px 7px 7px 30px;
+                font-size: 18px; }
+              html body .page-content-wrapper .site-header .site-header-content .site-nav .site-nav-tab .doc-menu-item-icon {
+                display: inline-block;
+                height: 6px;
+                width: 10px;
+                margin: 0 0 2px 5px;
+                background-image: url("/testcafe/images/accordion-arrow-down.png"); }
+              html body .page-content-wrapper .site-header .site-header-content .site-nav .site-nav-tab.expanded .doc-menu-item-icon {
+                background-image: url("/testcafe/images/accordion-arrow-up.png"); }
+              html body .page-content-wrapper .site-header .site-header-content .site-nav .site-nav-tab.active {
+                background-color: #fff;
+                border-radius: 0; }
+              html body .page-content-wrapper .site-header .site-header-content .site-nav .site-nav-tab:nth-child(1) {
+                padding: 15px 0 5px; }
+                html body .page-content-wrapper .site-header .site-header-content .site-nav .site-nav-tab:nth-child(1) .page-link {
+                  display: inline; }
+            html body .page-content-wrapper .site-header .site-header-content .site-nav .doc-top-nav {
+              display: none;
+              position: relative;
+              height: 0;
+              top: 0;
+              background-color: #fff;
+              border: none;
+              padding: 5px 0 15px 30px; }
+              html body .page-content-wrapper .site-header .site-header-content .site-nav .doc-top-nav .doc-top-nav-content {
+                min-width: 0;
+                max-width: 100%;
+                padding: 0; }
+                html body .page-content-wrapper .site-header .site-header-content .site-nav .doc-top-nav .doc-top-nav-content .doc-top-nav-wrapper {
+                  margin-left: 0; }
+                  html body .page-content-wrapper .site-header .site-header-content .site-nav .doc-top-nav .doc-top-nav-content .doc-top-nav-wrapper .doc-top-nav-tab {
+                    display: block;
+                    margin: 0;
+                    padding: 0; }
+                    html body .page-content-wrapper .site-header .site-header-content .site-nav .doc-top-nav .doc-top-nav-content .doc-top-nav-wrapper .doc-top-nav-tab.active {
+                      background-color: #fff;
+                      border-radius: 0; }
+                    html body .page-content-wrapper .site-header .site-header-content .site-nav .doc-top-nav .doc-top-nav-content .doc-top-nav-wrapper .doc-top-nav-tab a {
+                      display: block;
+                      padding: 5px 0 5px 10px;
+                      font-size: 16px;
+                      font-weight: normal;
+                      color: #404142; }
+              html body .page-content-wrapper .site-header .site-header-content .site-nav .doc-top-nav.expanded {
+                display: block;
+                height: auto; }
+            html body .page-content-wrapper .site-header .site-header-content .site-nav #search-panel, html body .page-content-wrapper .site-header .site-header-content .site-nav .star-button, html body .page-content-wrapper .site-header .site-header-content .site-nav #search-icon, html body .page-content-wrapper .site-header .site-header-content .site-nav #twitter-button {
+              display: none; }
+            html body .page-content-wrapper .site-header .site-header-content .site-nav .hamburger-button {
+              display: block; }
+            html body .page-content-wrapper .site-header .site-header-content .site-nav.active {
+              right: 0px; }
+      html body .page-content-wrapper .container {
+        padding-left: 0;
+        padding-top: 0; }
+        html body .page-content-wrapper .container .post {
+          padding: 70px 30px 0px;
+          min-width: 0; }
+          html body .page-content-wrapper .container .post .blog-title {
+            margin-top: 0; }
+        html body .page-content-wrapper .container main .faq {
+          min-width: 0;
+          margin: 0;
+          padding: 70px 30px 0; }
+    html body .site-footer {
+      height: 153px;
+      z-index: -1; }
+    html body .cookie-notice .cookie-notice-content {
+      flex-direction: column; }
+      html body .cookie-notice .cookie-notice-content .cookie-notice-message {
+        margin-bottom: 20px; }

@@ -12,7 +12,7 @@
 
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
-  
+
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
   <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/using-testcafe/using-testcafe-docker-image.html" />
@@ -29,6 +29,10 @@
   <script defer src="https://buttons.github.io/buttons.js"></script>
   <script defer type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.3.min.js"></script>
   <script src="/testcafe/scripts/mobile-detect.min.js" type="text/javascript"></script>
+  <script>
+     var md             = new MobileDetect(window.navigator.userAgent);
+     var isMobileDevice = !!md.mobile();
+  </script>
   <script>
       document.addEventListener('DOMContentLoaded', function (e) {
           hljs.initHighlightingOnLoad();
@@ -52,10 +56,87 @@
   
   
 
+  <script>
+    function linkCss (href) {
+        var link  = document.createElement('link');
+        var html  = document.querySelector('html');
+        var head  = document.head;
+
+        link.rel  = 'stylesheet';
+        link.type = 'text/css';
+        link.href = href;
+        link.media = 'all';
+
+        head.appendChild(link);
+
+        window.addEventListener('load', function () {
+            html.style.display = 'block';
+        });
+
+        html.style.display = 'none';
+    }
+  </script>
+    
+    
+    <script>
+        if (isMobileDevice) {
+            document.addEventListener('DOMContentLoaded', function (e) {
+                var siteNav         = document.querySelector('.site-nav');
+                var hamburgerButton = document.querySelector('.hamburger-button');
+
+                hamburgerButton.addEventListener('click', function (e) {
+                    if (hamburgerButton.className.indexOf('active') !== -1) {
+                        hamburgerButton.className = hamburgerButton.className.replace(' active', '');
+                        siteNav.className = siteNav.className.replace(' active', '');
+                        document.documentElement.style.overflowY = 'scroll';
+                    }
+                    else {
+                        hamburgerButton.className += ' active';
+                        siteNav.className += ' active';
+                        document.documentElement.style.overflowY = 'hidden';
+                    }
+                });
+
+                var docTopNav          = document.querySelector('.doc-top-nav');
+                var siteNav            = document.querySelector('.site-nav');
+                var docMenuItem        = document.querySelector('.site-nav-tab');
+                var mainMenuSecondItem = document.querySelector('.site-nav-tab:nth-child(2)');
+
+                siteNav.insertBefore(docTopNav, mainMenuSecondItem);
+
+                var docMenuItemIcon = document.createElement('div');
+
+                docMenuItemIcon.className = 'doc-menu-item-icon';
+                docMenuItem.appendChild(docMenuItemIcon);
+
+                
+                    docMenuItem.className += ' expanded';
+                    docTopNav.className += ' expanded';
+                
+
+                docMenuItem.addEventListener('click', function (e) {
+                    if (docTopNav.className.indexOf('expanded') !== -1) {
+                        docMenuItem.className = docMenuItem.className.replace(' expanded', '');
+                        docTopNav.className = docTopNav.className.replace(' expanded', '');
+                    }
+                    else {
+                        docMenuItem.className += ' expanded';
+                        docTopNav.className += ' expanded';
+                    }
+                    e.preventDefault();
+                });
+            });
+
+            linkCss('/testcafe/css/mobile.css');
+        }
+    </script>
+    
+
   
 
   
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/css/perfect-scrollbar.min.css">
+    <link rel="stylesheet" href="/testcafe/css/docs.css">
     <style>
         .ps-container > .ps-scrollbar-x-rail,
         .ps-container > .ps-scrollbar-y-rail {
@@ -72,23 +153,9 @@
 
         var nav            = null;
         var article        = null;
-        var md             = new MobileDetect(window.navigator.userAgent);
-        var isMobileDevice = !!md.mobile();
 
         function setNavTopPosition () {
-            var isMobileZoomed = isMobileDevice && window.innerWidth !== document.body.scrollWidth;
-            var top            = null;
-
-            if(isMobileDevice) {
-                top = window.pageYOffset >= HEADER_HEIGHT ? window.pageYOffset - HEADER_HEIGHT + 'px' : '0';
-
-                if (nav.style.paddingTop !== top) {
-                    nav.style.paddingTop = top;
-                    Ps.update(nav);
-                }
-
-                return;
-            }
+            var top = null;
 
             if (document.body.clientWidth > MIN_BODY_WIDTH) {
                 if (nav.style.top !== HEADER_HEIGHT + 'px') {
@@ -96,7 +163,7 @@
                     Ps.update(nav);
                 }
             }
-            else if(!isMobileZoomed) {
+            else {
                 top = window.pageYOffset <= HEADER_HEIGHT ? HEADER_HEIGHT - window.pageYOffset + 'px' : '0';
 
                 if (nav.style.top !== top) {
@@ -123,10 +190,7 @@
         }
 
         function updatePosition () {
-            if (isMobileDevice)
-                changeBodyHeight();
-            else
-                nav.style.marginLeft = '-' + window.pageXOffset + 'px';
+            nav.style.marginLeft = '-' + window.pageXOffset + 'px';
 
             setNavBottomPosition();
             setNavTopPosition();
@@ -146,32 +210,44 @@
         }
 
         function initNav() {
-            if(isMobileDevice) {
-                nav.style.position = 'relative';
-                nav.style.float = 'left';
-                nav.style.top = '0px';
-
-                article.style.marginTop = '0px';
-                article.style.paddingTop = '22px';
-            }
-
             initScrollBar();
             updatePosition();
             window.addEventListener('scroll', updatePosition);
             window.addEventListener('resize', updatePosition);
-
-            if(isMobileDevice) {
-                nav.style.height = window.innerHeight + 'px';
-            }
         }
 
         document.addEventListener('DOMContentLoaded', function (e) {
+            if (isMobileDevice)
+                return;
+
             nav     = document.querySelector('.doc-nav');
             article = document.querySelector('.doc');
 
-            if(nav)
+            if (nav)
                 initNav(nav);
         });
+    </script>
+    
+    <script>
+        if (isMobileDevice && false == false) {
+            document.addEventListener('DOMContentLoaded', function (e) {
+                var toggleNavButton = document.querySelector('.toggle-nav-button');
+                var docNav          = document.querySelector('.doc-nav');
+
+                toggleNavButton.addEventListener('click', function (e) {
+                    if (docNav.className.indexOf('active') !== -1) {
+                        docNav.className = docNav.className.replace(' active', '');
+                        document.documentElement.style.overflowY = 'scroll';
+                    }
+                    else {
+                        docNav.className += ' active';
+                        document.documentElement.style.overflowY = 'hidden';
+                    }
+                });
+            });
+
+            linkCss('/testcafe/css/docs.mobile.css');
+        }
     </script>
   
     <script>
@@ -191,10 +267,10 @@
                 if(contentWrapper)
                     contentWrapper.style.paddingTop = bodyMinimized ? '0' : '';
 
-                if(article)
+                if(article && !isMobileDevice)
                     article.style.marginTop = bodyMinimized ? '21px' : '72px';
- 
-                if(gs)
+
+                if(gs && !isMobileDevice)
                     gs.style.paddingTop = bodyMinimized ? '21px' : '72px';
             }
 
@@ -209,7 +285,7 @@
             var article        = document.querySelector('.doc');
             var gs             = document.querySelector('.gs');
 
-            if(siteHeader) 
+            if(siteHeader)
                 initHeader(siteHeader, contentWrapper, docTopMenu, article, gs);
         });
     </script>
@@ -222,6 +298,9 @@
       <header class="site-header fixed">
   <div class="site-header-content">
     <a class="site-logo" href="/testcafe/"></a>
+    <div class="hamburger-button">
+        <div class="hamburger-icon"></div>
+    </div>
     <nav class="site-nav">
         
           
@@ -268,7 +347,7 @@
           <input type="text" placeholder="Search query" id="search"/>
           <div id="close-search"></div>
       </div>
-      </nav>
+    </nav>
   </div>
 </header>
 
@@ -282,10 +361,12 @@
     return false;
   }
 
-  function closeSearchBox(e) {
-      var clickOutsideSearchBox = searchPanel !== e.target && !has(searchPanel, e.target);
+  function clickOutsideBox(e, box) {
+      return box !== e.target && !has(box, e.target);
+  }  
 
-      if(clickOutsideSearchBox && searchPanel.className.indexOf('hidden') === -1) 
+  function closeSearchBox(e) {
+      if(clickOutsideBox(e, searchPanel) && searchPanel.className.indexOf('hidden') === -1) 
           searchPanel.className += ' hidden';
   }
 
@@ -305,6 +386,40 @@
 
   window.addEventListener('mousedown', closeSearchBox);        
   window.addEventListener('touchstart', closeSearchBox);
+
+  if (window.isMobileDevice) {
+      function closeHamburgerMenuBox(e) {
+          if(clickOutsideBox(e, hamburgerMenu) && clickOutsideBox(e, hamburgerButton) && hamburgerMenu.className.indexOf('active') !== -1) {
+              hamburgerMenu.className = hamburgerMenu.className.replace(' active', '');
+              hamburgerButton.className = hamburgerButton.className.replace(' active', '');
+              document.documentElement.style.overflowY = 'scroll';
+          }
+      }
+
+      var hamburgerMenu = document.querySelector('.site-nav');
+      var hamburgerButton = document.querySelector('.hamburger-button');
+
+      window.addEventListener('mousedown', closeHamburgerMenuBox);        
+      window.addEventListener('touchstart', closeHamburgerMenuBox);
+
+      window.addEventListener('DOMContentLoaded', function (e) {
+          var docNav = document.querySelector('.doc-nav');
+
+          if(docNav) {
+              function closeDocNav(e) {
+                  if(clickOutsideBox(e, docNav) && clickOutsideBox(e, toggleNavButton) && docNav.className.indexOf('active') !== -1) {
+                      docNav.className = docNav.className.replace(' active', '');
+                      document.documentElement.style.overflowY = 'scroll';
+                  }
+              }
+
+              var toggleNavButton = document.querySelector('.toggle-nav-button');
+
+              window.addEventListener('mousedown', closeDocNav);        
+              window.addEventListener('touchstart', closeDocNav);
+          }
+      });
+  }
 </script>
 
 <script>
@@ -315,36 +430,33 @@
   });
 </script>
 
-
-
-  <div class="doc-top-nav">
-    <div class="doc-top-nav-content">
-      <div class="doc-top-nav-wrapper">
-        
-          <div class="doc-top-nav-tab " >
-            <a href="/testcafe/documentation/getting-started/">Getting Started</a>      
-          </div>
-        
-          <div class="doc-top-nav-tab active" >
-            <a href="/testcafe/documentation/using-testcafe/">Using TestCafe</a>      
-          </div>
-        
-          <div class="doc-top-nav-tab " >
-            <a href="/testcafe/documentation/test-api/">Test API</a>      
-          </div>
-        
-          <div class="doc-top-nav-tab " >
-            <a href="/testcafe/documentation/extending-testcafe/">Extending TestCafe</a>      
-          </div>
-        
-          <div class="doc-top-nav-tab " >
-            <a href="/testcafe/documentation/recipes/">Recipes</a>      
-          </div>
-        
-      </div>
+<div class="doc-top-nav">
+  <div class="doc-top-nav-content">
+    <div class="doc-top-nav-wrapper">
+      
+        <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/getting-started/">Getting Started</a>      
+        </div>
+      
+        <div class="doc-top-nav-tab active" >
+          <a href="/testcafe/documentation/using-testcafe/">Using TestCafe</a>      
+        </div>
+      
+        <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/test-api/">Test API</a>      
+        </div>
+      
+        <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/extending-testcafe/">Extending TestCafe</a>      
+        </div>
+      
+        <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/recipes/">Recipes</a>      
+        </div>
+      
     </div>
   </div>
-
+</div>
 
 
       <div class="container">
@@ -354,6 +466,9 @@
 
 	
 	
+	<div class="doc-nav-panel">
+		<div class="toggle-nav-button"></div>
+	</div>
 	<nav class="doc-nav">	
 		<div class="doc-nav-content">
 			<ul>
@@ -526,7 +641,7 @@ Therefore, you can avoid manual installation of browsers and the testing framewo
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">docker pull testcafe/testcafe:alpha
 </code></pre></div>
 <p>Now you can run TestCafe from the docker image.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">docker run -v <span class="k">${</span><span class="nv">TEST_FOLDER</span><span class="k">}</span>:/tests -it testcafe/testcafe <span class="k">${</span><span class="nv">TESTCAFE_ARGS</span><span class="k">}</span>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">docker run <span class="nt">-v</span> <span class="k">${</span><span class="nv">TEST_FOLDER</span><span class="k">}</span>:/tests <span class="nt">-it</span> testcafe/testcafe <span class="k">${</span><span class="nv">TESTCAFE_ARGS</span><span class="k">}</span>
 </code></pre></div>
 <p>This command takes the following parameters:</p>
 
@@ -563,19 +678,16 @@ Therefore, you can avoid manual installation of browsers and the testing framewo
 </ul>
 
 <p>The example below shows a command that runs tests in a remote browser.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">docker run -v /d/tests:/tests -P -it testcafe/testcafe --hostname <span class="nv">$EXTERNAL_HOSTNAME</span> remote /tests/test.js
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">docker run <span class="nt">-v</span> /d/tests:/tests <span class="nt">-P</span> <span class="nt">-it</span> testcafe/testcafe <span class="nt">--hostname</span> <span class="nv">$EXTERNAL_HOSTNAME</span> remote /tests/test.js
 </code></pre></div>
 <p>where <code>$EXTERNAL_HOSTNAME</code> is the host machine name.</p>
 
 <p>If Docker reports that the default ports <code>1337</code> and <code>1338</code> are occupied by some other process, kill this process or choose different ports. Use the <code>netstat</code> command to determine which process occupies the default ports.</p>
-
-<table><thead>
-<tr>
+<div class="table-wrapper"><table><thead><tr>
 <th>OS</th>
 <th>Command</th>
 </tr>
-</thead><tbody>
-<tr>
+</thead><tbody><tr>
 <td>Windows</td>
 <td><code>netstat -ano</code></td>
 </tr>
@@ -587,17 +699,16 @@ Therefore, you can avoid manual installation of browsers and the testing framewo
 <td>Linux</td>
 <td><code>netstat -anp</code></td>
 </tr>
-</tbody></table>
-
+</tbody></table></div>
 <p>If you choose to use different ports, publish them in the Docker container (use the <code>-p</code> flag) and specify them to TestCafe (use the <a href="command-line-interface.html#--ports-port1port2">--ports</a> option).</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">docker run -v /d/tests:/tests -p <span class="nv">$PORT1</span> -p <span class="nv">$PORT2</span> -it testcafe/testcafe --hostname <span class="nv">$EXTERNAL_HOSTNAME</span> --ports <span class="nv">$PORT1</span>,<span class="nv">$PORT2</span> remote /tests/test.js
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">docker run <span class="nt">-v</span> /d/tests:/tests <span class="nt">-p</span> <span class="nv">$PORT1</span> <span class="nt">-p</span> <span class="nv">$PORT2</span> <span class="nt">-it</span> testcafe/testcafe <span class="nt">--hostname</span> <span class="nv">$EXTERNAL_HOSTNAME</span> <span class="nt">--ports</span> <span class="nv">$PORT1</span>,<span class="nv">$PORT2</span> remote /tests/test.js
 </code></pre></div>
 <p>where <code>$PORT1</code> and <code>$PORT2</code> are vacant container&#39;s ports, <code>$EXTERNAL_HOSTNAME</code> is the host machine name.</p>
 <h2><a class="anchor" name="testing-heavy-websites"></a>Testing Heavy Websites <a class="permalink" href="#testing-heavy-websites">#</a></h2>
 <p>If you are testing a heavy website, you may need to allocate extra resources for the Docker image.</p>
 
 <p>The most common case is when the temporary file storage <code>/dev/shm</code> runs out of free space. It usually happens when you run tests in Chromium. The following example shows how to allow additional space (1GB) for this storage using the <code>--shm-size</code> option.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">docker run --shm-size<span class="o">=</span>1g -v <span class="k">${</span><span class="nv">TEST_FOLDER</span><span class="k">}</span>:/tests -it testcafe/testcafe <span class="k">${</span><span class="nv">TESTCAFE_ARGS</span><span class="k">}</span>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">docker run <span class="nt">--shm-size</span><span class="o">=</span>1g <span class="nt">-v</span> <span class="k">${</span><span class="nv">TEST_FOLDER</span><span class="k">}</span>:/tests <span class="nt">-it</span> testcafe/testcafe <span class="k">${</span><span class="nv">TESTCAFE_ARGS</span><span class="k">}</span>
 </code></pre></div>
 <p>You can find a complete list of options that manage runtime constraints on resources in the <a href="https://docs.docker.com/engine/reference/run/#runtime-constraints-on-resources">Docker documentation</a>.</p>
 

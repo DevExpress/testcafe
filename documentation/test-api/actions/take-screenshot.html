@@ -12,7 +12,7 @@
 
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
-  
+
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
   <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/test-api/actions/take-screenshot.html" />
@@ -29,6 +29,10 @@
   <script defer src="https://buttons.github.io/buttons.js"></script>
   <script defer type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.3.min.js"></script>
   <script src="/testcafe/scripts/mobile-detect.min.js" type="text/javascript"></script>
+  <script>
+     var md             = new MobileDetect(window.navigator.userAgent);
+     var isMobileDevice = !!md.mobile();
+  </script>
   <script>
       document.addEventListener('DOMContentLoaded', function (e) {
           hljs.initHighlightingOnLoad();
@@ -52,10 +56,87 @@
   
   
 
+  <script>
+    function linkCss (href) {
+        var link  = document.createElement('link');
+        var html  = document.querySelector('html');
+        var head  = document.head;
+
+        link.rel  = 'stylesheet';
+        link.type = 'text/css';
+        link.href = href;
+        link.media = 'all';
+
+        head.appendChild(link);
+
+        window.addEventListener('load', function () {
+            html.style.display = 'block';
+        });
+
+        html.style.display = 'none';
+    }
+  </script>
+    
+    
+    <script>
+        if (isMobileDevice) {
+            document.addEventListener('DOMContentLoaded', function (e) {
+                var siteNav         = document.querySelector('.site-nav');
+                var hamburgerButton = document.querySelector('.hamburger-button');
+
+                hamburgerButton.addEventListener('click', function (e) {
+                    if (hamburgerButton.className.indexOf('active') !== -1) {
+                        hamburgerButton.className = hamburgerButton.className.replace(' active', '');
+                        siteNav.className = siteNav.className.replace(' active', '');
+                        document.documentElement.style.overflowY = 'scroll';
+                    }
+                    else {
+                        hamburgerButton.className += ' active';
+                        siteNav.className += ' active';
+                        document.documentElement.style.overflowY = 'hidden';
+                    }
+                });
+
+                var docTopNav          = document.querySelector('.doc-top-nav');
+                var siteNav            = document.querySelector('.site-nav');
+                var docMenuItem        = document.querySelector('.site-nav-tab');
+                var mainMenuSecondItem = document.querySelector('.site-nav-tab:nth-child(2)');
+
+                siteNav.insertBefore(docTopNav, mainMenuSecondItem);
+
+                var docMenuItemIcon = document.createElement('div');
+
+                docMenuItemIcon.className = 'doc-menu-item-icon';
+                docMenuItem.appendChild(docMenuItemIcon);
+
+                
+                    docMenuItem.className += ' expanded';
+                    docTopNav.className += ' expanded';
+                
+
+                docMenuItem.addEventListener('click', function (e) {
+                    if (docTopNav.className.indexOf('expanded') !== -1) {
+                        docMenuItem.className = docMenuItem.className.replace(' expanded', '');
+                        docTopNav.className = docTopNav.className.replace(' expanded', '');
+                    }
+                    else {
+                        docMenuItem.className += ' expanded';
+                        docTopNav.className += ' expanded';
+                    }
+                    e.preventDefault();
+                });
+            });
+
+            linkCss('/testcafe/css/mobile.css');
+        }
+    </script>
+    
+
   
 
   
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/css/perfect-scrollbar.min.css">
+    <link rel="stylesheet" href="/testcafe/css/docs.css">
     <style>
         .ps-container > .ps-scrollbar-x-rail,
         .ps-container > .ps-scrollbar-y-rail {
@@ -72,23 +153,9 @@
 
         var nav            = null;
         var article        = null;
-        var md             = new MobileDetect(window.navigator.userAgent);
-        var isMobileDevice = !!md.mobile();
 
         function setNavTopPosition () {
-            var isMobileZoomed = isMobileDevice && window.innerWidth !== document.body.scrollWidth;
-            var top            = null;
-
-            if(isMobileDevice) {
-                top = window.pageYOffset >= HEADER_HEIGHT ? window.pageYOffset - HEADER_HEIGHT + 'px' : '0';
-
-                if (nav.style.paddingTop !== top) {
-                    nav.style.paddingTop = top;
-                    Ps.update(nav);
-                }
-
-                return;
-            }
+            var top = null;
 
             if (document.body.clientWidth > MIN_BODY_WIDTH) {
                 if (nav.style.top !== HEADER_HEIGHT + 'px') {
@@ -96,7 +163,7 @@
                     Ps.update(nav);
                 }
             }
-            else if(!isMobileZoomed) {
+            else {
                 top = window.pageYOffset <= HEADER_HEIGHT ? HEADER_HEIGHT - window.pageYOffset + 'px' : '0';
 
                 if (nav.style.top !== top) {
@@ -123,10 +190,7 @@
         }
 
         function updatePosition () {
-            if (isMobileDevice)
-                changeBodyHeight();
-            else
-                nav.style.marginLeft = '-' + window.pageXOffset + 'px';
+            nav.style.marginLeft = '-' + window.pageXOffset + 'px';
 
             setNavBottomPosition();
             setNavTopPosition();
@@ -146,32 +210,44 @@
         }
 
         function initNav() {
-            if(isMobileDevice) {
-                nav.style.position = 'relative';
-                nav.style.float = 'left';
-                nav.style.top = '0px';
-
-                article.style.marginTop = '0px';
-                article.style.paddingTop = '22px';
-            }
-
             initScrollBar();
             updatePosition();
             window.addEventListener('scroll', updatePosition);
             window.addEventListener('resize', updatePosition);
-
-            if(isMobileDevice) {
-                nav.style.height = window.innerHeight + 'px';
-            }
         }
 
         document.addEventListener('DOMContentLoaded', function (e) {
+            if (isMobileDevice)
+                return;
+
             nav     = document.querySelector('.doc-nav');
             article = document.querySelector('.doc');
 
-            if(nav)
+            if (nav)
                 initNav(nav);
         });
+    </script>
+    
+    <script>
+        if (isMobileDevice && false == false) {
+            document.addEventListener('DOMContentLoaded', function (e) {
+                var toggleNavButton = document.querySelector('.toggle-nav-button');
+                var docNav          = document.querySelector('.doc-nav');
+
+                toggleNavButton.addEventListener('click', function (e) {
+                    if (docNav.className.indexOf('active') !== -1) {
+                        docNav.className = docNav.className.replace(' active', '');
+                        document.documentElement.style.overflowY = 'scroll';
+                    }
+                    else {
+                        docNav.className += ' active';
+                        document.documentElement.style.overflowY = 'hidden';
+                    }
+                });
+            });
+
+            linkCss('/testcafe/css/docs.mobile.css');
+        }
     </script>
   
     <script>
@@ -191,10 +267,10 @@
                 if(contentWrapper)
                     contentWrapper.style.paddingTop = bodyMinimized ? '0' : '';
 
-                if(article)
+                if(article && !isMobileDevice)
                     article.style.marginTop = bodyMinimized ? '21px' : '72px';
- 
-                if(gs)
+
+                if(gs && !isMobileDevice)
                     gs.style.paddingTop = bodyMinimized ? '21px' : '72px';
             }
 
@@ -209,7 +285,7 @@
             var article        = document.querySelector('.doc');
             var gs             = document.querySelector('.gs');
 
-            if(siteHeader) 
+            if(siteHeader)
                 initHeader(siteHeader, contentWrapper, docTopMenu, article, gs);
         });
     </script>
@@ -222,6 +298,9 @@
       <header class="site-header fixed">
   <div class="site-header-content">
     <a class="site-logo" href="/testcafe/"></a>
+    <div class="hamburger-button">
+        <div class="hamburger-icon"></div>
+    </div>
     <nav class="site-nav">
         
           
@@ -268,7 +347,7 @@
           <input type="text" placeholder="Search query" id="search"/>
           <div id="close-search"></div>
       </div>
-      </nav>
+    </nav>
   </div>
 </header>
 
@@ -282,10 +361,12 @@
     return false;
   }
 
-  function closeSearchBox(e) {
-      var clickOutsideSearchBox = searchPanel !== e.target && !has(searchPanel, e.target);
+  function clickOutsideBox(e, box) {
+      return box !== e.target && !has(box, e.target);
+  }  
 
-      if(clickOutsideSearchBox && searchPanel.className.indexOf('hidden') === -1) 
+  function closeSearchBox(e) {
+      if(clickOutsideBox(e, searchPanel) && searchPanel.className.indexOf('hidden') === -1) 
           searchPanel.className += ' hidden';
   }
 
@@ -305,6 +386,40 @@
 
   window.addEventListener('mousedown', closeSearchBox);        
   window.addEventListener('touchstart', closeSearchBox);
+
+  if (window.isMobileDevice) {
+      function closeHamburgerMenuBox(e) {
+          if(clickOutsideBox(e, hamburgerMenu) && clickOutsideBox(e, hamburgerButton) && hamburgerMenu.className.indexOf('active') !== -1) {
+              hamburgerMenu.className = hamburgerMenu.className.replace(' active', '');
+              hamburgerButton.className = hamburgerButton.className.replace(' active', '');
+              document.documentElement.style.overflowY = 'scroll';
+          }
+      }
+
+      var hamburgerMenu = document.querySelector('.site-nav');
+      var hamburgerButton = document.querySelector('.hamburger-button');
+
+      window.addEventListener('mousedown', closeHamburgerMenuBox);        
+      window.addEventListener('touchstart', closeHamburgerMenuBox);
+
+      window.addEventListener('DOMContentLoaded', function (e) {
+          var docNav = document.querySelector('.doc-nav');
+
+          if(docNav) {
+              function closeDocNav(e) {
+                  if(clickOutsideBox(e, docNav) && clickOutsideBox(e, toggleNavButton) && docNav.className.indexOf('active') !== -1) {
+                      docNav.className = docNav.className.replace(' active', '');
+                      document.documentElement.style.overflowY = 'scroll';
+                  }
+              }
+
+              var toggleNavButton = document.querySelector('.toggle-nav-button');
+
+              window.addEventListener('mousedown', closeDocNav);        
+              window.addEventListener('touchstart', closeDocNav);
+          }
+      });
+  }
 </script>
 
 <script>
@@ -315,36 +430,33 @@
   });
 </script>
 
-
-
-  <div class="doc-top-nav">
-    <div class="doc-top-nav-content">
-      <div class="doc-top-nav-wrapper">
-        
-          <div class="doc-top-nav-tab " >
-            <a href="/testcafe/documentation/getting-started/">Getting Started</a>      
-          </div>
-        
-          <div class="doc-top-nav-tab " >
-            <a href="/testcafe/documentation/using-testcafe/">Using TestCafe</a>      
-          </div>
-        
-          <div class="doc-top-nav-tab active" >
-            <a href="/testcafe/documentation/test-api/">Test API</a>      
-          </div>
-        
-          <div class="doc-top-nav-tab " >
-            <a href="/testcafe/documentation/extending-testcafe/">Extending TestCafe</a>      
-          </div>
-        
-          <div class="doc-top-nav-tab " >
-            <a href="/testcafe/documentation/recipes/">Recipes</a>      
-          </div>
-        
-      </div>
+<div class="doc-top-nav">
+  <div class="doc-top-nav-content">
+    <div class="doc-top-nav-wrapper">
+      
+        <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/getting-started/">Getting Started</a>      
+        </div>
+      
+        <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/using-testcafe/">Using TestCafe</a>      
+        </div>
+      
+        <div class="doc-top-nav-tab active" >
+          <a href="/testcafe/documentation/test-api/">Test API</a>      
+        </div>
+      
+        <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/extending-testcafe/">Extending TestCafe</a>      
+        </div>
+      
+        <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/recipes/">Recipes</a>      
+        </div>
+      
     </div>
   </div>
-
+</div>
 
 
       <div class="container">
@@ -357,6 +469,9 @@
 
 	
 	
+	<div class="doc-nav-panel">
+		<div class="toggle-nav-button"></div>
+	</div>
 	<nav class="doc-nav">	
 		<div class="doc-nav-content">
 			<ul>
@@ -852,29 +967,25 @@
 <p><strong>Note</strong>: these actions require .NET 4.0 or newer installed on Windows machines and an <a href="https://en.wikipedia.org/wiki/Comparison_of_X_window_managers">ICCCM/EWMH-compliant window manager</a> on Linux.</p>
 <blockquote class="important"><div class="blockquote-content"><p>Screenshot actions are ignored if the screenshot directory is not specified with the <a href="../../using-testcafe/programming-interface/runner.html#screenshots">runner.screenshots</a> API method or the <a href="../../using-testcafe/command-line-interface.html#-s-path---screenshots-path">screenshots</a> command line option.</p>
 </div></blockquote><h2><a class="anchor" name="take-a-screenshot-of-the-entire-page"></a>Take a Screenshot of the Entire Page <a class="permalink" href="#take-a-screenshot-of-the-entire-page">#</a></h2><div class="highlight"><pre><code class="language-text" data-lang="text">t.takeScreenshot( [path] )
-</code></pre></div>
-<table><thead>
-<tr>
+</code></pre></div><div class="table-wrapper"><table><thead><tr>
 <th>Parameter</th>
 <th>Type</th>
 <th>Description</th>
 </tr>
-</thead><tbody>
-<tr>
+</thead><tbody><tr>
 <td><code>path</code>&#160;<em>(optional)</em></td>
 <td>String</td>
 <td>The screenshot file&#39;s relative path and name. The path is relative to the base directory specified by the <a href="../../using-testcafe/programming-interface/runner.html#screenshots">runner.screenshots</a> API method or the <a href="../../using-testcafe/command-line-interface.html#-s-path---screenshots-path">screenshots</a> command line option. This path overrides the relative path the default or custom <a href="../../using-testcafe/command-line-interface.html#path-patterns">path patterns</a> specify.</td>
 </tr>
-</tbody></table>
-
+</tbody></table></div>
 <p>The following example shows how to use the <code>t.takeScreenshot</code> action:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`;</span>
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://devexpress.github.io/testcafe/example/`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Take a screenshot of a fieldset'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Take a screenshot of a fieldset'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">,</span> <span class="s1">'Peter Parker'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">takeScreenshot</span><span class="p">(</span><span class="s1">'my-fixture/thank-you-page.png'</span><span class="p">);</span>
@@ -882,15 +993,12 @@
 </code></pre></div><h2><a class="anchor" name="take-a-screenshot-of-a-page-element"></a>Take a Screenshot of a Page Element <a class="permalink" href="#take-a-screenshot-of-a-page-element">#</a></h2><div class="highlight"><pre><code class="language-text" data-lang="text">t.takeElementScreenshot(selector[, path][, options])
 </code></pre></div>
 <p>Takes a screenshot of the specified page element.</p>
-
-<table><thead>
-<tr>
+<div class="table-wrapper"><table><thead><tr>
 <th>Parameter</th>
 <th>Type</th>
 <th>Description</th>
 </tr>
-</thead><tbody>
-<tr>
+</thead><tbody><tr>
 <td><code>selector</code></td>
 <td>Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise</td>
 <td>Identifies the webpage element whose screenshot should be taken. See <a href=".#selecting-target-elements">Selecting Target Elements</a>.</td>
@@ -905,30 +1013,26 @@
 <td>Object</td>
 <td>Options that define how the screenshot is taken. See details below.</td>
 </tr>
-</tbody></table>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+</tbody></table></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`;</span>
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://devexpress.github.io/testcafe/example/`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Take a screenshot of a fieldset'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Take a screenshot of a fieldset'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#reusing-js-code'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#continuous-integration-embedding'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">takeElementScreenshot</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="s1">'fieldset'</span><span class="p">).</span><span class="nx">nth</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="s1">'my-fixture/important-features.png'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div>
 <p>The <code>options</code> object contains the following properties:</p>
-
-<table><thead>
-<tr>
+<div class="table-wrapper"><table><thead><tr>
 <th>Property</th>
 <th>Type</th>
 <th>Description</th>
 <th>Default</th>
 </tr>
-</thead><tbody>
-<tr>
+</thead><tbody><tr>
 <td><code>scrollTargetX</code>,&#160;<code>scrollTargetY</code></td>
 <td>Number</td>
 <td>If the target element is too big to fit into the browser window, the page is scrolled to put this point to the center of the viewport. The coordinates of this point are calculated relative to the target element. If the numbers are positive, the point is positioned relative to the top-left corner of the element. If the numbers are negative, the point is positioned relative to the bottom-right corner. If the target element fits into the browser window, these properties have no effect.</td>
@@ -958,18 +1062,14 @@
 <td>Allows you to crop the target element on the screenshot.</td>
 <td>Crops to the whole element or, if it does not fit into the viewport, its visible part.</td>
 </tr>
-</tbody></table>
-
+</tbody></table></div>
 <p>An object assigned to the <code>crop</code> property has the following fields.</p>
-
-<table><thead>
-<tr>
+<div class="table-wrapper"><table><thead><tr>
 <th>Field</th>
 <th>Type</th>
 <th>Description</th>
 </tr>
-</thead><tbody>
-<tr>
+</thead><tbody><tr>
 <td><code>top</code></td>
 <td>Number</td>
 <td>The top edge of the cropping rectangle. The coordinate is calculated from the element&#39;s top edge. If a negative number is passed, the coordinate is calculated from the element&#39;s bottom edge.</td>
@@ -989,16 +1089,15 @@
 <td>Number</td>
 <td>The right edge of the cropping rectangle. The coordinate is calculated from the element&#39;s left edge. If a negative number is passed, the coordinate is calculated from the element&#39;s right edge.</td>
 </tr>
-</tbody></table>
-
+</tbody></table></div>
 <p><img src="../../../images/screenshot-crop.png" alt="Crop Rectangle"></p>
 
 <p><strong>Example</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//www.example.com/`;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://www.example.com/`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Take a screenshot of my new avatar'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Take a screenshot of my new avatar'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#change-avatar'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">setFilesToUpload</span><span class="p">(</span><span class="s1">'#upload-input'</span><span class="p">,</span> <span class="s1">'img/portrait.jpg'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#submit'</span><span class="p">)</span>

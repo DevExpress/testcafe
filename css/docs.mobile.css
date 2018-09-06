@@ -1,0 +1,59 @@
+html body .page-content-wrapper .container .doc-nav-panel {
+  background-color: #2e688a;
+  height: 60px;
+  display: block;
+  margin-top: 60px; }
+  html body .page-content-wrapper .container .doc-nav-panel .toggle-nav-button {
+    background-image: url("/testcafe/images/toggle-nav-button.png");
+    background-repeat: no-repeat;
+    background-size: 100%;
+    width: 35px;
+    height: 35px;
+    float: left;
+    margin: 10px 30px 0px; }
+html body .page-content-wrapper .container .doc-nav {
+  position: absolute;
+  top: 120px;
+  width: 100%;
+  height: calc(100vh - 120px);
+  left: -100%;
+  transition: left .2s;
+  overflow-y: auto;
+  margin-top: 0px;
+  background-color: #2e688a;
+  color: #fff; }
+  html body .page-content-wrapper .container .doc-nav .doc-nav-content {
+    margin-top: 0px;
+    padding: 0 30px; }
+    html body .page-content-wrapper .container .doc-nav .doc-nav-content ul li ul li {
+      font-size: 18px;
+      font-weight: bold;
+      list-style-type: none;
+      margin-left: -8px; }
+      html body .page-content-wrapper .container .doc-nav .doc-nav-content ul li ul li a {
+        display: block;
+        margin-left: -15px;
+        padding-top: 8px;
+        color: #fff; }
+      html body .page-content-wrapper .container .doc-nav .doc-nav-content ul li ul li ul li {
+        font-size: 16px;
+        font-weight: normal;
+        list-style-type: inherit; }
+        html body .page-content-wrapper .container .doc-nav .doc-nav-content ul li ul li ul li a {
+          margin-left: 0; }
+  html body .page-content-wrapper .container .doc-nav.active {
+    left: 0px; }
+html body .page-content-wrapper .container main .doc {
+  margin: 0px 30px;
+  padding-right: 0px; }
+  html body .page-content-wrapper .container main .doc .anchor {
+    top: -85px; }
+html body .page-content-wrapper .container main .post-content .table-wrapper {
+  overflow: scroll;
+  margin: 40px 0; }
+  html body .page-content-wrapper .container main .post-content .table-wrapper table {
+    width: 100%;
+    min-width: 500px;
+    margin: 0; }
+html body .page-content-wrapper .container main .post-content pre > code {
+  font-size: 14px; }

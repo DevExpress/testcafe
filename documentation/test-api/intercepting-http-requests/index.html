@@ -12,7 +12,7 @@
 
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
-  
+
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
   <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/" />
@@ -29,6 +29,10 @@
   <script defer src="https://buttons.github.io/buttons.js"></script>
   <script defer type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.3.min.js"></script>
   <script src="/testcafe/scripts/mobile-detect.min.js" type="text/javascript"></script>
+  <script>
+     var md             = new MobileDetect(window.navigator.userAgent);
+     var isMobileDevice = !!md.mobile();
+  </script>
   <script>
       document.addEventListener('DOMContentLoaded', function (e) {
           hljs.initHighlightingOnLoad();
@@ -52,10 +56,87 @@
   
   
 
+  <script>
+    function linkCss (href) {
+        var link  = document.createElement('link');
+        var html  = document.querySelector('html');
+        var head  = document.head;
+
+        link.rel  = 'stylesheet';
+        link.type = 'text/css';
+        link.href = href;
+        link.media = 'all';
+
+        head.appendChild(link);
+
+        window.addEventListener('load', function () {
+            html.style.display = 'block';
+        });
+
+        html.style.display = 'none';
+    }
+  </script>
+    
+    
+    <script>
+        if (isMobileDevice) {
+            document.addEventListener('DOMContentLoaded', function (e) {
+                var siteNav         = document.querySelector('.site-nav');
+                var hamburgerButton = document.querySelector('.hamburger-button');
+
+                hamburgerButton.addEventListener('click', function (e) {
+                    if (hamburgerButton.className.indexOf('active') !== -1) {
+                        hamburgerButton.className = hamburgerButton.className.replace(' active', '');
+                        siteNav.className = siteNav.className.replace(' active', '');
+                        document.documentElement.style.overflowY = 'scroll';
+                    }
+                    else {
+                        hamburgerButton.className += ' active';
+                        siteNav.className += ' active';
+                        document.documentElement.style.overflowY = 'hidden';
+                    }
+                });
+
+                var docTopNav          = document.querySelector('.doc-top-nav');
+                var siteNav            = document.querySelector('.site-nav');
+                var docMenuItem        = document.querySelector('.site-nav-tab');
+                var mainMenuSecondItem = document.querySelector('.site-nav-tab:nth-child(2)');
+
+                siteNav.insertBefore(docTopNav, mainMenuSecondItem);
+
+                var docMenuItemIcon = document.createElement('div');
+
+                docMenuItemIcon.className = 'doc-menu-item-icon';
+                docMenuItem.appendChild(docMenuItemIcon);
+
+                
+                    docMenuItem.className += ' expanded';
+                    docTopNav.className += ' expanded';
+                
+
+                docMenuItem.addEventListener('click', function (e) {
+                    if (docTopNav.className.indexOf('expanded') !== -1) {
+                        docMenuItem.className = docMenuItem.className.replace(' expanded', '');
+                        docTopNav.className = docTopNav.className.replace(' expanded', '');
+                    }
+                    else {
+                        docMenuItem.className += ' expanded';
+                        docTopNav.className += ' expanded';
+                    }
+                    e.preventDefault();
+                });
+            });
+
+            linkCss('/testcafe/css/mobile.css');
+        }
+    </script>
+    
+
   
 
   
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/css/perfect-scrollbar.min.css">
+    <link rel="stylesheet" href="/testcafe/css/docs.css">
     <style>
         .ps-container > .ps-scrollbar-x-rail,
         .ps-container > .ps-scrollbar-y-rail {
@@ -72,23 +153,9 @@
 
         var nav            = null;
         var article        = null;
-        var md             = new MobileDetect(window.navigator.userAgent);
-        var isMobileDevice = !!md.mobile();
 
         function setNavTopPosition () {
-            var isMobileZoomed = isMobileDevice && window.innerWidth !== document.body.scrollWidth;
-            var top            = null;
-
-            if(isMobileDevice) {
-                top = window.pageYOffset >= HEADER_HEIGHT ? window.pageYOffset - HEADER_HEIGHT + 'px' : '0';
-
-                if (nav.style.paddingTop !== top) {
-                    nav.style.paddingTop = top;
-                    Ps.update(nav);
-                }
-
-                return;
-            }
+            var top = null;
 
             if (document.body.clientWidth > MIN_BODY_WIDTH) {
                 if (nav.style.top !== HEADER_HEIGHT + 'px') {
@@ -96,7 +163,7 @@
                     Ps.update(nav);
                 }
             }
-            else if(!isMobileZoomed) {
+            else {
                 top = window.pageYOffset <= HEADER_HEIGHT ? HEADER_HEIGHT - window.pageYOffset + 'px' : '0';
 
                 if (nav.style.top !== top) {
@@ -123,10 +190,7 @@
         }
 
         function updatePosition () {
-            if (isMobileDevice)
-                changeBodyHeight();
-            else
-                nav.style.marginLeft = '-' + window.pageXOffset + 'px';
+            nav.style.marginLeft = '-' + window.pageXOffset + 'px';
 
             setNavBottomPosition();
             setNavTopPosition();
@@ -146,32 +210,44 @@
         }
 
         function initNav() {
-            if(isMobileDevice) {
-                nav.style.position = 'relative';
-                nav.style.float = 'left';
-                nav.style.top = '0px';
-
-                article.style.marginTop = '0px';
-                article.style.paddingTop = '22px';
-            }
-
             initScrollBar();
             updatePosition();
             window.addEventListener('scroll', updatePosition);
             window.addEventListener('resize', updatePosition);
-
-            if(isMobileDevice) {
-                nav.style.height = window.innerHeight + 'px';
-            }
         }
 
         document.addEventListener('DOMContentLoaded', function (e) {
+            if (isMobileDevice)
+                return;
+
             nav     = document.querySelector('.doc-nav');
             article = document.querySelector('.doc');
 
-            if(nav)
+            if (nav)
                 initNav(nav);
         });
+    </script>
+    
+    <script>
+        if (isMobileDevice && false == false) {
+            document.addEventListener('DOMContentLoaded', function (e) {
+                var toggleNavButton = document.querySelector('.toggle-nav-button');
+                var docNav          = document.querySelector('.doc-nav');
+
+                toggleNavButton.addEventListener('click', function (e) {
+                    if (docNav.className.indexOf('active') !== -1) {
+                        docNav.className = docNav.className.replace(' active', '');
+                        document.documentElement.style.overflowY = 'scroll';
+                    }
+                    else {
+                        docNav.className += ' active';
+                        document.documentElement.style.overflowY = 'hidden';
+                    }
+                });
+            });
+
+            linkCss('/testcafe/css/docs.mobile.css');
+        }
     </script>
   
     <script>
@@ -191,10 +267,10 @@
                 if(contentWrapper)
                     contentWrapper.style.paddingTop = bodyMinimized ? '0' : '';
 
-                if(article)
+                if(article && !isMobileDevice)
                     article.style.marginTop = bodyMinimized ? '21px' : '72px';
- 
-                if(gs)
+
+                if(gs && !isMobileDevice)
                     gs.style.paddingTop = bodyMinimized ? '21px' : '72px';
             }
 
@@ -209,7 +285,7 @@
             var article        = document.querySelector('.doc');
             var gs             = document.querySelector('.gs');
 
-            if(siteHeader) 
+            if(siteHeader)
                 initHeader(siteHeader, contentWrapper, docTopMenu, article, gs);
         });
     </script>
@@ -222,6 +298,9 @@
       <header class="site-header fixed">
   <div class="site-header-content">
     <a class="site-logo" href="/testcafe/"></a>
+    <div class="hamburger-button">
+        <div class="hamburger-icon"></div>
+    </div>
     <nav class="site-nav">
         
           
@@ -268,7 +347,7 @@
           <input type="text" placeholder="Search query" id="search"/>
           <div id="close-search"></div>
       </div>
-      </nav>
+    </nav>
   </div>
 </header>
 
@@ -282,10 +361,12 @@
     return false;
   }
 
-  function closeSearchBox(e) {
-      var clickOutsideSearchBox = searchPanel !== e.target && !has(searchPanel, e.target);
+  function clickOutsideBox(e, box) {
+      return box !== e.target && !has(box, e.target);
+  }  
 
-      if(clickOutsideSearchBox && searchPanel.className.indexOf('hidden') === -1) 
+  function closeSearchBox(e) {
+      if(clickOutsideBox(e, searchPanel) && searchPanel.className.indexOf('hidden') === -1) 
           searchPanel.className += ' hidden';
   }
 
@@ -305,6 +386,40 @@
 
   window.addEventListener('mousedown', closeSearchBox);        
   window.addEventListener('touchstart', closeSearchBox);
+
+  if (window.isMobileDevice) {
+      function closeHamburgerMenuBox(e) {
+          if(clickOutsideBox(e, hamburgerMenu) && clickOutsideBox(e, hamburgerButton) && hamburgerMenu.className.indexOf('active') !== -1) {
+              hamburgerMenu.className = hamburgerMenu.className.replace(' active', '');
+              hamburgerButton.className = hamburgerButton.className.replace(' active', '');
+              document.documentElement.style.overflowY = 'scroll';
+          }
+      }
+
+      var hamburgerMenu = document.querySelector('.site-nav');
+      var hamburgerButton = document.querySelector('.hamburger-button');
+
+      window.addEventListener('mousedown', closeHamburgerMenuBox);        
+      window.addEventListener('touchstart', closeHamburgerMenuBox);
+
+      window.addEventListener('DOMContentLoaded', function (e) {
+          var docNav = document.querySelector('.doc-nav');
+
+          if(docNav) {
+              function closeDocNav(e) {
+                  if(clickOutsideBox(e, docNav) && clickOutsideBox(e, toggleNavButton) && docNav.className.indexOf('active') !== -1) {
+                      docNav.className = docNav.className.replace(' active', '');
+                      document.documentElement.style.overflowY = 'scroll';
+                  }
+              }
+
+              var toggleNavButton = document.querySelector('.toggle-nav-button');
+
+              window.addEventListener('mousedown', closeDocNav);        
+              window.addEventListener('touchstart', closeDocNav);
+          }
+      });
+  }
 </script>
 
 <script>
@@ -315,36 +430,33 @@
   });
 </script>
 
-
-
-  <div class="doc-top-nav">
-    <div class="doc-top-nav-content">
-      <div class="doc-top-nav-wrapper">
-        
-          <div class="doc-top-nav-tab " >
-            <a href="/testcafe/documentation/getting-started/">Getting Started</a>      
-          </div>
-        
-          <div class="doc-top-nav-tab " >
-            <a href="/testcafe/documentation/using-testcafe/">Using TestCafe</a>      
-          </div>
-        
-          <div class="doc-top-nav-tab active" >
-            <a href="/testcafe/documentation/test-api/">Test API</a>      
-          </div>
-        
-          <div class="doc-top-nav-tab " >
-            <a href="/testcafe/documentation/extending-testcafe/">Extending TestCafe</a>      
-          </div>
-        
-          <div class="doc-top-nav-tab " >
-            <a href="/testcafe/documentation/recipes/">Recipes</a>      
-          </div>
-        
-      </div>
+<div class="doc-top-nav">
+  <div class="doc-top-nav-content">
+    <div class="doc-top-nav-wrapper">
+      
+        <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/getting-started/">Getting Started</a>      
+        </div>
+      
+        <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/using-testcafe/">Using TestCafe</a>      
+        </div>
+      
+        <div class="doc-top-nav-tab active" >
+          <a href="/testcafe/documentation/test-api/">Test API</a>      
+        </div>
+      
+        <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/extending-testcafe/">Extending TestCafe</a>      
+        </div>
+      
+        <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/recipes/">Recipes</a>      
+        </div>
+      
     </div>
   </div>
-
+</div>
 
 
       <div class="container">
@@ -357,6 +469,9 @@
 
 	
 	
+	<div class="doc-nav-panel">
+		<div class="toggle-nav-button"></div>
+	</div>
 	<nav class="doc-nav">	
 		<div class="doc-nav-content">
 			<ul>
@@ -858,32 +973,32 @@
 </ul>
 <h2><a class="anchor" name="logging-http-requests"></a>Logging HTTP Requests <a class="permalink" href="#logging-http-requests">#</a></h2>
 <p>You can use the request logger to record HTTP requests the tested web app sends and responses it receives. For instance, you may want to make sure that the data from a remote service is correct. In this example, the test checks the DevExpress grid control&#39;s data.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span><span class="p">,</span> <span class="nx">RequestLogger</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
-<span class="kr">import</span> <span class="nx">fs</span> <span class="nx">from</span> <span class="s1">'fs'</span><span class="p">;</span>
-<span class="kr">import</span> <span class="nx">path</span> <span class="nx">from</span> <span class="s1">'path'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span><span class="p">,</span> <span class="nx">RequestLogger</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">fs</span> <span class="k">from</span> <span class="s1">'fs'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">path</span> <span class="k">from</span> <span class="s1">'path'</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">url</span> <span class="o">=</span> <span class="s1">'https://demos.devexpress.com/ASPxGridViewDemos/Exporting/Exporting.aspx'</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">url</span> <span class="o">=</span> <span class="s1">'https://demos.devexpress.com/ASPxGridViewDemos/Exporting/Exporting.aspx'</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">logger</span> <span class="o">=</span> <span class="nx">RequestLogger</span><span class="p">({</span> <span class="nx">url</span><span class="p">,</span> <span class="na">method</span><span class="p">:</span> <span class="s1">'post'</span> <span class="p">},</span> <span class="p">{</span>
+<span class="kd">const</span> <span class="nx">logger</span> <span class="o">=</span> <span class="nx">RequestLogger</span><span class="p">({</span> <span class="nx">url</span><span class="p">,</span> <span class="na">method</span><span class="p">:</span> <span class="s1">'post'</span> <span class="p">},</span> <span class="p">{</span>
     <span class="na">logResponseHeaders</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
     <span class="na">logResponseBody</span><span class="p">:</span>    <span class="kc">true</span>
 <span class="p">});</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">Export</span><span class="err">`</span>
+<span class="nx">fixture</span> <span class="s2">`Export`</span>
     <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="nx">url</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">requestHooks</span><span class="p">(</span><span class="nx">logger</span><span class="p">);</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'export to csv'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">exportToCSVButton</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'span'</span><span class="p">).</span><span class="nx">withText</span><span class="p">(</span><span class="s1">'Export to CSV'</span><span class="p">);</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'export to csv'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">exportToCSVButton</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'span'</span><span class="p">).</span><span class="nx">withText</span><span class="p">(</span><span class="s1">'Export to CSV'</span><span class="p">);</span>
 
-    <span class="nx">await</span> <span class="nx">t</span>
+    <span class="kr">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">exportToCSVButton</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">logger</span><span class="p">.</span><span class="nx">contains</span><span class="p">(</span><span class="nx">r</span> <span class="o">=&gt;</span> <span class="nx">r</span><span class="p">.</span><span class="nx">response</span><span class="p">.</span><span class="nx">statusCode</span> <span class="o">===</span> <span class="mi">200</span><span class="p">)).</span><span class="nx">ok</span><span class="p">();</span>
 
     <span class="c1">// After clicking 'Export', the response comes as a gziped CSV.</span>
     <span class="c1">// The browser unpacks the archive and gives you the file that was inside.</span>
     <span class="c1">// The test receives the archive as is.</span>
-    <span class="kr">const</span> <span class="nx">filePath</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="s1">'exported-grid.zip'</span><span class="p">);</span>
+    <span class="kd">const</span> <span class="nx">filePath</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="s1">'exported-grid.zip'</span><span class="p">);</span>
 
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">filePath</span><span class="p">);</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">logger</span><span class="p">.</span><span class="nx">requests</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">response</span><span class="p">.</span><span class="nx">headers</span><span class="p">);</span>
@@ -898,16 +1013,16 @@
 <p>See <a href="logging-http-requests.html">Logging HTTP Requests</a> for more information.</p>
 <h2><a class="anchor" name="mocking-http-responses"></a>Mocking HTTP Responses <a class="permalink" href="#mocking-http-responses">#</a></h2>
 <p>Use TestCafe request mocker to substitute infrastructure that is difficult to deploy or that you do not want to use when testing. This can be a third-party service that charges you per pageview or an analytics service that should not log page views tests generate.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span><span class="p">,</span> <span class="nx">RequestMock</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span><span class="p">,</span> <span class="nx">RequestMock</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
 <span class="c1">// A URL to which Google Analytics sends data.</span>
-<span class="kr">const</span> <span class="nx">collectDataGoogleAnalyticsRegExp</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">RegExp</span><span class="p">(</span><span class="s1">'https://www.google-analytics.com/collect'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">collectDataGoogleAnalyticsRegExp</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">RegExp</span><span class="p">(</span><span class="s1">'https://www.google-analytics.com/collect'</span><span class="p">);</span>
 
 <span class="c1">// Technically, Google Analytics sends an XHR request for a GIF image.</span>
 <span class="c1">// So, we prepare a mocked response with binary data.</span>
-<span class="kr">const</span> <span class="nx">mockedResponse</span> <span class="o">=</span> <span class="nx">Buffer</span><span class="p">.</span><span class="nx">from</span><span class="p">([</span><span class="mh">0x47</span><span class="p">,</span> <span class="mh">0x49</span><span class="p">,</span> <span class="mh">0x46</span><span class="p">,</span> <span class="mh">0x38</span><span class="p">,</span> <span class="mh">0x39</span><span class="p">,</span> <span class="mh">0x61</span><span class="p">,</span> <span class="mh">0x01</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x01</span><span class="p">]);</span>
+<span class="kd">const</span> <span class="nx">mockedResponse</span> <span class="o">=</span> <span class="nx">Buffer</span><span class="p">.</span><span class="k">from</span><span class="p">([</span><span class="mh">0x47</span><span class="p">,</span> <span class="mh">0x49</span><span class="p">,</span> <span class="mh">0x46</span><span class="p">,</span> <span class="mh">0x38</span><span class="p">,</span> <span class="mh">0x39</span><span class="p">,</span> <span class="mh">0x61</span><span class="p">,</span> <span class="mh">0x01</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x01</span><span class="p">]);</span>
 
-<span class="kr">const</span> <span class="nx">mock</span> <span class="o">=</span> <span class="nx">RequestMock</span><span class="p">()</span>
+<span class="kd">const</span> <span class="nx">mock</span> <span class="o">=</span> <span class="nx">RequestMock</span><span class="p">()</span>
     <span class="p">.</span><span class="nx">onRequestTo</span><span class="p">(</span><span class="nx">collectDataGoogleAnalyticsRegExp</span><span class="p">)</span>
 
     <span class="c1">// We respond to Analytics requests with the prepared data</span>
@@ -917,12 +1032,12 @@
         <span class="s1">'content-type'</span><span class="p">:</span> <span class="s1">'image/gif'</span>
     <span class="p">});</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">Fixture</span><span class="err">`</span>
+<span class="nx">fixture</span> <span class="s2">`Fixture`</span>
     <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="s1">'https://devexpress.github.io/testcafe/'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">requestHooks</span><span class="p">(</span><span class="nx">mock</span><span class="p">);</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'basic'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'basic'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'.get-started-button'</span><span class="p">)</span>
 
         <span class="c1">// During the pause, you can open DevTools and</span>
@@ -936,13 +1051,13 @@
 <p>You can create your own request hook to handle HTTP requests.</p>
 
 <p>The example below shows a custom hook that adds the <code>Authorization</code> header for <a href="https://tools.ietf.org/html/rfc7519">JWT</a> bearer authorization.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span><span class="p">,</span> <span class="nx">RequestHook</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span><span class="p">,</span> <span class="nx">RequestHook</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="kr">class</span> <span class="nx">JwtBearerAuthorization</span> <span class="kr">extends</span> <span class="nx">RequestHook</span> <span class="p">{</span>
-    <span class="nx">constructor</span> <span class="p">()</span> <span class="p">{</span>
+<span class="kd">class</span> <span class="nx">JwtBearerAuthorization</span> <span class="kd">extends</span> <span class="nx">RequestHook</span> <span class="p">{</span>
+    <span class="kd">constructor</span> <span class="p">()</span> <span class="p">{</span>
         <span class="c1">// No URL filtering applied to this hook</span>
         <span class="c1">// so it will be used for all requests.</span>
-        <span class="kr">super</span><span class="p">();</span>
+        <span class="k">super</span><span class="p">();</span>
     <span class="p">}</span>
 
     <span class="nx">onRequest</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
@@ -950,13 +1065,13 @@
     <span class="p">}</span>
 <span class="p">}</span>
 
-<span class="kr">const</span> <span class="nx">jwtBearerAuthorization</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">JwtBearerAuthorization</span><span class="p">();</span>
+<span class="kd">const</span> <span class="nx">jwtBearerAuthorization</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">JwtBearerAuthorization</span><span class="p">();</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">Fixture</span><span class="err">`</span>
+<span class="nx">fixture</span> <span class="s2">`Fixture`</span>
     <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="s1">'&lt;website URL&gt;'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">requestHooks</span><span class="p">(</span><span class="nx">jwtBearerAuthorization</span><span class="p">);</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'basic'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'basic'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="cm">/* some actions */</span>
 <span class="p">});</span>
 </code></pre></div>

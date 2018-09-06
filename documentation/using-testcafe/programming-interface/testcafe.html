@@ -12,7 +12,7 @@
 
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
-  
+
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
   <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/testcafe.html" />
@@ -29,6 +29,10 @@
   <script defer src="https://buttons.github.io/buttons.js"></script>
   <script defer type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.3.min.js"></script>
   <script src="/testcafe/scripts/mobile-detect.min.js" type="text/javascript"></script>
+  <script>
+     var md             = new MobileDetect(window.navigator.userAgent);
+     var isMobileDevice = !!md.mobile();
+  </script>
   <script>
       document.addEventListener('DOMContentLoaded', function (e) {
           hljs.initHighlightingOnLoad();
@@ -52,10 +56,87 @@
   
   
 
+  <script>
+    function linkCss (href) {
+        var link  = document.createElement('link');
+        var html  = document.querySelector('html');
+        var head  = document.head;
+
+        link.rel  = 'stylesheet';
+        link.type = 'text/css';
+        link.href = href;
+        link.media = 'all';
+
+        head.appendChild(link);
+
+        window.addEventListener('load', function () {
+            html.style.display = 'block';
+        });
+
+        html.style.display = 'none';
+    }
+  </script>
+    
+    
+    <script>
+        if (isMobileDevice) {
+            document.addEventListener('DOMContentLoaded', function (e) {
+                var siteNav         = document.querySelector('.site-nav');
+                var hamburgerButton = document.querySelector('.hamburger-button');
+
+                hamburgerButton.addEventListener('click', function (e) {
+                    if (hamburgerButton.className.indexOf('active') !== -1) {
+                        hamburgerButton.className = hamburgerButton.className.replace(' active', '');
+                        siteNav.className = siteNav.className.replace(' active', '');
+                        document.documentElement.style.overflowY = 'scroll';
+                    }
+                    else {
+                        hamburgerButton.className += ' active';
+                        siteNav.className += ' active';
+                        document.documentElement.style.overflowY = 'hidden';
+                    }
+                });
+
+                var docTopNav          = document.querySelector('.doc-top-nav');
+                var siteNav            = document.querySelector('.site-nav');
+                var docMenuItem        = document.querySelector('.site-nav-tab');
+                var mainMenuSecondItem = document.querySelector('.site-nav-tab:nth-child(2)');
+
+                siteNav.insertBefore(docTopNav, mainMenuSecondItem);
+
+                var docMenuItemIcon = document.createElement('div');
+
+                docMenuItemIcon.className = 'doc-menu-item-icon';
+                docMenuItem.appendChild(docMenuItemIcon);
+
+                
+                    docMenuItem.className += ' expanded';
+                    docTopNav.className += ' expanded';
+                
+
+                docMenuItem.addEventListener('click', function (e) {
+                    if (docTopNav.className.indexOf('expanded') !== -1) {
+                        docMenuItem.className = docMenuItem.className.replace(' expanded', '');
+                        docTopNav.className = docTopNav.className.replace(' expanded', '');
+                    }
+                    else {
+                        docMenuItem.className += ' expanded';
+                        docTopNav.className += ' expanded';
+                    }
+                    e.preventDefault();
+                });
+            });
+
+            linkCss('/testcafe/css/mobile.css');
+        }
+    </script>
+    
+
   
 
   
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/css/perfect-scrollbar.min.css">
+    <link rel="stylesheet" href="/testcafe/css/docs.css">
     <style>
         .ps-container > .ps-scrollbar-x-rail,
         .ps-container > .ps-scrollbar-y-rail {
@@ -72,23 +153,9 @@
 
         var nav            = null;
         var article        = null;
-        var md             = new MobileDetect(window.navigator.userAgent);
-        var isMobileDevice = !!md.mobile();
 
         function setNavTopPosition () {
-            var isMobileZoomed = isMobileDevice && window.innerWidth !== document.body.scrollWidth;
-            var top            = null;
-
-            if(isMobileDevice) {
-                top = window.pageYOffset >= HEADER_HEIGHT ? window.pageYOffset - HEADER_HEIGHT + 'px' : '0';
-
-                if (nav.style.paddingTop !== top) {
-                    nav.style.paddingTop = top;
-                    Ps.update(nav);
-                }
-
-                return;
-            }
+            var top = null;
 
             if (document.body.clientWidth > MIN_BODY_WIDTH) {
                 if (nav.style.top !== HEADER_HEIGHT + 'px') {
@@ -96,7 +163,7 @@
                     Ps.update(nav);
                 }
             }
-            else if(!isMobileZoomed) {
+            else {
                 top = window.pageYOffset <= HEADER_HEIGHT ? HEADER_HEIGHT - window.pageYOffset + 'px' : '0';
 
                 if (nav.style.top !== top) {
@@ -123,10 +190,7 @@
         }
 
         function updatePosition () {
-            if (isMobileDevice)
-                changeBodyHeight();
-            else
-                nav.style.marginLeft = '-' + window.pageXOffset + 'px';
+            nav.style.marginLeft = '-' + window.pageXOffset + 'px';
 
             setNavBottomPosition();
             setNavTopPosition();
@@ -146,32 +210,44 @@
         }
 
         function initNav() {
-            if(isMobileDevice) {
-                nav.style.position = 'relative';
-                nav.style.float = 'left';
-                nav.style.top = '0px';
-
-                article.style.marginTop = '0px';
-                article.style.paddingTop = '22px';
-            }
-
             initScrollBar();
             updatePosition();
             window.addEventListener('scroll', updatePosition);
             window.addEventListener('resize', updatePosition);
-
-            if(isMobileDevice) {
-                nav.style.height = window.innerHeight + 'px';
-            }
         }
 
         document.addEventListener('DOMContentLoaded', function (e) {
+            if (isMobileDevice)
+                return;
+
             nav     = document.querySelector('.doc-nav');
             article = document.querySelector('.doc');
 
-            if(nav)
+            if (nav)
                 initNav(nav);
         });
+    </script>
+    
+    <script>
+        if (isMobileDevice && false == false) {
+            document.addEventListener('DOMContentLoaded', function (e) {
+                var toggleNavButton = document.querySelector('.toggle-nav-button');
+                var docNav          = document.querySelector('.doc-nav');
+
+                toggleNavButton.addEventListener('click', function (e) {
+                    if (docNav.className.indexOf('active') !== -1) {
+                        docNav.className = docNav.className.replace(' active', '');
+                        document.documentElement.style.overflowY = 'scroll';
+                    }
+                    else {
+                        docNav.className += ' active';
+                        document.documentElement.style.overflowY = 'hidden';
+                    }
+                });
+            });
+
+            linkCss('/testcafe/css/docs.mobile.css');
+        }
     </script>
   
     <script>
@@ -191,10 +267,10 @@
                 if(contentWrapper)
                     contentWrapper.style.paddingTop = bodyMinimized ? '0' : '';
 
-                if(article)
+                if(article && !isMobileDevice)
                     article.style.marginTop = bodyMinimized ? '21px' : '72px';
- 
-                if(gs)
+
+                if(gs && !isMobileDevice)
                     gs.style.paddingTop = bodyMinimized ? '21px' : '72px';
             }
 
@@ -209,7 +285,7 @@
             var article        = document.querySelector('.doc');
             var gs             = document.querySelector('.gs');
 
-            if(siteHeader) 
+            if(siteHeader)
                 initHeader(siteHeader, contentWrapper, docTopMenu, article, gs);
         });
     </script>
@@ -222,6 +298,9 @@
       <header class="site-header fixed">
   <div class="site-header-content">
     <a class="site-logo" href="/testcafe/"></a>
+    <div class="hamburger-button">
+        <div class="hamburger-icon"></div>
+    </div>
     <nav class="site-nav">
         
           
@@ -268,7 +347,7 @@
           <input type="text" placeholder="Search query" id="search"/>
           <div id="close-search"></div>
       </div>
-      </nav>
+    </nav>
   </div>
 </header>
 
@@ -282,10 +361,12 @@
     return false;
   }
 
-  function closeSearchBox(e) {
-      var clickOutsideSearchBox = searchPanel !== e.target && !has(searchPanel, e.target);
+  function clickOutsideBox(e, box) {
+      return box !== e.target && !has(box, e.target);
+  }  
 
-      if(clickOutsideSearchBox && searchPanel.className.indexOf('hidden') === -1) 
+  function closeSearchBox(e) {
+      if(clickOutsideBox(e, searchPanel) && searchPanel.className.indexOf('hidden') === -1) 
           searchPanel.className += ' hidden';
   }
 
@@ -305,6 +386,40 @@
 
   window.addEventListener('mousedown', closeSearchBox);        
   window.addEventListener('touchstart', closeSearchBox);
+
+  if (window.isMobileDevice) {
+      function closeHamburgerMenuBox(e) {
+          if(clickOutsideBox(e, hamburgerMenu) && clickOutsideBox(e, hamburgerButton) && hamburgerMenu.className.indexOf('active') !== -1) {
+              hamburgerMenu.className = hamburgerMenu.className.replace(' active', '');
+              hamburgerButton.className = hamburgerButton.className.replace(' active', '');
+              document.documentElement.style.overflowY = 'scroll';
+          }
+      }
+
+      var hamburgerMenu = document.querySelector('.site-nav');
+      var hamburgerButton = document.querySelector('.hamburger-button');
+
+      window.addEventListener('mousedown', closeHamburgerMenuBox);        
+      window.addEventListener('touchstart', closeHamburgerMenuBox);
+
+      window.addEventListener('DOMContentLoaded', function (e) {
+          var docNav = document.querySelector('.doc-nav');
+
+          if(docNav) {
+              function closeDocNav(e) {
+                  if(clickOutsideBox(e, docNav) && clickOutsideBox(e, toggleNavButton) && docNav.className.indexOf('active') !== -1) {
+                      docNav.className = docNav.className.replace(' active', '');
+                      document.documentElement.style.overflowY = 'scroll';
+                  }
+              }
+
+              var toggleNavButton = document.querySelector('.toggle-nav-button');
+
+              window.addEventListener('mousedown', closeDocNav);        
+              window.addEventListener('touchstart', closeDocNav);
+          }
+      });
+  }
 </script>
 
 <script>
@@ -315,36 +430,33 @@
   });
 </script>
 
-
-
-  <div class="doc-top-nav">
-    <div class="doc-top-nav-content">
-      <div class="doc-top-nav-wrapper">
-        
-          <div class="doc-top-nav-tab " >
-            <a href="/testcafe/documentation/getting-started/">Getting Started</a>      
-          </div>
-        
-          <div class="doc-top-nav-tab active" >
-            <a href="/testcafe/documentation/using-testcafe/">Using TestCafe</a>      
-          </div>
-        
-          <div class="doc-top-nav-tab " >
-            <a href="/testcafe/documentation/test-api/">Test API</a>      
-          </div>
-        
-          <div class="doc-top-nav-tab " >
-            <a href="/testcafe/documentation/extending-testcafe/">Extending TestCafe</a>      
-          </div>
-        
-          <div class="doc-top-nav-tab " >
-            <a href="/testcafe/documentation/recipes/">Recipes</a>      
-          </div>
-        
-      </div>
+<div class="doc-top-nav">
+  <div class="doc-top-nav-content">
+    <div class="doc-top-nav-wrapper">
+      
+        <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/getting-started/">Getting Started</a>      
+        </div>
+      
+        <div class="doc-top-nav-tab active" >
+          <a href="/testcafe/documentation/using-testcafe/">Using TestCafe</a>      
+        </div>
+      
+        <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/test-api/">Test API</a>      
+        </div>
+      
+        <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/extending-testcafe/">Extending TestCafe</a>      
+        </div>
+      
+        <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/recipes/">Recipes</a>      
+        </div>
+      
     </div>
   </div>
-
+</div>
 
 
       <div class="container">
@@ -354,6 +466,9 @@
 
 	
 	
+	<div class="doc-nav-panel">
+		<div class="toggle-nav-button"></div>
+	</div>
 	<nav class="doc-nav">	
 		<div class="doc-nav-content">
 			<ul>
@@ -519,7 +634,7 @@
 <p>To create a server instance, use the <a href="createtestcafe.html">createTestCafe</a> factory function.</p>
 
 <p><strong>Example</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">createTestCafe</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'testcafe'</span><span class="p">);</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">createTestCafe</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'testcafe'</span><span class="p">);</span>
 
 <span class="nx">createTestCafe</span><span class="p">(</span><span class="s1">'localhost'</span><span class="p">,</span> <span class="mi">1337</span><span class="p">,</span> <span class="mi">1338</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">testcafe</span> <span class="o">=&gt;</span> <span class="p">{</span>
@@ -538,7 +653,7 @@
 <p>To connect a remote browser, navigate it to <a href="browserconnection.html#url">BrowserConnection.url</a>.</p>
 
 <p><strong>Example</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">createTestCafe</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'testcafe'</span><span class="p">);</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">createTestCafe</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'testcafe'</span><span class="p">);</span>
 <span class="kd">let</span> <span class="nx">runner</span>           <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
 <span class="kd">let</span> <span class="nx">testcafe</span>         <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
 
@@ -571,13 +686,13 @@
 <div class="highlight"><pre><code class="language-text" data-lang="text">createRunner() → Runner
 </code></pre></div>
 <p><strong>Example</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">createTestCafe</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'testcafe'</span><span class="p">);</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">createTestCafe</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'testcafe'</span><span class="p">);</span>
 <span class="kd">let</span> <span class="nx">testcafe</span>         <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
 
 <span class="nx">createTestCafe</span><span class="p">(</span><span class="s1">'localhost'</span><span class="p">,</span> <span class="mi">1337</span><span class="p">,</span> <span class="mi">1338</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">tc</span> <span class="o">=&gt;</span> <span class="p">{</span>
         <span class="nx">testcafe</span>     <span class="o">=</span> <span class="nx">tc</span><span class="p">;</span>
-        <span class="kr">const</span> <span class="nx">runner</span> <span class="o">=</span> <span class="nx">testcafe</span><span class="p">.</span><span class="nx">createRunner</span><span class="p">();</span>
+        <span class="kd">const</span> <span class="nx">runner</span> <span class="o">=</span> <span class="nx">testcafe</span><span class="p">.</span><span class="nx">createRunner</span><span class="p">();</span>
 
         <span class="k">return</span> <span class="nx">runner</span>
             <span class="p">.</span><span class="nx">src</span><span class="p">([</span><span class="s1">'tests/fixture1.js'</span><span class="p">,</span> <span class="s1">'tests/func/fixture3.js'</span><span class="p">])</span>

@@ -1,0 +1,91 @@
+.doc-top-nav {
+  display: block;
+  position: fixed;
+  top: 75px;
+  width: 100%;
+  height: 50px;
+  font-size: 16px;
+  background-color: #ebeeef;
+  border-bottom: 1px solid #e6e6e6; }
+  .doc-top-nav .doc-top-nav-content {
+    min-width: 600px;
+    max-width: 1500px;
+    padding: 0 100px;
+    margin: auto; }
+    .doc-top-nav .doc-top-nav-content .doc-top-nav-wrapper {
+      margin-left: -15px; }
+      .doc-top-nav .doc-top-nav-content .doc-top-nav-wrapper .doc-top-nav-tab {
+        display: inline-block;
+        margin: 10px 0 20px;
+        padding: 5px 15px 15px 15px; }
+        .doc-top-nav .doc-top-nav-content .doc-top-nav-wrapper .doc-top-nav-tab.active {
+          background-color: #fdfdfd;
+          border-radius: 5px 5px 0 0; }
+        .doc-top-nav .doc-top-nav-content .doc-top-nav-wrapper .doc-top-nav-tab a {
+          font-size: 15px;
+          font-weight: bold;
+          color: #404142; }
+
+.doc-nav-panel {
+  display: none; }
+
+.doc-nav {
+  position: fixed;
+  top: 126px;
+  bottom: 0;
+  width: 350px;
+  vertical-align: top;
+  font-size: 13px;
+  background-color: #ffffff;
+  margin: 10px 0; }
+  .doc-nav ul {
+    list-style-type: none;
+    margin-left: 0px; }
+    .doc-nav ul li {
+      text-transform: uppercase;
+      font-weight: bold;
+      font-size: 14px;
+      padding: 6px 0;
+      border-bottom: 1px solid #e6e6e6; }
+      .doc-nav ul li ul {
+        list-style-type: disc;
+        margin-left: 0px;
+        padding-left: 20px; }
+        .doc-nav ul li ul li {
+          font-weight: normal;
+          text-transform: none;
+          border-bottom: none;
+          padding: 3px 0 0; }
+          .doc-nav ul li ul li ul {
+            list-style-type: circle;
+            margin-left: 14px;
+            padding-left: 0px; }
+            .doc-nav ul li ul li ul li > ul {
+              list-style-type: square;
+              margin-left: 28px; }
+              .doc-nav ul li ul li ul li > ul li > ul {
+                list-style-type: disc;
+                margin-left: 42px; }
+    .doc-nav ul li:last-child {
+      border-bottom: none; }
+  .doc-nav a, .doc-nav a:visited {
+    color: #111; }
+  .doc-nav a.active {
+    color: #2fa4cf; }
+
+.doc-nav-content {
+  margin-top: 17px;
+  border-right: 1px solid #e6e6e6;
+  padding-right: 20px; }
+  .doc-nav-content > ul {
+    margin-bottom: 0; }
+
+.doc {
+  max-width: 1100px;
+  margin: 72px 0 40px 410px;
+  padding-right: 40px; }
+  .doc .anchor {
+    top: -153px; }
+
+.post.gs {
+  padding-top: 72px; }

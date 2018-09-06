@@ -12,7 +12,7 @@
 
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
-  
+
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
   <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/extending-testcafe/browser-provider-plugin/" />
@@ -29,6 +29,10 @@
   <script defer src="https://buttons.github.io/buttons.js"></script>
   <script defer type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.3.min.js"></script>
   <script src="/testcafe/scripts/mobile-detect.min.js" type="text/javascript"></script>
+  <script>
+     var md             = new MobileDetect(window.navigator.userAgent);
+     var isMobileDevice = !!md.mobile();
+  </script>
   <script>
       document.addEventListener('DOMContentLoaded', function (e) {
           hljs.initHighlightingOnLoad();
@@ -52,10 +56,87 @@
   
   
 
+  <script>
+    function linkCss (href) {
+        var link  = document.createElement('link');
+        var html  = document.querySelector('html');
+        var head  = document.head;
+
+        link.rel  = 'stylesheet';
+        link.type = 'text/css';
+        link.href = href;
+        link.media = 'all';
+
+        head.appendChild(link);
+
+        window.addEventListener('load', function () {
+            html.style.display = 'block';
+        });
+
+        html.style.display = 'none';
+    }
+  </script>
+    
+    
+    <script>
+        if (isMobileDevice) {
+            document.addEventListener('DOMContentLoaded', function (e) {
+                var siteNav         = document.querySelector('.site-nav');
+                var hamburgerButton = document.querySelector('.hamburger-button');
+
+                hamburgerButton.addEventListener('click', function (e) {
+                    if (hamburgerButton.className.indexOf('active') !== -1) {
+                        hamburgerButton.className = hamburgerButton.className.replace(' active', '');
+                        siteNav.className = siteNav.className.replace(' active', '');
+                        document.documentElement.style.overflowY = 'scroll';
+                    }
+                    else {
+                        hamburgerButton.className += ' active';
+                        siteNav.className += ' active';
+                        document.documentElement.style.overflowY = 'hidden';
+                    }
+                });
+
+                var docTopNav          = document.querySelector('.doc-top-nav');
+                var siteNav            = document.querySelector('.site-nav');
+                var docMenuItem        = document.querySelector('.site-nav-tab');
+                var mainMenuSecondItem = document.querySelector('.site-nav-tab:nth-child(2)');
+
+                siteNav.insertBefore(docTopNav, mainMenuSecondItem);
+
+                var docMenuItemIcon = document.createElement('div');
+
+                docMenuItemIcon.className = 'doc-menu-item-icon';
+                docMenuItem.appendChild(docMenuItemIcon);
+
+                
+                    docMenuItem.className += ' expanded';
+                    docTopNav.className += ' expanded';
+                
+
+                docMenuItem.addEventListener('click', function (e) {
+                    if (docTopNav.className.indexOf('expanded') !== -1) {
+                        docMenuItem.className = docMenuItem.className.replace(' expanded', '');
+                        docTopNav.className = docTopNav.className.replace(' expanded', '');
+                    }
+                    else {
+                        docMenuItem.className += ' expanded';
+                        docTopNav.className += ' expanded';
+                    }
+                    e.preventDefault();
+                });
+            });
+
+            linkCss('/testcafe/css/mobile.css');
+        }
+    </script>
+    
+
   
 
   
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/css/perfect-scrollbar.min.css">
+    <link rel="stylesheet" href="/testcafe/css/docs.css">
     <style>
         .ps-container > .ps-scrollbar-x-rail,
         .ps-container > .ps-scrollbar-y-rail {
@@ -72,23 +153,9 @@
 
         var nav            = null;
         var article        = null;
-        var md             = new MobileDetect(window.navigator.userAgent);
-        var isMobileDevice = !!md.mobile();
 
         function setNavTopPosition () {
-            var isMobileZoomed = isMobileDevice && window.innerWidth !== document.body.scrollWidth;
-            var top            = null;
-
-            if(isMobileDevice) {
-                top = window.pageYOffset >= HEADER_HEIGHT ? window.pageYOffset - HEADER_HEIGHT + 'px' : '0';
-
-                if (nav.style.paddingTop !== top) {
-                    nav.style.paddingTop = top;
-                    Ps.update(nav);
-                }
-
-                return;
-            }
+            var top = null;
 
             if (document.body.clientWidth > MIN_BODY_WIDTH) {
                 if (nav.style.top !== HEADER_HEIGHT + 'px') {
@@ -96,7 +163,7 @@
                     Ps.update(nav);
                 }
             }
-            else if(!isMobileZoomed) {
+            else {
                 top = window.pageYOffset <= HEADER_HEIGHT ? HEADER_HEIGHT - window.pageYOffset + 'px' : '0';
 
                 if (nav.style.top !== top) {
@@ -123,10 +190,7 @@
         }
 
         function updatePosition () {
-            if (isMobileDevice)
-                changeBodyHeight();
-            else
-                nav.style.marginLeft = '-' + window.pageXOffset + 'px';
+            nav.style.marginLeft = '-' + window.pageXOffset + 'px';
 
             setNavBottomPosition();
             setNavTopPosition();
@@ -146,32 +210,44 @@
         }
 
         function initNav() {
-            if(isMobileDevice) {
-                nav.style.position = 'relative';
-                nav.style.float = 'left';
-                nav.style.top = '0px';
-
-                article.style.marginTop = '0px';
-                article.style.paddingTop = '22px';
-            }
-
             initScrollBar();
             updatePosition();
             window.addEventListener('scroll', updatePosition);
             window.addEventListener('resize', updatePosition);
-
-            if(isMobileDevice) {
-                nav.style.height = window.innerHeight + 'px';
-            }
         }
 
         document.addEventListener('DOMContentLoaded', function (e) {
+            if (isMobileDevice)
+                return;
+
             nav     = document.querySelector('.doc-nav');
             article = document.querySelector('.doc');
 
-            if(nav)
+            if (nav)
                 initNav(nav);
         });
+    </script>
+    
+    <script>
+        if (isMobileDevice && false == false) {
+            document.addEventListener('DOMContentLoaded', function (e) {
+                var toggleNavButton = document.querySelector('.toggle-nav-button');
+                var docNav          = document.querySelector('.doc-nav');
+
+                toggleNavButton.addEventListener('click', function (e) {
+                    if (docNav.className.indexOf('active') !== -1) {
+                        docNav.className = docNav.className.replace(' active', '');
+                        document.documentElement.style.overflowY = 'scroll';
+                    }
+                    else {
+                        docNav.className += ' active';
+                        document.documentElement.style.overflowY = 'hidden';
+                    }
+                });
+            });
+
+            linkCss('/testcafe/css/docs.mobile.css');
+        }
     </script>
   
     <script>
@@ -191,10 +267,10 @@
                 if(contentWrapper)
                     contentWrapper.style.paddingTop = bodyMinimized ? '0' : '';
 
-                if(article)
+                if(article && !isMobileDevice)
                     article.style.marginTop = bodyMinimized ? '21px' : '72px';
- 
-                if(gs)
+
+                if(gs && !isMobileDevice)
                     gs.style.paddingTop = bodyMinimized ? '21px' : '72px';
             }
 
@@ -209,7 +285,7 @@
             var article        = document.querySelector('.doc');
             var gs             = document.querySelector('.gs');
 
-            if(siteHeader) 
+            if(siteHeader)
                 initHeader(siteHeader, contentWrapper, docTopMenu, article, gs);
         });
     </script>
@@ -222,6 +298,9 @@
       <header class="site-header fixed">
   <div class="site-header-content">
     <a class="site-logo" href="/testcafe/"></a>
+    <div class="hamburger-button">
+        <div class="hamburger-icon"></div>
+    </div>
     <nav class="site-nav">
         
           
@@ -268,7 +347,7 @@
           <input type="text" placeholder="Search query" id="search"/>
           <div id="close-search"></div>
       </div>
-      </nav>
+    </nav>
   </div>
 </header>
 
@@ -282,10 +361,12 @@
     return false;
   }
 
-  function closeSearchBox(e) {
-      var clickOutsideSearchBox = searchPanel !== e.target && !has(searchPanel, e.target);
+  function clickOutsideBox(e, box) {
+      return box !== e.target && !has(box, e.target);
+  }  
 
-      if(clickOutsideSearchBox && searchPanel.className.indexOf('hidden') === -1) 
+  function closeSearchBox(e) {
+      if(clickOutsideBox(e, searchPanel) && searchPanel.className.indexOf('hidden') === -1) 
           searchPanel.className += ' hidden';
   }
 
@@ -305,6 +386,40 @@
 
   window.addEventListener('mousedown', closeSearchBox);        
   window.addEventListener('touchstart', closeSearchBox);
+
+  if (window.isMobileDevice) {
+      function closeHamburgerMenuBox(e) {
+          if(clickOutsideBox(e, hamburgerMenu) && clickOutsideBox(e, hamburgerButton) && hamburgerMenu.className.indexOf('active') !== -1) {
+              hamburgerMenu.className = hamburgerMenu.className.replace(' active', '');
+              hamburgerButton.className = hamburgerButton.className.replace(' active', '');
+              document.documentElement.style.overflowY = 'scroll';
+          }
+      }
+
+      var hamburgerMenu = document.querySelector('.site-nav');
+      var hamburgerButton = document.querySelector('.hamburger-button');
+
+      window.addEventListener('mousedown', closeHamburgerMenuBox);        
+      window.addEventListener('touchstart', closeHamburgerMenuBox);
+
+      window.addEventListener('DOMContentLoaded', function (e) {
+          var docNav = document.querySelector('.doc-nav');
+
+          if(docNav) {
+              function closeDocNav(e) {
+                  if(clickOutsideBox(e, docNav) && clickOutsideBox(e, toggleNavButton) && docNav.className.indexOf('active') !== -1) {
+                      docNav.className = docNav.className.replace(' active', '');
+                      document.documentElement.style.overflowY = 'scroll';
+                  }
+              }
+
+              var toggleNavButton = document.querySelector('.toggle-nav-button');
+
+              window.addEventListener('mousedown', closeDocNav);        
+              window.addEventListener('touchstart', closeDocNav);
+          }
+      });
+  }
 </script>
 
 <script>
@@ -315,36 +430,33 @@
   });
 </script>
 
-
-
-  <div class="doc-top-nav">
-    <div class="doc-top-nav-content">
-      <div class="doc-top-nav-wrapper">
-        
-          <div class="doc-top-nav-tab " >
-            <a href="/testcafe/documentation/getting-started/">Getting Started</a>      
-          </div>
-        
-          <div class="doc-top-nav-tab " >
-            <a href="/testcafe/documentation/using-testcafe/">Using TestCafe</a>      
-          </div>
-        
-          <div class="doc-top-nav-tab " >
-            <a href="/testcafe/documentation/test-api/">Test API</a>      
-          </div>
-        
-          <div class="doc-top-nav-tab active" >
-            <a href="/testcafe/documentation/extending-testcafe/">Extending TestCafe</a>      
-          </div>
-        
-          <div class="doc-top-nav-tab " >
-            <a href="/testcafe/documentation/recipes/">Recipes</a>      
-          </div>
-        
-      </div>
+<div class="doc-top-nav">
+  <div class="doc-top-nav-content">
+    <div class="doc-top-nav-wrapper">
+      
+        <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/getting-started/">Getting Started</a>      
+        </div>
+      
+        <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/using-testcafe/">Using TestCafe</a>      
+        </div>
+      
+        <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/test-api/">Test API</a>      
+        </div>
+      
+        <div class="doc-top-nav-tab active" >
+          <a href="/testcafe/documentation/extending-testcafe/">Extending TestCafe</a>      
+        </div>
+      
+        <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/recipes/">Recipes</a>      
+        </div>
+      
     </div>
   </div>
-
+</div>
 
 
       <div class="container">
@@ -360,6 +472,9 @@
 
 	
 	
+	<div class="doc-nav-panel">
+		<div class="toggle-nav-button"></div>
+	</div>
 	<nav class="doc-nav">	
 		<div class="doc-nav-content">
 			<ul>
@@ -448,11 +563,11 @@ or <a href="https://github.com/ryx/testcafe-browser-provider-nightmare">testcafe
 The generator will scaffold out the plugin, so that you only need to write a few lines of code.</p>
 
 <p>First, install <a href="http://yeoman.io">Yeoman</a> and <code>generator-testcafe-browser-provider</code> using <a href="https://www.npmjs.com/">npm</a>.</p>
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">npm install -g yo
-npm install -g generator-testcafe-browser-provider
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">npm <span class="nb">install</span> <span class="nt">-g</span> yo
+npm <span class="nb">install</span> <span class="nt">-g</span> generator-testcafe-browser-provider
 </code></pre></div>
 <p>Create a new directory where the generator should place your scaffolded project files and go into it.</p>
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">mkdir my-provider
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">mkdir </span>my-provider
 <span class="nb">cd </span>my-provider
 </code></pre></div><blockquote><div class="blockquote-content"><p>It is recommended that you name the directory as you would name the browser provider project. When you run the generator, it will automatically suggest the browser provider name that matches the browser provider directory name.</p>
 
@@ -469,64 +584,64 @@ npm install -g generator-testcafe-browser-provider
 
 <p>There are several required and optional <a href="browser-provider-methods.html">provider methods</a> you can implement.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// Required methods</span>
-<span class="nx">async</span> <span class="nx">openBrowser</span> <span class="p">(</span><span class="cm">/* id, pageUrl, browserName */</span><span class="p">)</span> <span class="p">{</span>
+<span class="k">async</span> <span class="nx">openBrowser</span> <span class="p">(</span><span class="cm">/* id, pageUrl, browserName */</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">'Not implemented!'</span><span class="p">);</span>
 <span class="p">},</span>
 
-<span class="nx">async</span> <span class="nx">closeBrowser</span> <span class="p">(</span><span class="cm">/* id */</span><span class="p">)</span> <span class="p">{</span>
+<span class="k">async</span> <span class="nx">closeBrowser</span> <span class="p">(</span><span class="cm">/* id */</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">'Not implemented!'</span><span class="p">);</span>
 <span class="p">},</span>
 
 <span class="c1">// Optional initialization and cleanup methods</span>
-<span class="nx">async</span> <span class="nx">init</span> <span class="p">()</span> <span class="p">{</span>
+<span class="k">async</span> <span class="nx">init</span> <span class="p">()</span> <span class="p">{</span>
     <span class="k">return</span><span class="p">;</span>
 <span class="p">},</span>
 
-<span class="nx">async</span> <span class="nx">dispose</span> <span class="p">()</span> <span class="p">{</span>
+<span class="k">async</span> <span class="nx">dispose</span> <span class="p">()</span> <span class="p">{</span>
     <span class="k">return</span><span class="p">;</span>
 <span class="p">},</span>
 
 <span class="c1">// Optional methods for multi-browser support</span>
-<span class="nx">async</span> <span class="nx">getBrowserList</span> <span class="p">()</span> <span class="p">{</span>
+<span class="k">async</span> <span class="nx">getBrowserList</span> <span class="p">()</span> <span class="p">{</span>
     <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">'Not implemented!'</span><span class="p">);</span>
 <span class="p">},</span>
 
-<span class="nx">async</span> <span class="nx">isValidBrowserName</span> <span class="p">(</span><span class="cm">/* browserName */</span><span class="p">)</span> <span class="p">{</span>
+<span class="k">async</span> <span class="nx">isValidBrowserName</span> <span class="p">(</span><span class="cm">/* browserName */</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
 <span class="p">},</span>
 
 <span class="c1">// Optional extra methods</span>
-<span class="nx">async</span> <span class="nx">resizeWindow</span> <span class="p">(</span><span class="cm">/* id, width, height, currentWidth, currentHeight */</span><span class="p">)</span> <span class="p">{</span>
+<span class="k">async</span> <span class="nx">resizeWindow</span> <span class="p">(</span><span class="cm">/* id, width, height, currentWidth, currentHeight */</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">reportWarning</span><span class="p">(</span><span class="s1">'The window resize functionality is not supported by the "my-provider" browser provider.'</span><span class="p">);</span>
 <span class="p">},</span>
 
-<span class="nx">async</span> <span class="nx">canResizeWindowToDimensions</span> <span class="p">(</span><span class="cm">/* browserId, width, height */</span><span class="p">)</span> <span class="p">{</span>
+<span class="k">async</span> <span class="nx">canResizeWindowToDimensions</span> <span class="p">(</span><span class="cm">/* browserId, width, height */</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="nx">async</span> <span class="nx">takeScreenshot</span> <span class="p">(</span><span class="cm">/* id, screenshotPath, pageWidth, pageHeight */</span><span class="p">)</span> <span class="p">{</span>
+<span class="k">async</span> <span class="nx">takeScreenshot</span> <span class="p">(</span><span class="cm">/* id, screenshotPath, pageWidth, pageHeight */</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">reportWarning</span><span class="p">(</span><span class="s1">'The screenshot functionality is not supported by the "my-provider" browser provider.'</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="nx">async</span> <span class="nx">maximizeWindow</span> <span class="p">(</span><span class="cm">/*browserId*/</span><span class="p">)</span> <span class="p">{</span>
+<span class="k">async</span> <span class="nx">maximizeWindow</span> <span class="p">(</span><span class="cm">/*browserId*/</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">reportWarning</span><span class="p">(</span><span class="s1">'The window maximization functionality is not supported by the "my-provider" browser provider.'</span><span class="p">);</span>
 <span class="p">}</span>
 </code></pre></div>
 <p>To implement these methods, you can use the <a href="https://github.com/DevExpress/testcafe-browser-tools">testcafe-browser-tools</a> library that contains methods for performing platform-dependent actions on browser windows.</p>
 <h3><a class="anchor" name="example"></a>Example <a class="permalink" href="#example">#</a></h3>
 <p>The following example code demonstrates how you can implement the simple browser provider for portable browsers.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="nx">path</span> <span class="nx">from</span> <span class="s1">'path'</span><span class="p">;</span>
-<span class="kr">import</span> <span class="nx">browserTools</span> <span class="nx">from</span> <span class="s1">'testcafe-browser-tools'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="nx">path</span> <span class="k">from</span> <span class="s1">'path'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">browserTools</span> <span class="k">from</span> <span class="s1">'testcafe-browser-tools'</span><span class="p">;</span>
 
 <span class="kd">function</span> <span class="nx">getScreenSize</span> <span class="p">()</span> <span class="p">{</span>
     <span class="k">return</span> <span class="p">{</span> <span class="na">width</span><span class="p">:</span> <span class="nx">screen</span><span class="p">.</span><span class="nx">availWidth</span><span class="p">,</span> <span class="na">height</span><span class="p">:</span> <span class="nx">screen</span><span class="p">.</span><span class="nx">availHeight</span> <span class="p">};</span>
 <span class="p">}</span>
 
-<span class="kr">export</span> <span class="k">default</span> <span class="p">{</span>
+<span class="k">export</span> <span class="k">default</span> <span class="p">{</span>
     <span class="na">isMultiBrowser</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
     <span class="na">screenSizes</span><span class="p">:</span> <span class="p">{},</span>
 
-    <span class="nx">async</span> <span class="nx">openBrowser</span> <span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">pageUrl</span><span class="p">,</span> <span class="nx">browserName</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">async</span> <span class="nx">openBrowser</span> <span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">pageUrl</span><span class="p">,</span> <span class="nx">browserName</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">browserInfo</span> <span class="o">=</span> <span class="p">{};</span>
 
         <span class="k">switch</span> <span class="p">(</span><span class="nx">browserName</span><span class="p">)</span> <span class="p">{</span>
@@ -542,43 +657,43 @@ npm install -g generator-testcafe-browser-provider
                 <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">'Unsupported browser!'</span><span class="p">);</span>
         <span class="p">}</span>
 
-        <span class="nx">await</span> <span class="nx">browserTools</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="nx">browserInfo</span><span class="p">,</span> <span class="nx">pageUrl</span><span class="p">);</span>
+        <span class="kr">await</span> <span class="nx">browserTools</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="nx">browserInfo</span><span class="p">,</span> <span class="nx">pageUrl</span><span class="p">);</span>
 
-        <span class="nx">await</span> <span class="k">this</span><span class="p">.</span><span class="nx">waitForConnectionReady</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
+        <span class="kr">await</span> <span class="k">this</span><span class="p">.</span><span class="nx">waitForConnectionReady</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">screenSizes</span><span class="p">[</span><span class="nx">id</span><span class="p">]</span> <span class="o">=</span> <span class="nx">await</span> <span class="k">this</span><span class="p">.</span><span class="nx">runInitScript</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">getScreenSize</span><span class="p">.</span><span class="nx">toString</span><span class="p">());</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">screenSizes</span><span class="p">[</span><span class="nx">id</span><span class="p">]</span> <span class="o">=</span> <span class="kr">await</span> <span class="k">this</span><span class="p">.</span><span class="nx">runInitScript</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">getScreenSize</span><span class="p">.</span><span class="nx">toString</span><span class="p">());</span>
     <span class="p">},</span>
 
-    <span class="nx">async</span> <span class="nx">closeBrowser</span> <span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">await</span> <span class="nx">browserTools</span><span class="p">.</span><span class="nx">close</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
+    <span class="k">async</span> <span class="nx">closeBrowser</span> <span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kr">await</span> <span class="nx">browserTools</span><span class="p">.</span><span class="nx">close</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
     <span class="p">},</span>
 
-    <span class="nx">async</span> <span class="nx">getBrowserList</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">async</span> <span class="nx">getBrowserList</span> <span class="p">()</span> <span class="p">{</span>
         <span class="k">return</span> <span class="p">[</span><span class="s1">'firefox'</span><span class="p">,</span> <span class="s1">'chrome'</span><span class="p">];</span>
     <span class="p">},</span>
 
-    <span class="nx">async</span> <span class="nx">isValidBrowserName</span> <span class="p">(</span><span class="nx">browserName</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">browserList</span> <span class="o">=</span> <span class="nx">await</span> <span class="k">this</span><span class="p">.</span><span class="nx">getBrowserList</span><span class="p">();</span>
+    <span class="k">async</span> <span class="nx">isValidBrowserName</span> <span class="p">(</span><span class="nx">browserName</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">browserList</span> <span class="o">=</span> <span class="kr">await</span> <span class="k">this</span><span class="p">.</span><span class="nx">getBrowserList</span><span class="p">();</span>
 
         <span class="k">return</span> <span class="nx">browserList</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">browserName</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
     <span class="p">},</span>
 
-    <span class="nx">async</span> <span class="nx">resizeWindow</span> <span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">width</span><span class="p">,</span> <span class="nx">height</span><span class="p">,</span> <span class="nx">currentWidth</span><span class="p">,</span> <span class="nx">currentHeight</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">await</span> <span class="nx">browserTools</span><span class="p">.</span><span class="nx">resize</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">currentWidth</span><span class="p">,</span> <span class="nx">currentHeight</span><span class="p">,</span> <span class="nx">width</span><span class="p">,</span> <span class="nx">height</span><span class="p">);</span>
+    <span class="k">async</span> <span class="nx">resizeWindow</span> <span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">width</span><span class="p">,</span> <span class="nx">height</span><span class="p">,</span> <span class="nx">currentWidth</span><span class="p">,</span> <span class="nx">currentHeight</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kr">await</span> <span class="nx">browserTools</span><span class="p">.</span><span class="nx">resize</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">currentWidth</span><span class="p">,</span> <span class="nx">currentHeight</span><span class="p">,</span> <span class="nx">width</span><span class="p">,</span> <span class="nx">height</span><span class="p">);</span>
     <span class="p">},</span>
 
-    <span class="nx">async</span> <span class="nx">canResizeWindowToDimensions</span> <span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">width</span><span class="p">,</span> <span class="nx">height</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">async</span> <span class="nx">canResizeWindowToDimensions</span> <span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">width</span><span class="p">,</span> <span class="nx">height</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="p">{</span> <span class="na">width</span><span class="p">:</span> <span class="nx">screenWidth</span><span class="p">,</span> <span class="na">height</span><span class="p">:</span> <span class="nx">screenHeight</span> <span class="p">}</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">screenSizes</span><span class="p">[</span><span class="nx">id</span><span class="p">];</span>
 
         <span class="k">return</span> <span class="nx">width</span> <span class="o">&lt;=</span> <span class="nx">screenWidth</span> <span class="o">&amp;&amp;</span> <span class="nx">height</span> <span class="o">&lt;=</span> <span class="nx">screenHeight</span><span class="p">;</span>
     <span class="p">}</span>
 
-    <span class="nx">async</span> <span class="nx">maximizeWindow</span> <span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">await</span> <span class="nx">browserTools</span><span class="p">.</span><span class="nx">maximize</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
+    <span class="k">async</span> <span class="nx">maximizeWindow</span> <span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kr">await</span> <span class="nx">browserTools</span><span class="p">.</span><span class="nx">maximize</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
     <span class="p">},</span>
 
-    <span class="nx">async</span> <span class="nx">takeScreenshot</span> <span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">screenshotPath</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">await</span> <span class="nx">browserTools</span><span class="p">.</span><span class="nx">screenshot</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">screenshotPath</span><span class="p">);</span>
+    <span class="k">async</span> <span class="nx">takeScreenshot</span> <span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">screenshotPath</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kr">await</span> <span class="nx">browserTools</span><span class="p">.</span><span class="nx">screenshot</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">screenshotPath</span><span class="p">);</span>
     <span class="p">},</span>
 <span class="p">};</span>
 </code></pre></div><blockquote><div class="blockquote-content"><p>To learn how to implement provider methods, you can also explore the existing browser provider plugins,
@@ -594,7 +709,7 @@ This allows you to work on the browser provider project and test it iteratively 
 
 <p>To link the browser provider package, navigate to the provider directory and run <code>npm link</code>:</p>
 <div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">cd </span>my-provider
-npm link
+npm <span class="nb">link</span>
 </code></pre></div>
 <p>After that, TestCafe will use the provider version you are currently developing.</p>
 

@@ -12,7 +12,7 @@
 
   <meta name="description" content="TestCafe v0.14.0 ReleasedAuthentication via user roles, client-side debugging and numerous bug fixes.">
   <meta name="viewport" content="width=device-width">
-  
+
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
   <meta property="og:url" content="http://devexpress.github.io/testcafe/blog/testcafe-v0-14-0-released.html" />
@@ -29,6 +29,10 @@
   <script defer src="https://buttons.github.io/buttons.js"></script>
   <script defer type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.3.min.js"></script>
   <script src="/testcafe/scripts/mobile-detect.min.js" type="text/javascript"></script>
+  <script>
+     var md             = new MobileDetect(window.navigator.userAgent);
+     var isMobileDevice = !!md.mobile();
+  </script>
   <script>
       document.addEventListener('DOMContentLoaded', function (e) {
           hljs.initHighlightingOnLoad();
@@ -52,9 +56,83 @@
   
   
 
+  <script>
+    function linkCss (href) {
+        var link  = document.createElement('link');
+        var html  = document.querySelector('html');
+        var head  = document.head;
+
+        link.rel  = 'stylesheet';
+        link.type = 'text/css';
+        link.href = href;
+        link.media = 'all';
+
+        head.appendChild(link);
+
+        window.addEventListener('load', function () {
+            html.style.display = 'block';
+        });
+
+        html.style.display = 'none';
+    }
+  </script>
+    
+    
+    <script>
+        if (isMobileDevice) {
+            document.addEventListener('DOMContentLoaded', function (e) {
+                var siteNav         = document.querySelector('.site-nav');
+                var hamburgerButton = document.querySelector('.hamburger-button');
+
+                hamburgerButton.addEventListener('click', function (e) {
+                    if (hamburgerButton.className.indexOf('active') !== -1) {
+                        hamburgerButton.className = hamburgerButton.className.replace(' active', '');
+                        siteNav.className = siteNav.className.replace(' active', '');
+                        document.documentElement.style.overflowY = 'scroll';
+                    }
+                    else {
+                        hamburgerButton.className += ' active';
+                        siteNav.className += ' active';
+                        document.documentElement.style.overflowY = 'hidden';
+                    }
+                });
+
+                var docTopNav          = document.querySelector('.doc-top-nav');
+                var siteNav            = document.querySelector('.site-nav');
+                var docMenuItem        = document.querySelector('.site-nav-tab');
+                var mainMenuSecondItem = document.querySelector('.site-nav-tab:nth-child(2)');
+
+                siteNav.insertBefore(docTopNav, mainMenuSecondItem);
+
+                var docMenuItemIcon = document.createElement('div');
+
+                docMenuItemIcon.className = 'doc-menu-item-icon';
+                docMenuItem.appendChild(docMenuItemIcon);
+
+                
+
+                docMenuItem.addEventListener('click', function (e) {
+                    if (docTopNav.className.indexOf('expanded') !== -1) {
+                        docMenuItem.className = docMenuItem.className.replace(' expanded', '');
+                        docTopNav.className = docTopNav.className.replace(' expanded', '');
+                    }
+                    else {
+                        docMenuItem.className += ' expanded';
+                        docTopNav.className += ' expanded';
+                    }
+                    e.preventDefault();
+                });
+            });
+
+            linkCss('/testcafe/css/mobile.css');
+        }
+    </script>
+    
+
   
 
   
+    
     <script>
         if (document.images) {
             img1 = new Image();
@@ -79,10 +157,10 @@
                 if(contentWrapper)
                     contentWrapper.style.paddingTop = bodyMinimized ? '0' : '';
 
-                if(article)
+                if(article && !isMobileDevice)
                     article.style.marginTop = bodyMinimized ? '21px' : '72px';
- 
-                if(gs)
+
+                if(gs && !isMobileDevice)
                     gs.style.paddingTop = bodyMinimized ? '21px' : '72px';
             }
 
@@ -97,7 +175,7 @@
             var article        = document.querySelector('.doc');
             var gs             = document.querySelector('.gs');
 
-            if(siteHeader) 
+            if(siteHeader)
                 initHeader(siteHeader, contentWrapper, docTopMenu, article, gs);
         });
     </script>
@@ -110,6 +188,9 @@
       <header class="site-header fixed">
   <div class="site-header-content">
     <a class="site-logo" href="/testcafe/"></a>
+    <div class="hamburger-button">
+        <div class="hamburger-icon"></div>
+    </div>
     <nav class="site-nav">
         
           
@@ -156,7 +237,7 @@
           <input type="text" placeholder="Search query" id="search"/>
           <div id="close-search"></div>
       </div>
-      </nav>
+    </nav>
   </div>
 </header>
 
@@ -170,10 +251,12 @@
     return false;
   }
 
-  function closeSearchBox(e) {
-      var clickOutsideSearchBox = searchPanel !== e.target && !has(searchPanel, e.target);
+  function clickOutsideBox(e, box) {
+      return box !== e.target && !has(box, e.target);
+  }  
 
-      if(clickOutsideSearchBox && searchPanel.className.indexOf('hidden') === -1) 
+  function closeSearchBox(e) {
+      if(clickOutsideBox(e, searchPanel) && searchPanel.className.indexOf('hidden') === -1) 
           searchPanel.className += ' hidden';
   }
 
@@ -193,6 +276,40 @@
 
   window.addEventListener('mousedown', closeSearchBox);        
   window.addEventListener('touchstart', closeSearchBox);
+
+  if (window.isMobileDevice) {
+      function closeHamburgerMenuBox(e) {
+          if(clickOutsideBox(e, hamburgerMenu) && clickOutsideBox(e, hamburgerButton) && hamburgerMenu.className.indexOf('active') !== -1) {
+              hamburgerMenu.className = hamburgerMenu.className.replace(' active', '');
+              hamburgerButton.className = hamburgerButton.className.replace(' active', '');
+              document.documentElement.style.overflowY = 'scroll';
+          }
+      }
+
+      var hamburgerMenu = document.querySelector('.site-nav');
+      var hamburgerButton = document.querySelector('.hamburger-button');
+
+      window.addEventListener('mousedown', closeHamburgerMenuBox);        
+      window.addEventListener('touchstart', closeHamburgerMenuBox);
+
+      window.addEventListener('DOMContentLoaded', function (e) {
+          var docNav = document.querySelector('.doc-nav');
+
+          if(docNav) {
+              function closeDocNav(e) {
+                  if(clickOutsideBox(e, docNav) && clickOutsideBox(e, toggleNavButton) && docNav.className.indexOf('active') !== -1) {
+                      docNav.className = docNav.className.replace(' active', '');
+                      document.documentElement.style.overflowY = 'scroll';
+                  }
+              }
+
+              var toggleNavButton = document.querySelector('.toggle-nav-button');
+
+              window.addEventListener('mousedown', closeDocNav);        
+              window.addEventListener('touchstart', closeDocNav);
+          }
+      });
+  }
 </script>
 
 <script>
@@ -203,8 +320,33 @@
   });
 </script>
 
-
-
+<div class="doc-top-nav">
+  <div class="doc-top-nav-content">
+    <div class="doc-top-nav-wrapper">
+      
+        <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/getting-started/">Getting Started</a>      
+        </div>
+      
+        <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/using-testcafe/">Using TestCafe</a>      
+        </div>
+      
+        <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/test-api/">Test API</a>      
+        </div>
+      
+        <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/extending-testcafe/">Extending TestCafe</a>      
+        </div>
+      
+        <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/recipes/">Recipes</a>      
+        </div>
+      
+    </div>
+  </div>
+</div>
 
 
       <div class="container">
@@ -227,25 +369,25 @@ to isolate authentication test actions and apply them easily whenever you need t
 <p>Create roles via the <code>Role</code> constructor. You can keep them in a separate helper file.</p>
 
 <p><em>helper.js</em></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Role</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Role</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="kr">export</span> <span class="kd">var</span> <span class="nx">regularAccUser</span> <span class="o">=</span> <span class="nx">Role</span><span class="p">(</span><span class="s1">'http://example.com/login'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
+<span class="k">export</span> <span class="kd">var</span> <span class="nx">regularAccUser</span> <span class="o">=</span> <span class="nx">Role</span><span class="p">(</span><span class="s1">'http://example.com/login'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="s1">'#login'</span><span class="p">,</span> <span class="s1">'TestUser'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="s1">'#password'</span><span class="p">,</span> <span class="s1">'testpass'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#sign-in'</span><span class="p">);</span>
 <span class="p">});</span>
 
-<span class="kr">export</span> <span class="kd">var</span> <span class="nx">facebookAccUser</span> <span class="o">=</span> <span class="nx">Role</span><span class="p">(</span><span class="s1">'http://example.com/login'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
+<span class="k">export</span> <span class="kd">var</span> <span class="nx">facebookAccUser</span> <span class="o">=</span> <span class="nx">Role</span><span class="p">(</span><span class="s1">'http://example.com/login'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#sign-in-with-facebook'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="s1">'#email'</span><span class="p">,</span> <span class="s1">'testuser@mycompany.com'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="s1">'#pass'</span><span class="p">,</span> <span class="s1">'testpass'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#submit'</span><span class="p">);</span>
 <span class="p">});</span>
 
-<span class="kr">export</span> <span class="kd">var</span> <span class="nx">admin</span> <span class="o">=</span> <span class="nx">Role</span><span class="p">(</span><span class="s1">'http://example.com/login'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
+<span class="k">export</span> <span class="kd">var</span> <span class="nx">admin</span> <span class="o">=</span> <span class="nx">Role</span><span class="p">(</span><span class="s1">'http://example.com/login'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="s1">'#login'</span><span class="p">,</span> <span class="s1">'Admin'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="s1">'#password'</span><span class="p">,</span> <span class="s1">'adminpass'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#sign-in'</span><span class="p">);</span>
@@ -254,17 +396,17 @@ to isolate authentication test actions and apply them easily whenever you need t
 <p>In test code, use the <code>t.useRole</code> method to switch between roles.</p>
 
 <p><em>test.js</em></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">regularAccUser</span><span class="p">,</span> <span class="nx">admin</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'./helper'</span><span class="p">;</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">regularAccUser</span><span class="p">,</span> <span class="nx">admin</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'./helper'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">entry</span>        <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#entry'</span><span class="p">);</span>
-<span class="kr">const</span> <span class="nx">removeButton</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#remove-entry'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">entry</span>        <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#entry'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">removeButton</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#remove-entry'</span><span class="p">);</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">Fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//example.com`;</span>
+<span class="nx">fixture</span> <span class="s2">`My Fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://example.com`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'test that involves two users'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'test that involves two users'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">useRole</span><span class="p">(</span><span class="nx">regularAccUser</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">entry</span><span class="p">.</span><span class="nx">exists</span><span class="p">).</span><span class="nx">ok</span><span class="p">()</span>
         <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">removeButton</span><span class="p">.</span><span class="nx">visible</span><span class="p">).</span><span class="nx">notOk</span><span class="p">()</span>
@@ -279,7 +421,7 @@ to isolate authentication test actions and apply them easily whenever you need t
 <p>We have released the <a href="https://www.browserstack.com/">BrowserStack</a> browser provider <a href="https://github.com/DevExpress/testcafe-browser-provider-browserstack">plugin</a>.</p>
 
 <p>Install this plugin from <code>npm</code>.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm install testcafe-browser-provider-browserstack
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm <span class="nb">install </span>testcafe-browser-provider-browserstack
 </code></pre></div>
 <p>And save the BrowserStack username and access key to environment variables <code>BROWSERSTACK_USERNAME</code> and <code>BROWSERSTACK_ACCESS_KEY</code>.</p>
 
@@ -290,11 +432,11 @@ to isolate authentication test actions and apply them easily whenever you need t
 
 <p>When test execution reaches <code>t.debug</code>, it pauses so that you can open browser&#39;s developer tools
 and check the web page state, DOM elements location, their CSS styles.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">https</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example`;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`https://devexpress.github.io/testcafe/example`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">debug</span><span class="p">()</span>
         <span class="p">.</span><span class="nx">setNativeDialogHandler</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#populate'</span><span class="p">)</span>
@@ -310,37 +452,37 @@ and check the web page state, DOM elements location, their CSS styles.</p>
 <p><img src="../images/debugging/log-debugger.png" alt="Logging Debugger Breakpoints"></p>
 <h3><a class="anchor" name="testing-local-webpages-1286"></a>⚙ Testing local webpages (<a href="https://github.com/DevExpress/testcafe/issues/1286">#1286</a>) <a class="permalink" href="#testing-local-webpages-1286">#</a></h3>
 <p>You can now run tests against local webpages. To do this, specify a URL with the <code>file://</code> scheme or a relative path when calling the <a href="https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#specifying-the-start-webpage">page</a> function.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">MyFixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">file</span><span class="err">:</span><span class="c1">///user/my-website/index.html`;</span>
-</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">MyFixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="p">..</span><span class="o">/</span><span class="nx">my</span><span class="o">-</span><span class="nx">project</span><span class="o">/</span><span class="nx">index</span><span class="p">.</span><span class="nx">html</span><span class="err">`</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`MyFixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`file:///user/my-website/index.html`</span><span class="p">;</span>
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`MyFixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`../my-project/index.html`</span><span class="p">;</span>
 </code></pre></div>
 <p>You can also navigate to local pages with the <a href="https://devexpress.github.io/testcafe/documentation/test-api/actions/navigate.html">t.navigateTo</a> action.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//www.example.com/`;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://www.example.com/`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Navigate to local pages'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Navigate to local pages'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">navigateTo</span><span class="p">(</span><span class="s1">'file:///user/my-website/index.html'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">navigateTo</span><span class="p">(</span><span class="s1">'../my-project/index.html'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div><h3><a class="anchor" name="adding-custom-methods-to-the-selector-1212"></a>⚙ Adding custom methods to the selector (<a href="https://github.com/DevExpress/testcafe/issues/1212">#1212</a>) <a class="permalink" href="#adding-custom-methods-to-the-selector-1212">#</a></h3>
 <p>You can now extend selectors with custom methods executed on the client. Use the <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#custom-methods">addCustomMethods</a> method to provide custom methods.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">myTable</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'.my-table'</span><span class="p">).</span><span class="nx">addCustomMethods</span><span class="p">({</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">myTable</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'.my-table'</span><span class="p">).</span><span class="nx">addCustomMethods</span><span class="p">({</span>
     <span class="na">getCellText</span><span class="p">:</span> <span class="p">(</span><span class="nx">table</span><span class="p">,</span> <span class="nx">rowIndex</span><span class="p">,</span> <span class="nx">columnIndex</span><span class="p">)</span> <span class="o">=&gt;</span>
         <span class="nx">table</span><span class="p">.</span><span class="nx">rows</span><span class="p">[</span><span class="nx">rowIndex</span><span class="p">].</span><span class="nx">cells</span><span class="p">[</span><span class="nx">columnIndex</span><span class="p">].</span><span class="nx">innerText</span>
 <span class="p">});</span>
 
-<span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">myTable</span><span class="p">.</span><span class="nx">getCellText</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)).</span><span class="nx">contains</span><span class="p">(</span><span class="s1">'hey!'</span><span class="p">);</span>
+<span class="kr">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">myTable</span><span class="p">.</span><span class="nx">getCellText</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)).</span><span class="nx">contains</span><span class="p">(</span><span class="s1">'hey!'</span><span class="p">);</span>
 </code></pre></div>
 <p>Use this feature to build selectors that reflect the specifics of your web app.</p>
 <h3><a class="anchor" name="removing-the-native-dialog-handler-243"></a>⚙ Removing the native dialog handler (<a href="https://github.com/DevExpress/testcafe/issues/243">#243</a>) <a class="permalink" href="#removing-the-native-dialog-handler-243">#</a></h3>
 <p>We have added the capability to remove a <a href="https://devexpress.github.io/testcafe/documentation/test-api/handling-native-dialogs.html">native dialog handler</a> by passing <code>null</code> to the <code>t.setNativeDialogHandler</code> method.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">https</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example`;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`https://devexpress.github.io/testcafe/example`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">setNativeDialogHandler</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#populate'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">setNativeDialogHandler</span><span class="p">(</span><span class="kc">null</span><span class="p">)</span>

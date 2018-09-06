@@ -12,7 +12,7 @@
 
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
-  
+
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
   <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/helpers.html" />
@@ -29,6 +29,10 @@
   <script defer src="https://buttons.github.io/buttons.js"></script>
   <script defer type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.3.min.js"></script>
   <script src="/testcafe/scripts/mobile-detect.min.js" type="text/javascript"></script>
+  <script>
+     var md             = new MobileDetect(window.navigator.userAgent);
+     var isMobileDevice = !!md.mobile();
+  </script>
   <script>
       document.addEventListener('DOMContentLoaded', function (e) {
           hljs.initHighlightingOnLoad();
@@ -52,10 +56,87 @@
   
   
 
+  <script>
+    function linkCss (href) {
+        var link  = document.createElement('link');
+        var html  = document.querySelector('html');
+        var head  = document.head;
+
+        link.rel  = 'stylesheet';
+        link.type = 'text/css';
+        link.href = href;
+        link.media = 'all';
+
+        head.appendChild(link);
+
+        window.addEventListener('load', function () {
+            html.style.display = 'block';
+        });
+
+        html.style.display = 'none';
+    }
+  </script>
+    
+    
+    <script>
+        if (isMobileDevice) {
+            document.addEventListener('DOMContentLoaded', function (e) {
+                var siteNav         = document.querySelector('.site-nav');
+                var hamburgerButton = document.querySelector('.hamburger-button');
+
+                hamburgerButton.addEventListener('click', function (e) {
+                    if (hamburgerButton.className.indexOf('active') !== -1) {
+                        hamburgerButton.className = hamburgerButton.className.replace(' active', '');
+                        siteNav.className = siteNav.className.replace(' active', '');
+                        document.documentElement.style.overflowY = 'scroll';
+                    }
+                    else {
+                        hamburgerButton.className += ' active';
+                        siteNav.className += ' active';
+                        document.documentElement.style.overflowY = 'hidden';
+                    }
+                });
+
+                var docTopNav          = document.querySelector('.doc-top-nav');
+                var siteNav            = document.querySelector('.site-nav');
+                var docMenuItem        = document.querySelector('.site-nav-tab');
+                var mainMenuSecondItem = document.querySelector('.site-nav-tab:nth-child(2)');
+
+                siteNav.insertBefore(docTopNav, mainMenuSecondItem);
+
+                var docMenuItemIcon = document.createElement('div');
+
+                docMenuItemIcon.className = 'doc-menu-item-icon';
+                docMenuItem.appendChild(docMenuItemIcon);
+
+                
+                    docMenuItem.className += ' expanded';
+                    docTopNav.className += ' expanded';
+                
+
+                docMenuItem.addEventListener('click', function (e) {
+                    if (docTopNav.className.indexOf('expanded') !== -1) {
+                        docMenuItem.className = docMenuItem.className.replace(' expanded', '');
+                        docTopNav.className = docTopNav.className.replace(' expanded', '');
+                    }
+                    else {
+                        docMenuItem.className += ' expanded';
+                        docTopNav.className += ' expanded';
+                    }
+                    e.preventDefault();
+                });
+            });
+
+            linkCss('/testcafe/css/mobile.css');
+        }
+    </script>
+    
+
   
 
   
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/css/perfect-scrollbar.min.css">
+    <link rel="stylesheet" href="/testcafe/css/docs.css">
     <style>
         .ps-container > .ps-scrollbar-x-rail,
         .ps-container > .ps-scrollbar-y-rail {
@@ -72,23 +153,9 @@
 
         var nav            = null;
         var article        = null;
-        var md             = new MobileDetect(window.navigator.userAgent);
-        var isMobileDevice = !!md.mobile();
 
         function setNavTopPosition () {
-            var isMobileZoomed = isMobileDevice && window.innerWidth !== document.body.scrollWidth;
-            var top            = null;
-
-            if(isMobileDevice) {
-                top = window.pageYOffset >= HEADER_HEIGHT ? window.pageYOffset - HEADER_HEIGHT + 'px' : '0';
-
-                if (nav.style.paddingTop !== top) {
-                    nav.style.paddingTop = top;
-                    Ps.update(nav);
-                }
-
-                return;
-            }
+            var top = null;
 
             if (document.body.clientWidth > MIN_BODY_WIDTH) {
                 if (nav.style.top !== HEADER_HEIGHT + 'px') {
@@ -96,7 +163,7 @@
                     Ps.update(nav);
                 }
             }
-            else if(!isMobileZoomed) {
+            else {
                 top = window.pageYOffset <= HEADER_HEIGHT ? HEADER_HEIGHT - window.pageYOffset + 'px' : '0';
 
                 if (nav.style.top !== top) {
@@ -123,10 +190,7 @@
         }
 
         function updatePosition () {
-            if (isMobileDevice)
-                changeBodyHeight();
-            else
-                nav.style.marginLeft = '-' + window.pageXOffset + 'px';
+            nav.style.marginLeft = '-' + window.pageXOffset + 'px';
 
             setNavBottomPosition();
             setNavTopPosition();
@@ -146,32 +210,44 @@
         }
 
         function initNav() {
-            if(isMobileDevice) {
-                nav.style.position = 'relative';
-                nav.style.float = 'left';
-                nav.style.top = '0px';
-
-                article.style.marginTop = '0px';
-                article.style.paddingTop = '22px';
-            }
-
             initScrollBar();
             updatePosition();
             window.addEventListener('scroll', updatePosition);
             window.addEventListener('resize', updatePosition);
-
-            if(isMobileDevice) {
-                nav.style.height = window.innerHeight + 'px';
-            }
         }
 
         document.addEventListener('DOMContentLoaded', function (e) {
+            if (isMobileDevice)
+                return;
+
             nav     = document.querySelector('.doc-nav');
             article = document.querySelector('.doc');
 
-            if(nav)
+            if (nav)
                 initNav(nav);
         });
+    </script>
+    
+    <script>
+        if (isMobileDevice && false == false) {
+            document.addEventListener('DOMContentLoaded', function (e) {
+                var toggleNavButton = document.querySelector('.toggle-nav-button');
+                var docNav          = document.querySelector('.doc-nav');
+
+                toggleNavButton.addEventListener('click', function (e) {
+                    if (docNav.className.indexOf('active') !== -1) {
+                        docNav.className = docNav.className.replace(' active', '');
+                        document.documentElement.style.overflowY = 'scroll';
+                    }
+                    else {
+                        docNav.className += ' active';
+                        document.documentElement.style.overflowY = 'hidden';
+                    }
+                });
+            });
+
+            linkCss('/testcafe/css/docs.mobile.css');
+        }
     </script>
   
     <script>
@@ -191,10 +267,10 @@
                 if(contentWrapper)
                     contentWrapper.style.paddingTop = bodyMinimized ? '0' : '';
 
-                if(article)
+                if(article && !isMobileDevice)
                     article.style.marginTop = bodyMinimized ? '21px' : '72px';
- 
-                if(gs)
+
+                if(gs && !isMobileDevice)
                     gs.style.paddingTop = bodyMinimized ? '21px' : '72px';
             }
 
@@ -209,7 +285,7 @@
             var article        = document.querySelector('.doc');
             var gs             = document.querySelector('.gs');
 
-            if(siteHeader) 
+            if(siteHeader)
                 initHeader(siteHeader, contentWrapper, docTopMenu, article, gs);
         });
     </script>
@@ -222,6 +298,9 @@
       <header class="site-header fixed">
   <div class="site-header-content">
     <a class="site-logo" href="/testcafe/"></a>
+    <div class="hamburger-button">
+        <div class="hamburger-icon"></div>
+    </div>
     <nav class="site-nav">
         
           
@@ -268,7 +347,7 @@
           <input type="text" placeholder="Search query" id="search"/>
           <div id="close-search"></div>
       </div>
-      </nav>
+    </nav>
   </div>
 </header>
 
@@ -282,10 +361,12 @@
     return false;
   }
 
-  function closeSearchBox(e) {
-      var clickOutsideSearchBox = searchPanel !== e.target && !has(searchPanel, e.target);
+  function clickOutsideBox(e, box) {
+      return box !== e.target && !has(box, e.target);
+  }  
 
-      if(clickOutsideSearchBox && searchPanel.className.indexOf('hidden') === -1) 
+  function closeSearchBox(e) {
+      if(clickOutsideBox(e, searchPanel) && searchPanel.className.indexOf('hidden') === -1) 
           searchPanel.className += ' hidden';
   }
 
@@ -305,6 +386,40 @@
 
   window.addEventListener('mousedown', closeSearchBox);        
   window.addEventListener('touchstart', closeSearchBox);
+
+  if (window.isMobileDevice) {
+      function closeHamburgerMenuBox(e) {
+          if(clickOutsideBox(e, hamburgerMenu) && clickOutsideBox(e, hamburgerButton) && hamburgerMenu.className.indexOf('active') !== -1) {
+              hamburgerMenu.className = hamburgerMenu.className.replace(' active', '');
+              hamburgerButton.className = hamburgerButton.className.replace(' active', '');
+              document.documentElement.style.overflowY = 'scroll';
+          }
+      }
+
+      var hamburgerMenu = document.querySelector('.site-nav');
+      var hamburgerButton = document.querySelector('.hamburger-button');
+
+      window.addEventListener('mousedown', closeHamburgerMenuBox);        
+      window.addEventListener('touchstart', closeHamburgerMenuBox);
+
+      window.addEventListener('DOMContentLoaded', function (e) {
+          var docNav = document.querySelector('.doc-nav');
+
+          if(docNav) {
+              function closeDocNav(e) {
+                  if(clickOutsideBox(e, docNav) && clickOutsideBox(e, toggleNavButton) && docNav.className.indexOf('active') !== -1) {
+                      docNav.className = docNav.className.replace(' active', '');
+                      document.documentElement.style.overflowY = 'scroll';
+                  }
+              }
+
+              var toggleNavButton = document.querySelector('.toggle-nav-button');
+
+              window.addEventListener('mousedown', closeDocNav);        
+              window.addEventListener('touchstart', closeDocNav);
+          }
+      });
+  }
 </script>
 
 <script>
@@ -315,36 +430,33 @@
   });
 </script>
 
-
-
-  <div class="doc-top-nav">
-    <div class="doc-top-nav-content">
-      <div class="doc-top-nav-wrapper">
-        
-          <div class="doc-top-nav-tab " >
-            <a href="/testcafe/documentation/getting-started/">Getting Started</a>      
-          </div>
-        
-          <div class="doc-top-nav-tab " >
-            <a href="/testcafe/documentation/using-testcafe/">Using TestCafe</a>      
-          </div>
-        
-          <div class="doc-top-nav-tab " >
-            <a href="/testcafe/documentation/test-api/">Test API</a>      
-          </div>
-        
-          <div class="doc-top-nav-tab active" >
-            <a href="/testcafe/documentation/extending-testcafe/">Extending TestCafe</a>      
-          </div>
-        
-          <div class="doc-top-nav-tab " >
-            <a href="/testcafe/documentation/recipes/">Recipes</a>      
-          </div>
-        
-      </div>
+<div class="doc-top-nav">
+  <div class="doc-top-nav-content">
+    <div class="doc-top-nav-wrapper">
+      
+        <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/getting-started/">Getting Started</a>      
+        </div>
+      
+        <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/using-testcafe/">Using TestCafe</a>      
+        </div>
+      
+        <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/test-api/">Test API</a>      
+        </div>
+      
+        <div class="doc-top-nav-tab active" >
+          <a href="/testcafe/documentation/extending-testcafe/">Extending TestCafe</a>      
+        </div>
+      
+        <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/recipes/">Recipes</a>      
+        </div>
+      
     </div>
   </div>
-
+</div>
 
 
       <div class="container">
@@ -360,6 +472,9 @@
 
 	
 	
+	<div class="doc-nav-panel">
+		<div class="toggle-nav-button"></div>
+	</div>
 	<nav class="doc-nav">	
 		<div class="doc-nav-content">
 			<ul>
@@ -452,10 +567,10 @@ This allows you to write compact code like this.</p>
 <p><strong>Example</strong></p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">reportTaskDone</span> <span class="p">(</span><span class="nx">endTime</span><span class="p">,</span> <span class="nx">passed</span><span class="p">)</span> <span class="p">{</span>
     <span class="p">...</span>
-    <span class="kr">const</span> <span class="nx">summary</span> <span class="o">=</span> <span class="nx">passed</span> <span class="o">===</span> <span class="k">this</span><span class="p">.</span><span class="nx">testCount</span> <span class="p">?</span>
-                  <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">testCount</span><span class="p">}</span> <span class="nx">passed</span><span class="err">`</span> <span class="p">:</span>
-                  <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">testCount</span> <span class="o">-</span> <span class="nx">passed</span><span class="p">}</span><span class="sr">/${this.testCount} failed`</span><span class="err">;
-</span>
+    <span class="kd">const</span> <span class="nx">summary</span> <span class="o">=</span> <span class="nx">passed</span> <span class="o">===</span> <span class="k">this</span><span class="p">.</span><span class="nx">testCount</span> <span class="p">?</span>
+                  <span class="s2">`</span><span class="p">${</span><span class="k">this</span><span class="p">.</span><span class="nx">testCount</span><span class="p">}</span><span class="s2"> passed`</span> <span class="p">:</span>
+                  <span class="s2">`</span><span class="p">${</span><span class="k">this</span><span class="p">.</span><span class="nx">testCount</span> <span class="o">-</span> <span class="nx">passed</span><span class="p">}</span><span class="s2">/</span><span class="p">${</span><span class="k">this</span><span class="p">.</span><span class="nx">testCount</span><span class="p">}</span><span class="s2"> failed`</span><span class="p">;</span>
+
     <span class="k">this</span><span class="p">.</span><span class="nx">newline</span><span class="p">()</span>
         <span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">summary</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">newline</span><span class="p">();</span>
@@ -463,57 +578,49 @@ This allows you to write compact code like this.</p>
 </code></pre></div><h3><a class="anchor" name="write"></a>write <a class="permalink" href="#write">#</a></h3>
 <p>Writes the specified text to the report.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">write (text) → this
-</code></pre></div>
-<table><thead>
-<tr>
+</code></pre></div><div class="table-wrapper"><table><thead><tr>
 <th>Parameter</th>
 <th>Type</th>
 <th>Description</th>
 </tr>
-</thead><tbody>
-<tr>
+</thead><tbody><tr>
 <td><code>text</code></td>
 <td>String</td>
 <td>The text to output in the report.</td>
 </tr>
-</tbody></table>
-
+</tbody></table></div>
 <p><strong>Example</strong></p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">reportTaskDone</span> <span class="p">(</span><span class="nx">endTime</span><span class="p">,</span> <span class="nx">passed</span><span class="p">)</span> <span class="p">{</span>
     <span class="p">...</span>
-    <span class="kr">const</span> <span class="nx">summary</span> <span class="o">=</span> <span class="nx">passed</span> <span class="o">===</span> <span class="k">this</span><span class="p">.</span><span class="nx">testCount</span> <span class="p">?</span>
-                  <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">testCount</span><span class="p">}</span> <span class="nx">passed</span><span class="err">`</span> <span class="p">:</span>
-                  <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">testCount</span> <span class="o">-</span> <span class="nx">passed</span><span class="p">}</span><span class="sr">/${this.testCount} failed`</span><span class="err">;
-</span>
+    <span class="kd">const</span> <span class="nx">summary</span> <span class="o">=</span> <span class="nx">passed</span> <span class="o">===</span> <span class="k">this</span><span class="p">.</span><span class="nx">testCount</span> <span class="p">?</span>
+                  <span class="s2">`</span><span class="p">${</span><span class="k">this</span><span class="p">.</span><span class="nx">testCount</span><span class="p">}</span><span class="s2"> passed`</span> <span class="p">:</span>
+                  <span class="s2">`</span><span class="p">${</span><span class="k">this</span><span class="p">.</span><span class="nx">testCount</span> <span class="o">-</span> <span class="nx">passed</span><span class="p">}</span><span class="s2">/</span><span class="p">${</span><span class="k">this</span><span class="p">.</span><span class="nx">testCount</span><span class="p">}</span><span class="s2"> failed`</span><span class="p">;</span>
+
     <span class="k">this</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">summary</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">newline</span><span class="p">();</span>
 <span class="p">}</span>
 </code></pre></div><h3><a class="anchor" name="usewordwrap"></a>useWordWrap <a class="permalink" href="#usewordwrap">#</a></h3>
 <p>Toggles word wrapping for subsequent output.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">useWordWrap (use) → this
-</code></pre></div>
-<table><thead>
-<tr>
+</code></pre></div><div class="table-wrapper"><table><thead><tr>
 <th>Parameter</th>
 <th>Type</th>
 <th>Description</th>
 </tr>
-</thead><tbody>
-<tr>
+</thead><tbody><tr>
 <td><code>use</code></td>
 <td>Boolean</td>
 <td>Specify <em>true</em> to enable word wrapping.</td>
 </tr>
-</tbody></table>
-
+</tbody></table></div>
 <p><strong>Example</strong></p>
 
 <p>The following example demonstrates how to enable word wrapping in case the <code>title</code> string is long.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">reportTestDone</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">errs</span><span class="p">)</span> <span class="p">{</span>
     <span class="p">...</span>
-    <span class="nx">name</span> <span class="o">=</span> <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">currentFixtureName</span><span class="p">}</span> <span class="o">-</span> <span class="nx">$</span><span class="p">{</span><span class="nx">name</span><span class="p">}</span><span class="err">`</span><span class="p">;</span>
+    <span class="nx">name</span> <span class="o">=</span> <span class="s2">`</span><span class="p">${</span><span class="k">this</span><span class="p">.</span><span class="nx">currentFixtureName</span><span class="p">}</span><span class="s2"> - </span><span class="p">${</span><span class="nx">name</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
 
-    <span class="kr">const</span> <span class="nx">title</span> <span class="o">=</span> <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="nx">result</span><span class="p">}</span> <span class="nx">$</span><span class="p">{</span><span class="nx">name</span><span class="p">}</span><span class="err">`</span><span class="p">;</span>
+    <span class="kd">const</span> <span class="nx">title</span> <span class="o">=</span> <span class="s2">`</span><span class="p">${</span><span class="nx">result</span><span class="p">}</span><span class="s2"> </span><span class="p">${</span><span class="nx">name</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
 
     <span class="k">this</span><span class="p">.</span><span class="nx">useWordWrap</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">title</span><span class="p">);</span>
@@ -521,30 +628,26 @@ This allows you to write compact code like this.</p>
 </code></pre></div><h3><a class="anchor" name="setindent"></a>setIndent <a class="permalink" href="#setindent">#</a></h3>
 <p>Specifies indentation for subsequent output.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">setIndent (val) → this
-</code></pre></div>
-<table><thead>
-<tr>
+</code></pre></div><div class="table-wrapper"><table><thead><tr>
 <th>Parameter</th>
 <th>Type</th>
 <th>Description</th>
 </tr>
-</thead><tbody>
-<tr>
+</thead><tbody><tr>
 <td><code>val</code></td>
 <td>Integer</td>
 <td>Specifies the number of spaces to indent a new line. To disable indentation, set the parameter to 0.</td>
 </tr>
-</tbody></table>
-
+</tbody></table></div>
 <p><strong>Example</strong></p>
 
 <p>The following example demonstrates how to indent summary information by four spaces.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">reportTaskDone</span> <span class="p">(</span><span class="nx">endTime</span><span class="p">,</span> <span class="nx">passed</span><span class="p">)</span> <span class="p">{</span>
     <span class="p">...</span>
-    <span class="kr">const</span> <span class="nx">summary</span> <span class="o">=</span> <span class="nx">passed</span> <span class="o">===</span> <span class="k">this</span><span class="p">.</span><span class="nx">testCount</span> <span class="p">?</span>
-                  <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">testCount</span><span class="p">}</span> <span class="nx">passed</span><span class="err">`</span> <span class="p">:</span>
-                  <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">testCount</span> <span class="o">-</span> <span class="nx">passed</span><span class="p">}</span><span class="sr">/${this.testCount} failed`</span><span class="err">;
-</span>
+    <span class="kd">const</span> <span class="nx">summary</span> <span class="o">=</span> <span class="nx">passed</span> <span class="o">===</span> <span class="k">this</span><span class="p">.</span><span class="nx">testCount</span> <span class="p">?</span>
+                  <span class="s2">`</span><span class="p">${</span><span class="k">this</span><span class="p">.</span><span class="nx">testCount</span><span class="p">}</span><span class="s2"> passed`</span> <span class="p">:</span>
+                  <span class="s2">`</span><span class="p">${</span><span class="k">this</span><span class="p">.</span><span class="nx">testCount</span> <span class="o">-</span> <span class="nx">passed</span><span class="p">}</span><span class="s2">/</span><span class="p">${</span><span class="k">this</span><span class="p">.</span><span class="nx">testCount</span><span class="p">}</span><span class="s2"> failed`</span><span class="p">;</span>
+
     <span class="k">this</span><span class="p">.</span><span class="nx">setIndent</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">summary</span><span class="p">);</span>
 <span class="p">}</span>
@@ -552,15 +655,12 @@ This allows you to write compact code like this.</p>
 </code></pre></div><h2><a class="anchor" name="formatting-helpers"></a>Formatting Helpers <a class="permalink" href="#formatting-helpers">#</a></h2><h3><a class="anchor" name="indentstring"></a>indentString <a class="permalink" href="#indentstring">#</a></h3>
 <p>Indents each line in a string by a number of spaces.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">indentString (str, indentVal) → String
-</code></pre></div>
-<table><thead>
-<tr>
+</code></pre></div><div class="table-wrapper"><table><thead><tr>
 <th>Parameter</th>
 <th>Type</th>
 <th>Description</th>
 </tr>
-</thead><tbody>
-<tr>
+</thead><tbody><tr>
 <td><code>str</code></td>
 <td>String</td>
 <td>The string to indent.</td>
@@ -570,31 +670,27 @@ This allows you to write compact code like this.</p>
 <td>Number</td>
 <td>The number of spaces to indent a new line.</td>
 </tr>
-</tbody></table>
-
+</tbody></table></div>
 <p><strong>Example</strong></p>
 
 <p>This example demonstrates how you can indent each line in the <code>str</code> string by four spaces.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">reportTaskStart</span> <span class="p">(</span><span class="nx">startTime</span><span class="p">,</span> <span class="nx">userAgents</span><span class="p">,</span> <span class="nx">testCount</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">let</span> <span class="nx">str</span> <span class="o">=</span> <span class="err">`</span><span class="nx">Start</span> <span class="nx">running</span> <span class="nx">tests</span><span class="err">\</span><span class="nx">nBrowsers</span> <span class="nx">used</span> <span class="k">for</span> <span class="nx">testing</span><span class="err">:</span> <span class="nx">$</span><span class="p">{</span><span class="nx">userAgents</span><span class="p">}</span><span class="err">`</span><span class="p">;</span>
+    <span class="kd">let</span> <span class="nx">str</span> <span class="o">=</span> <span class="s2">`Start running tests\nBrowsers used for testing: </span><span class="p">${</span><span class="nx">userAgents</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
     <span class="nx">str</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">indentString</span><span class="p">(</span><span class="nx">str</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="nx">str</span><span class="p">}</span><span class="err">`</span><span class="p">)</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s2">`</span><span class="p">${</span><span class="nx">str</span><span class="p">}</span><span class="s2">`</span><span class="p">)</span>
 <span class="p">}</span>
 <span class="c1">//=&gt;    Start running tests</span>
 <span class="c1">//=&gt;    Browsers used for testing: Chrome,Firefox</span>
 </code></pre></div><h3><a class="anchor" name="wordwrap"></a>wordWrap <a class="permalink" href="#wordwrap">#</a></h3>
 <p>Breaks and wraps a string to a new line if its length exceeds the maximum allowed length.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">wordWrap (str, indentVal, width) → String
-</code></pre></div>
-<table><thead>
-<tr>
+</code></pre></div><div class="table-wrapper"><table><thead><tr>
 <th>Parameter</th>
 <th>Type</th>
 <th>Description</th>
 </tr>
-</thead><tbody>
-<tr>
+</thead><tbody><tr>
 <td><code>str</code></td>
 <td>String</td>
 <td>The string you want to break.</td>
@@ -609,20 +705,19 @@ This allows you to write compact code like this.</p>
 <td>Number</td>
 <td>The maximum number of characters each line can contain.</td>
 </tr>
-</tbody></table>
-
+</tbody></table></div>
 <p><strong>Example</strong></p>
 
 <p>The following example demonstrates how to break the <code>title</code> string to the next line if the string length is more than 50 symbols.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">LINE_WIDTH</span> <span class="o">=</span> <span class="mi">50</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">LINE_WIDTH</span> <span class="o">=</span> <span class="mi">50</span><span class="p">;</span>
 
 <span class="nx">reportTestDone</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">errs</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">hasErr</span>    <span class="o">=</span> <span class="o">!!</span><span class="nx">errs</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
-    <span class="kr">const</span> <span class="nx">result</span>    <span class="o">=</span> <span class="nx">hasErr</span> <span class="p">?</span> <span class="err">`</span><span class="nx">passed</span><span class="err">`</span> <span class="p">:</span> <span class="err">`</span><span class="nx">failed</span><span class="err">`</span><span class="p">;</span>
+    <span class="kd">const</span> <span class="nx">hasErr</span>    <span class="o">=</span> <span class="o">!!</span><span class="nx">errs</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+    <span class="kd">const</span> <span class="nx">result</span>    <span class="o">=</span> <span class="nx">hasErr</span> <span class="p">?</span> <span class="s2">`passed`</span> <span class="p">:</span> <span class="s2">`failed`</span><span class="p">;</span>
 
-    <span class="nx">name</span> <span class="o">=</span> <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">currentFixtureName</span><span class="p">}</span> <span class="o">-</span> <span class="nx">$</span><span class="p">{</span><span class="nx">name</span><span class="p">}</span><span class="err">`</span><span class="p">;</span>
+    <span class="nx">name</span> <span class="o">=</span> <span class="s2">`</span><span class="p">${</span><span class="k">this</span><span class="p">.</span><span class="nx">currentFixtureName</span><span class="p">}</span><span class="s2"> - </span><span class="p">${</span><span class="nx">name</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
 
-    <span class="kd">let</span> <span class="nx">title</span> <span class="o">=</span> <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="nx">result</span><span class="p">}</span> <span class="nx">$</span><span class="p">{</span><span class="nx">name</span><span class="p">}</span><span class="err">`</span><span class="p">;</span>
+    <span class="kd">let</span> <span class="nx">title</span> <span class="o">=</span> <span class="s2">`</span><span class="p">${</span><span class="nx">result</span><span class="p">}</span><span class="s2"> </span><span class="p">${</span><span class="nx">name</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
 
     <span class="nx">title</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">wordWrap</span><span class="p">(</span><span class="nx">title</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">LINE_WIDTH</span><span class="p">);</span>
 
@@ -638,21 +733,17 @@ This allows you to write compact code like this.</p>
 </code></pre></div><h3><a class="anchor" name="escapehtml"></a>escapeHtml <a class="permalink" href="#escapehtml">#</a></h3>
 <p>Encodes a string for use in HTML.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">escapeHtml (str) → String
-</code></pre></div>
-<table><thead>
-<tr>
+</code></pre></div><div class="table-wrapper"><table><thead><tr>
 <th>Parameter</th>
 <th>Type</th>
 <th>Description</th>
 </tr>
-</thead><tbody>
-<tr>
+</thead><tbody><tr>
 <td><code>str</code></td>
 <td>String</td>
 <td>The string to be encoded.</td>
 </tr>
-</tbody></table>
-
+</tbody></table></div>
 <p><strong>Example</strong></p>
 
 <p>The following example demonstrates how to escape the fixture name <em>Tests for the &quot;Example&quot; page</em> for HTML.</p>
@@ -664,15 +755,12 @@ This allows you to write compact code like this.</p>
 </code></pre></div><h3><a class="anchor" name="formaterror"></a>formatError <a class="permalink" href="#formaterror">#</a></h3>
 <p>Returns the formatted error message string for the specified error.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">formatError (err, prefix = '') → String
-</code></pre></div>
-<table><thead>
-<tr>
+</code></pre></div><div class="table-wrapper"><table><thead><tr>
 <th>Parameter</th>
 <th>Type</th>
 <th>Description</th>
 </tr>
-</thead><tbody>
-<tr>
+</thead><tbody><tr>
 <td><code>err</code></td>
 <td>String</td>
 <td>The error message you need to format.</td>
@@ -682,19 +770,18 @@ This allows you to write compact code like this.</p>
 <td>String</td>
 <td>The string that is prepended to the error. By default, it is empty.</td>
 </tr>
-</tbody></table>
-
+</tbody></table></div>
 <p><strong>Example</strong></p>
 
 <p>The following example demonstrates how to add numbering to the errors.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">reportTestDone</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">errs</span><span class="p">){</span>
     <span class="p">...</span>
-    <span class="kr">const</span> <span class="nx">hasErr</span> <span class="o">=</span> <span class="o">!!</span><span class="nx">errs</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+    <span class="kd">const</span> <span class="nx">hasErr</span> <span class="o">=</span> <span class="o">!!</span><span class="nx">errs</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
 
     <span class="k">if</span> <span class="p">(</span><span class="nx">hasErr</span><span class="p">)</span> <span class="p">{</span>
         <span class="nx">errs</span><span class="p">.</span><span class="nx">forEach</span><span class="p">((</span><span class="nx">err</span><span class="p">,</span> <span class="nx">idx</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
             <span class="k">this</span><span class="p">.</span><span class="nx">newline</span><span class="p">()</span>
-                <span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">formatError</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="nx">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">})</span> <span class="err">`</span><span class="p">));</span>
+                <span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">formatError</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="s2">`</span><span class="p">${</span><span class="nx">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">}</span><span class="s2">) `</span><span class="p">));</span>
         <span class="p">});</span>
     <span class="p">}</span>
 <span class="p">}</span>
@@ -712,19 +799,19 @@ This allows you to write compact code like this.</p>
 
 <p>The following example demonstrates how to color test results.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">reportTestDone</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">errs</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">hasErr</span> <span class="o">=</span> <span class="o">!!</span><span class="nx">errs</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
-    <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">hasErr</span> <span class="p">?</span> <span class="k">this</span><span class="p">.</span><span class="nx">chalk</span><span class="p">.</span><span class="nx">green</span><span class="p">(</span><span class="err">`</span><span class="nx">passed</span><span class="err">`</span><span class="p">)</span> <span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">chalk</span><span class="p">.</span><span class="nx">red</span><span class="p">(</span><span class="err">`</span><span class="nx">failed</span><span class="err">`</span><span class="p">);</span>
+    <span class="kd">const</span> <span class="nx">hasErr</span> <span class="o">=</span> <span class="o">!!</span><span class="nx">errs</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+    <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">hasErr</span> <span class="p">?</span> <span class="k">this</span><span class="p">.</span><span class="nx">chalk</span><span class="p">.</span><span class="nx">green</span><span class="p">(</span><span class="s2">`passed`</span><span class="p">)</span> <span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">chalk</span><span class="p">.</span><span class="nx">red</span><span class="p">(</span><span class="s2">`failed`</span><span class="p">);</span>
 
-    <span class="nx">name</span> <span class="o">=</span> <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">currentFixtureName</span><span class="p">}</span> <span class="o">-</span> <span class="nx">$</span><span class="p">{</span><span class="nx">name</span><span class="p">}</span><span class="err">`</span><span class="p">;</span>
+    <span class="nx">name</span> <span class="o">=</span> <span class="s2">`</span><span class="p">${</span><span class="k">this</span><span class="p">.</span><span class="nx">currentFixtureName</span><span class="p">}</span><span class="s2"> - </span><span class="p">${</span><span class="nx">name</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
 
-    <span class="kr">const</span> <span class="nx">title</span> <span class="o">=</span> <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="nx">result</span><span class="p">}</span> <span class="nx">$</span><span class="p">{</span><span class="nx">name</span><span class="p">}</span><span class="err">`</span><span class="p">;</span>
+    <span class="kd">const</span> <span class="nx">title</span> <span class="o">=</span> <span class="s2">`</span><span class="p">${</span><span class="nx">result</span><span class="p">}</span><span class="s2"> </span><span class="p">${</span><span class="nx">name</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
 
     <span class="k">this</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">title</span><span class="p">);</span>
 <span class="p">}</span>
 </code></pre></div>
 <p>To force disabling coloring in reports, set the reporter&#39;s <code>noColors</code> property in the <code>src/index.js</code> file to <code>false</code>.
 For example, you may need to disable coloring for machine-readable formats (JSON or xUnit) since the colored output is not required.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">export</span> <span class="k">default</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">export</span> <span class="k">default</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
     <span class="k">return</span> <span class="p">{</span>
         <span class="na">noColors</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
 
@@ -741,12 +828,12 @@ For example, you may need to disable coloring for machine-readable formats (JSON
 </code></pre></div>
 <p><strong>Example</strong></p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">reportTaskDone</span> <span class="p">(</span><span class="nx">endTime</span><span class="p">,</span> <span class="nx">passed</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">durationMs</span>  <span class="o">=</span> <span class="nx">endTime</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">startTime</span><span class="p">;</span>
-    <span class="kr">const</span> <span class="nx">durationStr</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">moment</span>
+    <span class="kd">const</span> <span class="nx">durationMs</span>  <span class="o">=</span> <span class="nx">endTime</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">startTime</span><span class="p">;</span>
+    <span class="kd">const</span> <span class="nx">durationStr</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">moment</span>
                             <span class="p">.</span><span class="nx">duration</span><span class="p">(</span><span class="nx">durationMs</span><span class="p">)</span>
                             <span class="p">.</span><span class="nx">format</span><span class="p">(</span><span class="s1">'h[h] mm[m] ss[s]'</span><span class="p">);</span>
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="err">`</span><span class="nx">Duration</span><span class="err">:</span> <span class="nx">$</span><span class="p">{</span><span class="nx">durationStr</span><span class="p">}</span><span class="err">`</span><span class="p">)</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s2">`Duration: </span><span class="p">${</span><span class="nx">durationStr</span><span class="p">}</span><span class="s2">`</span><span class="p">)</span>
     <span class="p">...</span>
 <span class="p">}</span>
 </code></pre></div>

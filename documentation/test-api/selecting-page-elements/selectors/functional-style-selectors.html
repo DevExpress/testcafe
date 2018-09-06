@@ -12,7 +12,7 @@
 
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
-  
+
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
   <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html" />
@@ -29,6 +29,10 @@
   <script defer src="https://buttons.github.io/buttons.js"></script>
   <script defer type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.3.min.js"></script>
   <script src="/testcafe/scripts/mobile-detect.min.js" type="text/javascript"></script>
+  <script>
+     var md             = new MobileDetect(window.navigator.userAgent);
+     var isMobileDevice = !!md.mobile();
+  </script>
   <script>
       document.addEventListener('DOMContentLoaded', function (e) {
           hljs.initHighlightingOnLoad();
@@ -52,10 +56,87 @@
   
   
 
+  <script>
+    function linkCss (href) {
+        var link  = document.createElement('link');
+        var html  = document.querySelector('html');
+        var head  = document.head;
+
+        link.rel  = 'stylesheet';
+        link.type = 'text/css';
+        link.href = href;
+        link.media = 'all';
+
+        head.appendChild(link);
+
+        window.addEventListener('load', function () {
+            html.style.display = 'block';
+        });
+
+        html.style.display = 'none';
+    }
+  </script>
+    
+    
+    <script>
+        if (isMobileDevice) {
+            document.addEventListener('DOMContentLoaded', function (e) {
+                var siteNav         = document.querySelector('.site-nav');
+                var hamburgerButton = document.querySelector('.hamburger-button');
+
+                hamburgerButton.addEventListener('click', function (e) {
+                    if (hamburgerButton.className.indexOf('active') !== -1) {
+                        hamburgerButton.className = hamburgerButton.className.replace(' active', '');
+                        siteNav.className = siteNav.className.replace(' active', '');
+                        document.documentElement.style.overflowY = 'scroll';
+                    }
+                    else {
+                        hamburgerButton.className += ' active';
+                        siteNav.className += ' active';
+                        document.documentElement.style.overflowY = 'hidden';
+                    }
+                });
+
+                var docTopNav          = document.querySelector('.doc-top-nav');
+                var siteNav            = document.querySelector('.site-nav');
+                var docMenuItem        = document.querySelector('.site-nav-tab');
+                var mainMenuSecondItem = document.querySelector('.site-nav-tab:nth-child(2)');
+
+                siteNav.insertBefore(docTopNav, mainMenuSecondItem);
+
+                var docMenuItemIcon = document.createElement('div');
+
+                docMenuItemIcon.className = 'doc-menu-item-icon';
+                docMenuItem.appendChild(docMenuItemIcon);
+
+                
+                    docMenuItem.className += ' expanded';
+                    docTopNav.className += ' expanded';
+                
+
+                docMenuItem.addEventListener('click', function (e) {
+                    if (docTopNav.className.indexOf('expanded') !== -1) {
+                        docMenuItem.className = docMenuItem.className.replace(' expanded', '');
+                        docTopNav.className = docTopNav.className.replace(' expanded', '');
+                    }
+                    else {
+                        docMenuItem.className += ' expanded';
+                        docTopNav.className += ' expanded';
+                    }
+                    e.preventDefault();
+                });
+            });
+
+            linkCss('/testcafe/css/mobile.css');
+        }
+    </script>
+    
+
   
 
   
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/css/perfect-scrollbar.min.css">
+    <link rel="stylesheet" href="/testcafe/css/docs.css">
     <style>
         .ps-container > .ps-scrollbar-x-rail,
         .ps-container > .ps-scrollbar-y-rail {
@@ -72,23 +153,9 @@
 
         var nav            = null;
         var article        = null;
-        var md             = new MobileDetect(window.navigator.userAgent);
-        var isMobileDevice = !!md.mobile();
 
         function setNavTopPosition () {
-            var isMobileZoomed = isMobileDevice && window.innerWidth !== document.body.scrollWidth;
-            var top            = null;
-
-            if(isMobileDevice) {
-                top = window.pageYOffset >= HEADER_HEIGHT ? window.pageYOffset - HEADER_HEIGHT + 'px' : '0';
-
-                if (nav.style.paddingTop !== top) {
-                    nav.style.paddingTop = top;
-                    Ps.update(nav);
-                }
-
-                return;
-            }
+            var top = null;
 
             if (document.body.clientWidth > MIN_BODY_WIDTH) {
                 if (nav.style.top !== HEADER_HEIGHT + 'px') {
@@ -96,7 +163,7 @@
                     Ps.update(nav);
                 }
             }
-            else if(!isMobileZoomed) {
+            else {
                 top = window.pageYOffset <= HEADER_HEIGHT ? HEADER_HEIGHT - window.pageYOffset + 'px' : '0';
 
                 if (nav.style.top !== top) {
@@ -123,10 +190,7 @@
         }
 
         function updatePosition () {
-            if (isMobileDevice)
-                changeBodyHeight();
-            else
-                nav.style.marginLeft = '-' + window.pageXOffset + 'px';
+            nav.style.marginLeft = '-' + window.pageXOffset + 'px';
 
             setNavBottomPosition();
             setNavTopPosition();
@@ -146,32 +210,44 @@
         }
 
         function initNav() {
-            if(isMobileDevice) {
-                nav.style.position = 'relative';
-                nav.style.float = 'left';
-                nav.style.top = '0px';
-
-                article.style.marginTop = '0px';
-                article.style.paddingTop = '22px';
-            }
-
             initScrollBar();
             updatePosition();
             window.addEventListener('scroll', updatePosition);
             window.addEventListener('resize', updatePosition);
-
-            if(isMobileDevice) {
-                nav.style.height = window.innerHeight + 'px';
-            }
         }
 
         document.addEventListener('DOMContentLoaded', function (e) {
+            if (isMobileDevice)
+                return;
+
             nav     = document.querySelector('.doc-nav');
             article = document.querySelector('.doc');
 
-            if(nav)
+            if (nav)
                 initNav(nav);
         });
+    </script>
+    
+    <script>
+        if (isMobileDevice && false == false) {
+            document.addEventListener('DOMContentLoaded', function (e) {
+                var toggleNavButton = document.querySelector('.toggle-nav-button');
+                var docNav          = document.querySelector('.doc-nav');
+
+                toggleNavButton.addEventListener('click', function (e) {
+                    if (docNav.className.indexOf('active') !== -1) {
+                        docNav.className = docNav.className.replace(' active', '');
+                        document.documentElement.style.overflowY = 'scroll';
+                    }
+                    else {
+                        docNav.className += ' active';
+                        document.documentElement.style.overflowY = 'hidden';
+                    }
+                });
+            });
+
+            linkCss('/testcafe/css/docs.mobile.css');
+        }
     </script>
   
     <script>
@@ -191,10 +267,10 @@
                 if(contentWrapper)
                     contentWrapper.style.paddingTop = bodyMinimized ? '0' : '';
 
-                if(article)
+                if(article && !isMobileDevice)
                     article.style.marginTop = bodyMinimized ? '21px' : '72px';
- 
-                if(gs)
+
+                if(gs && !isMobileDevice)
                     gs.style.paddingTop = bodyMinimized ? '21px' : '72px';
             }
 
@@ -209,7 +285,7 @@
             var article        = document.querySelector('.doc');
             var gs             = document.querySelector('.gs');
 
-            if(siteHeader) 
+            if(siteHeader)
                 initHeader(siteHeader, contentWrapper, docTopMenu, article, gs);
         });
     </script>
@@ -222,6 +298,9 @@
       <header class="site-header fixed">
   <div class="site-header-content">
     <a class="site-logo" href="/testcafe/"></a>
+    <div class="hamburger-button">
+        <div class="hamburger-icon"></div>
+    </div>
     <nav class="site-nav">
         
           
@@ -268,7 +347,7 @@
           <input type="text" placeholder="Search query" id="search"/>
           <div id="close-search"></div>
       </div>
-      </nav>
+    </nav>
   </div>
 </header>
 
@@ -282,10 +361,12 @@
     return false;
   }
 
-  function closeSearchBox(e) {
-      var clickOutsideSearchBox = searchPanel !== e.target && !has(searchPanel, e.target);
+  function clickOutsideBox(e, box) {
+      return box !== e.target && !has(box, e.target);
+  }  
 
-      if(clickOutsideSearchBox && searchPanel.className.indexOf('hidden') === -1) 
+  function closeSearchBox(e) {
+      if(clickOutsideBox(e, searchPanel) && searchPanel.className.indexOf('hidden') === -1) 
           searchPanel.className += ' hidden';
   }
 
@@ -305,6 +386,40 @@
 
   window.addEventListener('mousedown', closeSearchBox);        
   window.addEventListener('touchstart', closeSearchBox);
+
+  if (window.isMobileDevice) {
+      function closeHamburgerMenuBox(e) {
+          if(clickOutsideBox(e, hamburgerMenu) && clickOutsideBox(e, hamburgerButton) && hamburgerMenu.className.indexOf('active') !== -1) {
+              hamburgerMenu.className = hamburgerMenu.className.replace(' active', '');
+              hamburgerButton.className = hamburgerButton.className.replace(' active', '');
+              document.documentElement.style.overflowY = 'scroll';
+          }
+      }
+
+      var hamburgerMenu = document.querySelector('.site-nav');
+      var hamburgerButton = document.querySelector('.hamburger-button');
+
+      window.addEventListener('mousedown', closeHamburgerMenuBox);        
+      window.addEventListener('touchstart', closeHamburgerMenuBox);
+
+      window.addEventListener('DOMContentLoaded', function (e) {
+          var docNav = document.querySelector('.doc-nav');
+
+          if(docNav) {
+              function closeDocNav(e) {
+                  if(clickOutsideBox(e, docNav) && clickOutsideBox(e, toggleNavButton) && docNav.className.indexOf('active') !== -1) {
+                      docNav.className = docNav.className.replace(' active', '');
+                      document.documentElement.style.overflowY = 'scroll';
+                  }
+              }
+
+              var toggleNavButton = document.querySelector('.toggle-nav-button');
+
+              window.addEventListener('mousedown', closeDocNav);        
+              window.addEventListener('touchstart', closeDocNav);
+          }
+      });
+  }
 </script>
 
 <script>
@@ -315,36 +430,33 @@
   });
 </script>
 
-
-
-  <div class="doc-top-nav">
-    <div class="doc-top-nav-content">
-      <div class="doc-top-nav-wrapper">
-        
-          <div class="doc-top-nav-tab " >
-            <a href="/testcafe/documentation/getting-started/">Getting Started</a>      
-          </div>
-        
-          <div class="doc-top-nav-tab " >
-            <a href="/testcafe/documentation/using-testcafe/">Using TestCafe</a>      
-          </div>
-        
-          <div class="doc-top-nav-tab active" >
-            <a href="/testcafe/documentation/test-api/">Test API</a>      
-          </div>
-        
-          <div class="doc-top-nav-tab " >
-            <a href="/testcafe/documentation/extending-testcafe/">Extending TestCafe</a>      
-          </div>
-        
-          <div class="doc-top-nav-tab " >
-            <a href="/testcafe/documentation/recipes/">Recipes</a>      
-          </div>
-        
-      </div>
+<div class="doc-top-nav">
+  <div class="doc-top-nav-content">
+    <div class="doc-top-nav-wrapper">
+      
+        <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/getting-started/">Getting Started</a>      
+        </div>
+      
+        <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/using-testcafe/">Using TestCafe</a>      
+        </div>
+      
+        <div class="doc-top-nav-tab active" >
+          <a href="/testcafe/documentation/test-api/">Test API</a>      
+        </div>
+      
+        <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/extending-testcafe/">Extending TestCafe</a>      
+        </div>
+      
+        <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/recipes/">Recipes</a>      
+        </div>
+      
     </div>
   </div>
-
+</div>
 
 
       <div class="container">
@@ -357,6 +469,9 @@
 
 	
 	
+	<div class="doc-nav-panel">
+		<div class="toggle-nav-button"></div>
+	</div>
 	<nav class="doc-nav">	
 		<div class="doc-nav-content">
 			<ul>
@@ -878,29 +993,22 @@ These methods can be used in a chain for a functional-style selection mechanism.
 <p>If a selector returns multiple DOM nodes, you can filter them to select
 a single node that will eventually be returned by the selector.
 The selector provides methods to filter DOM nodes by their index, text, attributes, etc.</p>
-<h3><a class="anchor" name="nth"></a>nth <a class="permalink" href="#nth">#</a></h3>
-<table><thead>
-<tr>
+<h3><a class="anchor" name="nth"></a>nth <a class="permalink" href="#nth">#</a></h3><div class="table-wrapper"><table><thead><tr>
 <th>Method</th>
 <th>Return Type</th>
 <th>Description</th>
 </tr>
-</thead><tbody>
-<tr>
+</thead><tbody><tr>
 <td><code>nth(index)</code></td>
 <td>Selector</td>
 <td>Finds an element by its index in the matching set. The <code>index</code> parameter is zero-based. If <code>index</code> is negative, the index is counted from the end of the matching set.</td>
 </tr>
-</tbody></table>
-<h3><a class="anchor" name="withtext"></a>withText <a class="permalink" href="#withtext">#</a></h3>
-<table><thead>
-<tr>
+</tbody></table></div><h3><a class="anchor" name="withtext"></a>withText <a class="permalink" href="#withtext">#</a></h3><div class="table-wrapper"><table><thead><tr>
 <th>Method</th>
 <th>Type</th>
 <th>Description</th>
 </tr>
-</thead><tbody>
-<tr>
+</thead><tbody><tr>
 <td><code>withText(text)</code></td>
 <td>Selector</td>
 <td>Creates a selector that filters a matching set by the specified text. Selects elements that <em>contain</em> this text. To filter elements by <em>strict match</em>, use the <code>withExactText</code> method. The <code>text</code> parameter is case-sensitive.</td>
@@ -910,46 +1018,34 @@ The selector provides methods to filter DOM nodes by their index, text, attribut
 <td>Selector</td>
 <td>Creates a selector that filters a matching set using the specified regular expression.</td>
 </tr>
-</tbody></table>
-<h3><a class="anchor" name="withexacttext"></a>withExactText <a class="permalink" href="#withexacttext">#</a></h3>
-<table><thead>
-<tr>
+</tbody></table></div><h3><a class="anchor" name="withexacttext"></a>withExactText <a class="permalink" href="#withexacttext">#</a></h3><div class="table-wrapper"><table><thead><tr>
 <th>Method</th>
 <th>Type</th>
 <th>Description</th>
 </tr>
-</thead><tbody>
-<tr>
+</thead><tbody><tr>
 <td><code>withExactText(text)</code></td>
 <td>Selector</td>
 <td>Creates a selector that filters a matching set by the specified text. Selects elements whose text content <em>strictly matches</em> this text. To search for elements that <em>contain</em> a specific text, use the <code>withText</code> method. The <code>text</code> parameter is case-sensitive.</td>
 </tr>
-</tbody></table>
-<h3><a class="anchor" name="withattribute"></a>withAttribute <a class="permalink" href="#withattribute">#</a></h3>
-<table><thead>
-<tr>
+</tbody></table></div><h3><a class="anchor" name="withattribute"></a>withAttribute <a class="permalink" href="#withattribute">#</a></h3><div class="table-wrapper"><table><thead><tr>
 <th>Method</th>
 <th>Return Type</th>
 <th>Description</th>
 </tr>
-</thead><tbody>
-<tr>
+</thead><tbody><tr>
 <td><code>withAttribute(attrName [, attrValue])</code></td>
 <td>Selector</td>
 <td>Finds elements that contain the specified attribute and, optionally, attribute value.</td>
 </tr>
-</tbody></table>
-
+</tbody></table></div>
 <p>This method takes the following parameters.</p>
-
-<table><thead>
-<tr>
+<div class="table-wrapper"><table><thead><tr>
 <th>Parameter</th>
 <th>Type</th>
 <th>Description</th>
 </tr>
-</thead><tbody>
-<tr>
+</thead><tbody><tr>
 <td><code>attrName</code></td>
 <td>String &#124; RegExp</td>
 <td>The attribute name.</td>
@@ -959,46 +1055,34 @@ The selector provides methods to filter DOM nodes by their index, text, attribut
 <td>String &#124; RegExp</td>
 <td>The attribute value. You can omit this parameter to select elements that have the <code>attrName</code> attribute regardless of the value.</td>
 </tr>
-</tbody></table>
-
+</tbody></table></div>
 <p>If <code>attrName</code> or <code>attrValue</code> is a String, <code>withAttribute</code> selects an element by strict match.</p>
-<h3><a class="anchor" name="filtervisible"></a>filterVisible <a class="permalink" href="#filtervisible">#</a></h3>
-<table><thead>
-<tr>
+<h3><a class="anchor" name="filtervisible"></a>filterVisible <a class="permalink" href="#filtervisible">#</a></h3><div class="table-wrapper"><table><thead><tr>
 <th>Method</th>
 <th>Type</th>
 <th>Description</th>
 </tr>
-</thead><tbody>
-<tr>
+</thead><tbody><tr>
 <td><code>filterVisible()</code></td>
 <td>Selector</td>
 <td>Creates a selector that filters a matching set leaving only visible elements. These are elements that <em>do not</em> have <code>display: none</code> or <code>visibility: hidden</code> CSS properties and have non-zero width and height.</td>
 </tr>
-</tbody></table>
-<h3><a class="anchor" name="filterhidden"></a>filterHidden <a class="permalink" href="#filterhidden">#</a></h3>
-<table><thead>
-<tr>
+</tbody></table></div><h3><a class="anchor" name="filterhidden"></a>filterHidden <a class="permalink" href="#filterhidden">#</a></h3><div class="table-wrapper"><table><thead><tr>
 <th>Method</th>
 <th>Type</th>
 <th>Description</th>
 </tr>
-</thead><tbody>
-<tr>
+</thead><tbody><tr>
 <td><code>filterHidden()</code></td>
 <td>Selector</td>
 <td>Creates a selector that filters a matching set leaving only hidden elements. These are elements that have a <code>display: none</code> or <code>visibility: hidden</code> CSS property or zero width or height.</td>
 </tr>
-</tbody></table>
-<h3><a class="anchor" name="filter"></a>filter <a class="permalink" href="#filter">#</a></h3>
-<table><thead>
-<tr>
+</tbody></table></div><h3><a class="anchor" name="filter"></a>filter <a class="permalink" href="#filter">#</a></h3><div class="table-wrapper"><table><thead><tr>
 <th>Method</th>
 <th>Return Type</th>
 <th>Description</th>
 </tr>
-</thead><tbody>
-<tr>
+</thead><tbody><tr>
 <td><code>filter(cssSelector)</code></td>
 <td>Selector</td>
 <td>Finds elements that match the <code>cssSelector</code>.</td>
@@ -1008,17 +1092,13 @@ The selector provides methods to filter DOM nodes by their index, text, attribut
 <td>Selector</td>
 <td>Finds elements that satisfy the <code>filterFn</code> predicate. Use an optional <code>dependencies</code> parameter to pass functions, variables or objects to the <code>filterFn</code> function.</td>
 </tr>
-</tbody></table>
-
+</tbody></table></div>
 <p>The <code>filterFn</code> predicate is executed on the client. It takes the following parameters.</p>
-
-<table><thead>
-<tr>
+<div class="table-wrapper"><table><thead><tr>
 <th>Parameter</th>
 <th>Description</th>
 </tr>
-</thead><tbody>
-<tr>
+</thead><tbody><tr>
 <td><code>node</code></td>
 <td>The current DOM node.</td>
 </tr>
@@ -1026,39 +1106,38 @@ The selector provides methods to filter DOM nodes by their index, text, attribut
 <td><code>idx</code></td>
 <td>Index of the current node among other nodes in the matching set.</td>
 </tr>
-</tbody></table>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">Selector</span><span class="p">(</span><span class="s1">'ul'</span><span class="p">).</span><span class="nx">filter</span><span class="p">((</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+</tbody></table></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">Selector</span><span class="p">(</span><span class="s1">'ul'</span><span class="p">).</span><span class="nx">filter</span><span class="p">((</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="c1">// node === a &lt;ul&gt; node</span>
     <span class="c1">// idx === index of the current &lt;ul&gt; node</span>
 <span class="p">});</span>
 </code></pre></div>
 <p>The <a href="../../obtaining-data-from-the-client/#optionsdependencies">dependencies parameter</a> allows
 you to pass objects to the <code>filterFn</code> client-side scope where they appear as variables.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">isNodeOk</span> <span class="o">=</span> <span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/*...*/</span> <span class="p">};</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">isNodeOk</span> <span class="o">=</span> <span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/*...*/</span> <span class="p">};</span>
 
 <span class="nx">Selector</span><span class="p">(</span><span class="s1">'ul'</span><span class="p">).</span><span class="nx">filter</span><span class="p">((</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">isNodeOk</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">);</span>
 <span class="p">},</span> <span class="p">{</span> <span class="nx">isNodeOk</span> <span class="p">});</span>
 </code></pre></div>
 <p><strong>Example</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">Example</span> <span class="nx">page</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`;</span>
+<span class="nx">fixture</span> <span class="s2">`Example page`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://devexpress.github.io/testcafe/example/`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">secondCheckBox</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'input'</span><span class="p">)</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">secondCheckBox</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'input'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">withAttribute</span><span class="p">(</span><span class="s1">'type'</span><span class="p">,</span> <span class="s1">'checkbox'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">nth</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
 
-    <span class="kr">const</span> <span class="nx">checkedInputs</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'input'</span><span class="p">)</span>
+    <span class="kd">const</span> <span class="nx">checkedInputs</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'input'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">withAttribute</span><span class="p">(</span><span class="s1">'type'</span><span class="p">,</span> <span class="s1">'checkbox'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">node</span> <span class="o">=&gt;</span> <span class="nx">node</span><span class="p">.</span><span class="nx">checked</span><span class="p">);</span>
 
-    <span class="kr">const</span> <span class="nx">windowsLabel</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'label'</span><span class="p">)</span>
+    <span class="kd">const</span> <span class="nx">windowsLabel</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'label'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">withText</span><span class="p">(</span><span class="s1">'Windows'</span><span class="p">);</span>
 
-    <span class="nx">await</span> <span class="nx">t</span>
+    <span class="kr">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">secondCheckBox</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">checkedInputs</span><span class="p">.</span><span class="nx">count</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">windowsLabel</span><span class="p">);</span>
@@ -1067,14 +1146,11 @@ you to pass objects to the <code>filterFn</code> client-side scope where they ap
 <p>If all nodes are filtered out, the selector returns <code>null</code>.</p>
 <h2><a class="anchor" name="search-for-elements-in-the-dom-hierarchy"></a>Search for Elements in the DOM Hierarchy <a class="permalink" href="#search-for-elements-in-the-dom-hierarchy">#</a></h2>
 <p>The selector API provides methods to find elements in a DOM hierarchy in jQuery style.</p>
-<h3><a class="anchor" name="find"></a>find <a class="permalink" href="#find">#</a></h3>
-<table><thead>
-<tr>
+<h3><a class="anchor" name="find"></a>find <a class="permalink" href="#find">#</a></h3><div class="table-wrapper"><table><thead><tr>
 <th>Method</th>
 <th>Description</th>
 </tr>
-</thead><tbody>
-<tr>
+</thead><tbody><tr>
 <td><code>find(cssSelector)</code></td>
 <td>Finds all descendants of all nodes in the matching set and filters them by <code>cssSelector</code>.</td>
 </tr>
@@ -1082,15 +1158,11 @@ you to pass objects to the <code>filterFn</code> client-side scope where they ap
 <td><code>find(filterFn, dependencies)</code></td>
 <td>Finds all descendants of all nodes in the matching set and filters them using <code>filterFn</code> predicate. Use an optional <code>dependencies</code> parameter to pass functions, variables or objects to the <code>filterFn</code> function. See <a href="#filtering-dom-elements-by-predicates">Filtering DOM Elements by Predicates</a>.</td>
 </tr>
-</tbody></table>
-<h3><a class="anchor" name="parent"></a>parent <a class="permalink" href="#parent">#</a></h3>
-<table><thead>
-<tr>
+</tbody></table></div><h3><a class="anchor" name="parent"></a>parent <a class="permalink" href="#parent">#</a></h3><div class="table-wrapper"><table><thead><tr>
 <th>Method</th>
 <th>Description</th>
 </tr>
-</thead><tbody>
-<tr>
+</thead><tbody><tr>
 <td><code>parent()</code></td>
 <td>Finds all parents of all nodes in the matching set (first element in the set will be the closest parent).</td>
 </tr>
@@ -1106,15 +1178,11 @@ you to pass objects to the <code>filterFn</code> client-side scope where they ap
 <td><code>parent(filterFn, dependencies)</code></td>
 <td>Finds all parents of all nodes in the matching set and filters them by the <code>filterFn</code> predicate. Use an optional <code>dependencies</code> parameter to pass functions, variables or objects to the <code>filterFn</code> function. See <a href="#filtering-dom-elements-by-predicates">Filtering DOM Elements by Predicates</a>.</td>
 </tr>
-</tbody></table>
-<h3><a class="anchor" name="child"></a>child <a class="permalink" href="#child">#</a></h3>
-<table><thead>
-<tr>
+</tbody></table></div><h3><a class="anchor" name="child"></a>child <a class="permalink" href="#child">#</a></h3><div class="table-wrapper"><table><thead><tr>
 <th>Method</th>
 <th>Description</th>
 </tr>
-</thead><tbody>
-<tr>
+</thead><tbody><tr>
 <td><code>child()</code></td>
 <td>Finds all child elements (not <a href="https://developer.mozilla.org/en-US/docs/Web/API/Node">nodes</a>) of all nodes in the matching set.</td>
 </tr>
@@ -1130,16 +1198,12 @@ you to pass objects to the <code>filterFn</code> client-side scope where they ap
 <td><code>child(filterFn, dependencies)</code></td>
 <td>Finds all child elements (not nodes) of all nodes in the matching set and filters them by the <code>filterFn</code> predicate. Use an optional <code>dependencies</code> parameter to pass functions, variables or objects to the <code>filterFn</code> function. See <a href="#filtering-dom-elements-by-predicates">Filtering DOM Elements by Predicates</a>.</td>
 </tr>
-</tbody></table>
-<blockquote class="important"><div class="blockquote-content"><p>To know how to access child nodes, see <a href="../../obtaining-data-from-the-client/examples-of-using-client-functions.html#accessing-child-nodes-in-the-dom-hierarchy">Accessing Child Nodes in the DOM Hierarchy</a>.</p>
-</div></blockquote><h3><a class="anchor" name="sibling"></a>sibling <a class="permalink" href="#sibling">#</a></h3>
-<table><thead>
-<tr>
+</tbody></table></div><blockquote class="important"><div class="blockquote-content"><p>To know how to access child nodes, see <a href="../../obtaining-data-from-the-client/examples-of-using-client-functions.html#accessing-child-nodes-in-the-dom-hierarchy">Accessing Child Nodes in the DOM Hierarchy</a>.</p>
+</div></blockquote><h3><a class="anchor" name="sibling"></a>sibling <a class="permalink" href="#sibling">#</a></h3><div class="table-wrapper"><table><thead><tr>
 <th>Method</th>
 <th>Description</th>
 </tr>
-</thead><tbody>
-<tr>
+</thead><tbody><tr>
 <td><code>sibling()</code></td>
 <td>Finds all sibling  elements (not nodes) of all nodes in the matching set.</td>
 </tr>
@@ -1155,15 +1219,11 @@ you to pass objects to the <code>filterFn</code> client-side scope where they ap
 <td><code>sibling(filterFn, dependencies)</code></td>
 <td>Finds all sibling elements (not nodes) of all nodes in the matching set and filters them by the <code>filterFn</code> predicate. Use an optional <code>dependencies</code> parameter to pass functions, variables or objects to the <code>filterFn</code> function. See <a href="#filtering-dom-elements-by-predicates">Filtering DOM Elements by Predicates</a>.</td>
 </tr>
-</tbody></table>
-<h3><a class="anchor" name="nextsibling"></a>nextSibling <a class="permalink" href="#nextsibling">#</a></h3>
-<table><thead>
-<tr>
+</tbody></table></div><h3><a class="anchor" name="nextsibling"></a>nextSibling <a class="permalink" href="#nextsibling">#</a></h3><div class="table-wrapper"><table><thead><tr>
 <th>Method</th>
 <th>Description</th>
 </tr>
-</thead><tbody>
-<tr>
+</thead><tbody><tr>
 <td><code>nextSibling()</code></td>
 <td>Finds all succeeding sibling elements (not nodes) of all nodes in the matching set.</td>
 </tr>
@@ -1179,15 +1239,11 @@ you to pass objects to the <code>filterFn</code> client-side scope where they ap
 <td><code>nextSibling(filterFn, dependencies)</code></td>
 <td>Finds all succeeding sibling elements (not nodes) of all nodes in the matching set and filters them by the <code>filterFn</code> predicate. Use an optional <code>dependencies</code> parameter to pass functions, variables or objects to the <code>filterFn</code> function. See <a href="#filtering-dom-elements-by-predicates">Filtering DOM Elements by Predicates</a>.</td>
 </tr>
-</tbody></table>
-<h3><a class="anchor" name="prevsibling"></a>prevSibling <a class="permalink" href="#prevsibling">#</a></h3>
-<table><thead>
-<tr>
+</tbody></table></div><h3><a class="anchor" name="prevsibling"></a>prevSibling <a class="permalink" href="#prevsibling">#</a></h3><div class="table-wrapper"><table><thead><tr>
 <th>Method</th>
 <th>Description</th>
 </tr>
-</thead><tbody>
-<tr>
+</thead><tbody><tr>
 <td><code>prevSibling()</code></td>
 <td>Finds all preceding sibling elements (not nodes) of all nodes in the matching set.</td>
 </tr>
@@ -1203,19 +1259,15 @@ you to pass objects to the <code>filterFn</code> client-side scope where they ap
 <td><code>prevSibling(filterFn, dependencies)</code></td>
 <td>Finds all preceding sibling elements (not nodes) of all nodes in the matching set and filters them by the <code>filterFn</code> predicate. Use an optional <code>dependencies</code> parameter to pass functions, variables or objects to the <code>filterFn</code> function. See <a href="#filtering-dom-elements-by-predicates">Filtering DOM Elements by Predicates</a>.</td>
 </tr>
-</tbody></table>
-<h3><a class="anchor" name="filtering-dom-elements-by-predicates"></a>Filtering DOM Elements by Predicates <a class="permalink" href="#filtering-dom-elements-by-predicates">#</a></h3>
+</tbody></table></div><h3><a class="anchor" name="filtering-dom-elements-by-predicates"></a>Filtering DOM Elements by Predicates <a class="permalink" href="#filtering-dom-elements-by-predicates">#</a></h3>
 <p>Functions that search for elements through the DOM tree allow you to filter the matching set by a <code>filterFn</code> predicate.</p>
 
 <p>The <code>filterFn</code> predicate is executed on the client. It takes the following parameters.</p>
-
-<table><thead>
-<tr>
+<div class="table-wrapper"><table><thead><tr>
 <th>Parameter</th>
 <th>Description</th>
 </tr>
-</thead><tbody>
-<tr>
+</thead><tbody><tr>
 <td><code>node</code></td>
 <td>The current matching node.</td>
 </tr>
@@ -1227,8 +1279,7 @@ you to pass objects to the <code>filterFn</code> client-side scope where they ap
 <td><code>originNode</code></td>
 <td>A node from the left-hand selector&#39;s matching set whose parents/siblings/children are being iterated.</td>
 </tr>
-</tbody></table>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">Selector</span><span class="p">(</span><span class="s1">'section'</span><span class="p">).</span><span class="nx">prevSibling</span><span class="p">((</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">,</span> <span class="nx">originNode</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+</tbody></table></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">Selector</span><span class="p">(</span><span class="s1">'section'</span><span class="p">).</span><span class="nx">prevSibling</span><span class="p">((</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">,</span> <span class="nx">originNode</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="c1">// node === the &lt;section&gt;'s preceding sibling node</span>
     <span class="c1">// idx === index of the current &lt;section&gt;'s preceding sibling node</span>
     <span class="c1">// originNode === the &lt;section&gt; element</span>
@@ -1236,7 +1287,7 @@ you to pass objects to the <code>filterFn</code> client-side scope where they ap
 </code></pre></div>
 <p>The <a href="../../obtaining-data-from-the-client/#optionsdependencies">dependencies parameter</a> allows
 you to pass objects to the <code>filterFn</code> client-side scope where they appear as variables.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">isNodeOk</span> <span class="o">=</span> <span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">,</span> <span class="nx">originNode</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/*...*/</span> <span class="p">};</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">isNodeOk</span> <span class="o">=</span> <span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">,</span> <span class="nx">originNode</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/*...*/</span> <span class="p">};</span>
 
 <span class="nx">Selector</span><span class="p">(</span><span class="s1">'ul'</span><span class="p">).</span><span class="nx">prevSibling</span><span class="p">((</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">,</span> <span class="nx">originNode</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">isNodeOk</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">,</span> <span class="nx">originNode</span><span class="p">);</span>
@@ -1251,17 +1302,17 @@ Then, for each <code>label</code> element finds a parent that matches the <code>
 <p>Like in jQuery, if you request a <a href="../dom-node-state.html#members-common-across-all-nodes">property</a> of the matching set or try to evaluate
 a <a href="using-selectors.html#dom-node-snapshot">snapshot</a>, the selector returns values for the first element in the set.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// Returns id of the first element in the set</span>
-<span class="kr">const</span> <span class="nx">id</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'ul'</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">'label'</span><span class="p">).</span><span class="nx">parent</span><span class="p">(</span><span class="s1">'div.someClass'</span><span class="p">).</span><span class="nx">id</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">id</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'ul'</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">'label'</span><span class="p">).</span><span class="nx">parent</span><span class="p">(</span><span class="s1">'div.someClass'</span><span class="p">).</span><span class="nx">id</span><span class="p">;</span>
 
 <span class="c1">// Returns snapshot for the first element in the set</span>
-<span class="kr">const</span> <span class="nx">snapshot</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'ul'</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">'label'</span><span class="p">).</span><span class="nx">parent</span><span class="p">(</span><span class="s1">'div.someClass'</span><span class="p">)();</span>
+<span class="kd">const</span> <span class="nx">snapshot</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'ul'</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">'label'</span><span class="p">).</span><span class="nx">parent</span><span class="p">(</span><span class="s1">'div.someClass'</span><span class="p">)();</span>
 </code></pre></div>
 <p>However, you can obtain data for any element in the set by using <code>nth</code> filter.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// Returns id of the third element in the set</span>
-<span class="kr">const</span> <span class="nx">id</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'ul'</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">'label'</span><span class="p">).</span><span class="nx">parent</span><span class="p">(</span><span class="s1">'div.someClass'</span><span class="p">).</span><span class="nx">nth</span><span class="p">(</span><span class="mi">2</span><span class="p">).</span><span class="nx">id</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">id</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'ul'</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">'label'</span><span class="p">).</span><span class="nx">parent</span><span class="p">(</span><span class="s1">'div.someClass'</span><span class="p">).</span><span class="nx">nth</span><span class="p">(</span><span class="mi">2</span><span class="p">).</span><span class="nx">id</span><span class="p">;</span>
 
 <span class="c1">// Returns snapshot for the fourth element in the set</span>
-<span class="kr">const</span> <span class="nx">snapshot</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'ul'</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">'label'</span><span class="p">).</span><span class="nx">parent</span><span class="p">(</span><span class="s1">'div.someClass'</span><span class="p">).</span><span class="nx">nth</span><span class="p">(</span><span class="mi">4</span><span class="p">)();</span>
+<span class="kd">const</span> <span class="nx">snapshot</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'ul'</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">'label'</span><span class="p">).</span><span class="nx">parent</span><span class="p">(</span><span class="s1">'div.someClass'</span><span class="p">).</span><span class="nx">nth</span><span class="p">(</span><span class="mi">4</span><span class="p">)();</span>
 </code></pre></div>
 <hr>
 
@@ -1281,15 +1332,15 @@ a <a href="using-selectors.html#dom-node-snapshot">snapshot</a>, the selector re
 <hr>
 
 <p>The following example shows how to use functional-style selection in test code.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">Example</span> <span class="nx">page</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`;</span>
+<span class="nx">fixture</span> <span class="s2">`Example page`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://devexpress.github.io/testcafe/example/`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">macOSRadioButton</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'.column.col-2'</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">'label'</span><span class="p">).</span><span class="nx">child</span><span class="p">(</span><span class="nx">el</span> <span class="o">=&gt;</span> <span class="nx">el</span><span class="p">.</span><span class="nx">value</span> <span class="o">===</span> <span class="s1">'MacOS'</span><span class="p">);</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">macOSRadioButton</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'.column.col-2'</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">'label'</span><span class="p">).</span><span class="nx">child</span><span class="p">(</span><span class="nx">el</span> <span class="o">=&gt;</span> <span class="nx">el</span><span class="p">.</span><span class="nx">value</span> <span class="o">===</span> <span class="s1">'MacOS'</span><span class="p">);</span>
 
-    <span class="nx">await</span> <span class="nx">t</span>
+    <span class="kr">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">macOSRadioButton</span><span class="p">.</span><span class="nx">parent</span><span class="p">())</span>
         <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">macOSRadioButton</span><span class="p">.</span><span class="nx">checked</span><span class="p">).</span><span class="nx">ok</span><span class="p">();</span>
 <span class="p">});</span>

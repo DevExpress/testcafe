@@ -12,7 +12,7 @@
 
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
-  
+
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
   <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/recipes/integrating-testcafe-with-ci-systems/circleci.html" />
@@ -29,6 +29,10 @@
   <script defer src="https://buttons.github.io/buttons.js"></script>
   <script defer type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.3.min.js"></script>
   <script src="/testcafe/scripts/mobile-detect.min.js" type="text/javascript"></script>
+  <script>
+     var md             = new MobileDetect(window.navigator.userAgent);
+     var isMobileDevice = !!md.mobile();
+  </script>
   <script>
       document.addEventListener('DOMContentLoaded', function (e) {
           hljs.initHighlightingOnLoad();
@@ -52,10 +56,87 @@
   
   
 
+  <script>
+    function linkCss (href) {
+        var link  = document.createElement('link');
+        var html  = document.querySelector('html');
+        var head  = document.head;
+
+        link.rel  = 'stylesheet';
+        link.type = 'text/css';
+        link.href = href;
+        link.media = 'all';
+
+        head.appendChild(link);
+
+        window.addEventListener('load', function () {
+            html.style.display = 'block';
+        });
+
+        html.style.display = 'none';
+    }
+  </script>
+    
+    
+    <script>
+        if (isMobileDevice) {
+            document.addEventListener('DOMContentLoaded', function (e) {
+                var siteNav         = document.querySelector('.site-nav');
+                var hamburgerButton = document.querySelector('.hamburger-button');
+
+                hamburgerButton.addEventListener('click', function (e) {
+                    if (hamburgerButton.className.indexOf('active') !== -1) {
+                        hamburgerButton.className = hamburgerButton.className.replace(' active', '');
+                        siteNav.className = siteNav.className.replace(' active', '');
+                        document.documentElement.style.overflowY = 'scroll';
+                    }
+                    else {
+                        hamburgerButton.className += ' active';
+                        siteNav.className += ' active';
+                        document.documentElement.style.overflowY = 'hidden';
+                    }
+                });
+
+                var docTopNav          = document.querySelector('.doc-top-nav');
+                var siteNav            = document.querySelector('.site-nav');
+                var docMenuItem        = document.querySelector('.site-nav-tab');
+                var mainMenuSecondItem = document.querySelector('.site-nav-tab:nth-child(2)');
+
+                siteNav.insertBefore(docTopNav, mainMenuSecondItem);
+
+                var docMenuItemIcon = document.createElement('div');
+
+                docMenuItemIcon.className = 'doc-menu-item-icon';
+                docMenuItem.appendChild(docMenuItemIcon);
+
+                
+                    docMenuItem.className += ' expanded';
+                    docTopNav.className += ' expanded';
+                
+
+                docMenuItem.addEventListener('click', function (e) {
+                    if (docTopNav.className.indexOf('expanded') !== -1) {
+                        docMenuItem.className = docMenuItem.className.replace(' expanded', '');
+                        docTopNav.className = docTopNav.className.replace(' expanded', '');
+                    }
+                    else {
+                        docMenuItem.className += ' expanded';
+                        docTopNav.className += ' expanded';
+                    }
+                    e.preventDefault();
+                });
+            });
+
+            linkCss('/testcafe/css/mobile.css');
+        }
+    </script>
+    
+
   
 
   
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/css/perfect-scrollbar.min.css">
+    <link rel="stylesheet" href="/testcafe/css/docs.css">
     <style>
         .ps-container > .ps-scrollbar-x-rail,
         .ps-container > .ps-scrollbar-y-rail {
@@ -72,23 +153,9 @@
 
         var nav            = null;
         var article        = null;
-        var md             = new MobileDetect(window.navigator.userAgent);
-        var isMobileDevice = !!md.mobile();
 
         function setNavTopPosition () {
-            var isMobileZoomed = isMobileDevice && window.innerWidth !== document.body.scrollWidth;
-            var top            = null;
-
-            if(isMobileDevice) {
-                top = window.pageYOffset >= HEADER_HEIGHT ? window.pageYOffset - HEADER_HEIGHT + 'px' : '0';
-
-                if (nav.style.paddingTop !== top) {
-                    nav.style.paddingTop = top;
-                    Ps.update(nav);
-                }
-
-                return;
-            }
+            var top = null;
 
             if (document.body.clientWidth > MIN_BODY_WIDTH) {
                 if (nav.style.top !== HEADER_HEIGHT + 'px') {
@@ -96,7 +163,7 @@
                     Ps.update(nav);
                 }
             }
-            else if(!isMobileZoomed) {
+            else {
                 top = window.pageYOffset <= HEADER_HEIGHT ? HEADER_HEIGHT - window.pageYOffset + 'px' : '0';
 
                 if (nav.style.top !== top) {
@@ -123,10 +190,7 @@
         }
 
         function updatePosition () {
-            if (isMobileDevice)
-                changeBodyHeight();
-            else
-                nav.style.marginLeft = '-' + window.pageXOffset + 'px';
+            nav.style.marginLeft = '-' + window.pageXOffset + 'px';
 
             setNavBottomPosition();
             setNavTopPosition();
@@ -146,32 +210,44 @@
         }
 
         function initNav() {
-            if(isMobileDevice) {
-                nav.style.position = 'relative';
-                nav.style.float = 'left';
-                nav.style.top = '0px';
-
-                article.style.marginTop = '0px';
-                article.style.paddingTop = '22px';
-            }
-
             initScrollBar();
             updatePosition();
             window.addEventListener('scroll', updatePosition);
             window.addEventListener('resize', updatePosition);
-
-            if(isMobileDevice) {
-                nav.style.height = window.innerHeight + 'px';
-            }
         }
 
         document.addEventListener('DOMContentLoaded', function (e) {
+            if (isMobileDevice)
+                return;
+
             nav     = document.querySelector('.doc-nav');
             article = document.querySelector('.doc');
 
-            if(nav)
+            if (nav)
                 initNav(nav);
         });
+    </script>
+    
+    <script>
+        if (isMobileDevice && false == false) {
+            document.addEventListener('DOMContentLoaded', function (e) {
+                var toggleNavButton = document.querySelector('.toggle-nav-button');
+                var docNav          = document.querySelector('.doc-nav');
+
+                toggleNavButton.addEventListener('click', function (e) {
+                    if (docNav.className.indexOf('active') !== -1) {
+                        docNav.className = docNav.className.replace(' active', '');
+                        document.documentElement.style.overflowY = 'scroll';
+                    }
+                    else {
+                        docNav.className += ' active';
+                        document.documentElement.style.overflowY = 'hidden';
+                    }
+                });
+            });
+
+            linkCss('/testcafe/css/docs.mobile.css');
+        }
     </script>
   
     <script>
@@ -191,10 +267,10 @@
                 if(contentWrapper)
                     contentWrapper.style.paddingTop = bodyMinimized ? '0' : '';
 
-                if(article)
+                if(article && !isMobileDevice)
                     article.style.marginTop = bodyMinimized ? '21px' : '72px';
- 
-                if(gs)
+
+                if(gs && !isMobileDevice)
                     gs.style.paddingTop = bodyMinimized ? '21px' : '72px';
             }
 
@@ -209,7 +285,7 @@
             var article        = document.querySelector('.doc');
             var gs             = document.querySelector('.gs');
 
-            if(siteHeader) 
+            if(siteHeader)
                 initHeader(siteHeader, contentWrapper, docTopMenu, article, gs);
         });
     </script>
@@ -222,6 +298,9 @@
       <header class="site-header fixed">
   <div class="site-header-content">
     <a class="site-logo" href="/testcafe/"></a>
+    <div class="hamburger-button">
+        <div class="hamburger-icon"></div>
+    </div>
     <nav class="site-nav">
         
           
@@ -268,7 +347,7 @@
           <input type="text" placeholder="Search query" id="search"/>
           <div id="close-search"></div>
       </div>
-      </nav>
+    </nav>
   </div>
 </header>
 
@@ -282,10 +361,12 @@
     return false;
   }
 
-  function closeSearchBox(e) {
-      var clickOutsideSearchBox = searchPanel !== e.target && !has(searchPanel, e.target);
+  function clickOutsideBox(e, box) {
+      return box !== e.target && !has(box, e.target);
+  }  
 
-      if(clickOutsideSearchBox && searchPanel.className.indexOf('hidden') === -1) 
+  function closeSearchBox(e) {
+      if(clickOutsideBox(e, searchPanel) && searchPanel.className.indexOf('hidden') === -1) 
           searchPanel.className += ' hidden';
   }
 
@@ -305,6 +386,40 @@
 
   window.addEventListener('mousedown', closeSearchBox);        
   window.addEventListener('touchstart', closeSearchBox);
+
+  if (window.isMobileDevice) {
+      function closeHamburgerMenuBox(e) {
+          if(clickOutsideBox(e, hamburgerMenu) && clickOutsideBox(e, hamburgerButton) && hamburgerMenu.className.indexOf('active') !== -1) {
+              hamburgerMenu.className = hamburgerMenu.className.replace(' active', '');
+              hamburgerButton.className = hamburgerButton.className.replace(' active', '');
+              document.documentElement.style.overflowY = 'scroll';
+          }
+      }
+
+      var hamburgerMenu = document.querySelector('.site-nav');
+      var hamburgerButton = document.querySelector('.hamburger-button');
+
+      window.addEventListener('mousedown', closeHamburgerMenuBox);        
+      window.addEventListener('touchstart', closeHamburgerMenuBox);
+
+      window.addEventListener('DOMContentLoaded', function (e) {
+          var docNav = document.querySelector('.doc-nav');
+
+          if(docNav) {
+              function closeDocNav(e) {
+                  if(clickOutsideBox(e, docNav) && clickOutsideBox(e, toggleNavButton) && docNav.className.indexOf('active') !== -1) {
+                      docNav.className = docNav.className.replace(' active', '');
+                      document.documentElement.style.overflowY = 'scroll';
+                  }
+              }
+
+              var toggleNavButton = document.querySelector('.toggle-nav-button');
+
+              window.addEventListener('mousedown', closeDocNav);        
+              window.addEventListener('touchstart', closeDocNav);
+          }
+      });
+  }
 </script>
 
 <script>
@@ -315,36 +430,33 @@
   });
 </script>
 
-
-
-  <div class="doc-top-nav">
-    <div class="doc-top-nav-content">
-      <div class="doc-top-nav-wrapper">
-        
-          <div class="doc-top-nav-tab " >
-            <a href="/testcafe/documentation/getting-started/">Getting Started</a>      
-          </div>
-        
-          <div class="doc-top-nav-tab " >
-            <a href="/testcafe/documentation/using-testcafe/">Using TestCafe</a>      
-          </div>
-        
-          <div class="doc-top-nav-tab " >
-            <a href="/testcafe/documentation/test-api/">Test API</a>      
-          </div>
-        
-          <div class="doc-top-nav-tab " >
-            <a href="/testcafe/documentation/extending-testcafe/">Extending TestCafe</a>      
-          </div>
-        
-          <div class="doc-top-nav-tab active" >
-            <a href="/testcafe/documentation/recipes/">Recipes</a>      
-          </div>
-        
-      </div>
+<div class="doc-top-nav">
+  <div class="doc-top-nav-content">
+    <div class="doc-top-nav-wrapper">
+      
+        <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/getting-started/">Getting Started</a>      
+        </div>
+      
+        <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/using-testcafe/">Using TestCafe</a>      
+        </div>
+      
+        <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/test-api/">Test API</a>      
+        </div>
+      
+        <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/extending-testcafe/">Extending TestCafe</a>      
+        </div>
+      
+        <div class="doc-top-nav-tab active" >
+          <a href="/testcafe/documentation/recipes/">Recipes</a>      
+        </div>
+      
     </div>
   </div>
-
+</div>
 
 
       <div class="container">
@@ -363,6 +475,9 @@
 
 	
 	
+	<div class="doc-nav-panel">
+		<div class="toggle-nav-button"></div>
+	</div>
 	<nav class="doc-nav">	
 		<div class="doc-nav-content">
 			<ul>
@@ -372,14 +487,14 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/recipes/debug-in-chrome-dev-tools.html"  >Debug in Chrome Developer Tools</a>
+<a href="/testcafe/documentation/recipes/debugging-with-chrome-dev-tools.html"  >Debugging with Chrome Developer Tools</a>
 		
     </li>
 
     <li>
 		    
 		
-<a href="/testcafe/documentation/recipes/debug-in-visual-studio-code.html"  >Debug in Visual Studio Code</a>
+<a href="/testcafe/documentation/recipes/debugging-with-visual-studio-code.html"  >Debugging with Visual Studio Code</a>
 		
     </li>
 
@@ -532,11 +647,11 @@
 
 <ul>
 <li><p>Since you are going to perform browser testing, you need a virtual machine image that has all popular browsers pre-installed. So use the following image</p>
-<div class="highlight"><pre><code class="language-yml" data-lang="yml"><span class="pi">-</span> <span class="s">image</span><span class="pi">:</span> <span class="s">circleci/node:7.10-browsers</span>
+<div class="highlight"><pre><code class="language-yml" data-lang="yml"><span class="pi">-</span> <span class="na">image</span><span class="pi">:</span> <span class="s">circleci/node:7.10-browsers</span>
 </code></pre></div></li>
 <li><p>Add a step that imports test results to the end of the YAML. The results will be displayed in the <strong>Test Summary</strong> section.</p>
-<div class="highlight"><pre><code class="language-yml" data-lang="yml"><span class="pi">-</span> <span class="s">store_test_results</span><span class="pi">:</span>
-    <span class="s">path</span><span class="pi">:</span> <span class="s">/tmp/test-results</span>
+<div class="highlight"><pre><code class="language-yml" data-lang="yml"><span class="pi">-</span> <span class="na">store_test_results</span><span class="pi">:</span>
+    <span class="na">path</span><span class="pi">:</span> <span class="s">/tmp/test-results</span>
 </code></pre></div></li>
 </ul>
 
@@ -546,52 +661,52 @@
 <span class="c1">#</span>
 <span class="c1"># Check https://circleci.com/docs/2.0/language-javascript/ for more details</span>
 <span class="c1">#</span>
-<span class="s">version</span><span class="pi">:</span> <span class="s">2</span>
-<span class="s">jobs</span><span class="pi">:</span>
-  <span class="s">build</span><span class="pi">:</span>
-    <span class="s">docker</span><span class="pi">:</span>
+<span class="na">version</span><span class="pi">:</span> <span class="s">2</span>
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">build</span><span class="pi">:</span>
+    <span class="na">docker</span><span class="pi">:</span>
       <span class="c1"># specify the version you desire here</span>
-      <span class="pi">-</span> <span class="s">image</span><span class="pi">:</span> <span class="s">circleci/node:7.10-browsers</span>
+      <span class="pi">-</span> <span class="na">image</span><span class="pi">:</span> <span class="s">circleci/node:7.10-browsers</span>
 
       <span class="c1"># Specify service dependencies here if necessary</span>
       <span class="c1"># CircleCI maintains a library of pre-built images</span>
       <span class="c1"># documented at https://circleci.com/docs/2.0/circleci-images/</span>
       <span class="c1"># - image: circleci/mongo:3.4.4</span>
 
-    <span class="s">working_directory</span><span class="pi">:</span> <span class="s">~/repo</span>
+    <span class="na">working_directory</span><span class="pi">:</span> <span class="s">~/repo</span>
 
-    <span class="s">steps</span><span class="pi">:</span>
+    <span class="na">steps</span><span class="pi">:</span>
       <span class="pi">-</span> <span class="s">checkout</span>
 
       <span class="c1"># Download and cache dependencies</span>
-      <span class="pi">-</span> <span class="s">restore_cache</span><span class="pi">:</span>
-          <span class="s">keys</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">restore_cache</span><span class="pi">:</span>
+          <span class="na">keys</span><span class="pi">:</span>
           <span class="pi">-</span> <span class="s">v1-dependencies-{{ checksum "package.json" }}</span>
           <span class="c1"># fallback to using the latest cache if no exact match is found</span>
           <span class="pi">-</span> <span class="s">v1-dependencies-</span>
 
-      <span class="pi">-</span> <span class="s">run</span><span class="pi">:</span> <span class="s">yarn install</span>
+      <span class="pi">-</span> <span class="na">run</span><span class="pi">:</span> <span class="s">yarn install</span>
 
-      <span class="pi">-</span> <span class="s">save_cache</span><span class="pi">:</span>
-          <span class="s">paths</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">save_cache</span><span class="pi">:</span>
+          <span class="na">paths</span><span class="pi">:</span>
             <span class="pi">-</span> <span class="s">node_modules</span>
-          <span class="s">key</span><span class="pi">:</span> <span class="s">v1-dependencies-{{ checksum "package.json" }}</span>
+          <span class="na">key</span><span class="pi">:</span> <span class="s">v1-dependencies-{{ checksum "package.json" }}</span>
 
       <span class="c1"># run tests!</span>
-      <span class="pi">-</span> <span class="s">run</span><span class="pi">:</span> <span class="s">yarn test</span>
+      <span class="pi">-</span> <span class="na">run</span><span class="pi">:</span> <span class="s">yarn test</span>
 
-      <span class="pi">-</span> <span class="s">store_test_results</span><span class="pi">:</span>
-          <span class="s">path</span><span class="pi">:</span> <span class="s">/tmp/test-results</span>
+      <span class="pi">-</span> <span class="na">store_test_results</span><span class="pi">:</span>
+          <span class="na">path</span><span class="pi">:</span> <span class="s">/tmp/test-results</span>
 
 </code></pre></div>
 <p>Next, create a <code>package.json</code> file in the repository root directory. Provide a command to run tests and add TestCafe as a dependency.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-  </span><span class="nt">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="nt">"test"</span><span class="p">:</span><span class="w"> </span><span class="s2">"testcafe chrome:headless tests/**/* -r xunit:/tmp/test-results/res.xml"</span><span class="w">
+  </span><span class="s2">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"test"</span><span class="p">:</span><span class="w"> </span><span class="s2">"testcafe chrome:headless tests/**/* -r xunit:/tmp/test-results/res.xml"</span><span class="w">
   </span><span class="p">},</span><span class="w">
-  </span><span class="nt">"devDependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-      </span><span class="nt">"testcafe"</span><span class="p">:</span><span class="w"> </span><span class="s2">"^0.18.4"</span><span class="p">,</span><span class="w">
-      </span><span class="nt">"testcafe-reporter-xunit"</span><span class="p">:</span><span class="w"> </span><span class="s2">"^2.1.0"</span><span class="w">
+  </span><span class="s2">"devDependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"testcafe"</span><span class="p">:</span><span class="w"> </span><span class="s2">"^0.18.4"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"testcafe-reporter-xunit"</span><span class="p">:</span><span class="w"> </span><span class="s2">"^2.1.0"</span><span class="w">
   </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>

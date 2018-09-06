@@ -12,7 +12,7 @@
 
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
-  
+
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
   <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/test-api/actions/action-options.html" />
@@ -29,6 +29,10 @@
   <script defer src="https://buttons.github.io/buttons.js"></script>
   <script defer type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.3.min.js"></script>
   <script src="/testcafe/scripts/mobile-detect.min.js" type="text/javascript"></script>
+  <script>
+     var md             = new MobileDetect(window.navigator.userAgent);
+     var isMobileDevice = !!md.mobile();
+  </script>
   <script>
       document.addEventListener('DOMContentLoaded', function (e) {
           hljs.initHighlightingOnLoad();
@@ -52,10 +56,87 @@
   
   
 
+  <script>
+    function linkCss (href) {
+        var link  = document.createElement('link');
+        var html  = document.querySelector('html');
+        var head  = document.head;
+
+        link.rel  = 'stylesheet';
+        link.type = 'text/css';
+        link.href = href;
+        link.media = 'all';
+
+        head.appendChild(link);
+
+        window.addEventListener('load', function () {
+            html.style.display = 'block';
+        });
+
+        html.style.display = 'none';
+    }
+  </script>
+    
+    
+    <script>
+        if (isMobileDevice) {
+            document.addEventListener('DOMContentLoaded', function (e) {
+                var siteNav         = document.querySelector('.site-nav');
+                var hamburgerButton = document.querySelector('.hamburger-button');
+
+                hamburgerButton.addEventListener('click', function (e) {
+                    if (hamburgerButton.className.indexOf('active') !== -1) {
+                        hamburgerButton.className = hamburgerButton.className.replace(' active', '');
+                        siteNav.className = siteNav.className.replace(' active', '');
+                        document.documentElement.style.overflowY = 'scroll';
+                    }
+                    else {
+                        hamburgerButton.className += ' active';
+                        siteNav.className += ' active';
+                        document.documentElement.style.overflowY = 'hidden';
+                    }
+                });
+
+                var docTopNav          = document.querySelector('.doc-top-nav');
+                var siteNav            = document.querySelector('.site-nav');
+                var docMenuItem        = document.querySelector('.site-nav-tab');
+                var mainMenuSecondItem = document.querySelector('.site-nav-tab:nth-child(2)');
+
+                siteNav.insertBefore(docTopNav, mainMenuSecondItem);
+
+                var docMenuItemIcon = document.createElement('div');
+
+                docMenuItemIcon.className = 'doc-menu-item-icon';
+                docMenuItem.appendChild(docMenuItemIcon);
+
+                
+                    docMenuItem.className += ' expanded';
+                    docTopNav.className += ' expanded';
+                
+
+                docMenuItem.addEventListener('click', function (e) {
+                    if (docTopNav.className.indexOf('expanded') !== -1) {
+                        docMenuItem.className = docMenuItem.className.replace(' expanded', '');
+                        docTopNav.className = docTopNav.className.replace(' expanded', '');
+                    }
+                    else {
+                        docMenuItem.className += ' expanded';
+                        docTopNav.className += ' expanded';
+                    }
+                    e.preventDefault();
+                });
+            });
+
+            linkCss('/testcafe/css/mobile.css');
+        }
+    </script>
+    
+
   
 
   
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/css/perfect-scrollbar.min.css">
+    <link rel="stylesheet" href="/testcafe/css/docs.css">
     <style>
         .ps-container > .ps-scrollbar-x-rail,
         .ps-container > .ps-scrollbar-y-rail {
@@ -72,23 +153,9 @@
 
         var nav            = null;
         var article        = null;
-        var md             = new MobileDetect(window.navigator.userAgent);
-        var isMobileDevice = !!md.mobile();
 
         function setNavTopPosition () {
-            var isMobileZoomed = isMobileDevice && window.innerWidth !== document.body.scrollWidth;
-            var top            = null;
-
-            if(isMobileDevice) {
-                top = window.pageYOffset >= HEADER_HEIGHT ? window.pageYOffset - HEADER_HEIGHT + 'px' : '0';
-
-                if (nav.style.paddingTop !== top) {
-                    nav.style.paddingTop = top;
-                    Ps.update(nav);
-                }
-
-                return;
-            }
+            var top = null;
 
             if (document.body.clientWidth > MIN_BODY_WIDTH) {
                 if (nav.style.top !== HEADER_HEIGHT + 'px') {
@@ -96,7 +163,7 @@
                     Ps.update(nav);
                 }
             }
-            else if(!isMobileZoomed) {
+            else {
                 top = window.pageYOffset <= HEADER_HEIGHT ? HEADER_HEIGHT - window.pageYOffset + 'px' : '0';
 
                 if (nav.style.top !== top) {
@@ -123,10 +190,7 @@
         }
 
         function updatePosition () {
-            if (isMobileDevice)
-                changeBodyHeight();
-            else
-                nav.style.marginLeft = '-' + window.pageXOffset + 'px';
+            nav.style.marginLeft = '-' + window.pageXOffset + 'px';
 
             setNavBottomPosition();
             setNavTopPosition();
@@ -146,32 +210,44 @@
         }
 
         function initNav() {
-            if(isMobileDevice) {
-                nav.style.position = 'relative';
-                nav.style.float = 'left';
-                nav.style.top = '0px';
-
-                article.style.marginTop = '0px';
-                article.style.paddingTop = '22px';
-            }
-
             initScrollBar();
             updatePosition();
             window.addEventListener('scroll', updatePosition);
             window.addEventListener('resize', updatePosition);
-
-            if(isMobileDevice) {
-                nav.style.height = window.innerHeight + 'px';
-            }
         }
 
         document.addEventListener('DOMContentLoaded', function (e) {
+            if (isMobileDevice)
+                return;
+
             nav     = document.querySelector('.doc-nav');
             article = document.querySelector('.doc');
 
-            if(nav)
+            if (nav)
                 initNav(nav);
         });
+    </script>
+    
+    <script>
+        if (isMobileDevice && false == false) {
+            document.addEventListener('DOMContentLoaded', function (e) {
+                var toggleNavButton = document.querySelector('.toggle-nav-button');
+                var docNav          = document.querySelector('.doc-nav');
+
+                toggleNavButton.addEventListener('click', function (e) {
+                    if (docNav.className.indexOf('active') !== -1) {
+                        docNav.className = docNav.className.replace(' active', '');
+                        document.documentElement.style.overflowY = 'scroll';
+                    }
+                    else {
+                        docNav.className += ' active';
+                        document.documentElement.style.overflowY = 'hidden';
+                    }
+                });
+            });
+
+            linkCss('/testcafe/css/docs.mobile.css');
+        }
     </script>
   
     <script>
@@ -191,10 +267,10 @@
                 if(contentWrapper)
                     contentWrapper.style.paddingTop = bodyMinimized ? '0' : '';
 
-                if(article)
+                if(article && !isMobileDevice)
                     article.style.marginTop = bodyMinimized ? '21px' : '72px';
- 
-                if(gs)
+
+                if(gs && !isMobileDevice)
                     gs.style.paddingTop = bodyMinimized ? '21px' : '72px';
             }
 
@@ -209,7 +285,7 @@
             var article        = document.querySelector('.doc');
             var gs             = document.querySelector('.gs');
 
-            if(siteHeader) 
+            if(siteHeader)
                 initHeader(siteHeader, contentWrapper, docTopMenu, article, gs);
         });
     </script>
@@ -222,6 +298,9 @@
       <header class="site-header fixed">
   <div class="site-header-content">
     <a class="site-logo" href="/testcafe/"></a>
+    <div class="hamburger-button">
+        <div class="hamburger-icon"></div>
+    </div>
     <nav class="site-nav">
         
           
@@ -268,7 +347,7 @@
           <input type="text" placeholder="Search query" id="search"/>
           <div id="close-search"></div>
       </div>
-      </nav>
+    </nav>
   </div>
 </header>
 
@@ -282,10 +361,12 @@
     return false;
   }
 
-  function closeSearchBox(e) {
-      var clickOutsideSearchBox = searchPanel !== e.target && !has(searchPanel, e.target);
+  function clickOutsideBox(e, box) {
+      return box !== e.target && !has(box, e.target);
+  }  
 
-      if(clickOutsideSearchBox && searchPanel.className.indexOf('hidden') === -1) 
+  function closeSearchBox(e) {
+      if(clickOutsideBox(e, searchPanel) && searchPanel.className.indexOf('hidden') === -1) 
           searchPanel.className += ' hidden';
   }
 
@@ -305,6 +386,40 @@
 
   window.addEventListener('mousedown', closeSearchBox);        
   window.addEventListener('touchstart', closeSearchBox);
+
+  if (window.isMobileDevice) {
+      function closeHamburgerMenuBox(e) {
+          if(clickOutsideBox(e, hamburgerMenu) && clickOutsideBox(e, hamburgerButton) && hamburgerMenu.className.indexOf('active') !== -1) {
+              hamburgerMenu.className = hamburgerMenu.className.replace(' active', '');
+              hamburgerButton.className = hamburgerButton.className.replace(' active', '');
+              document.documentElement.style.overflowY = 'scroll';
+          }
+      }
+
+      var hamburgerMenu = document.querySelector('.site-nav');
+      var hamburgerButton = document.querySelector('.hamburger-button');
+
+      window.addEventListener('mousedown', closeHamburgerMenuBox);        
+      window.addEventListener('touchstart', closeHamburgerMenuBox);
+
+      window.addEventListener('DOMContentLoaded', function (e) {
+          var docNav = document.querySelector('.doc-nav');
+
+          if(docNav) {
+              function closeDocNav(e) {
+                  if(clickOutsideBox(e, docNav) && clickOutsideBox(e, toggleNavButton) && docNav.className.indexOf('active') !== -1) {
+                      docNav.className = docNav.className.replace(' active', '');
+                      document.documentElement.style.overflowY = 'scroll';
+                  }
+              }
+
+              var toggleNavButton = document.querySelector('.toggle-nav-button');
+
+              window.addEventListener('mousedown', closeDocNav);        
+              window.addEventListener('touchstart', closeDocNav);
+          }
+      });
+  }
 </script>
 
 <script>
@@ -315,36 +430,33 @@
   });
 </script>
 
-
-
-  <div class="doc-top-nav">
-    <div class="doc-top-nav-content">
-      <div class="doc-top-nav-wrapper">
-        
-          <div class="doc-top-nav-tab " >
-            <a href="/testcafe/documentation/getting-started/">Getting Started</a>      
-          </div>
-        
-          <div class="doc-top-nav-tab " >
-            <a href="/testcafe/documentation/using-testcafe/">Using TestCafe</a>      
-          </div>
-        
-          <div class="doc-top-nav-tab active" >
-            <a href="/testcafe/documentation/test-api/">Test API</a>      
-          </div>
-        
-          <div class="doc-top-nav-tab " >
-            <a href="/testcafe/documentation/extending-testcafe/">Extending TestCafe</a>      
-          </div>
-        
-          <div class="doc-top-nav-tab " >
-            <a href="/testcafe/documentation/recipes/">Recipes</a>      
-          </div>
-        
-      </div>
+<div class="doc-top-nav">
+  <div class="doc-top-nav-content">
+    <div class="doc-top-nav-wrapper">
+      
+        <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/getting-started/">Getting Started</a>      
+        </div>
+      
+        <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/using-testcafe/">Using TestCafe</a>      
+        </div>
+      
+        <div class="doc-top-nav-tab active" >
+          <a href="/testcafe/documentation/test-api/">Test API</a>      
+        </div>
+      
+        <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/extending-testcafe/">Extending TestCafe</a>      
+        </div>
+      
+        <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/recipes/">Recipes</a>      
+        </div>
+      
     </div>
   </div>
-
+</div>
 
 
       <div class="container">
@@ -357,6 +469,9 @@
 
 	
 	
+	<div class="doc-nav-panel">
+		<div class="toggle-nav-button"></div>
+	</div>
 	<nav class="doc-nav">	
 		<div class="doc-nav-content">
 			<ul>
@@ -861,37 +976,33 @@
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="p">{</span>
     <span class="nl">speed</span><span class="p">:</span> <span class="nb">Number</span>
 <span class="p">}</span>
-</code></pre></div>
-<table><thead>
-<tr>
+</code></pre></div><div class="table-wrapper"><table><thead><tr>
 <th>Parameter</th>
 <th>Type</th>
 <th>Description</th>
 <th>Default</th>
 </tr>
-</thead><tbody>
-<tr>
+</thead><tbody><tr>
 <td><code>speed</code></td>
 <td>Number</td>
 <td>The speed of action emulation. Defines how fast TestCafe performs the action when running tests. A number between <code>1</code> (the maximum speed) and <code>0.01</code> (the minimum speed). If test speed is also specified in the <a href="../../using-testcafe/command-line-interface.html#--speed-factor">CLI</a>, <a href="../../using-testcafe/programming-interface/runner.html#run">API</a> or in <a href="../test-code-structure.html#setting-test-speed">test code</a>, the action speed setting overrides test speed.</td>
 <td><code>1</code></td>
 </tr>
-</tbody></table>
-
+</tbody></table></div>
 <p>Basic action options are used in the <a href="press-key.html">t.pressKey</a>,
 <a href="select-text.html#select-text-in-input-elements">t.selectText</a>, <a href="select-text.html#select-textarea-content">t.selectTextAreaContent</a> and
 <a href="select-text.html#perform-selection-within-editable-content">t.selectEditableContent</a> actions.</p>
 
 <p><strong>Example</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">nameInput</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">nameInput</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">);</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">Fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`</span>
+<span class="nx">fixture</span> <span class="s2">`My Fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://devexpress.github.io/testcafe/example/`</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My Test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My Test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">,</span> <span class="s1">'Peter'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">,</span> <span class="s1">' Parker'</span><span class="p">,</span> <span class="p">{</span> <span class="na">speed</span><span class="p">:</span> <span class="mf">0.1</span> <span class="p">});</span>
 <span class="p">});</span>
@@ -900,25 +1011,22 @@
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="p">{</span>
     <span class="nl">modifiers</span><span class="p">:</span> <span class="p">{</span>
         <span class="nl">ctrl</span><span class="p">:</span> <span class="nb">Boolean</span><span class="p">,</span>
-        <span class="nx">alt</span><span class="err">:</span> <span class="nb">Boolean</span><span class="p">,</span>
-        <span class="nx">shift</span><span class="err">:</span> <span class="nb">Boolean</span><span class="p">,</span>
-        <span class="nx">meta</span><span class="err">:</span> <span class="nb">Boolean</span>
+        <span class="nx">alt</span><span class="p">:</span> <span class="nb">Boolean</span><span class="p">,</span>
+        <span class="nx">shift</span><span class="p">:</span> <span class="nb">Boolean</span><span class="p">,</span>
+        <span class="nx">meta</span><span class="p">:</span> <span class="nb">Boolean</span>
     <span class="p">},</span>
 
-    <span class="nx">offsetX</span><span class="err">:</span> <span class="nb">Number</span><span class="p">,</span>
-    <span class="nx">offsetY</span><span class="err">:</span> <span class="nb">Number</span><span class="p">,</span>
-    <span class="nx">speed</span><span class="err">:</span> <span class="nb">Number</span>
+    <span class="nx">offsetX</span><span class="p">:</span> <span class="nb">Number</span><span class="p">,</span>
+    <span class="nx">offsetY</span><span class="p">:</span> <span class="nb">Number</span><span class="p">,</span>
+    <span class="nx">speed</span><span class="p">:</span> <span class="nb">Number</span>
 <span class="p">}</span>
-</code></pre></div>
-<table><thead>
-<tr>
+</code></pre></div><div class="table-wrapper"><table><thead><tr>
 <th>Parameter</th>
 <th>Type</th>
 <th>Description</th>
 <th>Default</th>
 </tr>
-</thead><tbody>
-<tr>
+</thead><tbody><tr>
 <td><code>ctrl</code>, <code>alt</code>, <code>shift</code>, <code>meta</code></td>
 <td>Boolean</td>
 <td>Indicate which modifier keys are to be pressed during the mouse action.</td>
@@ -936,20 +1044,19 @@
 <td>The speed of action emulation. Defines how fast TestCafe performs the action when running tests. A value between <code>1</code> (the maximum speed) and <code>0.01</code> (the minimum speed). If test speed is also specified in the <a href="../../using-testcafe/command-line-interface.html#--speed-factor">CLI</a> or <a href="../../using-testcafe/programming-interface/runner.html#run">programmatically</a>, the action speed setting overrides test speed.</td>
 <td><code>1</code></td>
 </tr>
-</tbody></table>
-
+</tbody></table></div>
 <p>Mouse action options are used in the <a href="drag-element.html#drag-an-element-by-an-offset">t.drag</a> and <a href="hover.html">t.hover</a> actions.</p>
 
 <p><strong>Example</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">sliderHandle</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'.ui-slider-handle'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">sliderHandle</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'.ui-slider-handle'</span><span class="p">);</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">Fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`</span>
+<span class="nx">fixture</span> <span class="s2">`My Fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://devexpress.github.io/testcafe/example/`</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My Test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My Test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">drag</span><span class="p">(</span><span class="nx">sliderHandle</span><span class="p">,</span> <span class="mi">360</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">{</span>
             <span class="na">offsetX</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
             <span class="na">offsetY</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
@@ -963,27 +1070,24 @@
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="p">{</span>
     <span class="nl">modifiers</span><span class="p">:</span> <span class="p">{</span>
         <span class="nl">ctrl</span><span class="p">:</span> <span class="nb">Boolean</span><span class="p">,</span>
-        <span class="nx">alt</span><span class="err">:</span> <span class="nb">Boolean</span><span class="p">,</span>
-        <span class="nx">shift</span><span class="err">:</span> <span class="nb">Boolean</span><span class="p">,</span>
-        <span class="nx">meta</span><span class="err">:</span> <span class="nb">Boolean</span>
+        <span class="nx">alt</span><span class="p">:</span> <span class="nb">Boolean</span><span class="p">,</span>
+        <span class="nx">shift</span><span class="p">:</span> <span class="nb">Boolean</span><span class="p">,</span>
+        <span class="nx">meta</span><span class="p">:</span> <span class="nb">Boolean</span>
     <span class="p">},</span>
 
-    <span class="nx">offsetX</span><span class="err">:</span> <span class="nb">Number</span><span class="p">,</span>
-    <span class="nx">offsetY</span><span class="err">:</span> <span class="nb">Number</span><span class="p">,</span>
-    <span class="nx">destinationOffsetX</span><span class="err">:</span> <span class="nb">Number</span><span class="p">,</span>
-    <span class="nx">destinationOffsetY</span><span class="err">:</span> <span class="nb">Number</span><span class="p">,</span>
-    <span class="nx">speed</span><span class="err">:</span> <span class="nb">Number</span>
+    <span class="nx">offsetX</span><span class="p">:</span> <span class="nb">Number</span><span class="p">,</span>
+    <span class="nx">offsetY</span><span class="p">:</span> <span class="nb">Number</span><span class="p">,</span>
+    <span class="nx">destinationOffsetX</span><span class="p">:</span> <span class="nb">Number</span><span class="p">,</span>
+    <span class="nx">destinationOffsetY</span><span class="p">:</span> <span class="nb">Number</span><span class="p">,</span>
+    <span class="nx">speed</span><span class="p">:</span> <span class="nb">Number</span>
 <span class="p">}</span>
-</code></pre></div>
-<table><thead>
-<tr>
+</code></pre></div><div class="table-wrapper"><table><thead><tr>
 <th>Parameter</th>
 <th>Type</th>
 <th>Description</th>
 <th>Default</th>
 </tr>
-</thead><tbody>
-<tr>
+</thead><tbody><tr>
 <td><code>ctrl</code>, <code>alt</code>, <code>shift</code>, <code>meta</code></td>
 <td>Boolean</td>
 <td>Indicate which modifier keys are to be pressed during the drag action.</td>
@@ -1007,21 +1111,20 @@
 <td>The speed of action emulation. Defines how fast TestCafe performs the action when running tests. A value between <code>1</code> (the maximum speed) and <code>0.01</code> (the minimum speed). If test speed is also specified in the <a href="../../using-testcafe/command-line-interface.html#--speed-factor">CLI</a> or <a href="../../using-testcafe/programming-interface/runner.html#run">programmatically</a>, the action speed setting overrides test speed.</td>
 <td><code>1</code></td>
 </tr>
-</tbody></table>
-
+</tbody></table></div>
 <p>DragToElement options are used in the <a href="drag-element.html#drag-an-element-onto-another-one">t.dragToElement</a> action.</p>
 
 <p><strong>Example</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">fileIcon</span>      <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'.file-icon'</span><span class="p">);</span>
-<span class="kr">const</span> <span class="nx">directoryPane</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'.directory'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">fileIcon</span>      <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'.file-icon'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">directoryPane</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'.directory'</span><span class="p">);</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">Fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">https</span><span class="err">:</span><span class="c1">//example.com/`;</span>
+<span class="nx">fixture</span> <span class="s2">`My Fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`https://example.com/`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My Test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My Test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">dragToElement</span><span class="p">(</span><span class="nx">fileIcon</span><span class="p">,</span> <span class="nx">directoryPane</span><span class="p">,</span> <span class="p">{</span>
             <span class="na">offsetX</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
             <span class="na">offsetY</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
@@ -1037,26 +1140,23 @@
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="p">{</span>
     <span class="nl">modifiers</span><span class="p">:</span> <span class="p">{</span>
         <span class="nl">ctrl</span><span class="p">:</span> <span class="nb">Boolean</span><span class="p">,</span>
-        <span class="nx">alt</span><span class="err">:</span> <span class="nb">Boolean</span><span class="p">,</span>
-        <span class="nx">shift</span><span class="err">:</span> <span class="nb">Boolean</span><span class="p">,</span>
-        <span class="nx">meta</span><span class="err">:</span> <span class="nb">Boolean</span>
+        <span class="nx">alt</span><span class="p">:</span> <span class="nb">Boolean</span><span class="p">,</span>
+        <span class="nx">shift</span><span class="p">:</span> <span class="nb">Boolean</span><span class="p">,</span>
+        <span class="nx">meta</span><span class="p">:</span> <span class="nb">Boolean</span>
     <span class="p">},</span>
 
-    <span class="nx">offsetX</span><span class="err">:</span> <span class="nb">Number</span><span class="p">,</span>
-    <span class="nx">offsetY</span><span class="err">:</span> <span class="nb">Number</span><span class="p">,</span>
-    <span class="nx">caretPos</span><span class="err">:</span> <span class="nb">Number</span><span class="p">,</span>
-    <span class="nx">speed</span><span class="err">:</span> <span class="nb">Number</span>
+    <span class="nx">offsetX</span><span class="p">:</span> <span class="nb">Number</span><span class="p">,</span>
+    <span class="nx">offsetY</span><span class="p">:</span> <span class="nb">Number</span><span class="p">,</span>
+    <span class="nx">caretPos</span><span class="p">:</span> <span class="nb">Number</span><span class="p">,</span>
+    <span class="nx">speed</span><span class="p">:</span> <span class="nb">Number</span>
 <span class="p">}</span>
-</code></pre></div>
-<table><thead>
-<tr>
+</code></pre></div><div class="table-wrapper"><table><thead><tr>
 <th>Parameter</th>
 <th>Type</th>
 <th>Description</th>
 <th>Default</th>
 </tr>
-</thead><tbody>
-<tr>
+</thead><tbody><tr>
 <td><code>ctrl</code>, <code>alt</code>, <code>shift</code>, <code>meta</code></td>
 <td>Boolean</td>
 <td>Indicate which modifier keys are to be pressed during the mouse action.</td>
@@ -1080,20 +1180,19 @@
 <td>The speed of action emulation. Defines how fast TestCafe performs the action when running tests. A value between <code>1</code> (the maximum speed) and <code>0.01</code> (the minimum speed). If test speed is also specified in the <a href="../../using-testcafe/command-line-interface.html#--speed-factor">CLI</a> or <a href="../../using-testcafe/programming-interface/runner.html#run">programmatically</a>, the action speed setting overrides test speed.</td>
 <td><code>1</code></td>
 </tr>
-</tbody></table>
-
+</tbody></table></div>
 <p>Click action options are used in the <a href="click.html">t.click</a>, <a href="double-click.html">t.doubleClick</a> and <a href="right-click.html">t.rightClick</a> actions.</p>
 
 <p><strong>Example</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">nameInput</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">nameInput</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">);</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">Fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`</span>
+<span class="nx">fixture</span> <span class="s2">`My Fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://devexpress.github.io/testcafe/example/`</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My Test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My Test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">,</span> <span class="s1">'Pete Parker'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">,</span> <span class="p">{</span> <span class="na">caretPos</span><span class="p">:</span> <span class="mi">4</span> <span class="p">})</span>
         <span class="p">.</span><span class="nx">pressKey</span><span class="p">(</span><span class="s1">'r'</span><span class="p">);</span>
@@ -1103,28 +1202,25 @@
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="p">{</span>
     <span class="nl">modifiers</span><span class="p">:</span> <span class="p">{</span>
         <span class="nl">ctrl</span><span class="p">:</span> <span class="nb">Boolean</span><span class="p">,</span>
-        <span class="nx">alt</span><span class="err">:</span> <span class="nb">Boolean</span><span class="p">,</span>
-        <span class="nx">shift</span><span class="err">:</span> <span class="nb">Boolean</span><span class="p">,</span>
-        <span class="nx">meta</span><span class="err">:</span> <span class="nb">Boolean</span>
+        <span class="nx">alt</span><span class="p">:</span> <span class="nb">Boolean</span><span class="p">,</span>
+        <span class="nx">shift</span><span class="p">:</span> <span class="nb">Boolean</span><span class="p">,</span>
+        <span class="nx">meta</span><span class="p">:</span> <span class="nb">Boolean</span>
     <span class="p">},</span>
 
-    <span class="nx">offsetX</span><span class="err">:</span> <span class="nb">Number</span><span class="p">,</span>
-    <span class="nx">offsetY</span><span class="err">:</span> <span class="nb">Number</span><span class="p">,</span>
-    <span class="nx">caretPos</span><span class="err">:</span> <span class="nb">Number</span><span class="p">,</span>
-    <span class="nx">replace</span><span class="err">:</span> <span class="nb">Boolean</span><span class="p">,</span>
-    <span class="nx">paste</span><span class="err">:</span> <span class="nb">Boolean</span><span class="p">,</span>
-    <span class="nx">speed</span><span class="err">:</span> <span class="nb">Number</span>
+    <span class="nx">offsetX</span><span class="p">:</span> <span class="nb">Number</span><span class="p">,</span>
+    <span class="nx">offsetY</span><span class="p">:</span> <span class="nb">Number</span><span class="p">,</span>
+    <span class="nx">caretPos</span><span class="p">:</span> <span class="nb">Number</span><span class="p">,</span>
+    <span class="nx">replace</span><span class="p">:</span> <span class="nb">Boolean</span><span class="p">,</span>
+    <span class="nx">paste</span><span class="p">:</span> <span class="nb">Boolean</span><span class="p">,</span>
+    <span class="nx">speed</span><span class="p">:</span> <span class="nb">Number</span>
 <span class="p">}</span>
-</code></pre></div>
-<table><thead>
-<tr>
+</code></pre></div><div class="table-wrapper"><table><thead><tr>
 <th>Parameter</th>
 <th>Type</th>
 <th>Description</th>
 <th>Default</th>
 </tr>
-</thead><tbody>
-<tr>
+</thead><tbody><tr>
 <td><code>ctrl</code>, <code>alt</code>, <code>shift</code>, <code>meta</code></td>
 <td>Boolean</td>
 <td>Indicate which modifier keys are to be pressed while typing.</td>
@@ -1160,20 +1256,19 @@
 <td>The speed of action emulation. Defines how fast TestCafe performs the action when running tests. A value between <code>1</code> (the maximum speed) and <code>0.01</code> (the minimum speed). If test speed is also specified in the <a href="../../using-testcafe/command-line-interface.html#--speed-factor">CLI</a> or <a href="../../using-testcafe/programming-interface/runner.html#run">programmatically</a>, the action speed setting overrides test speed.</td>
 <td><code>1</code></td>
 </tr>
-</tbody></table>
-
+</tbody></table></div>
 <p>Typing action options are used in the <a href="type-text.html">t.typeText</a> action.</p>
 
 <p><strong>Example</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">nameInput</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">nameInput</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">);</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">Fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`</span>
+<span class="nx">fixture</span> <span class="s2">`My Fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://devexpress.github.io/testcafe/example/`</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My Test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My Test'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">,</span> <span class="s1">'Peter'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">,</span> <span class="s1">'Parker'</span><span class="p">,</span> <span class="p">{</span> <span class="na">replace</span><span class="p">:</span> <span class="kc">true</span> <span class="p">});</span>
 <span class="p">});</span>
