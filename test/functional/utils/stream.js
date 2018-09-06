@@ -1,15 +1,36 @@
+const { Writable: WritableStream } = require('stream');
+
+
+const ASYNC_REPORTER_FINALIZING_TIMEOUT = 2000;
+
 module.exports.createTestStream = () => {
-    const stream = {
-        data:  '',
-        write: function (val) {
+    return {
+        data: '',
+
+        write (val) {
             this.data += val;
         },
-        end: function (val) {
+        end (val) {
             this.data += val;
         }
     };
+};
 
-    return stream;
+
+module.exports.createAsyncTestStream = ({ shouldFail } = {}) => {
+    return new WritableStream({
+        write (chunk, enc, cb) {
+            cb();
+        },
+
+        final (cb) {
+            setTimeout(() => {
+                this.finalCalled = true;
+
+                cb(shouldFail ? new Error('Stream failed') : null);
+            }, ASYNC_REPORTER_FINALIZING_TIMEOUT);
+        }
+    });
 };
 
 module.exports.createNullStream = () => {
