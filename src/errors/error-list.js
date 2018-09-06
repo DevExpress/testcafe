@@ -1,4 +1,5 @@
 import processTestFnError from './process-test-fn-error';
+import { UncaughtErrorInTestCode } from './test-run';
 
 export default class TestCafeErrorList {
     constructor () {
@@ -7,6 +8,10 @@ export default class TestCafeErrorList {
 
     get hasErrors () {
         return !!this.items.length;
+    }
+
+    get hasUncaughtErrorsInTestCode () {
+        return this.items.some(item => item instanceof UncaughtErrorInTestCode);
     }
 
     addError (err) {

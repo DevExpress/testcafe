@@ -108,6 +108,15 @@ describe('[API] TestController', () => {
                 });
         });
 
+        it('Should not track missing `await` when uncaught error is occurred (GH-2557)', () => {
+            return runTests('./testcafe-fixtures/test-controller-test.js', 'GH-2557',
+                { shouldFail: true, only: 'chrome' })
+                .catch(errs => {
+                    expect(errs.length).eql(1);
+                    expect(errs[0]).contains("TypeError: Cannot read property 'someProperty' of undefined  [[user-agent]]");
+                });
+        });
+
         describe('Regression', () => {
             it('Should allow chains within chain (GH-1285)', () => {
                 return runTests('./testcafe-fixtures/test-controller-test.js', 'GH-1285', { only: 'chrome' });

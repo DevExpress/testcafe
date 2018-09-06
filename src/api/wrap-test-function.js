@@ -20,9 +20,11 @@ export default function wrapTestFunction (fn) {
             errList.addError(err);
         }
 
-        testRun.controller.callsitesWithoutAwait.forEach(callsite => {
-            errList.addError(new MissingAwaitError(callsite));
-        });
+        if (!errList.hasUncaughtErrorsInTestCode) {
+            testRun.controller.callsitesWithoutAwait.forEach(callsite => {
+                errList.addError(new MissingAwaitError(callsite));
+            });
+        }
 
         if (errList.hasErrors)
             throw errList;

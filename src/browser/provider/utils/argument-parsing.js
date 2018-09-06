@@ -44,7 +44,7 @@ export function getPathFromParsedModes (modes, availableModes = []) {
     if (availableModes.some(mode => mode === modes[0]))
         return '';
 
-    const path = modes.shift();
+    let path = modes.shift();
 
     if (OS.win && modes.length && path.match(/^[A-Za-z]$/))
         path += ':' + modes.shift();
