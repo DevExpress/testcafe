@@ -8,7 +8,7 @@ export default {
     async openBrowser (browserId) {
         await this.waitForConnectionReady(browserId);
 
-        var localBrowserWindow = await findWindow(browserId);
+        const localBrowserWindow = await findWindow(browserId);
 
         this.localBrowsersFlags[browserId] = localBrowserWindow !== null;
     },
@@ -23,7 +23,7 @@ export default {
 
     // NOTE: we must try to do a local screenshot or resize, if browser is accessible, and emit warning otherwise
     async hasCustomActionForBrowser (browserId) {
-        var isLocalBrowser = this.localBrowsersFlags[browserId];
+        const isLocalBrowser = this.localBrowsersFlags[browserId];
 
         return {
             hasCloseBrowser:                true,

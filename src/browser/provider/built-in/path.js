@@ -1,20 +1,19 @@
 import browserTools from 'testcafe-browser-tools';
 import { splitQuotedText } from '../../../utils/string';
 
-
 export default {
     isMultiBrowser: true,
 
     async _handleString (str) {
-        var args = splitQuotedText(str, ' ', '`"\'');
-        var path = args.shift();
+        const args = splitQuotedText(str, ' ', '`"\'');
+        const path = args.shift();
 
-        var browserInfo = await browserTools.getBrowserInfo(path);
+        const browserInfo = await browserTools.getBrowserInfo(path);
 
         if (!browserInfo)
             return null;
 
-        var params = Object.assign({}, browserInfo);
+        const params = Object.assign({}, browserInfo);
 
         if (args.length)
             params.cmd = args.join(' ') + (params.cmd ? ' ' + params.cmd : '');
@@ -23,7 +22,7 @@ export default {
     },
 
     async _handleJSON (str) {
-        var params = null;
+        let params = null;
 
         try {
             params = JSON.parse(str);
@@ -35,7 +34,7 @@ export default {
         if (!params.path)
             return null;
 
-        var openParameters = await browserTools.getBrowserInfo(params.path);
+        const openParameters = await browserTools.getBrowserInfo(params.path);
 
         if (!openParameters)
             return null;
@@ -47,7 +46,7 @@ export default {
     },
 
     async openBrowser (browserId, pageUrl, browserName) {
-        var openParameters = await this._handleString(browserName) || await this._handleJSON(browserName);
+        const openParameters = await this._handleString(browserName) || await this._handleJSON(browserName);
 
         if (!openParameters)
             throw new Error('The specified browser name is not valid!');
