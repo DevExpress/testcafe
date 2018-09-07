@@ -153,7 +153,7 @@ export default class TestRun extends EventEmitter {
     _initRequestHook (hook) {
         hook.warningLog = this.warningLog;
 
-        hook._instantiateRequestFilterRules();
+        hook.instantiateRequestFilterRules();
         hook._instantiatedRequestFilterRules.forEach(rule => {
             this.session.addRequestEventListeners(rule, {
                 onRequest:           hook.onRequest.bind(hook),

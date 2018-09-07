@@ -5,15 +5,14 @@ import VisibleElementAutomation from './visible-element-automation';
 import ClickAutomation from './click';
 import AutomationSettings from '../settings';
 
-var featureDetection = hammerhead.utils.featureDetection;
-var browserUtils     = hammerhead.utils.browser;
-var eventSimulator   = hammerhead.eventSandbox.eventSimulator;
+const featureDetection = hammerhead.utils.featureDetection;
+const browserUtils     = hammerhead.utils.browser;
+const eventSimulator   = hammerhead.eventSandbox.eventSimulator;
 
-var eventUtils = testCafeCore.eventUtils;
-var delay      = testCafeCore.delay;
+const eventUtils = testCafeCore.eventUtils;
+const delay      = testCafeCore.delay;
 
 const FIRST_CLICK_DELAY = featureDetection.isTouchDevice ? 0 : 160;
-
 
 export default class DblClickAutomation extends VisibleElementAutomation {
     constructor (element, clickOptions) {
@@ -37,11 +36,11 @@ export default class DblClickAutomation extends VisibleElementAutomation {
 
     _firstClick (useStrictElementCheck) {
         // NOTE: we should always perform click with the highest speed
-        var clickOptions = new ClickOptions(this.options);
+        const clickOptions = new ClickOptions(this.options);
 
         clickOptions.speed = 1;
 
-        var clickAutomation = new ClickAutomation(this.element, clickOptions);
+        const clickAutomation = new ClickAutomation(this.element, clickOptions);
 
         clickAutomation.on(clickAutomation.TARGET_ELEMENT_FOUND_EVENT, e => this.emit(this.TARGET_ELEMENT_FOUND_EVENT, e));
 
@@ -56,7 +55,7 @@ export default class DblClickAutomation extends VisibleElementAutomation {
         if (browserUtils.isIE)
             eventUtils.bind(document, 'focus', eventUtils.preventDefault, true);
 
-        var clickOptions = new ClickOptions({
+        const clickOptions = new ClickOptions({
             offsetX:   eventArgs.screenPoint.x,
             offsetY:   eventArgs.screenPoint.y,
             caretPos:  this.caretPos,
@@ -64,7 +63,7 @@ export default class DblClickAutomation extends VisibleElementAutomation {
             speed:     1
         });
 
-        var clickAutomation = new ClickAutomation(document.documentElement, clickOptions);
+        const clickAutomation = new ClickAutomation(document.documentElement, clickOptions);
 
         return clickAutomation.run()
             .then(clickEventArgs => {
