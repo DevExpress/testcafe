@@ -35,8 +35,11 @@ export default class TestRunBookmark {
         if (this.testRun.activeIframeSelector)
             await this.testRun.executeCommand(new SwitchToMainWindowCommand());
 
-        if (!this.role.opts.preserveUrl)
+        if (!this.role.opts.preserveUrl) {
             this.url = await this.testRun.getCurrentUrl();
+
+            await this.testRun.executeCommand(new NavigateToCommand({ url: this.url }, this.testRun));
+        }
     }
 
     async _restoreDialogHandler () {
