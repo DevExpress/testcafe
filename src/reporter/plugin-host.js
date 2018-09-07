@@ -11,10 +11,10 @@ import getViewportWidth from '../utils/get-viewport-width';
 // Therefore we use symbols to store them.
 
 /*global Symbol*/
-var stream          = Symbol();
-var wordWrapEnabled = Symbol();
-var indent          = Symbol();
-var errorDecorator  = Symbol();
+const stream          = Symbol();
+const wordWrapEnabled = Symbol();
+const indent          = Symbol();
+const errorDecorator  = Symbol();
 
 export default class ReporterPluginHost {
     constructor (plugin, outStream) {
@@ -22,7 +22,7 @@ export default class ReporterPluginHost {
         this[wordWrapEnabled] = false;
         this[indent]          = 0;
 
-        var useColors = this[stream] === process.stdout && chalk.enabled && !plugin.noColors;
+        const useColors = this[stream] === process.stdout && chalk.enabled && !plugin.noColors;
 
         this.chalk         = new chalk.constructor({ enabled: useColors });
         this.moment        = moment;
@@ -90,9 +90,9 @@ export default class ReporterPluginHost {
     }
 
     formatError (err, prefix = '') {
-        var prefixLengthWithoutColors = removeTTYColors(prefix).length;
-        var maxMsgLength              = this.viewportWidth - this[indent] - prefixLengthWithoutColors;
-        var msg                       = err.formatMessage(this[errorDecorator], maxMsgLength);
+        const prefixLengthWithoutColors = removeTTYColors(prefix).length;
+        const maxMsgLength              = this.viewportWidth - this[indent] - prefixLengthWithoutColors;
+        let msg                         = err.formatMessage(this[errorDecorator], maxMsgLength);
 
         if (this[wordWrapEnabled])
             msg = this.wordWrap(msg, prefixLengthWithoutColors, maxMsgLength);

@@ -37,7 +37,7 @@ describe('[API] TestController', () => {
 
     describe('Missing `await` tracking', () => {
         const missingAwaitErrMsg = 'A call to an async function is not awaited. Use the "await" keyword before actions, ' +
-                                 'assertions or chains of them to ensure that they run in the right sequence.';
+                                   'assertions or chains of them to ensure that they run in the right sequence.';
 
         it('Should track missing `await`', () => {
             return runTests('./testcafe-fixtures/test-controller-test.js', 'Missing await', {

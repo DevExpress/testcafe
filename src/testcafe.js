@@ -15,17 +15,17 @@ const UI_SPRITE = read('./client/ui/sprite.png', true);
 const FAVICON   = read('./client/ui/favicon.ico', true);
 
 export default class TestCafe {
-    constructor (hostname, port1, port2, sslOptions, developmentMode) {
+    constructor (hostname, port1, port2, options = {}) {
         this._setupSourceMapsSupport();
 
         registerErrorHandlers();
 
         this.closed                   = false;
-        this.proxy                    = new Proxy(hostname, port1, port2, sslOptions, developmentMode);
+        this.proxy                    = new Proxy(hostname, port1, port2, options);
         this.browserConnectionGateway = new BrowserConnectionGateway(this.proxy);
         this.runners                  = [];
 
-        this._registerAssets(developmentMode);
+        this._registerAssets(options.developmentMode);
     }
 
     _registerAssets (developmentMode) {
@@ -63,13 +63,13 @@ export default class TestCafe {
 
     // API
     async createBrowserConnection () {
-        var browserInfo = await browserProviderPool.getBrowserInfo('remote');
+        const browserInfo = await browserProviderPool.getBrowserInfo('remote');
 
         return new BrowserConnection(this.browserConnectionGateway, browserInfo, true);
     }
 
     createRunner () {
-        var newRunner = new Runner(this.proxy, this.browserConnectionGateway);
+        const newRunner = new Runner(this.proxy, this.browserConnectionGateway);
 
         this.runners.push(newRunner);
 

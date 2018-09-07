@@ -45,7 +45,6 @@ import {
     canSetDebuggerBreakpointBeforeCommand
 } from './commands/utils';
 
-//Const
 const TEST_RUN_TEMPLATE               = read('../client/test-run/index.js.mustache');
 const IFRAME_TEST_RUN_TEMPLATE        = read('../client/test-run/iframe.js.mustache');
 const TEST_DONE_CONFIRMATION_RESPONSE = 'test-done-confirmation';
@@ -176,7 +175,6 @@ export default class TestRun extends EventEmitter {
         this.requestHooks.forEach(hook => this._initRequestHook(hook));
     }
 
-
     // Hammerhead payload
     _getPayloadScript () {
         this.fileDownloadingHandled               = false;
@@ -208,7 +206,6 @@ export default class TestRun extends EventEmitter {
             dialogHandler:   JSON.stringify(this.activeDialogHandler)
         });
     }
-
 
     // Hammerhead handlers
     getAuthCredentials () {
@@ -361,7 +358,6 @@ export default class TestRun extends EventEmitter {
         this.browserManipulationQueue.removeAllNonServiceManipulations();
     }
 
-
     // Current driver task
     get currentDriverTask () {
         return this.driverTaskQueue[0];
@@ -383,7 +379,6 @@ export default class TestRun extends EventEmitter {
         this._removeAllNonServiceTasks();
     }
 
-
     // Pending request
     _clearPendingRequest () {
         if (this.pendingRequest) {
@@ -397,7 +392,6 @@ export default class TestRun extends EventEmitter {
         this.pendingRequest.resolve(command);
         this._clearPendingRequest();
     }
-
 
     // Handle driver request
     _fulfillCurrentDriverTask (driverStatus) {
@@ -653,7 +647,6 @@ export default class TestRun extends EventEmitter {
         this.disableDebugBreakpoints = false;
     }
 
-
     // Get current URL
     async getCurrentUrl () {
         var builder = new ClientFunctionBuilder(() => {
@@ -667,7 +660,6 @@ export default class TestRun extends EventEmitter {
         return await getLocation();
     }
 }
-
 
 // Service message handlers
 var ServiceMessages = TestRun.prototype;

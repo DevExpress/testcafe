@@ -1,12 +1,12 @@
-const path            = require('path');
-const fs              = require('fs');
-const del             = require('del');
-const expect          = require('chai').expect;
-const correctFilePath = require('../../lib/utils/correct-file-path');
-const escapeUserAgent = require('../../lib/utils/escape-user-agent');
-const parseFileList   = require('../../lib/utils/parse-file-list');
-const TempDirectory   = require('../../lib/utils/temp-directory');
-
+const path                             = require('path');
+const fs                               = require('fs');
+const del                              = require('del');
+const expect                           = require('chai').expect;
+const correctFilePath                  = require('../../lib/utils/correct-file-path');
+const escapeUserAgent                  = require('../../lib/utils/escape-user-agent');
+const parseFileList                    = require('../../lib/utils/parse-file-list');
+const TempDirectory                    = require('../../lib/utils/temp-directory');
+const { replaceLeadingSpacesWithNbsp } = require('../../lib/utils/string');
 
 describe('Utils', () => {
     it('Correct File Path', () => {
@@ -67,7 +67,7 @@ describe('Utils', () => {
         });
     });
 
-    describe('Temp Directory', function () {
+    describe('Temp Directory', () => {
         const TMP_ROOT = path.join(process.cwd(), '__tmp__');
 
         const savedTmpRoot = TempDirectory.TEMP_DIRECTORIES_ROOT;
@@ -119,5 +119,13 @@ describe('Utils', () => {
                     expect(subDirs.length).eql(0);
                 });
         });
+    });
+
+    it('Replace leading spaces with &nbsp', () => {
+        expect(replaceLeadingSpacesWithNbsp('test')).eql('test');
+        expect(replaceLeadingSpacesWithNbsp(' test')).eql('&nbsp;test');
+        expect(replaceLeadingSpacesWithNbsp('  test')).eql('&nbsp;&nbsp;test');
+        expect(replaceLeadingSpacesWithNbsp(' test1 test2 ')).eql('&nbsp;test1 test2 ');
+        expect(replaceLeadingSpacesWithNbsp('  test1\n test2 \r\ntest3 ')).eql('&nbsp;&nbsp;test1\n&nbsp;test2 \r\ntest3 ');
     });
 });

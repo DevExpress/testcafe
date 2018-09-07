@@ -1,6 +1,7 @@
 import dedent from 'dedent';
 import { escape as escapeHtml } from 'lodash';
 import TYPE from './type';
+import { replaceLeadingSpacesWithNbsp } from '../../utils/string';
 import TEST_RUN_PHASE from '../../test-run/phase';
 
 const SUBTITLES = {
@@ -50,7 +51,7 @@ function markup (err, msgMarkup, opts = {}) {
         msgMarkup += `\n<div class="screenshot-info"><strong>Screenshot:</strong> <a class="screenshot-path">${escapeHtml(err.screenshotPath)}</a></div>`;
 
     if (!opts.withoutCallsite) {
-        var callsiteMarkup = err.getCallsiteMarkup();
+        const callsiteMarkup = err.getCallsiteMarkup();
 
         if (callsiteMarkup)
             msgMarkup += `\n\n${callsiteMarkup}`;
@@ -83,7 +84,7 @@ export default {
     [TYPE.uncaughtErrorOnPage]: err => markup(err, `
         Error on page <a href="${err.pageDestUrl}">${err.pageDestUrl}</a>:
 
-        ${escapeHtml(err.errMsg)}
+        ${replaceLeadingSpacesWithNbsp(escapeHtml(err.errStack))}
     `),
 
     [TYPE.uncaughtErrorInTestCode]: err => markup(err, `

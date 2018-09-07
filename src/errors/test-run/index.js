@@ -100,10 +100,10 @@ export class PageLoadError extends TestRunErrorBase {
 // Uncaught errors
 //--------------------------------------------------------------------
 export class UncaughtErrorOnPage extends TestRunErrorBase {
-    constructor (errMsg, pageDestUrl) {
+    constructor (errStack, pageDestUrl) {
         super(TYPE.uncaughtErrorOnPage);
 
-        this.errMsg      = errMsg;
+        this.errStack    = errStack;
         this.pageDestUrl = pageDestUrl;
     }
 }

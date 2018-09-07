@@ -1,4 +1,5 @@
 import indentString from 'indent-string';
+import { repeat } from 'lodash';
 
 function rtrim (str) {
     return str.replace(/\s+$/, '');
@@ -72,4 +73,10 @@ export function splitQuotedText (str, splitChar, quotes = '"\'') {
         parts.push(currentPart);
 
     return parts;
+}
+
+export function replaceLeadingSpacesWithNbsp (str) {
+    return str.replace(/^ +/mg, match => {
+        return repeat('&nbsp;', match.length);
+    });
 }
