@@ -74,7 +74,7 @@ describe('[API] TestController', () => {
                 .catch(errs => {
                     expect(errs[0]).to.contains(missingAwaitErrMsg);
                     expect(errs[0]).to.contains("> 48 |    t.click('#error');");
-                    expect(errs[1]).to.contains('Uncaught Error: Error callsite test');
+                    expect(errs[1]).to.contains('Error callsite test');
                     expect(errs[1]).to.contains("> 48 |    t.click('#error');");
                 });
         });
@@ -94,17 +94,6 @@ describe('[API] TestController', () => {
                 .catch(errs => {
                     expect(errs[0]).to.contains(missingAwaitErrMsg);
                     expect(errs[0]).to.contains("> 2 |    t.click('#yo');");
-                });
-        });
-
-        it('Should track missing `await` before error', () => {
-            return runTests('./testcafe-fixtures/test-controller-test.js', 'Missing await before error',
-                { shouldFail: true, only: 'chrome' })
-                .catch(errs => {
-                    expect(errs[0]).to.contains(missingAwaitErrMsg);
-                    expect(errs[0]).to.contains("> 68 |    t.click('#btn2'); ");
-                    expect(errs[1]).to.contains('Error: Hey!');
-                    expect(errs[1]).to.contains("> 70 |    throw new Error('Hey!');");
                 });
         });
 
