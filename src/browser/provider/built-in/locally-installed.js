@@ -5,11 +5,11 @@ export default {
     isMultiBrowser: true,
 
     async openBrowser (browserId, pageUrl, browserName) {
-        var args  = browserName.split(' ');
-        var alias = args.shift();
+        const args  = browserName.split(' ');
+        const alias = args.shift();
 
-        var browserInfo    = await browserTools.getBrowserInfo(alias);
-        var openParameters = Object.assign({}, browserInfo);
+        const browserInfo    = await browserTools.getBrowserInfo(alias);
+        const openParameters = Object.assign({}, browserInfo);
 
         if (args.length)
             openParameters.cmd = args.join(' ') + (openParameters.cmd ? ' ' + openParameters.cmd : '');
@@ -22,13 +22,13 @@ export default {
     },
 
     async getBrowserList () {
-        var installations = await browserTools.getInstallations();
+        const installations = await browserTools.getInstallations();
 
         return Object.keys(installations);
     },
 
     async isValidBrowserName (browserName) {
-        var browserNames = await this.getBrowserList();
+        const browserNames = await this.getBrowserList();
 
         browserName = browserName.toLowerCase().split(' ')[0];
 

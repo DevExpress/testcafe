@@ -1,29 +1,28 @@
 import { find as findElement } from 'lodash';
 import OS from 'os-family';
 
-
-const CONFIG_TERMINATOR_RE     = /(\s+|^)-/;
+const CONFIG_TERMINATOR_RE = /(\s+|^)-/;
 
 export function hasMatch (array, re) {
     return !!findElement(array, el => el.match(re));
 }
 
 export function findMatch (array, re) {
-    var element = findElement(array, el => el.match(re));
+    const element = findElement(array, el => el.match(re));
 
     return element ? element.match(re)[1] : '';
 }
 
 export function isMatchTrue (array, re) {
-    var match = findMatch(array, re);
+    const match = findMatch(array, re);
 
     return match && match !== '0' && match !== 'false';
 }
 
 export function splitEscaped (str, splitterChar) {
-    var result = [''];
+    const result = [''];
 
-    for (var i = 0; i < str.length; i++) {
+    for (let i = 0; i < str.length; i++) {
         if (str[i] === splitterChar) {
             result.push('');
             continue;
@@ -45,7 +44,7 @@ export function getPathFromParsedModes (modes, availableModes = []) {
     if (availableModes.some(mode => mode === modes[0]))
         return '';
 
-    var path = modes.shift();
+    let path = modes.shift();
 
     if (OS.win && modes.length && path.match(/^[A-Za-z]$/))
         path += ':' + modes.shift();
@@ -54,7 +53,7 @@ export function getPathFromParsedModes (modes, availableModes = []) {
 }
 
 export function getModes (modes, availableModes = []) {
-    var result = {};
+    const result = {};
 
     availableModes = availableModes.slice();
 
@@ -76,7 +75,7 @@ export function getModes (modes, availableModes = []) {
 }
 
 export function parseConfig (str) {
-    var configTerminatorMatch = str.match(CONFIG_TERMINATOR_RE);
+    const configTerminatorMatch = str.match(CONFIG_TERMINATOR_RE);
 
     if (!configTerminatorMatch)
         return { modesString: str, userArgs: '' };

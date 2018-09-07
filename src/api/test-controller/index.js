@@ -68,6 +68,7 @@ export default class TestController {
 
         extendedPromise.then = function () {
             markCallsiteAwaited();
+
             return originalThen.apply(this, arguments);
         };
 

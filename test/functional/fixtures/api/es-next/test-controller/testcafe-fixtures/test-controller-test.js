@@ -64,14 +64,18 @@ test('Missing await in helper', async t => {
     await missingAwaitFn(t);
 });
 
-test('Missing await before error', async t => {
-    t.click('#btn2');
-
-    throw new Error('Hey!');
-});
-
 test('GH-1285', async t => {
     await t
         .click('#btn2')
         .expect(await t.click('#btn3')).notEql('Hey ya!');
 });
+
+test('GH-2557', async t => {
+    let undefinedVariable;
+
+    await t
+        .click('body')
+        .click(undefinedVariable.someProperty)
+        .click('body');
+});
+

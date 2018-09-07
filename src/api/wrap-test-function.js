@@ -3,7 +3,6 @@ import testRunTracker from './test-run-tracker';
 import TestCafeErrorList from '../errors/error-list';
 import { MissingAwaitError } from '../errors/test-run';
 
-
 export default function wrapTestFunction (fn) {
     return async testRun => {
         let result       = null;
@@ -21,9 +20,11 @@ export default function wrapTestFunction (fn) {
             errList.addError(err);
         }
 
-        testRun.controller.callsitesWithoutAwait.forEach(callsite => {
-            errList.addError(new MissingAwaitError(callsite));
-        });
+        if (!errList.hasUncaughtErrorsInTestCode) {
+            testRun.controller.callsitesWithoutAwait.forEach(callsite => {
+                errList.addError(new MissingAwaitError(callsite));
+            });
+        }
 
         if (errList.hasErrors)
             throw errList;
