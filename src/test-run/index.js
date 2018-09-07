@@ -121,8 +121,6 @@ export default class TestRun extends EventEmitter {
         this.requestHooks = Array.from(this.test.requestHooks);
 
         this._initRequestHooks();
-
-        this.browserConnection.once('disconnected', err => this.disconnect(err));
     }
 
     get id () {
@@ -277,6 +275,10 @@ export default class TestRun extends EventEmitter {
 
         this.emit('start');
 
+        const onDisconnected = err => this._disconnect(err);
+
+        this.browserConnection.once('disconnected', onDisconnected);
+
         if (await this._runBeforeHook()) {
             await this._executeTestFn(PHASE.inTest, this.test.fn);
             await this._runAfterHook();
@@ -284,6 +286,8 @@ export default class TestRun extends EventEmitter {
 
         if (this.disconnected)
             return;
+
+        this.browserConnection.removeListener('disconnected', onDisconnected);
 
         if (this.errs.length && this.debugOnFail)
             await this._enqueueSetBreakpointCommand(null, this.debugReporterPluginHost.formatError(this.errs[0]));
@@ -381,7 +385,7 @@ export default class TestRun extends EventEmitter {
     }
 
     _rejectCurrentDriverTask (err) {
-        err.callsite             = err.callsite || this.driverTaskQueue[0].callsite;
+        err.callsite             = err.callsite || this.currentDriverTask.callsite;
         err.isRejectedDriverTask = true;
 
         this.currentDriverTask.reject(err);
@@ -677,7 +681,7 @@ export default class TestRun extends EventEmitter {
         return await getLocation();
     }
 
-    disconnect (err) {
+    _disconnect (err) {
         this.disconnected = true;
 
         this._rejectCurrentDriverTask(err);

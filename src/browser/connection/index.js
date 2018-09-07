@@ -27,6 +27,7 @@ export default class BrowserConnection extends EventEmitter {
         this.initScriptsQueue         = [];
         this.browserConnectionGateway = gateway;
         this.errorSupressed           = false;
+        this.testRunAborted           = false;
 
         this.browserInfo                           = browserInfo;
         this.browserInfo.userAgent                 = '';
@@ -121,7 +122,7 @@ export default class BrowserConnection extends EventEmitter {
 
             this.opened         = false;
             this.errorSupressed = false;
-            this.cancelTestRun  = true;
+            this.testRunAborted = true;
 
             this.emit('disconnected', err);
 
@@ -301,9 +302,9 @@ export default class BrowserConnection extends EventEmitter {
         }
 
         if (this.opened) {
-            const testRunUrl = await this._getTestRunUrl(isTestDone || this.cancelTestRun);
+            const testRunUrl = await this._getTestRunUrl(isTestDone || this.testRunAborted);
 
-            this.cancelTestRun = false;
+            this.testRunAborted = false;
 
             if (testRunUrl) {
                 this.idle = false;
