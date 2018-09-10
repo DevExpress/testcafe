@@ -1,12 +1,10 @@
-const RequestFilterRule = require('testcafe-hammerhead').RequestFilterRule;
-const testRunTracker    = require('../../lib/api/test-run-tracker');
-const exportableLib     = require('../../lib/api/exportable-lib');
-const RequestMock       = exportableLib.RequestMock;
-const RequestLogger     = exportableLib.RequestLogger;
-const RequestHook       = exportableLib.RequestHook;
-const Promise           = require('pinkie');
-const nanoid            = require('nanoid');
-const expect            = require('chai').expect;
+const { RequestFilterRule }                       = require('testcafe-hammerhead');
+const testRunTracker                              = require('../../lib/api/test-run-tracker');
+const exportableLib                               = require('../../lib/api/exportable-lib');
+const { RequestMock, RequestLogger, RequestHook } = exportableLib;
+const Promise                                     = require('pinkie');
+const nanoid                                      = require('nanoid');
+const { expect }                                  = require('chai');
 
 describe('RequestLogger', () => {
     const createProxyRequestEventMock = (testRunId, requestId) => {
@@ -222,9 +220,25 @@ describe('RequestMock', () => {
     });
 });
 
-it('RequestHook should handle any requests by default', () => {
-    const hook                          = new RequestHook();
-    const defaultHookRequestFilterRules = hook.requestFilterRules;
+describe('RequestHook', () => {
+    it('Should handle any requests by default', () => {
+        const hook                          = new RequestHook();
+        const defaultHookRequestFilterRules = hook.requestFilterRules;
 
-    expect(defaultHookRequestFilterRules).to.deep.equal([RequestFilterRule.ANY]);
+        expect(defaultHookRequestFilterRules).to.deep.equal([RequestFilterRule.ANY]);
+    });
+
+    it('Should not duplicate instantiated filter rules between test runs (GH-2650)', () => {
+        const url  = 'http://example.com';
+        const hook = new RequestHook(url);
+
+        hook._instantiateRequestFilterRules();
+
+        expect(hook._instantiatedRequestFilterRules.length).eql(1);
+
+        hook._instantiateRequestFilterRules();
+
+        expect(hook._instantiatedRequestFilterRules.length).eql(1);
+    });
 });
+
