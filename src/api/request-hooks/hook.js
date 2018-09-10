@@ -17,7 +17,7 @@ export default class RequestHook {
         return [RequestFilterRule.ANY];
     }
 
-    instantiateRequestFilterRules () {
+    _instantiateRequestFilterRules () {
         this._instantiatedRequestFilterRules = [];
 
         this.requestFilterRules.forEach(rule => {

@@ -232,11 +232,11 @@ describe('RequestHook', () => {
         const url  = 'http://example.com';
         const hook = new RequestHook(url);
 
-        hook.instantiateRequestFilterRules();
+        hook._instantiateRequestFilterRules();
 
         expect(hook._instantiatedRequestFilterRules.length).eql(1);
 
-        hook.instantiateRequestFilterRules();
+        hook._instantiateRequestFilterRules();
 
         expect(hook._instantiatedRequestFilterRules.length).eql(1);
     });
