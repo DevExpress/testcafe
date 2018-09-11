@@ -627,7 +627,7 @@ function testFunctional (fixturesDir, testingEnvironmentName, browserProviderNam
         .pipe(mocha({
             ui:       'bdd',
             reporter: 'spec',
-            timeout:  typeof v8debug === 'undefined' ? 30000 : Infinity // NOTE: disable timeouts in debug
+            timeout:  typeof v8debug === 'undefined' ? 180000 : Infinity // NOTE: disable timeouts in debug
         }));
 }
 

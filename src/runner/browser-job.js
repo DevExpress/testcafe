@@ -33,7 +33,7 @@ export default class BrowserJob extends EventEmitter {
     }
 
     _createTestRunController (test, index) {
-        var testRunController = new TestRunController(test, index + 1, this.proxy, this.screenshots, this.warningLog,
+        const testRunController = new TestRunController(test, index + 1, this.proxy, this.screenshots, this.warningLog,
             this.fixtureHookController, this.opts);
 
         testRunController.on('test-run-start', () => this.emit('test-run-start', testRunController.testRun));
@@ -100,7 +100,7 @@ export default class BrowserJob extends EventEmitter {
             if (this.testRunControllerQueue[0].blocked)
                 break;
 
-            var testRunController = this.testRunControllerQueue.shift();
+            const testRunController = this.testRunControllerQueue.shift();
 
             this._addToCompletionQueue(testRunController);
 
@@ -109,7 +109,7 @@ export default class BrowserJob extends EventEmitter {
                 this.emit('start');
             }
 
-            var testRunUrl = await testRunController.start(connection);
+            const testRunUrl = await testRunController.start(connection);
 
             if (testRunUrl)
                 return testRunUrl;

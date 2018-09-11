@@ -12,19 +12,22 @@ import { GeneralError } from '../../errors/runtime';
 import MESSAGE from '../../errors/runtime/message';
 
 const IDLE_PAGE_TEMPLATE = read('../../client/browser/idle-page/index.html.mustache');
+const connections        = {};
 
-var connections = {};
 
 export default class BrowserConnection extends EventEmitter {
     constructor (gateway, browserInfo, permanent) {
         super();
 
-        this.HEARTBEAT_TIMEOUT = 2 * 60 * 1000;
+        this.HEARTBEAT_TIMEOUT       = 2 * 60 * 1000;
+        this.BROWSER_RESTART_TIMEOUT = 60 * 1000;
 
         this.id                       = BrowserConnection._generateId();
         this.jobQueue                 = [];
         this.initScriptsQueue         = [];
         this.browserConnectionGateway = gateway;
+        this.errorSuppressed          = false;
+        this.testRunAborted           = false;
 
         this.browserInfo                           = browserInfo;
         this.browserInfo.userAgent                 = '';
@@ -63,33 +66,30 @@ export default class BrowserConnection extends EventEmitter {
 
         this.browserConnectionGateway.startServingConnection(this);
 
-        this._runBrowser();
+        process.nextTick(() => this._runBrowser());
     }
 
     static _generateId () {
         return nanoid(7);
     }
 
-    _runBrowser () {
-        // NOTE: Give caller time to assign event listeners
-        process.nextTick(async () => {
-            try {
-                await this.provider.openBrowser(this.id, this.url, this.browserInfo.browserName);
+    async _runBrowser () {
+        try {
+            await this.provider.openBrowser(this.id, this.url, this.browserInfo.browserName);
 
-                if (!this.ready)
-                    await promisifyEvent(this, 'ready');
+            if (!this.ready)
+                await promisifyEvent(this, 'ready');
 
-                this.opened = true;
-                this.emit('opened');
-            }
-            catch (err) {
-                this.emit('error', new GeneralError(
-                    MESSAGE.unableToOpenBrowser,
-                    this.browserInfo.providerName + ':' + this.browserInfo.browserName,
-                    err.stack
-                ));
-            }
-        });
+            this.opened = true;
+            this.emit('opened');
+        }
+        catch (err) {
+            this.emit('error', new GeneralError(
+                MESSAGE.unableToOpenBrowser,
+                this.browserInfo.providerName + ':' + this.browserInfo.browserName,
+                err.stack
+            ));
+        }
     }
 
     async _closeBrowser () {
@@ -112,14 +112,28 @@ export default class BrowserConnection extends EventEmitter {
         }
     }
 
+    _createBrowserDisconnectedError () {
+        return new GeneralError(MESSAGE.browserDisconnected, this.userAgent);
+    }
+
     _waitForHeartbeat () {
         this.heartbeatTimeout = setTimeout(() => {
-            this.emit('error', new GeneralError(MESSAGE.browserDisconnected, this.userAgent));
+            const err = this._createBrowserDisconnectedError();
+
+            this.opened          = false;
+            this.errorSuppressed = false;
+            this.testRunAborted  = true;
+
+            this.emit('disconnected', err);
+
+            if (!this.errorSuppressed)
+                this.emit('error', err);
+
         }, this.HEARTBEAT_TIMEOUT);
     }
 
-    async _getTestRunUrl (isTestDone) {
-        if (isTestDone || !this.pendingTestRunUrl)
+    async _getTestRunUrl (needPopNext) {
+        if (needPopNext || !this.pendingTestRunUrl)
             this.pendingTestRunUrl = await this._popNextTestRunUrl();
 
         return this.pendingTestRunUrl;
@@ -136,6 +150,43 @@ export default class BrowserConnection extends EventEmitter {
         return connections[id] || null;
     }
 
+    async restartBrowser () {
+        this.ready = false;
+
+        this._forceIdle();
+
+        let resolveTimeout   = null;
+        let isTimeoutExpired = false;
+        let timeout          = null;
+
+        const restartPromise = this._closeBrowser()
+            .then(() => this._runBrowser());
+
+        const timeoutPromise = new Promise(resolve => {
+            resolveTimeout = resolve;
+
+            timeout = setTimeout(() => {
+                isTimeoutExpired = true;
+
+                resolve();
+            }, this.BROWSER_RESTART_TIMEOUT);
+        });
+
+        Promise.race([ restartPromise, timeoutPromise ])
+            .then(() => {
+                clearTimeout(timeout);
+
+                if (isTimeoutExpired)
+                    this.emit('error', this._createBrowserDisconnectedError());
+                else
+                    resolveTimeout();
+            });
+    }
+
+    suppressError () {
+        this.errorSuppressed = true;
+    }
+
     addWarning (...args) {
         if (this.currentJob)
             this.currentJob.warningLog.addWarning(...args);
@@ -146,7 +197,7 @@ export default class BrowserConnection extends EventEmitter {
     }
 
     get userAgent () {
-        var userAgent = this.browserInfo.userAgent;
+        let userAgent = this.browserInfo.userAgent;
 
         if (this.browserInfo.userAgentProviderMetaInfo)
             userAgent += ` (${this.browserInfo.userAgentProviderMetaInfo})`;
@@ -228,13 +279,13 @@ export default class BrowserConnection extends EventEmitter {
     }
 
     getInitScript () {
-        var initScriptPromise = this.initScriptsQueue[0];
+        const initScriptPromise = this.initScriptsQueue[0];
 
         return { code: initScriptPromise ? initScriptPromise.code : null };
     }
 
     handleInitScriptResult (data) {
-        var initScriptPromise = this.initScriptsQueue.shift();
+        const initScriptPromise = this.initScriptsQueue.shift();
 
         if (initScriptPromise)
             initScriptPromise.resolve(JSON.parse(data));
@@ -251,7 +302,9 @@ export default class BrowserConnection extends EventEmitter {
         }
 
         if (this.opened) {
-            var testRunUrl = await this._getTestRunUrl(isTestDone);
+            const testRunUrl = await this._getTestRunUrl(isTestDone || this.testRunAborted);
+
+            this.testRunAborted = false;
 
             if (testRunUrl) {
                 this.idle = false;
