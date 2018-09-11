@@ -128,7 +128,7 @@ export default class TestRunController extends EventEmitter {
         this.disconnectionCount++;
 
         if (this.disconnectionCount < DISCONNECT_THRESHOLD) {
-            connection.supressError();
+            connection.suppressError();
 
             await connection.restartBrowser();
 

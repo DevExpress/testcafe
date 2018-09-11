@@ -26,7 +26,7 @@ export default class BrowserConnection extends EventEmitter {
         this.jobQueue                 = [];
         this.initScriptsQueue         = [];
         this.browserConnectionGateway = gateway;
-        this.errorSupressed           = false;
+        this.errorSuppressed          = false;
         this.testRunAborted           = false;
 
         this.browserInfo                           = browserInfo;
@@ -120,13 +120,13 @@ export default class BrowserConnection extends EventEmitter {
         this.heartbeatTimeout = setTimeout(() => {
             const err = this._createBrowserDisconnectedError();
 
-            this.opened         = false;
-            this.errorSupressed = false;
-            this.testRunAborted = true;
+            this.opened          = false;
+            this.errorSuppressed = false;
+            this.testRunAborted  = true;
 
             this.emit('disconnected', err);
 
-            if (!this.errorSupressed)
+            if (!this.errorSuppressed)
                 this.emit('error', err);
 
         }, this.HEARTBEAT_TIMEOUT);
@@ -155,9 +155,9 @@ export default class BrowserConnection extends EventEmitter {
 
         this._forceIdle();
 
-        let resolveTimeout = null;
-        let onTimeout      = false;
-        let timeout        = null;
+        let resolveTimeout   = null;
+        let isTimeoutExpired = false;
+        let timeout          = null;
 
         const restartPromise = this._closeBrowser()
             .then(() => this._runBrowser());
@@ -166,7 +166,7 @@ export default class BrowserConnection extends EventEmitter {
             resolveTimeout = resolve;
 
             timeout = setTimeout(() => {
-                onTimeout = true;
+                isTimeoutExpired = true;
 
                 resolve();
             }, this.BROWSER_RESTART_TIMEOUT);
@@ -176,15 +176,15 @@ export default class BrowserConnection extends EventEmitter {
             .then(() => {
                 clearTimeout(timeout);
 
-                if (onTimeout)
+                if (isTimeoutExpired)
                     this.emit('error', this._createBrowserDisconnectedError());
                 else
                     resolveTimeout();
             });
     }
 
-    supressError () {
-        this.errorSupressed = true;
+    suppressError () {
+        this.errorSuppressed = true;
     }
 
     addWarning (...args) {
