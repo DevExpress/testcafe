@@ -6,8 +6,8 @@ function getPointsDistance (start, end) {
 }
 
 function findLineAndRectSideIntersection (startLinePoint, endLinePoint, rectSide) {
-    var intersectionX            = null;
-    var haveIntersectionInBounds = null;
+    let intersectionX            = null;
+    let haveIntersectionInBounds = null;
 
     if (rectSide.isHorizontal) {
         intersectionX            = positionUtils.getLineXByYCoord(startLinePoint, endLinePoint, rectSide.y1);
@@ -16,7 +16,7 @@ function findLineAndRectSideIntersection (startLinePoint, endLinePoint, rectSide
         return haveIntersectionInBounds ? { x: intersectionX, y: rectSide.y1 } : null;
     }
 
-    var intersectionY = positionUtils.getLineYByXCoord(startLinePoint, endLinePoint, rectSide.x1);
+    const intersectionY = positionUtils.getLineYByXCoord(startLinePoint, endLinePoint, rectSide.x1);
 
     haveIntersectionInBounds = intersectionY && intersectionY >= rectSide.y1 && intersectionY <= rectSide.y2;
 
@@ -24,17 +24,17 @@ function findLineAndRectSideIntersection (startLinePoint, endLinePoint, rectSide
 }
 
 export default function (startLinePoint, endLinePoint, rect) {
-    var res          = [];
-    var intersection = null;
+    const res        = [];
+    let intersection = null;
 
-    var rectLines = [
+    const rectLines = [
         { x1: rect.left, y1: rect.top, x2: rect.left, y2: rect.bottom, isHorizontal: false }, // left-side
         { x1: rect.right, y1: rect.top, x2: rect.right, y2: rect.bottom, isHorizontal: false }, // right-side
         { x1: rect.left, y1: rect.top, x2: rect.right, y2: rect.top, isHorizontal: true }, // top-side
         { x1: rect.left, y1: rect.bottom, x2: rect.right, y2: rect.bottom, isHorizontal: true } // bottom-side
     ];
 
-    for (var i = 0; i < rectLines.length; i++) {
+    for (let i = 0; i < rectLines.length; i++) {
         intersection = findLineAndRectSideIntersection(startLinePoint, endLinePoint, rectLines[i]);
 
         if (intersection)

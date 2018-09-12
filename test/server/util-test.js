@@ -7,6 +7,7 @@ const escapeUserAgent                  = require('../../lib/utils/escape-user-ag
 const parseFileList                    = require('../../lib/utils/parse-file-list');
 const TempDirectory                    = require('../../lib/utils/temp-directory');
 const { replaceLeadingSpacesWithNbsp } = require('../../lib/utils/string');
+const getCommonPath                    = require('../../lib/utils/get-common-path');
 
 describe('Utils', () => {
     it('Correct File Path', () => {
@@ -127,5 +128,16 @@ describe('Utils', () => {
         expect(replaceLeadingSpacesWithNbsp('  test')).eql('&nbsp;&nbsp;test');
         expect(replaceLeadingSpacesWithNbsp(' test1 test2 ')).eql('&nbsp;test1 test2 ');
         expect(replaceLeadingSpacesWithNbsp('  test1\n test2 \r\ntest3 ')).eql('&nbsp;&nbsp;test1\n&nbsp;test2 \r\ntest3 ');
+    });
+
+    it('Get common path', () => {
+        const pathFragemts = [ 'home', 'user1', 'tmp' ];
+        const path1        = path.join(...pathFragemts);
+        const path2        = path.join(pathFragemts[0], pathFragemts[1]);
+        const path3        = path.join(pathFragemts[0], pathFragemts[2]);
+
+        expect(getCommonPath([path1])).eql(path1);
+        expect(getCommonPath([path1, path2])).eql(path2);
+        expect(getCommonPath([path1, path2, path3])).eql(pathFragemts[0]);
     });
 });

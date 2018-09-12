@@ -5,16 +5,13 @@ import { focusAndSetSelection, focusByRelatedElement } from '../utils/utils';
 import cursor from '../cursor';
 import nextTick from '../utils/next-tick';
 
-var Promise = hammerhead.Promise;
+const Promise = hammerhead.Promise;
 
-var extend         = hammerhead.utils.extend;
-var browserUtils   = hammerhead.utils.browser;
-var eventSimulator = hammerhead.eventSandbox.eventSimulator;
+const extend         = hammerhead.utils.extend;
+const browserUtils   = hammerhead.utils.browser;
+const eventSimulator = hammerhead.eventSandbox.eventSimulator;
 
-var domUtils   = testCafeCore.domUtils;
-var eventUtils = testCafeCore.eventUtils;
-var delay      = testCafeCore.delay;
-
+const { domUtils, eventUtils, delay } = testCafeCore.domUtils;
 
 export default class RClickAutomation extends VisibleElementAutomation {
     constructor (element, clickOptions) {
@@ -46,10 +43,10 @@ export default class RClickAutomation extends VisibleElementAutomation {
         // NOTE: If a target element is a contentEditable element, we need to call focusAndSetSelection directly for
         // this element. Otherwise, if the element obtained by elementFromPoint is a child of the contentEditable
         // element, a selection position may be calculated incorrectly (by using the caretPos option).
-        var elementForFocus = domUtils.isContentEditableElement(this.element) ? this.element : eventArgs.element;
+        const elementForFocus = domUtils.isContentEditableElement(this.element) ? this.element : eventArgs.element;
 
         // NOTE: IE doesn't perform focus if active element has been changed while executing mousedown
-        var simulateFocus = !browserUtils.isIE || this.eventState.activeElementBeforeMouseDown === domUtils.getActiveElement();
+        const simulateFocus = !browserUtils.isIE || this.eventState.activeElementBeforeMouseDown === domUtils.getActiveElement();
 
         return focusAndSetSelection(elementForFocus, simulateFocus, this.caretPos)
             .then(() => nextTick());
@@ -74,7 +71,7 @@ export default class RClickAutomation extends VisibleElementAutomation {
     }
 
     run (useStrictElementCheck) {
-        var eventArgs = null;
+        let eventArgs = null;
 
         return this
             ._ensureElement(useStrictElementCheck)

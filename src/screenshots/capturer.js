@@ -59,21 +59,6 @@ export default class Capturer {
         return joinPath(this.baseScreenshotsPath, path);
     }
 
-    _updateScreenshotPathForTestEntry (customPath) {
-        // NOTE: if test contains takeScreenshot action with custom path
-        // we should specify the most common screenshot folder in report
-        let screenshotPathForTestEntry = this.baseScreenshotsPath;
-
-        if (!customPath) {
-            const pathForReport = this.pathPattern.getPathForReport();
-
-            screenshotPathForTestEntry = this._joinWithBaseScreenshotPath(pathForReport);
-        }
-
-
-        this.testEntry.path = screenshotPathForTestEntry;
-    }
-
     _incrementFileIndexes (forError) {
         if (forError)
             this.pathPattern.data.errorFileIndex++;
@@ -125,8 +110,6 @@ export default class Capturer {
 
             await generateThumbnail(screenshotPath, thumbnailPath);
         });
-
-        this._updateScreenshotPathForTestEntry(customPath);
 
         const screenshot = {
             screenshotPath,

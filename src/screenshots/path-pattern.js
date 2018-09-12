@@ -106,12 +106,6 @@ export default class PathPattern {
         return correctFilePath(path, SCRENSHOT_EXTENTION);
     }
 
-    getPathForReport () {
-        const path = PathPattern._buildPath(DEFAULT_PATH_PATTERN_FOR_REPORT, this.placeholderToDataMap);
-
-        return correctFilePath(path);
-    }
-
     // For testing purposes
     static get PLACEHOLDERS () {
         return PLACEHOLDERS;

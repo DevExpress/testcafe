@@ -2,6 +2,7 @@ import { find } from 'lodash';
 import moment from 'moment';
 import Capturer from './capturer';
 import PathPattern from './path-pattern';
+import getCommonPath from '../utils/get-common-path';
 
 export default class Screenshots {
     constructor (path, pattern) {
@@ -15,7 +16,6 @@ export default class Screenshots {
     _addTestEntry (test) {
         const testEntry = {
             test:        test,
-            path:        this.screenshotsPath || '',
             screenshots: []
         };
 
@@ -46,7 +46,10 @@ export default class Screenshots {
     }
 
     getPathFor (test) {
-        return this._getTestEntry(test).path;
+        const testEntry       = this._getTestEntry(test);
+        const screenshotPaths = testEntry.screenshots.map(screenshot => screenshot.screenshotPath);
+
+        return getCommonPath(screenshotPaths);
     }
 
     createCapturerFor (test, testIndex, quarantine, connection, warningLog) {
