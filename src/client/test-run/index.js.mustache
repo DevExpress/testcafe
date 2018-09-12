@@ -3,6 +3,9 @@
         return;
 
     var origin = location.origin;
+    // For browsers like IE11 which don't provide location.origin
+    if (!origin)
+        origin = location.protocol + "//" + location.hostname + (location.port ? ':' + location.port: '');
 
     var testRunId            = {{{testRunId}}};
     var browserId            = {{{browserId}}};
