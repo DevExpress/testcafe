@@ -137,6 +137,7 @@ describe('Utils', () => {
         const path3        = path.join(pathFragemts[0], pathFragemts[2]);
 
         expect(getCommonPath([path1])).eql(path1);
+        expect(getCommonPath([path1, path1])).eql(path1);
         expect(getCommonPath([path1, path2])).eql(path2);
         expect(getCommonPath([path1, path2, path3])).eql(pathFragemts[0]);
     });

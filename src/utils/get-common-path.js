@@ -9,15 +9,17 @@ export default function (paths) {
 
     const pathArrs               = paths.map(item => item.split(path.sep));
     const isCommonPathFragment   = (pathFragment, idx) => pathArrs.every(pathArray => pathArray[idx] === pathFragment);
+    const firstPathArr           = pathArrs[0];
     let commonPathFramgemtnIndex = 0;
 
-    while (isCommonPathFragment(pathArrs[0][commonPathFramgemtnIndex], commonPathFramgemtnIndex))
+    while (commonPathFramgemtnIndex < firstPathArr.length &&
+           isCommonPathFragment(firstPathArr[commonPathFramgemtnIndex], commonPathFramgemtnIndex))
         commonPathFramgemtnIndex++;
 
     if (!commonPathFramgemtnIndex)
         return null;
 
-    const commonPathFragments = pathArrs[0].slice(0, commonPathFramgemtnIndex);
+    const commonPathFragments = firstPathArr.slice(0, commonPathFramgemtnIndex);
 
     return path.join(...commonPathFragments);
 }

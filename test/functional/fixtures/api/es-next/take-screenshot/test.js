@@ -60,7 +60,7 @@ describe('[API] t.takeScreenshot()', function () {
             return runTests('./testcafe-fixtures/take-screenshot.js', 'Take a screenshot with a custom path (OS separator)',
                 { setScreenshotPath: true })
                 .then(function () {
-                    expect(testReport.screenshotPath).eql(SCREENSHOTS_PATH);
+                    expect(testReport.screenshotPath).eql(path.join(SCREENSHOTS_PATH, 'custom'));
 
                     const screenshotsCheckingOptions = { forError: false, screenshotsCount: 2, customPath: 'custom' };
 
