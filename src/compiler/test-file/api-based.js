@@ -15,7 +15,7 @@ const EXPORTABLE_LIB_PATH = join(__dirname, '../../api/exportable-lib');
 const FIXTURE_RE = /(^|;|\s+)fixture\s*(\.|\(|`)/;
 const TEST_RE    = /(^|;|\s+)test\s*(\.|\()/;
 
-var Module = module.constructor;
+const Module = module.constructor;
 
 export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
     constructor () {
@@ -30,7 +30,7 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
     }
 
     static _getNodeModulesLookupPath (filename) {
-        var dir = dirname(filename);
+        const dir = dirname(filename);
 
         return Module._nodeModulePaths(dir);
     }
@@ -42,7 +42,7 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
     }
 
     static _execAsModule (code, filename) {
-        var mod = new Module(filename, module.parent);
+        const mod = new Module(filename, module.parent);
 
         mod.filename = filename;
         mod.paths    = APIBasedTestFileCompilerBase._getNodeModulesLookupPath(filename);
@@ -59,12 +59,12 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
     }
 
     _setupRequireHook (testFile) {
-        var requireCompilers = this._getRequireCompilers();
+        const requireCompilers = this._getRequireCompilers();
 
         this.origRequireExtensions = Object.create(null);
 
         Object.keys(requireCompilers).forEach(ext => {
-            var origExt = require.extensions[ext];
+            const origExt = require.extensions[ext];
 
             this.origRequireExtensions[ext] = origExt;
 
@@ -76,8 +76,8 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
                     origExt(mod, filename);
 
                 else {
-                    var code         = readFileSync(filename).toString();
-                    var compiledCode = requireCompilers[ext](stripBom(code), filename);
+                    const code         = readFileSync(filename).toString();
+                    const compiledCode = requireCompilers[ext](stripBom(code), filename);
 
                     mod.paths = APIBasedTestFileCompilerBase._getNodeModulesLookupPath(filename);
 
@@ -96,7 +96,7 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
     }
 
     _compileCodeForTestFile (code, filename) {
-        var compiledCode = null;
+        let compiledCode = null;
 
         stackCleaningHook.enabled = true;
 
@@ -131,8 +131,8 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
     }
 
     compile (code, filename) {
-        var compiledCode = this._compileCodeForTestFile(code, filename);
-        var testFile     = new TestFile(filename);
+        const compiledCode = this._compileCodeForTestFile(code, filename);
+        const testFile     = new TestFile(filename);
 
         this._addGlobalAPI(testFile);
 

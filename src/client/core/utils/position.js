@@ -4,17 +4,17 @@ import * as styleUtils from './style';
 import * as domUtils from './dom';
 
 
-export var getElementRectangle  = hammerhead.utils.position.getElementRectangle;
-export var getOffsetPosition    = hammerhead.utils.position.getOffsetPosition;
-export var offsetToClientCoords = hammerhead.utils.position.offsetToClientCoords;
+export const getElementRectangle  = hammerhead.utils.position.getElementRectangle;
+export const getOffsetPosition    = hammerhead.utils.position.getOffsetPosition;
+export const offsetToClientCoords = hammerhead.utils.position.offsetToClientCoords;
 
 export function getIframeClientCoordinates (iframe) {
-    var { left, top }       = getOffsetPosition(iframe);
-    var clientPosition      = offsetToClientCoords({ x: left, y: top });
-    var iframeBorders       = styleUtils.getBordersWidth(iframe);
-    var iframePadding       = styleUtils.getElementPadding(iframe);
-    var iframeRectangleLeft = clientPosition.x + iframeBorders.left + iframePadding.left;
-    var iframeRectangleTop  = clientPosition.y + iframeBorders.top + iframePadding.top;
+    const { left, top }       = getOffsetPosition(iframe);
+    const clientPosition      = offsetToClientCoords({ x: left, y: top });
+    const iframeBorders       = styleUtils.getBordersWidth(iframe);
+    const iframePadding       = styleUtils.getElementPadding(iframe);
+    const iframeRectangleLeft = clientPosition.x + iframeBorders.left + iframePadding.left;
+    const iframeRectangleTop  = clientPosition.y + iframeBorders.top + iframePadding.top;
 
     return {
         left:   iframeRectangleLeft,
@@ -28,7 +28,7 @@ export function isElementVisible (el) {
     if (domUtils.isTextNode(el))
         return !styleUtils.isNotVisibleNode(el);
 
-    var elementRectangle = getElementRectangle(el);
+    const elementRectangle = getElementRectangle(el);
 
     if (!domUtils.isContentEditableElement(el)) {
         if (elementRectangle.width === 0 || elementRectangle.height === 0)
@@ -36,18 +36,18 @@ export function isElementVisible (el) {
     }
 
     if (domUtils.isMapElement(el)) {
-        var mapContainer = domUtils.getMapContainer(domUtils.closest(el, 'map'));
+        const mapContainer = domUtils.getMapContainer(domUtils.closest(el, 'map'));
 
         return mapContainer ? isElementVisible(mapContainer) : false;
     }
 
     if (styleUtils.isSelectVisibleChild(el)) {
-        var select              = domUtils.getSelectParent(el);
-        var childRealIndex      = domUtils.getChildVisibleIndex(select, el);
-        var realSelectSizeValue = styleUtils.getSelectElementSize(select);
-        var topVisibleIndex     = Math.max(styleUtils.getScrollTop(select) / styleUtils.getOptionHeight(select), 0);
-        var bottomVisibleIndex  = topVisibleIndex + realSelectSizeValue - 1;
-        var optionVisibleIndex  = Math.max(childRealIndex - topVisibleIndex, 0);
+        const select              = domUtils.getSelectParent(el);
+        const childRealIndex      = domUtils.getChildVisibleIndex(select, el);
+        const realSelectSizeValue = styleUtils.getSelectElementSize(select);
+        const topVisibleIndex     = Math.max(styleUtils.getScrollTop(select) / styleUtils.getOptionHeight(select), 0);
+        const bottomVisibleIndex  = topVisibleIndex + realSelectSizeValue - 1;
+        const optionVisibleIndex  = Math.max(childRealIndex - topVisibleIndex, 0);
 
         return optionVisibleIndex >= topVisibleIndex && optionVisibleIndex <= bottomVisibleIndex;
     }
@@ -60,7 +60,7 @@ export function isElementVisible (el) {
 
 export function getClientDimensions (target) {
     if (!domUtils.isDomElement(target)) {
-        var clientPoint = offsetToClientCoords(target);
+        const clientPoint = offsetToClientCoords(target);
 
         return {
             width:  0,
@@ -84,17 +84,17 @@ export function getClientDimensions (target) {
         };
     }
 
-    var isHtmlElement       = /html/i.test(target.tagName);
-    var body                = isHtmlElement ? target.getElementsByTagName('body')[0] : null;
-    var elementBorders      = styleUtils.getBordersWidth(target);
-    var elementRect         = target.getBoundingClientRect();
-    var elementScroll       = styleUtils.getElementScroll(target);
-    var isElementInIframe   = domUtils.isElementInIframe(target);
-    var elementLeftPosition = isHtmlElement ? 0 : elementRect.left;
-    var elementTopPosition  = isHtmlElement ? 0 : elementRect.top;
-    var elementHeight       = isHtmlElement ? target.clientHeight : elementRect.height;
-    var elementWidth        = isHtmlElement ? target.clientWidth : elementRect.width;
-    var isCompatMode        = target.ownerDocument.compatMode === 'BackCompat';
+    const isHtmlElement       = /html/i.test(target.tagName);
+    const body                = isHtmlElement ? target.getElementsByTagName('body')[0] : null;
+    const elementBorders      = styleUtils.getBordersWidth(target);
+    const elementRect         = target.getBoundingClientRect();
+    const elementScroll       = styleUtils.getElementScroll(target);
+    const isElementInIframe   = domUtils.isElementInIframe(target);
+    let elementLeftPosition = isHtmlElement ? 0 : elementRect.left;
+    let elementTopPosition  = isHtmlElement ? 0 : elementRect.top;
+    let elementHeight       = isHtmlElement ? target.clientHeight : elementRect.height;
+    let elementWidth        = isHtmlElement ? target.clientWidth : elementRect.width;
+    const isCompatMode        = target.ownerDocument.compatMode === 'BackCompat';
 
     if (isHtmlElement && body && (typeof isIFrameWithoutSrc === 'boolean' && isIFrameWithoutSrc || isCompatMode)) {
         elementHeight = body.clientHeight;
@@ -102,15 +102,15 @@ export function getClientDimensions (target) {
     }
 
     if (isElementInIframe) {
-        var iframeElement = domUtils.getIframeByElement(target);
+        const iframeElement = domUtils.getIframeByElement(target);
 
         if (iframeElement) {
-            var iframeOffset  = getOffsetPosition(iframeElement);
-            var clientOffset  = offsetToClientCoords({
+            const iframeOffset  = getOffsetPosition(iframeElement);
+            const clientOffset  = offsetToClientCoords({
                 x: iframeOffset.left,
                 y: iframeOffset.top
             });
-            var iframeBorders = styleUtils.getBordersWidth(iframeElement);
+            const iframeBorders = styleUtils.getBordersWidth(iframeElement);
 
             elementLeftPosition += clientOffset.x + iframeBorders.left;
             elementTopPosition += clientOffset.y + iframeBorders.top;
@@ -152,29 +152,29 @@ export function getClientDimensions (target) {
 }
 
 export function containsOffset (el, offsetX, offsetY) {
-    var dimensions = getClientDimensions(el);
-    var width      = Math.max(el.scrollWidth, dimensions.width);
-    var height     = Math.max(el.scrollHeight, dimensions.height);
-    var maxX       = dimensions.scrollbar.right + dimensions.border.left + dimensions.border.right + width;
-    var maxY       = dimensions.scrollbar.bottom + dimensions.border.top + dimensions.border.bottom + height;
+    const dimensions = getClientDimensions(el);
+    const width      = Math.max(el.scrollWidth, dimensions.width);
+    const height     = Math.max(el.scrollHeight, dimensions.height);
+    const maxX       = dimensions.scrollbar.right + dimensions.border.left + dimensions.border.right + width;
+    const maxY       = dimensions.scrollbar.bottom + dimensions.border.top + dimensions.border.bottom + height;
 
     return (typeof offsetX === 'undefined' || offsetX >= 0 && maxX >= offsetX) &&
            (typeof offsetY === 'undefined' || offsetY >= 0 && maxY >= offsetY);
 }
 
 export function getEventAbsoluteCoordinates (ev) {
-    var el              = ev.target || ev.srcElement;
-    var pageCoordinates = getEventPageCoordinates(ev);
-    var curDocument     = domUtils.findDocument(el);
-    var xOffset         = 0;
-    var yOffset         = 0;
+    const el              = ev.target || ev.srcElement;
+    const pageCoordinates = getEventPageCoordinates(ev);
+    const curDocument     = domUtils.findDocument(el);
+    let xOffset         = 0;
+    let yOffset         = 0;
 
     if (domUtils.isElementInIframe(curDocument.documentElement)) {
-        var currentIframe = domUtils.getIframeByElement(curDocument);
+        const currentIframe = domUtils.getIframeByElement(curDocument);
 
         if (currentIframe) {
-            var iframeOffset  = getOffsetPosition(currentIframe);
-            var iframeBorders = styleUtils.getBordersWidth(currentIframe);
+            const iframeOffset  = getOffsetPosition(currentIframe);
+            const iframeBorders = styleUtils.getBordersWidth(currentIframe);
 
             xOffset = iframeOffset.left + iframeBorders.left;
             yOffset = iframeOffset.top + iframeBorders.top;
@@ -188,16 +188,16 @@ export function getEventAbsoluteCoordinates (ev) {
 }
 
 export function getEventPageCoordinates (ev) {
-    var curCoordObject = /^touch/.test(ev.type) && ev.targetTouches ? ev.targetTouches[0] || ev.changedTouches[0] : ev;
+    const curCoordObject = /^touch/.test(ev.type) && ev.targetTouches ? ev.targetTouches[0] || ev.changedTouches[0] : ev;
 
-    var bothPageCoordinatesAreZero      = curCoordObject.pageX === 0 && curCoordObject.pageY === 0;
-    var notBothClientCoordinatesAreZero = curCoordObject.clientX !== 0 || curCoordObject.clientY !== 0;
+    const bothPageCoordinatesAreZero      = curCoordObject.pageX === 0 && curCoordObject.pageY === 0;
+    const notBothClientCoordinatesAreZero = curCoordObject.clientX !== 0 || curCoordObject.clientY !== 0;
 
     if ((curCoordObject.pageX === null || bothPageCoordinatesAreZero && notBothClientCoordinatesAreZero) &&
         curCoordObject.clientX !== null) {
-        var currentDocument = domUtils.findDocument(ev.target || ev.srcElement);
-        var html            = currentDocument.documentElement;
-        var body            = currentDocument.body;
+        const currentDocument = domUtils.findDocument(ev.target || ev.srcElement);
+        const html            = currentDocument.documentElement;
+        const body            = currentDocument.body;
 
         return {
             x: Math.round(curCoordObject.clientX + (html && html.scrollLeft || body && body.scrollLeft || 0) -
@@ -213,8 +213,8 @@ export function getEventPageCoordinates (ev) {
 }
 
 export function getElementFromPoint (x, y) {
-    var el   = null;
-    var func = document.getElementFromPoint || document.elementFromPoint;
+    let el   = null;
+    const func = document.getElementFromPoint || document.elementFromPoint;
 
     try {
         // Permission denied to access property 'getElementFromPoint' error in iframe
@@ -229,7 +229,7 @@ export function getElementFromPoint (x, y) {
         el = func.call(document, x - 1, y - 1);
 
     while (el && el.shadowRoot && el.shadowRoot.elementFromPoint) {
-        var shadowEl = el.shadowRoot.elementFromPoint(x, y);
+        const shadowEl = el.shadowRoot.elementFromPoint(x, y);
 
         if (!shadowEl)
             break;
@@ -241,10 +241,10 @@ export function getElementFromPoint (x, y) {
 }
 
 export function getIframePointRelativeToParentFrame (pos, iframeWin) {
-    var iframe        = domUtils.findIframeByWindow(iframeWin);
-    var iframeOffset  = getOffsetPosition(iframe);
-    var iframeBorders = styleUtils.getBordersWidth(iframe);
-    var iframePadding = styleUtils.getElementPadding(iframe);
+    const iframe        = domUtils.findIframeByWindow(iframeWin);
+    const iframeOffset  = getOffsetPosition(iframe);
+    const iframeBorders = styleUtils.getBordersWidth(iframe);
+    const iframePadding = styleUtils.getElementPadding(iframe);
 
     return offsetToClientCoords({
         x: pos.x + iframeOffset.left + iframeBorders.left + iframePadding.left,
@@ -253,7 +253,7 @@ export function getIframePointRelativeToParentFrame (pos, iframeWin) {
 }
 
 export function clientToOffsetCoord (coords, currentDocument) {
-    var doc = currentDocument || document;
+    const doc = currentDocument || document;
 
     return {
         x: coords.x + styleUtils.getScrollLeft(doc),
@@ -262,7 +262,7 @@ export function clientToOffsetCoord (coords, currentDocument) {
 }
 
 export function findCenter (el) {
-    var rectangle = getElementRectangle(el);
+    const rectangle = getElementRectangle(el);
 
     return {
         x: Math.round(rectangle.left + rectangle.width / 2),
@@ -271,9 +271,9 @@ export function findCenter (el) {
 }
 
 export function getClientPosition (el) {
-    var { left, top } = getOffsetPosition(el);
+    const { left, top } = getOffsetPosition(el);
 
-    var clientCoords = offsetToClientCoords({ x: left, y: top });
+    const clientCoords = offsetToClientCoords({ x: left, y: top });
 
     clientCoords.x = Math.round(clientCoords.x);
     clientCoords.y = Math.round(clientCoords.y);
@@ -282,8 +282,8 @@ export function getClientPosition (el) {
 }
 
 export function getElementClientRectangle (el) {
-    var rect      = getElementRectangle(el);
-    var clientPos = offsetToClientCoords({
+    const rect      = getElementRectangle(el);
+    const clientPos = offsetToClientCoords({
         x: rect.left,
         y: rect.top
     });
@@ -318,9 +318,9 @@ export function getLineYByXCoord (startLinePoint, endLinePoint, x) {
     if (endLinePoint.x - startLinePoint.x === 0)
         return null;
 
-    var equationSlope = (endLinePoint.y - startLinePoint.y) / (endLinePoint.x - startLinePoint.x);
+    const equationSlope = (endLinePoint.y - startLinePoint.y) / (endLinePoint.x - startLinePoint.x);
 
-    var equationYIntercept = startLinePoint.x * (startLinePoint.y - endLinePoint.y) /
+    const equationYIntercept = startLinePoint.x * (startLinePoint.y - endLinePoint.y) /
                              (endLinePoint.x - startLinePoint.x) + startLinePoint.y;
 
     return Math.round(equationSlope * x + equationYIntercept);
@@ -330,9 +330,9 @@ export function getLineXByYCoord (startLinePoint, endLinePoint, y) {
     if (endLinePoint.y - startLinePoint.y === 0)
         return null;
 
-    var equationSlope = (endLinePoint.x - startLinePoint.x) / (endLinePoint.y - startLinePoint.y);
+    const equationSlope = (endLinePoint.x - startLinePoint.x) / (endLinePoint.y - startLinePoint.y);
 
-    var equationXIntercept = startLinePoint.y * (startLinePoint.x - endLinePoint.x) /
+    const equationXIntercept = startLinePoint.y * (startLinePoint.x - endLinePoint.x) /
                              (endLinePoint.y - startLinePoint.y) + startLinePoint.x;
 
     return Math.round(equationSlope * y + equationXIntercept);

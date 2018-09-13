@@ -16,22 +16,22 @@ import moveEventSequence from './event-sequence';
 import dragAndDropMoveEventSequence from './event-sequence/drag-and-drop-move';
 import dragAndDropFirstMoveEventSequence from './event-sequence/drag-and-drop-first-move';
 
-var Promise          = hammerhead.Promise;
-var nativeMethods    = hammerhead.nativeMethods;
-var featureDetection = hammerhead.utils.featureDetection;
-var htmlUtils        = hammerhead.utils.html;
-var urlUtils         = hammerhead.utils.url;
-var eventSimulator   = hammerhead.eventSandbox.eventSimulator;
-var messageSandbox   = hammerhead.eventSandbox.message;
-var DataTransfer     = hammerhead.eventSandbox.DataTransfer;
-var DragDataStore    = hammerhead.eventSandbox.DragDataStore;
+const Promise          = hammerhead.Promise;
+const nativeMethods    = hammerhead.nativeMethods;
+const featureDetection = hammerhead.utils.featureDetection;
+const htmlUtils        = hammerhead.utils.html;
+const urlUtils         = hammerhead.utils.url;
+const eventSimulator   = hammerhead.eventSandbox.eventSimulator;
+const messageSandbox   = hammerhead.eventSandbox.message;
+const DataTransfer     = hammerhead.eventSandbox.DataTransfer;
+const DragDataStore    = hammerhead.eventSandbox.DragDataStore;
 
-var positionUtils      = testCafeCore.positionUtils;
-var domUtils           = testCafeCore.domUtils;
-var styleUtils         = testCafeCore.styleUtils;
-var eventUtils         = testCafeCore.eventUtils;
-var promiseUtils       = testCafeCore.promiseUtils;
-var sendRequestToFrame = testCafeCore.sendRequestToFrame;
+const positionUtils      = testCafeCore.positionUtils;
+const domUtils           = testCafeCore.domUtils;
+const styleUtils         = testCafeCore.styleUtils;
+const eventUtils         = testCafeCore.eventUtils;
+const promiseUtils       = testCafeCore.promiseUtils;
+const sendRequestToFrame = testCafeCore.sendRequestToFrame;
 
 
 const MOVE_REQUEST_CMD  = 'automation|move|request';
@@ -52,7 +52,7 @@ messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
 
 // Utils
 function findDraggableElement (element) {
-    var parentNode = element;
+    let parentNode = element;
 
     while (parentNode) {
         if (parentNode.draggable)
@@ -65,7 +65,7 @@ function findDraggableElement (element) {
 }
 
 // Static
-var lastHoveredElement = null;
+let lastHoveredElement = null;
 
 
 export default class MoveAutomation {
@@ -80,7 +80,7 @@ export default class MoveAutomation {
 
         this.automationSettings = new AutomationSettings(moveOptions.speed);
 
-        var target = MoveAutomation.getTarget(element, moveOptions.offsetX, moveOptions.offsetY);
+        const target = MoveAutomation.getTarget(element, moveOptions.offsetX, moveOptions.offsetY);
 
         this.element     = target.element;
         this.offsetX     = target.offsetX;
@@ -110,8 +110,8 @@ export default class MoveAutomation {
     static getTarget (el, offsetX, offsetY) {
         // NOTE: if the target point (considering offsets) is out of
         // the element change the target element to the document element
-        var relateToDocument = !positionUtils.containsOffset(el, offsetX, offsetY);
-        var relatedPoint     = relateToDocument ? getAutomationPoint(el, offsetX, offsetY) : { x: offsetX, y: offsetY };
+        const relateToDocument = !positionUtils.containsOffset(el, offsetX, offsetY);
+        const relatedPoint     = relateToDocument ? getAutomationPoint(el, offsetX, offsetY) : { x: offsetX, y: offsetY };
 
         return {
             element: relateToDocument ? document.documentElement : el,
@@ -121,28 +121,28 @@ export default class MoveAutomation {
     }
 
     static onMoveToIframeRequest (e) {
-        var iframePoint = {
+        const iframePoint = {
             x: e.message.endX,
             y: e.message.endY
         };
 
-        var iframeWin                   = e.source;
-        var iframe                      = domUtils.findIframeByWindow(iframeWin);
-        var iframeBorders               = styleUtils.getBordersWidth(iframe);
-        var iframePadding               = styleUtils.getElementPadding(iframe);
-        var iframeRectangle             = positionUtils.getIframeClientCoordinates(iframe);
-        var iframePointRelativeToParent = positionUtils.getIframePointRelativeToParentFrame(iframePoint, iframeWin);
-        var cursorPosition              = cursor.position;
+        const iframeWin                   = e.source;
+        const iframe                      = domUtils.findIframeByWindow(iframeWin);
+        const iframeBorders               = styleUtils.getBordersWidth(iframe);
+        const iframePadding               = styleUtils.getElementPadding(iframe);
+        const iframeRectangle             = positionUtils.getIframeClientCoordinates(iframe);
+        const iframePointRelativeToParent = positionUtils.getIframePointRelativeToParentFrame(iframePoint, iframeWin);
+        const cursorPosition              = cursor.position;
 
-        var intersectionPoint = positionUtils.isInRectangle(cursorPosition, iframeRectangle) ? cursorPosition :
+        const intersectionPoint = positionUtils.isInRectangle(cursorPosition, iframeRectangle) ? cursorPosition :
             getLineRectIntersection(cursorPosition, iframePointRelativeToParent, iframeRectangle);
 
-        var intersectionRelatedToIframe = {
+        const intersectionRelatedToIframe = {
             x: intersectionPoint.x - iframeRectangle.left,
             y: intersectionPoint.y - iframeRectangle.top
         };
 
-        var moveOptions = new MoveOptions({
+        const moveOptions = new MoveOptions({
             modifiers: e.message.modifiers,
             offsetX:   intersectionRelatedToIframe.x + iframeBorders.left + iframePadding.left,
             offsetY:   intersectionRelatedToIframe.y + iframeBorders.top + iframePadding.top,
@@ -153,9 +153,9 @@ export default class MoveAutomation {
             skipScrolling: true
         }, false);
 
-        var moveAutomation = new MoveAutomation(iframe, moveOptions);
+        const moveAutomation = new MoveAutomation(iframe, moveOptions);
 
-        var responseMsg = {
+        const responseMsg = {
             cmd: MOVE_RESPONSE_CMD,
             x:   intersectionRelatedToIframe.x,
             y:   intersectionRelatedToIframe.y
@@ -175,9 +175,9 @@ export default class MoveAutomation {
     }
 
     static onMoveOutRequest (e) {
-        var parentWin = e.source;
+        const parentWin = e.source;
 
-        var iframeRectangle = {
+        const iframeRectangle = {
             left:   e.message.left,
             right:  e.message.right,
             top:    e.message.top,
@@ -185,10 +185,10 @@ export default class MoveAutomation {
         };
 
         if (!e.message.iframeUnderCursor) {
-            var { startX, startY } = e.message;
+            const { startX, startY } = e.message;
 
-            var clientX = startX - iframeRectangle.left;
-            var clientY = startY - iframeRectangle.top;
+            const clientX = startX - iframeRectangle.left;
+            const clientY = startY - iframeRectangle.top;
 
             // NOTE: We should not emulate mouseout and mouseleave if iframe was reloaded.
             if (lastHoveredElement) {
@@ -201,15 +201,15 @@ export default class MoveAutomation {
             return;
         }
 
-        var cursorPosition = cursor.position;
+        const cursorPosition = cursor.position;
 
-        var startPoint = {
+        const startPoint = {
             x: iframeRectangle.left + cursorPosition.x,
             y: iframeRectangle.top + cursorPosition.y
         };
 
-        var endPoint          = { x: e.message.endX, y: e.message.endY };
-        var intersectionPoint = getLineRectIntersection(startPoint, endPoint, iframeRectangle);
+        const endPoint          = { x: e.message.endX, y: e.message.endY };
+        const intersectionPoint = getLineRectIntersection(startPoint, endPoint, iframeRectangle);
 
         // NOTE: We should not move the cursor out of the iframe if
         // the cursor path does not intersect with the iframe borders.
@@ -223,7 +223,7 @@ export default class MoveAutomation {
             return;
         }
 
-        var moveOptions = new MoveOptions({
+        const moveOptions = new MoveOptions({
             modifiers: e.message.modifiers,
             offsetX:   intersectionPoint.x - iframeRectangle.left,
             offsetY:   intersectionPoint.y - iframeRectangle.top,
@@ -234,12 +234,12 @@ export default class MoveAutomation {
             skipScrolling: true
         }, false);
 
-        var moveAutomation = new MoveAutomation(document.documentElement, moveOptions);
+        const moveAutomation = new MoveAutomation(document.documentElement, moveOptions);
 
         moveAutomation
             .run()
             .then(() => {
-                var responseMsg = {
+                const responseMsg = {
                     cmd: MOVE_RESPONSE_CMD,
                     x:   intersectionPoint.x,
                     y:   intersectionPoint.y
@@ -251,7 +251,7 @@ export default class MoveAutomation {
     }
 
     _getTargetClientPoint () {
-        var scroll = styleUtils.getElementScroll(this.element);
+        const scroll = styleUtils.getElementScroll(this.element);
 
         if (domUtils.isHtmlElement(this.element)) {
             return {
@@ -260,8 +260,8 @@ export default class MoveAutomation {
             };
         }
 
-        var clientPosition = positionUtils.getClientPosition(this.element);
-        var isDocumentBody = this.element.tagName && domUtils.isBodyElement(this.element);
+        const clientPosition = positionUtils.getClientPosition(this.element);
+        const isDocumentBody = this.element.tagName && domUtils.isBodyElement(this.element);
 
         return {
             x: Math.floor(isDocumentBody ? clientPosition.x + this.offsetX : clientPosition.x + this.offsetX -
@@ -272,10 +272,10 @@ export default class MoveAutomation {
     }
 
     _emulateEvents (currentElement) {
-        var button      = this.holdLeftButton ? eventUtils.BUTTONS_PARAMETER.leftButton : eventUtils.BUTTONS_PARAMETER.noButton;
-        var devicePoint = getDevicePoint({ x: this.x, y: this.y });
+        const button      = this.holdLeftButton ? eventUtils.BUTTONS_PARAMETER.leftButton : eventUtils.BUTTONS_PARAMETER.noButton;
+        const devicePoint = getDevicePoint({ x: this.x, y: this.y });
 
-        var eventOptions = {
+        const eventOptions = {
             clientX:      this.x,
             clientY:      this.y,
             screenX:      devicePoint.x,
@@ -288,14 +288,14 @@ export default class MoveAutomation {
             dataTransfer: this.dragAndDropState.dataTransfer
         };
 
-        var eventSequence = null;
+        let eventSequence = null;
 
         if (this.dragAndDropState.enabled)
             eventSequence = this.firstMovingStepOccured ? dragAndDropMoveEventSequence : dragAndDropFirstMoveEventSequence;
         else
             eventSequence = moveEventSequence;
 
-        var { dragAndDropMode, dropAllowed } = eventSequence.run(currentElement, lastHoveredElement, eventOptions,
+        const { dragAndDropMode, dropAllowed } = eventSequence.run(currentElement, lastHoveredElement, eventOptions,
             this.moveEvent, this.dragElement, this.dragAndDropState.dataStore);
 
         this.firstMovingStepOccured       = true;
@@ -320,8 +320,8 @@ export default class MoveAutomation {
             this.y += this.distanceY > 0 ? 1 : -1;
         }
         else {
-            var currentTime = Math.min(nativeMethods.dateNow(), this.endTime);
-            var progress    = (currentTime - this.startTime) / (this.endTime - this.startTime);
+            const currentTime = Math.min(nativeMethods.dateNow(), this.endTime);
+            const progress    = (currentTime - this.startTime) / (this.endTime - this.startTime);
 
             this.x = Math.floor(this.startPoint.x + this.distanceX * progress);
             this.y = Math.floor(this.startPoint.y + this.distanceY * progress);
@@ -332,7 +332,7 @@ export default class MoveAutomation {
             .then(getElementUnderCursor)
             // NOTE: in touch mode, events are simulated for the element for which mousedown was simulated (GH-372)
             .then(topElement => {
-                var currentElement = this.holdLeftButton && this.touchMode ? this.dragElement : topElement;
+                const currentElement = this.holdLeftButton && this.touchMode ? this.dragElement : topElement;
 
                 // NOTE: it can be null in IE
                 if (!currentElement)
@@ -367,8 +367,8 @@ export default class MoveAutomation {
         if (this.skipScrolling)
             return Promise.resolve();
 
-        var scrollOptions    = new ScrollOptions({ offsetX: this.offsetX, offsetY: this.offsetY }, false);
-        var scrollAutomation = new ScrollAutomation(this.element, scrollOptions);
+        const scrollOptions    = new ScrollOptions({ offsetX: this.offsetX, offsetY: this.offsetY }, false);
+        const scrollAutomation = new ScrollAutomation(this.element, scrollOptions);
 
         return scrollAutomation.run();
     }
@@ -377,13 +377,13 @@ export default class MoveAutomation {
         if (cursor.active)
             return Promise.resolve();
 
-        var { x, y }          = cursor.position;
-        var activeWindow      = cursor.activeWindow;
-        var iframe            = null;
-        var iframeUnderCursor = null;
-        var iframeRectangle   = null;
+        const { x, y }          = cursor.position;
+        const activeWindow      = cursor.activeWindow;
+        let iframe            = null;
+        let iframeUnderCursor = null;
+        let iframeRectangle   = null;
 
-        var msg = {
+        const msg = {
             cmd:       MOVE_REQUEST_CMD,
             startX:    x,
             startY:    y,
@@ -427,7 +427,7 @@ export default class MoveAutomation {
             .then(topElement => {
                 this.dragElement = this.holdLeftButton ? topElement : null;
 
-                var draggable = findDraggableElement(this.dragElement);
+                const draggable = findDraggableElement(this.dragElement);
 
                 // NOTE: we should skip simulating drag&drop's native behavior if the mousedown event was prevented (GH - 2529)
                 if (draggable && featureDetection.hasDataTransfer && !this.skipDefaultDragBehavior) {
@@ -437,13 +437,13 @@ export default class MoveAutomation {
                     this.dragAndDropState.dataStore    = new DragDataStore();
                     this.dragAndDropState.dataTransfer = new DataTransfer(this.dragAndDropState.dataStore);
 
-                    var isLink = domUtils.isAnchorElement(this.dragElement);
+                    const isLink = domUtils.isAnchorElement(this.dragElement);
 
                     if (isLink || domUtils.isImgElement(this.dragElement)) {
-                        var srcAttr   = isLink ? 'href' : 'src';
-                        var parsedUrl = urlUtils.parseProxyUrl(this.dragElement[srcAttr]);
-                        var src       = parsedUrl ? parsedUrl.destUrl : this.dragElement[srcAttr];
-                        var outerHTML = htmlUtils.cleanUpHtml(nativeMethods.elementOuterHTMLGetter.call(this.dragElement));
+                        const srcAttr   = isLink ? 'href' : 'src';
+                        const parsedUrl = urlUtils.parseProxyUrl(this.dragElement[srcAttr]);
+                        const src       = parsedUrl ? parsedUrl.destUrl : this.dragElement[srcAttr];
+                        const outerHTML = htmlUtils.cleanUpHtml(nativeMethods.elementOuterHTMLGetter.call(this.dragElement));
 
                         this.dragAndDropState.dataTransfer.setData('text/plain', src);
                         this.dragAndDropState.dataTransfer.setData('text/uri-list', src);
@@ -454,9 +454,9 @@ export default class MoveAutomation {
                 return this._scroll();
             })
             .then(() => {
-                var { x, y }     = this._getTargetClientPoint();
-                var windowWidth  = styleUtils.getWidth(window);
-                var windowHeight = styleUtils.getHeight(window);
+                const { x, y }     = this._getTargetClientPoint();
+                const windowWidth  = styleUtils.getWidth(window);
+                const windowHeight = styleUtils.getHeight(window);
 
                 if (x >= 0 && x <= windowWidth && y >= 0 && y <= windowHeight) {
                     this.endPoint = { x, y };

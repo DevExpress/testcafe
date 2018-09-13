@@ -10,8 +10,8 @@ export function removeTTYColors (str) {
 }
 
 export function wordWrap (str, indent, width) {
-    var curStr     = '';
-    var wrappedMsg = '';
+    let curStr     = '';
+    let wrappedMsg = '';
 
     if (removeTTYColors(str).length <= width - indent)
         return indentString(str, ' ', indent);
@@ -22,7 +22,7 @@ export function wordWrap (str, indent, width) {
         .filter(elm => !!elm);
 
     str.forEach(word => {
-        var newStr = curStr + word;
+        const newStr = curStr + word;
 
         if (removeTTYColors(newStr).length > width - indent) {
             wrappedMsg += `${rtrim(curStr)}\n`;
@@ -42,12 +42,12 @@ export function wordWrap (str, indent, width) {
 }
 
 export function splitQuotedText (str, splitChar, quotes = '"\'') {
-    var currentPart = '';
-    var parts       = [];
-    var quoteChar   = null;
+    let currentPart = '';
+    const parts       = [];
+    let quoteChar   = null;
 
-    for (var i = 0; i < str.length; i++) {
-        var currentChar = str[i];
+    for (let i = 0; i < str.length; i++) {
+        const currentChar = str[i];
 
         if (currentChar === splitChar) {
             if (quoteChar)

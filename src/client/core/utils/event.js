@@ -3,9 +3,9 @@ import delay from './delay';
 import * as domUtils from './dom';
 
 
-var Promise       = hammerhead.Promise;
-var nativeMethods = hammerhead.nativeMethods;
-var listeners     = hammerhead.eventSandbox.listeners;
+const Promise       = hammerhead.Promise;
+const nativeMethods = hammerhead.nativeMethods;
+const listeners     = hammerhead.eventSandbox.listeners;
 
 export const RECORDING_LISTENED_EVENTS = [
     'click', 'mousedown', 'mouseup', 'dblclick', 'contextmenu', 'mousemove', 'mouseover', 'mouseout',
@@ -19,7 +19,7 @@ export const BUTTONS_PARAMETER = hammerhead.utils.event.BUTTONS_PARAMETER;
 export const DOM_EVENTS        = hammerhead.utils.event.DOM_EVENTS;
 export const WHICH_PARAMETER   = hammerhead.utils.event.WHICH_PARAMETER;
 
-export var preventDefault = hammerhead.utils.event.preventDefault;
+export const preventDefault = hammerhead.utils.event.preventDefault;
 
 export function bind (el, event, handler, useCapture) {
     if (domUtils.isWindow(el))

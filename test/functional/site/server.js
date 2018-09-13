@@ -1,29 +1,29 @@
-var express               = require('express');
-var http                  = require('http');
-var path                  = require('path');
-var bodyParser            = require('body-parser');
-var readSync              = require('read-file-relative').readSync;
-var multer                = require('multer');
-var Mustache              = require('mustache');
-var readFile              = require('../../../lib/utils/promisified-functions').readFile;
-var quarantineModeTracker = require('../quarantine-mode-tracker');
-var useragent             = require('useragent');
+const express               = require('express');
+const http                  = require('http');
+const path                  = require('path');
+const bodyParser            = require('body-parser');
+const readSync              = require('read-file-relative').readSync;
+const multer                = require('multer');
+const Mustache              = require('mustache');
+const readFile              = require('../../../lib/utils/promisified-functions').readFile;
+const quarantineModeTracker = require('../quarantine-mode-tracker');
+const useragent             = require('useragent');
 
-var storage = multer.memoryStorage();
-var upload  = multer({ storage: storage });
+const storage = multer.memoryStorage();
+const upload  = multer({ storage: storage });
 
-var CONTENT_TYPES = {
+const CONTENT_TYPES = {
     '.js':   'application/javascript',
     '.css':  'text/css',
     '.html': 'text/html',
     '.png':  'image/png'
 };
 
-var UPLOAD_SUCCESS_PAGE_TEMPLATE = readSync('./views/upload-success.html.mustache');
+const UPLOAD_SUCCESS_PAGE_TEMPLATE = readSync('./views/upload-success.html.mustache');
 
 
-var Server = module.exports = function (port, basePath) {
-    var server = this;
+const Server = module.exports = function (port, basePath) {
+    const server = this;
 
     this.app       = express().use(bodyParser.urlencoded({ extended: false }));
     this.appServer = http.createServer(this.app).listen(port);
@@ -32,7 +32,7 @@ var Server = module.exports = function (port, basePath) {
 
     this._setupRoutes();
 
-    var handler = function (socket) {
+    const handler = function (socket) {
         server.sockets.push(socket);
         socket.on('close', function () {
             server.sockets.splice(server.sockets.indexOf(socket), 1);
@@ -43,10 +43,10 @@ var Server = module.exports = function (port, basePath) {
 };
 
 Server.prototype._setupRoutes = function () {
-    var server = this;
+    const server = this;
 
     this.app.get('/download', function (req, res) {
-        var filePath = path.join(server.basePath, '../../package.json');
+        const filePath = path.join(server.basePath, '../../package.json');
 
         res.download(filePath);
     });
@@ -58,9 +58,9 @@ Server.prototype._setupRoutes = function () {
     });
 
     this.app.get('*', function (req, res) {
-        var reqPath      = req.params[0] || '';
-        var resourcePath = path.join(server.basePath, reqPath);
-        var delay        = req.query.delay ? parseInt(req.query.delay, 10) : 0;
+        const reqPath      = req.params[0] || '';
+        const resourcePath = path.join(server.basePath, reqPath);
+        const delay        = req.query.delay ? parseInt(req.query.delay, 10) : 0;
 
         readFile(resourcePath)
             .then(function (content) {
@@ -98,7 +98,7 @@ Server.prototype._setupRoutes = function () {
     });
 
     this.app.post('/file-upload', upload.any(), function (req, res) {
-        var filesData = req.files.map(function (file) {
+        const filesData = req.files.map(function (file) {
             return file.buffer.toString();
         });
 
@@ -106,7 +106,7 @@ Server.prototype._setupRoutes = function () {
     });
 
     this.app.post('/xhr/:delay', function (req, res) {
-        var delay = req.params.delay || 0;
+        const delay = req.params.delay || 0;
 
         setTimeout(function () {
             res.send(delay.toString());

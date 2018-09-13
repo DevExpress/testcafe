@@ -1,4 +1,4 @@
-var expect = require('chai').expect;
+const expect = require('chai').expect;
 
 describe('[Regression](GH-1994)', function () {
     it('Click on hidden element recreated on timeout', function () {

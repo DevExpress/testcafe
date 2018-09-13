@@ -8,13 +8,13 @@ const RESEND_MESSAGE_INTERVAL      = 1000;
 
 
 export default function sendMessageToDriver (msg, driverWindow, timeout, NotLoadedErrorCtor) {
-    var sendMsgInterval = null;
-    var sendMsgTimeout  = null;
-    var onResponse      = null;
+    let sendMsgInterval = null;
+    const sendMsgTimeout  = null;
+    let onResponse      = null;
 
     timeout = Math.max(timeout || 0, MIN_RESPONSE_WAITING_TIMEOUT);
 
-    var sendAndWaitForResponse = () => {
+    const sendAndWaitForResponse = () => {
         return new Promise(resolve => {
             onResponse = e => {
                 if (e.message.type === MESSAGE_TYPE.confirmation && e.message.requestMessageId === msg.id)

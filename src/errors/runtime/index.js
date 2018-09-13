@@ -28,7 +28,7 @@ export class TestCompilationError extends Error {
 
 export class APIError extends Error {
     constructor (methodName, template, ...args) {
-        var rawMessage = renderTemplate(template, ...args);
+        const rawMessage = renderTemplate(template, ...args);
 
         super(renderTemplate(MESSAGE.cannotPrepareTestsDueToError, rawMessage));
 

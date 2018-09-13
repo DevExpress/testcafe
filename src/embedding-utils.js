@@ -24,7 +24,7 @@ export default {
     initSelector,
 
     buildReporterPlugin (pluginFactory, outStream) {
-        var plugin = pluginFactory();
+        const plugin = pluginFactory();
 
         return new ReporterPluginHost(plugin, outStream);
     }

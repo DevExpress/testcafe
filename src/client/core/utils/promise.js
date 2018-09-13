@@ -1,7 +1,7 @@
 import hammerhead from '../deps/hammerhead';
 import { reduce } from './array';
 
-var Promise = hammerhead.Promise;
+const Promise = hammerhead.Promise;
 
 
 export function whilst (condition, iterator) {

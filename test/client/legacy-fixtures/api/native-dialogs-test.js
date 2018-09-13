@@ -1,10 +1,10 @@
-var testCafeLegacyRunner = window.getTestCafeModule('testCafeLegacyRunner');
-var dialogsAPI           = testCafeLegacyRunner.get('./api/native-dialogs');
+const testCafeLegacyRunner = window.getTestCafeModule('testCafeLegacyRunner');
+const dialogsAPI           = testCafeLegacyRunner.get('./api/native-dialogs');
 
 
-var unexpectedDialogErrors     = [];
-var wasNotExpectedDialogErrors = [];
-var dialogsInfoChangedEvents   = [];
+let unexpectedDialogErrors     = [];
+let wasNotExpectedDialogErrors = [];
+let dialogsInfoChangedEvents   = [];
 
 QUnit.testStart(function () {
     unexpectedDialogErrors     = [];
@@ -51,7 +51,7 @@ test('Dialogs info changed event (init without info)', function () {
 });
 
 test('Dialogs info changed event (init with info)', function () {
-    var info = createDefaultDialogsInfo();
+    const info = createDefaultDialogsInfo();
 
     info.expectAlertCount = 1;
 
@@ -75,7 +75,7 @@ test('Unexpected dialog errors', function () {
 });
 
 test('Init with expected dialogs', function () {
-    var info = createDefaultDialogsInfo();
+    const info = createDefaultDialogsInfo();
 
     info.expectAlertCount         = 1;
     info.expectConfirmCount       = 2;
@@ -105,7 +105,7 @@ test('Init with expected dialogs', function () {
 });
 
 test('Handle dialogs', function () {
-    var info = createDefaultDialogsInfo();
+    const info = createDefaultDialogsInfo();
 
     dialogsAPI.init();
 
@@ -140,7 +140,7 @@ test('Handle dialogs', function () {
 });
 
 test('Unexpected dialog error when there are several dialogs', function () {
-    var info = createDefaultDialogsInfo();
+    const info = createDefaultDialogsInfo();
 
     info.expectAlertCount = 1;
 
@@ -158,7 +158,7 @@ test('Unexpected dialog error when there are several dialogs', function () {
 });
 
 test('Was not expected dialog error', function () {
-    var info = createDefaultDialogsInfo();
+    const info = createDefaultDialogsInfo();
 
     info.expectAlertCount   = 1;
     info.expectConfirmCount = 1;
@@ -175,7 +175,7 @@ test('Was not expected dialog error', function () {
 });
 
 test('Reset handlers', function () {
-    var info = createDefaultDialogsInfo();
+    const info = createDefaultDialogsInfo();
 
     info.expectAlertCount = 1;
 

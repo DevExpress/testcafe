@@ -5,9 +5,9 @@ import { ActionInvalidScrollTargetError, InvalidElementScreenshotDimensionsError
 
 
 function determineDimensionBounds (bounds, maximum) {
-    var hasMin    = typeof bounds.min === 'number';
-    var hasMax    = typeof bounds.max === 'number';
-    var hasLength = typeof bounds.length === 'number';
+    const hasMin    = typeof bounds.min === 'number';
+    const hasMax    = typeof bounds.max === 'number';
+    const hasLength = typeof bounds.length === 'number';
 
     if (hasLength)
         bounds.length = limitNumber(bounds.length, 0, maximum);
@@ -36,23 +36,23 @@ function determineScrollPoint (cropStart, cropEnd, viewportBound) {
 }
 
 export default function ensureCropOptions (element, options) {
-    var elementRectangle = element.getBoundingClientRect();
+    const elementRectangle = element.getBoundingClientRect();
 
-    var elementBounds = {
+    const elementBounds = {
         left:   elementRectangle.left,
         right:  elementRectangle.right,
         top:    elementRectangle.top,
         bottom: elementRectangle.bottom
     };
 
-    var elementMargin       = styleUtils.getElementMargin(element);
-    var elementPadding      = styleUtils.getElementPadding(element);
-    var elementBordersWidth = styleUtils.getBordersWidth(element);
+    const elementMargin       = styleUtils.getElementMargin(element);
+    const elementPadding      = styleUtils.getElementPadding(element);
+    const elementBordersWidth = styleUtils.getBordersWidth(element);
 
     options.originOffset = { x: 0, y: 0 };
 
-    var scrollRight  = elementBounds.left + element.scrollWidth + elementBordersWidth.left + elementBordersWidth.right;
-    var scrollBottom = elementBounds.top + element.scrollHeight + elementBordersWidth.top + elementBordersWidth.bottom;
+    const scrollRight  = elementBounds.left + element.scrollWidth + elementBordersWidth.left + elementBordersWidth.right;
+    const scrollBottom = elementBounds.top + element.scrollHeight + elementBordersWidth.top + elementBordersWidth.bottom;
 
     elementBounds.right  = Math.max(elementBounds.right, scrollRight);
     elementBounds.bottom = Math.max(elementBounds.bottom, scrollBottom);
@@ -89,8 +89,8 @@ export default function ensureCropOptions (element, options) {
     elementBounds.width  = elementBounds.right - elementBounds.left;
     elementBounds.height = elementBounds.bottom - elementBounds.top;
 
-    var horizontalCropBounds = determineDimensionBounds({ min: options.crop.left, max: options.crop.right, length: options.crop.width }, elementBounds.width);
-    var verticalCropBounds   = determineDimensionBounds({ min: options.crop.top, max: options.crop.bottom, length: options.crop.height }, elementBounds.height);
+    const horizontalCropBounds = determineDimensionBounds({ min: options.crop.left, max: options.crop.right, length: options.crop.width }, elementBounds.width);
+    const verticalCropBounds   = determineDimensionBounds({ min: options.crop.top, max: options.crop.bottom, length: options.crop.height }, elementBounds.height);
 
     options.crop.left  = horizontalCropBounds.min;
     options.crop.right = horizontalCropBounds.max;
@@ -103,13 +103,13 @@ export default function ensureCropOptions (element, options) {
     if (options.crop.width <= 0 || options.crop.height <= 0)
         throw new InvalidElementScreenshotDimensionsError(options.crop.width, options.crop.height);
 
-    var viewportDimensions = styleUtils.getViewportDimensions();
+    const viewportDimensions = styleUtils.getViewportDimensions();
 
     if (elementBounds.width > viewportDimensions.width || elementBounds.height > viewportDimensions.height)
         options.scrollToCenter = true;
 
-    var hasScrollTargetX = typeof options.scrollTargetX === 'number';
-    var hasScrollTargetY = typeof options.scrollTargetY === 'number';
+    const hasScrollTargetX = typeof options.scrollTargetX === 'number';
+    const hasScrollTargetY = typeof options.scrollTargetY === 'number';
 
     if (!hasScrollTargetX)
         options.scrollTargetX = determineScrollPoint(options.crop.left, options.crop.right, viewportDimensions.width);
@@ -117,13 +117,13 @@ export default function ensureCropOptions (element, options) {
     if (!hasScrollTargetY)
         options.scrollTargetY = determineScrollPoint(options.crop.top, options.crop.bottom, viewportDimensions.height);
 
-    var { offsetX, offsetY } = getOffsetOptions(element, options.scrollTargetX, options.scrollTargetY);
+    const { offsetX, offsetY } = getOffsetOptions(element, options.scrollTargetX, options.scrollTargetY);
 
     options.scrollTargetX = offsetX;
     options.scrollTargetY = offsetY;
 
-    var isScrollTargetXValid = !hasScrollTargetX || options.scrollTargetX >= options.crop.left && options.scrollTargetX <= options.crop.right;
-    var isScrollTargetYValid = !hasScrollTargetY || options.scrollTargetY >= options.crop.top && options.scrollTargetY <= options.crop.bottom;
+    const isScrollTargetXValid = !hasScrollTargetX || options.scrollTargetX >= options.crop.left && options.scrollTargetX <= options.crop.right;
+    const isScrollTargetYValid = !hasScrollTargetY || options.scrollTargetY >= options.crop.top && options.scrollTargetY <= options.crop.bottom;
 
     if (!isScrollTargetXValid || !isScrollTargetYValid)
         throw new ActionInvalidScrollTargetError(isScrollTargetXValid, isScrollTargetYValid);

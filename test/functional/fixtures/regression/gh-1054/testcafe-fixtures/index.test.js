@@ -21,8 +21,8 @@ test('Type text in the content editable element', async t => {
         .typeText('div', 'text', { replace: true })
         .expect(Selector('div').textContent).eql('text');
 
-    var userAgentStr = await getUserAgent();
-    var isIE         = userAgent.is(userAgentStr).ie;
+    const userAgentStr = await getUserAgent();
+    const isIE         = userAgent.is(userAgentStr).ie;
 
     if (!isIE)
         await t.expect(await getFirstValue()).eql('t');

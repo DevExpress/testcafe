@@ -1,4 +1,4 @@
-var expect = require('chai').expect;
+const expect = require('chai').expect;
 
 describe('[Regression](GH-1907)', function () {
     it('Base selector should pass the boundTestRun option to derivative selectors', function () {

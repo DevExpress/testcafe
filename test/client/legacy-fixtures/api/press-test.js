@@ -1,40 +1,40 @@
-var hammerhead    = window.getTestCafeModule('hammerhead');
-var browserUtils  = hammerhead.utils.browser;
-var iframeSandbox = hammerhead.sandbox.iframe;
+const hammerhead    = window.getTestCafeModule('hammerhead');
+const browserUtils  = hammerhead.utils.browser;
+const iframeSandbox = hammerhead.sandbox.iframe;
 
-var testCafeCore  = window.getTestCafeModule('testCafeCore');
-var domUtils      = testCafeCore.get('./utils/dom');
-var textSelection = testCafeCore.get('./utils/text-selection');
+const testCafeCore  = window.getTestCafeModule('testCafeCore');
+const domUtils      = testCafeCore.get('./utils/dom');
+const textSelection = testCafeCore.get('./utils/text-selection');
 
-var testCafeLegacyRunner = window.getTestCafeModule('testCafeLegacyRunner');
-var ERROR_TYPE           = testCafeLegacyRunner.get('../test-run-error/type');
-var SETTINGS             = testCafeLegacyRunner.get('./settings').get();
-var actionsAPI           = testCafeLegacyRunner.get('./api/actions');
-var StepIterator         = testCafeLegacyRunner.get('./step-iterator');
+const testCafeLegacyRunner = window.getTestCafeModule('testCafeLegacyRunner');
+const ERROR_TYPE           = testCafeLegacyRunner.get('../test-run-error/type');
+const SETTINGS             = testCafeLegacyRunner.get('./settings').get();
+const actionsAPI           = testCafeLegacyRunner.get('./api/actions');
+const StepIterator         = testCafeLegacyRunner.get('./step-iterator');
 
-var initAutomation = testCafeLegacyRunner.get('./init-automation');
+const initAutomation = testCafeLegacyRunner.get('./init-automation');
 
 initAutomation();
 
-var Promise      = hammerhead.Promise;
-var stepIterator = new StepIterator();
+const Promise      = hammerhead.Promise;
+const stepIterator = new StepIterator();
 
 actionsAPI.init(stepIterator);
 
 $(document).ready(function () {
-    var asyncActionCallback;
-    var currentErrorType   = null;
-    var currentSourceIndex = null;
-    var $input;
+    let asyncActionCallback;
+    let currentErrorType   = null;
+    let currentSourceIndex = null;
+    let $input;
 
     //constants
-    var TEST_ELEMENT_CLASS = 'testElement';
-    var TEST_TIMEOUT       = 2000;
+    const TEST_ELEMENT_CLASS = 'testElement';
+    const TEST_TIMEOUT       = 2000;
 
     //utils
-    var runAsyncTest = function (actions, assertions, timeout, delayBeforeAssertions) {
-        var timeoutId        = null;
-        var callbackFunction = function () {
+    const runAsyncTest = function (actions, assertions, timeout, delayBeforeAssertions) {
+        let timeoutId        = null;
+        let callbackFunction = function () {
             clearTimeout(timeoutId);
             assertions();
             start();
@@ -52,8 +52,8 @@ $(document).ready(function () {
         }, timeout);
     };
 
-    var createIFrame = function (src) {
-        var $iframe = $('<iframe/>')
+    const createIFrame = function (src) {
+        const $iframe = $('<iframe/>')
             .css({
                 width:  '600px',
                 height: '600px'
@@ -65,8 +65,8 @@ $(document).ready(function () {
         return $iframe[0];
     };
 
-    var waitForIframeReloaded = function (iframe) {
-        var iframeUnloadPromise = new Promise(function (resolve) {
+    const waitForIframeReloaded = function (iframe) {
+        const iframeUnloadPromise = new Promise(function (resolve) {
             iframe.contentWindow.addEventListener('unload', resolve);
         });
 
@@ -75,14 +75,14 @@ $(document).ready(function () {
         });
     };
 
-    var wait = function (ms) {
+    const wait = function (ms) {
         return new Promise(function (resolve) {
             window.setTimeout(resolve, ms);
         });
     };
 
     StepIterator.prototype.asyncActionSeries = function (items, runArgumentsIterator, action) {
-        var seriesActionsRun = function (elements, callback) {
+        const seriesActionsRun = function (elements, callback) {
             window.async.forEachSeries(
                 elements,
                 function (element, seriaCallback) {
@@ -208,20 +208,21 @@ $(document).ready(function () {
     });
 
     asyncTest('B253200 - TestCafe doesn\'t emulate browsers behavior for press "enter" key on the focused HyperLink editor (link with href)', function () {
-        var iFrameSrc    = window.QUnitGlobals.getResourceUrl('../../data/runner/iframe.html', 'runner-iframe.html');
-        var linkHref     = window.QUnitGlobals.getResourceUrl('../../data/focus-blur-change/iframe.html', 'focus-iframe.html');
-        var link         = $('<a>Link</a>').attr('href', linkHref).addClass(TEST_ELEMENT_CLASS)[0];
-        var iframe       = createIFrame(iFrameSrc);
-        var clicked      = false;
-        var testFinished = false;
+        const iFrameSrc    = window.QUnitGlobals.getResourceUrl('../../data/runner/iframe.html', 'runner-iframe.html');
+        const linkHref     = window.QUnitGlobals.getResourceUrl('../../data/focus-blur-change/iframe.html', 'focus-iframe.html');
+        const link         = $('<a>Link</a>').attr('href', linkHref).addClass(TEST_ELEMENT_CLASS)[0];
+        const iframe       = createIFrame(iFrameSrc);
+
+        let clicked      = false;
+        let testFinished = false;
 
         link.onclick = function () {
             clicked = true;
         };
 
-        var watchdog = wait(10000);
+        const watchdog = wait(10000);
 
-        var runTest = function () {
+        const runTest = function () {
             return window.QUnitGlobals
                 .waitForIframe(iframe)
                 .then(function () {
@@ -262,20 +263,21 @@ $(document).ready(function () {
     });
 
     asyncTest('B253200 - TestCafe doesn\'t emulate browsers behavior for press "enter" key on the focused HyperLink editor (link with javascript)', function () {
-        var iFrameSrc    = window.QUnitGlobals.getResourceUrl('../../data/runner/iframe.html', 'runner-iframe.html');
-        var linkHref     = window.QUnitGlobals.getResourceUrl('../../data/focus-blur-change/iframe.html', 'focus-iframe.html');
-        var link         = $('<a>Link</a>').attr('href', 'javascript: window.location.href = "' + linkHref + '"')[0];
-        var iframe       = createIFrame(iFrameSrc);
-        var clicked      = false;
-        var testFinished = false;
+        const iFrameSrc    = window.QUnitGlobals.getResourceUrl('../../data/runner/iframe.html', 'runner-iframe.html');
+        const linkHref     = window.QUnitGlobals.getResourceUrl('../../data/focus-blur-change/iframe.html', 'focus-iframe.html');
+        const link         = $('<a>Link</a>').attr('href', 'javascript: window.location.href = "' + linkHref + '"')[0];
+        const iframe       = createIFrame(iFrameSrc);
+
+        let clicked      = false;
+        let testFinished = false;
 
         link.onclick = function () {
             clicked = true;
         };
 
-        var watchdog = wait(10000);
+        const watchdog = wait(10000);
 
-        var runTest = function () {
+        const runTest = function () {
             return window.QUnitGlobals
                 .waitForIframe(iframe)
                 .then(function () {

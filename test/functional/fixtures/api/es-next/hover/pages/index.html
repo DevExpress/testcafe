@@ -56,11 +56,11 @@
 
 <script>
     window.eventLog = [];
-    var container   = document.getElementById('container');
-    var child1      = document.getElementById('child1');
-    var child2      = document.getElementById('child2');
-    var content1    = document.getElementById('content1');
-    var content2    = document.getElementById('content2');
+    const container   = document.getElementById('container');
+    const child1      = document.getElementById('child1');
+    const child2      = document.getElementById('child2');
+    const content1    = document.getElementById('content1');
+    const content2    = document.getElementById('content2');
 
     function eventHandler (e) {
         window.eventLog.push(e.type + ':' + e.target.id + ':' + e.currentTarget.id);

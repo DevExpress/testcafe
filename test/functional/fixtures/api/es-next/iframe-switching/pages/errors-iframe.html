@@ -18,7 +18,7 @@
     });
 
     document.getElementById('error-in-another-iframe-btn').addEventListener('click', function () {
-        var anotherIframeDocument = window.top.document.getElementById('iframe2').contentDocument;
+        const anotherIframeDocument = window.top.document.getElementById('iframe2').contentDocument;
 
         anotherIframeDocument.getElementById('error-btn').click();
     });

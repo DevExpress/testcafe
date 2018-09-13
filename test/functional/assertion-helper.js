@@ -30,11 +30,12 @@ function hasPixel (png, pixel, x, y) {
 }
 
 function getScreenshotFilesCount (dir, customPath) {
-    var results          = 0;
-    var list             = fs.readdirSync(dir);
-    var screenshotRegExp = customPath ? CUSTOM_SCREENSHOT_FILE_NAME_RE : SCREENSHOT_FILE_NAME_RE;
-    var stat             = null;
-    var filePath         = null;
+    const list             = fs.readdirSync(dir);
+    const screenshotRegExp = customPath ? CUSTOM_SCREENSHOT_FILE_NAME_RE : SCREENSHOT_FILE_NAME_RE;
+
+    let results  = 0;
+    let stat     = null;
+    let filePath = null;
 
     list.forEach(function (file) {
         filePath = path.join(dir, file);
@@ -50,7 +51,7 @@ function getScreenshotFilesCount (dir, customPath) {
 
 function readPng (filePath) {
     return new Promise(function (resolve) {
-        var png = new pngjs.PNG();
+        const png = new pngjs.PNG();
 
         png.once('parsed', function () {
             resolve(png);
@@ -63,8 +64,8 @@ function readPng (filePath) {
 function checkScreenshotFileCropped (filePath) {
     return readPng(filePath)
         .then(function (png) {
-            var width  = png.width;
-            var height = png.height;
+            const width  = png.width;
+            const height = png.height;
 
             // NOTE: sometimes an appearing dialog can cover an edge of the browser. Try to check all edges
             return hasPixel(png, RED_PIXEL, 0, 0) && hasPixel(png, RED_PIXEL, 49, 49) && hasPixel(png, GREEN_PIXEL, 50, 50) ||
@@ -82,7 +83,7 @@ function checkScreenshotFileIsNotWhite (filePath) {
 }
 
 function isDirExists (folderPath) {
-    var exists = false;
+    let exists = false;
 
     try {
         exists = fs.statSync(folderPath).isDirectory();
@@ -95,7 +96,7 @@ function isDirExists (folderPath) {
 }
 
 function checkTestDir (testDirPath, forError, expectedSubDirCount, expectedScreenshotCount) {
-    var subDirs = fs
+    const subDirs = fs
         .readdirSync(testDirPath)
         .filter(function (file) {
             return isDirExists(path.join(testDirPath, file));
@@ -104,7 +105,7 @@ function checkTestDir (testDirPath, forError, expectedSubDirCount, expectedScree
     if (subDirs.length !== expectedSubDirCount)
         return false;
 
-    var dirPath = null;
+    let dirPath = null;
 
     return subDirs.every(function (dir) {
         dirPath = forError ? path.join(testDirPath, dir, ERRORS_DIR_NAME) : path.join(testDirPath, dir);
@@ -119,28 +120,29 @@ function checkScreenshotImages (forError, customPath, predicate) {
     if (!isDirExists(SCREENSHOTS_PATH))
         return false;
 
-    var taskDirs = fs.readdirSync(SCREENSHOTS_PATH);
+    const taskDirs = fs.readdirSync(SCREENSHOTS_PATH);
 
     if (!taskDirs || !taskDirs[0] || taskDirs.length !== 1)
         return false;
 
-    var taskDirPath = path.join(SCREENSHOTS_PATH, taskDirs[0]);
-    var list        = [];
+    const taskDirPath = path.join(SCREENSHOTS_PATH, taskDirs[0]);
+
+    let list = [];
 
     if (forError) {
-        var testDirs = fs.readdirSync(taskDirPath);
+        const testDirs = fs.readdirSync(taskDirPath);
 
         if (!testDirs || !testDirs[0] || testDirs.length !== 1)
             return false;
 
-        var testDirPath = path.join(taskDirPath, testDirs[0]);
-        var browserDirs = fs.readdirSync(testDirPath);
+        const testDirPath = path.join(taskDirPath, testDirs[0]);
+        const browserDirs = fs.readdirSync(testDirPath);
 
         browserDirs.forEach(function (browserDir) {
-            var errorDirPath    = path.join(testDirPath, browserDir, 'errors');
-            var screenshotFiles = fs.readdirSync(errorDirPath);
+            const errorDirPath    = path.join(testDirPath, browserDir, 'errors');
+            const screenshotFiles = fs.readdirSync(errorDirPath);
 
-            var screenshotPaths = screenshotFiles.map(function (screenshotFile) {
+            const screenshotPaths = screenshotFiles.map(function (screenshotFile) {
                 return path.join(errorDirPath, screenshotFile);
             });
 
@@ -168,9 +170,9 @@ function checkScreenshotImages (forError, customPath, predicate) {
             return predicate(filePath);
         }))
         .then(function (checkResults) {
-            var actualScreenshotsCount = 0;
+            let actualScreenshotsCount = 0;
 
-            for (var i = 0; i < checkResults.length; i++)
+            for (let i = 0; i < checkResults.length; i++)
                 actualScreenshotsCount += checkResults[i] ? 1 : 0;
 
             return actualScreenshotsCount === expectedScreenshotsCount;
@@ -230,22 +232,22 @@ exports.isScreenshotDirExists = function () {
 };
 
 exports.checkScreenshotsCreated = function ({ forError, customPath, screenshotsCount, runDirCount, browsersCount }) {
-    var expectedSubDirCount     = browsersCount || config.browsers.length;
-    var expectedScreenshotCount = screenshotsCount || 2;
+    const expectedSubDirCount     = browsersCount || config.browsers.length;
+    const expectedScreenshotCount = screenshotsCount || 2;
 
     if (!isDirExists(SCREENSHOTS_PATH))
         return false;
 
-    var taskDirs = fs.readdirSync(SCREENSHOTS_PATH);
+    const taskDirs = fs.readdirSync(SCREENSHOTS_PATH);
 
     if (!taskDirs || !taskDirs[0] || taskDirs.length !== 1)
         return false;
 
-    var taskDirPath = path.join(SCREENSHOTS_PATH, taskDirs[0]);
+    const taskDirPath = path.join(SCREENSHOTS_PATH, taskDirs[0]);
 
     if (customPath) {
-        var customDirExists = taskDirPath.includes(customPath);
-        var hasScreenshots  = getScreenshotFilesCount(taskDirPath, customPath) ===
+        const customDirExists = taskDirPath.includes(customPath);
+        const hasScreenshots  = getScreenshotFilesCount(taskDirPath, customPath) ===
                               expectedScreenshotCount * expectedSubDirCount;
 
         return customDirExists && hasScreenshots;
@@ -254,15 +256,15 @@ exports.checkScreenshotsCreated = function ({ forError, customPath, screenshotsC
     if (!TASK_DIR_RE.test(taskDirs[0]))
         return false;
 
-    var testDirs = fs.readdirSync(taskDirPath);
+    const testDirs = fs.readdirSync(taskDirPath);
 
     if (!testDirs || !testDirs.length || testDirs.length !== 1)
         return false;
 
-    var basePath  = null;
-    var dirs      = null;
-    var dirNameRE = null;
-    var dirPath   = null;
+    let basePath  = null;
+    let dirs      = null;
+    let dirNameRE = null;
+    let dirPath   = null;
 
     if (runDirCount) {
         basePath  = path.join(taskDirPath, testDirs[0]);

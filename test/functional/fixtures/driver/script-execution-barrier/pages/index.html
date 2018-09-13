@@ -13,7 +13,7 @@
     window.loadedScripts = 0;
 
     function appendScript (delay) {
-        var script = document.createElement('script');
+        const script = document.createElement('script');
 
         script.src = './script.js?delay=' + delay;
 
@@ -23,7 +23,7 @@
     }
 
     document.getElementById('add-scripts').addEventListener('click', function () {
-        var addedScript = appendScript(500);
+        const addedScript = appendScript(500);
 
         addedScript.onload = function () {
             appendScript(250);
@@ -35,12 +35,13 @@
     });
 
     document.getElementById('add-repetitive-adding-scripts').addEventListener('click', function () {
-        var scriptsCount    = 0;
-        var maxScriptsCount = 10;
+        const maxScriptsCount = 10;
+
+        let scriptsCount = 0;
 
         function iterate () {
             // HACK: we should request different URLs to avoid caching of response in IE 10
-            var addedScript = appendScript(1000 + scriptsCount);
+            const addedScript = appendScript(1000 + scriptsCount);
 
             addedScript.onload = function () {
                 if (++scriptsCount < maxScriptsCount)

@@ -14,7 +14,7 @@ export default class CoffeeScriptTestFileCompiler extends ESNextTestFileCompiler
         if (this.cache[filename])
             return this.cache[filename];
 
-        var transpiled = CoffeeScript.compile(code, {
+        const transpiled = CoffeeScript.compile(code, {
             filename,
             bare:      true,
             sourceMap: true,
@@ -22,9 +22,9 @@ export default class CoffeeScriptTestFileCompiler extends ESNextTestFileCompiler
             header:    false
         });
 
-        var { babel }    = loadBabelLibs();
-        var babelOptions = ESNextTestFileCompiler.getBabelOptions(filename, code);
-        var compiled     = babel.transform(transpiled.js, babelOptions);
+        const { babel }    = loadBabelLibs();
+        const babelOptions = ESNextTestFileCompiler.getBabelOptions(filename, code);
+        const compiled     = babel.transform(transpiled.js, babelOptions);
 
         this.cache[filename] = compiled.code;
 

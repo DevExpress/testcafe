@@ -1,4 +1,4 @@
-var errorInEachBrowserContains = require('../../../../assertion-helper.js').errorInEachBrowserContains;
+const errorInEachBrowserContains = require('../../../../assertion-helper.js').errorInEachBrowserContains;
 
 // NOTE: the whole Selectors API is tested in the es-next tests. The
 // goal of this tests - check different types of Selector API constructions

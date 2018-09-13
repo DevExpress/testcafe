@@ -9,7 +9,7 @@
     window.keydownSequence = '';
     window.keyupSequence   = '';
 
-    var input = document.querySelector('input');
+    const input = document.querySelector('input');
 
     input.addEventListener('keydown', function (e) {
         window.keydownSequence += e.key || e.keyIdentifier;

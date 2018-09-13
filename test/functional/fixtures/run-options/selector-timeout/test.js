@@ -1,4 +1,4 @@
-var expect = require('chai').expect;
+const expect = require('chai').expect;
 
 describe('Selector timeout', function () {
     it('Should pass if selector timeout exceeds time required for the element to appear', function () {

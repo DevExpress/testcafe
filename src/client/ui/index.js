@@ -12,10 +12,10 @@ import screenshotMark from './screenshot-mark';
 import uiRoot from './ui-root';
 
 
-var Promise        = hammerhead.Promise;
-var messageSandbox = hammerhead.eventSandbox.message;
+const Promise        = hammerhead.Promise;
+const messageSandbox = hammerhead.eventSandbox.message;
 
-var sendRequestToFrame = testCafeCore.sendRequestToFrame;
+const sendRequestToFrame = testCafeCore.sendRequestToFrame;
 
 const HIDE_REQUEST_CMD  = 'ui|hide|request';
 const HIDE_RESPONSE_CMD = 'ui|hide|response';

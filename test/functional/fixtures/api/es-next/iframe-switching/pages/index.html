@@ -21,7 +21,7 @@
         // event after this iframe is completely loaded (in other browsers, this event never waits for
         // an iframe to load). To avoid this collision, we create the iframe on the DOMContentLoaded event.
         // It helps us get rid of an unstable functional test in IE9.
-        var tooSlowlyLoadingIframe = document.createElement('iframe');
+        const tooSlowlyLoadingIframe = document.createElement('iframe');
 
         tooSlowlyLoadingIframe.id           = 'too-slowly-loading-iframe';
         tooSlowlyLoadingIframe.src          = "iframe.html?delay=10000";
@@ -44,9 +44,9 @@
 <button id="fill-iframe-without-src">Fill iframe without src</button>
 <script>
     document.getElementById('fill-iframe-without-src').addEventListener('click', function () {
-        var iframeDocument = document.getElementById('iframe-without-src').contentWindow.document;
+        const iframeDocument = document.getElementById('iframe-without-src').contentWindow.document;
 
-        var btn = iframeDocument.createElement('button');
+        const btn = iframeDocument.createElement('button');
 
         btn.id          = 'btn';
         btn.textContent = 'button';

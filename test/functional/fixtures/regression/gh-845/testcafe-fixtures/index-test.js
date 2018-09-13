@@ -16,7 +16,7 @@ test('Click on a download link', async t => {
 
     await t.click('#link');
 
-    var delay = await getDelay();
+    const delay = await getDelay();
 
     expect(delay).to.be.below(MAX_UNLOADING_TIMEOUT);
 });
@@ -28,7 +28,7 @@ test('Click on a download link in iframe', async t => {
 
     await t.click('#link');
 
-    var delay = await getDelay();
+    const delay = await getDelay();
 
     expect(delay).to.be.below(MAX_UNLOADING_TIMEOUT);
 });

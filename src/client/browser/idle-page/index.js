@@ -5,7 +5,7 @@ import COMMAND from '../../../browser/connection/command';
 
 const CHECK_STATUS_DELAY = 1000;
 
-var createXHR = () => new XMLHttpRequest();
+const createXHR = () => new XMLHttpRequest();
 
 
 class IdlePage {

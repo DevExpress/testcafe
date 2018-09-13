@@ -29,7 +29,7 @@ class Role extends EventEmitter {
     }
 
     async _navigateToLoginPage (testRun) {
-        var navigateCommand = new NavigateToCommand({ url: this.loginPage });
+        const navigateCommand = new NavigateToCommand({ url: this.loginPage });
 
         await testRun.executeCommand(navigateCommand);
     }

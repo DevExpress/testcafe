@@ -1,18 +1,18 @@
-var hammerhead = window.getTestCafeModule('hammerhead');
+const hammerhead = window.getTestCafeModule('hammerhead');
 
-var testCafeLegacyRunner = window.getTestCafeModule('testCafeLegacyRunner');
-var actionsAPI           = testCafeLegacyRunner.get('./api/actions');
-var StepIterator         = testCafeLegacyRunner.get('./step-iterator');
-var initAutomation       = testCafeLegacyRunner.get('./init-automation');
+const testCafeLegacyRunner = window.getTestCafeModule('testCafeLegacyRunner');
+const actionsAPI           = testCafeLegacyRunner.get('./api/actions');
+const StepIterator         = testCafeLegacyRunner.get('./step-iterator');
+const initAutomation       = testCafeLegacyRunner.get('./init-automation');
 
-var stepIterator = new StepIterator();
+const stepIterator = new StepIterator();
 
 initAutomation();
 actionsAPI.init(stepIterator);
 
 $(document).ready(function () {
     asyncTest('navigate to given url', function () {
-        var locationValue = null;
+        let locationValue = null;
 
         hammerhead.navigateTo = function (url) {
             locationValue = url;

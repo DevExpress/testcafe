@@ -1,6 +1,6 @@
 import hammerhead from '../deps/hammerhead';
 
-var browserUtils = hammerhead.utils.browser;
+const browserUtils = hammerhead.utils.browser;
 
 
 const MODIFIERS = {
@@ -55,9 +55,9 @@ const SPECIAL_KEYS = {
 };
 
 function reverseMap (map) {
-    var reversed = {};
+    const reversed = {};
 
-    for (var key in map) {
+    for (const key in map) {
         if (map.hasOwnProperty(key))
             reversed[map[key]] = key;
     }

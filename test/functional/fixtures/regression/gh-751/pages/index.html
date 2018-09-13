@@ -15,7 +15,7 @@
         window.dblclickEvents.push(Date.now());
     }
 
-    var dblclickBtn = document.getElementById('dblclick');
+    const dblclickBtn = document.getElementById('dblclick');
 
     dblclickBtn.addEventListener('mouseup', logDblclickPerformance);
     dblclickBtn.addEventListener('click', logDblclickPerformance);
@@ -31,13 +31,13 @@
     }
 
     function doHardWork () {
-        var startTime = Date.now();
+        const startTime = Date.now();
 
         while (Date.now() < startTime + window.HARD_WORK_TIME) {
         }
     }
 
-    var hardWorkMousedownBtn = document.getElementById('hardWorkMousedown');
+    const hardWorkMousedownBtn = document.getElementById('hardWorkMousedown');
 
     hardWorkMousedownBtn.addEventListener('mousedown', logClickPerformance);
     hardWorkMousedownBtn.addEventListener('mouseup', logClickPerformance);

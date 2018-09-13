@@ -8,7 +8,7 @@ export function createReplicator (transforms) {
     // to JSON with a command or command result.
     // Therefore there is no need to do additional job here,
     // so we use identity functions for serialization.
-    var replicator = new Replicator({
+    const replicator = new Replicator({
         serialize:   identity,
         deserialize: identity
     });
@@ -28,7 +28,7 @@ export class FunctionTransform {
     }
 
     toSerializable (fn) {
-        var clientFnBuilder = fn[functionBuilderSymbol];
+        const clientFnBuilder = fn[functionBuilderSymbol];
 
         if (clientFnBuilder) {
             return {

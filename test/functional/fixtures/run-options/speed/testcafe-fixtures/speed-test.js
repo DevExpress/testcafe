@@ -7,7 +7,7 @@ test('Decrease speed', async t => {
     // NOTE: do the first click to wait while the page is loaded
     await t.click('#button1');
 
-    var startTime = Date.now();
+    const startTime = Date.now();
 
     await t.click('#button1');
 
@@ -20,7 +20,7 @@ test('Decrease speed in iframe', async t => {
         .switchToIframe('#iframe')
         .click('#button1');
 
-    var startTime = Date.now();
+    const startTime = Date.now();
 
     await t.click('#button1');
 
@@ -31,7 +31,7 @@ test('Default speed', async t => {
     // NOTE: do the first click to wait while the page is loaded
     await t.click('#button1');
 
-    var startTime = Date.now();
+    const startTime = Date.now();
 
     await t.click('#button1');
 

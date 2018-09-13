@@ -18,7 +18,7 @@
 <!--Click without offset options test-->
 <script>
     document.querySelector('#div').addEventListener('click', function (e) {
-        var rect = document.getElementById('div').getBoundingClientRect();
+        const rect = document.getElementById('div').getBoundingClientRect();
 
         window.clickOffset = { x: e.pageX - rect.left, y: e.pageY - rect.top };
     });
@@ -27,7 +27,7 @@
 <input id="statusBtn" type="button">
 <script>
     document.querySelector('#statusBtn').addEventListener('click', function () {
-        var status = document.querySelector('#status');
+        const status = document.querySelector('#status');
 
         status.textContent = 'Clicked!';
     });

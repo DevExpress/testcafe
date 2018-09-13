@@ -1,33 +1,33 @@
-var testCafeLegacyRunner = window.getTestCafeModule('testCafeLegacyRunner');
-var ERROR_TYPE           = testCafeLegacyRunner.get('../test-run-error/type');
-var SETTINGS             = testCafeLegacyRunner.get('./settings').get();
-var actionsAPI           = testCafeLegacyRunner.get('./api/actions');
-var StepIterator         = testCafeLegacyRunner.get('./step-iterator');
+const testCafeLegacyRunner = window.getTestCafeModule('testCafeLegacyRunner');
+const ERROR_TYPE           = testCafeLegacyRunner.get('../test-run-error/type');
+const SETTINGS             = testCafeLegacyRunner.get('./settings').get();
+const actionsAPI           = testCafeLegacyRunner.get('./api/actions');
+const StepIterator         = testCafeLegacyRunner.get('./step-iterator');
 
 
-var stepIterator   = new StepIterator();
-var initAutomation = testCafeLegacyRunner.get('./init-automation');
+const stepIterator   = new StepIterator();
+const initAutomation = testCafeLegacyRunner.get('./init-automation');
 
 initAutomation();
 actionsAPI.init(stepIterator);
 
-var ELEMENT_WAITING_TIMEOUT = 400;
+const ELEMENT_WAITING_TIMEOUT = 400;
 
 actionsAPI.setElementAvailabilityWaitingTimeout(ELEMENT_WAITING_TIMEOUT);
 
 $(document).ready(function () {
-    var asyncActionCallback;
-    var currentErrorType   = null;
-    var currentSourceIndex = null;
-    var $input;
+    let asyncActionCallback;
+    let currentErrorType   = null;
+    let currentSourceIndex = null;
+    let $input;
 
     //constants
-    var TEST_ELEMENT_CLASS = 'testElement';
+    const TEST_ELEMENT_CLASS = 'testElement';
 
     //utils
-    var runAsyncTest = function (actions, assertions, timeout) {
-        var timeoutId        = null;
-        var callbackFunction = function () {
+    const runAsyncTest = function (actions, assertions, timeout) {
+        let timeoutId        = null;
+        let callbackFunction = function () {
             clearTimeout(timeoutId);
             assertions();
             start();
@@ -46,7 +46,7 @@ $(document).ready(function () {
     };
 
     StepIterator.prototype.asyncActionSeries = function (items, runArgumentsIterator, action) {
-        var seriesActionsRun = function (elements, callback) {
+        const seriesActionsRun = function (elements, callback) {
             window.async.forEachSeries(
                 elements,
                 function (element, seriaCallback) {
@@ -87,8 +87,8 @@ $(document).ready(function () {
     });
 
     asyncTest('by default type command concats new text with the old one', function () {
-        var newText     = 'new text';
-        var oldText     = 'old text';
+        const newText     = 'new text';
+        const oldText     = 'old text';
 
         $input[0].value = oldText;
         runAsyncTest(

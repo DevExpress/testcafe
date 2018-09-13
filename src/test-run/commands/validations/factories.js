@@ -5,12 +5,12 @@
 
 export function createIntegerValidator (ErrorCtor) {
     return (name, val) => {
-        var valType = typeof val;
+        const valType = typeof val;
 
         if (valType !== 'number')
             throw new ErrorCtor(name, valType);
 
-        var isInteger = !isNaN(val) &&
+        const isInteger = !isNaN(val) &&
                         isFinite(val) &&
                         val === Math.floor(val);
 
@@ -20,7 +20,7 @@ export function createIntegerValidator (ErrorCtor) {
 }
 
 export function createPositiveIntegerValidator (ErrorCtor) {
-    var integerValidator = createIntegerValidator(ErrorCtor);
+    const integerValidator = createIntegerValidator(ErrorCtor);
 
     return (name, val) => {
         integerValidator(name, val);
@@ -32,7 +32,7 @@ export function createPositiveIntegerValidator (ErrorCtor) {
 
 export function createBooleanValidator (ErrorCtor) {
     return (name, val) => {
-        var valType = typeof val;
+        const valType = typeof val;
 
         if (valType !== 'boolean')
             throw new ErrorCtor(name, valType);
@@ -41,7 +41,7 @@ export function createBooleanValidator (ErrorCtor) {
 
 export function createSpeedValidator (ErrorCtor) {
     return (name, val) => {
-        var valType = typeof val;
+        const valType = typeof val;
 
         if (valType !== 'number')
             throw new ErrorCtor(name, valType);

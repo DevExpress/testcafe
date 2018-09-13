@@ -8,11 +8,11 @@
 </head>
 <body>
 <script type="text/javascript">
-    var hammerhead = window['%hammerhead%'];
+    const hammerhead = window['%hammerhead%'];
 
     hammerhead.start({ sessionId: 'sessionId' });
 
-    var sandboxedJQuery = window['%testCafeCore%'].get('./sandboxed-jquery');
+    const sandboxedJQuery = window['%testCafeCore%'].get('./sandboxed-jquery');
 
     sandboxedJQuery.init(window);
 </script>

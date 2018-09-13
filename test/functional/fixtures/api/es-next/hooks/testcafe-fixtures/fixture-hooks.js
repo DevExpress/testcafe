@@ -1,7 +1,7 @@
 import delay from '../../../../../../../src/utils/delay';
 import getTimeLimitedPromise from 'time-limit-promise';
 
-var hooksExecuted = {
+const hooksExecuted = {
     fixture1Before: 0,
     fixture1After:  0,
     fixture2Before: 0

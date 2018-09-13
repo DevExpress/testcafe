@@ -7,81 +7,81 @@ fixture `GH-851`
 const getEventStorage = ClientFunction(() => window.eventStorage);
 
 test('Raise click for common parent', async t => {
-    var expectedEvents = ['body click'];
+    const expectedEvents = ['body click'];
 
     await t.click('#div1');
 
-    var actualEvents = await getEventStorage();
+    const actualEvents = await getEventStorage();
 
     expect(actualEvents).deep.eql(expectedEvents);
 });
 
 test('Raise click for top element', async t => {
-    var expectedEvents = ['body click'];
+    const expectedEvents = ['body click'];
 
     await t.click('#div2');
 
-    var actualEvents = await getEventStorage();
+    const actualEvents = await getEventStorage();
 
     expect(actualEvents).deep.eql(expectedEvents);
 });
 
 test('Raise dblclick for common element', async t => {
-    var expectedEvents = ['div click', 'body click', 'body dblclick'];
+    const expectedEvents = ['div click', 'body click', 'body dblclick'];
 
     await t.doubleClick('#div3');
 
-    var actualEvents = await getEventStorage();
+    const actualEvents = await getEventStorage();
 
     expect(actualEvents).deep.eql(expectedEvents);
 });
 
 test('Raise dblclick for a top element', async t => {
-    var expectedEvents = ['div click', 'body click', 'body dblclick'];
+    const expectedEvents = ['div click', 'body click', 'body dblclick'];
 
     await t.doubleClick('#div4');
 
-    var actualEvents = await getEventStorage();
+    const actualEvents = await getEventStorage();
 
     expect(actualEvents).deep.eql(expectedEvents);
 });
 
 test("Don't raise click for common parent", async t => {
-    var expectedEvents = [];
+    const expectedEvents = [];
 
     await t.click('#div1');
 
-    var actualEvents = await getEventStorage();
+    const actualEvents = await getEventStorage();
 
     expect(actualEvents).deep.eql(expectedEvents);
 });
 
 test("Don't raise click for top element", async t => {
-    var expectedEvents = [];
+    const expectedEvents = [];
 
     await t.click('#div2');
 
-    var actualEvents = await getEventStorage();
+    const actualEvents = await getEventStorage();
 
     expect(actualEvents).deep.eql(expectedEvents);
 });
 
 test("Don't raise dblclick for common element", async t => {
-    var expectedEvents = ['div click'];
+    const expectedEvents = ['div click'];
 
     await t.doubleClick('#div3');
 
-    var actualEvents = await getEventStorage();
+    const actualEvents = await getEventStorage();
 
     expect(actualEvents).deep.eql(expectedEvents);
 });
 
 test("Don't raise dblclick for a top element", async t => {
-    var expectedEvents = ['div click'];
+    const expectedEvents = ['div click'];
 
     await t.doubleClick('#div4');
 
-    var actualEvents = await getEventStorage();
+    const actualEvents = await getEventStorage();
 
     expect(actualEvents).deep.eql(expectedEvents);
 });

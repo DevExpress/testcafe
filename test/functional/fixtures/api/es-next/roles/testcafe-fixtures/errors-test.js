@@ -18,7 +18,7 @@ test('useRole argument', async t => {
 
 test('Error restoring configuration', async t => {
     await t.eval(() => {
-        var iframe = document.createElement('iframe');
+        const iframe = document.createElement('iframe');
 
         iframe.id = 'new-iframe';
         document.body.appendChild(iframe);

@@ -30,9 +30,9 @@ async function runWMIC (args) {
 }
 
 async function findProcessWin (processOptions) {
-    var wmicArgs    = ['process', 'where', `commandline like '%${processOptions.arguments}%' and name <> 'cmd.exe' and name <> 'wmic.exe'`, 'get', 'processid'];
-    var wmicOutput  = await runWMIC(wmicArgs);
-    var processList = wmicOutput.split(/\s*\n/);
+    const wmicArgs    = ['process', 'where', `commandline like '%${processOptions.arguments}%' and name <> 'cmd.exe' and name <> 'wmic.exe'`, 'get', 'processid'];
+    const wmicOutput  = await runWMIC(wmicArgs);
+    let processList = wmicOutput.split(/\s*\n/);
 
     processList = processList
         // NOTE: remove list's header and empty last element, caused by trailing newline
@@ -43,8 +43,8 @@ async function findProcessWin (processOptions) {
 }
 
 export default async function (browserId) {
-    var processOptions = { arguments: browserId, psargs: '-ef' };
-    var processList    = OS.win ? await findProcessWin(processOptions) : await findProcess(processOptions);
+    const processOptions = { arguments: browserId, psargs: '-ef' };
+    const processList    = OS.win ? await findProcessWin(processOptions) : await findProcess(processOptions);
 
     if (!processList.length)
         return true;

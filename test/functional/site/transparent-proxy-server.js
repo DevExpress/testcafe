@@ -1,10 +1,10 @@
-var http   = require('http');
-var urlLib = require('url');
+const http   = require('http');
+const urlLib = require('url');
 
-var server  = null;
-var sockets = null;
+let server  = null;
+let sockets = null;
 
-var agentsCache = {};
+const agentsCache = {};
 
 function start (port) {
     sockets = [];
@@ -15,7 +15,7 @@ function start (port) {
 
     server
         .on('request', (req, res) => {
-            var reqOptions = urlLib.parse(req.url);
+            const reqOptions = urlLib.parse(req.url);
 
             reqOptions.method  = req.method;
             reqOptions.headers = req.headers;
@@ -25,7 +25,7 @@ function start (port) {
 
             reqOptions.agent = agentsCache[reqOptions.headers['user-agent']];
 
-            var serverReq = http.request(reqOptions, function (serverRes) {
+            const serverReq = http.request(reqOptions, function (serverRes) {
                 res.writeHead(serverRes.statusCode, serverRes.headers);
 
                 if (serverRes.headers.connection && serverRes.headers.connection === 'close')
@@ -37,7 +37,7 @@ function start (port) {
             req.pipe(serverReq);
         });
 
-    var connectionHandler = function (socket) {
+    const connectionHandler = function (socket) {
         sockets.push(socket);
 
         socket.on('close', function () {

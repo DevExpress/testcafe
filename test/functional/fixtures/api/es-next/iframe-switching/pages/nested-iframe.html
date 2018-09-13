@@ -16,7 +16,7 @@
     });
 
     document.getElementById('remove-parent-iframe-btn').addEventListener('click', function () {
-        var iframe = window.top.document.getElementById('iframe');
+        const iframe = window.top.document.getElementById('iframe');
 
         iframe.parentElement.removeChild(iframe);
     });

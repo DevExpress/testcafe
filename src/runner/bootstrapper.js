@@ -25,8 +25,8 @@ export default class Bootstrapper {
     }
 
     static _splitBrowserInfo (browserInfo) {
-        var remotes   = [];
-        var automated = [];
+        const remotes   = [];
+        const automated = [];
 
         browserInfo.forEach(browser => {
             if (browser instanceof BrowserConnection)
@@ -42,7 +42,7 @@ export default class Bootstrapper {
         if (!this.browsers.length)
             throw new GeneralError(MESSAGE.browserNotSet);
 
-        var browserInfo = await Promise.all(this.browsers.map(browser => browserProviderPool.getBrowserInfo(browser)));
+        const browserInfo = await Promise.all(this.browsers.map(browser => browserProviderPool.getBrowserInfo(browser)));
 
         return flatten(browserInfo);
     }
@@ -56,12 +56,12 @@ export default class Bootstrapper {
     }
 
     async _getBrowserConnections (browserInfo) {
-        var { automated, remotes } = Bootstrapper._splitBrowserInfo(browserInfo);
+        const { automated, remotes } = Bootstrapper._splitBrowserInfo(browserInfo);
 
         if (remotes && remotes.length % this.concurrency)
             throw new GeneralError(MESSAGE.cannotDivideRemotesCountByConcurrency);
 
-        var browserConnections = this._createAutomatedConnections(automated);
+        let browserConnections = this._createAutomatedConnections(automated);
 
         browserConnections = browserConnections.concat(chunk(remotes, this.concurrency));
 
@@ -91,7 +91,7 @@ export default class Bootstrapper {
     }
 
     _getReporterPlugins () {
-        var stdoutReporters = filter(this.reporters, r => isUndefined(r.outStream) || r.outStream === process.stdout);
+        const stdoutReporters = filter(this.reporters, r => isUndefined(r.outStream) || r.outStream === process.stdout);
 
         if (stdoutReporters.length > 1)
             throw new GeneralError(MESSAGE.multipleStdoutReporters, stdoutReporters.map(r => r.name).join(', '));
@@ -124,7 +124,7 @@ export default class Bootstrapper {
 
     async _startTestedApp () {
         if (this.appCommand) {
-            var testedApp = new TestedApp();
+            const testedApp = new TestedApp();
 
             await testedApp.start(this.appCommand, this.appInitDelay);
 
@@ -137,16 +137,16 @@ export default class Bootstrapper {
 
     // API
     async createRunnableConfiguration () {
-        var reporterPlugins = this._getReporterPlugins();
+        const reporterPlugins = this._getReporterPlugins();
 
         // NOTE: If a user forgot to specify a browser, but has specified a path to tests, the specified path will be
         // considered as the browser argument, and the tests path argument will have the predefined default value.
         // It's very ambiguous for the user, who might be confused by compilation errors from an unexpected test.
         // So, we need to retrieve the browser aliases and paths before tests compilation.
-        var browserInfo = await this._getBrowserInfo();
-        var tests       = await this._getTests();
-        var testedApp   = await this._startTestedApp();
-        var browserSet  = await this._getBrowserConnections(browserInfo);
+        const browserInfo = await this._getBrowserInfo();
+        const tests       = await this._getTests();
+        const testedApp   = await this._startTestedApp();
+        const browserSet  = await this._getBrowserConnections(browserInfo);
 
         return { reporterPlugins, browserSet, tests, testedApp };
     }

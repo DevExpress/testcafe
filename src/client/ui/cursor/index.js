@@ -4,14 +4,14 @@ import uiRoot from '../ui-root';
 import CURSOR_UI_MESSAGES from './messages';
 
 
-var Promise          = hammerhead.Promise;
-var shadowUI         = hammerhead.shadowUI;
-var browserUtils     = hammerhead.utils.browser;
-var featureDetection = hammerhead.utils.featureDetection;
-var messageSandbox   = hammerhead.eventSandbox.message;
+const Promise          = hammerhead.Promise;
+const shadowUI         = hammerhead.shadowUI;
+const browserUtils     = hammerhead.utils.browser;
+const featureDetection = hammerhead.utils.featureDetection;
+const messageSandbox   = hammerhead.eventSandbox.message;
 
-var styleUtils    = testCafeCore.styleUtils;
-var positionUtils = testCafeCore.positionUtils;
+const styleUtils    = testCafeCore.styleUtils;
+const positionUtils = testCafeCore.positionUtils;
 
 const CURSOR_CLASS       = 'cursor';
 const TOUCH_CLASS        = 'touch';
@@ -21,11 +21,13 @@ const STATE_CLASSES      = [L_MOUSE_DOWN_CLASS, R_MOUSE_DOWN_CLASS].join(' ');
 
 // Setup cross-iframe interaction
 messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
-    var msg = e.message;
+    const msg = e.message;
+
+    let position = null;
 
     switch (msg.cmd) {
         case CURSOR_UI_MESSAGES.moveRequest:
-            var position = positionUtils.getIframePointRelativeToParentFrame({ x: msg.x, y: msg.y }, e.source);
+            position = positionUtils.getIframePointRelativeToParentFrame({ x: msg.x, y: msg.y }, e.source);
 
             CursorUI
                 .move(position.x, position.y)
@@ -50,7 +52,7 @@ messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
     }
 });
 
-var CursorUI = {
+const CursorUI = {
     cursorElement:  null,
     x:              50,
     y:              50,

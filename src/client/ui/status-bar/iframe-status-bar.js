@@ -3,8 +3,8 @@ import testCafeCore from './../deps/testcafe-core';
 import MESSAGES from './messages';
 import StatusBar from './index';
 
-var sendRequestToFrame = testCafeCore.sendRequestToFrame;
-var messageSandbox     = hammerhead.eventSandbox.message;
+const sendRequestToFrame = testCafeCore.sendRequestToFrame;
+const messageSandbox     = hammerhead.eventSandbox.message;
 
 
 export default class IframeStatusBar extends StatusBar {
@@ -18,7 +18,7 @@ export default class IframeStatusBar extends StatusBar {
     }
 
     hideWaitingElementStatus (waitingSuccess) {
-        var msg = { cmd: MESSAGES.endWaitingElementRequest, waitingSuccess };
+        const msg = { cmd: MESSAGES.endWaitingElementRequest, waitingSuccess };
 
         return sendRequestToFrame(msg, MESSAGES.endWaitingElementResponse, window.top);
     }
@@ -28,7 +28,7 @@ export default class IframeStatusBar extends StatusBar {
     }
 
     hideWaitingAssertionRetriesStatus (waitingSuccess) {
-        var msg = { cmd: MESSAGES.endWaitingAssertionRetriesRequest, waitingSuccess };
+        const msg = { cmd: MESSAGES.endWaitingAssertionRetriesRequest, waitingSuccess };
 
         return sendRequestToFrame(msg, MESSAGES.endWaitingAssertionRetriesResponse, window.top);
     }

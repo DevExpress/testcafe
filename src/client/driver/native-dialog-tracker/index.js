@@ -4,9 +4,9 @@ import ClientFunctionExecutor from '../command-executors/client-functions/client
 import MESSAGE_TYPE from './messages';
 
 
-var messageSandbox = hammerhead.eventSandbox.message;
-var processScript  = hammerhead.processScript;
-var nativeMethods  = hammerhead.nativeMethods;
+const messageSandbox = hammerhead.eventSandbox.message;
+const processScript  = hammerhead.processScript;
+const nativeMethods  = hammerhead.nativeMethods;
 
 const APPEARED_DIALOGS                  = 'testcafe|native-dialog-tracker|appeared-dialogs';
 const UNEXPECTED_DIALOG                 = 'testcafe|native-dialog-tracker|unexpected-dialog';
@@ -27,7 +27,7 @@ export default class NativeDialogTracker {
     }
 
     get appearedDialogs () {
-        var dialogs = this.contextStorage.getItem(APPEARED_DIALOGS);
+        let dialogs = this.contextStorage.getItem(APPEARED_DIALOGS);
 
         if (!dialogs) {
             dialogs              = [];
@@ -63,7 +63,7 @@ export default class NativeDialogTracker {
 
     _initListening () {
         messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
-            var msg = e.message;
+            const msg = e.message;
 
             if (msg.type === MESSAGE_TYPE.appearedDialog)
                 // eslint-disable-next-line no-restricted-properties
@@ -81,7 +81,7 @@ export default class NativeDialogTracker {
         hammerhead.on(hammerhead.EVENTS.beforeUnload, e => {
             if (e.prevented && !e.isFakeIEEvent) {
                 if (this.dialogHandler) {
-                    var handler = this._createDialogHandler('beforeunload');
+                    const handler = this._createDialogHandler('beforeunload');
 
                     handler(e.returnValue || '');
                 }
@@ -101,12 +101,12 @@ export default class NativeDialogTracker {
 
     _createDialogHandler (type) {
         return text => {
-            var url = NativeDialogTracker._getPageUrl();
+            const url = NativeDialogTracker._getPageUrl();
 
             this._addAppearedDialogs(type, text, url);
 
-            var executor = new ClientFunctionExecutor(this.dialogHandler);
-            var result   = null;
+            const executor = new ClientFunctionExecutor(this.dialogHandler);
+            let result   = null;
 
             try {
                 result = executor.fn.apply(window, [type, text, url]);
@@ -121,7 +121,7 @@ export default class NativeDialogTracker {
 
     // Overridable methods
     _defaultDialogHandler (type) {
-        var url = NativeDialogTracker._getPageUrl();
+        const url = NativeDialogTracker._getPageUrl();
 
         this.unexpectedDialog = this.unexpectedDialog || { type, url };
     }
@@ -146,8 +146,8 @@ export default class NativeDialogTracker {
     }
 
     getUnexpectedDialogError () {
-        var unexpectedDialog = this.unexpectedDialog;
-        var handlerError     = this.handlerError;
+        const unexpectedDialog = this.unexpectedDialog;
+        const handlerError     = this.handlerError;
 
         this.unexpectedDialog = null;
         this.handlerError     = null;

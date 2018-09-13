@@ -41,7 +41,7 @@ export default class TestRunBookmark {
 
     async _restoreDialogHandler () {
         if (this.testRun.activeDialogHandler !== this.dialogHandler) {
-            var restoreDialogCommand = new SetNativeDialogHandlerCommand({ dialogHandler: { fn: this.dialogHandler } });
+            const restoreDialogCommand = new SetNativeDialogHandlerCommand({ dialogHandler: { fn: this.dialogHandler } });
 
             await this.testRun.executeCommand(restoreDialogCommand);
         }
@@ -49,7 +49,7 @@ export default class TestRunBookmark {
 
     async _restoreSpeed () {
         if (this.testRun.speed !== this.speed) {
-            var restoreSpeedCommand = new SetTestSpeedCommand({ speed: this.speed });
+            const restoreSpeedCommand = new SetTestSpeedCommand({ speed: this.speed });
 
             await this.testRun.executeCommand(restoreSpeedCommand);
         }
@@ -57,7 +57,7 @@ export default class TestRunBookmark {
 
     async _restorePageLoadTimeout () {
         if (this.testRun.pageLoadTimeout !== this.pageLoadTimeout) {
-            var restorePageLoadTimeoutCommand = new SetPageLoadTimeoutCommand({ duration: this.pageLoadTimeout });
+            const restorePageLoadTimeoutCommand = new SetPageLoadTimeoutCommand({ duration: this.pageLoadTimeout });
 
             await this.testRun.executeCommand(restorePageLoadTimeoutCommand);
         }
@@ -65,7 +65,7 @@ export default class TestRunBookmark {
 
     async _restoreWorkingFrame () {
         if (this.testRun.activeIframeSelector !== this.iframeSelector) {
-            var switchWorkingFrameCommand = this.iframeSelector ?
+            const switchWorkingFrameCommand = this.iframeSelector ?
                 new SwitchToIframeCommand({ selector: this.iframeSelector }) :
                 new SwitchToMainWindowCommand();
 
@@ -85,13 +85,13 @@ export default class TestRunBookmark {
     }
 
     async _restorePage (url, stateSnapshot) {
-        var navigateCommand = new NavigateToCommand({ url, stateSnapshot });
+        const navigateCommand = new NavigateToCommand({ url, stateSnapshot });
 
         await this.testRun.executeCommand(navigateCommand);
     }
 
     async restore (callsite, stateSnapshot) {
-        var prevPhase = this.testRun.phase;
+        const prevPhase = this.testRun.phase;
 
         this.testRun.phase = TEST_RUN_PHASE.inBookmarkRestore;
 
@@ -104,8 +104,8 @@ export default class TestRunBookmark {
             await this._restorePageLoadTimeout();
             await this._restoreDialogHandler();
 
-            var preserveUrl = this.role.opts.preserveUrl;
-            var url = preserveUrl ? this.role.url : this.url;
+            const preserveUrl = this.role.opts.preserveUrl;
+            const url = preserveUrl ? this.role.url : this.url;
 
             await this._restorePage(url, JSON.stringify(stateSnapshot));
 

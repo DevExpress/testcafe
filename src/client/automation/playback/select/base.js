@@ -8,17 +8,17 @@ import { MoveOptions } from '../../../../test-run/commands/options';
 import cursor from '../../cursor';
 import AUTOMATION_ERROR_TYPES from '../../errors';
 
-var Promise          = hammerhead.Promise;
-var browserUtils     = hammerhead.utils.browser;
-var featureDetection = hammerhead.utils.featureDetection;
-var eventSimulator   = hammerhead.eventSandbox.eventSimulator;
-var focusBlurSandbox = hammerhead.eventSandbox.focusBlur;
+const Promise          = hammerhead.Promise;
+const browserUtils     = hammerhead.utils.browser;
+const featureDetection = hammerhead.utils.featureDetection;
+const eventSimulator   = hammerhead.eventSandbox.eventSimulator;
+const focusBlurSandbox = hammerhead.eventSandbox.focusBlur;
 
-var contentEditable = testCafeCore.contentEditable;
-var domUtils        = testCafeCore.domUtils;
-var positionUtils   = testCafeCore.positionUtils;
-var eventUtils      = testCafeCore.eventUtils;
-var delay           = testCafeCore.delay;
+const contentEditable = testCafeCore.contentEditable;
+const domUtils        = testCafeCore.domUtils;
+const positionUtils   = testCafeCore.positionUtils;
+const eventUtils      = testCafeCore.eventUtils;
+const delay           = testCafeCore.delay;
 
 
 export default class SelectBaseAutomation extends VisibleElementAutomation {
@@ -46,7 +46,7 @@ export default class SelectBaseAutomation extends VisibleElementAutomation {
     }
 
     static _calculateEventArguments (point) {
-        var clientPoint = positionUtils.offsetToClientCoords(point);
+        const clientPoint = positionUtils.offsetToClientCoords(point);
 
         return getElementFromPoint(clientPoint.x, clientPoint.y)
             .then(({ element }) => {
@@ -64,8 +64,8 @@ export default class SelectBaseAutomation extends VisibleElementAutomation {
     }
 
     _move ({ element, offsetX, offsetY, speed }) {
-        var moveOptions    = new MoveOptions({ offsetX, offsetY, speed }, false);
-        var moveAutomation = new MoveAutomation(element, moveOptions);
+        const moveOptions    = new MoveOptions({ offsetX, offsetY, speed }, false);
+        const moveAutomation = new MoveAutomation(element, moveOptions);
 
         return moveAutomation
             .run()
@@ -73,7 +73,7 @@ export default class SelectBaseAutomation extends VisibleElementAutomation {
     }
 
     _bindMousedownHandler () {
-        var onmousedown = e => {
+        const onmousedown = e => {
             this.eventState.mousedownPrevented = e.defaultPrevented;
             eventUtils.preventDefault(e);
             eventUtils.unbind(this.element, 'mousedown', onmousedown);
@@ -95,7 +95,7 @@ export default class SelectBaseAutomation extends VisibleElementAutomation {
 
         this.clientPoint = selectUtils.excludeElementScroll(this.element, point);
 
-        var moveArguments = {
+        const moveArguments = {
             element: document.documentElement,
             offsetX: this.clientPoint.x,
             offsetY: this.clientPoint.y,
@@ -114,7 +114,7 @@ export default class SelectBaseAutomation extends VisibleElementAutomation {
 
                 // NOTE: In WebKit and IE, the mousedown event opens the select element's dropdown;
                 // therefore, we should prevent mousedown and hide the dropdown (B236416).
-                var needCloseSelectDropDown = (browserUtils.isWebKit || browserUtils.isIE) &&
+                const needCloseSelectDropDown = (browserUtils.isWebKit || browserUtils.isIE) &&
                                               domUtils.isSelectElement(this.element);
 
                 if (needCloseSelectDropDown)
@@ -133,7 +133,7 @@ export default class SelectBaseAutomation extends VisibleElementAutomation {
     _focus () {
         return new Promise(resolve => {
             // NOTE: If the target element is a child of a contentEditable element, we need to call focus for its parent
-            var elementForFocus = domUtils.isContentEditableElement(this.element) ?
+            const elementForFocus = domUtils.isContentEditableElement(this.element) ?
                 contentEditable.findContentEditableParent(this.element) : this.element;
 
             focusBlurSandbox.focus(elementForFocus, resolve, false, true);

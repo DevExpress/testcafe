@@ -9,11 +9,11 @@
 <script>
     window.storedValue = '';
 
-    var input = document.querySelector('input');
-    var div   = document.querySelector('div');
+    const input = document.querySelector('input');
+    const div   = document.querySelector('div');
 
-    var storeValue = function (event) {
-        var target = event.target;
+    const storeValue = function (event) {
+        const target = event.target;
 
         window.storedValue = target.value || target.innerText;
 

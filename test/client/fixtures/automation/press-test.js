@@ -1,24 +1,24 @@
-var testCafeCore      = window.getTestCafeModule('testCafeCore');
-var parseKeySequence  = testCafeCore.get('./utils/parse-key-sequence');
-var domUtils          = testCafeCore.get('./utils/dom');
-var textSelection     = testCafeCore.get('./utils/text-selection');
+const testCafeCore      = window.getTestCafeModule('testCafeCore');
+const parseKeySequence  = testCafeCore.get('./utils/parse-key-sequence');
+const domUtils          = testCafeCore.get('./utils/dom');
+const textSelection     = testCafeCore.get('./utils/text-selection');
 
-var testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
-var PressAutomation    = testCafeAutomation.Press;
+const testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
+const PressAutomation    = testCafeAutomation.Press;
 
 testCafeCore.preventRealEvents();
 
-var hammerhead    = window.getTestCafeModule('hammerhead');
-var iframeSandbox = hammerhead.sandbox.iframe;
-var browserUtils  = hammerhead.utils.browser;
-var nativeMethods = hammerhead.nativeMethods;
+const hammerhead    = window.getTestCafeModule('hammerhead');
+const iframeSandbox = hammerhead.sandbox.iframe;
+const browserUtils  = hammerhead.utils.browser;
+const nativeMethods = hammerhead.nativeMethods;
 
 
 $(document).ready(function () {
-    var $input = null;
+    let $input = null;
 
     //constants
-    var TEST_ELEMENT_CLASS = 'testElement';
+    const TEST_ELEMENT_CLASS = 'testElement';
 
 
     //tests
@@ -41,7 +41,7 @@ $(document).ready(function () {
     module('different scenarios');
 
     asyncTest('press a', function () {
-        var press = new PressAutomation(parseKeySequence('left a').combinations, {});
+        const press = new PressAutomation(parseKeySequence('left a').combinations, {});
 
         press
             .run()
@@ -52,7 +52,7 @@ $(document).ready(function () {
     });
 
     asyncTest('press +', function () {
-        var press = new PressAutomation(parseKeySequence('+ shift++').combinations, {});
+        const press = new PressAutomation(parseKeySequence('+ shift++').combinations, {});
 
         press
             .run()
@@ -63,7 +63,7 @@ $(document).ready(function () {
     });
 
     asyncTest('press space', function () {
-        var press = new PressAutomation(parseKeySequence('left space').combinations, {});
+        const press = new PressAutomation(parseKeySequence('left space').combinations, {});
 
         press
             .run()
@@ -74,7 +74,7 @@ $(document).ready(function () {
     });
 
     asyncTest('press shift+a', function () {
-        var press = new PressAutomation(parseKeySequence('shift+a').combinations, {});
+        const press = new PressAutomation(parseKeySequence('shift+a').combinations, {});
 
         press
             .run()
@@ -85,7 +85,7 @@ $(document).ready(function () {
     });
 
     asyncTest('press shift+1', function () {
-        var press = new PressAutomation(parseKeySequence('shift+1').combinations, {});
+        const press = new PressAutomation(parseKeySequence('shift+1').combinations, {});
 
         press
             .run()
@@ -100,7 +100,7 @@ $(document).ready(function () {
         $('body').focus();
         $input.attr('tabIndex', 1);
 
-        var press = new PressAutomation(parseKeySequence('tab').combinations, {});
+        const press = new PressAutomation(parseKeySequence('tab').combinations, {});
 
         press
             .run()
@@ -113,7 +113,7 @@ $(document).ready(function () {
     });
 
     asyncTest('press tab with tabIndexes', function () {
-        var $input2 = $('<input type="text" id="$input2" class="input"/>')
+        const $input2 = $('<input type="text" id="$input2" class="input"/>')
             .addClass(TEST_ELEMENT_CLASS)
             .appendTo($('body'))
             .attr('tabIndex', 1);
@@ -122,7 +122,7 @@ $(document).ready(function () {
         domUtils.getActiveElement().blur();
         $('body').focus();
 
-        var press = new PressAutomation(parseKeySequence('tab').combinations, {});
+        const press = new PressAutomation(parseKeySequence('tab').combinations, {});
 
         press
             .run()
@@ -133,11 +133,11 @@ $(document).ready(function () {
     });
 
     asyncTest('press tab with iframe', function () {
-        var $iframe = $('<iframe id="test1" src="about:blank"/>')
+        const $iframe = $('<iframe id="test1" src="about:blank"/>')
             .addClass(TEST_ELEMENT_CLASS)
             .appendTo($('body'));
 
-        var $iframeInput = $('<input type="text" id="iframeInput"/>')
+        const $iframeInput = $('<input type="text" id="iframeInput"/>')
             .addClass(TEST_ELEMENT_CLASS);
 
         window.QUnitGlobals.waitForIframe($iframe[0])
@@ -147,7 +147,7 @@ $(document).ready(function () {
                 domUtils.getActiveElement().blur();
                 $input.focus();
 
-                var press = new PressAutomation(parseKeySequence('tab').combinations, {});
+                const press = new PressAutomation(parseKeySequence('tab').combinations, {});
 
                 press
                     .run()
@@ -162,15 +162,15 @@ $(document).ready(function () {
 
     if (!browserUtils.isSafari && (!browserUtils.isChrome || browserUtils.version > 53)) {
         asyncTest('T334620 - Wrong "key" property in keyEvent objects (press)', function () {
-            var textarea = document.createElement('textarea');
+            const textarea = document.createElement('textarea');
 
             textarea.className = TEST_ELEMENT_CLASS;
 
             document.body.appendChild(textarea);
 
-            var keydownKeyProperty  = '';
-            var keypressKeyProperty = '';
-            var keyupKeyProperty    = '';
+            let keydownKeyProperty  = '';
+            let keypressKeyProperty = '';
+            let keyupKeyProperty    = '';
 
             textarea.focus();
 
@@ -186,7 +186,7 @@ $(document).ready(function () {
                 keyupKeyProperty += e.key;
             });
 
-            var press = new PressAutomation(parseKeySequence('a A shift+a ! enter shift+1 shift+!').combinations, {});
+            const press = new PressAutomation(parseKeySequence('a A shift+a ! enter shift+1 shift+!').combinations, {});
 
             press
                 .run()
@@ -201,15 +201,15 @@ $(document).ready(function () {
     }
     else {
         asyncTest('T334620 - Wrong "keyIdentifier" property in keyEvent objects (press)', function () {
-            var textarea = document.createElement('textarea');
+            const textarea = document.createElement('textarea');
 
             textarea.className = TEST_ELEMENT_CLASS;
 
             document.body.appendChild(textarea);
 
-            var keydownKeyIdentifierProperty  = '';
-            var keypressKeyIdentifierProperty = '';
-            var keyupKeyIdentifierProperty    = '';
+            let keydownKeyIdentifierProperty  = '';
+            let keypressKeyIdentifierProperty = '';
+            let keyupKeyIdentifierProperty    = '';
 
             textarea.focus();
 
@@ -225,16 +225,16 @@ $(document).ready(function () {
                 keyupKeyIdentifierProperty += e.keyIdentifier;
             });
 
-            var press = new PressAutomation(parseKeySequence('a A shift+a ! enter shift+1 shift+!').combinations, {});
+            const press = new PressAutomation(parseKeySequence('a A shift+a ! enter shift+1 shift+!').combinations, {});
 
-            var s = {
+            const s = {
                 '!': 'U+0021',
                 'a': 'U+0041'
             };
 
-            var expectedKeydownSequence = s['a'] + s['a'] + 'Shift' + s['a'] + 'Shift' + s['!'] + 'Enter' + 'Shift' +
+            const expectedKeydownSequence = s['a'] + s['a'] + 'Shift' + s['a'] + 'Shift' + s['!'] + 'Enter' + 'Shift' +
                                           s['!'] + 'Shift' + s['!'];
-            var expectedKeyupSequence   = s['a'] + s['a'] + s['a'] + 'Shift' + s['!'] + 'Shift' + 'Enter' + s['!'] +
+            const expectedKeyupSequence   = s['a'] + s['a'] + s['a'] + 'Shift' + s['!'] + 'Shift' + 'Enter' + s['!'] +
                                           'Shift' + s['!'] + 'Shift';
 
             press
@@ -251,12 +251,12 @@ $(document).ready(function () {
 
     if (nativeMethods.inputValueSetter) {
         asyncTest('call native setter of the value property (GH-1558)', function () {
-            var input    = $('<input type="text" />').addClass(TEST_ELEMENT_CLASS).appendTo('body')[0];
-            var textArea = $('<textarea/>').addClass(TEST_ELEMENT_CLASS).appendTo('body')[0];
+            const input    = $('<input type="text" />').addClass(TEST_ELEMENT_CLASS).appendTo('body')[0];
+            const textArea = $('<textarea/>').addClass(TEST_ELEMENT_CLASS).appendTo('body')[0];
 
-            var testNativeValueSetter = function (element, callback) {
-                var valueGetter = Object.getOwnPropertyDescriptor(element.constructor.prototype, 'value').get;
-                var press = new PressAutomation(parseKeySequence('backspace').combinations, {});
+            const testNativeValueSetter = function (element, callback) {
+                const valueGetter = Object.getOwnPropertyDescriptor(element.constructor.prototype, 'value').get;
+                const press = new PressAutomation(parseKeySequence('backspace').combinations, {});
 
                 element.value = '1';
                 element.focus();

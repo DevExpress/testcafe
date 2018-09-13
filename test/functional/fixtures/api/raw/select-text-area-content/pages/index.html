@@ -11,7 +11,7 @@
 
 <input id="input" value="input"/>
 <script>
-    var touchDevice = isTouchDevice();
+    const touchDevice = isTouchDevice();
 
     document.getElementById('textarea').addEventListener(touchDevice ? 'touchend' : 'mouseup', function () {
         if (this.selectionStart === 2 && this.selectionEnd === 7)

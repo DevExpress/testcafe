@@ -14,13 +14,13 @@
         document.location = "./logged.html";
     }
 
-    var btn = document.getElementById('setAuthToken');
+    let btn = document.getElementById('setAuthToken');
 
     btn.addEventListener('click', function () {
         window.localStorage.loginKey = 'login-key';
     });
 
-    var btn = document.getElementById('redirectAfterLogin');
+    btn = document.getElementById('redirectAfterLogin');
 
     btn.addEventListener('click', function () {
         if(window.localStorage.loginKey) {

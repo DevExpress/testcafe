@@ -7,9 +7,9 @@ fixture `Selector`
 const getElementById = Selector(id => document.getElementById(id));
 
 const isIEFunction = ClientFunction(() => {
-    var userAgent = window.navigator.userAgent;
-    var appName   = window.navigator.appName;
-    var isIE11Re  = new RegExp('Trident/.*rv:([0-9]{1,}[.0-9]{0,})');
+    const userAgent = window.navigator.userAgent;
+    const appName   = window.navigator.appName;
+    const isIE11Re  = new RegExp('Trident/.*rv:([0-9]{1,}[.0-9]{0,})');
 
     return appName === 'Microsoft Internet Explorer' ||
            appName === 'Netscape' && isIE11Re.exec(userAgent) !== null;
@@ -174,7 +174,7 @@ test('`innerText` element snapshot property', async t => {
 
     // NOTE: we have to use regexp because the innerText field
     // returns a little bit different values in IE9 and other browsers
-    var expectedTextRe = isIE ? /^Hey\nyo test {2}42 test {2}'hey hey'; \.someClass \{ \}/ :
+    const expectedTextRe = isIE ? /^Hey\nyo test {2}42 test {2}'hey hey'; \.someClass \{ \}/ :
         /^Hey\nyo test {1,2}test/;
 
     await t.expect(expectedTextRe.test(innerText.trim())).ok();
@@ -325,7 +325,7 @@ test('Element on new page', async t => {
 });
 
 test('Derivative selector without options', async () => {
-    var derivative = Selector(getElementById('textInput'));
+    const derivative = Selector(getElementById('textInput'));
 
     await derivative();
 });
@@ -449,7 +449,7 @@ test('Selector "withText" method', async t => {
         .expect(getElementById('el1').withText('element 4.').exists).notOk()
         .expect(getElementById('el4').withText('element 4.').id).eql('el4');
 
-    var getDocument = Selector(() => document);
+    const getDocument = Selector(() => document);
 
     // Should filter document if text filter specified
     await t
@@ -459,7 +459,7 @@ test('Selector "withText" method', async t => {
         //Compound
         .expect(Selector('div').withText('This').withText('element 4').id).eql('el4');
 
-    var getNode = Selector(() => document.getElementById('el2').childNodes[0]);
+    const getNode = Selector(() => document.getElementById('el2').childNodes[0]);
 
     await t
         .expect(getNode().withText('Lorem ipsum dolor sit amet, consectetur').exists).notOk()
@@ -510,7 +510,7 @@ test('Selector "withAttribute" method', async t => {
         .expect(Selector('div').withAttribute('store').exists).notOk()
         .expect(Selector('div').withAttribute('data-store', 'data-attr').exists).notOk();
 
-    var byAtrSelector = Selector(() => document.querySelectorAll('.attr'));
+    const byAtrSelector = Selector(() => document.querySelectorAll('.attr'));
 
     await t
     // Function selector and attr filter
@@ -523,18 +523,18 @@ test('Selector "withAttribute" method', async t => {
         .expect(Selector('div').withAttribute('class', /attr/).withAttribute('data-store', 'data-attr2').id).eql('attr2');
 
     // Parameterized selector and attr filter
-    var byClassNameSelector = Selector(className => document.getElementsByClassName(className));
+    const byClassNameSelector = Selector(className => document.getElementsByClassName(className));
 
     await t
         .expect(byClassNameSelector('attr').withAttribute('data-store', 'data-attr1').id).eql('attr1')
         .expect(byClassNameSelector('attr').withAttribute('data-store', 'data-attr2').id).eql('attr2');
 
-    var documentSelector = Selector(() => document);
+    const documentSelector = Selector(() => document);
 
     // Should not filter document with attributes
     await t.expect(documentSelector.withAttribute('data-store', 'data-attr1').exists).notOk();
 
-    var nodeSelector = Selector(() => document.getElementById('attr1').childNodes[0]);
+    const nodeSelector = Selector(() => document.getElementById('attr1').childNodes[0]);
 
     // Should not work for nodes
     await t.expect(nodeSelector.withAttribute('data-store').exists).notOk();

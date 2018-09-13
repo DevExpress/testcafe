@@ -1,25 +1,25 @@
 import hammerhead from '../deps/hammerhead';
 import testCafeCore from '../deps/testcafe-core';
 
-var Promise          = hammerhead.Promise;
-var nativeMethods    = hammerhead.nativeMethods;
-var browserUtils     = hammerhead.utils.browser;
-var focusBlurSandbox = hammerhead.eventSandbox.focusBlur;
+const Promise          = hammerhead.Promise;
+const nativeMethods    = hammerhead.nativeMethods;
+const browserUtils     = hammerhead.utils.browser;
+const focusBlurSandbox = hammerhead.eventSandbox.focusBlur;
 
-var contentEditable = testCafeCore.contentEditable;
-var textSelection   = testCafeCore.textSelection;
-var domUtils        = testCafeCore.domUtils;
+const contentEditable = testCafeCore.contentEditable;
+const textSelection   = testCafeCore.textSelection;
+const domUtils        = testCafeCore.domUtils;
 
 
 function setCaretPosition (element, caretPos) {
-    var isTextEditable    = domUtils.isTextEditableElement(element);
-    var isContentEditable = domUtils.isContentEditableElement(element);
+    const isTextEditable    = domUtils.isTextEditableElement(element);
+    const isContentEditable = domUtils.isContentEditableElement(element);
 
     if (isTextEditable || isContentEditable) {
         if (isContentEditable && isNaN(parseInt(caretPos, 10)))
             textSelection.setCursorToLastVisiblePosition(element);
         else {
-            var position = isNaN(parseInt(caretPos, 10)) ? domUtils.getElementValue(element).length : caretPos;
+            const position = isNaN(parseInt(caretPos, 10)) ? domUtils.getElementValue(element).length : caretPos;
 
             textSelection.select(element, position, position);
         }
@@ -29,7 +29,7 @@ function setCaretPosition (element, caretPos) {
         // a contentEditable parent, we should try to set the right window selection. Generally, we can't
         // set the right window selection object because after the selection setup, the window.getSelection
         // method returns a different object, which depends on the browser.
-        var contentEditableParent = contentEditable.findContentEditableParent(element);
+        const contentEditableParent = contentEditable.findContentEditableParent(element);
 
         if (contentEditableParent)
             textSelection.setCursorToLastVisiblePosition(contentEditable.findContentEditableParent(contentEditableParent));
@@ -38,13 +38,13 @@ function setCaretPosition (element, caretPos) {
 
 export function focusAndSetSelection (element, simulateFocus, caretPos) {
     return new Promise(resolve => {
-        var activeElement               = domUtils.getActiveElement();
-        var isTextEditable              = domUtils.isTextEditableElement(element);
-        var labelWithForAttr            = domUtils.closest(element, 'label[for]');
-        var isElementFocusable          = domUtils.isElementFocusable(element);
-        var shouldFocusByRelatedElement = !domUtils.isElementFocusable(element) && labelWithForAttr;
-        var isContentEditable           = domUtils.isContentEditableElement(element);
-        var elementForFocus             = isContentEditable ? contentEditable.findContentEditableParent(element) : element;
+        const activeElement               = domUtils.getActiveElement();
+        const isTextEditable              = domUtils.isTextEditableElement(element);
+        const labelWithForAttr            = domUtils.closest(element, 'label[for]');
+        const isElementFocusable          = domUtils.isElementFocusable(element);
+        const shouldFocusByRelatedElement = !domUtils.isElementFocusable(element) && labelWithForAttr;
+        const isContentEditable           = domUtils.isContentEditableElement(element);
+        let elementForFocus             = isContentEditable ? contentEditable.findContentEditableParent(element) : element;
 
         // NOTE: in WebKit, if selection was never set in an input element, the focus method selects all the
         // text in this element. So, we should call select before focus to set the caret to the first symbol.
@@ -60,20 +60,20 @@ export function focusAndSetSelection (element, simulateFocus, caretPos) {
             return;
         }
 
-        var focusWithSilentMode = !simulateFocus;
-        var focusForMouseEvent  = true;
-        var preventScrolling    = false;
+        const focusWithSilentMode = !simulateFocus;
+        const focusForMouseEvent  = true;
+        let preventScrolling    = false;
 
         if (!isElementFocusable && !isContentEditable) {
-            var curDocument         = domUtils.findDocument(elementForFocus);
-            var curActiveElement    = nativeMethods.documentActiveElementGetter.call(curDocument);
-            var isActiveElementBody = domUtils.isBodyElement(curActiveElement);
-            var focusableParent     = domUtils.isBodyElement(elementForFocus) ?
+            const curDocument         = domUtils.findDocument(elementForFocus);
+            const curActiveElement    = nativeMethods.documentActiveElementGetter.call(curDocument);
+            const isActiveElementBody = domUtils.isBodyElement(curActiveElement);
+            const focusableParent     = domUtils.isBodyElement(elementForFocus) ?
                 elementForFocus : domUtils.getFocusableParent(elementForFocus);
 
             // NOTE: we should not call focus or blur if action element is
             // not focusable and is child of active element (gh-889)
-            var elementChildOfActiveElement = curActiveElement && !isActiveElementBody &&
+            const elementChildOfActiveElement = curActiveElement && !isActiveElementBody &&
                                               domUtils.containsElement(curActiveElement, elementForFocus);
 
             if (elementChildOfActiveElement || isActiveElementBody && domUtils.isBodyElement(focusableParent)) {
@@ -105,12 +105,12 @@ export function focusAndSetSelection (element, simulateFocus, caretPos) {
 }
 
 export function focusByRelatedElement (element) {
-    var labelWithForAttr = domUtils.closest(element, 'label[for]');
+    const labelWithForAttr = domUtils.closest(element, 'label[for]');
 
     if (!labelWithForAttr)
         return;
 
-    var elementForFocus = document.getElementById(labelWithForAttr.getAttribute('for'));
+    const elementForFocus = document.getElementById(labelWithForAttr.getAttribute('for'));
 
     if (!elementForFocus || domUtils.getActiveElement() === elementForFocus)
         return;

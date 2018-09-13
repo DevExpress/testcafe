@@ -1,26 +1,26 @@
-var hammerhead       = window.getTestCafeModule('hammerhead');
-var browserUtils     = hammerhead.utils.browser;
-var featureDetection = hammerhead.utils.featureDetection;
+const hammerhead       = window.getTestCafeModule('hammerhead');
+const browserUtils     = hammerhead.utils.browser;
+const featureDetection = hammerhead.utils.featureDetection;
 
-var testCafeCore  = window.getTestCafeModule('testCafeCore');
-var domUtils      = testCafeCore.get('./utils/dom');
-var textSelection = testCafeCore.get('./utils/text-selection');
+const testCafeCore  = window.getTestCafeModule('testCafeCore');
+const domUtils      = testCafeCore.get('./utils/dom');
+const textSelection = testCafeCore.get('./utils/text-selection');
 
-var testCafeLegacyRunner = window.getTestCafeModule('testCafeLegacyRunner');
-var ERROR_TYPE           = testCafeLegacyRunner.get('../test-run-error/type');
-var SETTINGS             = testCafeLegacyRunner.get('./settings').get();
-var actionsAPI           = testCafeLegacyRunner.get('./api/actions');
-var StepIterator         = testCafeLegacyRunner.get('./step-iterator');
+const testCafeLegacyRunner = window.getTestCafeModule('testCafeLegacyRunner');
+const ERROR_TYPE           = testCafeLegacyRunner.get('../test-run-error/type');
+const SETTINGS             = testCafeLegacyRunner.get('./settings').get();
+const actionsAPI           = testCafeLegacyRunner.get('./api/actions');
+const StepIterator         = testCafeLegacyRunner.get('./step-iterator');
 
-var stepIterator = new StepIterator();
+const stepIterator = new StepIterator();
 
 actionsAPI.init(stepIterator);
 
-var initAutomation = testCafeLegacyRunner.get('./init-automation');
+const initAutomation = testCafeLegacyRunner.get('./init-automation');
 
 initAutomation();
 
-var correctTestWaitingTime = function (time) {
+const correctTestWaitingTime = function (time) {
     if (featureDetection.isTouchDevice || featureDetection.hasTouchPoints)
         return time * 2;
 
@@ -28,14 +28,14 @@ var correctTestWaitingTime = function (time) {
 };
 
 $(document).ready(function () {
-    var asyncActionCallback;
-    var actionTargetWaitingCounter = 0;
-    var actionRunCounter           = 0;
-    var currentErrorType           = null;
-    var currentSourceIndex         = null;
+    let asyncActionCallback;
+    let actionTargetWaitingCounter = 0;
+    let actionRunCounter           = 0;
+    let currentErrorType           = null;
+    let currentSourceIndex         = null;
 
     StepIterator.prototype.asyncActionSeries = function (items, runArgumentsIterator, action) {
-        var seriesActionsRun = function (elements, callback) {
+        const seriesActionsRun = function (elements, callback) {
             window.async.forEachSeries(
                 elements,
                 function (element, seriaCallback) {
@@ -64,23 +64,23 @@ $(document).ready(function () {
     });
 
     //constants
-    var TEXTAREA_SELECTOR    = '#textarea';
-    var INPUT_SELECTOR       = '#input';
-    var DIV_ELEMENT_SELECTOR = '#div';
+    const TEXTAREA_SELECTOR    = '#textarea';
+    const INPUT_SELECTOR       = '#input';
+    const DIV_ELEMENT_SELECTOR = '#div';
 
-    var INPUT_INITIAL_VALUE = '123456789';
+    const INPUT_INITIAL_VALUE = '123456789';
 
-    var startSelectEvent = featureDetection.isTouchDevice ? 'ontouchstart' : 'onmousedown';
-    var endSelectEvent   = featureDetection.isTouchDevice ? 'ontouchend' : 'onmouseup';
+    const startSelectEvent = featureDetection.isTouchDevice ? 'ontouchstart' : 'onmousedown';
+    const endSelectEvent   = featureDetection.isTouchDevice ? 'ontouchend' : 'onmouseup';
 
-    var mousedownOnInput    = false;
-    var mouseupOnInput      = false;
-    var mousedownOnTextarea = false;
-    var mouseupOnTextarea   = false;
+    let mousedownOnInput    = false;
+    let mouseupOnInput      = false;
+    let mousedownOnTextarea = false;
+    let mouseupOnTextarea   = false;
 
     //utils
     function setValueToTextarea (value) {
-        var textarea = $(TEXTAREA_SELECTOR)[0];
+        const textarea = $(TEXTAREA_SELECTOR)[0];
 
         textarea.value       = value;
         textarea.textContent = value;
@@ -91,7 +91,7 @@ $(document).ready(function () {
     }
 
     function setValueToInput (value) {
-        var input = $(INPUT_SELECTOR)[0];
+        const input = $(INPUT_SELECTOR)[0];
 
         input.value = value;
 
@@ -102,8 +102,8 @@ $(document).ready(function () {
         start = start || 0;
 
         //NOTE: set to start position
-        var el            = $el[0];
-        var startPosition = inverse ? end : start;
+        const el            = $el[0];
+        const startPosition = inverse ? end : start;
 
         if (el.setSelectionRange)
             el.setSelectionRange(startPosition, startPosition);
@@ -129,8 +129,8 @@ $(document).ready(function () {
     }
 
     function restorePageState () {
-        var $input    = $(INPUT_SELECTOR);
-        var $textarea = $(TEXTAREA_SELECTOR);
+        const $input    = $(INPUT_SELECTOR);
+        const $textarea = $(TEXTAREA_SELECTOR);
 
         $textarea.css({
             width:  '250px',
@@ -147,8 +147,8 @@ $(document).ready(function () {
     }
 
     function bindHandlers () {
-        var input    = $(INPUT_SELECTOR)[0];
-        var textarea = $(TEXTAREA_SELECTOR)[0];
+        const input    = $(INPUT_SELECTOR)[0];
+        const textarea = $(TEXTAREA_SELECTOR)[0];
 
         input[startSelectEvent] = function () {
             mousedownOnInput = true;
@@ -168,8 +168,8 @@ $(document).ready(function () {
     }
 
     function unbindHandlers () {
-        var input    = $(INPUT_SELECTOR)[0];
-        var textarea = $(TEXTAREA_SELECTOR)[0];
+        const input    = $(INPUT_SELECTOR)[0];
+        const textarea = $(TEXTAREA_SELECTOR)[0];
 
         mousedownOnInput    = false;
         mouseupOnInput      = false;
@@ -190,9 +190,9 @@ $(document).ready(function () {
     }
 
     function runAsyncTest (actions, assertions, timeout) {
-        var timeoutId = null;
+        let timeoutId = null;
 
-        var callbackFunction = function () {
+        let callbackFunction = function () {
             clearTimeout(timeoutId);
             assertions();
 
@@ -244,9 +244,10 @@ $(document).ready(function () {
     });
 
     asyncTest('different arguments. not texteditable and contexteditable element', function () {
-        var $div      = $(DIV_ELEMENT_SELECTOR);
-        var mousedown = false;
-        var mouseup   = false;
+        const $div = $(DIV_ELEMENT_SELECTOR);
+
+        let mousedown = false;
+        let mouseup   = false;
 
         runAsyncTest(
             function () {
@@ -275,7 +276,7 @@ $(document).ready(function () {
     module('different arguments tests. element is input');
 
     asyncTest('only dom element as a parameter', function () {
-        var $input = $(INPUT_SELECTOR);
+        const $input = $(INPUT_SELECTOR);
 
         runAsyncTest(
             function () {
@@ -295,7 +296,7 @@ $(document).ready(function () {
     });
 
     asyncTest('positive offset as a parameters', function () {
-        var $input = $(INPUT_SELECTOR);
+        const $input = $(INPUT_SELECTOR);
 
         runAsyncTest(
             function () {
@@ -312,8 +313,8 @@ $(document).ready(function () {
     });
 
     asyncTest('and negative offset as a parameters', function () {
-        var $input      = $(INPUT_SELECTOR);
-        var valueLength = $input[0].value.length;
+        const $input      = $(INPUT_SELECTOR);
+        const valueLength = $input[0].value.length;
 
         runAsyncTest(
             function () {
@@ -330,7 +331,7 @@ $(document).ready(function () {
     });
 
     asyncTest('zero offset as a parameters', function () {
-        var $input = $(INPUT_SELECTOR);
+        const $input = $(INPUT_SELECTOR);
 
         runAsyncTest(
             function () {
@@ -347,7 +348,7 @@ $(document).ready(function () {
     });
 
     asyncTest('startPos less than endPos as a parameters', function () {
-        var $input = $(INPUT_SELECTOR);
+        const $input = $(INPUT_SELECTOR);
 
         runAsyncTest(
             function () {
@@ -364,7 +365,7 @@ $(document).ready(function () {
     });
 
     asyncTest('startPos more than endPos as a parameters', function () {
-        var $input = $(INPUT_SELECTOR);
+        const $input = $(INPUT_SELECTOR);
 
         runAsyncTest(
             function () {
@@ -381,7 +382,7 @@ $(document).ready(function () {
     });
 
     asyncTest('startLine, startPos, endLine, endPos as a parameters', function () {
-        var $input = $(INPUT_SELECTOR);
+        const $input = $(INPUT_SELECTOR);
 
         runAsyncTest(
             function () {
@@ -400,7 +401,7 @@ $(document).ready(function () {
     module('different arguments tests. element is textarea');
 
     asyncTest('only dom element as a parameter', function () {
-        var $textarea = $(TEXTAREA_SELECTOR);
+        const $textarea = $(TEXTAREA_SELECTOR);
 
         runAsyncTest(
             function () {
@@ -419,7 +420,7 @@ $(document).ready(function () {
     });
 
     asyncTest('positive offset as a parameters', function () {
-        var $textarea = $(TEXTAREA_SELECTOR);
+        const $textarea = $(TEXTAREA_SELECTOR);
 
         runAsyncTest(
             function () {
@@ -438,8 +439,9 @@ $(document).ready(function () {
     });
 
     asyncTest('negative offset as a parameters', function () {
-        var $textarea   = $(TEXTAREA_SELECTOR);
-        var valueLength = null;
+        const $textarea = $(TEXTAREA_SELECTOR);
+
+        let valueLength = null;
 
         runAsyncTest(
             function () {
@@ -460,7 +462,7 @@ $(document).ready(function () {
     });
 
     asyncTest('startPos less than endPos as a parameters', function () {
-        var $textarea = $(TEXTAREA_SELECTOR);
+        const $textarea = $(TEXTAREA_SELECTOR);
 
         runAsyncTest(
             function () {
@@ -479,7 +481,7 @@ $(document).ready(function () {
     });
 
     asyncTest('startPos more than endPos as a parameters', function () {
-        var $textarea = $(TEXTAREA_SELECTOR);
+        const $textarea = $(TEXTAREA_SELECTOR);
 
         runAsyncTest(
             function () {
@@ -498,9 +500,10 @@ $(document).ready(function () {
     });
 
     asyncTest('startLine, startPos less than endLine, endPos as a parameters', function () {
-        var $textarea     = $(TEXTAREA_SELECTOR);
-        var startPosition = null;
-        var endPosition   = null;
+        const $textarea = $(TEXTAREA_SELECTOR);
+
+        let startPosition = null;
+        let endPosition   = null;
 
         runAsyncTest(
             function () {
@@ -522,9 +525,10 @@ $(document).ready(function () {
     });
 
     asyncTest('startLine, startPos more than endLine, endPos as a parameters', function () {
-        var $textarea     = $(TEXTAREA_SELECTOR);
-        var startPosition = null;
-        var endPosition   = null;
+        const $textarea = $(TEXTAREA_SELECTOR);
+
+        let startPosition = null;
+        let endPosition   = null;
 
         runAsyncTest(
             function () {
@@ -546,8 +550,9 @@ $(document).ready(function () {
     });
 
     asyncTest('startLine, startPos equal endLine, endPos as a parameters', function () {
-        var $textarea      = $(TEXTAREA_SELECTOR);
-        var selectPosition = null;
+        const $textarea = $(TEXTAREA_SELECTOR);
+
+        let selectPosition = null;
 
         runAsyncTest(
             function () {
@@ -568,9 +573,10 @@ $(document).ready(function () {
     });
 
     asyncTest('startLine, startPos and endLine as a parameters', function () {
-        var $textarea     = $(TEXTAREA_SELECTOR);
-        var textareaValue = '123456789abcd\nefj\nqwerty test cafe';
-        var startPosition = null;
+        const $textarea     = $(TEXTAREA_SELECTOR);
+        const textareaValue = '123456789abcd\nefj\nqwerty test cafe';
+
+        let startPosition = null;
 
         runAsyncTest(
             function () {
@@ -593,7 +599,7 @@ $(document).ready(function () {
     module('incorrect parameters');
 
     asyncTest('not a number offset raise error', function () {
-        var $input = $(INPUT_SELECTOR);
+        const $input = $(INPUT_SELECTOR);
 
         SETTINGS.ENABLE_SOURCE_INDEX = true;
 
@@ -608,7 +614,7 @@ $(document).ready(function () {
     });
 
     asyncTest('negative endPos raise error', function () {
-        var $input = $(INPUT_SELECTOR);
+        const $input = $(INPUT_SELECTOR);
 
         SETTINGS.ENABLE_SOURCE_INDEX = true;
 
@@ -623,7 +629,7 @@ $(document).ready(function () {
     });
 
     asyncTest('negative endLine raise error', function () {
-        var $textarea = $(TEXTAREA_SELECTOR);
+        const $textarea = $(TEXTAREA_SELECTOR);
 
         SETTINGS.ENABLE_SOURCE_INDEX = true;
 

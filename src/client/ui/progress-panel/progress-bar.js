@@ -1,9 +1,9 @@
 import hammerhead from '../deps/hammerhead';
 import testCafeCore from '../deps/testcafe-core';
 
-var shadowUI = hammerhead.shadowUI;
+const shadowUI = hammerhead.shadowUI;
 
-var styleUtils = testCafeCore.styleUtils;
+const styleUtils = testCafeCore.styleUtils;
 
 
 const CONTAINER_CLASS = 'progress-bar';

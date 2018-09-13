@@ -14,10 +14,10 @@ export default {
         // NOTE: we can use the spinner only if stderr is a TTY and we are not in CI environment (e.g. TravisCI),
         // otherwise we can't repaint animation frames. Thanks https://github.com/sindresorhus/ora for insight.
         if (this.isAnimated) {
-            var spinnerFrame = elegantSpinner();
+            const spinnerFrame = elegantSpinner();
 
             this.animation = setInterval(() => {
-                var frame = chalk.cyan(spinnerFrame());
+                const frame = chalk.cyan(spinnerFrame());
 
                 logUpdate.stderr(frame);
             }, 50);

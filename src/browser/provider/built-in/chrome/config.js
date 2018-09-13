@@ -10,17 +10,17 @@ const HEADLESS_DEFAULT_HEIGHT = 800;
 
 const AVAILABLE_MODES = ['userProfile', 'headless', 'emulation'];
 
-var configCache = {};
+const configCache = {};
 
 function hasCustomProfile (userArgs) {
     return !!userArgs.match(/--user-data-dir=/);
 }
 
 function parseModes (modesStr, userArgs) {
-    var parsed        = splitEscaped(modesStr, ':');
-    var path          = getPathFromParsedModes(parsed, AVAILABLE_MODES);
-    var detectedModes = getModes(parsed, AVAILABLE_MODES);
-    var optionsString = '';
+    const parsed        = splitEscaped(modesStr, ':');
+    const path          = getPathFromParsedModes(parsed, AVAILABLE_MODES);
+    const detectedModes = getModes(parsed, AVAILABLE_MODES);
+    let optionsString = '';
 
     if (parsed.length)
         optionsString = parsed.shift();
@@ -28,7 +28,7 @@ function parseModes (modesStr, userArgs) {
     while (parsed.length)
         optionsString += ':' + parsed.shift();
 
-    var modes = {
+    const modes = {
         path:        path,
         userProfile: detectedModes.userProfile || hasCustomProfile(userArgs),
         headless:    detectedModes.headless,
@@ -43,7 +43,7 @@ function simplifyDeviceName (deviceName) {
 }
 
 function findDevice (deviceName) {
-    var simpleName = simplifyDeviceName(deviceName);
+    const simpleName = simplifyDeviceName(deviceName);
 
     return emulatedDevices.filter(device => simplifyDeviceName(device.title).indexOf(simpleName) >= 0)[0];
 }
@@ -52,12 +52,12 @@ function getDeviceBasedOptions (deviceName, orientation) {
     if (!deviceName)
         return {};
 
-    var deviceData = findDevice(deviceName);
+    const deviceData = findDevice(deviceName);
 
     if (!deviceData)
         return {};
 
-    var mobile = deviceData.capabilities.indexOf('mobile') >= 0;
+    const mobile = deviceData.capabilities.indexOf('mobile') >= 0;
 
     if (!orientation)
         orientation = mobile ? 'vertical' : 'horizontal';
@@ -74,9 +74,9 @@ function getDeviceBasedOptions (deviceName, orientation) {
 }
 
 function parseOptions (str, modes) {
-    var parsed = splitEscaped(str, ';');
+    const parsed = splitEscaped(str, ';');
 
-    var baseOptions = {
+    const baseOptions = {
         width:       modes.headless ? HEADLESS_DEFAULT_WIDTH : 0,
         height:      modes.headless ? HEADLESS_DEFAULT_HEIGHT : 0,
         scaleFactor: 0,
@@ -84,11 +84,11 @@ function parseOptions (str, modes) {
         cdpPort:     findMatch(parsed, /^cdpPort=(.*)/)
     };
 
-    var deviceName         = findMatch(parsed, /^device=(.*)/);
-    var orientation        = findMatch(parsed, /^orientation=(.*)/);
-    var deviceBasedOptions = getDeviceBasedOptions(deviceName, orientation);
+    const deviceName         = findMatch(parsed, /^device=(.*)/);
+    const orientation        = findMatch(parsed, /^orientation=(.*)/);
+    const deviceBasedOptions = getDeviceBasedOptions(deviceName, orientation);
 
-    var specifiedDeviceOptions = {
+    let specifiedDeviceOptions = {
         orientation: orientation,
         touch:       hasMatch(parsed, /^touch=/) ? isMatchTrue(parsed, /^touch=(.*)/) : void 0,
         mobile:      isMatchTrue(parsed, /^mobile=(.*)/),
@@ -107,9 +107,9 @@ function parseOptions (str, modes) {
 
 
 function getNewConfig (configString) {
-    var { userArgs, modesString } = parseConfig(configString);
-    var { modes, optionsString }  = parseModes(modesString, userArgs);
-    var options                   = parseOptions(optionsString, modes);
+    const { userArgs, modesString } = parseConfig(configString);
+    const { modes, optionsString }  = parseModes(modesString, userArgs);
+    const options                   = parseOptions(optionsString, modes);
 
     return Object.assign({ userArgs }, modes, options);
 }

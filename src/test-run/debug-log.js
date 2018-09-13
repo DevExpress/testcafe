@@ -8,7 +8,7 @@ export default class TestRunDebugLog {
     }
 
     static _addEntry (logger, data) {
-        var entry = data ?
+        const entry = data ?
             indentString(`\n${JSON.stringify(data, null, 2)}\n`, ' ', 4) :
             '';
 

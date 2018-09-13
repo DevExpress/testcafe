@@ -44,11 +44,11 @@
     <div contenteditable="true" id="contentEditableWithReplace"><p>B</p></div>
 </body>
 <script type="text/javascript">
-    var contentEditableWithModifyEl  = document.getElementById('contentEditableWithModify');
-    var contentEditableWithReplaceEl = document.getElementById('contentEditableWithReplace');
+    const contentEditableWithModifyEl  = document.getElementById('contentEditableWithModify');
+    const contentEditableWithReplaceEl = document.getElementById('contentEditableWithReplace');
 
     function onTextInput (event) {
-        var needPreventDefault = true;
+        let needPreventDefault = true;
 
         if (isTargetElement(event.target, contentEditableWithModifyEl))
             changeNodeValueOnTextInput(event);
@@ -73,9 +73,8 @@
 
         window.preventNextElementReplacement = true;
 
-        var paragraph    = contentEditableWithReplaceEl.childNodes[0];
-        var textNode     = paragraph.childNodes[0];
-        var newParagraph = document.createElement("P");
+        const paragraph    = contentEditableWithReplaceEl.childNodes[0];
+        const newParagraph = document.createElement("P");
 
         newParagraph.innerHTML = 'X';
 

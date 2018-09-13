@@ -13,7 +13,7 @@
     <input type="button" id="showUA" value="showUA"/>
 </form>
 <script>
-    var clicked = '';
+    let clicked = '';
 
     document.querySelector('#btn1').addEventListener('click', function () {
         clicked += '-btn1';
@@ -33,7 +33,7 @@
     });
 
     document.querySelector('#showUA').addEventListener('click', function () {
-        var div = document.createElement('div');
+        const div = document.createElement('div');
 
         div.textContent = navigator.userAgent;
         div.id          = 'userAgent';

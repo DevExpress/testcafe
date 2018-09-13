@@ -48,7 +48,7 @@
 <!-- Init drag behavior -->
 <script>
     (function () {
-        var touchDevice = isTouchDevice();
+        const touchDevice = isTouchDevice();
 
         function getClientX (e) {
             return touchDevice ? e.touches[0].clientX : e.clientX;
@@ -59,8 +59,8 @@
         }
 
         function initDraggable (element) {
-            var cursorOffsetLeft = 0;
-            var cursorOffsetTop  = 0;
+            let cursorOffsetLeft = 0;
+            let cursorOffsetTop  = 0;
 
             function onMouseMove (e) {
                 element.style.left = getClientX(e) - cursorOffsetLeft + 'px';
@@ -68,8 +68,8 @@
             }
 
             function onMouseDown (e) {
-                var left = element.offsetLeft;
-                var top  = element.offsetTop;
+                const left = element.offsetLeft;
+                const top  = element.offsetTop;
 
                 element.style.opacity = 0.5;
                 element.style.border  = '1px dotted black';
@@ -100,12 +100,13 @@
 <!-- Drag to offset test -->
 <script>
     (function () {
-        var touchDevice = isTouchDevice();
+        const touchDevice = isTouchDevice();
 
-        var draggable1      = document.getElementById('draggable-div-1');
-        var startPos        = { x: 0, y: 0 };
-        var endPos          = { x: 0, y: 0 };
-        var moveEventRaised = false;
+        const draggable1 = document.getElementById('draggable-div-1');
+        const startPos   = { x: 0, y: 0 };
+        const endPos     = { x: 0, y: 0 };
+
+        let moveEventRaised = false;
 
         draggable1.addEventListener(touchDevice ? 'touchstart' : 'mousedown', function () {
             startPos.x = draggable1.offsetLeft;
@@ -137,18 +138,19 @@
 <!-- Drag to element test -->
 <script>
     (function () {
-        var touchDevice = isTouchDevice();
+        const touchDevice = isTouchDevice();
 
-        var draggable2      = document.getElementById('draggable-div-2');
-        var destination     = document.getElementById('destination-div');
-        var startPos        = { x: 0, y: 0 };
-        var endPos          = { x: 0, y: 0 };
-        var moveEventRaised = false;
+        const draggable2  = document.getElementById('draggable-div-2');
+        const destination = document.getElementById('destination-div');
+        const startPos    = { x: 0, y: 0 };
+        const endPos      = { x: 0, y: 0 };
 
-        var destinationDivPos    = { x: destination.offsetLeft, y: destination.offsetTop };
-        var destinationDivCenter = { x: destination.offsetWidth / 2, y: destination.offsetHeight / 2 };
+        let moveEventRaised = false;
 
-        var destinationPos = {
+        const destinationDivPos    = { x: destination.offsetLeft, y: destination.offsetTop };
+        const destinationDivCenter = { x: destination.offsetWidth / 2, y: destination.offsetHeight / 2 };
+
+        const destinationPos = {
             x: destinationDivPos.x + destinationDivCenter.x,
             y: destinationDivPos.y + destinationDivCenter.y
         };
@@ -166,7 +168,7 @@
             endPos.x = draggable2.offsetLeft;
             endPos.y = draggable2.offsetTop;
 
-            var expectedPos = {
+            const expectedPos = {
                 x: destinationPos.x - 10,
                 y: destinationPos.y - 10
             };

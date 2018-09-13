@@ -31,13 +31,15 @@
 <div id="top" class="point"></div>
 <div id="bottom" class="point"></div>
 <script>
-    window.clickCount = 0;
+    {
+        window.clickCount = 0;
 
-    var btn = document.getElementById('btn');
+        const btn = document.getElementById('btn');
 
-    btn.addEventListener('click', function () {
-        window.clickCount++;
-    });
+        btn.addEventListener('click', function () {
+            window.clickCount++;
+        });
+    }
 </script>
 </body>
 </html>

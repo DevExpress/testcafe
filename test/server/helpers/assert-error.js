@@ -1,7 +1,7 @@
-var sep         = require('path').sep;
-var stripAnsi   = require('strip-ansi');
-var expect      = require('chai').expect;
-var stackParser = require('error-stack-parser');
+const sep         = require('path').sep;
+const stripAnsi   = require('strip-ansi');
+const expect      = require('chai').expect;
+const stackParser = require('error-stack-parser');
 
 
 function assertStack (err, expected) {
@@ -11,14 +11,14 @@ function assertStack (err, expected) {
     if (!expected.stackTop)
         err.stack += '\n    at (<empty-marker>:1:1)';
 
-    var parsedStack = stackParser.parse(err);
+    const parsedStack = stackParser.parse(err);
 
     if (expected.stackTop) {
-        var expectedStackTop = Array.isArray(expected.stackTop) ? expected.stackTop : [expected.stackTop];
+        const expectedStackTop = Array.isArray(expected.stackTop) ? expected.stackTop : [expected.stackTop];
 
         parsedStack.forEach(function (frame, idx) {
-            var filename   = frame.fileName;
-            var isInternal = frame.fileName.indexOf('internal/') === 0 ||
+            const filename   = frame.fileName;
+            const isInternal = frame.fileName.indexOf('internal/') === 0 ||
                              frame.fileName.indexOf(sep) < 0;
 
             // NOTE: assert that stack is clean from internals
@@ -54,7 +54,7 @@ function assertAPIError (err, expected) {
 
 // NOTE: chai's throws doesn't perform deep comparison of error objects
 function assertThrow (fn, expectedErr) {
-    var actualErr = null;
+    let actualErr = null;
 
     try {
         fn();

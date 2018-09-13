@@ -49,8 +49,8 @@ export default class BrowserSet extends EventEmitter {
     }
 
     async _getReadyTimeout () {
-        var isLocalBrowser      = connection => connection.provider.isLocalBrowser(connection.id, connection.browserInfo.browserName);
-        var remoteBrowsersExist = (await Promise.all(this.browserConnections.map(isLocalBrowser))).indexOf(false) > -1;
+        const isLocalBrowser      = connection => connection.provider.isLocalBrowser(connection.id, connection.browserInfo.browserName);
+        const remoteBrowsersExist = (await Promise.all(this.browserConnections.map(isLocalBrowser))).indexOf(false) > -1;
 
         return remoteBrowsersExist ? REMOTE_BROWSERS_READY_TIMEOUT : LOCAL_BROWSERS_READY_TIMEOUT;
     }
@@ -75,20 +75,20 @@ export default class BrowserSet extends EventEmitter {
     }
 
     async _waitConnectionsOpened () {
-        var connectionsReadyPromise = Promise.all(
+        const connectionsReadyPromise = Promise.all(
             this.browserConnections
                 .filter(bc => !bc.opened)
                 .map(bc => promisifyEvent(bc, 'opened'))
         );
 
-        var timeoutError = new GeneralError(MESSAGE.cantEstablishBrowserConnection);
-        var readyTimeout = await this._getReadyTimeout();
+        const timeoutError = new GeneralError(MESSAGE.cantEstablishBrowserConnection);
+        const readyTimeout = await this._getReadyTimeout();
 
         await this._createPendingConnectionPromise(connectionsReadyPromise, readyTimeout, timeoutError);
     }
 
     _checkForDisconnections () {
-        var disconnectedUserAgents = this.browserConnections
+        const disconnectedUserAgents = this.browserConnections
             .filter(bc => bc.closed)
             .map(bc => bc.userAgent);
 
@@ -99,9 +99,9 @@ export default class BrowserSet extends EventEmitter {
 
     //API
     static from (browserConnections) {
-        var browserSet = new BrowserSet(browserConnections);
+        const browserSet = new BrowserSet(browserConnections);
 
-        var prepareConnection = Promise.resolve()
+        const prepareConnection = Promise.resolve()
             .then(() => {
                 browserSet._checkForDisconnections();
                 return browserSet._waitConnectionsOpened();
@@ -128,11 +128,11 @@ export default class BrowserSet extends EventEmitter {
 
         bc.removeListener('error', this.browserErrorHandler);
 
-        var appropriateStateSwitch = !bc.permanent ?
+        const appropriateStateSwitch = !bc.permanent ?
             BrowserSet._closeConnection(bc) :
             BrowserSet._waitIdle(bc);
 
-        var release = getTimeLimitedPromise(appropriateStateSwitch, this.RELEASE_TIMEOUT).then(() => remove(this.pendingReleases, release));
+        const release = getTimeLimitedPromise(appropriateStateSwitch, this.RELEASE_TIMEOUT).then(() => remove(this.pendingReleases, release));
 
         this.pendingReleases.push(release);
 

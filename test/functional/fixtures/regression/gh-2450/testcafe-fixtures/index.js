@@ -11,7 +11,7 @@ const doScroll = ClientFunction(() => {
 });
 
 const changeFixed = ClientFunction(() => {
-    var inversed = 'inversed';
+    const inversed = 'inversed';
 
     document.getElementById('fixedTop').className  = inversed;
     document.getElementById('fixedLeft').className = inversed;

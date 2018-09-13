@@ -1,7 +1,7 @@
 import hammerhead from './deps/hammerhead';
 
-var JSON          = hammerhead.json;
-var nativeMethods = hammerhead.nativeMethods;
+const JSON          = hammerhead.json;
+const nativeMethods = hammerhead.nativeMethods;
 
 const STORAGE_KEY_PREFIX = 'testcafe|driver|';
 
@@ -15,7 +15,7 @@ export default class Storage {
     }
 
     _loadFromStorage () {
-        var savedData = this.storage.getItem(this.storageKey);
+        const savedData = this.storage.getItem(this.storageKey);
 
         if (savedData) {
             this.data = JSON.parse(savedData);

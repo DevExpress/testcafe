@@ -42,94 +42,96 @@
 <img id="img" src="./img.png"/>
 
 <script>
-    var from            = document.querySelector('#from');
-    var to              = document.querySelector('#to');
-    var toDisplayValues = document.querySelector('#to-display-values');
-    var draggable       = document.querySelector('#draggable');
+    {
+        const from            = document.querySelector('#from');
+        const to              = document.querySelector('#to');
+        const toDisplayValues = document.querySelector('#to-display-values');
+        const draggable       = document.querySelector('#draggable');
 
-    from.addEventListener('dragstart', function (e) {
-        e.dataTransfer.setData('text', e.target.children[0].id);
-    });
+        from.addEventListener('dragstart', function (e) {
+            e.dataTransfer.setData('text', e.target.children[0].id);
+        });
 
-    to.addEventListener('dragover', function (e) {
-        e.preventDefault();
-    });
+        to.addEventListener('dragover', function (e) {
+            e.preventDefault();
+        });
 
-    toDisplayValues.addEventListener('dragover', function (e) {
-        e.dataTransfer.setData('custom/type', 'customValue');
+        toDisplayValues.addEventListener('dragover', function (e) {
+            e.dataTransfer.setData('custom/type', 'customValue');
 
-        if (e.dataTransfer.getData('custom/type'))
-            throw new Error("It should not be allowed to change dataTransfer data after dragstart event");
+            if (e.dataTransfer.getData('custom/type'))
+                throw new Error("It should not be allowed to change dataTransfer data after dragstart event");
 
-        e.preventDefault();
-    });
+            e.preventDefault();
+        });
 
-    to.addEventListener('drop', function (e) {
-        e.preventDefault();
-        e.target.appendChild(document.getElementById(e.dataTransfer.getData('text')));
-    });
+        to.addEventListener('drop', function (e) {
+            e.preventDefault();
+            e.target.appendChild(document.getElementById(e.dataTransfer.getData('text')));
+        });
 
-    toDisplayValues.addEventListener('drop', function (e) {
-        e.preventDefault();
+        toDisplayValues.addEventListener('drop', function (e) {
+            e.preventDefault();
 
-        var values = [];
+            const values = [];
 
-        for (var i = 0; i < e.dataTransfer.types.length; i++)
-            values.push(e.dataTransfer.getData(e.dataTransfer.types[i]));
+            for (let i = 0; i < e.dataTransfer.types.length; i++)
+                values.push(e.dataTransfer.getData(e.dataTransfer.types[i]));
 
-        e.target.textContent = values.join(' - ');
-    });
+            e.target.textContent = values.join(' - ');
+        });
 
-    // NOTE: the exact order depends on random factors (like cursor moving speed and time).
-    // Here is defined required events that should be raised in a certain order (some additional
-    // events can be raise between these events ('eventName-elementSelector' format is used).
-    window.requiredEvents = [
-        'mousedown-#draggable',
-        'mousemove-#draggable',
-        'dragstart-#parent',
-        'drag-#parent',
-        'dragenter-#draggable',
-        'dragover-#draggable',
-        'drag-#parent',
-        'dragover-#draggable',
-        'drag-#parent',
-        'dragleave-#draggable',
-        'drag-#parent',
-        'dragenter-#to',
-        'dragleave-body',
-        'dragover-#to',
-        'drag-#parent',
-        'dragover-#to',
-        'drop-#to',
-        'dragend-#parent'
-    ];
-    window.raisedEvents   = [];
+        // NOTE: the exact order depends on random factors (like cursor moving speed and time).
+        // Here is defined required events that should be raised in a certain order (some additional
+        // events can be raise between these events ('eventName-elementSelector' format is used).
+        window.requiredEvents = [
+            'mousedown-#draggable',
+            'mousemove-#draggable',
+            'dragstart-#parent',
+            'drag-#parent',
+            'dragenter-#draggable',
+            'dragover-#draggable',
+            'drag-#parent',
+            'dragover-#draggable',
+            'drag-#parent',
+            'dragleave-#draggable',
+            'drag-#parent',
+            'dragenter-#to',
+            'dragleave-body',
+            'dragover-#to',
+            'drag-#parent',
+            'dragover-#to',
+            'drop-#to',
+            'dragend-#parent'
+        ];
+        window.raisedEvents   = [];
 
-    function waitForNextEvent (index) {
-        var nextItemStr = window.requiredEvents[index];
+        function waitForNextEvent (index) {
+            let nextItemStr = window.requiredEvents[index];
 
-        if (!nextItemStr)
-            return;
+            if (!nextItemStr)
+                return;
 
-        var nextItem = nextItemStr.split('-');
+            nextItem = nextItemStr.split('-');
 
-        var eventName = nextItem[0];
-        var selector  = nextItem[1];
+            const eventName = nextItem[0];
+            const selector  = nextItem[1];
 
-        function eventHandler () {
-            document.querySelector(selector).removeEventListener(eventName, eventHandler);
-            window.raisedEvents.push(nextItemStr);
-            waitForNextEvent(index + 1);
+            function eventHandler () {
+                document.querySelector(selector).removeEventListener(eventName, eventHandler);
+                window.raisedEvents.push(nextItemStr);
+                waitForNextEvent(index + 1);
+            }
+
+            document.querySelector(selector).addEventListener(eventName, eventHandler);
         }
 
-        document.querySelector(selector).addEventListener(eventName, eventHandler);
+        waitForNextEvent(0);
+
+        document.onclick = function () {
+            throw new Error('Click is raised but should not');
+        };
     }
-
-    waitForNextEvent(0);
-
-    document.onclick = function () {
-        throw new Error('Click is raised but should not');
-    };
 </script>
 </body>
 </html>

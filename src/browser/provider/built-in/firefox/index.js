@@ -25,8 +25,8 @@ export default {
     },
 
     async openBrowser (browserId, pageUrl, configString) {
-        var runtimeInfo = await getRuntimeInfo(configString);
-        var browserName = this.providerName.replace(':', '');
+        const runtimeInfo = await getRuntimeInfo(configString);
+        const browserName = this.providerName.replace(':', '');
 
         runtimeInfo.browserId   = browserId;
         runtimeInfo.browserName = browserName;
@@ -42,8 +42,8 @@ export default {
     },
 
     async closeBrowser (browserId) {
-        var runtimeInfo = this.openedBrowsers[browserId];
-        var { config, marionetteClient } = runtimeInfo;
+        const runtimeInfo = this.openedBrowsers[browserId];
+        const { config, marionetteClient } = runtimeInfo;
 
         if (config.headless)
             await marionetteClient.quit();
@@ -60,19 +60,19 @@ export default {
     },
 
     async isLocalBrowser (browserId, configString) {
-        var config = this.openedBrowsers[browserId] ? this.openedBrowsers[browserId].config : getConfig(configString);
+        const config = this.openedBrowsers[browserId] ? this.openedBrowsers[browserId].config : getConfig(configString);
 
         return !config.headless;
     },
 
     async takeScreenshot (browserId, path) {
-        var { marionetteClient } = this.openedBrowsers[browserId];
+        const { marionetteClient } = this.openedBrowsers[browserId];
 
         await marionetteClient.takeScreenshot(path);
     },
 
     async resizeWindow (browserId, width, height) {
-        var { marionetteClient } = this.openedBrowsers[browserId];
+        const { marionetteClient } = this.openedBrowsers[browserId];
 
         await marionetteClient.setWindowSize(width, height);
     },
@@ -84,7 +84,7 @@ export default {
     },
 
     async hasCustomActionForBrowser (browserId) {
-        var { config, marionetteClient } = this.openedBrowsers[browserId];
+        const { config, marionetteClient } = this.openedBrowsers[browserId];
 
         return {
             hasCloseBrowser:                true,

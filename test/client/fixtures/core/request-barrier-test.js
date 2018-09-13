@@ -1,10 +1,10 @@
-var hammerhead    = window.getTestCafeModule('hammerhead');
-var Promise       = hammerhead.Promise;
-var hhsettings    = hammerhead.get('./settings').get();
-var iframeSandbox = hammerhead.sandbox.iframe;
+const hammerhead    = window.getTestCafeModule('hammerhead');
+const Promise       = hammerhead.Promise;
+const hhsettings    = hammerhead.get('./settings').get();
+const iframeSandbox = hammerhead.sandbox.iframe;
 
-var testCafeCore   = window.getTestCafeModule('testCafeCore');
-var RequestBarrier = testCafeCore.RequestBarrier;
+const testCafeCore   = window.getTestCafeModule('testCafeCore');
+const RequestBarrier = testCafeCore.RequestBarrier;
 
 
 $.support.cors = true;
@@ -27,18 +27,19 @@ QUnit.testDone(function () {
 $(document).ready(function () {
     module('xhr', function () {
         asyncTest('waitPageInitialRequests', function () {
-            var completeReqCount       = 0;
-            var reqCount               = 4;
-            var barrierTimeoutExceeded = false;
+            const reqCount = 4;
+
+            let completeReqCount       = 0;
+            let barrierTimeoutExceeded = false;
 
             expect(1);
 
-            var requestBarrier = new RequestBarrier();
-            var onReqCompleted = function () {
+            const requestBarrier = new RequestBarrier();
+            const onReqCompleted = function () {
                 completeReqCount++;
             };
 
-            for (var i = 0; i < reqCount; i++)
+            for (let i = 0; i < reqCount; i++)
                 $.get('/xhr-test/200', onReqCompleted);
 
             // NOTE: ignore slow connection on the testing
@@ -57,18 +58,19 @@ $(document).ready(function () {
         });
 
         asyncTest('barrier - Wait requests complete', function () {
-            var completeReqCount       = 0;
-            var reqCount               = 2;
-            var barrierTimeoutExceeded = false;
+            const reqCount = 2;
+
+            let completeReqCount       = 0;
+            let barrierTimeoutExceeded = false;
 
             expect(1);
 
-            var requestBarrier = new RequestBarrier();
-            var onReqCompleted = function () {
+            const requestBarrier = new RequestBarrier();
+            const onReqCompleted = function () {
                 completeReqCount++;
             };
 
-            for (var i = 0; i < reqCount; i++)
+            for (let i = 0; i < reqCount; i++)
                 $.get('/xhr-test/1000', onReqCompleted);
 
             // NOTE: ignore slow connection on the testing
@@ -87,16 +89,16 @@ $(document).ready(function () {
         });
 
         asyncTest('barrier - Skip TestCafeClient requests', function () {
-            var jqxhr                     = null;
-            var TestCafeClientReqComplete = false;
+            let jqxhr                     = null;
+            let TestCafeClientReqComplete = false;
 
             expect(1);
 
-            var requestBarrier = new RequestBarrier();
+            const requestBarrier = new RequestBarrier();
 
             hhsettings.serviceMsgUrl = '/xhr-test/8000';
 
-            var action = function (callback) {
+            const action = function (callback) {
                 jqxhr = $.ajax(hhsettings.serviceMsgUrl);
 
                 jqxhr.always(function () {
@@ -118,11 +120,11 @@ $(document).ready(function () {
         });
 
         asyncTest('barrier - Timeout', function () {
-            var jqxhr = null;
+            let jqxhr = null;
 
             expect(1);
 
-            var requestBarrier = new RequestBarrier();
+            const requestBarrier = new RequestBarrier();
 
             requestBarrier.BARRIER_TIMEOUT = 0;
 
@@ -141,8 +143,8 @@ $(document).ready(function () {
         });
 
         asyncTest('T135542 - act.wait method works too-o-o-o long', function () {
-            var firstRequestCompleted  = false;
-            var secondRequestCompleted = false;
+            let firstRequestCompleted  = false;
+            let secondRequestCompleted = false;
 
             $.get('/xhr-test/3000', function () {
                 firstRequestCompleted = true;
@@ -152,7 +154,7 @@ $(document).ready(function () {
 
             expect(2);
 
-            var requestBarrier = new RequestBarrier();
+            const requestBarrier = new RequestBarrier();
 
             window.setTimeout(function () {
                 requestBarrier
@@ -169,12 +171,13 @@ $(document).ready(function () {
         });
 
         asyncTest('T233907 - TestRunning waits cancelled xhrs', function () {
-            var timeout          = 300; //NOTE: equals to REQUESTS_COLLECTION_DELAY
-            var barrierCompleted = false;
+            const timeout          = 300; //NOTE: equals to REQUESTS_COLLECTION_DELAY
+
+            let barrierCompleted = false;
 
             expect(1);
 
-            var requestBarrier = new RequestBarrier();
+            const requestBarrier = new RequestBarrier();
 
             requestBarrier
                 .wait()
@@ -182,7 +185,7 @@ $(document).ready(function () {
                     barrierCompleted = true;
                 });
 
-            var xhr = new XMLHttpRequest();
+            const xhr = new XMLHttpRequest();
 
             xhr.open('GET', '/xhr-test/' + 2 * timeout);
             xhr.send(null);
@@ -197,14 +200,14 @@ $(document).ready(function () {
         module('regression');
 
         asyncTest('barrier - creating new iframe without src (B236650)', function () {
-            var $iframe           = null;
-            var windowErrorRaised = false;
+            let $iframe           = null;
+            let windowErrorRaised = false;
 
             window.onerror = function () {
                 windowErrorRaised = true;
             };
 
-            var action = function (callback) {
+            const action = function (callback) {
                 if ($iframe)
                     $iframe.remove();
 
@@ -215,7 +218,7 @@ $(document).ready(function () {
                 callback();
             };
 
-            var requestBarrier = new RequestBarrier();
+            const requestBarrier = new RequestBarrier();
 
             action.call(window, function () {
                 requestBarrier
@@ -234,10 +237,10 @@ $(document).ready(function () {
         });
 
         asyncTest('B237815 - Test runner - can\'t execute simple test', function () {
-            var $iframe        = null;
-            var callbackRaised = false;
+            let $iframe        = null;
+            let callbackRaised = false;
 
-            var action = function (callback) {
+            const action = function (callback) {
                 $iframe = $('<iframe id="test2">').appendTo('body');
 
                 window.setTimeout(function () {
@@ -247,7 +250,7 @@ $(document).ready(function () {
                 callback();
             };
 
-            var requestBarrier = new RequestBarrier();
+            const requestBarrier = new RequestBarrier();
 
             action.call(window, function () {
                 requestBarrier
@@ -267,22 +270,23 @@ $(document).ready(function () {
     if (window.fetch) {
         module('fetch', function () {
             asyncTest('success request', function () {
-                var completeReqCount       = 0;
-                var reqCount               = 2;
-                var barrierTimeoutExceeded = false;
+                const reqCount = 2;
+
+                let completeReqCount       = 0;
+                let barrierTimeoutExceeded = false;
 
                 expect(1);
 
-                var requestBarrier     = new RequestBarrier();
-                var returnResponseText = function (response) {
+                const requestBarrier     = new RequestBarrier();
+                const returnResponseText = function (response) {
                     return response.text();
                 };
 
-                var onReqCompleted = function () {
+                const onReqCompleted = function () {
                     completeReqCount++;
                 };
 
-                for (var i = 0; i < reqCount; i++) {
+                for (let i = 0; i < reqCount; i++) {
                     fetch('/xhr-test/' + 1000 * (i + 1))
                         .then(returnResponseText)
                         .then(onReqCompleted);
@@ -304,12 +308,12 @@ $(document).ready(function () {
             });
 
             asyncTest('failed request', function () {
-                var requestIsFailed        = false;
-                var barrierTimeoutExceeded = false;
+                let requestIsFailed        = false;
+                let barrierTimeoutExceeded = false;
 
                 expect(1);
 
-                var requestBarrier = new RequestBarrier();
+                const requestBarrier = new RequestBarrier();
 
                 fetch('/close-request')
                     .then(function (response) {

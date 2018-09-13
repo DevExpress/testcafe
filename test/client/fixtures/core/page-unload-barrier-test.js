@@ -1,11 +1,11 @@
-var hammerhead    = window.getTestCafeModule('hammerhead');
-var Promise       = hammerhead.Promise;
-var iframeSandbox = hammerhead.sandbox.iframe;
+const hammerhead    = window.getTestCafeModule('hammerhead');
+const Promise       = hammerhead.Promise;
+const iframeSandbox = hammerhead.sandbox.iframe;
 
-var iframe                  = null;
-var iframePageUnloadBarrier = null;
-var waitIframeLoad          = null;
-var waitIframeBeforeUnLoad  = null;
+let iframe                  = null;
+let iframePageUnloadBarrier = null;
+let waitIframeLoad          = null;
+let waitIframeBeforeUnLoad  = null;
 
 QUnit.testStart(function () {
     iframeSandbox.on(iframeSandbox.RUN_TASK_SCRIPT_EVENT, window.initIFrameTestHandler);
@@ -17,7 +17,7 @@ QUnit.testStart(function () {
 
     //NOTE: we need this to wait while iframe is initialized (it is done with some timeout in Firefox)
     iframe.onload = function () {
-        var iframeHammerhead = iframe.contentWindow.eval("window['%hammerhead%']");
+        const iframeHammerhead = iframe.contentWindow.eval("window['%hammerhead%']");
 
         iframePageUnloadBarrier = iframe.contentWindow.eval("window['%testCafeCore%'].pageUnloadBarrier");
         iframePageUnloadBarrier.init();
@@ -56,7 +56,7 @@ $(document).ready(function () {
     });
 
     asyncTest('Should wait for timeout for a possible page redirect', function () {
-        var pageUnloadBarrierResolved = false;
+        let pageUnloadBarrierResolved = false;
 
         iframe.contentWindow.location = '/xhr-test/600'; // delay should be greater then page load barrier timeout
 
@@ -76,8 +76,8 @@ $(document).ready(function () {
     });
 
     asyncTest('Should not resolve waiting promise if page is unloading after click on a link', function () {
-        var iframeDocument = iframe.contentDocument;
-        var link           = iframeDocument.createElement('a');
+        const iframeDocument = iframe.contentDocument;
+        const link           = iframeDocument.createElement('a');
 
         link.href        = '/xhr-test/750';
         link.textContent = 'link';
@@ -85,7 +85,7 @@ $(document).ready(function () {
 
         link.click();
 
-        var pageUnloadBarrierResolved = false;
+        let pageUnloadBarrierResolved = false;
 
         waitIframeBeforeUnLoad()
             .then(function () {

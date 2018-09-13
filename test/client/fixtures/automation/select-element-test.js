@@ -1,49 +1,50 @@
-var hammerhead       = window.getTestCafeModule('hammerhead');
-var browserUtils     = hammerhead.utils.browser;
-var featureDetection = hammerhead.utils.featureDetection;
-var shadowUI         = hammerhead.shadowUI;
+const hammerhead       = window.getTestCafeModule('hammerhead');
+const browserUtils     = hammerhead.utils.browser;
+const featureDetection = hammerhead.utils.featureDetection;
+const shadowUI         = hammerhead.shadowUI;
 
-var testCafeCore     = window.getTestCafeModule('testCafeCore');
-var parseKeySequence = testCafeCore.get('./utils/parse-key-sequence');
+const testCafeCore     = window.getTestCafeModule('testCafeCore');
+const parseKeySequence = testCafeCore.get('./utils/parse-key-sequence');
 
 testCafeCore.preventRealEvents();
 
-var testCafeAutomation         = window.getTestCafeModule('testCafeAutomation');
-var ClickOptions               = testCafeAutomation.get('../../test-run/commands/options').ClickOptions;
-var PressAutomation            = testCafeAutomation.Press;
-var DblClickAutomation         = testCafeAutomation.DblClick;
-var ClickAutomation            = testCafeAutomation.Click;
-var SelectChildClickAutomation = testCafeAutomation.SelectChildClick;
-var getOffsetOptions           = testCafeAutomation.getOffsetOptions;
+const testCafeAutomation         = window.getTestCafeModule('testCafeAutomation');
+const ClickOptions               = testCafeAutomation.get('../../test-run/commands/options').ClickOptions;
+const PressAutomation            = testCafeAutomation.Press;
+const DblClickAutomation         = testCafeAutomation.DblClick;
+const ClickAutomation            = testCafeAutomation.Click;
+const SelectChildClickAutomation = testCafeAutomation.SelectChildClick;
+const getOffsetOptions           = testCafeAutomation.getOffsetOptions;
 
-var testCafeUI    = window.getTestCafeModule('testCafeUI');
-var selectElement = testCafeUI.get('./select-element');
+const testCafeUI    = window.getTestCafeModule('testCafeUI');
+const selectElement = testCafeUI.get('./select-element');
 
 $(document).ready(function () {
     //consts
-    var TEST_ELEMENT_CLASS = 'testElement';
-    var OPTION_CLASS       = 'tcOption';
-    var OPTION_GROUP_CLASS = 'tcOptionGroup';
-    var OPTION_LIST_CLASS  = 'tcOptionList';
+    const TEST_ELEMENT_CLASS = 'testElement';
+    const OPTION_CLASS       = 'tcOption';
+    const OPTION_GROUP_CLASS = 'tcOptionGroup';
+    const OPTION_LIST_CLASS  = 'tcOptionList';
 
     //utils
-    var handlersLog     = [];
-    var isMobileBrowser = featureDetection.isTouchDevice;
+    const isMobileBrowser = featureDetection.isTouchDevice;
 
-    var createOption = function (parent, text) {
+    let handlersLog = [];
+
+    const createOption = function (parent, text) {
         return $('<option></option>').text(text)
             .addClass(TEST_ELEMENT_CLASS)
             .appendTo(parent);
     };
 
-    var createOptionGroup = function (select, label) {
+    const createOptionGroup = function (select, label) {
         return $('<optgroup></optgroup>').attr('label', label)
             .addClass(TEST_ELEMENT_CLASS)
             .appendTo(select)[0];
     };
 
-    var createSelect = function (size) {
-        var select = $('<select><select/>')
+    const createSelect = function (size) {
+        const select = $('<select><select/>')
             .addClass(TEST_ELEMENT_CLASS)
             .appendTo('body')[0];
 
@@ -59,24 +60,24 @@ $(document).ready(function () {
         return select;
     };
 
-    var createSelectWithGroups = function () {
-        var select = $('<select><select/>')
+    const createSelectWithGroups = function () {
+        const select = $('<select><select/>')
             .addClass(TEST_ELEMENT_CLASS)
             .appendTo('body')[0];
 
-        var firstGroup = createOptionGroup(select, 'First');
+        const firstGroup = createOptionGroup(select, 'First');
 
         createOption(firstGroup, 'one');
         createOption(firstGroup, 'two');
         createOption(firstGroup, 'three');
 
-        var secondGroup = createOptionGroup(select, 'Second');
+        const secondGroup = createOptionGroup(select, 'Second');
 
         createOption(secondGroup, 'four');
         createOption(secondGroup, 'five');
         createOption(secondGroup, 'six');
 
-        var thirdGroup = createOptionGroup(select, 'Third');
+        const thirdGroup = createOptionGroup(select, 'Third');
 
         createOption(thirdGroup, 'sevent');
         createOption(thirdGroup, 'eight');
@@ -84,20 +85,20 @@ $(document).ready(function () {
         return select;
     };
 
-    var createSelectWithGroupsForCheckPress = function () {
-        var select = $('<select><select/>')
+    const createSelectWithGroupsForCheckPress = function () {
+        const select = $('<select><select/>')
             .addClass(TEST_ELEMENT_CLASS)
             .appendTo('body')[0];
 
-        var firstGroup = createOptionGroup(select, 'Group 1');
+        const firstGroup = createOptionGroup(select, 'Group 1');
 
         createOption(firstGroup, 'one');
 
-        var secondGroup = createOptionGroup(select, 'Group 2');
+        const secondGroup = createOptionGroup(select, 'Group 2');
 
         createOption(secondGroup, 'two');
 
-        var thirdGroup = createOptionGroup(select, 'Group 3');
+        const thirdGroup = createOptionGroup(select, 'Group 3');
 
         createOption(thirdGroup, 'thee');
         $(thirdGroup).attr('disabled', 'disabled');
@@ -107,17 +108,17 @@ $(document).ready(function () {
         return select;
     };
 
-    var runPressAutomation = function (keys, callback) {
-        var pressAutomation = new PressAutomation(parseKeySequence(keys).combinations, {});
+    const runPressAutomation = function (keys, callback) {
+        const pressAutomation = new PressAutomation(parseKeySequence(keys).combinations, {});
 
         pressAutomation
             .run()
             .then(callback);
     };
 
-    var runDblClickAutomation = function (el, options, callback) {
-        var clickOptions = new ClickOptions();
-        var offsets      = getOffsetOptions(el, options.offsetX, options.offsetY);
+    const runDblClickAutomation = function (el, options, callback) {
+        const clickOptions = new ClickOptions();
+        const offsets      = getOffsetOptions(el, options.offsetX, options.offsetY);
 
         clickOptions.offsetX  = offsets.offsetX;
         clickOptions.offsetY  = offsets.offsetY;
@@ -130,15 +131,15 @@ $(document).ready(function () {
             meta:  options.meta
         };
 
-        var dblClickAutomation = new DblClickAutomation(el, clickOptions);
+        const dblClickAutomation = new DblClickAutomation(el, clickOptions);
 
         dblClickAutomation
             .run()
             .then(callback);
     };
 
-    var preventDefault = function (e) {
-        var ev = e || window.event;
+    const preventDefault = function (e) {
+        const ev = e || window.event;
 
         if (ev.preventDefault)
             ev.preventDefault();
@@ -146,12 +147,12 @@ $(document).ready(function () {
             ev.returnValue = false;
     };
 
-    var eventHandler = function (e) {
+    const eventHandler = function (e) {
         if (e.target === this)
             handlersLog.push(e.target.tagName.toLowerCase() + ' ' + e.type);
     };
 
-    var bindSelectAndOptionHandlers = function ($select, $option) {
+    const bindSelectAndOptionHandlers = function ($select, $option) {
         $select.bind('mousedown', eventHandler);
         $select.bind('mouseup', eventHandler);
         $select.bind('click', eventHandler);
@@ -167,7 +168,7 @@ $(document).ready(function () {
 
     $('body').css('height', 1500);
 
-    var startNext = function () {
+    const startNext = function () {
         if (browserUtils.isIE) {
             removeTestElements();
             window.setTimeout(start, 30);
@@ -176,11 +177,11 @@ $(document).ready(function () {
             start();
     };
 
-    var removeTestElements = function () {
+    const removeTestElements = function () {
         $('.' + TEST_ELEMENT_CLASS).remove();
     };
 
-    var pressDownUpKeysActions = function (select) {
+    const pressDownUpKeysActions = function (select) {
         window.async.series({
             firstPressDownAction: function (callback) {
                 equal(select.selectedIndex, 0);
@@ -256,7 +257,7 @@ $(document).ready(function () {
         });
     };
 
-    var pressRightLeftKeysActions = function (select) {
+    const pressRightLeftKeysActions = function (select) {
         window.async.series({
             firstPressRightAction: function (callback) {
                 equal(select.selectedIndex, 0);
@@ -332,7 +333,7 @@ $(document).ready(function () {
         });
     };
 
-    var pressDownUpKeysActionsForSelectWithOptgroups = function (select, testCallback) {
+    const pressDownUpKeysActionsForSelectWithOptgroups = function (select, testCallback) {
         window.async.series({
             pressDownFirstTime: function (callback) {
                 equal(select.selectedIndex, 0);
@@ -366,7 +367,7 @@ $(document).ready(function () {
         });
     };
 
-    var pressRightLeftKeysActionsForSelectWithOptgroups = function ($select, testCallback, notChangeInChrome) {
+    const pressRightLeftKeysActionsForSelectWithOptgroups = function ($select, testCallback, notChangeInChrome) {
         window.async.series({
             pressDownFirstTime: function (callback) {
                 equal($select.selectedIndex, 0);
@@ -400,9 +401,9 @@ $(document).ready(function () {
         });
     };
 
-    var runClickAutomation = function (el, options, callback) {
-        var clickOptions = new ClickOptions();
-        var offsets      = getOffsetOptions(el, options.offsetX, options.offsetY);
+    const runClickAutomation = function (el, options, callback) {
+        const clickOptions = new ClickOptions();
+        const offsets      = getOffsetOptions(el, options.offsetX, options.offsetY);
 
         clickOptions.offsetX  = offsets.offsetX;
         clickOptions.offsetY  = offsets.offsetY;
@@ -415,7 +416,7 @@ $(document).ready(function () {
             meta:  options.meta
         };
 
-        var clickAutomation = /opt/i.test(el.tagName) ?
+        const clickAutomation = /opt/i.test(el.tagName) ?
             new SelectChildClickAutomation(el, clickOptions) :
             new ClickAutomation(el, clickOptions);
 
@@ -436,7 +437,7 @@ $(document).ready(function () {
     //tests
     module('common tests');
     asyncTest('option list doesn\'t open if mousedown event prevented', function () {
-        var select = createSelect();
+        const select = createSelect();
 
         select['onmousedown'] = preventDefault;
 
@@ -450,8 +451,8 @@ $(document).ready(function () {
 
     module('mouse actions with select element');
     asyncTest('click on select and on option', function () {
-        var select = createSelect();
-        var option = $(select).children()[2];
+        const select = createSelect();
+        const option = $(select).children()[2];
 
         runClickAutomation(select, {}, function () {
             equal(select.selectedIndex, 0);
@@ -467,7 +468,7 @@ $(document).ready(function () {
 
     module('press actions with select element');
     asyncTest('press down/up/right/left when option list closed', function () {
-        var select = createSelect();
+        const select = createSelect();
 
         $(select).focus();
 
@@ -505,7 +506,7 @@ $(document).ready(function () {
     });
 
     asyncTest('press down/up/right/left when option list opened', function () {
-        var select = createSelect();
+        const select = createSelect();
 
         window.async.series({
             openSelectList: function (callback) {
@@ -555,7 +556,7 @@ $(document).ready(function () {
     });
 
     asyncTest('click select and press enter', function () {
-        var select = createSelect();
+        const select = createSelect();
 
         window.async.series({
             'Click on select': function (callback) {
@@ -584,7 +585,7 @@ $(document).ready(function () {
     });
 
     asyncTest('click select and press tab', function () {
-        var select = createSelect();
+        const select = createSelect();
 
         window.async.series({
             'Click on select': function (callback) {
@@ -609,7 +610,7 @@ $(document).ready(function () {
     });
 
     asyncTest('click select and press esc', function () {
-        var select = createSelect();
+        const select = createSelect();
 
         window.async.series({
             'Click on select': function (callback) {
@@ -637,7 +638,7 @@ $(document).ready(function () {
     if (isMobileBrowser) {
         module('mouse actions with multiline select element');
         asyncTest('click on the "select" element with the "size" attribute greater than one, then click on an option', function () {
-            var select = createSelect(2);
+            const select = createSelect(2);
 
             runClickAutomation(select, {}, function () {
                 ok(selectElement.isOptionListExpanded(select));
@@ -646,7 +647,7 @@ $(document).ready(function () {
         });
 
         asyncTest('click on the "select" element with the "multiple" attribute, then click on an option', function () {
-            var select = createSelect();
+            const select = createSelect();
 
             $(select).attr('multiple', 'multiple');
 
@@ -659,7 +660,7 @@ $(document).ready(function () {
     else {
         module('mouse actions with select element with attribute size more than one');
         asyncTest('click on option', function () {
-            var select = createSelect(2);
+            const select = createSelect(2);
 
             select.selectedIndex = 0;
             equal(select.selectedIndex, 0);
@@ -671,7 +672,7 @@ $(document).ready(function () {
         });
 
         asyncTest('click on option with scroll', function () {
-            var select = createSelect(2);
+            const select = createSelect(2);
 
             select.selectedIndex = 0;
             equal(select.selectedIndex, 0);
@@ -683,8 +684,8 @@ $(document).ready(function () {
         });
 
         asyncTest('click on disabled option', function () {
-            var select  = createSelect(2);
-            var $option = $(select).children(':first');
+            const select  = createSelect(2);
+            const $option = $(select).children(':first');
 
             $option.attr('disabled', 'disabled');
 
@@ -698,7 +699,7 @@ $(document).ready(function () {
         });
 
         asyncTest('click on an option (the select size is more than the option count)', function () {
-            var select = createSelect(10);
+            const select = createSelect(10);
 
             select.selectedIndex = 0;
             equal(select.selectedIndex, 0);
@@ -711,7 +712,7 @@ $(document).ready(function () {
 
         module('press actions with select element with attribute size more than one');
         asyncTest('press down/up in select', function () {
-            var select = createSelect();
+            const select = createSelect();
 
             $(select).attr('size', '2');
             //NOTE: IE11 sets selectedIndex = -1 after setting attribute size != 1
@@ -722,7 +723,7 @@ $(document).ready(function () {
         });
 
         asyncTest('press right/left in select', function () {
-            var select = createSelect();
+            const select = createSelect();
 
             $(select).attr('size', '2');
             //NOTE: IE11 sets selectedIndex = -1 after setting attribute size != 1
@@ -733,7 +734,7 @@ $(document).ready(function () {
         });
 
         asyncTest('press down/up in select with "size" more than the option count', function () {
-            var select = createSelect();
+            const select = createSelect();
 
             $(select).attr('size', '10');
             //NOTE: IE11 sets selectedIndex = -1 after setting attribute size != 1
@@ -744,7 +745,7 @@ $(document).ready(function () {
         });
 
         asyncTest('press right/left in select with "size" more than the option count', function () {
-            var select = createSelect();
+            const select = createSelect();
 
             $(select).attr('size', '10');
             //NOTE: IE11 sets selectedIndex = -1 after setting attribute size != 1
@@ -757,7 +758,7 @@ $(document).ready(function () {
 
         module('mouse actions with the "select" element with the "multiple" attribute');
         asyncTest('click on option with scroll', function () {
-            var select = createSelect();
+            const select = createSelect();
 
             select.selectedIndex = 0;
             equal(select.selectedIndex, 0);
@@ -770,7 +771,7 @@ $(document).ready(function () {
         });
 
         asyncTest('click on option with scroll (attribute size more than one)', function () {
-            var select = createSelect(2);
+            const select = createSelect(2);
 
             select.selectedIndex = 0;
             equal(select.selectedIndex, 0);
@@ -783,7 +784,7 @@ $(document).ready(function () {
         });
 
         asyncTest('click on option with scroll (attribute size less than one)', function () {
-            var select = createSelect(-1);
+            const select = createSelect(-1);
 
             select.selectedIndex = 0;
             equal(select.selectedIndex, 0);
@@ -798,9 +799,10 @@ $(document).ready(function () {
 
     module('mouse actions with select with option groups');
     asyncTest('click select and option', function () {
-        var select        = createSelectWithGroups();
-        var option        = $(select).find('option')[3];
-        var changeHandled = false;
+        const select        = createSelectWithGroups();
+        const option        = $(select).find('option')[3];
+
+        let changeHandled = false;
 
         //T280587 - Selecting an option does not trigger the on('change', ...) event
         select.onchange = function () {
@@ -823,9 +825,9 @@ $(document).ready(function () {
     });
 
     asyncTest('click select and option (optgroup with empty label)', function () {
-        var select    = createSelectWithGroups();
-        var $optgroup = $(select).find('optgroup').eq(0).attr('label', '');
-        var option    = $optgroup.find('option')[1];
+        const select    = createSelectWithGroups();
+        const $optgroup = $(select).find('optgroup').eq(0).attr('label', '');
+        const option    = $optgroup.find('option')[1];
 
         runClickAutomation(select, {}, function () {
             equal(select.selectedIndex, 0);
@@ -842,9 +844,9 @@ $(document).ready(function () {
     });
 
     asyncTest('click select and option (in disabled group)', function () {
-        var select    = createSelectWithGroups();
-        var $optgroup = $(select).find('optgroup').eq(1).attr('disabled', '');
-        var option    = $optgroup.find('option')[0];
+        const select    = createSelectWithGroups();
+        const $optgroup = $(select).find('optgroup').eq(1).attr('disabled', '');
+        const option    = $optgroup.find('option')[0];
 
         runClickAutomation(select, {}, function () {
             equal(select.selectedIndex, 0);
@@ -865,8 +867,8 @@ $(document).ready(function () {
     });
 
     asyncTest('click select and optgroup', function () {
-        var select = createSelectWithGroups();
-        var group  = $(select).find('optgroup')[2];
+        const select = createSelectWithGroups();
+        const group  = $(select).find('optgroup')[2];
 
         runClickAutomation(select, {}, function () {
             equal(select.selectedIndex, 0);
@@ -888,13 +890,13 @@ $(document).ready(function () {
     });
 
     asyncTest('click select and option in subgroup', function () {
-        var select       = createSelectWithGroups();
-        var $optgroup    = $(select).find('optgroup').eq(1);
-        var $newOptgroup = $('<optgroup label="subgroup"></optgroup>')
+        const select       = createSelectWithGroups();
+        const $optgroup    = $(select).find('optgroup').eq(1);
+        const $newOptgroup = $('<optgroup label="subgroup"></optgroup>')
             .addClass(TEST_ELEMENT_CLASS)
             .appendTo($optgroup[0]);
 
-        var $newOption = $('<option></option>').text('sub option')
+        const $newOption = $('<option></option>').text('sub option')
             .addClass(TEST_ELEMENT_CLASS)
             .appendTo($newOptgroup[0]);
 
@@ -913,9 +915,9 @@ $(document).ready(function () {
     });
 
     asyncTest('click select and subgroup', function () {
-        var select       = createSelectWithGroups();
-        var $optgroup    = $(select).find('optgroup').eq(1);
-        var $newOptgroup = $('<optgroup label="subgroup"></optgroup>')
+        const select       = createSelectWithGroups();
+        const $optgroup    = $(select).find('optgroup').eq(1);
+        const $newOptgroup = $('<optgroup label="subgroup"></optgroup>')
             .addClass(TEST_ELEMENT_CLASS)
             .appendTo($optgroup[0]);
 
@@ -943,9 +945,9 @@ $(document).ready(function () {
     });
 
     asyncTest('click select and option out of group', function () {
-        var select     = createSelectWithGroups();
-        var $optgroup  = $(select).find('optgroup').eq(1);
-        var $newOption = $('<option></option>').text('outer option')
+        const select     = createSelectWithGroups();
+        const $optgroup  = $(select).find('optgroup').eq(1);
+        const $newOption = $('<option></option>').text('outer option')
             .addClass(TEST_ELEMENT_CLASS)
             .insertAfter($optgroup);
 
@@ -966,7 +968,7 @@ $(document).ready(function () {
 
     module('press actions with select with option groups');
     asyncTest('press down/up when option list closed', function () {
-        var select = createSelectWithGroupsForCheckPress();
+        const select = createSelectWithGroupsForCheckPress();
 
         select.selectedIndex = 0;
         $(select).focus();
@@ -975,7 +977,7 @@ $(document).ready(function () {
     });
 
     asyncTest('press right/left when option list closed', function () {
-        var select = createSelectWithGroupsForCheckPress();
+        const select = createSelectWithGroupsForCheckPress();
 
         select.selectedIndex = 0;
         $(select).focus();
@@ -984,7 +986,7 @@ $(document).ready(function () {
     });
 
     asyncTest('press down/up when option list opened', function () {
-        var select = createSelectWithGroupsForCheckPress();
+        const select = createSelectWithGroupsForCheckPress();
 
         select.selectedIndex = 0;
         $(select).focus();
@@ -1013,7 +1015,7 @@ $(document).ready(function () {
     });
 
     asyncTest('press right/left when option list opened', function () {
-        var select = createSelectWithGroupsForCheckPress();
+        const select = createSelectWithGroupsForCheckPress();
 
         window.async.series({
             openSelectList: function (callback) {
@@ -1042,9 +1044,9 @@ $(document).ready(function () {
     if (!isMobileBrowser) {
         module('mouse actions with select with the "groups" option and size more than one');
         asyncTest('click optgroup', function () {
-            var select  = createSelectWithGroups();
-            var $select = $(select);
-            var group   = $select.find('optgroup')[0];
+            const select  = createSelectWithGroups();
+            const $select = $(select);
+            const group   = $select.find('optgroup')[0];
 
             $select.attr('size', '4');
             select.selectedIndex = 0;
@@ -1063,9 +1065,9 @@ $(document).ready(function () {
         });
 
         asyncTest('click option', function () {
-            var select  = createSelectWithGroups();
-            var $select = $(select);
-            var option  = $select.find('option')[1];
+            const select  = createSelectWithGroups();
+            const $select = $(select);
+            const option  = $select.find('option')[1];
 
             $select.css({
                 position: 'absolute',
@@ -1090,10 +1092,10 @@ $(document).ready(function () {
         });
 
         asyncTest('click option with scroll down', function () {
-            var select              = createSelectWithGroups();
-            var $select             = $(select);
-            var option              = $select.find('option')[8];
-            var selectElementScroll = 0;
+            const select              = createSelectWithGroups();
+            const $select             = $(select);
+            const option              = $select.find('option')[8];
+            const selectElementScroll = 0;
 
             $select.css({
                 position: 'absolute',
@@ -1119,10 +1121,10 @@ $(document).ready(function () {
         });
 
         asyncTest('click option with scroll up', function () {
-            var select              = createSelectWithGroups();
-            var $select             = $(select);
-            var option              = $select.find('option')[4];
-            var selectElementScroll = 119;
+            const select              = createSelectWithGroups();
+            const $select             = $(select);
+            const option              = $select.find('option')[4];
+            const selectElementScroll = 119;
 
             $select.css({
                 position: 'absolute',
@@ -1147,14 +1149,14 @@ $(document).ready(function () {
         });
 
         asyncTest('click option in subgroup', function () {
-            var select       = createSelectWithGroups();
-            var $select      = $(select);
-            var $optgroup    = $select.find('optgroup').eq(1);
-            var $newOptgroup = $('<optgroup label="subgroup"></optgroup>')
+            const select       = createSelectWithGroups();
+            const $select      = $(select);
+            const $optgroup    = $select.find('optgroup').eq(1);
+            const $newOptgroup = $('<optgroup label="subgroup"></optgroup>')
                 .addClass(TEST_ELEMENT_CLASS)
                 .appendTo($optgroup[0]);
 
-            var $newOption = $('<option></option>').text('sub option')
+            const $newOption = $('<option></option>').text('sub option')
                 .addClass(TEST_ELEMENT_CLASS)
                 .appendTo($newOptgroup[0]);
 
@@ -1181,10 +1183,10 @@ $(document).ready(function () {
         });
 
         asyncTest('click subgroup', function () {
-            var select       = createSelectWithGroups();
-            var $select      = $(select);
-            var $optgroup    = $select.find('optgroup').eq(1);
-            var $newOptgroup = $('<optgroup label="subgroup"></optgroup>')
+            const select       = createSelectWithGroups();
+            const $select      = $(select);
+            const $optgroup    = $select.find('optgroup').eq(1);
+            const $newOptgroup = $('<optgroup label="subgroup"></optgroup>')
                 .addClass(TEST_ELEMENT_CLASS)
                 .appendTo($optgroup[0]);
 
@@ -1215,10 +1217,10 @@ $(document).ready(function () {
         });
 
         asyncTest('click option out of group', function () {
-            var select     = createSelectWithGroups();
-            var $select    = $(select);
-            var $optgroup  = $select.find('optgroup').eq(2);
-            var $newOption = $('<option></option>').text('outer option')
+            const select     = createSelectWithGroups();
+            const $select    = $(select);
+            const $optgroup  = $select.find('optgroup').eq(2);
+            const $newOption = $('<option></option>').text('outer option')
                 .addClass(TEST_ELEMENT_CLASS)
                 .insertAfter($optgroup);
 
@@ -1242,7 +1244,7 @@ $(document).ready(function () {
 
         module('press actions with select with the "groups" option and size more than one');
         asyncTest('press down/up', function () {
-            var select = createSelectWithGroupsForCheckPress();
+            const select = createSelectWithGroupsForCheckPress();
 
             $(select).attr('size', '5');
             select.selectedIndex = 0;
@@ -1252,7 +1254,7 @@ $(document).ready(function () {
         });
 
         asyncTest('press right/left', function () {
-            var select = createSelectWithGroupsForCheckPress();
+            const select = createSelectWithGroupsForCheckPress();
 
             $(select).attr('size', '5');
             select.selectedIndex = 0;
@@ -1264,7 +1266,7 @@ $(document).ready(function () {
 
     module('regression');
     asyncTest('B237794 - Select options list doesn\'t close after dblclick in Chrome and Opera (dblclick)', function () {
-        var select = createSelect();
+        const select = createSelect();
 
         equal(shadowUI.select('.' + OPTION_LIST_CLASS).length, 0);
 
@@ -1279,7 +1281,7 @@ $(document).ready(function () {
     });
 
     asyncTest('B237794 - Select options list doesn\'t close after dblclick in Chrome and Opera (two successive clicks)', function () {
-        var select = createSelect();
+        const select = createSelect();
 
         equal(shadowUI.select('.' + OPTION_LIST_CLASS).length, 0);
 
@@ -1312,9 +1314,9 @@ $(document).ready(function () {
     });
 
     asyncTest('B238984 - After click on select element and then click on another first opened options list doesn\'t closed', function () {
-        var firstSelect         = createSelect();
-        var secondSelect        = createSelect();
-        var $secondSelectOption = $(secondSelect).find('option').last();
+        const firstSelect         = createSelect();
+        const secondSelect        = createSelect();
+        const $secondSelectOption = $(secondSelect).find('option').last();
 
         equal(shadowUI.select('.' + OPTION_LIST_CLASS).length, 0);
 
@@ -1361,8 +1363,8 @@ $(document).ready(function () {
     });
 
     asyncTest('B253370 - Event handlers are called in the wrong order (click on select and option)', function () {
-        var select  = createSelect();
-        var $option = $(select).children().eq(2);
+        const select  = createSelect();
+        const $option = $(select).children().eq(2);
 
         //bind handlers
         bindSelectAndOptionHandlers($(select), $option);
@@ -1387,8 +1389,8 @@ $(document).ready(function () {
     });
 
     asyncTest('B253370 - Event handlers are called in the wrong order (click on select and the same option)', function () {
-        var select  = createSelect();
-        var $option = $(select).children().eq(2);
+        const select  = createSelect();
+        const $option = $(select).children().eq(2);
 
         //bind handlers
         bindSelectAndOptionHandlers($(select), $option);
@@ -1419,8 +1421,8 @@ $(document).ready(function () {
     });
 
     asyncTest('B253370 - Event handlers are called in the wrong order (click on select and select)', function () {
-        var select  = createSelect();
-        var $option = $(select).children().eq(2);
+        const select  = createSelect();
+        const $option = $(select).children().eq(2);
 
         //bind handlers
         bindSelectAndOptionHandlers($(select), $option);
@@ -1438,8 +1440,8 @@ $(document).ready(function () {
     });
 
     asyncTest('B253370 - Event handlers are called in the wrong order (click on option in select with size more than one)', function () {
-        var select  = createSelect(4);
-        var $option = $(select).children().eq(2);
+        const select  = createSelect(4);
+        const $option = $(select).children().eq(2);
 
         //bind handlers
         bindSelectAndOptionHandlers($(select), $option);
@@ -1472,8 +1474,8 @@ $(document).ready(function () {
     });
 
     asyncTest('B253370 - Event handlers are called in the wrong order (click on the same option in select with size more than one)', function () {
-        var select  = createSelect(4);
-        var $option = $(select).children().eq(2);
+        const select  = createSelect(4);
+        const $option = $(select).children().eq(2);
 
         //bind handlers
         bindSelectAndOptionHandlers($(select), $option);
@@ -1517,7 +1519,7 @@ $(document).ready(function () {
     });
 
     asyncTest('B253370 - Event handlers are called in the wrong order (click on select with size more than one)', function () {
-        var select = createSelect(30);
+        const select = createSelect(30);
 
         //bind handlers
         bindSelectAndOptionHandlers($(select));
@@ -1531,7 +1533,7 @@ $(document).ready(function () {
     });
 
     asyncTest('GH234 - Value of a <select> element must be updated before emitting "change" event in IE and Edge', function () {
-        var select = createSelect();
+        const select = createSelect();
 
         select.addEventListener('change', function () {
             equal(select.value, 'three');

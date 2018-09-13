@@ -1,19 +1,19 @@
-var path    = require('path');
-var Promise = require('pinkie');
-var expect  = require('chai').expect;
-var config  = require('../../config');
+const path    = require('path');
+const Promise = require('pinkie');
+const expect  = require('chai').expect;
+const config  = require('../../config');
 
 
 if (config.useLocalBrowsers) {
     describe('Concurrency', function () {
-        var data = '';
+        let data = '';
 
         function resolvePath (file) {
             return path.join(__dirname, file);
         }
 
         function run (browsers, concurrency, files, reporter) {
-            var src = null;
+            let src = null;
 
             reporter = reporter || 'json';
 
@@ -52,7 +52,7 @@ if (config.useLocalBrowsers) {
         }
 
         function createConnections (count) {
-            var connections = [];
+            const connections = [];
 
             function createConnection () {
                 return testCafe.createBrowserConnection();
@@ -63,9 +63,9 @@ if (config.useLocalBrowsers) {
                 return connections;
             }
 
-            var promise = Promise.resolve();
+            let promise = Promise.resolve();
 
-            for (var i = 0; i < count; i++) {
+            for (let i = 0; i < count; i++) {
                 promise = promise
                     .then(createConnection)
                     .then(addConnection);
@@ -101,7 +101,7 @@ if (config.useLocalBrowsers) {
         it('Should run tests sequentially if concurrency = 1', function () {
             return run('chrome:headless --no-sandbox', 1, './testcafe-fixtures/sequential-test.js')
                 .then(failedCount => {
-                    var results = getResults(data);
+                    const results = getResults(data);
 
                     expect(results.errs).eql([]);
                     expect(failedCount).eql(0);
@@ -111,7 +111,7 @@ if (config.useLocalBrowsers) {
         it('Should run tests concurrently if concurrency > 1', function () {
             return run('chrome:headless --no-sandbox', 2, './testcafe-fixtures/concurrent-test.js')
                 .then(failedCount => {
-                    var results = getResults(data);
+                    const results = getResults(data);
 
                     expect(results.errs).eql([]);
                     expect(failedCount).eql(0);
@@ -121,7 +121,7 @@ if (config.useLocalBrowsers) {
         it('Should run tests concurrently in different browser kinds', function () {
             return run(['chrome:headless --no-sandbox', 'firefox:headless'], 2, './testcafe-fixtures/multibrowser-concurrent-test.js')
                 .then(failedCount => {
-                    var results = getResults(data);
+                    const results = getResults(data);
 
                     expect(results.errs).eql([]);
                     expect(failedCount).eql(0);

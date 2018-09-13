@@ -1,9 +1,9 @@
-var testCafeCore = window.getTestCafeModule('testCafeCore');
-var styleUtils   = testCafeCore.get('./utils/style');
+const testCafeCore = window.getTestCafeModule('testCafeCore');
+const styleUtils   = testCafeCore.get('./utils/style');
 
 test('hasScroll (GH-2511)', function () {
-    var div      = document.createElement('div');
-    var innerDiv = document.createElement('div');
+    const div      = document.createElement('div');
+    const innerDiv = document.createElement('div');
 
     div.appendChild(innerDiv);
     innerDiv.setAttribute('style', 'border: 1px solid red; width: 100px; height: 60px;');

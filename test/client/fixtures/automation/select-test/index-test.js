@@ -1,28 +1,28 @@
-var hammerhead       = window.getTestCafeModule('hammerhead');
-var browserUtils     = hammerhead.utils.browser;
-var featureDetection = hammerhead.utils.featureDetection;
+const hammerhead       = window.getTestCafeModule('hammerhead');
+const browserUtils     = hammerhead.utils.browser;
+const featureDetection = hammerhead.utils.featureDetection;
 
-var testCafeCore = window.getTestCafeModule('testCafeCore');
+const testCafeCore = window.getTestCafeModule('testCafeCore');
 
-var testCafeAutomation                = window.getTestCafeModule('testCafeAutomation');
-var SelectTextAutomation              = testCafeAutomation.SelectText;
-var getSelectionCoordinatesByPosition = testCafeAutomation.get('./playback/select/utils').getSelectionCoordinatesByPosition;
+const testCafeAutomation                = window.getTestCafeModule('testCafeAutomation');
+const SelectTextAutomation              = testCafeAutomation.SelectText;
+const getSelectionCoordinatesByPosition = testCafeAutomation.get('./playback/select/utils').getSelectionCoordinatesByPosition;
 
 testCafeCore.preventRealEvents();
 
-var domUtils      = testCafeCore.get('./utils/dom');
-var style         = testCafeCore.get('./utils/style');
-var textSelection = testCafeCore.get('./utils/text-selection');
+const domUtils      = testCafeCore.get('./utils/dom');
+const style         = testCafeCore.get('./utils/style');
+const textSelection = testCafeCore.get('./utils/text-selection');
 
 
 $(document).ready(function () {
     //constants
-    var TEXTAREA_SELECTOR = '#textarea';
-    var INPUT_SELECTOR    = '#input';
+    const TEXTAREA_SELECTOR = '#textarea';
+    const INPUT_SELECTOR    = '#input';
 
-    var INPUT_INITIAL_VALUE = '123456789';
+    const INPUT_INITIAL_VALUE = '123456789';
 
-    var TEXTAREA_BIG_TEXT = '123456789abcdlasdkjasdjkajkdjkasjkdjkajskd\n12345678901234567890\n123456\n' +
+    const TEXTAREA_BIG_TEXT = '123456789abcdlasdkjasdjkajkdjkasjkdjkajskd\n12345678901234567890\n123456\n' +
                             'efghifkklfkalsklfkalskdlkaldklakdlkalskdaslkdl\njklmopsdajdkjaksjdkkjdk\n' +
                             '123456\nefghifkklfkalsklfkalskdlkaldklakdlkalskdaslkdl\njklmopsdajdkjaksjdkkjdk\n123456\n' +
                             'efghifkklfkalsklfkalskdlkaldklakdlkalskdaslkdl\njklmopsdajdkjaksjdkkjdk\n123456\n' +
@@ -32,18 +32,18 @@ $(document).ready(function () {
                             'dasdasdasdasdajksdjkajskdjk\najkdjkasjkdjksjkdjksjdkjs\nqwerty\ntest\n' +
                             'cafesadkaldklakldlakdklakldkalskd;';
 
-    var startSelectEvent       = featureDetection.isTouchDevice ? 'ontouchstart' : 'onmousedown';
-    var endSelectEvent         = featureDetection.isTouchDevice ? 'ontouchend' : 'onmouseup';
-    var checkScrollAfterSelect = !(browserUtils.isFirefox || browserUtils.isIE);
+    const startSelectEvent       = featureDetection.isTouchDevice ? 'ontouchstart' : 'onmousedown';
+    const endSelectEvent         = featureDetection.isTouchDevice ? 'ontouchend' : 'onmouseup';
+    const checkScrollAfterSelect = !(browserUtils.isFirefox || browserUtils.isIE);
 
-    var mousedownOnInput    = false;
-    var mouseupOnInput      = false;
-    var mousedownOnTextarea = false;
-    var mouseupOnTextarea   = false;
+    let mousedownOnInput    = false;
+    let mouseupOnInput      = false;
+    let mousedownOnTextarea = false;
+    let mouseupOnTextarea   = false;
 
     //utils
     function setValueToTextarea (value) {
-        var textarea = $(TEXTAREA_SELECTOR)[0];
+        const textarea = $(TEXTAREA_SELECTOR)[0];
 
         textarea.value       = value;
         textarea.textContent = value;
@@ -54,7 +54,7 @@ $(document).ready(function () {
     }
 
     function setValueToInput (value) {
-        var input = $(INPUT_SELECTOR)[0];
+        const input = $(INPUT_SELECTOR)[0];
 
         input.value = value;
 
@@ -65,8 +65,8 @@ $(document).ready(function () {
         start = start || 0;
 
         //NOTE: set to start position
-        var el            = $el[0];
-        var startPosition = inverse ? end : start;
+        const el            = $el[0];
+        const startPosition = inverse ? end : start;
 
         if (el.setSelectionRange)
             el.setSelectionRange(startPosition, startPosition);
@@ -94,8 +94,8 @@ $(document).ready(function () {
     }
 
     function restorePageState () {
-        var $input    = $(INPUT_SELECTOR);
-        var $textarea = $(TEXTAREA_SELECTOR);
+        const $input    = $(INPUT_SELECTOR);
+        const $textarea = $(TEXTAREA_SELECTOR);
 
         $textarea.css({
             width:  '250px',
@@ -112,8 +112,8 @@ $(document).ready(function () {
     }
 
     function bindHandlers () {
-        var input    = $(INPUT_SELECTOR)[0];
-        var textarea = $(TEXTAREA_SELECTOR)[0];
+        const input    = $(INPUT_SELECTOR)[0];
+        const textarea = $(TEXTAREA_SELECTOR)[0];
 
         input[startSelectEvent] = function () {
             mousedownOnInput = true;
@@ -133,8 +133,8 @@ $(document).ready(function () {
     }
 
     function unbindHandlers () {
-        var input    = $(INPUT_SELECTOR)[0];
-        var textarea = $(TEXTAREA_SELECTOR)[0];
+        const input    = $(INPUT_SELECTOR)[0];
+        const textarea = $(TEXTAREA_SELECTOR)[0];
 
         mousedownOnInput    = false;
         mouseupOnInput      = false;
@@ -177,11 +177,11 @@ $(document).ready(function () {
     module('check the boundary cases');
 
     asyncTest('select empty input', function () {
-        var $input = $(INPUT_SELECTOR);
+        const $input = $(INPUT_SELECTOR);
 
         setValueToInput('');
 
-        var select = new SelectTextAutomation($input[0], 0, 0, {});
+        const select = new SelectTextAutomation($input[0], 0, 0, {});
 
         select
             .run()
@@ -195,11 +195,11 @@ $(document).ready(function () {
     });
 
     asyncTest('select empty textarea', function () {
-        var $textarea = $(TEXTAREA_SELECTOR);
+        const $textarea = $(TEXTAREA_SELECTOR);
 
         setValueToTextarea('');
 
-        var select = new SelectTextAutomation($textarea[0], 0, 0, {});
+        const select = new SelectTextAutomation($textarea[0], 0, 0, {});
 
         select
             .run()
@@ -213,11 +213,11 @@ $(document).ready(function () {
     });
 
     asyncTest('select in input with some spaces in succession', function () {
-        var $input = $(INPUT_SELECTOR);
+        const $input = $(INPUT_SELECTOR);
 
         setValueToInput('1   2     3    4    5      6');
 
-        var select = new SelectTextAutomation($input[0], 3, 25, {});
+        const select = new SelectTextAutomation($input[0], 3, 25, {});
 
         select
             .run()
@@ -231,13 +231,14 @@ $(document).ready(function () {
     });
 
     asyncTest('select in textarea with some empty strings', function () {
-        var $textarea   = $(TEXTAREA_SELECTOR);
-        var valueLength = null;
+        const $textarea = $(TEXTAREA_SELECTOR);
+
+        let valueLength = null;
 
         setValueToTextarea('123456789abcd\n\n\nefghi\njklmop\n\nqwerty test cafe');
         valueLength = $textarea[0].value.length;
 
-        var select = new SelectTextAutomation($textarea[0], 3, valueLength - 3, {});
+        const select = new SelectTextAutomation($textarea[0], 3, valueLength - 3, {});
 
         select
             .run()
@@ -253,9 +254,10 @@ $(document).ready(function () {
     module('scroll in input');
 
     asyncTest('forward select and scroll', function () {
-        var input     = $(INPUT_SELECTOR)[0];
-        var mousedown = false;
-        var mouseup   = false;
+        const input = $(INPUT_SELECTOR)[0];
+
+        let mousedown = false;
+        let mouseup   = false;
 
         setValueToInput('1234567891012131415161718911200111554454455454545412121212121212');
 
@@ -271,7 +273,7 @@ $(document).ready(function () {
             mouseup = true;
         };
 
-        var select = new SelectTextAutomation(input, 3, 33, {});
+        const select = new SelectTextAutomation(input, 3, 33, {});
 
         select
             .run()
@@ -290,10 +292,11 @@ $(document).ready(function () {
     });
 
     asyncTest('backward select and scroll', function () {
-        var input     = $(INPUT_SELECTOR)[0];
-        var oldScroll = null;
-        var mousedown = false;
-        var mouseup   = false;
+        const input = $(INPUT_SELECTOR)[0];
+
+        let oldScroll = null;
+        let mousedown = false;
+        let mouseup   = false;
 
         setValueToInput('1234567891012131415161718911200111554454455454545412121212121212');
 
@@ -313,7 +316,7 @@ $(document).ready(function () {
             mouseup = true;
         };
 
-        var select = new SelectTextAutomation(input, 33, 0, {});
+        const select = new SelectTextAutomation(input, 33, 0, {});
 
         select
             .run()
@@ -334,9 +337,10 @@ $(document).ready(function () {
     module('scroll in textarea');
 
     asyncTest('forward select and right direction (endPos more than startPos)', function () {
-        var textarea  = $(TEXTAREA_SELECTOR)[0];
-        var mousedown = false;
-        var mouseup   = false;
+        const textarea = $(TEXTAREA_SELECTOR)[0];
+
+        let mousedown = false;
+        let mouseup   = false;
 
         setValueToTextarea(TEXTAREA_BIG_TEXT);
 
@@ -358,7 +362,7 @@ $(document).ready(function () {
             mouseup = true;
         };
 
-        var select = new SelectTextAutomation(textarea, 2, 628, {});
+        const select = new SelectTextAutomation(textarea, 2, 628, {});
 
         select
             .run()
@@ -377,9 +381,10 @@ $(document).ready(function () {
     });
 
     asyncTest('forward select and left direction (endPos less than startPos)', function () {
-        var textarea  = $(TEXTAREA_SELECTOR)[0];
-        var mousedown = false;
-        var mouseup   = false;
+        const textarea = $(TEXTAREA_SELECTOR)[0];
+
+        let mousedown = false;
+        let mouseup   = false;
 
         setValueToTextarea(TEXTAREA_BIG_TEXT);
 
@@ -401,7 +406,7 @@ $(document).ready(function () {
             mouseup = true;
         };
 
-        var select = new SelectTextAutomation(textarea, 34, 591, {});
+        const select = new SelectTextAutomation(textarea, 34, 591, {});
 
         select
             .run()
@@ -420,10 +425,11 @@ $(document).ready(function () {
     });
 
     asyncTest('backward select and right direction (endPos less than startPos)', function () {
-        var textarea  = $(TEXTAREA_SELECTOR)[0];
-        var oldScroll = null;
-        var mousedown = false;
-        var mouseup   = false;
+        const textarea = $(TEXTAREA_SELECTOR)[0];
+
+        let oldScroll = null;
+        let mousedown = false;
+        let mouseup   = false;
 
         setValueToTextarea(TEXTAREA_BIG_TEXT);
 
@@ -448,7 +454,7 @@ $(document).ready(function () {
             mouseup = true;
         };
 
-        var select = new SelectTextAutomation(textarea, 591, 34, {});
+        const select = new SelectTextAutomation(textarea, 591, 34, {});
 
         select
             .run()
@@ -467,10 +473,11 @@ $(document).ready(function () {
     });
 
     asyncTest('backward select and left direction (endPos more than startPos)', function () {
-        var textarea  = $(TEXTAREA_SELECTOR)[0];
-        var oldScroll = null;
-        var mousedown = false;
-        var mouseup   = false;
+        const textarea = $(TEXTAREA_SELECTOR)[0];
+
+        let oldScroll = null;
+        let mousedown = false;
+        let mouseup   = false;
 
         setValueToTextarea(TEXTAREA_BIG_TEXT);
 
@@ -495,7 +502,7 @@ $(document).ready(function () {
             mouseup = true;
         };
 
-        var select = new SelectTextAutomation(textarea, 628, 2, {});
+        const select = new SelectTextAutomation(textarea, 628, 2, {});
 
         select
             .run()
@@ -517,8 +524,9 @@ $(document).ready(function () {
     module('regression');
 
     test('GH2169 - SelectText action sometimes raise error in Safari', function () {
-        var input = $(INPUT_SELECTOR)[0];
-        var err   = null;
+        const input = $(INPUT_SELECTOR)[0];
+
+        let err   = null;
 
         //emulate Safari behavior
         document.createRange = function () {

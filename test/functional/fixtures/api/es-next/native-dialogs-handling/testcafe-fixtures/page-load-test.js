@@ -20,7 +20,7 @@ test('Expected dialogs after page load', async t => {
 
     expect(await getResult()).equals('true');
 
-    var info = await t.getNativeDialogHistory();
+    const info = await t.getNativeDialogHistory();
 
     expect(info).to.deep.equal([
         {

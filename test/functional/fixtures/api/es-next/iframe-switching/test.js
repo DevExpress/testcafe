@@ -1,12 +1,12 @@
-var expect                     = require('chai').expect;
-var errorInEachBrowserContains = require('../../../../assertion-helper.js').errorInEachBrowserContains;
+const expect                     = require('chai').expect;
+const errorInEachBrowserContains = require('../../../../assertion-helper.js').errorInEachBrowserContains;
 
 // NOTE: we set selectorTimeout to a large value in some tests to wait for
 // an iframe to load on the farm (it is fast locally but can take some time on the farm)
 
-var DEFAULT_SELECTOR_TIMEOUT   = 5000;
-var DEFAULT_RUN_OPTIONS        = { selectorTimeout: DEFAULT_SELECTOR_TIMEOUT };
-var DEFAULT_FAILED_RUN_OPTIONS = {
+const DEFAULT_SELECTOR_TIMEOUT   = 5000;
+const DEFAULT_RUN_OPTIONS        = { selectorTimeout: DEFAULT_SELECTOR_TIMEOUT };
+const DEFAULT_FAILED_RUN_OPTIONS = {
     shouldFail:      true,
     selectorTimeout: DEFAULT_SELECTOR_TIMEOUT
 };

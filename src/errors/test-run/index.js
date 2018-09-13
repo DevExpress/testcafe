@@ -420,8 +420,8 @@ export class InvalidElementScreenshotDimensionsError extends TestRunErrorBase {
     constructor (width, height) {
         super(TYPE.invalidElementScreenshotDimensionsError);
 
-        var widthIsInvalid  = width <= 0;
-        var heightIsInvalid = height <= 0;
+        const widthIsInvalid  = width <= 0;
+        const heightIsInvalid = height <= 0;
 
         if (widthIsInvalid) {
             if (heightIsInvalid) {

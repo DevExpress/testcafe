@@ -73,7 +73,7 @@
         </div>
         <div class="vfiller"></div>
         <script>
-            var table = document.querySelector('table');
+            const table = document.querySelector('table');
 
             document.querySelector('#hide').addEventListener('click', function () {
                 table.style.visibility = 'hidden';
@@ -83,9 +83,9 @@
                 table.parentNode.removeChild(table);
             });
 
-            var testCafeAutomation = window['%testCafeAutomation%'];
-            var ScrollAutomation   = testCafeAutomation.Scroll;
-            var origRunScroll      = ScrollAutomation.prototype.run;
+            const testCafeAutomation = window['%testCafeAutomation%'];
+            const ScrollAutomation   = testCafeAutomation.Scroll;
+            const origRunScroll      = ScrollAutomation.prototype.run;
 
             window.wasScrolled               = false;
             window.internalScrollEventsCount = 0;

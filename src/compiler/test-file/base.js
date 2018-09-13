@@ -2,7 +2,7 @@ import { escapeRegExp as escapeRe } from 'lodash';
 
 export default class TestFileCompilerBase {
     constructor () {
-        var escapedExt = escapeRe(this.getSupportedExtension());
+        const escapedExt = escapeRe(this.getSupportedExtension());
 
         this.supportedExtensionRe = new RegExp(`${escapedExt}$`);
     }

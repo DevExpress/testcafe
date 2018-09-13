@@ -6,7 +6,7 @@
 
 '@test'['Upload a file'] = {
     '1.Upload text1.txt': function () {
-        var file = '../../../../../../legacy-fixtures/upload/testcafe-fixtures/files/text1.txt';
+        const file = '../../../../../../legacy-fixtures/upload/testcafe-fixtures/files/text1.txt';
 
         act.upload('#fileInput', file);
     },

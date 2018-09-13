@@ -26,7 +26,7 @@ function getNumberTypeActualValueMsg (value, type) {
     return value;
 }
 
-export var is = {
+export const is = {
     number: {
         name:              'number',
         predicate:         isFiniteNumber,
@@ -44,7 +44,7 @@ export var is = {
         predicate: value => isNonNegativeValue(parseInt(value, 10)),
 
         getActualValueMsg: value => {
-            var number = parseInt(value, 10);
+            const number = parseInt(value, 10);
 
             return isNaN(number) ? JSON.stringify(value) : number;
         }
@@ -90,11 +90,11 @@ export var is = {
 export function assertType (types, callsiteName, what, value) {
     types = Array.isArray(types) ? types : [types];
 
-    var pass            = false;
-    var actualType      = typeof value;
-    var actualMsg       = actualType;
-    var expectedTypeMsg = '';
-    var last            = types.length - 1;
+    let pass            = false;
+    const actualType      = typeof value;
+    let actualMsg       = actualType;
+    let expectedTypeMsg = '';
+    const last            = types.length - 1;
 
     types.forEach((type, i) => {
         pass = pass || type.predicate(value, actualType);

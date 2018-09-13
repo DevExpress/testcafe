@@ -1,5 +1,5 @@
-var os     = require('os');
-var expect = require('chai').expect;
+const os     = require('os');
+const expect = require('chai').expect;
 
 const TRUSTED_PROXY_URL     = os.hostname() + ':3004';
 const TRANSPARENT_PROXY_URL = os.hostname() + ':3005';

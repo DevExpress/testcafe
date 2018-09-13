@@ -1,12 +1,12 @@
-var hammerhead   = window.getTestCafeModule('hammerhead');
-var browserUtils = hammerhead.utils.browser;
+const hammerhead   = window.getTestCafeModule('hammerhead');
+const browserUtils = hammerhead.utils.browser;
 
-var testCafeCore = window.getTestCafeModule('testCafeCore');
-var domUtils     = testCafeCore.get('./utils/dom');
+const testCafeCore = window.getTestCafeModule('testCafeCore');
+const domUtils     = testCafeCore.get('./utils/dom');
 
-var testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
-var PressAutomation    = testCafeAutomation.Press;
-var parseKeySequence   = testCafeCore.get('./utils/parse-key-sequence');
+const testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
+const PressAutomation    = testCafeAutomation.Press;
+const parseKeySequence   = testCafeCore.get('./utils/parse-key-sequence');
 
 testCafeCore.preventRealEvents();
 
@@ -14,40 +14,41 @@ QUnit.config.testTimeout = 15000;
 
 $(document).ready(function () {
     //consts
-    var TEST_ELEMENT_CLASS = 'testElement';
+    const TEST_ELEMENT_CLASS = 'testElement';
 
-    var focusedElements          = [];
-    var $expectedFocusedElements = [];
-    var $inputText               = null;
-    var $textarea                = null;
-    var $link                    = null;
-    var $linkWithTabIndex        = null;
-    var $divWithTabIndex         = null;
+    let focusedElements          = [];
+    let $expectedFocusedElements = [];
+
+    let $inputText               = null;
+    let $textarea                = null;
+    let $link                    = null;
+    let $linkWithTabIndex        = null;
+    let $divWithTabIndex         = null;
 
     //contentEditable elements
-    var $divContentEditable             = null;
-    var $divContentEditableWithTabIndex = null;
-    var $buttonInContentEditable        = null;
-    var $inputSubmit                    = null;
-    var $inputCheckBox                  = null;
-    var $select                         = null;
-    var $selectMultiple                 = null;
-    var $optionOneWithTabIdex           = null;
-    var $optionTwoWithTabIdex           = null;
-    var $radioGroupOnePart1             = null;
-    var $radioInput1                    = null;
-    var $radioInput2                    = null;
-    var $radioGroupOnePart2             = null;
-    var $radioInput3                    = null;
-    var $radioInput4                    = null;
-    var $radioGroupSecond               = null;
-    var $radioInput5                    = null;
-    var $radioInput6                    = null;
-    var $invisibleInput                 = null;
+    let $divContentEditable             = null;
+    let $divContentEditableWithTabIndex = null;
+    let $buttonInContentEditable        = null;
+    let $inputSubmit                    = null;
+    let $inputCheckBox                  = null;
+    let $select                         = null;
+    let $selectMultiple                 = null;
+    let $optionOneWithTabIdex           = null;
+    let $optionTwoWithTabIdex           = null;
+    let $radioGroupOnePart1             = null;
+    let $radioInput1                    = null;
+    let $radioInput2                    = null;
+    let $radioGroupOnePart2             = null;
+    let $radioInput3                    = null;
+    let $radioInput4                    = null;
+    let $radioGroupSecond               = null;
+    let $radioInput5                    = null;
+    let $radioInput6                    = null;
+    let $invisibleInput                 = null;
 
     //utils
-    var createElements = function () {
-        var $body = $('body');
+    const createElements = function () {
+        const $body = $('body');
 
         $inputText        = $('<input type="text">').attr('value', 'text input').addClass(TEST_ELEMENT_CLASS).appendTo($body);
         $textarea         = $('<textarea>').css('height', 100).attr('value', 'textarea').addClass(TEST_ELEMENT_CLASS).appendTo($body);
@@ -92,12 +93,12 @@ $(document).ready(function () {
         //T297258
         $('<div style="display: none;"><input/></div>').addClass(TEST_ELEMENT_CLASS).appendTo($body);
 
-        var $hiddenParent = $('<div style="width: 0px; height: 0px;"></div>').addClass(TEST_ELEMENT_CLASS).appendTo($body);
+        const $hiddenParent = $('<div style="width: 0px; height: 0px;"></div>').addClass(TEST_ELEMENT_CLASS).appendTo($body);
 
         $invisibleInput = $('<input style="width: 0px; height: 0px;"/>').addClass(TEST_ELEMENT_CLASS).appendTo($hiddenParent);
     };
 
-    var createExpectedLog = function () {
+    const createExpectedLog = function () {
         $expectedFocusedElements.push($divWithTabIndex);
         $expectedFocusedElements.push($link);
 
@@ -137,14 +138,14 @@ $(document).ready(function () {
         $expectedFocusedElements.push($invisibleInput);
     };
 
-    var logElement = function () {
-        var element = domUtils.getActiveElement();
+    const logElement = function () {
+        const element = domUtils.getActiveElement();
 
         if ($(element).hasClass(TEST_ELEMENT_CLASS))
             focusedElements.push(element);
     };
 
-    var finishActions = function (actionsType) {
+    const finishActions = function (actionsType) {
         if (actionsType === 'shift+tab') {
             $expectedFocusedElements    = $expectedFocusedElements.reverse();
             $expectedFocusedElements[3] = $radioInput4;
@@ -159,8 +160,8 @@ $(document).ready(function () {
         start();
     };
 
-    var runPressAutomation = function (keys, callback) {
-        var pressAutomation = new PressAutomation(parseKeySequence(keys).combinations, {});
+    const runPressAutomation = function (keys, callback) {
+        const pressAutomation = new PressAutomation(parseKeySequence(keys).combinations, {});
 
         pressAutomation
             .run()
@@ -184,7 +185,7 @@ $(document).ready(function () {
         createElements();
         createExpectedLog();
 
-        var pressTabRecursive = function () {
+        const pressTabRecursive = function () {
             runPressAutomation('tab', function (callback) {
                 if (focusedElements.length === $expectedFocusedElements.length - 1) {
                     logElement();
@@ -206,7 +207,7 @@ $(document).ready(function () {
         createElements();
         createExpectedLog();
 
-        var pressShiftTabRecursive = function () {
+        const pressShiftTabRecursive = function () {
             runPressAutomation('shift+tab', function (callback) {
                 if (focusedElements.length === $expectedFocusedElements.length - 1) {
                     logElement();

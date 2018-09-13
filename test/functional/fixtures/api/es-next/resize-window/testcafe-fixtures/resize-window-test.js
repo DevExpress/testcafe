@@ -32,8 +32,8 @@ fixture `Resize the window`
     });
 
 test('Resize the window', async t => {
-    var newWidth  = 500;
-    var newHeight = 500;
+    const newWidth  = 500;
+    const newHeight = 500;
 
     await t.resizeWindow(newWidth, newHeight);
 
@@ -77,8 +77,8 @@ test('Resize the window to fit a device leads to js-error', async t => {
 });
 
 test('Too big size', async t => {
-    var hugeWidth  = 100000;
-    var hugeHeight = 100000;
+    const hugeWidth  = 100000;
+    const hugeHeight = 100000;
 
     await t.resizeWindow(hugeWidth, hugeHeight);
 });

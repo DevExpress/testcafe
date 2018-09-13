@@ -38,7 +38,7 @@ function convertToString (value) {
 }
 
 function rotateAxes (point, rotationAngle) {
-    var angle = convertToRadian(rotationAngle);
+    const angle = convertToRadian(rotationAngle);
 
     return {
         x: Math.round(point.x * Math.cos(angle) - point.y * Math.sin(angle)),
@@ -87,7 +87,7 @@ export default class StatusIndicator {
     }
 
     static _createStatusMessage (connected) {
-        var statusSpan = StatusIndicator._getStatusElementSpan();
+        const statusSpan = StatusIndicator._getStatusElementSpan();
 
         // eslint-disable-next-line no-restricted-properties
         statusSpan.textContent = connected ? CONNECTED_TEXT : DISCONNECTED_TEXT;
@@ -95,10 +95,10 @@ export default class StatusIndicator {
     }
 
     static _alignContainerVertically () {
-        var background = document.getElementsByClassName(PAGE_BACKGROUND_CLASS_NAME)[0];
-        var container  = StatusIndicator._getContainer();
+        const background = document.getElementsByClassName(PAGE_BACKGROUND_CLASS_NAME)[0];
+        const container  = StatusIndicator._getContainer();
 
-        var topMargin = Math.ceil((background.offsetHeight - container.offsetHeight) / 2);
+        const topMargin = Math.ceil((background.offsetHeight - container.offsetHeight) / 2);
 
         if (topMargin > 0)
             container.style.marginTop = convertToString(topMargin);
@@ -106,10 +106,10 @@ export default class StatusIndicator {
 
 
     _setSize () {
-        var documentElement = window.document.documentElement;
-        var minResolution   = Math.min(documentElement.clientWidth, documentElement.clientHeight);
-        var container       = StatusIndicator._getContainer();
-        var newSize         = Math.round(Math.min(MAXIMUM_SPINNER_SIZE, minResolution * RELATED_SPINNER_SIZE));
+        const documentElement = window.document.documentElement;
+        const minResolution   = Math.min(documentElement.clientWidth, documentElement.clientHeight);
+        const container       = StatusIndicator._getContainer();
+        const newSize         = Math.round(Math.min(MAXIMUM_SPINNER_SIZE, minResolution * RELATED_SPINNER_SIZE));
 
         if (newSize === this.size)
             return;
@@ -124,15 +124,15 @@ export default class StatusIndicator {
     }
 
     _setFontSize () {
-        var userAgentSpan = document.getElementsByClassName(USER_AGENT_ELEMENT_CLASS_NAME)[0].children[0];
-        var statusSpan    = StatusIndicator._getStatusElementSpan();
+        const userAgentSpan = document.getElementsByClassName(USER_AGENT_ELEMENT_CLASS_NAME)[0].children[0];
+        const statusSpan    = StatusIndicator._getStatusElementSpan();
 
         // NOTE: We have established proportions for two edge cases:
         // the maximum spinner size of 400px corresponds to the 16px font,
         // the minimum spinner size of 240px corresponds to the 11px font.
         // Actual sizes are calculated from these proportions.
-        var fontSize   = Math.round(FONT_SIZE_EQUATION_SLOPE * this.size + FONT_SIZE_EQUATION_Y_INTERCEPT);
-        var lineHeight = fontSize + LINE_HEIGHT_INDENT;
+        const fontSize   = Math.round(FONT_SIZE_EQUATION_SLOPE * this.size + FONT_SIZE_EQUATION_Y_INTERCEPT);
+        const lineHeight = fontSize + LINE_HEIGHT_INDENT;
 
         userAgentSpan.style.fontSize   = convertToString(fontSize);
         userAgentSpan.style.lineHeight = convertToString(lineHeight);
@@ -144,7 +144,7 @@ export default class StatusIndicator {
 
     _watchWindowResize () {
         window.onresize = () => {
-            var oldSize = this.size;
+            const oldSize = this.size;
 
             this._setSize();
             this._setFontSize();
@@ -180,7 +180,7 @@ export default class StatusIndicator {
     }
 
     _drawCircle (strokeStyle, centralAngle, startAngle) {
-        var radius = this.spinnerCenter - SPINNER_WIDTH / 2;
+        const radius = this.spinnerCenter - SPINNER_WIDTH / 2;
 
         this.canvasContext.beginPath();
 
@@ -204,7 +204,7 @@ export default class StatusIndicator {
     }
 
     _getRotatedGradientPoints (point) {
-        var changedPoint = moveAxes(point, this.spinnerCenter);
+        let changedPoint = moveAxes(point, this.spinnerCenter);
 
         changedPoint = rotateAxes(changedPoint, this.rotationAngle);
         changedPoint = moveAxes(changedPoint, -this.spinnerCenter);
@@ -213,12 +213,12 @@ export default class StatusIndicator {
     }
 
     _setSpinnerGradient () {
-        var startGradientPoint = {
+        let startGradientPoint = {
             x: Math.round(this.size * START_GRADIENT_POINT_OFFSET.x),
             y: Math.round(this.size * START_GRADIENT_POINT_OFFSET.y)
         };
 
-        var endGradientPoint = {
+        let endGradientPoint = {
             x: Math.round(this.size * END_GRADIENT_POINT_OFFSET.x),
             y: Math.round(this.size * END_GRADIENT_POINT_OFFSET.y)
         };
@@ -228,7 +228,7 @@ export default class StatusIndicator {
             endGradientPoint   = this._getRotatedGradientPoints(endGradientPoint);
         }
 
-        var gradient = this.canvasContext.createLinearGradient(startGradientPoint.x, startGradientPoint.y,
+        const gradient = this.canvasContext.createLinearGradient(startGradientPoint.x, startGradientPoint.y,
             endGradientPoint.x, endGradientPoint.y);
 
         gradient.addColorStop(0, CONNECTED_SPINNER_COLOR);

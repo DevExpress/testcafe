@@ -16,7 +16,7 @@
 
 <button id="button">Button</button>
 <script>
-    var touchDevice = isTouchDevice();
+    const touchDevice = isTouchDevice();
 
     document.getElementById('input').addEventListener(touchDevice ? 'touchend' : 'mouseup', function () {
         if (this.selectionStart === 2 && this.selectionEnd === 4)
@@ -29,8 +29,8 @@
     });
 
     document.getElementById('div').addEventListener(touchDevice ? 'touchend' : 'mouseup', function () {
-        var selection   = window.getSelection();
-        var divTextNode = this.childNodes[0];
+        const selection   = window.getSelection();
+        const divTextNode = this.childNodes[0];
 
         if (selection.anchorNode === divTextNode && selection.anchorOffset === 5 &&
             selection.focusNode === divTextNode && selection.focusOffset === 15)

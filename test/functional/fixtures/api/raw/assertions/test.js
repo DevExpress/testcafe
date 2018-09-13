@@ -1,4 +1,4 @@
-var expect = require('chai').expect;
+const expect = require('chai').expect;
 
 describe('[Raw API] Assertions', function () {
     it('Should perform eql assertion', function () {

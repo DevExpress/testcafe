@@ -1,29 +1,29 @@
-var hammerhead       = window.getTestCafeModule('hammerhead');
-var browserUtils     = hammerhead.utils.browser;
-var featureDetection = hammerhead.utils.featureDetection;
+const hammerhead       = window.getTestCafeModule('hammerhead');
+const browserUtils     = hammerhead.utils.browser;
+const featureDetection = hammerhead.utils.featureDetection;
 
-var testCafeCore     = window.getTestCafeModule('testCafeCore');
-var parseKeySequence = testCafeCore.get('./utils/parse-key-sequence');
+const testCafeCore     = window.getTestCafeModule('testCafeCore');
+const parseKeySequence = testCafeCore.get('./utils/parse-key-sequence');
 
-var testCafeAutomation   = window.getTestCafeModule('testCafeAutomation');
-var ClickAutomation      = testCafeAutomation.Click;
-var RClickAutomation     = testCafeAutomation.RClick;
-var DblClickAutomation   = testCafeAutomation.DblClick;
-var SelectTextAutomation = testCafeAutomation.SelectText;
-var TypeAutomation       = testCafeAutomation.Type;
-var PressAutomation      = testCafeAutomation.Press;
+const testCafeAutomation   = window.getTestCafeModule('testCafeAutomation');
+const ClickAutomation      = testCafeAutomation.Click;
+const RClickAutomation     = testCafeAutomation.RClick;
+const DblClickAutomation   = testCafeAutomation.DblClick;
+const SelectTextAutomation = testCafeAutomation.SelectText;
+const TypeAutomation       = testCafeAutomation.Type;
+const PressAutomation      = testCafeAutomation.Press;
 
-var ClickOptions = testCafeAutomation.get('../../test-run/commands/options').ClickOptions;
-var TypeOptions  = testCafeAutomation.get('../../test-run/commands/options').TypeOptions;
+const ClickOptions = testCafeAutomation.get('../../test-run/commands/options').ClickOptions;
+const TypeOptions  = testCafeAutomation.get('../../test-run/commands/options').TypeOptions;
 
 testCafeCore.preventRealEvents();
 
 $(document).ready(function () {
-    var TEST_ELEMENT_CLASS = 'testElement';
+    const TEST_ELEMENT_CLASS = 'testElement';
 
     //utils
-    var addInputElement = function (x, y, value) {
-        var elementString = ['<input type="text" value="', value, '" />'].join('');
+    const addInputElement = function (x, y, value) {
+        const elementString = ['<input type="text" value="', value, '" />'].join('');
 
         return $(elementString)
             .css({
@@ -35,7 +35,7 @@ $(document).ready(function () {
             .appendTo('body');
     };
 
-    var addDiv = function (x, y) {
+    const addDiv = function (x, y) {
         return $('<div />')
             .css({
                 position: 'absolute',
@@ -49,7 +49,7 @@ $(document).ready(function () {
             .appendTo('body');
     };
 
-    var startNext = function () {
+    const startNext = function () {
         if (browserUtils.isIE) {
             removeTestElements();
             window.setTimeout(start, 30);
@@ -58,11 +58,11 @@ $(document).ready(function () {
             start();
     };
 
-    var removeTestElements = function () {
+    const removeTestElements = function () {
         $('.' + TEST_ELEMENT_CLASS).remove();
     };
 
-    var createMouseMonitorEventObject = function () {
+    const createMouseMonitorEventObject = function () {
         return {
             elementOneMousedownRaised:   false,
             elementOneMouseupRaised:     false,
@@ -88,7 +88,7 @@ $(document).ready(function () {
         };
     };
 
-    var createKeyMonitorEventObject = function () {
+    const createKeyMonitorEventObject = function () {
         return {
             elementsOneKeydownRaised:  false,
             elementsOneKeypressRaised: false,
@@ -100,11 +100,11 @@ $(document).ready(function () {
         };
     };
 
-    var swapLocationOfElements = function ($el1, $el2) {
-        var left1 = $el1.css('left');
-        var top1  = $el1.css('top');
-        var left2 = $el2.css('left');
-        var top2  = $el2.css('top');
+    const swapLocationOfElements = function ($el1, $el2) {
+        const left1 = $el1.css('left');
+        const top1  = $el1.css('top');
+        const left2 = $el2.css('left');
+        const top2  = $el2.css('top');
 
         $el1.css({
             left: left2,
@@ -117,8 +117,8 @@ $(document).ready(function () {
         });
     };
 
-    var bindMouseHandlersToSwappingElements = function ($el1, $el2, eventName, eventMonitorObject, checkMousemove, toSecondHandler) {
-        var isSecondEvent = false;
+    const bindMouseHandlersToSwappingElements = function ($el1, $el2, eventName, eventMonitorObject, checkMousemove, toSecondHandler) {
+        let isSecondEvent = false;
 
         $el1.bind('mousedown', function (e) {
             eventMonitorObject.elementOneMousedownRaised = true;
@@ -207,7 +207,7 @@ $(document).ready(function () {
         }
     };
 
-    var bindKeyHandlersToSwappingElements = function ($el1, $el2, eventName, eventMonitorObject) {
+    const bindKeyHandlersToSwappingElements = function ($el1, $el2, eventName, eventMonitorObject) {
         $el1.bind('keydown', function (e) {
             eventMonitorObject.elementsOneKeydownRaised = true;
 
@@ -243,7 +243,7 @@ $(document).ready(function () {
         });
     };
 
-    var bindHandlerToTouchEvents = function ($el1, $el2, eventName, eventMonitorObject, checkMousemove) {
+    const bindHandlerToTouchEvents = function ($el1, $el2, eventName, eventMonitorObject, checkMousemove) {
         $el1.bind('touchstart', function (e) {
             eventMonitorObject.elementOneMousedownRaised = true;
             eventMonitorObject.elementOneMousedownCount++;
@@ -307,8 +307,8 @@ $(document).ready(function () {
         }
     };
 
-    var createIFrame = function ($element, src, callback) {
-        var $iFrame = $('<iframe/>')
+    const createIFrame = function ($element, src, callback) {
+        const $iFrame = $('<iframe/>')
             .attr('src', src)
             .css({
                 width:  '600px',
@@ -318,7 +318,7 @@ $(document).ready(function () {
 
         $element.addClass(TEST_ELEMENT_CLASS);
 
-        var onLoadHandler = function () {
+        const onLoadHandler = function () {
             $($iFrame[0].contentWindow.document.body).append($element);
             $iFrame.unbind('load', onLoadHandler);
             callback();
@@ -337,14 +337,14 @@ $(document).ready(function () {
     module('detection element under cursor after events simulation');
 
     asyncTest('click - change element on "mousedown" event', function () {
-        var eventMonitorObject = createMouseMonitorEventObject();
+        const eventMonitorObject = createMouseMonitorEventObject();
 
-        var $div1 = addDiv(100, 100).css('background-color', 'red');
-        var $div2 = addDiv(100, 300).css('background-color', 'green');
+        const $div1 = addDiv(100, 100).css('background-color', 'red');
+        const $div2 = addDiv(100, 300).css('background-color', 'green');
 
         bindMouseHandlersToSwappingElements($div1, $div2, 'mousedown', eventMonitorObject);
 
-        var click = new ClickAutomation($div1[0], new ClickOptions());
+        const click = new ClickAutomation($div1[0], new ClickOptions());
 
         click
             .run()
@@ -362,14 +362,14 @@ $(document).ready(function () {
     });
 
     asyncTest('click - change element on "mouseup" event', function () {
-        var eventMonitorObject = createMouseMonitorEventObject();
+        const eventMonitorObject = createMouseMonitorEventObject();
 
-        var $div1 = addDiv(100, 100).css('background-color', 'red');
-        var $div2 = addDiv(100, 300).css('background-color', 'green');
+        const $div1 = addDiv(100, 100).css('background-color', 'red');
+        const $div2 = addDiv(100, 300).css('background-color', 'green');
 
         bindMouseHandlersToSwappingElements($div1, $div2, 'mouseup', eventMonitorObject);
 
-        var click = new ClickAutomation($div1[0], new ClickOptions());
+        const click = new ClickAutomation($div1[0], new ClickOptions());
 
         click
             .run()
@@ -387,14 +387,14 @@ $(document).ready(function () {
     });
 
     asyncTest('click - change element on "click" event', function () {
-        var eventMonitorObject = createMouseMonitorEventObject();
+        const eventMonitorObject = createMouseMonitorEventObject();
 
-        var $div1 = addDiv(100, 100).css('background-color', 'red');
-        var $div2 = addDiv(100, 300).css('background-color', 'green');
+        const $div1 = addDiv(100, 100).css('background-color', 'red');
+        const $div2 = addDiv(100, 300).css('background-color', 'green');
 
         bindMouseHandlersToSwappingElements($div1, $div2, 'click', eventMonitorObject);
 
-        var click = new ClickAutomation($div1[0], new ClickOptions());
+        const click = new ClickAutomation($div1[0], new ClickOptions());
 
         click
             .run()
@@ -413,14 +413,14 @@ $(document).ready(function () {
 
 
     asyncTest('rclick - change element on "mousedown" event', function () {
-        var eventMonitorObject = createMouseMonitorEventObject();
+        const eventMonitorObject = createMouseMonitorEventObject();
 
-        var $div1 = addDiv(100, 100).css('background-color', 'red');
-        var $div2 = addDiv(100, 300).css('background-color', 'green');
+        const $div1 = addDiv(100, 100).css('background-color', 'red');
+        const $div2 = addDiv(100, 300).css('background-color', 'green');
 
         bindMouseHandlersToSwappingElements($div1, $div2, 'mousedown', eventMonitorObject);
 
-        var rclick = new RClickAutomation($div1[0], new ClickOptions());
+        const rclick = new RClickAutomation($div1[0], new ClickOptions());
 
         rclick
             .run()
@@ -438,14 +438,14 @@ $(document).ready(function () {
     });
 
     asyncTest('rclick - change element on "mouseup" event', function () {
-        var eventMonitorObject = createMouseMonitorEventObject();
+        const eventMonitorObject = createMouseMonitorEventObject();
 
-        var $div1 = addDiv(100, 100).css('background-color', 'red');
-        var $div2 = addDiv(100, 300).css('background-color', 'green');
+        const $div1 = addDiv(100, 100).css('background-color', 'red');
+        const $div2 = addDiv(100, 300).css('background-color', 'green');
 
         bindMouseHandlersToSwappingElements($div1, $div2, 'mouseup', eventMonitorObject);
 
-        var rclick = new RClickAutomation($div1[0], new ClickOptions());
+        const rclick = new RClickAutomation($div1[0], new ClickOptions());
 
         rclick
             .run()
@@ -463,14 +463,14 @@ $(document).ready(function () {
     });
 
     asyncTest('rclick - change element on "contextmenu" event', function () {
-        var eventMonitorObject = createMouseMonitorEventObject();
+        const eventMonitorObject = createMouseMonitorEventObject();
 
-        var $div1 = addDiv(100, 100).css('background-color', 'red');
-        var $div2 = addDiv(100, 300).css('background-color', 'green');
+        const $div1 = addDiv(100, 100).css('background-color', 'red');
+        const $div2 = addDiv(100, 300).css('background-color', 'green');
 
         bindMouseHandlersToSwappingElements($div1, $div2, 'contextmenu', eventMonitorObject);
 
-        var rclick = new RClickAutomation($div1[0], new ClickOptions());
+        const rclick = new RClickAutomation($div1[0], new ClickOptions());
 
         rclick
             .run()
@@ -489,17 +489,17 @@ $(document).ready(function () {
 
 
     asyncTest('select - change element on "mousedown" event', function () {
-        var eventMonitorObject = createMouseMonitorEventObject();
+        const eventMonitorObject = createMouseMonitorEventObject();
 
-        var $input1 = addInputElement(200, 200, '12345');
-        var $input2 = addInputElement(400, 400, 'qwerty');
+        const $input1 = addInputElement(200, 200, '12345');
+        const $input2 = addInputElement(400, 400, 'qwerty');
 
         if (featureDetection.isTouchDevice)
             bindHandlerToTouchEvents($input1, $input2, 'touchstart', eventMonitorObject, true);
         else
             bindMouseHandlersToSwappingElements($input1, $input2, 'mousedown', eventMonitorObject, true);
 
-        var selectText = new SelectTextAutomation($input1[0], 2, 4, {});
+        const selectText = new SelectTextAutomation($input1[0], 2, 4, {});
 
         selectText
             .run()
@@ -520,17 +520,17 @@ $(document).ready(function () {
     });
 
     asyncTest('select - change element on "mouseup" event', function () {
-        var eventMonitorObject = createMouseMonitorEventObject();
+        const eventMonitorObject = createMouseMonitorEventObject();
 
-        var $input1 = addInputElement(200, 200, '12345');
-        var $input2 = addInputElement(400, 400, 'qwerty');
+        const $input1 = addInputElement(200, 200, '12345');
+        const $input2 = addInputElement(400, 400, 'qwerty');
 
         if (featureDetection.isTouchDevice)
             bindHandlerToTouchEvents($input1, $input2, 'touchend', eventMonitorObject, true);
         else
             bindMouseHandlersToSwappingElements($input1, $input2, 'mouseup', eventMonitorObject, true);
 
-        var selectText = new SelectTextAutomation($input1[0], 2, 4, {});
+        const selectText = new SelectTextAutomation($input1[0], 2, 4, {});
 
         selectText
             .run()
@@ -552,14 +552,14 @@ $(document).ready(function () {
 
 
     asyncTest('dblclick - change element on first "mousedown" event', function () {
-        var eventMonitorObject = createMouseMonitorEventObject();
+        const eventMonitorObject = createMouseMonitorEventObject();
 
-        var $div1 = addDiv(100, 100).css('background-color', 'red');
-        var $div2 = addDiv(100, 300).css('background-color', 'green');
+        const $div1 = addDiv(100, 100).css('background-color', 'red');
+        const $div2 = addDiv(100, 300).css('background-color', 'green');
 
         bindMouseHandlersToSwappingElements($div1, $div2, 'mousedown', eventMonitorObject);
 
-        var dblclick = new DblClickAutomation($div1[0], new ClickOptions());
+        const dblclick = new DblClickAutomation($div1[0], new ClickOptions());
 
         dblclick
             .run()
@@ -583,14 +583,14 @@ $(document).ready(function () {
     });
 
     asyncTest('dblclick - change element on first "mouseup" event', function () {
-        var eventMonitorObject = createMouseMonitorEventObject();
+        const eventMonitorObject = createMouseMonitorEventObject();
 
-        var $div1 = addDiv(100, 100).css('background-color', 'red');
-        var $div2 = addDiv(100, 300).css('background-color', 'green');
+        const $div1 = addDiv(100, 100).css('background-color', 'red');
+        const $div2 = addDiv(100, 300).css('background-color', 'green');
 
         bindMouseHandlersToSwappingElements($div1, $div2, 'mouseup', eventMonitorObject);
 
-        var dblclick = new DblClickAutomation($div1[0], new ClickOptions());
+        const dblclick = new DblClickAutomation($div1[0], new ClickOptions());
 
         dblclick
             .run()
@@ -616,14 +616,14 @@ $(document).ready(function () {
     });
 
     asyncTest('dblclick - change element on first "click" event', function () {
-        var eventMonitorObject = createMouseMonitorEventObject();
+        const eventMonitorObject = createMouseMonitorEventObject();
 
-        var $div1 = addDiv(100, 100).css('background-color', 'red');
-        var $div2 = addDiv(100, 300).css('background-color', 'green');
+        const $div1 = addDiv(100, 100).css('background-color', 'red');
+        const $div2 = addDiv(100, 300).css('background-color', 'green');
 
         bindMouseHandlersToSwappingElements($div1, $div2, 'click', eventMonitorObject);
 
-        var dblclick = new DblClickAutomation($div1[0], new ClickOptions());
+        const dblclick = new DblClickAutomation($div1[0], new ClickOptions());
 
         dblclick
             .run()
@@ -649,14 +649,14 @@ $(document).ready(function () {
     });
 
     asyncTest('dblclick - change element on second "mousedown" event', function () {
-        var eventMonitorObject = createMouseMonitorEventObject();
+        const eventMonitorObject = createMouseMonitorEventObject();
 
-        var $div1 = addDiv(100, 100).css('background-color', 'red');
-        var $div2 = addDiv(100, 300).css('background-color', 'green');
+        const $div1 = addDiv(100, 100).css('background-color', 'red');
+        const $div2 = addDiv(100, 300).css('background-color', 'green');
 
         bindMouseHandlersToSwappingElements($div1, $div2, 'mousedown', eventMonitorObject, false, true);
 
-        var dblclick = new DblClickAutomation($div1[0], new ClickOptions());
+        const dblclick = new DblClickAutomation($div1[0], new ClickOptions());
 
         dblclick
             .run()
@@ -680,14 +680,14 @@ $(document).ready(function () {
     });
 
     asyncTest('dblclick - change element on second "mouseup" event', function () {
-        var eventMonitorObject = createMouseMonitorEventObject();
+        const eventMonitorObject = createMouseMonitorEventObject();
 
-        var $div1 = addDiv(100, 100).css('background-color', 'red');
-        var $div2 = addDiv(100, 300).css('background-color', 'green');
+        const $div1 = addDiv(100, 100).css('background-color', 'red');
+        const $div2 = addDiv(100, 300).css('background-color', 'green');
 
         bindMouseHandlersToSwappingElements($div1, $div2, 'mouseup', eventMonitorObject, false, true);
 
-        var dblclick = new DblClickAutomation($div1[0], new ClickOptions());
+        const dblclick = new DblClickAutomation($div1[0], new ClickOptions());
 
         dblclick
             .run()
@@ -710,14 +710,14 @@ $(document).ready(function () {
     });
 
     asyncTest('dblclick - change element on second "click" event', function () {
-        var eventMonitorObject = createMouseMonitorEventObject();
+        const eventMonitorObject = createMouseMonitorEventObject();
 
-        var $div1 = addDiv(100, 100).css('background-color', 'red');
-        var $div2 = addDiv(100, 300).css('background-color', 'green');
+        const $div1 = addDiv(100, 100).css('background-color', 'red');
+        const $div2 = addDiv(100, 300).css('background-color', 'green');
 
         bindMouseHandlersToSwappingElements($div1, $div2, 'click', eventMonitorObject, false, true);
 
-        var dblclick = new DblClickAutomation($div1[0], new ClickOptions());
+        const dblclick = new DblClickAutomation($div1[0], new ClickOptions());
 
         dblclick
             .run()
@@ -740,14 +740,14 @@ $(document).ready(function () {
     });
 
     asyncTest('dblclick - change element on "dblclick" event', function () {
-        var eventMonitorObject = createMouseMonitorEventObject();
+        const eventMonitorObject = createMouseMonitorEventObject();
 
-        var $div1 = addDiv(100, 100).css('background-color', 'red');
-        var $div2 = addDiv(100, 300).css('background-color', 'green');
+        const $div1 = addDiv(100, 100).css('background-color', 'red');
+        const $div2 = addDiv(100, 300).css('background-color', 'green');
 
         bindMouseHandlersToSwappingElements($div1, $div2, 'dblclick', eventMonitorObject);
 
-        var dblclick = new DblClickAutomation($div1[0], new ClickOptions());
+        const dblclick = new DblClickAutomation($div1[0], new ClickOptions());
 
         dblclick
             .run()
@@ -771,14 +771,14 @@ $(document).ready(function () {
 
 
     asyncTest('type - change element on "keydown" event', function () {
-        var eventMonitorObject = createKeyMonitorEventObject();
+        const eventMonitorObject = createKeyMonitorEventObject();
 
-        var $input1 = addInputElement(200, 200, '');
-        var $input2 = addInputElement(400, 400, '');
+        const $input1 = addInputElement(200, 200, '');
+        const $input2 = addInputElement(400, 400, '');
 
         bindKeyHandlersToSwappingElements($input1, $input2, 'keydown', eventMonitorObject);
 
-        var type = new TypeAutomation($input1[0], 'a', new TypeOptions({ offsetX: 5, offsetY: 5 }));
+        const type = new TypeAutomation($input1[0], 'a', new TypeOptions({ offsetX: 5, offsetY: 5 }));
 
         type
             .run()
@@ -799,14 +799,14 @@ $(document).ready(function () {
     });
 
     asyncTest('type - change element on "keypress" event', function () {
-        var eventMonitorObject = createKeyMonitorEventObject();
+        const eventMonitorObject = createKeyMonitorEventObject();
 
-        var $input1 = addInputElement(200, 200, '');
-        var $input2 = addInputElement(400, 400, '');
+        const $input1 = addInputElement(200, 200, '');
+        const $input2 = addInputElement(400, 400, '');
 
         bindKeyHandlersToSwappingElements($input1, $input2, 'keypress', eventMonitorObject);
 
-        var type = new TypeAutomation($input1[0], 'a', new TypeOptions({ offsetX: 5, offsetY: 5 }));
+        const type = new TypeAutomation($input1[0], 'a', new TypeOptions({ offsetX: 5, offsetY: 5 }));
 
         type
             .run()
@@ -827,14 +827,14 @@ $(document).ready(function () {
     });
 
     asyncTest('type - change element on "keyup" event', function () {
-        var eventMonitorObject = createKeyMonitorEventObject();
+        const eventMonitorObject = createKeyMonitorEventObject();
 
-        var $input1 = addInputElement(200, 200, '');
-        var $input2 = addInputElement(400, 400, '');
+        const $input1 = addInputElement(200, 200, '');
+        const $input2 = addInputElement(400, 400, '');
 
         bindKeyHandlersToSwappingElements($input1, $input2, 'keyup', eventMonitorObject);
 
-        var type = new TypeAutomation($input1[0], 'a', new TypeOptions({ offsetX: 5, offsetY: 5 }));
+        const type = new TypeAutomation($input1[0], 'a', new TypeOptions({ offsetX: 5, offsetY: 5 }));
 
         type
             .run()
@@ -855,16 +855,16 @@ $(document).ready(function () {
     });
 
     asyncTest('T210448: Unnecessary typing occurs if element was changed after keypress event', function () {
-        var iFrameSrc    = window.QUnitGlobals.getResourceUrl('../../data/runner/iframe.html');
-        var $inputIFrame = $('<input />');
+        const iFrameSrc    = window.QUnitGlobals.getResourceUrl('../../data/runner/iframe.html');
+        const $inputIFrame = $('<input />');
 
-        var testActions = function () {
+        const testActions = function () {
             window.setTimeout(function () {
                 $(document).bind('keypress', function () {
                     $inputIFrame.focus();
                 });
 
-                var press = new PressAutomation(parseKeySequence('f').combinations, {});
+                const press = new PressAutomation(parseKeySequence('f').combinations, {});
 
                 press
                     .run()

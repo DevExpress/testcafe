@@ -1,4 +1,4 @@
-var expect = require('chai').expect;
+const expect = require('chai').expect;
 
 describe('[Regression](GH-1267)', function () {
     it('Incorrect callsite stack for failed assertion in a method of some class (GH-1267)', function () {

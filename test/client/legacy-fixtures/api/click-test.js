@@ -1,49 +1,50 @@
-var hammerhead       = window.getTestCafeModule('hammerhead');
-var browserUtils     = hammerhead.utils.browser;
-var featureDetection = hammerhead.utils.featureDetection;
+const hammerhead       = window.getTestCafeModule('hammerhead');
+const browserUtils     = hammerhead.utils.browser;
+const featureDetection = hammerhead.utils.featureDetection;
 
-var testCafeLegacyRunner = window.getTestCafeModule('testCafeLegacyRunner');
-var ERROR_TYPE           = testCafeLegacyRunner.get('../test-run-error/type');
-var SETTINGS             = testCafeLegacyRunner.get('./settings').get();
-var actionsAPI           = testCafeLegacyRunner.get('./api/actions');
-var StepIterator         = testCafeLegacyRunner.get('./step-iterator');
-var initAutomation       = testCafeLegacyRunner.get('./init-automation');
+const testCafeLegacyRunner = window.getTestCafeModule('testCafeLegacyRunner');
+const ERROR_TYPE           = testCafeLegacyRunner.get('../test-run-error/type');
+const SETTINGS             = testCafeLegacyRunner.get('./settings').get();
+const actionsAPI           = testCafeLegacyRunner.get('./api/actions');
+const StepIterator         = testCafeLegacyRunner.get('./step-iterator');
+const initAutomation       = testCafeLegacyRunner.get('./init-automation');
 
 initAutomation();
 
-var stepIterator = new StepIterator();
+const stepIterator = new StepIterator();
 
 actionsAPI.init(stepIterator);
 
-var correctTestWaitingTime = function (time) {
+const correctTestWaitingTime = function (time) {
     if (featureDetection.isTouchDevice && browserUtils.isFirefox)
         return time * 2;
 
     return time;
 };
 
-var ELEMENT_WAITING_TIMEOUT       = 400;
-var ERROR_WAITING_TIMEOUT         = ELEMENT_WAITING_TIMEOUT + 100;
-var TEST_COMPLETE_WAITING_TIMEOUT = 2000;
+const ELEMENT_WAITING_TIMEOUT       = 400;
+const ERROR_WAITING_TIMEOUT         = ELEMENT_WAITING_TIMEOUT + 100;
+const TEST_COMPLETE_WAITING_TIMEOUT = 2000;
 
 actionsAPI.setElementAvailabilityWaitingTimeout(ELEMENT_WAITING_TIMEOUT);
 
 $(document).ready(function () {
-    var actionTargetWaitingCounter = 0;
-    var actionRunCounter           = 0;
+    let actionTargetWaitingCounter = 0;
+    let actionRunCounter           = 0;
 
-    var $el                      = null;
-    var currentErrorType         = null;
-    var currentErrorElement      = null;
-    var currentActionSourceIndex = null;
+    let $el                      = null;
+    let currentErrorType         = null;
+    let currentErrorElement      = null;
+    let currentActionSourceIndex = null;
+
     //constants
-    var TEST_ELEMENT_CLASS       = 'testElement';
+    const TEST_ELEMENT_CLASS       = 'testElement';
 
     //utils
-    var asyncActionCallback;
+    let asyncActionCallback;
 
-    var addInputElement = function (type, id, x, y) {
-        var elementString = ['<input type="', type, '" id="', id, '" value="', id, '" />'].join('');
+    const addInputElement = function (type, id, x, y) {
+        const elementString = ['<input type="', type, '" id="', id, '" value="', id, '" />'].join('');
 
         return $(elementString)
             .css({
@@ -56,13 +57,13 @@ $(document).ready(function () {
             .appendTo('body');
     };
 
-    var createOption = function (parent, text) {
+    const createOption = function (parent, text) {
         return $('<option></option>').text(text)
             .addClass(TEST_ELEMENT_CLASS)
             .appendTo(parent);
     };
 
-    var startNext = function () {
+    const startNext = function () {
         if (browserUtils.isIE) {
             removeTestElements();
             window.setTimeout(start, 30);
@@ -71,9 +72,10 @@ $(document).ready(function () {
             start();
     };
 
-    var runAsyncTest = function (actions, assertions, timeout) {
-        var timeoutId        = null;
-        var callbackFunction = function () {
+    const runAsyncTest = function (actions, assertions, timeout) {
+        let timeoutId = null;
+
+        let callbackFunction = function () {
             clearTimeout(timeoutId);
             assertions();
             startNext();
@@ -82,21 +84,24 @@ $(document).ready(function () {
         asyncActionCallback = function () {
             callbackFunction();
         };
+
         actions();
+
         timeoutId = setTimeout(function () {
             callbackFunction = function () {
             };
+
             ok(false, 'Timeout is exceeded');
             startNext();
         }, timeout);
     };
 
-    var removeTestElements = function () {
+    const removeTestElements = function () {
         $('.' + TEST_ELEMENT_CLASS).remove();
     };
 
     StepIterator.prototype.asyncActionSeries = function (items, runArgumentsIterator, action) {
-        var seriesActionsRun = function (elements, callback) {
+        const seriesActionsRun = function (elements, callback) {
             window.async.forEachSeries(
                 elements,
                 function (element, seriaCallback) {
@@ -154,7 +159,7 @@ $(document).ready(function () {
     module('different arguments tests');
 
     asyncTest('dom element as a parameter', function () {
-        var clicked = false;
+        let clicked = false;
 
         runAsyncTest(
             function () {
@@ -173,7 +178,7 @@ $(document).ready(function () {
     });
 
     asyncTest('jQuery object as a parameter', function () {
-        var clicked = false;
+        let clicked = false;
 
         runAsyncTest(
             function () {
@@ -190,12 +195,12 @@ $(document).ready(function () {
     });
 
     asyncTest('jQuery object with two elements as a parameter', function () {
-        var clicksCount = 0;
+        let clicksCount = 0;
 
         runAsyncTest(
             function () {
                 addInputElement('button', 'button2', 150, 150);
-                var $elements = $('.button')
+                const $elements = $('.button')
                     .click(function () {
                         clicksCount++;
                     });
@@ -212,8 +217,8 @@ $(document).ready(function () {
     });
 
     asyncTest('dom elements array as a parameter', function () {
-        var firstElementClickRaised  = false;
-        var secondElementClickRaised = false;
+        let firstElementClickRaised  = false;
+        let secondElementClickRaised = false;
 
         runAsyncTest(
             function () {
@@ -221,7 +226,7 @@ $(document).ready(function () {
                     marginLeft: '120px',
                     marginTop:  '120px'
                 });
-                var $el2 = addInputElement('button', 'button2', 150, 150);
+                const $el2 = addInputElement('button', 'button2', 150, 150);
 
                 $el.click(function () {
                     firstElementClickRaised = true;
@@ -241,7 +246,7 @@ $(document).ready(function () {
     });
 
     asyncTest('jQuery objects array as a parameter', function () {
-        var clicksCount = 0;
+        let clicksCount = 0;
 
         runAsyncTest(
             function () {
@@ -250,7 +255,7 @@ $(document).ready(function () {
                     marginTop:  '130px'
                 });
                 addInputElement('button', 'button2', 150, 150);
-                var $el3 = addInputElement('input', 'input1', 170, 170);
+                const $el3 = addInputElement('input', 'input1', 170, 170);
 
                 $('.' + TEST_ELEMENT_CLASS)
                     .click(function () {
@@ -266,9 +271,10 @@ $(document).ready(function () {
     });
 
     asyncTest('some elements created after click on the first one', function () {
-        var secondElementClicked = false;
-        var thirdElementClicked  = false;
-        var newTestClass         = 'newTestClass';
+        const newTestClass = 'newTestClass';
+
+        let secondElementClicked = false;
+        let thirdElementClicked  = false;
 
         $el.click(function () {
             addInputElement('button', 'button2', 150, 150)
@@ -297,9 +303,10 @@ $(document).ready(function () {
     });
 
     asyncTest('function as a first argument', function () {
-        var secondElementClicked = false;
-        var thirdElementClicked  = false;
-        var newTestClass         = 'newTestClass';
+        const newTestClass = 'newTestClass';
+
+        let secondElementClicked = false;
+        let thirdElementClicked  = false;
 
         $el.click(function () {
             addInputElement('button', 'button2', 150, 150).addClass(newTestClass).click(function () {
@@ -311,7 +318,7 @@ $(document).ready(function () {
         });
         runAsyncTest(
             function () {
-                var getArguments = function () {
+                const getArguments = function () {
                     return ['.' + TEST_ELEMENT_CLASS, '.' + newTestClass];
                 };
 
@@ -326,7 +333,7 @@ $(document).ready(function () {
     });
 
     asyncTest('click with positive offsets', function () {
-        var eventPoint = null;
+        let eventPoint = null;
 
         $el.css({
             width:  '100px',
@@ -343,8 +350,8 @@ $(document).ready(function () {
                 actionsAPI.click($el[0], { offsetX: 10, offsetY: 10 });
             },
             function () {
-                var el            = $el[0];
-                var expectedPoint = { x: el.offsetLeft + 10, y: el.offsetTop + 10 };
+                const el            = $el[0];
+                const expectedPoint = { x: el.offsetLeft + 10, y: el.offsetTop + 10 };
 
                 deepEqual(eventPoint, expectedPoint, 'event point is correct');
             },
@@ -353,7 +360,7 @@ $(document).ready(function () {
     });
 
     asyncTest('click with negative offsets', function () {
-        var eventPoint = null;
+        let eventPoint = null;
 
         $el.css({
             width:  '100px',
@@ -370,8 +377,8 @@ $(document).ready(function () {
                 actionsAPI.click($el[0], { offsetX: -20, offsetY: -20 });
             },
             function () {
-                var el            = $el[0];
-                var expectedPoint = {
+                const el            = $el[0];
+                const expectedPoint = {
                     x: el.offsetLeft + el.offsetWidth - 20,
                     y: el.offsetTop + el.offsetHeight - 20
                 };
@@ -390,7 +397,7 @@ $(document).ready(function () {
         asyncActionCallback = function () {
         };
 
-        var clicked = false;
+        let clicked = false;
 
         $el.click(function () {
             clicked = true;
@@ -439,7 +446,7 @@ $(document).ready(function () {
     module('regression');
 
     asyncTest('testcafe functions should not be in strict mode (GH-258)', function () {
-        var exceptionRaised = false;
+        let exceptionRaised = false;
 
         runAsyncTest(
             function () {
@@ -447,7 +454,7 @@ $(document).ready(function () {
                     try {
                         /*eslint-disable no-caller*/
 
-                        var caller = arguments.callee.caller;
+                        let caller = arguments.callee.caller;
 
                         /*eslint-enable no-caller*/
 
@@ -469,13 +476,13 @@ $(document).ready(function () {
     });
 
     asyncTest('click on an option element', function () {
-        var select = $('<select></select>')
+        const select = $('<select></select>')
             .addClass(TEST_ELEMENT_CLASS)
             .appendTo('body')[0];
 
         createOption(select, 'opt1');
 
-        var option = createOption(select, 'opt2');
+        const option = createOption(select, 'opt2');
 
         runAsyncTest(
             function () {

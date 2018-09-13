@@ -1,4 +1,4 @@
-var expect = require('chai').expect;
+const expect = require('chai').expect;
 
 describe('[API] Hover action', function () {
     it('Should run hover over elements', function () {

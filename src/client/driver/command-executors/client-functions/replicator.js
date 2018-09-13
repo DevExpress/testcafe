@@ -5,15 +5,15 @@ import { DomNodeClientFunctionResultError, UncaughtErrorInCustomDOMPropertyCode 
 import hammerhead from '../../deps/hammerhead';
 
 // NOTE: save original ctors because they may be overwritten by page code
-var Node     = window.Node;
-var identity = val => val;
+const Node     = window.Node;
+const identity = val => val;
 
 export function createReplicator (transforms) {
     // NOTE: we will serialize replicator results
     // to JSON with a command or command result.
     // Therefore there is no need to do additional job here,
     // so we use identity functions for serialization.
-    var replicator = new Replicator({
+    const replicator = new Replicator({
         serialize:   identity,
         deserialize: identity
     });
@@ -61,7 +61,7 @@ export class SelectorNodeTransform {
     }
 
     toSerializable (node) {
-        var snapshot = node.nodeType === 1 ? new ElementSnapshot(node) : new NodeSnapshot(node);
+        const snapshot = node.nodeType === 1 ? new ElementSnapshot(node) : new NodeSnapshot(node);
 
         this._extend(snapshot, node);
 

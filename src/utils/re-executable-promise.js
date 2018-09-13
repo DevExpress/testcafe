@@ -34,7 +34,7 @@ export default class ReExecutablePromise extends Promise {
     }
 
     static fromFn (asyncExecutorFn) {
-        var testRunId = testRunTracker.getContextTestRunId();
+        const testRunId = testRunTracker.getContextTestRunId();
 
         if (testRunId)
             asyncExecutorFn = testRunTracker.addTrackingMarkerToFunction(testRunId, asyncExecutorFn);

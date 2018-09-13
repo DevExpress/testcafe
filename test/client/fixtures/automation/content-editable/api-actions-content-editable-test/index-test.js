@@ -1,20 +1,20 @@
-var hammerhead   = window.getTestCafeModule('hammerhead');
-var browserUtils = hammerhead.utils.browser;
+const hammerhead   = window.getTestCafeModule('hammerhead');
+const browserUtils = hammerhead.utils.browser;
 
-var testCafeAutomation   = window.getTestCafeModule('testCafeAutomation');
-var ClickAutomation      = testCafeAutomation.Click;
-var RClickAutomation     = testCafeAutomation.RClick;
-var DblClickAutomation   = testCafeAutomation.DblClick;
-var SelectTextAutomation = testCafeAutomation.SelectText;
-var PressAutomation      = testCafeAutomation.Press;
-var TypeAutomation       = testCafeAutomation.Type;
-var ClickOptions         = testCafeAutomation.get('../../test-run/commands/options').ClickOptions;
-var TypeOptions          = testCafeAutomation.get('../../test-run/commands/options').TypeOptions;
+const testCafeAutomation   = window.getTestCafeModule('testCafeAutomation');
+const ClickAutomation      = testCafeAutomation.Click;
+const RClickAutomation     = testCafeAutomation.RClick;
+const DblClickAutomation   = testCafeAutomation.DblClick;
+const SelectTextAutomation = testCafeAutomation.SelectText;
+const PressAutomation      = testCafeAutomation.Press;
+const TypeAutomation       = testCafeAutomation.Type;
+const ClickOptions         = testCafeAutomation.get('../../test-run/commands/options').ClickOptions;
+const TypeOptions          = testCafeAutomation.get('../../test-run/commands/options').TypeOptions;
 
-var testCafeCore      = window.getTestCafeModule('testCafeCore');
-var domUtils          = testCafeCore.get('./utils/dom');
-var textSelection     = testCafeCore.get('./utils/text-selection');
-var parseKeySequence  = testCafeCore.get('./utils/parse-key-sequence');
+const testCafeCore      = window.getTestCafeModule('testCafeCore');
+const domUtils          = testCafeCore.get('./utils/dom');
+const textSelection     = testCafeCore.get('./utils/text-selection');
+const parseKeySequence  = testCafeCore.get('./utils/parse-key-sequence');
 
 
 testCafeCore.preventRealEvents();
@@ -25,34 +25,34 @@ $(document).ready(function () {
     if (browserUtils.isSafari && browserUtils.version === 11)
         return;
 
-    var $el     = null;
-    var $parent = null;
+    let $el     = null;
+    let $parent = null;
 
-    var firstElementInnerHTML   = null;
-    var secondElementInnerHTML  = null;
-    var thirdElementInnerHTML   = null;
-    var fourthElementInnerHTML  = null;
-    var fifthElementInnerHTML   = null;
-    var sixthElementInnerHTML   = null;
-    var seventhElementInnerHTML = null;
+    let firstElementInnerHTML   = null;
+    let secondElementInnerHTML  = null;
+    let thirdElementInnerHTML   = null;
+    let fourthElementInnerHTML  = null;
+    let fifthElementInnerHTML   = null;
+    let sixthElementInnerHTML   = null;
+    let seventhElementInnerHTML = null;
 
-    var startNext = function () {
+    const startNext = function () {
         window.setTimeout(start, 30);
     };
 
-    var firstNotWhiteSpaceSymbolIndex = function (value) {
-        var start = 0;
+    const firstNotWhiteSpaceSymbolIndex = function (value) {
+        let start = 0;
 
-        for (var i = 0; i < value.length; i++) {
+        for (let i = 0; i < value.length; i++) {
             if (value.charCodeAt(i) === 10 || value.charCodeAt(i) === 32) start++;
             else break;
         }
         return start;
     };
 
-    var checkSelection = function ($element, startNode, startOffset, endNode, endOffset) {
-        var curDocument = domUtils.findDocument($element[0]);
-        var selection   = curDocument.getSelection();
+    const checkSelection = function ($element, startNode, startOffset, endNode, endOffset) {
+        const curDocument = domUtils.findDocument($element[0]);
+        const selection   = curDocument.getSelection();
 
         equal(domUtils.getActiveElement(), $element[0]);
         ok(domUtils.isTheSameNode(startNode, selection.anchorNode), 'startNode correct');
@@ -61,18 +61,18 @@ $(document).ready(function () {
         equal(selection.focusOffset, endOffset, 'endOffset correct');
     };
 
-    var setInnerHTML = function ($element, innerHTML) {
+    const setInnerHTML = function ($element, innerHTML) {
         $element[0].innerHTML = innerHTML;
     };
 
-    var selectByNodesAndOffsets = function (startNode, startOffset, endNode, endOffset) {
-        var startPos = { node: startNode, offset: startOffset };
-        var endPos   = { node: endNode, offset: endOffset };
+    const selectByNodesAndOffsets = function (startNode, startOffset, endNode, endOffset) {
+        const startPos = { node: startNode, offset: startOffset };
+        const endPos   = { node: endNode, offset: endOffset };
 
         textSelection.selectByNodesAndOffsets(startPos, endPos, true);
     };
 
-    var stateHelper = {
+    const stateHelper = {
         isStateSaved: function () {
             return firstElementInnerHTML;
         },
@@ -88,8 +88,8 @@ $(document).ready(function () {
         },
 
         restoreState: function () {
-            var curActiveElement = domUtils.getActiveElement();
-            var selection        = document.getSelection();
+            const curActiveElement = domUtils.getActiveElement();
+            const selection        = document.getSelection();
 
             if (firstElementInnerHTML) {
                 setInnerHTML($('#1'), firstElementInnerHTML);
@@ -134,7 +134,7 @@ $(document).ready(function () {
     module('act.click');
 
     asyncTest('simple click', function () {
-        var clicked = false;
+        let clicked = false;
 
         $parent = $('#1');
         $el     = $parent.find('p');
@@ -145,7 +145,7 @@ $(document).ready(function () {
 
         ok(!clicked);
 
-        var click = new ClickAutomation($el[0], new ClickOptions({ caretPos: 10 }));
+        const click = new ClickAutomation($el[0], new ClickOptions({ caretPos: 10 }));
 
         click
             .run()
@@ -158,7 +158,7 @@ $(document).ready(function () {
     });
 
     asyncTest('click on deep child', function () {
-        var clicked = false;
+        let clicked = false;
 
         $parent = $('#4');
         $el     = $parent.find(' > p:nth(1) > i:nth(1)');
@@ -169,7 +169,7 @@ $(document).ready(function () {
 
         ok(!clicked);
 
-        var click = new ClickAutomation($el[0], new ClickOptions({ caretPos: 1, offsetX: 10, offsetY: 10 }));
+        const click = new ClickAutomation($el[0], new ClickOptions({ caretPos: 1, offsetX: 10, offsetY: 10 }));
 
         click
             .run()
@@ -182,7 +182,7 @@ $(document).ready(function () {
     });
 
     asyncTest('click on element with selection', function () {
-        var clicked = false;
+        let clicked = false;
 
         $parent = $('#5');
         $el     = $parent.find(' > i:nth(0) > b:nth(0)');
@@ -194,7 +194,7 @@ $(document).ready(function () {
         ok(!clicked);
         selectByNodesAndOffsets($parent[0].childNodes[0], 3, $parent[0].childNodes[4], 7);
 
-        var click = new ClickAutomation($el[0], new ClickOptions({ offsetX: 5, offsetY: 5, caretPos: 6 }));
+        const click = new ClickAutomation($el[0], new ClickOptions({ offsetX: 5, offsetY: 5, caretPos: 6 }));
 
         click
             .run()
@@ -209,7 +209,7 @@ $(document).ready(function () {
     module('act.rclick');
 
     asyncTest('rclick (sets the correct position relative to the parent, not the item under the cursor)', function () {
-        var clicked = false;
+        let clicked = false;
 
         $el = $('#4');
 
@@ -219,12 +219,12 @@ $(document).ready(function () {
 
         ok(!clicked);
 
-        var rclick = new RClickAutomation($el[0], new ClickOptions({ caretPos: 104 }));
+        const rclick = new RClickAutomation($el[0], new ClickOptions({ caretPos: 104 }));
 
         rclick
             .run()
             .then(function () {
-                var selectedEl = $el.find('>p:first>i')[0];
+                const selectedEl = $el.find('>p:first>i')[0];
 
                 ok(clicked, 'click raised');
                 checkSelection($el, selectedEl.childNodes[0], 1, selectedEl.childNodes[0], 1);
@@ -236,7 +236,7 @@ $(document).ready(function () {
     module('act.dblclick');
 
     asyncTest('dblclick (sets the correct position relative to the parent, not the item under the cursor)', function () {
-        var dblclicked = false;
+        let dblclicked = false;
 
         $el = $('#4');
 
@@ -246,12 +246,12 @@ $(document).ready(function () {
 
         ok(!dblclicked);
 
-        var dblclick = new DblClickAutomation($el[0], new ClickOptions({ caretPos: 104 }));
+        const dblclick = new DblClickAutomation($el[0], new ClickOptions({ caretPos: 104 }));
 
         dblclick
             .run()
             .then(function () {
-                var selectedEl = $el.find('>p:first>i')[0];
+                const selectedEl = $el.find('>p:first>i')[0];
 
                 ok(dblclicked, 'click raised');
                 checkSelection($el, selectedEl.childNodes[0], 1, selectedEl.childNodes[0], 1);
@@ -266,7 +266,7 @@ $(document).ready(function () {
         $parent = $('#1');
         $el     = $parent.find('p');
 
-        var selectText = new SelectTextAutomation($el[0], 5, 30, {});
+        const selectText = new SelectTextAutomation($el[0], 5, 30, {});
 
         selectText
             .run()
@@ -281,7 +281,7 @@ $(document).ready(function () {
         $el     = $('#4');
         $parent = $el;
 
-        var selectText = new SelectTextAutomation($el[0], 15, 151, {});
+        const selectText = new SelectTextAutomation($el[0], 15, 151, {});
 
         selectText
             .run()
@@ -298,7 +298,7 @@ $(document).ready(function () {
         $parent = $('#6');
         $el     = $parent.find('i:first');
 
-        var selectText = new SelectTextAutomation($el[0], 18, 54, {});
+        const selectText = new SelectTextAutomation($el[0], 18, 54, {});
 
         selectText
             .run()
@@ -314,13 +314,13 @@ $(document).ready(function () {
     module('shortcuts');
 
     asyncTest('select all', function () {
-        var oldInnerHTML = null;
+        let oldInnerHTML = null;
 
         $el          = $('#4');
         oldInnerHTML = $el[0].innerHTML;
         $el.focus();
 
-        var press = new PressAutomation(parseKeySequence('ctrl+a').combinations, {});
+        const press = new PressAutomation(parseKeySequence('ctrl+a').combinations, {});
 
         press
             .run()
@@ -333,7 +333,7 @@ $(document).ready(function () {
     });
 
     asyncTest('select and delete', function () {
-        var oldNodeValue = null;
+        let oldNodeValue = null;
 
         $el          = $('#4');
         oldNodeValue = $el[0].childNodes[1].childNodes[2].nodeValue;
@@ -341,7 +341,7 @@ $(document).ready(function () {
         selectByNodesAndOffsets($el[0].childNodes[1].childNodes[2], 11, $el[0].childNodes[10].childNodes[0], 3);
         equal($el[0].childNodes[1].childNodes[2].nodeValue, oldNodeValue, 'nodeValue is correct');
 
-        var press = new PressAutomation(parseKeySequence('delete').combinations, {});
+        const press = new PressAutomation(parseKeySequence('delete').combinations, {});
 
         press
             .run()
@@ -353,8 +353,8 @@ $(document).ready(function () {
     });
 
     asyncTest('select and backspace', function () {
-        var element        = null;
-        var oldElementText = null;
+        let element        = null;
+        let oldElementText = null;
 
         $parent        = $('#6');
         $el            = $parent.find('i:first');
@@ -366,7 +366,7 @@ $(document).ready(function () {
         window.setTimeout(function () {
             equal($(element).text(), oldElementText, 'nodeValue is correct');
 
-            var press = new PressAutomation(parseKeySequence('backspace').combinations, {});
+            const press = new PressAutomation(parseKeySequence('backspace').combinations, {});
 
             press
                 .run()
@@ -381,10 +381,10 @@ $(document).ready(function () {
     });
 
     asyncTest('select and left', function () {
-        var startNode   = null;
-        var startOffset = null;
-        var endNode     = null;
-        var endOffset   = null;
+        let startNode   = null;
+        let startOffset = null;
+        let endNode     = null;
+        let endOffset   = null;
 
         $el         = $('#4');
         startNode   = $el[0].childNodes[1].childNodes[2];
@@ -395,7 +395,7 @@ $(document).ready(function () {
         selectByNodesAndOffsets(startNode, startOffset, endNode, endOffset);
         checkSelection($el, startNode, startOffset, endNode, endOffset);
 
-        var press = new PressAutomation(parseKeySequence('left').combinations, {});
+        const press = new PressAutomation(parseKeySequence('left').combinations, {});
 
         press
             .run()
@@ -407,10 +407,10 @@ $(document).ready(function () {
     });
 
     asyncTest('select and right', function () {
-        var startNode   = null;
-        var startOffset = null;
-        var endNode     = null;
-        var endOffset   = null;
+        let startNode   = null;
+        let startOffset = null;
+        let endNode     = null;
+        let endOffset   = null;
 
         $el         = $('#4');
         startNode   = $el[0].childNodes[1].childNodes[2];
@@ -421,7 +421,7 @@ $(document).ready(function () {
         selectByNodesAndOffsets(startNode, startOffset, endNode, endOffset);
         checkSelection($el, startNode, startOffset, endNode, endOffset);
 
-        var press = new PressAutomation(parseKeySequence('right').combinations, {});
+        const press = new PressAutomation(parseKeySequence('right').combinations, {});
 
         press
             .run()
@@ -435,12 +435,13 @@ $(document).ready(function () {
     module('act.type');
 
     asyncTest('simple type', function () {
-        var text                  = 'Test me all!';
-        var fixedText             = 'Test' + String.fromCharCode(160) + 'me' + String.fromCharCode(160) + 'all!';
-        var inputEventRaisedCount = 0;
+        const text      = 'Test me all!';
+        const fixedText = 'Test' + String.fromCharCode(160) + 'me' + String.fromCharCode(160) + 'all!';
+
+        let inputEventRaisedCount = 0;
 
         // NOTE IE11 does not raise input event on contenteditable element
-        var expectedInputEventRaisedCount = browserUtils.isIE11 ? 0 : 12;
+        const expectedInputEventRaisedCount = browserUtils.isIE11 ? 0 : 12;
 
         $el = $('#2');
 
@@ -450,7 +451,7 @@ $(document).ready(function () {
 
         $el.bind('input', onInput);
 
-        var type = new TypeAutomation($el[0], text, new TypeOptions({ caretPos: 19 }));
+        const type = new TypeAutomation($el[0], text, new TypeOptions({ caretPos: 19 }));
 
         type
             .run()
@@ -465,11 +466,12 @@ $(document).ready(function () {
     });
 
     asyncTest('type in element node', function () {
-        var text                  = 'Test';
-        var inputEventRaisedCount = 0;
+        const text = 'Test';
+
+        let inputEventRaisedCount = 0;
 
         // NOTE IE11 does not raise input event on contenteditable element
-        var expectedInputEventRaisedCount = !browserUtils.isIE11 ? 4 : 0;
+        const expectedInputEventRaisedCount = !browserUtils.isIE11 ? 4 : 0;
 
         $el = $('#8');
 
@@ -479,7 +481,7 @@ $(document).ready(function () {
 
         $el.bind('input', onInput);
 
-        var type = new TypeAutomation($el[0], text, new TypeOptions());
+        const type = new TypeAutomation($el[0], text, new TypeOptions());
 
         type
             .run()
@@ -493,12 +495,12 @@ $(document).ready(function () {
     });
 
     asyncTest('simple type in deep child', function () {
-        var text = 'ABC';
+        const text = 'ABC';
 
         $parent = $('#6');
         $el     = $parent.find(' > i:nth(0) > b:nth(1)');
 
-        var type = new TypeAutomation($el[0], text, new TypeOptions({ caretPos: 2 }));
+        const type = new TypeAutomation($el[0], text, new TypeOptions({ caretPos: 2 }));
 
         type
             .run()
@@ -512,14 +514,14 @@ $(document).ready(function () {
     });
 
     asyncTest('type in element with simple selection', function () {
-        var text      = 'Test me all!';
-        var fixedText = 'Test' + String.fromCharCode(160) + 'me' + String.fromCharCode(160) + 'all!';
+        const text      = 'Test me all!';
+        const fixedText = 'Test' + String.fromCharCode(160) + 'me' + String.fromCharCode(160) + 'all!';
 
         $el = $('#2');
 
         selectByNodesAndOffsets($el[0].childNodes[0], 3, $el[0].childNodes[2], 7);
 
-        var type = new TypeAutomation($el[0], text, new TypeOptions({ caretPos: 21 }));
+        const type = new TypeAutomation($el[0], text, new TypeOptions({ caretPos: 21 }));
 
         type
             .run()
@@ -535,13 +537,13 @@ $(document).ready(function () {
         $parent = $('#4');
         $el     = $parent.find('p:nth(1)>i:nth(1)');
 
-        var text            = 'Test me all!';
-        var fixedText       = 'Test' + String.fromCharCode(160) + 'me' + String.fromCharCode(160) + 'all!';
-        var olsElementValue = $el[0].childNodes[0].nodeValue;
+        const text            = 'Test me all!';
+        const fixedText       = 'Test' + String.fromCharCode(160) + 'me' + String.fromCharCode(160) + 'all!';
+        const olsElementValue = $el[0].childNodes[0].nodeValue;
 
         selectByNodesAndOffsets($parent[0].childNodes[1].childNodes[4], 11, $parent[0].childNodes[5].childNodes[6].childNodes[0], 2);
 
-        var type = new TypeAutomation($el[0], text, new TypeOptions({ caretPos: 2 }));
+        const type = new TypeAutomation($el[0], text, new TypeOptions({ caretPos: 2 }));
 
         type
             .run()
@@ -554,12 +556,12 @@ $(document).ready(function () {
     });
 
     asyncTest('type and replace text in simple element', function () {
-        var text      = 'Test me all!';
-        var fixedText = 'Test' + String.fromCharCode(160) + 'me' + String.fromCharCode(160) + 'all!';
+        const text      = 'Test me all!';
+        const fixedText = 'Test' + String.fromCharCode(160) + 'me' + String.fromCharCode(160) + 'all!';
 
         $el = $('#2');
 
-        var type = new TypeAutomation($el[0], text, new TypeOptions({ replace: true }));
+        const type = new TypeAutomation($el[0], text, new TypeOptions({ replace: true }));
 
         type
             .run()
@@ -572,13 +574,14 @@ $(document).ready(function () {
     });
 
     asyncTest('type and replace text in big element', function () {
-        var text         = 'Test me all!';
-        var fixedText    = 'Test' + String.fromCharCode(160) + 'me' + String.fromCharCode(160) + 'all!';
-        var expectedNode = null;
+        const text      = 'Test me all!';
+        const fixedText = 'Test' + String.fromCharCode(160) + 'me' + String.fromCharCode(160) + 'all!';
+
+        let expectedNode = null;
 
         $el = $('#4');
 
-        var type = new TypeAutomation($el[0], text, new TypeOptions({ replace: true }));
+        const type = new TypeAutomation($el[0], text, new TypeOptions({ replace: true }));
 
         type
             .run()
@@ -598,12 +601,12 @@ $(document).ready(function () {
         $parent = $('#4');
         $el     = $parent.find('p:nth(1)');
 
-        var text        = '123';
-        var node        = $el[0].childNodes[5];
-        var nodeValue   = node.nodeValue;
-        var elementText = $el.text();
+        const text        = '123';
+        const node        = $el[0].childNodes[5];
+        const nodeValue   = node.nodeValue;
+        const elementText = $el.text();
 
-        var type = new TypeAutomation($el[0], text, new TypeOptions({ caretPos: 28 }));
+        const type = new TypeAutomation($el[0], text, new TypeOptions({ caretPos: 28 }));
 
         type
             .run()
@@ -620,11 +623,11 @@ $(document).ready(function () {
         $parent = $('#1');
         $el     = $parent.find('p');
 
-        var text      = '123';
-        var caretPos  = 0;
-        var nodeValue = $parent[0].childNodes[1].childNodes[0].nodeValue;
+        const text      = '123';
+        const caretPos  = 0;
+        const nodeValue = $parent[0].childNodes[1].childNodes[0].nodeValue;
 
-        var type = new TypeAutomation($el[0], text, new TypeOptions({ caretPos: caretPos }));
+        const type = new TypeAutomation($el[0], text, new TypeOptions({ caretPos: caretPos }));
 
         type
             .run()
@@ -643,12 +646,13 @@ $(document).ready(function () {
         $parent = $('#6');
         $el     = $parent.find('i>code');
 
-        var text        = '123';
-        var caretPos    = 1;
-        var nodeValue   = $parent[0].childNodes[5].childNodes[1].childNodes[0].nodeValue;
-        var symbolIndex = null;
+        const text      = '123';
+        const caretPos  = 1;
+        const nodeValue = $parent[0].childNodes[5].childNodes[1].childNodes[0].nodeValue;
 
-        var type = new TypeAutomation($el[0], text, new TypeOptions({ caretPos: caretPos }));
+        let symbolIndex = null;
+
+        const type = new TypeAutomation($el[0], text, new TypeOptions({ caretPos: caretPos }));
 
         type
             .run()
@@ -669,11 +673,11 @@ $(document).ready(function () {
         $parent = $('#6');
         $el     = $parent.find('i>code');
 
-        var text      = '123';
-        var caretPos  = 0;
-        var nodeValue = $parent[0].childNodes[5].childNodes[1].childNodes[0].nodeValue;
+        const text      = '123';
+        const caretPos  = 0;
+        const nodeValue = $parent[0].childNodes[5].childNodes[1].childNodes[0].nodeValue;
 
-        var type = new TypeAutomation($el[0], text, new TypeOptions({ caretPos: caretPos }));
+        const type = new TypeAutomation($el[0], text, new TypeOptions({ caretPos: caretPos }));
 
         type
             .run()
@@ -692,11 +696,11 @@ $(document).ready(function () {
         $parent = $('#6');
         $el     = $parent.find('i>code');
 
-        var text      = '123';
-        var caretPos  = 9;
-        var nodeValue = $parent[0].childNodes[5].childNodes[1].childNodes[0].nodeValue;
+        const text      = '123';
+        const caretPos  = 9;
+        const nodeValue = $parent[0].childNodes[5].childNodes[1].childNodes[0].nodeValue;
 
-        var type = new TypeAutomation($el[0], text, new TypeOptions({ caretPos: caretPos }));
+        const type = new TypeAutomation($el[0], text, new TypeOptions({ caretPos: caretPos }));
 
         type
             .run()
@@ -715,11 +719,11 @@ $(document).ready(function () {
         $parent = $('#1');
         $el     = $parent.find('p');
 
-        var text      = '123';
-        var caretPos  = 31;
-        var nodeValue = $parent[0].childNodes[1].childNodes[0].nodeValue;
+        const text      = '123';
+        const caretPos  = 31;
+        const nodeValue = $parent[0].childNodes[1].childNodes[0].nodeValue;
 
-        var type = new TypeAutomation($el[0], text, new TypeOptions({ caretPos: caretPos }));
+        const type = new TypeAutomation($el[0], text, new TypeOptions({ caretPos: caretPos }));
 
         type
             .run()
@@ -738,11 +742,11 @@ $(document).ready(function () {
         $parent = $('#6');
         $el     = $parent.find('i>code');
 
-        var text      = '123';
-        var caretPos  = 17;
-        var nodeValue = $parent[0].childNodes[5].childNodes[1].childNodes[0].nodeValue;
+        const text      = '123';
+        const caretPos  = 17;
+        const nodeValue = $parent[0].childNodes[5].childNodes[1].childNodes[0].nodeValue;
 
-        var type = new TypeAutomation($el[0], text, new TypeOptions({ caretPos: caretPos }));
+        const type = new TypeAutomation($el[0], text, new TypeOptions({ caretPos: caretPos }));
 
         type
             .run()
@@ -761,11 +765,11 @@ $(document).ready(function () {
         $parent = $('#6');
         $el     = $parent.find('i>code');
 
-        var text      = '123';
-        var caretPos  = 25;
-        var nodeValue = $parent[0].childNodes[5].childNodes[1].childNodes[0].nodeValue;
+        const text      = '123';
+        const caretPos  = 25;
+        const nodeValue = $parent[0].childNodes[5].childNodes[1].childNodes[0].nodeValue;
 
-        var type = new TypeAutomation($el[0], text, new TypeOptions({ caretPos: caretPos }));
+        const type = new TypeAutomation($el[0], text, new TypeOptions({ caretPos: caretPos }));
 
         type
             .run()
@@ -783,11 +787,11 @@ $(document).ready(function () {
     asyncTest('caret position is last visible position (with invisible symbols in the start)', function () {
         $el = $('#6');
 
-        var text      = '123';
-        var caretPos  = 8;
-        var nodeValue = $el[0].childNodes[8].nodeValue;
+        const text      = '123';
+        const caretPos  = 8;
+        const nodeValue = $el[0].childNodes[8].nodeValue;
 
-        var type = new TypeAutomation($el[0], text, new TypeOptions({ caretPos: 118 }));
+        const type = new TypeAutomation($el[0], text, new TypeOptions({ caretPos: 118 }));
 
         type
             .run()

@@ -13,7 +13,7 @@ import {
 const INTERNAL = 'internal/';
 
 function isAssertionErrorCallsiteFrame (frame) {
-    var filename = frame.getFileName();
+    const filename = frame.getFileName();
 
     // NOTE: filter out the internals of node.js and assertion libraries
     return filename &&
@@ -31,11 +31,11 @@ export default function processTestFnError (err) {
         return new UncaughtErrorInTestCode(err.rawMessage, err.callsite);
 
     if (err instanceof Error) {
-        var isAssertionError = err.name === 'AssertionError' || err.constructor.name === 'AssertionError';
+        const isAssertionError = err.name === 'AssertionError' || err.constructor.name === 'AssertionError';
 
         // NOTE: assertion libraries can add their source files to the error stack frames.
         // We should skip them to create a correct callsite for the assertion error.
-        var callsite = isAssertionError ? getCallsiteForError(err, isAssertionErrorCallsiteFrame) : getCallsiteForError(err);
+        const callsite = isAssertionError ? getCallsiteForError(err, isAssertionErrorCallsiteFrame) : getCallsiteForError(err);
 
         return isAssertionError ?
             new ExternalAssertionLibraryError(err, callsite) :

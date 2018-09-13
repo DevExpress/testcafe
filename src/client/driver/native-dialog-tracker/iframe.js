@@ -2,7 +2,7 @@ import hammerhead from '../deps/hammerhead';
 import MESSAGE_TYPE from './messages';
 import NativeDialogTracker from './index';
 
-var messageSandbox = hammerhead.eventSandbox.message;
+const messageSandbox = hammerhead.eventSandbox.message;
 
 
 export default class IframeNativeDialogTracker extends NativeDialogTracker {

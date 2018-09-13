@@ -1,20 +1,20 @@
-var expect              = require('chai').expect;
-var Promise             = require('pinkie');
-var promisify           = require('../../lib/utils/promisify');
-var request             = require('request');
-var createTestCafe      = require('../../lib/');
-var COMMAND             = require('../../lib/browser/connection/command');
-var browserProviderPool = require('../../lib/browser/provider/pool');
+const expect              = require('chai').expect;
+const Promise             = require('pinkie');
+const promisify           = require('../../lib/utils/promisify');
+const request             = require('request');
+const createTestCafe      = require('../../lib/');
+const COMMAND             = require('../../lib/browser/connection/command');
+const browserProviderPool = require('../../lib/browser/provider/pool');
 
 
-var promisedRequest = promisify(request);
+const promisedRequest = promisify(request);
 
 describe('Browser connection', function () {
-    var testCafe                  = null;
-    var connection                = null;
-    var origRemoteBrowserProvider = null;
+    let testCafe                  = null;
+    let connection                = null;
+    let origRemoteBrowserProvider = null;
 
-    var remoteBrowserProviderMock = {
+    const remoteBrowserProviderMock = {
         openBrowser: function () {
             return Promise.resolve();
         },
@@ -60,13 +60,13 @@ describe('Browser connection', function () {
     });
 
     it('Should fire "ready" event and redirect to idle page once established', function () {
-        var eventFired = false;
+        let eventFired = false;
 
         connection.on('ready', function () {
             eventFired = true;
         });
 
-        var options = {
+        const options = {
             url:            connection.url,
             followRedirect: false,
             headers:        {
@@ -105,7 +105,7 @@ describe('Browser connection', function () {
             done();
         });
 
-        var options = {
+        const options = {
             url:            connection.url,
             followRedirect: false,
             headers:        {
@@ -121,7 +121,7 @@ describe('Browser connection', function () {
         function createBrowserJobMock (urls) {
             return {
                 popNextTestRunUrl: function () {
-                    var url = urls.shift();
+                    const url = urls.shift();
 
                     return url;
                 },
@@ -171,7 +171,7 @@ describe('Browser connection', function () {
     });
 
     it('Should respond to the service queries with error if not ready', function () {
-        var testCases = [
+        let testCases = [
             connection.heartbeatUrl,
             connection.idleUrl,
             connection.statusUrl

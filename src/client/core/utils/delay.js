@@ -1,7 +1,7 @@
 import hammerhead from '../deps/hammerhead';
 
-var Promise       = hammerhead.Promise;
-var nativeMethods = hammerhead.nativeMethods;
+const Promise       = hammerhead.Promise;
+const nativeMethods = hammerhead.nativeMethods;
 
 
 export default function (ms) {

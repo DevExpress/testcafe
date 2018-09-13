@@ -22,14 +22,14 @@ const MANIPULATION_RESPONSE_CMD = 'driver|browser-manipulation|response';
 // Setup cross-iframe interaction
 messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
     if (e.message.cmd === MANIPULATION_REQUEST_CMD) {
-        var element = domUtils.findIframeByWindow(e.source);
+        const element = domUtils.findIframeByWindow(e.source);
 
-        var { command, cropDimensions } = e.message;
+        const { command, cropDimensions } = e.message;
 
         if (cropDimensions)
             command.options = new ElementScreenshotOptions({ crop: cropDimensions, includePaddings: false });
 
-        var manipulation = new ManipulationExecutor(command);
+        const manipulation = new ManipulationExecutor(command);
 
         manipulation.element = element;
 
@@ -48,13 +48,13 @@ class ManipulationExecutor {
     }
 
     _getAbsoluteCropValues () {
-        var { top, left } = this.element.getBoundingClientRect();
+        let { top, left } = this.element.getBoundingClientRect();
 
         left += this.command.options.originOffset.x;
         top += this.command.options.originOffset.y;
 
-        var right  = left + this.command.options.crop.right;
-        var bottom = top + this.command.options.crop.bottom;
+        const right  = left + this.command.options.crop.right;
+        const bottom = top + this.command.options.crop.bottom;
 
         top += this.command.options.crop.top;
         left += this.command.options.crop.left;
@@ -63,9 +63,9 @@ class ManipulationExecutor {
     }
 
     _createManipulationReadyMessage () {
-        var dpr = window.devicePixelRatio || 1;
+        const dpr = window.devicePixelRatio || 1;
 
-        var message = {
+        const message = {
             cmd: MESSAGE.readyForBrowserManipulation,
 
             pageDimensions: {
@@ -94,9 +94,9 @@ class ManipulationExecutor {
                 if (this.element || !this.command.selector)
                     return Promise.resolve();
 
-                var selectorTimeout = this.command.selector.timeout;
+                const selectorTimeout = this.command.selector.timeout;
 
-                var specificSelectorTimeout = typeof selectorTimeout === 'number' ? selectorTimeout : this.globalSelectorTimeout;
+                const specificSelectorTimeout = typeof selectorTimeout === 'number' ? selectorTimeout : this.globalSelectorTimeout;
 
                 this.statusBar.showWaitingElementStatus(specificSelectorTimeout);
 
@@ -115,9 +115,9 @@ class ManipulationExecutor {
             .then(() => {
                 ensureCropOptions(this.element, this.command.options);
 
-                var { scrollTargetX, scrollTargetY, scrollToCenter } = this.command.options;
+                const { scrollTargetX, scrollTargetY, scrollToCenter } = this.command.options;
 
-                var scrollAutomation = new ScrollAutomation(this.element, new ScrollOptions({
+                const scrollAutomation = new ScrollAutomation(this.element, new ScrollOptions({
                     offsetX:          scrollTargetX,
                     offsetY:          scrollTargetY,
                     scrollToCenter:   scrollToCenter,
@@ -148,9 +148,9 @@ class ManipulationExecutor {
         if (window.top === window)
             return transport.queuedAsyncServiceMsg(this._createManipulationReadyMessage());
 
-        var cropDimensions = this._getAbsoluteCropValues();
+        const cropDimensions = this._getAbsoluteCropValues();
 
-        var iframeRequestPromise = sendRequestToFrame({
+        const iframeRequestPromise = sendRequestToFrame({
             cmd:            MANIPULATION_REQUEST_CMD,
             command:        this.command,
             cropDimensions: cropDimensions
@@ -161,7 +161,7 @@ class ManipulationExecutor {
                 if (!message.result)
                     return { result: null };
 
-                var { result, executionError } = message.result;
+                const { result, executionError } = message.result;
 
                 if (executionError)
                     throw executionError;
@@ -171,7 +171,7 @@ class ManipulationExecutor {
     }
 
     _runManipulation () {
-        var manipulationResult = null;
+        let manipulationResult = null;
 
         return Promise
             .resolve()
@@ -212,14 +212,14 @@ class ManipulationExecutor {
     }
 
     execute () {
-        var { barriersPromise } = runWithBarriers(() => this._runManipulation());
+        const { barriersPromise } = runWithBarriers(() => this._runManipulation());
 
         return barriersPromise;
     }
 }
 
 export default function (command, globalSelectorTimeout, statusBar) {
-    var manipulationExecutor = new ManipulationExecutor(command, globalSelectorTimeout, statusBar);
+    const manipulationExecutor = new ManipulationExecutor(command, globalSelectorTimeout, statusBar);
 
     return manipulationExecutor.execute();
 }

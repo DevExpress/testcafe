@@ -8,12 +8,12 @@ export default function selectorAttributeFilter (node, index, originNode, attrNa
     if (node.nodeType !== 1)
         return false;
 
-    var attributes = node.attributes;
-    var attr       = null;
+    const attributes = node.attributes;
+    let attr       = null;
 
-    var check = (actual, expect) => typeof expect === 'string' ? expect === actual : expect.test(actual);
+    const check = (actual, expect) => typeof expect === 'string' ? expect === actual : expect.test(actual);
 
-    for (var i = 0; i < attributes.length; i++) {
+    for (let i = 0; i < attributes.length; i++) {
         attr = attributes[i];
 
         if (check(attr.nodeName, attrName) && (!attrValue || check(attr.nodeValue, attrValue)))

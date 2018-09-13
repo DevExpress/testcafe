@@ -20,7 +20,7 @@
 <button id="setTextContent"></button>
 
 <script>
-    var div = document.getElementById('el1');
+    const div = document.getElementById('el1');
 
     document.getElementById('makeFloat').addEventListener('click', function () {
         window.setTimeout(function () {
@@ -46,7 +46,7 @@
         }, 180);
     });
 
-    var value = 4;
+    let value = 4;
 
     Object.defineProperty(window, 'someVar', {
         get: function () {

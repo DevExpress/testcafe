@@ -14,8 +14,8 @@ export default {
     isMultiBrowser: false,
 
     async openBrowser (browserId, pageUrl, configString) {
-        var runtimeInfo = await getRuntimeInfo(parseUrl(pageUrl).hostname, configString);
-        var browserName = this.providerName.replace(':', '');
+        const runtimeInfo = await getRuntimeInfo(parseUrl(pageUrl).hostname, configString);
+        const browserName = this.providerName.replace(':', '');
 
         runtimeInfo.browserId   = browserId;
         runtimeInfo.browserName = browserName;
@@ -36,7 +36,7 @@ export default {
     },
 
     async closeBrowser (browserId) {
-        var runtimeInfo = this.openedBrowsers[browserId];
+        const runtimeInfo = this.openedBrowsers[browserId];
 
         if (cdp.isHeadlessTab(runtimeInfo))
             await cdp.closeTab(runtimeInfo);
@@ -53,19 +53,19 @@ export default {
     },
 
     async isLocalBrowser (browserId, configString) {
-        var config = this.openedBrowsers[browserId] ? this.openedBrowsers[browserId].config : getConfig(configString);
+        const config = this.openedBrowsers[browserId] ? this.openedBrowsers[browserId].config : getConfig(configString);
 
         return !config.headless;
     },
 
     async takeScreenshot (browserId, path) {
-        var runtimeInfo = this.openedBrowsers[browserId];
+        const runtimeInfo = this.openedBrowsers[browserId];
 
         await cdp.takeScreenshot(path, runtimeInfo);
     },
 
     async resizeWindow (browserId, width, height, currentWidth, currentHeight) {
-        var runtimeInfo = this.openedBrowsers[browserId];
+        const runtimeInfo = this.openedBrowsers[browserId];
 
         if (runtimeInfo.config.mobile)
             await cdp.updateMobileViewportSize(runtimeInfo);
@@ -84,7 +84,7 @@ export default {
     },
 
     async hasCustomActionForBrowser (browserId) {
-        var { config, client } = this.openedBrowsers[browserId];
+        const { config, client } = this.openedBrowsers[browserId];
 
         return {
             hasCloseBrowser:                true,

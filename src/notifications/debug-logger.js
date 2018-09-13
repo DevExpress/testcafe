@@ -11,7 +11,7 @@ export default {
     streamsOverridden: false,
 
     _overrideStream (stream) {
-        var initialWrite = stream.write;
+        const initialWrite = stream.write;
 
         stream.write = (chunk, encoding, cb) => {
             if (this.debugLogging)
@@ -39,9 +39,9 @@ export default {
     },
 
     _getMessageAsString () {
-        var string = '';
+        let string = '';
 
-        for (var message of this.messages)
+        for (const message of this.messages)
             string += message.frame;
 
         return string;
@@ -61,23 +61,23 @@ export default {
             this._overrideStreams();
 
         // NOTE: Raw API does not have callsite.
-        var hasCallsite = callsite && callsite.renderSync;
+        const hasCallsite = callsite && callsite.renderSync;
 
-        var callsiteStr = hasCallsite ? callsite.renderSync({
+        const callsiteStr = hasCallsite ? callsite.renderSync({
             frameSize:   1,
             stackFilter: createStackFilter(Error.stackTraceLimit),
             stack:       false
         }) : '';
 
-        var frame = `\n` +
+        const frame = `\n` +
                     `----\n` +
                     `${userAgent}\n` +
                     chalk.yellow(testError ? 'DEBUGGER PAUSE ON FAILED TEST:' : 'DEBUGGER PAUSE:') + `\n` +
                     `${testError ? testError : callsiteStr}\n` +
                     `----\n`;
 
-        var message = { testRunId, frame };
-        var index   = findIndex(this.messages, { testRunId });
+        const message = { testRunId, frame };
+        const index   = findIndex(this.messages, { testRunId });
 
         if (index === -1)
             this.messages.push(message);
@@ -88,7 +88,7 @@ export default {
     },
 
     hideBreakpoint (testRunId) {
-        var index = findIndex(this.messages, { testRunId });
+        const index = findIndex(this.messages, { testRunId });
 
         if (index !== -1)
             this.messages.splice(index, 1);

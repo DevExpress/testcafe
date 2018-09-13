@@ -1,24 +1,24 @@
-var hammerhead   = window.getTestCafeModule('hammerhead');
-var browserUtils = hammerhead.utils.browser;
+const hammerhead   = window.getTestCafeModule('hammerhead');
+const browserUtils = hammerhead.utils.browser;
 
-var testCafeCore = window.getTestCafeModule('testCafeCore');
-var domUtils     = testCafeCore.get('./utils/dom');
+const testCafeCore = window.getTestCafeModule('testCafeCore');
+const domUtils     = testCafeCore.get('./utils/dom');
 
-var testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
-var TypeOptions        = testCafeAutomation.get('../../test-run/commands/options').TypeOptions;
-var TypeAutomation     = testCafeAutomation.Type;
+const testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
+const TypeOptions        = testCafeAutomation.get('../../test-run/commands/options').TypeOptions;
+const TypeAutomation     = testCafeAutomation.Type;
 
 testCafeCore.preventRealEvents();
 
 $(document).ready(function () {
     //consts
-    var TEST_ELEMENT_CLASS = 'testElement';
+    const TEST_ELEMENT_CLASS = 'testElement';
 
-    var firstElementInnerHTML  = null;
-    var secondElementInnerHTML = null;
-    var thirdElementInnerHTML  = null;
+    let firstElementInnerHTML  = null;
+    let secondElementInnerHTML = null;
+    let thirdElementInnerHTML  = null;
 
-    var startNext = function () {
+    const startNext = function () {
         if (browserUtils.isIE) {
             removeTestElements();
             window.setTimeout(start, 30);
@@ -27,13 +27,13 @@ $(document).ready(function () {
             start();
     };
 
-    var removeTestElements = function () {
+    const removeTestElements = function () {
         $('.' + TEST_ELEMENT_CLASS).remove();
     };
 
-    var checkSelection = function ($el, startNode, startOffset, endNode, endOffset) {
-        var curDocument = domUtils.findDocument($el[0]);
-        var selection   = curDocument.getSelection();
+    const checkSelection = function ($el, startNode, startOffset, endNode, endOffset) {
+        const curDocument = domUtils.findDocument($el[0]);
+        const selection   = curDocument.getSelection();
 
         equal(domUtils.getActiveElement(), $el[0]);
         ok(domUtils.isTheSameNode(startNode, selection.anchorNode), 'startNode correct');
@@ -42,11 +42,11 @@ $(document).ready(function () {
         equal(selection.focusOffset, endOffset, 'endOffset correct');
     };
 
-    var setInnerHTML = function ($el, innerHTML) {
+    const setInnerHTML = function ($el, innerHTML) {
         $el[0].innerHTML = innerHTML;
     };
 
-    var stateHelper = {
+    const stateHelper = {
         isStateSaved: function () {
             return firstElementInnerHTML;
         },
@@ -83,17 +83,17 @@ $(document).ready(function () {
     module('regression tests');
 
     asyncTest('Wrong result of type action without option \'caretPos\'', function () {
-        var $body      = $('body');
-        var $el        = $('#2').find('p:first');
-        var node       = $el[0].childNodes[0];
-        var nodeValue  = node.nodeValue;
-        var typingText = '123 test';
+        const $body      = $('body');
+        const $el        = $('#2').find('p:first');
+        const node       = $el[0].childNodes[0];
+        const nodeValue  = node.nodeValue;
+        const typingText = '123 test';
 
         $body.css('height', 1500).attr('contenteditable', 'true');
         $body.focus();
         equal(document.activeElement, $body[0]);
 
-        var typeAutomation = new TypeAutomation($el[0], typingText, new TypeOptions());
+        const typeAutomation = new TypeAutomation($el[0], typingText, new TypeOptions());
 
         typeAutomation
             .run()
@@ -114,17 +114,18 @@ $(document).ready(function () {
 
     if (!browserUtils.isFirefox) {
         asyncTest('textInput eventArgs.data should contain space but not &nbsp;)', function () {
-            var result = '';
-            var editor = document.createElement('div');
-            var text   = 'Hello World';
-            var type   = new TypeAutomation(editor, text, {});
+            const editor = document.createElement('div');
+            const text   = 'Hello World';
+            const type   = new TypeAutomation(editor, text, {});
+
+            let result = '';
 
             editor.className       = TEST_ELEMENT_CLASS;
             editor.contentEditable = true;
 
             document.body.appendChild(editor);
 
-            var onTextInput = function (e) {
+            const onTextInput = function (e) {
                 result += e.data;
             };
 
@@ -146,9 +147,9 @@ $(document).ready(function () {
     asyncTest('selection after mousedown should ignore single new line character', function () {
 
         function testWithWhiteSpaceStyle (whiteSpace) {
-            var editor = document.createElement('div');
-            var span   = document.createElement('span');
-            var type   = new TypeAutomation(editor, 'Hello World', {});
+            const editor = document.createElement('div');
+            const span   = document.createElement('span');
+            const type   = new TypeAutomation(editor, 'Hello World', {});
 
             editor.className        = TEST_ELEMENT_CLASS;
             editor.style.whiteSpace = whiteSpace;
@@ -158,7 +159,7 @@ $(document).ready(function () {
             editor.appendChild(span);
             document.body.appendChild(editor);
 
-            var onSelectionChange = function () {
+            const onSelectionChange = function () {
                 equal(document.getSelection().anchorOffset, 0);
                 document.removeEventListener('selectionchange', onSelectionChange, true);
             };

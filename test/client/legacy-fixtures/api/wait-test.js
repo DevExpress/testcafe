@@ -1,36 +1,38 @@
-var testCafeLegacyRunner = window.getTestCafeModule('testCafeLegacyRunner');
-var ERROR_TYPE           = testCafeLegacyRunner.get('../test-run-error/type');
-var SETTINGS             = testCafeLegacyRunner.get('./settings').get();
-var actionsAPI           = testCafeLegacyRunner.get('./api/actions');
-var StepIterator         = testCafeLegacyRunner.get('./step-iterator');
-var initAutomation       = testCafeLegacyRunner.get('./init-automation');
+const testCafeLegacyRunner = window.getTestCafeModule('testCafeLegacyRunner');
+const ERROR_TYPE           = testCafeLegacyRunner.get('../test-run-error/type');
+const SETTINGS             = testCafeLegacyRunner.get('./settings').get();
+const actionsAPI           = testCafeLegacyRunner.get('./api/actions');
+const StepIterator         = testCafeLegacyRunner.get('./step-iterator');
+const initAutomation       = testCafeLegacyRunner.get('./init-automation');
 
 initAutomation();
 
-var stepIterator = new StepIterator();
+const stepIterator = new StepIterator();
 
 actionsAPI.init(stepIterator);
 
 $(document).ready(function () {
-    var asyncActionCallback;
-    var pageShortTimeoutDelay   = 500;
-    var pageShortTimeoutExpired = false;
-    var pageShortTimeoutId      = null;
+    const pageShortTimeoutDelay = 500;
+    const pageLongTimeoutDelay  = 1000;
 
-    var pageLongTimeoutDelay   = 1000;
-    var pageLongTimeoutExpired = false;
-    var pageLongTimeoutId      = null;
+    let asyncActionCallback;
+    let pageShortTimeoutExpired = false;
+    let pageShortTimeoutId      = null;
 
-    var currentErrorType   = null;
-    var currentSourceIndex = null;
+    let pageLongTimeoutExpired = false;
+    let pageLongTimeoutId      = null;
+
+    let currentErrorType   = null;
+    let currentSourceIndex = null;
+
     //constants
-    var SHORT_DELAY        = 10;
-    var LONG_DELAY         = 1050;
+    const SHORT_DELAY        = 10;
+    const LONG_DELAY         = 1050;
 
     //utils
-    var runAsyncTest = function (actions, assertions, timeout) {
-        var timeoutId        = null;
-        var callbackFunction = function () {
+    const runAsyncTest = function (actions, assertions, timeout) {
+        let timeoutId        = null;
+        let callbackFunction = function () {
             clearTimeout(timeoutId);
             assertions();
             start();
@@ -118,8 +120,9 @@ $(document).ready(function () {
     asyncTest('wait with feasible condition and long ms parameter', function () {
         runAsyncTest(
             function () {
-                var i         = 0;
-                var condition = function () {
+                let i = 0;
+
+                const condition = function () {
                     ok(this.contextCheck, 'condition context is wrong');
                     if (i !== 10) {
                         i++;
@@ -143,7 +146,7 @@ $(document).ready(function () {
     asyncTest('wait with not feasible condition and long ms parameter', function () {
         runAsyncTest(
             function () {
-                var condition = function () {
+                const condition = function () {
                     return false;
                 };
 
@@ -186,10 +189,14 @@ $(document).ready(function () {
 
     asyncTest('mixed up settings raise error', function () {
         SETTINGS.ENABLE_SOURCE_INDEX = true;
-        asyncActionCallback          = function () {
+
+        asyncActionCallback = function () {
+
         };
-        var i                        = 0;
-        var condition                = function () {
+
+        let i = 0;
+
+        const condition = function () {
             if (i !== 10) {
                 i++;
                 return false;

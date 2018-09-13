@@ -1,36 +1,38 @@
-var hammerhead       = window.getTestCafeModule('hammerhead');
-var browserUtils     = hammerhead.utils.browser;
-var nativeMethods    = hammerhead.nativeMethods;
-var focusBlurSandbox = hammerhead.eventSandbox.focusBlur;
-var eventSimulator   = hammerhead.eventSandbox.eventSimulator;
+const hammerhead       = window.getTestCafeModule('hammerhead');
+const browserUtils     = hammerhead.utils.browser;
+const nativeMethods    = hammerhead.nativeMethods;
+const focusBlurSandbox = hammerhead.eventSandbox.focusBlur;
+const eventSimulator   = hammerhead.eventSandbox.eventSimulator;
 
-var testCafeCore       = window.getTestCafeModule('testCafeCore');
-var testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
+const testCafeCore       = window.getTestCafeModule('testCafeCore');
+const testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
 
-var ClickOptions = testCafeAutomation.get('../../test-run/commands/options').ClickOptions;
-var TypeOptions  = testCafeAutomation.get('../../test-run/commands/options').TypeOptions;
+const ClickOptions = testCafeAutomation.get('../../test-run/commands/options').ClickOptions;
+const TypeOptions  = testCafeAutomation.get('../../test-run/commands/options').TypeOptions;
 
-var ClickAutomation = testCafeAutomation.Click;
-var TypeAutomation  = testCafeAutomation.Type;
-var PressAutomation = testCafeAutomation.Press;
+const ClickAutomation = testCafeAutomation.Click;
+const TypeAutomation  = testCafeAutomation.Type;
+const PressAutomation = testCafeAutomation.Press;
 
-var parseKeySequence = testCafeCore.get('./utils/parse-key-sequence');
-var getOffsetOptions = testCafeAutomation.getOffsetOptions;
+const parseKeySequence = testCafeCore.get('./utils/parse-key-sequence');
+const getOffsetOptions = testCafeAutomation.getOffsetOptions;
 
 testCafeCore.preventRealEvents();
 
-var input1                           = null;
-var input2                           = null;
-var input2BlurHandlersExecutedAmount = null;
-var TEST_ELEMENT_CLASS               = 'testElement';
-var testStartDelay                   = 25;
-var testEndDelay                     = 25;
+const TEST_ELEMENT_CLASS = 'testElement';
 
-var testTimeoutIds = [];
+const testStartDelay = 25;
+const testEndDelay   = 25;
 
-var enableLogging = false;
+let input1                           = null;
+let input2                           = null;
+let input2BlurHandlersExecutedAmount = null;
 
-var setDoubleTimeout = function (callback, timeout) {
+const testTimeoutIds = [];
+
+const enableLogging = false;
+
+const setDoubleTimeout = function (callback, timeout) {
     if (!timeout)
         timeout = 0;
 
@@ -39,15 +41,15 @@ var setDoubleTimeout = function (callback, timeout) {
     }, 50);
 };
 
-var logMessage = function (text) {
+const logMessage = function (text) {
     if (enableLogging)
         ok(true, (new Date()).getSeconds() + ':' + (new Date()).getMilliseconds().toString() + ' ' + text);
 };
 
-var getBlurHandler = function () {
+const getBlurHandler = function () {
     return function (e) {
         e           = e || window.event;
-        var element = e.target || e.srcElement;
+        const element = e.target || e.srcElement;
 
         if (element && element.id === 'input2')
             input2BlurHandlersExecutedAmount++;
@@ -56,17 +58,17 @@ var getBlurHandler = function () {
     };
 };
 
-var blurListener = getBlurHandler();
+const blurListener = getBlurHandler();
 
-var clearExecutedHandlersCounter = function () {
+const clearExecutedHandlersCounter = function () {
     input2BlurHandlersExecutedAmount = 0;
 };
 
-var removeTestElements = function () {
+const removeTestElements = function () {
     $('.' + TEST_ELEMENT_CLASS).remove();
 };
 
-var startNext = function () {
+const startNext = function () {
     while (testTimeoutIds.length)
         clearTimeout(testTimeoutIds.pop());
 
@@ -80,8 +82,8 @@ var startNext = function () {
     });
 };
 
-var runAsyncTest = function (actions, timeout) {
-    var testCanceled = null;
+const runAsyncTest = function (actions, timeout) {
+    let testCanceled = null;
 
     window.setTimeout(function () {
         actions(function () {
@@ -99,15 +101,15 @@ var runAsyncTest = function (actions, timeout) {
     );
 };
 
-var dumpProperties = function (element) {
-    var props        = [];
-    var currentProps = [];
-    var i            = 0;
+const dumpProperties = function (element) {
+    const props        = [];
+
+    let currentProps = [];
 
     while (element) {
         currentProps = Object.getOwnPropertyNames(element);
 
-        for (i = 0; i < currentProps.length; i++) {
+        for (let i = 0; i < currentProps.length; i++) {
             if (props.indexOf(currentProps[i]) < 0)
                 props.push(currentProps[i]);
         }
@@ -123,9 +125,8 @@ var dumpProperties = function (element) {
     return props;
 };
 
-var getArrayDiff = function (a, b) {
-    var i    = 0;
-    var diff = {
+const getArrayDiff = function (a, b) {
+    const diff = {
         deleted: [],
         added:   []
     };
@@ -133,12 +134,12 @@ var getArrayDiff = function (a, b) {
     a = !a ? [] : a;
     b = !b ? [] : b;
 
-    for (i = 0; i < a.length; i++) {
+    for (let i = 0; i < a.length; i++) {
         if (b.indexOf(a[i]) < 0)
             diff.deleted.push(a[i]);
     }
 
-    for (i = 0; i < b.length; i++) {
+    for (let i = 0; i < b.length; i++) {
         if (a.indexOf(b[i]) < 0)
             diff.added.push(b[i]);
     }
@@ -146,9 +147,9 @@ var getArrayDiff = function (a, b) {
     return diff;
 };
 
-var runClickAutomation = function (el, options) {
-    var offsets      = getOffsetOptions(el, options.offsetX, options.offsetY);
-    var clickOptions = new ClickOptions({
+const runClickAutomation = function (el, options) {
+    const offsets      = getOffsetOptions(el, options.offsetX, options.offsetY);
+    const clickOptions = new ClickOptions({
         offsetX:  offsets.offsetX,
         offsetY:  offsets.offsetY,
         caretPos: options.caretPos,
@@ -161,19 +162,19 @@ var runClickAutomation = function (el, options) {
         }
     });
 
-    var clickAutomation = new ClickAutomation(el, clickOptions);
+    const clickAutomation = new ClickAutomation(el, clickOptions);
 
     return clickAutomation.run();
 };
 
-var runTypeAutomation = function (element, text) {
-    var offsets     = getOffsetOptions(element);
-    var typeOptions = new TypeOptions({
+const runTypeAutomation = function (element, text) {
+    const offsets     = getOffsetOptions(element);
+    const typeOptions = new TypeOptions({
         offsetX: offsets.offsetX,
         offsetY: offsets.offsetY
     });
 
-    var typeAutomation = new TypeAutomation(element, text, typeOptions);
+    const typeAutomation = new TypeAutomation(element, text, typeOptions);
 
     return typeAutomation.run();
 };
@@ -191,7 +192,7 @@ module('Regression tests');
 asyncTest('B236526 - Change event raising if blur() is called by a client script', function () {
     runAsyncTest(
         function () {
-            var changed = false;
+            let changed = false;
 
             input2.onchange = function () {
                 changed = true;
@@ -214,7 +215,7 @@ asyncTest('B236526 - Change event raising if blur() is called by a client script
 asyncTest('B236912 - change event raising if an element is focused before type action by a client script', function () {
     runAsyncTest(
         function () {
-            var changed = false;
+            let changed = false;
 
             input2.onchange = function () {
                 changed = true;
@@ -237,8 +238,8 @@ asyncTest('B236912 - change event raising if an element is focused before type a
 asyncTest('B237366 - change event raising after sequential type actions', function () {
     runAsyncTest(
         function () {
-            var input1changed = false;
-            var input2changed = false;
+            let input1changed = false;
+            let input2changed = false;
 
             input1.onchange = function () {
                 input1changed = true;
@@ -267,7 +268,7 @@ asyncTest('B237366 - change event raising after sequential type actions', functi
 asyncTest('B237489 - act.press("left") does not work in IE', function () {
     runAsyncTest(
         function () {
-            var input = $('<input type="text"/>').addClass(TEST_ELEMENT_CLASS).appendTo('body')[0];
+            const input = $('<input type="text"/>').addClass(TEST_ELEMENT_CLASS).appendTo('body')[0];
 
             input.addEventListener('focus', function () {
                 ok(document.activeElement === input);
@@ -289,7 +290,7 @@ if (browserUtils.isIE) {
         runAsyncTest(
             function () {
                 focusBlurSandbox.focus(input2, function () {
-                    var focusCount = 0;
+                    let focusCount = 0;
 
                     input1.onfocus = function () {
                         focusCount++;
@@ -314,9 +315,10 @@ if (browserUtils.isIE) {
 asyncTest('B238617 - Label with "for" attribute focusing', function () {
     runAsyncTest(
         function () {
-            var $label       = $('<label>label</label>').addClass(TEST_ELEMENT_CLASS).attr('for', input2.id).appendTo('body');
-            var labelFocused = false;
-            var inputFocused = false;
+            const $label       = $('<label>label</label>').addClass(TEST_ELEMENT_CLASS).attr('for', input2.id).appendTo('body');
+
+            let labelFocused = false;
+            let inputFocused = false;
 
             $label[0].onfocus = function () {
                 labelFocused = true;
@@ -354,8 +356,9 @@ asyncTest('B238617 - Label with "for" attribute focusing', function () {
 asyncTest('B238617 - Label with "for" attribute focusing - non-valid "for"', function () {
     runAsyncTest(
         function () {
-            var $label       = $('<label>label</label>').addClass(TEST_ELEMENT_CLASS).attr('for', 'non-valid').appendTo('body');
-            var labelFocused = false;
+            const $label       = $('<label>label</label>').addClass(TEST_ELEMENT_CLASS).attr('for', 'non-valid').appendTo('body');
+
+            let labelFocused = false;
 
             $label[0].onfocus = function () {
                 labelFocused = true;
@@ -380,9 +383,9 @@ asyncTest('B238617 - Label with "for" attribute focusing - non-valid "for"', fun
 asyncTest('B238617 - Label with "for" attribute focusing - check no internal flag', function () {
     runAsyncTest(
         function () {
-            var $label             = $('<label>label</label>').addClass(TEST_ELEMENT_CLASS).attr('for', input2.id).appendTo('body');
-            var labelProperties    = dumpProperties($label[0]);
-            var newLabelProperties = [];
+            let $label             = $('<label>label</label>').addClass(TEST_ELEMENT_CLASS).attr('for', input2.id).appendTo('body');
+            let labelProperties    = dumpProperties($label[0]);
+            let newLabelProperties = [];
 
             focusBlurSandbox.focus($label[0], function () {
                 $label.remove();
@@ -410,9 +413,9 @@ asyncTest('B238617 - Label with "for" attribute focusing - check no internal fla
 asyncTest('B238617 - Label with "for" attribute focusing - non-valid "for", check no internal flag', function () {
     runAsyncTest(
         function () {
-            var $label             = $('<label>label</label>').addClass(TEST_ELEMENT_CLASS).attr('for', 'non-valid').appendTo('body');
-            var labelProperties    = dumpProperties($label[0]);
-            var newLabelProperties = [];
+            let $label             = $('<label>label</label>').addClass(TEST_ELEMENT_CLASS).attr('for', 'non-valid').appendTo('body');
+            let labelProperties    = dumpProperties($label[0]);
+            let newLabelProperties = [];
 
             focusBlurSandbox.focus($label[0], function () {
                 $label.remove();
@@ -439,9 +442,10 @@ asyncTest('B238617 - Label with "for" attribute focusing - non-valid "for", chec
 asyncTest('B238599, B239799 - Div with parent with tabindex focusing', function () {
     runAsyncTest(
         function () {
-            var $parentDiv = $('<div></div>').addClass(TEST_ELEMENT_CLASS).attr('tabIndex', '0').appendTo('body');
-            var $input     = $('<input />').addClass(TEST_ELEMENT_CLASS).attr('tabIndex', '').attr('disabled', 'disabled').appendTo($parentDiv);
-            var focused    = false;
+            const $parentDiv = $('<div></div>').addClass(TEST_ELEMENT_CLASS).attr('tabIndex', '0').appendTo('body');
+            const $input     = $('<input />').addClass(TEST_ELEMENT_CLASS).attr('tabIndex', '').attr('disabled', 'disabled').appendTo($parentDiv);
+
+            let focused = false;
 
             $parentDiv[0].onfocus = function () {
                 focused = true;
@@ -466,17 +470,17 @@ asyncTest('B239136 - stack overflow exception when TestCafe dialog opened', func
     //Focus and blur without handlers when document was binded with the useCapture attribute
     runAsyncTest(
         function () {
-            var $div   = $('<div></div>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
-            var $input = $('<input />').addClass(TEST_ELEMENT_CLASS).appendTo($div);
+            const $div   = $('<div></div>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
+            const $input = $('<input />').addClass(TEST_ELEMENT_CLASS).appendTo($div);
 
-            var focusCount = 0;
-            var blurCount  = 0;
+            let focusCount = 0;
+            let blurCount  = 0;
 
-            var focusHandler = function () {
+            const focusHandler = function () {
                 focusCount++;
             };
 
-            var blurHandler = function () {
+            const blurHandler = function () {
                 blurCount++;
             };
 
@@ -503,9 +507,10 @@ asyncTest('B239136 - stack overflow exception when TestCafe dialog opened', func
 
 asyncTest('B239273 - An Input\'s focusout event is not raised after click on a button in Firefox during test running', function () {
     runAsyncTest(function () {
-        var $input        = $('<input>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
-        var $button       = $('<button type="button"></button>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
-        var focusOutCount = 0;
+        const $input        = $('<input>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
+        const $button       = $('<button type="button"></button>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
+
+        let focusOutCount = 0;
 
         $input.focusout(function () {
             focusOutCount++;
@@ -524,9 +529,9 @@ asyncTest('B239273 - An Input\'s focusout event is not raised after click on a b
 
 asyncTest('B251819 - Clicks on checkbox text don\'t change checkbox state during playback', function () {
     runAsyncTest(function () {
-        var $label    = $('<label></label>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
-        var $checkbox = $('<input type="checkbox">').addClass(TEST_ELEMENT_CLASS).appendTo($label);
-        var $span     = $('<span>test</span>').addClass(TEST_ELEMENT_CLASS).appendTo($label);
+        const $label    = $('<label></label>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
+        const $checkbox = $('<input type="checkbox">').addClass(TEST_ELEMENT_CLASS).appendTo($label);
+        const $span     = $('<span>test</span>').addClass(TEST_ELEMENT_CLASS).appendTo($label);
 
         runClickAutomation($span[0], {})
             .then(function () {
@@ -557,9 +562,9 @@ if (!browserUtils.isWebKit) {
 
 asyncTest('B253577 - Focus handlers should be executed synchronously after mousedown', function () {
     runAsyncTest(function () {
-        var mousedownHandled = false;
-        var focusHandled     = false;
-        var timeoutHandled   = false;
+        let mousedownHandled = false;
+        let focusHandled     = false;
+        let timeoutHandled   = false;
 
         $(input2).mousedown(function () {
             mousedownHandled = true;
@@ -611,23 +616,24 @@ asyncTest('B253735 - Blur event is raised twice in IE if element has zero width 
 if (browserUtils.isIE && browserUtils.version < 12) {
     asyncTest('focus method must not have effect if it is called from focus event handler on its second phase (AT_TARGET) in IE', function () {
         runAsyncTest(function () {
-            var $parentDiv  = $('<div tabindex="0"></div>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
-            var $childTable = $('<table><tbody><tr><td></td></tr></tbody></table>').addClass(TEST_ELEMENT_CLASS).appendTo($parentDiv);
-            var startTime   = null;
-            var timeout     = 2000;
-            var focusCount  = 0;
+            const $parentDiv  = $('<div tabindex="0"></div>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
+            const $childTable = $('<table><tbody><tr><td></td></tr></tbody></table>').addClass(TEST_ELEMENT_CLASS).appendTo($parentDiv);
+            const timeout     = 2000;
 
-            var bindFocus = function (element) {
+            let startTime  = null;
+            let focusCount = 0;
+
+            const bindFocus = function (element) {
                 element.addEventListener('focus', function (e) {
                     focusCount++;
 
                     //this code prevent page hanging
                     if (Date.now() - startTime < timeout) {
                         if (document.activeElement !== this) {
-                            var savedActiveElement = document.activeElement;
+                            const savedActiveElement = document.activeElement;
 
                             element.focus();
-                            var activeElementChanged = savedActiveElement !== document.activeElement;
+                            const activeElementChanged = savedActiveElement !== document.activeElement;
 
                             if (e.eventPhase === 2)
                                 ok(!activeElementChanged, 'check that active element was not changed after calling focus() on second event phase');
@@ -662,10 +668,11 @@ if (browserUtils.isIE && browserUtils.version < 12) {
 if (browserUtils.isIE) {
     asyncTest('focus and blur methods must raise events asynchronously and change active element synchronously in IE', function () {
         runAsyncTest(function () {
-            var $input             = $('<input type="text"/>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
-            var focusHandled       = false;
-            var blurHandled        = false;
-            var savedActiveElement = document.activeElement;
+            const $input = $('<input type="text"/>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
+
+            let focusHandled       = false;
+            let blurHandled        = false;
+            let savedActiveElement = document.activeElement;
 
             $input.focus(function () {
                 focusHandled = true;
@@ -706,8 +713,9 @@ if (browserUtils.isIE) {
 
 asyncTest('Change event not raised after press action if element was focused by client script', function () {
     runAsyncTest(function () {
-        var changed         = false;
-        var pressAutomation = new PressAutomation(parseKeySequence('ctrl+a delete').combinations, {});
+        const pressAutomation = new PressAutomation(parseKeySequence('ctrl+a delete').combinations, {});
+
+        let changed = false;
 
         input2.value = 'test';
 
@@ -734,9 +742,9 @@ asyncTest('Change event not raised after press action if element was focused by 
 if (browserUtils.isIE) {
     asyncTest('B254768 - Blur event should be raised after focus event, if element becomes invisible synchronously after focus() method executing', function () {
         runAsyncTest(function () {
-            var focused   = false;
-            var blurred   = false;
-            var lastEvent = void 0;
+            let focused   = false;
+            let blurred   = false;
+            let lastEvent = void 0;
 
             input2.addEventListener('focus', function (e) {
                 focused   = true;
@@ -763,8 +771,8 @@ if (browserUtils.isIE) {
 
 asyncTest('B254775 - Click action on already focused element must not raise focus event even if element was blurred on mousedown in IE', function () {
     runAsyncTest(function () {
-        var focused = false;
-        var blurred = false;
+        let focused = false;
+        let blurred = false;
 
         focusBlurSandbox.focus(input2, function () {
             input2.addEventListener('focus', function () {
@@ -799,7 +807,7 @@ asyncTest('B254775 - Click action on already focused element must not raise focu
 if (browserUtils.isIE) {
     asyncTest('incorrect handlers queue bug (setTimeout)', function () {
         runAsyncTest(function () {
-            var state = [];
+            const state = [];
 
             input1.addEventListener('focus', function () {
                 state.push('3');
@@ -839,8 +847,8 @@ if (browserUtils.isIE) {
 
     asyncTest('incorrect handlers queue bug (setInterval)', function () {
         runAsyncTest(function () {
-            var intervalFunctionCalled = false;
-            var focusRaised            = false;
+            let intervalFunctionCalled = false;
+            let focusRaised            = false;
 
             window.setInterval(function () {
                 intervalFunctionCalled = true;
@@ -873,7 +881,7 @@ if (browserUtils.isIE) {
 
 asyncTest('change event must not be raised if element value was changed by blur handler (T110822)', function () {
     runAsyncTest(function () {
-        var changed = false;
+        let changed = false;
 
         input1.onblur   = function () {
             input1.value += 'test';
@@ -896,15 +904,15 @@ asyncTest('T229732 - Focus and blur events bubble but should not during test run
     runAsyncTest(function () {
         expect(4);
 
-        var $div   = $('<div tabIndex="0"></div>').appendTo('body');
-        var $input = $('<input type="text"/>').appendTo($div);
-        var div    = $div[0];
-        var input  = $input[0];
+        const $div   = $('<div tabIndex="0"></div>').appendTo('body');
+        const $input = $('<input type="text"/>').appendTo($div);
+        const div    = $div[0];
+        const input  = $input[0];
 
-        var divFocusRaised   = false;
-        var divBlurRaised    = false;
-        var inputFocusRaised = false;
-        var inputBlurRaised  = false;
+        let divFocusRaised   = false;
+        let divBlurRaised    = false;
+        let inputFocusRaised = false;
+        let inputBlurRaised  = false;
 
         div.addEventListener('focus', function () {
             divFocusRaised = true;
@@ -940,7 +948,7 @@ asyncTest('T229732 - Focus and blur events bubble but should not during test run
 asyncTest('T231934 - Native focus method raises event handlers twice in IE in recorder - TEST RUNNING', function () {
     runAsyncTest(
         function () {
-            var focusCount = 0;
+            let focusCount = 0;
 
             input2.addEventListener('focus', function () {
                 focusCount++;

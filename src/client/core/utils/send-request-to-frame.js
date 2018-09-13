@@ -1,7 +1,7 @@
 import hammerhead from '../deps/hammerhead';
 
-var Promise        = hammerhead.Promise;
-var messageSandbox = hammerhead.eventSandbox.message;
+const Promise        = hammerhead.Promise;
+const messageSandbox = hammerhead.eventSandbox.message;
 
 export default function sendRequestToFrame (msg, responseCmd, receiverWindow) {
     return new Promise(resolve => {

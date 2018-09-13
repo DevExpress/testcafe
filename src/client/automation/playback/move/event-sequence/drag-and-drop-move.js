@@ -2,7 +2,7 @@ import hammerhead from '../../../deps/hammerhead';
 import { domUtils } from '../../../deps/testcafe-core';
 import MoveEventSequenceBase from './base';
 
-var eventSimulator = hammerhead.eventSandbox.eventSimulator;
+const eventSimulator = hammerhead.eventSandbox.eventSimulator;
 
 class DragAndDropMoveEventSequence extends MoveEventSequenceBase {
     setup () {
@@ -14,7 +14,7 @@ class DragAndDropMoveEventSequence extends MoveEventSequenceBase {
     dragAndDrop (dragElement, currentElement, prevElement, options) {
         eventSimulator.drag(dragElement, options);
 
-        var currentElementChanged = currentElement !== prevElement;
+        const currentElementChanged = currentElement !== prevElement;
 
         if (currentElementChanged) {
             if (domUtils.isElementInDocument(currentElement)) {

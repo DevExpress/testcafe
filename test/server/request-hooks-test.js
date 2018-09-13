@@ -114,7 +114,7 @@ describe('RequestLogger', () => {
         logger.onRequest(requestEventMock2);
         logger.onResponse(responseEventMock2);
 
-        var storedResolveContextTestRunFn = testRunTracker.resolveContextTestRun;
+        const storedResolveContextTestRunFn = testRunTracker.resolveContextTestRun;
 
         testRunTracker.resolveContextTestRun = () => {
             return {

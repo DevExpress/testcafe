@@ -2,7 +2,7 @@ import hammerhead from '../../deps/hammerhead';
 
 // NOTE: expose Promise to the function code
 /* eslint-disable no-unused-vars */
-var Promise = hammerhead.Promise;
+const Promise = hammerhead.Promise;
 /* eslint-enable no-unused-vars */
 
 // NOTE: evalFunction is isolated into a separate module to

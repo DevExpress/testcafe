@@ -1,4 +1,4 @@
-var ScriptExecutionBarrier = window.getTestCafeModule('ScriptExecutionBarrier');
+const ScriptExecutionBarrier = window.getTestCafeModule('ScriptExecutionBarrier');
 
 QUnit.testStart(function () {
     window.scriptExecuted     = false;
@@ -9,9 +9,9 @@ QUnit.testStart(function () {
 $(document).ready(function () {
     module('script execution barrier', function () {
         asyncTest('should wait while added script is loaded and executed', function () {
-            var barrier       = new ScriptExecutionBarrier();
-            var script        = document.createElement('script');
-            var scriptContent = encodeURIComponent('window.scriptExecuted=true;');
+            const barrier       = new ScriptExecutionBarrier();
+            const script        = document.createElement('script');
+            const scriptContent = encodeURIComponent('window.scriptExecuted=true;');
 
             script.src = '/xhr-test/500?expectedResponse=' + scriptContent;
             document.body.appendChild(script);
@@ -28,9 +28,9 @@ $(document).ready(function () {
         });
 
         asyncTest('should not wait if the script is loading too much time', function () {
-            var barrier       = new ScriptExecutionBarrier();
-            var script        = document.createElement('script');
-            var scriptContent = encodeURIComponent('window.scriptExecuted=true');
+            const barrier       = new ScriptExecutionBarrier();
+            const script        = document.createElement('script');
+            const scriptContent = encodeURIComponent('window.scriptExecuted=true');
 
             script.src           = '/xhr-test/500?expectedResponse=' + scriptContent;
             script.style.display = 'none';
@@ -49,10 +49,10 @@ $(document).ready(function () {
         });
 
         asyncTest("should not wait if the script can't be loaded or it's without src", function () {
-            var barrier              = new ScriptExecutionBarrier();
-            var scriptWithInvalidSrc = document.createElement('script');
-            var scriptWithoutSrc     = document.createElement('script');
-            var scriptWithEmptySrc   = document.createElement('script');
+            const barrier              = new ScriptExecutionBarrier();
+            const scriptWithInvalidSrc = document.createElement('script');
+            const scriptWithoutSrc     = document.createElement('script');
+            const scriptWithEmptySrc   = document.createElement('script');
 
             scriptWithInvalidSrc.id = 'scriptWithInvalidSrc';
             scriptWithoutSrc.id     = 'scriptWithoutSrc';
@@ -65,7 +65,7 @@ $(document).ready(function () {
             document.body.appendChild(scriptWithoutSrc);
             document.body.appendChild(scriptWithEmptySrc);
 
-            var startTime = Date.now();
+            const startTime = Date.now();
 
             barrier.SCRIPT_LOADING_TIMEOUT = 2000;
             barrier.BARRIER_TIMEOUT        = 2000;
@@ -73,7 +73,7 @@ $(document).ready(function () {
             barrier
                 .wait()
                 .then(function () {
-                    var waitingTime = Date.now() - startTime;
+                    const waitingTime = Date.now() - startTime;
 
                     ok(waitingTime < 500, 'waiting time is ' + waitingTime);
                     start();
@@ -81,14 +81,14 @@ $(document).ready(function () {
         });
 
         asyncTest('should not wait if scripts are added recursively', function () {
-            var barrier = new ScriptExecutionBarrier();
+            const barrier = new ScriptExecutionBarrier();
 
-            var scriptCounter = 0;
+            let scriptCounter = 0;
 
             window.stopAppending      = false;
             window.appendCustomScript = function () {
-                var script        = document.createElement('script');
-                var scriptContent = encodeURIComponent('if(!window.stopAppending)window.appendCustomScript()');
+                const script        = document.createElement('script');
+                const scriptContent = encodeURIComponent('if(!window.stopAppending)window.appendCustomScript()');
 
                 // HACK: we should request different URLs to avoid caching of response in IE 10
                 script.src = '/xhr-test/' + scriptCounter + '?expectedResponse=' + scriptContent;

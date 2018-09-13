@@ -8,7 +8,7 @@ export default class FixtureHookController {
 
     static _ensureFixtureMapItem (fixtureMap, fixture) {
         if (!fixtureMap.has(fixture)) {
-            var item = {
+            const item = {
                 started:                  false,
                 runningFixtureBeforeHook: false,
                 fixtureBeforeHookErr:     null,
@@ -22,12 +22,12 @@ export default class FixtureHookController {
 
     static _createFixtureMap (tests, browserConnectionCount) {
         return tests.reduce((fixtureMap, test) => {
-            var fixture = test.fixture;
+            const fixture = test.fixture;
 
             if (!test.skip) {
                 FixtureHookController._ensureFixtureMapItem(fixtureMap, fixture);
 
-                var item = fixtureMap.get(fixture);
+                const item = fixtureMap.get(fixture);
 
                 item.pendingTestRunCount += browserConnectionCount;
             }
@@ -41,17 +41,17 @@ export default class FixtureHookController {
     }
 
     isTestBlocked (test) {
-        var item = this._getFixtureMapItem(test);
+        const item = this._getFixtureMapItem(test);
 
         return item && item.runningFixtureBeforeHook;
     }
 
     async runFixtureBeforeHookIfNecessary (testRun) {
-        var fixture = testRun.test.fixture;
-        var item    = this._getFixtureMapItem(testRun.test);
+        const fixture = testRun.test.fixture;
+        const item    = this._getFixtureMapItem(testRun.test);
 
         if (item) {
-            var shouldRunBeforeHook = !item.started && fixture.beforeFn;
+            const shouldRunBeforeHook = !item.started && fixture.beforeFn;
 
             item.started = true;
 
@@ -84,8 +84,8 @@ export default class FixtureHookController {
     }
 
     async runFixtureAfterHookIfNecessary (testRun) {
-        var fixture = testRun.test.fixture;
-        var item    = this._getFixtureMapItem(testRun.test);
+        const fixture = testRun.test.fixture;
+        const item    = this._getFixtureMapItem(testRun.test);
 
         if (item) {
             item.pendingTestRunCount--;

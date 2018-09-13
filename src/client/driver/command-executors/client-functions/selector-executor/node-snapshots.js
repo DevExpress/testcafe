@@ -7,7 +7,7 @@ import {
 
 
 // Node
-var nodeSnapshotPropertyInitializers = {
+const nodeSnapshotPropertyInitializers = {
     // eslint-disable-next-line no-restricted-properties
     textContent:    node => node.textContent,
     childNodeCount: node => node.childNodes.length,
@@ -15,17 +15,17 @@ var nodeSnapshotPropertyInitializers = {
 
     childElementCount: node => {
         /*eslint-disable no-restricted-properties*/
-        var children = node.children;
+        const children = node.children;
 
         if (children)
             return children.length;
 
         // NOTE: IE doesn't have `children` for non-element nodes =/
-        var childElementCount = 0;
-        var childNodeCount    = node.childNodes.length;
+        let childElementCount = 0;
+        const childNodeCount    = node.childNodes.length;
         /*eslint-enable no-restricted-properties*/
 
-        for (var i = 0; i < childNodeCount; i++) {
+        for (let i = 0; i < childNodeCount; i++) {
             if (node.childNodes[i].nodeType === 1)
                 childElementCount++;
         }
@@ -44,9 +44,9 @@ export class NodeSnapshot {
     }
 
     _initializeProperties (node, properties, initializers) {
-        for (var i = 0; i < properties.length; i++) {
-            var property    = properties[i];
-            var initializer = initializers[property];
+        for (let i = 0; i < properties.length; i++) {
+            const property    = properties[i];
+            const initializer = initializers[property];
 
             this[property] = initializer ? initializer(node) : node[property];
         }
@@ -55,17 +55,17 @@ export class NodeSnapshot {
 
 
 // Element
-var elementSnapshotPropertyInitializers = {
+const elementSnapshotPropertyInitializers = {
     tagName: element => element.tagName.toLowerCase(),
     visible: positionUtils.isElementVisible,
     focused: element => domUtils.getActiveElement() === element,
 
     attributes: element => {
         // eslint-disable-next-line no-restricted-properties
-        var attrs  = element.attributes;
-        var result = {};
+        const attrs  = element.attributes;
+        const result = {};
 
-        for (var i = attrs.length - 1; i >= 0; i--)
+        for (let i = attrs.length - 1; i >= 0; i--)
             // eslint-disable-next-line no-restricted-properties
             result[attrs[i].name] = attrs[i].value;
 
@@ -73,7 +73,7 @@ var elementSnapshotPropertyInitializers = {
     },
 
     boundingClientRect: element => {
-        var rect = element.getBoundingClientRect();
+        const rect = element.getBoundingClientRect();
 
         return {
             left:   rect.left,
@@ -86,7 +86,7 @@ var elementSnapshotPropertyInitializers = {
     },
 
     classNames: element => {
-        var className = element.className;
+        let className = element.className;
 
         className = typeof className.animVal === 'string' ? className.animVal : className;
 
@@ -96,11 +96,11 @@ var elementSnapshotPropertyInitializers = {
     },
 
     style: element => {
-        var result   = {};
-        var computed = window.getComputedStyle(element);
+        const result   = {};
+        const computed = window.getComputedStyle(element);
 
-        for (var i = 0; i < computed.length; i++) {
-            var prop = computed[i];
+        for (let i = 0; i < computed.length; i++) {
+            const prop = computed[i];
 
             result[prop] = computed[prop];
         }

@@ -9,7 +9,7 @@ const RENAMED_DEPENDENCIES_MAP = new Map([['testcafe', APIBasedTestFileCompilerB
 export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompilerBase {
     static _getTypescriptOptions () {
         // NOTE: lazy load the compiler
-        var ts = require('typescript');
+        const ts = require('typescript');
 
         return {
             experimentalDecorators:  true,
@@ -30,13 +30,13 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
 
     static _reportErrors (diagnostics) {
         // NOTE: lazy load the compiler
-        var ts     = require('typescript');
-        var errMsg = 'TypeScript compilation failed.\n';
+        const ts     = require('typescript');
+        let errMsg = 'TypeScript compilation failed.\n';
 
         diagnostics.forEach(d => {
-            var file                = d.file;
-            var { line, character } = file.getLineAndCharacterOfPosition(d.start);
-            var message             = ts.flattenDiagnosticMessageText(d.messageText, '\n');
+            const file                = d.file;
+            const { line, character } = file.getLineAndCharacterOfPosition(d.start);
+            const message             = ts.flattenDiagnosticMessageText(d.messageText, '\n');
 
             errMsg += `${file.fileName} (${line + 1}, ${character + 1}): ${message}\n`;
         });
@@ -55,21 +55,21 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
 
     _compileCode (code, filename) {
         // NOTE: lazy load the compiler
-        var ts = require('typescript');
+        const ts = require('typescript');
 
-        var normalizedFilename = TypeScriptTestFileCompiler._normalizeFilename(filename);
+        const normalizedFilename = TypeScriptTestFileCompiler._normalizeFilename(filename);
 
         if (this.cache[normalizedFilename])
             return this.cache[normalizedFilename];
 
-        var opts    = TypeScriptTestFileCompiler._getTypescriptOptions();
-        var program = ts.createProgram([filename], opts);
+        const opts    = TypeScriptTestFileCompiler._getTypescriptOptions();
+        const program = ts.createProgram([filename], opts);
 
         program.getSourceFiles().forEach(sourceFile => {
             sourceFile.renamedDependencies = RENAMED_DEPENDENCIES_MAP;
         });
 
-        var diagnostics = ts.getPreEmitDiagnostics(program);
+        const diagnostics = ts.getPreEmitDiagnostics(program);
 
         if (diagnostics.length)
             TypeScriptTestFileCompiler._reportErrors(diagnostics);
@@ -78,7 +78,7 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
         // <program> will be compiled. <program> contains a file specified in createProgram() plus all its dependencies.
         // This mode is much faster than compiling files one-by-one, and it is used in the tsc CLI compiler.
         program.emit(void 0, (outputName, result, writeBOM, onError, sources) => {
-            var sourcePath = TypeScriptTestFileCompiler._normalizeFilename(sources[0].fileName);
+            const sourcePath = TypeScriptTestFileCompiler._normalizeFilename(sources[0].fileName);
 
             this.cache[sourcePath] = result;
         });

@@ -14,12 +14,12 @@
 </head>
 <body>
 <script type="text/javascript">
-    var hammerhead = window['%hammerhead%'];
-    var settings = hammerhead.get('./settings');
+    const hammerhead = window['%hammerhead%'];
+    const settings = hammerhead.get('./settings');
 
     settings.get().crossDomainProxyPort = 2000;
 
-    var testCafeCore = window['%testCafeCore%'];
+    const testCafeCore = window['%testCafeCore%'];
 
     (function (isIFrameWindowInDOM, window, JSON) {
         window.addEventListener('message', function (event) {

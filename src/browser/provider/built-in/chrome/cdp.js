@@ -4,8 +4,8 @@ import { GET_WINDOW_DIMENSIONS_INFO_SCRIPT } from '../../utils/client-functions'
 
 
 async function getActiveTab (cdpPort, browserId) {
-    var tabs = await remoteChrome.listTabs({ port: cdpPort });
-    var tab  = tabs.filter(t => t.type === 'page' && t.url.indexOf(browserId) > -1)[0];
+    const tabs = await remoteChrome.listTabs({ port: cdpPort });
+    const tab  = tabs.filter(t => t.type === 'page' && t.url.indexOf(browserId) > -1)[0];
 
     return tab;
 }
@@ -23,7 +23,7 @@ async function setEmulationBounds ({ client, config, viewportSize, emulatedDevic
 }
 
 async function setEmulation (runtimeInfo) {
-    var { client, config } = runtimeInfo;
+    const { client, config } = runtimeInfo;
 
     if (config.userAgent !== void 0)
         await client.Network.setUserAgentOverride({ userAgent: config.userAgent });
@@ -46,15 +46,18 @@ async function setEmulation (runtimeInfo) {
 }
 
 export async function createClient (runtimeInfo) {
-    var { browserId, config, cdpPort } = runtimeInfo;
+    const { browserId, config, cdpPort } = runtimeInfo;
+
+    let tab    = null;
+    let client = null;
 
     try {
-        var tab = await getActiveTab(cdpPort, browserId);
+        tab = await getActiveTab(cdpPort, browserId);
 
         if (!tab)
             return;
 
-        var client = await remoteChrome({ target: tab, port: cdpPort });
+        client = await remoteChrome({ target: tab, port: cdpPort });
     }
     catch (e) {
         return;
@@ -67,7 +70,7 @@ export async function createClient (runtimeInfo) {
     await client.Network.enable();
     await client.Runtime.enable();
 
-    var devicePixelRatioQueryResult = await client.Runtime.evaluate({ expression: 'window.devicePixelRatio' });
+    const devicePixelRatioQueryResult = await client.Runtime.evaluate({ expression: 'window.devicePixelRatio' });
 
     runtimeInfo.originalDevicePixelRatio = devicePixelRatioQueryResult.result.value;
     runtimeInfo.emulatedDevicePixelRatio = config.scaleFactor || runtimeInfo.originalDevicePixelRatio;
@@ -113,12 +116,12 @@ export async function takeScreenshot (path, { client }) {
 }
 
 export async function resizeWindow (newDimensions, runtimeInfo) {
-    var { browserId, config, viewportSize, providerMethods } = runtimeInfo;
+    const { browserId, config, viewportSize, providerMethods } = runtimeInfo;
 
-    var currentWidth  = viewportSize.width;
-    var currentHeight = viewportSize.height;
-    var newWidth      = newDimensions.width || currentWidth;
-    var newHeight     = newDimensions.height || currentHeight;
+    const currentWidth  = viewportSize.width;
+    const currentHeight = viewportSize.height;
+    const newWidth      = newDimensions.width || currentWidth;
+    const newHeight     = newDimensions.height || currentHeight;
 
     if (!config.headless)
         await providerMethods.resizeLocalBrowserWindow(browserId, newWidth, newHeight, currentWidth, currentHeight);

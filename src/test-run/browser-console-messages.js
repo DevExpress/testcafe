@@ -38,8 +38,8 @@ export default class BrowserConsoleMessages extends Assignable {
     }
 
     getCopy () {
-        var copy = {};
-        var properties = this._getAssignableProperties();
+        const copy = {};
+        const properties = this._getAssignableProperties();
 
         for (const property of properties)
             copy[property.name] = this[property.name].slice();

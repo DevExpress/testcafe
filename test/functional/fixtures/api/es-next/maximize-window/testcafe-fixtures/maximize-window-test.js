@@ -30,7 +30,7 @@ fixture `Maximize Window`
 test('Maximize window', async t => {
     await t.maximizeWindow();
 
-    var dimensions = await getWindowDimensionsInfo();
+    const dimensions = await getWindowDimensionsInfo();
 
     expect(dimensions.outerWidth).to.be.at.least(dimensions.availableWidth);
     expect(dimensions.outerHeight).to.be.at.least(dimensions.availableHeight);

@@ -6,18 +6,18 @@ import { MoveOptions } from '../../../../test-run/commands/options';
 import { getDefaultAutomationOffsets } from '../../utils/offsets';
 import AutomationSettings from '../../settings';
 
-var Promise = hammerhead.Promise;
+const Promise = hammerhead.Promise;
 
-var browserUtils     = hammerhead.utils.browser;
-var featureDetection = hammerhead.utils.featureDetection;
-var eventSimulator   = hammerhead.eventSandbox.eventSimulator;
-var focusBlurSandbox = hammerhead.eventSandbox.focusBlur;
+const browserUtils     = hammerhead.utils.browser;
+const featureDetection = hammerhead.utils.featureDetection;
+const eventSimulator   = hammerhead.eventSandbox.eventSimulator;
+const focusBlurSandbox = hammerhead.eventSandbox.focusBlur;
 
-var domUtils   = testCafeCore.domUtils;
-var styleUtils = testCafeCore.styleUtils;
-var delay      = testCafeCore.delay;
+const domUtils   = testCafeCore.domUtils;
+const styleUtils = testCafeCore.styleUtils;
+const delay      = testCafeCore.delay;
 
-var selectElementUI = testCafeUI.selectElement;
+const selectElementUI = testCafeUI.selectElement;
 
 const FOCUS_DELAY = featureDetection.isTouchDevice ? 0 : 160;
 
@@ -40,14 +40,14 @@ export default class SelectChildClickAutomation {
         this.clickCausesChange  = false;
 
         if (this.parentSelect) {
-            var isOption      = domUtils.isOptionElement(this.element);
-            var selectedIndex = this.parentSelect.selectedIndex;
+            const isOption      = domUtils.isOptionElement(this.element);
+            const selectedIndex = this.parentSelect.selectedIndex;
 
             this.childIndex = isOption ? domUtils.getElementIndexInParent(this.parentSelect, this.element) :
                 domUtils.getElementIndexInParent(this.parentSelect, this.element);
 
-            var parentOptGroup = domUtils.isOptionGroupElement(this.element.parentNode) ? this.element.parentNode : null;
-            var isDisabled     = this.element.disabled || parentOptGroup && parentOptGroup.disabled;
+            const parentOptGroup = domUtils.isOptionGroupElement(this.element.parentNode) ? this.element.parentNode : null;
+            const isDisabled     = this.element.disabled || parentOptGroup && parentOptGroup.disabled;
 
             this.clickCausesChange = isOption && !isDisabled && this.childIndex !== selectedIndex;
         }
@@ -59,8 +59,8 @@ export default class SelectChildClickAutomation {
     }
 
     _calculateEventArguments () {
-        var childElement     = this.optionListExpanded ? selectElementUI.getEmulatedChildElement(this.element) : this.element;
-        var parentSelectSize = styleUtils.getSelectElementSize(this.parentSelect) > 1;
+        const childElement     = this.optionListExpanded ? selectElementUI.getEmulatedChildElement(this.element) : this.element;
+        const parentSelectSize = styleUtils.getSelectElementSize(this.parentSelect) > 1;
 
         return {
             options: this.modifiers,
@@ -69,14 +69,14 @@ export default class SelectChildClickAutomation {
     }
 
     _getMoveArguments () {
-        var element = null;
-        var offsetX = null;
-        var offsetY = null;
+        let element = null;
+        let offsetX = null;
+        let offsetY = null;
 
         if (this.optionListExpanded) {
             element = selectElementUI.getEmulatedChildElement(this.element);
 
-            var moveActionOffsets = getDefaultAutomationOffsets(element);
+            const moveActionOffsets = getDefaultAutomationOffsets(element);
 
             offsetX = moveActionOffsets.offsetX;
             offsetY = moveActionOffsets.offsetY;
@@ -84,7 +84,7 @@ export default class SelectChildClickAutomation {
         else {
             element = document.documentElement;
 
-            var elementCenter = selectElementUI.getSelectChildCenter(this.element);
+            const elementCenter = selectElementUI.getSelectChildCenter(this.element);
 
             offsetX = elementCenter.x;
             offsetY = elementCenter.y;
@@ -94,7 +94,7 @@ export default class SelectChildClickAutomation {
     }
 
     _move ({ element, offsetX, offsetY, speed }) {
-        var moveOptions = new MoveOptions({
+        const moveOptions = new MoveOptions({
             offsetX,
             offsetY,
             speed,
@@ -102,7 +102,7 @@ export default class SelectChildClickAutomation {
             modifiers: this.modifiers
         }, false);
 
-        var moveAutomation = new MoveAutomation(element, moveOptions);
+        const moveAutomation = new MoveAutomation(element, moveOptions);
 
         return moveAutomation
             .run()
@@ -146,17 +146,17 @@ export default class SelectChildClickAutomation {
     }
 
     _mouseup () {
-        var elementForMouseupEvent = browserUtils.isIE ? this.parentSelect : this.eventsArgs.element;
+        const elementForMouseupEvent = browserUtils.isIE ? this.parentSelect : this.eventsArgs.element;
 
         eventSimulator.mouseup(elementForMouseupEvent, this.eventsArgs.options);
 
         if (browserUtils.isIE && this.clickCausesChange)
             this.parentSelect.selectedIndex = this.childIndex;
 
-        var simulateInputEventOnValueChange = browserUtils.isFirefox || browserUtils.isSafari ||
+        const simulateInputEventOnValueChange = browserUtils.isFirefox || browserUtils.isSafari ||
                                                browserUtils.isChrome && browserUtils.version >= 53;
 
-        var simulateChangeEventOnValueChange = simulateInputEventOnValueChange || browserUtils.isIE;
+        const simulateChangeEventOnValueChange = simulateInputEventOnValueChange || browserUtils.isIE;
 
         if (simulateInputEventOnValueChange && this.clickCausesChange)
             eventSimulator.input(this.parentSelect);
@@ -182,7 +182,7 @@ export default class SelectChildClickAutomation {
         if (!this.optionListExpanded)
             selectElementUI.scrollOptionListByChild(this.element);
 
-        var moveArguments = this._getMoveArguments();
+        const moveArguments = this._getMoveArguments();
 
         this.eventsArgs = this._calculateEventArguments();
 

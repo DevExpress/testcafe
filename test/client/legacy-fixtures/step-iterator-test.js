@@ -1,18 +1,18 @@
-var testCafeCore = window.getTestCafeModule('testCafeCore');
-var eventUtils   = testCafeCore.get('./utils/event');
+const testCafeCore = window.getTestCafeModule('testCafeCore');
+const eventUtils   = testCafeCore.get('./utils/event');
 
-var testCafeLegacyRunner = window.getTestCafeModule('testCafeLegacyRunner');
-var COMMAND              = testCafeLegacyRunner.get('../test-run/command');
-var ERROR_TYPE           = testCafeLegacyRunner.get('../test-run-error/type');
-var StepIterator         = testCafeLegacyRunner.get('./step-iterator');
-var SETTINGS             = testCafeLegacyRunner.get('./settings').get();
+const testCafeLegacyRunner = window.getTestCafeModule('testCafeLegacyRunner');
+const COMMAND              = testCafeLegacyRunner.get('../test-run/command');
+const ERROR_TYPE           = testCafeLegacyRunner.get('../test-run-error/type');
+const StepIterator         = testCafeLegacyRunner.get('./step-iterator');
+const SETTINGS             = testCafeLegacyRunner.get('./settings').get();
 
-var stepIterator            = null;
-var nextStep                = 0;
-var stepsSharedData         = null;
-var states                  = [];
-var onError                 = null;
-var onStepIteratorCompleted = null;
+let stepIterator            = null;
+let nextStep                = 0;
+let stepsSharedData         = null;
+let states                  = [];
+let onError                 = null;
+let onStepIteratorCompleted = null;
 
 QUnit.testStart(function () {
     stepIterator            = new StepIterator();
@@ -58,9 +58,9 @@ $(document).ready(function () {
 
         stepIterator.setGlobalWaitFor();
 
-        var stepNames = ['0', '1', '2', '3', '4'];
+        const stepNames = ['0', '1', '2', '3', '4'];
 
-        var steps = [
+        const steps = [
             function () {
                 strictEqual(SETTINGS.CURRENT_TEST_STEP_NAME, '0');
 
@@ -114,7 +114,7 @@ $(document).ready(function () {
 
                 states.push('step4');
 
-                var runArgumentIteratorEmulator = function (items, actionRunner, callback) {
+                const runArgumentIteratorEmulator = function (items, actionRunner, callback) {
                     actionRunner(items, callback);
                 };
 
@@ -127,15 +127,15 @@ $(document).ready(function () {
             }
         ];
 
-        var stepSetup = function () {
+        const stepSetup = function () {
             states.push('step' + SETTINGS.CURRENT_TEST_STEP_NAME + '_setup');
         };
 
-        var stepDone = function () {
+        const stepDone = function () {
             states.push('step' + SETTINGS.CURRENT_TEST_STEP_NAME + '_done');
         };
 
-        var expectedStates = [
+        const expectedStates = [
             COMMAND.getStepsSharedData,
             COMMAND.setNextStep,
             'step0_setup',
@@ -192,9 +192,9 @@ $(document).ready(function () {
         nextStep        = 0;
         stepsSharedData = null;
 
-        var stepNames = ['0', '1'];
+        const stepNames = ['0', '1'];
 
-        var steps = [
+        const steps = [
             function () {
                 states.push('step0');
                 stepIterator.asyncAction(function (callback) {
@@ -216,11 +216,11 @@ $(document).ready(function () {
             }
         ];
 
-        var stepSetup = function () {
+        const stepSetup = function () {
             states.push('step' + SETTINGS.CURRENT_TEST_STEP_NAME + '_setup');
         };
 
-        var stepDone = function () {
+        const stepDone = function () {
             states.push('step' + SETTINGS.CURRENT_TEST_STEP_NAME + '_done');
         };
 
@@ -229,7 +229,7 @@ $(document).ready(function () {
             callback();
         }, 1000);
 
-        var expectedStates = [
+        const expectedStates = [
             COMMAND.getStepsSharedData,
             COMMAND.setNextStep,
             'step0_pre_setup',
@@ -262,9 +262,9 @@ $(document).ready(function () {
         nextStep        = 0;
         stepsSharedData = null;
 
-        var stepNames = ['0', '1'];
+        const stepNames = ['0', '1'];
 
-        var steps = [
+        const steps = [
             function () {
                 states.push('step0');
                 stepIterator.asyncAction(function (callback) {
@@ -276,11 +276,11 @@ $(document).ready(function () {
             }
         ];
 
-        var stepSetup = function () {
+        const stepSetup = function () {
             states.push('step' + SETTINGS.CURRENT_TEST_STEP_NAME + '_setup');
         };
 
-        var stepDone = function () {
+        const stepDone = function () {
             states.push('step' + SETTINGS.CURRENT_TEST_STEP_NAME + '_done');
         };
 
@@ -288,7 +288,7 @@ $(document).ready(function () {
             states.push('step' + SETTINGS.CURRENT_TEST_STEP_NAME + '_pre_setup');
         }, 1000);
 
-        var expectedStates = [
+        const expectedStates = [
             COMMAND.getStepsSharedData,
             COMMAND.setNextStep,
             'step0_pre_setup',
@@ -310,8 +310,9 @@ $(document).ready(function () {
 
     module('Regression');
     test('T162970 - Delays between steps are very long on the github.com page', function () {
-        var $a          = $('<a href="http://test.org">Link</a>').appendTo('body');
-        var clickRaised = false;
+        const $a          = $('<a href="http://test.org">Link</a>').appendTo('body');
+
+        let clickRaised = false;
 
         stepIterator._setupUnloadHandlers();
 
@@ -330,9 +331,9 @@ $(document).ready(function () {
     });
 
     asyncTest('T226191 - The "Maximum call stack size exceeded" exception is raised when put an unserializable object to the shared data', function () {
-        var stepNames = ['0'];
+        const stepNames = ['0'];
 
-        var steps = [
+        const steps = [
             function () {
                 states.push('step0');
                 this.body = $('body');
@@ -345,7 +346,7 @@ $(document).ready(function () {
             }
         ];
 
-        var expectedStates = [
+        const expectedStates = [
             COMMAND.getStepsSharedData,
             COMMAND.setNextStep,
             'step0',

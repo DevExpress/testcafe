@@ -55,9 +55,9 @@ export default class ChildDriverLink {
     }
 
     _waitForCommandResult () {
-        var onMessage = null;
+        let onMessage = null;
 
-        var waitForResultMessage = () => new Promise(resolve => {
+        const waitForResultMessage = () => new Promise(resolve => {
             onMessage = e => {
                 if (e.message.type === MESSAGE_TYPE.commandExecuted)
                     resolve(e.message.driverStatus);
@@ -77,7 +77,7 @@ export default class ChildDriverLink {
     }
 
     confirmConnectionEstablished (requestMsgId) {
-        var msg = new ConfirmationMessage(requestMsgId, { id: this.driverId });
+        const msg = new ConfirmationMessage(requestMsgId, { id: this.driverId });
 
         eventSandbox.message.sendServiceMsg(msg, this.driverWindow);
     }
@@ -88,7 +88,7 @@ export default class ChildDriverLink {
         return this
             ._ensureIframe()
             .then(() => {
-                var msg = new ExecuteCommandMessage(command, testSpeed);
+                const msg = new ExecuteCommandMessage(command, testSpeed);
 
                 return Promise.all([
                     sendMessageToDriver(msg, this.driverWindow, this.iframeAvailabilityTimeout, CurrentIframeIsNotLoadedError),

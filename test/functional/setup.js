@@ -122,7 +122,7 @@ function closeLocalBrowsers () {
 }
 
 before(function () {
-    var mocha = this;
+    const mocha = this;
 
     mocha.timeout(60000);
 

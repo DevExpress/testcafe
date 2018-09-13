@@ -1,19 +1,19 @@
-var errorInEachBrowserContains                = require('../../../../../assertion-helper.js').errorInEachBrowserContains;
-var getNativeDialogNotHandledErrorText        = require('../errors.js').getNativeDialogNotHandledErrorText;
-var getUncaughtErrorInNativeDialogHandlerText = require('../errors.js').getUncaughtErrorInNativeDialogHandlerText;
+const errorInEachBrowserContains                = require('../../../../../assertion-helper.js').errorInEachBrowserContains;
+const getNativeDialogNotHandledErrorText        = require('../errors.js').getNativeDialogNotHandledErrorText;
+const getUncaughtErrorInNativeDialogHandlerText = require('../errors.js').getUncaughtErrorInNativeDialogHandlerText;
 
 
 // NOTE: we set selectorTimeout to a large value in some tests to wait for
 // an iframe to load on the farm (it is fast locally but can take some time on the farm)
-var DEFAULT_SELECTOR_TIMEOUT             = 5000;
-var DEFAULT_RUN_IN_IFRAME_OPTIONS        = { selectorTimeout: DEFAULT_SELECTOR_TIMEOUT };
-var DEFAULT_FAILED_RUN_IN_IFRAME_OPTIONS = {
+const DEFAULT_SELECTOR_TIMEOUT             = 5000;
+const DEFAULT_RUN_IN_IFRAME_OPTIONS        = { selectorTimeout: DEFAULT_SELECTOR_TIMEOUT };
+const DEFAULT_FAILED_RUN_IN_IFRAME_OPTIONS = {
     shouldFail:      true,
     selectorTimeout: DEFAULT_SELECTOR_TIMEOUT
 };
-var pageUrl                              = 'http://localhost:3000/fixtures/api/es-next/native-dialogs-handling/iframe/pages/page-with-iframe.html';
-var iframeUrl                            = 'http://localhost:3000/fixtures/api/es-next/native-dialogs-handling/iframe/pages/iframe.html';
-var pageLoadingUrl                       = 'http://localhost:3000/fixtures/api/es-next/native-dialogs-handling/iframe/pages/page-load.html';
+const pageUrl                              = 'http://localhost:3000/fixtures/api/es-next/native-dialogs-handling/iframe/pages/page-with-iframe.html';
+const iframeUrl                            = 'http://localhost:3000/fixtures/api/es-next/native-dialogs-handling/iframe/pages/iframe.html';
+const pageLoadingUrl                       = 'http://localhost:3000/fixtures/api/es-next/native-dialogs-handling/iframe/pages/page-load.html';
 
 
 describe('Native dialogs handling in iframe', function () {

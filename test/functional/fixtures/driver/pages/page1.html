@@ -9,17 +9,19 @@
 <div id="btn1" style="width:100px; height: 50px;"></div>
 
 <script>
-    document.getElementById('link').addEventListener('click', function () {
-        window.setTimeout(function () {
-            window.location = 'index.html?delay=2000';
-        }, 900);
-    });
+    {
+        document.getElementById('link').addEventListener('click', function () {
+            window.setTimeout(function () {
+                window.location = 'index.html?delay=2000';
+            }, 900);
+        });
 
-    var btn1 = document.getElementById('btn1');
+        const btn1 = document.getElementById('btn1');
 
-    btn1.addEventListener('click', function () {
-        btn1.innerHTML = 'Hey ya!';
-    });
+        btn1.addEventListener('click', function () {
+            btn1.innerHTML = 'Hey ya!';
+        });
+    }
 </script>
 </body>
 </html>

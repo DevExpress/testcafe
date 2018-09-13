@@ -4,7 +4,7 @@ fixture `GH-1874`
 test('gh-1874', async t => {
     await t.click('h1');
 
-    var foo = t.eval(() => window.foo);
+    const foo = t.eval(() => window.foo);
 
     await t.expect(foo).eql(42);
 });

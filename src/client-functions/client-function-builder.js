@@ -42,7 +42,7 @@ export default class ClientFunctionBuilder {
             if (typeof options === 'object')
                 options = assign({}, this.options, options);
 
-            var builder = new this.constructor(this.fn, options, {
+            const builder = new this.constructor(this.fn, options, {
                 instantiation: 'with',
                 execution:     this.callsiteNames.execution
             });
@@ -64,15 +64,15 @@ export default class ClientFunctionBuilder {
     }
 
     getFunction () {
-        var builder = this;
+        const builder = this;
 
-        var clientFn = function __$$clientFunction$$ () {
-            var testRun  = builder._getTestRun();
-            var callsite = getCallsiteForMethod(builder.callsiteNames.execution);
-            var args     = [];
+        const clientFn = function __$$clientFunction$$ () {
+            const testRun  = builder._getTestRun();
+            const callsite = getCallsiteForMethod(builder.callsiteNames.execution);
+            const args     = [];
 
             // OPTIMIZATION: don't leak `arguments` object.
-            for (var i = 0; i < arguments.length; i++)
+            for (let i = 0; i < arguments.length; i++)
                 args.push(arguments[i]);
 
             return builder._executeCommand(args, testRun, callsite);
@@ -84,8 +84,8 @@ export default class ClientFunctionBuilder {
     }
 
     getCommand (args) {
-        var encodedArgs         = this.replicator.encode(args);
-        var encodedDependencies = this.replicator.encode(this.getFunctionDependencies());
+        const encodedArgs         = this.replicator.encode(args);
+        const encodedDependencies = this.replicator.encode(this.getFunctionDependencies());
 
         return this._createTestRunCommand(encodedArgs, encodedDependencies);
     }
@@ -119,11 +119,11 @@ export default class ClientFunctionBuilder {
     _executeCommand (args, testRun, callsite) {
         // NOTE: should be kept outside of lazy promise to preserve
         // correct callsite in case of replicator error.
-        var command = this.getCommand(args);
+        const command = this.getCommand(args);
 
         return ReExecutablePromise.fromFn(async () => {
             if (!testRun) {
-                var err = new ClientFunctionAPIError(this.callsiteNames.execution, this.callsiteNames.instantiation, MESSAGE.clientFunctionCantResolveTestRun);
+                const err = new ClientFunctionAPIError(this.callsiteNames.execution, this.callsiteNames.instantiation, MESSAGE.clientFunctionCantResolveTestRun);
 
                 // NOTE: force callsite here, because more likely it will
                 // be impossible to resolve it by method name from a lazy promise.
@@ -132,7 +132,7 @@ export default class ClientFunctionBuilder {
                 throw err;
             }
 
-            var result = await testRun.executeCommand(command, callsite);
+            const result = await testRun.executeCommand(command, callsite);
 
             return this._processResult(result, args);
         });
@@ -147,7 +147,7 @@ export default class ClientFunctionBuilder {
 
         if (!isNullOrUndefined(options.boundTestRun)) {
             // NOTE: `boundTestRun` can be either TestController or TestRun instance.
-            var boundTestRun = options.boundTestRun.testRun || options.boundTestRun;
+            const boundTestRun = options.boundTestRun.testRun || options.boundTestRun;
 
             if (!boundTestRun[testRunMarker])
                 throw new APIError(this.callsiteNames.instantiation, MESSAGE.invalidClientFunctionTestRunBinding);

@@ -1,6 +1,6 @@
-var express = require('express');
+const express = require('express');
 
-var app = express();
+const app = express();
 
 app.all('*', function (req, res) {
     res.end('<html><body><div id="result">Test</div></body></html>');

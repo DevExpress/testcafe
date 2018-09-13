@@ -18,16 +18,16 @@ const SOURCE_MAP_SUPPORT = `${sep}source-map-support${sep}`;
 const INTERNAL = 'internal/';
 
 export default function createStackFilter (limit) {
-    var passedFramesCount = 0;
+    let passedFramesCount = 0;
 
     return function stackFilter (frame) {
         if (passedFramesCount >= limit)
             return false;
 
-        var filename = frame.getFileName();
+        const filename = frame.getFileName();
 
         // NOTE: filter out the internals of node, Babel and TestCafe
-        var pass = filename &&
+        const pass = filename &&
                    filename.indexOf(sep) > -1 &&
                    filename.indexOf(INTERNAL) !== 0 &&
                    filename.indexOf(TESTCAFE_LIB) !== 0 &&

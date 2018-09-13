@@ -2,7 +2,7 @@ import testCafeCore from '../../deps/testcafe-core';
 import DragAutomationBase from './base';
 import getAutomationPoint from '../../utils/get-automation-point';
 
-var styleUtils = testCafeCore.styleUtils;
+const styleUtils = testCafeCore.styleUtils;
 
 
 export default class DragToOffsetAutomation extends DragAutomationBase {
@@ -14,11 +14,11 @@ export default class DragToOffsetAutomation extends DragAutomationBase {
     }
 
     _getDestination () {
-        var startPoint = getAutomationPoint(this.element, this.offsetX, this.offsetY);
-        var maxX       = styleUtils.getWidth(document);
-        var maxY       = styleUtils.getHeight(document);
+        const startPoint = getAutomationPoint(this.element, this.offsetX, this.offsetY);
+        const maxX       = styleUtils.getWidth(document);
+        const maxY       = styleUtils.getHeight(document);
 
-        var endPoint = {
+        let endPoint = {
             x: startPoint.x + this.dragOffsetX,
             y: startPoint.y + this.dragOffsetY
         };
@@ -28,9 +28,9 @@ export default class DragToOffsetAutomation extends DragAutomationBase {
             y: Math.min(Math.max(0, endPoint.y), maxY)
         };
 
-        var element = document.documentElement;
+        const element = document.documentElement;
 
-        var offsets = {
+        const offsets = {
             offsetX: endPoint.x,
             offsetY: endPoint.y
         };

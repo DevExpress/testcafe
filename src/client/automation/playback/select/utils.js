@@ -1,38 +1,38 @@
 import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
 
-var browserUtils = hammerhead.utils.browser;
+const browserUtils = hammerhead.utils.browser;
 
-var domUtils        = testCafeCore.domUtils;
-var positionUtils   = testCafeCore.positionUtils;
-var styleUtils      = testCafeCore.styleUtils;
-var contentEditable = testCafeCore.contentEditable;
-var arrayUtils      = testCafeCore.arrayUtils;
+const domUtils        = testCafeCore.domUtils;
+const positionUtils   = testCafeCore.positionUtils;
+const styleUtils      = testCafeCore.styleUtils;
+const contentEditable = testCafeCore.contentEditable;
+const arrayUtils      = testCafeCore.arrayUtils;
 
 
 const MODIFIERS_LIST = ['direction', 'font-family', 'font-size', 'font-size-adjust', 'font-variant', 'font-weight', 'font-style', 'letter-spacing', 'line-height', 'text-align', 'text-indent', 'text-transform', 'word-wrap', 'word-spacing', 'padding-top', 'padding-left', 'padding-right', 'padding-bottom', 'margin-top', 'margin-left', 'margin-right', 'margin-bottom', 'border-top-width', 'border-left-width', 'border-right-width', 'border-bottom-width'];
 
 function ensureRectangleInsideElement (element, rect) {
-    var elementBorders = styleUtils.getBordersWidth(element);
-    var elementOffset  = positionUtils.getOffsetPosition(element);
+    const elementBorders = styleUtils.getBordersWidth(element);
+    const elementOffset  = positionUtils.getOffsetPosition(element);
 
     // NOTE: strange behavior in Chrome - for some elements (e.g., for the 'font' element)
     // scrollHeight is 0, so we use getBoundingClientRect
-    var elementHeight = element.scrollHeight || element.getBoundingClientRect().height;
-    var left          = Math.ceil(rect.left);
-    var top           = Math.ceil(rect.top);
-    var bottom        = Math.floor(rect.bottom);
+    const elementHeight = element.scrollHeight || element.getBoundingClientRect().height;
+    let left          = Math.ceil(rect.left);
+    let top           = Math.ceil(rect.top);
+    let bottom        = Math.floor(rect.bottom);
 
     if (!domUtils.isTextAreaElement(element)) {
-        var clientOffset = positionUtils.offsetToClientCoords({
+        const clientOffset = positionUtils.offsetToClientCoords({
             x: elementOffset.left,
             y: elementOffset.top
         });
 
-        var minLeft     = clientOffset.x + elementBorders.left + 1;
-        var minTop      = clientOffset.y + elementBorders.top + 1;
-        var bottomBound = clientOffset.y + elementBorders.top + elementBorders.bottom + elementHeight;
-        var maxBottom   = clientOffset.y + elementBorders.top + elementHeight - 1;
+        const minLeft     = clientOffset.x + elementBorders.left + 1;
+        const minTop      = clientOffset.y + elementBorders.top + 1;
+        const bottomBound = clientOffset.y + elementBorders.top + elementBorders.bottom + elementHeight;
+        const maxBottom   = clientOffset.y + elementBorders.top + elementHeight - 1;
 
         left   = Math.ceil(left <= clientOffset.x ? minLeft : rect.left);
         top    = Math.ceil(top <= clientOffset.y ? minTop : rect.top);
@@ -47,7 +47,7 @@ function ensureRectangleInsideElement (element, rect) {
 }
 
 function getAbsoluteRect (rect) {
-    var documentScroll = styleUtils.getElementScroll(document);
+    const documentScroll = styleUtils.getElementScroll(document);
 
     return {
         left:   rect.left + documentScroll.left,
@@ -57,8 +57,8 @@ function getAbsoluteRect (rect) {
 }
 
 function getSelectionRectangleInContentEditableElement (element, position) {
-    var range             = domUtils.findDocument(element).createRange();
-    var selectionPosition = contentEditable.calculateNodeAndOffsetByPosition(element, position);
+    const range             = domUtils.findDocument(element).createRange();
+    const selectionPosition = contentEditable.calculateNodeAndOffsetByPosition(element, position);
 
     range.setStart(selectionPosition.node, Math.min(selectionPosition.offset, selectionPosition.node.length));
     range.setEnd(selectionPosition.node, Math.min(selectionPosition.offset, selectionPosition.node.length));
@@ -67,7 +67,7 @@ function getSelectionRectangleInContentEditableElement (element, position) {
 }
 
 function getTextSelectionRectangle (element, position) {
-    var range = element.createTextRange();
+    const range = element.createTextRange();
 
     range.collapse(true);
     range.moveStart('character', position);
@@ -78,16 +78,16 @@ function getTextSelectionRectangle (element, position) {
 }
 
 function getSelectionRectangle (element, position) {
-    var clientRectBeforeFakeDiv = element.getBoundingClientRect();
-    var fakeDiv                 = createFakeDiv(element);
-    var rect                    = null;
-    var clientRectAfterFakeDiv  = element.getBoundingClientRect();
-    var topBoundDiff            = clientRectAfterFakeDiv.top - clientRectBeforeFakeDiv.top;
-    var leftBoundDiff           = clientRectAfterFakeDiv.left - clientRectBeforeFakeDiv.left;
-    var valueLength             = domUtils.getElementValue(element).length;
+    const clientRectBeforeFakeDiv = element.getBoundingClientRect();
+    const fakeDiv                 = createFakeDiv(element);
+    let rect                    = null;
+    const clientRectAfterFakeDiv  = element.getBoundingClientRect();
+    const topBoundDiff            = clientRectAfterFakeDiv.top - clientRectBeforeFakeDiv.top;
+    const leftBoundDiff           = clientRectAfterFakeDiv.left - clientRectBeforeFakeDiv.left;
+    const valueLength             = domUtils.getElementValue(element).length;
 
     try {
-        var range = document.createRange(); //B254723
+        const range = document.createRange(); //B254723
 
         range.setStart(hammerhead.nativeMethods.nodeFirstChildGetter.call(fakeDiv), Math.min(position, valueLength));
         // NOTE: The range.getClientRects function returns wrong result if range length is 0 in Safari 11
@@ -122,19 +122,19 @@ function getSelectionRectangle (element, position) {
 }
 
 function createFakeDiv (element) {
-    var body          = document.body;
-    var elementOffset = positionUtils.getOffsetPosition(element);
-    var elementMargin = styleUtils.getElementMargin(element);
-    var elementTop    = elementOffset.top - elementMargin.top;
-    var elementLeft   = elementOffset.left - elementMargin.left;
+    const body          = document.body;
+    const elementOffset = positionUtils.getOffsetPosition(element);
+    const elementMargin = styleUtils.getElementMargin(element);
+    let elementTop    = elementOffset.top - elementMargin.top;
+    let elementLeft   = elementOffset.left - elementMargin.left;
 
-    var fakeDiv          = document.createElement('div');
-    var fakeDivCssStyles = 'white-space:pre-wrap;border-style:solid;';
+    const fakeDiv          = document.createElement('div');
+    let fakeDivCssStyles = 'white-space:pre-wrap;border-style:solid;';
 
     if (styleUtils.get(body, 'position') === 'absolute') {
-        var bodyMargin = styleUtils.getElementMargin(body);
-        var bodyLeft   = styleUtils.get(body, 'left');
-        var bodyTop    = styleUtils.get(body, 'top');
+        const bodyMargin = styleUtils.getElementMargin(body);
+        const bodyLeft   = styleUtils.get(body, 'left');
+        const bodyTop    = styleUtils.get(body, 'top');
 
         elementLeft -= bodyMargin.left + (parseInt(bodyLeft.replace('px', ''), 10) || 0);
         elementTop -= bodyMargin.top + (parseInt(bodyTop.replace('px', ''), 10) || 0);
@@ -161,7 +161,7 @@ function createFakeDiv (element) {
 }
 
 function getPositionCoordinates (element, position) {
-    var rect = null;
+    let rect = null;
 
     if (domUtils.isContentEditableElement(element))
         rect = getSelectionRectangleInContentEditableElement(element, position);
@@ -183,9 +183,9 @@ function getPositionCoordinates (element, position) {
 }
 
 export function getSelectionCoordinatesByPosition (element, position) {
-    var isTextEditable    = domUtils.isTextEditableElement(element);
-    var isContentEditable = domUtils.isContentEditableElement(element);
-    var hasText           = isTextEditable && domUtils.getElementValue(element).length > 0 ||
+    const isTextEditable    = domUtils.isTextEditableElement(element);
+    const isContentEditable = domUtils.isContentEditableElement(element);
+    const hasText           = isTextEditable && domUtils.getElementValue(element).length > 0 ||
                             isContentEditable && contentEditable.getContentEditableValue(element).length;
 
     if (!hasText)
@@ -195,12 +195,12 @@ export function getSelectionCoordinatesByPosition (element, position) {
 }
 
 export function getSelectionCoordinatesByNodeAndOffset (element, node, offset) {
-    var range = domUtils.findDocument(element).createRange();
+    const range = domUtils.findDocument(element).createRange();
 
     range.setStart(node, Math.min(offset, node.length));
     range.setEnd(node, Math.min(offset, node.length));
 
-    var rect = range.getClientRects()[0];
+    let rect = range.getClientRects()[0];
 
     if (!rect)
         return null;
@@ -215,10 +215,10 @@ export function getSelectionCoordinatesByNodeAndOffset (element, node, offset) {
 }
 
 export function getLastVisibleSelectionPosition (element, startPos, endPos) {
-    var backward     = startPos > endPos;
-    var inc          = backward ? 1 : -1;
-    var currentPos   = endPos;
-    var currentPoint = null;
+    const backward     = startPos > endPos;
+    const inc          = backward ? 1 : -1;
+    let currentPos   = endPos;
+    let currentPoint = null;
 
     while (currentPos !== startPos) {
         currentPos += inc;
@@ -240,21 +240,21 @@ export function scrollEditableElementByPoint (element, point) {
     if (!domUtils.isEditableElement(element))
         return;
 
-    var isTextarea     = domUtils.isTextAreaElement(element);
-    var isInputElement = domUtils.isInputElement(element);
+    const isTextarea     = domUtils.isTextAreaElement(element);
+    const isInputElement = domUtils.isInputElement(element);
 
     // NOTE: we don't need to scroll input elements in Mozilla and
     // IE > 10 because it happens automatically on selection setting
     if (isInputElement && (browserUtils.isFirefox || browserUtils.isIE && browserUtils.version > 10))
         return;
 
-    var elementOffset  = positionUtils.getOffsetPosition(element);
-    var elementBorders = styleUtils.getBordersWidth(element);
-    var elementScroll  = styleUtils.getElementScroll(element);
+    const elementOffset  = positionUtils.getOffsetPosition(element);
+    const elementBorders = styleUtils.getBordersWidth(element);
+    const elementScroll  = styleUtils.getElementScroll(element);
 
-    var offsetX     = point.x - elementOffset.left - elementBorders.left;
-    var offsetY     = point.y - elementOffset.top - elementBorders.top;
-    var scrollValue = null;
+    const offsetX     = point.x - elementOffset.left - elementBorders.left;
+    const offsetY     = point.y - elementOffset.top - elementBorders.top;
+    let scrollValue = null;
 
     if (isTextarea) {
         if (offsetY < elementScroll.top)
@@ -280,16 +280,16 @@ export function scrollEditableElementByPoint (element, point) {
 }
 
 export function excludeElementScroll (element, point) {
-    var isTextEditable = domUtils.isTextEditableElement(element);
-    var isInputElement = domUtils.isInputElement(element);
+    const isTextEditable = domUtils.isTextEditableElement(element);
+    const isInputElement = domUtils.isInputElement(element);
 
     if (!(isTextEditable || domUtils.isContentEditableElement(element)))
         return point;
 
-    var elementOffset  = positionUtils.getOffsetPosition(element);
-    var elementBorders = styleUtils.getBordersWidth(element);
-    var elementScroll  = styleUtils.getElementScroll(element);
-    var maxLeft        = elementOffset.left + elementBorders.left + element.clientWidth;
+    const elementOffset  = positionUtils.getOffsetPosition(element);
+    const elementBorders = styleUtils.getBordersWidth(element);
+    const elementScroll  = styleUtils.getElementScroll(element);
+    const maxLeft        = elementOffset.left + elementBorders.left + element.clientWidth;
 
     // NOTE: we can't know input elements' scroll value in Mozilla and
     // IE > 10 (https://bugzilla.mozilla.org/show_bug.cgi?id=293186)

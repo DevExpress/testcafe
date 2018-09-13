@@ -16,7 +16,7 @@
 
 <script>
     document.querySelector('form').addEventListener('submit', function () {
-        var name = document.querySelector('#user-name').textContent;
+        const name = document.querySelector('#user-name').textContent;
 
         sessionStorage.setItem('token', 'qwerty' + name);
     });
@@ -30,12 +30,12 @@
 
 <script>
     function getCookie (name) {
-        var kvs = document.cookie.split(';')
+        const kvs = document.cookie.split(';')
             .map(function (cookie) {
                 return cookie.trim().split('=');
             });
 
-        for (var i = 0; i < kvs.length; i++) {
+        for (let i = 0; i < kvs.length; i++) {
             if (kvs[i][0] === name)
                 return kvs[i][1];
         }

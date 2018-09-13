@@ -27,7 +27,7 @@ class ElementsRetriever {
     _ensureElement ({ selector, createNotFoundError, createIsInvisibleError, createHasWrongNodeTypeError }) {
         this.ensureElementsPromise = this.ensureElementsPromise
             .then(() => {
-                var selectorExecutor = new SelectorExecutor(selector, this.globalSelectorTimeout, this.ensureElementsStartTime,
+                const selectorExecutor = new SelectorExecutor(selector, this.globalSelectorTimeout, this.ensureElementsStartTime,
                     createNotFoundError, createIsInvisibleError);
 
                 return selectorExecutor.getResult();
@@ -47,7 +47,7 @@ class ElementsRetriever {
 }
 
 export function ensureElements (elementDescriptors, globalSelectorTimeout) {
-    var elementsRetriever = new ElementsRetriever(elementDescriptors, globalSelectorTimeout);
+    const elementsRetriever = new ElementsRetriever(elementDescriptors, globalSelectorTimeout);
 
     return elementsRetriever.getElements();
 }

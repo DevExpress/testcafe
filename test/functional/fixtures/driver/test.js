@@ -1,4 +1,4 @@
-var errorInEachBrowserContains = require('../../assertion-helper').errorInEachBrowserContains;
+const errorInEachBrowserContains = require('../../assertion-helper').errorInEachBrowserContains;
 
 describe('TestRun - Driver protocol', function () {
     it('TestRun should not process the same driver status twice', function () {

@@ -26,10 +26,10 @@ import { assertUrl } from '../../../api/test-page-url';
 
 
 // Validators
-export var integerArgument         = createIntegerValidator(ActionIntegerArgumentError);
-export var positiveIntegerArgument = createPositiveIntegerValidator(ActionPositiveIntegerArgumentError);
-export var booleanArgument         = createBooleanValidator(ActionBooleanArgumentError);
-export var setSpeedArgument        = createSpeedValidator(SetTestSpeedArgumentError);
+export const integerArgument         = createIntegerValidator(ActionIntegerArgumentError);
+export const positiveIntegerArgument = createPositiveIntegerValidator(ActionPositiveIntegerArgumentError);
+export const booleanArgument         = createBooleanValidator(ActionBooleanArgumentError);
+export const setSpeedArgument        = createSpeedValidator(SetTestSpeedArgumentError);
 
 
 export function actionRoleArgument (name, val) {
@@ -38,7 +38,7 @@ export function actionRoleArgument (name, val) {
 }
 
 export function actionOptions (name, val) {
-    var type = typeof val;
+    const type = typeof val;
 
     if (type !== 'object' && val !== null && val !== void 0)
         throw new ActionOptionsTypeError(type);
@@ -49,7 +49,7 @@ export function nonEmptyStringArgument (argument, val, createError) {
     if (!createError)
         createError = actualValue => new ActionStringArgumentError(argument, actualValue);
 
-    var type = typeof val;
+    const type = typeof val;
 
     if (type !== 'string')
         throw createError(type);
@@ -59,7 +59,7 @@ export function nonEmptyStringArgument (argument, val, createError) {
 }
 
 export function nullableStringArgument (argument, val) {
-    var type = typeof val;
+    const type = typeof val;
 
     if (type !== 'string' && val !== null)
         throw new ActionNullableStringArgumentError(argument, type);
@@ -72,7 +72,7 @@ export function urlArgument (name, val) {
 }
 
 export function stringOrStringArrayArgument (argument, val) {
-    var type = typeof val;
+    const type = typeof val;
 
     if (type === 'string') {
         if (!val.length)
@@ -83,13 +83,13 @@ export function stringOrStringArrayArgument (argument, val) {
         if (!val.length)
             throw new ActionStringOrStringArrayArgumentError(argument, '[]');
 
-        var validateElement = elementIndex => nonEmptyStringArgument(
+        const validateElement = elementIndex => nonEmptyStringArgument(
             argument,
             val[elementIndex],
             actualValue => new ActionStringArrayElementError(argument, actualValue, elementIndex)
         );
 
-        for (var i = 0; i < val.length; i++)
+        for (let i = 0; i < val.length; i++)
             validateElement(i);
     }
 

@@ -11,7 +11,7 @@
 </form>
 <script>
     document.querySelector('form').addEventListener('submit', function () {
-        var name = document.querySelector('[name="name"]').value;
+        const name = document.querySelector('[name="name"]').value;
 
         localStorage.setItem('token', '123456789' + name);
     });

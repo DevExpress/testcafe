@@ -1,4 +1,4 @@
-var config = require('../../../config.js');
+const config = require('../../../config.js');
 
 describe('[Regression](GH-1940)', function () {
     if (config.useLocalBrowsers) {

@@ -16,7 +16,7 @@ export default class BrowserManipulationQueue {
     }
 
     async _resizeWindow (width, height, currentWidth, currentHeight) {
-        var canResizeWindow = await this.browserProvider.canResizeWindowToDimensions(this.browserId, width, height);
+        const canResizeWindow = await this.browserProvider.canResizeWindowToDimensions(this.browserId, width, height);
 
         if (!canResizeWindow)
             throw new WindowDimensionsOverflowError();
@@ -31,10 +31,10 @@ export default class BrowserManipulationQueue {
     }
 
     async _resizeWindowToFitDevice (device, portrait, currentWidth, currentHeight) {
-        var { landscapeWidth, portraitWidth } = getViewportSize(device);
+        const { landscapeWidth, portraitWidth } = getViewportSize(device);
 
-        var width  = portrait ? portraitWidth : landscapeWidth;
-        var height = portrait ? landscapeWidth : portraitWidth;
+        const width  = portrait ? portraitWidth : landscapeWidth;
+        const height = portrait ? landscapeWidth : portraitWidth;
 
         return await this._resizeWindow(width, height, currentWidth, currentHeight);
     }
@@ -68,7 +68,7 @@ export default class BrowserManipulationQueue {
     }
 
     async executePendingManipulation (driverMsg) {
-        var command = this.commands.shift();
+        const command = this.commands.shift();
 
         switch (command.type) {
             case COMMAND_TYPE.takeElementScreenshot:

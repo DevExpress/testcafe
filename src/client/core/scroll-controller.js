@@ -32,9 +32,9 @@ class ScrollController {
     }
 
     waitForScroll () {
-        var promiseResolver = null;
+        let promiseResolver = null;
 
-        var promise = new Promise(resolve => {
+        const promise = new Promise(resolve => {
             promiseResolver = resolve;
         });
 
