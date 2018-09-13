@@ -11,7 +11,7 @@ const extend         = hammerhead.utils.extend;
 const browserUtils   = hammerhead.utils.browser;
 const eventSimulator = hammerhead.eventSandbox.eventSimulator;
 
-const { domUtils, eventUtils, delay } = testCafeCore.domUtils;
+const { domUtils, eventUtils, delay } = testCafeCore;
 
 export default class RClickAutomation extends VisibleElementAutomation {
     constructor (element, clickOptions) {

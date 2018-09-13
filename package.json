@@ -131,6 +131,7 @@
     "broken-link-checker": "^0.7.0",
     "browserstack-connector": "^0.1.5",
     "caller": "^1.0.1",
+    "chai-string": "^1.5.0",
     "connect": "^3.4.0",
     "cross-spawn": "^4.0.0",
     "dom-walk": "^0.1.1",
