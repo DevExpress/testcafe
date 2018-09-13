@@ -214,7 +214,7 @@ describe('[API] t.takeScreenshot()', function () {
                     only:                  'chrome'
                 })
                 .then(() => {
-                    expect(SCREENSHOT_PATH_MESSAGE_RE.test(testReport.screenshotPath)).eql(true);
+                    expect(testReport.screenshotPath).eql(SCREENSHOTS_PATH);
 
                     const screenshot1Path = path.join(assertionHelper.SCREENSHOTS_PATH, 'Take a screenshot-1.png');
                     const screenshot2Path = path.join(assertionHelper.SCREENSHOTS_PATH, 'Take a screenshot-2.png');
