@@ -1,5 +1,4 @@
 const { expect }       = require('chai');
-const { sync: globby } = require('globby');
 const path             = require('path');
 const config           = require('../../../../config');
 const assertionHelper  = require('../../../../assertion-helper');
@@ -9,7 +8,7 @@ const ERROR_SCREENSHOT_PATH_RE   = /Screenshot: ___test-screenshots___[\\/]\d{4,
 
 describe('[Legacy] Smoke tests', () => {
     it('Should run basic tests', () => {
-        return runTests(globby(path.join(__dirname, './testcafe-fixtures/basic/*test.js')), null, { skip: 'iphone,ipad' });
+        return runTests(path.join(__dirname, './testcafe-fixtures/basic/*test.js'), null, { skip: 'iphone,ipad' });
     });
 
     it('Should fail on errors', () => {
