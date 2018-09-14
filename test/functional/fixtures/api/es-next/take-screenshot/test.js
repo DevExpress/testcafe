@@ -1,16 +1,19 @@
 const path            = require('path');
 const fs              = require('fs');
-const expect          = require('chai').expect;
+const chai            = require('chai');
+const { expect }      = chai;
 const config          = require('../../../../config.js');
 const assertionHelper = require('../../../../assertion-helper.js');
 
+chai.use(require('chai-string'));
+
 const SCREENSHOTS_PATH                   = assertionHelper.SCREENSHOTS_PATH;
 const THUMBNAILS_DIR_NAME                = assertionHelper.THUMBNAILS_DIR_NAME;
-const SCREENSHOT_PATH_MESSAGE_RE         = /^___test-screenshots___[\\/]\d{4,4}-\d{2,2}-\d{2,2}_\d{2,2}-\d{2,2}-\d{2,2}[\\/]test-1$/;
+const SCREENSHOT_PATH_MESSAGE_RE         = /^___test-screenshots___[\\/]\d{4,4}-\d{2,2}-\d{2,2}_\d{2,2}-\d{2,2}-\d{2,2}[\\/]test-1/;
 const SCREENSHOT_ON_FAIL_PATH_MESSAGE_RE = /^.*run-1/;
 const SLASH_RE                           = /[\\/]/g;
 
-var getReporter = function (scope) {
+const getReporter = function (scope) {
     const userAgents = { };
 
     function patchScreenshotPath (screenshotPath) {
@@ -60,7 +63,8 @@ describe('[API] t.takeScreenshot()', function () {
             return runTests('./testcafe-fixtures/take-screenshot.js', 'Take a screenshot with a custom path (OS separator)',
                 { setScreenshotPath: true })
                 .then(function () {
-                    expect(testReport.screenshotPath).eql(SCREENSHOTS_PATH);
+
+                    expect(testReport.screenshotPath).startsWith(path.join(SCREENSHOTS_PATH, 'custom'));
 
                     const screenshotsCheckingOptions = { forError: false, screenshotsCount: 2, customPath: 'custom' };
 
@@ -214,7 +218,7 @@ describe('[API] t.takeScreenshot()', function () {
                     only:                  'chrome'
                 })
                 .then(() => {
-                    expect(SCREENSHOT_PATH_MESSAGE_RE.test(testReport.screenshotPath)).eql(true);
+                    expect(testReport.screenshotPath).eql(SCREENSHOTS_PATH);
 
                     const screenshot1Path = path.join(assertionHelper.SCREENSHOTS_PATH, 'Take a screenshot-1.png');
                     const screenshot2Path = path.join(assertionHelper.SCREENSHOTS_PATH, 'Take a screenshot-2.png');
