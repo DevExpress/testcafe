@@ -467,16 +467,22 @@ You can also cancel all pending tasks at once using the [runner.stop](#stop) fun
 
 #### Quarantine Mode
 
-The quarantine mode is designed to isolate *non-deterministic* tests (that is, tests that sometimes pass and fail without any apparent reason)
-from the rest of the test base (*healthy* tests).
+The quarantine mode is designed to isolate *non-deterministic* tests (that is, tests that pass and fail without any apparent reason) from the other tests.
 
-In this mode, a failed test is executed several times. The test result depends on the outcome (passed or failed) that occurs most often. That is, if the test fails on most attempts, the result is failed. If the test result differs between test runs, the test is marked as unstable.
+When the quarantine mode is enabled, tests run according to the following logic:
+
+1. A test runs at the first time. If it passes, TestCafe proceeds to the next test.
+2. If the test fails, it runs again until it passes or fails three times.
+3. The most frequent outcome is recorded as the test result.
+4. If the test result differs between test runs, the test is marked as unstable.
+
+> Note that it increases the test task's duration if you enable quarantine mode on your test machine because failed tests are executed three to five times.
 
 See Martin Fowler's [Eradicating Non-Determinism in Tests](http://martinfowler.com/articles/nonDeterminism.html) article for more information about non-deterministic tests.
 
 ### stop
 
-Stops all pending test tasks.
+Stops all the pending test tasks.
 
 ```text
 async stop()
