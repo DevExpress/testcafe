@@ -1,6 +1,6 @@
 import { EventEmitter } from 'events';
 import Promise from 'pinkie';
-import timeLimit from 'time-limit-promise';
+import getTimeLimitedPromise from 'time-limit-promise';
 import promisifyEvent from 'promisify-event';
 import { noop, pull as remove, flatten } from 'lodash';
 import mapReverse from 'map-reverse';
@@ -132,7 +132,7 @@ export default class BrowserSet extends EventEmitter {
             BrowserSet._closeConnection(bc) :
             BrowserSet._waitIdle(bc);
 
-        var release = timeLimit(appropriateStateSwitch, this.RELEASE_TIMEOUT).then(() => remove(this.pendingReleases, release));
+        var release = getTimeLimitedPromise(appropriateStateSwitch, this.RELEASE_TIMEOUT).then(() => remove(this.pendingReleases, release));
 
         this.pendingReleases.push(release);
 

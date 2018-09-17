@@ -619,15 +619,18 @@ gulp.task('test-docs-travis', gulp.parallel('test-website-travis', 'lint'));
 
 
 function testFunctional (fixturesDir, testingEnvironmentName, browserProviderName) {
-    process.env.TESTING_ENVIRONMENT = testingEnvironmentName;
-    process.env.BROWSER_PROVIDER    = browserProviderName;
+    process.env.TESTING_ENVIRONMENT   = testingEnvironmentName;
+    process.env.BROWSER_PROVIDER      = browserProviderName;
+
+    if (DEV_MODE)
+        process.env.DEV_MODE = 'true';
 
     return gulp
         .src(['test/functional/setup.js', fixturesDir + '/**/test.js'])
         .pipe(mocha({
             ui:       'bdd',
             reporter: 'spec',
-            timeout:  typeof v8debug === 'undefined' ? 180000 : Infinity // NOTE: disable timeouts in debug
+            timeout:  typeof v8debug === 'undefined' ? 3 * 60 * 1000 : Infinity // NOTE: disable timeouts in debug
         }));
 }
 

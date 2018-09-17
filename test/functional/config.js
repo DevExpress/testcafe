@@ -29,22 +29,24 @@ testingEnvironments[testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers] = {
         accessKey: process.env.BROWSER_STACK_ACCESS_KEY
     },
 
+    retryTestPages: true,
+
     browsers: [
         {
             os:        'OS X',
-            osVersion: 'Sierra',
+            osVersion: 'HIgh Sierra',
             name:      'safari',
             alias:     'safari'
         },
         {
             os:        'OS X',
-            osVersion: 'Sierra',
+            osVersion: 'High Sierra',
             name:      'chrome',
             alias:     'chrome-osx'
         },
         {
             os:        'OS X',
-            osVersion: 'Sierra',
+            osVersion: 'High Sierra',
             name:      'firefox',
             alias:     'firefox-osx'
         },
@@ -64,6 +66,8 @@ testingEnvironments[testingEnvironmentNames.mobileBrowsers] = {
         username:  process.env.BROWSER_STACK_USERNAME,
         accessKey: process.env.BROWSER_STACK_ACCESS_KEY
     },
+
+    retryTestPages: true,
 
     browsers: [
         {
@@ -174,6 +178,8 @@ testingEnvironments[testingEnvironmentNames.oldBrowsers] = {
 
     },
 
+    retryTestPages: true,
+
     browsers: [
         {
             platform:    'Windows 8',
@@ -224,6 +230,14 @@ module.exports = {
 
     get useLocalBrowsers () {
         return this.currentEnvironment.isLocalBrowsers;
+    },
+
+    get devMode () {
+        return !!process.env.DEV_MODE;
+    },
+
+    get retryTestPages () {
+        return this.currentEnvironment.retryTestPages;
     },
 
     isTravisEnvironment,

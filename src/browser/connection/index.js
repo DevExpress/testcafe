@@ -271,10 +271,11 @@ export default class BrowserConnection extends EventEmitter {
 
     renderIdlePage () {
         return Mustache.render(IDLE_PAGE_TEMPLATE, {
-            userAgent:     this.userAgent,
-            statusUrl:     this.statusUrl,
-            heartbeatUrl:  this.heartbeatUrl,
-            initScriptUrl: this.initScriptUrl
+            userAgent:      this.userAgent,
+            statusUrl:      this.statusUrl,
+            heartbeatUrl:   this.heartbeatUrl,
+            initScriptUrl:  this.initScriptUrl,
+            retryTestPages: !!this.browserConnectionGateway.retryTestPages
         });
     }
 

@@ -20,10 +20,14 @@ export default class TestCafe {
 
         registerErrorHandlers();
 
+        if (options.retryTestPages)
+            options.staticContentCaching = { maxAge: 3600, mustRevalidate: false };
+
         this.closed                   = false;
         this.proxy                    = new Proxy(hostname, port1, port2, options);
-        this.browserConnectionGateway = new BrowserConnectionGateway(this.proxy);
+        this.browserConnectionGateway = new BrowserConnectionGateway(this.proxy, { retryTestPages: options.retryTestPages });
         this.runners                  = [];
+        this.retryTestPages           = options.retryTestPages;
 
         this._registerAssets(options.developmentMode);
     }
@@ -69,7 +73,7 @@ export default class TestCafe {
     }
 
     createRunner () {
-        const newRunner = new Runner(this.proxy, this.browserConnectionGateway);
+        const newRunner = new Runner(this.proxy, this.browserConnectionGateway, { retryTestPages: this.retryTestPages });
 
         this.runners.push(newRunner);
 

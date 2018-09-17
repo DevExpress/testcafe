@@ -126,8 +126,10 @@ before(function () {
 
     mocha.timeout(60000);
 
-    return createTestCafe(config.testCafe.hostname, config.testCafe.port1, config.testCafe.port2)
-        .then(tc => {
+    const { devMode, retryTestPages } = config;
+
+    return createTestCafe(config.testCafe.hostname, config.testCafe.port1, config.testCafe.port2, null, devMode, retryTestPages)
+        .then(function (tc) {
             testCafe = tc;
 
             return initBrowsersInfo();

@@ -1,19 +1,26 @@
 import hammerhead from '../deps/hammerhead';
-import testCafeCore from '../deps/testcafe-core';
+import { RequestBarrier, pageUnloadBarrier, browser } from '../deps/testcafe-core';
 import DriverStatus from '../status';
 
-var Promise = hammerhead.Promise;
 
-var RequestBarrier    = testCafeCore.RequestBarrier;
-var pageUnloadBarrier = testCafeCore.pageUnloadBarrier;
-
+const { createNativeXHR, utils } = hammerhead;
 
 export default function executeNavigateTo (command) {
-    var requestBarrier = new RequestBarrier();
+    const navigationUrl = utils.url.getNavigationUrl(command.url, window);
 
-    hammerhead.navigateTo(command.url);
+    let ensurePagePromise = hammerhead.Promise.resolve();
 
-    return Promise.all([requestBarrier.wait(), pageUnloadBarrier.wait()])
+    if (navigationUrl && browser.isRetryingTestPagesEnabled())
+        ensurePagePromise = browser.fetchPageToCache(navigationUrl, createNativeXHR);
+
+    return ensurePagePromise
+        .then(() => {
+            const requestBarrier = new RequestBarrier();
+
+            hammerhead.navigateTo(command.url);
+
+            return hammerhead.Promise.all([requestBarrier.wait(), pageUnloadBarrier.wait()]);
+        })
         .then(() => new DriverStatus({ isCommandResult: true }))
         .catch(err => new DriverStatus({ isCommandResult: true, executionError: err }));
 }

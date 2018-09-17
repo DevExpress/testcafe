@@ -6,19 +6,19 @@ const assertionHelper  = require('../../../../assertion-helper');
 const SCREENSHOT_PATH_MESSAGE_RE = /^___test-screenshots___[\\/]\d{4,4}-\d{2,2}-\d{2,2}_\d{2,2}-\d{2,2}-\d{2,2}[\\/]test-1/;
 const ERROR_SCREENSHOT_PATH_RE   = /Screenshot: ___test-screenshots___[\\/]\d{4,4}-\d{2,2}-\d{2,2}_\d{2,2}-\d{2,2}-\d{2,2}[\\/]test-1[\\/]\S+[\\/]errors[\\/]\d.png/;
 
-describe('[Legacy] Smoke tests', () => {
-    it('Should run basic tests', () => {
-        return runTests(path.join(__dirname, './testcafe-fixtures/basic/*test.js'), null, { skip: 'iphone,ipad' });
-    });
+if (config.useLocalBrowsers) {
+    describe('[Legacy] Smoke tests', () => {
+        it('Should run basic tests', () => {
+            return runTests(path.join(__dirname, './testcafe-fixtures/basic/*test.js'), null, { skip: 'iphone,ipad' });
+        });
 
-    it('Should fail on errors', () => {
-        return runTests('./testcafe-fixtures/errors.test.js', null, { shouldFail: true, skip: 'iphone,ipad' })
-            .catch(errs => {
-                expect(errs[0]).contains('A target element of the click action has not been found in the DOM tree.');
-            });
-    });
+        it('Should fail on errors', () => {
+            return runTests('./testcafe-fixtures/errors.test.js', null, { shouldFail: true, skip: 'iphone,ipad' })
+                .catch(errs => {
+                    expect(errs[0]).contains('A target element of the click action has not been found in the DOM tree.');
+                });
+        });
 
-    if (config.useLocalBrowsers) {
         describe('Screenshots', () => {
             afterEach(assertionHelper.removeScreenshotDir);
 
@@ -39,5 +39,5 @@ describe('[Legacy] Smoke tests', () => {
                     });
             });
         });
-    }
-});
+    });
+}

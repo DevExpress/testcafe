@@ -2,24 +2,43 @@
 import Promise from 'pinkie';
 import COMMAND from '../../browser/connection/command';
 import STATUS from '../../browser/connection/status';
+import { UNSTABLE_NETWORK_MODE_HEADER } from '../../browser/connection/unstable-network-mode';
 
 const HEARTBEAT_INTERVAL = 2 * 1000;
 
-var allowInitScriptExecution = false;
+let allowInitScriptExecution = false;
+let retryTestPages           = false;
+
+const noop  = () => void 0;
+const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+const FETCH_PAGE_TO_CACHE_RETRY_DELAY = 300;
+const FETCH_PAGE_TO_CACHE_RETRY_COUNT = 5;
 
 //Utils
 // NOTE: the window.XMLHttpRequest may have been wrapped by Hammerhead, while we should send a request to
 // the original URL. That's why we need the XMLHttpRequest argument to send the request via native methods.
-function sendXHR (url, createXHR, method = 'GET', data = null) {
+export function sendXHR (url, createXHR, { method = 'GET', data = null, parseResponse = true } = {}) {
     return new Promise((resolve, reject) => {
-        var xhr = createXHR();
+        const xhr = createXHR();
 
         xhr.open(method, url, true);
 
+        if (isRetryingTestPagesEnabled()) {
+            xhr.setRequestHeader(UNSTABLE_NETWORK_MODE_HEADER, 'true');
+            xhr.setRequestHeader('accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8');
+        }
+
         xhr.onreadystatechange = () => {
             if (xhr.readyState === 4) {
-                if (xhr.status === 200)
-                    resolve(xhr.responseText ? JSON.parse(xhr.responseText) : ''); //eslint-disable-line no-restricted-globals
+                if (xhr.status === 200) {
+                    let responseText = xhr.responseText || '';
+
+                    if (responseText && parseResponse)
+                        responseText = JSON.parse(xhr.responseText); //eslint-disable-line no-restricted-globals
+
+                    resolve(responseText);
+                }
                 else
                     reject('disconnected');
             }
@@ -63,7 +82,7 @@ function executeInitScript (initScriptUrl, createXHR) {
                 return null;
 
             /* eslint-disable no-eval,  no-restricted-globals*/
-            return sendXHR(initScriptUrl, createXHR, 'POST', JSON.stringify(eval(res.code)));
+            return sendXHR(initScriptUrl, createXHR, { method: 'POST', data: JSON.stringify(eval(res.code)) });
             /* eslint-enable no-eval, no-restricted-globals */
         })
         .then(() => {
@@ -86,17 +105,48 @@ export function redirect (command) {
     document.location = command.url;
 }
 
+export function fetchPageToCache (pageUrl, createXHR) {
+    const requestAttempt = () => sendXHR(pageUrl, createXHR, { parseResponse: false });
+    const retryRequest   = () => delay(FETCH_PAGE_TO_CACHE_RETRY_DELAY).then(requestAttempt);
+
+    let fetchPagePromise = requestAttempt();
+
+    for (let i = 0; i < FETCH_PAGE_TO_CACHE_RETRY_COUNT; i++)
+        fetchPagePromise = fetchPagePromise.catch(retryRequest);
+
+    return fetchPagePromise.catch(noop);
+}
+
 export function checkStatus (statusUrl, createXHR, opts) {
     const { manualRedirect } = opts || {};
 
     return sendXHR(statusUrl, createXHR)
-        .then(res => {
-            const redirecting = (res.cmd === COMMAND.run || res.cmd === COMMAND.idle) && !isCurrentLocation(res.url);
+        .then(result => {
+            let ensurePagePromise = Promise.resolve();
+
+            if (result.url && isRetryingTestPagesEnabled())
+                ensurePagePromise = fetchPageToCache(result.url, createXHR);
+
+            return ensurePagePromise.then(() => result);
+        })
+        .then(result => {
+            const redirecting = (result.cmd === COMMAND.run || result.cmd === COMMAND.idle) && !isCurrentLocation(result.url);
 
             if (redirecting && !manualRedirect)
-                redirect(res);
+                redirect(result);
 
-            return { command: res, redirecting };
+            return { command: result, redirecting };
         });
 }
 
+export function enableRetryingTestPages () {
+    retryTestPages = true;
+}
+
+export function disableRetryingTestPages () {
+    retryTestPages = false;
+}
+
+export function isRetryingTestPagesEnabled () {
+    return retryTestPages;
+}

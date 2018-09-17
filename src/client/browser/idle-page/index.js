@@ -9,9 +9,12 @@ var createXHR = () => new XMLHttpRequest();
 
 
 class IdlePage {
-    constructor (statusUrl, heartbeatUrl, initScriptUrl) {
+    constructor (statusUrl, heartbeatUrl, initScriptUrl, options = {}) {
         this.statusUrl       = statusUrl;
         this.statusIndicator = new StatusIndicator();
+
+        if (options.retryTestPages)
+            browser.enableRetryingTestPages();
 
         browser.startHeartbeat(heartbeatUrl, createXHR);
         browser.startInitScriptExecution(initScriptUrl, createXHR);
