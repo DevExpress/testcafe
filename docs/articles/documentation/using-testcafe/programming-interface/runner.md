@@ -470,11 +470,11 @@ The quarantine mode is designed to isolate *non-deterministic* tests (that is, t
 When the quarantine mode is enabled, tests run according to the following logic:
 
 1. A test runs at the first time. If it passes, TestCafe proceeds to the next test.
-2. If the test fails, it runs over and over until it shows the same result (passed or failed) three times.
-3. The result seen most often (three times) is recorded as the test result.
+2. If the test fails, it runs again until it passes or fails three times.
+3. The most frequent outcome is recorded as the test result.
 4. If the test result differs between test runs, the test is marked as unstable.
 
-> When you decide whether to enable quarantine mode on your test machine, note that it increases test task duration because failed tests are executed three to five times.
+> Note that it increases the test task's duration if you enable quarantine mode on your test machine because failed tests are executed three to five times.
 
 See Martin Fowler's [Eradicating Non-Determinism in Tests](http://martinfowler.com/articles/nonDeterminism.html) article for more information about non-deterministic tests.
 
