@@ -39,7 +39,7 @@ export default class Runner extends EventEmitter {
     }
 
     static async _disposeTaskAndRelatedAssets (task, browserSet, testedApp) {
-        task.abort();
+        await task.abort();
         task.removeAllListeners();
 
         await Runner._disposeBrowserSetAndTestedApp(browserSet, testedApp);

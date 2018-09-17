@@ -5,8 +5,6 @@ import TestRunController from './test-run-controller';
 import SessionController from '../test-run/session-controller';
 import RESULT from './browser-job-result';
 
-
-// Browser job
 export default class BrowserJob extends EventEmitter {
     constructor (tests, browserConnections, proxy, screenshots, warningLog, fixtureHookController, opts) {
         super();
@@ -27,8 +25,11 @@ export default class BrowserJob extends EventEmitter {
 
         this.completionQueue = [];
 
-        this.connectionErrorListener = error => this._setResult(RESULT.errored, error);
-
+        this.connectionErrorListener = error => {
+            (async () => {
+                await this._setResult(RESULT.errored, error);
+            })();
+        };
         this.browserConnections.map(bc => bc.once('error', this.connectionErrorListener));
     }
 
@@ -118,9 +119,9 @@ export default class BrowserJob extends EventEmitter {
         return null;
     }
 
-    abort () {
+    async abort () {
         this.removeAllListeners();
-        this._setResult(RESULT.aborted);
+        await this._setResult(RESULT.aborted);
         this.browserConnections.map(bc => bc.removeJob(this));
     }
 }
