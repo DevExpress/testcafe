@@ -84,11 +84,15 @@ export default class TestController {
         const callsite = getCallsiteForMethod(apiMethodName);
         const executor = createTaskExecutor(callsite);
 
+        this.executionChain.then = Promise.resolve().then;
+
         this.executionChain = this.executionChain.then(executor);
 
         this.callsitesWithoutAwait.add(callsite);
 
-        return this._createExtendedPromise(this.executionChain, callsite);
+        this.executionChain = this._createExtendedPromise(this.executionChain, callsite);
+
+        return this.executionChain;
     }
 
     _enqueueCommand (apiMethodName, CmdCtor, cmdArgs) {
