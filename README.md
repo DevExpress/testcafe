@@ -1,6 +1,6 @@
 <h1 align="center">
     <a href="https://devexpress.github.io/testcafe">
-        <img src="https://raw.github.com/DevExpress/testcafe/master/media/logo.png" alt="testcafe" />
+        <img src="https://raw.githubusercontent.com/DevExpress/testcafe/master/media/testcafe-logo.svg?sanitize=true" alt="testcafe" />
     </a>
 </h1>
 
