@@ -252,15 +252,11 @@ export default class TestController {
     }
 
     _getNativeDialogHistory$ () {
-        const callsite = getCallsiteForMethod('getNativeDialogHistory');
-
-        return this.testRun.executeCommand(new GetNativeDialogHistoryCommand(), callsite);
+        return this._enqueueCommand('getNativeDialogHistory', GetNativeDialogHistoryCommand);
     }
 
     _getBrowserConsoleMessages$ () {
-        const callsite = getCallsiteForMethod('getBrowserConsoleMessages');
-
-        return this.testRun.executeCommand(new GetBrowserConsoleMessagesCommand(), callsite);
+        return this._enqueueCommand('getBrowserConsoleMessages', GetBrowserConsoleMessagesCommand);
     }
 
     _expect$ (actual) {
