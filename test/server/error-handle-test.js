@@ -25,7 +25,7 @@ class TestRunMock {
 }
 
 describe('Global error handlers', () => {
-    it('unhandled promise rejection on chain assertions', async () => {
+    it('unhandled promise rejection on chain assertions', () => {
         let unhandledRejection = false;
 
         const throwErrorOnUnhandledRejection = () => {
@@ -34,16 +34,15 @@ describe('Global error handlers', () => {
 
         process.once('unhandledRejection', throwErrorOnUnhandledRejection);
 
-        try {
-            await new TestController(new TestRunMock('', '')).expect(10).eql(5).expect(10).eql(10);
-        }
-        catch (err) {
-            //
-        }
+        return Promise.resolve()
+            .then(() => {
+                return new TestController(new TestRunMock('', '')).expect(10).eql(5).expect(10).eql(10);
+            })
+            .catch(() => {
+                process.removeListener('unhandledRejection', throwErrorOnUnhandledRejection);
 
-        process.removeListener('unhandledRejection', throwErrorOnUnhandledRejection);
-
-        expect(unhandledRejection).eql(false);
+                expect(unhandledRejection).eql(false);
+            });
     });
 
     it('format UnhandledPromiseRejection reason', () => {

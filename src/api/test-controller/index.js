@@ -41,6 +41,8 @@ import {
 import { WaitCommand, DebugCommand } from '../../test-run/commands/observation';
 import assertRequestHookType from '../request-hooks/assert-type';
 
+const promiseThen = Promise.resolve().then;
+
 export default class TestController {
     constructor (testRun) {
         this.testRun               = testRun;
@@ -62,14 +64,12 @@ export default class TestController {
     // await t2.click('#btn3');   // <-- without check it will set callsiteWithoutAwait = null, so we will lost tracking
     _createExtendedPromise (promise, callsite) {
         const extendedPromise     = promise.then(identity);
-        const originalThen        = extendedPromise.then;
         const markCallsiteAwaited = () => this.callsitesWithoutAwait.delete(callsite);
-
 
         extendedPromise.then = function () {
             markCallsiteAwaited();
 
-            return originalThen.apply(this, arguments);
+            return promiseThen.apply(this, arguments);
         };
 
         delegateAPI(extendedPromise, TestController.API_LIST, {
@@ -84,9 +84,8 @@ export default class TestController {
         const callsite = getCallsiteForMethod(apiMethodName);
         const executor = createTaskExecutor(callsite);
 
-        this.executionChain.then = Promise.resolve().then;
-
-        this.executionChain = this.executionChain.then(executor);
+        this.executionChain.then = promiseThen;
+        this.executionChain      = this.executionChain.then(executor);
 
         this.callsitesWithoutAwait.add(callsite);
 
