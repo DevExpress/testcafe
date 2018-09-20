@@ -49,7 +49,7 @@ describe('Global error handlers', () => {
         handleErrors.registerErrorHandlers();
         handleErrors.startHandlingTestErrors();
 
-        const obj = { a: 1, b: { c: 'd', e: { f: { g : 'too deep' } } } };
+        const obj = { a: 1, b: { c: 'd', e: { f: { g: 'too deep' } } } };
 
         obj.circular = obj;
 
