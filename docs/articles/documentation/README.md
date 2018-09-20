@@ -1,8 +1,3 @@
----
-layout: docs
-title: Documentation
-permalink: /documentation/
----
 # Documentation
 
 * [Getting Started](getting-started/README.md)
