@@ -6,24 +6,24 @@ import { filter, some } from './array';
 const styleUtils   = hammerhead.utils.style;
 const browserUtils = hammerhead.utils.browser;
 
-export var getBordersWidth      = hammerhead.utils.style.getBordersWidth;
-export var getComputedStyle     = hammerhead.utils.style.getComputedStyle;
-export var getElementMargin     = hammerhead.utils.style.getElementMargin;
-export var getElementPadding    = hammerhead.utils.style.getElementPadding;
-export var getElementScroll     = hammerhead.utils.style.getElementScroll;
-export var getOptionHeight      = hammerhead.utils.style.getOptionHeight;
-export var getSelectElementSize = hammerhead.utils.style.getSelectElementSize;
-export var isElementVisible     = hammerhead.utils.style.isElementVisible;
-export var isSelectVisibleChild = hammerhead.utils.style.isVisibleChild;
-export var getWidth             = hammerhead.utils.style.getWidth;
-export var getHeight            = hammerhead.utils.style.getHeight;
-export var getInnerWidth        = hammerhead.utils.style.getInnerWidth;
-export var getInnerHeight       = hammerhead.utils.style.getInnerHeight;
-export var getScrollLeft        = hammerhead.utils.style.getScrollLeft;
-export var getScrollTop         = hammerhead.utils.style.getScrollTop;
-export var setScrollLeft        = hammerhead.utils.style.setScrollLeft;
-export var setScrollTop         = hammerhead.utils.style.setScrollTop;
-export var get                  = hammerhead.utils.style.get;
+export const getBordersWidth      = hammerhead.utils.style.getBordersWidth;
+export const getComputedStyle     = hammerhead.utils.style.getComputedStyle;
+export const getElementMargin     = hammerhead.utils.style.getElementMargin;
+export const getElementPadding    = hammerhead.utils.style.getElementPadding;
+export const getElementScroll     = hammerhead.utils.style.getElementScroll;
+export const getOptionHeight      = hammerhead.utils.style.getOptionHeight;
+export const getSelectElementSize = hammerhead.utils.style.getSelectElementSize;
+export const isElementVisible     = hammerhead.utils.style.isElementVisible;
+export const isSelectVisibleChild = hammerhead.utils.style.isVisibleChild;
+export const getWidth             = hammerhead.utils.style.getWidth;
+export const getHeight            = hammerhead.utils.style.getHeight;
+export const getInnerWidth        = hammerhead.utils.style.getInnerWidth;
+export const getInnerHeight       = hammerhead.utils.style.getInnerHeight;
+export const getScrollLeft        = hammerhead.utils.style.getScrollLeft;
+export const getScrollTop         = hammerhead.utils.style.getScrollTop;
+export const setScrollLeft        = hammerhead.utils.style.setScrollLeft;
+export const setScrollTop         = hammerhead.utils.style.setScrollTop;
+export const get                  = hammerhead.utils.style.get;
 
 const SCROLLABLE_OVERFLOW_STYLE_RE               = /auto|scroll/i;
 const DEFAULT_IE_SCROLLABLE_OVERFLOW_STYLE_VALUE = 'visible';
@@ -45,8 +45,8 @@ const getScrollable = function (el) {
     return { scrollableHorizontally, scrollableVertically };
 };
 
-var getAncestors = function (node) {
-    var ancestors = [];
+const getAncestors = function (node) {
+    const ancestors = [];
 
     while (node.parentNode) {
         ancestors.unshift(node.parentNode);
@@ -56,18 +56,18 @@ var getAncestors = function (node) {
     return ancestors;
 };
 
-var getAncestorsAndSelf = function (node) {
+const getAncestorsAndSelf = function (node) {
     return getAncestors(node).concat([node]);
 };
 
-var isVisibilityHiddenNode = function (node) {
-    var ancestors = getAncestorsAndSelf(node);
+const isVisibilityHiddenNode = function (node) {
+    const ancestors = getAncestorsAndSelf(node);
 
     return some(ancestors, ancestor => domUtils.isElementNode(ancestor) && get(ancestor, 'visibility') === 'hidden');
 };
 
-var isHiddenNode = function (node) {
-    var ancestors = getAncestorsAndSelf(node);
+const isHiddenNode = function (node) {
+    const ancestors = getAncestorsAndSelf(node);
 
     return some(ancestors, ancestor => domUtils.isElementNode(ancestor) && get(ancestor, 'display') === 'none');
 };
@@ -81,10 +81,10 @@ export function isNotVisibleNode (node) {
 }
 
 export function getScrollableParents (element) {
-    var parentsArray = domUtils.getParents(element);
+    const parentsArray = domUtils.getParents(element);
 
     if (domUtils.isElementInIframe(element)) {
-        var iFrameParents = domUtils.getParents(domUtils.getIframeByElement(element));
+        const iFrameParents = domUtils.getParents(domUtils.getIframeByElement(element));
 
         parentsArray.concat(iFrameParents);
     }
@@ -93,29 +93,29 @@ export function getScrollableParents (element) {
 }
 
 function hasBodyScroll (el) {
-    var overflowX              = get(el, 'overflowX');
-    var overflowY              = get(el, 'overflowY');
-    var scrollableHorizontally = SCROLLABLE_OVERFLOW_STYLE_RE.test(overflowX);
-    var scrollableVertically   = SCROLLABLE_OVERFLOW_STYLE_RE.test(overflowY);
+    const overflowX              = get(el, 'overflowX');
+    const overflowY              = get(el, 'overflowY');
+    const scrollableHorizontally = SCROLLABLE_OVERFLOW_STYLE_RE.test(overflowX);
+    const scrollableVertically   = SCROLLABLE_OVERFLOW_STYLE_RE.test(overflowY);
 
-    var documentElement = domUtils.findDocument(el).documentElement;
+    const documentElement = domUtils.findDocument(el).documentElement;
 
     return (scrollableHorizontally || scrollableVertically) &&
            el.scrollHeight > documentElement.scrollHeight;
 }
 
 function hasHTMLElementScroll (el) {
-    var overflowX = get(el, 'overflowX');
-    var overflowY = get(el, 'overflowY');
+    const overflowX = get(el, 'overflowX');
+    const overflowY = get(el, 'overflowY');
     //T174562 - wrong scrolling in iframes without src and others iframes
-    var body      = el.getElementsByTagName('body')[0];
+    const body      = el.getElementsByTagName('body')[0];
 
     //T303226
     if (overflowX === 'hidden' && overflowY === 'hidden')
         return false;
 
-    var hasHorizontalScroll = el.scrollHeight > el.clientHeight;
-    var hasVerticalScroll   = el.scrollWidth > el.clientWidth;
+    const hasHorizontalScroll = el.scrollHeight > el.clientHeight;
+    const hasVerticalScroll   = el.scrollWidth > el.clientWidth;
 
     if (hasHorizontalScroll || hasVerticalScroll)
         return true;
@@ -124,8 +124,8 @@ function hasHTMLElementScroll (el) {
         if (hasBodyScroll(body))
             return false;
 
-        var clientWidth  = Math.min(el.clientWidth, body.clientWidth);
-        var clientHeight = Math.min(el.clientHeight, body.clientHeight);
+        const clientWidth  = Math.min(el.clientWidth, body.clientWidth);
+        const clientHeight = Math.min(el.clientHeight, body.clientHeight);
 
         return body.scrollHeight > clientHeight || body.scrollWidth > clientWidth;
     }
@@ -160,7 +160,7 @@ export function set (el, style, value) {
     if (typeof style === 'string')
         styleUtils.set(el, style, value);
 
-    for (var property in style) {
+    for (const property in style) {
         if (style.hasOwnProperty(property))
             styleUtils.set(el, property, style[property]);
     }

@@ -1,6 +1,6 @@
-var expect         = require('chai').expect;
-var parseUserAgent = require('useragent').parse;
-var config         = require('../../../../config');
+const expect         = require('chai').expect;
+const parseUserAgent = require('useragent').parse;
+const config         = require('../../../../config');
 
 describe('[API] ClientFunction', function () {
     it('Should be correctly dispatched to test run', function () {
@@ -13,12 +13,12 @@ describe('[API] ClientFunction', function () {
             if (!isErrorsArray && !errs)
                 throw new Error('Error for "' + alias + '" haven\'t created');
 
-            var ua = parseUserAgent(errs[0]).toString().toLowerCase();
+            const ua = parseUserAgent(errs[0]).toString().toLowerCase();
 
             expect(ua.indexOf(expected)).eql(0, ua + ' doesn\'t start with "' + expected + '"');
         }
 
-        var browsers = 'chrome,firefox,ie';
+        const browsers = 'chrome,firefox,ie';
 
         return runTests('./testcafe-fixtures/client-fn-test.js', 'Dispatch', { shouldFail: true, only: browsers })
             .catch(function (errs) {

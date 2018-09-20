@@ -14,7 +14,7 @@ import MESSAGE from '../errors/runtime/message';
 
 const SOURCE_CHUNK_LENGTH = 1000;
 
-var testFileCompilers = [
+const testFileCompilers = [
     new LegacyTestFileCompiler(hammerhead.processScript),
     new EsNextTestFileCompiler(),
     new TypeScriptTestFileCompiler(),
@@ -32,7 +32,7 @@ export default class Compiler {
     }
 
     async _compileTestFile (filename) {
-        var code = null;
+        let code = null;
 
         try {
             code = await readFile(filename);
@@ -43,15 +43,15 @@ export default class Compiler {
 
         code = stripBom(code).toString();
 
-        var compiler = find(testFileCompilers, c => c.canCompile(code, filename));
+        const compiler = find(testFileCompilers, c => c.canCompile(code, filename));
 
         return compiler ? await compiler.compile(code, filename) : null;
     }
 
     async getTests () {
-        var sourceChunks = chunk(this.sources, SOURCE_CHUNK_LENGTH);
-        var tests        = [];
-        var compileUnits = [];
+        const sourceChunks = chunk(this.sources, SOURCE_CHUNK_LENGTH);
+        let tests        = [];
+        let compileUnits = [];
 
         // NOTE: split sources into chunks because the fs module can't read all files
         // simultaneously if the number of them is too large (several thousands).

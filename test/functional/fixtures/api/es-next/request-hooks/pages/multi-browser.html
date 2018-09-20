@@ -7,10 +7,10 @@
 <body>
 <button>Get browser info</button>
 <script>
-    var button = document.getElementsByTagName('button')[0];
+    const button = document.getElementsByTagName('button')[0];
 
     button.addEventListener('click', function () {
-        var xhr = new XMLHttpRequest();
+        const xhr = new XMLHttpRequest();
 
         xhr.open('GET', '/get-browser-name');
         xhr.addEventListener('load', function (e) {

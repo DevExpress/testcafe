@@ -1,17 +1,17 @@
-var testCafeCore = window.getTestCafeModule('testCafeCore');
-var domUtils     = testCafeCore.get('./utils/dom');
+const testCafeCore = window.getTestCafeModule('testCafeCore');
+const domUtils     = testCafeCore.get('./utils/dom');
 
-var testCafeLegacyRunner = window.getTestCafeModule('testCafeLegacyRunner');
-var actionsAPI           = testCafeLegacyRunner.get('./api/actions');
+const testCafeLegacyRunner = window.getTestCafeModule('testCafeLegacyRunner');
+const actionsAPI           = testCafeLegacyRunner.get('./api/actions');
 
 
 $(document).ready(function () {
-    var parse = actionsAPI.parseActionArgument;
+    const parse = actionsAPI.parseActionArgument;
 
-    var isArrayOfElements = function (target) {
+    const isArrayOfElements = function (target) {
         if (!$.isArray(target))
             return false;
-        for (var i = 0; i < target.length; i++) {
+        for (let i = 0; i < target.length; i++) {
             if (!domUtils.isDomElement(target[i]))
                 return false;
         }
@@ -19,8 +19,8 @@ $(document).ready(function () {
     };
 
     test('isArrayOfElements function test', function () {
-        var div1 = document.getElementById('div1');
-        var div2 = document.getElementById('div2');
+        const div1 = document.getElementById('div1');
+        const div2 = document.getElementById('div2');
 
         ok(isArrayOfElements([div1, div2]));
         ok(!isArrayOfElements(div1));
@@ -30,21 +30,21 @@ $(document).ready(function () {
     });
 
     test('dom element', function () {
-        var target = parse(document.getElementById('div1'));
+        const target = parse(document.getElementById('div1'));
 
         ok(isArrayOfElements(target));
         equal(target.length, 1);
     });
 
     test('jQuery object', function () {
-        var target = parse($('.testDiv'));
+        const target = parse($('.testDiv'));
 
         ok(isArrayOfElements(target));
         equal(target.length, 2);
     });
 
     test('css selector', function () {
-        var target = parse('#div1');
+        const target = parse('#div1');
 
         ok(isArrayOfElements(target));
         equal(target.length, 1);

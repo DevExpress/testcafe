@@ -1,4 +1,4 @@
-var expect = require('chai').expect;
+const expect = require('chai').expect;
 
 describe('[TypeScript] Smoke tests', function () {
     it('Should run non-trivial tests', function () {

@@ -75,7 +75,7 @@ function ensureFileInput (element) {
 }
 
 function ensureOffsetOptions (element, options) {
-    var { offsetX, offsetY } = getOffsetOptions(element, options.offsetX, options.offsetY);
+    const { offsetX, offsetY } = getOffsetOptions(element, options.offsetX, options.offsetY);
 
     options.offsetX = offsetX;
     options.offsetY = offsetY;
@@ -101,7 +101,7 @@ class ActionExecutor {
     }
 
     _getSpecificTimeout () {
-        var hasSpecificTimeout = this.command.selector && typeof this.command.selector.timeout === 'number';
+        const hasSpecificTimeout = this.command.selector && typeof this.command.selector.timeout === 'number';
 
         return hasSpecificTimeout ? this.command.selector.timeout : this.globalSelectorTimeout;
     }
@@ -119,7 +119,7 @@ class ActionExecutor {
 
     _ensureCommandArguments () {
         if (this.command.type === COMMAND_TYPE.pressKey) {
-            var parsedKeySequence = parseKeySequence(this.command.keys);
+            const parsedKeySequence = parseKeySequence(this.command.keys);
 
             if (parsedKeySequence.error)
                 throw new ActionIncorrectKeysError('keys');
@@ -127,7 +127,7 @@ class ActionExecutor {
     }
 
     _ensureCommandElements () {
-        var elementDescriptors = [];
+        const elementDescriptors = [];
 
         if (this.command.selector)
             elementDescriptors.push(createElementDescriptor(this.command.selector));
@@ -168,7 +168,7 @@ class ActionExecutor {
     }
 
     _createAutomation () {
-        var selectArgs = null;
+        let selectArgs = null;
 
         switch (this.command.type) {
             case COMMAND_TYPE.click :
@@ -227,7 +227,7 @@ class ActionExecutor {
             .then(() => {
                 this._ensureCommandOptions();
 
-                var automation = this._createAutomation();
+                const automation = this._createAutomation();
 
                 if (automation.TARGET_ELEMENT_FOUND_EVENT) {
                     automation.on(automation.TARGET_ELEMENT_FOUND_EVENT, () => {
@@ -246,8 +246,8 @@ class ActionExecutor {
     }
 
     _runRecursively () {
-        var actionFinished     = false;
-        var strictElementCheck = true;
+        let actionFinished     = false;
+        let strictElementCheck = true;
 
         return promiseUtils.whilst(() => !actionFinished, () => {
             return this
@@ -278,11 +278,11 @@ class ActionExecutor {
         if (this.command.options && !this.command.options.speed)
             this.command.options.speed = this.testSpeed;
 
-        var startPromise = new Promise(resolve => {
+        const startPromise = new Promise(resolve => {
             this.executionStartedHandler = resolve;
         });
 
-        var completionPromise = new Promise(resolve => {
+        const completionPromise = new Promise(resolve => {
             this.executionStartTime = new Date();
 
             try {
@@ -297,7 +297,7 @@ class ActionExecutor {
 
             this.statusBar.showWaitingElementStatus(this.commandSelectorTimeout);
 
-            var { actionPromise, barriersPromise } = runWithBarriers(() => this._runRecursively());
+            const { actionPromise, barriersPromise } = runWithBarriers(() => this._runRecursively());
 
             actionPromise
                 .then(() => Promise.all([
@@ -316,7 +316,7 @@ class ActionExecutor {
 }
 
 export default function executeAction (command, globalSelectorTimeout, statusBar, testSpeed) {
-    var actionExecutor = new ActionExecutor(command, globalSelectorTimeout, statusBar, testSpeed);
+    const actionExecutor = new ActionExecutor(command, globalSelectorTimeout, statusBar, testSpeed);
 
     return actionExecutor.execute();
 }

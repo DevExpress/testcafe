@@ -33,9 +33,9 @@ test('ClientFunction fn is not a function', async () => {
 });
 
 test('ClientFunction fn test run is unresolvable', async () => {
-    var fs = require('fs');
+    const fs = require('fs');
 
-    var fn = ClientFunction(() => 123);
+    const fn = ClientFunction(() => 123);
 
     return new Promise((resolve, reject) => {
         fs.readFile('not/exists', async () => {
@@ -66,7 +66,7 @@ test('Bind ClientFunction', async t => {
 
     // NOTE: binding does not modify the original function,
     // but creates a new bound function instead, so here it will throw an error.
-    var originalClientFnExec = new Promise((resolve, reject) => {
+    const originalClientFnExec = new Promise((resolve, reject) => {
         fs.readFile('not/exists', () => {
             try {
                 getLocation();
@@ -95,7 +95,7 @@ test('Invalid ClientFunction test run binding', () => {
 });
 
 test('Promises support', async () => {
-    var res = await ClientFunction(() => {
+    const res = await ClientFunction(() => {
         return Promise
             .resolve()
             .then(()=> {
@@ -109,8 +109,8 @@ test('Promises support', async () => {
 });
 
 test('Babel artifacts polyfills', async () => {
-    var res = await ClientFunction(() => {
-        var obj = { 1: '1', '2': 2 };
+    const res = await ClientFunction(() => {
+        const obj = { 1: '1', '2': 2 };
 
         return typeof obj === 'object' ? JSON.stringify(Object.keys(obj)) : null;
     })();
@@ -119,7 +119,7 @@ test('Babel artifacts polyfills', async () => {
 });
 
 test('Error in code', async () => {
-    var fn = ClientFunction(() => {
+    const fn = ClientFunction(() => {
         throw new Error('Hey ya!');
     });
 
@@ -127,7 +127,7 @@ test('Error in code', async () => {
 });
 
 test('Error in Promise', async () => {
-    var fn = ClientFunction(() => {
+    const fn = ClientFunction(() => {
         return Promise.resolve().then(()=> {
             throw new Error('42');
         });

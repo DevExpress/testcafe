@@ -1,24 +1,24 @@
-var hammerhead   = window.getTestCafeModule('hammerhead');
-var browserUtils = hammerhead.utils.browser;
+const hammerhead   = window.getTestCafeModule('hammerhead');
+const browserUtils = hammerhead.utils.browser;
 
-var testCafeLegacyRunner = window.getTestCafeModule('testCafeLegacyRunner');
-var getAutomations       = testCafeLegacyRunner.get('./automation-storage').getAutomations;
-var initAutomation       = testCafeLegacyRunner.get('./init-automation');
+const testCafeLegacyRunner = window.getTestCafeModule('testCafeLegacyRunner');
+const getAutomations       = testCafeLegacyRunner.get('./automation-storage').getAutomations;
+const initAutomation       = testCafeLegacyRunner.get('./init-automation');
 
-var testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
+const testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
 
-var ClickOptions    = testCafeAutomation.get('../../test-run/commands/options').ClickOptions;
+const ClickOptions    = testCafeAutomation.get('../../test-run/commands/options').ClickOptions;
 
-var getOffsetOptions = testCafeAutomation.getOffsetOptions;
+const getOffsetOptions = testCafeAutomation.getOffsetOptions;
 
 initAutomation();
 
 $(document).ready(function () {
     //consts
-    var TEST_ELEMENT_CLASS = 'testElement';
+    const TEST_ELEMENT_CLASS = 'testElement';
 
     //vars
-    var body = $('body')[0];
+    const body = $('body')[0];
 
     $(body).css('height', 1500);
 
@@ -27,7 +27,7 @@ $(document).ready(function () {
     if (browserUtils.isIE9)
         $(window.top.document).find('body').css('marginTop', '0px');
 
-    var startNext = function () {
+    const startNext = function () {
         if (browserUtils.isIE) {
             removeTestElements();
             window.setTimeout(start, 30);
@@ -36,13 +36,13 @@ $(document).ready(function () {
             start();
     };
 
-    var removeTestElements = function () {
+    const removeTestElements = function () {
         $('.' + TEST_ELEMENT_CLASS).remove();
     };
 
-    var runClickAutomationInIframe = function (iframe, el, options, callback) {
-        var offsets      = getOffsetOptions(el, options.offsetX, options.offsetY);
-        var clickOptions = new ClickOptions({
+    const runClickAutomationInIframe = function (iframe, el, options, callback) {
+        const offsets      = getOffsetOptions(el, options.offsetX, options.offsetY);
+        const clickOptions = new ClickOptions({
             offsetX:  offsets.offsetX,
             offsetY:  offsets.offsetY,
             caretPos: options.caretPos,
@@ -55,8 +55,8 @@ $(document).ready(function () {
             }
         });
 
-        var iframeAutomations = getAutomations(iframe.contentWindow);
-        var clickAutomation   = new iframeAutomations.Click(el, clickOptions);
+        const iframeAutomations = getAutomations(iframe.contentWindow);
+        const clickAutomation   = new iframeAutomations.Click(el, clickOptions);
 
         clickAutomation
             .run()
@@ -71,8 +71,9 @@ $(document).ready(function () {
     module('regression tests');
 
     asyncTest('T235186 - Focus event handlers don\'t call for iframe\'s contenteditable body', function () {
-        var focusEventCount = 0;
-        var $iFrame         = $('<iframe></iframe>')
+        let focusEventCount = 0;
+
+        const $iFrame = $('<iframe></iframe>')
             .width(500)
             .height(500)
             .attr('src', window.QUnitGlobals.getResourceUrl('../data/runner/iframe.html'))
@@ -80,7 +81,7 @@ $(document).ready(function () {
             .appendTo('body');
 
         $iFrame.load(function () {
-            var $iFrameBody = $($iFrame[0].contentWindow.document.body);
+            const $iFrameBody = $($iFrame[0].contentWindow.document.body);
 
             $iFrameBody.attr('contenteditable', true);
 

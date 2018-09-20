@@ -8,8 +8,8 @@
 <div id="result"></div>
 <div style="background-color: #6ab779; width: 100px; height: 100px;;"></div>
 <script>
-    var wasReloadedFlag = 'wasReloaded';
-    var wasReloaded = sessionStorage.getItem(wasReloadedFlag);
+    const wasReloadedFlag = 'wasReloaded';
+    const wasReloaded = sessionStorage.getItem(wasReloadedFlag);
     sessionStorage.setItem(wasReloadedFlag, true);
 
     if (!wasReloaded) {

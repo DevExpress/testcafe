@@ -1,39 +1,39 @@
-var hammerhead   = window.getTestCafeModule('hammerhead');
-var browserUtils = hammerhead.utils.browser;
+const hammerhead   = window.getTestCafeModule('hammerhead');
+const browserUtils = hammerhead.utils.browser;
 
-var testCafeCore      = window.getTestCafeModule('testCafeCore');
-var textSelection     = testCafeCore.get('./utils/text-selection');
-var contentEditable   = testCafeCore.get('./utils/content-editable');
-var domUtils          = testCafeCore.get('./utils/dom');
-var parseKeySequence  = testCafeCore.get('./utils/parse-key-sequence');
+const testCafeCore      = window.getTestCafeModule('testCafeCore');
+const textSelection     = testCafeCore.get('./utils/text-selection');
+const contentEditable   = testCafeCore.get('./utils/content-editable');
+const domUtils          = testCafeCore.get('./utils/dom');
+const parseKeySequence  = testCafeCore.get('./utils/parse-key-sequence');
 
-var testCafeAutomation   = window.getTestCafeModule('testCafeAutomation');
-var TypeAutomation       = testCafeAutomation.Type;
-var SelectTextAutomation = testCafeAutomation.SelectText;
-var PressAutomation      = testCafeAutomation.Press;
+const testCafeAutomation   = window.getTestCafeModule('testCafeAutomation');
+const TypeAutomation       = testCafeAutomation.Type;
+const SelectTextAutomation = testCafeAutomation.SelectText;
+const PressAutomation      = testCafeAutomation.Press;
 
-var TypeOptions = testCafeAutomation.get('../../test-run/commands/options').TypeOptions;
+const TypeOptions = testCafeAutomation.get('../../test-run/commands/options').TypeOptions;
 
 testCafeCore.preventRealEvents();
 
 
 $(document).ready(function () {
     //consts
-    var TEST_ELEMENT_CLASS = 'testElement';
+    const TEST_ELEMENT_CLASS = 'testElement';
 
-    var $el                     = null;
-    var $parent                 = null;
-    var firstElementInnerHTML   = null;
-    var secondElementInnerHTML  = null;
-    var thirdElementInnerHTML   = null;
-    var fourthElementInnerHTML  = null;
-    var fifthElementInnerHTML   = null;
-    var sixthElementInnerHTML   = null;
-    var seventhElementInnerHTML = null;
+    let $el                     = null;
+    let $parent                 = null;
+    let firstElementInnerHTML   = null;
+    let secondElementInnerHTML  = null;
+    let thirdElementInnerHTML   = null;
+    let fourthElementInnerHTML  = null;
+    let fifthElementInnerHTML   = null;
+    let sixthElementInnerHTML   = null;
+    let seventhElementInnerHTML = null;
 
     $('body').css('height', 1500);
 
-    var startNext = function () {
+    const startNext = function () {
         if (browserUtils.isIE) {
             removeTestElements();
             window.setTimeout(start, 30);
@@ -42,13 +42,13 @@ $(document).ready(function () {
             start();
     };
 
-    var removeTestElements = function () {
+    const removeTestElements = function () {
         $('.' + TEST_ELEMENT_CLASS).remove();
     };
 
-    var checkSelection = function ($element, startNode, startOffset, endNode, endOffset) {
-        var curDocument = domUtils.findDocument($element[0]);
-        var selection   = curDocument.getSelection();
+    const checkSelection = function ($element, startNode, startOffset, endNode, endOffset) {
+        const curDocument = domUtils.findDocument($element[0]);
+        const selection   = curDocument.getSelection();
 
         equal(domUtils.getActiveElement(), $element[0]);
         ok(domUtils.isTheSameNode(startNode, selection.anchorNode), 'startNode correct');
@@ -57,11 +57,11 @@ $(document).ready(function () {
         equal(selection.focusOffset, endOffset, 'endOffset correct');
     };
 
-    var setInnerHTML = function ($element, innerHTML) {
+    const setInnerHTML = function ($element, innerHTML) {
         $element[0].innerHTML = innerHTML;
     };
 
-    var stateHelper = {
+    const stateHelper = {
         isStateSaved: function () {
             return firstElementInnerHTML;
         },
@@ -89,12 +89,12 @@ $(document).ready(function () {
         }
     };
 
-    var getRealCaretPosition = function ($element, node, offset) {
-        var currentOffset = 0;
-        var find          = false;
+    const getRealCaretPosition = function ($element, node, offset) {
+        let currentOffset = 0;
+        let find          = false;
 
         function checkChildNodes (target) {
-            var childNodes = target.childNodes;
+            const childNodes = target.childNodes;
 
             if (find)
                 return currentOffset;
@@ -117,18 +117,18 @@ $(document).ready(function () {
         return checkChildNodes($element[0]);
     };
 
-    var getElementTextWithoutSelection = function ($element, text) {
-        var curDocument = domUtils.findDocument($element[0]);
-        var sel         = curDocument.getSelection();
-        var startNode   = sel.anchorNode;
-        var startOffset = sel.anchorOffset;
-        var endNode     = sel.focusNode;
-        var endOffset   = sel.focusOffset;
+    const getElementTextWithoutSelection = function ($element, text) {
+        const curDocument = domUtils.findDocument($element[0]);
+        const sel         = curDocument.getSelection();
+        const startNode   = sel.anchorNode;
+        const startOffset = sel.anchorOffset;
+        const endNode     = sel.focusNode;
+        const endOffset   = sel.focusOffset;
 
-        var elementText = $element.text();
+        const elementText = $element.text();
 
-        var start = getRealCaretPosition($element, startNode, startOffset);
-        var end   = getRealCaretPosition($element, endNode, endOffset);
+        const start = getRealCaretPosition($element, startNode, startOffset);
+        const end   = getRealCaretPosition($element, endNode, endOffset);
 
         if (!browserUtils.isIE && textSelection.hasInverseSelection($element[0]))
             return elementText.substring(0, end) + text + elementText.substring(start);
@@ -136,25 +136,25 @@ $(document).ready(function () {
         return elementText.substring(0, start) + text + elementText.substring(end);
     };
 
-    var runPressAutomation = function (keys, callback) {
-        var pressAutomation = new PressAutomation(parseKeySequence(keys).combinations, {});
+    const runPressAutomation = function (keys, callback) {
+        const pressAutomation = new PressAutomation(parseKeySequence(keys).combinations, {});
 
         pressAutomation
             .run()
             .then(callback);
     };
 
-    var runSelectAutomation = function (element, startPos, endPos, callback) {
-        var selectTextAutomation = new SelectTextAutomation(element, startPos, endPos, {});
+    const runSelectAutomation = function (element, startPos, endPos, callback) {
+        const selectTextAutomation = new SelectTextAutomation(element, startPos, endPos, {});
 
         selectTextAutomation
             .run()
             .then(callback);
     };
 
-    var runTypeAutomation = function (element, text, options, callback) {
-        var typeOptions    = new TypeOptions(options);
-        var typeAutomation = new TypeAutomation(element, text, typeOptions);
+    const runTypeAutomation = function (element, text, options, callback) {
+        const typeOptions    = new TypeOptions(options);
+        const typeAutomation = new TypeAutomation(element, text, typeOptions);
 
         typeAutomation
             .run()
@@ -181,9 +181,10 @@ $(document).ready(function () {
     module('selection and typing');
 
     asyncTest('select from middle of node1 to middle node2 and typing', function () {
-        var nodeValue      = null;
-        var newElementText = null;
-        var text           = '123';
+        const text = '123';
+
+        let nodeValue      = null;
+        let newElementText = null;
 
         $el = $('#4');
 
@@ -223,8 +224,9 @@ $(document).ready(function () {
     });
 
     asyncTest('select from start of node1 to middle node2 and typing', function () {
-        var newElementText = null;
-        var text           = '123';
+        const text = '123';
+
+        let newElementText = null;
 
         $el = $('#4');
 
@@ -263,8 +265,9 @@ $(document).ready(function () {
     });
 
     asyncTest('select from middle of node1 to start node2 and typing (inverse)', function () {
-        var newElementText = null;
-        var text           = '123';
+        const text = '123';
+
+        let newElementText = null;
 
         $el = $('#4');
 
@@ -307,9 +310,10 @@ $(document).ready(function () {
     });
 
     asyncTest('select from end of node1 to middle node2 and typing', function () {
-        var nodeValue      = null;
-        var newElementText = null;
-        var text           = '123';
+        const text = '123';
+
+        let nodeValue      = null;
+        let newElementText = null;
 
         $el = $('#4');
 
@@ -367,9 +371,10 @@ $(document).ready(function () {
     });
 
     asyncTest('select from middle of node1 to end node2 and typing (inverse)', function () {
-        var nodeValue      = null;
-        var newElementText = null;
-        var text           = '123';
+        const text = '123';
+
+        let nodeValue      = null;
+        let newElementText = null;
 
         $el = $('#4');
 
@@ -417,8 +422,9 @@ $(document).ready(function () {
     });
 
     asyncTest('select from start of node1 to end node2 and typing', function () {
-        var newElementText = null;
-        var text           = '123';
+        const text = '123';
+
+        let newElementText = null;
 
         $el = $('#4');
 
@@ -457,9 +463,10 @@ $(document).ready(function () {
     });
 
     asyncTest('select from end of node1 to start node2 and typing', function () {
-        var nodeValue      = null;
-        var newElementText = null;
-        var text           = '123';
+        const text = '123';
+
+        let nodeValue      = null;
+        let newElementText = null;
 
         $el = $('#4');
 
@@ -505,9 +512,10 @@ $(document).ready(function () {
     });
 
     asyncTest('select from start of node1 to start node2 and typing', function () {
-        var nodeValue      = null;
-        var newElementText = null;
-        var text           = '123';
+        const text = '123';
+
+        let nodeValue      = null;
+        let newElementText = null;
 
         $el = $('#4');
 
@@ -552,9 +560,10 @@ $(document).ready(function () {
     });
 
     asyncTest('select from end of node1 to start node2 and typing', function () {
-        var nodeValue      = null;
-        var newElementText = null;
-        var text           = '123';
+        const text = '123';
+
+        let nodeValue      = null;
+        let newElementText = null;
 
         $el = $('#4');
 
@@ -606,8 +615,9 @@ $(document).ready(function () {
     });
 
     asyncTest('select with end on invisible node and typing', function () {
-        var newElementText = null;
-        var text           = '123';
+        const text = '123';
+
+        let newElementText = null;
 
         $parent = $('#4');
         $el     = $parent.find('p:nth(1)');
@@ -648,9 +658,10 @@ $(document).ready(function () {
     });
 
     asyncTest('select with start on invisible node and typing', function () {
-        var nodeValue      = null;
-        var newElementText = null;
-        var text           = '123';
+        const text = '123';
+
+        let nodeValue      = null;
+        let newElementText = null;
 
         $el = $('#4');
 
@@ -700,9 +711,9 @@ $(document).ready(function () {
     asyncTest('select, press delete and typing', function () {
         $el = $('#4');
 
-        var nodeValue     = $el[0].childNodes[1].childNodes[2].nodeValue;
-        var nextNodeValue = $el[0].childNodes[10].childNodes[0].nodeValue;
-        var text          = '123';
+        const nodeValue     = $el[0].childNodes[1].childNodes[2].nodeValue;
+        const nextNodeValue = $el[0].childNodes[10].childNodes[0].nodeValue;
+        const text          = '123';
 
         window.async.series({
             'Select': function (callback) {
@@ -732,8 +743,8 @@ $(document).ready(function () {
 
             'Check typing': function () {
                 //NOTE: we can not guarantee the exact position of selection after removal of content (after press 'delete', 'backspace' or etc.)
-                var curDocument = domUtils.findDocument($el[0]);
-                var selection   = curDocument.getSelection();
+                const curDocument = domUtils.findDocument($el[0]);
+                const selection   = curDocument.getSelection();
 
                 if (!browserUtils.isIE9 || selection.anchorNode === $el[0].childNodes[1].childNodes[2]) {
                     checkSelection($el, $el[0].childNodes[1].childNodes[2],
@@ -755,9 +766,10 @@ $(document).ready(function () {
         $parent = $('#6');
         $el     = $parent.find('i>code');
 
-        var nodeValue        = $parent[0].childNodes[5].childNodes[0].nodeValue;
-        var text             = '123';
-        var currentSelection = null;
+        const nodeValue        = $parent[0].childNodes[5].childNodes[0].nodeValue;
+        const text             = '123';
+
+        let currentSelection = null;
 
         window.async.series({
             'Select': function (callback) {
@@ -785,7 +797,7 @@ $(document).ready(function () {
             },
 
             'Check typing': function () {
-                var $typedElement = $parent.find('i:first');
+                const $typedElement = $parent.find('i:first');
 
                 checkSelection($parent, currentSelection.startPos.node,
                     currentSelection.startPos.offset + text.length, currentSelection.startPos.node,
@@ -801,9 +813,10 @@ $(document).ready(function () {
         $parent = $('#6');
         $el     = $parent.find('i>code');
 
-        var nodeValue        = $parent[0].childNodes[5].childNodes[0].nodeValue;
-        var text             = '123';
-        var currentSelection = null;
+        const nodeValue        = $parent[0].childNodes[5].childNodes[0].nodeValue;
+        const text             = '123';
+
+        let currentSelection = null;
 
         window.async.series({
             'Select': function (callback) {
@@ -831,14 +844,14 @@ $(document).ready(function () {
             },
 
             'Check typing': function () {
-                var $typedElement = $parent.find('i:first');
+                const $typedElement = $parent.find('i:first');
 
                 checkSelection($parent, currentSelection.startPos.node,
                     currentSelection.startPos.offset + text.length, currentSelection.startPos.node,
                     currentSelection.startPos.offset + text.length);
 
                 equal($typedElement.text().substring(0, 11), 'i el123b el');
-                //var node = $parent[0].childNodes[5].childNodes[0];
+                //const node = $parent[0].childNodes[5].childNodes[0];
                 //checkSelection($parent, node, node.nodeValue.length, node, node.nodeValue.length);
                 // equal($parent[0].childNodes[5].childNodes[0].nodeValue, nodeValue + text);
                 startNext();
@@ -849,13 +862,13 @@ $(document).ready(function () {
     asyncTest('select (inverse), press left and typing', function () {
         $el = $('#4');
 
-        var startNode      = $el[0].childNodes[1].childNodes[2];
-        var startOffset    = 11;
-        var endNode        = $el[0].childNodes[10].childNodes[0];
-        var endOffset      = 3;
-        var startNodeValue = startNode.nodeValue;
-        var endNodeValue   = endNode.nodeValue;
-        var text           = '123';
+        const startNode      = $el[0].childNodes[1].childNodes[2];
+        const startOffset    = 11;
+        const endNode        = $el[0].childNodes[10].childNodes[0];
+        const endOffset      = 3;
+        const startNodeValue = startNode.nodeValue;
+        const endNodeValue   = endNode.nodeValue;
+        const text           = '123';
 
         window.async.series({
             'Select': function (callback) {
@@ -908,13 +921,13 @@ $(document).ready(function () {
     asyncTest('select (inverse), press right and typing', function () {
         $el = $('#4');
 
-        var startNode      = $el[0].childNodes[1].childNodes[2];
-        var startOffset    = 11;
-        var endNode        = $el[0].childNodes[10].childNodes[0];
-        var endOffset      = 3;
-        var startNodeValue = startNode.nodeValue;
-        var endNodeValue   = endNode.nodeValue;
-        var text           = '123';
+        const startNode      = $el[0].childNodes[1].childNodes[2];
+        const startOffset    = 11;
+        const endNode        = $el[0].childNodes[10].childNodes[0];
+        const endOffset      = 3;
+        const startNodeValue = startNode.nodeValue;
+        const endNodeValue   = endNode.nodeValue;
+        const text           = '123';
 
         window.async.series({
             'Select': function (callback) {

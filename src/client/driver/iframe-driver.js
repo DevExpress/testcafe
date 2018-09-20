@@ -30,7 +30,7 @@ export default class IframeDriver extends Driver {
     // Messaging between drivers
     _initParentDriverListening () {
         eventSandbox.message.on(eventSandbox.message.SERVICE_MSG_RECEIVED_EVENT, e => {
-            var msg = e.message;
+            const msg = e.message;
 
             pageUnloadBarrier
                 .wait(0)
@@ -77,7 +77,7 @@ export default class IframeDriver extends Driver {
         this.nativeDialogsTracker = new IframeNativeDialogTracker(this.dialogHandler);
         this.statusBar            = new IframeStatusBar();
 
-        var initializePromise = this.parentDriverLink
+        const initializePromise = this.parentDriverLink
             .establishConnection()
             .then(id => {
                 this.contextStorage = new ContextStorage(window, id);
@@ -85,7 +85,7 @@ export default class IframeDriver extends Driver {
                 if (this._failIfClientCodeExecutionIsInterrupted())
                     return;
 
-                var inCommandExecution = this.contextStorage.getItem(this.COMMAND_EXECUTING_FLAG) ||
+                const inCommandExecution = this.contextStorage.getItem(this.COMMAND_EXECUTING_FLAG) ||
                                          this.contextStorage.getItem(this.EXECUTING_IN_IFRAME_FLAG);
 
                 if (inCommandExecution) {

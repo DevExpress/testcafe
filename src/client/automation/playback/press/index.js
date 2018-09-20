@@ -5,9 +5,9 @@ import supportedShortcutHandlers from './shortcuts';
 import { getActualKeysAndEventKeyProperties, getDeepActiveElement } from './utils';
 import AutomationSettings from '../../settings';
 
-var Promise        = hammerhead.Promise;
-var browserUtils   = hammerhead.utils.browser;
-var messageSandbox = hammerhead.eventSandbox.message;
+const Promise        = hammerhead.Promise;
+const browserUtils   = hammerhead.utils.browser;
+const messageSandbox = hammerhead.eventSandbox.message;
 
 
 const PRESS_REQUEST_CMD  = 'automation|press|request';
@@ -19,7 +19,7 @@ messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
     if (e.message.cmd === PRESS_REQUEST_CMD) {
         hammerhead.on(hammerhead.EVENTS.beforeUnload, () => messageSandbox.sendServiceMsg({ cmd: PRESS_RESPONSE_CMD }, e.source));
 
-        var pressAutomation = new PressAutomation(e.message.keyCombinations, e.message.options);
+        const pressAutomation = new PressAutomation(e.message.keyCombinations, e.message.options);
 
         pressAutomation
             .run()
@@ -40,28 +40,28 @@ export default class PressAutomation {
     }
 
     static _getKeyPressSimulators (keyCombination) {
-        var keysArray = getKeyArray(keyCombination);
+        const keysArray = getKeyArray(keyCombination);
 
         // NOTE: symbols may have the same keyCode, but their "event.key" will be different, so we
         // need to get the "event.key" property for each key, and add the 'shift' key where needed.
-        var { actualKeys, eventKeyProperties } = getActualKeysAndEventKeyProperties(keysArray);
+        const { actualKeys, eventKeyProperties } = getActualKeysAndEventKeyProperties(keysArray);
 
         return arrayUtils.map(actualKeys, (key, index) => new KeyPressSimulator(key, eventKeyProperties[index]));
     }
 
     static _getShortcuts (keyCombination) {
-        var keys               = getKeyArray(keyCombination.toLowerCase());
-        var shortcuts          = [];
-        var curFullCombination = [];
-        var curCombination     = [];
+        const keys               = getKeyArray(keyCombination.toLowerCase());
+        const shortcuts          = [];
+        let curFullCombination = [];
+        let curCombination     = [];
 
-        for (var i = 0; i < keys.length; i++) {
+        for (let i = 0; i < keys.length; i++) {
             curFullCombination.push(keys[i]);
 
             curCombination = curFullCombination.slice();
 
             while (curCombination.length) {
-                var keyString = curCombination.join('+');
+                const keyString = curCombination.join('+');
 
                 if (supportedShortcutHandlers[keyString]) {
                     shortcuts.push(keyString);
@@ -76,14 +76,14 @@ export default class PressAutomation {
     }
 
     static _getShortcutHandlers (keyCombination) {
-        var shortcuts          = PressAutomation._getShortcuts(keyCombination.toLowerCase());
-        var shortcutHandlers   = {};
-        var stringWithShortcut = '';
-        var shortcut           = null;
-        var shortcutPosition   = null;
-        var shortcutLength     = null;
+        const shortcuts          = PressAutomation._getShortcuts(keyCombination.toLowerCase());
+        const shortcutHandlers   = {};
+        let stringWithShortcut = '';
+        let shortcut           = null;
+        let shortcutPosition   = null;
+        let shortcutLength     = null;
 
-        for (var i = 0; i < shortcuts.length; i++) {
+        for (let i = 0; i < shortcuts.length; i++) {
             shortcut         = shortcuts[i];
             shortcutPosition = keyCombination.indexOf(shortcut);
             shortcutLength   = shortcut.length;
@@ -102,7 +102,7 @@ export default class PressAutomation {
     _down (keyPressSimulator) {
         this.pressedKeyString += (this.pressedKeyString ? '+' : '') + keyPressSimulator.key;
 
-        var keyDownPrevented = !keyPressSimulator.down(this.modifiersState);
+        const keyDownPrevented = !keyPressSimulator.down(this.modifiersState);
 
         return Promise.resolve(keyDownPrevented);
     }
@@ -114,8 +114,8 @@ export default class PressAutomation {
         if (keyEventPrevented && !this.isSelectElement)
             return delay(this.automationSettings.keyActionStepDelay);
 
-        var currentShortcutHandler = this.shortcutHandlers[this.pressedKeyString];
-        var keyPressPrevented      = false;
+        const currentShortcutHandler = this.shortcutHandlers[this.pressedKeyString];
+        let keyPressPrevented      = false;
 
         // NOTE: B254435
         if (!currentShortcutHandler || browserUtils.isFirefox || keyPressSimulator.key === 'enter')
@@ -141,7 +141,7 @@ export default class PressAutomation {
         this.pressedKeyString = '';
         this.shortcutHandlers = PressAutomation._getShortcutHandlers(keyCombination);
 
-        var keyPressSimulators = PressAutomation._getKeyPressSimulators(keyCombination);
+        const keyPressSimulators = PressAutomation._getKeyPressSimulators(keyCombination);
 
         return promiseUtils.each(keyPressSimulators, keySimulator => {
             return this
@@ -156,11 +156,11 @@ export default class PressAutomation {
     }
 
     run () {
-        var activeElement         = domUtils.getActiveElement();
-        var activeElementIsIframe = domUtils.isIframeElement(activeElement);
+        const activeElement         = domUtils.getActiveElement();
+        const activeElementIsIframe = domUtils.isIframeElement(activeElement);
 
         if (window.top === window && activeElementIsIframe && activeElement.contentWindow) {
-            var msg = {
+            const msg = {
                 cmd:             PRESS_REQUEST_CMD,
                 keyCombinations: this.keyCombinations,
                 options:         this.options

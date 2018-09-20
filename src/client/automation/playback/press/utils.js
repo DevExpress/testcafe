@@ -2,23 +2,23 @@ import hammerhead from '../../deps/hammerhead';
 import { KEY_MAPS, domUtils } from '../../deps/testcafe-core';
 import isLetter from '../../utils/is-letter';
 
-var nativeMethods = hammerhead.nativeMethods;
+const nativeMethods = hammerhead.nativeMethods;
 
 export function changeLetterCase (letter) {
-    var isLowCase = letter === letter.toLowerCase();
+    const isLowCase = letter === letter.toLowerCase();
 
     return isLowCase ? letter.toUpperCase() : letter.toLowerCase();
 }
 
 export function getActualKeysAndEventKeyProperties (keyArray) {
-    var eventKeyProperties = keyArray.slice();
+    const eventKeyProperties = keyArray.slice();
 
     //NOTE: check 'shift' modifier in keys
-    for (var i = 0; i < keyArray.length; i++) {
-        var key = keyArray[i];
+    for (let i = 0; i < keyArray.length; i++) {
+        const key = keyArray[i];
 
         if (key.toLowerCase() === 'shift') {
-            var nextKey = keyArray[i + 1];
+            const nextKey = keyArray[i + 1];
 
             if (!nextKey)
                 continue;
@@ -56,9 +56,9 @@ export function getChar (key, shiftModified) {
 }
 
 export function getDeepActiveElement (currentDocument) {
-    var doc                   = currentDocument || document;
-    var activeElementInIframe = null;
-    var activeElement         = nativeMethods.documentActiveElementGetter.call(doc);
+    const doc                   = currentDocument || document;
+    let activeElementInIframe = null;
+    let activeElement         = nativeMethods.documentActiveElementGetter.call(doc);
 
     if (!activeElement || !domUtils.isDomElement(activeElement))
         activeElement = doc.body;

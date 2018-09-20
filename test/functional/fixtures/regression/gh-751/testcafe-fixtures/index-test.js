@@ -8,12 +8,13 @@ fixture `GH-751`
 test('Test dblclick performance', async t => {
     await t.doubleClick('#dblclick');
 
-    var dblclickPerformanceLog = await ClientFunction(() => window.dblclickEvents)();
-    var firstMouseupTime       = null;
-    var firstClickTime         = null;
-    var secondMouseupTime      = null;
-    var secondClickTime        = null;
-    var dblclickTime           = null;
+    const dblclickPerformanceLog = await ClientFunction(() => window.dblclickEvents)();
+
+    let firstMouseupTime  = null;
+    let firstClickTime    = null;
+    let secondMouseupTime = null;
+    let secondClickTime   = null;
+    let dblclickTime      = null;
 
     [firstMouseupTime, firstClickTime, secondMouseupTime, secondClickTime, dblclickTime] = dblclickPerformanceLog;
 
@@ -27,7 +28,7 @@ test('Test click performance with hard work', async t => {
 
     await t.click('#hardWorkMousedown');
 
-    var [mousedownTime, mouseupTime] = await ClientFunction(() => window.clickEvents)();
+    const [mousedownTime, mouseupTime] = await ClientFunction(() => window.clickEvents)();
 
     expect(mouseupTime - mousedownTime).is.most(HARD_WORK_TIME + 30);
 });

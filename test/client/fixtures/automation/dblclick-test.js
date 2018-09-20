@@ -1,20 +1,20 @@
-var testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
-var DblClickAutomation = testCafeAutomation.DblClick;
-var ClickOptions       = testCafeAutomation.get('../../test-run/commands/options').ClickOptions;
+const testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
+const DblClickAutomation = testCafeAutomation.DblClick;
+const ClickOptions       = testCafeAutomation.get('../../test-run/commands/options').ClickOptions;
 
-var testCafeCore      = window.getTestCafeModule('testCafeCore');
+const testCafeCore      = window.getTestCafeModule('testCafeCore');
 
 testCafeCore.preventRealEvents();
 
 $(document).ready(function () {
-    var $el = null;
+    let $el = null;
 
     //constants
-    var TEST_ELEMENT_CLASS = 'testElement';
+    const TEST_ELEMENT_CLASS = 'testElement';
 
     //utils
-    var addInputElement = function (type, id, x, y) {
-        var elementString = ['<input type="', type, '" id="', id, '" value="', id, '" />'].join('');
+    const addInputElement = function (type, id, x, y) {
+        const elementString = ['<input type="', type, '" id="', id, '" value="', id, '" />'].join('');
 
         return $(elementString)
             .css({
@@ -40,8 +40,8 @@ $(document).ready(function () {
     module('event tests');
 
     asyncTest('dom events', function () {
-        var clickCount    = 0;
-        var dblclickCount = 0;
+        let clickCount    = 0;
+        let dblclickCount = 0;
 
         $el
             .click(
@@ -52,7 +52,7 @@ $(document).ready(function () {
                 dblclickCount++;
             });
 
-        var dblClick = new DblClickAutomation($el[0], new ClickOptions({ offsetX: 5, offsetY: 5 }));
+        const dblClick = new DblClickAutomation($el[0], new ClickOptions({ offsetX: 5, offsetY: 5 }));
 
         dblClick
             .run()

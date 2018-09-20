@@ -1,7 +1,7 @@
-var expect                     = require('chai').expect;
-var OS                         = require('os-family');
-var config                     = require('../../../../config.js');
-var errorInEachBrowserContains = require('../../../../assertion-helper.js').errorInEachBrowserContains;
+const expect                     = require('chai').expect;
+const OS                         = require('os-family');
+const config                     = require('../../../../config.js');
+const errorInEachBrowserContains = require('../../../../assertion-helper.js').errorInEachBrowserContains;
 
 
 describe('[API] Resize window actions', function () {

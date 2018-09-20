@@ -47,7 +47,7 @@ function initDragToElementOptions (name, val) {
 }
 
 function initDialogHandler (name, val, { skipVisibilityCheck, testRun }) {
-    var fn;
+    let fn;
 
     if (isJSExpression(val))
         fn = executeJsExpression(val.value, testRun, { skipVisibilityCheck });
@@ -57,11 +57,11 @@ function initDialogHandler (name, val, { skipVisibilityCheck, testRun }) {
     if (fn === null || fn instanceof ExecuteClientFunctionCommand)
         return fn;
 
-    var options      = val.options;
-    var methodName   = 'setNativeDialogHandler';
-    var builder      = fn && fn[functionBuilderSymbol];
-    var isSelector   = builder instanceof SelectorBuilder;
-    var functionType = typeof fn;
+    const options      = val.options;
+    const methodName   = 'setNativeDialogHandler';
+    let builder      = fn && fn[functionBuilderSymbol];
+    const isSelector   = builder instanceof SelectorBuilder;
+    const functionType = typeof fn;
 
     if (functionType !== 'function' || isSelector)
         throw new SetNativeDialogHandlerCodeWrongTypeError(isSelector ? 'Selector' : functionType);

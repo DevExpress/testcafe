@@ -1,9 +1,9 @@
-var hammerhead   = window.getTestCafeModule('hammerhead');
-var hhsettings   = hammerhead.get('./settings').get();
-var browserUtils = hammerhead.utils.browser;
+const hammerhead   = window.getTestCafeModule('hammerhead');
+const hhsettings   = hammerhead.get('./settings').get();
+const browserUtils = hammerhead.utils.browser;
 
-var testCafeLegacyRunner = window.getTestCafeModule('testCafeLegacyRunner');
-var RunnerBase           = testCafeLegacyRunner.get('./runner-base');
+const testCafeLegacyRunner = window.getTestCafeModule('testCafeLegacyRunner');
+const RunnerBase           = testCafeLegacyRunner.get('./runner-base');
 
 hhsettings.serviceMsgUrl = '/ping/10';
 
@@ -16,21 +16,23 @@ if (browserUtils.isAndroid) {
 }
 
 asyncTest('run test', function () {
-    var $iframe = $('<iframe>');
+    const $iframe = $('<iframe>');
 
     $iframe[0].src = window.getCrossDomainPageUrl('../../data/runner/iframe.html');
     $iframe.appendTo('body');
 
-    var runner          = new RunnerBase();
-    var inIFrame        = runner.inIFrame;
-    var eq              = runner.eq;
-    var stepCount       = 0;
-    var iframeStepCount = 0;
-    var errorRaised     = false;
-    var assertionFailed = false;
-    var sharedData      = {};
-    var stepNames       = ['1', '2', '3', '4'];
-    var steps           = [
+    const runner          = new RunnerBase();
+    const inIFrame        = runner.inIFrame;
+    const eq              = runner.eq;
+
+    let stepCount       = 0;
+    let iframeStepCount = 0;
+    let errorRaised     = false;
+    let assertionFailed = false;
+    let sharedData      = {};
+
+    const stepNames       = ['1', '2', '3', '4'];
+    const steps           = [
         function () {
             this.testValue = 1;
         },
@@ -51,7 +53,7 @@ asyncTest('run test', function () {
         })
     ];
 
-    var storedIFrameStepExecuted = runner._onIFrameStepExecuted;
+    const storedIFrameStepExecuted = runner._onIFrameStepExecuted;
 
     runner._onIFrameStepExecuted = function () {
         iframeStepCount++;

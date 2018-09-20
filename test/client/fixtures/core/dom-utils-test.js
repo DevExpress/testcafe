@@ -1,10 +1,10 @@
-var hammerhead    = window.getTestCafeModule('hammerhead');
-var browserUtils  = hammerhead.utils.browser;
+const hammerhead    = window.getTestCafeModule('hammerhead');
+const browserUtils  = hammerhead.utils.browser;
 
 asyncTest('isIFrameWindowInDOM', function () {
     expect(browserUtils.isIE ? 2 : 1);
 
-    var messageCounter = 0;
+    let messageCounter = 0;
 
     function finishTest () {
         window.removeEventListener('message', onMessage, false);
@@ -15,7 +15,7 @@ asyncTest('isIFrameWindowInDOM', function () {
         if (messageCounter === 0) {
             equal(event.data, 'true');
 
-            var iFramePostMessage = iframe.contentWindow.postMessage.bind(iframe.contentWindow);
+            const iFramePostMessage = iframe.contentWindow.postMessage.bind(iframe.contentWindow);
 
             document.body.removeChild(iframe);
 
@@ -35,7 +35,7 @@ asyncTest('isIFrameWindowInDOM', function () {
 
     window.addEventListener('message', onMessage, false);
 
-    var iframe = $('<iframe>')[0];
+    const iframe = $('<iframe>')[0];
 
     iframe.src = window.getCrossDomainPageUrl('../../data/dom-utils/iframe.html');
 

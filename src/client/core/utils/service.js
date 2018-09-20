@@ -2,7 +2,7 @@ import hammerhead from '../deps/hammerhead';
 import { filter } from './array';
 
 export function inherit (Child, Parent) {
-    var Func = function () {
+    const Func = function () {
     };
 
     Func.prototype = Parent.prototype;
@@ -12,15 +12,15 @@ export function inherit (Child, Parent) {
     Child.base                  = Parent.prototype;
 }
 
-export var EventEmitter = function () {
+export const EventEmitter = function () {
     this.eventsListeners = [];
 };
 
 EventEmitter.prototype.emit = function (evt) {
-    var listeners = this.eventsListeners[evt];
+    const listeners = this.eventsListeners[evt];
 
     if (listeners) {
-        for (var i = 0; i < listeners.length; i++) {
+        for (let i = 0; i < listeners.length; i++) {
             try {
                 if (listeners[i])
                     listeners[i].apply(this, Array.prototype.slice.apply(arguments, [1]));
@@ -39,7 +39,7 @@ EventEmitter.prototype.emit = function (evt) {
 };
 
 EventEmitter.prototype.off = function (evt, listener) {
-    var listeners = this.eventsListeners[evt];
+    const listeners = this.eventsListeners[evt];
 
     if (listeners)
         this.eventsListeners[evt] = filter(listeners, item => item !== listener);

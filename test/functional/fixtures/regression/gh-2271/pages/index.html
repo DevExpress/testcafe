@@ -11,8 +11,8 @@
             log('dragleave', event.target, event.relatedTarget);
         }
         function log (eventName, target, relatedTarget) {
-            var logger = document.getElementById('logger');
-            
+            const logger = document.getElementById('logger');
+
             logger.innerHTML += eventName + ' ' + target.id + ' ' + (relatedTarget ? relatedTarget.id : 'none') + ' <br/>';
         }
     </script>

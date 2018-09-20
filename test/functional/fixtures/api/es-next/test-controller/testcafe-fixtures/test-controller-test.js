@@ -51,7 +51,7 @@ test('Error caused by action with missing await', async t => {
 });
 
 test('Missing await with disrupted chain', async t => {
-    var t2 = t.click('#btn1');
+    const t2 = t.click('#btn1');
 
     await t2;
 

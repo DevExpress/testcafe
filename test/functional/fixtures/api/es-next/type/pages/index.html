@@ -8,11 +8,11 @@
     <div id="status">
     </div>
 <script>
-    var keydownRaised = false;
-    var keypressRaised = false;
-    var inputRaised = false;
+    let keydownRaised = false;
+    let keypressRaised = false;
+    let inputRaised = false;
 
-    var statusDiv = document.getElementById('status');
+    const statusDiv = document.getElementById('status');
 
     document.getElementById('input').addEventListener('keydown', function () {
         keydownRaised = true;

@@ -33,7 +33,7 @@ test('Click on element in a nested iframe', async t => {
         .switchToMainWindow()
         .click('#btn');
 
-    var btnClickCount               = await getBtnClickCount();
+    let btnClickCount               = await getBtnClickCount();
     const nestedIframeBtnClickCount = await getNestedIframeBtnClickCount();
 
     expect(btnClickCount).eql(1);

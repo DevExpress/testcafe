@@ -7,13 +7,13 @@
 <button id="btn">Button</button>
 
 <script>
-    var firstMouseDown = null;
-    var lastClick      = null;
-    var currentDelays  = [];
+    let firstMouseDown = null;
+    let lastClick      = null;
+    let currentDelays  = [];
 
     window.delays = [];
 
-    var button = document.getElementById('btn');
+    const button = document.getElementById('btn');
 
     button.addEventListener('mousedown', function () {
         if (!firstMouseDown)
@@ -21,7 +21,7 @@
     });
 
     button.addEventListener('click', function () {
-        var now = Date.now();
+        const now = Date.now();
 
         if (lastClick)
             currentDelays.push(now - firstMouseDown);

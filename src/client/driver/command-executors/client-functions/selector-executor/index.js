@@ -18,12 +18,12 @@ export default class SelectorExecutor extends ClientFunctionExecutor {
         this.counterMode            = this.dependencies.filterOptions.counterMode;
 
         if (startTime) {
-            var elapsed = new Date() - startTime;
+            const elapsed = new Date() - startTime;
 
             this.timeout = Math.max(this.timeout - elapsed, 0);
         }
 
-        var customDOMProperties = this.dependencies && this.dependencies.customDOMProperties;
+        const customDOMProperties = this.dependencies && this.dependencies.customDOMProperties;
 
         this.replicator.addTransforms([new SelectorNodeTransform(customDOMProperties)]);
     }
@@ -70,9 +70,9 @@ export default class SelectorExecutor extends ClientFunctionExecutor {
         if (this.counterMode)
             return super._executeFn(args);
 
-        var startTime = new Date();
-        var error     = null;
-        var element   = null;
+        const startTime = new Date();
+        let error     = null;
+        let element   = null;
 
         return this
             ._validateElement(args, startTime)

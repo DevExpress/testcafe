@@ -1,5 +1,5 @@
 export default function createSnapshotMethods (snapshot) {
-    var isElementSnapshot = !!snapshot.tagName;
+    const isElementSnapshot = !!snapshot.tagName;
 
     if (isElementSnapshot) {
         snapshot.hasClass                      = name => snapshot.classNames.indexOf(name) > -1;

@@ -315,7 +315,7 @@ describe('Should get structure of TypeScript files', function () {
 
 describe('Should get structure of CoffeeScript files', function () {
     it('Smoke test', () => {
-        var expectedStructure = [
+        const expectedStructure = [
             [
                 new Fixture('fixture 1', 94, 138, new Loc(7, 0, 7, 44), {},
                     [

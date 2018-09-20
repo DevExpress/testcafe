@@ -1,7 +1,7 @@
 import hammerhead from '../../../deps/hammerhead';
 import { domUtils } from '../../../deps/testcafe-core';
 
-var browserUtils = hammerhead.utils.browser;
+const browserUtils = hammerhead.utils.browser;
 
 export default class MoveEventSequenceBase {
     constructor () {
@@ -32,16 +32,16 @@ export default class MoveEventSequenceBase {
     run (currentElement, prevElement, options, moveEvent, dragElement, dragDataStore) {
         // NOTE: if last hovered element was in an iframe that has been removed, IE
         // raises an exception when we try to compare it with the current element
-        var prevElementInDocument = prevElement && domUtils.isElementInDocument(prevElement);
+        const prevElementInDocument = prevElement && domUtils.isElementInDocument(prevElement);
 
-        var prevElementInRemovedIframe = prevElement && domUtils.isElementInIframe(prevElement) &&
+        const prevElementInRemovedIframe = prevElement && domUtils.isElementInIframe(prevElement) &&
                                          !domUtils.getIframeByElement(prevElement);
 
         if (!prevElementInDocument || prevElementInRemovedIframe)
             prevElement = null;
 
-        var elementChanged = currentElement !== prevElement;
-        var commonAncestor = elementChanged ? domUtils.getCommonAncestor(currentElement, prevElement) : null;
+        const elementChanged = currentElement !== prevElement;
+        const commonAncestor = elementChanged ? domUtils.getCommonAncestor(currentElement, prevElement) : null;
 
         this.setup();
 
@@ -60,8 +60,8 @@ export default class MoveEventSequenceBase {
         this.dragAndDrop(dragElement, currentElement, prevElement, options, dragDataStore);
         this.teardown(currentElement, options, prevElement, moveEvent);
 
-        var dragAndDropMode = this.dragAndDropMode;
-        var dropAllowed     = this.dropAllowed;
+        const dragAndDropMode = this.dragAndDropMode;
+        const dropAllowed     = this.dropAllowed;
 
         this.dragAndDropMode = false;
         this.dropAllowed     = false;

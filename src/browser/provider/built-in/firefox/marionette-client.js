@@ -34,7 +34,7 @@ module.exports = class MarionetteClient {
     async _attemptToConnect (port, host) {
         this.socket.connect(port, host);
 
-        var connectionPromise = Promise.race([
+        const connectionPromise = Promise.race([
             promisifyEvent(this.socket, 'connect'),
             promisifyEvent(this.socket, 'error')
         ]);
@@ -50,7 +50,7 @@ module.exports = class MarionetteClient {
     async _connectSocket (port, host) {
         const connectionStartTime = Date.now();
 
-        var connected = await this._attemptToConnect(port, host);
+        let connected = await this._attemptToConnect(port, host);
 
         while (!connected && Date.now() - connectionStartTime < CONNECTION_TIMEOUT)
             connected = await this._attemptToConnect(port, host);
@@ -77,7 +77,7 @@ module.exports = class MarionetteClient {
 
     _getPacket () {
         this.getPacketPromise = this.getPacketPromise.then(async () => {
-            var headerEndIndex = this.buffer.indexOf(HEADER_SEPARATOR);
+            let headerEndIndex = this.buffer.indexOf(HEADER_SEPARATOR);
 
             while (headerEndIndex < 0) {
                 await promisifyEvent(this.events, 'new-data');
@@ -85,15 +85,15 @@ module.exports = class MarionetteClient {
                 headerEndIndex = this.buffer.indexOf(HEADER_SEPARATOR);
             }
 
-            var packet = {
+            const packet = {
                 length: NaN,
                 body:   null
             };
 
             packet.length = parseInt(this.buffer.toString('utf8', 0, headerEndIndex), 10) || 0;
 
-            var bodyStartIndex = headerEndIndex + HEADER_SEPARATOR.length;
-            var bodyEndIndex   = bodyStartIndex + packet.length;
+            const bodyStartIndex = headerEndIndex + HEADER_SEPARATOR.length;
+            const bodyEndIndex   = bodyStartIndex + packet.length;
 
             if (packet.length) {
                 while (this.buffer.length < bodyEndIndex)
@@ -112,9 +112,9 @@ module.exports = class MarionetteClient {
 
     _sendPacket (payload) {
         this.sendPacketPromise = this.sendPacketPromise.then(async () => {
-            var body       = [0, this.currentPacketNumber++, payload.command, payload.parameters];
-            var serialized = JSON.stringify(body);
-            var message    = Buffer.byteLength(serialized, 'utf8') + HEADER_SEPARATOR + serialized;
+            const body       = [0, this.currentPacketNumber++, payload.command, payload.parameters];
+            const serialized = JSON.stringify(body);
+            const message    = Buffer.byteLength(serialized, 'utf8') + HEADER_SEPARATOR + serialized;
 
             this._writeSocket(message);
         });
@@ -127,11 +127,11 @@ module.exports = class MarionetteClient {
     }
 
     async _getResponse (packet) {
-        var packetNumber = this.currentPacketNumber;
+        const packetNumber = this.currentPacketNumber;
 
         await this._sendPacket(packet);
 
-        var responsePacket = await this._getPacket();
+        let responsePacket = await this._getPacket();
 
         while (!responsePacket.body || responsePacket.body[1] !== packetNumber)
             responsePacket = await this._getPacket();
@@ -145,7 +145,7 @@ module.exports = class MarionetteClient {
     async connect () {
         await this._connectSocket(this.port, this.host);
 
-        var infoPacket = await this._getPacket();
+        const infoPacket = await this._getPacket();
 
         this.protocolInfo = {
             applicationType:    infoPacket.body.applicationType,
@@ -165,17 +165,17 @@ module.exports = class MarionetteClient {
     }
 
     async takeScreenshot (path) {
-        var screenshot = await this._getResponse({ command: 'takeScreenshot' });
+        const screenshot = await this._getResponse({ command: 'takeScreenshot' });
 
         await writeFile(path, screenshot.value, { encoding: 'base64' });
     }
 
     async setWindowSize (width, height) {
-        var { value: pageRect } = await this.executeScript(GET_WINDOW_DIMENSIONS_INFO_SCRIPT);
-        var attemptCounter      = 0;
+        let { value: pageRect } = await this.executeScript(GET_WINDOW_DIMENSIONS_INFO_SCRIPT);
+        let attemptCounter      = 0;
 
         while (attemptCounter++ < MAX_RESIZE_RETRY_COUNT && (pageRect.width !== width || pageRect.height !== height)) {
-            var currentRect = await this._getResponse({ command: 'getWindowRect' });
+            const currentRect = await this._getResponse({ command: 'getWindowRect' });
 
             await this._getResponse({
                 command: 'setWindowRect',

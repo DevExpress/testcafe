@@ -5,10 +5,10 @@
     <title>Title</title>
     <script type="text/javascript">
         function onClick (e) {
-            var selectEl = document.getElementById('select');
-            var option = document.getElementById('two');
+            const selectEl = document.getElementById('select');
+            const option   = document.getElementById('two');
 
-            var targets = [ selectEl, option ];
+            const targets = [ selectEl, option ];
 
             if(targets.indexOf(e.target) === -1)
                 throw new Error('Shadow element appeared in user event handler');

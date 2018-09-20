@@ -1,23 +1,23 @@
-var path                  = require('path');
-var expect                = require('chai').expect;
-var config                = require('../../../config');
-var chromeBrowserProvider = require('../../../../../lib/browser/provider/built-in/chrome');
-var browserProviderPool   = require('../../../../../lib/browser/provider/pool');
-var BrowserConnection     = require('../../../../../lib/browser/connection');
+const path                  = require('path');
+const expect                = require('chai').expect;
+const config                = require('../../../config');
+const chromeBrowserProvider = require('../../../../../lib/browser/provider/built-in/chrome');
+const browserProviderPool   = require('../../../../../lib/browser/provider/pool');
+const BrowserConnection     = require('../../../../../lib/browser/connection');
 
 
 if (config.useLocalBrowsers) {
     describe('Browser Provider - Job Results Reporting', function () {
-        var BROWSER_OPENING_DELAY = 3000;
+        const BROWSER_OPENING_DELAY = 3000;
 
-        var mockProvider = null;
+        let mockProvider = null;
 
-        var mockProviderPlugin = Object.assign({}, chromeBrowserProvider, {
+        const mockProviderPlugin = Object.assign({}, chromeBrowserProvider, {
             state:     {},
             idNameMap: {},
 
             openBrowser: function (browserId, pageUrl, name) {
-                var self = this;
+                const self = this;
 
                 this.idNameMap[browserId] = name;
                 this.state[name]          = {};
@@ -36,7 +36,7 @@ if (config.useLocalBrowsers) {
             },
 
             reportJobResult: function (browserId, result, data) {
-                var name = this.idNameMap[browserId];
+                const name = this.idNameMap[browserId];
 
                 this.state[name].result = result;
                 this.state[name].data   = data;
@@ -45,7 +45,7 @@ if (config.useLocalBrowsers) {
             },
 
             simulateError: function (browserId) {
-                var bc = BrowserConnection.getById(browserId);
+                const bc = BrowserConnection.getById(browserId);
 
                 bc.emit('error', new Error('Connection error'));
             }

@@ -1,6 +1,6 @@
-var pageUrl                            = 'http://localhost:3000/fixtures/api/es-next/native-dialogs-handling/pages/index.html';
-var errorInEachBrowserContains         = require('../../../../assertion-helper.js').errorInEachBrowserContains;
-var getNativeDialogNotHandledErrorText = require('../../es-next/native-dialogs-handling/errors.js').getNativeDialogNotHandledErrorText;
+const pageUrl                            = 'http://localhost:3000/fixtures/api/es-next/native-dialogs-handling/pages/index.html';
+const errorInEachBrowserContains         = require('../../../../assertion-helper.js').errorInEachBrowserContains;
+const getNativeDialogNotHandledErrorText = require('../../es-next/native-dialogs-handling/errors.js').getNativeDialogNotHandledErrorText;
 
 describe('Native dialogs handling', function () {
     it('Should pass if the expected confirm dialog appears after an action', function () {

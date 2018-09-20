@@ -11,7 +11,7 @@ const childIframeUrl = 'http://localhost:3000/fixtures/api/es-next/native-dialog
 
 //Actions in iframe, dialogs in iframe
 test('Without handler', async t => {
-    var info = await t.getNativeDialogHistory();
+    const info = await t.getNativeDialogHistory();
 
     expect(info.length).equals(0);
 
@@ -26,7 +26,7 @@ test('Expected alert in iframe after an action in iframe', async t => {
         .setNativeDialogHandler(() => null)
         .click('#buttonAlert');
 
-    var info = await t.getNativeDialogHistory();
+    const info = await t.getNativeDialogHistory();
 
     expect(info).to.deep.equal([{ type: 'alert', text: 'Alert!', url: iframeUrl }]);
 });
@@ -46,7 +46,7 @@ test('No expected alert after an action in iframe', async t => {
         .setNativeDialogHandler(() => null)
         .click('#withoutDialog');
 
-    var info = await t.getNativeDialogHistory();
+    const info = await t.getNativeDialogHistory();
 
     expect(info.length).equals(1);
 });
@@ -65,7 +65,7 @@ test('Expected alert in iframe after an action in top window', async t => {
         .setNativeDialogHandler(() => null)
         .click('#buttonIframeAlert');
 
-    var info = await t.getNativeDialogHistory();
+    const info = await t.getNativeDialogHistory();
 
     expect(info).to.deep.equal([{ type: 'alert', text: 'Alert!', url: iframeUrl }]);
 });
@@ -84,7 +84,7 @@ test('Expected alert in top window after an action in iframe', async t => {
         .setNativeDialogHandler(() => null)
         .click('#buttonTopWindowAlert');
 
-    var info = await t.getNativeDialogHistory();
+    const info = await t.getNativeDialogHistory();
 
     expect(info).to.deep.equal([{ type: 'alert', text: 'Alert!', url: pageUrl }]);
 });
@@ -106,7 +106,7 @@ test('Expected alert in parent iframe after an action in child iframe', async t 
         })
         .click('#buttonParentIframeAlert');
 
-    var info = await t.getNativeDialogHistory();
+    const info = await t.getNativeDialogHistory();
 
     expect(info).to.deep.equal([{ type: 'alert', text: 'Alert!', url: iframeUrl }]);
 });
@@ -123,7 +123,7 @@ test('Expected alert in child iframe after an action in parent iframe', async t 
         })
         .click('#buttonChildIframeAlert');
 
-    var info = await t.getNativeDialogHistory();
+    const info = await t.getNativeDialogHistory();
 
     expect(info).to.deep.equal([{ type: 'alert', text: 'Alert!', url: childIframeUrl }]);
 });

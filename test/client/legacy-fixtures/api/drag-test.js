@@ -1,21 +1,21 @@
-var hammerhead       = window.getTestCafeModule('hammerhead');
-var browserUtils     = hammerhead.utils.browser;
-var featureDetection = hammerhead.utils.featureDetection;
+const hammerhead       = window.getTestCafeModule('hammerhead');
+const browserUtils     = hammerhead.utils.browser;
+const featureDetection = hammerhead.utils.featureDetection;
 
-var testCafeLegacyRunner = window.getTestCafeModule('testCafeLegacyRunner');
-var ERROR_TYPE           = testCafeLegacyRunner.get('../test-run-error/type');
-var SETTINGS             = testCafeLegacyRunner.get('./settings').get();
-var actionsAPI           = testCafeLegacyRunner.get('./api/actions');
-var StepIterator         = testCafeLegacyRunner.get('./step-iterator');
-var initAutomation       = testCafeLegacyRunner.get('./init-automation');
+const testCafeLegacyRunner = window.getTestCafeModule('testCafeLegacyRunner');
+const ERROR_TYPE           = testCafeLegacyRunner.get('../test-run-error/type');
+const SETTINGS             = testCafeLegacyRunner.get('./settings').get();
+const actionsAPI           = testCafeLegacyRunner.get('./api/actions');
+const StepIterator         = testCafeLegacyRunner.get('./step-iterator');
+const initAutomation       = testCafeLegacyRunner.get('./init-automation');
 
 initAutomation();
 
-var stepIterator = new StepIterator();
+const stepIterator = new StepIterator();
 
 actionsAPI.init(stepIterator);
 
-var correctTestWaitingTime = function (time) {
+const correctTestWaitingTime = function (time) {
     if (featureDetection.isTouchDevice && browserUtils.isFirefox)
         return time * 2;
 
@@ -28,25 +28,27 @@ $(document).ready(function () {
 
     // NOTE: prevent auto scrolling
     if (browserUtils.isSafari && featureDetection.isTouchDevice) {
-        var $meta = $('<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, shrink-to-fit=no">');
+        const $meta = $('<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, shrink-to-fit=no">');
 
         $('head').append($meta);
     }
 
-    var actionTargetWaitingCounter = 0;
-    var actionRunCounter           = 0;
+    let actionTargetWaitingCounter = 0;
+    let actionRunCounter           = 0;
 
-    var currentErrorType   = null;
-    var currentSourceIndex = null;
+    let currentErrorType   = null;
+    let currentSourceIndex = null;
+
     //constants
-    var TEST_ELEMENT_CLASS = 'testElement';
+    const TEST_ELEMENT_CLASS = 'testElement';
 
     //utils
-    var asyncActionCallback;
-    var isTouchDevice = featureDetection.isTouchDevice;
+    let asyncActionCallback;
 
-    var createDraggable = function (left, top) {
-        var $draggable = $('<div></div>')
+    const isTouchDevice = featureDetection.isTouchDevice;
+
+    const createDraggable = function (left, top) {
+        const $draggable = $('<div></div>')
             .css({
                 width:           '100px',
                 height:          '100px',
@@ -66,7 +68,7 @@ $(document).ready(function () {
             .appendTo('body');
 
         $(document).bind(isTouchDevice ? 'touchmove' : 'mousemove', function (e) {
-            var curMousePos = isTouchDevice ? {
+            const curMousePos = isTouchDevice ? {
                 x: e.originalEvent.targetTouches[0].pageX || e.originalEvent.touches[0].pageX,
                 y: e.originalEvent.targetTouches[0].pageY || e.originalEvent.touches[0].pageY
             } : {
@@ -87,7 +89,7 @@ $(document).ready(function () {
         return $draggable;
     };
 
-    var createTarget = function (left, top) {
+    const createTarget = function (left, top) {
         return $('<div></div>')
             .css({
                 width:           '120px',
@@ -101,23 +103,23 @@ $(document).ready(function () {
             .appendTo('body');
     };
 
-    var getCenter = function (element) {
+    const getCenter = function (element) {
         return {
             x: Math.floor(element.offsetLeft + element.offsetWidth / 2),
             y: Math.floor(element.offsetTop + element.offsetHeight / 2)
         };
     };
 
-    var isInTarget = function (element, target) {
-        var elementCenter = getCenter(element);
-        var targetCenter  = getCenter(target);
+    const isInTarget = function (element, target) {
+        const elementCenter = getCenter(element);
+        const targetCenter  = getCenter(target);
 
         return elementCenter.x === targetCenter.x && elementCenter.y === targetCenter.y;
     };
 
-    var runAsyncTest = function (actions, assertions, timeout) {
-        var timeoutId        = null;
-        var callbackFunction = function () {
+    const runAsyncTest = function (actions, assertions, timeout) {
+        let timeoutId        = null;
+        let callbackFunction = function () {
             clearTimeout(timeoutId);
             assertions();
             start();
@@ -136,7 +138,7 @@ $(document).ready(function () {
     };
 
     StepIterator.prototype.asyncActionSeries = function (items, runArgumentsIterator, action) {
-        var seriesActionsRun = function (elements, callback) {
+        const seriesActionsRun = function (elements, callback) {
             window.async.forEachSeries(
                 elements,
                 function (element, seriaCallback) {
@@ -182,8 +184,8 @@ $(document).ready(function () {
     module('first argument tests');
 
     asyncTest('domElement as first argument', function () {
-        var $draggable = createDraggable(0, 0);
-        var $target    = createTarget(100, 100);
+        const $draggable = createDraggable(0, 0);
+        const $target    = createTarget(100, 100);
 
         runAsyncTest(
             function () {
@@ -199,8 +201,8 @@ $(document).ready(function () {
     });
 
     asyncTest('dragging with startOffset', function () {
-        var $draggable = createDraggable(0, 0);
-        var $target    = createTarget(100, 100);
+        const $draggable = createDraggable(0, 0);
+        const $target    = createTarget(100, 100);
 
         runAsyncTest(
             function () {
@@ -214,9 +216,9 @@ $(document).ready(function () {
     });
 
     asyncTest('domElements array as first argument', function () {
-        var $draggable  = createDraggable(0, 0).attr('id', 'first');
-        var $draggable2 = createDraggable(100, 300).attr('id', 'second');
-        var $target     = createTarget(170, 170);
+        const $draggable  = createDraggable(0, 0).attr('id', 'first');
+        const $draggable2 = createDraggable(100, 300).attr('id', 'second');
+        const $target     = createTarget(170, 170);
 
         runAsyncTest(
             function () {
@@ -233,8 +235,8 @@ $(document).ready(function () {
     });
 
     asyncTest('jQuery object as first argument', function () {
-        var $draggable = createDraggable(0, 0);
-        var $target    = createTarget(100, 100);
+        const $draggable = createDraggable(0, 0);
+        const $target    = createTarget(100, 100);
 
         runAsyncTest(
             function () {
@@ -248,13 +250,13 @@ $(document).ready(function () {
     });
 
     asyncTest('jQuery object with two elements as first argument', function () {
-        var draggableClassName = 'draggable';
-        var $target            = createTarget(170, 170);
+        const draggableClassName = 'draggable';
+        const $target            = createTarget(170, 170);
 
         createDraggable(0, 0).addClass(draggableClassName);
         createDraggable(100, 300).addClass(draggableClassName);
 
-        var $draggableElements = $('.' + draggableClassName);
+        const $draggableElements = $('.' + draggableClassName);
 
         runAsyncTest(
             function () {
@@ -270,13 +272,13 @@ $(document).ready(function () {
 
     module('second argument test');
     asyncTest('jQuery object with one element as a second argument', function () {
-        var className = 'draggable';
-        var $target   = createTarget(170, 170);
+        const className = 'draggable';
+        const $target   = createTarget(170, 170);
 
         createDraggable(0, 0).addClass(className);
         createDraggable(100, 300).addClass(className);
 
-        var $draggableElements = $('.' + className);
+        const $draggableElements = $('.' + className);
 
         runAsyncTest(
             function () {
@@ -291,9 +293,9 @@ $(document).ready(function () {
     });
 
     asyncTest('jQuery object with several elements as a second argument (drop to first)', function () {
-        var targetClassName = 'target';
-        var $draggable      = createDraggable(0, 0);
-        var $firstTarget    = createTarget(100, 100).addClass(targetClassName);
+        const targetClassName = 'target';
+        const $draggable      = createDraggable(0, 0);
+        const $firstTarget    = createTarget(100, 100).addClass(targetClassName);
 
         createTarget(150, 150).addClass(targetClassName);
 
@@ -309,18 +311,18 @@ $(document).ready(function () {
     });
 
     asyncTest('x and y coordinates as second and third arguments', function () {
-        var $draggable  = createDraggable(10, 10);
-        var center      = getCenter($draggable[0]);
-        var dragOffsetX = 100;
-        var dragOffsetY = 100;
-        var pointTo     = { x: center.x + dragOffsetX, y: center.y + dragOffsetY };
+        const $draggable  = createDraggable(10, 10);
+        const center      = getCenter($draggable[0]);
+        const dragOffsetX = 100;
+        const dragOffsetY = 100;
+        const pointTo     = { x: center.x + dragOffsetX, y: center.y + dragOffsetY };
 
         runAsyncTest(
             function () {
                 actionsAPI.drag($draggable[0], dragOffsetX, dragOffsetY);
             },
             function () {
-                var elementCenter = getCenter($draggable[0]);
+                const elementCenter = getCenter($draggable[0]);
 
                 equal(elementCenter.x, pointTo.x, 'element has correct x coordinate');
                 equal(elementCenter.y, pointTo.y, 'element has correct y coordinate');
@@ -330,13 +332,13 @@ $(document).ready(function () {
     });
 
     asyncTest('drag with offset when the second and third arguments are coordinates', function () {
-        var $draggable      = createDraggable(10, 10);
-        var draggableOffset = $draggable.offset();
-        var dragOffsetX     = 100;
-        var dragOffsetY     = 100;
-        var offsetX         = 40;
-        var offsetY         = 40;
-        var pointTo         = {
+        const $draggable      = createDraggable(10, 10);
+        const draggableOffset = $draggable.offset();
+        const dragOffsetX     = 100;
+        const dragOffsetY     = 100;
+        const offsetX         = 40;
+        const offsetY         = 40;
+        const pointTo         = {
             x: draggableOffset.left + offsetX + dragOffsetX,
             y: draggableOffset.top + offsetY + dragOffsetY
         };
@@ -346,7 +348,7 @@ $(document).ready(function () {
                 actionsAPI.drag($draggable[0], dragOffsetX, dragOffsetY, { offsetX: offsetX, offsetY: offsetY });
             },
             function () {
-                var elementCenter = getCenter($draggable[0]);
+                const elementCenter = getCenter($draggable[0]);
 
                 equal(elementCenter.x, pointTo.x, 'element has correct x coordinate');
                 equal(elementCenter.y, pointTo.y, 'element has correct y coordinate');
@@ -356,7 +358,7 @@ $(document).ready(function () {
     });
 
     asyncTest('non-numeric x or y argument raises an error', function () {
-        var $draggable = createDraggable(0, 0);
+        const $draggable = createDraggable(0, 0);
 
         SETTINGS.ENABLE_SOURCE_INDEX = true;
         asyncActionCallback          = function () {
@@ -370,13 +372,13 @@ $(document).ready(function () {
     });
 
     asyncTest('drag with offset when the second and third arguments are fractional coordinates', function () {
-        var $draggable      = createDraggable(10, 10);
-        var draggableOffset = $draggable.offset();
-        var dragOffsetX     = 99.8;
-        var dragOffsetY     = 100.3;
-        var offsetX         = 40;
-        var offsetY         = 40;
-        var pointTo         = {
+        const $draggable      = createDraggable(10, 10);
+        const draggableOffset = $draggable.offset();
+        const dragOffsetX     = 99.8;
+        const dragOffsetY     = 100.3;
+        const offsetX         = 40;
+        const offsetY         = 40;
+        const pointTo         = {
             x: draggableOffset.left + offsetX + Math.round(dragOffsetX),
             y: draggableOffset.top + offsetY + Math.round(dragOffsetY)
         };
@@ -386,7 +388,7 @@ $(document).ready(function () {
                 actionsAPI.drag($draggable[0], dragOffsetX, dragOffsetY, { offsetX: offsetX, offsetY: offsetY });
             },
             function () {
-                var elementCenter = getCenter($draggable[0]);
+                const elementCenter = getCenter($draggable[0]);
 
                 equal(elementCenter.x, pointTo.x, 'element has correct x coordinate');
                 equal(elementCenter.y, pointTo.y, 'element has correct y coordinate');
@@ -396,7 +398,7 @@ $(document).ready(function () {
     });
 
     asyncTest('drag_ function calling with empty second argument raises error', function () {
-        var $draggable = createDraggable(0, 0);
+        const $draggable = createDraggable(0, 0);
 
         SETTINGS.ENABLE_SOURCE_INDEX = true;
         asyncActionCallback          = function () {
@@ -412,8 +414,8 @@ $(document).ready(function () {
     module('Regression');
 
     asyncTest('B236553 - The act.drag() function hangs the test when offsetX/offsetY parameters are passed', function () {
-        var $draggable = createDraggable(0, 0);
-        var $target    = createTarget(50, 50);
+        const $draggable = createDraggable(0, 0);
+        const $target    = createTarget(50, 50);
 
         runAsyncTest(
             function () {

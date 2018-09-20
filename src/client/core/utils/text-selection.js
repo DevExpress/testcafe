@@ -4,9 +4,9 @@ import * as contentEditable from './content-editable';
 import * as eventUtils from './event';
 
 
-var browserUtils     = hammerhead.utils.browser;
-var nativeMethods    = hammerhead.nativeMethods;
-var selectionSandbox = hammerhead.eventSandbox.selection;
+const browserUtils     = hammerhead.utils.browser;
+const nativeMethods    = hammerhead.nativeMethods;
+const selectionSandbox = hammerhead.eventSandbox.selection;
 
 
 //NOTE: we can't determine selection direction in ie from dom api. Therefore we should listen selection changes,
@@ -16,13 +16,13 @@ const FORWARD_SELECTION_DIRECTION  = 'forward';
 const NONE_SELECTION_DIRECTION     = 'none';
 
 
-var selectionDirection  = NONE_SELECTION_DIRECTION;
-var initialLeft         = 0;
-var initialTop          = 0;
-var lastSelectionHeight = 0;
-var lastSelectionLeft   = 0;
-var lastSelectionLength = 0;
-var lastSelectionTop    = 0;
+let selectionDirection  = NONE_SELECTION_DIRECTION;
+let initialLeft         = 0;
+let initialTop          = 0;
+let lastSelectionHeight = 0;
+let lastSelectionLeft   = 0;
+let lastSelectionLength = 0;
+let lastSelectionTop    = 0;
 
 function stateChanged (left, top, height, width, selectionLength) {
     if (!selectionLength) {
@@ -69,11 +69,11 @@ function stateChanged (left, top, height, width, selectionLength) {
 }
 
 function onSelectionChange () {
-    var activeElement  = null;
-    var endSelection   = null;
-    var range          = null;
-    var rect           = null;
-    var startSelection = null;
+    let activeElement  = null;
+    let endSelection   = null;
+    let range          = null;
+    let rect           = null;
+    let startSelection = null;
 
     try {
         if (this.selection)
@@ -101,7 +101,7 @@ function onSelectionChange () {
                 //NOTE: for MSEdge
                 range = document.createRange();
 
-                var textNode = hammerhead.nativeMethods.nodeFirstChildGetter.call(activeElement);
+                const textNode = hammerhead.nativeMethods.nodeFirstChildGetter.call(activeElement);
 
                 range.setStart(textNode, startSelection);
                 range.setEnd(textNode, endSelection);
@@ -116,12 +116,12 @@ function onSelectionChange () {
         return;
     }
 
-    var rangeLeft           = rect ? Math.ceil(rect.left) : range.offsetLeft;
-    var rangeTop            = rect ? Math.ceil(rect.top) : range.offsetTop;
-    var rangeHeight         = rect ? Math.ceil(rect.height) : range.boundingHeight;
-    var rangeWidth          = rect ? Math.ceil(rect.width) : range.boundingWidth;
-    var rangeHTMLTextLength = range.htmlText ? range.htmlText.length : 0;
-    var rangeTextLength     = rect ? range.toString().length : rangeHTMLTextLength;
+    const rangeLeft           = rect ? Math.ceil(rect.left) : range.offsetLeft;
+    const rangeTop            = rect ? Math.ceil(rect.top) : range.offsetTop;
+    const rangeHeight         = rect ? Math.ceil(rect.height) : range.boundingHeight;
+    const rangeWidth          = rect ? Math.ceil(rect.width) : range.boundingWidth;
+    const rangeHTMLTextLength = range.htmlText ? range.htmlText.length : 0;
+    const rangeTextLength     = rect ? range.toString().length : rangeHTMLTextLength;
 
     stateChanged(rangeLeft, rangeTop, rangeHeight, rangeWidth, rangeTextLength);
 }
@@ -131,12 +131,12 @@ if (browserUtils.isIE)
 
 //utils for contentEditable
 function selectContentEditable (el, from, to, needFocus) {
-    var endPosition         = null;
-    var firstTextNodeChild  = null;
-    var latestTextNodeChild = null;
-    var startPosition       = null;
-    var temp                = null;
-    var inverse             = false;
+    let endPosition         = null;
+    let firstTextNodeChild  = null;
+    let latestTextNodeChild = null;
+    let startPosition       = null;
+    let temp                = null;
+    let inverse             = false;
 
     if (typeof from !== 'undefined' && typeof to !== 'undefined' && from > to) {
         temp    = from;
@@ -177,22 +177,22 @@ function selectContentEditable (el, from, to, needFocus) {
 }
 
 function correctContentEditableSelectionBeforeDelete (el) {
-    var selection = getSelectionByElement(el);
+    const selection = getSelectionByElement(el);
 
-    var startNode = selection.anchorNode;
-    var endNode   = selection.focusNode;
+    const startNode = selection.anchorNode;
+    const endNode   = selection.focusNode;
 
-    var startOffset = selection.anchorOffset;
-    var endOffset   = selection.focusOffset;
+    const startOffset = selection.anchorOffset;
+    const endOffset   = selection.focusOffset;
 
-    var startNodeFirstNonWhitespaceSymbol = contentEditable.getFirstNonWhitespaceSymbolIndex(startNode.nodeValue);
-    var startNodeLastNonWhitespaceSymbol  = contentEditable.getLastNonWhitespaceSymbolIndex(startNode.nodeValue);
+    const startNodeFirstNonWhitespaceSymbol = contentEditable.getFirstNonWhitespaceSymbolIndex(startNode.nodeValue);
+    const startNodeLastNonWhitespaceSymbol  = contentEditable.getLastNonWhitespaceSymbolIndex(startNode.nodeValue);
 
-    var endNodeFirstNonWhitespaceSymbol = contentEditable.getFirstNonWhitespaceSymbolIndex(endNode.nodeValue);
-    var endNodeLastNonWhitespaceSymbol  = contentEditable.getLastNonWhitespaceSymbolIndex(endNode.nodeValue);
+    const endNodeFirstNonWhitespaceSymbol = contentEditable.getFirstNonWhitespaceSymbolIndex(endNode.nodeValue);
+    const endNodeLastNonWhitespaceSymbol  = contentEditable.getLastNonWhitespaceSymbolIndex(endNode.nodeValue);
 
-    var newStartOffset = null;
-    var newEndOffset   = null;
+    let newStartOffset = null;
+    let newEndOffset   = null;
 
     if (domUtils.isTextNode(startNode)) {
         if (startOffset < startNodeFirstNonWhitespaceSymbol && startOffset !== 0)
@@ -239,8 +239,8 @@ function correctContentEditableSelectionBeforeDelete (el) {
         else
             newEndOffset = endOffset;
 
-        var startPos = { node: startNode, offset: newStartOffset };
-        var endPos   = { node: endNode, offset: newEndOffset };
+        const startPos = { node: startNode, offset: newStartOffset };
+        const endPos   = { node: endNode, offset: newEndOffset };
 
         selectByNodesAndOffsets(startPos, endPos);
     }
@@ -248,10 +248,10 @@ function correctContentEditableSelectionBeforeDelete (el) {
 
 //API
 export function hasInverseSelectionContentEditable (el) {
-    var curDocument = el ? domUtils.findDocument(el) : document;
-    var selection   = curDocument.getSelection();
-    var range       = null;
-    var backward    = false;
+    const curDocument = el ? domUtils.findDocument(el) : document;
+    const selection   = curDocument.getSelection();
+    let range       = null;
+    let backward    = false;
 
     if (selection) {
         if (!selection.isCollapsed) {
@@ -267,14 +267,14 @@ export function hasInverseSelectionContentEditable (el) {
 }
 
 export function isInverseSelectionContentEditable (element, startPos, endPos) {
-    var startPosition = contentEditable.calculatePositionByNodeAndOffset(element, startPos);
-    var endPosition   = contentEditable.calculatePositionByNodeAndOffset(element, endPos);
+    const startPosition = contentEditable.calculatePositionByNodeAndOffset(element, startPos);
+    const endPosition   = contentEditable.calculatePositionByNodeAndOffset(element, endPos);
 
     return startPosition > endPosition;
 }
 
 export function getSelectionStart (el) {
-    var selection = null;
+    let selection = null;
 
     if (!domUtils.isContentEditableElement(el))
         return selectionSandbox.getSelection(el).start;
@@ -289,7 +289,7 @@ export function getSelectionStart (el) {
 }
 
 export function getSelectionEnd (el) {
-    var selection = null;
+    let selection = null;
 
     if (!domUtils.isContentEditableElement(el))
         return selectionSandbox.getSelection(el).end;
@@ -311,7 +311,7 @@ export function hasInverseSelection (el) {
 }
 
 export function getSelectionByElement (el) {
-    var currentDocument = domUtils.findDocument(el);
+    const currentDocument = domUtils.findDocument(el);
 
     return currentDocument ? currentDocument.getSelection() : window.getSelection();
 }
@@ -323,10 +323,10 @@ export function select (el, from, to) {
         return;
     }
 
-    var start   = from || 0;
-    var end     = typeof to === 'undefined' ? domUtils.getElementValue(el).length : to;
-    var inverse = false;
-    var temp    = null;
+    let start   = from || 0;
+    let end     = typeof to === 'undefined' ? domUtils.getElementValue(el).length : to;
+    let inverse = false;
+    let temp    = null;
 
     if (start > end) {
         temp    = start;
@@ -344,13 +344,13 @@ export function select (el, from, to) {
 }
 
 export function selectByNodesAndOffsets (startPos, endPos, needFocus) {
-    var startNode = startPos.node;
-    var endNode   = endPos.node;
+    const startNode = startPos.node;
+    const endNode   = endPos.node;
 
-    var startNodeLength = startNode.nodeValue ? startNode.length : 0;
-    var endNodeLength   = endNode.nodeValue ? endNode.length : 0;
-    var startOffset     = startPos.offset;
-    var endOffset       = endPos.offset;
+    const startNodeLength = startNode.nodeValue ? startNode.length : 0;
+    const endNodeLength   = endNode.nodeValue ? endNode.length : 0;
+    let startOffset     = startPos.offset;
+    let endOffset       = endPos.offset;
 
     if (!domUtils.isElementNode(startNode) || !startOffset)
         startOffset = Math.min(startNodeLength, startPos.offset);
@@ -358,15 +358,15 @@ export function selectByNodesAndOffsets (startPos, endPos, needFocus) {
     if (!domUtils.isElementNode(endNode) || !endOffset)
         endOffset = Math.min(endNodeLength, endPos.offset);
 
-    var parentElement = contentEditable.findContentEditableParent(startNode);
-    var inverse       = isInverseSelectionContentEditable(parentElement, startPos, endPos);
+    const parentElement = contentEditable.findContentEditableParent(startNode);
+    const inverse       = isInverseSelectionContentEditable(parentElement, startPos, endPos);
 
 
-    var selection   = getSelectionByElement(parentElement);
-    var curDocument = domUtils.findDocument(parentElement);
-    var range       = curDocument.createRange();
+    const selection   = getSelectionByElement(parentElement);
+    const curDocument = domUtils.findDocument(parentElement);
+    const range       = curDocument.createRange();
 
-    var selectionSetter = function () {
+    const selectionSetter = function () {
         selection.removeAllRanges();
 
         //NOTE: For IE we can't create inverse selection
@@ -385,9 +385,9 @@ export function selectByNodesAndOffsets (startPos, endPos, needFocus) {
             range.setEnd(startNode, startOffset);
             selection.addRange(range);
 
-            var shouldCutEndOffset = browserUtils.isSafari || browserUtils.isChrome && browserUtils.version < 58;
+            const shouldCutEndOffset = browserUtils.isSafari || browserUtils.isChrome && browserUtils.version < 58;
 
-            var extendSelection = (node, offset) => {
+            const extendSelection = (node, offset) => {
                 // NODE: in some cases in Firefox extend method raises error so we use try-catch
                 try {
                     selection.extend(node, offset);
@@ -412,19 +412,19 @@ export function selectByNodesAndOffsets (startPos, endPos, needFocus) {
 }
 
 function deleteSelectionRanges (el) {
-    var selection  = getSelectionByElement(el);
-    var rangeCount = selection.rangeCount;
+    const selection  = getSelectionByElement(el);
+    const rangeCount = selection.rangeCount;
 
     if (!rangeCount)
         return;
 
-    for (var i = 0; i < rangeCount; i++)
+    for (let i = 0; i < rangeCount; i++)
         selection.getRangeAt(i).deleteContents();
 }
 
 export function deleteSelectionContents (el, selectAll) {
-    var startSelection = getSelectionStart(el);
-    var endSelection   = getSelectionEnd(el);
+    const startSelection = getSelectionStart(el);
+    const endSelection   = getSelectionEnd(el);
 
 
     if (selectAll)
@@ -439,8 +439,8 @@ export function deleteSelectionContents (el, selectAll) {
 
     deleteSelectionRanges(el);
 
-    var selection = getSelectionByElement(el);
-    var range     = null;
+    const selection = getSelectionByElement(el);
+    let range     = null;
 
     //NOTE: We should try to do selection collapsed
     if (selection.rangeCount && !selection.getRangeAt(0).collapsed) {
@@ -450,13 +450,13 @@ export function deleteSelectionContents (el, selectAll) {
 }
 
 export function setCursorToLastVisiblePosition (el) {
-    var position = contentEditable.getLastVisiblePosition(el);
+    const position = contentEditable.getLastVisiblePosition(el);
 
     selectContentEditable(el, position, position);
 }
 
 export function hasElementContainsSelection (el) {
-    var selection = getSelectionByElement(el);
+    const selection = getSelectionByElement(el);
 
     return selection.anchorNode && selection.focusNode ?
         domUtils.isElementContainsNode(el, selection.anchorNode) &&

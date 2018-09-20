@@ -3,8 +3,8 @@ import testCafeCore from '../../deps/testcafe-core';
 import DeterminateIndicator from './determinate-indicator';
 import IndeterminateIndicator from './indeterminate-indicator';
 
-var shadowUI   = hammerhead.shadowUI;
-var styleUtils = testCafeCore.styleUtils;
+const shadowUI   = hammerhead.shadowUI;
+const styleUtils = testCafeCore.styleUtils;
 
 
 const PROGRESS_BAR_CLASS = 'progress-bar';
@@ -29,7 +29,7 @@ export default class ProgressBar {
         shadowUI.addClass(this.progressBar, PROGRESS_BAR_CLASS);
         containerElement.appendChild(this.progressBar);
 
-        var container = document.createElement('div');
+        const container = document.createElement('div');
 
         shadowUI.addClass(container, CONTAINER_CLASS);
         this.progressBar.appendChild(container);

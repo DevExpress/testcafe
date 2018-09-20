@@ -5,13 +5,13 @@ import { wrapCallSite } from 'source-map-support';
 const STACK_TRACE_LIMIT = 2000;
 
 function getCallsite (options) {
-    var originalStackCleaningEnabled = stackCleaningHook.enabled;
-    var originalStackTraceLimit      = Error.stackTraceLimit;
+    const originalStackCleaningEnabled = stackCleaningHook.enabled;
+    const originalStackTraceLimit      = Error.stackTraceLimit;
 
     stackCleaningHook.enabled = false;
     Error.stackTraceLimit     = STACK_TRACE_LIMIT;
 
-    var callsiteRecord = createCallsiteRecord(options);
+    const callsiteRecord = createCallsiteRecord(options);
 
     Error.stackTraceLimit     = originalStackTraceLimit;
     stackCleaningHook.enabled = originalStackCleaningEnabled;

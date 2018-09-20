@@ -1,11 +1,11 @@
-var errorInEachBrowserContains                = require('../../../../assertion-helper.js').errorInEachBrowserContains;
-var getNativeDialogNotHandledErrorText        = require('./errors.js').getNativeDialogNotHandledErrorText;
-var getUncaughtErrorInNativeDialogHandlerText = require('./errors.js').getUncaughtErrorInNativeDialogHandlerText;
+const errorInEachBrowserContains                = require('../../../../assertion-helper.js').errorInEachBrowserContains;
+const getNativeDialogNotHandledErrorText        = require('./errors.js').getNativeDialogNotHandledErrorText;
+const getUncaughtErrorInNativeDialogHandlerText = require('./errors.js').getUncaughtErrorInNativeDialogHandlerText;
 
 
-var pageUrl        = 'http://localhost:3000/fixtures/api/es-next/native-dialogs-handling/pages/index.html';
-var pageLoadingUrl = 'http://localhost:3000/fixtures/api/es-next/native-dialogs-handling/pages/page-load.html';
-var pagePromptUrl  = 'http://localhost:3000/fixtures/api/es-next/native-dialogs-handling/pages/prompt.html';
+const pageUrl        = 'http://localhost:3000/fixtures/api/es-next/native-dialogs-handling/pages/index.html';
+const pageLoadingUrl = 'http://localhost:3000/fixtures/api/es-next/native-dialogs-handling/pages/page-load.html';
+const pagePromptUrl  = 'http://localhost:3000/fixtures/api/es-next/native-dialogs-handling/pages/prompt.html';
 
 
 describe('Native dialogs handling', function () {

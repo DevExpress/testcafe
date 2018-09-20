@@ -6,20 +6,20 @@ import { focusAndSetSelection, focusByRelatedElement } from '../../utils/utils';
 import cursor from '../../cursor';
 import nextTick from '../../utils/next-tick';
 
-var Promise = hammerhead.Promise;
+const Promise = hammerhead.Promise;
 
-var extend           = hammerhead.utils.extend;
-var browserUtils     = hammerhead.utils.browser;
-var featureDetection = hammerhead.utils.featureDetection;
-var eventSimulator   = hammerhead.eventSandbox.eventSimulator;
+const extend           = hammerhead.utils.extend;
+const browserUtils     = hammerhead.utils.browser;
+const featureDetection = hammerhead.utils.featureDetection;
+const eventSimulator   = hammerhead.eventSandbox.eventSimulator;
 
-var domUtils   = testCafeCore.domUtils;
-var styleUtils = testCafeCore.styleUtils;
-var eventUtils = testCafeCore.eventUtils;
-var arrayUtils = testCafeCore.arrayUtils;
-var delay      = testCafeCore.delay;
+const domUtils   = testCafeCore.domUtils;
+const styleUtils = testCafeCore.styleUtils;
+const eventUtils = testCafeCore.eventUtils;
+const arrayUtils = testCafeCore.arrayUtils;
+const delay      = testCafeCore.delay;
 
-var selectElementUI = testCafeUI.selectElement;
+const selectElementUI = testCafeUI.selectElement;
 
 
 export default class ClickAutomation extends VisibleElementAutomation {
@@ -42,7 +42,7 @@ export default class ClickAutomation extends VisibleElementAutomation {
     }
 
     _bindMousedownHandler () {
-        var onmousedown = e => {
+        const onmousedown = e => {
             this.eventState.mousedownPrevented = e.defaultPrevented;
             eventUtils.preventDefault(e);
             eventUtils.unbind(this.element, 'mousedown', onmousedown);
@@ -52,7 +52,7 @@ export default class ClickAutomation extends VisibleElementAutomation {
     }
 
     _bindBlurHandler (element) {
-        var onblur = () => {
+        const onblur = () => {
             this.eventState.blurRaised = true;
             eventUtils.unbind(element, 'blur', onblur, true);
         };
@@ -85,13 +85,13 @@ export default class ClickAutomation extends VisibleElementAutomation {
             .then(() => {
                 this._raiseTouchEvents(eventArgs);
 
-                var activeElement = domUtils.getActiveElement();
+                const activeElement = domUtils.getActiveElement();
 
                 this.activeElementBeforeMouseDown = activeElement;
 
                 // NOTE: In WebKit and IE, the mousedown event opens the select element's dropdown;
                 // therefore, we should prevent mousedown and hide the dropdown (B236416).
-                var needCloseSelectDropDown = (browserUtils.isWebKit || browserUtils.isIE) &&
+                const needCloseSelectDropDown = (browserUtils.isWebKit || browserUtils.isIE) &&
                                               domUtils.isSelectElement(this.mouseDownElement);
 
                 if (needCloseSelectDropDown)
@@ -114,7 +114,7 @@ export default class ClickAutomation extends VisibleElementAutomation {
         // We simulate the blur event if the active element was changed after the mousedown, and
         // the blur event does not get raised automatically (B239273, B253520)
         return new Promise(resolve => {
-            var simulateBlur = domUtils.getActiveElement() !== element && !this.eventState.blurRaised;
+            const simulateBlur = domUtils.getActiveElement() !== element && !this.eventState.blurRaised;
 
             if (!simulateBlur) {
                 resolve();
@@ -146,17 +146,17 @@ export default class ClickAutomation extends VisibleElementAutomation {
         // NOTE: If a target element is a contentEditable element, we need to call focusAndSetSelection directly for
         // this element. Otherwise, if the element obtained by elementFromPoint is a child of the contentEditable
         // element, a selection position may be calculated incorrectly (by using the caretPos option).
-        var elementForFocus = domUtils.isContentEditableElement(this.element) ? this.element : eventArgs.element;
+        const elementForFocus = domUtils.isContentEditableElement(this.element) ? this.element : eventArgs.element;
 
         // NOTE: IE doesn't perform focus if active element has been changed while executing mousedown
-        var simulateFocus = !browserUtils.isIE || this.activeElementBeforeMouseDown === domUtils.getActiveElement();
+        const simulateFocus = !browserUtils.isIE || this.activeElementBeforeMouseDown === domUtils.getActiveElement();
 
         return focusAndSetSelection(elementForFocus, simulateFocus, this.caretPos);
     }
 
     static _getElementForClick (mouseDownElement, topElement, mouseDownElementParentNodes) {
-        var topElementParentNodes = domUtils.getParents(topElement);
-        var areElementsSame       = domUtils.isTheSameNode(topElement, mouseDownElement);
+        const topElementParentNodes = domUtils.getParents(topElement);
+        const areElementsSame       = domUtils.isTheSameNode(topElement, mouseDownElement);
 
         // NOTE: Mozilla Firefox always skips click, if an element under cursor has been changed after mousedown.
         if (browserUtils.isFirefox)
@@ -212,8 +212,8 @@ export default class ClickAutomation extends VisibleElementAutomation {
 
         // NOTE: Emulating the click event on the 'select' element doesn't expand the
         // dropdown with options (except chrome), therefore we should emulate it.
-        var isSelectElement      = domUtils.isSelectElement(eventArgs.element);
-        var isSelectWithDropDown = isSelectElement && styleUtils.getSelectElementSize(eventArgs.element) === 1;
+        const isSelectElement      = domUtils.isSelectElement(eventArgs.element);
+        const isSelectWithDropDown = isSelectElement && styleUtils.getSelectElementSize(eventArgs.element) === 1;
 
         if (isSelectWithDropDown && this.eventState.simulateDefaultBehavior !== false) {
             if (selectElementUI.isOptionListExpanded(eventArgs.element))
@@ -226,7 +226,7 @@ export default class ClickAutomation extends VisibleElementAutomation {
     }
 
     run (useStrictElementCheck) {
-        var eventArgs = null;
+        let eventArgs = null;
 
         return this
             ._ensureElement(useStrictElementCheck)

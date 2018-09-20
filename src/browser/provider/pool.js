@@ -13,23 +13,23 @@ export default {
     providersCache: {},
 
     async _handlePathAndCmd (alias) {
-        var browserName  = JSON.stringify(alias);
-        var providerName = 'path';
-        var provider     = await this.getProvider(providerName);
+        const browserName  = JSON.stringify(alias);
+        const providerName = 'path';
+        const provider     = await this.getProvider(providerName);
 
         return { provider, providerName, browserName };
     },
 
     async _parseAliasString (alias) {
-        var providerRegExpMatch = BROWSER_PROVIDER_RE.exec(alias);
+        const providerRegExpMatch = BROWSER_PROVIDER_RE.exec(alias);
 
         if (!providerRegExpMatch)
             throw new GeneralError(MESSAGE.cantFindBrowser, alias);
 
-        var providerName = providerRegExpMatch[1];
-        var browserName  = providerRegExpMatch[2] || '';
+        let providerName = providerRegExpMatch[1];
+        let browserName  = providerRegExpMatch[2] || '';
 
-        var provider = await this.getProvider(providerName);
+        let provider = await this.getProvider(providerName);
 
         if (!provider && providerRegExpMatch[2])
             provider = await this.getProvider(providerName + ':');
@@ -54,7 +54,7 @@ export default {
     },
 
     async _getInfoForAllBrowserNames (provider, providerName) {
-        var allBrowserNames = provider.isMultiBrowser ?
+        const allBrowserNames = provider.isMultiBrowser ?
             await provider.getBrowserList() :
             [];
 
@@ -67,7 +67,7 @@ export default {
 
     _getProviderModule (providerName, moduleName) {
         try {
-            var providerObject = require(moduleName);
+            const providerObject = require(moduleName);
 
             this.addProvider(providerName, providerObject);
             return this._getProviderFromCache(providerName);
@@ -82,7 +82,7 @@ export default {
     },
 
     _getBuiltinProvider (providerName) {
-        var providerObject = BUILT_IN_PROVIDERS[providerName];
+        const providerObject = BUILT_IN_PROVIDERS[providerName];
 
         if (!providerObject)
             return null;
@@ -96,9 +96,9 @@ export default {
         if (alias instanceof BrowserConnection)
             return alias;
 
-        var browserInfo = await this._parseAlias(alias);
+        const browserInfo = await this._parseAlias(alias);
 
-        var { provider, providerName, browserName } = browserInfo;
+        const { provider, providerName, browserName } = browserInfo;
 
         if (browserName === 'all')
             return await this._getInfoForAllBrowserNames(provider, providerName);
@@ -129,7 +129,7 @@ export default {
 
         providerName = parsedProviderName.providerName;
 
-        var provider = this._getProviderFromCache(providerName) ||
+        const provider = this._getProviderFromCache(providerName) ||
                        this._getProviderModule(providerName, moduleName) ||
                        this._getBuiltinProvider(providerName);
 

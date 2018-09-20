@@ -9,12 +9,12 @@
 <div id="div3"><p id="p5">5</p>div<p id="p6">6</p></div>
 <div id="div4" contenteditable="true"><p id="p7">7</p></div>
 <script>
-    var touchDevice = isTouchDevice();
+    const touchDevice = isTouchDevice();
 
     document.getElementById('div1').addEventListener(touchDevice ? 'touchend' : 'mouseup', function () {
-        var selection = window.getSelection();
-        var startNode = this.childNodes[1].childNodes[0];
-        var endNode   = this.childNodes[3].childNodes[0];
+        const selection = window.getSelection();
+        const startNode = this.childNodes[1].childNodes[0];
+        const endNode   = this.childNodes[3].childNodes[0];
 
         if (selection.anchorNode === startNode && selection.anchorOffset === 0 && selection.focusNode === endNode &&
             selection.focusOffset === endNode.nodeValue.length)

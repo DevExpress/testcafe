@@ -7,8 +7,8 @@ const Promise               = require('pinkie');
 const selfSignedCertificate = require('openssl-self-signed-certificate');
 
 describe('TestCafe factory function', function () {
-    var testCafe = null;
-    var server   = null;
+    let testCafe = null;
+    let server   = null;
 
     function getTestCafe (hostname, port1, port2, sslOptions) {
         return createTestCafe(hostname, port1, port2, sslOptions)
@@ -23,7 +23,7 @@ describe('TestCafe factory function', function () {
             server = null;
         }
 
-        var promisedClose = testCafe ? testCafe.close() : Promise.resolve();
+        const promisedClose = testCafe ? testCafe.close() : Promise.resolve();
 
         testCafe = null;
         return promisedClose;
@@ -35,8 +35,8 @@ describe('TestCafe factory function', function () {
                 return testCafe.createBrowserConnection();
             })
             .then(function (bc) {
-                var bcUrl = url.parse(bc.url);
-                var port  = parseInt(bcUrl.port, 10);
+                const bcUrl = url.parse(bc.url);
+                const port  = parseInt(bcUrl.port, 10);
 
                 expect(bcUrl.hostname).not.eql('undefined');
                 expect(bcUrl.hostname).not.eql('null');
@@ -50,8 +50,8 @@ describe('TestCafe factory function', function () {
                 return testCafe.createBrowserConnection();
             })
             .then(function (bc) {
-                var bcUrl = url.parse(bc.url);
-                var port  = parseInt(bcUrl.port, 10);
+                const bcUrl = url.parse(bc.url);
+                const port  = parseInt(bcUrl.port, 10);
 
                 expect(bcUrl.hostname).eql('localhost');
                 expect(port).eql(1338);
@@ -59,7 +59,7 @@ describe('TestCafe factory function', function () {
     });
 
     it('Should raise error if specified port is not free', function () {
-        var serverListen = new Promise(function (resolve) {
+        const serverListen = new Promise(function (resolve) {
             server = net.createServer();
 
             server.listen(1337, resolve);

@@ -10,9 +10,9 @@ import remotesWizard from './remotes-wizard';
 import createTestCafe from '../';
 
 
-var showMessageOnExit = true;
-var exitMessageShown  = false;
-var exiting           = false;
+let showMessageOnExit = true;
+let exitMessageShown  = false;
+let exiting           = false;
 
 function exitHandler (terminationLevel) {
     if (showMessageOnExit && !exitMessageShown) {
@@ -44,7 +44,7 @@ function exit (code) {
 function error (err) {
     log.hideSpinner();
 
-    var message = null;
+    let message = null;
 
     // HACK: workaround for the `instanceof` problem
     // (see: http://stackoverflow.com/questions/33870684/why-doesnt-instanceof-work-on-instances-of-error-subclasses-under-babel-node)
@@ -64,21 +64,21 @@ function error (err) {
 }
 
 async function runTests (argParser) {
-    var opts              = argParser.opts;
-    var port1             = opts.ports && opts.ports[0];
-    var port2             = opts.ports && opts.ports[1];
-    var externalProxyHost = opts.proxy;
-    var proxyBypass       = opts.proxyBypass;
+    const opts              = argParser.opts;
+    const port1             = opts.ports && opts.ports[0];
+    const port2             = opts.ports && opts.ports[1];
+    const externalProxyHost = opts.proxy;
+    const proxyBypass       = opts.proxyBypass;
 
     log.showSpinner();
 
     const testCafe     = await createTestCafe(opts.hostname, port1, port2, opts.ssl, opts.dev);
-    var concurrency    = argParser.concurrency || 1;
-    var remoteBrowsers = await remotesWizard(testCafe, argParser.remoteCount, opts.qrCode);
-    var browsers       = argParser.browsers.concat(remoteBrowsers);
-    var runner         = testCafe.createRunner();
-    var failed         = 0;
-    var reporters      = argParser.opts.reporters.map(r => {
+    const concurrency    = argParser.concurrency || 1;
+    const remoteBrowsers = await remotesWizard(testCafe, argParser.remoteCount, opts.qrCode);
+    const browsers       = argParser.browsers.concat(remoteBrowsers);
+    const runner         = testCafe.createRunner();
+    let failed         = 0;
+    const reporters      = argParser.opts.reporters.map(r => {
         return {
             name:      r.name,
             outStream: r.outFile ? fs.createWriteStream(r.outFile) : void 0
@@ -111,13 +111,13 @@ async function runTests (argParser) {
 }
 
 async function listBrowsers (providerName = 'locally-installed') {
-    var provider = await browserProviderPool.getProvider(providerName);
+    const provider = await browserProviderPool.getProvider(providerName);
 
     if (!provider)
         throw new GeneralError(MESSAGE.browserProviderNotFound, providerName);
 
     if (provider.isMultiBrowser) {
-        var browserNames = await provider.getBrowserList();
+        const browserNames = await provider.getBrowserList();
 
         await browserProviderPool.dispose();
 
@@ -133,12 +133,12 @@ async function listBrowsers (providerName = 'locally-installed') {
 }
 
 (async function cli () {
-    var terminationHandler = new TerminationHandler();
+    const terminationHandler = new TerminationHandler();
 
     terminationHandler.on(TerminationHandler.TERMINATION_LEVEL_INCREASED_EVENT, exitHandler);
 
     try {
-        var argParser = new CliArgumentParser();
+        const argParser = new CliArgumentParser();
 
         await argParser.parse(process.argv);
 

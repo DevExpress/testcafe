@@ -12,20 +12,20 @@ export default class ParentDriverLink {
     }
 
     establishConnection () {
-        var msg = new EstablishConnectionMessage();
+        const msg = new EstablishConnectionMessage();
 
         return sendMessageToDriver(msg, this.driverWindow, WAIT_FOR_PARENT_DRIVER_RESPONSE_TIMEOUT, CurrentIframeIsNotLoadedError)
             .then(response => response.result.id);
     }
 
     confirmMessageReceived (requestMsgId) {
-        var msg = new ConfirmationMessage(requestMsgId);
+        const msg = new ConfirmationMessage(requestMsgId);
 
         eventSandbox.message.sendServiceMsg(msg, this.driverWindow);
     }
 
     onCommandExecuted (status) {
-        var msg = new CommandExecutedMessage(status);
+        const msg = new CommandExecutedMessage(status);
 
         eventSandbox.message.sendServiceMsg(msg, this.driverWindow);
     }

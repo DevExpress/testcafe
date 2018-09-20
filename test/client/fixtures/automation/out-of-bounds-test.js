@@ -1,36 +1,36 @@
-var hammerhead       = window.getTestCafeModule('hammerhead');
-var browserUtils     = hammerhead.utils.browser;
-var featureDetection = hammerhead.utils.featureDetection;
+const hammerhead       = window.getTestCafeModule('hammerhead');
+const browserUtils     = hammerhead.utils.browser;
+const featureDetection = hammerhead.utils.featureDetection;
 
-var testCafeCore  = window.getTestCafeModule('testCafeCore');
-var position      = testCafeCore.get('./utils/position');
-var textSelection = testCafeCore.get('./utils/text-selection');
+const testCafeCore  = window.getTestCafeModule('testCafeCore');
+const position      = testCafeCore.get('./utils/position');
+const textSelection = testCafeCore.get('./utils/text-selection');
 
 testCafeCore.preventRealEvents();
 
-var testCafeAutomation     = window.getTestCafeModule('testCafeAutomation');
-var ClickOptions           = testCafeAutomation.get('../../test-run/commands/options').ClickOptions;
-var TypeOptions            = testCafeAutomation.get('../../test-run/commands/options').TypeOptions;
-var MouseOptions           = testCafeAutomation.get('../../test-run/commands/options').MouseOptions;
-var ClickAutomation        = testCafeAutomation.Click;
-var RClickAutomation       = testCafeAutomation.RClick;
-var DblClickAutomation     = testCafeAutomation.DblClick;
-var DragToOffsetAutomation = testCafeAutomation.DragToOffset;
-var TypeAutomation         = testCafeAutomation.Type;
+const testCafeAutomation     = window.getTestCafeModule('testCafeAutomation');
+const ClickOptions           = testCafeAutomation.get('../../test-run/commands/options').ClickOptions;
+const TypeOptions            = testCafeAutomation.get('../../test-run/commands/options').TypeOptions;
+const MouseOptions           = testCafeAutomation.get('../../test-run/commands/options').MouseOptions;
+const ClickAutomation        = testCafeAutomation.Click;
+const RClickAutomation       = testCafeAutomation.RClick;
+const DblClickAutomation     = testCafeAutomation.DblClick;
+const DragToOffsetAutomation = testCafeAutomation.DragToOffset;
+const TypeAutomation         = testCafeAutomation.Type;
 
 
 $(document).ready(function () {
     //consts
-    var TEST_ELEMENT_CLASS = 'testElement';
+    const TEST_ELEMENT_CLASS = 'testElement';
 
     //utils
-    var createTextInput = function () {
+    const createTextInput = function () {
         return $('<input type="text">').attr('id', 'input').addClass(TEST_ELEMENT_CLASS).appendTo('body');
     };
 
     $('body').css('height', 1500);
 
-    var createDiv = function (x, y, width, height, color) {
+    const createDiv = function (x, y, width, height, color) {
         return $('<div></div>')
             .addClass(TEST_ELEMENT_CLASS)
             .css({
@@ -44,22 +44,22 @@ $(document).ready(function () {
             .appendTo($('body'));
     };
 
-    var DRAGGABLE_BIND_FLAG      = 'tc-dbf-c56a4d91';
-    var CURSOR_POSITION_PROPERTY = 'tc-cpp-ac4a65d4';
-    var SCROLL_POSITION_PROPERTY = 'tc-spp-ac4a65d4';
-    var DRAGGABLE_CLASS          = 'draggable';
-    var DRAG_STARTED_PROPERTY    = 'dragStarted';
+    const DRAGGABLE_BIND_FLAG      = 'tc-dbf-c56a4d91';
+    const CURSOR_POSITION_PROPERTY = 'tc-cpp-ac4a65d4';
+    const SCROLL_POSITION_PROPERTY = 'tc-spp-ac4a65d4';
+    const DRAGGABLE_CLASS          = 'draggable';
+    const DRAG_STARTED_PROPERTY    = 'dragStarted';
 
-    var initDraggable = function (win, doc, $el) {
-        var $doc = $(doc);
-        var $win = $(win);
+    const initDraggable = function (win, doc, $el) {
+        const $doc = $(doc);
+        const $win = $(win);
 
         if (!$doc.data(DRAGGABLE_BIND_FLAG)) {
             $doc.data(DRAGGABLE_BIND_FLAG, true);
             $doc.data(CURSOR_POSITION_PROPERTY, null);
 
             $doc.bind(featureDetection.isTouchDevice ? 'touchmove' : 'mousemove', function (e) {
-                var curMousePos = featureDetection.isTouchDevice ? {
+                const curMousePos = featureDetection.isTouchDevice ? {
                     x: e.originalEvent.targetTouches[0].pageX || e.originalEvent.touches[0].pageX,
                     y: e.originalEvent.targetTouches[0].pageY || e.originalEvent.touches[0].pageY
                 } : {
@@ -68,7 +68,7 @@ $(document).ready(function () {
                 };
 
                 $.each($doc.find('.' + DRAGGABLE_CLASS), function () {
-                    var $this = $(this);
+                    const $this = $(this);
 
                     if ($(this).data(DRAG_STARTED_PROPERTY)) {
                         $this.css({
@@ -97,14 +97,14 @@ $(document).ready(function () {
             });
 
             $win.scroll(function () {
-                var x = $win.scrollLeft() - $win.data(SCROLL_POSITION_PROPERTY).x;
-                var y = $win.scrollTop() - $win.data(SCROLL_POSITION_PROPERTY).y;
+                const x = $win.scrollLeft() - $win.data(SCROLL_POSITION_PROPERTY).x;
+                const y = $win.scrollTop() - $win.data(SCROLL_POSITION_PROPERTY).y;
 
                 $win.data(SCROLL_POSITION_PROPERTY).x = $win.scrollLeft();
                 $win.data(SCROLL_POSITION_PROPERTY).y = $win.scrollTop();
 
                 $.each($doc.find('.' + DRAGGABLE_CLASS), function () {
-                    var $this = $(this);
+                    const $this = $(this);
 
                     if ($(this).data(DRAG_STARTED_PROPERTY)) {
                         $this.css({
@@ -141,10 +141,10 @@ $(document).ready(function () {
         });
     };
 
-    var createDraggable = function (currentWindow, currentDocument, x, y) {
-        var curDocument = currentDocument || document;
-        var curindow    = currentWindow || window;
-        var $draggable  = $('<div></div>')
+    const createDraggable = function (currentWindow, currentDocument, x, y) {
+        const curDocument = currentDocument || document;
+        const curindow    = currentWindow || window;
+        const $draggable  = $('<div></div>')
             .attr('id', 'draggable')
             .addClass(TEST_ELEMENT_CLASS)
             .css({
@@ -163,7 +163,7 @@ $(document).ready(function () {
         return $draggable;
     };
 
-    var startNext = function () {
+    const startNext = function () {
         if (browserUtils.isIE) {
             removeTestElements();
             window.setTimeout(start, 30);
@@ -172,13 +172,13 @@ $(document).ready(function () {
             start();
     };
 
-    var removeTestElements = function () {
+    const removeTestElements = function () {
         $('.' + TEST_ELEMENT_CLASS).remove();
     };
 
-    var runTypeAutomation = function (element, text, options, callback) {
-        var typeOptions    = new TypeOptions(options);
-        var typeAutomation = new TypeAutomation(element, text, typeOptions);
+    const runTypeAutomation = function (element, text, options, callback) {
+        const typeOptions    = new TypeOptions(options);
+        const typeAutomation = new TypeAutomation(element, text, typeOptions);
 
         typeAutomation
             .run()
@@ -194,12 +194,14 @@ $(document).ready(function () {
     module('actions with out of element\'s bounds offsets');
 
     asyncTest('Click playback', function () {
-        var $smallDiv       = createDiv(200, 200, 50, 50, 'red');
-        var $bigDiv         = createDiv(150, 150, 150, 150, 'grey');
-        var clickSmallCount = 0;
-        var clickBigCount   = 0;
-        var offsetX         = $smallDiv.width() + 10;
-        var offsetY         = $smallDiv.height() + 10;
+        const $smallDiv       = createDiv(200, 200, 50, 50, 'red');
+        const $bigDiv         = createDiv(150, 150, 150, 150, 'grey');
+        const offsetX         = $smallDiv.width() + 10;
+        const offsetY         = $smallDiv.height() + 10;
+
+        let clickSmallCount = 0;
+        let clickBigCount   = 0;
+
 
         $smallDiv.css('zIndex', '5');
 
@@ -208,8 +210,8 @@ $(document).ready(function () {
         });
 
         $bigDiv.bind('mousedown', function (e) {
-            var smallDivPos       = position.getOffsetPosition($smallDiv[0]);
-            var smallDivPosClient = position.offsetToClientCoords({
+            const smallDivPos       = position.getOffsetPosition($smallDiv[0]);
+            const smallDivPosClient = position.offsetToClientCoords({
                 x: smallDivPos.left + offsetX,
                 y: smallDivPos.top + offsetY
             });
@@ -222,12 +224,12 @@ $(document).ready(function () {
             clickBigCount++;
         });
 
-        var clickOptions = new ClickOptions({
+        const clickOptions = new ClickOptions({
             offsetX: offsetX,
             offsetY: offsetY
         });
 
-        var clickAutomation = new ClickAutomation($smallDiv[0], clickOptions);
+        const clickAutomation = new ClickAutomation($smallDiv[0], clickOptions);
 
         clickAutomation
             .run()
@@ -240,12 +242,13 @@ $(document).ready(function () {
     });
 
     asyncTest('RClick playback', function () {
-        var $smallDiv       = createDiv(200, 200, 50, 50, 'red');
-        var $bigDiv         = createDiv(150, 150, 150, 150, 'grey');
-        var clickSmallCount = 0;
-        var clickBigCount   = 0;
-        var offsetX         = $smallDiv.width() + 10;
-        var offsetY         = $smallDiv.height() + 10;
+        const $smallDiv       = createDiv(200, 200, 50, 50, 'red');
+        const $bigDiv         = createDiv(150, 150, 150, 150, 'grey');
+        const offsetX         = $smallDiv.width() + 10;
+        const offsetY         = $smallDiv.height() + 10;
+
+        let clickSmallCount = 0;
+        let clickBigCount   = 0;
 
         $smallDiv.css('zIndex', '5');
 
@@ -254,8 +257,8 @@ $(document).ready(function () {
         });
 
         $bigDiv.bind('mousedown', function (e) {
-            var smallDivPos       = position.getOffsetPosition($smallDiv[0]);
-            var smallDivPosClient = position.offsetToClientCoords({
+            const smallDivPos       = position.getOffsetPosition($smallDiv[0]);
+            const smallDivPosClient = position.offsetToClientCoords({
                 x: smallDivPos.left + offsetX,
                 y: smallDivPos.top + offsetY
             });
@@ -268,12 +271,12 @@ $(document).ready(function () {
             clickBigCount++;
         });
 
-        var clickOptions = new ClickOptions({
+        const clickOptions = new ClickOptions({
             offsetX: offsetX,
             offsetY: offsetY
         });
 
-        var rClickAutomation = new RClickAutomation($smallDiv[0], clickOptions);
+        const rClickAutomation = new RClickAutomation($smallDiv[0], clickOptions);
 
         rClickAutomation
             .run()
@@ -286,16 +289,17 @@ $(document).ready(function () {
     });
 
     asyncTest('DblClick playback', function () {
-        var $smallDiv       = createDiv(200, 200, 50, 50, 'red');
-        var $bigDiv         = createDiv(150, 150, 150, 150, 'grey');
-        var clickSmallCount = 0;
-        var clickBigCount   = 0;
-        var offsetX         = $smallDiv.width() + 10;
-        var offsetY         = $smallDiv.height() + 10;
+        const $smallDiv       = createDiv(200, 200, 50, 50, 'red');
+        const $bigDiv         = createDiv(150, 150, 150, 150, 'grey');
+        const offsetX         = $smallDiv.width() + 10;
+        const offsetY         = $smallDiv.height() + 10;
 
-        var mousedownHandler = function (e) {
-            var smallDivPos       = position.getOffsetPosition($smallDiv[0]);
-            var smallDivPosClient = position.offsetToClientCoords({
+        let clickSmallCount = 0;
+        let clickBigCount   = 0;
+
+        const mousedownHandler = function (e) {
+            const smallDivPos       = position.getOffsetPosition($smallDiv[0]);
+            const smallDivPosClient = position.offsetToClientCoords({
                 x: smallDivPos.left + offsetX,
                 y: smallDivPos.top + offsetY
             });
@@ -316,13 +320,13 @@ $(document).ready(function () {
             clickBigCount++;
         });
 
-        var clickOptions = new ClickOptions({
+        const clickOptions = new ClickOptions({
             offsetX:   offsetX,
             offsetY:   offsetY,
             modifiers: {}
         });
 
-        var dblClickAutomation = new DblClickAutomation($smallDiv[0], clickOptions);
+        const dblClickAutomation = new DblClickAutomation($smallDiv[0], clickOptions);
 
         dblClickAutomation
             .run()
@@ -335,49 +339,51 @@ $(document).ready(function () {
     });
 
     asyncTest('Type playback', function () {
-        var inputText      = 'input with text';
-        var typpingText    = 'testtext';
-        var newInputText   = '';
-        var startCursorPos = 0;
-        var $input         = createTextInput()
+        const inputText      = 'input with text';
+        const typingText     = 'testtext';
+
+        const $input = createTextInput()
             .attr('value', inputText);
 
-        var inputOffset         = position.getOffsetPosition($input[0]);
-        var inputCursorPosition = 5;
-        var offsetX             = $input.width() + 50;
-        var offsetY             = $input.height() + 50;
+        let newInputText   = '';
+        let startCursorPos = 0;
 
-        var typeOptions = {
+        const inputOffset         = position.getOffsetPosition($input[0]);
+        const inputCursorPosition = 5;
+        const offsetX             = $input.width() + 50;
+        const offsetY             = $input.height() + 50;
+
+        const typeOptions = {
             offsetX:  offsetX,
             offsetY:  offsetY,
             caretPos: inputCursorPosition
         };
 
-        var $div = createDiv(inputOffset.left, inputOffset.top + $input.height(), $input.width() +
+        const $div = createDiv(inputOffset.left, inputOffset.top + $input.height(), $input.width() +
                                                                                   100, 100, 'red');
 
         $div.click(function () {
             $input.focus();
             startCursorPos = textSelection.getSelectionStart($input[0]);
-            newInputText   = inputText.substring(0, startCursorPos) + typpingText + inputText.substring(startCursorPos);
+            newInputText   = inputText.substring(0, startCursorPos) + typingText + inputText.substring(startCursorPos);
         });
 
-        runTypeAutomation($input[0], typpingText, typeOptions, function () {
+        runTypeAutomation($input[0], typingText, typeOptions, function () {
             equal($input[0].value, newInputText);
-            equal(textSelection.getSelectionStart($input[0]), startCursorPos + typpingText.length);
+            equal(textSelection.getSelectionStart($input[0]), startCursorPos + typingText.length);
             startNext();
         });
     });
 
     asyncTest('Type playback with too large offset', function () {
-        var inputText           = 'input with text';
-        var typpingText         = 'testtext';
-        var $input              = createTextInput().attr('value', inputText);
-        var startCursorPos      = textSelection.getSelectionStart($input[0]);
-        var inputCursorPosition = 5;
-        var offsetX             = $input.width() + 50;
-        var offsetY             = $input.height() + 50;
-        var typeOptions         = {
+        const inputText           = 'input with text';
+        const typpingText         = 'testtext';
+        const $input              = createTextInput().attr('value', inputText);
+        const startCursorPos      = textSelection.getSelectionStart($input[0]);
+        const inputCursorPosition = 5;
+        const offsetX             = $input.width() + 50;
+        const offsetY             = $input.height() + 50;
+        const typeOptions         = {
             offsetX:  offsetX,
             offsetY:  offsetY,
             caretPos: inputCursorPosition
@@ -391,20 +397,20 @@ $(document).ready(function () {
     });
 
     asyncTest('Drag playback', function () {
-        var $smallDraggable      = createDraggable(window, document, 200, 200);
-        var smallDraggableOffset = position.getOffsetPosition($smallDraggable[0]);
+        const $smallDraggable      = createDraggable(window, document, 200, 200);
+        const smallDraggableOffset = position.getOffsetPosition($smallDraggable[0]);
 
-        var $bigDraggable      = createDraggable(window, document, 150, 150);
-        var bigDraggableOffset = position.getOffsetPosition($bigDraggable[0]);
+        const $bigDraggable      = createDraggable(window, document, 150, 150);
+        const bigDraggableOffset = position.getOffsetPosition($bigDraggable[0]);
 
-        var dragOffsetX = 10;
-        var dragOffsetY = -100;
-        var offsetX     = $smallDraggable.width() + 10;
-        var offsetY     = $smallDraggable.height() + 10;
+        const dragOffsetX = 10;
+        const dragOffsetY = -100;
+        const offsetX     = $smallDraggable.width() + 10;
+        const offsetY     = $smallDraggable.height() + 10;
 
-        var handler = function (e) {
-            var smallDraggablePos       = position.getOffsetPosition($smallDraggable[0]);
-            var smallDraggablePosClient = position.offsetToClientCoords({
+        const handler = function (e) {
+            const smallDraggablePos       = position.getOffsetPosition($smallDraggable[0]);
+            const smallDraggablePosClient = position.offsetToClientCoords({
                 x: smallDraggablePos.left + offsetX,
                 y: smallDraggablePos.top + offsetY
             });
@@ -415,8 +421,8 @@ $(document).ready(function () {
 
         if (!featureDetection.isTouchDevice) {
             $bigDraggable.bind('mousedown', function (e) {
-                var smallDraggablePos       = position.getOffsetPosition($smallDraggable[0]);
-                var smallDraggablePosClient = position.offsetToClientCoords({
+                const smallDraggablePos       = position.getOffsetPosition($smallDraggable[0]);
+                const smallDraggablePosClient = position.offsetToClientCoords({
                     x: smallDraggablePos.left + offsetX,
                     y: smallDraggablePos.top + offsetY
                 });
@@ -440,12 +446,12 @@ $(document).ready(function () {
             backgroundColor: 'red'
         });
 
-        var mouseOptions = new MouseOptions({
+        const mouseOptions = new MouseOptions({
             offsetX: offsetX,
             offsetY: offsetY
         });
 
-        var dragAutomation = new DragToOffsetAutomation($smallDraggable[0], dragOffsetX, dragOffsetY, mouseOptions);
+        const dragAutomation = new DragToOffsetAutomation($smallDraggable[0], dragOffsetX, dragOffsetY, mouseOptions);
 
         dragAutomation
             .run()

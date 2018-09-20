@@ -12,18 +12,18 @@ export default class Assignable {
         if (!obj)
             return;
 
-        var props = this._getAssignableProperties();
+        const props = this._getAssignableProperties();
 
-        for (var i = 0; i < props.length; i++) {
-            var { name, type, required, init, defaultValue } = props[i];
+        for (let i = 0; i < props.length; i++) {
+            const { name, type, required, init, defaultValue } = props[i];
 
-            var path    = name.split('.');
-            var lastIdx = path.length - 1;
-            var last    = path[lastIdx];
-            var srcObj  = obj;
-            var destObj = this;
+            const path    = name.split('.');
+            const lastIdx = path.length - 1;
+            const last    = path[lastIdx];
+            let srcObj  = obj;
+            let destObj = this;
 
-            for (var j = 0; j < lastIdx && srcObj && destObj; j++) {
+            for (let j = 0; j < lastIdx && srcObj && destObj; j++) {
                 srcObj  = srcObj[path[j]];
                 destObj = destObj[path[j]];
             }
@@ -32,7 +32,7 @@ export default class Assignable {
                 destObj[name] = defaultValue;
 
             if (srcObj && destObj) {
-                var srcVal = srcObj[last];
+                const srcVal = srcObj[last];
 
                 if (srcVal !== void 0 || required) {
                     if (validate && type)

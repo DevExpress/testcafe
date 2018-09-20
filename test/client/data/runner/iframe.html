@@ -21,21 +21,21 @@
 
 
     //Hammerhead setup
-    var hammerhead  = getTestCafeModule('hammerhead');
-    var INSTRUCTION = hammerhead.get('../processing/script/instruction');
+    const hammerhead  = getTestCafeModule('hammerhead');
+    const INSTRUCTION = hammerhead.get('../processing/script/instruction');
 
 
     hammerhead.get('./utils/destination-location').forceLocation('http://localhost/sessionId/https://example.com');
 
     hammerhead.start({ sessionId: 'sessionId' });
 
-    var testCafeLegacyRunner = getTestCafeModule('testCafeLegacyRunner');
-    var sandboxedJQuery      = testCafeLegacyRunner.get('./sandboxed-jquery');
-    var iframeDispatcher     = testCafeLegacyRunner.get('./iframe-dispatcher');
+    const testCafeLegacyRunner = getTestCafeModule('testCafeLegacyRunner');
+    const sandboxedJQuery      = testCafeLegacyRunner.get('./sandboxed-jquery');
+    const iframeDispatcher     = testCafeLegacyRunner.get('./iframe-dispatcher');
 
     sandboxedJQuery.init(window);
 
-    var act          = null,
+    let act          = null,
         ok           = null,
         notOk        = null,
         eq           = null,

@@ -47,7 +47,7 @@
 
 <script>
     document.querySelector('#createElement').addEventListener('click', function () {
-        var div = document.createElement('div');
+        const div = document.createElement('div');
 
         div.id = 'newElement';
 
@@ -57,7 +57,7 @@
     });
 
     document.querySelector('#makeVisible').addEventListener('click', function () {
-        var div = document.querySelector('#invisibleElement');
+        const div = document.querySelector('#invisibleElement');
 
         window.setTimeout(function () {
             div.style.display = 'block';
@@ -72,7 +72,7 @@
 
     document.addEventListener("DOMContentLoaded", function () {
         window.setTimeout(function () {
-            var div = document.createElement('div');
+            const div = document.createElement('div');
 
             div.id            = 'slowElement';
             div.style.display = 'none';

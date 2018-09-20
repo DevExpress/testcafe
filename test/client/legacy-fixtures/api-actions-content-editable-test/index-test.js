@@ -1,29 +1,29 @@
-var hammerhead       = window.getTestCafeModule('hammerhead');
-var browserUtils     = hammerhead.utils.browser;
-var featureDetection = hammerhead.utils.featureDetection;
+const hammerhead       = window.getTestCafeModule('hammerhead');
+const browserUtils     = hammerhead.utils.browser;
+const featureDetection = hammerhead.utils.featureDetection;
 
-var testCafeCore  = window.getTestCafeModule('testCafeCore');
-var domUtils      = testCafeCore.get('./utils/dom');
-var textSelection = testCafeCore.get('./utils/text-selection');
+const testCafeCore  = window.getTestCafeModule('testCafeCore');
+const domUtils      = testCafeCore.get('./utils/dom');
+const textSelection = testCafeCore.get('./utils/text-selection');
 
-var testCafeLegacyRunner = window.getTestCafeModule('testCafeLegacyRunner');
-var ERROR_TYPE           = testCafeLegacyRunner.get('../test-run-error/type');
-var actionsAPI           = testCafeLegacyRunner.get('./api/actions');
-var StepIterator         = testCafeLegacyRunner.get('./step-iterator');
-var initAutomation       = testCafeLegacyRunner.get('./init-automation');
+const testCafeLegacyRunner = window.getTestCafeModule('testCafeLegacyRunner');
+const ERROR_TYPE           = testCafeLegacyRunner.get('../test-run-error/type');
+const actionsAPI           = testCafeLegacyRunner.get('./api/actions');
+const StepIterator         = testCafeLegacyRunner.get('./step-iterator');
+const initAutomation       = testCafeLegacyRunner.get('./init-automation');
 
 actionsAPI.ELEMENT_AVAILABILITY_WAITING_TIMEOUT = 400;
 
-var WAITING_TIMEOUT               = 3500;
-var TEST_COMPLETE_WAITING_TIMEOUT = featureDetection.isTouchDevice ? WAITING_TIMEOUT * 2 : WAITING_TIMEOUT;
-var ERROR_WAITING_TIMEOUT         = actionsAPI.ELEMENT_AVAILABILITY_WAITING_TIMEOUT + 50;
+const WAITING_TIMEOUT               = 3500;
+const TEST_COMPLETE_WAITING_TIMEOUT = featureDetection.isTouchDevice ? WAITING_TIMEOUT * 2 : WAITING_TIMEOUT;
+const ERROR_WAITING_TIMEOUT         = actionsAPI.ELEMENT_AVAILABILITY_WAITING_TIMEOUT + 50;
 
-var stepIterator = new StepIterator();
+const stepIterator = new StepIterator();
 
 initAutomation();
 actionsAPI.init(stepIterator);
 
-var correctTestWaitingTime = function (time) {
+const correctTestWaitingTime = function (time) {
     if (featureDetection.isTouchDevice && browserUtils.isFirefox)
         return time * 2;
 
@@ -32,29 +32,29 @@ var correctTestWaitingTime = function (time) {
 
 
 $(document).ready(function () {
-    var $el     = null;
-    var $parent = null;
+    let $el     = null;
+    let $parent = null;
 
-    var firstElementInnerHTML   = null;
-    var secondElementInnerHTML  = null;
-    var thirdElementInnerHTML   = null;
-    var fourthElementInnerHTML  = null;
-    var fifthElementInnerHTML   = null;
-    var sixthElementInnerHTML   = null;
-    var seventhElementInnerHTML = null;
+    let firstElementInnerHTML   = null;
+    let secondElementInnerHTML  = null;
+    let thirdElementInnerHTML   = null;
+    let fourthElementInnerHTML  = null;
+    let fifthElementInnerHTML   = null;
+    let sixthElementInnerHTML   = null;
+    let seventhElementInnerHTML = null;
 
-    var currentErrorType = null;
+    let currentErrorType = null;
 
     //utils
-    var asyncActionCallback;
+    let asyncActionCallback;
 
-    var startNext = function () {
+    const startNext = function () {
         window.setTimeout(start, 30);
     };
 
-    var runAsyncTest = function (actions, assertions, timeout) {
-        var timeoutId        = null;
-        var callbackFunction = function () {
+    const runAsyncTest = function (actions, assertions, timeout) {
+        let timeoutId        = null;
+        let callbackFunction = function () {
             clearTimeout(timeoutId);
             assertions();
             startNext();
@@ -74,7 +74,7 @@ $(document).ready(function () {
     };
 
     function checkOffsetsArray (actualOffset, offsets) {
-        for (var i = 0; i < offsets.length; i++) {
+        for (let i = 0; i < offsets.length; i++) {
             if (actualOffset === offsets[i])
                 return true;
         }
@@ -82,9 +82,9 @@ $(document).ready(function () {
         return false;
     }
 
-    var checkSelection = function ($element, startNode, startOffsets, endNode, endOffsets) {
-        var curDocument = domUtils.findDocument($element[0]);
-        var selection   = curDocument.getSelection();
+    const checkSelection = function ($element, startNode, startOffsets, endNode, endOffsets) {
+        const curDocument = domUtils.findDocument($element[0]);
+        const selection   = curDocument.getSelection();
 
         equal(domUtils.getActiveElement(), $element[0]);
         ok(domUtils.isTheSameNode(startNode, selection.anchorNode), 'startNode correct');
@@ -102,11 +102,11 @@ $(document).ready(function () {
             equal(selection.focusOffset, endOffsets, 'endOffset correct');
     };
 
-    var setInnerHTML = function ($element, innerHTML) {
+    const setInnerHTML = function ($element, innerHTML) {
         window.setProperty($element[0], 'innerHTML', innerHTML);
     };
 
-    var stateHelper = {
+    const stateHelper = {
         isStateSaved: function () {
             return firstElementInnerHTML;
         },
@@ -122,8 +122,8 @@ $(document).ready(function () {
         },
 
         restoreState: function () {
-            var curActiveElement = domUtils.getActiveElement();
-            var selection        = document.getSelection();
+            const curActiveElement = domUtils.getActiveElement();
+            const selection        = document.getSelection();
 
             if (firstElementInnerHTML) {
                 setInnerHTML($('#1'), firstElementInnerHTML);
@@ -143,7 +143,7 @@ $(document).ready(function () {
     };
 
     StepIterator.prototype.asyncActionSeries = function (items, runArgumentsIterator, action) {
-        var seriesActionsRun = function (elements, callback) {
+        const seriesActionsRun = function (elements, callback) {
             async.forEachSeries(
                 elements,
                 function (element, seriaCallback) {
@@ -285,8 +285,8 @@ $(document).ready(function () {
 
     asyncTest('startNode and endNode', function () {
         $parent   = $('#2');
-        var node1 = $parent[0].childNodes[0];
-        var node2 = $parent[0].childNodes[2];
+        const node1 = $parent[0].childNodes[0];
+        const node2 = $parent[0].childNodes[2];
 
         runAsyncTest(
             function () {
@@ -301,7 +301,7 @@ $(document).ready(function () {
 
     asyncTest('startNode equal endNode', function () {
         $parent  = $('#2');
-        var node = $parent[0].childNodes[0];
+        const node = $parent[0].childNodes[0];
 
         runAsyncTest(
             function () {
@@ -316,8 +316,8 @@ $(document).ready(function () {
 
     asyncTest('startElement and endElement', function () {
         $parent = $('#4');
-        var el1 = $parent[0].childNodes[3];
-        var el2 = $parent[0].childNodes[5];
+        const el1 = $parent[0].childNodes[3];
+        const el2 = $parent[0].childNodes[5];
 
         runAsyncTest(
             function () {
@@ -332,8 +332,8 @@ $(document).ready(function () {
 
     asyncTest('startNode and endElement', function () {
         $parent  = $('#4');
-        var node = $parent[0].childNodes[5].childNodes[0];
-        var el   = $parent[0].childNodes[5].childNodes[4];
+        const node = $parent[0].childNodes[5].childNodes[0];
+        const el   = $parent[0].childNodes[5].childNodes[4];
 
         runAsyncTest(
             function () {
@@ -348,8 +348,8 @@ $(document).ready(function () {
 
     asyncTest('startElement and endNode', function () {
         $parent  = $('#6');
-        var el   = $parent[0].childNodes[1];
-        var node = $parent[0].childNodes[8];
+        const el   = $parent[0].childNodes[1];
+        const node = $parent[0].childNodes[8];
 
         runAsyncTest(
             function () {
@@ -364,8 +364,8 @@ $(document).ready(function () {
 
     asyncTest('inverse startNode and endElement', function () {
         $parent  = $('#6');
-        var el   = $parent[0].childNodes[1];
-        var node = $parent[0].childNodes[8];
+        const el   = $parent[0].childNodes[1];
+        const node = $parent[0].childNodes[8];
 
         runAsyncTest(
             function () {
@@ -385,7 +385,7 @@ $(document).ready(function () {
 
     asyncTest('startNode and $endElement', function () {
         $parent  = $('#5');
-        var node = $parent[0].childNodes[2];
+        const node = $parent[0].childNodes[2];
 
         runAsyncTest(
             function () {
@@ -400,8 +400,8 @@ $(document).ready(function () {
 
     asyncTest('startElement and $endElement', function () {
         $parent  = $('#7');
-        var el1  = $parent.find('div')[3];
-        var $el2 = $parent.find('div').eq(4);
+        const el1  = $parent.find('div')[3];
+        const $el2 = $parent.find('div').eq(4);
 
         runAsyncTest(
             function () {
@@ -416,8 +416,8 @@ $(document).ready(function () {
 
     asyncTest('$startElement and $endElement', function () {
         $parent  = $('#7');
-        var $el1 = $parent.find('del:first');
-        var $el2 = $parent.find('a:last');
+        const $el1 = $parent.find('del:first');
+        const $el2 = $parent.find('a:last');
 
         runAsyncTest(
             function () {
@@ -432,8 +432,8 @@ $(document).ready(function () {
 
     asyncTest('inverse $startElement and $endElement', function () {
         $parent  = $('#7');
-        var $el1 = $parent.find('a:last');
-        var $el2 = $parent.find('del:first');
+        const $el1 = $parent.find('a:last');
+        const $el2 = $parent.find('del:first');
 
         runAsyncTest(
             function () {
@@ -457,8 +457,8 @@ $(document).ready(function () {
         asyncActionCallback = function () {
         };
 
-        var $el1 = $('#4>p').first();
-        var $el2 = $('#4>p').last();
+        const $el1 = $('#4>p').first();
+        const $el2 = $('#4>p').last();
 
         $el2.css('display', 'none');
 
@@ -473,8 +473,8 @@ $(document).ready(function () {
         asyncActionCallback = function () {
         };
         $parent             = $('#4');
-        var $el1            = $('#4>p').first();
-        var $el2            = $('#4>p').last();
+        const $el1            = $('#4>p').first();
+        const $el2            = $('#4>p').last();
 
         $parent[0].removeAttribute('contenteditable');
 
@@ -488,8 +488,8 @@ $(document).ready(function () {
     asyncTest('elements, which don\'t have common ancestor raise error', function () {
         asyncActionCallback = function () {
         };
-        var $el1            = $('#1>p');
-        var $el2            = $('#4>p').last();
+        const $el1            = $('#1>p');
+        const $el2            = $('#4>p').last();
 
         actionsAPI.select($el1[0], $el2[0]);
         window.setTimeout(function () {
@@ -502,8 +502,8 @@ $(document).ready(function () {
         asyncActionCallback = function () {
         };
 
-        var node = $('#2')[0].childNodes[0];
-        var text = 'test';
+        const node = $('#2')[0].childNodes[0];
+        const text = 'test';
 
         actionsAPI.type(node, text, {
             caretPos: 1

@@ -1,4 +1,4 @@
-var expect = require('chai').expect;
+const expect = require('chai').expect;
 
 //GH-1674
 const TEST_DURATION_BOUND = 10000;

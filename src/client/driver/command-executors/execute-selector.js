@@ -1,7 +1,7 @@
 import SelectorExecutor from './client-functions/selector-executor';
 
 export function getResult (command, globalTimeout, startTime, createNotFoundError, createIsInvisibleError, statusBar) {
-    var selectorExecutor = new SelectorExecutor(command, globalTimeout, startTime, createNotFoundError, createIsInvisibleError);
+    const selectorExecutor = new SelectorExecutor(command, globalTimeout, startTime, createNotFoundError, createIsInvisibleError);
 
     statusBar.showWaitingElementStatus(selectorExecutor.timeout);
 
@@ -19,7 +19,7 @@ export function getResult (command, globalTimeout, startTime, createNotFoundErro
 }
 
 export function getResultDriverStatus (command, globalTimeout, startTime, createNotFoundError, createIsInvisibleError, statusBar) {
-    var selectorExecutor = new SelectorExecutor(command, globalTimeout, startTime, createNotFoundError, createIsInvisibleError);
+    const selectorExecutor = new SelectorExecutor(command, globalTimeout, startTime, createNotFoundError, createIsInvisibleError);
 
     statusBar.showWaitingElementStatus(selectorExecutor.timeout);
 

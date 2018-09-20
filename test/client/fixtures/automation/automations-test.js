@@ -1,40 +1,40 @@
-var hammerhead       = window.getTestCafeModule('hammerhead');
-var browserUtils     = hammerhead.utils.browser;
-var featureDetection = hammerhead.utils.featureDetection;
+const hammerhead       = window.getTestCafeModule('hammerhead');
+const browserUtils     = hammerhead.utils.browser;
+const featureDetection = hammerhead.utils.featureDetection;
 
-var testCafeCore  = window.getTestCafeModule('testCafeCore');
-var domUtils      = testCafeCore.get('./utils/dom');
-var textSelection = testCafeCore.get('./utils/text-selection');
-var position      = testCafeCore.get('./utils/position');
+const testCafeCore  = window.getTestCafeModule('testCafeCore');
+const domUtils      = testCafeCore.get('./utils/dom');
+const textSelection = testCafeCore.get('./utils/text-selection');
+const position      = testCafeCore.get('./utils/position');
 
 testCafeCore.preventRealEvents();
 
-var testCafeAutomation     = window.getTestCafeModule('testCafeAutomation');
-var ClickAutomation        = testCafeAutomation.Click;
-var DblClickAutomation     = testCafeAutomation.DblClick;
-var SelectTextAutomation   = testCafeAutomation.SelectText;
-var TypeAutomation         = testCafeAutomation.Type;
-var PressAutomation        = testCafeAutomation.Press;
-var DragToOffsetAutomation = testCafeAutomation.DragToOffset;
+const testCafeAutomation     = window.getTestCafeModule('testCafeAutomation');
+const ClickAutomation        = testCafeAutomation.Click;
+const DblClickAutomation     = testCafeAutomation.DblClick;
+const SelectTextAutomation   = testCafeAutomation.SelectText;
+const TypeAutomation         = testCafeAutomation.Type;
+const PressAutomation        = testCafeAutomation.Press;
+const DragToOffsetAutomation = testCafeAutomation.DragToOffset;
 
-var ClickOptions = testCafeAutomation.get('../../test-run/commands/options').ClickOptions;
-var TypeOptions  = testCafeAutomation.get('../../test-run/commands/options').TypeOptions;
-var MouseOptions = testCafeAutomation.get('../../test-run/commands/options').MouseOptions;
+const ClickOptions = testCafeAutomation.get('../../test-run/commands/options').ClickOptions;
+const TypeOptions  = testCafeAutomation.get('../../test-run/commands/options').TypeOptions;
+const MouseOptions = testCafeAutomation.get('../../test-run/commands/options').MouseOptions;
 
-var parseKeySequence = testCafeCore.get('./utils/parse-key-sequence');
-var getOffsetOptions = testCafeAutomation.getOffsetOptions;
+const parseKeySequence = testCafeCore.get('./utils/parse-key-sequence');
+const getOffsetOptions = testCafeAutomation.getOffsetOptions;
 
 
 $(document).ready(function () {
     //consts
-    var TEST_ELEMENT_CLASS = 'testElement';
+    const TEST_ELEMENT_CLASS = 'testElement';
 
     //utils
-    var createTextInput = function () {
+    const createTextInput = function () {
         return $('<input type="text">').attr('id', 'input').addClass(TEST_ELEMENT_CLASS).appendTo('body');
     };
 
-    var createTextarea = function () {
+    const createTextarea = function () {
         return $('<textarea>').attr('id', 'textarea').addClass(TEST_ELEMENT_CLASS).appendTo('body').css('height', 200);
     };
 
@@ -44,22 +44,22 @@ $(document).ready(function () {
     if (browserUtils.isIE9)
         $(window.top.document).find('body').css('marginTop', '0px');
 
-    var DRAGGABLE_BIND_FLAG      = 'tc-dbf-c56a4d91';
-    var CURSOR_POSITION_PROPERTY = 'tc-cpp-ac4a65d4';
-    var SCROLL_POSITION_PROPERTY = 'tc-spp-ac4a65d4';
-    var DRAGGABLE_CLASS          = 'draggable';
-    var DRAG_STARTED_PROPERTY    = 'dragStarted';
+    const DRAGGABLE_BIND_FLAG      = 'tc-dbf-c56a4d91';
+    const CURSOR_POSITION_PROPERTY = 'tc-cpp-ac4a65d4';
+    const SCROLL_POSITION_PROPERTY = 'tc-spp-ac4a65d4';
+    const DRAGGABLE_CLASS          = 'draggable';
+    const DRAG_STARTED_PROPERTY    = 'dragStarted';
 
-    var initDraggable = function (win, doc, $el) {
-        var $doc = $(doc);
-        var $win = $(win);
+    const initDraggable = function (win, doc, $el) {
+        const $doc = $(doc);
+        const $win = $(win);
 
         if (!$doc.data(DRAGGABLE_BIND_FLAG)) {
             $doc.data(DRAGGABLE_BIND_FLAG, true);
             $doc.data(CURSOR_POSITION_PROPERTY, null);
 
             $doc.bind(featureDetection.isTouchDevice ? 'touchmove' : 'mousemove', function (e) {
-                var curMousePos = featureDetection.isTouchDevice ? {
+                const curMousePos = featureDetection.isTouchDevice ? {
                     x: e.originalEvent.targetTouches[0].pageX || e.originalEvent.touches[0].pageX,
                     y: e.originalEvent.targetTouches[0].pageY || e.originalEvent.touches[0].pageY
                 } : {
@@ -68,7 +68,7 @@ $(document).ready(function () {
                 };
 
                 $.each($doc.find('.' + DRAGGABLE_CLASS), function () {
-                    var $this = $(this);
+                    const $this = $(this);
 
                     if ($(this).data(DRAG_STARTED_PROPERTY)) {
                         $this.css({
@@ -96,14 +96,14 @@ $(document).ready(function () {
             });
 
             $win.scroll(function () {
-                var x = $win.scrollLeft() - $win.data(SCROLL_POSITION_PROPERTY).x;
-                var y = $win.scrollTop() - $win.data(SCROLL_POSITION_PROPERTY).y;
+                const x = $win.scrollLeft() - $win.data(SCROLL_POSITION_PROPERTY).x;
+                const y = $win.scrollTop() - $win.data(SCROLL_POSITION_PROPERTY).y;
 
                 $win.data(SCROLL_POSITION_PROPERTY).x = $win.scrollLeft();
                 $win.data(SCROLL_POSITION_PROPERTY).y = $win.scrollTop();
 
                 $.each($doc.find('.' + DRAGGABLE_CLASS), function () {
-                    var $this = $(this);
+                    const $this = $(this);
 
                     if ($(this).data(DRAG_STARTED_PROPERTY)) {
                         $this.css({
@@ -139,11 +139,11 @@ $(document).ready(function () {
         });
     };
 
-    var createDraggable = function (currentWindow, currentDocument, x, y) {
+    const createDraggable = function (currentWindow, currentDocument, x, y) {
         currentDocument = currentDocument || document;
         currentWindow   = currentWindow || window;
 
-        var $draggable = $('<div></div>')
+        const $draggable = $('<div></div>')
             .attr('id', 'draggable')
             .addClass(TEST_ELEMENT_CLASS)
             .css({
@@ -162,7 +162,7 @@ $(document).ready(function () {
         return $draggable;
     };
 
-    var startNext = function (ms) {
+    const startNext = function (ms) {
         if (browserUtils.isIE) {
             removeTestElements();
             window.setTimeout(start, ms || 30);
@@ -171,13 +171,13 @@ $(document).ready(function () {
             start();
     };
 
-    var removeTestElements = function () {
+    const removeTestElements = function () {
         $('.' + TEST_ELEMENT_CLASS).remove();
     };
 
-    var checkEditorSelection = function (element, startSelection, endSelection, selectionInversed) {
-        var start  = textSelection.getSelectionStart(element);
-        var result = document.activeElement === element && start === startSelection;
+    const checkEditorSelection = function (element, startSelection, endSelection, selectionInversed) {
+        const start = textSelection.getSelectionStart(element);
+        let result  = document.activeElement === element && start === startSelection;
 
         if (result && typeof endSelection !== 'undefined')
             result = textSelection.getSelectionEnd(element) === endSelection;
@@ -188,7 +188,7 @@ $(document).ready(function () {
         return result;
     };
 
-    var checkSelection = function (el, start, end, inverse) {
+    const checkSelection = function (el, start, end, inverse) {
         equal(domUtils.getActiveElement(), el, 'selected element is active');
         equal(textSelection.getSelectionStart(el), start, 'start selection correct');
         equal(textSelection.getSelectionEnd(el), end, 'end selection correct');
@@ -197,8 +197,8 @@ $(document).ready(function () {
             equal(textSelection.hasInverseSelection(el), inverse, 'selection direction correct');
     };
 
-    var preventDefault = function (e) {
-        var ev = e || window.event;
+    const preventDefault = function (e) {
+        const ev = e || window.event;
 
         if (ev.preventDefault)
             ev.preventDefault();
@@ -206,17 +206,17 @@ $(document).ready(function () {
             ev.returnValue = false;
     };
 
-    var runPressAutomation = function (keys, callback) {
-        var pressAutomation = new PressAutomation(parseKeySequence(keys).combinations, {});
+    const runPressAutomation = function (keys, callback) {
+        const pressAutomation = new PressAutomation(parseKeySequence(keys).combinations, {});
 
         pressAutomation
             .run()
             .then(callback);
     };
 
-    var runClickAutomation = function (el, options, callback) {
-        var offsets      = getOffsetOptions(el, options.offsetX, options.offsetY);
-        var clickOptions = new ClickOptions({
+    const runClickAutomation = function (el, options, callback) {
+        const offsets      = getOffsetOptions(el, options.offsetX, options.offsetY);
+        const clickOptions = new ClickOptions({
             offsetX:  offsets.offsetX,
             offsetY:  offsets.offsetY,
             caretPos: options.caretPos,
@@ -229,21 +229,21 @@ $(document).ready(function () {
             }
         });
 
-        var clickAutomation = new ClickAutomation(el, clickOptions);
+        const clickAutomation = new ClickAutomation(el, clickOptions);
 
         clickAutomation
             .run()
             .then(callback);
     };
 
-    var runTypeAutomation = function (element, text, callback) {
-        var offsets     = getOffsetOptions(element);
-        var typeOptions = new TypeOptions({
+    const runTypeAutomation = function (element, text, callback) {
+        const offsets     = getOffsetOptions(element);
+        const typeOptions = new TypeOptions({
             offsetX: offsets.offsetX,
             offsetY: offsets.offsetY
         });
 
-        var typeAutomation = new TypeAutomation(element, text, typeOptions);
+        const typeAutomation = new TypeAutomation(element, text, typeOptions);
 
         typeAutomation
             .run()
@@ -257,8 +257,8 @@ $(document).ready(function () {
 
     //tests
     asyncTest('run click playback', function () {
-        var $input     = createTextInput();
-        var clickCount = 0;
+        const $input   = createTextInput();
+        let clickCount = 0;
 
         $input.click(function () {
             clickCount++;
@@ -271,9 +271,9 @@ $(document).ready(function () {
     });
 
     asyncTest('run dblclick playback', function () {
-        var $input        = createTextInput();
-        var dblclickCount = 0;
-        var clickCount    = 0;
+        const $input        = createTextInput();
+        let dblclickCount = 0;
+        let clickCount    = 0;
 
         $input.dblclick(function () {
             dblclickCount++;
@@ -283,15 +283,15 @@ $(document).ready(function () {
             clickCount++;
         });
 
-        var offsets      = getOffsetOptions($input[0]);
-        var clickOptions = new ClickOptions({
+        const offsets      = getOffsetOptions($input[0]);
+        const clickOptions = new ClickOptions({
             offsetX: offsets.offsetX,
             offsetY: offsets.offsetY,
 
             modifiers: {}
         });
 
-        var dblClickAutomation = new DblClickAutomation($input[0], clickOptions);
+        const dblClickAutomation = new DblClickAutomation($input[0], clickOptions);
 
         dblClickAutomation
             .run()
@@ -303,13 +303,13 @@ $(document).ready(function () {
     });
 
     asyncTest('run drag playback', function () {
-        var $draggable  = createDraggable();
-        var dragOffsetX = 10;
-        var dragOffsetY = -100;
-        var center      = position.findCenter($draggable[0]);
-        var pointTo     = { x: center.x + dragOffsetX, y: center.y + dragOffsetY };
+        const $draggable  = createDraggable();
+        const dragOffsetX = 10;
+        const dragOffsetY = -100;
+        const center      = position.findCenter($draggable[0]);
+        const pointTo     = { x: center.x + dragOffsetX, y: center.y + dragOffsetY };
 
-        var dragAutomation = new DragToOffsetAutomation($draggable[0], dragOffsetX, dragOffsetY, new MouseOptions());
+        const dragAutomation = new DragToOffsetAutomation($draggable[0], dragOffsetX, dragOffsetY, new MouseOptions());
 
         dragAutomation
             .run()
@@ -320,11 +320,11 @@ $(document).ready(function () {
     });
 
     asyncTest('run select playback in input', function () {
-        var $input = createTextInput();
+        const $input = createTextInput();
 
         $input[0].value = '123456789qwertyuiop';
 
-        var selectTextAutomation = new SelectTextAutomation($input[0], 10, 2, {});
+        const selectTextAutomation = new SelectTextAutomation($input[0], 10, 2, {});
 
         selectTextAutomation
             .run()
@@ -335,14 +335,14 @@ $(document).ready(function () {
     });
 
     asyncTest('run select playback in textarea', function () {
-        var $textarea = createTextarea();
-        var value     = '123456789\nabcd\nefjtybllsjaLJS';
+        const $textarea = createTextarea();
+        const value     = '123456789\nabcd\nefjtybllsjaLJS';
 
         $textarea[0].value       = value;
         $textarea[0].textContent = value;
         $textarea.text(value);
 
-        var selectTextAutomation = new SelectTextAutomation($textarea[0], 2, value.length - 5, {});
+        const selectTextAutomation = new SelectTextAutomation($textarea[0], 2, value.length - 5, {});
 
         selectTextAutomation
             .run()
@@ -353,10 +353,10 @@ $(document).ready(function () {
     });
 
     asyncTest('run press playback', function () {
-        var initText = 'init';
-        var newText  = 'ini';
-        var input    = createTextInput()[0];
-        var keys     = 'backspace';
+        const initText = 'init';
+        const newText  = 'ini';
+        const input    = createTextInput()[0];
+        const keys     = 'backspace';
 
         runTypeAutomation(input, initText, function () {
             equal(input.value, initText);
@@ -368,9 +368,9 @@ $(document).ready(function () {
     });
 
     asyncTest('run type playback', function () {
-        var initText = 'init';
-        var newText  = 'new';
-        var $input   = createTextInput().attr('value', initText);
+        const initText = 'init';
+        const newText  = 'new';
+        const $input   = createTextInput().attr('value', initText);
 
         runTypeAutomation($input[0], newText, function () {
             equal($input[0].value, initText + newText);
@@ -379,9 +379,9 @@ $(document).ready(function () {
     });
 
     asyncTest('press down in textarea', function () {
-        var initText  = 'Textarea\rfor test\r123456789';
-        var $textarea = createTextarea().val(initText);
-        var keys      = 'down';
+        const initText  = 'Textarea\rfor test\r123456789';
+        const $textarea = createTextarea().val(initText);
+        const keys      = 'down';
 
         window.async.series({
             'Click on textarea': function (callback) {
@@ -416,9 +416,9 @@ $(document).ready(function () {
     });
 
     asyncTest('press up in textarea', function () {
-        var initText  = 'Textarea\rfor test\r123456789';
-        var $textarea = createTextarea().val(initText);
-        var keys      = 'up';
+        const initText  = 'Textarea\rfor test\r123456789';
+        const $textarea = createTextarea().val(initText);
+        const keys      = 'up';
 
 
         window.async.series({
@@ -454,8 +454,8 @@ $(document).ready(function () {
     });
 
     asyncTest('press home in textarea', function () {
-        var initText  = 'abc\n123\n123456789';
-        var $textarea = createTextarea().val(initText);
+        const initText  = 'abc\n123\n123456789';
+        const $textarea = createTextarea().val(initText);
 
         window.async.series({
             'Click on textarea': function (callback) {
@@ -478,8 +478,8 @@ $(document).ready(function () {
     });
 
     asyncTest('press end in textarea', function () {
-        var initText  = 'Textarea\rfor test\r123456789';
-        var $textarea = createTextarea().val(initText);
+        const initText  = 'Textarea\rfor test\r123456789';
+        const $textarea = createTextarea().val(initText);
 
         window.async.series({
             'Click on textarea': function (callback) {
@@ -504,10 +504,10 @@ $(document).ready(function () {
     module('checking the require scrolling');
 
     asyncTest('click element with scroll then click body near to first click does not raise scroll again', function () {
-        var $input               = createTextInput();
-        var clickCount           = 0;
-        var errorScroll          = false;
-        var $scrollableContainer = $('<div />')
+        const $input               = createTextInput();
+        let clickCount           = 0;
+        let errorScroll          = false;
+        const $scrollableContainer = $('<div />')
             .css({
                 position: 'absolute',
                 left:     '50px',
@@ -523,17 +523,17 @@ $(document).ready(function () {
         $input.css({ marginTop: '400px' });
         $input.appendTo($scrollableContainer);
 
-        var scrollHandler = function () {
+        const scrollHandler = function () {
             if (clickCount === 1)
                 errorScroll = true;
         };
 
-        var bindScrollHandlers = function () {
+        const bindScrollHandlers = function () {
             $scrollableContainer.bind('scroll', scrollHandler);
             $(window).bind('scroll', scrollHandler);
         };
 
-        var unbindScrollHandlers = function () {
+        const unbindScrollHandlers = function () {
             $scrollableContainer.unbind('scroll', scrollHandler);
             $(window).unbind('scroll', scrollHandler);
         };
@@ -575,8 +575,8 @@ $(document).ready(function () {
     module('check preventing events');
 
     asyncTest('focus event doesn\'t raised on click if mousedown event prevented', function () {
-        var input       = createTextInput()[0];
-        var focusRaised = false;
+        const input       = createTextInput()[0];
+        let focusRaised   = false;
 
         input['onmousedown'] = preventDefault;
 
@@ -592,9 +592,9 @@ $(document).ready(function () {
     });
 
     asyncTest('input text doesn\'t changed on type if keydown event prevented', function () {
-        var initText = '1';
-        var newText  = '123';
-        var $input   = createTextInput().attr('value', initText);
+        const initText = '1';
+        const newText  = '123';
+        const $input   = createTextInput().attr('value', initText);
 
         $input[0]['onkeydown'] = preventDefault;
 
@@ -606,9 +606,10 @@ $(document).ready(function () {
 
     module('Regression');
     asyncTest('T191234 - Press Enter key on a textbox element doesn\'t raise report\'s element updating during test running', function () {
-        var input       = createTextInput()[0];
-        var changeCount = 0;
-        var keys        = 'enter';
+        const input       = createTextInput()[0];
+        const keys        = 'enter';
+
+        let changeCount = 0;
 
         input.addEventListener('change', function () {
             changeCount++;

@@ -1,10 +1,10 @@
-var testCafeUIRoot = window.getTestCafeModule('testCafeUI').get('./ui-root');
+const testCafeUIRoot = window.getTestCafeModule('testCafeUI').get('./ui-root');
 
-var $rootDiv      = null;
-var $underRootDiv = null;
+let $rootDiv      = null;
+let $underRootDiv = null;
 
 function getElementFromPointMethod (window) {
-    var testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
+    const testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
 
     return testCafeAutomation.get('./get-element').fromPoint;
 }
@@ -35,9 +35,9 @@ function createElementUnderRoot (parent, left, top) {
 }
 
 function createIFrame (onLoadHandler) {
-    var iframeSrc = window.QUnitGlobals.getResourceUrl('../../data/runner/iframe.html');
+    const iframeSrc = window.QUnitGlobals.getResourceUrl('../../data/runner/iframe.html');
 
-    var $iframe = $('<iframe/>')
+    const $iframe = $('<iframe/>')
         .attr('src', iframeSrc)
         .css({
             width:  '600px',
@@ -59,14 +59,14 @@ $(document).ready(function () {
     asyncTest('Should ignore shadow ui elements', function () {
         createRoot();
 
-        var shadowUITop  = testCafeUIRoot.element().offsetTop;
-        var shadowUILeft = testCafeUIRoot.element().offsetLeft;
+        const shadowUITop  = testCafeUIRoot.element().offsetTop;
+        const shadowUILeft = testCafeUIRoot.element().offsetLeft;
 
         createElementUnderRoot(document.body, shadowUILeft, shadowUITop);
 
         getElementFromPointMethod(window).call(window, shadowUITop + 50, shadowUILeft + 50)
             .then(function (res) {
-                var element = res.element;
+                const element = res.element;
 
                 equal(element.id, 'div-id');
                 start();
@@ -78,7 +78,7 @@ $(document).ready(function () {
     });
 
     asyncTest('Should ignore shadow ui elements in iframe (gh-1029)', function () {
-        var $iframe = null;
+        let $iframe = null;
 
         createRoot();
 
@@ -88,8 +88,8 @@ $(document).ready(function () {
             height: '500px'
         });
 
-        var onLoadHandler = function () {
-            var iframeWindow = $iframe[0].contentWindow;
+        const onLoadHandler = function () {
+            const iframeWindow = $iframe[0].contentWindow;
 
             $iframe.unbind('load', onLoadHandler);
             createElementUnderRoot(iframeWindow.document.body, 0, 0);
@@ -97,7 +97,7 @@ $(document).ready(function () {
             window.setTimeout(function () {
                 getElementFromPointMethod(iframeWindow).call(iframeWindow, 50, 50)
                     .then(function (res) {
-                        var element = res.element;
+                        const element = res.element;
 
                         $iframe.remove();
                         equal(element.id, 'div-id');

@@ -6,7 +6,7 @@ const FLOW_MARKER_RE   = /^\s*\/\/\s*@flow\s*\n|^\s*\/\*\s*@flow\s*\*\//;
 
 export default class ESNextTestFileCompiler extends APIBasedTestFileCompilerBase {
     static getBabelOptions (filename, code) {
-        var { presetStage2, presetFlow, transformRuntime, transformClassProperties, presetEnv } = loadBabelLibs();
+        const { presetStage2, presetFlow, transformRuntime, transformClassProperties, presetEnv } = loadBabelLibs();
 
         // NOTE: passPrePreset and complex presets is a workaround for https://github.com/babel/babel/issues/2877
         // Fixes https://github.com/DevExpress/testcafe/issues/969
@@ -48,13 +48,13 @@ export default class ESNextTestFileCompiler extends APIBasedTestFileCompilerBase
     }
 
     _compileCode (code, filename) {
-        var { babel } = loadBabelLibs();
+        const { babel } = loadBabelLibs();
 
         if (this.cache[filename])
             return this.cache[filename];
 
-        var opts     = ESNextTestFileCompiler.getBabelOptions(filename, code);
-        var compiled = babel.transform(code, opts);
+        const opts     = ESNextTestFileCompiler.getBabelOptions(filename, code);
+        const compiled = babel.transform(code, opts);
 
         this.cache[filename] = compiled.code;
 

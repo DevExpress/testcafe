@@ -8,7 +8,7 @@
     <button id="btnSendFetch">Send fetch request</button>
     <span>Request status:</span><span id="requestStatusText">Not send</span>
     <script>
-        var btnSendFetch = document.getElementById('btnSendFetch');
+        const btnSendFetch = document.getElementById('btnSendFetch');
 
         btnSendFetch.addEventListener('click', function () {
             fetch('http://dummy-url.com/get')

@@ -3,8 +3,8 @@ import delay from './utils/delay';
 import { remove as removeItem, indexOf } from './utils/array';
 import { EventEmitter } from './utils/service';
 
-var Promise       = hammerhead.Promise;
-var nativeMethods = hammerhead.nativeMethods;
+const Promise       = hammerhead.Promise;
+const nativeMethods = hammerhead.nativeMethods;
 
 
 const REQUESTS_COLLECTION_DELAY_DEFAULT = 50;
@@ -39,10 +39,10 @@ export default class RequestBarrier extends EventEmitter {
     }
 
     _init () {
-        var onXhrSend      = e => this._onXhrSend(e.xhr);
-        var onXhrCompleted = e => this._onRequestCompleted(e.xhr);
-        var onXhrError     = e => this._onRequestError(e.xhr, e.err);
-        var onFetchSend    = e => this._onFetchSend(e);
+        const onXhrSend      = e => this._onXhrSend(e.xhr);
+        const onXhrCompleted = e => this._onRequestCompleted(e.xhr);
+        const onXhrError     = e => this._onRequestError(e.xhr, e.err);
+        const onFetchSend    = e => this._onFetchSend(e);
 
         hammerhead.on(hammerhead.EVENTS.beforeXhrSend, onXhrSend);
         hammerhead.on(hammerhead.EVENTS.xhrCompleted, onXhrCompleted);
@@ -98,7 +98,7 @@ export default class RequestBarrier extends EventEmitter {
                 .then(() => {
                     this.collectingReqs = false;
 
-                    var onRequestsFinished = () => {
+                    const onRequestsFinished = () => {
                         if (this.watchdog)
                             nativeMethods.clearTimeout.call(window, this.watchdog);
 

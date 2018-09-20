@@ -12,7 +12,7 @@ const TRAILING_SEMICOLON_RE          = /;\s*$/;
 const REGENERATOR_FOOTPRINTS_RE      = /(_index\d+\.default|_regenerator\d+\.default|regeneratorRuntime)\.wrap\(function _callee\$\(_context\)/;
 const ASYNC_TO_GENERATOR_OUTPUT_CODE = asyncToGenerator(noop).toString();
 
-var babelArtifactPolyfills = {
+const babelArtifactPolyfills = {
     'Promise': {
         re:                 /_promise(\d+)\.default/,
         getCode:            match => `var _promise${match[1]} = { default: Promise };`,
@@ -34,7 +34,7 @@ var babelArtifactPolyfills = {
 
 
 function getBabelOptions () {
-    var { presetFallback, transformForOfAsArray } = loadBabelLibs();
+    const { presetFallback, transformForOfAsArray } = loadBabelLibs();
 
     return {
         presets:       [{ plugins: [transformForOfAsArray] }, presetFallback],
@@ -47,10 +47,10 @@ function getBabelOptions () {
 }
 
 function downgradeES (fnCode) {
-    var { babel } = loadBabelLibs();
+    const { babel } = loadBabelLibs();
 
-    var opts     = getBabelOptions();
-    var compiled = babel.transform(fnCode, opts);
+    const opts     = getBabelOptions();
+    const compiled = babel.transform(fnCode, opts);
 
     return compiled.code
         .replace(USE_STRICT_RE, '')
@@ -58,12 +58,12 @@ function downgradeES (fnCode) {
 }
 
 function addBabelArtifactsPolyfills (fnCode, dependenciesDefinition) {
-    var modifiedFnCode = fnCode;
+    let modifiedFnCode = fnCode;
 
-    var polyfills = Object
+    const polyfills = Object
         .values(babelArtifactPolyfills)
         .reduce((polyfillsCode, polyfill) => {
-            var match = fnCode.match(polyfill.re);
+            const match = fnCode.match(polyfill.re);
 
             if (match) {
                 if (polyfill.removeMatchingCode)
@@ -92,7 +92,7 @@ function makeFnCodeSuitableForParsing (fnCode) {
         return `(${fnCode})`;
 
     // NOTE: 'myFn () {}' -> 'function myFn() {}'
-    var match = fnCode.match(ES6_OBJ_METHOD_NAME_RE);
+    const match = fnCode.match(ES6_OBJ_METHOD_NAME_RE);
 
     if (match && match[1] !== 'function')
         return `function ${fnCode}`;
@@ -118,7 +118,7 @@ export default function compileClientFunction (fnCode, dependencies, instantiati
     if (!TRAILING_SEMICOLON_RE.test(fnCode))
         fnCode += ';';
 
-    var dependenciesDefinition = dependencies ? getDependenciesDefinition(dependencies) : '';
+    const dependenciesDefinition = dependencies ? getDependenciesDefinition(dependencies) : '';
 
     return addBabelArtifactsPolyfills(fnCode, dependenciesDefinition);
 }

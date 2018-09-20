@@ -29,7 +29,7 @@ export default {
     },
 
     remove () {
-        var shadowRoot = shadowUI.getRoot();
+        const shadowRoot = shadowUI.getRoot();
 
         shadowRoot.parentNode.removeChild(shadowRoot);
     }

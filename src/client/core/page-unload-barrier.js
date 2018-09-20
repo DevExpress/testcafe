@@ -4,10 +4,10 @@ import delay from './utils/delay';
 import MESSAGE from '../../test-run/client-messages';
 import { isAnchorElement } from './utils/dom';
 
-var Promise       = hammerhead.Promise;
-var browserUtils  = hammerhead.utils.browser;
-var nativeMethods = hammerhead.nativeMethods;
-var transport     = hammerhead.transport;
+const Promise       = hammerhead.Promise;
+const browserUtils  = hammerhead.utils.browser;
+const nativeMethods = hammerhead.nativeMethods;
+const transport     = hammerhead.transport;
 
 
 const DEFAULT_BARRIER_TIMEOUT       = 400;
@@ -16,13 +16,13 @@ const FILE_DOWNLOAD_CHECK_DELAY     = 500;
 const MAX_UNLOADING_TIMEOUT         = 15 * 1000;
 
 
-var waitingForUnload          = false;
-var waitingForUnloadTimeoutId = null;
-var waitingPromiseResolvers   = [];
-var unloading                 = false;
+let waitingForUnload          = false;
+let waitingForUnloadTimeoutId = null;
+let waitingPromiseResolvers   = [];
+let unloading                 = false;
 
-var pageNavigationTriggeredListener = null;
-var pageNavigationTriggered         = false;
+let pageNavigationTriggeredListener = null;
+let pageNavigationTriggered         = false;
 
 function onBeforeUnload () {
     if (!browserUtils.isIE) {
@@ -36,7 +36,7 @@ function onBeforeUnload () {
         .then(() => {
             // NOTE: except file downloading
             if (document.readyState === 'loading') {
-                var activeElement = nativeMethods.documentActiveElementGetter.call(document);
+                const activeElement = nativeMethods.documentActiveElementGetter.call(document);
 
                 if (!activeElement || !isAnchorElement(activeElement) || !activeElement.hasAttribute('download'))
                     unloading = true;
@@ -93,7 +93,7 @@ export function watchForPageNavigationTriggers () {
 }
 
 export function wait (timeout) {
-    var waitForUnloadingPromise = new Promise(resolve => {
+    const waitForUnloadingPromise = new Promise(resolve => {
         if (timeout === void 0)
             timeout = !pageNavigationTriggeredListener || pageNavigationTriggered ? DEFAULT_BARRIER_TIMEOUT : 0;
 
@@ -125,7 +125,7 @@ export function wait (timeout) {
     // fires (see issues #664, #437). To avoid test hanging, we resolve the unload
     // barrier waiting promise in MAX_UNLOADING_TIMEOUT. We can improve this logic when
     // the https://github.com/DevExpress/testcafe-hammerhead/issues/667 issue is fixed.
-    var watchdog = delay(MAX_UNLOADING_TIMEOUT)
+    const watchdog = delay(MAX_UNLOADING_TIMEOUT)
         .then(() => {
             unloading = false;
         });

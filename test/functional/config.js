@@ -1,14 +1,14 @@
-var os = require('os');
+const os = require('os');
 
-var isTravisEnvironment = !!process.env.TRAVIS;
-var hostname            = isTravisEnvironment ? os.hostname() : '127.0.0.1';
+const isTravisEnvironment = !!process.env.TRAVIS;
+const hostname            = isTravisEnvironment ? os.hostname() : '127.0.0.1';
 
-var browserProviderNames = {
+const browserProviderNames = {
     sauceLabs:    'sauceLabs',
     browserstack: 'browserstack'
 };
 
-var testingEnvironmentNames = {
+const testingEnvironmentNames = {
     osXDesktopAndMSEdgeBrowsers: 'osx-desktop-and-ms-edge-browsers',
     mobileBrowsers:              'mobile-browsers',
     localBrowsersIE:             'local-browsers-ie',
@@ -19,7 +19,7 @@ var testingEnvironmentNames = {
     legacy:                      'legacy'
 };
 
-var testingEnvironments = {};
+const testingEnvironments = {};
 
 testingEnvironments[testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers] = {
     jobName: 'functional tests - OS X desktop and MS edge browsers',

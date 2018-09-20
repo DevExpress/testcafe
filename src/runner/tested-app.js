@@ -12,7 +12,7 @@ const MODULES_BIN_DIR = pathJoin(process.cwd(), './node_modules/.bin');
 
 const ENV_PATH_KEY = (function () {
     if (OS.win) {
-        var pathKey = 'Path';
+        let pathKey = 'Path';
 
         Object.keys(process.env).forEach(key => {
             if (key.toLowerCase() === 'path')
@@ -35,9 +35,9 @@ export default class TestedApp {
 
     async start (command, initDelay) {
         this.errorPromise = new Promise((resolve, reject) => {
-            var env       = Object.assign({}, process.env);
-            var path      = env[ENV_PATH_KEY] || '';
-            var pathParts = path.split(pathDelimiter);
+            const env       = Object.assign({}, process.env);
+            const path      = env[ENV_PATH_KEY] || '';
+            const pathParts = path.split(pathDelimiter);
 
             pathParts.unshift(MODULES_BIN_DIR);
 
@@ -45,7 +45,7 @@ export default class TestedApp {
 
             this.process = exec(command, { env }, err => {
                 if (!this.killed && err) {
-                    var message = err.stack || String(err);
+                    const message = err.stack || String(err);
 
                     reject(new GeneralError(MESSAGE.testedAppFailedWithError, message));
                 }
@@ -61,7 +61,7 @@ export default class TestedApp {
     async kill () {
         this.killed = true;
 
-        var killPromise = new Promise(resolve => kill(this.process.pid, 'SIGTERM', resolve));
+        const killPromise = new Promise(resolve => kill(this.process.pid, 'SIGTERM', resolve));
 
         await killPromise;
     }

@@ -1,6 +1,6 @@
-var sortBy   = require('lodash').sortBy;
-var resolve  = require('path').resolve;
-var Compiler = require('../../../lib/compiler');
+const sortBy   = require('lodash').sortBy;
+const resolve  = require('path').resolve;
+const Compiler = require('../../../lib/compiler');
 
 module.exports = function compile (sources) {
     sources = Array.isArray(sources) ? sources : [sources];
@@ -9,11 +9,11 @@ module.exports = function compile (sources) {
         return resolve(filename);
     });
 
-    var compiler = new Compiler(sources);
+    const compiler = new Compiler(sources);
 
     return compiler.getTests()
         .then(function (tests) {
-            var fixtures = tests
+            const fixtures = tests
                 .reduce(function (fxtrs, test) {
                     if (fxtrs.indexOf(test.fixture) < 0)
                         fxtrs.push(test.fixture);

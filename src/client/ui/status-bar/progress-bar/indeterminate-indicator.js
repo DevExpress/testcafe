@@ -1,11 +1,11 @@
 import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
 
-var shadowUI      = hammerhead.shadowUI;
-var nativeMethods = hammerhead.nativeMethods;
+const shadowUI      = hammerhead.shadowUI;
+const nativeMethods = hammerhead.nativeMethods;
 
-var styleUtils    = testCafeCore.styleUtils;
-var positionUtils = testCafeCore.positionUtils;
+const styleUtils    = testCafeCore.styleUtils;
+const positionUtils = testCafeCore.positionUtils;
 
 
 const FIRST_VALUE_ANIMATION_OPTIONS = {
@@ -48,20 +48,20 @@ function getCompletePercent (time, y1, y2) {
 }
 
 function getNewPosition (completePercent, positions) {
-    var isFirstAnimationPart = completePercent < ANIMATION_PERCENTS.middle;
-    var startPercent         = isFirstAnimationPart ? ANIMATION_PERCENTS.start : ANIMATION_PERCENTS.middle;
-    var endPercent           = isFirstAnimationPart ? ANIMATION_PERCENTS.middle : ANIMATION_PERCENTS.end;
-    var startPosition        = positions[startPercent];
-    var endPosition          = positions[endPercent];
-    var startPoint           = { x: startPercent, y: startPosition.left };
-    var endPoint             = { x: endPercent, y: endPosition.left };
+    const isFirstAnimationPart = completePercent < ANIMATION_PERCENTS.middle;
+    const startPercent         = isFirstAnimationPart ? ANIMATION_PERCENTS.start : ANIMATION_PERCENTS.middle;
+    const endPercent           = isFirstAnimationPart ? ANIMATION_PERCENTS.middle : ANIMATION_PERCENTS.end;
+    const startPosition        = positions[startPercent];
+    const endPosition          = positions[endPercent];
+    let startPoint           = { x: startPercent, y: startPosition.left };
+    let endPoint             = { x: endPercent, y: endPosition.left };
 
-    var left = positionUtils.getLineYByXCoord(startPoint, endPoint, completePercent);
+    const left = positionUtils.getLineYByXCoord(startPoint, endPoint, completePercent);
 
     startPoint = { x: startPercent, y: startPosition.right };
     endPoint   = { x: endPercent, y: endPosition.right };
 
-    var right = positionUtils.getLineYByXCoord(startPoint, endPoint, completePercent);
+    const right = positionUtils.getLineYByXCoord(startPoint, endPoint, completePercent);
 
     return { left, right };
 }
@@ -79,14 +79,14 @@ export default class IndeterminateIndicator {
     }
 
     static _updateValueAnimation (startTime, valueElement, animationOptions) {
-        var animationTime   = animationOptions.time;
-        var animationPoints = animationOptions.points;
-        var positions       = animationOptions.positionByCompletePercent;
-        var currentTime     = Date.now() - startTime;
-        var timePercent     = currentTime / animationTime;
+        const animationTime   = animationOptions.time;
+        const animationPoints = animationOptions.points;
+        const positions       = animationOptions.positionByCompletePercent;
+        const currentTime     = Date.now() - startTime;
+        const timePercent     = currentTime / animationTime;
 
-        var completePercent = getCompletePercent(timePercent, animationPoints[0], animationPoints[1]);
-        var { left, right } = getNewPosition(completePercent, positions);
+        const completePercent = getCompletePercent(timePercent, animationPoints[0], animationPoints[1]);
+        const { left, right } = getNewPosition(completePercent, positions);
 
         styleUtils.set(valueElement, 'left', Math.round(left) + '%');
         styleUtils.set(valueElement, 'right', Math.round(right) + '%');
@@ -115,7 +115,7 @@ export default class IndeterminateIndicator {
     _startFirstValueAnimation () {
         this._clearFirstValueAnimation();
 
-        var startTime = Date.now();
+        const startTime = Date.now();
 
         this.animationInterval = nativeMethods.setInterval.call(window, () => {
             IndeterminateIndicator._updateValueAnimation(startTime, this.firstValue, FIRST_VALUE_ANIMATION_OPTIONS);
@@ -125,7 +125,7 @@ export default class IndeterminateIndicator {
     _startSecondValueAnimation () {
         this._clearSecondValueAnimation();
 
-        var startTime = Date.now();
+        const startTime = Date.now();
 
         this.secondValueAnimationInterval = nativeMethods.setInterval.call(window, () => {
             IndeterminateIndicator._updateValueAnimation(startTime, this.secondValue, SECOND_VALUE_ANIMATION_OPTIONS);

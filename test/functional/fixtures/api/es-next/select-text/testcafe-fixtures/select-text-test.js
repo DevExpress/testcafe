@@ -7,16 +7,16 @@ fixture `Select`
     .page `http://localhost:3000/fixtures/api/es-next/select-text/pages/index.html`;
 
 const getSelectionByElementId = ClientFunction(id => {
-    var element = document.getElementById(id);
+    const element = document.getElementById(id);
 
     return { start: element.selectionStart, end: element.selectionEnd };
 });
 
 const checkEditableContentSelection = ClientFunction(() => {
-    var selection = window.getSelection();
-    var div       = document.getElementById('div');
-    var startNode = div.childNodes[1].childNodes[0];
-    var endNode   = div.childNodes[3].childNodes[0];
+    const selection = window.getSelection();
+    const div       = document.getElementById('div');
+    const startNode = div.childNodes[1].childNodes[0];
+    const endNode   = div.childNodes[3].childNodes[0];
 
     return selection.anchorNode === startNode && selection.anchorOffset === 0 && selection.focusNode === endNode &&
            selection.focusOffset === endNode.nodeValue.length;
@@ -26,7 +26,7 @@ const checkEditableContentSelection = ClientFunction(() => {
 test('Select text in input', async t => {
     await t.selectText('#input', 2, 4);
 
-    var selection = await getSelectionByElementId('input');
+    const selection = await getSelectionByElementId('input');
 
     expect(selection.start).equals(2);
     expect(selection.end).equals(4);
@@ -35,7 +35,7 @@ test('Select text in input', async t => {
 test('Select content in textarea', async t => {
     await t.selectTextAreaContent('#textarea', 0, 2, 1, 3);
 
-    var selection = await getSelectionByElementId('textarea');
+    const selection = await getSelectionByElementId('textarea');
 
     expect(selection.start).equals(2);
     expect(selection.end).equals(7);
@@ -100,10 +100,10 @@ test('End element selector returns text node', async t => {
 });
 
 const isIEFunction = ClientFunction(() => {
-    var userAgent = window.navigator.userAgent;
-    var appName   = window.navigator.appName;
-    var isIE11Re  = new RegExp('Trident/.*rv:([0-9]{1,}[.0-9]{0,})');
-    var isMSEdge  = /Edge/.test(navigator.userAgent);
+    const userAgent = window.navigator.userAgent;
+    const appName   = window.navigator.appName;
+    const isIE11Re  = new RegExp('Trident/.*rv:([0-9]{1,}[.0-9]{0,})');
+    const isMSEdge  = /Edge/.test(navigator.userAgent);
 
     return appName === 'Microsoft Internet Explorer' ||
            appName === 'Netscape' && isIE11Re.exec(userAgent) !== null ||

@@ -2,14 +2,14 @@ import hammerhead from '../../../deps/hammerhead';
 import { domUtils } from '../../../deps/testcafe-core';
 import MoveEventSequenceBase from './base';
 
-var eventSimulator = hammerhead.eventSandbox.eventSimulator;
-var extend         = hammerhead.utils.extend;
+const eventSimulator = hammerhead.eventSandbox.eventSimulator;
+const extend         = hammerhead.utils.extend;
 
 class MoveEventSequence extends MoveEventSequenceBase {
     leaveElement (currentElement, prevElement, commonAncestor, options) {
         eventSimulator.mouseout(prevElement, extend({ relatedTarget: currentElement }, options));
 
-        var currentParent = prevElement;
+        let currentParent = prevElement;
 
         while (currentParent && currentParent !== commonAncestor) {
             eventSimulator.mouseleave(currentParent, extend({ relatedTarget: currentElement }, options));
@@ -24,8 +24,8 @@ class MoveEventSequence extends MoveEventSequenceBase {
     enterElement (currentElement, prevElement, commonAncestor, options) {
         eventSimulator.mouseover(currentElement, extend({ relatedTarget: prevElement }, options));
 
-        var currentParent      = currentElement;
-        var mouseenterElements = [];
+        let currentParent      = currentElement;
+        const mouseenterElements = [];
 
         while (currentParent && currentParent !== commonAncestor) {
             mouseenterElements.push(currentParent);
@@ -34,7 +34,7 @@ class MoveEventSequence extends MoveEventSequenceBase {
 
         mouseenterElements.reverse();
 
-        for (var i = 0; i < mouseenterElements.length; i++)
+        for (let i = 0; i < mouseenterElements.length; i++)
             eventSimulator.mouseenter(mouseenterElements[i], extend({ relatedTarget: prevElement }, options));
     }
 

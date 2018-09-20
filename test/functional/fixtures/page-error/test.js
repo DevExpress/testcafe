@@ -1,4 +1,4 @@
-var expect = require('chai').expect;
+const expect = require('chai').expect;
 
 describe('Handle page error', function () {
     it('Should fail if the error is not caught in the test', function () {

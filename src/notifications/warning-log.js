@@ -6,7 +6,7 @@ export default class WarningLog {
     }
 
     addWarning () {
-        var msg = renderTemplate.apply(null, arguments);
+        const msg = renderTemplate.apply(null, arguments);
 
         // NOTE: avoid duplicates
         if (this.messages.indexOf(msg) < 0)

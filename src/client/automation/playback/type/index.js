@@ -9,17 +9,17 @@ import keyIdentifierRequiredForEvent from '../../utils/key-identifier-required-f
 import { getDefaultAutomationOffsets } from '../../utils/offsets';
 import AutomationSettings from '../../settings';
 
-var Promise               = hammerhead.Promise;
-var extend                = hammerhead.utils.extend;
-var eventSimulator        = hammerhead.eventSandbox.eventSimulator;
-var elementEditingWatcher = hammerhead.eventSandbox.elementEditingWatcher;
+const Promise               = hammerhead.Promise;
+const extend                = hammerhead.utils.extend;
+const eventSimulator        = hammerhead.eventSandbox.eventSimulator;
+const elementEditingWatcher = hammerhead.eventSandbox.elementEditingWatcher;
 
-var domUtils        = testCafeCore.domUtils;
-var promiseUtils    = testCafeCore.promiseUtils;
-var contentEditable = testCafeCore.contentEditable;
-var textSelection   = testCafeCore.textSelection;
-var delay           = testCafeCore.delay;
-var SPECIAL_KEYS    = testCafeCore.KEY_MAPS.specialKeys;
+const domUtils        = testCafeCore.domUtils;
+const promiseUtils    = testCafeCore.promiseUtils;
+const contentEditable = testCafeCore.contentEditable;
+const textSelection   = testCafeCore.textSelection;
+const delay           = testCafeCore.delay;
+const SPECIAL_KEYS    = testCafeCore.KEY_MAPS.specialKeys;
 
 
 export default class TypeAutomation {
@@ -57,12 +57,12 @@ export default class TypeAutomation {
     }
 
     static findTextEditableChild (element) {
-        var innerElement = null;
+        let innerElement = null;
 
         if (!domUtils.isEditableElement(element)) {
-            var allChildren = element.querySelectorAll('*');
+            const allChildren = element.querySelectorAll('*');
 
-            for (var i = 0; i < allChildren.length; i++) {
+            for (let i = 0; i < allChildren.length; i++) {
                 if (domUtils.isTextEditableElementAndEditingAllowed(allChildren[i])) {
                     innerElement = allChildren[i];
                     break;
@@ -74,15 +74,15 @@ export default class TypeAutomation {
     }
 
     _calculateEventArguments (isPressEvent) {
-        var activeElement     = domUtils.getActiveElement();
-        var isContentEditable = domUtils.isContentEditableElement(this.element);
-        var element           = this.eventArgs.element || this.element;
+        const activeElement     = domUtils.getActiveElement();
+        const isContentEditable = domUtils.isContentEditableElement(this.element);
+        let element           = this.eventArgs.element || this.element;
 
         // T162478: Wrong typing and keys pressing in editor
         if (!isContentEditable && activeElement !== element)
             element = TypeAutomation.findTextEditableChild(activeElement) || activeElement;
 
-        var options = extend({
+        const options = extend({
             keyCode: isPressEvent ? this.currentCharCode : this.currentKeyCode
         }, this.modifiers);
 
@@ -98,8 +98,8 @@ export default class TypeAutomation {
     }
 
     _calculateTargetElement () {
-        var activeElement     = domUtils.getActiveElement();
-        var isContentEditable = domUtils.isContentEditableElement(this.element);
+        const activeElement     = domUtils.getActiveElement();
+        const isContentEditable = domUtils.isContentEditableElement(this.element);
 
         if (isContentEditable) {
             if (activeElement !== contentEditable.findContentEditableParent(this.element)) {
@@ -118,13 +118,13 @@ export default class TypeAutomation {
     }
 
     _click (useStrictElementCheck) {
-        var activeElement     = domUtils.getActiveElement();
-        var isTextEditable    = domUtils.isTextEditableElementAndEditingAllowed(this.element);
-        var isContentEditable = domUtils.isContentEditableElement(this.element);
+        const activeElement     = domUtils.getActiveElement();
+        const isTextEditable    = domUtils.isTextEditableElementAndEditingAllowed(this.element);
+        const isContentEditable = domUtils.isContentEditableElement(this.element);
 
         if (activeElement !== this.element) {
-            var { offsetX, offsetY } = getDefaultAutomationOffsets(this.element);
-            var clickOptions         = new ClickOptions({
+            const { offsetX, offsetY } = getDefaultAutomationOffsets(this.element);
+            const clickOptions         = new ClickOptions({
                 offsetX:   this.elementChanged ? offsetX : this.offsetX,
                 offsetY:   this.elementChanged ? offsetY : this.offsetY,
                 speed:     this.speed,
@@ -132,7 +132,7 @@ export default class TypeAutomation {
                 modifiers: this.modifiers
             });
 
-            var clickAutomation = new ClickAutomation(this.element, clickOptions);
+            const clickAutomation = new ClickAutomation(this.element, clickOptions);
 
             return clickAutomation
                 .run(useStrictElementCheck)
@@ -142,10 +142,10 @@ export default class TypeAutomation {
         if (isTextEditable)
             elementEditingWatcher.watchElementEditing(this.element);
 
-        var isEditableElement = isTextEditable || isContentEditable;
+        const isEditableElement = isTextEditable || isContentEditable;
 
         if (isEditableElement) {
-            var selectionStart = textSelection.getSelectionStart(this.element);
+            const selectionStart = textSelection.getSelectionStart(this.element);
 
             if (!isNaN(parseInt(this.caretPos, 10)) && this.caretPos !== selectionStart)
                 textSelection.select(this.element, this.caretPos, this.caretPos);
@@ -158,7 +158,7 @@ export default class TypeAutomation {
         if (this.eventState.skipType)
             return Promise.resolve();
 
-        var isContentEditable = domUtils.isContentEditableElement(this.element);
+        const isContentEditable = domUtils.isContentEditableElement(this.element);
 
         if (this.replace) {
             if (domUtils.isTextEditableElementAndEditingAllowed(this.element))
@@ -175,7 +175,7 @@ export default class TypeAutomation {
     }
 
     _typingStep () {
-        var char = this.typingText.charAt(this.currentPos);
+        const char = this.typingText.charAt(this.currentPos);
 
         this.currentKeyCode       = getKeyCode(char);
         this.currentCharCode      = this.typingText.charCodeAt(this.currentPos);
@@ -204,14 +204,14 @@ export default class TypeAutomation {
     }
 
     _keyup () {
-        var elementForTyping = this.eventArgs.element;
+        const elementForTyping = this.eventArgs.element;
 
         this.eventArgs = this._calculateEventArguments();
 
-        var isTextEditableElement = domUtils.isTextEditableElement(this.element);
-        var isContentEditable     = domUtils.isContentEditableElement(this.element);
+        const isTextEditableElement = domUtils.isTextEditableElement(this.element);
+        const isContentEditable     = domUtils.isContentEditableElement(this.element);
 
-        var shouldTypeAllText = this.paste || !isTextEditableElement && !isContentEditable;
+        const shouldTypeAllText = this.paste || !isTextEditableElement && !isContentEditable;
 
         return Promise
             .resolve()
@@ -237,16 +237,16 @@ export default class TypeAutomation {
             return delay(this.automationSettings.keyActionStepDelay);
         }
 
-        var currentChar       = this.typingText.charAt(this.currentPos);
-        var isDigit           = /^\d$/.test(currentChar);
-        var prevChar          = this.currentPos === 0 ? null : this.typingText.charAt(this.currentPos - 1);
-        var isInputTypeNumber = domUtils.isInputElement(element) && element.type === 'number';
+        let currentChar       = this.typingText.charAt(this.currentPos);
+        const isDigit           = /^\d$/.test(currentChar);
+        const prevChar          = this.currentPos === 0 ? null : this.typingText.charAt(this.currentPos - 1);
+        const isInputTypeNumber = domUtils.isInputElement(element) && element.type === 'number';
 
         if (isInputTypeNumber) {
-            var selectionStart      = textSelection.getSelectionStart(element);
-            var valueLength         = domUtils.getInputValue(element).length;
-            var textHasDigits       = /^\d/.test(this.typingText);
-            var isPermissibleSymbol = currentChar === '.' || currentChar === '-' && valueLength;
+            const selectionStart      = textSelection.getSelectionStart(element);
+            const valueLength         = domUtils.getInputValue(element).length;
+            const textHasDigits       = /^\d/.test(this.typingText);
+            const isPermissibleSymbol = currentChar === '.' || currentChar === '-' && valueLength;
 
             if (!isDigit && (textHasDigits || !isPermissibleSymbol || selectionStart !== 0))
                 return delay(this.automationSettings.keyActionStepDelay);

@@ -1,6 +1,6 @@
 import generateId from '../generate-id';
 
-export var TYPE = {
+export const TYPE = {
     establishConnection:    'driver|establish-connection',
     commandExecuted:        'driver|command-executed',
     executeCommand:         'driver|execute-command',

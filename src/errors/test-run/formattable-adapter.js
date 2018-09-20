@@ -4,7 +4,7 @@ import { renderers } from 'callsite-record';
 import TEMPLATES from './templates';
 import createStackFilter from '../create-stack-filter';
 
-var parser = new Parser();
+const parser = new Parser();
 
 export default class TestRunErrorFormattableAdapter {
     constructor (err, metaInfo) {
@@ -20,14 +20,14 @@ export default class TestRunErrorFormattableAdapter {
     }
 
     static _getSelector (node) {
-        var classAttr = find(node.attrs, { name: 'class' });
-        var cls       = classAttr && classAttr.value;
+        const classAttr = find(node.attrs, { name: 'class' });
+        const cls       = classAttr && classAttr.value;
 
         return cls ? `${node.tagName} ${cls}` : node.tagName;
     }
 
     static _decorateHtml (node, decorator) {
-        var msg = '';
+        let msg = '';
 
         if (node.nodeName === '#text')
             msg = node.value;
@@ -39,7 +39,7 @@ export default class TestRunErrorFormattableAdapter {
             }
 
             if (node.nodeName !== '#document-fragment') {
-                var selector = TestRunErrorFormattableAdapter._getSelector(node);
+                const selector = TestRunErrorFormattableAdapter._getSelector(node);
 
                 msg = decorator[selector](msg, node.attrs);
             }
@@ -72,8 +72,8 @@ export default class TestRunErrorFormattableAdapter {
     }
 
     formatMessage (decorator, viewportWidth) {
-        var msgHtml  = this.getErrorMarkup(viewportWidth);
-        var fragment = parser.parseFragment(msgHtml);
+        const msgHtml  = this.getErrorMarkup(viewportWidth);
+        const fragment = parser.parseFragment(msgHtml);
 
         return TestRunErrorFormattableAdapter._decorateHtml(fragment, decorator);
     }

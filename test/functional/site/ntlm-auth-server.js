@@ -1,12 +1,12 @@
-var http    = require('http');
-var express = require('express');
-var ntlm    = require('express-ntlm');
+const http    = require('http');
+const express = require('express');
+const ntlm    = require('express-ntlm');
 
-var server  = null;
-var sockets = null;
+let server  = null;
+let sockets = null;
 
 function start (port) {
-    var app = express();
+    const app = express();
 
     app.use(ntlm());
 
@@ -17,7 +17,7 @@ function start (port) {
     server  = http.createServer(app).listen(port);
     sockets = [];
 
-    var connectionHandler = function (socket) {
+    const connectionHandler = function (socket) {
         sockets.push(socket);
 
         socket.on('close', function () {

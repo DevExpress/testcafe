@@ -11,7 +11,7 @@ import exportableLib from './api/exportable-lib';
 // Validations
 async function getValidHostname (hostname) {
     if (hostname) {
-        var valid = await endpointUtils.isMyHostname(hostname);
+        const valid = await endpointUtils.isMyHostname(hostname);
 
         if (!valid)
             throw new GeneralError(MESSAGE.invalidHostname, hostname);
@@ -24,7 +24,7 @@ async function getValidHostname (hostname) {
 
 async function getValidPort (port) {
     if (port) {
-        var isFree = await endpointUtils.isFreePort(port);
+        const isFree = await endpointUtils.isFreePort(port);
 
         if (!isFree)
             throw new GeneralError(MESSAGE.portIsNotFree, port);

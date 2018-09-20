@@ -1,16 +1,16 @@
-var expect                = require('chai').expect;
-var Promise               = require('pinkie');
-var testcafeBrowserTools  = require('testcafe-browser-tools');
-var browserProviderPool   = require('../../lib/browser/provider/pool');
-var parseProviderName     = require('../../lib/browser/provider/parse-provider-name');
+const expect                = require('chai').expect;
+const Promise               = require('pinkie');
+const testcafeBrowserTools  = require('testcafe-browser-tools');
+const browserProviderPool   = require('../../lib/browser/provider/pool');
+const parseProviderName     = require('../../lib/browser/provider/parse-provider-name');
 
 
 describe('Browser provider', function () {
     describe('Path and arguments handling', function () {
-        var processedBrowserInfo                 = null;
-        var originalBrowserToolsGetBrowserInfo   = null;
-        var originalBrowserToolsOpen             = null;
-        var originalBrowserToolsGetInstallations = null;
+        let processedBrowserInfo                 = null;
+        let originalBrowserToolsGetBrowserInfo   = null;
+        let originalBrowserToolsOpen             = null;
+        let originalBrowserToolsGetInstallations = null;
 
         function getBrowserInfo (arg) {
             return browserProviderPool
@@ -81,9 +81,9 @@ describe('Browser provider', function () {
     });
 
     describe('Init/dispose error handling', function () {
-        var initShouldSuccess = false;
+        let initShouldSuccess = false;
 
-        var dummyProvider = {
+        const dummyProvider = {
             init: function () {
                 if (initShouldSuccess)
                     return Promise.resolve();
@@ -167,7 +167,7 @@ describe('Browser provider', function () {
     });
 
     describe('Module loading', function () {
-        var dummyProvider = {
+        const dummyProvider = {
             init: function () {
                 return Promise.resolve();
             },

@@ -23,7 +23,7 @@
     }*/
 
     test('T173577: TD_14_2 Uncaught TypeError: Cannot read property "call" of undefined - ikea.ru', function () {
-        var documentReadyCalled = false;
+        let documentReadyCalled = false;
 
         document.ready = function () {
             documentReadyCalled = true;
@@ -77,7 +77,7 @@ HOW TO FIX - go to sandboxed-jquery and replace the following code:
  }*/
 
 asyncTest('T230756: TD15.1 - _ is not defined on tula.metro-cc.ru', function () {
-    var iframe = $('<iframe>').attr('src', window.QUnitGlobals.getResourceUrl('iframe.html'))[0];
+    const iframe = $('<iframe>').attr('src', window.QUnitGlobals.getResourceUrl('iframe.html'))[0];
 
     window.QUnitGlobals.waitForIframe(iframe).then(function () {
         ok(!('$' in iframe.contentWindow));

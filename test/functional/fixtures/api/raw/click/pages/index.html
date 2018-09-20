@@ -27,7 +27,7 @@
     });
 
     document.getElementById('xhr').addEventListener('click', function () {
-        var xhr = new XMLHttpRequest();
+        const xhr = new XMLHttpRequest();
 
         xhr.open('POST', '/xhr/1000', true);
         xhr.send();
@@ -36,7 +36,7 @@
             if (xhr.readyState != 4) return;
 
             if (xhr.status === 200) {
-                var xhrResultDiv = document.createElement('div');
+                const xhrResultDiv = document.createElement('div');
 
                 xhrResultDiv.id          = 'xhr-result';
                 xhrResultDiv.textContent = xhr.responseText;
@@ -51,7 +51,7 @@
     });
 
     document.getElementById('create-button').addEventListener('click', function () {
-        var newButton = document.createElement('input');
+        const newButton = document.createElement('input');
 
         newButton.type          = 'button';
         newButton.id            = 'new-button';

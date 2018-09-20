@@ -1,8 +1,8 @@
 import testCafeCore from './deps/testcafe-core';
 import testCafeUI from './deps/testcafe-ui';
 
-var domUtils = testCafeCore.domUtils;
-var cursorUI = window.top === window ? testCafeUI.cursorUI : testCafeUI.iframeCursorUI;
+const domUtils = testCafeCore.domUtils;
+const cursorUI = window.top === window ? testCafeUI.cursorUI : testCafeUI.iframeCursorUI;
 
 
 // NOTE: the default position should be outside of the page (GH-794)
@@ -15,7 +15,7 @@ export default {
         if (this.currentActiveWindow === window || this.currentActiveWindow === window.parent)
             return;
 
-        var activeFrame = domUtils.findIframeByWindow(this.currentActiveWindow);
+        const activeFrame = domUtils.findIframeByWindow(this.currentActiveWindow);
 
         if (!activeFrame || !domUtils.isElementInDocument(activeFrame))
             this.currentActiveWindow = window;

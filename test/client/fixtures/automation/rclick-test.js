@@ -1,23 +1,23 @@
-var testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
-var RClickAutomation   = testCafeAutomation.RClick;
-var ClickOptions       = testCafeAutomation.get('../../test-run/commands/options').ClickOptions;
+const testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
+const RClickAutomation   = testCafeAutomation.RClick;
+const ClickOptions       = testCafeAutomation.get('../../test-run/commands/options').ClickOptions;
 
-var testCafeCore = window.getTestCafeModule('testCafeCore');
+const testCafeCore = window.getTestCafeModule('testCafeCore');
 
 testCafeCore.preventRealEvents();
 
-var hammerhead   = window.getTestCafeModule('hammerhead');
-var browserUtils = hammerhead.utils.browser;
+const hammerhead   = window.getTestCafeModule('hammerhead');
+const browserUtils = hammerhead.utils.browser;
 
-var RIGHT_BUTTON_WHICH_PARAMETER = hammerhead.utils.event.WHICH_PARAMETER.rightButton;
+const RIGHT_BUTTON_WHICH_PARAMETER = hammerhead.utils.event.WHICH_PARAMETER.rightButton;
 
 $(document).ready(function () {
     //constants
-    var TEST_ELEMENT_CLASS = 'testElement';
+    const TEST_ELEMENT_CLASS = 'testElement';
 
     //utils
-    var addInputElement = function (type, id, x, y) {
-        var elementString = ['<input type="', type, '" id="', id, '" value="', id, '" />'].join('');
+    const addInputElement = function (type, id, x, y) {
+        const elementString = ['<input type="', type, '" id="', id, '" value="', id, '" />'].join('');
 
         return $(elementString)
             .css({
@@ -30,7 +30,7 @@ $(document).ready(function () {
             .appendTo('body');
     };
 
-    var startNext = function () {
+    const startNext = function () {
         if (browserUtils.isIE) {
             removeTestElements();
             window.setTimeout(start, 30);
@@ -39,7 +39,7 @@ $(document).ready(function () {
             start();
     };
 
-    var removeTestElements = function () {
+    const removeTestElements = function () {
         $('.' + TEST_ELEMENT_CLASS).remove();
     };
 
@@ -52,11 +52,11 @@ $(document).ready(function () {
     module('dom events tests');
 
     asyncTest('mouse events raised', function () {
-        var $input            = null;
-        var mousedownRaised   = false;
-        var mouseupRaised     = false;
-        var clickRaised       = false;
-        var contextmenuRaised = false;
+        let $input            = null;
+        let mousedownRaised   = false;
+        let mouseupRaised     = false;
+        let clickRaised       = false;
+        let contextmenuRaised = false;
 
         $input = addInputElement('button', 'button1', Math.floor(Math.random() * 100),
             Math.floor(Math.random() * 100));
@@ -81,7 +81,7 @@ $(document).ready(function () {
                 ok(mousedownRaised && mouseupRaised && !clickRaised, 'contextmenu event was raised third ');
             });
 
-            var rclick = new RClickAutomation($input[0], new ClickOptions({ offsetX: 5, offsetY: 5 }));
+            const rclick = new RClickAutomation($input[0], new ClickOptions({ offsetX: 5, offsetY: 5 }));
 
             rclick
                 .run()
@@ -93,11 +93,11 @@ $(document).ready(function () {
     });
 
     asyncTest('T191183 - pointer event properties are fixed', function () {
-        var mousedownRaised = false;
-        var mouseupRaised   = false;
-        var contextmenu     = false;
+        let mousedownRaised = false;
+        let mouseupRaised   = false;
+        let contextmenu     = false;
 
-        var $el = addInputElement('button', 'button1', Math.floor(Math.random() * 100),
+        const $el = addInputElement('button', 'button1', Math.floor(Math.random() * 100),
             Math.floor(Math.random() * 100));
 
         $el.mousedown(function (e) {
@@ -133,7 +133,7 @@ $(document).ready(function () {
             ok(mousedownRaised && mouseupRaised, 'click event was raised third ');
         });
 
-        var pointerHandler = function (e) {
+        const pointerHandler = function (e) {
             equal(e.pointerType, browserUtils.version > 10 ? 'mouse' : 4);
 
             if (e.type === 'pointerdown')
@@ -152,7 +152,7 @@ $(document).ready(function () {
             $el[0].onmspointerup   = pointerHandler;
         }
 
-        var rclick = new RClickAutomation($el[0], new ClickOptions({ offsetX: 5, offsetY: 5 }));
+        const rclick = new RClickAutomation($el[0], new ClickOptions({ offsetX: 5, offsetY: 5 }));
 
         rclick
             .run()

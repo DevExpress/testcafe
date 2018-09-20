@@ -28,24 +28,25 @@
 <div id="start"></div>
 
 <script>
-    var clickCount = 0;
-    var moveCount  = 0;
-    var target     = document.getElementById('target');
+    const target = document.getElementById('target');
+
+    window.clickCount = 0;
+    window.moveCount  = 0;
 
     target.addEventListener('click', function () {
-        clickCount++;
+        window.clickCount++;
     });
 
-    var movingInterval = null;
+    let movingInterval = null;
 
     function startMoving () {
         // NOTE: simulate element transition
         movingInterval = window.setInterval(function () {
-            moveCount++;
+            window.moveCount++;
 
-            target.style.top = moveCount * 10 + 'px';
+            target.style.top = window.moveCount * 10 + 'px';
 
-            if (moveCount > 50)
+            if (window.moveCount > 50)
                 window.clearInterval(movingInterval);
         }, 10);
     }

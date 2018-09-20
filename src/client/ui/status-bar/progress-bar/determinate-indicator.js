@@ -1,9 +1,9 @@
 import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
 
-var shadowUI      = hammerhead.shadowUI;
-var nativeMethods = hammerhead.nativeMethods;
-var styleUtils    = testCafeCore.styleUtils;
+const shadowUI      = hammerhead.shadowUI;
+const nativeMethods = hammerhead.nativeMethods;
+const styleUtils    = testCafeCore.styleUtils;
 
 
 const DETERMINATE_STYLE_CLASS   = 'determinate';
@@ -21,10 +21,10 @@ export default class DeterminateIndicator {
     }
 
     _setCurrentProgress () {
-        var progress         = (Date.now() - this.startTime) / this.maxTimeout;
-        var percent          = Math.min(Math.max(progress, 0), 1);
-        var progressBarWidth = styleUtils.getWidth(this.progressBar);
-        var newWidth         = Math.round(progressBarWidth * percent);
+        const progress         = (Date.now() - this.startTime) / this.maxTimeout;
+        const percent          = Math.min(Math.max(progress, 0), 1);
+        const progressBarWidth = styleUtils.getWidth(this.progressBar);
+        const newWidth         = Math.round(progressBarWidth * percent);
 
         styleUtils.set(this.firstValueElement, 'width', newWidth + 'px');
     }

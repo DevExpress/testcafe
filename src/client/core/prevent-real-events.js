@@ -6,9 +6,9 @@ import { get, hasDimensions } from './utils/style';
 import { filter } from './utils/array';
 import { isShadowUIElement, isWindow, getParents } from './utils/dom';
 
-var browserUtils   = utils.browser;
-var listeners      = eventSandbox.listeners;
-var eventSimulator = eventSandbox.eventSimulator;
+const browserUtils   = utils.browser;
+const listeners      = eventSandbox.listeners;
+const eventSimulator = eventSandbox.eventSimulator;
 
 const PREVENTED_EVENTS = [
     'click', 'mousedown', 'mouseup', 'dblclick', 'contextmenu', 'mousemove', 'mouseover', 'mouseout',
@@ -29,7 +29,7 @@ function checkBrowserHotkey (e) {
 // NOTE: when tests are running, we should block real events (from mouse
 // or keyboard), because they may lead to unexpected test result.
 function preventRealEventHandler (e, dispatched, preventDefault, cancelHandlers, stopEventPropagation) {
-    var target = e.target || e.srcElement;
+    const target = e.target || e.srcElement;
 
     if (!dispatched && !isShadowUIElement(target)) {
         // NOTE: this will allow pressing hotkeys to open developer tools.
@@ -44,9 +44,9 @@ function preventRealEventHandler (e, dispatched, preventDefault, cancelHandlers,
         // invisible don't lead to blurring (in MSEdge, focus/blur are sync).
         if (e.type === 'blur') {
             if (browserUtils.isIE && browserUtils.version < 12) {
-                var isElementInvisible = !isWindow(target) && get(target, 'display') === 'none';
-                var elementParents     = null;
-                var invisibleParents   = false;
+                const isElementInvisible = !isWindow(target) && get(target, 'display') === 'none';
+                let elementParents     = null;
+                let invisibleParents   = false;
 
                 if (!isElementInvisible) {
                     elementParents   = getParents(target);

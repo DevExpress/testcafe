@@ -10,8 +10,9 @@
 <script>
     window.lastEditingTime = null;
 
-    var input     = document.getElementById('input');
-    var startTime = null;
+    const input = document.getElementById('input');
+
+    let startTime = null;
 
     input.addEventListener('focus', function () {
         startTime = Date.now();

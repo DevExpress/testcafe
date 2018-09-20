@@ -9,8 +9,8 @@
 
 <script>
     document.getElementById('div').addEventListener('mousedown', function (e) {
-        var x = e.clientX;
-        var y = e.clientY;
+        const x = e.clientX;
+        const y = e.clientY;
 
         window.elementFromPointId = document.elementFromPoint(x, y).id;
 

@@ -249,18 +249,18 @@ describe('Compiler', function () {
 
     describe('CoffeeScript', function () {
         it('Should compile test files and their dependencies', function () {
-            var sources = [
+            const sources = [
                 'test/server/data/test-suites/coffeescript-basic/testfile1.coffee',
                 'test/server/data/test-suites/coffeescript-basic/testfile2.coffee'
             ];
 
             return compile(sources)
                 .then(function (compiled) {
-                    var testfile1 = path.resolve('test/server/data/test-suites/coffeescript-basic/testfile1.coffee');
-                    var testfile2 = path.resolve('test/server/data/test-suites/coffeescript-basic/testfile2.coffee');
+                    const testfile1 = path.resolve('test/server/data/test-suites/coffeescript-basic/testfile1.coffee');
+                    const testfile2 = path.resolve('test/server/data/test-suites/coffeescript-basic/testfile2.coffee');
 
-                    var tests     = compiled.tests;
-                    var fixtures  = compiled.fixtures;
+                    const tests     = compiled.tests;
+                    const fixtures  = compiled.fixtures;
 
                     expect(tests.length).eql(4);
                     expect(fixtures.length).eql(3);

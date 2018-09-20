@@ -3,7 +3,7 @@
 
 '@test'['Click on non-exising element'] = {
     '1.Click on non-existing element': function () {
-        var element = $('#heyheyhey')[0];
+        const element = $('#heyheyhey')[0];
 
         act.click(element);
     }

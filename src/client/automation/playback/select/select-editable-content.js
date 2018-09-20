@@ -2,22 +2,22 @@ import testCafeCore from '../../deps/testcafe-core';
 import * as selectUtils from './utils';
 import SelectBaseAutomation from './base';
 
-var textSelection   = testCafeCore.textSelection;
-var contentEditable = testCafeCore.contentEditable;
-var positionUtils   = testCafeCore.positionUtils;
+const textSelection   = testCafeCore.textSelection;
+const contentEditable = testCafeCore.contentEditable;
+const positionUtils   = testCafeCore.positionUtils;
 
 
 export default class SelectEditableContentAutomation extends SelectBaseAutomation {
     constructor (startNode, endNode, actionOptions) {
         super(contentEditable.getNearestCommonAncestor(startNode, endNode), actionOptions);
 
-        var startOffset = contentEditable.getFirstVisiblePosition(startNode);
-        var endOffset   = contentEditable.getLastVisiblePosition(endNode);
+        let startOffset = contentEditable.getFirstVisiblePosition(startNode);
+        let endOffset   = contentEditable.getLastVisiblePosition(endNode);
 
-        var startPos      = { node: startNode, offset: startOffset };
-        var endPos        = { node: endNode, offset: endOffset };
-        var startPosition = contentEditable.calculatePositionByNodeAndOffset(this.element, startPos);
-        var endPosition   = contentEditable.calculatePositionByNodeAndOffset(this.element, endPos);
+        let startPos      = { node: startNode, offset: startOffset };
+        let endPos        = { node: endNode, offset: endOffset };
+        const startPosition = contentEditable.calculatePositionByNodeAndOffset(this.element, startPos);
+        const endPosition   = contentEditable.calculatePositionByNodeAndOffset(this.element, endPos);
 
         if (startPosition > endPosition) {
             startOffset = contentEditable.getLastVisiblePosition(startNode);
@@ -36,13 +36,13 @@ export default class SelectEditableContentAutomation extends SelectBaseAutomatio
     }
 
     _calculateAbsoluteStartPoint () {
-        var point = selectUtils.getSelectionCoordinatesByNodeAndOffset(this.element, this.startNode, this.startOffset);
+        const point = selectUtils.getSelectionCoordinatesByNodeAndOffset(this.element, this.startNode, this.startOffset);
 
         return point || positionUtils.findCenter(this.element);
     }
 
     _calculateAbsoluteEndPoint () {
-        var point = selectUtils.getSelectionCoordinatesByNodeAndOffset(this.element, this.endNode, this.endOffset);
+        const point = selectUtils.getSelectionCoordinatesByNodeAndOffset(this.element, this.endNode, this.endOffset);
 
         return point || positionUtils.findCenter(this.element);
     }
@@ -53,8 +53,8 @@ export default class SelectEditableContentAutomation extends SelectBaseAutomatio
 
         // NOTE: The same cursor position may correspond to different nodes, so, if we
         // know which nodes should be selected eventually, we should select them directly.
-        var startPos = { node: this.startNode, offset: this.startOffset };
-        var endPos   = { node: this.endNode, offset: this.endOffset };
+        const startPos = { node: this.startNode, offset: this.startOffset };
+        const endPos   = { node: this.endNode, offset: this.endOffset };
 
         textSelection.selectByNodesAndOffsets(startPos, endPos, true);
     }

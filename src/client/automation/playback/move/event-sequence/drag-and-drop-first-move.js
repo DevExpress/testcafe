@@ -3,7 +3,7 @@ import MoveEventSequenceBase from './base';
 import moveEventSequence from './index';
 import dragAndDropMoveEventSequence from './drag-and-drop-move';
 
-var eventSimulator = hammerhead.eventSandbox.eventSimulator;
+const eventSimulator = hammerhead.eventSandbox.eventSimulator;
 
 class DragAndDropFirstMoveEventSequence extends MoveEventSequenceBase {
     setup () {
@@ -25,7 +25,7 @@ class DragAndDropFirstMoveEventSequence extends MoveEventSequenceBase {
     }
 
     dragAndDrop (dragElement, currentElement, prevElement, options, dragDataStore) {
-        var dragAllowed = eventSimulator.dragstart(dragElement, options);
+        const dragAllowed = eventSimulator.dragstart(dragElement, options);
 
         dragDataStore.setReadOnlyMode();
 

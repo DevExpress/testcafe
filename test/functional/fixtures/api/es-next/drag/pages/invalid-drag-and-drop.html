@@ -45,54 +45,56 @@
 <div id="invalid-to"></div>
 
 <script>
-    var from        = document.querySelector('#from');
-    var to          = document.querySelector('#to');
-    var draggable   = document.querySelector('#draggable');
-    var undraggable = document.querySelector('#undraggable');
-    var preventDrag = document.querySelector('#prevent-drag');
-    var invalidTo   = document.querySelector('#invalid-to');
+    {
+        const from        = document.querySelector('#from');
+        const to          = document.querySelector('#to');
+        const draggable   = document.querySelector('#draggable');
+        const undraggable = document.querySelector('#undraggable');
+        const preventDrag = document.querySelector('#prevent-drag');
+        const invalidTo   = document.querySelector('#invalid-to');
 
-    window.dragEvents = [];
+        window.dragEvents = [];
 
-    function logEvent (e) {
-        dragEvents.push(e.type);
+        function logEvent (e) {
+            dragEvents.push(e.type);
+        }
+
+        from.addEventListener('dragstart', function (e) {
+            e.dataTransfer.setData('text', e.target.id);
+            logEvent(e);
+        });
+
+        undraggable.addEventListener('dragover', function (e) {
+            e.preventDefault();
+            logEvent(e);
+        });
+
+        preventDrag.addEventListener('dragstart', function (e) {
+            e.preventDefault();
+        });
+
+        to.addEventListener('dragover', function (e) {
+            e.preventDefault();
+            logEvent(e);
+        });
+
+        to.addEventListener('drop', function (e) {
+            e.preventDefault();
+            e.target.appendChild(document.getElementById(e.dataTransfer.getData('text')));
+            logEvent(e);
+        });
+
+        invalidTo.addEventListener('drop', function (e) {
+            e.preventDefault();
+            e.target.appendChild(document.getElementById(e.dataTransfer.getData('text')));
+            logEvent(e);
+        });
+
+        draggable.addEventListener('dragend', function (e) {
+            window.dradendRaised = true;
+            logEvent(e);
+        });
     }
-
-    from.addEventListener('dragstart', function (e) {
-        e.dataTransfer.setData('text', e.target.id);
-        logEvent(e);
-    });
-
-    undraggable.addEventListener('dragover', function (e) {
-        e.preventDefault();
-        logEvent(e);
-    });
-
-    preventDrag.addEventListener('dragstart', function (e) {
-        e.preventDefault();
-    });
-
-    to.addEventListener('dragover', function (e) {
-        e.preventDefault();
-        logEvent(e);
-    });
-
-    to.addEventListener('drop', function (e) {
-        e.preventDefault();
-        e.target.appendChild(document.getElementById(e.dataTransfer.getData('text')));
-        logEvent(e);
-    });
-
-    invalidTo.addEventListener('drop', function (e) {
-        e.preventDefault();
-        e.target.appendChild(document.getElementById(e.dataTransfer.getData('text')));
-        logEvent(e);
-    });
-
-    draggable.addEventListener('dragend', function (e) {
-        window.dradendRaised = true;
-        logEvent(e);
-    });
 </script>
 </body>
 </html>

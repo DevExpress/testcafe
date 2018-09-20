@@ -13,14 +13,14 @@
     }
 
     //Hammerhead setup
-    var hammerhead   = getTestCafeModule('hammerhead');
-    var INSTRUCTION  = hammerhead.get('../processing/script/instruction');
-    var location     = 'http://localhost/sessionId/https://example.com';
-    var browserUtils = hammerhead.utils.browser;
+    const hammerhead   = getTestCafeModule('hammerhead');
+    const INSTRUCTION  = hammerhead.get('../processing/script/instruction');
+    const location     = 'http://localhost/sessionId/https://example.com';
+    const browserUtils = hammerhead.utils.browser;
 
     hammerhead.get('./utils/destination-location').forceLocation(location);
 
-    var iframeTaskScriptTempate = [
+    const iframeTaskScriptTempate = [
         'window["%hammerhead%"].get("./utils/destination-location").forceLocation("{{{location}}}");',
         'window["%hammerhead%"].start({',
         '    referer : "{{{referer}}}",',
@@ -40,9 +40,9 @@
     };
 
     window.initIFrameTestHandler = function (e) {
-        var referer          = location;
-        var serviceMsg       = '/service-msg/100';
-        var iframeTaskScript = window.getIframeTaskScript(referer, serviceMsg, location).replace(/"/g, '\\"');
+        const referer          = location;
+        const serviceMsg       = '/service-msg/100';
+        const iframeTaskScript = window.getIframeTaskScript(referer, serviceMsg, location).replace(/"/g, '\\"');
 
         if (e.iframe.id.indexOf('test') !== -1) {
             e.iframe.contentWindow.eval.call(e.iframe.contentWindow, [
@@ -61,9 +61,9 @@
 
 
     //TestCafe setup
-    var testCafeLegacyRunner = getTestCafeModule('testCafeLegacyRunner');
-    var tcSettings           = testCafeLegacyRunner.get('./settings');
-    var sandboxedJQuery      = testCafeLegacyRunner.get('./sandboxed-jquery');
+    const testCafeLegacyRunner = getTestCafeModule('testCafeLegacyRunner');
+    const tcSettings           = testCafeLegacyRunner.get('./settings');
+    const sandboxedJQuery      = testCafeLegacyRunner.get('./sandboxed-jquery');
 
     tcSettings.get().REFERER          = 'https://example.com';
     tcSettings.get().SELECTOR_TIMEOUT = 10000;
@@ -75,8 +75,8 @@
 
     if (browserUtils.isMSEdge && browserUtils.version >= 17) {
         $(function () {
-            var nativeMethods = hammerhead.nativeMethods;
-            var input         = nativeMethods.createElement.call(document, 'input');
+            const nativeMethods = hammerhead.nativeMethods;
+            const input         = nativeMethods.createElement.call(document, 'input');
 
             nativeMethods.appendChild.call(document.body, input);
             nativeMethods.inputValueSetter.call(input, 'text');
@@ -102,9 +102,10 @@
     // With this hack, we only allow setting the scroll by a script and prevent native browser scrolling.
     if (hammerhead.utils.browser.isIOS) {
         document.addEventListener('DOMContentLoaded', function () {
-            var originWindowScrollTo = window.scrollTo;
-            var lastScrollTop        = window.scrollY;
-            var lastScrollLeft       = window.scrollX;
+            const originWindowScrollTo = window.scrollTo;
+
+            let lastScrollTop        = window.scrollY;
+            let lastScrollLeft       = window.scrollX;
 
             window.scrollTo = function () {
                 lastScrollLeft = arguments[0];

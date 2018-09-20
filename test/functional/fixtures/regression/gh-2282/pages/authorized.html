@@ -8,7 +8,7 @@
             if (!document.cookie || document.cookie === 'auth=false')
                 location.href = './login.html';
             else {
-                var result = document.getElementById('result');
+                const result = document.getElementById('result');
 
                 result.innerHTML = 'logged'
             }

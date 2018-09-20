@@ -1,6 +1,6 @@
-var expect         = require('chai').expect;
-var parseUserAgent = require('useragent').parse;
-var config         = require('../../../../config');
+const expect         = require('chai').expect;
+const parseUserAgent = require('useragent').parse;
+const config         = require('../../../../config');
 
 describe('[API] t.eval', function () {
     it('Should execute an anonymous client function', function () {
@@ -13,12 +13,12 @@ describe('[API] t.eval', function () {
             if (!isErrorsArray && !errs)
                 throw new Error('Error for "' + alias + '" haven\'t created');
 
-            var ua = parseUserAgent(errs[0]).toString().toLowerCase();
+            const ua = parseUserAgent(errs[0]).toString().toLowerCase();
 
             expect(ua.indexOf(expected)).eql(0, ua + ' doesn\'t start with "' + expected + '"');
         }
 
-        var browsers = 'chrome,firefox,ie';
+        const browsers = 'chrome,firefox,ie';
 
         return runTests('./testcafe-fixtures/eval-test.js', 'Get UA', { shouldFail: true, only: browsers })
             .catch(function (errs) {

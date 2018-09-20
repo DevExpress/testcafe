@@ -4,18 +4,18 @@ import hammerhead from './deps/hammerhead';
 import testCafeCore from './deps/testcafe-core';
 import uiRoot from './ui-root';
 
-var shadowUI         = hammerhead.shadowUI;
-var browserUtils     = hammerhead.utils.browser;
-var featureDetection = hammerhead.utils.featureDetection;
-var nativeMethods    = hammerhead.nativeMethods;
-var eventSimulator   = hammerhead.eventSandbox.eventSimulator;
-var listeners        = hammerhead.eventSandbox.listeners;
+const shadowUI         = hammerhead.shadowUI;
+const browserUtils     = hammerhead.utils.browser;
+const featureDetection = hammerhead.utils.featureDetection;
+const nativeMethods    = hammerhead.nativeMethods;
+const eventSimulator   = hammerhead.eventSandbox.eventSimulator;
+const listeners        = hammerhead.eventSandbox.listeners;
 
-var positionUtils = testCafeCore.positionUtils;
-var domUtils      = testCafeCore.domUtils;
-var styleUtils    = testCafeCore.styleUtils;
-var eventUtils    = testCafeCore.eventUtils;
-var arrayUtils    = testCafeCore.arrayUtils;
+const positionUtils = testCafeCore.positionUtils;
+const domUtils      = testCafeCore.domUtils;
+const styleUtils    = testCafeCore.styleUtils;
+const eventUtils    = testCafeCore.eventUtils;
+const arrayUtils    = testCafeCore.arrayUtils;
 
 
 const OPTION_LIST_CLASS      = 'tcOptionList';
@@ -25,10 +25,10 @@ const DISABLED_CLASS         = 'disabled';
 const MAX_OPTION_LIST_LENGTH = browserUtils.isIE ? 30 : 20;
 
 
-var curSelectEl = null;
-var optionList  = null;
-var groups      = [];
-var options     = [];
+let curSelectEl = null;
+let optionList  = null;
+let groups      = [];
+let options     = [];
 
 function onDocumentMouseDown (e) {
     //NOTE: only in Mozilla 'mousedown' raises for option
@@ -54,9 +54,9 @@ function onWindowClick (e, dispatched, preventDefault) {
 }
 
 function clickOnOption (optionIndex, isOptionDisabled) {
-    var curSelectIndex   = curSelectEl.selectedIndex;
-    var realOption       = curSelectEl.getElementsByTagName('option')[optionIndex];
-    var clickLeadChanges = !isOptionDisabled && optionIndex !== curSelectIndex;
+    const curSelectIndex   = curSelectEl.selectedIndex;
+    const realOption       = curSelectEl.getElementsByTagName('option')[optionIndex];
+    const clickLeadChanges = !isOptionDisabled && optionIndex !== curSelectIndex;
 
     if (clickLeadChanges && !browserUtils.isIE)
         curSelectEl.selectedIndex = optionIndex;
@@ -90,8 +90,8 @@ function clickOnOption (optionIndex, isOptionDisabled) {
 }
 
 function createOption (realOption, parent) {
-    var option           = document.createElement('div');
-    var isOptionDisabled = realOption.disabled || domUtils.getTagName(realOption.parentElement) === 'optgroup' &&
+    const option           = document.createElement('div');
+    const isOptionDisabled = realOption.disabled || domUtils.getTagName(realOption.parentElement) === 'optgroup' &&
                                                   realOption.parentElement.disabled;
 
     // eslint-disable-next-line no-restricted-properties
@@ -109,7 +109,7 @@ function createOption (realOption, parent) {
 }
 
 function createGroup (realGroup, parent) {
-    var group = document.createElement('div');
+    const group = document.createElement('div');
 
     nativeMethods.nodeTextContentSetter.call(group, realGroup.label || ' ');
     parent.appendChild(group);
@@ -128,9 +128,9 @@ function createGroup (realGroup, parent) {
 }
 
 function createChildren (children, parent) {
-    var childrenLength = domUtils.getChildrenLength(children);
+    const childrenLength = domUtils.getChildrenLength(children);
 
-    for (var i = 0; i < childrenLength; i++) {
+    for (let i = 0; i < childrenLength; i++) {
         if (domUtils.isOptionElement(children[i]))
             createOption(children[i], parent);
         else if (domUtils.getTagName(children[i]) === 'optgroup')
@@ -139,14 +139,14 @@ function createChildren (children, parent) {
 }
 
 export function expandOptionList (select) {
-    var selectChildren = select.children;
+    const selectChildren = select.children;
 
     if (!selectChildren.length)
         return;
 
     //NOTE: check is option list expanded
     if (curSelectEl) {
-        var isSelectExpanded = select === curSelectEl;
+        const isSelectExpanded = select === curSelectEl;
 
         collapseOptionList();
 
@@ -178,12 +178,12 @@ export function expandOptionList (select) {
             styleUtils.getOptionHeight(select) * MAX_OPTION_LIST_LENGTH : ''
     });
 
-    var selectTopPosition     = positionUtils.getOffsetPosition(curSelectEl).top;
-    var optionListHeight      = styleUtils.getHeight(optionList);
-    var optionListTopPosition = selectTopPosition + styleUtils.getHeight(curSelectEl) + 2;
+    const selectTopPosition     = positionUtils.getOffsetPosition(curSelectEl).top;
+    const optionListHeight      = styleUtils.getHeight(optionList);
+    let optionListTopPosition = selectTopPosition + styleUtils.getHeight(curSelectEl) + 2;
 
     if (optionListTopPosition + optionListHeight > styleUtils.getScrollTop(window) + styleUtils.getHeight(window)) {
-        var topPositionAboveSelect = selectTopPosition - 3 - optionListHeight;
+        const topPositionAboveSelect = selectTopPosition - 3 - optionListHeight;
 
         if (topPositionAboveSelect >= styleUtils.getScrollTop(window))
             optionListTopPosition = topPositionAboveSelect;
@@ -207,8 +207,8 @@ export function isOptionListExpanded (select) {
 }
 
 export function getEmulatedChildElement (element) {
-    var isGroup      = domUtils.getTagName(element) === 'optgroup';
-    var elementIndex = isGroup ? domUtils.getElementIndexInParent(curSelectEl, element) :
+    const isGroup      = domUtils.getTagName(element) === 'optgroup';
+    const elementIndex = isGroup ? domUtils.getElementIndexInParent(curSelectEl, element) :
         domUtils.getElementIndexInParent(curSelectEl, element);
 
     if (!isGroup)
@@ -218,19 +218,19 @@ export function getEmulatedChildElement (element) {
 }
 
 export function scrollOptionListByChild (child) {
-    var select = domUtils.getSelectParent(child);
+    const select = domUtils.getSelectParent(child);
 
     if (!select)
         return;
 
-    var realSizeValue = styleUtils.getSelectElementSize(select);
-    var optionHeight  = styleUtils.getOptionHeight(select);
-    var scrollIndent  = 0;
+    const realSizeValue = styleUtils.getSelectElementSize(select);
+    const optionHeight  = styleUtils.getOptionHeight(select);
+    let scrollIndent  = 0;
 
-    var topVisibleIndex    = Math.max(styleUtils.getScrollTop(select) / optionHeight, 0);
-    var bottomVisibleIndex = topVisibleIndex + realSizeValue - 1;
+    const topVisibleIndex    = Math.max(styleUtils.getScrollTop(select) / optionHeight, 0);
+    const bottomVisibleIndex = topVisibleIndex + realSizeValue - 1;
 
-    var childIndex = domUtils.getChildVisibleIndex(select, child);
+    const childIndex = domUtils.getChildVisibleIndex(select, child);
 
     if (childIndex < topVisibleIndex) {
         scrollIndent = optionHeight * (topVisibleIndex - childIndex);
@@ -243,7 +243,7 @@ export function scrollOptionListByChild (child) {
 }
 
 export function getSelectChildCenter (child) {
-    var select = domUtils.getSelectParent(child);
+    const select = domUtils.getSelectParent(child);
 
     if (!select) {
         return {
@@ -252,8 +252,8 @@ export function getSelectChildCenter (child) {
         };
     }
 
-    var optionHeight   = styleUtils.getOptionHeight(select);
-    var childRectangle = positionUtils.getElementRectangle(child);
+    const optionHeight   = styleUtils.getOptionHeight(select);
+    const childRectangle = positionUtils.getElementRectangle(child);
 
     return {
         x: Math.round(childRectangle.left + childRectangle.width / 2),
@@ -262,24 +262,24 @@ export function getSelectChildCenter (child) {
 }
 
 export function switchOptionsByKeys (element, command) {
-    var selectSize       = styleUtils.getSelectElementSize(element);
-    var optionListHidden = !styleUtils.hasDimensions(shadowUI.select('.' + OPTION_LIST_CLASS)[0]);
+    const selectSize       = styleUtils.getSelectElementSize(element);
+    const optionListHidden = !styleUtils.hasDimensions(shadowUI.select('.' + OPTION_LIST_CLASS)[0]);
 
     if (/down|up/.test(command) ||
         !browserUtils.isIE && (selectSize <= 1 || browserUtils.isFirefox) &&
         (optionListHidden || browserUtils.isFirefox) && /left|right/.test(command)) {
-        var realOptions    = element.querySelectorAll('option');
-        var enabledOptions = [];
+        const realOptions    = element.querySelectorAll('option');
+        const enabledOptions = [];
 
-        for (var i = 0; i < realOptions.length; i++) {
-            var parent = realOptions[i].parentElement;
+        for (let i = 0; i < realOptions.length; i++) {
+            const parent = realOptions[i].parentElement;
 
             if (!realOptions[i].disabled && !(domUtils.getTagName(parent) === 'optgroup' && parent.disabled))
                 enabledOptions.push(realOptions[i]);
         }
 
-        var curSelectedOptionIndex = arrayUtils.indexOf(enabledOptions, realOptions[element.selectedIndex]);
-        var nextIndex              = curSelectedOptionIndex + (/down|right/.test(command) ? 1 : -1);
+        const curSelectedOptionIndex = arrayUtils.indexOf(enabledOptions, realOptions[element.selectedIndex]);
+        const nextIndex              = curSelectedOptionIndex + (/down|right/.test(command) ? 1 : -1);
 
         if (nextIndex >= 0 && nextIndex < enabledOptions.length) {
             element.selectedIndex = arrayUtils.indexOf(realOptions, enabledOptions[nextIndex]);
@@ -293,13 +293,13 @@ export function switchOptionsByKeys (element, command) {
 }
 
 export function isOptionElementVisible (el) {
-    var parentSelect = domUtils.getSelectParent(el);
+    const parentSelect = domUtils.getSelectParent(el);
 
     if (!parentSelect)
         return true;
 
-    var expanded        = isOptionListExpanded(parentSelect);
-    var selectSizeValue = styleUtils.getSelectElementSize(parentSelect);
+    const expanded        = isOptionListExpanded(parentSelect);
+    const selectSizeValue = styleUtils.getSelectElementSize(parentSelect);
 
     return expanded || selectSizeValue > 1;
 }

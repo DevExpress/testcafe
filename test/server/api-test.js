@@ -1,7 +1,7 @@
-var expect         = require('chai').expect;
-var resolve        = require('path').resolve;
-var assertAPIError = require('./helpers/assert-error').assertAPIError;
-var compile        = require('./helpers/compile');
+const expect         = require('chai').expect;
+const resolve        = require('path').resolve;
+const assertAPIError = require('./helpers/assert-error').assertAPIError;
+const compile        = require('./helpers/compile');
 
 describe('API', function () {
     this.timeout(20000);
@@ -16,7 +16,7 @@ describe('API', function () {
         });
 
         it('Should raise an error if fixture name is not a string', function () {
-            var testfile = resolve('test/server/data/test-suites/fixture-name-is-not-a-string/testfile.js');
+            const testfile = resolve('test/server/data/test-suites/fixture-name-is-not-a-string/testfile.js');
 
             return compile(testfile)
                 .then(function () {
@@ -45,7 +45,7 @@ describe('API', function () {
         });
 
         it('Should raise an error if fixture page is not a string', function () {
-            var testfile = resolve('test/server/data/test-suites/fixture-page-is-not-a-string/testfile.js');
+            const testfile = resolve('test/server/data/test-suites/fixture-page-is-not-a-string/testfile.js');
 
             return compile(testfile)
                 .then(function () {
@@ -70,7 +70,7 @@ describe('API', function () {
         });
 
         it('Should raise an error if beforeEach is not a function', function () {
-            var testfile = resolve('test/server/data/test-suites/before-each-is-not-a-function/testfile.js');
+            const testfile = resolve('test/server/data/test-suites/before-each-is-not-a-function/testfile.js');
 
             return compile(testfile)
                 .then(function () {
@@ -95,7 +95,7 @@ describe('API', function () {
         });
 
         it('Should raise an error if afterEach is not a function', function () {
-            var testfile = resolve('test/server/data/test-suites/after-each-is-not-a-function/testfile.js');
+            const testfile = resolve('test/server/data/test-suites/after-each-is-not-a-function/testfile.js');
 
             return compile(testfile)
                 .then(function () {
@@ -120,7 +120,7 @@ describe('API', function () {
         });
 
         it('Should raise an error if fixture.before is not a function', function () {
-            var testfile = resolve('test/server/data/test-suites/fixture-before-is-not-a-function/testfile.js');
+            const testfile = resolve('test/server/data/test-suites/fixture-before-is-not-a-function/testfile.js');
 
             return compile(testfile)
                 .then(function () {
@@ -145,7 +145,7 @@ describe('API', function () {
         });
 
         it('Should raise an error if fixture.after is not a function', function () {
-            var testfile = resolve('test/server/data/test-suites/fixture-after-is-not-a-function/testfile.js');
+            const testfile = resolve('test/server/data/test-suites/fixture-after-is-not-a-function/testfile.js');
 
             return compile(testfile)
                 .then(function () {
@@ -170,9 +170,9 @@ describe('API', function () {
         });
 
         it('Should raise an error if httpAuth takes a wrong argument', function () {
-            var credentialsInNotObject = resolve('test/server/data/test-suites/http-auth/credentials-is-not-an-object.js');
-            var passIsNotString        = resolve('test/server/data/test-suites/http-auth/password-is-not-a-string.js');
-            var usernameIsNotDefined   = resolve('test/server/data/test-suites/http-auth/username-is-not-defined.js');
+            const credentialsInNotObject = resolve('test/server/data/test-suites/http-auth/credentials-is-not-an-object.js');
+            const passIsNotString        = resolve('test/server/data/test-suites/http-auth/password-is-not-a-string.js');
+            const usernameIsNotDefined   = resolve('test/server/data/test-suites/http-auth/username-is-not-defined.js');
 
             return compile(credentialsInNotObject)
                 .then(function () {
@@ -274,7 +274,7 @@ describe('API', function () {
         });
 
         it('Should raise an error if fixture.meta is undefined', function () {
-            var file = resolve('test/server/data/test-suites/meta/incorrect-fixture-meta.js');
+            const file = resolve('test/server/data/test-suites/meta/incorrect-fixture-meta.js');
 
             return compile(file)
                 .then(function () {
@@ -302,7 +302,7 @@ describe('API', function () {
 
     describe('test', function () {
         it('Should raise an error if test name is not a string', function () {
-            var testfile = resolve('test/server/data/test-suites/test-name-is-not-a-string/testfile.js');
+            const testfile = resolve('test/server/data/test-suites/test-name-is-not-a-string/testfile.js');
 
             return compile(testfile)
                 .then(function () {
@@ -327,7 +327,7 @@ describe('API', function () {
         });
 
         it('Should raise an error if test body is not a function', function () {
-            var testfile = resolve('test/server/data/test-suites/test-body-is-not-a-function/testfile.js');
+            const testfile = resolve('test/server/data/test-suites/test-body-is-not-a-function/testfile.js');
 
             return compile(testfile)
                 .then(function () {
@@ -349,7 +349,7 @@ describe('API', function () {
         });
 
         it('Should raise an error if test.before is not a function', function () {
-            var testfile = resolve('test/server/data/test-suites/test-before-is-not-a-function/testfile.js');
+            const testfile = resolve('test/server/data/test-suites/test-before-is-not-a-function/testfile.js');
 
             return compile(testfile)
                 .then(function () {
@@ -373,7 +373,7 @@ describe('API', function () {
         });
 
         it('Should raise an error if test.after is not a function', function () {
-            var testfile = resolve('test/server/data/test-suites/test-after-is-not-a-function/testfile.js');
+            const testfile = resolve('test/server/data/test-suites/test-after-is-not-a-function/testfile.js');
 
             return compile(testfile)
                 .then(function () {
@@ -458,7 +458,7 @@ describe('API', function () {
         });
 
         it('Should raise an error if test.meta is null', function () {
-            var file = resolve('test/server/data/test-suites/meta/incorrect-test-meta.js');
+            const file = resolve('test/server/data/test-suites/meta/incorrect-test-meta.js');
 
             return compile(file)
                 .then(function () {
@@ -486,7 +486,7 @@ describe('API', function () {
 
     describe('Selector', function () {
         it('Should raise an error if Selector initialized with wrong type', function () {
-            var testfile = resolve('test/server/data/test-suites/selector-arg-is-not-a-function-or-string/testfile.js');
+            const testfile = resolve('test/server/data/test-suites/selector-arg-is-not-a-function-or-string/testfile.js');
 
             return compile(testfile)
                 .then(function () {
@@ -514,7 +514,7 @@ describe('API', function () {
         });
 
         it('Should raise an error if Selector `visibilityCheck` option is not a boolean value', function () {
-            var testfile = resolve('test/server/data/test-suites/selector-visibility-check-opt-not-bool/testfile.js');
+            const testfile = resolve('test/server/data/test-suites/selector-visibility-check-opt-not-bool/testfile.js');
 
             return compile(testfile)
                 .then(function () {
@@ -540,7 +540,7 @@ describe('API', function () {
         });
 
         it('Should raise an error if Selector `timeout` option is not a non-negative number', function () {
-            var testfile = resolve('test/server/data/test-suites/selector-timeout-is-not-non-negative-value/testfile.js');
+            const testfile = resolve('test/server/data/test-suites/selector-timeout-is-not-non-negative-value/testfile.js');
 
             return compile(testfile)
                 .then(function () {
@@ -566,7 +566,7 @@ describe('API', function () {
         });
 
         it('Should raise `it was NaN` error if Selector.nth() `index` argument is NaN', function () {
-            var testfile = resolve('test/server/data/test-suites/selector-nth-arg-is-nan-value/testfile.js');
+            const testfile = resolve('test/server/data/test-suites/selector-nth-arg-is-nan-value/testfile.js');
 
             return compile(testfile)
                 .then(function () {
@@ -592,7 +592,7 @@ describe('API', function () {
         });
 
         it('Should raise `it was Infinity` error if Selector.nth() `index` argument is Infinity', function () {
-            var testfile = resolve('test/server/data/test-suites/selector-nth-arg-is-infinity-value/testfile.js');
+            const testfile = resolve('test/server/data/test-suites/selector-nth-arg-is-infinity-value/testfile.js');
 
             return compile(testfile)
                 .then(function () {
@@ -618,7 +618,7 @@ describe('API', function () {
         });
 
         it('Should raise an error if Selector.nth() `index` argument is not a number', function () {
-            var testfile = resolve('test/server/data/test-suites/selector-nth-arg-is-a-number-value/testfile.js');
+            const testfile = resolve('test/server/data/test-suites/selector-nth-arg-is-a-number-value/testfile.js');
 
             return compile(testfile)
                 .then(function () {
@@ -644,7 +644,7 @@ describe('API', function () {
         });
 
         it('Should raise an error if Selector.withText `text` argument is not a RegExp or string', function () {
-            var testfile = resolve('test/server/data/test-suites/selector-with-text-arg-is-not-regexp-or-string/testfile.js');
+            const testfile = resolve('test/server/data/test-suites/selector-with-text-arg-is-not-regexp-or-string/testfile.js');
 
             return compile(testfile)
                 .then(function () {
@@ -670,7 +670,7 @@ describe('API', function () {
         });
 
         it('Should raise an error if Selector.withAttribute `attrName` argument is not a RegExp or string', function () {
-            var testfile = resolve('test/server/data/test-suites/selector-with-attr-arg-is-not-regexp-or-string/attrName.js');
+            const testfile = resolve('test/server/data/test-suites/selector-with-attr-arg-is-not-regexp-or-string/attrName.js');
 
             return compile(testfile)
                 .then(function () {
@@ -696,7 +696,7 @@ describe('API', function () {
         });
 
         it('Should raise an error if Selector.withAttribute `attrValue` argument is not a RegExp or string', function () {
-            var testfile = resolve('test/server/data/test-suites/selector-with-attr-arg-is-not-regexp-or-string/attrValue.js');
+            const testfile = resolve('test/server/data/test-suites/selector-with-attr-arg-is-not-regexp-or-string/attrValue.js');
 
             return compile(testfile)
                 .then(function () {
@@ -722,7 +722,7 @@ describe('API', function () {
         });
 
         it('Should raise an error if Selector.filter `filter` argument is not a function or string', function () {
-            var testfile = resolve('test/server/data/test-suites/selector-filter-arg-is-not-a-function-or-string/testfile.js');
+            const testfile = resolve('test/server/data/test-suites/selector-filter-arg-is-not-a-function-or-string/testfile.js');
 
             return compile(testfile)
                 .then(function () {
@@ -748,7 +748,7 @@ describe('API', function () {
         });
 
         it('Should raise an error if Selector.find `filter` argument is not a function or string', function () {
-            var testfile = resolve('test/server/data/test-suites/selector-find-arg-is-not-a-string-or-function/testfile.js');
+            const testfile = resolve('test/server/data/test-suites/selector-find-arg-is-not-a-string-or-function/testfile.js');
 
             return compile(testfile)
                 .then(function () {
@@ -774,7 +774,7 @@ describe('API', function () {
         });
 
         it('Should raise an error if Selector.parent `filter` argument is not a function or string', function () {
-            var testfile = resolve('test/server/data/test-suites/selector-parent-incorrect-arg-type/testfile.js');
+            const testfile = resolve('test/server/data/test-suites/selector-parent-incorrect-arg-type/testfile.js');
 
             return compile(testfile)
                 .then(function () {
@@ -800,7 +800,7 @@ describe('API', function () {
         });
 
         it('Should raise an error if Selector.child `filter` argument is not a function or string', function () {
-            var testfile = resolve('test/server/data/test-suites/selector-child-incorrect-arg-type/testfile.js');
+            const testfile = resolve('test/server/data/test-suites/selector-child-incorrect-arg-type/testfile.js');
 
             return compile(testfile)
                 .then(function () {
@@ -826,7 +826,7 @@ describe('API', function () {
         });
 
         it('Should raise an error if Selector.sibling `filter` argument is not a function or string', function () {
-            var testfile = resolve('test/server/data/test-suites/selector-sibling-incorrect-arg-type/testfile.js');
+            const testfile = resolve('test/server/data/test-suites/selector-sibling-incorrect-arg-type/testfile.js');
 
             return compile(testfile)
                 .then(function () {
@@ -852,7 +852,7 @@ describe('API', function () {
         });
 
         it('Should raise an error if Selector.nextSibling `filter` argument is not a function or string', function () {
-            var testfile = resolve('test/server/data/test-suites/selector-next-sibling-incorrect-arg-type/testfile.js');
+            const testfile = resolve('test/server/data/test-suites/selector-next-sibling-incorrect-arg-type/testfile.js');
 
             return compile(testfile)
                 .then(function () {
@@ -879,7 +879,7 @@ describe('API', function () {
 
 
         it('Should raise an error if Selector.prevSibling `filter` argument is not a function or string', function () {
-            var testfile = resolve('test/server/data/test-suites/selector-prev-sibling-incorrect-arg-type/testfile.js');
+            const testfile = resolve('test/server/data/test-suites/selector-prev-sibling-incorrect-arg-type/testfile.js');
 
             return compile(testfile)
                 .then(function () {
@@ -905,7 +905,7 @@ describe('API', function () {
         });
 
         it('Should raise an error if Selector.addCustomDOMProperties argument is not object', function () {
-            var testfile = resolve('test/server/data/test-suites/selector-add-custom-dom-properties-incorrect-arg-type/testfile.js');
+            const testfile = resolve('test/server/data/test-suites/selector-add-custom-dom-properties-incorrect-arg-type/testfile.js');
 
             return compile(testfile)
                 .then(function () {
@@ -932,7 +932,7 @@ describe('API', function () {
         });
 
         it('Should raise error if at least one of Selector custom DOM properties is not function', function () {
-            var testfile = resolve('test/server/data/test-suites/selector-custom-dom-property-incorrect-arg-type/testfile.js');
+            const testfile = resolve('test/server/data/test-suites/selector-custom-dom-property-incorrect-arg-type/testfile.js');
 
             return compile(testfile)
                 .then(function () {
@@ -958,7 +958,7 @@ describe('API', function () {
         });
 
         it('Should raise error if Selector.addCustomMethods argument is not object', function () {
-            var testfile = resolve('test/server/data/test-suites/selector-add-custom-methods-incorrect-arg-type/testfile.js');
+            const testfile = resolve('test/server/data/test-suites/selector-add-custom-methods-incorrect-arg-type/testfile.js');
 
             return compile(testfile)
                 .then(function () {
@@ -985,7 +985,7 @@ describe('API', function () {
         });
 
         it('Should raise error if at least one of custom methods is not function', function () {
-            var testfile = resolve('test/server/data/test-suites/selector-custom-dom-method-incorrect-arg-type/testfile.js');
+            const testfile = resolve('test/server/data/test-suites/selector-custom-dom-method-incorrect-arg-type/testfile.js');
 
             return compile(testfile)
                 .then(function () {
@@ -1013,7 +1013,7 @@ describe('API', function () {
 
     describe('ClientFunction', function () {
         it('Should raise an error if ClientFunction argument is not a function', function () {
-            var testfile = resolve('test/server/data/test-suites/client-fn-arg-is-not-a-function/testfile.js');
+            const testfile = resolve('test/server/data/test-suites/client-fn-arg-is-not-a-function/testfile.js');
 
             return compile(testfile)
                 .then(function () {
@@ -1040,7 +1040,7 @@ describe('API', function () {
         });
 
         it('Should raise an error if ClientFunction argument is not a function (if called as ctor)', function () {
-            var testfile = resolve('test/server/data/test-suites/client-fn-arg-is-not-a-function-as-ctor/testfile.js');
+            const testfile = resolve('test/server/data/test-suites/client-fn-arg-is-not-a-function-as-ctor/testfile.js');
 
             return compile(testfile)
                 .then(function () {
@@ -1067,7 +1067,7 @@ describe('API', function () {
         });
 
         it('Should raise an error if ClientFunction uses async function', function () {
-            var testfile = resolve('test/server/data/test-suites/async-function-in-client-fn/testfile.js');
+            const testfile = resolve('test/server/data/test-suites/async-function-in-client-fn/testfile.js');
 
             return compile(testfile)
                 .then(function () {
@@ -1094,7 +1094,7 @@ describe('API', function () {
         });
 
         it('Should raise an error if ClientFunction uses generator', function () {
-            var testfile = resolve('test/server/data/test-suites/generator-in-client-fn/testfile.js');
+            const testfile = resolve('test/server/data/test-suites/generator-in-client-fn/testfile.js');
 
             return compile(testfile)
                 .then(function () {
@@ -1122,7 +1122,7 @@ describe('API', function () {
         });
 
         it('Should raise an error if ClientFunction options is not an object', function () {
-            var testfile = resolve('test/server/data/test-suites/client-fn-options-not-object/testfile.js');
+            const testfile = resolve('test/server/data/test-suites/client-fn-options-not-object/testfile.js');
 
             return compile(testfile)
                 .then(function () {
@@ -1148,7 +1148,7 @@ describe('API', function () {
         });
 
         it('Should raise an error if ClientFunction "dependencies" is not an object', function () {
-            var testfile = resolve('test/server/data/test-suites/client-fn-dependencies-not-object/testfile.js');
+            const testfile = resolve('test/server/data/test-suites/client-fn-dependencies-not-object/testfile.js');
 
             return compile(testfile)
                 .then(function () {
@@ -1171,7 +1171,7 @@ describe('API', function () {
         });
 
         it('Should raise an error if ClientFunction `boundTestRun` option is not TestController', function () {
-            var testfile = resolve('test/server/data/test-suites/client-fn-bound-test-run-not-t/testfile.js');
+            const testfile = resolve('test/server/data/test-suites/client-fn-bound-test-run-not-t/testfile.js');
 
             return compile(testfile)
                 .then(function () {
@@ -1200,7 +1200,7 @@ describe('API', function () {
 
     describe('Role', function () {
         it('Should raise an error if Role "loginPage" is not a string', function () {
-            var testfile = resolve('test/server/data/test-suites/role-login-page-is-not-a-string/testfile.js');
+            const testfile = resolve('test/server/data/test-suites/role-login-page-is-not-a-string/testfile.js');
 
             return compile(testfile)
                 .then(function () {
@@ -1227,7 +1227,7 @@ describe('API', function () {
         });
 
         it('Should raise an error if Role "initFn" is not a string', function () {
-            var testfile = resolve('test/server/data/test-suites/role-init-fn-is-not-a-function/testfile.js');
+            const testfile = resolve('test/server/data/test-suites/role-init-fn-is-not-a-function/testfile.js');
 
             return compile(testfile)
                 .then(function () {
@@ -1254,7 +1254,7 @@ describe('API', function () {
         });
 
         it('Should raise an error if Role "options" is not an object', function () {
-            var testfile = resolve('test/server/data/test-suites/role-options-is-not-an-object/testfile.js');
+            const testfile = resolve('test/server/data/test-suites/role-options-is-not-an-object/testfile.js');
 
             return compile(testfile)
                 .then(function () {
@@ -1281,7 +1281,7 @@ describe('API', function () {
         });
 
         it('Should raise an error if Role "option.preserveUrl" is not a boolean', function () {
-            var testfile = resolve('test/server/data/test-suites/role-preserve-url-option-is-not-a-boolean/testfile.js');
+            const testfile = resolve('test/server/data/test-suites/role-preserve-url-option-is-not-a-boolean/testfile.js');
 
             return compile(testfile)
                 .then(function () {
@@ -1310,7 +1310,7 @@ describe('API', function () {
 
     describe('TestController import', function () {
         it('Should raise an error if TestControllerProxy can not resolve test run', function () {
-            var testfile = resolve('test/server/data/test-suites/cant-resolve-test-run-proxy-context/testfile.js');
+            const testfile = resolve('test/server/data/test-suites/cant-resolve-test-run-proxy-context/testfile.js');
 
             return compile(testfile)
                 .then(function () {

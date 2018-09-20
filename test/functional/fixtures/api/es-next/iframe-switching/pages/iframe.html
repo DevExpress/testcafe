@@ -24,7 +24,7 @@
     });
 
     document.getElementById('remove-from-parent-btn').addEventListener('click', function () {
-        var iframe = window.top.document.getElementById('iframe');
+        const iframe = window.top.document.getElementById('iframe');
 
         window.setTimeout(function () {
             iframe.parentElement.removeChild(iframe);
@@ -32,7 +32,7 @@
     });
 
     document.getElementById('hide-iframe-btn').addEventListener('click', function () {
-        var iframe = window.top.document.getElementById('iframe');
+        const iframe = window.top.document.getElementById('iframe');
 
         window.setTimeout(function () {
             iframe.style.display = 'none';

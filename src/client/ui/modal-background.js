@@ -13,14 +13,14 @@ const BACKGROUND_OPACITY_WITH_LOADING_TEXT = 0.8;
 const LOADING_ICON_CLASS = 'loading-icon';
 
 //Globals
-var backgroundDiv  = null;
-var loadingTextDiv = null;
-var loadingIconDiv = null;
-var initialized    = false;
+let backgroundDiv  = null;
+let loadingTextDiv = null;
+let loadingIconDiv = null;
+let initialized    = false;
 
 //Markup
 function createBackground () {
-    var root = uiRoot.element();
+    const root = uiRoot.element();
 
     backgroundDiv = document.createElement('div');
     root.appendChild(backgroundDiv);
@@ -40,9 +40,9 @@ function createBackground () {
 
 //Behavior
 function adjustLoadingTextPos () {
-    var wHeight           = styleUtils.getHeight(window);
-    var wWidth            = styleUtils.getWidth(window);
-    var loadingTextHidden = !styleUtils.hasDimensions(loadingTextDiv);
+    const wHeight           = styleUtils.getHeight(window);
+    const wWidth            = styleUtils.getWidth(window);
+    const loadingTextHidden = !styleUtils.hasDimensions(loadingTextDiv);
 
     if (loadingTextHidden) {
         styleUtils.set(loadingTextDiv, 'visibility', 'hidden');
@@ -61,9 +61,9 @@ function adjustLoadingTextPos () {
 }
 
 function initSizeAdjustments () {
-    var adjust = function () {
-        var wHeight = styleUtils.getHeight(window);
-        var wWidth  = styleUtils.getWidth(window);
+    const adjust = function () {
+        const wHeight = styleUtils.getHeight(window);
+        const wWidth  = styleUtils.getWidth(window);
 
         styleUtils.set(backgroundDiv, 'width', wWidth + 'px');
         styleUtils.set(backgroundDiv, 'height', wHeight + 'px');
@@ -88,10 +88,10 @@ function init () {
 }
 
 export function initAndShowLoadingText () {
-    var shown = false;
+    let shown = false;
 
     //NOTE: init and show modal background as soon as possible
-    var initAndShow = function () {
+    const initAndShow = function () {
         init();
 
         styleUtils.set(backgroundDiv, 'opacity', BACKGROUND_OPACITY_WITH_LOADING_TEXT);
@@ -101,7 +101,7 @@ export function initAndShowLoadingText () {
         shown = true;
     };
 
-    var tryShowBeforeReady = function () {
+    const tryShowBeforeReady = function () {
         if (!shown) {
             if (document.body)
                 initAndShow();

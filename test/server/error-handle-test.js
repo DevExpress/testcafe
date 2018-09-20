@@ -40,9 +40,10 @@ describe('Global error handlers', () => {
     });
 
     it('Should add error to testRun on UnhandledPromiseRejection', () => {
-        var testCafe                 = null;
-        var unhandledRejectionRaised = false;
-        var testRunMock              = new TestRunMock(1);
+        const testRunMock = new TestRunMock(1);
+
+        let testCafe                 = null;
+        let unhandledRejectionRaised = false;
 
         return createTestCafe('127.0.0.1', 1335, 1336)
             .then(tc => {

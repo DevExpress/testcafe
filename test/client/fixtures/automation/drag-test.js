@@ -1,16 +1,16 @@
-var testCafeAutomation      = window.getTestCafeModule('testCafeAutomation');
-var DragToOffsetAutomation  = testCafeAutomation.DragToOffset;
-var DragToElementAutomation = testCafeAutomation.DragToElement;
-var MouseOptions            = testCafeAutomation.get('../../test-run/commands/options').MouseOptions;
+const testCafeAutomation      = window.getTestCafeModule('testCafeAutomation');
+const DragToOffsetAutomation  = testCafeAutomation.DragToOffset;
+const DragToElementAutomation = testCafeAutomation.DragToElement;
+const MouseOptions            = testCafeAutomation.get('../../test-run/commands/options').MouseOptions;
 
-var testCafeCore = window.getTestCafeModule('testCafeCore');
-var position     = testCafeCore.get('./utils/position');
+const testCafeCore = window.getTestCafeModule('testCafeCore');
+const position     = testCafeCore.get('./utils/position');
 
 testCafeCore.preventRealEvents();
 
-var hammerhead       = window.getTestCafeModule('hammerhead');
-var browserUtils     = hammerhead.utils.browser;
-var featureDetection = hammerhead.utils.featureDetection;
+const hammerhead       = window.getTestCafeModule('hammerhead');
+const browserUtils     = hammerhead.utils.browser;
+const featureDetection = hammerhead.utils.featureDetection;
 
 $(document).ready(function () {
     // NOTE: remove this after fix IE tests in iFrame
@@ -18,19 +18,19 @@ $(document).ready(function () {
 
     // NOTE: prevent auto scrolling
     if (browserUtils.isSafari && featureDetection.isTouchDevice) {
-        var $meta = $('<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, shrink-to-fit=no">');
+        const $meta = $('<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, shrink-to-fit=no">');
 
         $('head').append($meta);
     }
 
     //constants
-    var TEST_ELEMENT_CLASS = 'testElement';
+    const TEST_ELEMENT_CLASS = 'testElement';
 
     //utils
-    var isTouchDevice = featureDetection.isTouchDevice;
+    const isTouchDevice = featureDetection.isTouchDevice;
 
-    var createDraggable = function (left, top, withGloballCoord) {
-        var $draggable = $('<div></div>')
+    const createDraggable = function (left, top, withGloballCoord) {
+        const $draggable = $('<div></div>')
             .css({
                 width:           '100px',
                 height:          '100px',
@@ -50,12 +50,12 @@ $(document).ready(function () {
             .appendTo('body');
 
         $(document).bind(isTouchDevice ? 'touchmove' : 'mousemove', function (e) {
-            var startMouseClientPosition = position.offsetToClientCoords({
+            const startMouseClientPosition = position.offsetToClientCoords({
                 x: e.pageX,
                 y: e.pageY
             });
 
-            var curMousePos = isTouchDevice ? {
+            const curMousePos = isTouchDevice ? {
                 x: e.originalEvent.targetTouches[0].pageX || e.originalEvent.touches[0].pageX,
                 y: e.originalEvent.targetTouches[0].pageY || e.originalEvent.touches[0].pageY
             } : {
@@ -76,7 +76,7 @@ $(document).ready(function () {
         return $draggable;
     };
 
-    var createTarget = function (left, top) {
+    const createTarget = function (left, top) {
         return $('<div></div>')
             .css({
                 width:           '120px',
@@ -90,16 +90,16 @@ $(document).ready(function () {
             .appendTo('body');
     };
 
-    var getCenter = function (element) {
+    const getCenter = function (element) {
         return {
             x: Math.floor(element.offsetLeft + element.offsetWidth / 2),
             y: Math.floor(element.offsetTop + element.offsetHeight / 2)
         };
     };
 
-    var isInTarget = function (element, target) {
-        var elementCenter = getCenter(element);
-        var targetCenter  = getCenter(target);
+    const isInTarget = function (element, target) {
+        const elementCenter = getCenter(element);
+        const targetCenter  = getCenter(target);
 
         return elementCenter.x === targetCenter.x && elementCenter.y === targetCenter.y;
     };
@@ -110,7 +110,7 @@ $(document).ready(function () {
     });
 
     QUnit.testDone(function () {
-        var $body = $('body');
+        const $body = $('body');
 
         $('.' + TEST_ELEMENT_CLASS).remove();
         $body.height('').width('');
@@ -122,10 +122,10 @@ $(document).ready(function () {
         $('body').height(1500).width(1500);
 
         window.setTimeout(function () {
-            var draggable = createDraggable(100, 100)[0];
-            var target    = createTarget(1200, 1200)[0];
+            const draggable = createDraggable(100, 100)[0];
+            const target    = createTarget(1200, 1200)[0];
 
-            var drag = new DragToElementAutomation(draggable, target, new MouseOptions());
+            const drag = new DragToElementAutomation(draggable, target, new MouseOptions());
 
             drag
                 .run()
@@ -140,10 +140,10 @@ $(document).ready(function () {
         $('body').height(1400);
 
         window.setTimeout(function () {
-            var draggable = createDraggable(100, 1300)[0];
-            var target    = createTarget(100, 200)[0];
+            const draggable = createDraggable(100, 1300)[0];
+            const target    = createTarget(100, 200)[0];
 
-            var drag = new DragToElementAutomation(draggable, target, new MouseOptions());
+            const drag = new DragToElementAutomation(draggable, target, new MouseOptions());
 
             drag
                 .run()
@@ -158,12 +158,12 @@ $(document).ready(function () {
 
     asyncTest('overlapped during dragging', function () {
         window.setTimeout(function () {
-            var draggable = createDraggable(100, 100)[0];
-            var target    = createTarget(100, 350)[0];
+            const draggable = createDraggable(100, 100)[0];
+            const target    = createTarget(100, 350)[0];
 
             createTarget(100, 200).css('zIndex', '100');
 
-            var drag = new DragToElementAutomation(draggable, target, new MouseOptions({ offsetX: 5, offsetY: 5 }));
+            const drag = new DragToElementAutomation(draggable, target, new MouseOptions({ offsetX: 5, offsetY: 5 }));
 
             drag
                 .run()
@@ -178,13 +178,13 @@ $(document).ready(function () {
     module('regression');
 
     asyncTest('B253930 - Wrong playback of drag action on http://jqueryui.com/droppable/ in IE9', function () {
-        var $draggable  = createDraggable(10, 10, true);
-        var center      = getCenter($draggable[0]);
-        var dragOffsetX = 100;
-        var dragOffsetY = 100;
-        var pointTo     = { x: center.x + dragOffsetX, y: center.y + dragOffsetY };
+        const $draggable  = createDraggable(10, 10, true);
+        const center      = getCenter($draggable[0]);
+        const dragOffsetX = 100;
+        const dragOffsetY = 100;
+        const pointTo     = { x: center.x + dragOffsetX, y: center.y + dragOffsetY };
 
-        var drag = new DragToOffsetAutomation($draggable[0], dragOffsetX, dragOffsetY, new MouseOptions({
+        const drag = new DragToOffsetAutomation($draggable[0], dragOffsetX, dragOffsetY, new MouseOptions({
             offsetX: 50,
             offsetY: 50
         }));
@@ -192,7 +192,7 @@ $(document).ready(function () {
         drag
             .run()
             .then(function () {
-                var elementCenter = getCenter($draggable[0]);
+                const elementCenter = getCenter($draggable[0]);
 
                 equal(elementCenter.x, pointTo.x, 'element has correct x coordinate');
                 equal(elementCenter.y, pointTo.y, 'element has correct y coordinate');
@@ -203,14 +203,14 @@ $(document).ready(function () {
 
     if (!featureDetection.isTouchDevice) {
         asyncTest('GH372 - The mousemove event is sent to a wrong element during dragging', function () {
-            var $firstTarget  = createTarget(10, 10);
-            var $secondTarget = createTarget(110, 110);
-            var elementCenter = getCenter($firstTarget[0]);
+            const $firstTarget  = createTarget(10, 10);
+            const $secondTarget = createTarget(110, 110);
+            const elementCenter = getCenter($firstTarget[0]);
 
-            var mousedownRaised              = false;
-            var firstElementMousemoveRaised  = false;
-            var secondElementMousemoveRaised = false;
-            var mouseupRaised                = false;
+            let mousedownRaised              = false;
+            let firstElementMousemoveRaised  = false;
+            let secondElementMousemoveRaised = false;
+            let mouseupRaised                = false;
 
             $firstTarget.mousedown(function () {
                 mousedownRaised = true;
@@ -228,7 +228,7 @@ $(document).ready(function () {
                 mouseupRaised = true;
             });
 
-            var drag = new DragToOffsetAutomation($firstTarget[0], 100, 100, new MouseOptions({
+            const drag = new DragToOffsetAutomation($firstTarget[0], 100, 100, new MouseOptions({
                 offsetX: 5,
                 offsetY: 5
             }));

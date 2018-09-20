@@ -1,19 +1,19 @@
 import hammerhead from '../deps/hammerhead';
 
-var nativeIndexOf = Array.prototype.indexOf;
-var nativeForEach = Array.prototype.forEach;
-var nativeSome    = Array.prototype.some;
-var nativeMap     = Array.prototype.map;
-var nativeFilter  = Array.prototype.filter;
-var nativeReverse = Array.prototype.reverse;
-var nativeReduce  = Array.prototype.reduce;
-var nativeSplice  = Array.prototype.splice;
+const nativeIndexOf = Array.prototype.indexOf;
+const nativeForEach = Array.prototype.forEach;
+const nativeSome    = Array.prototype.some;
+const nativeMap     = Array.prototype.map;
+const nativeFilter  = Array.prototype.filter;
+const nativeReverse = Array.prototype.reverse;
+const nativeReduce  = Array.prototype.reduce;
+const nativeSplice  = Array.prototype.splice;
 
 export function toArray (arg) {
-    var arr    = [];
-    var length = arg.length;
+    const arr    = [];
+    const length = arg.length;
 
-    for (var i = 0; i < length; i++)
+    for (let i = 0; i < length; i++)
         arr.push(arg[i]);
 
     return arr;
@@ -28,9 +28,9 @@ export function isArray (arg) {
 }
 
 export function find (arr, callback) {
-    var length = arr.length;
+    const length = arr.length;
 
-    for (var i = 0; i < length; i++) {
+    for (let i = 0; i < length; i++) {
         if (callback(arr[i], i, arr))
             return arr[i];
     }
@@ -63,7 +63,7 @@ export function reduce (arr, callback, initialValue) {
 }
 
 export function remove (arr, item) {
-    var index = indexOf(arr, item);
+    const index = indexOf(arr, item);
 
     if (index > -1)
         nativeSplice.call(arr, index, 1);
@@ -73,7 +73,7 @@ export function equals (arr1, arr2) {
     if (arr1.length !== arr2.length)
         return false;
 
-    for (var i = 0, l = arr1.length; i < l; i++) {
+    for (let i = 0, l = arr1.length; i < l; i++) {
         if (arr1[i] !== arr2[i])
             return false;
     }
@@ -82,8 +82,8 @@ export function equals (arr1, arr2) {
 }
 
 export function getCommonElement (arr1, arr2) {
-    for (var i = 0; i < arr1.length; i++) {
-        for (var t = 0; t < arr2.length; t++) {
+    for (let i = 0; i < arr1.length; i++) {
+        for (let t = 0; t < arr2.length; t++) {
             if (arr1[i] === arr2[t])
                 return arr1[i];
         }

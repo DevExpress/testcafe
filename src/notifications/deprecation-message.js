@@ -3,7 +3,7 @@ import { renderers } from 'callsite-record';
 import createStackFilter from '../errors/create-stack-filter';
 
 export default function showDeprecationMessage (callsite, info) {
-    var callsiteStr = '';
+    let callsiteStr = '';
 
     if (callsite) {
         callsiteStr = callsite.renderSync({

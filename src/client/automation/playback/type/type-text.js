@@ -2,20 +2,20 @@ import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
 import nextTick from '../../utils/next-tick';
 
-var browserUtils   = hammerhead.utils.browser;
-var eventSandbox   = hammerhead.sandbox.event;
-var eventSimulator = hammerhead.eventSandbox.eventSimulator;
-var listeners      = hammerhead.eventSandbox.listeners;
+const browserUtils   = hammerhead.utils.browser;
+const eventSandbox   = hammerhead.sandbox.event;
+const eventSimulator = hammerhead.eventSandbox.eventSimulator;
+const listeners      = hammerhead.eventSandbox.listeners;
 
-var domUtils        = testCafeCore.domUtils;
-var contentEditable = testCafeCore.contentEditable;
-var textSelection   = testCafeCore.textSelection;
+const domUtils        = testCafeCore.domUtils;
+const contentEditable = testCafeCore.contentEditable;
+const textSelection   = testCafeCore.textSelection;
 
 const WHITE_SPACES_RE = / /g;
 
 function _getSelectionInElement (element) {
-    var currentSelection   = textSelection.getSelectionByElement(element);
-    var isInverseSelection = textSelection.hasInverseSelectionContentEditable(element);
+    const currentSelection   = textSelection.getSelectionByElement(element);
+    const isInverseSelection = textSelection.hasInverseSelectionContentEditable(element);
 
     if (textSelection.hasElementContainsSelection(element))
         return contentEditable.getSelection(element, currentSelection, isInverseSelection);
@@ -30,10 +30,10 @@ function _getSelectionInElement (element) {
 }
 
 function _updateSelectionAfterDeletionContent (element, selection) {
-    var startNode      = selection.startPos.node;
-    var hasStartParent = startNode.parentNode && startNode.parentElement;
+    const startNode      = selection.startPos.node;
+    const hasStartParent = startNode.parentNode && startNode.parentElement;
 
-    var browserRequiresSelectionUpdating = browserUtils.isChrome && browserUtils.version < 58 || browserUtils.isSafari;
+    const browserRequiresSelectionUpdating = browserUtils.isChrome && browserUtils.version < 58 || browserUtils.isSafari;
 
     if (browserRequiresSelectionUpdating || !hasStartParent || !domUtils.isElementContainsNode(element, startNode)) {
         selection = _getSelectionInElement(element);
@@ -52,9 +52,9 @@ function _updateSelectionAfterDeletionContent (element, selection) {
 }
 
 function _typeTextInElementNode (elementNode, text, offset) {
-    var nodeForTyping  = document.createTextNode(text);
-    var textLength     = text.length;
-    var selectPosition = { node: nodeForTyping, offset: textLength };
+    const nodeForTyping  = document.createTextNode(text);
+    const textLength     = text.length;
+    const selectPosition = { node: nodeForTyping, offset: textLength };
 
     if (domUtils.getTagName(elementNode) === 'br')
         elementNode.parentNode.insertBefore(nodeForTyping, elementNode);
@@ -87,12 +87,12 @@ function _typeTextInChildTextNode (element, selection, text) {
 }
 
 function _excludeInvisibleSymbolsFromSelection (selection) {
-    var startNode   = selection.startPos.node;
-    var startOffset = selection.startPos.offset;
-    var endOffset   = selection.endPos.offset;
+    const startNode   = selection.startPos.node;
+    const startOffset = selection.startPos.offset;
+    const endOffset   = selection.endPos.offset;
 
-    var firstNonWhitespaceSymbolIndex = contentEditable.getFirstNonWhitespaceSymbolIndex(startNode.nodeValue);
-    var lastNonWhitespaceSymbolIndex  = contentEditable.getLastNonWhitespaceSymbolIndex(startNode.nodeValue);
+    const firstNonWhitespaceSymbolIndex = contentEditable.getFirstNonWhitespaceSymbolIndex(startNode.nodeValue);
+    const lastNonWhitespaceSymbolIndex  = contentEditable.getLastNonWhitespaceSymbolIndex(startNode.nodeValue);
 
     if (startOffset < firstNonWhitespaceSymbolIndex && startOffset !== 0) {
         selection.startPos.offset = firstNonWhitespaceSymbolIndex;
@@ -141,19 +141,19 @@ function simulateTextInput (element, text) {
 }
 
 function _typeTextToContentEditable (element, text) {
-    var currentSelection    = _getSelectionInElement(element);
-    var startNode           = currentSelection.startPos.node;
-    var endNode             = currentSelection.endPos.node;
-    var needProcessInput    = true;
-    var needRaiseInputEvent = true;
-    var textInputData       = text;
+    let currentSelection    = _getSelectionInElement(element);
+    let startNode           = currentSelection.startPos.node;
+    const endNode             = currentSelection.endPos.node;
+    let needProcessInput    = true;
+    let needRaiseInputEvent = true;
+    const textInputData       = text;
 
     text = text.replace(WHITE_SPACES_RE, String.fromCharCode(160));
 
     // NOTE: some browsers raise the 'input' event after the element
     // content is changed, but in others we should do it manually.
 
-    var onInput = () => {
+    const onInput = () => {
         needRaiseInputEvent = false;
     };
 
@@ -166,7 +166,7 @@ function _typeTextToContentEditable (element, text) {
 
     // NOTE: IE11 does not raise input event when type to contenteditable
 
-    var beforeContentChanged = () => {
+    const beforeContentChanged = () => {
         needProcessInput    = simulateTextInput(element, textInputData);
         needRaiseInputEvent = needProcessInput && !browserUtils.isIE11;
 
@@ -174,7 +174,7 @@ function _typeTextToContentEditable (element, text) {
         listeners.addInternalEventListener(window, ['textinput'], onTextInput);
     };
 
-    var afterContentChanged = () => {
+    const afterContentChanged = () => {
         nextTick()
             .then(() => {
                 if (needRaiseInputEvent)
@@ -216,18 +216,18 @@ function _typeTextToContentEditable (element, text) {
 }
 
 function _typeTextToTextEditable (element, text) {
-    var elementValue      = domUtils.getElementValue(element);
-    var textLength        = text.length;
-    var startSelection    = textSelection.getSelectionStart(element);
-    var endSelection      = textSelection.getSelectionEnd(element);
-    var isInputTypeNumber = domUtils.isInputElement(element) && element.type === 'number';
-    var needProcessInput  = simulateTextInput(element, text);
+    const elementValue      = domUtils.getElementValue(element);
+    const textLength        = text.length;
+    let startSelection    = textSelection.getSelectionStart(element);
+    let endSelection      = textSelection.getSelectionEnd(element);
+    const isInputTypeNumber = domUtils.isInputElement(element) && element.type === 'number';
+    const needProcessInput  = simulateTextInput(element, text);
 
     if (!needProcessInput)
         return;
 
     // NOTE: the 'maxlength' attribute doesn't work in all browsers. IE still doesn't support input with the 'number' type
-    var elementMaxLength = !browserUtils.isIE && isInputTypeNumber ? null : parseInt(element.maxLength, 10);
+    let elementMaxLength = !browserUtils.isIE && isInputTypeNumber ? null : parseInt(element.maxLength, 10);
 
     if (elementMaxLength < 0)
         elementMaxLength = browserUtils.isIE && browserUtils.version < 17 ? 0 : null;
@@ -251,7 +251,7 @@ function _typeTextToTextEditable (element, text) {
 
 function _typeTextToNonTextEditable (element, text, caretPos) {
     if (caretPos !== null) {
-        var elementValue = domUtils.getElementValue(element);
+        const elementValue = domUtils.getElementValue(element);
 
         domUtils.setElementValue(element, elementValue.substr(0, caretPos) + text + elementValue.substr(caretPos + text.length));
     }

@@ -29,16 +29,16 @@
     </tr>
 </table>
 <script>
-    var topDiv = document.querySelector('#topDiv');
+    const topDiv = document.querySelector('#topDiv');
 
     topDiv.style.left = '170px';
 
     document.addEventListener('mousemove', function (e) {
-        var topDiv = document.querySelector('#topDiv');
+        const topDiv = document.querySelector('#topDiv');
 
         topDiv.removeNode();
 
-        var newTopDiv = document.createElement('div');
+        const newTopDiv = document.createElement('div');
 
         newTopDiv.id = 'topDiv';
         newTopDiv.style.left = (e.clientX) - 80 + 'px';

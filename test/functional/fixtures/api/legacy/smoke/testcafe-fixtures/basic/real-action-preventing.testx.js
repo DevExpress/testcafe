@@ -12,7 +12,7 @@
     },
 
     '2.Type in input': function () {
-        var input = $('#input', $('#iframe').contents());
+        const input = $('#input', $('#iframe').contents());
 
         act.type(input, 'Hello, world!');
     },

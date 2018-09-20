@@ -15,7 +15,7 @@ test('Expected dialogs after page load', async t => {
     // NOTE: waiting for iframe loading
     await t.switchToIframe('#iframe');
 
-    var info = await t.getNativeDialogHistory();
+    const info = await t.getNativeDialogHistory();
 
     expect(info).to.deep.equal([
         { type: 'confirm', text: 'Confirm?', url: iframeUrl },

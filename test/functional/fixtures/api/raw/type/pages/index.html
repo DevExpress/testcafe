@@ -7,11 +7,11 @@
 <input id="input" value="input"/>
 
 <script>
-    var keydownRaised = false;
-    var keypressRaised = false;
-    var inputRaised = false;
-    var keydownCount = 0;
-    var keypressCount = 0;
+    let keydownRaised = false;
+    let keypressRaised = false;
+    let inputRaised = false;
+    let keydownCount = 0;
+    let keypressCount = 0;
 
     document.getElementById('input').addEventListener('keydown', function () {
         keydownRaised = true;
@@ -28,9 +28,9 @@
     });
 
     document.getElementById('input').addEventListener('keyup', function () {
-        var containsAllText = this.value.indexOf('block of text to be inserted in one keystroke') > 0;
-        var allRaised = keydownRaised && keypressRaised && inputRaised;
-        var exactlyOneKeystroke = keydownCount === 1 && keypressCount === 1;
+        const containsAllText = this.value.indexOf('block of text to be inserted in one keystroke') > 0;
+        const allRaised = keydownRaised && keypressRaised && inputRaised;
+        const exactlyOneKeystroke = keydownCount === 1 && keypressCount === 1;
 
         if (allRaised && this.value === 'a') {
             throw new Error('Type in input raised');

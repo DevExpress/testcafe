@@ -1,4 +1,4 @@
-var expect = require('chai').expect;
+const expect = require('chai').expect;
 
 describe('[API] t.doubleClick()', function () {
     it('Should make double click on a button', function () {

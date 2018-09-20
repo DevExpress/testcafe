@@ -51,7 +51,7 @@ test
         t.ctx.val.browsers.push(await t.eval(()=>navigator.userAgent));
         t.ctx.val.steps.push('after');
 
-        var val = t.ctx.val;
+        const val = t.ctx.val;
 
         t.ctx = 123;
 

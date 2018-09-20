@@ -1,16 +1,16 @@
-var http      = require('http');
-var express   = require('express');
-var basicAuth = require('basic-auth');
+const http      = require('http');
+const express   = require('express');
+const basicAuth = require('basic-auth');
 
 
-var server  = null;
-var sockets = null;
+let server  = null;
+let sockets = null;
 
 function start (port) {
-    var app = express();
+    const app = express();
 
     app.all('*', function (req, res) {
-        var credentials = basicAuth(req);
+        const credentials = basicAuth(req);
 
         if (!credentials || credentials.name !== 'username' || credentials.pass !== 'password') {
             res.statusCode = 401;
@@ -26,7 +26,7 @@ function start (port) {
     server  = http.createServer(app).listen(port);
     sockets = [];
 
-    var connectionHandler = function (socket) {
+    const connectionHandler = function (socket) {
         sockets.push(socket);
 
         socket.on('close', function () {

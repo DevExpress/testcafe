@@ -14,10 +14,10 @@ const browserProviderPool = require('../../lib/browser/provider/pool');
 const delay               = require('../../lib/utils/delay');
 
 describe('Runner', function () {
-    var testCafe                  = null;
-    var runner                    = null;
-    var connection                = null;
-    var origRemoteBrowserProvider = null;
+    let testCafe                  = null;
+    let runner                    = null;
+    let connection                = null;
+    let origRemoteBrowserProvider = null;
 
     const remoteBrowserProviderMock = {
         openBrowser: function () {
@@ -28,7 +28,7 @@ describe('Runner', function () {
             return Promise.resolve();
         }
     };
-    const browserMock               = { path: '/non/exist' };
+    const browserMock = { path: '/non/exist' };
 
     before(() => {
         return createTestCafe('127.0.0.1', 1335, 1336)
@@ -70,8 +70,8 @@ describe('Runner', function () {
                     return testCafe.createBrowserConnection();
                 }))
                 .then(function (connections) {
-                    var browserInfo1 = { path: '/Applications/Google Chrome.app' };
-                    var browserInfo2 = { path: '/Applications/Firefox.app' };
+                    const browserInfo1 = { path: '/Applications/Google Chrome.app' };
+                    const browserInfo2 = { path: '/Applications/Firefox.app' };
 
                     runner.browsers('ie', 'chrome');
                     runner.browsers('firefox');
@@ -327,8 +327,9 @@ describe('Runner', function () {
 
     describe('.run()', function () {
         it('Should not create a new local browser connection if sources are empty', function () {
-            var origGenerateId   = BrowserConnection._generateId;
-            var connectionsCount = 0;
+            const origGenerateId   = BrowserConnection._generateId;
+
+            let connectionsCount = 0;
 
             BrowserConnection._generateId = function () {
                 connectionsCount++;
@@ -355,14 +356,14 @@ describe('Runner', function () {
         });
 
         it('Should raise an error if the browser connections are not ready', function () {
-            var origGetReadyTimeout = BrowserSet.prototype._getReadyTimeout;
+            const origGetReadyTimeout = BrowserSet.prototype._getReadyTimeout;
 
             BrowserSet.prototype._getReadyTimeout = function () {
                 return Promise.resolve(100);
             };
 
             //NOTE: Restore original in prototype in test timeout callback
-            var testCallback = this.test.callback;
+            const testCallback = this.test.callback;
 
             this.test.callback = function (err) {
                 BrowserSet.prototype._getReadyTimeout       = origGetReadyTimeout;
@@ -424,7 +425,7 @@ describe('Runner', function () {
                     return testCafe.createBrowserConnection();
                 }))
                 .then(function (connections) {
-                    var run = runner
+                    const run = runner
                         .browsers(connections[0], connections[1])
                         .reporter('list')
                         .src('test/server/data/test-suites/basic/testfile2.js')
@@ -433,7 +434,7 @@ describe('Runner', function () {
                     connections[0].HEARTBEAT_TIMEOUT = 200;
                     connections[1].HEARTBEAT_TIMEOUT = 200;
 
-                    var options = {
+                    const options = {
                         url:            connections[0].url,
                         followRedirect: false,
                         headers:        {
@@ -457,7 +458,7 @@ describe('Runner', function () {
         });
 
         it('Should raise an error if connection breaks while tests are running', function () {
-            var test = this.test;
+            const test = this.test;
 
             return testCafe
                 .createBrowserConnection()
@@ -465,7 +466,7 @@ describe('Runner', function () {
                     brokenConnection.establish('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 ' +
                                                '(KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36');
 
-                    var run = runner
+                    const run = runner
                         .browsers(brokenConnection)
                         .reporter('json')
                         .src('test/server/data/test-suites/basic/testfile2.js')
@@ -495,9 +496,9 @@ describe('Runner', function () {
         });
 
         it('Should raise an error if speed option has wrong value', function () {
-            var exceptionCount = 0;
+            let exceptionCount = 0;
 
-            var incorrectSpeedError = function (speed) {
+            const incorrectSpeedError = function (speed) {
                 return runner
                     .run({ speed })
                     .catch(function (err) {
@@ -515,9 +516,9 @@ describe('Runner', function () {
         });
 
         it('Should raise an error if concurrency option has wrong value', function () {
-            var exceptionCount = 0;
+            let exceptionCount = 0;
 
-            var incorrectConcurrencyFactorError = function (concurrency) {
+            const incorrectConcurrencyFactorError = function (concurrency) {
                 return runner
                     .concurrency(concurrency)
                     .run()
@@ -536,9 +537,9 @@ describe('Runner', function () {
         });
 
         it('Should raise an error if proxyBypass option has wrong type', function () {
-            var exceptionCount = 0;
+            let exceptionCount = 0;
 
-            var expectProxyBypassError = function (proxyBypass, type) {
+            const expectProxyBypassError = function (proxyBypass, type) {
                 runner.opts.proxyBypass = proxyBypass;
 
                 return runner
@@ -558,7 +559,7 @@ describe('Runner', function () {
 
     describe('Regression', function () {
         it('Should not have unhandled rejections in runner (GH-825)', function () {
-            var rejectionReason = null;
+            let rejectionReason = null;
 
             process.on('unhandledRejection', function (reason) {
                 rejectionReason = reason;
@@ -587,16 +588,16 @@ describe('Runner', function () {
         const BROWSER_CLOSING_DELAY = 50;
         const TASK_ACTION_DELAY     = 50;
 
-        var origCreateBrowserJobs = Task.prototype._createBrowserJobs;
-        var origAbort             = Task.prototype.abort;
+        const origCreateBrowserJobs = Task.prototype._createBrowserJobs;
+        const origAbort             = Task.prototype.abort;
 
-        var closeCalled        = 0;
-        var abortCalled        = false;
-        var taskActionCallback = null;
+        let closeCalled        = 0;
+        let abortCalled        = false;
+        let taskActionCallback = null;
 
-        var MockBrowserProvider = {
+        const MockBrowserProvider = {
             openBrowser: function (browserId, pageUrl) {
-                var options = {
+                const options = {
                     url:            pageUrl,
                     followRedirect: false,
                     headers:        {
@@ -621,7 +622,7 @@ describe('Runner', function () {
         };
 
         function taskDone () {
-            var task = this;
+            const task = this;
 
             task.pendingBrowserJobs.forEach(function (job) {
                 task.emit('browser-job-done', job);
@@ -704,8 +705,9 @@ describe('Runner', function () {
         });
 
         it('Should not stop the task while connected browser is not in idle state', function () {
-            var IDLE_DELAY       = 50;
-            var remoteConnection = null;
+            const IDLE_DELAY       = 50;
+
+            let remoteConnection = null;
 
             return testCafe
                 .createBrowserConnection()
@@ -737,8 +739,9 @@ describe('Runner', function () {
         });
 
         it('Should be able to cancel test', function () {
-            var IDLE_DELAY       = 100;
-            var remoteConnection = null;
+            const IDLE_DELAY       = 100;
+
+            let remoteConnection = null;
 
             return testCafe
                 .createBrowserConnection()

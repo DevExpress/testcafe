@@ -6,15 +6,15 @@ import ScriptExecutionBarrier from '../script-execution-barrier';
 
 
 export default function (action, ...args) {
-    var requestBarrier         = new RequestBarrier();
-    var scriptExecutionBarrier = new ScriptExecutionBarrier();
+    const requestBarrier         = new RequestBarrier();
+    const scriptExecutionBarrier = new ScriptExecutionBarrier();
 
     pageUnloadBarrier.watchForPageNavigationTriggers();
 
-    var actionResult   = null;
-    var actionPromise  = action(...args);
+    let actionResult   = null;
+    const actionPromise  = action(...args);
 
-    var barriersPromise = actionPromise
+    const barriersPromise = actionPromise
         .then(result => {
             actionResult = result;
 

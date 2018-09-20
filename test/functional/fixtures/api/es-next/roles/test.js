@@ -1,13 +1,13 @@
-var expect = require('chai').expect;
-var config = require('../../../../config');
+const expect = require('chai').expect;
+const config = require('../../../../config');
 
 
 // NOTE: we set selectorTimeout to a large value in some tests to wait for
 // an iframe to load on the farm (it is fast locally but can take some time on the farm)
 
-var IFRAME_SELECTOR_TIMEOUT             = 5000;
-var TEST_WITH_IFRAME_RUN_OPTIONS        = { selectorTimeout: IFRAME_SELECTOR_TIMEOUT };
-var TEST_WITH_IFRAME_FAILED_RUN_OPTIONS = {
+const IFRAME_SELECTOR_TIMEOUT             = 5000;
+const TEST_WITH_IFRAME_RUN_OPTIONS        = { selectorTimeout: IFRAME_SELECTOR_TIMEOUT };
+const TEST_WITH_IFRAME_FAILED_RUN_OPTIONS = {
     shouldFail:      true,
     selectorTimeout: IFRAME_SELECTOR_TIMEOUT
 };

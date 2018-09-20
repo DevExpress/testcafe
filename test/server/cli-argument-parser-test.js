@@ -12,7 +12,7 @@ describe('CLI argument parser', function () {
     tmp.setGracefulCleanup();
 
     function parse (args, cwd) {
-        var parser = new CliArgumentParser(cwd);
+        const parser = new CliArgumentParser(cwd);
 
         args = ['node', 'index.js'].concat(typeof args === 'string' ? args.split(/\s+/) : args);
 
@@ -314,7 +314,7 @@ describe('CLI argument parser', function () {
     });
 
     it('Should parse the screenshot path and ensure it exists', function () {
-        var dir = path.join(tmp.dirSync().name, 'my/screenshots');
+        const dir = path.join(tmp.dirSync().name, 'my/screenshots');
 
         return parse('-s ' + dir)
             .then(function (parser) {
@@ -324,8 +324,8 @@ describe('CLI argument parser', function () {
     });
 
     it('Should parse reporters and their output file paths and ensure they exist', function () {
-        var cwd      = process.cwd();
-        var filePath = path.join(tmp.dirSync().name, 'my/reports/report.json');
+        const cwd      = process.cwd();
+        const filePath = path.join(tmp.dirSync().name, 'my/reports/report.json');
 
         return parse('-r list,json:' + filePath)
             .then(function (parser) {

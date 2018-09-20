@@ -10,7 +10,7 @@ const getStatusText = ClientFunction(() => document.getElementById('status').tex
 test('Type text in input', async t => {
     await t.typeText('#input', 'a', { replace: true });
 
-    var statusText = await getStatusText();
+    const statusText = await getStatusText();
 
     expect(statusText).to.equal('Type in input raised');
 });

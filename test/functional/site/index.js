@@ -1,11 +1,11 @@
-var Server                 = require('./server');
-var basicAuthServer        = require('./basic-auth-server');
-var ntlmAuthServer         = require('./ntlm-auth-server');
-var trustedProxyServer     = require('./trusted-proxy-server');
-var transparentProxyServer = require('./transparent-proxy-server');
+const Server                 = require('./server');
+const basicAuthServer        = require('./basic-auth-server');
+const ntlmAuthServer         = require('./ntlm-auth-server');
+const trustedProxyServer     = require('./trusted-proxy-server');
+const transparentProxyServer = require('./transparent-proxy-server');
 
-var server1 = null;
-var server2 = null;
+let server1 = null;
+let server2 = null;
 
 exports.create = function (ports, viewsPath) {
     server1 = new Server(ports.server1, viewsPath);

@@ -23,8 +23,8 @@ test('Click button', async t => {
 test('Click without offset options', async t=> {
     await t.click('#div');
 
-    var expectedClickOffset = { x: 50, y: 50 };
-    var actualClickOffset   = await getClickOffset();
+    const expectedClickOffset = { x: 50, y: 50 };
+    const actualClickOffset   = await getClickOffset();
 
     expect(actualClickOffset.x).eql(expectedClickOffset.x);
     expect(actualClickOffset.y).eql(expectedClickOffset.y);

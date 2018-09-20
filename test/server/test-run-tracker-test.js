@@ -1,20 +1,20 @@
-var expect   = require('chai').expect;
-var fill     = require('lodash/fill');
-var Promise  = require('pinkie');
-var Compiler = require('../../lib/compiler');
+const expect   = require('chai').expect;
+const fill     = require('lodash/fill');
+const Promise  = require('pinkie');
+const Compiler = require('../../lib/compiler');
 
 describe('Test run tracker', function () {
     this.timeout(20000);
 
     function runTest (testName) {
-        var src         = 'test/server/data/test-run-tracking/' + testName;
-        var compiler    = new Compiler([src]);
-        var testRunMock = { id: 'dB_J4h0H' };
-        var expected    = fill(Array(3), testRunMock.id);
+        const src         = 'test/server/data/test-run-tracking/' + testName;
+        const compiler    = new Compiler([src]);
+        const testRunMock = { id: 'dB_J4h0H' };
+        const expected    = fill(Array(3), testRunMock.id);
 
         return compiler.getTests()
             .then(function (tests) {
-                var test = tests[0];
+                const test = tests[0];
 
                 return Promise.all([
                     test.fixture.beforeEachFn ? test.fixture.beforeEachFn(testRunMock) : testRunMock.id,

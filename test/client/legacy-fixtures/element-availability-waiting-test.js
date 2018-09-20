@@ -1,17 +1,17 @@
-var testCafeLegacyRunner = window.getTestCafeModule('testCafeLegacyRunner');
+const testCafeLegacyRunner = window.getTestCafeModule('testCafeLegacyRunner');
 
-var transport      = testCafeLegacyRunner.get('./transport');
-var StepIterator   = testCafeLegacyRunner.get('./step-iterator');
-var initAutomation = testCafeLegacyRunner.get('./init-automation');
-var actionsAPI     = testCafeLegacyRunner.get('./api/actions');
+const transport      = testCafeLegacyRunner.get('./transport');
+const StepIterator   = testCafeLegacyRunner.get('./step-iterator');
+const initAutomation = testCafeLegacyRunner.get('./init-automation');
+const actionsAPI     = testCafeLegacyRunner.get('./api/actions');
 
 initAutomation();
 
-var stepIterator = new StepIterator();
+const stepIterator = new StepIterator();
 
 actionsAPI.init(stepIterator);
 
-var errorRaised = false;
+let errorRaised = false;
 
 transport.fatalError = function (err) {
     if (err) {
@@ -21,9 +21,9 @@ transport.fatalError = function (err) {
     }
 };
 
-var setupTestIterator = function (iteratorCallback) {
+const setupTestIterator = function (iteratorCallback) {
     StepIterator.prototype.asyncActionSeries = function (items, runArgumentsIterator, action) {
-        var seriesActionsRun = function (elements, callback) {
+        const seriesActionsRun = function (elements, callback) {
             window.async.forEachSeries(elements, action, callback);
         };
 
@@ -33,7 +33,7 @@ var setupTestIterator = function (iteratorCallback) {
 
 $(document).ready(function () {
     //consts
-    var TEST_ELEMENT_CLASS = 'testElement';
+    const TEST_ELEMENT_CLASS = 'testElement';
 
     //utils
     QUnit.testDone(function () {
@@ -43,9 +43,9 @@ $(document).ready(function () {
 
     //tests
     asyncTest('invisible element waiting', function () {
-        var clickRaised = false;
+        let clickRaised = false;
 
-        var actionCallback = function () {
+        const actionCallback = function () {
             ok(!errorRaised);
             ok(clickRaised);
             start();
@@ -54,7 +54,7 @@ $(document).ready(function () {
 
         setupTestIterator(actionCallback);
 
-        var $element = $('<input>').addClass(TEST_ELEMENT_CLASS)
+        const $element = $('<input>').addClass(TEST_ELEMENT_CLASS)
             .css('display', 'none')
             .click(function () {
                 clickRaised = true;
@@ -69,9 +69,9 @@ $(document).ready(function () {
     });
 
     asyncTest('element from jQuery selector argument is not exist on the start', function () {
-        var clickRaised = false;
+        let clickRaised = false;
 
-        var actionCallback = function () {
+        const actionCallback = function () {
             ok(!errorRaised);
             ok(clickRaised);
             start();
@@ -80,7 +80,7 @@ $(document).ready(function () {
 
         setupTestIterator(actionCallback);
 
-        var id = 'element';
+        const id = 'element';
 
         window.setTimeout(function () {
             $('<input />').attr('id', id)
@@ -95,9 +95,9 @@ $(document).ready(function () {
     });
 
     asyncTest('element from function argument is not exist on the start', function () {
-        var clickRaised = false;
+        let clickRaised = false;
 
-        var actionCallback = function () {
+        const actionCallback = function () {
             ok(!errorRaised);
             ok(clickRaised);
             start();
@@ -106,8 +106,9 @@ $(document).ready(function () {
 
         setupTestIterator(actionCallback);
 
-        var id       = 'element';
-        var $element = null;
+        const id = 'element';
+
+        let $element = null;
 
         window.setTimeout(function () {
             $element = $('<input />').attr('id', id)
@@ -124,9 +125,9 @@ $(document).ready(function () {
     });
 
     asyncTest('element from array argument is not exist on the start', function () {
-        var clickRaised = false;
+        let clickRaised = false;
 
-        var actionCallback = function () {
+        const actionCallback = function () {
             ok(!errorRaised);
             ok(clickRaised);
             start();
@@ -135,8 +136,8 @@ $(document).ready(function () {
 
         setupTestIterator(actionCallback);
 
-        var id        = 'element';
-        var $element1 = $('<input />').addClass(TEST_ELEMENT_CLASS).appendTo('body');
+        const id        = 'element';
+        const $element1 = $('<input />').addClass(TEST_ELEMENT_CLASS).appendTo('body');
 
         window.setTimeout(function () {
             $('<input />').attr('id', id)
@@ -151,9 +152,9 @@ $(document).ready(function () {
     });
 
     asyncTest('argument function returns empty jQuery object', function () {
-        var clickRaised = false;
+        let clickRaised = false;
 
-        var actionCallback = function () {
+        const actionCallback = function () {
             ok(!errorRaised);
             ok(clickRaised);
             start();
@@ -161,7 +162,7 @@ $(document).ready(function () {
 
         setupTestIterator(actionCallback);
 
-        var id = 'element';
+        const id = 'element';
 
         window.setTimeout(function () {
             $('<input />').attr('id', id)

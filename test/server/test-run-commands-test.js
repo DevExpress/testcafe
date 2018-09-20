@@ -1,16 +1,16 @@
-var expect                  = require('chai').expect;
-var TYPE                    = require('../../lib/test-run/commands/type');
-var createCommandFromObject = require('../../lib/test-run/commands/from-object');
-var ERROR_TYPE              = require('../../lib/errors/test-run/type');
-var SelectorBuilder         = require('../../lib/client-functions/selectors/selector-builder');
-var assertThrow             = require('./helpers/assert-error').assertThrow;
+const expect                  = require('chai').expect;
+const TYPE                    = require('../../lib/test-run/commands/type');
+const createCommandFromObject = require('../../lib/test-run/commands/from-object');
+const ERROR_TYPE              = require('../../lib/errors/test-run/type');
+const SelectorBuilder         = require('../../lib/client-functions/selectors/selector-builder');
+const assertThrow             = require('./helpers/assert-error').assertThrow;
 
 function createCommand (obj) {
     return createCommandFromObject(obj, {});
 }
 
 function assertErrorMessage (fn, expectedErrMessage) {
-    var actualErr = null;
+    let actualErr = null;
 
     try {
         fn();
@@ -23,8 +23,8 @@ function assertErrorMessage (fn, expectedErrMessage) {
 }
 
 function makeSelector (str, skipVisibilityCheck) {
-    var builder = new SelectorBuilder(str, { visibilityCheck: !skipVisibilityCheck }, { instantiation: 'Selector' });
-    var command = builder.getCommand([]);
+    const builder = new SelectorBuilder(str, { visibilityCheck: !skipVisibilityCheck }, { instantiation: 'Selector' });
+    const command = builder.getCommand([]);
 
     return JSON.parse(JSON.stringify(command));
 }
@@ -32,7 +32,7 @@ function makeSelector (str, skipVisibilityCheck) {
 describe('Test run commands', function () {
     describe('Construction from object and serialization', function () {
         it('Should create ClickCommand from object', function () {
-            var commandObj = {
+            let commandObj = {
                 type:     TYPE.click,
                 selector: '#yo',
                 yo:       'test',
@@ -54,7 +54,7 @@ describe('Test run commands', function () {
                 }
             };
 
-            var command = createCommand(commandObj);
+            let command = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.click,
@@ -103,7 +103,7 @@ describe('Test run commands', function () {
         });
 
         it('Should create RightClickCommand from object', function () {
-            var commandObj = {
+            let commandObj = {
                 type:     TYPE.rightClick,
                 selector: '#yo',
                 yo:       'test',
@@ -125,7 +125,7 @@ describe('Test run commands', function () {
                 }
             };
 
-            var command = createCommand(commandObj);
+            let command = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.rightClick,
@@ -174,7 +174,7 @@ describe('Test run commands', function () {
         });
 
         it('Should create DoubleClickCommand from object', function () {
-            var commandObj = {
+            let commandObj = {
                 type:     TYPE.doubleClick,
                 selector: '#yo',
                 yo:       'test',
@@ -196,7 +196,7 @@ describe('Test run commands', function () {
                 }
             };
 
-            var command = createCommand(commandObj);
+            let command = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.doubleClick,
@@ -245,7 +245,7 @@ describe('Test run commands', function () {
         });
 
         it('Should create HoverCommand from object', function () {
-            var commandObj = {
+            let commandObj = {
                 type:     TYPE.hover,
                 selector: '#yo',
                 yo:       'test',
@@ -267,7 +267,7 @@ describe('Test run commands', function () {
                 }
             };
 
-            var command = createCommand(commandObj);
+            let command = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.hover,
@@ -314,7 +314,7 @@ describe('Test run commands', function () {
         });
 
         it('Should create DragCommand from object', function () {
-            var commandObj = {
+            let commandObj = {
                 type:        TYPE.drag,
                 selector:    '#yo',
                 dragOffsetX: 10,
@@ -338,7 +338,7 @@ describe('Test run commands', function () {
                 }
             };
 
-            var command = createCommand(commandObj);
+            let command = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:        TYPE.drag,
@@ -391,7 +391,7 @@ describe('Test run commands', function () {
         });
 
         it('Should create DragToElementCommand from object', function () {
-            var commandObj = {
+            let commandObj = {
                 type:                TYPE.dragToElement,
                 selector:            '#yo',
                 destinationSelector: '#destination',
@@ -416,7 +416,7 @@ describe('Test run commands', function () {
                 }
             };
 
-            var command = createCommand(commandObj);
+            let command = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:                TYPE.dragToElement,
@@ -471,7 +471,7 @@ describe('Test run commands', function () {
         });
 
         it('Should create TypeTextCommand from object', function () {
-            var commandObj = {
+            let commandObj = {
                 type:     TYPE.typeText,
                 selector: '#yo',
                 text:     'testText',
@@ -496,7 +496,7 @@ describe('Test run commands', function () {
                 }
             };
 
-            var command = createCommand(commandObj);
+            let command = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.typeText,
@@ -552,7 +552,7 @@ describe('Test run commands', function () {
         });
 
         it('Should create SelectTextCommand from object', function () {
-            var commandObj = {
+            let commandObj = {
                 type:     TYPE.selectText,
                 selector: '#yo',
                 startPos: 1,
@@ -566,7 +566,7 @@ describe('Test run commands', function () {
                 }
             };
 
-            var command = createCommand(commandObj);
+            let command = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.selectText,
@@ -599,7 +599,7 @@ describe('Test run commands', function () {
         });
 
         it('Should create SelectTextAreaContentCommand from object', function () {
-            var commandObj = {
+            let commandObj = {
                 type:      TYPE.selectTextAreaContent,
                 selector:  '#yo',
                 startLine: 0,
@@ -615,7 +615,7 @@ describe('Test run commands', function () {
                 }
             };
 
-            var command = createCommand(commandObj);
+            let command = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:      TYPE.selectTextAreaContent,
@@ -652,7 +652,7 @@ describe('Test run commands', function () {
         });
 
         it('Should create SelectEditableContentCommand from object', function () {
-            var commandObj = {
+            let commandObj = {
                 type:          TYPE.selectEditableContent,
                 selector:      '#yo',
                 startSelector: '#node1',
@@ -666,7 +666,7 @@ describe('Test run commands', function () {
                 }
             };
 
-            var command = createCommand(commandObj);
+            let command = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:          TYPE.selectEditableContent,
@@ -698,7 +698,7 @@ describe('Test run commands', function () {
         });
 
         it('Should create PressKeyCommand from object', function () {
-            var commandObj = {
+            const commandObj = {
                 type:     TYPE.pressKey,
                 selector: '#yo',
                 keys:     'a+b c',
@@ -720,7 +720,7 @@ describe('Test run commands', function () {
                 }
             };
 
-            var command = createCommand(commandObj);
+            const command = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type: TYPE.pressKey,
@@ -733,11 +733,11 @@ describe('Test run commands', function () {
         });
 
         it('Should create WaitCommand from object', function () {
-            var commandObj = {
+            const commandObj = {
                 type:    TYPE.wait,
                 timeout: 1000
             };
-            var command    = createCommand(commandObj);
+            const command    = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:    TYPE.wait,
@@ -746,13 +746,13 @@ describe('Test run commands', function () {
         });
 
         it('Should create NavigateToCommand from object', function () {
-            var commandObj = {
+            const commandObj = {
                 type:          TYPE.navigateTo,
                 url:           'localhost',
                 stateSnapshot: 'stateSnapshot'
             };
 
-            var command = createCommand(commandObj);
+            const command = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:          TYPE.navigateTo,
@@ -762,7 +762,7 @@ describe('Test run commands', function () {
         });
 
         it('Should create SetFilesToUploadCommand from object', function () {
-            var commandObj = {
+            let commandObj = {
                 type:     TYPE.setFilesToUpload,
                 selector: '#yo',
                 filePath: '/test/path',
@@ -773,7 +773,7 @@ describe('Test run commands', function () {
                 }
             };
 
-            var command = createCommand(commandObj);
+            let command = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.setFilesToUpload,
@@ -802,7 +802,7 @@ describe('Test run commands', function () {
         });
 
         it('Should create ClearUploadCommand from object', function () {
-            var commandObj = {
+            const commandObj = {
                 type:     TYPE.clearUpload,
                 selector: '#yo',
                 dummy:    'test',
@@ -812,7 +812,7 @@ describe('Test run commands', function () {
                 }
             };
 
-            var command = createCommand(commandObj);
+            const command = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.clearUpload,
@@ -821,7 +821,7 @@ describe('Test run commands', function () {
         });
 
         it('Should create TakeScreenshotCommand from object', function () {
-            var commandObj = {
+            let commandObj = {
                 type:     TYPE.takeScreenshot,
                 selector: '#yo',
                 path:     'custom',
@@ -832,7 +832,7 @@ describe('Test run commands', function () {
                 }
             };
 
-            var command = createCommand(commandObj);
+            let command = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.takeScreenshot,
@@ -862,7 +862,7 @@ describe('Test run commands', function () {
         });
 
         it('Should create TakeElementScreenshotCommand from object', function () {
-            var commandObj = {
+            const commandObj = {
                 type:     TYPE.takeElementScreenshot,
                 selector: '#yo',
                 path:     'custom',
@@ -880,7 +880,7 @@ describe('Test run commands', function () {
                 }
             };
 
-            var command = createCommand(commandObj);
+            const command = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.takeElementScreenshot,
@@ -909,7 +909,7 @@ describe('Test run commands', function () {
         });
 
         it('Should create ResizeWindowCommand from object', function () {
-            var commandObj = {
+            const commandObj = {
                 type:     TYPE.resizeWindow,
                 selector: '#yo',
                 dummy:    'test',
@@ -921,7 +921,7 @@ describe('Test run commands', function () {
                 }
             };
 
-            var command = createCommand(commandObj);
+            const command = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:   TYPE.resizeWindow,
@@ -931,7 +931,7 @@ describe('Test run commands', function () {
         });
 
         it('Should create ResizeWindowToFitDeviceCommand from object', function () {
-            var commandObj = {
+            let commandObj = {
                 type:     TYPE.resizeWindowToFitDevice,
                 selector: '#yo',
                 dummy:    'test',
@@ -943,7 +943,7 @@ describe('Test run commands', function () {
                 }
             };
 
-            var command = createCommand(commandObj);
+            let command = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:    TYPE.resizeWindowToFitDevice,
@@ -966,11 +966,11 @@ describe('Test run commands', function () {
         });
 
         it('Should create SwitchToIframeCommand from object', function () {
-            var commandObj = {
+            const commandObj = {
                 type:     TYPE.switchToIframe,
                 selector: '#iframe'
             };
-            var command    = createCommand(commandObj);
+            const command    = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.switchToIframe,
@@ -979,10 +979,10 @@ describe('Test run commands', function () {
         });
 
         it('Should create SwitchToMainWindowCommand from object', function () {
-            var commandObj = {
+            const commandObj = {
                 type: TYPE.switchToMainWindow
             };
-            var command    = createCommand(commandObj);
+            const command    = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type: TYPE.switchToMainWindow
@@ -990,11 +990,11 @@ describe('Test run commands', function () {
         });
 
         it('Should create SetTestSpeedCommand from object', function () {
-            var commandObj = {
+            const commandObj = {
                 type:  TYPE.setTestSpeed,
                 speed: 0.5
             };
-            var command    = createCommand(commandObj);
+            const command    = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:  TYPE.setTestSpeed,
@@ -1003,11 +1003,11 @@ describe('Test run commands', function () {
         });
 
         it('Should create SetPageLoadTimeoutCommand from object', function () {
-            var commandObj = {
+            const commandObj = {
                 type:     TYPE.setPageLoadTimeout,
                 duration: 3
             };
-            var command    = createCommand(commandObj);
+            const command    = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.setPageLoadTimeout,
@@ -1016,7 +1016,7 @@ describe('Test run commands', function () {
         });
 
         it('Should create AssertionCommand from object', function () {
-            var commandObj = {
+            let commandObj = {
                 type:          TYPE.assertion,
                 assertionType: 'eql',
                 actual:        1,
@@ -1031,7 +1031,7 @@ describe('Test run commands', function () {
                 }
             };
 
-            var command = createCommand(commandObj);
+            let command = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:          TYPE.assertion,
@@ -1068,7 +1068,7 @@ describe('Test run commands', function () {
         });
 
         it('Should create ExecuteExpressionCommand from object', function () {
-            var commandObj = {
+            let commandObj = {
                 type: TYPE.executeExpression,
 
                 expression:         'js-expression',
@@ -1076,7 +1076,7 @@ describe('Test run commands', function () {
                 resultVariableName: 'variable'
             };
 
-            var command = createCommand(commandObj);
+            let command = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type: TYPE.executeExpression,
@@ -1103,7 +1103,7 @@ describe('Test run commands', function () {
         });
 
         it('Should process js expression as a Selector', function () {
-            var commandObj = {
+            const commandObj = {
                 type:     TYPE.click,
                 selector: {
                     type:  'js-expr',
@@ -1111,7 +1111,7 @@ describe('Test run commands', function () {
                 }
             };
 
-            var command = createCommand(commandObj);
+            const command = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.click,
@@ -1134,7 +1134,7 @@ describe('Test run commands', function () {
         });
 
         it('Should process js expression as an assertion parameter', function () {
-            var commandObj = {
+            const commandObj = {
                 type:          TYPE.assertion,
                 assertionType: 'eql',
 
@@ -1146,7 +1146,7 @@ describe('Test run commands', function () {
                 expected: 1
             };
 
-            var command = createCommand(commandObj);
+            const command = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:          TYPE.assertion,

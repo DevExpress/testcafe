@@ -3,18 +3,18 @@ import { findMatch, isMatchTrue, splitEscaped, parseConfig, getModes, getPathFro
 
 const AVAILABLE_MODES = ['userProfile', 'headless'];
 
-var configCache = {};
+const configCache = {};
 
 function hasCustomProfile (userArgs) {
     return !!(userArgs.match(/-P\s/) || userArgs.match(/-profile\s/));
 }
 
 function parseModes (modesStr, userArgs) {
-    var parsed        = splitEscaped(modesStr, ':');
-    var path          = getPathFromParsedModes(parsed, AVAILABLE_MODES);
-    var detectedModes = getModes(parsed, AVAILABLE_MODES);
-    var optionsString = parsed.filter(item => !!item).join(':');
-    var options       = parsed.length ? splitEscaped(optionsString, ';') : [];
+    const parsed        = splitEscaped(modesStr, ':');
+    const path          = getPathFromParsedModes(parsed, AVAILABLE_MODES);
+    const detectedModes = getModes(parsed, AVAILABLE_MODES);
+    const optionsString = parsed.filter(item => !!item).join(':');
+    const options       = parsed.length ? splitEscaped(optionsString, ';') : [];
 
     return {
         path:                   path,
@@ -27,8 +27,8 @@ function parseModes (modesStr, userArgs) {
 
 
 function getNewConfig (configString) {
-    var { userArgs, modesString } = parseConfig(configString);
-    var modes                     = parseModes(modesString, userArgs);
+    const { userArgs, modesString } = parseConfig(configString);
+    const modes                     = parseModes(modesString, userArgs);
 
     return Object.assign({ userArgs }, modes);
 }

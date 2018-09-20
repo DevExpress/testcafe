@@ -1,4 +1,4 @@
-var expect = require('chai').expect;
+const expect = require('chai').expect;
 
 describe('[Regression](GH-1521)', function () {
     it('Should wait for a timeout if an element is not in the viewport temporary', function () {

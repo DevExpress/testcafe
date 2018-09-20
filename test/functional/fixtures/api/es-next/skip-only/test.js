@@ -1,4 +1,4 @@
-var expect = require('chai').expect;
+const expect = require('chai').expect;
 
 // NOTE: we run tests in chrome only, because we mainly test server API functionality.
 describe('[API] .skip/.only', function () {

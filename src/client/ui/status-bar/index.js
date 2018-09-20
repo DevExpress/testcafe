@@ -5,19 +5,19 @@ import uiRoot from '../ui-root';
 import MESSAGES from './messages';
 
 
-var Promise          = hammerhead.Promise;
-var shadowUI         = hammerhead.shadowUI;
-var nativeMethods    = hammerhead.nativeMethods;
-var messageSandbox   = hammerhead.eventSandbox.message;
-var browserUtils     = hammerhead.utils.browser;
-var featureDetection = hammerhead.utils.featureDetection;
-var listeners        = hammerhead.eventSandbox.listeners;
+const Promise          = hammerhead.Promise;
+const shadowUI         = hammerhead.shadowUI;
+const nativeMethods    = hammerhead.nativeMethods;
+const messageSandbox   = hammerhead.eventSandbox.message;
+const browserUtils     = hammerhead.utils.browser;
+const featureDetection = hammerhead.utils.featureDetection;
+const listeners        = hammerhead.eventSandbox.listeners;
 
-var styleUtils   = testCafeCore.styleUtils;
-var eventUtils   = testCafeCore.eventUtils;
-var domUtils     = testCafeCore.domUtils;
-var serviceUtils = testCafeCore.serviceUtils;
-var arrayUtils   = testCafeCore.arrayUtils;
+const styleUtils   = testCafeCore.styleUtils;
+const eventUtils   = testCafeCore.eventUtils;
+const domUtils     = testCafeCore.domUtils;
+const serviceUtils = testCafeCore.serviceUtils;
+const arrayUtils   = testCafeCore.arrayUtils;
 
 
 const STATUS_BAR_CLASS                     = 'status-bar';
@@ -119,13 +119,13 @@ export default class StatusBar extends serviceUtils.EventEmitter {
         shadowUI.addClass(this.fixtureContainer, FIXTURE_CONTAINER_CLASS);
         this.infoContainer.appendChild(this.fixtureContainer);
 
-        var fixtureDiv = document.createElement('div');
+        const fixtureDiv = document.createElement('div');
 
         nativeMethods.nodeTextContentSetter.call(fixtureDiv, `${this.fixtureName} - ${this.testName}`);
         shadowUI.addClass(fixtureDiv, FIXTURE_DIV_CLASS);
         this.fixtureContainer.appendChild(fixtureDiv);
 
-        var userAgentDiv = document.createElement('div');
+        const userAgentDiv = document.createElement('div');
 
         nativeMethods.nodeTextContentSetter.call(userAgentDiv, this.userAgent);
         shadowUI.addClass(userAgentDiv, USER_AGENT_DIV_CLASS);
@@ -133,11 +133,11 @@ export default class StatusBar extends serviceUtils.EventEmitter {
     }
 
     _createUnlockPageArea (container) {
-        var unlockPageArea      = document.createElement('div');
-        var unlockPageContainer = document.createElement('div');
-        var unlockIcon          = document.createElement('div');
-        var iconSeparator       = document.createElement('div');
-        var unlockText          = document.createElement('span');
+        const unlockPageArea      = document.createElement('div');
+        const unlockPageContainer = document.createElement('div');
+        const unlockIcon          = document.createElement('div');
+        const iconSeparator       = document.createElement('div');
+        const unlockText          = document.createElement('span');
 
         nativeMethods.nodeTextContentSetter.call(unlockText, UNLOCK_PAGE_TEXT);
 
@@ -175,7 +175,7 @@ export default class StatusBar extends serviceUtils.EventEmitter {
     }
 
     _createStatusArea () {
-        var statusContainer = document.createElement('div');
+        const statusContainer = document.createElement('div');
 
         shadowUI.addClass(statusContainer, STATUS_CONTAINER_CLASS);
         this.container.appendChild(statusContainer);
@@ -207,9 +207,9 @@ export default class StatusBar extends serviceUtils.EventEmitter {
     }
 
     _createButton (text, className) {
-        var button = document.createElement('div');
-        var icon   = document.createElement('div');
-        var span   = document.createElement('span');
+        const button = document.createElement('div');
+        const icon   = document.createElement('div');
+        const span   = document.createElement('span');
 
         nativeMethods.nodeTextContentSetter.call(span, text);
 
@@ -277,7 +277,7 @@ export default class StatusBar extends serviceUtils.EventEmitter {
     }
 
     _calculateActualView (windowWidth) {
-        var hideStatusMaxSize = this.state.debugging ? VIEWS.hideStatusDebugging.maxSize : VIEWS.hideStatus.maxSize;
+        const hideStatusMaxSize = this.state.debugging ? VIEWS.hideStatusDebugging.maxSize : VIEWS.hideStatus.maxSize;
 
         if (windowWidth >= VIEWS.hideFixture.maxSize)
             return VIEWS.all;
@@ -302,10 +302,10 @@ export default class StatusBar extends serviceUtils.EventEmitter {
         if (styleUtils.get(this.fixtureContainer, 'display') === 'none')
             return;
 
-        var infoContainerWidth    = styleUtils.getWidth(this.infoContainer);
-        var iconWidth             = styleUtils.getWidth(this.icon);
-        var iconMargin            = styleUtils.getElementMargin(this.icon);
-        var fixtureContainerWidth = infoContainerWidth - iconWidth - iconMargin.left - iconMargin.right - 1;
+        const infoContainerWidth    = styleUtils.getWidth(this.infoContainer);
+        const iconWidth             = styleUtils.getWidth(this.icon);
+        const iconMargin            = styleUtils.getElementMargin(this.icon);
+        const fixtureContainerWidth = infoContainerWidth - iconWidth - iconMargin.left - iconMargin.right - 1;
 
         styleUtils.set(this.fixtureContainer, 'width', fixtureContainerWidth + 'px');
     }
@@ -314,27 +314,27 @@ export default class StatusBar extends serviceUtils.EventEmitter {
         if (!this.statusDiv.parentNode || styleUtils.get(this.statusDiv.parentNode, 'display') === 'none')
             return;
 
-        var statusDivHidden = styleUtils.get(this.statusDiv, 'display') === 'none';
+        const statusDivHidden = styleUtils.get(this.statusDiv, 'display') === 'none';
 
-        var infoContainerWidth = styleUtils.getWidth(this.infoContainer);
-        var containerWidth     = styleUtils.getWidth(this.container);
-        var statusDivWidth     = statusDivHidden ? 0 : styleUtils.getWidth(this.statusDiv);
+        const infoContainerWidth = styleUtils.getWidth(this.infoContainer);
+        const containerWidth     = styleUtils.getWidth(this.container);
+        const statusDivWidth     = statusDivHidden ? 0 : styleUtils.getWidth(this.statusDiv);
 
-        var marginLeft = containerWidth / 2 - statusDivWidth / 2 - infoContainerWidth;
+        let marginLeft = containerWidth / 2 - statusDivWidth / 2 - infoContainerWidth;
 
         if (this.state.debugging) {
             marginLeft -= styleUtils.getWidth(this.buttons) / 2;
             marginLeft -= styleUtils.getWidth(this.unlockPageArea) / 2;
         }
 
-        var marginLeftStr = Math.max(Math.round(marginLeft), 0) + 'px';
+        const marginLeftStr = Math.max(Math.round(marginLeft), 0) + 'px';
 
         styleUtils.set(this.statusDiv, 'marginLeft', statusDivHidden ? 0 : marginLeftStr);
         styleUtils.set(this.statusDiv.parentNode, 'marginLeft', statusDivHidden ? marginLeftStr : 0);
     }
 
     _recalculateSizes () {
-        var windowWidth = styleUtils.getWidth(window);
+        const windowWidth = styleUtils.getWidth(window);
 
         this.windowHeight = styleUtils.getHeight(window);
 
@@ -346,11 +346,11 @@ export default class StatusBar extends serviceUtils.EventEmitter {
     }
 
     _animate (show) {
-        var startTime         = Date.now();
-        var startOpacityValue = parseInt(styleUtils.get(this.statusBar, 'opacity'), 10) || 0;
-        var passedTime        = 0;
-        var progress          = 0;
-        var delta             = 0;
+        const startTime         = Date.now();
+        const startOpacityValue = parseInt(styleUtils.get(this.statusBar, 'opacity'), 10) || 0;
+        let passedTime        = 0;
+        let progress          = 0;
+        let delta             = 0;
 
         this._stopAnimation();
 
@@ -424,10 +424,10 @@ export default class StatusBar extends serviceUtils.EventEmitter {
     }
 
     _bindClickOnce (elements, handler) {
-        var eventName = featureDetection.isTouchDevice ? 'touchstart' : 'mousedown';
+        const eventName = featureDetection.isTouchDevice ? 'touchstart' : 'mousedown';
 
-        var downHandler = e => {
-            var isTargetElement = !!arrayUtils.find(elements, el => domUtils.containsElement(el, e.target));
+        const downHandler = e => {
+            const isTargetElement = !!arrayUtils.find(elements, el => domUtils.containsElement(el, e.target));
 
             if (isTargetElement) {
                 eventUtils.preventDefault(e);
@@ -444,7 +444,7 @@ export default class StatusBar extends serviceUtils.EventEmitter {
 
     _initChildListening () {
         messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
-            var msg = e.message;
+            const msg = e.message;
 
             if (msg.cmd === MESSAGES.startWaitingElement)
                 this.showWaitingElementStatus(msg.timeout);
@@ -472,7 +472,7 @@ export default class StatusBar extends serviceUtils.EventEmitter {
     }
 
     _showWaitingStatus () {
-        var waitingStatusText = this.state.assertionRetries ? WAITING_FOR_ASSERTION_EXECUTION_TEXT : WAITING_FOR_ELEMENT_TEXT;
+        const waitingStatusText = this.state.assertionRetries ? WAITING_FOR_ASSERTION_EXECUTION_TEXT : WAITING_FOR_ELEMENT_TEXT;
 
         nativeMethods.nodeTextContentSetter.call(this.statusDiv, waitingStatusText);
         this._setStatusDivLeftMargin();
@@ -520,7 +520,7 @@ export default class StatusBar extends serviceUtils.EventEmitter {
             this._recalculateSizes();
 
             this._bindClickOnce([this.resumeButton, this.stepButton, this.finishButton], e => {
-                var isStepButton = domUtils.containsElement(this.stepButton, e.target);
+                const isStepButton = domUtils.containsElement(this.stepButton, e.target);
 
                 this._resetState();
                 resolve(isStepButton);
@@ -548,7 +548,7 @@ export default class StatusBar extends serviceUtils.EventEmitter {
         else
             shadowUI.addClass(this.statusBar, WAITING_FAILED_CLASS);
 
-        var forceReset = this.showingTimeout && waitingSuccess;
+        const forceReset = this.showingTimeout && waitingSuccess;
 
         if (this.showingTimeout) {
             nativeMethods.clearTimeout.call(window, this.showingTimeout);

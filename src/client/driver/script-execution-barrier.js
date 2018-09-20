@@ -1,8 +1,8 @@
 import hammerhead from './deps/hammerhead';
 import { delay } from './deps/testcafe-core';
 
-var Promise       = hammerhead.Promise;
-var nativeMethods = hammerhead.nativeMethods;
+const Promise       = hammerhead.Promise;
+const nativeMethods = hammerhead.nativeMethods;
 
 const WAIT_FOR_NEW_SCRIPTS_DELAY = 25;
 
@@ -23,16 +23,16 @@ export default class ScriptExecutionBarrier {
     }
 
     _onScriptElementAdded (el) {
-        var scriptSrc = nativeMethods.scriptSrcGetter.call(el);
+        const scriptSrc = nativeMethods.scriptSrcGetter.call(el);
 
         if (scriptSrc === void 0 || scriptSrc === '')
             return;
 
         this.scriptsCount++;
 
-        var loadingTimeout = null;
+        let loadingTimeout = null;
 
-        var done = () => {
+        const done = () => {
             nativeMethods.removeEventListener.call(el, 'load', done);
             nativeMethods.removeEventListener.call(el, 'error', done);
 
@@ -65,7 +65,7 @@ export default class ScriptExecutionBarrier {
 
     wait () {
         return new Promise(resolve => {
-            var done = () => {
+            const done = () => {
                 nativeMethods.clearTimeout.call(window, this.watchdog);
                 hammerhead.off(hammerhead.EVENTS.scriptElementAdded, this.scriptElementAddedHandler);
 

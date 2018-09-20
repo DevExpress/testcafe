@@ -4,9 +4,9 @@ import { writeFile } from '../../../../utils/promisified-functions';
 
 
 async function generatePreferences (profileDir, { marionettePort, config }) {
-    var prefsFileName = path.join(profileDir, 'user.js');
+    const prefsFileName = path.join(profileDir, 'user.js');
 
-    var prefs = [
+    let prefs = [
         'user_pref("browser.link.open_newwindow.override.external", 2);',
         'user_pref("app.update.enabled", false);',
         'user_pref("app.update.auto", false);',

@@ -5,8 +5,8 @@ import { expect } from 'chai';
 fixture `GH-889`
     .page `http://localhost:3000/fixtures/regression/gh-889/pages/index.html`;
 
-var getTableFocusEventCount = ClientFunction(() => window.tableFocusEventCount);
-var getTableBlurEventCount  = ClientFunction(() => window.tableBlurEventCount);
+const getTableFocusEventCount = ClientFunction(() => window.tableFocusEventCount);
+const getTableBlurEventCount  = ClientFunction(() => window.tableBlurEventCount);
 
 test('Click on children of table', async t => {
     await t
@@ -18,8 +18,8 @@ test('Click on children of table', async t => {
 });
 
 test('Click on children of table (for IE)', async t => {
-    var getFirstTableDataFocusEventCount  = ClientFunction(() => window.firstTableDataFocusEventCount);
-    var getSecondTableDataFocusEventCount = ClientFunction(() => window.secondTableDataFocusEventCount);
+    const getFirstTableDataFocusEventCount  = ClientFunction(() => window.firstTableDataFocusEventCount);
+    const getSecondTableDataFocusEventCount = ClientFunction(() => window.secondTableDataFocusEventCount);
 
     await t
         .click('#td1')

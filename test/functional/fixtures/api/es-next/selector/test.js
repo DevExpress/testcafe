@@ -1,8 +1,8 @@
-var expect = require('chai').expect;
+const expect = require('chai').expect;
 
-var DEFAULT_SELECTOR_TIMEOUT   = 3000;
-var DEFAULT_RUN_OPTIONS        = { selectorTimeout: DEFAULT_SELECTOR_TIMEOUT };
-var DEFAULT_CHROME_RUN_OPTIONS = { only: 'chrome', selectorTimeout: DEFAULT_SELECTOR_TIMEOUT };
+const DEFAULT_SELECTOR_TIMEOUT   = 3000;
+const DEFAULT_RUN_OPTIONS        = { selectorTimeout: DEFAULT_SELECTOR_TIMEOUT };
+const DEFAULT_CHROME_RUN_OPTIONS = { only: 'chrome', selectorTimeout: DEFAULT_SELECTOR_TIMEOUT };
 
 describe('[API] Selector', function () {
     it('Should provide basic properties in HTMLElement snapshots', function () {

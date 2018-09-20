@@ -1,6 +1,6 @@
 function areErrorsSame (errors) {
-    for (var i = 0; i < errors.length; i++) {
-        for (var j = i + 1; j < errors.length; j++) {
+    for (let i = 0; i < errors.length; i++) {
+        for (let j = i + 1; j < errors.length; j++) {
             if (errors[i] !== errors[j])
                 return false;
         }
@@ -31,7 +31,7 @@ function normalizeError (err, userAgents) {
 // If different errors occur in several browsers, a dictionary object is returned. In this case, browser aliases are
 // keys, and values are arrays of errors.
 module.exports = function getTestError (taskReport, browsers) {
-    var errs = [];
+    let errs = [];
 
     taskReport.fixtures.forEach(function (fixture) {
         fixture.tests.forEach(function (test) {
@@ -42,11 +42,11 @@ module.exports = function getTestError (taskReport, browsers) {
     if (!errs.length)
         return null;
 
-    var userAgents = browsers.map(function (browserInfo) {
+    const userAgents = browsers.map(function (browserInfo) {
         return browserInfo.connection.userAgent;
     });
 
-    var normalizedErrors = errs.map(function (err) {
+    const normalizedErrors = errs.map(function (err) {
         return normalizeError(err, userAgents);
     });
 
@@ -54,10 +54,10 @@ module.exports = function getTestError (taskReport, browsers) {
         return [normalizedErrors[0]];
 
     if (browsers.length > 1) {
-        var testError = {};
+        const testError = {};
 
         browsers.forEach(function (browserInfo) {
-            var errorsArray = errs
+            const errorsArray = errs
                 .filter(function (error) {
                     return error.indexOf(browserInfo.connection.userAgent) > -1;
                 })

@@ -15,14 +15,10 @@
     window.inputEvtCounter  = 0;
     window.changeEvtCounter = 0;
 
-    var inputElements = document.querySelectorAll('input');
+    const inputElements = document.querySelectorAll('input');
 
-    var saveEventToStorage = function (event) {
-        eventStorage.push(event.type);
-    };
-
-    for (var i = 0; i < inputElements.length; i++) {
-        var element = inputElements[i];
+    for (let i = 0; i < inputElements.length; i++) {
+        const element = inputElements[i];
 
         element.addEventListener('change', function () {
             window.inputEvtCounter++;

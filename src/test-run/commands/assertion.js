@@ -22,7 +22,7 @@ function initAssertionParameter (name, val, { skipVisibilityCheck, testRun }) {
         return val;
     }
     catch (err) {
-        var msg = err.constructor === APIError ? err.rawMessage : err.message;
+        const msg = err.constructor === APIError ? err.rawMessage : err.message;
 
         throw new AssertionExecutableArgumentError(name, val.value, msg);
     }

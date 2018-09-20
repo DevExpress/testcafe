@@ -1,27 +1,27 @@
-var hammerhead   = window.getTestCafeModule('hammerhead');
-var browserUtils = hammerhead.utils.browser;
+const hammerhead   = window.getTestCafeModule('hammerhead');
+const browserUtils = hammerhead.utils.browser;
 
-var testCafeCore      = window.getTestCafeModule('testCafeCore');
-var parseKeySequence  = testCafeCore.get('./utils/parse-key-sequence');
+const testCafeCore      = window.getTestCafeModule('testCafeCore');
+const parseKeySequence  = testCafeCore.get('./utils/parse-key-sequence');
 
-var testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
-var PressAutomation    = testCafeAutomation.Press;
+const testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
+const PressAutomation    = testCafeAutomation.Press;
 
 testCafeCore.preventRealEvents();
 
 
 $(document).ready(function () {
-    var TEST_ELEMENT_CLASS = 'testElement';
+    const TEST_ELEMENT_CLASS = 'testElement';
 
     function checkSubmitRaisedOnEnterPress ($form, $input, needSubmit) {
-        var submitHandlerExecuted = false;
+        let submitHandlerExecuted = false;
 
         $form[0].addEventListener('submit', function (e) {
             submitHandlerExecuted = true;
             e.preventDefault();
         });
 
-        var callback = function () {
+        const callback = function () {
             ok(needSubmit === submitHandlerExecuted, 'submit handler executed');
 
             start();
@@ -32,13 +32,13 @@ $(document).ready(function () {
     }
 
     function isInputValueValid ($el) {
-        var el = $el[0];
+        const el = $el[0];
 
         return el.validity.valid;
     }
 
     function runPressAutomation (keys, callback) {
-        var pressAutomation = new PressAutomation(parseKeySequence(keys).combinations, {});
+        const pressAutomation = new PressAutomation(parseKeySequence(keys).combinations, {});
 
         pressAutomation
             .run()
@@ -51,8 +51,8 @@ $(document).ready(function () {
 
     module('form with two text inputs');
     asyncTest('submit button (input type="submit")', function () {
-        var $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
-        var $input = $('<input type="text">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
+        const $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
+        const $input = $('<input type="text">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
 
         $('<input type="text">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
         $('<input type="submit">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
@@ -61,8 +61,8 @@ $(document).ready(function () {
     });
 
     asyncTest('submit button (button type="submit")', function () {
-        var $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
-        var $input = $('<input type="text">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
+        const $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
+        const $input = $('<input type="text">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
 
         $('<input type="text">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
         $('<button type="submit">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
@@ -71,8 +71,8 @@ $(document).ready(function () {
     });
 
     asyncTest('submit button (button without declared type)', function () {
-        var $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
-        var $input = $('<input type="text">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
+        const $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
+        const $input = $('<input type="text">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
 
         $('<input type="text">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
         $('<button></button>').addClass(TEST_ELEMENT_CLASS).appendTo($form);
@@ -81,8 +81,8 @@ $(document).ready(function () {
     });
 
     asyncTest('without submit button', function () {
-        var $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
-        var $input = $('<input type="text">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
+        const $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
+        const $input = $('<input type="text">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
 
         $('<input type="text">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
 
@@ -90,8 +90,8 @@ $(document).ready(function () {
     });
 
     asyncTest('not-submit button (button type="button")', function () {
-        var $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
-        var $input = $('<input type="text">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
+        const $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
+        const $input = $('<input type="text">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
 
         $('<input type="text">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
         $('<button type="button"></button>').addClass(TEST_ELEMENT_CLASS).appendTo($form);
@@ -100,8 +100,8 @@ $(document).ready(function () {
     });
 
     asyncTest('disabled submit button', function () {
-        var $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
-        var $input = $('<input type="text">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
+        const $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
+        const $input = $('<input type="text">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
 
         $('<input type="text">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
         $('<button type="submit" disabled></button>').addClass(TEST_ELEMENT_CLASS).appendTo($form);
@@ -110,8 +110,8 @@ $(document).ready(function () {
     });
 
     asyncTest('inputs types "text" and "search" and without submit button', function () {
-        var $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
-        var $input = $('<input type="text">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
+        const $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
+        const $input = $('<input type="text">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
 
         $('<input type="search">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
 
@@ -119,9 +119,9 @@ $(document).ready(function () {
     });
 
     asyncTest('valid and invalid text input ("text" and "url") and submit button', function () {
-        var $form     = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
-        var $input    = $('<input type="text">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
-        var $urlInput = $('<input type="url">').addClass(TEST_ELEMENT_CLASS).val('test').appendTo($form);
+        const $form     = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
+        const $input    = $('<input type="text">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
+        const $urlInput = $('<input type="url">').addClass(TEST_ELEMENT_CLASS).val('test').appendTo($form);
 
         $('<button type="submit">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
 
@@ -130,58 +130,58 @@ $(document).ready(function () {
 
     module('form with one text input');
     asyncTest('input type = "text"', function () {
-        var $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
-        var $input = $('<input type="text">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
+        const $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
+        const $input = $('<input type="text">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
 
         checkSubmitRaisedOnEnterPress($form, $input, true);
     });
 
     asyncTest('input type = "search"', function () {
-        var $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
-        var $input = $('<input type="search">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
+        const $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
+        const $input = $('<input type="search">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
 
         checkSubmitRaisedOnEnterPress($form, $input, true);
     });
 
     asyncTest('input type = "url"', function () {
-        var $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
-        var $input = $('<input type="url">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
+        const $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
+        const $input = $('<input type="url">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
 
         checkSubmitRaisedOnEnterPress($form, $input, true);
     });
 
     asyncTest('input type = "number"', function () {
-        var $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
-        var $input = $('<input type="number">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
+        const $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
+        const $input = $('<input type="number">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
 
         checkSubmitRaisedOnEnterPress($form, $input, true);
     });
 
     asyncTest('input type = "tel"', function () {
-        var $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
-        var $input = $('<input type="tel">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
+        const $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
+        const $input = $('<input type="tel">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
 
         checkSubmitRaisedOnEnterPress($form, $input, true);
     });
 
     asyncTest('input type = "password"', function () {
-        var $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
-        var $input = $('<input type="password">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
+        const $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
+        const $input = $('<input type="password">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
 
         checkSubmitRaisedOnEnterPress($form, $input, true);
     });
 
     asyncTest('input type = "email"', function () {
-        var $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
-        var $input = $('<input type="email">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
+        const $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
+        const $input = $('<input type="email">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
 
         checkSubmitRaisedOnEnterPress($form, $input, true);
     });
 
     asyncTest('input type = "date"', function () {
-        var needChangeType = browserUtils.isIE && browserUtils.version > 11;
-        var $form          = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
-        var $input         = $('<input type="' + (needChangeType ? 'email' : 'date') +
+        const needChangeType = browserUtils.isIE && browserUtils.version > 11;
+        const $form          = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
+        const $input         = $('<input type="' + (needChangeType ? 'email' : 'date') +
                                '">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
 
         //HACK: For tests in MSEdge. MSEdge fails when we try to create input with type = 'date'
@@ -193,31 +193,31 @@ $(document).ready(function () {
     });
 
     asyncTest('input type = "time"', function () {
-        var $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
-        var $input = $('<input type="time">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
+        const $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
+        const $input = $('<input type="time">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
 
         //webkit does not submit time input on enter
         checkSubmitRaisedOnEnterPress($form, $input, !browserUtils.isWebKit || browserUtils.isSafari);
     });
 
     asyncTest('input type = "radio"', function () {
-        var $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
-        var $input = $('<input type="radio">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
+        const $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
+        const $input = $('<input type="radio">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
 
         checkSubmitRaisedOnEnterPress($form, $input, false);
     });
 
     asyncTest('input type = "url" with invalid value', function () {
-        var $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
-        var $input = $('<input type="url">').addClass(TEST_ELEMENT_CLASS).val('test').appendTo($form);
+        const $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
+        const $input = $('<input type="url">').addClass(TEST_ELEMENT_CLASS).val('test').appendTo($form);
 
         checkSubmitRaisedOnEnterPress($form, $input, isInputValueValid($input));
     });
 
     module('form with two different type inputs');
     asyncTest('one text input and one not-text input (type = "checkbox"), text input is focused', function () {
-        var $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
-        var $input = $('<input type="text">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
+        const $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
+        const $input = $('<input type="text">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
 
         $('<input type="checkbox">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
 
@@ -225,8 +225,8 @@ $(document).ready(function () {
     });
 
     asyncTest('one text input and one not-text input (type = "checkbox"), checkbox is focused', function () {
-        var $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
-        var $input = $('<input type="checkbox">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
+        const $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
+        const $input = $('<input type="checkbox">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
 
         $('<input type="text">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
 
@@ -235,16 +235,17 @@ $(document).ready(function () {
 
     module('event handlers');
     asyncTest('check all handlers are executed - form with submit button', function () {
-        var $form                        = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
-        var $input                       = $('<input type="text">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
-        var $button                      = $('<input type="submit">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
-        var inlineSubmitHandlerExecuted  = false;
-        var jQuerySubmitHandlerExecuted  = false;
-        var submitHandlerExecuted        = false;
-        var buttonClickHandlerExecuted   = false;
-        var inputKeydownHandlerExecuted  = false;
-        var inputKeyupHandlerExecuted    = false;
-        var inputKeypressHandlerExecuted = false;
+        const $form   = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
+        const $input  = $('<input type="text">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
+        const $button = $('<input type="submit">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
+
+        let inlineSubmitHandlerExecuted  = false;
+        let jQuerySubmitHandlerExecuted  = false;
+        let submitHandlerExecuted        = false;
+        let buttonClickHandlerExecuted   = false;
+        let inputKeydownHandlerExecuted  = false;
+        let inputKeyupHandlerExecuted    = false;
+        let inputKeypressHandlerExecuted = false;
 
         $input.bind('keydown', function () {
             inputKeydownHandlerExecuted = true;
@@ -275,7 +276,7 @@ $(document).ready(function () {
             e.preventDefault();
         });
 
-        var callback = function () {
+        const callback = function () {
             ok(jQuerySubmitHandlerExecuted, 'jQuery submit handler executed');
             ok(submitHandlerExecuted, 'submit handler executed');
             ok(inlineSubmitHandlerExecuted, 'inline submit handler executed');
@@ -293,16 +294,17 @@ $(document).ready(function () {
     });
 
     asyncTest('check all handlers are executed - form without submit button', function () {
-        var $form                        = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
-        var $input                       = $('<input type="text">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
-        var inlineSubmitHandlerExecuted  = false;
-        var jQuerySubmitHandlerExecuted  = false;
-        var submitHandlerExecuted        = false;
-        var inputKeydownHandlerExecuted  = false;
-        var inputKeyupHandlerExecuted    = false;
-        var inputKeypressHandlerExecuted = false;
-        var submitFunctionCalled         = false;
-        var needToPreventEvent           = browserUtils.isFirefox || browserUtils.isSafari && browserUtils.version > 9;
+        const $form              = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
+        const $input             = $('<input type="text">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
+        const needToPreventEvent = browserUtils.isFirefox || browserUtils.isSafari && browserUtils.version > 9;
+
+        let inlineSubmitHandlerExecuted  = false;
+        let jQuerySubmitHandlerExecuted  = false;
+        let submitHandlerExecuted        = false;
+        let inputKeydownHandlerExecuted  = false;
+        let inputKeyupHandlerExecuted    = false;
+        let inputKeypressHandlerExecuted = false;
+        let submitFunctionCalled         = false;
 
         $input.bind('keydown', function () {
             inputKeydownHandlerExecuted = true;
@@ -338,7 +340,7 @@ $(document).ready(function () {
             };
         }
 
-        var callback = function () {
+        const callback = function () {
             ok(jQuerySubmitHandlerExecuted, 'jQuery submit handler executed');
             ok(submitHandlerExecuted, 'submit handler executed');
             ok(inlineSubmitHandlerExecuted, 'inline submit handler executed');
@@ -357,11 +359,12 @@ $(document).ready(function () {
 
     //when enter pressed in a form input, browser sends click event to form submit button
     asyncTest('form must not be submitted if submit button click event was prevented', function () {
-        var $form                 = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
-        var $input                = $('<input type="text">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
-        var $button               = $('<input type="submit">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
-        var submitHandlerExecuted = false;
-        var clickHandlerExecuted  = false;
+        const $form   = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
+        const $input  = $('<input type="text">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
+        const $button = $('<input type="submit">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
+
+        let submitHandlerExecuted = false;
+        let clickHandlerExecuted  = false;
 
         $button[0].addEventListener('click', function (e) {
             clickHandlerExecuted = true;
@@ -372,7 +375,7 @@ $(document).ready(function () {
             submitHandlerExecuted = true;
         });
 
-        var callback = function () {
+        const callback = function () {
             ok(clickHandlerExecuted, 'click executed');
             ok(!submitHandlerExecuted, 'submit not executed');
             start();
@@ -383,11 +386,12 @@ $(document).ready(function () {
     });
 
     asyncTest('form must not be submitted if enter keydown event was prevented', function () {
-        var $form                  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
-        var $input                 = $('<input type="text">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
-        var keydownHandlerExecuted = false;
-        var submitHandlerExecuted  = false;
-        var ENTER_KEY_CODE         = 13;
+        const $form          = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
+        const $input         = $('<input type="text">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
+        const ENTER_KEY_CODE = 13;
+
+        let keydownHandlerExecuted = false;
+        let submitHandlerExecuted  = false;
 
         $('<input type="submit">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
 
@@ -401,7 +405,7 @@ $(document).ready(function () {
             submitHandlerExecuted = true;
         });
 
-        var callback = function () {
+        const callback = function () {
             ok(keydownHandlerExecuted, 'keydown handler was executed');
             ok(!submitHandlerExecuted, 'submit handler was not executed');
             start();
@@ -412,12 +416,13 @@ $(document).ready(function () {
     });
 
     asyncTest('form must not be submitted if it has inputs with failed validation', function () {
-        var $form                 = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
-        var $input                = $('<input type="text">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
-        var $emailInput           = $('<input type="email">').addClass(TEST_ELEMENT_CLASS).val('test').appendTo($form);
-        var $button               = $('<input type="submit">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
-        var submitHandlerExecuted = false;
-        var clickHandlerExecuted  = false;
+        const $form       = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
+        const $input      = $('<input type="text">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
+        const $emailInput = $('<input type="email">').addClass(TEST_ELEMENT_CLASS).val('test').appendTo($form);
+        const $button     = $('<input type="submit">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
+
+        let submitHandlerExecuted = false;
+        let clickHandlerExecuted  = false;
 
         $button[0].addEventListener('click', function () {
             clickHandlerExecuted = true;
@@ -428,7 +433,7 @@ $(document).ready(function () {
             e.preventDefault();
         });
 
-        var callback = function () {
+        const callback = function () {
             ok(clickHandlerExecuted, 'click executed');
             equal(submitHandlerExecuted, isInputValueValid($emailInput));
 

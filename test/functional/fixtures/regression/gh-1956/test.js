@@ -1,6 +1,6 @@
-var expect = require('chai').expect;
+const expect = require('chai').expect;
 
-var browsersWithLimitations = [ 'ie', 'firefox', 'firefox-osx' ];
+const browsersWithLimitations = [ 'ie', 'firefox', 'firefox-osx' ];
 
 describe('Should support TextInput event[Regression](GH-1956)', function () {
     it('Prevent Input event on TextInput when type to input element', function () {
@@ -14,7 +14,7 @@ describe('Should support TextInput event[Regression](GH-1956)', function () {
             'Prevent Input event on TextInput when type to input element IE11/Firefox',
             { only: [ 'ie', 'firefox', 'firefox-osx' ], shouldFail: true })
             .catch(function (errs) {
-                var errors = [ errs['ie'], errs['firefox'] ].filter(err => err);
+                const errors = [ errs['ie'], errs['firefox'] ].filter(err => err);
 
                 errors.forEach(err => {
                     expect(err[0]).contains('Input event has raised');

@@ -165,8 +165,8 @@ describe('[API] t.takeScreenshot()', function () {
         });
 
         it('Should provide screenshot log to a reporter', function () {
-            var result   = {};
-            var reporter = getReporter(result);
+            const result   = {};
+            const reporter = getReporter(result);
 
             return runTests('./testcafe-fixtures/take-screenshot.js', 'Take screenshots for reporter', {
                 setScreenshotPath:  true,
@@ -175,7 +175,7 @@ describe('[API] t.takeScreenshot()', function () {
                 reporters:          [{ reporter }]
             })
                 .then(function () {
-                    var getScreenshotsInfo = (screenshotPath, thumbnailPath, attempt, userAgent, takenOnFail) => {
+                    const getScreenshotsInfo = (screenshotPath, thumbnailPath, attempt, userAgent, takenOnFail) => {
                         if (!takenOnFail) {
                             screenshotPath = '_' + userAgent + attempt + screenshotPath;
                             thumbnailPath  = '_thumbnails' + screenshotPath;
@@ -191,14 +191,14 @@ describe('[API] t.takeScreenshot()', function () {
                         };
                     };
 
-                    var expected = result.userAgents.reduce(function (value, userAgent) {
-                        for (var attempt = 1; attempt <= 4; attempt++) {
+                    const expected = result.userAgents.reduce(function (value, userAgent) {
+                        for (let attempt = 1; attempt <= 4; attempt++) {
                             value.push(getScreenshotsInfo('1.png', null, attempt, userAgent, false));
                             value.push(getScreenshotsInfo('2.png', null, attempt, userAgent, false));
                         }
 
-                        var errorScreenshotPath = '_' + userAgent + '_errors_1.png';
-                        var errorThumbnailPath  = '_' + userAgent + '_errors_thumbnails_1.png';
+                        const errorScreenshotPath = '_' + userAgent + '_errors_1.png';
+                        const errorThumbnailPath  = '_' + userAgent + '_errors_thumbnails_1.png';
 
                         value.push(getScreenshotsInfo(errorScreenshotPath, errorThumbnailPath, 1, userAgent, true));
 

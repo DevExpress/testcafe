@@ -17,10 +17,10 @@ import {
     ActionSpeedOptionError
 } from '../../errors/test-run';
 
-export var integerOption         = createIntegerValidator(ActionIntegerOptionError);
-export var positiveIntegerOption = createPositiveIntegerValidator(ActionPositiveIntegerOptionError);
-export var booleanOption         = createBooleanValidator(ActionBooleanOptionError);
-export var speedOption           = createSpeedValidator(ActionSpeedOptionError);
+export const integerOption         = createIntegerValidator(ActionIntegerOptionError);
+export const positiveIntegerOption = createPositiveIntegerValidator(ActionPositiveIntegerOptionError);
+export const booleanOption         = createBooleanValidator(ActionBooleanOptionError);
+export const speedOption           = createSpeedValidator(ActionSpeedOptionError);
 
 
 // Acitons

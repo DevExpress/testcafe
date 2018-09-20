@@ -15,7 +15,7 @@ export default class RemotesQueue {
     }
 
     add (remoteConnection) {
-        var connectionReadyPromise = promisifyEvent(remoteConnection, 'ready')
+        const connectionReadyPromise = promisifyEvent(remoteConnection, 'ready')
             .then(() => this.remove(remoteConnection));
 
         this.pendingConnections[remoteConnection.id] = {
@@ -31,9 +31,9 @@ export default class RemotesQueue {
     }
 
     shift () {
-        var shiftingPromise = this.shiftingTimeout
+        const shiftingPromise = this.shiftingTimeout
             .then(async () => {
-                var headId = Object.keys(this.pendingConnections)[0];
+                let headId = Object.keys(this.pendingConnections)[0];
 
                 if (!headId)
                     headId = await getTimeLimitedPromise(promisifyEvent(this.events, 'connection-added'), ADDING_CONNECTION_WAITING_TIMEOUT);

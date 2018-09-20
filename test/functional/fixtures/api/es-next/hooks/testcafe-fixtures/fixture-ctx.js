@@ -6,7 +6,7 @@ fixture `Fixture1`
         ctx.prop = 'before';
     })
     .after(ctx => {
-        var items = ctx.prop.split('|');
+        const items = ctx.prop.split('|');
 
         expect(items.filter(item => item === 'before').length).eql(1);
         expect(items.filter(item => item === 'test1').length).eql(2);

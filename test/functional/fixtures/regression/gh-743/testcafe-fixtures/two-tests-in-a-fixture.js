@@ -2,7 +2,7 @@ import { expect } from 'chai';
 
 fixture `GH-743`;
 
-var secondStarted = false;
+let secondStarted = false;
 
 test('First test', async t => {
     await t.wait(100);

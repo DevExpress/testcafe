@@ -1,4 +1,4 @@
-var os = require('os');
+const os = require('os');
 
 const TRANSPARENT_PROXY_URL = os.hostname() + ':3005';
 

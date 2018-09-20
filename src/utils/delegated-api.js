@@ -4,7 +4,7 @@ export function getDelegatedAPIList (src) {
     return Object
         .getOwnPropertyNames(src)
         .map(prop => {
-            var match = prop.match(API_IMPLEMENTATION_METHOD_RE);
+            const match = prop.match(API_IMPLEMENTATION_METHOD_RE);
 
             if (match) {
                 return {
@@ -21,11 +21,11 @@ export function getDelegatedAPIList (src) {
 
 export function delegateAPI (dest, apiList, opts) {
     apiList.forEach(({ srcProp, apiProp, accessor }) => {
-        var fn = function (...args) {
+        const fn = function (...args) {
             if (opts.proxyMethod)
                 opts.proxyMethod();
 
-            var handler = null;
+            let handler = null;
 
             if (opts.useCurrentCtxAsHandler)
                 handler = this;

@@ -1,14 +1,14 @@
-var testCafeLegacyRunner = window.getTestCafeModule('testCafeLegacyRunner');
-var ERROR_TYPE           = testCafeLegacyRunner.get('../test-run-error/type');
-var SETTINGS             = testCafeLegacyRunner.get('./settings').get();
-var actionsAPI           = testCafeLegacyRunner.get('./api/actions');
-var StepIterator         = testCafeLegacyRunner.get('./step-iterator');
-var initAutomation       = testCafeLegacyRunner.get('./init-automation');
+const testCafeLegacyRunner = window.getTestCafeModule('testCafeLegacyRunner');
+const ERROR_TYPE           = testCafeLegacyRunner.get('../test-run-error/type');
+const SETTINGS             = testCafeLegacyRunner.get('./settings').get();
+const actionsAPI           = testCafeLegacyRunner.get('./api/actions');
+const StepIterator         = testCafeLegacyRunner.get('./step-iterator');
+const initAutomation       = testCafeLegacyRunner.get('./init-automation');
 
 initAutomation();
 
-var actionTargetWaitingCounter = 0;
-var actionRunCounter           = 0;
+let actionTargetWaitingCounter = 0;
+let actionRunCounter           = 0;
 
 StepIterator.prototype.onActionTargetWaitingStarted = function () {
     actionTargetWaitingCounter++;
@@ -18,16 +18,16 @@ StepIterator.prototype.onActionRun = function () {
     actionRunCounter++;
 };
 
-var stepIterator = null;
+let stepIterator = null;
 
 $(document).ready(function () {
-    var currentErrorType   = null;
-    var currentSourceIndex = null;
-    var asyncActionCallback;
+    let currentErrorType   = null;
+    let currentSourceIndex = null;
+    let asyncActionCallback;
 
-    var runAsyncTest = function (actions, assertions, timeout) {
-        var timeoutId        = null;
-        var callbackFunction = function () {
+    const runAsyncTest = function (actions, assertions, timeout) {
+        let timeoutId        = null;
+        let callbackFunction = function () {
             clearTimeout(timeoutId);
             assertions();
             start();
@@ -75,7 +75,7 @@ $(document).ready(function () {
     });
 
     asyncTest('wait event', function () {
-        var requestComplete = false;
+        let requestComplete = false;
 
         runAsyncTest(
             function () {
@@ -157,7 +157,7 @@ $(document).ready(function () {
         expect(3);
         SETTINGS.ENABLE_SOURCE_INDEX = true;
 
-        var $element = $('<div></div>').attr('id', 'testDivElement');
+        const $element = $('<div></div>').attr('id', 'testDivElement');
 
         asyncActionCallback = function () {
             equal(currentErrorType, null);
@@ -177,7 +177,7 @@ $(document).ready(function () {
         expect(5);
         SETTINGS.ENABLE_SOURCE_INDEX = true;
 
-        var asyncActionCallbackRaised = false;
+        let asyncActionCallbackRaised = false;
 
         asyncActionCallback = function () {
             asyncActionCallbackRaised = true;
@@ -200,8 +200,8 @@ $(document).ready(function () {
         expect(3);
         SETTINGS.ENABLE_SOURCE_INDEX = true;
 
-        var $element1 = $('<div></div>').attr('id', 'testDivElement1');
-        var $element2 = $('<div></div>').attr('id', 'testDivElement2');
+        const $element1 = $('<div></div>').attr('id', 'testDivElement1');
+        const $element2 = $('<div></div>').attr('id', 'testDivElement2');
 
         asyncActionCallback = function () {
             equal(currentErrorType, null);
@@ -227,8 +227,9 @@ $(document).ready(function () {
         expect(5);
         SETTINGS.ENABLE_SOURCE_INDEX = true;
 
-        var $element                  = $('<div></div>').attr('id', 'testDivElement1').appendTo('body');
-        var asyncActionCallbackRaised = false;
+        const $element = $('<div></div>').attr('id', 'testDivElement1').appendTo('body');
+
+        let asyncActionCallbackRaised = false;
 
         asyncActionCallback = function () {
             asyncActionCallbackRaised = true;
