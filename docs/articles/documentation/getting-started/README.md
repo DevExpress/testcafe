@@ -2,6 +2,8 @@
 layout: docs
 title: Getting Started
 permalink: /documentation/getting-started/
+redirect_from:
+  - /documentation/
 ---
 # Getting Started
 
