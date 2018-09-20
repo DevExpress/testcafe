@@ -970,25 +970,25 @@ You can use selectors to <a href="using-selectors.html#obtain-element-state">ins
 To interact with the page, use <a href="../../actions/">test actions</a>.</p>
 </div></blockquote><h2><a class="anchor" name="quick-start"></a>Quick Start <a class="permalink" href="#quick-start">#</a></h2>
 <p>Import the <a href="creating-selectors.html">Selector</a> constructor from the <code>testcafe</code> module. Call this constructor and pass a CSS selector string as an argument.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="kd">const</span> <span class="nx">article</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'.article-content'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">article</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'.article-content'</span><span class="p">);</span>
 </code></pre></div>
 <p>The <code>article</code> constant now stores a selector that identifies an element with the <code>article-content</code> class.</p>
 
 <p>You can use this selector to take <a href="../../actions/">actions</a> on this element.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">article</span><span class="p">);</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">article</span><span class="p">);</span>
 </code></pre></div>
 <p>Or use it in <a href="../../assertions/">assertions</a>.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">article</span><span class="p">.</span><span class="nx">scrollHeight</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="mi">1800</span><span class="p">);</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">article</span><span class="p">.</span><span class="nx">scrollHeight</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="mi">1800</span><span class="p">);</span>
 </code></pre></div>
 <p>You can write a selector that matches several page elements and then <a href="functional-style-selectors.html#filter-dom-nodes">filter them</a> by text, attribute, etc.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">windowsRadioButton</span>  <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'.radio-button'</span><span class="p">).</span><span class="nx">withText</span><span class="p">(</span><span class="s1">'Windows'</span><span class="p">);</span>
-<span class="kd">const</span> <span class="nx">selectedRadioButton</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'.radio-button'</span><span class="p">).</span><span class="nx">withAttribute</span><span class="p">(</span><span class="s1">'selected'</span><span class="p">);</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">windowsRadioButton</span>  <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'.radio-button'</span><span class="p">).</span><span class="nx">withText</span><span class="p">(</span><span class="s1">'Windows'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">selectedRadioButton</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'.radio-button'</span><span class="p">).</span><span class="nx">withAttribute</span><span class="p">(</span><span class="s1">'selected'</span><span class="p">);</span>
 </code></pre></div>
 <p>If you need to find a specific element in the DOM tree, you can
 <a href="functional-style-selectors.html#search-for-elements-in-the-dom-hierarchy">search for it</a> using the selector API.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">buttonWrapper</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'.article-content'</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">'#share-button'</span><span class="p">).</span><span class="nx">parent</span><span class="p">();</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">buttonWrapper</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'.article-content'</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">'#share-button'</span><span class="p">).</span><span class="nx">parent</span><span class="p">();</span>
 </code></pre></div>
 <p>For more information about selectors, see the detailed topics in this section.</p>
 

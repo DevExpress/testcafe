@@ -487,14 +487,14 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/recipes/debugging-with-chrome-dev-tools.html"  >Debugging with Chrome Developer Tools</a>
+<a href="/testcafe/documentation/recipes/debug-in-chrome-dev-tools.html"  >Debug in Chrome Developer Tools</a>
 		
     </li>
 
     <li>
 		    
 		
-<a href="/testcafe/documentation/recipes/debugging-with-visual-studio-code.html"  >Debugging with Visual Studio Code</a>
+<a href="/testcafe/documentation/recipes/debug-in-visual-studio-code.html"  >Debug in Visual Studio Code</a>
 		
     </li>
 
@@ -647,11 +647,11 @@
 
 <ul>
 <li><p>Since you are going to perform browser testing, you need a virtual machine image that has all popular browsers pre-installed. So use the following image</p>
-<div class="highlight"><pre><code class="language-yml" data-lang="yml"><span class="pi">-</span> <span class="na">image</span><span class="pi">:</span> <span class="s">circleci/node:7.10-browsers</span>
+<div class="highlight"><pre><code class="language-yml" data-lang="yml"><span class="pi">-</span> <span class="s">image</span><span class="pi">:</span> <span class="s">circleci/node:7.10-browsers</span>
 </code></pre></div></li>
 <li><p>Add a step that imports test results to the end of the YAML. The results will be displayed in the <strong>Test Summary</strong> section.</p>
-<div class="highlight"><pre><code class="language-yml" data-lang="yml"><span class="pi">-</span> <span class="na">store_test_results</span><span class="pi">:</span>
-    <span class="na">path</span><span class="pi">:</span> <span class="s">/tmp/test-results</span>
+<div class="highlight"><pre><code class="language-yml" data-lang="yml"><span class="pi">-</span> <span class="s">store_test_results</span><span class="pi">:</span>
+    <span class="s">path</span><span class="pi">:</span> <span class="s">/tmp/test-results</span>
 </code></pre></div></li>
 </ul>
 
@@ -661,52 +661,52 @@
 <span class="c1">#</span>
 <span class="c1"># Check https://circleci.com/docs/2.0/language-javascript/ for more details</span>
 <span class="c1">#</span>
-<span class="na">version</span><span class="pi">:</span> <span class="s">2</span>
-<span class="na">jobs</span><span class="pi">:</span>
-  <span class="na">build</span><span class="pi">:</span>
-    <span class="na">docker</span><span class="pi">:</span>
+<span class="s">version</span><span class="pi">:</span> <span class="s">2</span>
+<span class="s">jobs</span><span class="pi">:</span>
+  <span class="s">build</span><span class="pi">:</span>
+    <span class="s">docker</span><span class="pi">:</span>
       <span class="c1"># specify the version you desire here</span>
-      <span class="pi">-</span> <span class="na">image</span><span class="pi">:</span> <span class="s">circleci/node:7.10-browsers</span>
+      <span class="pi">-</span> <span class="s">image</span><span class="pi">:</span> <span class="s">circleci/node:7.10-browsers</span>
 
       <span class="c1"># Specify service dependencies here if necessary</span>
       <span class="c1"># CircleCI maintains a library of pre-built images</span>
       <span class="c1"># documented at https://circleci.com/docs/2.0/circleci-images/</span>
       <span class="c1"># - image: circleci/mongo:3.4.4</span>
 
-    <span class="na">working_directory</span><span class="pi">:</span> <span class="s">~/repo</span>
+    <span class="s">working_directory</span><span class="pi">:</span> <span class="s">~/repo</span>
 
-    <span class="na">steps</span><span class="pi">:</span>
+    <span class="s">steps</span><span class="pi">:</span>
       <span class="pi">-</span> <span class="s">checkout</span>
 
       <span class="c1"># Download and cache dependencies</span>
-      <span class="pi">-</span> <span class="na">restore_cache</span><span class="pi">:</span>
-          <span class="na">keys</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">restore_cache</span><span class="pi">:</span>
+          <span class="s">keys</span><span class="pi">:</span>
           <span class="pi">-</span> <span class="s">v1-dependencies-{{ checksum "package.json" }}</span>
           <span class="c1"># fallback to using the latest cache if no exact match is found</span>
           <span class="pi">-</span> <span class="s">v1-dependencies-</span>
 
-      <span class="pi">-</span> <span class="na">run</span><span class="pi">:</span> <span class="s">yarn install</span>
+      <span class="pi">-</span> <span class="s">run</span><span class="pi">:</span> <span class="s">yarn install</span>
 
-      <span class="pi">-</span> <span class="na">save_cache</span><span class="pi">:</span>
-          <span class="na">paths</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">save_cache</span><span class="pi">:</span>
+          <span class="s">paths</span><span class="pi">:</span>
             <span class="pi">-</span> <span class="s">node_modules</span>
-          <span class="na">key</span><span class="pi">:</span> <span class="s">v1-dependencies-{{ checksum "package.json" }}</span>
+          <span class="s">key</span><span class="pi">:</span> <span class="s">v1-dependencies-{{ checksum "package.json" }}</span>
 
       <span class="c1"># run tests!</span>
-      <span class="pi">-</span> <span class="na">run</span><span class="pi">:</span> <span class="s">yarn test</span>
+      <span class="pi">-</span> <span class="s">run</span><span class="pi">:</span> <span class="s">yarn test</span>
 
-      <span class="pi">-</span> <span class="na">store_test_results</span><span class="pi">:</span>
-          <span class="na">path</span><span class="pi">:</span> <span class="s">/tmp/test-results</span>
+      <span class="pi">-</span> <span class="s">store_test_results</span><span class="pi">:</span>
+          <span class="s">path</span><span class="pi">:</span> <span class="s">/tmp/test-results</span>
 
 </code></pre></div>
 <p>Next, create a <code>package.json</code> file in the repository root directory. Provide a command to run tests and add TestCafe as a dependency.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-  </span><span class="s2">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"test"</span><span class="p">:</span><span class="w"> </span><span class="s2">"testcafe chrome:headless tests/**/* -r xunit:/tmp/test-results/res.xml"</span><span class="w">
+  </span><span class="nt">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"test"</span><span class="p">:</span><span class="w"> </span><span class="s2">"testcafe chrome:headless tests/**/* -r xunit:/tmp/test-results/res.xml"</span><span class="w">
   </span><span class="p">},</span><span class="w">
-  </span><span class="s2">"devDependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-      </span><span class="s2">"testcafe"</span><span class="p">:</span><span class="w"> </span><span class="s2">"^0.18.4"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"testcafe-reporter-xunit"</span><span class="p">:</span><span class="w"> </span><span class="s2">"^2.1.0"</span><span class="w">
+  </span><span class="nt">"devDependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"testcafe"</span><span class="p">:</span><span class="w"> </span><span class="s2">"^0.18.4"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"testcafe-reporter-xunit"</span><span class="p">:</span><span class="w"> </span><span class="s2">"^2.1.0"</span><span class="w">
   </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>

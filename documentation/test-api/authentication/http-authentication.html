@@ -1012,8 +1012,8 @@ For NTLM authentication, the server may need additional information - the workst
 <p>The specified credentials will be used for all requests that require authentication.</p>
 
 <p><strong>Example</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://example.com`</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//example.com`</span>
     <span class="p">.</span><span class="nx">httpAuth</span><span class="p">({</span>
         <span class="na">username</span><span class="p">:</span> <span class="s1">'username'</span><span class="p">,</span>
         <span class="na">password</span><span class="p">:</span> <span class="s1">'Pa$$word'</span><span class="p">,</span>
@@ -1023,14 +1023,14 @@ For NTLM authentication, the server may need additional information - the workst
         <span class="na">workstation</span><span class="p">:</span> <span class="s1">'machine-win10'</span>
     <span class="p">});</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Test1'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{});</span>          <span class="c1">// Logs in as username</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Test1'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{});</span>          <span class="c1">// Logs in as username</span>
 
 <span class="nx">test</span>                                   <span class="c1">// Logs in as differentUserName</span>
     <span class="p">.</span><span class="nx">httpAuth</span><span class="p">({</span>
         <span class="na">username</span><span class="p">:</span> <span class="s1">'differentUserName'</span><span class="p">,</span>
         <span class="na">password</span><span class="p">:</span> <span class="s1">'differentPa$$word'</span>
     <span class="p">})</span>
-    <span class="p">(</span><span class="s1">'Test2'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{});</span>
+    <span class="p">(</span><span class="s1">'Test2'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{});</span>
 </code></pre></div>
 
 		</div>

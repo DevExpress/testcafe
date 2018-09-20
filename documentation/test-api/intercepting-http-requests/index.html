@@ -973,32 +973,32 @@
 </ul>
 <h2><a class="anchor" name="logging-http-requests"></a>Logging HTTP Requests <a class="permalink" href="#logging-http-requests">#</a></h2>
 <p>You can use the request logger to record HTTP requests the tested web app sends and responses it receives. For instance, you may want to make sure that the data from a remote service is correct. In this example, the test checks the DevExpress grid control&#39;s data.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span><span class="p">,</span> <span class="nx">RequestLogger</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
-<span class="k">import</span> <span class="nx">fs</span> <span class="k">from</span> <span class="s1">'fs'</span><span class="p">;</span>
-<span class="k">import</span> <span class="nx">path</span> <span class="k">from</span> <span class="s1">'path'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span><span class="p">,</span> <span class="nx">RequestLogger</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<span class="kr">import</span> <span class="nx">fs</span> <span class="nx">from</span> <span class="s1">'fs'</span><span class="p">;</span>
+<span class="kr">import</span> <span class="nx">path</span> <span class="nx">from</span> <span class="s1">'path'</span><span class="p">;</span>
 
-<span class="kd">const</span> <span class="nx">url</span> <span class="o">=</span> <span class="s1">'https://demos.devexpress.com/ASPxGridViewDemos/Exporting/Exporting.aspx'</span><span class="p">;</span>
+<span class="kr">const</span> <span class="nx">url</span> <span class="o">=</span> <span class="s1">'https://demos.devexpress.com/ASPxGridViewDemos/Exporting/Exporting.aspx'</span><span class="p">;</span>
 
-<span class="kd">const</span> <span class="nx">logger</span> <span class="o">=</span> <span class="nx">RequestLogger</span><span class="p">({</span> <span class="nx">url</span><span class="p">,</span> <span class="na">method</span><span class="p">:</span> <span class="s1">'post'</span> <span class="p">},</span> <span class="p">{</span>
+<span class="kr">const</span> <span class="nx">logger</span> <span class="o">=</span> <span class="nx">RequestLogger</span><span class="p">({</span> <span class="nx">url</span><span class="p">,</span> <span class="na">method</span><span class="p">:</span> <span class="s1">'post'</span> <span class="p">},</span> <span class="p">{</span>
     <span class="na">logResponseHeaders</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
     <span class="na">logResponseBody</span><span class="p">:</span>    <span class="kc">true</span>
 <span class="p">});</span>
 
-<span class="nx">fixture</span> <span class="s2">`Export`</span>
+<span class="nx">fixture</span> <span class="err">`</span><span class="nx">Export</span><span class="err">`</span>
     <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="nx">url</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">requestHooks</span><span class="p">(</span><span class="nx">logger</span><span class="p">);</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'export to csv'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kd">const</span> <span class="nx">exportToCSVButton</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'span'</span><span class="p">).</span><span class="nx">withText</span><span class="p">(</span><span class="s1">'Export to CSV'</span><span class="p">);</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'export to csv'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">const</span> <span class="nx">exportToCSVButton</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'span'</span><span class="p">).</span><span class="nx">withText</span><span class="p">(</span><span class="s1">'Export to CSV'</span><span class="p">);</span>
 
-    <span class="kr">await</span> <span class="nx">t</span>
+    <span class="nx">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">exportToCSVButton</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">logger</span><span class="p">.</span><span class="nx">contains</span><span class="p">(</span><span class="nx">r</span> <span class="o">=&gt;</span> <span class="nx">r</span><span class="p">.</span><span class="nx">response</span><span class="p">.</span><span class="nx">statusCode</span> <span class="o">===</span> <span class="mi">200</span><span class="p">)).</span><span class="nx">ok</span><span class="p">();</span>
 
     <span class="c1">// After clicking 'Export', the response comes as a gziped CSV.</span>
     <span class="c1">// The browser unpacks the archive and gives you the file that was inside.</span>
     <span class="c1">// The test receives the archive as is.</span>
-    <span class="kd">const</span> <span class="nx">filePath</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="s1">'exported-grid.zip'</span><span class="p">);</span>
+    <span class="kr">const</span> <span class="nx">filePath</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="s1">'exported-grid.zip'</span><span class="p">);</span>
 
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">filePath</span><span class="p">);</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">logger</span><span class="p">.</span><span class="nx">requests</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">response</span><span class="p">.</span><span class="nx">headers</span><span class="p">);</span>
@@ -1013,16 +1013,16 @@
 <p>See <a href="logging-http-requests.html">Logging HTTP Requests</a> for more information.</p>
 <h2><a class="anchor" name="mocking-http-responses"></a>Mocking HTTP Responses <a class="permalink" href="#mocking-http-responses">#</a></h2>
 <p>Use TestCafe request mocker to substitute infrastructure that is difficult to deploy or that you do not want to use when testing. This can be a third-party service that charges you per pageview or an analytics service that should not log page views tests generate.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span><span class="p">,</span> <span class="nx">RequestMock</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span><span class="p">,</span> <span class="nx">RequestMock</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
 <span class="c1">// A URL to which Google Analytics sends data.</span>
-<span class="kd">const</span> <span class="nx">collectDataGoogleAnalyticsRegExp</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">RegExp</span><span class="p">(</span><span class="s1">'https://www.google-analytics.com/collect'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">collectDataGoogleAnalyticsRegExp</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">RegExp</span><span class="p">(</span><span class="s1">'https://www.google-analytics.com/collect'</span><span class="p">);</span>
 
 <span class="c1">// Technically, Google Analytics sends an XHR request for a GIF image.</span>
 <span class="c1">// So, we prepare a mocked response with binary data.</span>
-<span class="kd">const</span> <span class="nx">mockedResponse</span> <span class="o">=</span> <span class="nx">Buffer</span><span class="p">.</span><span class="k">from</span><span class="p">([</span><span class="mh">0x47</span><span class="p">,</span> <span class="mh">0x49</span><span class="p">,</span> <span class="mh">0x46</span><span class="p">,</span> <span class="mh">0x38</span><span class="p">,</span> <span class="mh">0x39</span><span class="p">,</span> <span class="mh">0x61</span><span class="p">,</span> <span class="mh">0x01</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x01</span><span class="p">]);</span>
+<span class="kr">const</span> <span class="nx">mockedResponse</span> <span class="o">=</span> <span class="nx">Buffer</span><span class="p">.</span><span class="nx">from</span><span class="p">([</span><span class="mh">0x47</span><span class="p">,</span> <span class="mh">0x49</span><span class="p">,</span> <span class="mh">0x46</span><span class="p">,</span> <span class="mh">0x38</span><span class="p">,</span> <span class="mh">0x39</span><span class="p">,</span> <span class="mh">0x61</span><span class="p">,</span> <span class="mh">0x01</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x01</span><span class="p">]);</span>
 
-<span class="kd">const</span> <span class="nx">mock</span> <span class="o">=</span> <span class="nx">RequestMock</span><span class="p">()</span>
+<span class="kr">const</span> <span class="nx">mock</span> <span class="o">=</span> <span class="nx">RequestMock</span><span class="p">()</span>
     <span class="p">.</span><span class="nx">onRequestTo</span><span class="p">(</span><span class="nx">collectDataGoogleAnalyticsRegExp</span><span class="p">)</span>
 
     <span class="c1">// We respond to Analytics requests with the prepared data</span>
@@ -1032,12 +1032,12 @@
         <span class="s1">'content-type'</span><span class="p">:</span> <span class="s1">'image/gif'</span>
     <span class="p">});</span>
 
-<span class="nx">fixture</span> <span class="s2">`Fixture`</span>
+<span class="nx">fixture</span> <span class="err">`</span><span class="nx">Fixture</span><span class="err">`</span>
     <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="s1">'https://devexpress.github.io/testcafe/'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">requestHooks</span><span class="p">(</span><span class="nx">mock</span><span class="p">);</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'basic'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">await</span> <span class="nx">t</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'basic'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'.get-started-button'</span><span class="p">)</span>
 
         <span class="c1">// During the pause, you can open DevTools and</span>
@@ -1051,13 +1051,13 @@
 <p>You can create your own request hook to handle HTTP requests.</p>
 
 <p>The example below shows a custom hook that adds the <code>Authorization</code> header for <a href="https://tools.ietf.org/html/rfc7519">JWT</a> bearer authorization.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span><span class="p">,</span> <span class="nx">RequestHook</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span><span class="p">,</span> <span class="nx">RequestHook</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="kd">class</span> <span class="nx">JwtBearerAuthorization</span> <span class="kd">extends</span> <span class="nx">RequestHook</span> <span class="p">{</span>
-    <span class="kd">constructor</span> <span class="p">()</span> <span class="p">{</span>
+<span class="kr">class</span> <span class="nx">JwtBearerAuthorization</span> <span class="kr">extends</span> <span class="nx">RequestHook</span> <span class="p">{</span>
+    <span class="nx">constructor</span> <span class="p">()</span> <span class="p">{</span>
         <span class="c1">// No URL filtering applied to this hook</span>
         <span class="c1">// so it will be used for all requests.</span>
-        <span class="k">super</span><span class="p">();</span>
+        <span class="kr">super</span><span class="p">();</span>
     <span class="p">}</span>
 
     <span class="nx">onRequest</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
@@ -1065,13 +1065,13 @@
     <span class="p">}</span>
 <span class="p">}</span>
 
-<span class="kd">const</span> <span class="nx">jwtBearerAuthorization</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">JwtBearerAuthorization</span><span class="p">();</span>
+<span class="kr">const</span> <span class="nx">jwtBearerAuthorization</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">JwtBearerAuthorization</span><span class="p">();</span>
 
-<span class="nx">fixture</span> <span class="s2">`Fixture`</span>
+<span class="nx">fixture</span> <span class="err">`</span><span class="nx">Fixture</span><span class="err">`</span>
     <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="s1">'&lt;website URL&gt;'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">requestHooks</span><span class="p">(</span><span class="nx">jwtBearerAuthorization</span><span class="p">);</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'basic'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'basic'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="cm">/* some actions */</span>
 <span class="p">});</span>
 </code></pre></div>

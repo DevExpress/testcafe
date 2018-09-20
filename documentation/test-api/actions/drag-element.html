@@ -999,15 +999,15 @@ To select text, use <a href="select-text.html">t.selectText</a>.</p>
 </tr>
 </tbody></table></div>
 <p>The following example demonstrates how to use the <code>t.drag</code> action with a slider.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="kd">const</span> <span class="nx">slider</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#developer-rating'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">slider</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#developer-rating'</span><span class="p">);</span>
 
-<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://www.example.com/`</span><span class="p">;</span>
+<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//www.example.com/`;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Drag slider'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">await</span> <span class="nx">t</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Drag slider'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#i-tried-testcafe'</span><span class="p">);</span>
         <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">slider</span><span class="p">.</span><span class="nx">value</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">drag</span><span class="p">(</span><span class="s1">'.ui-slider-handle'</span><span class="p">,</span> <span class="mi">360</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">{</span> <span class="na">offsetX</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="na">offsetY</span><span class="p">:</span> <span class="mi">10</span> <span class="p">})</span>
@@ -1036,15 +1036,15 @@ To select text, use <a href="select-text.html">t.selectText</a>.</p>
 </tr>
 </tbody></table></div>
 <p>This sample shows how to drop an element into a specific area using the <code>t.dragToElement</code> action.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="k">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://www.example.com/`</span><span class="p">;</span>
+<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//www.example.com/`;</span>
 
-<span class="kd">const</span> <span class="nx">designSurfaceItems</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'.design-surface'</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">'.items'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">designSurfaceItems</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'.design-surface'</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">'.items'</span><span class="p">);</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Drag an item from the toolbox'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">await</span> <span class="nx">t</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Drag an item from the toolbox'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">dragToElement</span><span class="p">(</span><span class="s1">'.toolbox-item.text-input'</span><span class="p">,</span> <span class="s1">'.design-surface'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">designSurfaceItems</span><span class="p">.</span><span class="nx">count</span><span class="p">).</span><span class="nx">gt</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
 <span class="p">});</span>

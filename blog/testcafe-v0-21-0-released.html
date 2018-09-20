@@ -366,16 +366,16 @@
 <p>Starting with v0.21.0, TestCafe can serve proxied web pages over HTTPS. This allows you to test pages that require a secure origin.</p>
 
 <p>To enable HTTPS when you use TestCafe through the command line, specify the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--ssl-options">--ssl</a> flag followed by the <a href="https://nodejs.org/api/https.html#https_https_createserver_options_requestlistener">HTTPS server options</a>. The most commonly used options are described in the <a href="https://nodejs.org/api/tls.html#tls_tls_createsecurecontext_options">TLS topic</a> in the Node.js documentation.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="nt">--ssl</span> <span class="nv">pfx</span><span class="o">=</span>path/to/file.pfx<span class="p">;</span><span class="nv">rejectUnauthorized</span><span class="o">=</span><span class="nb">true</span><span class="p">;</span>...
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe --ssl <span class="nv">pfx</span><span class="o">=</span>path/to/file.pfx;rejectUnauthorized<span class="o">=</span><span class="nb">true</span>;...
 </code></pre></div>
 <p>When you use a programming API, pass the HTTPS server options to the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/createtestcafe.html">createTestCafe</a> method.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="s1">'use strict'</span><span class="p">;</span>
 
-<span class="kd">const</span> <span class="nx">createTestCafe</span>        <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'testcafe'</span><span class="p">);</span>
-<span class="kd">const</span> <span class="nx">selfSignedSertificate</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'openssl-self-signed-certificate'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">createTestCafe</span>        <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'testcafe'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">selfSignedSertificate</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'openssl-self-signed-certificate'</span><span class="p">);</span>
 <span class="kd">let</span> <span class="nx">runner</span>                  <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
 
-<span class="kd">const</span> <span class="nx">sslOptions</span> <span class="o">=</span> <span class="p">{</span>
+<span class="kr">const</span> <span class="nx">sslOptions</span> <span class="o">=</span> <span class="p">{</span>
     <span class="na">key</span><span class="p">:</span>  <span class="nx">selfSignedSertificate</span><span class="p">.</span><span class="nx">key</span><span class="p">,</span>
     <span class="na">cert</span><span class="p">:</span> <span class="nx">selfSignedSertificate</span><span class="p">.</span><span class="nx">cert</span>
 <span class="p">};</span>
@@ -402,7 +402,7 @@
 <p>You specify a screenshot path pattern when you run tests. Each time TestCafe takes a screenshot, it substitutes the placeholders with actual values and saves the screenshot to the resulting path.</p>
 
 <p>The following example shows how to specify a screenshot path pattern through the command line:</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe all test.js <span class="nt">-s</span> screenshots <span class="nt">-p</span> <span class="s2">"</span><span class="k">${</span><span class="nv">DATE</span><span class="k">}</span><span class="s2">_</span><span class="k">${</span><span class="nv">TIME</span><span class="k">}</span><span class="s2">/test-</span><span class="k">${</span><span class="nv">TEST_INDEX</span><span class="k">}</span><span class="s2">/</span><span class="k">${</span><span class="nv">USERAGENT</span><span class="k">}</span><span class="s2">/</span><span class="k">${</span><span class="nv">FILE_INDEX</span><span class="k">}</span><span class="s2">.png"</span>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe all test.js -s screenshots -p <span class="s2">"</span><span class="k">${</span><span class="nv">DATE</span><span class="k">}</span><span class="s2">_</span><span class="k">${</span><span class="nv">TIME</span><span class="k">}</span><span class="s2">/test-</span><span class="k">${</span><span class="nv">TEST_INDEX</span><span class="k">}</span><span class="s2">/</span><span class="k">${</span><span class="nv">USERAGENT</span><span class="k">}</span><span class="s2">/</span><span class="k">${</span><span class="nv">FILE_INDEX</span><span class="k">}</span><span class="s2">.png"</span>
 </code></pre></div>
 <p>When you use a programming API, pass the screenshot path pattern to the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#screenshots">runner.screenshots method</a>.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">screenshots</span><span class="p">(</span><span class="s1">'reports/screenshots/'</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="s1">'${TEST_INDEX}/${OS}/${BROWSER}-v${BROWSER_VERSION}/${FILE_INDEX}.png'</span><span class="p">);</span>
