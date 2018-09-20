@@ -33,7 +33,7 @@ function formatUnhandledRejectionReason (reason) {
     if (reason instanceof Error)
         return reason.stack;
 
-    return util.inspect(reason, { depth: 1 });
+    return util.inspect(reason);
 }
 
 function onUnhandledRejection (reason) {

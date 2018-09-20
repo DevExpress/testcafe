@@ -49,7 +49,7 @@ describe('Global error handlers', () => {
         handleErrors.registerErrorHandlers();
         handleErrors.startHandlingTestErrors();
 
-        const obj = { a: 1, b: 'b', c: { d: 'd', e: { f: 'too deep' } } };
+        const obj = { a: 1, b: { c: 'd', e: { f: { g : 'too deep' } } } };
 
         obj.circular = obj;
 
@@ -75,7 +75,7 @@ describe('Global error handlers', () => {
             '1',
             'string message',
             'true',
-            '{ a: 1, b: \'b\', c: { d: \'d\', e: [Object] }, circular: [Circular] }',
+            '{ a: 1, b: { c: \'d\', e: { f: [Object] } }, circular: [Circular] }',
             '[Function]',
             '[ 1, 2 ]',
             '/regex/'
