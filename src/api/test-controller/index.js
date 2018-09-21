@@ -41,7 +41,7 @@ import {
 import { WaitCommand, DebugCommand } from '../../test-run/commands/observation';
 import assertRequestHookType from '../request-hooks/assert-type';
 
-const promiseThen = Promise.resolve().then;
+const originalThen = Promise.resolve().then;
 
 export default class TestController {
     constructor (testRun) {
@@ -69,7 +69,7 @@ export default class TestController {
         extendedPromise.then = function () {
             markCallsiteAwaited();
 
-            return promiseThen.apply(this, arguments);
+            return originalThen.apply(this, arguments);
         };
 
         delegateAPI(extendedPromise, TestController.API_LIST, {
@@ -84,7 +84,7 @@ export default class TestController {
         const callsite = getCallsiteForMethod(apiMethodName);
         const executor = createTaskExecutor(callsite);
 
-        this.executionChain.then = promiseThen;
+        this.executionChain.then = originalThen;
         this.executionChain      = this.executionChain.then(executor);
 
         this.callsitesWithoutAwait.add(callsite);
