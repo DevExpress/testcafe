@@ -1,8 +1,10 @@
-const Promise        = require('pinkie');
-const expect         = require('chai').expect;
-const createTestCafe = require('../../lib/');
-const types          = require('../../lib/errors/test-run/type');
-const handleErrors   = require('../../lib/utils/handle-errors');
+const Promise           = require('pinkie');
+const expect            = require('chai').expect;
+const createTestCafe    = require('../../lib/');
+const types             = require('../../lib/errors/test-run/type');
+const handleErrors      = require('../../lib/utils/handle-errors');
+const TestController    = require('../../lib/api/test-controller');
+const AssertionExecutor = require('../../lib/assertions/executor');
 
 
 class TestRunMock {
@@ -15,16 +17,69 @@ class TestRunMock {
     addError (err) {
         this.errors.push(err);
     }
+
+    executeCommand (command, callsite) {
+        return new AssertionExecutor(command, 0, callsite).run();
+    }
+
 }
 
 describe('Global error handlers', () => {
+    it('unhandled promise rejection on chain assertions', () => {
+        let unhandledRejection = false;
+
+        const throwErrorOnUnhandledRejection = () => {
+            unhandledRejection = true;
+        };
+
+        process.once('unhandledRejection', throwErrorOnUnhandledRejection);
+
+        return Promise.resolve()
+            .then(() => {
+                return new TestController(new TestRunMock('', '')).expect(10).eql(5).expect(10).eql(10);
+            })
+            .catch(() => {
+                process.removeListener('unhandledRejection', throwErrorOnUnhandledRejection);
+
+                expect(unhandledRejection).eql(false);
+            });
+    });
+
     it('format UnhandledPromiseRejection reason', () => {
         handleErrors.registerErrorHandlers();
         handleErrors.startHandlingTestErrors();
 
-        const reasons        = [new Error('test'), null, void 0, 1, 'string message', true, { a: 1 }];
-        const testRunMocks   = reasons.map((reason, index) => new TestRunMock(index, reason));
-        const expectedErrors = ['Error: test', '[object Null]', 'undefined', '1', 'string message', 'true', '[object Object]'];
+        const obj = { a: 1, b: { c: 'd', e: { f: { g: 'too deep' } } } };
+
+        obj.circular = obj;
+
+        const reasons = [
+            new Error('test'),
+            null,
+            void 0,
+            1,
+            'string message',
+            true,
+            obj,
+            _ => _,
+            [1, 2],
+            /regex/
+        ];
+
+        const testRunMocks = reasons.map((reason, index) => new TestRunMock(index, reason));
+
+        const expectedErrors = [
+            'Error: test',
+            'null',
+            'undefined',
+            '1',
+            'string message',
+            'true',
+            '{ a: 1, b: { c: \'d\', e: { f: [Object] } }, circular: [Circular] }',
+            '[Function]',
+            '[ 1, 2 ]',
+            '/regex/'
+        ];
 
         testRunMocks.forEach(testRun => {
             handleErrors.addRunningTest(testRun);

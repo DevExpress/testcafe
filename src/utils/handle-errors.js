@@ -1,4 +1,5 @@
 import { UnhandledPromiseRejectionError, UncaughtExceptionError } from '../errors/test-run';
+import util from 'util';
 
 const runningTests     = {};
 let handlingTestErrors = false;
@@ -32,7 +33,7 @@ function formatUnhandledRejectionReason (reason) {
     if (reason instanceof Error)
         return reason.stack;
 
-    return Object.prototype.toString.call(reason);
+    return util.inspect(reason);
 }
 
 function onUnhandledRejection (reason) {
