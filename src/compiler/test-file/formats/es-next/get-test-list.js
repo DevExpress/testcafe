@@ -15,6 +15,8 @@ const TOKEN_TYPE = {
     ExpressionStatement:      'ExpressionStatement',
     ReturnStatement:          'ReturnStatement',
     FunctionDeclaration:      'FunctionDeclaration',
+    VariableStatement:        'VariableStatement',
+    VariableDeclaration:      'VariableDeclaration',
     ObjectLiteralExpression:  'ObjectExpression'
 };
 

@@ -79,7 +79,7 @@ class TypeScriptTestFileParser extends TestFileParserBase {
     }
 
     getRValue (token) {
-        return token.initializer;
+        return token.declarationList.declarations[0].initializer;
     }
 
     getStringValue (token) {
