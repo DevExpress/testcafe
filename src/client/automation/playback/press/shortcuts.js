@@ -527,10 +527,11 @@ function focusAndCheckNextRadioButton (element, reverse) {
 }
 
 function focusNextElement (element, reverse, skipRadioGroups) {
-    if (domUtils.isSelectElement(element)) {
-        selectElement.collapseOptionList();
+    if (!element)
         return Promise.resolve();
-    }
+
+    if (domUtils.isSelectElement(element))
+        selectElement.collapseOptionList();
 
     return domUtils.focusNextElement(element, reverse, skipRadioGroups)
         .then(nextElement => {
