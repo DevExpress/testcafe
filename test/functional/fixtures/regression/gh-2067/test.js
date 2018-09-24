@@ -1,0 +1,17 @@
+describe('[Regression](GH-2067)', function () {
+    it('named', function () {
+        return runTests('testcafe-fixtures/index.js', 'named');
+    });
+
+    it('nonamed - chrome', function () {
+        return runTests('testcafe-fixtures/index.js', 'nonamed - chrome', { only: ['chrome'] });
+    });
+
+    it('nonamed - ie, firefox', function () {
+        return runTests('testcafe-fixtures/index.js', 'nonamed - ie, firefox', { skip: ['chrome'] });
+    });
+
+    it('Should select the checked radio button by pressing the tab key', function () {
+        return runTests('testcafe-fixtures/index.js', 'Should select the checked radio button by pressing the tab key');
+    });
+});

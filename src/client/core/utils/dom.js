@@ -2,9 +2,10 @@ import hammerhead from '../deps/hammerhead';
 import * as styleUtils from './style';
 import * as arrayUtils from './array';
 
-
-const browserUtils  = hammerhead.utils.browser;
-const nativeMethods = hammerhead.nativeMethods;
+const browserUtils     = hammerhead.utils.browser;
+const nativeMethods    = hammerhead.nativeMethods;
+const focusBlurSandbox = hammerhead.eventSandbox.focusBlur;
+const Promise          = hammerhead.Promise;
 
 export const getActiveElement                       = hammerhead.utils.dom.getActiveElement;
 export const findDocument                           = hammerhead.utils.dom.findDocument;
@@ -50,6 +51,8 @@ export const closest                                = hammerhead.utils.dom.close
 export const getParents                             = hammerhead.utils.dom.getParents;
 export const getTopSameDomainWindow                 = hammerhead.utils.dom.getTopSameDomainWindow;
 
+export const isRadioButtonElement = el => isInputElement(el) && el.type === 'radio';
+
 function getElementsWithTabIndex (elements) {
     return arrayUtils.filter(elements, el => el.tabIndex > 0);
 }
@@ -74,7 +77,7 @@ function sortElementsByFocusingIndex (elements) {
         return elements;
     }
 
-    elementsWithTabIndex        = elementsWithTabIndex.sort(sortBy('tabIndex'));
+    elementsWithTabIndex          = elementsWithTabIndex.sort(sortBy('tabIndex'));
     const elementsWithoutTabIndex = getElementsWithoutTabIndex(elements);
 
     if (iFrames.length)
@@ -84,9 +87,9 @@ function sortElementsByFocusingIndex (elements) {
 }
 
 function insertIFramesContentElements (elements, iFrames) {
-    const sortedIFrames         = sortElementsByTabIndex(iFrames);
+    const sortedIFrames       = sortElementsByTabIndex(iFrames);
     let results               = [];
-    const iFramesElements       = [];
+    const iFramesElements     = [];
     let iframeFocusedElements = [];
     let i                     = 0;
 
@@ -110,7 +113,7 @@ function insertIFramesContentElements (elements, iFrames) {
                 results.pop();
 
                 const iFrameElements               = iFramesElements[arrayUtils.indexOf(iFrames, elements[i])];
-                let elementsWithTabIndex         = getElementsWithTabIndex(iFrameElements);
+                let elementsWithTabIndex           = getElementsWithTabIndex(iFrameElements);
                 const elementsWithoutTabIndexArray = getElementsWithoutTabIndex(iFrameElements);
 
                 elementsWithTabIndex = elementsWithTabIndex.sort(sortBy('tabIndex'));
@@ -157,9 +160,9 @@ function getFocusableElements (doc) {
     const invisibleElements   = getInvisibleElements(allElements);
     const inputElementsRegExp = /^(input|button|select|textarea)$/;
     const focusableElements   = [];
-    let element             = null;
-    let tagName             = null;
-    let tabIndex            = null;
+    let element               = null;
+    let tagName               = null;
+    let tabIndex              = null;
 
     let needPush = false;
 
@@ -248,8 +251,8 @@ export function getTextareaIndentInLine (textarea, position) {
 export function getTextareaLineNumberByPosition (textarea, position) {
     const textareaValue = getTextAreaValue(textarea);
     const lines         = textareaValue.split('\n');
-    let topPartLength = 0;
-    let line          = 0;
+    let topPartLength   = 0;
+    let line            = 0;
 
     for (let i = 0; topPartLength <= position; i++) {
         if (position <= topPartLength + lines[i].length) {
@@ -267,7 +270,7 @@ export function getTextareaLineNumberByPosition (textarea, position) {
 export function getTextareaPositionByLineAndOffset (textarea, line, offset) {
     const textareaValue = getTextAreaValue(textarea);
     const lines         = textareaValue.split('\n');
-    let lineIndex     = 0;
+    let lineIndex       = 0;
 
     for (let i = 0; i < line; i++)
         lineIndex += lines[i].length + 1;
@@ -364,28 +367,81 @@ export function getElementDescription (el) {
     return res.join('');
 }
 
-export function getNextFocusableElement (element, reverse) {
-    const offset       = reverse ? -1 : 1;
+export function focusNextElement (element, reverse, skipRadioGroups) {
+    return new Promise(resolve => {
+        const nextElement = getNextFocusableElement(element, reverse, skipRadioGroups);
+
+        if (!nextElement)
+            resolve();
+
+        focusBlurSandbox.focus(nextElement, () => {
+            resolve(nextElement);
+        });
+    });
+}
+
+function filterFocusableElements (elements, sourceElement, skipRadioGroups) {
+    if (!isRadioButtonElement(sourceElement))
+        return elements;
+
+    const isArrowNavigationAllowed                  = !skipRadioGroups && sourceElement.name !== '';
+    const isArrowNavigationBetweenNonamesAllowed    = !skipRadioGroups && !sourceElement.name && browserUtils.isChrome;
+    const isArrowNavigationBetweenNonamesDisallowed = !skipRadioGroups && !sourceElement.name && !browserUtils.isChrome;
+
+    elements = arrayUtils.filter(elements, item => {
+        const isRadioItem = isRadioButtonElement(item);
+
+        if (isArrowNavigationAllowed)
+            return isRadioItem && item.name === sourceElement.name;
+
+        if (isArrowNavigationBetweenNonamesAllowed)
+            return isRadioItem && !item.name;
+
+        if (isArrowNavigationBetweenNonamesDisallowed)
+            return item === sourceElement;
+
+        //NOTE: in all browsers except Mozilla and Opera focus sets on one radio set from group only.
+        // in Mozilla and Opera focus sets on any radio set.
+
+        if (sourceElement.name !== '' && !browserUtils.isFirefox)
+            return !item.name || item === sourceElement || item.name !== sourceElement.name;
+
+        return false;
+    });
+
+    return elements;
+}
+
+function correctFocusableElement (elements, element, skipRadioGroups) {
+    const isNotCheckedRadioButtonElement = isRadioButtonElement(element) && element.name && !element.checked;
+
+    if (!skipRadioGroups || !isNotCheckedRadioButtonElement)
+        return element;
+
+    const checkedRadioButtonElementWithSameName = arrayUtils.find(elements, el => {
+        return isRadioButtonElement(el) && el.name === element.name && el.checked;
+    });
+
+    return checkedRadioButtonElementWithSameName || element;
+}
+
+export function getNextFocusableElement (element, reverse, skipRadioGroups) {
+    const offset     = reverse ? -1 : 1;
     let allFocusable = sortElementsByFocusingIndex(getFocusableElements(findDocument(element)));
 
-    //NOTE: in all browsers except Mozilla and Opera focus sets on one radio set from group only.
-    // in Mozilla and Opera focus sets on any radio set.
-    if (isInputElement(element) && element.type === 'radio' && element.name !== '' && !browserUtils.isFirefox) {
-        allFocusable = arrayUtils.filter(allFocusable, item => {
-            return !item.name || item === element || item.name !== element.name;
-        });
-    }
+    allFocusable = filterFocusableElements(allFocusable, element, skipRadioGroups);
 
+    const isRadioInput         = isRadioButtonElement(element);
     const currentIndex         = arrayUtils.indexOf(allFocusable, element);
     const isLastElementFocused = reverse ? currentIndex === 0 : currentIndex === allFocusable.length - 1;
 
     if (isLastElementFocused)
-        return document.body;
+        return skipRadioGroups || !isRadioInput ? document.body : allFocusable[allFocusable.length - 1 - currentIndex];
 
     if (reverse && currentIndex === -1)
         return allFocusable[allFocusable.length - 1];
 
-    return allFocusable[currentIndex + offset];
+    return correctFocusableElement(allFocusable, allFocusable[currentIndex + offset], skipRadioGroups);
 }
 
 export function getFocusableParent (el) {
@@ -457,7 +513,7 @@ export function getCommonAncestor (element1, element2) {
     if (isTheSameNode(element1, element2))
         return element1;
 
-    const el1Parents     = [element1].concat(getParents(element1));
+    const el1Parents   = [element1].concat(getParents(element1));
     let commonAncestor = element2;
 
     while (commonAncestor) {
