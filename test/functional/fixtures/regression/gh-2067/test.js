@@ -4,11 +4,11 @@ describe('[Regression](GH-2067)', function () {
     });
 
     it('nonamed - chrome', function () {
-        return runTests('testcafe-fixtures/index.js', 'nonamed - chrome', { only: ['chrome'] });
+        return runTests('testcafe-fixtures/index.js', 'nonamed - chrome', { only: ['chrome', 'chrome-osx', 'android'] });
     });
 
     it('nonamed - ie, firefox', function () {
-        return runTests('testcafe-fixtures/index.js', 'nonamed - ie, firefox', { skip: ['chrome'] });
+        return runTests('testcafe-fixtures/index.js', 'nonamed - ie, firefox', { skip: ['chrome', 'chrome-osx', 'android'] });
     });
 
     it('Should select the checked radio button by pressing the tab key', function () {
