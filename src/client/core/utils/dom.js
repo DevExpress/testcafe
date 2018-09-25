@@ -406,7 +406,7 @@ function filterFocusableElements (elements, sourceElement, skipRadioGroups) {
         if (sourceElement.name !== '' && !browserUtils.isFirefox)
             return !item.name || item === sourceElement || item.name !== sourceElement.name;
 
-        return false;
+        return true;
     });
 
     return elements;
