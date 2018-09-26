@@ -40,7 +40,7 @@ You need to add the following configuration to the `launch.json` file.
     "program": "${workspaceRoot}/node_modules/testcafe/bin/testcafe.js",
     "args": [
         "firefox",
-        "${file}"
+        "${relativeFile}"
     ],
     "console": "integratedTerminal",
     "cwd": "${workspaceRoot}"
@@ -54,7 +54,7 @@ This configuration contains the following attributes:
 * `request` - specifies the request type. Set to `launch` since this configuration launches a program.
 * `name` - specifies the configuration name.
 * `program` - path to the executed JS file. In this case, this file is the TestCafe module.
-* `args` - [command line arguments](../using-testcafe/command-line-interface.md) passed to the launched program. In this case, they specify the browser in which the tests should run and the test file.
+* `args` - [command line arguments](../using-testcafe/command-line-interface.md) passed to the launched program. In this case, they specify the browser in which the tests should run and the relative path to the test file.
 * `console` - the console where the test run report is printed. In this case, the report is output to the integrated terminal. You can learn about other available values in the [Launch.json attributes](https://code.visualstudio.com/docs/editor/debugging#_launchjson-attributes) topic.
 * `cwd` - the current working directory. Set to the workspace root.
 
