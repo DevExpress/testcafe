@@ -526,7 +526,7 @@ function focusAndCheckNextRadioButton (element, reverse) {
         });
 }
 
-function focusNextElement (element, reverse, skipRadioGroups) {
+function focusNextElement (element, reverse, skipRadioGroups = true) {
     if (!element)
         return Promise.resolve();
 
@@ -558,7 +558,7 @@ export default {
     'home':        home,
     'end':         end,
     'enter':       enter,
-    'tab':         element => focusNextElement(element, false, true),
-    'shift+tab':   element => focusNextElement(element, true, true),
+    'tab':         element => focusNextElement(element, false),
+    'shift+tab':   element => focusNextElement(element, true),
     'esc':         esc
 };

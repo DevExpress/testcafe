@@ -67,12 +67,12 @@ function sortElementsByFocusingIndex (elements) {
 
     let elementsWithTabIndex = getElementsWithTabIndex(elements);
 
-    //iFrames
-    const iFrames = arrayUtils.filter(elements, el => isIframeElement(el));
+    //iframes
+    const iframes = arrayUtils.filter(elements, el => isIframeElement(el));
 
     if (!elementsWithTabIndex.length) {
-        if (iFrames.length)
-            elements = insertIFramesContentElements(elements, iFrames);
+        if (iframes.length)
+            elements = insertIframesContentElements(elements, iframes);
 
         return elements;
     }
@@ -80,29 +80,29 @@ function sortElementsByFocusingIndex (elements) {
     elementsWithTabIndex          = elementsWithTabIndex.sort(sortBy('tabIndex'));
     const elementsWithoutTabIndex = getElementsWithoutTabIndex(elements);
 
-    if (iFrames.length)
-        return insertIFramesContentElements(elementsWithTabIndex, iFrames).concat(insertIFramesContentElements(elementsWithoutTabIndex, iFrames));
+    if (iframes.length)
+        return insertIframesContentElements(elementsWithTabIndex, iframes).concat(insertIframesContentElements(elementsWithoutTabIndex, iframes));
 
     return elementsWithTabIndex.concat(elementsWithoutTabIndex);
 }
 
-function insertIFramesContentElements (elements, iFrames) {
-    const sortedIFrames       = sortElementsByTabIndex(iFrames);
+function insertIframesContentElements (elements, iframes) {
+    const sortedIframes       = sortElementsByTabIndex(iframes);
     let results               = [];
-    const iFramesElements     = [];
+    const iframesElements     = [];
     let iframeFocusedElements = [];
     let i                     = 0;
 
-    for (i = 0; i < sortedIFrames.length; i++) {
+    for (i = 0; i < sortedIframes.length; i++) {
         //NOTE: We can get elements of the same domain iframe only
         try {
-            iframeFocusedElements = getFocusableElements(sortedIFrames[i].contentDocument);
+            iframeFocusedElements = getFocusableElements(sortedIframes[i].contentDocument);
         }
         catch (e) {
             iframeFocusedElements = [];
         }
 
-        iFramesElements.push(sortElementsByFocusingIndex(iframeFocusedElements));
+        iframesElements.push(sortElementsByFocusingIndex(iframeFocusedElements));
     }
 
     for (i = 0; i < elements.length; i++) {
@@ -112,7 +112,7 @@ function insertIFramesContentElements (elements, iFrames) {
             if (browserUtils.isIE) {
                 results.pop();
 
-                const iFrameElements               = iFramesElements[arrayUtils.indexOf(iFrames, elements[i])];
+                const iFrameElements               = iframesElements[arrayUtils.indexOf(iframes, elements[i])];
                 let elementsWithTabIndex           = getElementsWithTabIndex(iFrameElements);
                 const elementsWithoutTabIndexArray = getElementsWithoutTabIndex(iFrameElements);
 
@@ -122,10 +122,10 @@ function insertIFramesContentElements (elements, iFrames) {
                 results = results.concat(elementsWithoutTabIndexArray);
             }
             else {
-                if (browserUtils.isWebKit && iFramesElements[arrayUtils.indexOf(iFrames, elements[i])].length)
+                if (browserUtils.isWebKit && iframesElements[arrayUtils.indexOf(iframes, elements[i])].length)
                     results.pop();
 
-                results = results.concat(iFramesElements[arrayUtils.indexOf(iFrames, elements[i])]);
+                results = results.concat(iframesElements[arrayUtils.indexOf(iframes, elements[i])]);
             }
         }
     }
@@ -371,12 +371,10 @@ export function focusNextElement (element, reverse, skipRadioGroups) {
     return new Promise(resolve => {
         const nextElement = getNextFocusableElement(element, reverse, skipRadioGroups);
 
-        if (!nextElement)
+        if (nextElement)
+            focusBlurSandbox.focus(nextElement, () => resolve(nextElement));
+        else
             resolve();
-
-        focusBlurSandbox.focus(nextElement, () => {
-            resolve(nextElement);
-        });
     });
 }
 
@@ -400,9 +398,8 @@ function filterFocusableElements (elements, sourceElement, skipRadioGroups) {
         if (isArrowNavigationBetweenNonamesDisallowed)
             return item === sourceElement;
 
-        //NOTE: in all browsers except Mozilla and Opera focus sets on one radio set from group only.
+        // NOTE: in all browsers except Mozilla and Opera focus sets on one radio set from group only.
         // in Mozilla and Opera focus sets on any radio set.
-
         if (sourceElement.name !== '' && !browserUtils.isFirefox)
             return !item.name || item === sourceElement || item.name !== sourceElement.name;
 

@@ -1,4 +1,4 @@
-describe('[Regression](GH-2067)', function () {
+describe('[Regression](GH-2067) - Radio button navigation by keyboard', function () {
     it('named', function () {
         return runTests('testcafe-fixtures/index.js', 'named');
     });
