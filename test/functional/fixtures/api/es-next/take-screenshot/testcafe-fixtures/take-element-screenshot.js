@@ -54,6 +54,10 @@ test('Invalid scroll target', async t => {
     await t.takeElementScreenshot('table', 'custom/' + t.ctx.parsedUA.family + '.png', { scrollTargetX: -2000, scrollTargetY: -3000 });
 });
 
+test('Forbidden characters in the path argument', async t => {
+    await t.takeElementScreenshot('table', 'path:with*forbidden|chars');
+});
+
 test('Element', async t => {
     await enableScrollWatcher();
 

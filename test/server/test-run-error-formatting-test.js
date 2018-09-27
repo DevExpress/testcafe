@@ -59,6 +59,7 @@ const UncaughtErrorInNativeDialogHandler                = require('../../lib/err
 const SetNativeDialogHandlerCodeWrongTypeError          = require('../../lib/errors/test-run').SetNativeDialogHandlerCodeWrongTypeError;
 const CantObtainInfoForElementSpecifiedBySelectorError  = require('../../lib/errors/test-run').CantObtainInfoForElementSpecifiedBySelectorError;
 const WindowDimensionsOverflowError                     = require('../../lib/errors/test-run').WindowDimensionsOverflowError;
+const ForbiddenCharactersInScreenshotPathError          = require('../../lib/errors/test-run').ForbiddenCharactersInScreenshotPathError;
 const InvalidElementScreenshotDimensionsError           = require('../../lib/errors/test-run').InvalidElementScreenshotDimensionsError;
 const SetTestSpeedArgumentError                         = require('../../lib/errors/test-run').SetTestSpeedArgumentError;
 const RoleSwitchInRoleInitializerError                  = require('../../lib/errors/test-run').RoleSwitchInRoleInitializerError;
@@ -327,7 +328,11 @@ describe('Error formatting', () => {
             assertErrorMessage('window-dimensions-overflow-error', new WindowDimensionsOverflowError());
         });
 
-        it('Should format "InvalidElementScreenshotDimensionsError"', () => {
+        it('Should format "forbiddenCharactersInScreenshotPathError"', () => {
+            assertErrorMessage('forbidden-characters-in-screenshot-path-error', new ForbiddenCharactersInScreenshotPathError('/root/bla:bla', [{ char: ':', index: 9 }]));
+        });
+
+        it('Should format "invalidElementScreenshotDimensionsError"', () => {
             assertErrorMessage('invalid-element-screenshot-dimensions-error', new InvalidElementScreenshotDimensionsError(0, 10));
         });
 

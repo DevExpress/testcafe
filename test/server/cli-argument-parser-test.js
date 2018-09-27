@@ -313,16 +313,6 @@ describe('CLI argument parser', function () {
         });
     });
 
-    it('Should parse the screenshot path and ensure it exists', function () {
-        const dir = path.join(tmp.dirSync().name, 'my/screenshots');
-
-        return parse('-s ' + dir)
-            .then(function (parser) {
-                expect(parser.opts.screenshots).eql(dir);
-                expect(fs.existsSync(dir)).to.be.true;
-            });
-    });
-
     it('Should parse reporters and their output file paths and ensure they exist', function () {
         const cwd      = process.cwd();
         const filePath = path.join(tmp.dirSync().name, 'my/reports/report.json');

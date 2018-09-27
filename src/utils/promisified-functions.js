@@ -1,11 +1,9 @@
 import childProcess from 'child_process';
 import fs from 'graceful-fs';
-import mkdirp from 'mkdirp';
 import psNode from 'ps-node';
 import promisify from './promisify';
 
 
-export const ensureDir  = promisify(mkdirp);
 export const readDir    = promisify(fs.readdir);
 export const stat       = promisify(fs.stat);
 export const writeFile  = promisify(fs.writeFile);

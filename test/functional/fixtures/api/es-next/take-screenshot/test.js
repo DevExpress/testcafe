@@ -7,9 +7,9 @@ const assertionHelper = require('../../../../assertion-helper.js');
 
 chai.use(require('chai-string'));
 
-const SCREENSHOTS_PATH                   = assertionHelper.SCREENSHOTS_PATH;
+const SCREENSHOTS_PATH                   = path.resolve(assertionHelper.SCREENSHOTS_PATH);
 const THUMBNAILS_DIR_NAME                = assertionHelper.THUMBNAILS_DIR_NAME;
-const SCREENSHOT_PATH_MESSAGE_RE         = /^___test-screenshots___[\\/]\d{4,4}-\d{2,2}-\d{2,2}_\d{2,2}-\d{2,2}-\d{2,2}[\\/]test-1/;
+const SCREENSHOT_PATH_MESSAGE_RE         = /___test-screenshots___[\\/]\d{4,4}-\d{2,2}-\d{2,2}_\d{2,2}-\d{2,2}-\d{2,2}[\\/]test-1/;
 const SCREENSHOT_ON_FAIL_PATH_MESSAGE_RE = /^.*run-1/;
 const SLASH_RE                           = /[\\/]/g;
 
@@ -119,6 +119,21 @@ describe('[API] t.takeScreenshot()', function () {
                         '35 |test(\'Incorrect action path argument\', async t => {' +
                         ' > 36 |    await t.takeScreenshot(1); ' +
                         '37 |});'
+                    );
+                });
+        });
+
+        it('Should check the path argument for forbidden characters', function () {
+            return runTests('./testcafe-fixtures/take-screenshot.js', 'Forbidden characters in the path argument', {
+                shouldFail: true,
+                only:       'chrome'
+            })
+                .catch(function (errs) {
+                    expect(errs[0]).to.contains('There are forbidden characters in the "path:with*forbidden|chars" screenshot path: ":" at index 4 "*" at index 9 "|" at index 19');
+                    expect(errs[0]).to.contains(
+                        '39 |test(\'Forbidden characters in the path argument\', async t => {' +
+                        ' > 40 |    await t.takeScreenshot(\'path:with*forbidden|chars\'); ' +
+                        '41 |});'
                     );
                 });
         });
@@ -292,6 +307,21 @@ describe('[API] t.takeElementScreenshot()', function () {
                         ' 33 |test(\'Incorrect action path argument\', async t => {' +
                         ' > 34 |    await t.takeElementScreenshot(\'table\', 1);' +
                         ' 35 |});'
+                    );
+                });
+        });
+
+        it('Should check the path argument for forbidden characters', function () {
+            return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Forbidden characters in the path argument', {
+                shouldFail: true,
+                only:       'chrome'
+            })
+                .catch(function (errs) {
+                    expect(errs[0]).to.contains('There are forbidden characters in the "path:with*forbidden|chars" screenshot path: ":" at index 4 "*" at index 9 "|" at index 19');
+                    expect(errs[0]).to.contains(
+                        '57 |test(\'Forbidden characters in the path argument\', async t => {' +
+                        ' > 58 |    await t.takeElementScreenshot(\'table\', \'path:with*forbidden|chars\'); ' +
+                        '59 |});'
                     );
                 });
         });

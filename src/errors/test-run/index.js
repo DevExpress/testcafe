@@ -440,6 +440,16 @@ export class InvalidElementScreenshotDimensionsError extends TestRunErrorBase {
     }
 }
 
+export class ForbiddenCharactersInScreenshotPathError extends TestRunErrorBase {
+    constructor (screenshotPath, forbiddenCharsList) {
+        super(TYPE.forbiddenCharactersInScreenshotPathError);
+
+        this.screenshotPath     = screenshotPath;
+        this.forbiddenCharsList = forbiddenCharsList;
+    }
+}
+
+
 export class RoleSwitchInRoleInitializerError extends TestRunErrorBase {
     constructor (callsite) {
         super(TYPE.roleSwitchInRoleInitializerError);

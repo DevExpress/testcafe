@@ -1,7 +1,9 @@
-const PathPattern = require('../../lib/screenshots/path-pattern');
+const path        = require('path');
 const expect      = require('chai').expect;
 const moment      = require('moment');
 const userAgent   = require('useragent');
+const PathPattern = require('../../lib/screenshots/path-pattern');
+
 
 describe('Screenshot path pattern', () => {
     const parsedUserAgentMock = {
@@ -63,15 +65,15 @@ describe('Screenshot path pattern', () => {
 
         const pathPattern = createPathPattern(pattern, data);
 
-        const path = pathPattern.getPath(false);
+        const resultPath = pathPattern.getPath(false);
 
-        expect(path).eql(expectedParsedPattern);
+        expect(resultPath).eql(expectedParsedPattern);
     });
 
     it('Should add `errors` folder before filename', () => {
         const pathPattern = createPathPattern('${FILE_INDEX}');
-        const path        = pathPattern.getPath(true);
+        const resultPath  = pathPattern.getPath(true);
 
-        expect(path).eql('errors/1.png');
+        expect(resultPath).eql(path.join('errors', '1.png'));
     });
 });

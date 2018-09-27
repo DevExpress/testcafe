@@ -1,3 +1,4 @@
+import { resolve as resolvePath } from 'path';
 import Promise from 'pinkie';
 import promisifyEvent from 'promisify-event';
 import mapReverse from 'map-reverse';
@@ -9,6 +10,8 @@ import Task from './task';
 import { GeneralError } from '../errors/runtime';
 import MESSAGE from '../errors/runtime/message';
 import { assertType, is } from '../errors/runtime/type-assertions';
+import renderForbiddenCharsList from '../errors/render-forbidden-chars-list';
+import checkFilePath from '../utils/check-file-path';
 import { addRunningTest, removeRunningTest, startHandlingTestErrors, stopHandlingTestErrors } from '../utils/handle-errors';
 
 const DEFAULT_SELECTOR_TIMEOUT  = 10000;
@@ -139,9 +142,20 @@ export default class Runner extends EventEmitter {
     }
 
     _validateRunOptions () {
-        const concurrency = this.bootstrapper.concurrency;
-        const speed       = this.opts.speed;
-        let proxyBypass   = this.opts.proxyBypass;
+        const concurrency           = this.bootstrapper.concurrency;
+        const speed                 = this.opts.speed;
+        const screenshotPath        = this.opts.screenshotPath;
+        const screenshotPathPattern = this.opts.screenshotPathPattern;
+        let proxyBypass             = this.opts.proxyBypass;
+
+        if (screenshotPath) {
+            this._validateScreenshotPath(screenshotPath, 'screenshots base directory path');
+
+            this.opts.screenshotPath = resolvePath(screenshotPath);
+        }
+
+        if (screenshotPathPattern)
+            this._validateScreenshotPath(screenshotPathPattern, 'screenshots path pattern');
 
         if (typeof speed !== 'number' || isNaN(speed) || speed < 0.01 || speed > 1)
             throw new GeneralError(MESSAGE.invalidSpeedValue);
@@ -163,6 +177,13 @@ export default class Runner extends EventEmitter {
 
             this.opts.proxyBypass = proxyBypass;
         }
+    }
+
+    _validateScreenshotPath (screenshotPath, pathType) {
+        const forbiddenCharsList = checkFilePath(screenshotPath);
+
+        if (forbiddenCharsList.length)
+            throw new GeneralError(MESSAGE.forbiddenCharatersInScreenshotPath, screenshotPath, pathType, renderForbiddenCharsList(forbiddenCharsList));
     }
 
     // API

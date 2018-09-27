@@ -1,6 +1,7 @@
 import dedent from 'dedent';
 import { escape as escapeHtml } from 'lodash';
 import TYPE from './type';
+import renderForbiddenCharsList from '../render-forbidden-chars-list';
 import { replaceLeadingSpacesWithNbsp } from '../../utils/string';
 import TEST_RUN_PHASE from '../../test-run/phase';
 
@@ -57,7 +58,8 @@ function markup (err, msgMarkup, opts = {}) {
             msgMarkup += `\n\n${callsiteMarkup}`;
     }
 
-    return msgMarkup;
+    return msgMarkup
+        .replace('\t', '&nbsp;'.repeat(4));
 }
 
 export default {
@@ -292,6 +294,11 @@ export default {
 
     [TYPE.windowDimensionsOverflowError]: err => markup(err, `
         Unable to resize the window because the specified size exceeds the screen size. On macOS, a window cannot be larger than the screen.
+    `),
+
+    [TYPE.forbiddenCharactersInScreenshotPathError]: err => markup(err, `
+        There are forbidden characters in the "${err.screenshotPath}" screenshot path:
+        ${renderForbiddenCharsList(err.forbiddenCharsList)}
     `),
 
     [TYPE.invalidElementScreenshotDimensionsError]: err => markup(err, `

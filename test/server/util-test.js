@@ -13,7 +13,7 @@ const getCommonPath                    = require('../../lib/utils/get-common-pat
 
 describe('Utils', () => {
     it('Correct File Path', () => {
-        expect(correctFilePath('\\test')).eql('/test');
+        expect(correctFilePath('\\test')).eql(path.sep + 'test');
         expect(correctFilePath('"')).eql('');
         expect(correctFilePath('test.png', 'test.png'));
         expect(correctFilePath('test', 'png')).eql('test.png');
@@ -133,15 +133,14 @@ describe('Utils', () => {
     });
 
     it('Get common path', () => {
-        const pathFragemts = ['home', 'user1', 'tmp'];
-        const path1        = path.join(...pathFragemts);
-        const path2        = path.join(pathFragemts[0], pathFragemts[1]);
-        const path3        = path.join(pathFragemts[0], pathFragemts[2]);
+        const winPaths  = ['D:\\home', 'D:\\home\\user\\tmp', 'D:\\home\\user', 'D:\\home\\temp'];
+        const unixPaths = ['/home', '/home/user/tmp', '/home/user', '/home/temp'];
+        const paths     = path.sep === '/' ? unixPaths : winPaths;
 
-        expect(getCommonPath([path1])).eql(path1);
-        expect(getCommonPath([path1, path1])).eql(path1);
-        expect(getCommonPath([path1, path2])).eql(path2);
-        expect(getCommonPath([path1, path2, path3])).eql(pathFragemts[0]);
+        expect(getCommonPath([paths[1]])).eql(paths[1]);
+        expect(getCommonPath([paths[1], paths[1]])).eql(paths[1]);
+        expect(getCommonPath([paths[1], paths[2]])).eql(paths[2]);
+        expect(getCommonPath([paths[1], paths[2], paths[3]])).eql(paths[0]);
     });
 
     describe('Moment Module Loader', () => {
