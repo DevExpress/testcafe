@@ -378,46 +378,50 @@ export function focusNextElement (element, reverse, skipRadioGroups) {
     });
 }
 
+function getFocusableElementsFilter (sourceElement, skipRadioGroups) {
+    let filter = null;
+
+    if (skipRadioGroups) {
+        // NOTE: in all browsers except Mozilla and Opera focus sets on one radio set from group only.
+        // in Mozilla and Opera focus sets on any radio set.
+        if (sourceElement.name !== '' && !browserUtils.isFirefox)
+            filter = item => !item.name || item === sourceElement || item.name !== sourceElement.name;
+    }
+    // NOTE arrow navigations works with radio buttons in all browsers only between radio buttons with same names
+    // Navigation between radio buttons without name just moves focus between radio buttons in Chrome
+    // In other browsers navigation between radio buttons without name does not work
+    else if (sourceElement.name !== '')
+        filter = item => isRadioButtonElement(item) && item.name === sourceElement.name;
+    else if (browserUtils.isChrome)
+        filter = item => isRadioButtonElement(item) && !item.name;
+
+    return filter;
+}
+
 function filterFocusableElements (elements, sourceElement, skipRadioGroups) {
     if (!isRadioButtonElement(sourceElement))
         return elements;
 
-    const isArrowNavigationAllowed                  = !skipRadioGroups && sourceElement.name !== '';
-    const isArrowNavigationBetweenNonamesAllowed    = !skipRadioGroups && !sourceElement.name && browserUtils.isChrome;
-    const isArrowNavigationBetweenNonamesDisallowed = !skipRadioGroups && !sourceElement.name && !browserUtils.isChrome;
+    if (!skipRadioGroups && !sourceElement.name && !browserUtils.isChrome)
+        return [sourceElement];
 
-    elements = arrayUtils.filter(elements, item => {
-        const isRadioItem = isRadioButtonElement(item);
+    const filterFn = getFocusableElementsFilter(sourceElement, skipRadioGroups);
 
-        if (isArrowNavigationAllowed)
-            return isRadioItem && item.name === sourceElement.name;
-
-        if (isArrowNavigationBetweenNonamesAllowed)
-            return isRadioItem && !item.name;
-
-        if (isArrowNavigationBetweenNonamesDisallowed)
-            return item === sourceElement;
-
-        // NOTE: in all browsers except Mozilla and Opera focus sets on one radio set from group only.
-        // in Mozilla and Opera focus sets on any radio set.
-        if (sourceElement.name !== '' && !browserUtils.isFirefox)
-            return !item.name || item === sourceElement || item.name !== sourceElement.name;
-
-        return true;
-    });
+    if (filterFn)
+        elements = arrayUtils.filter(elements, filterFn);
 
     return elements;
 }
 
 function correctFocusableElement (elements, element, skipRadioGroups) {
-    const isNotCheckedRadioButtonElement = isRadioButtonElement(element) && element.name && !element.checked;
+    const isNotCheckedRadioButtonElement      = isRadioButtonElement(element) && element.name && !element.checked;
+    let checkedRadioButtonElementWithSameName = null;
 
-    if (!skipRadioGroups || !isNotCheckedRadioButtonElement)
-        return element;
-
-    const checkedRadioButtonElementWithSameName = arrayUtils.find(elements, el => {
-        return isRadioButtonElement(el) && el.name === element.name && el.checked;
-    });
+    if (skipRadioGroups && isNotCheckedRadioButtonElement) {
+        checkedRadioButtonElementWithSameName = arrayUtils.find(elements, el => {
+            return isRadioButtonElement(el) && el.name === element.name && el.checked;
+        });
+    }
 
     return checkedRadioButtonElementWithSameName || element;
 }
