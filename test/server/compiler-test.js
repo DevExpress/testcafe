@@ -208,7 +208,7 @@ describe('Compiler', function () {
             const tscPath  = path.resolve('node_modules/typescript/bin/tsc');
             const defsPath = path.resolve('ts-defs/index.d.ts');
             const args     = '--strict';
-            const command  = `node ${tscPath} ${defsPath} ${args}`;
+            const command  = `node ${tscPath} ${defsPath} ${args} --target ES6`;
 
             return new Promise(resolve => {
                 exec(command, (error, stdout) => {
