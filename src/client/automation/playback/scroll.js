@@ -184,7 +184,7 @@ export default class ScrollAutomation {
         let needScroll         = true;
 
         if (this._isChildFullyVisible(parentDimensions, childDimensions, offsetX, offsetY))
-           return Promise.resolve();
+            return Promise.resolve();
 
         while (needScroll) {
             scrollPos = this._getScrollPosition(parentDimensions, childDimensions, this.maxScrollMargin, offsetX, offsetY);

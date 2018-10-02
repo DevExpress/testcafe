@@ -305,6 +305,34 @@ $(document).ready(function () {
 
     module('other functional tests');
 
+    asyncTest('scroll to already visible element', function () {
+        removeTestElements();
+
+        const target = addContainer(20, 10, 'body');
+
+        target.css({
+            backgroundColor: '#ff0000',
+            marginTop:       5000,
+            marginBottom:    5000
+        });
+
+        window.scrollTo(0, 5050);
+
+        const click = new ClickAutomation(target[0], {
+            offsetX: 10,
+            offsetY: 5
+        });
+
+        const windowY = window.scrollY;
+
+        click
+            .run()
+            .then(function () {
+                equal(window.scrollY, windowY, 'scroll position should not change');
+                startNext();
+            });
+    });
+
     asyncTest('click on element in scrolled container', function () {
         let clicked = false;
 
