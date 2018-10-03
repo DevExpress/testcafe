@@ -312,12 +312,14 @@ $(document).ready(function () {
     asyncTest('scroll to already visible element', function () {
         removeTestElements();
 
+        addContainer(1, 5000, 'body');
+
         const target = addContainer(20, 10, 'body');
 
+        addContainer(1, 5000, 'body');
+
         target.css({
-            backgroundColor: '#ff0000',
-            marginTop:       5000,
-            marginBottom:    5000
+            backgroundColor: '#ff0000'
         });
 
         window.scrollTo(0, 5050);
@@ -342,14 +344,17 @@ $(document).ready(function () {
     asyncTest('scroll to already visible but obscured element', function () {
         removeTestElements();
 
+        addContainer(1, 5000, 'body');
+
         const target = addContainer(20, 10, 'body');
-        const fixed  = addContainer(1000, 1000, 'body');
-        let clicked  = false;
+
+        addContainer(1, 5000, 'body');
+
+        const fixed = addContainer(1000, 1000, 'body');
+        let clicked = false;
 
         target.css({
-            backgroundColor: '#ff0000',
-            marginTop:       5000,
-            marginBottom:    5000
+            backgroundColor: '#ff0000'
         }).bind('mousedown', function () {
             clicked = true;
         });
@@ -376,7 +381,7 @@ $(document).ready(function () {
             click
                 .run()
                 .then(function () {
-                    notEqual(getScrollTop(), windowY, 'scroll position should not change');
+                    notEqual(getScrollTop(), windowY, 'scroll position should change');
                     ok(clicked, 'click was raised');
                     startNext();
                 });
