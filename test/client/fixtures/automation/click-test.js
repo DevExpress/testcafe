@@ -305,6 +305,10 @@ $(document).ready(function () {
 
     module('other functional tests');
 
+    const getScrollTop = function () {
+        return document.documentElement.scrollTop || document.body.scrollTop;
+    };
+
     asyncTest('scroll to already visible element', function () {
         removeTestElements();
 
@@ -323,14 +327,16 @@ $(document).ready(function () {
             offsetY: 5
         });
 
-        const windowY = window.scrollY;
+        const windowY = getScrollTop();
 
-        click
-            .run()
-            .then(function () {
-                equal(window.scrollY, windowY, 'scroll position should not change');
-                startNext();
-            });
+        setTimeout(function () {
+            click
+                .run()
+                .then(function () {
+                    equal(getScrollTop(), windowY, 'scroll position should not change');
+                    startNext();
+                });
+        });
     });
 
     asyncTest('scroll to already visible but obscured element', function () {
@@ -364,15 +370,17 @@ $(document).ready(function () {
             offsetY: 5
         });
 
-        const windowY = window.scrollY;
+        const windowY = getScrollTop();
 
-        click
-            .run()
-            .then(function () {
-                notEqual(window.scrollY, windowY, 'scroll position should not change');
-                ok(clicked, 'click was raised');
-                startNext();
-            });
+        setTimeout(function () {
+            click
+                .run()
+                .then(function () {
+                    notEqual(getScrollTop(), windowY, 'scroll position should not change');
+                    ok(clicked, 'click was raised');
+                    startNext();
+                });
+        }, 0);
     });
 
     asyncTest('click on element in scrolled container', function () {
