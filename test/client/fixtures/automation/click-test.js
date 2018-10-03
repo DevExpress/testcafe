@@ -333,6 +333,48 @@ $(document).ready(function () {
             });
     });
 
+    asyncTest('scroll to already visible but obscured element', function () {
+        removeTestElements();
+
+        const target = addContainer(20, 10, 'body');
+        const fixed  = addContainer(1000, 1000, 'body');
+        let clicked  = false;
+
+        target.css({
+            backgroundColor: '#ff0000',
+            marginTop:       5000,
+            marginBottom:    5000
+        }).bind('mousedown', function () {
+            clicked = true;
+        });
+
+        fixed.css({
+            backgroundColor: '#00ff00',
+            position:        'fixed',
+            top:             1,
+            left:            1,
+            right:           1,
+            height:          100
+        });
+
+        window.scrollTo(0, 5050);
+
+        const click = new ClickAutomation(target[0], {
+            offsetX: 10,
+            offsetY: 5
+        });
+
+        const windowY = window.scrollY;
+
+        click
+            .run()
+            .then(function () {
+                notEqual(window.scrollY, windowY, 'scroll position should not change');
+                ok(clicked, 'click was raised');
+                startNext();
+            });
+    });
+
     asyncTest('click on element in scrolled container', function () {
         let clicked = false;
 
