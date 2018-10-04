@@ -181,9 +181,9 @@ export class AssertionExecutableArgumentError extends ActionArgumentErrorBase {
     }
 }
 
-export class AssertionWithoutStatementError extends TestRunErrorBase {
+export class AssertionWithoutMethodCallError extends TestRunErrorBase {
     constructor (callsite) {
-        super(TYPE.assertionWithoutStatementError);
+        super(TYPE.assertionWithoutMethodCallError);
 
         this.callsite = callsite;
     }

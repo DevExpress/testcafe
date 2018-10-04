@@ -7,7 +7,7 @@ const TYPE                                              = require('../../lib/err
 const TestRunErrorFormattableAdapter                    = require('../../lib/errors/test-run/formattable-adapter');
 const testCallsite                                      = require('./data/test-callsite');
 const AssertionExecutableArgumentError                  = require('../../lib/errors/test-run').AssertionExecutableArgumentError;
-const AssertionWithoutStatementError                    = require('../../lib/errors/test-run').AssertionWithoutStatementError;
+const AssertionWithoutMethodCallError                   = require('../../lib/errors/test-run').AssertionWithoutMethodCallError;
 const AssertionUnawaitedPromiseError                    = require('../../lib/errors/test-run').AssertionUnawaitedPromiseError;
 const ActionIntegerOptionError                          = require('../../lib/errors/test-run').ActionIntegerOptionError;
 const ActionPositiveIntegerOptionError                  = require('../../lib/errors/test-run').ActionPositiveIntegerOptionError;
@@ -353,8 +353,8 @@ describe('Error formatting', () => {
             assertErrorMessage('assertion-executable-argument-error', new AssertionExecutableArgumentError('actual', '1 + temp', 'Unexpected identifier'));
         });
 
-        it('Should format "assertionWithoutStatementError"', () => {
-            assertErrorMessage('assertion-without-statement-error', new AssertionWithoutStatementError(testCallsite));
+        it('Should format "assertionWithoutMethodCallError"', () => {
+            assertErrorMessage('assertion-without-method-call-error', new AssertionWithoutMethodCallError(testCallsite));
         });
 
         it('Should format "assertionUnawaitedPromiseError"', () => {

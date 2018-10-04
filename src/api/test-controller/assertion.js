@@ -1,5 +1,5 @@
 import AssertionCommand from '../../test-run/commands/assertion';
-import { AssertionWithoutStatementError } from '../../errors/test-run';
+import { AssertionWithoutMethodCallError } from '../../errors/test-run';
 
 export default class Assertion {
     constructor (actual, testController, callsite) {
@@ -9,7 +9,7 @@ export default class Assertion {
     }
 
     then () {
-        throw new AssertionWithoutStatementError(this.callsite);
+        throw new AssertionWithoutMethodCallError(this.callsite);
     }
 
     _enqueueAssertion (apiMethodName, assertionArgs) {

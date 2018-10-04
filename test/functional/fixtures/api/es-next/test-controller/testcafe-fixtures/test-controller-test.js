@@ -64,10 +64,6 @@ test('Missing await in helper', async t => {
     await missingAwaitFn(t);
 });
 
-test('Missing statements in expect command', async t => {
-    await t.expect();
-});
-
 test('GH-1285', async t => {
     await t
         .click('#btn2')

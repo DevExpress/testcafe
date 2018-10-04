@@ -240,4 +240,13 @@ describe('[API] Assertions', function () {
         return runTests('./testcafe-fixtures/assertions-test.js', 'ClientFunction result assertion', { only: 'chrome' });
     });
 
+    it('Should raise an error if assertion was called without method', () => {
+        return runTests('./testcafe-fixtures/assertions-test.js', 'Assertion without method call',
+            { shouldFail: true, only: 'chrome' })
+            .catch(errs => {
+                expect(errs.length).eql(1);
+                expect(errs[0]).to.contains('Assertion method is not specified.');
+                expect(errs[0]).to.contains('> 160 |    await t.expect();');
+            });
+    });
 });

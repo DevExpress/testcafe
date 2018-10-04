@@ -315,8 +315,8 @@ export default {
         ${err.errMsg}
     `),
 
-    [TYPE.assertionWithoutStatementError]: err => markup(err, `
-        Assertion does not have any statements.
+    [TYPE.assertionWithoutMethodCallError]: err => markup(err, `
+        Assertion method is not specified.
     `),
 
     [TYPE.assertionUnawaitedPromiseError]: err => markup(err, `
