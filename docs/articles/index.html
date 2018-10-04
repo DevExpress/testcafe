@@ -22,7 +22,9 @@ permalink: /
                 </a>
             </div>
             <div class="banner-image">
-                <img src="/testcafe/images/landing-page/banner-image.png" />
+                <img srcset="/testcafe/images/landing-page/banner-image.png,
+                             /testcafe/images/landing-page/banner-image@2x.png 2x"
+                     src="/testcafe/images/landing-page/banner-image.png" />
             </div>
             <div class="values">
                 <div class="value-container">
@@ -38,7 +40,7 @@ permalink: /
                         <p>1 minute to set up</p>
                         <div class="description">
                             <p>You <a href="https://devexpress.github.io/testcafe/faq/#i-have-heard-that-testcafe-does-not-use-selenium-how-does-it-operate" target="_blank">do not need WebDriver</a> or any other testing software. Install TestCafe with one command, and you are ready to test.</p>
-                            <code class="install-example">npm install -g testcafe</code>
+                            <div class="install-example"><code>npm install -g testcafe</code></div>
                         </div>
                     </div>
                 </div>
@@ -60,6 +62,80 @@ permalink: /
                 <div class="gallery-wrapper">
                     <div id="main-gallery"></div>
                     <div class="gallery-background"></div>
+                </div>
+                <div class="gallery-alt-text">
+                    <div class="gallery-alt-step">
+                        <div class="gallery-alt-step-content">
+                            <div class="gallery-alt-step-number">1.</div>
+                            <div class="gallery-alt-step-text">
+                                <div class="gallery-alt-step-header">
+                                    <h2>Install TestCafe</h2>
+                                </div>
+                                <div class="gallery-alt-step-description">
+                                    <p>You will need Node.js</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="gallery-alt-step-illustration"><code>npm install -g testcafe</code></div>
+                    </div>
+                    <div class="gallery-alt-step">
+                        <div class="gallery-alt-step-content">
+                            <div class="gallery-alt-step-number">2.</div>
+                            <div class="gallery-alt-step-text">
+                                <div class="gallery-alt-step-header">
+                                    <h2>Write your first test</h2>
+                                </div>
+                                <div class="gallery-alt-step-description">
+                                    <p>You can use any text editor</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="gallery-alt-step-illustration"><pre><code>import Page from './basic-page-model';
+
+fixture `My first fixture`
+    .page `http://devexpress.github.io/testcafe/example/`;
+
+const page = new Page();
+                                    
+test('My first test', async t => {
+    await t
+        .typeText(page.nameInput, 'P.Parker')
+        .click(page.macOSRadioButton)
+        .click(page.featureList[0].checkbox)
+        .click(page.interfaceSelect)
+        .click(page.interfaceSelectOption.withText('Both'))
+        .expect(page.nameInput.value).contains('Peter');
+});</code></pre>
+                        </div>
+                    </div>
+                    <div class="gallery-alt-step">
+                        <div class="gallery-alt-step-content">
+                            <div class="gallery-alt-step-number">3.</div>
+                            <div class="gallery-alt-step-text">
+                                <div class="gallery-alt-step-header">
+                                    <h2>Run the test on your computer</h2>
+                                </div>
+                                <div class="gallery-alt-step-description">
+                                    <p>Choose the browser, and launch the test with one command</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="gallery-alt-step-illustration"><code>testcafe safari test-example.js</code></div>
+                    </div>
+                    <div class="gallery-alt-step">
+                        <div class="gallery-alt-step-content">
+                            <div class="gallery-alt-step-number">4.</div>
+                            <div class="gallery-alt-step-text">
+                                <div class="gallery-alt-step-header">
+                                    <h2>View the reports</h2>
+                                </div>
+                                <div class="gallery-alt-step-description">
+                                    <p>You'll see the line where the test has failed and a code snippet</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="gallery-alt-step-illustration"><img src="/testcafe/images/landing-page/gallery-test-run-report.png"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -115,6 +191,10 @@ permalink: /
                                 <div class="description">
                                     <p>The TestCafe's <a href="https://devexpress.github.io/testcafe/documentation/test-api/" target="_blank">Test API</a> includes a high-level selector library, assertions, etc. You can combine them to implement readable tests with the <a href="https://devexpress.github.io/testcafe/documentation/recipes/using-page-model.html" target="_blank">PageObject pattern</a>.</p>
                                     <div class="feature-5-code"><code class="page-object-example">const el = Selector('.column').find('label')<br/>           .withText('MacOS').child('input');</code></div>
+                                    <div class="feature-5-code-mobile"><code class="page-object-example">const el = Selector('.column')
+           .find('label')
+           .withText('MacOS')
+           .child('input');</code></div>
                                 </div>
                             </div>
                         </div>
@@ -152,7 +232,9 @@ permalink: /
                     <div class="testcafe-studio-promo-subheader">How about e2e automation without coding?<br/>Meet TestCafe Studio: all the perks of TestCafe + GUI + Visual Test Recorder.</div>
                     <a class="check-it-out-button" href="https://testcafe-studio.devexpress.com" target="_blank">Check it out!</a>
                 </div>
-                <div class="testcafe-studio-promo-screenshot"></div>
+                <div class="testcafe-studio-promo-screenshot"><img srcset="/testcafe/images/landing-page/studio-promo.png,
+                                                                           /testcafe/images/landing-page/studio-promo@2x.png 2x"
+                                                                   src="/testcafe/images/landing-page/studio-promo.png"></div>
             </div>
         </div>
         <div class="tweets-section">
@@ -170,7 +252,7 @@ permalink: /
             <div class="follow-content">
                 <div class="twitter">
                     <div class="header">
-                        <p>Follow us on <a href="https://twitter.com/DXTestCafe" target="_blank">Twitter</a></p>
+                        <p><a href="https://twitter.com/DXTestCafe" target="_blank">Follow us on Twitter</a></p>
                     </div>
                     <div class="subheader">
                         <p>We post TestCafe news and updates, several times a week.</p>
@@ -181,6 +263,14 @@ permalink: /
                 </div>
                 <div class="github">
                     <p>And don't forget<br/>to vote for new features on <a href="https://github.com/DevExpress/testcafe/issues" target="_blank">GitHub</a>.</p>
+                </div>
+                <div class="github-mobile">
+                    <div class="header">
+                        <p><a href="https://github.com/DevExpress/testcafe/issues" target="_blank">Suggest improvements</a></p>
+                    </div>
+                    <div class="subheader">
+                        <p>Help us understand your needs. Suggest features on <a href="https://github.com/DevExpress/testcafe/issues" target="_blank">GitHub</a>.</p>
+                    </div>
                 </div>
             </div>
         </div>
