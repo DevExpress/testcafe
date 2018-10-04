@@ -61,5 +61,6 @@ export default {
     invalidElementScreenshotDimensionsError:           'invalidElementScreenshotDimensionsError',
     roleSwitchInRoleInitializerError:                  'roleSwitchInRoleInitializerError',
     assertionExecutableArgumentError:                  'assertionExecutableArgumentError',
+    assertionWithoutStatementError:                    'assertionWithoutStatementError',
     assertionUnawaitedPromiseError:                    'assertionUnawaitedPromiseError'
 };

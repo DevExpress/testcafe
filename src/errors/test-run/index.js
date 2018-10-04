@@ -181,6 +181,14 @@ export class AssertionExecutableArgumentError extends ActionArgumentErrorBase {
     }
 }
 
+export class AssertionWithoutStatementError extends TestRunErrorBase {
+    constructor (callsite) {
+        super(TYPE.assertionWithoutStatementError);
+
+        this.callsite = callsite;
+    }
+}
+
 export class AssertionUnawaitedPromiseError extends TestRunErrorBase {
     constructor (callsite) {
         super(TYPE.assertionUnawaitedPromiseError);

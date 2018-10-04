@@ -315,6 +315,10 @@ export default {
         ${err.errMsg}
     `),
 
+    [TYPE.assertionWithoutStatementError]: err => markup(err, `
+        Assertion does not have any statements.
+    `),
+
     [TYPE.assertionUnawaitedPromiseError]: err => markup(err, `
         Attempted to run assertions on a Promise object. Did you forget to await it? If not, pass "{ allowUnawaitedPromise: true }" to the assertion options.
     `)

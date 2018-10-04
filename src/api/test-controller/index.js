@@ -267,7 +267,9 @@ export default class TestController {
     }
 
     _expect$ (actual) {
-        return new Assertion(actual, this);
+        const callsite = getCallsiteForMethod('expect');
+
+        return new Assertion(actual, this, callsite);
     }
 
     _debug$ () {

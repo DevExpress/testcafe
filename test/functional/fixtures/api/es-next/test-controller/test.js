@@ -35,6 +35,18 @@ describe('[API] TestController', () => {
         });
     });
 
+    describe('Assertions', () => {
+        it('Should track assertion without statements', () => {
+            return runTests('./testcafe-fixtures/test-controller-test.js', 'Missing statements in expect command',
+                { shouldFail: true, only: 'chrome' })
+                .catch(errs => {
+                    expect(errs.length).eql(1);
+                    expect(errs[0]).to.contains('Assertion does not have any statements.');
+                    expect(errs[0]).to.contains('> 68 |    await t.expect();');
+                });
+        });
+    });
+
     describe('Missing `await` tracking', () => {
         const missingAwaitErrMsg = 'A call to an async function is not awaited. Use the "await" keyword before actions, ' +
                                    'assertions or chains of them to ensure that they run in the right sequence.';
