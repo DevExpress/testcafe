@@ -181,9 +181,7 @@ method if you use API or specify the [selector-timeout](../../../using-testcafe/
 if you run TestCafe from the command line.
 
 Within the selector timeout, the selector is executed over and over again, until it returns a
-DOM node or the timeout exceeds. If TestCafe cannot find the corresponding node in the DOM, the test fails. The test report shows a sequence of the selector's methods that were called during the test and highlights the failed method. This helps you understand what caused the fail.
-
-![Selector methods in reports](../../../../images/failed-selector-report.png)
+DOM node or the timeout exceeds. If TestCafe cannot find the corresponding node in the DOM, the test fails.
 
 > Note that you can require that the node returned by the selector is visible.
 To do this, use the [visibilityCheck](selector-options.md#optionsvisibilitycheck) option.
