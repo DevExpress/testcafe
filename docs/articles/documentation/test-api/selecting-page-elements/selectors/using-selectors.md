@@ -192,8 +192,10 @@ To do this, use the [visibilityCheck](selector-options.md#optionsvisibilitycheck
 TestCafe outputs information about failed selectors to test run reports.
 
 When you try to use a selector that does not match any DOM element, the test fails and an error is thrown.
+The error message indicates which selector has failed.
 
-The error message indicates which selector has failed. If a fail occurs in a [selector methods chain](functional-style-selectors.md),
-the error message highlights the specific method that failed.
+An error can also occur when you call [functional-style selector's](functional-style-selectors.md) methods in a chain.
+These methods are applied to the selector one by one. TestCafe detects a method after which the selector no longer matches any DOM element.
+This method is highlighted in the error message.
 
 ![Selector methods in a report](../../../../images/failed-selector-report.png)
