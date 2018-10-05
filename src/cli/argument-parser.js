@@ -98,7 +98,7 @@ export default class CLIArgumentParser {
             .option('--ports <port1,port2>', 'specify custom port numbers')
             .option('--hostname <name>', 'specify the hostname')
             .option('--proxy <host>', 'specify the host of the proxy server')
-            .option('--ssl', 'specify SSL options to run TestCafe proxy server over the HTTPS protocol')
+            .option('--ssl <options>', 'specify SSL options to run TestCafe proxy server over the HTTPS protocol')
             .option('--proxy-bypass <rules>', 'specify a comma-separated list of rules that define URLs accessed bypassing the proxy server')
             .option('--disable-page-reloads', 'disable page reloads between tests')
             .option('--dev', 'enables mechanisms to log and diagnose errors')
@@ -205,7 +205,7 @@ export default class CLIArgumentParser {
 
     _parseSslOptions () {
         if (this.opts.ssl)
-            this.opts.ssl = parseSslOptions(this.program.args[0]);
+            this.opts.ssl = parseSslOptions(this.opts.ssl);
     }
 
     async _parseReporters () {

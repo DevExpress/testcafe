@@ -263,7 +263,7 @@ describe('CLI argument parser', function () {
 
     describe('Ssl options', () => {
         it('Should parse ssl options', () => {
-            return parse('--ssl passphrase=sample;sessionTimeout=1000;rejectUnauthorized=false;=onlyValue;onlyKey=')
+            return parse('param1 --ssl passphrase=sample;sessionTimeout=1000;rejectUnauthorized=false;=onlyValue;onlyKey=')
                 .then(parser => {
                     expect(parser.opts.ssl.passphrase).eql('sample');
                     expect(parser.opts.ssl.sessionTimeout).eql(1000);
