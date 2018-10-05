@@ -155,3 +155,7 @@ test('ClientFunction result assertion', async t => {
 
     await t.expect(getSomeVar()).eql(2);
 });
+
+test('Assertion without method call', async t => {
+    await t.expect();
+});

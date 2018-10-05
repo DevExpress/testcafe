@@ -315,6 +315,10 @@ export default {
         ${err.errMsg}
     `),
 
+    [TYPE.assertionWithoutMethodCallError]: err => markup(err, `
+        An assertion method is not specified.
+    `),
+
     [TYPE.assertionUnawaitedPromiseError]: err => markup(err, `
         Attempted to run assertions on a Promise object. Did you forget to await it? If not, pass "{ allowUnawaitedPromise: true }" to the assertion options.
     `)

@@ -1,9 +1,15 @@
 import AssertionCommand from '../../test-run/commands/assertion';
+import { AssertionWithoutMethodCallError } from '../../errors/test-run';
 
 export default class Assertion {
-    constructor (actual, testController) {
+    constructor (actual, testController, callsite) {
         this.testController = testController;
         this.actual         = actual;
+        this.callsite       = callsite;
+    }
+
+    then () {
+        throw new AssertionWithoutMethodCallError(this.callsite);
     }
 
     _enqueueAssertion (apiMethodName, assertionArgs) {
