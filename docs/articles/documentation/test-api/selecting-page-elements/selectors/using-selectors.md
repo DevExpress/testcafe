@@ -14,6 +14,7 @@ This topic describes how to identify DOM elements and obtain information about t
 * [Define Action Targets](#define-action-targets)
 * [Define Assertion Actual Value](#define-assertion-actual-value)
 * [Selector Timeout](#selector-timeout)
+* [Debug Selectors](#debug-selectors)
 
 ## Check if an Element Exists
 
@@ -185,3 +186,14 @@ DOM node or the timeout exceeds. If TestCafe cannot find the corresponding node 
 
 > Note that you can require that the node returned by the selector is visible.
 To do this, use the [visibilityCheck](selector-options.md#optionsvisibilitycheck) option.
+
+## Debug Selectors
+
+TestCafe outputs information about failed selectors to test run reports.
+
+When you try to use a selector that does not match any DOM element, the test fails and an error is thrown.
+
+The error message indicates which selector has failed. If a fail occurs in a [selector methods chain](functional-style-selectors.md),
+the error message highlights the specific method that failed.
+
+![Selector methods in a report](../../../../images/failed-selector-report.png)
