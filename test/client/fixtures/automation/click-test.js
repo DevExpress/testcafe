@@ -305,10 +305,6 @@ $(document).ready(function () {
 
     module('other functional tests');
 
-    const getScrollTop = function () {
-        return document.documentElement.scrollTop || document.body.scrollTop;
-    };
-
     asyncTest('scroll to already visible element', function () {
         removeTestElements();
 
@@ -329,13 +325,13 @@ $(document).ready(function () {
             offsetY: 5
         });
 
-        const windowY = getScrollTop();
+        const windowY = styleUtils.getScrollTop(document);
 
         setTimeout(function () {
             click
                 .run()
                 .then(function () {
-                    equal(getScrollTop(), windowY, 'scroll position should not change');
+                    equal(styleUtils.getScrollTop(document), windowY, 'scroll position should not change');
                     startNext();
                 });
         });
@@ -375,13 +371,13 @@ $(document).ready(function () {
             offsetY: 5
         });
 
-        const windowY = getScrollTop();
+        const windowY = styleUtils.getScrollTop(document);
 
         setTimeout(function () {
             click
                 .run()
                 .then(function () {
-                    notEqual(getScrollTop(), windowY, 'scroll position should change');
+                    notEqual(styleUtils.getScrollTop(document), windowY, 'scroll position should change');
                     ok(clicked, 'click was raised');
                     startNext();
                 });

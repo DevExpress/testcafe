@@ -1,5 +1,5 @@
 import hammerhead from '../deps/hammerhead';
-import { domUtils, styleUtils, positionUtils, promiseUtils, scrollController, sendRequestToFrame } from '../deps/testcafe-core';
+import { domUtils, styleUtils, positionUtils, promiseUtils, scrollController, sendRequestToFrame, arrayUtils } from '../deps/testcafe-core';
 
 
 const Promise        = hammerhead.Promise;
@@ -68,7 +68,7 @@ export default class ScrollAutomation {
         return scrollPromise;
     }
 
-    _getScrollToPoint (elementDimensions, maxScrollMargin, { x, y }) {
+    _getScrollToPoint (elementDimensions, { x, y }, maxScrollMargin) {
         const horizontalCenter = Math.floor(elementDimensions.width / 2);
         const verticalCenter   = Math.floor(Math.floor(elementDimensions.height / 2));
         const leftScrollMargin = this.scrollToCenter ? horizontalCenter : Math.min(maxScrollMargin.left, horizontalCenter);
@@ -145,7 +145,7 @@ export default class ScrollAutomation {
         };
     }
 
-    _getChildPoint (parentDimensions, childDimensions, offsetX, offsetY) {
+    static _getChildPoint (parentDimensions, childDimensions, offsetX, offsetY) {
         return {
             x: childDimensions.left - parentDimensions.left + parentDimensions.scroll.left +
                childDimensions.border.left + offsetX,
@@ -155,8 +155,8 @@ export default class ScrollAutomation {
     }
 
     _getScrollPosition (parentDimensions, childDimensions, maxScrollMargin, offsetX, offsetY) {
-        const childPoint       = this._getChildPoint(parentDimensions, childDimensions, offsetX, offsetY);
-        const scrollToPoint    = this._getScrollToPoint(parentDimensions, maxScrollMargin, childPoint);
+        const childPoint       = ScrollAutomation._getChildPoint(parentDimensions, childDimensions, offsetX, offsetY);
+        const scrollToPoint    = this._getScrollToPoint(parentDimensions, childPoint, maxScrollMargin);
         const scrollToFullView = this._getScrollToFullChildView(parentDimensions, childDimensions, maxScrollMargin);
 
         const left = Math.max(scrollToFullView.left === null ? scrollToPoint.left : scrollToFullView.left, 0);
@@ -165,7 +165,7 @@ export default class ScrollAutomation {
         return { left, top };
     }
 
-    _getChildPointAfterScroll (parentDimensions, childDimensions, left, top) {
+    static _getChildPointAfterScroll (parentDimensions, childDimensions, left, top) {
         const x = Math.round(childDimensions.left + parentDimensions.scroll.left - left + childDimensions.width / 2);
         const y = Math.round(childDimensions.top + parentDimensions.scroll.top - top + childDimensions.height / 2);
 
@@ -173,14 +173,15 @@ export default class ScrollAutomation {
     }
 
     _isChildFullyVisible (parentDimensions, childDimensions, offsetX, offsetY) {
-        const { x, y } = this._getChildPointAfterScroll(parentDimensions, childDimensions, parentDimensions.scroll.left, parentDimensions.scroll.top);
+        const { x, y } = ScrollAutomation._getChildPointAfterScroll(parentDimensions, childDimensions, parentDimensions.scroll.left, parentDimensions.scroll.top);
 
         const { left, top } = this._getScrollPosition(parentDimensions, childDimensions, {
             left: 0,
             top:  0
         }, offsetX, offsetY);
 
-        return !this._isTargetElementObscuredInPoint(x, y) && left === parentDimensions.scroll.left && top === parentDimensions.scroll.top;
+        return !this._isTargetElementObscuredInPoint(x, y) &&
+               left === parentDimensions.scroll.left && top === parentDimensions.scroll.top;
     }
 
     _scrollToChild (parent, child, { offsetX, offsetY }) {
@@ -194,7 +195,7 @@ export default class ScrollAutomation {
         while (needScroll) {
             scrollPos = this._getScrollPosition(parentDimensions, childDimensions, this.maxScrollMargin, offsetX, offsetY);
 
-            const { x, y }         = this._getChildPointAfterScroll(parentDimensions, childDimensions, scrollPos.left, scrollPos.top);
+            const { x, y }         = ScrollAutomation._getChildPointAfterScroll(parentDimensions, childDimensions, scrollPos.left, scrollPos.top);
             const isTargetObscured = this._isTargetElementObscuredInPoint(x, y);
 
             this.maxScrollMargin.left += SCROLL_MARGIN_INCREASE_STEP;
@@ -218,10 +219,7 @@ export default class ScrollAutomation {
             return Promise.resolve();
 
         const elementDimensions = positionUtils.getClientDimensions(this.element);
-        const scroll            = this._getScrollToPoint(elementDimensions, this.maxScrollMargin, {
-            x: this.offsetX,
-            y: this.offsetY
-        });
+        const scroll = this._getScrollToPoint(elementDimensions, { x: this.offsetX, y: this.offsetY }, this.maxScrollMargin);
 
         return this._setScroll(this.element, scroll);
     }
@@ -267,24 +265,21 @@ export default class ScrollAutomation {
             });
     }
 
-    _isElementObscured (element) {
-        let el           = element;
-        let fixedElement = null;
+    static _getFixedAncestorOrSelf (element) {
+        const ancestors = domUtils.getAncestorsAndSelf(element).reverse();
 
-        while (el && !fixedElement) {
-            if (styleUtils.isFixedElement(el))
-                fixedElement = el;
-
-            el = el.parentNode;
-        }
-
-        return element && fixedElement && !fixedElement.contains(this.element);
+        return arrayUtils.find(ancestors, el => styleUtils.isFixedElement(el));
     }
 
     _isTargetElementObscuredInPoint (x, y) {
         const elementInPoint = positionUtils.getElementFromPoint(x, y);
 
-        return this._isElementObscured(elementInPoint);
+        if (!elementInPoint)
+            return false;
+
+        const fixedElement = ScrollAutomation._getFixedAncestorOrSelf(elementInPoint);
+
+        return fixedElement && !fixedElement.contains(this.element);
     }
 
     run () {

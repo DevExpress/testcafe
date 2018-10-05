@@ -45,29 +45,14 @@ const getScrollable = function (el) {
     return { scrollableHorizontally, scrollableVertically };
 };
 
-const getAncestors = function (node) {
-    const ancestors = [];
-
-    while (node.parentNode) {
-        ancestors.unshift(node.parentNode);
-        node = node.parentNode;
-    }
-
-    return ancestors;
-};
-
-const getAncestorsAndSelf = function (node) {
-    return getAncestors(node).concat([node]);
-};
-
 const isVisibilityHiddenNode = function (node) {
-    const ancestors = getAncestorsAndSelf(node);
+    const ancestors = domUtils.getAncestorsAndSelf(node);
 
     return some(ancestors, ancestor => domUtils.isElementNode(ancestor) && get(ancestor, 'visibility') === 'hidden');
 };
 
 const isHiddenNode = function (node) {
-    const ancestors = getAncestorsAndSelf(node);
+    const ancestors = domUtils.getAncestorsAndSelf(node);
 
     return some(ancestors, ancestor => domUtils.isElementNode(ancestor) && get(ancestor, 'display') === 'none');
 };
