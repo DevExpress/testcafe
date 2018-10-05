@@ -316,7 +316,7 @@ export default {
     `),
 
     [TYPE.assertionWithoutMethodCallError]: err => markup(err, `
-        Assertion method is not specified.
+        An assertion method is not specified.
     `),
 
     [TYPE.assertionUnawaitedPromiseError]: err => markup(err, `

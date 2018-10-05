@@ -245,7 +245,7 @@ describe('[API] Assertions', function () {
             { shouldFail: true, only: 'chrome' })
             .catch(errs => {
                 expect(errs.length).eql(1);
-                expect(errs[0]).to.contains('Assertion method is not specified.');
+                expect(errs[0]).to.contains('An assertion method is not specified.');
                 expect(errs[0]).to.contains('> 160 |    await t.expect();');
             });
     });
