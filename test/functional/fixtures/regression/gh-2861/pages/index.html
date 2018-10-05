@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script>
+        function onClick () {
+            document.getElementById('result').innerHTML += 'clicked';
+        }
+
+        const myButtonTemplate     = document.createElement('template');
+        myButtonTemplate.innerHTML = '<button onclick="onClick()"><slot></slot></button>';
+
+        class myButton extends HTMLElement {
+            constructor () {
+                super();
+                this.attachShadow({ mode: 'open' });
+            }
+
+            connectedCallback () {
+                const content = myButtonTemplate.content.cloneNode(true);
+                this.shadowRoot.appendChild(content);
+            }
+        }
+
+        window.customElements.define('my-button', myButton);
+    </script>
+    <title>TestCafé</title>
+</head>
+<body>
+<my-button id="btn1">Just text</my-button>
+<my-button id="btn2"><span>Wrapped in span</span></my-button>
+<div id="result"></div>
+</body>
+</html>
