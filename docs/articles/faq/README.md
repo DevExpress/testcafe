@@ -232,9 +232,15 @@ npm install -g {pluginName}
 
 ### My test fails because TestCafe could not find the required webpage element. Why does this happen?
 
-First, try debugging the tested page with the TestCafe's built-in debugger by adding
-the [t.debug()](../documentation/test-api/debugging.md) method to test code.
-Then run the test and wait until the browser stops at the breakpoint.
+This happens because one of the [selectors](../documentation/test-api/selecting-page-elements/selectors/README.md)
+you used in test code does not match any DOM element.
+
+To determine the cause of this issue, do the following:
+
+1. Look at the error message in the test run report [to learn which selector has failed](../documentation/test-api/selecting-page-elements/selectors/using-selectors.md#debug-selectors).
+2. Add the [t.debug()](../documentation/test-api/debugging.md) method before this selector to stop test execution before it reaches this point.
+3. Run the test and wait until the browser stops at the breakpoint.
+
 After this, use the browser's development tools to check that:
 
 * the element is present on the page;
