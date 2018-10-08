@@ -194,7 +194,7 @@ TestCafe outputs information about failed selectors to test run reports.
 When you try to use a selector that does not match any DOM element, the test fails and an error is thrown.
 The error message indicates which selector has failed.
 
-An error can also occur when you call [functional-style selector's](functional-style-selectors.md) methods in a chain.
+An error can also occur when you call [selector's methods](functional-style-selectors.md) in a chain.
 These methods are applied to the selector one by one. TestCafe detects a method after which the selector no longer matches any DOM element.
 This method is highlighted in the error message.
 
