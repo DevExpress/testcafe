@@ -363,10 +363,18 @@ describe('Runner', () => {
             return testFilter(filter, expectedTestNames);
         });
 
-        it('Should filter by meta', () => {
-            const filter = (testName, fixtureName, fixturePath, meta) => meta.meta === 'test';
+        it('Should filter by test meta', () => {
+            const filter = (testName, fixtureName, fixturePath, testMeta) => testMeta.meta === 'test';
 
-            const expectedTestNames = ['Fixture4Test1', 'Fixture5Test2'];
+            const expectedTestNames = ['Fixture5Test2'];
+
+            return testFilter(filter, expectedTestNames);
+        });
+
+        it('Should filter by fixture meta', () => {
+            const filter = (testName, fixtureName, fixturePath, testMeta, fixtureMeta) => fixtureMeta.meta === 'test';
+
+            const expectedTestNames = ['Fixture4Test1'];
 
             return testFilter(filter, expectedTestNames);
         });

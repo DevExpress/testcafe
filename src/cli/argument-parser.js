@@ -102,7 +102,8 @@ export default class CLIArgumentParser {
             .option('-F, --fixture-grep <pattern>', 'run only fixtures matching the specified pattern')
             .option('-a, --app <command>', 'launch the tested app using the specified command before running tests')
             .option('-c, --concurrency <number>', 'run tests concurrently')
-            .option('-m, --meta <json>', 'run only tests matching the specified meta')
+            .option('--test-meta <json>', 'run only tests matching the specified meta')
+            .option('--fixture-meta <json>', 'run only fixtures matching the specified meta')
             .option('--debug-on-fail', 'pause the test if it fails')
             .option('--app-init-delay <ms>', 'specify how much time it takes for the tested app to initialize')
             .option('--selector-timeout <ms>', 'set the amount of time within which selectors make attempts to obtain a node to be returned')
@@ -138,9 +139,10 @@ export default class CLIArgumentParser {
     _parseFilteringOptions () {
         this.opts.testGrep    = CLIArgumentParser._optionValueToRegExp('--test-grep', this.opts.testGrep);
         this.opts.fixtureGrep = CLIArgumentParser._optionValueToRegExp('--fixture-grep', this.opts.fixtureGrep);
-        this.opts.meta = CLIArgumentParser._optionValueToJson('--meta', this.opts.meta);
+        this.opts.testMeta    = CLIArgumentParser._optionValueToJson('--test-meta', this.opts.testMeta);
+        this.opts.fixtureMeta = CLIArgumentParser._optionValueToJson('--fixture-meta', this.opts.fixtureMeta);
 
-        this.filter = (testName, fixtureName, _, meta) => {
+        this.filter = (testName, fixtureName, fixturePath, testMeta, fixtureMeta) => {
 
             if (this.opts.test && testName !== this.opts.test)
                 return false;
@@ -154,7 +156,10 @@ export default class CLIArgumentParser {
             if (this.opts.fixtureGrep && !this.opts.fixtureGrep.test(fixtureName))
                 return false;
 
-            if (this.opts.meta && !isMatch(meta, this.opts.meta))
+            if (this.opts.testMeta && !isMatch(testMeta, this.opts.testMeta))
+                return false;
+
+            if (this.opts.fixtureMeta && !isMatch(fixtureMeta, this.opts.fixtureMeta))
                 return false;
 
             return true;
