@@ -140,7 +140,7 @@ export default class CLIArgumentParser {
         this.opts.fixtureGrep = CLIArgumentParser._optionValueToRegExp('--fixture-grep', this.opts.fixtureGrep);
         this.opts.meta = CLIArgumentParser._optionValueToJson('--meta', this.opts.meta);
 
-        this.filter = (testName, fixtureName, _, meta) => {
+        this.filter = (testName, fixtureName, meta) => {
 
             if (this.opts.test && testName !== this.opts.test)
                 return false;
