@@ -215,6 +215,19 @@ describe('CLI argument parser', function () {
             return assertRaisesError('-F *+', 'The "--fixture-grep" option value is not a valid regular expression.');
         });
 
+        it('Should filter by test meta with "-m, --meta" option', function () {
+            parse('-m {"meta":"test"}')
+                .then(function (parser) {
+                    expect(parser.filter(null, null, { meta: 'test' })).to.be.true;
+                    expect(parser.filter(null, null, { another: 'meta', meta: 'test' })).to.be.true;
+                    expect(parser.filter(null, null, {})).to.be.false;
+                });
+        });
+
+        it('Should raise error if "-m, --meta" value is invalid json', function () {
+            return assertRaisesError('-m error', 'The "--meta" option value is not a valid JSON.');
+        });
+
         it('Should combine filters provided by multiple options', function () {
             return parse('-t thetest1 -T test\\d+$')
                 .then(function (parser) {
@@ -257,6 +270,31 @@ describe('CLI argument parser', function () {
                     expect(parser.filter('thetest1', 'thefixture1')).to.be.true;
                     expect(parser.filter('thetest', 'thefixture1')).to.be.false;
                     expect(parser.filter('thetest1', 'thefixture')).to.be.false;
+                })
+                .then(function () {
+                    return parse('-t thetest1 -m {"meta":"test"}');
+                })
+                .then(function (parser) {
+                    expect(parser.filter('thetest1', null, { meta: 'test' })).to.be.true;
+                    expect(parser.filter('thetest1', null, {})).to.be.false;
+                    expect(parser.filter('thetest2', null, { meta: 'test' })).to.be.false;
+                })
+                .then(function () {
+                    return parse('-f thefixture1 -m {"meta":"test"}');
+                })
+                .then(function (parser) {
+                    expect(parser.filter(null, 'thefixture1', { meta: 'test' })).to.be.true;
+                    expect(parser.filter(null, 'thefixture1', {})).to.be.false;
+                    expect(parser.filter(null, 'thefixture2', { meta: 'test' })).to.be.false;
+                })
+                .then(function () {
+                    return parse('-t thetest1 -f thefixture1 -m {"meta":"test"}');
+                })
+                .then(function (parser) {
+                    expect(parser.filter('thetest1', 'thefixture1', { meta: 'test' })).to.be.true;
+                    expect(parser.filter('thetest1', 'thefixture1', {})).to.be.false;
+                    expect(parser.filter('thetest1', 'thefixture2', { meta: 'test' })).to.be.false;
+                    expect(parser.filter('thetest2', 'thefixture1', { meta: 'test' })).to.be.false;
                 });
         });
     });
@@ -367,6 +405,7 @@ describe('CLI argument parser', function () {
             { long: '--fixture-grep', short: '-F' },
             { long: '--app', short: '-a' },
             { long: '--concurrency', short: '-c' },
+            { long: '--meta', short: '-m' },
             { long: '--debug-on-fail' },
             { long: '--app-init-delay' },
             { long: '--selector-timeout' },

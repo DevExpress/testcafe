@@ -287,7 +287,8 @@ describe('Runner', () => {
                 .reporter('list')
                 .src([
                     'test/server/data/test-suites/basic/testfile1.js',
-                    'test/server/data/test-suites/basic/testfile2.js'
+                    'test/server/data/test-suites/basic/testfile2.js',
+                    'test/server/data/test-suites/filter/meta.js'
                 ]);
         });
 
@@ -318,7 +319,10 @@ describe('Runner', () => {
             const expectedTestNames = [
                 'Fixture1Test1',
                 'Fixture1Test2',
-                'Fixture3Test1'
+                'Fixture3Test1',
+                'Fixture4Test1',
+                'Fixture5Test1',
+                'Fixture5Test2'
             ];
 
             return testFilter(filter, expectedTestNames);
@@ -339,6 +343,14 @@ describe('Runner', () => {
             const filter = (testName, fixtureName, fixturePath) => fixturePath.includes('testfile2.js');
 
             const expectedTestNames = ['Fixture3Test1'];
+
+            return testFilter(filter, expectedTestNames);
+        });
+
+        it('Should filter by meta', () => {
+            const filter = (testName, fixtureName, fixturePath, meta) => meta.meta === 'test';
+
+            const expectedTestNames = ['Fixture4Test1', 'Fixture5Test2'];
 
             return testFilter(filter, expectedTestNames);
         });

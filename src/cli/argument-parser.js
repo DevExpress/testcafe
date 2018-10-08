@@ -8,6 +8,7 @@ import MESSAGE from '../errors/runtime/message';
 import { assertType, is } from '../errors/runtime/type-assertions';
 import getViewPortWidth from '../utils/get-viewport-width';
 import { wordWrap, splitQuotedText } from '../utils/string';
+import { isMatch } from 'lodash';
 import parseSslOptions from './parse-ssl-options';
 
 const REMOTE_ALIAS_RE = /^remote(?::(\d*))?$/;
@@ -60,6 +61,18 @@ export default class CLIArgumentParser {
         }
     }
 
+    static _optionValueToJson (name, value) {
+        if (value === void 0)
+            return value;
+
+        try {
+            return JSON.parse(value);
+        }
+        catch (err) {
+            throw new GeneralError(MESSAGE.optionValueIsNotValidJson, name);
+        }
+    }
+
     static _getDescription () {
         // NOTE: add empty line to workaround commander-forced indentation on the first line.
         return '\n' + wordWrap(DESCRIPTION, 2, getViewPortWidth(process.stdout));
@@ -89,6 +102,7 @@ export default class CLIArgumentParser {
             .option('-F, --fixture-grep <pattern>', 'run only fixtures matching the specified pattern')
             .option('-a, --app <command>', 'launch the tested app using the specified command before running tests')
             .option('-c, --concurrency <number>', 'run tests concurrently')
+            .option('-m, --meta <json>', 'run only tests matching the specified meta')
             .option('--debug-on-fail', 'pause the test if it fails')
             .option('--app-init-delay <ms>', 'specify how much time it takes for the tested app to initialize')
             .option('--selector-timeout <ms>', 'set the amount of time within which selectors make attempts to obtain a node to be returned')
@@ -124,8 +138,9 @@ export default class CLIArgumentParser {
     _parseFilteringOptions () {
         this.opts.testGrep    = CLIArgumentParser._optionValueToRegExp('--test-grep', this.opts.testGrep);
         this.opts.fixtureGrep = CLIArgumentParser._optionValueToRegExp('--fixture-grep', this.opts.fixtureGrep);
+        this.opts.meta = CLIArgumentParser._optionValueToJson('--meta', this.opts.meta);
 
-        this.filter = (testName, fixtureName) => {
+        this.filter = (testName, fixtureName, meta) => {
 
             if (this.opts.test && testName !== this.opts.test)
                 return false;
@@ -137,6 +152,9 @@ export default class CLIArgumentParser {
                 return false;
 
             if (this.opts.fixtureGrep && !this.opts.fixtureGrep.test(fixtureName))
+                return false;
+
+            if (this.opts.meta && !isMatch(meta, this.opts.meta))
                 return false;
 
             return true;

@@ -16,6 +16,7 @@ export default {
     cantFindReporterForAlias:              'The provided "{name}" reporter does not exist. Check that you have specified the report format correctly.',
     multipleStdoutReporters:               'Multiple reporters attempting to write to stdout: "{reporters}". Only one reporter can write to stdout.',
     optionValueIsNotValidRegExp:           'The "{optionName}" option value is not a valid regular expression.',
+    optionValueIsNotValidJson:             'The "{optionName}" option value is not a valid JSON.',
     testedAppFailedWithError:              'Tested app failed with an error:\n\n{errMessage}',
     invalidSpeedValue:                     'Speed should be a number between 0.01 and 1.',
     invalidConcurrencyFactor:              'The concurrency factor should be an integer greater or equal to 1.',

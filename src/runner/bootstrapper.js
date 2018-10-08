@@ -82,7 +82,7 @@ export default class Bootstrapper {
             tests = testsWithOnlyFlag;
 
         if (this.filter)
-            tests = tests.filter(test => this.filter(test.name, test.fixture.name, test.fixture.path));
+            tests = tests.filter(test => this.filter(test.name, test.fixture.name, test.fixture.path, Object.assign({}, test.fixture.meta, test.meta)));
 
         if (!tests.length)
             throw new GeneralError(MESSAGE.noTestsToRun);
