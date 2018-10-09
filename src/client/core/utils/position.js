@@ -231,7 +231,7 @@ export function getElementFromPoint (x, y) {
     while (el && el.shadowRoot && el.shadowRoot.elementFromPoint) {
         const shadowEl = el.shadowRoot.elementFromPoint(x, y);
 
-        if (!shadowEl)
+        if (!shadowEl || el === shadowEl)
             break;
 
         el = shadowEl;
