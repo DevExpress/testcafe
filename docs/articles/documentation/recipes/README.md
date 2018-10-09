@@ -2,6 +2,8 @@
 layout: docs
 title: Recipes
 permalink: /documentation/recipes/
+redirect_from:
+  - /documentation/recipes/running-tests-in-firefox-and-chrome-using-travis-ci.html
 ---
 # Recipes
 

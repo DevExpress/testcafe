@@ -2,6 +2,8 @@
 layout: docs
 title: Debug in Visual Studio Code
 permalink: /documentation/recipes/debug-in-visual-studio-code.html
+redirect_from:
+  - /documentation/recipes/debugging-with-visual-studio-code.html
 ---
 # Debug in Visual Studio Code
 
