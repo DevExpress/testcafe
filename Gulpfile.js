@@ -243,7 +243,7 @@ gulp.step('client-scripts-templates-render', () => {
 
     const bundledScripts = scripts
         .pipe(clone())
-        // .pipe(uglify())
+        .pipe(uglify())
         .pipe(rename(file => {
             file.extname = '.min.js';
         }));

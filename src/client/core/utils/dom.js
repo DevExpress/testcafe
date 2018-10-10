@@ -518,17 +518,16 @@ export function setElementValue (element, value) {
     return value;
 }
 
-export function getAncestors (node) {
-    const ancestors = [];
+export function findParent (node, includeSelf = false, predicate) {
+    if (!includeSelf)
+        node = node.parentNode;
 
-    while (node.parentNode) {
-        ancestors.unshift(node.parentNode);
+    while (node) {
+        if (typeof predicate !== 'function' || predicate(node))
+            return node;
+
         node = node.parentNode;
     }
 
-    return ancestors;
-}
-
-export function getAncestorsAndSelf (node) {
-    return getAncestors(node).concat([node]);
+    return null;
 }

@@ -1,6 +1,6 @@
 import hammerhead from '../deps/hammerhead';
 import * as domUtils from './dom';
-import { filter, some } from './array';
+import { filter } from './array';
 
 
 const styleUtils   = hammerhead.utils.style;
@@ -46,15 +46,19 @@ const getScrollable = function (el) {
 };
 
 const isVisibilityHiddenNode = function (node) {
-    const ancestors = domUtils.getAncestorsAndSelf(node);
+    node = domUtils.findParent(node, true, ancestor => {
+        return domUtils.isElementNode(ancestor) && get(ancestor, 'visibility') === 'hidden';
+    });
 
-    return some(ancestors, ancestor => domUtils.isElementNode(ancestor) && get(ancestor, 'visibility') === 'hidden');
+    return !!node;
 };
 
 const isHiddenNode = function (node) {
-    const ancestors = domUtils.getAncestorsAndSelf(node);
+    node = domUtils.findParent(node, true, ancestor => {
+        return domUtils.isElementNode(ancestor) && get(ancestor, 'display') === 'none';
+    });
 
-    return some(ancestors, ancestor => domUtils.isElementNode(ancestor) && get(ancestor, 'display') === 'none');
+    return !!node;
 };
 
 export function isFixedElement (node) {
