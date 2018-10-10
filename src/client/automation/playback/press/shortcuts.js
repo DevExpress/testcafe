@@ -1,6 +1,7 @@
 import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
 import testCafeUI from '../../deps/testcafe-ui';
+import { focusNextElement } from './utils';
 
 const Promise               = hammerhead.Promise;
 const browserUtils          = hammerhead.utils.browser;
@@ -519,21 +520,22 @@ function isRadioButtonNavigationRequired (element) {
 }
 
 function focusAndCheckNextRadioButton (element, reverse) {
-    return focusNextElement(element, reverse, false)
+    return focusNextElementOnNavigationButton(element, reverse, false)
         .then(focusedElement => {
             if (focusedElement)
                 focusedElement.checked = true;
         });
 }
 
-function focusNextElement (element, reverse, skipRadioGroups = true) {
+function focusNextElementOnNavigationButton (element, reverse, skipRadioGroups = true) {
     if (!element)
         return Promise.resolve();
 
     if (domUtils.isSelectElement(element))
         selectElement.collapseOptionList();
 
-    return domUtils.focusNextElement(element, reverse, skipRadioGroups)
+
+    return focusNextElement(element, reverse, skipRadioGroups)
         .then(nextElement => {
             if (nextElement && domUtils.isTextEditableInput(nextElement))
                 textSelection.select(nextElement);
@@ -558,7 +560,7 @@ export default {
     'home':        home,
     'end':         end,
     'enter':       enter,
-    'tab':         element => focusNextElement(element, false),
-    'shift+tab':   element => focusNextElement(element, true),
+    'tab':         element => focusNextElementOnNavigationButton(element, false),
+    'shift+tab':   element => focusNextElementOnNavigationButton(element, true),
     'esc':         esc
 };

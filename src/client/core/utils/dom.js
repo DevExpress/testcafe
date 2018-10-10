@@ -2,10 +2,8 @@ import hammerhead from '../deps/hammerhead';
 import * as styleUtils from './style';
 import * as arrayUtils from './array';
 
-const browserUtils     = hammerhead.utils.browser;
-const nativeMethods    = hammerhead.nativeMethods;
-const focusBlurSandbox = hammerhead.eventSandbox.focusBlur;
-const Promise          = hammerhead.Promise;
+const browserUtils  = hammerhead.utils.browser;
+const nativeMethods = hammerhead.nativeMethods;
 
 export const getActiveElement                       = hammerhead.utils.dom.getActiveElement;
 export const findDocument                           = hammerhead.utils.dom.findDocument;
@@ -153,7 +151,7 @@ function sortBy (property) {
     };
 }
 
-function getFocusableElements (doc) {
+export function getFocusableElements (doc, sort = false) {
     // NOTE: We don't take into account the case of embedded contentEditable
     // elements and specify the contentEditable attribute for focusable elements
     const allElements         = doc.querySelectorAll('*');
@@ -204,7 +202,12 @@ function getFocusableElements (doc) {
     }
 
     //NOTE: remove children of invisible elements
-    return arrayUtils.filter(focusableElements, el => !containsElement(invisibleElements, el));
+    let result = arrayUtils.filter(focusableElements, el => !containsElement(invisibleElements, el));
+
+    if (sort)
+        result = sortElementsByFocusingIndex(result);
+
+    return result;
 }
 
 function getInvisibleElements (elements) {
@@ -365,84 +368,6 @@ export function getElementDescription (el) {
     res.push('>');
 
     return res.join('');
-}
-
-export function focusNextElement (element, reverse, skipRadioGroups) {
-    return new Promise(resolve => {
-        const nextElement = getNextFocusableElement(element, reverse, skipRadioGroups);
-
-        if (nextElement)
-            focusBlurSandbox.focus(nextElement, () => resolve(nextElement));
-        else
-            resolve();
-    });
-}
-
-function getFocusableElementsFilter (sourceElement, skipRadioGroups) {
-    let filter = null;
-
-    if (skipRadioGroups) {
-        // NOTE: in all browsers except Mozilla and Opera focus sets on one radio set from group only.
-        // in Mozilla and Opera focus sets on any radio set.
-        if (sourceElement.name !== '' && !browserUtils.isFirefox)
-            filter = item => !item.name || item === sourceElement || item.name !== sourceElement.name;
-    }
-    // NOTE arrow navigations works with radio buttons in all browsers only between radio buttons with same names
-    // Navigation between radio buttons without name just moves focus between radio buttons in Chrome
-    // In other browsers navigation between radio buttons without name does not work
-    else if (sourceElement.name !== '')
-        filter = item => isRadioButtonElement(item) && item.name === sourceElement.name;
-    else if (browserUtils.isChrome)
-        filter = item => isRadioButtonElement(item) && !item.name;
-
-    return filter;
-}
-
-function filterFocusableElements (elements, sourceElement, skipRadioGroups) {
-    if (!isRadioButtonElement(sourceElement))
-        return elements;
-
-    if (!skipRadioGroups && !sourceElement.name && !browserUtils.isChrome)
-        return [sourceElement];
-
-    const filterFn = getFocusableElementsFilter(sourceElement, skipRadioGroups);
-
-    if (filterFn)
-        elements = arrayUtils.filter(elements, filterFn);
-
-    return elements;
-}
-
-function correctFocusableElement (elements, element, skipRadioGroups) {
-    const isNotCheckedRadioButtonElement      = isRadioButtonElement(element) && element.name && !element.checked;
-    let checkedRadioButtonElementWithSameName = null;
-
-    if (skipRadioGroups && isNotCheckedRadioButtonElement) {
-        checkedRadioButtonElementWithSameName = arrayUtils.find(elements, el => {
-            return isRadioButtonElement(el) && el.name === element.name && el.checked;
-        });
-    }
-
-    return checkedRadioButtonElementWithSameName || element;
-}
-
-export function getNextFocusableElement (element, reverse, skipRadioGroups) {
-    const offset     = reverse ? -1 : 1;
-    let allFocusable = sortElementsByFocusingIndex(getFocusableElements(findDocument(element)));
-
-    allFocusable = filterFocusableElements(allFocusable, element, skipRadioGroups);
-
-    const isRadioInput         = isRadioButtonElement(element);
-    const currentIndex         = arrayUtils.indexOf(allFocusable, element);
-    const isLastElementFocused = reverse ? currentIndex === 0 : currentIndex === allFocusable.length - 1;
-
-    if (isLastElementFocused)
-        return skipRadioGroups || !isRadioInput ? document.body : allFocusable[allFocusable.length - 1 - currentIndex];
-
-    if (reverse && currentIndex === -1)
-        return allFocusable[allFocusable.length - 1];
-
-    return correctFocusableElement(allFocusable, allFocusable[currentIndex + offset], skipRadioGroups);
 }
 
 export function getFocusableParent (el) {
