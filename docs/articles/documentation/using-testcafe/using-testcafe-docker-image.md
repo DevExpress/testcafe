@@ -89,7 +89,7 @@ where `$PORT1` and `$PORT2` are vacant container's ports, `$EXTERNAL_HOSTNAME` i
 
 If you are testing a heavy website, you may need to allocate extra resources for the Docker image.
 
-The most common case is when the temporary file storage `/dev/shm` runs out of free space. It usually happens when you run tests in Chromium. The following example shows how to allow additional space (1GB) for this storage using the `--shm-size` option.
+The most common case is when the temporary file storage `/dev/shm` runs out of free space. The following example shows how to allow additional space (1GB) for this storage using the `--shm-size` option.
 
 ```sh
 docker run --shm-size=1g -v ${TEST_FOLDER}:/tests -it testcafe/testcafe ${TESTCAFE_ARGS}
