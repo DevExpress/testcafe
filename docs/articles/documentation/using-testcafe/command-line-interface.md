@@ -37,6 +37,8 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [-F \<pattern\>, --fixture-grep \<pattern\>](#-f-pattern---fixture-grep-pattern)
   * [-a \<command\>, --app \<command\>](#-a-command---app-command)
   * [-c \<n\>, --concurrency \<n\>](#-c-n---concurrency-n)
+  * [--test-meta \<json\>](#--test-meta-json)
+  * [--fixture-meta \<json\>](#--fixture-meta-json)
   * [--debug-on-fail](#--debug-on-fail)
   * [--app-init-delay \<ms\>](#--app-init-delay-ms)
   * [--selector-timeout \<ms\>](#--selector-timeout-ms)
@@ -449,6 +451,25 @@ The following example shows how to run tests in three Chrome instances:
 testcafe -c 3 chrome tests/sample-fixture.js
 ```
 
+### --test-meta \<json\>
+
+TestCafe runs tests whose test's [metadata](../test-api/test-code-structure.html#specifying-testing-metadata) [match](https://lodash.com/docs/#isMatch) the specified json.
+
+For example, the following command runs tests whose metadata have a `mobile` property with the value `true`.
+
+```sh
+testcafe ie my-tests --test-meta '{"mobile": true}'
+```
+
+### --fixture-meta \<json\>
+
+TestCafe runs tests whose fixture's [metadata](../test-api/test-code-structure.html#specifying-testing-metadata) [match](https://lodash.com/docs/#isMatch) the specified json.
+
+For example, the following command runs tests whose fixture's metadata have a `mobile` property with the value `true`.
+
+```sh
+testcafe ie my-tests --fixture-meta '{"mobile": true}'
+```
 ### --debug-on-fail
 
 Specifies whether to automatically enter the [debug mode](#-d---debug-mode) when a test fails.
