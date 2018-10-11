@@ -7,16 +7,24 @@
         act.click('#enableBeforeUnload');
     }),
 
-    '2.Click link "This page"': inIFrame('#iframe', function () {
+    '2.Click the reload button': inIFrame('#iframe', function () {
+        act.click('#reload');
+    }),
+
+    '3.Wait for a dialog': inIFrame('#iframe', function () {
         handleBeforeUnload();
-        act.click(':containsExcludeChildren(This page)');
+        act.wait(60000);
     })
 };
 
 '@test'['No expected beforeUnload dialog in iframe - should fail'] = {
-    '1.Click link "This page"': inIFrame('#iframe', function () {
+    '1.Click reload button': inIFrame('#iframe', function () {
+        act.click('#reload');
+    }),
+
+    '2.Wait for a dialog': inIFrame('#iframe', function () {
         handleBeforeUnload();
-        act.click(':containsExcludeChildren(This page)');
+        act.wait(30000);
     })
 };
 
@@ -25,7 +33,11 @@
         act.click('#enableBeforeUnload');
     }),
 
-    '2.Click link "This page"': inIFrame('#iframe', function () {
+    '2.Click the reload button': inIFrame('#iframe', function () {
         act.click(':containsExcludeChildren(This page)');
+    }),
+
+    '3.Wait for a dialog': inIFrame('#iframe', function () {
+        act.wait(30000);
     })
 };
