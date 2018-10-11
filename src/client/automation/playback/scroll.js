@@ -1,5 +1,5 @@
 import hammerhead from '../deps/hammerhead';
-import { domUtils, styleUtils, positionUtils, promiseUtils, scrollController, sendRequestToFrame, arrayUtils } from '../deps/testcafe-core';
+import { domUtils, styleUtils, positionUtils, promiseUtils, scrollController, sendRequestToFrame } from '../deps/testcafe-core';
 
 
 const Promise        = hammerhead.Promise;
