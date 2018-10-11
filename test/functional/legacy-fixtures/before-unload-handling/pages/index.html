@@ -4,9 +4,15 @@
     <title>Index</title>
 </head>
 <body>
-<a href="index.html">This page</a>
+<button id="reload">This page</button>
 <button id="enableBeforeUnload">Enable beforeunload dialog</button>
 <script>
+    document.getElementById('reload').onclick = function () {
+        setTimeout(function () {
+          window.location = 'index.html';
+        }, 15000);
+    };
+
     document.getElementById('enableBeforeUnload').onclick = function () {
         window.onbeforeunload = function (e) {
             e.returnValue = 'message';

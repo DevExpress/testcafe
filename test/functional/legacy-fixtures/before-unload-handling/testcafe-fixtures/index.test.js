@@ -7,9 +7,13 @@
         act.click('#enableBeforeUnload');
     },
 
-    '2.Click link "This page"': function () {
+    '2.Click the reload button': function () {
+        act.click('#reload');
+    },
+
+    '3.Wait for a dialog': function () {
         handleBeforeUnload();
-        act.click(':containsExcludeChildren(This page)');
+        act.wait(30000);
     }
 };
 
@@ -18,14 +22,22 @@
         act.click('#enableBeforeUnload');
     },
 
-    '2.Click link "This page"': function () {
-        act.click(':containsExcludeChildren(This page)');
+    '2.Click the reload button': function () {
+        act.click('#reload');
+    },
+
+    '3.Wait for a dialog': function () {
+        act.wait(30000);
     }
 };
 
 '@test'['No expected beforeUnload dialog - should fail'] = {
-    '1.Click link "This page"': function () {
+    '1.Click the reload button': function () {
+        act.click('#reload');
+    },
+
+    '2.Wait for a dialog': function () {
         handleBeforeUnload();
-        act.click(':containsExcludeChildren(This page)');
+        act.wait(30000);
     }
 };

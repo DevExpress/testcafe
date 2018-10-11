@@ -10,7 +10,7 @@ describe('Before unload handling', function () {
         return runTests('testcafe-fixtures/index.test.js', 'No expected beforeUnload dialog - should fail', { shouldFail: true })
             .catch(function (errs) {
                 var expectedError = [
-                    'Error at step "1.Click link "This page"":',
+                    'Error at step "2.Wait for a dialog":',
                     ' The expected system beforeUnload dialog did not appear.'
                 ].join('');
 
@@ -22,7 +22,7 @@ describe('Before unload handling', function () {
         return runTests('testcafe-fixtures/index.test.js', 'Unexpected beforeUnload dialog - should fail', { shouldFail: true })
             .catch(function (errs) {
                 var expectedError = [
-                    'Error at step "2.Click link "This page"":',
+                    'Error at step "3.Wait for a dialog":',
                     ' Unexpected system beforeUnload dialog message appeared.'
                 ].join('');
 
@@ -38,7 +38,7 @@ describe('Before unload handling', function () {
         return runTests('testcafe-fixtures/in-iframe.test.js', 'No expected beforeUnload dialog in iframe - should fail', { shouldFail: true })
             .catch(function (errs) {
                 var expectedError = [
-                    'Error at step "1.Click link "This page"":',
+                    'Error at step "2.Wait for a dialog":',
                     ' The expected system beforeUnload dialog did not appear.'
                 ].join('');
 
@@ -50,7 +50,7 @@ describe('Before unload handling', function () {
         return runTests('testcafe-fixtures/in-iframe.test.js', 'Unexpected beforeUnload dialog in iframe - should fail', { shouldFail: true })
             .catch(function (errs) {
                 var expectedError = [
-                    'Error at step "2.Click link "This page"":',
+                    'Error at step "3.Wait for a dialog":',
                     ' Unexpected system beforeUnload dialog message appeared.'
                 ].join('');
 
