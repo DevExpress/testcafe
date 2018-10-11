@@ -9,8 +9,13 @@
         act.click('#enableBeforeUnload');
     }),
 
-    '2.Click link "This page"': inIFrame('#iframe', function () {
+    '2.Click the reload button': inIFrame('#iframe', function () {
+        act.click('#reload');
+    }),
+
+    '3.Wait for dialog': inIFrame('#iframe', function () {
         handleBeforeUnload();
-        act.click(':containsExcludeChildren(This page)');
+
+        act.wait(30000);
     })
 };
