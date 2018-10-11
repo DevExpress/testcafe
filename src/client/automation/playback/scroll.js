@@ -266,7 +266,7 @@ export default class ScrollAutomation {
     }
 
     static _getFixedAncestorOrSelf (element) {
-        return domUtils.findParent(element, true, node => styleUtils.isFixedElement(node));
+        return domUtils.findParent(element, true, styleUtils.isFixedElement);
     }
 
     _isTargetElementObscuredInPoint (x, y) {
