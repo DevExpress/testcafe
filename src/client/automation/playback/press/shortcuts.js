@@ -1,11 +1,11 @@
 import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
 import testCafeUI from '../../deps/testcafe-ui';
+import { focusNextElement } from './utils';
 
 const Promise               = hammerhead.Promise;
 const browserUtils          = hammerhead.utils.browser;
 const eventSimulator        = hammerhead.eventSandbox.eventSimulator;
-const focusBlurSandbox      = hammerhead.eventSandbox.focusBlur;
 const elementEditingWatcher = hammerhead.eventSandbox.elementEditingWatcher;
 
 const textSelection = testCafeCore.textSelection;
@@ -232,6 +232,9 @@ function left (element) {
     if (domUtils.isSelectElement(element))
         selectElement.switchOptionsByKeys(element, 'left');
 
+    if (isRadioButtonNavigationRequired(element))
+        return focusAndCheckNextRadioButton(element, true);
+
     if (domUtils.isTextEditableElement(element)) {
         startPosition = textSelection.getSelectionStart(element) || 0;
         endPosition   = textSelection.getSelectionEnd(element);
@@ -267,6 +270,9 @@ function right (element) {
 
     if (domUtils.isSelectElement(element))
         selectElement.switchOptionsByKeys(element, 'right');
+
+    if (isRadioButtonNavigationRequired(element))
+        return focusAndCheckNextRadioButton(element, false);
 
     if (domUtils.isTextEditableElement(element)) {
         startPosition = textSelection.getSelectionStart(element);
@@ -304,6 +310,9 @@ function up (element) {
     if (domUtils.isSelectElement(element))
         selectElement.switchOptionsByKeys(element, 'up');
 
+    if (isRadioButtonNavigationRequired(element))
+        return focusAndCheckNextRadioButton(element, true);
+
     if (browserUtils.isWebKit && domUtils.isInputElement(element))
         return home(element);
 
@@ -316,6 +325,9 @@ function up (element) {
 function down (element) {
     if (domUtils.isSelectElement(element))
         selectElement.switchOptionsByKeys(element, 'down');
+
+    if (isRadioButtonNavigationRequired(element))
+        return focusAndCheckNextRadioButton(element, false);
 
     if (browserUtils.isWebKit && domUtils.isInputElement(element))
         return end(element);
@@ -503,46 +515,32 @@ function enter (element) {
     return Promise.resolve();
 }
 
-function focusNextElement (element) {
-    return new Promise(resolve => {
-        if (domUtils.isSelectElement(element)) {
-            selectElement.collapseOptionList();
-            resolve();
-        }
-
-        const nextElement = domUtils.getNextFocusableElement(element);
-
-        if (!nextElement)
-            resolve();
-
-        focusBlurSandbox.focus(nextElement, () => {
-            if (domUtils.isTextEditableInput(nextElement))
-                textSelection.select(nextElement);
-
-            resolve();
-        });
-    });
+function isRadioButtonNavigationRequired (element) {
+    return domUtils.isRadioButtonElement(element) && !browserUtils.isFirefox;
 }
 
-function focusPrevElement (element) {
-    return new Promise(resolve => {
-        if (domUtils.isSelectElement(element)) {
-            selectElement.collapseOptionList();
-            resolve();
-        }
-
-        const prevElement = domUtils.getNextFocusableElement(element, true);
-
-        if (!prevElement)
-            resolve();
-
-        focusBlurSandbox.focus(prevElement, () => {
-            if (domUtils.isTextEditableInput(prevElement))
-                textSelection.select(prevElement);
-
-            resolve();
+function focusAndCheckNextRadioButton (element, reverse) {
+    return focusNextElementOnNavigationButton(element, reverse, false)
+        .then(focusedElement => {
+            if (focusedElement)
+                focusedElement.checked = true;
         });
-    });
+}
+
+function focusNextElementOnNavigationButton (element, reverse, skipRadioGroups = true) {
+    if (!element)
+        return Promise.resolve();
+
+    if (domUtils.isSelectElement(element))
+        selectElement.collapseOptionList();
+
+
+    return focusNextElement(element, reverse, skipRadioGroups)
+        .then(nextElement => {
+            if (nextElement && domUtils.isTextEditableInput(nextElement))
+                textSelection.select(nextElement);
+            return nextElement;
+        });
 }
 
 export default {
@@ -562,7 +560,7 @@ export default {
     'home':        home,
     'end':         end,
     'enter':       enter,
-    'tab':         focusNextElement,
-    'shift+tab':   focusPrevElement,
+    'tab':         element => focusNextElementOnNavigationButton(element, false),
+    'shift+tab':   element => focusNextElementOnNavigationButton(element, true),
     'esc':         esc
 };

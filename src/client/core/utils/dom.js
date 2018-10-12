@@ -2,7 +2,6 @@ import hammerhead from '../deps/hammerhead';
 import * as styleUtils from './style';
 import * as arrayUtils from './array';
 
-
 const browserUtils  = hammerhead.utils.browser;
 const nativeMethods = hammerhead.nativeMethods;
 
@@ -50,6 +49,8 @@ export const closest                                = hammerhead.utils.dom.close
 export const getParents                             = hammerhead.utils.dom.getParents;
 export const getTopSameDomainWindow                 = hammerhead.utils.dom.getTopSameDomainWindow;
 
+export const isRadioButtonElement = el => isInputElement(el) && el.type === 'radio';
+
 function getElementsWithTabIndex (elements) {
     return arrayUtils.filter(elements, el => el.tabIndex > 0);
 }
@@ -64,42 +65,42 @@ function sortElementsByFocusingIndex (elements) {
 
     let elementsWithTabIndex = getElementsWithTabIndex(elements);
 
-    //iFrames
-    const iFrames = arrayUtils.filter(elements, el => isIframeElement(el));
+    //iframes
+    const iframes = arrayUtils.filter(elements, el => isIframeElement(el));
 
     if (!elementsWithTabIndex.length) {
-        if (iFrames.length)
-            elements = insertIFramesContentElements(elements, iFrames);
+        if (iframes.length)
+            elements = insertIframesContentElements(elements, iframes);
 
         return elements;
     }
 
-    elementsWithTabIndex        = elementsWithTabIndex.sort(sortBy('tabIndex'));
+    elementsWithTabIndex          = elementsWithTabIndex.sort(sortBy('tabIndex'));
     const elementsWithoutTabIndex = getElementsWithoutTabIndex(elements);
 
-    if (iFrames.length)
-        return insertIFramesContentElements(elementsWithTabIndex, iFrames).concat(insertIFramesContentElements(elementsWithoutTabIndex, iFrames));
+    if (iframes.length)
+        return insertIframesContentElements(elementsWithTabIndex, iframes).concat(insertIframesContentElements(elementsWithoutTabIndex, iframes));
 
     return elementsWithTabIndex.concat(elementsWithoutTabIndex);
 }
 
-function insertIFramesContentElements (elements, iFrames) {
-    const sortedIFrames         = sortElementsByTabIndex(iFrames);
+function insertIframesContentElements (elements, iframes) {
+    const sortedIframes       = sortElementsByTabIndex(iframes);
     let results               = [];
-    const iFramesElements       = [];
+    const iframesElements     = [];
     let iframeFocusedElements = [];
     let i                     = 0;
 
-    for (i = 0; i < sortedIFrames.length; i++) {
+    for (i = 0; i < sortedIframes.length; i++) {
         //NOTE: We can get elements of the same domain iframe only
         try {
-            iframeFocusedElements = getFocusableElements(sortedIFrames[i].contentDocument);
+            iframeFocusedElements = getFocusableElements(sortedIframes[i].contentDocument);
         }
         catch (e) {
             iframeFocusedElements = [];
         }
 
-        iFramesElements.push(sortElementsByFocusingIndex(iframeFocusedElements));
+        iframesElements.push(sortElementsByFocusingIndex(iframeFocusedElements));
     }
 
     for (i = 0; i < elements.length; i++) {
@@ -109,8 +110,8 @@ function insertIFramesContentElements (elements, iFrames) {
             if (browserUtils.isIE) {
                 results.pop();
 
-                const iFrameElements               = iFramesElements[arrayUtils.indexOf(iFrames, elements[i])];
-                let elementsWithTabIndex         = getElementsWithTabIndex(iFrameElements);
+                const iFrameElements               = iframesElements[arrayUtils.indexOf(iframes, elements[i])];
+                let elementsWithTabIndex           = getElementsWithTabIndex(iFrameElements);
                 const elementsWithoutTabIndexArray = getElementsWithoutTabIndex(iFrameElements);
 
                 elementsWithTabIndex = elementsWithTabIndex.sort(sortBy('tabIndex'));
@@ -119,10 +120,10 @@ function insertIFramesContentElements (elements, iFrames) {
                 results = results.concat(elementsWithoutTabIndexArray);
             }
             else {
-                if (browserUtils.isWebKit && iFramesElements[arrayUtils.indexOf(iFrames, elements[i])].length)
+                if (browserUtils.isWebKit && iframesElements[arrayUtils.indexOf(iframes, elements[i])].length)
                     results.pop();
 
-                results = results.concat(iFramesElements[arrayUtils.indexOf(iFrames, elements[i])]);
+                results = results.concat(iframesElements[arrayUtils.indexOf(iframes, elements[i])]);
             }
         }
     }
@@ -150,16 +151,16 @@ function sortBy (property) {
     };
 }
 
-function getFocusableElements (doc) {
+export function getFocusableElements (doc, sort = false) {
     // NOTE: We don't take into account the case of embedded contentEditable
     // elements and specify the contentEditable attribute for focusable elements
     const allElements         = doc.querySelectorAll('*');
     const invisibleElements   = getInvisibleElements(allElements);
     const inputElementsRegExp = /^(input|button|select|textarea)$/;
     const focusableElements   = [];
-    let element             = null;
-    let tagName             = null;
-    let tabIndex            = null;
+    let element               = null;
+    let tagName               = null;
+    let tabIndex              = null;
 
     let needPush = false;
 
@@ -201,7 +202,12 @@ function getFocusableElements (doc) {
     }
 
     //NOTE: remove children of invisible elements
-    return arrayUtils.filter(focusableElements, el => !containsElement(invisibleElements, el));
+    let result = arrayUtils.filter(focusableElements, el => !containsElement(invisibleElements, el));
+
+    if (sort)
+        result = sortElementsByFocusingIndex(result);
+
+    return result;
 }
 
 function getInvisibleElements (elements) {
@@ -248,8 +254,8 @@ export function getTextareaIndentInLine (textarea, position) {
 export function getTextareaLineNumberByPosition (textarea, position) {
     const textareaValue = getTextAreaValue(textarea);
     const lines         = textareaValue.split('\n');
-    let topPartLength = 0;
-    let line          = 0;
+    let topPartLength   = 0;
+    let line            = 0;
 
     for (let i = 0; topPartLength <= position; i++) {
         if (position <= topPartLength + lines[i].length) {
@@ -267,7 +273,7 @@ export function getTextareaLineNumberByPosition (textarea, position) {
 export function getTextareaPositionByLineAndOffset (textarea, line, offset) {
     const textareaValue = getTextAreaValue(textarea);
     const lines         = textareaValue.split('\n');
-    let lineIndex     = 0;
+    let lineIndex       = 0;
 
     for (let i = 0; i < line; i++)
         lineIndex += lines[i].length + 1;
@@ -364,30 +370,6 @@ export function getElementDescription (el) {
     return res.join('');
 }
 
-export function getNextFocusableElement (element, reverse) {
-    const offset       = reverse ? -1 : 1;
-    let allFocusable = sortElementsByFocusingIndex(getFocusableElements(findDocument(element)));
-
-    //NOTE: in all browsers except Mozilla and Opera focus sets on one radio set from group only.
-    // in Mozilla and Opera focus sets on any radio set.
-    if (isInputElement(element) && element.type === 'radio' && element.name !== '' && !browserUtils.isFirefox) {
-        allFocusable = arrayUtils.filter(allFocusable, item => {
-            return !item.name || item === element || item.name !== element.name;
-        });
-    }
-
-    const currentIndex         = arrayUtils.indexOf(allFocusable, element);
-    const isLastElementFocused = reverse ? currentIndex === 0 : currentIndex === allFocusable.length - 1;
-
-    if (isLastElementFocused)
-        return document.body;
-
-    if (reverse && currentIndex === -1)
-        return allFocusable[allFocusable.length - 1];
-
-    return allFocusable[currentIndex + offset];
-}
-
 export function getFocusableParent (el) {
     const parents = getParents(el);
 
@@ -457,7 +439,7 @@ export function getCommonAncestor (element1, element2) {
     if (isTheSameNode(element1, element2))
         return element1;
 
-    const el1Parents     = [element1].concat(getParents(element1));
+    const el1Parents   = [element1].concat(getParents(element1));
     let commonAncestor = element2;
 
     while (commonAncestor) {
