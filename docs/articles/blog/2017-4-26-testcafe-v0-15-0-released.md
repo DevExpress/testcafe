@@ -13,7 +13,7 @@ Plugins for React and Vue.js, TestCafe Docker image, support for Internet access
 
 ### New calls to selector's withText method no longer override previous calls
 
-We have changed the way the [withText](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#withtext)
+We have changed the way the [withText](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#withtext)
 method behaves when it is called in a chain.
 
 ```js

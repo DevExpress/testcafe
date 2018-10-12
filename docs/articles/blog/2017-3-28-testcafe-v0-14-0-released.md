@@ -151,7 +151,7 @@ test('Navigate to local pages', async t => {
 
 ### ⚙ Adding custom methods to the selector ([#1212](https://github.com/DevExpress/testcafe/issues/1212))
 
-You can now extend selectors with custom methods executed on the client. Use the [addCustomMethods](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#custom-methods) method to provide custom methods.
+You can now extend selectors with custom methods executed on the client. Use the [addCustomMethods](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/extending-selectors.html#custom-methods) method to provide custom methods.
 
 ```js
 const myTable = Selector('.my-table').addCustomMethods({
