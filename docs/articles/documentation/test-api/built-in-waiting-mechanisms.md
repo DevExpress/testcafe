@@ -2,6 +2,8 @@
 layout: docs
 title: Built-In Waiting Mechanisms 
 permalink: /documentation/test-api/built-in-waiting-mechanisms.html
+redirect_from:
+  - /documentation/test-api/waiting-for-page-elements-to-appear.html
 ---
 # Built-In Waiting Mechanisms
 

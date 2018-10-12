@@ -74,7 +74,7 @@ The `t.takeScreenshot`, `t.resizeWindow`, `t.resizeWindowToFitDevice` and `t.max
 
 The state of webpage elements can now be extended with custom properties.
 
-We have added the [addCustomDOMProperties](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#custom-properties)
+We have added the [addCustomDOMProperties](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/extending-selectors.html#custom-properties)
 method to the selector, so that you can add properties to the element state like in the following example.
 
 ```js

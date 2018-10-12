@@ -3,6 +3,8 @@ layout: docs
 title: Selector Options
 permalink: /documentation/test-api/selecting-page-elements/selectors/selector-options.html
 checked: true
+redirect_from:
+  - /documentation/test-api/selecting-page-elements/selector-options.html
 ---
 # Selector Options
 

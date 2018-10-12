@@ -3,6 +3,8 @@ layout: docs
 title: Selectors
 permalink: /documentation/test-api/selecting-page-elements/selectors/
 checked: false
+redirect_from:
+  - /documentation/test-api/selecting-page-elements/selectors.html
 ---
 # Selectors
 

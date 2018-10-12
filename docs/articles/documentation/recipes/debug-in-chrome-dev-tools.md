@@ -2,6 +2,8 @@
 layout: docs
 title: Debug in Chrome Developer Tools
 permalink: /documentation/recipes/debug-in-chrome-dev-tools.html
+redirect_from:
+  - /documentation/recipes/debugging-with-chrome-dev-tools.html
 ---
 # Debug in Chrome Developer Tools
 
