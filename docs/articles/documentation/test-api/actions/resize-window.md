@@ -12,6 +12,8 @@ There are three ways of resizing a browser window.
 * [Fitting the Window into a Particular Device](#fitting-the-window-into-a-particular-device)
 * [Maximizing the Window](#maximizing-the-window)
 
+> Important! Window resize actions are not supported when you run tests in [remote browsers](../../using-testcafe/common-concepts/browsers/browser-support.md#browsers-on-remote-devices).
+
 **Note**: these actions require .NET 4.0 or newer installed on Windows machines and an [ICCCM/EWMH-compliant window manager](https://en.wikipedia.org/wiki/Comparison_of_X_window_managers) on Linux.
 
 ## Setting the Window Size

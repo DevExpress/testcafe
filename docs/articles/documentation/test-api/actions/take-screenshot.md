@@ -8,9 +8,11 @@ checked: true
 
 This topic describes how to take screenshots of the tested page.
 
+> Important! Screenshot actions are not supported when you run tests in [remote browsers](../../using-testcafe/common-concepts/browsers/browser-support.md#browsers-on-remote-devices).
+
 **Note**: these actions require .NET 4.0 or newer installed on Windows machines and an [ICCCM/EWMH-compliant window manager](https://en.wikipedia.org/wiki/Comparison_of_X_window_managers) on Linux.
 
-> Important! Screenshot actions are ignored if the screenshot directory is not specified with the [runner.screenshots](../../using-testcafe/programming-interface/runner.md#screenshots) API method or the [screenshots](../../using-testcafe/command-line-interface.md#-s-path---screenshots-path) command line option.
+> Important! Screenshot actions are ignored if the screenshot directory is not specified with the [runner.screenshots](../../using-testcafe/programming-interface/runner.md#screenshots) API method or the [--screenshots](../../using-testcafe/command-line-interface.md#-s-path---screenshots-path) command line option.
 
 ## Take a Screenshot of the Entire Page
 
