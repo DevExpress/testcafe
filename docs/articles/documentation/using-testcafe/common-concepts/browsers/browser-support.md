@@ -74,6 +74,8 @@ First, you will need to create a remote browser connection.
 After that, TestCafe will provide a URL to open on the remote device in the browser against which you want to test.
 As you open this URL, the browser connects to the TestCafe server and starts testing.
 
+> You cannot [take screenshots](../../../test-api/actions/take-screenshot.md) or [resize the browser window](../../../test-api/actions/resize-window.md) when you run tests in remote browsers.
+
 ## Browsers in Cloud Testing Services
 
 TestCafe allows you to use browsers from cloud testing services. You can access them through [browser provider plugins](../../../extending-testcafe/browser-provider-plugin/).
