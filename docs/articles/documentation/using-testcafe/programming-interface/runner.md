@@ -449,7 +449,8 @@ createTestCafe('localhost', 1337, 1338)
     .catch(error => { /* ... */ });
 ```
 
-If a browser hangs while it executes tests, TestCafe restarts the browser and continues running tests in a new window.
+If a browser stops responding while it executes tests, TestCafe restarts the browser and tries to continue tests in a new window.
+The test during which the browser stopped responding is reported as failed.
 
 #### Cancelling Test Tasks
 
