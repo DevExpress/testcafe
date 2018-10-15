@@ -58,8 +58,8 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
 > Inactive tabs and minimized browser windows switch to a lower resource consumption mode
 > where tests do not always execute correctly.
 
-If a browser stops responding while it executes tests, TestCafe restarts the browser and tries to continue tests in a new window.
-The test during which the browser stopped responding is reported as failed.
+If a browser stops responding while it executes tests, TestCafe restarts the browser and reruns the current test in a new browser instance.
+If the same problem occurs with this test two more times, TestCafe proceeds to the next test and reports the current test as failed.
 
 ## Browser List
 
