@@ -353,7 +353,7 @@ You can also use the **Unlock page** switch in the footer to unlock the tested p
 
 ### -e, --skip-js-errors
 
-When a JavaScript error occurs on a tested web page, TestCafe stops test execution and posts an error message to a report. To ignore JavaScript errors, use the `-e`(`--skip-js-errors`) option.
+When a JavaScript error occurs on a tested web page, TestCafe stops test execution and posts an error message and a stack trace to a report. To ignore JavaScript errors, use the `-e`(`--skip-js-errors`) option.
 
 For example, the following command runs tests from the specified file and forces TestCafe to ignore JavaScript errors:
 

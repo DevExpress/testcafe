@@ -16,7 +16,7 @@ TestCafe ships with the following reporters:
 * [xUnit](https://github.com/DevExpress/testcafe-reporter-xunit)
 * [JSON](https://github.com/DevExpress/testcafe-reporter-json)
 
-You can also create a [custom reporter](/testcafe/documentation/extending-testcafe/reporter-plugin/) that will fulfill your needs.
+You can also create a [custom reporter](/testcafe/documentation/extending-testcafe/reporter-plugin/) that fulfills your needs.
 
 Here are some custom reporters developed by the community.
 
@@ -44,5 +44,5 @@ You can install reporter packages from npm as you would install any other plugin
 
 When running tests, you can select a reporter to generate test reports.
 You can do this by using the
-[reporter](../command-line-interface.md#-r-namefile---reporter-namefile) command line option or the
+[-r (--reporter)](../command-line-interface.md#-r-namefile---reporter-namefile) command line option or the
 [runner.reporter](../programming-interface/runner.md#reporter) API method.

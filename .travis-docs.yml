@@ -6,7 +6,7 @@ matrix:
  fast_finish: true
 
 before_install:
-   - rvm install 2.4.2
+   - rvm install 2.5.1
    - curl -o- -L https://yarnpkg.com/install.sh | bash
    - export PATH=$HOME/.yarn/bin:$PATH
    - yarn install
