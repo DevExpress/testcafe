@@ -99,7 +99,7 @@ export default class BrowserProviderPluginHost {
         return false;
     }
 
-    isHeadlessBrowser () {
+    isHeadlessBrowser (/* browserId, browserName */) {
         return false;
     }
 

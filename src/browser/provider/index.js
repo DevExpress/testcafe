@@ -168,6 +168,13 @@ export default class BrowserProvider {
         await browserTools.maximize(this._getWindowDescriptor(browserId));
     }
 
+    async _canUseDefaultWindowActions (browserId) {
+        const isLocalBrowser    = await this.plugin.isLocalBrowser(browserId);
+        const isHeadlessBrowser = await this.plugin.isHeadlessBrowser(browserId);
+
+        return isLocalBrowser && !isHeadlessBrowser;
+    }
+
     async init () {
         const initialized = await this.initPromise;
 
@@ -212,31 +219,29 @@ export default class BrowserProvider {
         return await this.plugin.isLocalBrowser(browserId, browserName);
     }
 
-    isHeadlessBrowser (browserId) {
-        return this.plugin.isHeadlessBrowser(browserId);
+    isHeadlessBrowser (browserId, browserName) {
+        return this.plugin.isHeadlessBrowser(browserId, browserName);
     }
 
     async openBrowser (browserId, pageUrl, browserName) {
         await this.plugin.openBrowser(browserId, pageUrl, browserName);
 
-        const isLocalBrowser = await this.plugin.isLocalBrowser(browserId);
-
-        if (isLocalBrowser)
+        if (await this._canUseDefaultWindowActions(browserId))
             await this._ensureBrowserWindowParameters(browserId);
     }
 
     async closeBrowser (browserId) {
-        const isLocalBrowser         = await this.plugin.isLocalBrowser(browserId);
-        const customActionsInfo      = await this.hasCustomActionForBrowser(browserId);
-        const hasCustomCloseBrowser  = customActionsInfo.hasCloseBrowser;
-        const usePluginsCloseBrowser = hasCustomCloseBrowser || !isLocalBrowser;
+        const canUseDefaultWindowActions = await this._canUseDefaultWindowActions(browserId);
+        const customActionsInfo          = await this.hasCustomActionForBrowser(browserId);
+        const hasCustomCloseBrowser      = customActionsInfo.hasCloseBrowser;
+        const usePluginsCloseBrowser     = hasCustomCloseBrowser || !canUseDefaultWindowActions;
 
         if (usePluginsCloseBrowser)
             await this.plugin.closeBrowser(browserId);
         else
             await this._closeLocalBrowser(browserId);
 
-        if (isLocalBrowser)
+        if (canUseDefaultWindowActions)
             delete this.localBrowsersInfo[browserId];
     }
 
@@ -249,12 +254,12 @@ export default class BrowserProvider {
     }
 
     async resizeWindow (browserId, width, height, currentWidth, currentHeight) {
-        const isLocalBrowser        = await this.plugin.isLocalBrowser(browserId);
-        const customActionsInfo     = await this.hasCustomActionForBrowser(browserId);
-        const hasCustomResizeWindow = customActionsInfo.hasResizeWindow;
+        const canUseDefaultWindowActions = await this._canUseDefaultWindowActions(browserId);
+        const customActionsInfo          = await this.hasCustomActionForBrowser(browserId);
+        const hasCustomResizeWindow      = customActionsInfo.hasResizeWindow;
 
 
-        if (isLocalBrowser && !hasCustomResizeWindow) {
+        if (canUseDefaultWindowActions && !hasCustomResizeWindow) {
             await this._resizeLocalBrowserWindow(browserId, width, height, currentWidth, currentHeight);
             return;
         }
@@ -263,34 +268,34 @@ export default class BrowserProvider {
     }
 
     async canResizeWindowToDimensions (browserId, width, height) {
-        const isLocalBrowser                 = await this.plugin.isLocalBrowser(browserId);
+        const canUseDefaultWindowActions     = await this._canUseDefaultWindowActions(browserId);
         const customActionsInfo              = await this.hasCustomActionForBrowser(browserId);
         const hasCustomCanResizeToDimensions = customActionsInfo.hasCanResizeWindowToDimensions;
 
 
-        if (isLocalBrowser && !hasCustomCanResizeToDimensions)
+        if (canUseDefaultWindowActions && !hasCustomCanResizeToDimensions)
             return await this._canResizeLocalBrowserWindowToDimensions(browserId, width, height);
 
         return await this.plugin.canResizeWindowToDimensions(browserId, width, height);
     }
 
     async maximizeWindow (browserId) {
-        const isLocalBrowser          = await this.plugin.isLocalBrowser(browserId);
-        const customActionsInfo       = await this.hasCustomActionForBrowser(browserId);
-        const hasCustomMaximizeWindow = customActionsInfo.hasMaximizeWindow;
+        const canUseDefaultWindowActions = await this._canUseDefaultWindowActions(browserId);
+        const customActionsInfo          = await this.hasCustomActionForBrowser(browserId);
+        const hasCustomMaximizeWindow    = customActionsInfo.hasMaximizeWindow;
 
-        if (isLocalBrowser && !hasCustomMaximizeWindow)
+        if (canUseDefaultWindowActions && !hasCustomMaximizeWindow)
             return await this._maximizeLocalBrowserWindow(browserId);
 
         return await this.plugin.maximizeWindow(browserId);
     }
 
     async takeScreenshot (browserId, screenshotPath, pageWidth, pageHeight) {
-        const isLocalBrowser          = await this.plugin.isLocalBrowser(browserId);
-        const customActionsInfo       = await this.hasCustomActionForBrowser(browserId);
-        const hasCustomTakeScreenshot = customActionsInfo.hasTakeScreenshot;
+        const canUseDefaultWindowActions = await this._canUseDefaultWindowActions(browserId);
+        const customActionsInfo          = await this.hasCustomActionForBrowser(browserId);
+        const hasCustomTakeScreenshot    = customActionsInfo.hasTakeScreenshot;
 
-        if (isLocalBrowser && !hasCustomTakeScreenshot) {
+        if (canUseDefaultWindowActions && !hasCustomTakeScreenshot) {
             await this._takeLocalBrowserScreenshot(browserId, screenshotPath, pageWidth, pageHeight);
             return;
         }

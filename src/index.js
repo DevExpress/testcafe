@@ -1,12 +1,13 @@
 import Promise from 'pinkie';
-import TestCafe from './testcafe';
-import * as endpointUtils from 'endpoint-utils';
-import setupExitHook from 'async-exit-hook';
 import { GeneralError } from './errors/runtime';
 import MESSAGE from './errors/runtime/message';
 import embeddingUtils from './embedding-utils';
 import exportableLib from './api/exportable-lib';
 
+const lazyRequire   = require('import-lazy')(require);
+const TestCafe      = lazyRequire('./testcafe');
+const endpointUtils = lazyRequire('endpoint-utils');
+const setupExitHook = lazyRequire('async-exit-hook');
 
 // Validations
 async function getValidHostname (hostname) {
@@ -59,7 +60,7 @@ createTestCafe.embeddingUtils = embeddingUtils;
 
 // Common API
 Object.keys(exportableLib).forEach(key => {
-    createTestCafe[key] = exportableLib[key];
+    Object.defineProperty(createTestCafe, key, { get: () => exportableLib[key] });
 });
 
 export default createTestCafe;

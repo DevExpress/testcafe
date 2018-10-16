@@ -135,6 +135,57 @@ export default class Bootstrapper {
         return null;
     }
 
+    _canUseParallelBootstrapping (browserInfo) {
+        return browserInfo.every(browser => browser.provider.isLocalBrowser(null, browserInfo.browserName));
+    }
+
+    async _bootstrapSequence (browserInfo) {
+        const tests       = await this._getTests();
+        const testedApp   = await this._startTestedApp();
+        const browserSet  = await this._getBrowserConnections(browserInfo);
+
+        return { tests, testedApp, browserSet };
+    }
+
+    _wrapBootstrappingPromise (promise) {
+        return promise
+            .then(result => ({ error: null, result }))
+            .catch(error => ({ result: null, error }));
+    }
+
+    async _handleBootstrappingError ([browserSetStatus, testsStatus, testedAppStatus]) {
+        if (!browserSetStatus.error)
+            await browserSetStatus.result.dispose();
+
+        if (!testedAppStatus.error && testedAppStatus.result)
+            await testedAppStatus.result.kill();
+
+        if (testsStatus.error)
+            throw testsStatus.error;
+        else if (testedAppStatus.error)
+            throw testedAppStatus.error;
+        else
+            throw browserSetStatus.error;
+    }
+
+    async _bootstrapParallel (browserInfo) {
+        let bootstrappingPromises = [
+            this._getBrowserConnections(browserInfo),
+            this._getTests(),
+            this._startTestedApp()
+        ];
+
+        bootstrappingPromises = bootstrappingPromises.map(promise => this._wrapBootstrappingPromise(promise));
+
+        const bootstrappingStatuses = await Promise.all(bootstrappingPromises);
+
+        if (bootstrappingStatuses.some(status => status.error))
+            await this._handleBootstrappingError(bootstrappingStatuses);
+
+        const [browserSet, tests, testedApp] = bootstrappingStatuses.map(status => status.result);
+
+        return { browserSet, tests, testedApp };
+    }
 
     // API
     async createRunnableConfiguration () {
@@ -145,10 +196,10 @@ export default class Bootstrapper {
         // It's very ambiguous for the user, who might be confused by compilation errors from an unexpected test.
         // So, we need to retrieve the browser aliases and paths before tests compilation.
         const browserInfo = await this._getBrowserInfo();
-        const tests       = await this._getTests();
-        const testedApp   = await this._startTestedApp();
-        const browserSet  = await this._getBrowserConnections(browserInfo);
 
-        return { reporterPlugins, browserSet, tests, testedApp };
+        if (this._canUseParallelBootstrapping(browserInfo))
+            return { reporterPlugins, ...await this._bootstrapParallel(browserInfo) };
+
+        return { reporterPlugins, ...await this._bootstrapSequence(browserInfo) };
     }
 }

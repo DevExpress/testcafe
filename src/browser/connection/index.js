@@ -293,7 +293,7 @@ export default class BrowserConnection extends EventEmitter {
     }
 
     isHeadlessBrowser () {
-        return this.provider.isHeadlessBrowser(this.id);
+        return this.provider.isHeadlessBrowser(this.id, this.browserInfo.browserName);
     }
 
     async reportJobResult (status, data) {

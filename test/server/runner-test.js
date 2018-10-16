@@ -404,7 +404,7 @@ describe('Runner', () => {
     });
 
     describe('.run()', () => {
-        it('Should not create a new local browser connection if sources are empty', () => {
+        it('Should not create a new remote browser connection if sources are empty', () => {
             const origGenerateId   = BrowserConnection._generateId;
 
             let connectionsCount = 0;
@@ -415,7 +415,7 @@ describe('Runner', () => {
             };
 
             return runner
-                .browsers(browserMock)
+                .browsers(connection)
                 .reporter('list')
                 .src([])
                 .run()

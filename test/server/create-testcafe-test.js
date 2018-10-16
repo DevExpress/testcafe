@@ -88,7 +88,7 @@ describe('TestCafe factory function', function () {
     });
 
     it('Should contain embedding utils and common runtime functions', function () {
-        expect(createTestCafe.embeddingUtils).to.be.an('object');
+        expect(createTestCafe.embeddingUtils).to.be.ok;
         expect(createTestCafe.Role).eql(exportableLib.Role);
         expect(createTestCafe.ClientFunction).eql(exportableLib.ClientFunction);
     });

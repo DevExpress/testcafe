@@ -52,16 +52,14 @@ export default {
         delete this.openedBrowsers[browserId];
     },
 
-    async isLocalBrowser (browserId, configString) {
-        const config = this.openedBrowsers[browserId] ? this.openedBrowsers[browserId].config : getConfig(configString);
-
-        return !config.headless;
+    async isLocalBrowser () {
+        return true;
     },
 
-    isHeadlessBrowser (browserId) {
-        const config = this.openedBrowsers[browserId].config;
+    isHeadlessBrowser (browserId, configString) {
+        const config = this.openedBrowsers[browserId] ? this.openedBrowsers[browserId].config : getConfig(configString);
 
-        return config && config.headless;
+        return config.headless;
     },
 
     async takeScreenshot (browserId, path) {
