@@ -37,8 +37,8 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [-F \<pattern\>, --fixture-grep \<pattern\>](#-f-pattern---fixture-grep-pattern)
   * [-a \<command\>, --app \<command\>](#-a-command---app-command)
   * [-c \<n\>, --concurrency \<n\>](#-c-n---concurrency-n)
-  * [--test-meta \<json\>](#--test-meta-json)
-  * [--fixture-meta \<json\>](#--fixture-meta-json)
+  * [--test-meta \<key=value\[,key2=value2,...\]\>](#--test-meta-keyvaluekey2value2)
+  * [--fixture-meta \<key=value\[,key2=value2,...\]\>](#--fixture-meta-keyvaluekey2value2)
   * [--debug-on-fail](#--debug-on-fail)
   * [--app-init-delay \<ms\>](#--app-init-delay-ms)
   * [--selector-timeout \<ms\>](#--selector-timeout-ms)
@@ -451,24 +451,24 @@ The following example shows how to run tests in three Chrome instances:
 testcafe -c 3 chrome tests/sample-fixture.js
 ```
 
-### --test-meta \<json\>
+### --test-meta \<key=value\[,key2=value2,...\]\>
 
-TestCafe runs tests whose test's [metadata](../test-api/test-code-structure.html#specifying-testing-metadata) [match](https://lodash.com/docs/#isMatch) the specified json.
+TestCafe runs tests whose [metadata](../test-api/test-code-structure.html#specifying-testing-metadata) [matches](https://lodash.com/docs/#isMatch) the specified key-value pair.
 
-For example, the following command runs tests whose metadata have a `mobile` property with the value `true`.
+For example, the following command runs tests whose metadata have a `device` property with the value `mobile` and a `env` property with the value `production`.
 
 ```sh
-testcafe ie my-tests --test-meta '{"mobile": true}'
+testcafe ie my-tests --test-meta device=mobile,env=production
 ```
 
-### --fixture-meta \<json\>
+### --fixture-meta \<key=value\[,key2=value2,...\]\>
 
-TestCafe runs tests whose fixture's [metadata](../test-api/test-code-structure.html#specifying-testing-metadata) [match](https://lodash.com/docs/#isMatch) the specified json.
+TestCafe runs tests whose fixture's [metadata](../test-api/test-code-structure.html#specifying-testing-metadata) [matches](https://lodash.com/docs/#isMatch) the specified key-value pair.
 
-For example, the following command runs tests whose fixture's metadata have a `mobile` property with the value `true`.
+For example, the following command runs tests whose fixture's metadata have a `device` property with the value `mobile` and a `env` property with the value `production`.
 
 ```sh
-testcafe ie my-tests --fixture-meta '{"mobile": true}'
+testcafe ie my-tests --fixture-meta device=mobile,env=production
 ```
 ### --debug-on-fail
 
