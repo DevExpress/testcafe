@@ -225,6 +225,22 @@ describe('Runner', () => {
                                             'screenshots path pattern:\n \t":" at index 7\n');
                 });
         });
+
+        it('Should allow to use relative paths in the screenshots base path and path patterns', () => {
+            const storedRunTaskFn = runner._runTask;
+
+            runner._runTask = function () {
+                runner._runTask = storedRunTaskFn;
+
+                return Promise.resolve({});
+            };
+
+            return runner
+                .browsers(connection)
+                .screenshots('..', false, '${BROWSER}/./${TEST}')
+                .src('test/server/data/test-suites/basic/testfile2.js')
+                .run();
+        });
     });
 
     describe('.src()', () => {

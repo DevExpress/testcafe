@@ -4,6 +4,10 @@
 
     var origin = location.origin;
 
+    // NOTE: location.origin doesn't exist in IE11 on Windows 10.10240 LTSB
+    if (!origin)
+        origin = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
+
     var testRunId            = {{{testRunId}}};
     var browserId            = {{{browserId}}};
     var selectorTimeout      = {{{selectorTimeout}}};

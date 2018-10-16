@@ -145,17 +145,17 @@ export default class ScrollAutomation {
         };
     }
 
-    static _getChildPoint (parentDimensions, childDimensions, offsetX, offsetY) {
+    static _getChildPoint (parentDimensions, childDimensions, offsets) {
         return {
             x: childDimensions.left - parentDimensions.left + parentDimensions.scroll.left +
-               childDimensions.border.left + offsetX,
+               childDimensions.border.left + offsets.x,
             y: childDimensions.top - parentDimensions.top + parentDimensions.scroll.top +
-               childDimensions.border.top + offsetY
+               childDimensions.border.top + offsets.y
         };
     }
 
-    _getScrollPosition (parentDimensions, childDimensions, maxScrollMargin, offsetX, offsetY) {
-        const childPoint       = ScrollAutomation._getChildPoint(parentDimensions, childDimensions, offsetX, offsetY);
+    _getScrollPosition (parentDimensions, childDimensions, offsets, maxScrollMargin) {
+        const childPoint       = ScrollAutomation._getChildPoint(parentDimensions, childDimensions, offsets);
         const scrollToPoint    = this._getScrollToPoint(parentDimensions, childPoint, maxScrollMargin);
         const scrollToFullView = this._getScrollToFullChildView(parentDimensions, childDimensions, maxScrollMargin);
 
@@ -165,37 +165,35 @@ export default class ScrollAutomation {
         return { left, top };
     }
 
-    static _getChildPointAfterScroll (parentDimensions, childDimensions, left, top) {
-        const x = Math.round(childDimensions.left + parentDimensions.scroll.left - left + childDimensions.width / 2);
-        const y = Math.round(childDimensions.top + parentDimensions.scroll.top - top + childDimensions.height / 2);
+    static _getChildPointAfterScroll (parentDimensions, childDimensions, currentScroll, offsets) {
+        const x = Math.round(childDimensions.left + parentDimensions.scroll.left - currentScroll.left + offsets.x);
+        const y = Math.round(childDimensions.top + parentDimensions.scroll.top - currentScroll.top + offsets.y);
 
         return { x, y };
     }
 
-    _isChildFullyVisible (parentDimensions, childDimensions, offsetX, offsetY) {
-        const { x, y } = ScrollAutomation._getChildPointAfterScroll(parentDimensions, childDimensions, parentDimensions.scroll.left, parentDimensions.scroll.top);
+    _isChildFullyVisible (parentDimensions, childDimensions, offsets) {
+        const { x, y }   = ScrollAutomation._getChildPointAfterScroll(parentDimensions, childDimensions, parentDimensions.scroll, offsets);
+        const zeroMargin = { left: 0, top:  0 };
 
-        const { left, top } = this._getScrollPosition(parentDimensions, childDimensions, {
-            left: 0,
-            top:  0
-        }, offsetX, offsetY);
+        const { left, top } = this._getScrollPosition(parentDimensions, childDimensions, offsets, zeroMargin);
 
         return !this._isTargetElementObscuredInPoint(x, y) &&
                left === parentDimensions.scroll.left && top === parentDimensions.scroll.top;
     }
 
-    _scrollToChild (parent, child, { offsetX, offsetY }) {
+    _scrollToChild (parent, child, offsets) {
         const parentDimensions = positionUtils.getClientDimensions(parent);
         const childDimensions  = positionUtils.getClientDimensions(child);
         const windowWidth      = styleUtils.getInnerWidth(window);
         const windowHeight     = styleUtils.getInnerHeight(window);
         let scrollPos          = parentDimensions.scroll;
-        let needScroll         = !this._isChildFullyVisible(parentDimensions, childDimensions, offsetX, offsetY);
+        let needScroll         = !this._isChildFullyVisible(parentDimensions, childDimensions, offsets);
 
         while (needScroll) {
-            scrollPos = this._getScrollPosition(parentDimensions, childDimensions, this.maxScrollMargin, offsetX, offsetY);
+            scrollPos = this._getScrollPosition(parentDimensions, childDimensions, offsets, this.maxScrollMargin);
 
-            const { x, y }         = ScrollAutomation._getChildPointAfterScroll(parentDimensions, childDimensions, scrollPos.left, scrollPos.top);
+            const { x, y }         = ScrollAutomation._getChildPointAfterScroll(parentDimensions, childDimensions, scrollPos, offsets);
             const isTargetObscured = this._isTargetElementObscuredInPoint(x, y);
 
             this.maxScrollMargin.left += SCROLL_MARGIN_INCREASE_STEP;
@@ -235,10 +233,7 @@ export default class ScrollAutomation {
 
         const scrollParentsPromise = promiseUtils.times(parents.length, i => {
             return this
-                ._scrollToChild(parents[i], currentChild, {
-                    offsetX: currentOffsetX,
-                    offsetY: currentOffsetY
-                })
+                ._scrollToChild(parents[i], currentChild, { x: currentOffsetX, y: currentOffsetY })
                 .then(() => {
                     childDimensions  = positionUtils.getClientDimensions(currentChild);
                     parentDimensions = positionUtils.getClientDimensions(parents[i]);

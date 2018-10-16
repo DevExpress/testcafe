@@ -3,31 +3,32 @@ import { win as isWin } from 'os-family';
 import sanitizeFilename from 'sanitize-filename';
 
 
+const SAFE_CHAR          = '_';
+const ALLOWED_CHARS_LIST = [path.win32.sep, path.posix.sep, '.', '..'];
+
+
 function correctForbiddenCharsList (forbiddenCharsList, filePath) {
     const isWinAbsolutePath       = isWin && path.isAbsolute(filePath);
-    const hasDriveSeparatorInList = forbiddenCharsList.length && forbiddenCharsList[0].char === ':' && forbiddenCharsList[0].index === 1;
+    const hasDriveSeparatorInList = forbiddenCharsList.length && forbiddenCharsList[0].chars === ':' && forbiddenCharsList[0].index === 1;
 
     if (isWinAbsolutePath && hasDriveSeparatorInList)
         forbiddenCharsList.shift();
 }
 
-function addForbiddenCharToList (forbiddenCharsList, forbiddenCharInfo) {
-    const { char } = forbiddenCharInfo;
+function addForbiddenCharsToList (forbiddenCharsList, forbiddenCharsInfo) {
+    const { chars } = forbiddenCharsInfo;
 
-    if (char === path.win32.sep || char === path.posix.sep)
-        return '';
+    if (!ALLOWED_CHARS_LIST.includes(chars))
+        forbiddenCharsList.push(forbiddenCharsInfo);
 
-    forbiddenCharsList.push(forbiddenCharInfo);
-
-    return '';
+    return SAFE_CHAR.repeat(chars.length);
 }
-
 
 export default function (filePath) {
     const forbiddenCharsList = [];
 
     sanitizeFilename(filePath, {
-        replacement: (char, index) => addForbiddenCharToList(forbiddenCharsList, { char, index })
+        replacement: (chars, index) => addForbiddenCharsToList(forbiddenCharsList, { chars, index })
     });
 
     correctForbiddenCharsList(forbiddenCharsList, filePath);
