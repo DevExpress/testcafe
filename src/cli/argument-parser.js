@@ -61,16 +61,24 @@ export default class CLIArgumentParser {
         }
     }
 
-    static _optionValueToJson (name, value) {
+    static _optionValueToKeyValue (name, value) {
         if (value === void 0)
             return value;
 
-        try {
-            return JSON.parse(value);
-        }
-        catch (err) {
-            throw new GeneralError(MESSAGE.optionValueIsNotValidJson, name);
-        }
+        const keyValue = value.split(',').reduce((obj, pair) => {
+            const [key, val] = pair.split('=');
+
+            if (!key || !val)
+                throw new GeneralError(MESSAGE.optionValueIsNotValidKeyValue, name);
+
+            obj[key] = val;
+            return obj;
+        }, {});
+
+        if (Object.keys(keyValue).length === 0)
+            throw new GeneralError(MESSAGE.optionValueIsNotValidKeyValue, name);
+
+        return keyValue;
     }
 
     static _getDescription () {
@@ -102,8 +110,8 @@ export default class CLIArgumentParser {
             .option('-F, --fixture-grep <pattern>', 'run only fixtures matching the specified pattern')
             .option('-a, --app <command>', 'launch the tested app using the specified command before running tests')
             .option('-c, --concurrency <number>', 'run tests concurrently')
-            .option('--test-meta <json>', 'run only tests with matching metadata')
-            .option('--fixture-meta <json>', 'run only fixtures with matching metadata')
+            .option('--test-meta <key=value[,key2=value2,...]>', 'run only tests with matching metadata')
+            .option('--fixture-meta <key=value[,key2=value2,...]>', 'run only fixtures with matching metadata')
             .option('--debug-on-fail', 'pause the test if it fails')
             .option('--app-init-delay <ms>', 'specify how much time it takes for the tested app to initialize')
             .option('--selector-timeout <ms>', 'set the amount of time within which selectors make attempts to obtain a node to be returned')
@@ -139,8 +147,8 @@ export default class CLIArgumentParser {
     _parseFilteringOptions () {
         this.opts.testGrep    = CLIArgumentParser._optionValueToRegExp('--test-grep', this.opts.testGrep);
         this.opts.fixtureGrep = CLIArgumentParser._optionValueToRegExp('--fixture-grep', this.opts.fixtureGrep);
-        this.opts.testMeta    = CLIArgumentParser._optionValueToJson('--test-meta', this.opts.testMeta);
-        this.opts.fixtureMeta = CLIArgumentParser._optionValueToJson('--fixture-meta', this.opts.fixtureMeta);
+        this.opts.testMeta    = CLIArgumentParser._optionValueToKeyValue('--test-meta', this.opts.testMeta);
+        this.opts.fixtureMeta = CLIArgumentParser._optionValueToKeyValue('--fixture-meta', this.opts.fixtureMeta);
 
         this.filter = (testName, fixtureName, fixturePath, testMeta, fixtureMeta) => {
 

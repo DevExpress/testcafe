@@ -216,29 +216,32 @@ describe('CLI argument parser', function () {
         });
 
         it('Should filter by test meta with "--test-meta" option', function () {
-            return parse('--test-meta {"meta":"test"}')
+            return parse('--test-meta meta=test')
                 .then(function (parser) {
                     expect(parser.filter(null, null, null, { meta: 'test' })).to.be.true;
                     expect(parser.filter(null, null, null, { another: 'meta', meta: 'test' })).to.be.true;
                     expect(parser.filter(null, null, null, {})).to.be.false;
+                    expect(parser.filter(null, null, null, { meta: 'notest' })).to.be.false;
                 });
         });
 
         it('Should filter by fixture meta with "--fixture-meta" option', function () {
-            return parse('--fixture-meta {"meta":"test"}')
+            return parse('--fixture-meta meta=test,more=meta')
                 .then(function (parser) {
-                    expect(parser.filter(null, null, null, null, { meta: 'test' })).to.be.true;
-                    expect(parser.filter(null, null, null, null, { another: 'meta', meta: 'test' })).to.be.true;
+                    expect(parser.filter(null, null, null, null, { meta: 'test', more: 'meta' })).to.be.true;
+                    expect(parser.filter(null, null, null, null, { another: 'meta', meta: 'test', more: 'meta' })).to.be.true;
                     expect(parser.filter(null, null, null, null, {})).to.be.false;
+                    expect(parser.filter(null, null, null, null, { meta: 'test' })).to.be.false;
+                    expect(parser.filter(null, null, null, null, { meta: 'test', more: 'another' })).to.be.false;
                 });
         });
 
         it('Should raise error if "--test-meta" value is invalid json', function () {
-            return assertRaisesError('--test-meta error', 'The "--test-meta" option value is not a valid JSON.');
+            return assertRaisesError('--test-meta error', 'The "--test-meta" option value is not a valid key-value pair.');
         });
 
         it('Should raise error if "--fixture-meta" value is invalid json', function () {
-            return assertRaisesError('--fixture-meta error', 'The "--fixture-meta" option value is not a valid JSON.');
+            return assertRaisesError('--fixture-meta error', 'The "--fixture-meta" option value is not a valid key-value pair.');
         });
 
         it('Should combine filters provided by multiple options', function () {
@@ -285,7 +288,7 @@ describe('CLI argument parser', function () {
                     expect(parser.filter('thetest1', 'thefixture')).to.be.false;
                 })
                 .then(function () {
-                    return parse('-t thetest1 --test-meta {"meta":"test"}');
+                    return parse('-t thetest1 --test-meta meta=test');
                 })
                 .then(function (parser) {
                     expect(parser.filter('thetest1', null, null, { meta: 'test' })).to.be.true;
@@ -293,7 +296,7 @@ describe('CLI argument parser', function () {
                     expect(parser.filter('thetest2', null, null, { meta: 'test' })).to.be.false;
                 })
                 .then(function () {
-                    return parse('-f thefixture1 --test-meta {"meta":"test"}');
+                    return parse('-f thefixture1 --test-meta meta=test');
                 })
                 .then(function (parser) {
                     expect(parser.filter(null, 'thefixture1', null, { meta: 'test' })).to.be.true;
@@ -301,7 +304,7 @@ describe('CLI argument parser', function () {
                     expect(parser.filter(null, 'thefixture2', null, { meta: 'test' })).to.be.false;
                 })
                 .then(function () {
-                    return parse('-t thetest1 -f thefixture1 --test-meta {"meta":"test"}');
+                    return parse('-t thetest1 -f thefixture1 --test-meta meta=test');
                 })
                 .then(function (parser) {
                     expect(parser.filter('thetest1', 'thefixture1', null, { meta: 'test' })).to.be.true;
@@ -310,7 +313,7 @@ describe('CLI argument parser', function () {
                     expect(parser.filter('thetest2', 'thefixture1', null, { meta: 'test' })).to.be.false;
                 })
                 .then(function () {
-                    return parse('-t thetest1 --fixture-meta {"meta":"test"}');
+                    return parse('-t thetest1 --fixture-meta meta=test');
                 })
                 .then(function (parser) {
                     expect(parser.filter('thetest1', null, null, null, { meta: 'test' })).to.be.true;
@@ -318,7 +321,7 @@ describe('CLI argument parser', function () {
                     expect(parser.filter('thetest2', null, null, null, { meta: 'test' })).to.be.false;
                 })
                 .then(function () {
-                    return parse('-f thefixture1 --fixture-meta {"meta":"test"}');
+                    return parse('-f thefixture1 --fixture-meta meta=test');
                 })
                 .then(function (parser) {
                     expect(parser.filter(null, 'thefixture1', null, null, { meta: 'test' })).to.be.true;
@@ -326,7 +329,7 @@ describe('CLI argument parser', function () {
                     expect(parser.filter(null, 'thefixture2', null, null, { meta: 'test' })).to.be.false;
                 })
                 .then(function () {
-                    return parse('-t thetest1 -f thefixture1 --fixture-meta {"meta":"test"}');
+                    return parse('-t thetest1 -f thefixture1 --fixture-meta meta=test');
                 })
                 .then(function (parser) {
                     expect(parser.filter('thetest1', 'thefixture1', null, null, { meta: 'test' })).to.be.true;
@@ -335,7 +338,7 @@ describe('CLI argument parser', function () {
                     expect(parser.filter('thetest2', 'thefixture1', null, null, { meta: 'test' })).to.be.false;
                 })
                 .then(function () {
-                    return parse('-t thetest1 -f thefixture1 --test-meta {"test":"test"} --fixture-meta {"fixture":"test"}');
+                    return parse('-t thetest1 -f thefixture1 --test-meta test=test --fixture-meta fixture=test');
                 })
                 .then(function (parser) {
                     expect(parser.filter('thetest1', 'thefixture1', null, { test: 'test' }, { fixture: 'test' })).to.be.true;
