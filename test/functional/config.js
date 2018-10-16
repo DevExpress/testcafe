@@ -73,7 +73,7 @@ testingEnvironments[testingEnvironmentNames.mobileBrowsers] = {
         {
             realMobile: true,
             os:         'android',
-            osVersion:  '7.1',
+            osVersion:  '8.0',
             device:     'Google Pixel',
             name:       'Android',
             alias:      'android'
@@ -248,8 +248,8 @@ module.exports = {
 
     testCafe: {
         hostname: hostname,
-        port1:    2000,
-        port2:    2001
+        port1:    9000,
+        port2:    9001
     },
 
     site: {
@@ -264,7 +264,7 @@ module.exports = {
         }
     },
 
-    browserstackConnectorServicePort: 4000,
+    browserstackConnectorServicePort: 9200,
 
     browsers: []
 };

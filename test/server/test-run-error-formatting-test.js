@@ -330,7 +330,7 @@ describe('Error formatting', () => {
         });
 
         it('Should format "forbiddenCharactersInScreenshotPathError"', () => {
-            assertErrorMessage('forbidden-characters-in-screenshot-path-error', new ForbiddenCharactersInScreenshotPathError('/root/bla:bla', [{ char: ':', index: 9 }]));
+            assertErrorMessage('forbidden-characters-in-screenshot-path-error', new ForbiddenCharactersInScreenshotPathError('/root/bla:bla', [{ chars: ':', index: 9 }]));
         });
 
         it('Should format "invalidElementScreenshotDimensionsError"', () => {

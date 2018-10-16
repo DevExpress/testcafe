@@ -4,7 +4,7 @@ describe('[Regression](GH-2067) - Radio button navigation by keyboard', function
     });
 
     it('nonamed - chrome', function () {
-        return runTests('testcafe-fixtures/index.js', 'nonamed - chrome', { only: ['chrome', 'chrome-osx', 'android'] });
+        return runTests('testcafe-fixtures/index.js', 'nonamed - chrome', { only: ['chrome', 'chrome-osx'] });
     });
 
     it('nonamed - ie, firefox', function () {

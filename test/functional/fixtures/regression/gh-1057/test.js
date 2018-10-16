@@ -6,6 +6,14 @@ describe('[Regression](GH-1057) - hidden by fixed parent', function () {
             skip: 'iphone,ipad,android'
         });
     });
+
+    it('The target element should not be under the element with position:fixed after scroll when using custom offsets', function () {
+        return runTests('testcafe-fixtures/hiddenByFixedParent.js', 'gh-1057 with custom offsets', {
+            // NOTE: https://github.com/DevExpress/testcafe/issues/1237
+            // TODO: Android disabled because of https://github.com/DevExpress/testcafe/issues/1492
+            skip: 'iphone,ipad,android'
+        });
+    });
 });
 
 describe('[Regression](GH-1057) - hidden by fixed ancestor', function () {
