@@ -6,7 +6,8 @@
   },
   "env": {
     "browser": true,
-    "node": false
+    "node": false,
+    "es6": false
   },
   "plugins": [
     "hammerhead"

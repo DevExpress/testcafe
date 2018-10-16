@@ -6,6 +6,8 @@
   },
   "globals": {
      "Map": true,
-     "Set": true
+     "Set": true,
+     "Proxy": true,
+     "Reflect": true
    }
 }

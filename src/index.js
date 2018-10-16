@@ -1,11 +1,14 @@
 import Promise from 'pinkie';
-import TestCafe from './testcafe';
-import * as endpointUtils from 'endpoint-utils';
-import setupExitHook from 'async-exit-hook';
 import { GeneralError } from './errors/runtime';
 import MESSAGE from './errors/runtime/message';
-import embeddingUtils from './embedding-utils';
-import exportableLib from './api/exportable-lib';
+
+
+const lazyRequire = require('import-lazy')(require);
+const TestCafe = lazyRequire('./testcafe');
+const endpointUtils = lazyRequire('endpoint-utils');
+const setupExitHook = lazyRequire('async-exit-hook');
+const embeddingUtils = lazyRequire('./embedding-utils');
+const exportableLib = lazyRequire('./api/exportable-lib');
 
 
 // Validations
@@ -57,9 +60,11 @@ async function createTestCafe (hostname, port1, port2, sslOptions, developmentMo
 // Embedding utils
 createTestCafe.embeddingUtils = embeddingUtils;
 
-// Common API
-Object.keys(exportableLib).forEach(key => {
-    createTestCafe[key] = exportableLib[key];
-});
+export default new Proxy(createTestCafe, {
+    get (target, property) {
+        if (exportableLib[property])
+            return exportableLib[property];
 
-export default createTestCafe;
+        return Reflect.get(target, property);
+    },
+});

@@ -1,6 +1,5 @@
 import fs from 'fs';
 import chalk from 'chalk';
-import browserProviderPool from '../browser/provider/pool';
 import { GeneralError, APIError } from '../errors/runtime';
 import MESSAGE from '../errors/runtime/message';
 import CliArgumentParser from './argument-parser';
@@ -111,6 +110,9 @@ async function runTests (argParser) {
 }
 
 async function listBrowsers (providerName = 'locally-installed') {
+    // NOTE: Load the provider pool lazily to reduce startup time
+    const browserProviderPool = require('../browser/provider/pool');
+
     const provider = await browserProviderPool.getProvider(providerName);
 
     if (!provider)
