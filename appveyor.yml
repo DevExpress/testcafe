@@ -1,6 +1,9 @@
 version: "#{build}"
 clone_depth: 1
 
+image:
+- Visual Studio 2017
+
 skip_commits:
   message: /^\[docs\]/
 
@@ -32,6 +35,8 @@ for:
 
 install:
 - ps: >-
+    $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+
     iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/set-screenresolution.ps1'))
 
     Set-ScreenResolution 1920 1080
