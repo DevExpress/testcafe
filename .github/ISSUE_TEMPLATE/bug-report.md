@@ -13,13 +13,13 @@ Before submitting an issue, please check CONTRIBUTING.md and existing issues 
 -->
 
 ### What is your Test Scenario?
-<!-- A clear and concise description of what you'd like to test. -->
+<!-- Describe what you'd like to test. -->
  
 ### What is the Current behavior?
-<!-- A clear and concise description of the behavior you see and consider invalid. -->
+<!-- Describe the behavior you see and consider invalid. -->
  
 ### What is the Expected behavior?
-<!-- A clear and concise description of what you expected to happen. -->
+<!-- Describe what you expected to happen. -->
  
 ### What is your web application and your TestCafe test code?
 <!-- Share a public accessible link to your application or provide a simple app which we can run. -->
