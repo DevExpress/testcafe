@@ -58,6 +58,9 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
 > Inactive tabs and minimized browser windows switch to a lower resource consumption mode
 > where tests do not always execute correctly.
 
+If a browser stops responding while it executes tests, TestCafe restarts the browser and reruns the current test in a new browser instance.
+If the same problem occurs with this test two more times, the test run finishes.
+
 ## Browser List
 
 The `browser-list-comma-separated` argument specifies the list of browsers (separated by commas) where tests are run.

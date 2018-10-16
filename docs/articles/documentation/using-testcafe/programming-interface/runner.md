@@ -449,6 +449,9 @@ createTestCafe('localhost', 1337, 1338)
     .catch(error => { /* ... */ });
 ```
 
+If a browser stops responding while it executes tests, TestCafe restarts the browser and reruns the current test in a new browser instance.
+If the same problem occurs with this test two more times, the test run finishes.
+
 #### Cancelling Test Tasks
 
 You can stop an individual test task at any moment by cancelling the corresponding promise.
