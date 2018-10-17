@@ -64,7 +64,7 @@ You specify a screenshot path pattern when you run tests. Each time TestCafe tak
 The following example shows how to specify a screenshot path pattern through the command line:
 
 ```sh
-testcafe all test.js -s screenshots -p "${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png"
+testcafe all test.js -s screenshots -p '${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png'
 ```
 
 When you use a programming API, pass the screenshot path pattern to the [runner.screenshots method](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#screenshots).

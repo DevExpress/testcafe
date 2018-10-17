@@ -330,7 +330,13 @@ Placeholder | Description
 `${OS_VERSION}` | The operation system's version.
 
 ```sh
-testcafe all tests/sample-fixture.js -s screenshots -p "${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png"
+testcafe all tests/sample-fixture.js -s screenshots -p '${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png'
+```
+
+In Windows `cmd.exe` shell, use double quotes because single quotes do not escape spaces.
+
+```sh
+testcafe all tests/sample-fixture.js -s screenshots -p "${DATE} ${TIME}/test ${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png"
 ```
 
 ### -q, --quarantine-mode
