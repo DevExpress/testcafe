@@ -31,10 +31,6 @@ Now when a JavaScript error occurs on the tested webpage, the test run report in
 If a browser stops responding while it executes tests, TestCafe restarts the browser and reruns the current test in a new browser instance.
 If the same problem occurs with this test two more times, the test run finishes.
 
-#### :gear: Work Reliably in Harsh Network Conditions ([#2727](https://github.com/DevExpress/testcafe/issues/2727))
-
-TestCafe now works stably in networks where any request can fail unexpectedly.
-
 ### Bug Fixes
 
 * An error message about an unawaited call to an async function is no longer displayed when an uncaught error occurs ([#2557](https://github.com/DevExpress/testcafe/issues/2557))
