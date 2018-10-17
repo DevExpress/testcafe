@@ -162,9 +162,9 @@ test('Assertion with Selector', async t => {
     const developerNameInput = Selector('#developer-name');
 
     await t
-        .expect(developerNameInput.innerText).eql('')
+        .expect(developerNameInput.value).eql('')
         .typeText(developerNameInput, 'Peter')
-        .expect(developerNameInput.innerText).eql('Peter');
+        .expect(developerNameInput.value).eql('Peter');
 });
 ```
 
