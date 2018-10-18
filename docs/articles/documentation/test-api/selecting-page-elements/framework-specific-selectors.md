@@ -83,7 +83,7 @@ test('add new item', async t => {
 });
 ```
 
-To learn more, see the [angularJS-selector.md](https://github.com/DevExpress/testcafe-angular-selectors/blob/master/angularJS-selector.md) file in the plugin repository.
+To learn more, refer to the [plugin repository](https://github.com/DevExpress/testcafe-angular-selectors/blob/master/angularJS-selector.md).
 
 ## Vue
 
