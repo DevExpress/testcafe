@@ -216,7 +216,7 @@ Add an action that enters the developer name and clicks the Submit button.
     this.submitButton = Selector('#submit-button');
     ```
 
-3. Declare an async function in the `Page` class. This function uses the test controller to perform several actions on the tested page: enter the developer name and click the Sumbit button.
+3. Declare an async function in the `Page` class. This function uses the test controller to perform several actions on the tested page: enter the developer name and click the Submit button.
 
     ```js
     async submitName(name) {
@@ -261,7 +261,7 @@ export default class Page {
 
 ### Step 8 - Write a Test That Calls Actions From the Page Model
 
-This test will call `page.submitName` and check the message on the Thank You page.
+Now write a test that calls `page.submitName` and checks the message on the Thank You page.
 
 ```js
 test('Submit a developer name and check the header', async t => {
