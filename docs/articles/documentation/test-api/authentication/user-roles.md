@@ -139,8 +139,7 @@ const role = Role('http://example.com/login', async t => {
         .typeText('#login', 'username')
         .typeText('#password', 'password')
         .click('#sign-in'); // Redirects to http://example.com?sessionId=abcdef
-},
-{
+}, {
     preserveUrl: true
 });
 
@@ -149,9 +148,11 @@ fixture `My Fixture`;
 test('My test', async t => {
     await t
         .navigateTo('http://example.com/')
-        .useRole(role) // Does not return to http://example.com/ but
-                       // stays at http://example.com?sessionId=abcdef instead
-                       // because options.preserveUrl is enabled.
+
+        // Does not return to http://example.com/ but
+        // stays at http://example.com?sessionId=abcdef instead
+        // because options.preserveUrl is enabled.
+        .useRole(role);
 ```
 
 **Default value**: `false`
