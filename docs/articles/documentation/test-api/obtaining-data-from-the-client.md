@@ -20,6 +20,7 @@ This topic contains the following sections.
 * [Executing Client Functions](#executing-client-functions)
 * [Options](#options)
 * [One-Time Client Code Execution](#one-time-client-code-execution)
+* [Import Functions to be Used as Client Function Dependencies](#import-functions-to-be-used-as-client-function-dependencies)
 * [Calling Client Functions from Node.js Callbacks](#calling-client-functions-from-nodejs-callbacks)
 * [Limitations](#limitations)
 
@@ -173,6 +174,58 @@ fixture `My fixture`
 
 test('My Test', async t => {
     const docURI = await t.eval(() => document.documentURI);
+});
+```
+
+## Import Functions to be Used as Client Function Dependencies
+
+Assume you have a JS file `utils.js` with a function you need to use as a client function dependency in your test file.
+
+**utils.js**
+
+```js
+export function getDocumentURI() {
+    return document.documentURI;
+}
+```
+
+You would probably want to use the `import` statement to import this function but this will not always work.
+
+TestCafe test files are internally processed with [Babel](https://babeljs.io). Because of its pecularities, you cannot import client function dependencies with the `import` statement if you want to use them under the same name they are imported.
+
+**test.js**
+
+```js
+// THIS DOES NOT WORK!
+import { getDocumentURI } from './utils';
+
+// ...
+
+const getUri = ClientFunction(() => {
+    return getDocumentURI();
+}, { dependencies: { getDocumentURI } });
+```
+
+Use the [require](https://nodejs.org/api/modules.html#modules_require) Node.js function in that case.
+
+**test.js**
+
+```js
+import { ClientFunction } from 'testcafe';
+
+const getDocumentURI = require('./utils.js').getDocumentURI;
+
+fixture `My fixture`
+    .page `http://devexpress.github.io/testcafe/example/`;
+
+test('My test', async t => {
+    const getUri = ClientFunction(() => {
+        return getDocumentURI();
+    }, { dependencies: { getDocumentURI } });
+
+    const uri = await getUri();
+
+    await t.expect(uri).eql('http://devexpress.github.io/testcafe/example/');
 });
 ```
 
