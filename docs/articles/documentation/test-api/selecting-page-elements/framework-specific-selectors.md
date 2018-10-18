@@ -11,6 +11,7 @@ For this purpose, the TestCafe team and community developed libraries of dedicat
 
 * [React](#react)
 * [Angular](#angular)
+* [AngularJS](#angularjs)
 * [Vue](#vue)
 * [Aurelia](#aurelia)
 
@@ -42,29 +43,6 @@ To learn more, see the [repository documentation](https://github.com/DevExpress/
 
 ## Angular
 
-### AngularJS
-
-`AngularJSSelector` contains a set of static methods to search for an HTML element by the specified binding (`byModel`, `byBinding`, etc.).
-
-```js
-import { AngularJSSelector } from 'testcafe-angular-selectors';
-import { Selector } from 'testcafe';
-
-fixture `TestFixture`
-    .page('http://todomvc.com/examples/angularjs/');
-
-test('add new item', async t => {
-    await t
-        .typeText(AngularJSSelector.byModel('newTodo'), 'new item')
-        .pressKey('enter')
-        .expect(Selector('#todo-list').visible).ok();
-});
-```
-
-To learn more, see the [angularJS-selector.md](https://github.com/DevExpress/testcafe-angular-selectors/blob/master/angularJS-selector.md) file in the plugin repository.
-
-### Angular v2+
-
 Use the `AngularSelector` class to select DOM elements by the component name. Call it without parameters to get a root element. You can also search through the nested components or elements. In addition, you can obtain the component state.
 
 ```js
@@ -85,6 +63,27 @@ await t.expect(listAngular.testProp).eql(1);
 ```
 
 To learn more, refer to the [plugin repository](https://github.com/DevExpress/testcafe-angular-selectors/blob/master/angular-selector.md).
+
+## AngularJS
+
+`AngularJSSelector` contains a set of static methods to search for an HTML element by the specified binding (`byModel`, `byBinding`, etc.).
+
+```js
+import { AngularJSSelector } from 'testcafe-angular-selectors';
+import { Selector } from 'testcafe';
+
+fixture `TestFixture`
+    .page('http://todomvc.com/examples/angularjs/');
+
+test('add new item', async t => {
+    await t
+        .typeText(AngularJSSelector.byModel('newTodo'), 'new item')
+        .pressKey('enter')
+        .expect(Selector('#todo-list').visible).ok();
+});
+```
+
+To learn more, refer to the [plugin repository](https://github.com/DevExpress/testcafe-angular-selectors/blob/master/angularJS-selector.md).
 
 ## Vue
 
