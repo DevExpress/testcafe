@@ -65,6 +65,12 @@ export default {
         return !config.headless;
     },
 
+    isHeadlessBrowser (browserId) {
+        const config = this.openedBrowsers[browserId].config;
+
+        return config && config.headless;
+    },
+
     async takeScreenshot (browserId, path) {
         const { marionetteClient } = this.openedBrowsers[browserId];
 

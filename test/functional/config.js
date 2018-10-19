@@ -134,8 +134,7 @@ testingEnvironments[testingEnvironmentNames.localBrowsersIE] = {
 };
 
 testingEnvironments[testingEnvironmentNames.localBrowsersChromeFirefox] = {
-    isLocalBrowsers:    true,
-    isHeadlessBrowsers: true,
+    isLocalBrowsers: true,
 
     browsers: [
         {
@@ -152,7 +151,8 @@ testingEnvironments[testingEnvironmentNames.localBrowsersChromeFirefox] = {
 };
 
 testingEnvironments[testingEnvironmentNames.localHeadlessBrowsers] = {
-    isLocalBrowsers: true,
+    isLocalBrowsers:    true,
+    isHeadlessBrowsers: true,
 
     browsers: [
         {
@@ -230,6 +230,10 @@ module.exports = {
 
     get useLocalBrowsers () {
         return this.currentEnvironment.isLocalBrowsers;
+    },
+
+    get useHeadlessBrowsers () {
+        return this.currentEnvironment.isHeadlessBrowsers;
     },
 
     get devMode () {

@@ -21,6 +21,10 @@ export default {
         return this.localBrowsersFlags[browserId];
     },
 
+    isHeadlessBrowser () {
+        return false;
+    },
+
     // NOTE: we must try to do a local screenshot or resize, if browser is accessible, and emit warning otherwise
     async hasCustomActionForBrowser (browserId) {
         const isLocalBrowser = this.localBrowsersFlags[browserId];

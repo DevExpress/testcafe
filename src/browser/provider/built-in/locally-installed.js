@@ -21,6 +21,10 @@ export default {
         return true;
     },
 
+    isHeadlessBrowser () {
+        return false;
+    },
+
     async getBrowserList () {
         const installations = await browserTools.getInstallations();
 

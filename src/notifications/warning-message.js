@@ -9,5 +9,6 @@ export default {
     maximizeNotSupportedByBrowserProvider:   'The window maximization functionality is not supported by the "{providerName}" browser provider.',
     resizeError:                             'Was unable to resize the window due to an error.\n\n{errMessage}',
     maximizeError:                           'Was unable to maximize the window due to an error.\n\n{errMessage}',
-    requestMockCORSValidationFailed:         '{RequestHook}: CORS validation failed for a request specified as {requestFilterRule}'
+    requestMockCORSValidationFailed:         '{RequestHook}: CORS validation failed for a request specified as {requestFilterRule}',
+    debugInHeadlessError:                    'It is not allowed to debug in Headless mode'
 };
