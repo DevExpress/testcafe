@@ -1,10 +1,3 @@
-strategy:
-  matrix:
-    mobile-tests:
-      GULP_TASK: test-functional-travis-mobile
-    desktop-tests:
-      GULP_TASK: test-functional-travis-desktop-osx-and-ms-edge
-
 pool: 'BrowserStack agents'
 
 steps:
