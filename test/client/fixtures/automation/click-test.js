@@ -305,6 +305,85 @@ $(document).ready(function () {
 
     module('other functional tests');
 
+    asyncTest('scroll to already visible element', function () {
+        removeTestElements();
+
+        addContainer(1, 5000, 'body');
+
+        const target = addContainer(20, 10, 'body');
+
+        addContainer(1, 5000, 'body');
+
+        target.css({
+            backgroundColor: '#ff0000'
+        });
+
+        window.scrollTo(0, 5050);
+
+        const click = new ClickAutomation(target[0], {
+            offsetX: 10,
+            offsetY: 5
+        });
+
+        const windowY = styleUtils.getScrollTop(document);
+
+        setTimeout(function () {
+            click
+                .run()
+                .then(function () {
+                    equal(styleUtils.getScrollTop(document), windowY, 'scroll position should not change');
+                    startNext();
+                });
+        });
+    });
+
+    asyncTest('scroll to already visible but obscured element', function () {
+        removeTestElements();
+
+        addContainer(1, 5000, 'body');
+
+        const target = addContainer(20, 10, 'body');
+
+        addContainer(1, 5000, 'body');
+
+        const fixed = addContainer(1000, 1000, 'body');
+        let clicked = false;
+
+        target.css({
+            backgroundColor: '#ff0000'
+        }).bind('mousedown', function () {
+            clicked = true;
+        });
+
+        fixed.css({
+            backgroundColor: '#00ff00',
+            position:        'fixed',
+            top:             1,
+            left:            1,
+            right:           1,
+            height:          100
+        });
+
+        window.scrollTo(0, 5050);
+
+        const click = new ClickAutomation(target[0], {
+            offsetX: 10,
+            offsetY: 5
+        });
+
+        const windowY = styleUtils.getScrollTop(document);
+
+        setTimeout(function () {
+            click
+                .run()
+                .then(function () {
+                    notEqual(styleUtils.getScrollTop(document), windowY, 'scroll position should change');
+                    ok(clicked, 'click was raised');
+                    startNext();
+                });
+        }, 0);
+    });
+
     asyncTest('click on element in scrolled container', function () {
         let clicked = false;
 

@@ -1,6 +1,6 @@
 import hammerhead from '../deps/hammerhead';
 import * as domUtils from './dom';
-import { filter, some } from './array';
+import { filter } from './array';
 
 
 const styleUtils   = hammerhead.utils.style;
@@ -45,31 +45,20 @@ const getScrollable = function (el) {
     return { scrollableHorizontally, scrollableVertically };
 };
 
-const getAncestors = function (node) {
-    const ancestors = [];
-
-    while (node.parentNode) {
-        ancestors.unshift(node.parentNode);
-        node = node.parentNode;
-    }
-
-    return ancestors;
-};
-
-const getAncestorsAndSelf = function (node) {
-    return getAncestors(node).concat([node]);
-};
-
 const isVisibilityHiddenNode = function (node) {
-    const ancestors = getAncestorsAndSelf(node);
+    node = domUtils.findParent(node, true, ancestor => {
+        return domUtils.isElementNode(ancestor) && get(ancestor, 'visibility') === 'hidden';
+    });
 
-    return some(ancestors, ancestor => domUtils.isElementNode(ancestor) && get(ancestor, 'visibility') === 'hidden');
+    return !!node;
 };
 
 const isHiddenNode = function (node) {
-    const ancestors = getAncestorsAndSelf(node);
+    node = domUtils.findParent(node, true, ancestor => {
+        return domUtils.isElementNode(ancestor) && get(ancestor, 'display') === 'none';
+    });
 
-    return some(ancestors, ancestor => domUtils.isElementNode(ancestor) && get(ancestor, 'display') === 'none');
+    return !!node;
 };
 
 export function isFixedElement (node) {
