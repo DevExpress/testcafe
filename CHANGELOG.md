@@ -29,7 +29,7 @@ Now when a JavaScript error occurs on the tested webpage, the test run report in
 #### :gear: Browsers are Automatically Restarted When They Stop Responding ([#1815](https://github.com/DevExpress/testcafe/issues/1815))
 
 If a browser stops responding while it executes tests, TestCafe restarts the browser and reruns the current test in a new browser instance.
-If the same problem occurs with this test two more times, the test run finishes.
+If the same problem occurs with this test two more times, the test run finishes and an error is thrown.
 
 ### Bug Fixes
 
@@ -44,6 +44,7 @@ If the same problem occurs with this test two more times, the test run finishes.
 * TestCafe no longer hangs when it clicks a custom element ([#2861](https://github.com/DevExpress/testcafe/issues/2861))
 * TestCafe now performs keyboard navigation between radio buttons/groups in a way that matches the native browser behavior ([#2067](https://github.com/DevExpress/testcafe/issues/2067), [#2045](https://github.com/DevExpress/testcafe/issues/2045))
 * The `fetch` method can now be used with data URLs ([#2865](https://github.com/DevExpress/testcafe/issues/2865))
+* The `switchToIframe` function no longer throws an error ([#2956](https://github.com/DevExpress/testcafe/issues/2956))
 * The overridden `removeEventListener` function now supports the `options` object ([testcafe-hammerhead/#1737](https://github.com/DevExpress/testcafe-hammerhead/issues/1737))
 * The DOM obtained with `DOMParser.parseFromString` no longer contains self-removing scripts ([testcafe-hammerhead/#1619](https://github.com/DevExpress/testcafe-hammerhead/issues/1619))
 * Hammerhead no longer adds the `event` property to a null `contentWindow` in IE11 ([testcafe-hammerhead/#1684](https://github.com/DevExpress/testcafe-hammerhead/issues/1684))
@@ -51,7 +52,6 @@ If the same problem occurs with this test two more times, the test run finishes.
 * Hammerhead now stringifies values correctly before outputting them to the console ([testcafe-hammerhead/#1750](https://github.com/DevExpress/testcafe-hammerhead/issues/1750))
 * A document fragment from the top window can now be correctly appended to an iframe ([testcafe-hammerhead/#912](https://github.com/DevExpress/testcafe-hammerhead/issues/912))
 * Lifecycle callbacks that result from the `document.registerElement` method are no longer called twice ([testcafe-hammerhead/#695](https://github.com/DevExpress/testcafe-hammerhead/issues/695))
-* The `switchToIframe` function no longer throws an error ([testcafe-hammerhead/#2956](https://github.com/DevExpress/testcafe/issues/2956))
 
 ## v0.22.0 (2018-9-3)
 
