@@ -1,0 +1,20 @@
+strategy:
+  matrix:
+    mobile-tests:
+      GULP_TASK: test-functional-travis-mobile
+    desktop-tests:
+      GULP_TASK: test-functional-travis-desktop-osx-and-ms-edge
+
+pool: 'BrowserStack agents'
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '10.x'
+- bash: |
+    npm install
+    npm test
+  displayName: 'Run tests'
+  env:
+    BROWSER_STACK_USERNAME: $(BROWSER_STACK_USERNAME)
+    BROWSER_STACK_ACCESS_KEY: $(BROWSER_STACK_ACCESS_KEY)
