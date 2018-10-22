@@ -94,8 +94,9 @@ If `attrName` or `attrValue` is a String, `withAttribute` selects an element by 
 
 ```js
 // Selects div elements whose 'attrName' attribute
-// is set to 'foo'.
-// Does not match the 'attrName1' attribute or the 'foobar' value.
+// is set to 'foo'. Does not match
+// the 'otherAttr' attribute, or the 'attrName' attribute
+// with the 'foobar' value.
 Selector('div').withAttribute('attrName', 'foo');
 
 // Selects div elements that have the 'myAttr' attribute.
@@ -108,8 +109,8 @@ Selector('div').withAttribute('myAttr');
 // the /a[0-9]/ regular expression.
 // Matches the '1z' and '3z' attributes with the
 // 'a0' and 'a7' values.
-// Does not match '4z' or '1b' attributes and
-// 'b0' or 'ab' values.
+// Does not match the '4z' or '1b' attribute,
+// as well as any attribute with the 'b0' or 'ab' value.
 Selector('ul').withAttribute(/[123]z/, /a[0-9]/);
 ```
 
