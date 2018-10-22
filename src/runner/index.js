@@ -249,7 +249,7 @@ export default class Runner extends EventEmitter {
         return this;
     }
 
-    run ({ skipJsErrors, disablePageReloads, quarantineMode, debugMode, selectorTimeout, assertionTimeout, pageLoadTimeout, speed = 1, debugOnFail, skipUncaughtErrors, stopOnFirstFail } = {}) {
+    run ({ skipJsErrors, disablePageReloads, quarantineMode, debugMode, selectorTimeout, assertionTimeout, pageLoadTimeout, speed = 1, debugOnFail, skipUncaughtErrors, stopOnFirstFail, disableTestSyntaxValidation } = {}) {
         this.opts.skipJsErrors       = !!skipJsErrors;
         this.opts.disablePageReloads = !!disablePageReloads;
         this.opts.quarantineMode     = !!quarantineMode;
@@ -266,7 +266,7 @@ export default class Runner extends EventEmitter {
             .then(() => {
                 this._validateRunOptions();
 
-                return this.bootstrapper.createRunnableConfiguration();
+                return this.bootstrapper.createRunnableConfiguration({ disableTestSyntaxValidation });
             })
             .then(({ reporterPlugins, browserSet, tests, testedApp }) => {
                 this.emit('done-bootstrapping');

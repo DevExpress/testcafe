@@ -68,12 +68,12 @@ export default class Bootstrapper {
         return await BrowserSet.from(browserConnections);
     }
 
-    async _getTests () {
+    async _getTests (disableTestSyntaxValidation) {
         if (!this.sources.length)
             throw new GeneralError(MESSAGE.testSourcesNotSet);
 
         const parsedFileList = await parseFileList(this.sources, process.cwd());
-        const compiler       = new Compiler(parsedFileList);
+        const compiler       = new Compiler(parsedFileList, disableTestSyntaxValidation);
         let tests            = await compiler.getTests();
 
         const testsWithOnlyFlag = tests.filter(test => test.only);
@@ -136,7 +136,7 @@ export default class Bootstrapper {
 
 
     // API
-    async createRunnableConfiguration () {
+    async createRunnableConfiguration ({ disableTestSyntaxValidation }) {
         const reporterPlugins = this._getReporterPlugins();
 
         // NOTE: If a user forgot to specify a browser, but has specified a path to tests, the specified path will be
@@ -144,7 +144,7 @@ export default class Bootstrapper {
         // It's very ambiguous for the user, who might be confused by compilation errors from an unexpected test.
         // So, we need to retrieve the browser aliases and paths before tests compilation.
         const browserInfo = await this._getBrowserInfo();
-        const tests       = await this._getTests();
+        const tests       = await this._getTests(disableTestSyntaxValidation);
         const testedApp   = await this._startTestedApp();
         const browserSet  = await this._getBrowserConnections(browserInfo);
 

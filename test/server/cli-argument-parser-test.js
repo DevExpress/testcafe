@@ -384,7 +384,8 @@ describe('CLI argument parser', function () {
             { long: '--skip-uncaught-errors' },
             { long: '--color' },
             { long: '--no-color' },
-            { long: '--stop-on-first-fail', short: '--sf' }
+            { long: '--stop-on-first-fail', short: '--sf' },
+            { long: '--disable-test-syntax-validation' }
         ];
 
         const parser  = new CliArgumentParser('');
