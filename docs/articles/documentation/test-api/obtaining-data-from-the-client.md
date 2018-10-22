@@ -189,22 +189,9 @@ export function getDocumentURI() {
 }
 ```
 
-You would probably want to use the `import` statement to import this function but this will not always work.
+You would probably want to use the `import` statement to import this function but this won't work.
 
-TestCafe test files are internally processed with [Babel](https://babeljs.io). Because of its pecularities, you cannot import client function dependencies with the `import` statement if you want to use them under the same name they are imported.
-
-**test.js**
-
-```js
-// THIS DOES NOT WORK!
-import { getDocumentURI } from './utils';
-
-// ...
-
-const getUri = ClientFunction(() => {
-    return getDocumentURI();
-}, { dependencies: { getDocumentURI } });
-```
+TestCafe test files are internally processed with [Babel](https://babeljs.io). Because of its peculiarities, you cannot import client function dependencies with the `import` statement if you want to use them under the same name they are imported.
 
 Use the [require](https://nodejs.org/api/modules.html#modules_require) Node.js function in that case.
 
