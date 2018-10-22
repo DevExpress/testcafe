@@ -216,10 +216,10 @@ Add an action that enters the developer name and clicks the Submit button.
     this.submitButton = Selector('#submit-button');
     ```
 
-3. Declare an async function in the `Page` class. This function uses the test controller to perform several actions on the tested page: enter the developer name and click the Submit button.
+3. Declare an [asynchronous function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function) in the `Page` class. This function uses the test controller to perform several actions on the tested page: enter the developer name and click the Submit button.
 
     ```js
-    async submitName(name) {
+    async submitName (name) {
         await t
             .typeText(this.nameInput, name)
             .click(this.submitButton);
@@ -243,15 +243,17 @@ class Feature {
 export default class Page {
     constructor () {
         this.nameInput = Selector('#developer-name');
+
         this.featureList = [
             new Feature('Support for testing on remote devices'),
             new Feature('Re-using existing JavaScript code for testing'),
             new Feature('Easy embedding into a Continuous integration system')
         ];
+
         this.submitButton = Selector('#submit-button');
     }
 
-    async submitName(name) {
+    async submitName (name) {
         await t
             .typeText(this.nameInput, name)
             .click(this.submitButton);
@@ -267,13 +269,13 @@ Now write a test that calls `page.submitName` and checks the message on the Than
 test('Submit a developer name and check the header', async t => {
     const header = Selector('#article-header');
 
-    page.submitName('Peter');
+    await page.submitName('Peter');
 
     await t.expect(header.innerText).eql('Thank you, Peter!');
 });
 ```
 
-This test works with a different page for which there is no page model. That is why it uses a Selector. Don't forget to import it to the test file.
+This test works with a different page for which there is no page model. That is why it uses a selector. Don't forget to import it to the test file.
 
 ```js
 import { Selector } from 'testcafe';
@@ -332,9 +334,9 @@ export default class Page {
 
         this.interfaceSelect       = Selector('#preferred-interface');
         this.interfaceSelectOption = this.interfaceSelect.find('option');
-        this.submitButton = Selector('#submit-button');
+        this.submitButton          = Selector('#submit-button');
     }
-    async submitName(name) {
+    async submitName (name) {
         await t
             .typeText(this.nameInput, name)
             .click(this.submitButton);
