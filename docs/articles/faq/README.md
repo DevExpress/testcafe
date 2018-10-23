@@ -232,8 +232,10 @@ npm install -g {pluginName}
 
 ### My test fails because TestCafe could not find the required webpage element. Why does this happen?
 
-This happens because one of the [selectors](../documentation/test-api/selecting-page-elements/selectors/README.md)
-you used in test code does not match any DOM element.
+This happens because either:
+
+* one of the [selectors](../documentation/test-api/selecting-page-elements/selectors/README.md) you used in test code does not match any DOM element, or
+* you have tried to specify an [action's target element](https://devexpress.github.io/testcafe/documentation/test-api/actions/#selecting-target-elements) using a wrong CSS selector or a client-side function that returns no element.
 
 To determine the cause of this issue, do the following:
 
