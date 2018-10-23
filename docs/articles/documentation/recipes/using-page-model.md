@@ -336,6 +336,7 @@ export default class Page {
         this.interfaceSelectOption = this.interfaceSelect.find('option');
         this.submitButton          = Selector('#submit-button');
     }
+
     async submitName (name) {
         await t
             .typeText(this.nameInput, name)
