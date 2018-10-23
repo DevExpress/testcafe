@@ -189,11 +189,7 @@ export function getDocumentURI() {
 }
 ```
 
-You would probably want to use the `import` statement to import this function but this won't work.
-
-TestCafe test files are internally processed with [Babel](https://babeljs.io). Because of its peculiarities, you cannot import client function dependencies with the `import` statement if you want to use them under the same name they are imported.
-
-Use the [require](https://nodejs.org/api/modules.html#modules_require) Node.js function in that case.
+Note that TestCafe internally processes test files with [Babel](https://babeljs.io). To avoid issues caused by code transpiling, use the [require](https://nodejs.org/api/modules.html#modules_require) function instead of the `import` statement to import client function dependencies.
 
 **test.js**
 
