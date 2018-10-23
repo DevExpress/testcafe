@@ -64,6 +64,24 @@ Selector('label').withText('foo');
 Selector('div').withText(/a[b-e]/);
 ```
 
+Note that when `withText` filters the matching set, it leaves not only the element that immediately contains the specified text but also its ancestors.
+
+Assume the following markup.
+
+```html
+<div class="container">
+    <div class="child">some text</div>
+</div>
+```
+
+In this instance, a selector that targets `div` elements with the `'some text'` text will match both elements (first, the parent and then, the child).
+
+```js
+// This selector matches the parent div (.container)
+// and then the child div (.child)
+Selector('div').withText('some text');
+```
+
 ### withExactText
 
 Method | Type | Description
@@ -77,6 +95,8 @@ Method | Type | Description
 Selector('.container').withExactText('foo');
 ```
 
+Note that when `withExactText` filters the matching set, it leaves not only the element that immediately contains the specified text but also its ancestors (if they do not contain any other text). See an example for [withText](#withtext).
+
 ### withAttribute
 
 Method                              | Return Type | Description
@@ -87,21 +107,21 @@ This method takes the following parameters.
 
 Parameter                     | Type                 | Description
 ----------------------------- | -------------------- | -------
-`attrName`                    | String &#124; RegExp | The attribute name.
-`attrValue`&#160;*(optional)* | String &#124; RegExp | The attribute value. You can omit this parameter to select elements that have the `attrName` attribute regardless of the value.
+`attrName`                    | String &#124; RegExp | The attribute name. This parameter is case-sensitive.
+`attrValue`&#160;*(optional)* | String &#124; RegExp | The attribute value. This parameter is case-sensitive. You can omit it to select elements that have the `attrName` attribute regardless of the value.
 
 If `attrName` or `attrValue` is a String, `withAttribute` selects an element by strict match.
 
 ```js
+// Selects div elements that have the 'myAttr' attribute.
+// This attribute can have any value.
+Selector('div').withAttribute('myAttr');
+
 // Selects div elements whose 'attrName' attribute
 // is set to 'foo'. Does not match
 // the 'otherAttr' attribute, or the 'attrName' attribute
 // with the 'foobar' value.
 Selector('div').withAttribute('attrName', 'foo');
-
-// Selects div elements that have the 'myAttr' attribute.
-// This attribute can have any value.
-Selector('div').withAttribute('myAttr');
 
 // Selects ul elements that have an attribute whose
 // name matches the /[123]z/ regular expression.
