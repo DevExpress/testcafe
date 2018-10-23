@@ -6,7 +6,7 @@ if (config.useHeadlessBrowsers) {
         it('Should add warning on t.debug', function () {
             return runTests('./testcafe-fixtures/index.js')
                 .then(() => {
-                    expect(testReport.warnings).eql(['It is not allowed to debug in Headless mode']);
+                    expect(testReport.warnings).eql(['You cannot debug in headless mode.']);
                 });
         });
     });
