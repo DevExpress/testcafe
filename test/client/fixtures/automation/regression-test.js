@@ -339,7 +339,7 @@ $(document).ready(function () {
         });
     });
 
-    asyncTest('B237672 - TesCafe does not throw exception "Access is denied" after trying to get content of iframe', function () {
+    asyncTest('B237672 - TesCafe should not throw an exception "Access is denied" on accessing to a content of the across-domain iframe', function () {
         let result = false;
 
         const $iframe = $('<iframe></iframe>')
@@ -350,10 +350,10 @@ $(document).ready(function () {
 
         window.QUnitGlobals.waitForIframe($iframe[0]).then(function () {
             try {
-                const iframeBody = $iframe[0].contentWindow.document;
+                const iframeDocument = $iframe[0].contentWindow.document;
 
-                nativeMethods.addEventListener.call(iframeBody, 'click', function () {
-                    throw new Error();
+                nativeMethods.addEventListener.call(iframeDocument, 'click', function () {
+                    throw new Error('Click handler on an iframe should not be called');
                 });
 
                 result = true;
