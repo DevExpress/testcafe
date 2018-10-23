@@ -292,6 +292,10 @@ export default class BrowserConnection extends EventEmitter {
             initScriptPromise.resolve(JSON.parse(data));
     }
 
+    isHeadlessBrowser () {
+        return this.provider.isHeadlessBrowser(this.id);
+    }
+
     async reportJobResult (status, data) {
         await this.provider.reportJobResult(this.id, status, data);
     }

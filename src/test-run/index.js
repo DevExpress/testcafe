@@ -25,6 +25,7 @@ import ClientFunctionBuilder from '../client-functions/client-function-builder';
 import ReporterPluginHost from '../reporter/plugin-host';
 import BrowserConsoleMessages from './browser-console-messages';
 import { UNSTABLE_NETWORK_MODE_HEADER } from '../browser/connection/unstable-network-mode';
+import WARNING_MESSAGE from '../notifications/warning-message';
 
 import { TakeScreenshotOnFailCommand } from './commands/browser-manipulation';
 import { SetNativeDialogHandlerCommand, SetTestSpeedCommand, SetPageLoadTimeoutCommand } from './commands/actions';
@@ -365,6 +366,11 @@ export default class TestRun extends EventEmitter {
     }
 
     async _enqueueSetBreakpointCommand (callsite, error) {
+        if (this.browserConnection.isHeadlessBrowser()) {
+            this.warningLog.addWarning(WARNING_MESSAGE.debugInHeadlessError);
+            return;
+        }
+
         debugLogger.showBreakpoint(this.session.id, this.browserConnection.userAgent, callsite, error);
 
         this.debugging = await this.executeCommand(new SetBreakpointCommand(!!error), callsite);

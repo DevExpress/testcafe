@@ -99,6 +99,10 @@ export default class BrowserProviderPluginHost {
         return false;
     }
 
+    isHeadlessBrowser () {
+        return false;
+    }
+
     async hasCustomActionForBrowser (/* browserId */) {
         return {
             hasCloseBrowser:                this.hasOwnProperty('closeBrowser'),
