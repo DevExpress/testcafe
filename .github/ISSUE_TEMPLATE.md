@@ -1,5 +1,5 @@
 ### Are you requesting a feature or reporting a bug?
-<!-- For questions, we strongly recommend StackOverflow for community support. -->
+<!-- In case you want to ask a question, we strongly recommend StackOverflow to get community support. -->
 
 
 ### What is your Test Scenario?
