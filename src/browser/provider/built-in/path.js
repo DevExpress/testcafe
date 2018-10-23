@@ -56,9 +56,5 @@ export default {
 
     async isLocalBrowser () {
         return true;
-    },
-
-    isHeadlessBrowser () {
-        return false;
-    },
+    }
 };
