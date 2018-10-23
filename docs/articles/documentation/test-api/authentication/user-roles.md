@@ -139,9 +139,7 @@ const role = Role('http://example.com/login', async t => {
         .typeText('#login', 'username')
         .typeText('#password', 'password')
         .click('#sign-in'); // Redirects to http://example.com?sessionId=abcdef
-}, {
-    preserveUrl: true
-});
+}, { preserveUrl: true });
 
 fixture `My Fixture`;
 
