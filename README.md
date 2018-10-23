@@ -37,10 +37,11 @@
 * [Getting Started](#getting-started)
 * [Documentation](#documentation)
 * [Community](#community)
-* [Badge](#badge)
+* [Issue tracker](#issue-tracker)
 * [Contributing](#contributing)
 * [Plugins](#plugins)
 * [Different versions of TestCafe](#different-versions-of-testcafe)
+* [Badge](#badge)
 * [License](#license)
 * [Creators](#creators)
 
@@ -162,27 +163,20 @@ Go to our website for full [documentation](http://devexpress.github.io/testcafe/
 
 ## Community
 
-Follow us on [Twitter](https://twitter.com/DXTestCafe). We post TestCafe news and updates, several times a week.
+Join the TestCafe community on Stack Overflow to get help. Ask and answer [questions with the TestCafe tag](https://stackoverflow.com/questions/tagged/testcafe).
 
-## Badge
+Follow us on [Twitter](https://twitter.com/DXTestCafe) to stay in touch. We post TestCafe news and updates, several times a week.
 
-Show everyone you are using TestCafe: ![Tested with TestCafe](https://img.shields.io/badge/tested%20with-TestCafe-2fa4cf.svg)
+## Issue Tracker
 
-To display this badge, add the following code to your repository readme:
+Use our GitHub issues page to [report bugs](https://github.com/DevExpress/testcafe/issues/new?template=bug-report.md) and [suggest improvements](https://github.com/DevExpress/testcafe/issues/new?template=feature_request.md).
 
-```html
-<a href="https://github.com/DevExpress/testcafe">
-    <img alt="Tested with TestCafe" src="https://img.shields.io/badge/tested%20with-TestCafe-2fa4cf.svg">
-</a>
-```
 
 ## Contributing
 
-Report bugs and request features on our [issues page](https://github.com/DevExpress/testcafe/issues).<br/>
-Ask and answer questions on StackOverflow. We review and answer [questions with the TestCafe tag](https://stackoverflow.com/questions/tagged/testcafe).<br/>
-For more information on how to help us improve TestCafe, see the [CONTRIBUTING.md](https://github.com/DevExpress/testcafe/blob/master/CONTRIBUTING.md).
+Read our [Contributing Guide](https://github.com/DevExpress/testcafe/blob/master/CONTRIBUTING.md) to learn how to contribute to the project.
 
-You can use these plugin generators to create your own plugins:
+To create your own plugin for TestCafe you can use these plugin generators:
 
 * [Build a browser provider](https://devexpress.github.io/testcafe/documentation/extending-testcafe/browser-provider-plugin/)
   to set up tests on your on-premises server farm, to use a cloud testing platform, or to start your local browsers in a special way. Use this [Yeoman generator](https://www.npmjs.com/package/generator-testcafe-browser-provider) to write only a few lines of code.
@@ -190,6 +184,8 @@ You can use these plugin generators to create your own plugins:
   with your formatting and style, check out this [generator](https://www.npmjs.com/package/generator-testcafe-reporter).
 
 If you want your plugin to be listed below, [send us a note in a Github issue](https://github.com/DevExpress/testcafe/issues/new).
+
+Thank you to all the people who already contributed to TestCafe!
 
 ## Plugins
 
@@ -269,6 +265,18 @@ There is a line of products called `TestCafe`. Below are the similarities and ke
   * You can record tests or edit them as JavaScript or TypeScript code.
   * New [Visual Test Recorder](https://testcafe-studio.devexpress.com/documentation/guides/record-tests/) and [IDE-like GUI](https://testcafe-studio.devexpress.com/documentation/guides/write-test-code.html) to record, edit, run and debug tests.
   * Currently available as a free preview version. The release version will replace the 2013 version of TestCafe.
+
+## Badge
+
+Show everyone you are using TestCafe: ![Tested with TestCafe](https://img.shields.io/badge/tested%20with-TestCafe-2fa4cf.svg)
+
+To display this badge, add the following code to your repository readme:
+
+```html
+<a href="https://github.com/DevExpress/testcafe">
+    <img alt="Tested with TestCafe" src="https://img.shields.io/badge/tested%20with-TestCafe-2fa4cf.svg">
+</a>
+```
 
 ## Thanks to BrowserStack
 
