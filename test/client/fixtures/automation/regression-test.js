@@ -339,7 +339,7 @@ $(document).ready(function () {
         });
     });
 
-    asyncTest('B237672 - TesCafe should not throw an exception "Access is denied" on accessing to a content of the across-domain iframe', function () {
+    asyncTest('B237672 - TesCafe should not throw an exception "Access is denied" on accessing to a content of the cross-domain iframe', function () {
         let result = false;
 
         const $iframe = $('<iframe></iframe>')
