@@ -171,7 +171,6 @@ Follow us on [Twitter](https://twitter.com/DXTestCafe) to stay in touch. We post
 
 Use our GitHub issues page to [report bugs](https://github.com/DevExpress/testcafe/issues/new?template=bug-report.md) and [suggest improvements](https://github.com/DevExpress/testcafe/issues/new?template=feature_request.md).
 
-
 ## Contributing
 
 Read our [Contributing Guide](https://github.com/DevExpress/testcafe/blob/master/CONTRIBUTING.md) to learn how to contribute to the project.
