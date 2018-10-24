@@ -74,7 +74,7 @@ testingEnvironments[testingEnvironmentNames.mobileBrowsers] = {
             realMobile: true,
             os:         'android',
             osVersion:  '8.0',
-            device:     'Google Pixel',
+            device:     'Google Pixel 2',
             name:       'Android',
             alias:      'android'
         },
