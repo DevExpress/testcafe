@@ -1,6 +1,6 @@
 describe('Should wait for the window.load event if necessary', function () {
     it('Should wait for the window.load event if there are user event handlers for it (set timeout via an option)', function () {
-        return runTests('testcafe-fixtures/index-test.js', 'Wait for window.load (set timeout via an option)', { pageLoadTimeout: 3000 });
+        return runTests('testcafe-fixtures/index-test.js', 'Wait for window.load (set timeout via an option)', { pageLoadTimeout: 10000 });
     });
 
     it('Should wait for the window.load event if there are user event handlers for it (set timeout via `t`)', function () {

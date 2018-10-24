@@ -4,13 +4,14 @@
     <title>PageLoadTimeout (window load long)</title>
 </head>
 <body>
-<img src="./img.png?delay=10000" />
 <script>
-    window.pageOpenedTime = Date.now();
-
     window.addEventListener('load', function () {
         window.loadEventRaised = true;
     });
+</script>
+<img src="./img.png?delay=10000" />
+<script>
+    window.pageOpenedTime = Date.now();
 </script>
 </body>
 </html>

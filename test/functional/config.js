@@ -49,12 +49,6 @@ testingEnvironments[testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers] = {
             osVersion: 'High Sierra',
             name:      'firefox',
             alias:     'firefox-osx'
-        },
-        {
-            os:        'Windows',
-            osVersion: '10',
-            name:      'edge',
-            alias:     'edge',
         }
     ]
 };
@@ -70,14 +64,6 @@ testingEnvironments[testingEnvironmentNames.mobileBrowsers] = {
     retryTestPages: true,
 
     browsers: [
-        {
-            realMobile: true,
-            os:         'android',
-            osVersion:  '7.1',
-            device:     'Google Pixel',
-            name:       'Android',
-            alias:      'android'
-        },
         {
             realMobile: true,
             os:         'ios',
@@ -252,8 +238,8 @@ module.exports = {
 
     testCafe: {
         hostname: hostname,
-        port1:    2000,
-        port2:    2001
+        port1:    9000,
+        port2:    9001
     },
 
     site: {
@@ -268,7 +254,7 @@ module.exports = {
         }
     },
 
-    browserstackConnectorServicePort: 4000,
+    browserstackConnectorServicePort: 9200,
 
     browsers: []
 };

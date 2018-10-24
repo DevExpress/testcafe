@@ -30,7 +30,7 @@ test('Short test', async t => {
 });
 
 test('Results', async t => {
-    await t.wait(6000);
+    await t.wait(10000);
 
     await t.expect(Object.keys(timelines).length).gt(1);
 
