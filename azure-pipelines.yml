@@ -14,7 +14,7 @@ steps:
     versionSpec: '11.x'
 
 - bash: |
-    npm install || npm install || npm install
+    npm install --no-progress --loglevel error
     npm test
   displayName: 'Run tests'
   condition: not(variables['isDocCommit'])
