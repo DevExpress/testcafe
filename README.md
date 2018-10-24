@@ -36,11 +36,12 @@
 * [IDE for End-to-End Web Testing](#ide-for-end-to-end-web-testing)
 * [Getting Started](#getting-started)
 * [Documentation](#documentation)
-* [Community](#community)
+* [Get Help](#get-help)
+* [Stay in Touch](#stay-in-touch)
 * [Issue tracker](#issue-tracker)
 * [Contributing](#contributing)
 * [Plugins](#plugins)
-* [Different versions of TestCafe](#different-versions-of-testcafe)
+* [Different Versions of TestCafe](#different-versions-of-testcafe)
 * [Badge](#badge)
 * [License](#license)
 * [Creators](#creators)
@@ -161,11 +162,13 @@ Read the [Getting Started](https://devexpress.github.io/testcafe/documentation/g
 
 Go to our website for full [documentation](http://devexpress.github.io/testcafe/documentation/using-testcafe/) on TestCafe.
 
-## Community
+## Get Help
 
 Join the TestCafe community on Stack Overflow to get help. Ask and answer [questions with the TestCafe tag](https://stackoverflow.com/questions/tagged/testcafe).
 
-Follow us on [Twitter](https://twitter.com/DXTestCafe) to stay in touch. We post TestCafe news and updates, several times a week.
+## Stay in Touch
+
+Follow us on [Twitter](https://twitter.com/DXTestCafe). We post TestCafe news and updates, several times a week.
 
 ## Issue Tracker
 
@@ -236,7 +239,7 @@ TestCafe developers and community members made these plugins:
   Use ESLint when writing and editing TestCafe tests.
   * [ESLint plugin](https://github.com/miherlosev/eslint-plugin-testcafe) (by [@miherlosev](https://github.com/miherlosev))
   
-## Different versions of TestCafe
+## Different Versions of TestCafe
 
 There is a line of products called `TestCafe`. Below are the similarities and key differences between them.
 
