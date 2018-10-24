@@ -23,7 +23,7 @@ Join the TestCafe community on Stack Overflow: ask and answer [questions with th
 If you find a problem when using TestCafe, please file an issue in our [GitHub repository](https://github.com/DevExpress/testcafe/issues).
 However, to save some time, please search through the existing issues to see if the problem has already been reported or addressed.
 
-When you create a new issue, template text is automatically added to its body. To help us understand the issue you're describing, be sure to fill in all sections in this template. Issues with insufficient details may take significant time to be processed.
+When you create a new issue, template text is automatically added to its body. To help us understand the issue you're describing, be sure to fill in all sections in this template. We process issues with insufficient details after all the others, which may take significant time without any guarantees.
 
 ## Code Contribution
 
