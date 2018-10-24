@@ -11,7 +11,7 @@ steps:
   displayName: 'Install Node.js'
   condition: not(variables['isDocCommit'])
   inputs:
-    versionSpec: '10.x'
+    versionSpec: '11.x'
     
 - bash: |
     npm install

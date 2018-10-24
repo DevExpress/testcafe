@@ -152,7 +152,7 @@ module.exports = class MarionetteClient {
             marionetteProtocol: infoPacket.body.marionetteProtocol
         };
 
-        this.sessionInfo = await this._getResponse({ command: 'newSession' });
+        this.sessionInfo = await this._getResponse({ command: 'WebDriver:NewSession' });
     }
 
     dispose () {
@@ -161,11 +161,11 @@ module.exports = class MarionetteClient {
     }
 
     async executeScript (code) {
-        return await this._getResponse({ command: 'executeScript', parameters: { script: `return (${code})()` } });
+        return await this._getResponse({ command: 'WebDriver:ExecuteScript', parameters: { script: `return (${code})()` } });
     }
 
     async takeScreenshot (path) {
-        const screenshot = await this._getResponse({ command: 'takeScreenshot' });
+        const screenshot = await this._getResponse({ command: 'WebDriver:TakeScreenshot' });
 
         await writeFile(path, screenshot.value, { encoding: 'base64' });
     }
@@ -175,10 +175,10 @@ module.exports = class MarionetteClient {
         let attemptCounter      = 0;
 
         while (attemptCounter++ < MAX_RESIZE_RETRY_COUNT && (pageRect.width !== width || pageRect.height !== height)) {
-            const currentRect = await this._getResponse({ command: 'getWindowRect' });
+            const currentRect = await this._getResponse({ command: 'WebDriver:GetWindowRect' });
 
             await this._getResponse({
-                command: 'setWindowRect',
+                command: 'WebDriver:SetWindowRect',
 
                 parameters: {
                     x:      currentRect.x,
@@ -193,7 +193,7 @@ module.exports = class MarionetteClient {
     }
 
     async quit () {
-        await this._getResponse({ command: 'quit' });
+        await this._getResponse({ command: 'Marionette:Quit' });
     }
 };
 
