@@ -227,6 +227,12 @@ export default class Runner extends EventEmitter {
         return this;
     }
 
+    disableTestSyntaxValidation () {
+        this.bootstrapper.disableTestSyntaxValidation = true;
+
+        return this;
+    }
+
     useProxy (externalProxyHost, proxyBypass) {
         this.opts.externalProxyHost = externalProxyHost;
         this.opts.proxyBypass       = proxyBypass;
@@ -249,7 +255,7 @@ export default class Runner extends EventEmitter {
         return this;
     }
 
-    run ({ skipJsErrors, disablePageReloads, quarantineMode, debugMode, selectorTimeout, assertionTimeout, pageLoadTimeout, speed = 1, debugOnFail, skipUncaughtErrors, stopOnFirstFail, disableTestSyntaxValidation } = {}) {
+    run ({ skipJsErrors, disablePageReloads, quarantineMode, debugMode, selectorTimeout, assertionTimeout, pageLoadTimeout, speed = 1, debugOnFail, skipUncaughtErrors, stopOnFirstFail } = {}) {
         this.opts.skipJsErrors       = !!skipJsErrors;
         this.opts.disablePageReloads = !!disablePageReloads;
         this.opts.quarantineMode     = !!quarantineMode;
@@ -266,7 +272,7 @@ export default class Runner extends EventEmitter {
             .then(() => {
                 this._validateRunOptions();
 
-                return this.bootstrapper.createRunnableConfiguration({ disableTestSyntaxValidation });
+                return this.bootstrapper.createRunnableConfiguration();
             })
             .then(({ reporterPlugins, browserSet, tests, testedApp }) => {
                 this.emit('done-bootstrapping');

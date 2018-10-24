@@ -15,13 +15,14 @@ export default class Bootstrapper {
     constructor (browserConnectionGateway) {
         this.browserConnectionGateway = browserConnectionGateway;
 
-        this.concurrency  = 1;
-        this.sources      = [];
-        this.browsers     = [];
-        this.reporters    = [];
-        this.filter       = null;
-        this.appCommand   = null;
-        this.appInitDelay = DEFAULT_APP_INIT_DELAY;
+        this.concurrency                 = 1;
+        this.sources                     = [];
+        this.browsers                    = [];
+        this.reporters                   = [];
+        this.filter                      = null;
+        this.appCommand                  = null;
+        this.appInitDelay                = DEFAULT_APP_INIT_DELAY;
+        this.disableTestSyntaxValidation = false;
     }
 
     static _splitBrowserInfo (browserInfo) {
@@ -68,12 +69,12 @@ export default class Bootstrapper {
         return await BrowserSet.from(browserConnections);
     }
 
-    async _getTests (disableTestSyntaxValidation) {
+    async _getTests () {
         if (!this.sources.length)
             throw new GeneralError(MESSAGE.testSourcesNotSet);
 
         const parsedFileList = await parseFileList(this.sources, process.cwd());
-        const compiler       = new Compiler(parsedFileList, disableTestSyntaxValidation);
+        const compiler       = new Compiler(parsedFileList, this.disableTestSyntaxValidation);
         let tests            = await compiler.getTests();
 
         const testsWithOnlyFlag = tests.filter(test => test.only);
@@ -136,7 +137,7 @@ export default class Bootstrapper {
 
 
     // API
-    async createRunnableConfiguration ({ disableTestSyntaxValidation }) {
+    async createRunnableConfiguration () {
         const reporterPlugins = this._getReporterPlugins();
 
         // NOTE: If a user forgot to specify a browser, but has specified a path to tests, the specified path will be
@@ -144,7 +145,7 @@ export default class Bootstrapper {
         // It's very ambiguous for the user, who might be confused by compilation errors from an unexpected test.
         // So, we need to retrieve the browser aliases and paths before tests compilation.
         const browserInfo = await this._getBrowserInfo();
-        const tests       = await this._getTests(disableTestSyntaxValidation);
+        const tests       = await this._getTests();
         const testedApp   = await this._startTestedApp();
         const browserSet  = await this._getBrowserConnections(browserInfo);
 

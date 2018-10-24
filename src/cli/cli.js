@@ -87,6 +87,9 @@ async function runTests (argParser) {
 
     reporters.forEach(r => runner.reporter(r.name, r.outStream));
 
+    if (opts.disableTestSyntaxValidation)
+        runner.disableTestSyntaxValidation();
+
     runner
         .useProxy(externalProxyHost, proxyBypass)
         .src(argParser.src)

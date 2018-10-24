@@ -215,9 +215,13 @@ before(function () {
                 else
                     runner.reporter('json', stream);
 
+                if (disableTestSyntaxValidation)
+                    runner.disableTestSyntaxValidation();
+
                 return runner
                     .useProxy(externalProxyHost, proxyBypass)
                     .browsers(connections)
+
                     .filter(test => {
                         return testName ? test === testName : true;
                     })
@@ -233,8 +237,7 @@ before(function () {
                         pageLoadTimeout,
                         speed,
                         stopOnFirstFail,
-                        skipUncaughtErrors,
-                        disableTestSyntaxValidation
+                        skipUncaughtErrors
                     })
                     .then(failedCount => {
                         if (customReporters)
