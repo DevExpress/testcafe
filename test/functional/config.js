@@ -49,12 +49,6 @@ testingEnvironments[testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers] = {
             osVersion: 'High Sierra',
             name:      'firefox',
             alias:     'firefox-osx'
-        },
-        {
-            os:        'Windows',
-            osVersion: '10',
-            name:      'edge',
-            alias:     'edge',
         }
     ]
 };
@@ -70,14 +64,6 @@ testingEnvironments[testingEnvironmentNames.mobileBrowsers] = {
     retryTestPages: true,
 
     browsers: [
-        {
-            realMobile: true,
-            os:         'android',
-            osVersion:  '8.0',
-            device:     'Google Pixel 2',
-            name:       'Android',
-            alias:      'android'
-        },
         {
             realMobile: true,
             os:         'ios',

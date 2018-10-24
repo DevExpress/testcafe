@@ -2,22 +2,19 @@ pool: 'BrowserStack agents'
 
 steps:
 - bash: |
-    if [[ $BUILD_SOURCEVERSIONMESSAGE =~ ^\[docs\] ]] || [[ ! -f "appveyor.yml" ]]; then 
+    if [[ $BUILD_SOURCEVERSIONMESSAGE =~ ^\[docs\] ]] || [[ ! -f "appveyor.yml" ]]; then
       echo '##vso[task.setvariable variable=isDocCommit]true'
     fi
   displayName: 'Check commit type'
-  
+
 - task: NodeTool@0
   displayName: 'Install Node.js'
   condition: not(variables['isDocCommit'])
   inputs:
     versionSpec: '11.x'
-    
+
 - bash: |
-    npm install
+    npm install || npm install || npm install
     npm test
   displayName: 'Run tests'
   condition: not(variables['isDocCommit'])
-  env:
-    BROWSER_STACK_USERNAME: $(BROWSER_STACK_USERNAME)
-    BROWSER_STACK_ACCESS_KEY: $(BROWSER_STACK_ACCESS_KEY)

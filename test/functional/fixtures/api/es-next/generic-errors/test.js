@@ -51,7 +51,7 @@ describe('[API] Generic errors', function () {
     describe('External assertion library error', function () {
         it('Should handle Node built-in assertion lib error', function () {
             const NODE_11_ASSERTION_MESSAGE = [
-                'AssertionError [ERR_ASSERTION]: Input A expected to strictly equal input B:',
+                'AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:',
                 '+ actual - expected',
                 '',
                 '+ \'answer\'',

@@ -4,11 +4,11 @@
     <title>PageLoadTimeout (window load)</title>
 </head>
 <body>
-<img src="./img.png?delay=1000" />
 <script>
     window.addEventListener('load', function () {
         window.loadEventRaised = true;
     });
 </script>
+<img src="./img.png?delay=1000" />
 </body>
 </html>
