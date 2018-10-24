@@ -65,6 +65,6 @@ Your website URL (or attach your complete example):
 * testcafe version:                   <!-- run `testcafe -v` -->
 * node.js version:                    <!-- run `node -v` -->
 * command-line arguments:  <!-- example: "testcafe ie,chrome -e test.js" -->
-* browser name and version: <!-- example: IE 11, Chrome 69, FireFox 100, etc. -->
+* browser name and version: <!-- example: IE 11, Chrome 69, Firefox 100, etc. -->
 * platform and version:          <!-- example: "macOS 10.14, Windows, Linux Ubuntu 18.04.1, iOS 12 -->
 * other:                                   <!-- any notes you consider important -->
