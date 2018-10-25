@@ -20,6 +20,7 @@ This topic contains the following sections.
 * [Executing Client Functions](#executing-client-functions)
 * [Options](#options)
 * [One-Time Client Code Execution](#one-time-client-code-execution)
+* [Import Functions to be Used as Client Function Dependencies](#import-functions-to-be-used-as-client-function-dependencies)
 * [Calling Client Functions from Node.js Callbacks](#calling-client-functions-from-nodejs-callbacks)
 * [Limitations](#limitations)
 
@@ -173,6 +174,41 @@ fixture `My fixture`
 
 test('My Test', async t => {
     const docURI = await t.eval(() => document.documentURI);
+});
+```
+
+## Import Functions to be Used as Client Function Dependencies
+
+Assume you have a JS file `utils.js` with a function you need to use as a client function dependency in your test file.
+
+**utils.js**
+
+```js
+export function getDocumentURI() {
+    return document.documentURI;
+}
+```
+
+Note that TestCafe internally processes test files with [Babel](https://babeljs.io). To avoid issues caused by code transpiling, use the [require](https://nodejs.org/api/modules.html#modules_require) function instead of the `import` statement to import client function dependencies.
+
+**test.js**
+
+```js
+import { ClientFunction } from 'testcafe';
+
+const getDocumentURI = require('./utils.js').getDocumentURI;
+
+fixture `My fixture`
+    .page `http://devexpress.github.io/testcafe/example/`;
+
+test('My test', async t => {
+    const getUri = ClientFunction(() => {
+        return getDocumentURI();
+    }, { dependencies: { getDocumentURI } });
+
+    const uri = await getUri();
+
+    await t.expect(uri).eql('http://devexpress.github.io/testcafe/example/');
 });
 ```
 
