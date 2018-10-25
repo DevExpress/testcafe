@@ -73,6 +73,8 @@
       margin: -27px 30px 0 0; }
     .banner .banner-content .banner-image {
       float: right; }
+      .banner .banner-content .banner-image img {
+        width: 369px; }
       @media (max-width: 1270px) {
         .banner .banner-content .banner-image {
           display: none; } }
@@ -103,11 +105,11 @@
     .values .value-container:first-child {
       padding-left: 0; }
   .values .value-1 {
-    background-image: url("/testcafe/images/landing-page/all-environments.png"); }
+    background-image: url("/testcafe/images/landing-page/all-environments.svg"); }
   .values .value-2 {
-    background-image: url("/testcafe/images/landing-page/quick-setup.png"); }
+    background-image: url("/testcafe/images/landing-page/quick-setup.svg"); }
   .values .value-3 {
-    background-image: url("/testcafe/images/landing-page/free-open-source.png"); }
+    background-image: url("/testcafe/images/landing-page/free-open-source.svg"); }
   .values .description {
     line-height: 1.5;
     color: #404142;
@@ -121,7 +123,7 @@
 
 .how-it-works-section {
   padding: 0 100px;
-  min-width: calc(1230px - 140px);
+  min-width: calc(1230px - 200px);
   height: 827px;
   -webkit-box-sizing: content-box;
   -moz-box-sizing: content-box;
@@ -139,6 +141,9 @@
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box; }
+
+.how-it-works-section .how-it-works-content .gallery-alt-text {
+  display: none; }
 
 .how-it-works-section .how-it-works-content:before, .how-it-works-section .how-it-works-content:after {
   content: "";
@@ -175,6 +180,7 @@
   .how-it-works-section .how-it-works-content:before {
     left: 24px; } }
 code {
+  font-family: Courier;
   background-color: #98c0d1;
   color: #ffffff;
   border: 1px solid #c8dfe8;
@@ -242,17 +248,17 @@ code {
                 color: #404142;
                 text-decoration: underline; }
           .features-section .features-content .features .row .feature-container .feature-1 {
-            background-image: url("/testcafe/images/landing-page/stable-tests.png"); }
+            background-image: url("/testcafe/images/landing-page/stable-tests.svg"); }
           .features-section .features-content .features .row .feature-container .feature-2 {
-            background-image: url("/testcafe/images/landing-page/js-ts.png"); }
+            background-image: url("/testcafe/images/landing-page/js-ts.svg"); }
           .features-section .features-content .features .row .feature-container .feature-3 {
-            background-image: url("/testcafe/images/landing-page/detect-errors.png"); }
+            background-image: url("/testcafe/images/landing-page/detect-errors.svg"); }
           .features-section .features-content .features .row .feature-container .feature-4 {
-            background-image: url("/testcafe/images/landing-page/concurrent-tests.png"); }
+            background-image: url("/testcafe/images/landing-page/concurrent-tests.svg"); }
           .features-section .features-content .features .row .feature-container .feature-5 {
-            background-image: url("/testcafe/images/landing-page/page-object.png"); }
+            background-image: url("/testcafe/images/landing-page/page-object.svg"); }
           .features-section .features-content .features .row .feature-container .feature-6 {
-            background-image: url("/testcafe/images/landing-page/continuous-integration.png"); }
+            background-image: url("/testcafe/images/landing-page/continuous-integration.svg"); }
         .features-section .features-content .features .row #page-object-popover {
           display: none; }
         .features-section .features-content .features .row #page-object-link {
@@ -380,12 +386,13 @@ code {
           background-color: #ffffff;
           color: #0a3e51; }
     .testcafe-studio-promo .testcafe-studio-promo-content .testcafe-studio-promo-screenshot {
-      background: url("/testcafe/images/landing-page/studio-promo.png") no-repeat 0 0;
       width: 732px;
       min-width: 732px;
-      height: 240px;
-      margin: 15px -16px 0 0;
+      margin: 15px -10px 0 0;
       align-self: flex-end; }
+      .testcafe-studio-promo .testcafe-studio-promo-content .testcafe-studio-promo-screenshot img {
+        vertical-align: top;
+        width: 732px; }
 
 .tweets-section {
   margin: 55px 0 45px;
@@ -438,7 +445,7 @@ code {
       vertical-align: top;
       margin: 0 56px; }
     .follow-section .follow-content .twitter {
-      background-image: url("/testcafe/images/landing-page/follow-on-twitter.png");
+      background-image: url("/testcafe/images/landing-page/follow-on-twitter.svg");
       background-repeat: no-repeat;
       background-color: transparent;
       background-position-x: right;
@@ -461,7 +468,7 @@ code {
     .follow-section .follow-content .github {
       background-repeat: no-repeat;
       background-color: transparent;
-      background-image: url("/testcafe/images/landing-page/follow-on-github.png");
+      background-image: url("/testcafe/images/landing-page/follow-on-github.svg");
       background-position-x: left;
       background-position-y: 22px;
       display: inline-block;
@@ -474,6 +481,8 @@ code {
       .follow-section .follow-content .github a {
         text-decoration: underline;
         color: #404142; }
+    .follow-section .follow-content .github-mobile {
+      display: none; }
 
 @media (max-width: 1270px) {
   .site-header .site-header-content {
@@ -486,13 +495,18 @@ code {
   background-color: transparent;
   padding: 0; }
 
-.feature-5-code {
-  display: inline-block;
+.feature-5-code, .feature-5-code-mobile {
   background-color: #98c0d1;
   color: #ffffff;
   border: 1px solid #c8dfe8;
   border-radius: 0;
   padding: 7px 15px; }
   @media (max-width: 1490px) {
-    .feature-5-code {
+    .feature-5-code, .feature-5-code-mobile {
       display: none; } }
+
+.feature-5-code {
+  display: inline-block; }
+
+.feature-5-code-mobile {
+  display: none; }

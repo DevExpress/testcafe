@@ -195,7 +195,7 @@ table > tbody > tr > td {
     margin: 0 0 2px 26px;
     vertical-align: text-bottom; }
   .site-header .site-logo {
-    background-image: url("/testcafe/images/landing-page/testcafe-logo.png");
+    background-image: url("/testcafe/images/site-header-logo.svg");
     background-repeat: no-repeat;
     background-color: transparent;
     background-size: contain;
@@ -205,7 +205,7 @@ table > tbody > tr > td {
     width: 147px;
     margin: 23px 0; }
   .site-header #twitter-button {
-    background-image: url("/testcafe/images/landing-page/twitter-icon.png");
+    background-image: url("/testcafe/images/twitter.svg");
     background-repeat: no-repeat;
     background-color: transparent;
     background-size: contain;
@@ -222,7 +222,7 @@ table > tbody > tr > td {
       display: none;
       opacity: 0; }
     .site-header #search-panel #close-search {
-      background-image: url("/testcafe/images/landing-page/close-icon.png");
+      background-image: url("/testcafe/images/landing-page/close.svg");
       background-repeat: no-repeat;
       background-color: transparent;
       background-size: contain;
@@ -233,7 +233,7 @@ table > tbody > tr > td {
       cursor: pointer; }
 
 #search-icon {
-  background-image: url("/testcafe/images/landing-page/find-icon.png");
+  background-image: url("/testcafe/images/search.svg");
   background-repeat: no-repeat;
   background-color: transparent;
   background-size: contain;
@@ -243,17 +243,18 @@ table > tbody > tr > td {
   cursor: pointer; }
 
 #search {
-  background-image: url("/testcafe/images/landing-page/find-icon-black.png");
+  background-image: url("/testcafe/images/landing-page/find-icon-black.svg");
   background-repeat: no-repeat;
   background-position: 12px 10px;
+  font-size: 14px;
   padding-left: 42px;
   border: none;
   outline: none;
   height: 40px;
-  width: 825px; }
+  width: 870px; }
   @media (max-width: 1310px) {
     #search {
-      width: 770px; } }
+      width: 780px; } }
 
 .site-header-content {
   padding: 0 100px;
@@ -404,7 +405,7 @@ html, body {
 .cookie-notice {
   display: none;
   position: fixed;
-  background-color: #81daff;
+  background-color: #fff;
   right: 10px;
   bottom: 10px;
   left: 10px;
@@ -413,17 +414,15 @@ html, body {
   .cookie-notice.visible {
     display: block; }
   .cookie-notice .close-icon {
-    font: 12px/100% arial,sans-serif;
-    color: white;
+    background-image: url("/testcafe/images/landing-page/close.svg");
+    background-position: center center;
+    background-repeat: no-repeat;
+    height: 36px;
+    width: 36px;
     position: absolute;
-    right: 7px;
-    text-decoration: none;
-    top: 7px;
+    right: 0px;
+    top: 0px;
     cursor: pointer; }
-    .cookie-notice .close-icon:after {
-      box-sizing: border-box;
-      position: relative;
-      content: '\2716'; }
   .cookie-notice .cookie-notice-content {
     max-width: 1500px;
     padding: 17px 15px;
@@ -435,7 +434,7 @@ html, body {
     .cookie-notice .cookie-notice-content .cookie-notice-message {
       max-width: 90%; }
       .cookie-notice .cookie-notice-content .cookie-notice-message .cookie-notice-header {
-        color: white;
+        color: #000;
         font-weight: bold;
         font-size: 18px; }
       .cookie-notice .cookie-notice-content .cookie-notice-message .cookie-notice-text {
@@ -447,13 +446,13 @@ html, body {
           text-decoration: underline; }
     .cookie-notice .cookie-notice-content .cookie-notice-button {
       min-width: 96px;
-      color: white;
+      color: #000;
       padding: 5px 20px;
       font-size: 16px;
       font-weight: bold;
       border-radius: 50px;
-      border: 2px solid white;
-      background-color: #81daff;
+      border: 2px solid #000;
+      background-color: #fff;
       cursor: pointer; }
 
 .doc-top-nav {

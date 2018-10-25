@@ -2,6 +2,10 @@
 <html>
 
   <head>
+  
+  
+  
+
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -18,13 +22,23 @@
   <meta property="og:url" content="http://devexpress.github.io/testcafe/blog/testcafe-v0-21-0-released.html" />
   <meta property="og:title" content="TestCafe v0.21.0 Released | TestCafe" />
 
+  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
+  
+  
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
   <link rel="canonical" href="http://devexpress.github.io/testcafe/blog/testcafe-v0-21-0-released.html">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="http://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+  <link rel="apple-touch-icon" sizes="180x180" href="/testcafe/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/testcafe/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/testcafe/favicon-16x16.png">
+  <link rel="manifest" href="/testcafe/site.webmanifest">
+  <meta name="msapplication-TileColor" content="#2d89ef">
+  <meta name="msapplication-config" content="/testcafe/browserconfig.xml" />
+  <meta name="theme-color" content="#ffffff">
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/highlight.min.js"></script>
   <script defer src="https://buttons.github.io/buttons.js"></script>
   <script defer type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.3.min.js"></script>
@@ -53,7 +67,7 @@
   
 
   
-  
+
   
 
   <script>
@@ -77,7 +91,6 @@
     }
   </script>
     
-    
     <script>
         if (isMobileDevice) {
             document.addEventListener('DOMContentLoaded', function (e) {
@@ -89,20 +102,25 @@
                         hamburgerButton.className = hamburgerButton.className.replace(' active', '');
                         siteNav.className = siteNav.className.replace(' active', '');
                         document.documentElement.style.overflowY = 'scroll';
+                        document.body.style.overflowY = 'initial';
                     }
                     else {
                         hamburgerButton.className += ' active';
                         siteNav.className += ' active';
                         document.documentElement.style.overflowY = 'hidden';
+                        document.body.style.overflowY = 'hidden';
                     }
                 });
 
                 var docTopNav          = document.querySelector('.doc-top-nav');
-                var siteNav            = document.querySelector('.site-nav');
                 var docMenuItem        = document.querySelector('.site-nav-tab');
                 var mainMenuSecondItem = document.querySelector('.site-nav-tab:nth-child(2)');
 
                 siteNav.insertBefore(docTopNav, mainMenuSecondItem);
+
+                var searchPanel = document.getElementById('search-panel');
+                
+                siteNav.insertBefore(searchPanel, docMenuItem);
 
                 var docMenuItemIcon = document.createElement('div');
 
@@ -127,7 +145,6 @@
             linkCss('/testcafe/css/mobile.css');
         }
     </script>
-    
 
   
 
@@ -159,7 +176,6 @@
 
                 if(article && !isMobileDevice)
                     article.style.marginTop = bodyMinimized ? '21px' : '72px';
-
                 if(gs && !isMobileDevice)
                     gs.style.paddingTop = bodyMinimized ? '21px' : '72px';
             }
@@ -183,6 +199,19 @@
 
 
   <body>
+
+    <script defer src="/testcafe/scripts/cookie-notice.js" type="text/javascript"></script>
+<div class="cookie-notice">
+    <div class="close-icon"></div>
+    <div class="cookie-notice-content">
+        <div class="cookie-notice-message">
+            <div class="cookie-notice-header">Why We Use Cookies</div>
+            <div class="cookie-notice-text">This site uses cookies to make your browsing experience more convenient and personal. Cookies store useful information on your computer to help us improve the efficiency and relevance of our site for you. In some cases, they are essential to making the site work properly. By accessing this site, you consent to the use of cookies. For more information, refer to DevExpress' <a href="https://www.devexpress.com/AboutUs/privacy-policy.xml" target="_blank">privacy policy</a> and <a href="https://www.devexpress.com/AboutUs/cookie-policy.xml" target="_blank">cookie policy</a>.</div>
+        </div>
+        <div class="cookie-notice-button">I understand</div>
+    </div>
+</div>
+
     <div class="page-content-wrapper">
 
       <header class="site-header fixed">
@@ -234,7 +263,7 @@
         <a class="github-button" href="https://github.com/DevExpress/testcafe" data-size="large" data-count-href="/DevExpress/testcafe/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star DevExpress/testcafe on GitHub"><span style="color:#ffffff">Star</span></a>
       </div>
       <div id="search-panel" class="hidden">
-          <input type="text" placeholder="Search query" id="search"/>
+          <input type="text" placeholder="Search documentation" id="search"/>
           <div id="close-search"></div>
       </div>
     </nav>
@@ -283,6 +312,7 @@
               hamburgerMenu.className = hamburgerMenu.className.replace(' active', '');
               hamburgerButton.className = hamburgerButton.className.replace(' active', '');
               document.documentElement.style.overflowY = 'scroll';
+              document.body.style.overflowY = 'initial';
           }
       }
 
@@ -296,17 +326,27 @@
           var docNav = document.querySelector('.doc-nav');
 
           if(docNav) {
-              function closeDocNav(e) {
-                  if(clickOutsideBox(e, docNav) && clickOutsideBox(e, toggleNavButton) && docNav.className.indexOf('active') !== -1) {
-                      docNav.className = docNav.className.replace(' active', '');
-                      document.documentElement.style.overflowY = 'scroll';
-                  }
+              function closeDocNav() {
+                  docNav.className = docNav.className.replace(' active', '');
+                  document.documentElement.style.overflowY = 'scroll';
+                  document.body.style.overflowY = 'initial';
               }
 
-              var toggleNavButton = document.querySelector('.toggle-nav-button');
+              function clickWithDocNavInvoked(e) {
+                  if(clickOutsideBox(e, docNav) && clickOutsideBox(e, docNavPanel) && docNav.className.indexOf('active') !== -1) 
+                      closeDocNav();
+              }
 
-              window.addEventListener('mousedown', closeDocNav);        
-              window.addEventListener('touchstart', closeDocNav);
+              var docNavPanel = document.querySelector('.doc-nav-panel');
+
+              window.addEventListener('mousedown', clickWithDocNavInvoked);        
+              window.addEventListener('touchstart', clickWithDocNavInvoked);
+
+              var docNavLinks = document.querySelectorAll('.doc-nav a');
+
+              docNavLinks.forEach(function (link) {
+                  link.addEventListener('click', closeDocNav);
+              });
           }
       });
   }
@@ -360,7 +400,7 @@
 <p>Test web pages served over HTTPS, construct screenshot paths with patterns and use more info in custom reporters.</p>
 
 <!--more-->
-<h2><a class="anchor" name="enhancements"></a>Enhancements <a class="permalink" href="#enhancements">#</a></h2><h3><a class="anchor" name="test-web-pages-served-over-https-1985"></a>⚙ Test Web Pages Served Over HTTPS (<a href="https://github.com/DevExpress/testcafe/issues/1985">#1985</a>) <a class="permalink" href="#test-web-pages-served-over-https-1985">#</a></h3>
+<h2><a class="anchor" id="enhancements"></a>Enhancements <a class="permalink" href="#enhancements">#</a></h2><h3><a class="anchor" id="test-web-pages-served-over-https-1985"></a>⚙ Test Web Pages Served Over HTTPS (<a href="https://github.com/DevExpress/testcafe/issues/1985">#1985</a>) <a class="permalink" href="#test-web-pages-served-over-https-1985">#</a></h3>
 <p>Some browser features (like <a href="https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API">Service Workers</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API">Geolocation API</a>, <a href="https://developer.apple.com/documentation/apple_pay_on_the_web/applepaysession">ApplePaySession</a>, or <a href="https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto">SubtleCrypto</a>) require a secure origin. This means that the website should use the HTTPS protocol.</p>
 
 <p>Starting with v0.21.0, TestCafe can serve proxied web pages over HTTPS. This allows you to test pages that require a secure origin.</p>
@@ -396,17 +436,17 @@
     <span class="p">});</span>
 </code></pre></div>
 <p>See <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/connect-to-the-testcafe-server-over-https.html">Connect to TestCafe Server over HTTPS</a> for more information.</p>
-<h3><a class="anchor" name="construct-screenshot-paths-with-patterns-2152"></a>⚙ Construct Screenshot Paths with Patterns (<a href="https://github.com/DevExpress/testcafe/issues/2152">#2152</a>) <a class="permalink" href="#construct-screenshot-paths-with-patterns-2152">#</a></h3>
+<h3><a class="anchor" id="construct-screenshot-paths-with-patterns-2152"></a>⚙ Construct Screenshot Paths with Patterns (<a href="https://github.com/DevExpress/testcafe/issues/2152">#2152</a>) <a class="permalink" href="#construct-screenshot-paths-with-patterns-2152">#</a></h3>
 <p>You can now use patterns to construct paths to screenshots. TestCafe provides a number of placeholders you can include in the path, for example, <code>${DATE}</code>, <code>${TIME}</code>, <code>${USERAGENT}</code>, etc. For a complete list, refer to the command line <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-p---screenshot-path-pattern">--screenshot-path-pattern flag description</a>.</p>
 
 <p>You specify a screenshot path pattern when you run tests. Each time TestCafe takes a screenshot, it substitutes the placeholders with actual values and saves the screenshot to the resulting path.</p>
 
 <p>The following example shows how to specify a screenshot path pattern through the command line:</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe all test.js -s screenshots -p <span class="s2">"</span><span class="k">${</span><span class="nv">DATE</span><span class="k">}</span><span class="s2">_</span><span class="k">${</span><span class="nv">TIME</span><span class="k">}</span><span class="s2">/test-</span><span class="k">${</span><span class="nv">TEST_INDEX</span><span class="k">}</span><span class="s2">/</span><span class="k">${</span><span class="nv">USERAGENT</span><span class="k">}</span><span class="s2">/</span><span class="k">${</span><span class="nv">FILE_INDEX</span><span class="k">}</span><span class="s2">.png"</span>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe all test.js -s screenshots -p <span class="s1">'${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png'</span>
 </code></pre></div>
 <p>When you use a programming API, pass the screenshot path pattern to the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#screenshots">runner.screenshots method</a>.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">screenshots</span><span class="p">(</span><span class="s1">'reports/screenshots/'</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="s1">'${TEST_INDEX}/${OS}/${BROWSER}-v${BROWSER_VERSION}/${FILE_INDEX}.png'</span><span class="p">);</span>
-</code></pre></div><h3><a class="anchor" name="add-info-about-screenshots-and-quarantine-attempts-to-custom-reports-2216"></a>⚙ Add Info About Screenshots and Quarantine Attempts to Custom Reports (<a href="https://github.com/DevExpress/testcafe/issues/2216">#2216</a>) <a class="permalink" href="#add-info-about-screenshots-and-quarantine-attempts-to-custom-reports-2216">#</a></h3>
+</code></pre></div><h3><a class="anchor" id="add-info-about-screenshots-and-quarantine-attempts-to-custom-reports-2216"></a>⚙ Add Info About Screenshots and Quarantine Attempts to Custom Reports (<a href="https://github.com/DevExpress/testcafe/issues/2216">#2216</a>) <a class="permalink" href="#add-info-about-screenshots-and-quarantine-attempts-to-custom-reports-2216">#</a></h3>
 <p>Custom reporters can now access screenshots&#39; data and the history of quarantine attempts (if the test run in the quarantine mode).</p>
 
 <p>The following information about screenshots is now available:</p>
@@ -422,7 +462,7 @@
 <p>If the test was run in the quarantine mode, you can also determine which attempts failed and passed.</p>
 
 <p>Refer to the <a href="https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reporttestdone">reportTestDone method description</a> for details on how to access this information.</p>
-<h2><a class="anchor" name="bug-fixes"></a>Bug Fixes <a class="permalink" href="#bug-fixes">#</a></h2>
+<h2><a class="anchor" id="bug-fixes"></a>Bug Fixes <a class="permalink" href="#bug-fixes">#</a></h2>
 <ul>
 <li>HTML5 drag events are no longer simulated if <code>event.preventDefault</code> is called for the <code>mousedown</code> event (<a href="https://github.com/DevExpress/testcafe/issues/2529">#2529</a>)</li>
 <li>File upload no longer causes an exception when there are several file inputs on the page (<a href="https://github.com/DevExpress/testcafe/issues/2642">#2642</a>)</li>
@@ -489,18 +529,6 @@
      }
  });
 </script> 
-
-    <script defer src="/testcafe/scripts/cookie-notice.js" type="text/javascript"></script>
-<div class="cookie-notice">
-    <div class="close-icon"></div>
-    <div class="cookie-notice-content">
-        <div class="cookie-notice-message">
-            <div class="cookie-notice-header">Why We Use Cookies</div>
-            <div class="cookie-notice-text">This site uses cookies to make your browsing experience more convenient and personal. Cookies store useful information on your computer to help us improve the efficiency and relevance of our site for you. In some cases, they are essential to making the site work properly. By accessing this site, you consent to the use of cookies. For more information, refer to DevExpress' <a href="https://www.devexpress.com/AboutUs/privacy-policy.xml" target="_blank">privacy policy</a> and <a href="https://www.devexpress.com/AboutUs/cookie-policy.xml" target="_blank">cookie policy</a>.</div>
-        </div>
-        <div class="cookie-notice-button">I understand</div>
-    </div>
-</div>
 
   </body>
 
