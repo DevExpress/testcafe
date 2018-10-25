@@ -2,7 +2,8 @@
 layout: docs
 title: Obtaining Data from the Client
 permalink: /documentation/test-api/obtaining-data-from-the-client/
-checked: true
+redirect_from:
+  - /documentation/test-api/obtaining-data-from-the-client.html
 ---
 # Obtaining Data from the Client
 
