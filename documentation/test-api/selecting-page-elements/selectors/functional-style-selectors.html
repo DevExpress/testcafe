@@ -2,6 +2,10 @@
 <html>
 
   <head>
+  
+  
+  
+
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -18,13 +22,23 @@
   <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html" />
   <meta property="og:title" content="Functional-Style Selectors | TestCafe" />
 
+  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
+  
+  
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
   <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="http://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+  <link rel="apple-touch-icon" sizes="180x180" href="/testcafe/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/testcafe/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/testcafe/favicon-16x16.png">
+  <link rel="manifest" href="/testcafe/site.webmanifest">
+  <meta name="msapplication-TileColor" content="#2d89ef">
+  <meta name="msapplication-config" content="/testcafe/browserconfig.xml" />
+  <meta name="theme-color" content="#ffffff">
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/highlight.min.js"></script>
   <script defer src="https://buttons.github.io/buttons.js"></script>
   <script defer type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.3.min.js"></script>
@@ -53,7 +67,16 @@
   
 
   
+
   
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/css/perfect-scrollbar.min.css">
+  <link rel="stylesheet" href="/testcafe/css/docs.css">
+  <style>
+      .ps-container > .ps-scrollbar-x-rail,
+      .ps-container > .ps-scrollbar-y-rail {
+          opacity: 0.6;
+      }
+  </style>
   
 
   <script>
@@ -77,7 +100,6 @@
     }
   </script>
     
-    
     <script>
         if (isMobileDevice) {
             document.addEventListener('DOMContentLoaded', function (e) {
@@ -89,20 +111,25 @@
                         hamburgerButton.className = hamburgerButton.className.replace(' active', '');
                         siteNav.className = siteNav.className.replace(' active', '');
                         document.documentElement.style.overflowY = 'scroll';
+                        document.body.style.overflowY = 'initial';
                     }
                     else {
                         hamburgerButton.className += ' active';
                         siteNav.className += ' active';
                         document.documentElement.style.overflowY = 'hidden';
+                        document.body.style.overflowY = 'hidden';
                     }
                 });
 
                 var docTopNav          = document.querySelector('.doc-top-nav');
-                var siteNav            = document.querySelector('.site-nav');
                 var docMenuItem        = document.querySelector('.site-nav-tab');
                 var mainMenuSecondItem = document.querySelector('.site-nav-tab:nth-child(2)');
 
                 siteNav.insertBefore(docTopNav, mainMenuSecondItem);
+
+                var searchPanel = document.getElementById('search-panel');
+                
+                siteNav.insertBefore(searchPanel, docMenuItem);
 
                 var docMenuItemIcon = document.createElement('div');
 
@@ -130,19 +157,10 @@
             linkCss('/testcafe/css/mobile.css');
         }
     </script>
-    
 
   
 
   
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/css/perfect-scrollbar.min.css">
-    <link rel="stylesheet" href="/testcafe/css/docs.css">
-    <style>
-        .ps-container > .ps-scrollbar-x-rail,
-        .ps-container > .ps-scrollbar-y-rail {
-            opacity: 0.6;
-        }
-    </style>
     <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/js/perfect-scrollbar.min.js"></script>
     <script defer type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.3.min.js"></script>
 
@@ -229,24 +247,28 @@
     </script>
     
     <script>
-        if (isMobileDevice && false == false) {
-            document.addEventListener('DOMContentLoaded', function (e) {
-                var toggleNavButton = document.querySelector('.toggle-nav-button');
-                var docNav          = document.querySelector('.doc-nav');
+        if (isMobileDevice) {
+            linkCss('/testcafe/css/docs.mobile.css');           
+            
+            if (false == false) {
+                document.addEventListener('DOMContentLoaded', function (e) {
+                    var docNavPanel = document.querySelector('.doc-nav-panel');
+                    var docNav      = document.querySelector('.doc-nav');
 
-                toggleNavButton.addEventListener('click', function (e) {
-                    if (docNav.className.indexOf('active') !== -1) {
-                        docNav.className = docNav.className.replace(' active', '');
-                        document.documentElement.style.overflowY = 'scroll';
-                    }
-                    else {
-                        docNav.className += ' active';
-                        document.documentElement.style.overflowY = 'hidden';
-                    }
+                    docNavPanel.addEventListener('click', function (e) {
+                        if (docNav.className.indexOf('active') !== -1) {
+                            docNav.className = docNav.className.replace(' active', '');
+                            document.documentElement.style.overflowY = 'scroll';
+                            document.body.style.overflowY = 'initial';
+                        }
+                        else {
+                            docNav.className += ' active';
+                            document.documentElement.style.overflowY = 'hidden';
+                            document.body.style.overflowY = 'hidden';
+                        }
+                    });
                 });
-            });
-
-            linkCss('/testcafe/css/docs.mobile.css');
+            }
         }
     </script>
   
@@ -269,7 +291,6 @@
 
                 if(article && !isMobileDevice)
                     article.style.marginTop = bodyMinimized ? '21px' : '72px';
-
                 if(gs && !isMobileDevice)
                     gs.style.paddingTop = bodyMinimized ? '21px' : '72px';
             }
@@ -293,6 +314,19 @@
 
 
   <body>
+
+    <script defer src="/testcafe/scripts/cookie-notice.js" type="text/javascript"></script>
+<div class="cookie-notice">
+    <div class="close-icon"></div>
+    <div class="cookie-notice-content">
+        <div class="cookie-notice-message">
+            <div class="cookie-notice-header">Why We Use Cookies</div>
+            <div class="cookie-notice-text">This site uses cookies to make your browsing experience more convenient and personal. Cookies store useful information on your computer to help us improve the efficiency and relevance of our site for you. In some cases, they are essential to making the site work properly. By accessing this site, you consent to the use of cookies. For more information, refer to DevExpress' <a href="https://www.devexpress.com/AboutUs/privacy-policy.xml" target="_blank">privacy policy</a> and <a href="https://www.devexpress.com/AboutUs/cookie-policy.xml" target="_blank">cookie policy</a>.</div>
+        </div>
+        <div class="cookie-notice-button">I understand</div>
+    </div>
+</div>
+
     <div class="page-content-wrapper">
 
       <header class="site-header fixed">
@@ -344,7 +378,7 @@
         <a class="github-button" href="https://github.com/DevExpress/testcafe" data-size="large" data-count-href="/DevExpress/testcafe/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star DevExpress/testcafe on GitHub"><span style="color:#ffffff">Star</span></a>
       </div>
       <div id="search-panel" class="hidden">
-          <input type="text" placeholder="Search query" id="search"/>
+          <input type="text" placeholder="Search documentation" id="search"/>
           <div id="close-search"></div>
       </div>
     </nav>
@@ -393,6 +427,7 @@
               hamburgerMenu.className = hamburgerMenu.className.replace(' active', '');
               hamburgerButton.className = hamburgerButton.className.replace(' active', '');
               document.documentElement.style.overflowY = 'scroll';
+              document.body.style.overflowY = 'initial';
           }
       }
 
@@ -406,17 +441,27 @@
           var docNav = document.querySelector('.doc-nav');
 
           if(docNav) {
-              function closeDocNav(e) {
-                  if(clickOutsideBox(e, docNav) && clickOutsideBox(e, toggleNavButton) && docNav.className.indexOf('active') !== -1) {
-                      docNav.className = docNav.className.replace(' active', '');
-                      document.documentElement.style.overflowY = 'scroll';
-                  }
+              function closeDocNav() {
+                  docNav.className = docNav.className.replace(' active', '');
+                  document.documentElement.style.overflowY = 'scroll';
+                  document.body.style.overflowY = 'initial';
               }
 
-              var toggleNavButton = document.querySelector('.toggle-nav-button');
+              function clickWithDocNavInvoked(e) {
+                  if(clickOutsideBox(e, docNav) && clickOutsideBox(e, docNavPanel) && docNav.className.indexOf('active') !== -1) 
+                      closeDocNav();
+              }
 
-              window.addEventListener('mousedown', closeDocNav);        
-              window.addEventListener('touchstart', closeDocNav);
+              var docNavPanel = document.querySelector('.doc-nav-panel');
+
+              window.addEventListener('mousedown', clickWithDocNavInvoked);        
+              window.addEventListener('touchstart', clickWithDocNavInvoked);
+
+              var docNavLinks = document.querySelectorAll('.doc-nav a');
+
+              docNavLinks.forEach(function (link) {
+                  link.addEventListener('click', closeDocNav);
+              });
           }
       });
   }
@@ -471,6 +516,24 @@
 	
 	<div class="doc-nav-panel">
 		<div class="toggle-nav-button"></div>
+		<div class="doc-nav-panel-header">
+			<div class="doc-nav-panel-heading">Documentation</div>
+			<div class="doc-nav-panel-title">
+				
+					
+				
+					
+				
+					
+						Test API
+					
+				
+					
+				
+					
+				
+			</div>
+		</div>
 	</div>
 	<nav class="doc-nav">	
 		<div class="doc-nav-content">
@@ -989,11 +1052,11 @@ These methods can be used in a chain for a functional-style selection mechanism.
 </ul></li>
 <li><a href="#examples">Examples</a></li>
 </ul>
-<h2><a class="anchor" name="filter-dom-nodes"></a>Filter DOM Nodes <a class="permalink" href="#filter-dom-nodes">#</a></h2>
+<h2><a class="anchor" id="filter-dom-nodes"></a>Filter DOM Nodes <a class="permalink" href="#filter-dom-nodes">#</a></h2>
 <p>If a selector returns multiple DOM nodes, you can filter them to select
 a single node that will eventually be returned by the selector.
 The selector provides methods to filter DOM nodes by their index, text, attributes, etc.</p>
-<h3><a class="anchor" name="nth"></a>nth <a class="permalink" href="#nth">#</a></h3><div class="table-wrapper"><table><thead><tr>
+<h3><a class="anchor" id="nth"></a>nth <a class="permalink" href="#nth">#</a></h3><div class="table-wrapper"><table><thead><tr>
 <th>Method</th>
 <th>Return Type</th>
 <th>Description</th>
@@ -1003,7 +1066,12 @@ The selector provides methods to filter DOM nodes by their index, text, attribut
 <td>Selector</td>
 <td>Finds an element by its index in the matching set. The <code>index</code> parameter is zero-based. If <code>index</code> is negative, the index is counted from the end of the matching set.</td>
 </tr>
-</tbody></table></div><h3><a class="anchor" name="withtext"></a>withText <a class="permalink" href="#withtext">#</a></h3><div class="table-wrapper"><table><thead><tr>
+</tbody></table></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// Selects the third ul element.</span>
+<span class="nx">Selector</span><span class="p">(</span><span class="s1">'ul'</span><span class="p">).</span><span class="nx">nth</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+
+<span class="c1">// Selects the last div element.</span>
+<span class="nx">Selector</span><span class="p">(</span><span class="s1">'div'</span><span class="p">).</span><span class="nx">nth</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+</code></pre></div><h3><a class="anchor" id="withtext"></a>withText <a class="permalink" href="#withtext">#</a></h3><div class="table-wrapper"><table><thead><tr>
 <th>Method</th>
 <th>Type</th>
 <th>Description</th>
@@ -1018,7 +1086,27 @@ The selector provides methods to filter DOM nodes by their index, text, attribut
 <td>Selector</td>
 <td>Creates a selector that filters a matching set using the specified regular expression.</td>
 </tr>
-</tbody></table></div><h3><a class="anchor" name="withexacttext"></a>withExactText <a class="permalink" href="#withexacttext">#</a></h3><div class="table-wrapper"><table><thead><tr>
+</tbody></table></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// Selects label elements that contain 'foo'.</span>
+<span class="c1">// Matches 'foo', 'foobar'. Does not match 'bar', 'Foo'.</span>
+<span class="nx">Selector</span><span class="p">(</span><span class="s1">'label'</span><span class="p">).</span><span class="nx">withText</span><span class="p">(</span><span class="s1">'foo'</span><span class="p">);</span>
+
+<span class="c1">// Selects div elements whose text matches</span>
+<span class="c1">// the /a[b-e]/ regular expression.</span>
+<span class="c1">// Matches 'ab', 'ac'. Does not match 'bb', 'aa'.</span>
+<span class="nx">Selector</span><span class="p">(</span><span class="s1">'div'</span><span class="p">).</span><span class="nx">withText</span><span class="p">(</span><span class="sr">/a</span><span class="se">[</span><span class="sr">b-e</span><span class="se">]</span><span class="sr">/</span><span class="p">);</span>
+</code></pre></div>
+<p>Note that when <code>withText</code> filters the matching set, it leaves not only the element that immediately contains the specified text but also its ancestors.</p>
+
+<p>Assume the following markup.</p>
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"container"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"child"</span><span class="nt">&gt;</span>some text<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</code></pre></div>
+<p>In this instance, a selector that targets <code>div</code> elements with the <code>&#39;some text&#39;</code> text will match both elements (first, the parent and then, the child).</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// This selector matches the parent div (.container)</span>
+<span class="c1">// and then the child div (.child)</span>
+<span class="nx">Selector</span><span class="p">(</span><span class="s1">'div'</span><span class="p">).</span><span class="nx">withText</span><span class="p">(</span><span class="s1">'some text'</span><span class="p">);</span>
+</code></pre></div><h3><a class="anchor" id="withexacttext"></a>withExactText <a class="permalink" href="#withexacttext">#</a></h3><div class="table-wrapper"><table><thead><tr>
 <th>Method</th>
 <th>Type</th>
 <th>Description</th>
@@ -1028,7 +1116,13 @@ The selector provides methods to filter DOM nodes by their index, text, attribut
 <td>Selector</td>
 <td>Creates a selector that filters a matching set by the specified text. Selects elements whose text content <em>strictly matches</em> this text. To search for elements that <em>contain</em> a specific text, use the <code>withText</code> method. The <code>text</code> parameter is case-sensitive.</td>
 </tr>
-</tbody></table></div><h3><a class="anchor" name="withattribute"></a>withAttribute <a class="permalink" href="#withattribute">#</a></h3><div class="table-wrapper"><table><thead><tr>
+</tbody></table></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// Selects elements of the 'container' class</span>
+<span class="c1">// whose text exactly matches 'foo'.</span>
+<span class="c1">// Does not match 'bar', 'foobar', 'Foo'.</span>
+<span class="nx">Selector</span><span class="p">(</span><span class="s1">'.container'</span><span class="p">).</span><span class="nx">withExactText</span><span class="p">(</span><span class="s1">'foo'</span><span class="p">);</span>
+</code></pre></div>
+<p>Note that when <code>withExactText</code> filters the matching set, it leaves not only the element that immediately contains the specified text but also its ancestors (if they do not contain any other text). See an example for <a href="#withtext">withText</a>.</p>
+<h3><a class="anchor" id="withattribute"></a>withAttribute <a class="permalink" href="#withattribute">#</a></h3><div class="table-wrapper"><table><thead><tr>
 <th>Method</th>
 <th>Return Type</th>
 <th>Description</th>
@@ -1048,16 +1142,35 @@ The selector provides methods to filter DOM nodes by their index, text, attribut
 </thead><tbody><tr>
 <td><code>attrName</code></td>
 <td>String &#124; RegExp</td>
-<td>The attribute name.</td>
+<td>The attribute name. This parameter is case-sensitive.</td>
 </tr>
 <tr>
 <td><code>attrValue</code>&#160;<em>(optional)</em></td>
 <td>String &#124; RegExp</td>
-<td>The attribute value. You can omit this parameter to select elements that have the <code>attrName</code> attribute regardless of the value.</td>
+<td>The attribute value. This parameter is case-sensitive. You can omit it to select elements that have the <code>attrName</code> attribute regardless of the value.</td>
 </tr>
 </tbody></table></div>
 <p>If <code>attrName</code> or <code>attrValue</code> is a String, <code>withAttribute</code> selects an element by strict match.</p>
-<h3><a class="anchor" name="filtervisible"></a>filterVisible <a class="permalink" href="#filtervisible">#</a></h3><div class="table-wrapper"><table><thead><tr>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// Selects div elements that have the 'myAttr' attribute.</span>
+<span class="c1">// This attribute can have any value.</span>
+<span class="nx">Selector</span><span class="p">(</span><span class="s1">'div'</span><span class="p">).</span><span class="nx">withAttribute</span><span class="p">(</span><span class="s1">'myAttr'</span><span class="p">);</span>
+
+<span class="c1">// Selects div elements whose 'attrName' attribute</span>
+<span class="c1">// is set to 'foo'. Does not match</span>
+<span class="c1">// the 'otherAttr' attribute, or the 'attrName' attribute</span>
+<span class="c1">// with the 'foobar' value.</span>
+<span class="nx">Selector</span><span class="p">(</span><span class="s1">'div'</span><span class="p">).</span><span class="nx">withAttribute</span><span class="p">(</span><span class="s1">'attrName'</span><span class="p">,</span> <span class="s1">'foo'</span><span class="p">);</span>
+
+<span class="c1">// Selects ul elements that have an attribute whose</span>
+<span class="c1">// name matches the /[123]z/ regular expression.</span>
+<span class="c1">// This attribute must have a value that matches</span>
+<span class="c1">// the /a[0-9]/ regular expression.</span>
+<span class="c1">// Matches the '1z' and '3z' attributes with the</span>
+<span class="c1">// 'a0' and 'a7' values.</span>
+<span class="c1">// Does not match the '4z' or '1b' attribute,</span>
+<span class="c1">// as well as any attribute with the 'b0' or 'ab' value.</span>
+<span class="nx">Selector</span><span class="p">(</span><span class="s1">'ul'</span><span class="p">).</span><span class="nx">withAttribute</span><span class="p">(</span><span class="sr">/</span><span class="se">[</span><span class="sr">123</span><span class="se">]</span><span class="sr">z/</span><span class="p">,</span> <span class="sr">/a</span><span class="se">[</span><span class="sr">0-9</span><span class="se">]</span><span class="sr">/</span><span class="p">);</span>
+</code></pre></div><h3><a class="anchor" id="filtervisible"></a>filterVisible <a class="permalink" href="#filtervisible">#</a></h3><div class="table-wrapper"><table><thead><tr>
 <th>Method</th>
 <th>Type</th>
 <th>Description</th>
@@ -1067,7 +1180,9 @@ The selector provides methods to filter DOM nodes by their index, text, attribut
 <td>Selector</td>
 <td>Creates a selector that filters a matching set leaving only visible elements. These are elements that <em>do not</em> have <code>display: none</code> or <code>visibility: hidden</code> CSS properties and have non-zero width and height.</td>
 </tr>
-</tbody></table></div><h3><a class="anchor" name="filterhidden"></a>filterHidden <a class="permalink" href="#filterhidden">#</a></h3><div class="table-wrapper"><table><thead><tr>
+</tbody></table></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// Selects all visible div elements.</span>
+<span class="nx">Selector</span><span class="p">(</span><span class="s1">'div'</span><span class="p">).</span><span class="nx">filterVisible</span><span class="p">();</span>
+</code></pre></div><h3><a class="anchor" id="filterhidden"></a>filterHidden <a class="permalink" href="#filterhidden">#</a></h3><div class="table-wrapper"><table><thead><tr>
 <th>Method</th>
 <th>Type</th>
 <th>Description</th>
@@ -1077,7 +1192,9 @@ The selector provides methods to filter DOM nodes by their index, text, attribut
 <td>Selector</td>
 <td>Creates a selector that filters a matching set leaving only hidden elements. These are elements that have a <code>display: none</code> or <code>visibility: hidden</code> CSS property or zero width or height.</td>
 </tr>
-</tbody></table></div><h3><a class="anchor" name="filter"></a>filter <a class="permalink" href="#filter">#</a></h3><div class="table-wrapper"><table><thead><tr>
+</tbody></table></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// Selects all hidden label elements.</span>
+<span class="nx">Selector</span><span class="p">(</span><span class="s1">'label'</span><span class="p">).</span><span class="nx">filterVisible</span><span class="p">();</span>
+</code></pre></div><h3><a class="anchor" id="filter"></a>filter <a class="permalink" href="#filter">#</a></h3><div class="table-wrapper"><table><thead><tr>
 <th>Method</th>
 <th>Return Type</th>
 <th>Description</th>
@@ -1092,7 +1209,10 @@ The selector provides methods to filter DOM nodes by their index, text, attribut
 <td>Selector</td>
 <td>Finds elements that satisfy the <code>filterFn</code> predicate. Use an optional <code>dependencies</code> parameter to pass functions, variables or objects to the <code>filterFn</code> function.</td>
 </tr>
-</tbody></table></div>
+</tbody></table></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// Selects li elements that</span>
+<span class="c1">// have the someClass class.</span>
+<span class="nx">Selector</span><span class="p">(</span><span class="s1">'li'</span><span class="p">).</span><span class="nx">filter</span><span class="p">(</span><span class="s1">'.someClass'</span><span class="p">)</span>
+</code></pre></div>
 <p>The <code>filterFn</code> predicate is executed on the client. It takes the following parameters.</p>
 <div class="table-wrapper"><table><thead><tr>
 <th>Parameter</th>
@@ -1144,9 +1264,9 @@ you to pass objects to the <code>filterFn</code> client-side scope where they ap
 <span class="p">});</span>
 </code></pre></div>
 <p>If all nodes are filtered out, the selector returns <code>null</code>.</p>
-<h2><a class="anchor" name="search-for-elements-in-the-dom-hierarchy"></a>Search for Elements in the DOM Hierarchy <a class="permalink" href="#search-for-elements-in-the-dom-hierarchy">#</a></h2>
+<h2><a class="anchor" id="search-for-elements-in-the-dom-hierarchy"></a>Search for Elements in the DOM Hierarchy <a class="permalink" href="#search-for-elements-in-the-dom-hierarchy">#</a></h2>
 <p>The selector API provides methods to find elements in a DOM hierarchy in jQuery style.</p>
-<h3><a class="anchor" name="find"></a>find <a class="permalink" href="#find">#</a></h3><div class="table-wrapper"><table><thead><tr>
+<h3><a class="anchor" id="find"></a>find <a class="permalink" href="#find">#</a></h3><div class="table-wrapper"><table><thead><tr>
 <th>Method</th>
 <th>Description</th>
 </tr>
@@ -1158,7 +1278,10 @@ you to pass objects to the <code>filterFn</code> client-side scope where they ap
 <td><code>find(filterFn, dependencies)</code></td>
 <td>Finds all descendants of all nodes in the matching set and filters them using <code>filterFn</code> predicate. Use an optional <code>dependencies</code> parameter to pass functions, variables or objects to the <code>filterFn</code> function. See <a href="#filtering-dom-elements-by-predicates">Filtering DOM Elements by Predicates</a>.</td>
 </tr>
-</tbody></table></div><h3><a class="anchor" name="parent"></a>parent <a class="permalink" href="#parent">#</a></h3><div class="table-wrapper"><table><thead><tr>
+</tbody></table></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// Selects input elements that are descendants</span>
+<span class="c1">// of div elements with the someClass class.</span>
+<span class="nx">Selector</span><span class="p">(</span><span class="s1">'div.someClass'</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">'input'</span><span class="p">);</span>
+</code></pre></div><h3><a class="anchor" id="parent"></a>parent <a class="permalink" href="#parent">#</a></h3><div class="table-wrapper"><table><thead><tr>
 <th>Method</th>
 <th>Description</th>
 </tr>
@@ -1178,7 +1301,18 @@ you to pass objects to the <code>filterFn</code> client-side scope where they ap
 <td><code>parent(filterFn, dependencies)</code></td>
 <td>Finds all parents of all nodes in the matching set and filters them by the <code>filterFn</code> predicate. Use an optional <code>dependencies</code> parameter to pass functions, variables or objects to the <code>filterFn</code> function. See <a href="#filtering-dom-elements-by-predicates">Filtering DOM Elements by Predicates</a>.</td>
 </tr>
-</tbody></table></div><h3><a class="anchor" name="child"></a>child <a class="permalink" href="#child">#</a></h3><div class="table-wrapper"><table><thead><tr>
+</tbody></table></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// Selects all ancestors of all ul elements.</span>
+<span class="nx">Selector</span><span class="p">(</span><span class="s1">'ul'</span><span class="p">).</span><span class="nx">parent</span><span class="p">();</span>
+
+<span class="c1">// Selects all closest parents of all input elements.</span>
+<span class="nx">Selector</span><span class="p">(</span><span class="s1">'input'</span><span class="p">).</span><span class="nx">parent</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+
+<span class="c1">// Selects all furthest ancestors of all labels.</span>
+<span class="nx">Selector</span><span class="p">(</span><span class="s1">'label'</span><span class="p">).</span><span class="nx">parent</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+
+<span class="c1">// Selects all divs that are ancestors of an 'a' element.</span>
+<span class="nx">Selector</span><span class="p">(</span><span class="s1">'a'</span><span class="p">).</span><span class="nx">parent</span><span class="p">(</span><span class="s1">'div'</span><span class="p">);</span>
+</code></pre></div><h3><a class="anchor" id="child"></a>child <a class="permalink" href="#child">#</a></h3><div class="table-wrapper"><table><thead><tr>
 <th>Method</th>
 <th>Description</th>
 </tr>
@@ -1198,8 +1332,19 @@ you to pass objects to the <code>filterFn</code> client-side scope where they ap
 <td><code>child(filterFn, dependencies)</code></td>
 <td>Finds all child elements (not nodes) of all nodes in the matching set and filters them by the <code>filterFn</code> predicate. Use an optional <code>dependencies</code> parameter to pass functions, variables or objects to the <code>filterFn</code> function. See <a href="#filtering-dom-elements-by-predicates">Filtering DOM Elements by Predicates</a>.</td>
 </tr>
-</tbody></table></div><blockquote class="important"><div class="blockquote-content"><p>To know how to access child nodes, see <a href="../../obtaining-data-from-the-client/examples-of-using-client-functions.html#accessing-child-nodes-in-the-dom-hierarchy">Accessing Child Nodes in the DOM Hierarchy</a>.</p>
-</div></blockquote><h3><a class="anchor" name="sibling"></a>sibling <a class="permalink" href="#sibling">#</a></h3><div class="table-wrapper"><table><thead><tr>
+</tbody></table></div><blockquote class="important"><div class="blockquote-content"><p>To learn how to access child nodes, see <a href="../../obtaining-data-from-the-client/examples-of-using-client-functions.html#accessing-child-nodes-in-the-dom-hierarchy">Accessing Child Nodes in the DOM Hierarchy</a>.</p>
+</div></blockquote><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// Selects all children of all ul elements.</span>
+<span class="nx">Selector</span><span class="p">(</span><span class="s1">'ul'</span><span class="p">).</span><span class="nx">child</span><span class="p">();</span>
+
+<span class="c1">// Selects all closest children of all div elements.</span>
+<span class="nx">Selector</span><span class="p">(</span><span class="s1">'div'</span><span class="p">).</span><span class="nx">child</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+
+<span class="c1">// Selects all furthest children of all table elements.</span>
+<span class="nx">Selector</span><span class="p">(</span><span class="s1">'table'</span><span class="p">).</span><span class="nx">child</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+
+<span class="c1">// Selects all ul elements that are children of a nav element.</span>
+<span class="nx">Selector</span><span class="p">(</span><span class="s1">'nav'</span><span class="p">).</span><span class="nx">child</span><span class="p">(</span><span class="s1">'ul'</span><span class="p">);</span>
+</code></pre></div><h3><a class="anchor" id="sibling"></a>sibling <a class="permalink" href="#sibling">#</a></h3><div class="table-wrapper"><table><thead><tr>
 <th>Method</th>
 <th>Description</th>
 </tr>
@@ -1209,7 +1354,7 @@ you to pass objects to the <code>filterFn</code> client-side scope where they ap
 </tr>
 <tr>
 <td><code>sibling(index)</code></td>
-<td>Finds all sibling  elements (not nodes) of all nodes in the matching set and filters them by <code>index</code>. The <code>index</code> parameter is zero-based. If <code>index</code> is negative, the index is counted from the end of the matching set.</td>
+<td>Finds all sibling  elements (not nodes) of all nodes in the matching set and filters them by <code>index</code>. Elements are indexed as they appear in their parents&#39; <code>childNodes</code> collections. The <code>index</code> parameter is zero-based. If <code>index</code> is negative, the index is counted from the end of the matching set.</td>
 </tr>
 <tr>
 <td><code>sibling(cssSelector)</code></td>
@@ -1219,7 +1364,20 @@ you to pass objects to the <code>filterFn</code> client-side scope where they ap
 <td><code>sibling(filterFn, dependencies)</code></td>
 <td>Finds all sibling elements (not nodes) of all nodes in the matching set and filters them by the <code>filterFn</code> predicate. Use an optional <code>dependencies</code> parameter to pass functions, variables or objects to the <code>filterFn</code> function. See <a href="#filtering-dom-elements-by-predicates">Filtering DOM Elements by Predicates</a>.</td>
 </tr>
-</tbody></table></div><h3><a class="anchor" name="nextsibling"></a>nextSibling <a class="permalink" href="#nextsibling">#</a></h3><div class="table-wrapper"><table><thead><tr>
+</tbody></table></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// Selects all siblings of all td elements.</span>
+<span class="nx">Selector</span><span class="p">(</span><span class="s1">'td'</span><span class="p">).</span><span class="nx">sibling</span><span class="p">();</span>
+
+<span class="c1">// Selects all li elements' siblings</span>
+<span class="c1">// that go first in their parent's child lists.</span>
+<span class="nx">Selector</span><span class="p">(</span><span class="s1">'li'</span><span class="p">).</span><span class="nx">sibling</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+
+<span class="c1">// Selects all ul elements' siblings</span>
+<span class="c1">// that go last in their parent's child lists.</span>
+<span class="nx">Selector</span><span class="p">(</span><span class="s1">'ul'</span><span class="p">).</span><span class="nx">sibling</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+
+<span class="c1">// Selects all p elements that are siblings of an img element.</span>
+<span class="nx">Selector</span><span class="p">(</span><span class="s1">'img'</span><span class="p">).</span><span class="nx">sibling</span><span class="p">(</span><span class="s1">'p'</span><span class="p">);</span>
+</code></pre></div><h3><a class="anchor" id="nextsibling"></a>nextSibling <a class="permalink" href="#nextsibling">#</a></h3><div class="table-wrapper"><table><thead><tr>
 <th>Method</th>
 <th>Description</th>
 </tr>
@@ -1229,7 +1387,7 @@ you to pass objects to the <code>filterFn</code> client-side scope where they ap
 </tr>
 <tr>
 <td><code>nextSibling(index)</code></td>
-<td>Finds all succeeding sibling elements (not nodes) of all nodes in the matching set and filters them by <code>index</code>. The <code>index</code> parameter is zero-based. If <code>index</code> is negative, the index is counted from the end of the matching set.</td>
+<td>Finds all succeeding sibling elements (not nodes) of all nodes in the matching set and filters them by <code>index</code>. Elements are indexed beginning from the closest sibling. The <code>index</code> parameter is zero-based. If <code>index</code> is negative, the index is counted from the end of the matching set.</td>
 </tr>
 <tr>
 <td><code>nextSibling(cssSelector)</code></td>
@@ -1239,7 +1397,18 @@ you to pass objects to the <code>filterFn</code> client-side scope where they ap
 <td><code>nextSibling(filterFn, dependencies)</code></td>
 <td>Finds all succeeding sibling elements (not nodes) of all nodes in the matching set and filters them by the <code>filterFn</code> predicate. Use an optional <code>dependencies</code> parameter to pass functions, variables or objects to the <code>filterFn</code> function. See <a href="#filtering-dom-elements-by-predicates">Filtering DOM Elements by Predicates</a>.</td>
 </tr>
-</tbody></table></div><h3><a class="anchor" name="prevsibling"></a>prevSibling <a class="permalink" href="#prevsibling">#</a></h3><div class="table-wrapper"><table><thead><tr>
+</tbody></table></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// Selects all succeeding siblings of all 'a' elements.</span>
+<span class="nx">Selector</span><span class="p">(</span><span class="s1">'a'</span><span class="p">).</span><span class="nx">nextSibling</span><span class="p">();</span>
+
+<span class="c1">// Selects all closest succeeding siblings of all div elements.</span>
+<span class="nx">Selector</span><span class="p">(</span><span class="s1">'div'</span><span class="p">).</span><span class="nx">nextSibling</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+
+<span class="c1">// Selects all furthest succeeding siblings of all pre elements.</span>
+<span class="nx">Selector</span><span class="p">(</span><span class="s1">'pre'</span><span class="p">).</span><span class="nx">nextSibling</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+
+<span class="c1">// Selects all p elements that are succeeding siblings of an hr element.</span>
+<span class="nx">Selector</span><span class="p">(</span><span class="s1">'hr'</span><span class="p">).</span><span class="nx">nextSibling</span><span class="p">(</span><span class="s1">'p'</span><span class="p">);</span>
+</code></pre></div><h3><a class="anchor" id="prevsibling"></a>prevSibling <a class="permalink" href="#prevsibling">#</a></h3><div class="table-wrapper"><table><thead><tr>
 <th>Method</th>
 <th>Description</th>
 </tr>
@@ -1249,7 +1418,7 @@ you to pass objects to the <code>filterFn</code> client-side scope where they ap
 </tr>
 <tr>
 <td><code>prevSibling(index)</code></td>
-<td>Finds all preceding sibling elements (not nodes) of all nodes in the matching set and filters them by <code>index</code>. The <code>index</code> parameter is zero-based. If <code>index</code> is negative, the index is counted from the end of the matching set.</td>
+<td>Finds all preceding sibling elements (not nodes) of all nodes in the matching set and filters them by <code>index</code>. Elements are indexed beginning from the closest sibling. The <code>index</code> parameter is zero-based. If <code>index</code> is negative, the index is counted from the end of the matching set.</td>
 </tr>
 <tr>
 <td><code>prevSibling(cssSelector)</code></td>
@@ -1259,7 +1428,18 @@ you to pass objects to the <code>filterFn</code> client-side scope where they ap
 <td><code>prevSibling(filterFn, dependencies)</code></td>
 <td>Finds all preceding sibling elements (not nodes) of all nodes in the matching set and filters them by the <code>filterFn</code> predicate. Use an optional <code>dependencies</code> parameter to pass functions, variables or objects to the <code>filterFn</code> function. See <a href="#filtering-dom-elements-by-predicates">Filtering DOM Elements by Predicates</a>.</td>
 </tr>
-</tbody></table></div><h3><a class="anchor" name="filtering-dom-elements-by-predicates"></a>Filtering DOM Elements by Predicates <a class="permalink" href="#filtering-dom-elements-by-predicates">#</a></h3>
+</tbody></table></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// Selects all preceding siblings of all p elements.</span>
+<span class="nx">Selector</span><span class="p">(</span><span class="s1">'p'</span><span class="p">).</span><span class="nx">prevSibling</span><span class="p">();</span>
+
+<span class="c1">// Selects all closest preceding siblings of all figure elements.</span>
+<span class="nx">Selector</span><span class="p">(</span><span class="s1">'figure'</span><span class="p">).</span><span class="nx">prevSibling</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+
+<span class="c1">// Selects all furthest preceding siblings of all option elements.</span>
+<span class="nx">Selector</span><span class="p">(</span><span class="s1">'option'</span><span class="p">).</span><span class="nx">prevSibling</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+
+<span class="c1">// Selects all p elements that are preceding siblings of a blockquote element.</span>
+<span class="nx">Selector</span><span class="p">(</span><span class="s1">'blockquote'</span><span class="p">).</span><span class="nx">prevSibling</span><span class="p">(</span><span class="s1">'p'</span><span class="p">);</span>
+</code></pre></div><h3><a class="anchor" id="filtering-dom-elements-by-predicates"></a>Filtering DOM Elements by Predicates <a class="permalink" href="#filtering-dom-elements-by-predicates">#</a></h3>
 <p>Functions that search for elements through the DOM tree allow you to filter the matching set by a <code>filterFn</code> predicate.</p>
 
 <p>The <code>filterFn</code> predicate is executed on the client. It takes the following parameters.</p>
@@ -1292,7 +1472,7 @@ you to pass objects to the <code>filterFn</code> client-side scope where they ap
 <span class="nx">Selector</span><span class="p">(</span><span class="s1">'ul'</span><span class="p">).</span><span class="nx">prevSibling</span><span class="p">((</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">,</span> <span class="nx">originNode</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">isNodeOk</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">,</span> <span class="nx">originNode</span><span class="p">);</span>
 <span class="p">},</span> <span class="p">{</span> <span class="nx">isNodeOk</span> <span class="p">});</span>
-</code></pre></div><h2><a class="anchor" name="examples"></a>Examples <a class="permalink" href="#examples">#</a></h2><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">Selector</span><span class="p">(</span><span class="s1">'ul'</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">'label'</span><span class="p">).</span><span class="nx">parent</span><span class="p">(</span><span class="s1">'div.someClass'</span><span class="p">)</span>
+</code></pre></div><h2><a class="anchor" id="examples"></a>Examples <a class="permalink" href="#examples">#</a></h2><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">Selector</span><span class="p">(</span><span class="s1">'ul'</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">'label'</span><span class="p">).</span><span class="nx">parent</span><span class="p">(</span><span class="s1">'div.someClass'</span><span class="p">)</span>
 </code></pre></div>
 <p>Finds all <code>ul</code> elements on page. Then, in each found <code>ul</code> element finds <code>label</code> elements.
 Then, for each <code>label</code> element finds a parent that matches the <code>div.someClass</code> selector.</p>
@@ -1383,18 +1563,6 @@ a <a href="using-selectors.html#dom-node-snapshot">snapshot</a>, the selector re
      }
  });
 </script> 
-
-    <script defer src="/testcafe/scripts/cookie-notice.js" type="text/javascript"></script>
-<div class="cookie-notice">
-    <div class="close-icon"></div>
-    <div class="cookie-notice-content">
-        <div class="cookie-notice-message">
-            <div class="cookie-notice-header">Why We Use Cookies</div>
-            <div class="cookie-notice-text">This site uses cookies to make your browsing experience more convenient and personal. Cookies store useful information on your computer to help us improve the efficiency and relevance of our site for you. In some cases, they are essential to making the site work properly. By accessing this site, you consent to the use of cookies. For more information, refer to DevExpress' <a href="https://www.devexpress.com/AboutUs/privacy-policy.xml" target="_blank">privacy policy</a> and <a href="https://www.devexpress.com/AboutUs/cookie-policy.xml" target="_blank">cookie policy</a>.</div>
-        </div>
-        <div class="cookie-notice-button">I understand</div>
-    </div>
-</div>
 
   </body>
 

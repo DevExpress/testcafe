@@ -2,6 +2,10 @@
 <html>
 
   <head>
+  
+  
+  
+
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -18,13 +22,23 @@
   <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html" />
   <meta property="og:title" content="Test Code Structure | TestCafe" />
 
+  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
+  
+  
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
   <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="http://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+  <link rel="apple-touch-icon" sizes="180x180" href="/testcafe/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/testcafe/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/testcafe/favicon-16x16.png">
+  <link rel="manifest" href="/testcafe/site.webmanifest">
+  <meta name="msapplication-TileColor" content="#2d89ef">
+  <meta name="msapplication-config" content="/testcafe/browserconfig.xml" />
+  <meta name="theme-color" content="#ffffff">
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/highlight.min.js"></script>
   <script defer src="https://buttons.github.io/buttons.js"></script>
   <script defer type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.3.min.js"></script>
@@ -53,7 +67,16 @@
   
 
   
+
   
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/css/perfect-scrollbar.min.css">
+  <link rel="stylesheet" href="/testcafe/css/docs.css">
+  <style>
+      .ps-container > .ps-scrollbar-x-rail,
+      .ps-container > .ps-scrollbar-y-rail {
+          opacity: 0.6;
+      }
+  </style>
   
 
   <script>
@@ -77,7 +100,6 @@
     }
   </script>
     
-    
     <script>
         if (isMobileDevice) {
             document.addEventListener('DOMContentLoaded', function (e) {
@@ -89,20 +111,25 @@
                         hamburgerButton.className = hamburgerButton.className.replace(' active', '');
                         siteNav.className = siteNav.className.replace(' active', '');
                         document.documentElement.style.overflowY = 'scroll';
+                        document.body.style.overflowY = 'initial';
                     }
                     else {
                         hamburgerButton.className += ' active';
                         siteNav.className += ' active';
                         document.documentElement.style.overflowY = 'hidden';
+                        document.body.style.overflowY = 'hidden';
                     }
                 });
 
                 var docTopNav          = document.querySelector('.doc-top-nav');
-                var siteNav            = document.querySelector('.site-nav');
                 var docMenuItem        = document.querySelector('.site-nav-tab');
                 var mainMenuSecondItem = document.querySelector('.site-nav-tab:nth-child(2)');
 
                 siteNav.insertBefore(docTopNav, mainMenuSecondItem);
+
+                var searchPanel = document.getElementById('search-panel');
+                
+                siteNav.insertBefore(searchPanel, docMenuItem);
 
                 var docMenuItemIcon = document.createElement('div');
 
@@ -130,19 +157,10 @@
             linkCss('/testcafe/css/mobile.css');
         }
     </script>
-    
 
   
 
   
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/css/perfect-scrollbar.min.css">
-    <link rel="stylesheet" href="/testcafe/css/docs.css">
-    <style>
-        .ps-container > .ps-scrollbar-x-rail,
-        .ps-container > .ps-scrollbar-y-rail {
-            opacity: 0.6;
-        }
-    </style>
     <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/js/perfect-scrollbar.min.js"></script>
     <script defer type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.3.min.js"></script>
 
@@ -229,24 +247,28 @@
     </script>
     
     <script>
-        if (isMobileDevice && false == false) {
-            document.addEventListener('DOMContentLoaded', function (e) {
-                var toggleNavButton = document.querySelector('.toggle-nav-button');
-                var docNav          = document.querySelector('.doc-nav');
+        if (isMobileDevice) {
+            linkCss('/testcafe/css/docs.mobile.css');           
+            
+            if (false == false) {
+                document.addEventListener('DOMContentLoaded', function (e) {
+                    var docNavPanel = document.querySelector('.doc-nav-panel');
+                    var docNav      = document.querySelector('.doc-nav');
 
-                toggleNavButton.addEventListener('click', function (e) {
-                    if (docNav.className.indexOf('active') !== -1) {
-                        docNav.className = docNav.className.replace(' active', '');
-                        document.documentElement.style.overflowY = 'scroll';
-                    }
-                    else {
-                        docNav.className += ' active';
-                        document.documentElement.style.overflowY = 'hidden';
-                    }
+                    docNavPanel.addEventListener('click', function (e) {
+                        if (docNav.className.indexOf('active') !== -1) {
+                            docNav.className = docNav.className.replace(' active', '');
+                            document.documentElement.style.overflowY = 'scroll';
+                            document.body.style.overflowY = 'initial';
+                        }
+                        else {
+                            docNav.className += ' active';
+                            document.documentElement.style.overflowY = 'hidden';
+                            document.body.style.overflowY = 'hidden';
+                        }
+                    });
                 });
-            });
-
-            linkCss('/testcafe/css/docs.mobile.css');
+            }
         }
     </script>
   
@@ -269,7 +291,6 @@
 
                 if(article && !isMobileDevice)
                     article.style.marginTop = bodyMinimized ? '21px' : '72px';
-
                 if(gs && !isMobileDevice)
                     gs.style.paddingTop = bodyMinimized ? '21px' : '72px';
             }
@@ -293,6 +314,19 @@
 
 
   <body>
+
+    <script defer src="/testcafe/scripts/cookie-notice.js" type="text/javascript"></script>
+<div class="cookie-notice">
+    <div class="close-icon"></div>
+    <div class="cookie-notice-content">
+        <div class="cookie-notice-message">
+            <div class="cookie-notice-header">Why We Use Cookies</div>
+            <div class="cookie-notice-text">This site uses cookies to make your browsing experience more convenient and personal. Cookies store useful information on your computer to help us improve the efficiency and relevance of our site for you. In some cases, they are essential to making the site work properly. By accessing this site, you consent to the use of cookies. For more information, refer to DevExpress' <a href="https://www.devexpress.com/AboutUs/privacy-policy.xml" target="_blank">privacy policy</a> and <a href="https://www.devexpress.com/AboutUs/cookie-policy.xml" target="_blank">cookie policy</a>.</div>
+        </div>
+        <div class="cookie-notice-button">I understand</div>
+    </div>
+</div>
+
     <div class="page-content-wrapper">
 
       <header class="site-header fixed">
@@ -344,7 +378,7 @@
         <a class="github-button" href="https://github.com/DevExpress/testcafe" data-size="large" data-count-href="/DevExpress/testcafe/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star DevExpress/testcafe on GitHub"><span style="color:#ffffff">Star</span></a>
       </div>
       <div id="search-panel" class="hidden">
-          <input type="text" placeholder="Search query" id="search"/>
+          <input type="text" placeholder="Search documentation" id="search"/>
           <div id="close-search"></div>
       </div>
     </nav>
@@ -393,6 +427,7 @@
               hamburgerMenu.className = hamburgerMenu.className.replace(' active', '');
               hamburgerButton.className = hamburgerButton.className.replace(' active', '');
               document.documentElement.style.overflowY = 'scroll';
+              document.body.style.overflowY = 'initial';
           }
       }
 
@@ -406,17 +441,27 @@
           var docNav = document.querySelector('.doc-nav');
 
           if(docNav) {
-              function closeDocNav(e) {
-                  if(clickOutsideBox(e, docNav) && clickOutsideBox(e, toggleNavButton) && docNav.className.indexOf('active') !== -1) {
-                      docNav.className = docNav.className.replace(' active', '');
-                      document.documentElement.style.overflowY = 'scroll';
-                  }
+              function closeDocNav() {
+                  docNav.className = docNav.className.replace(' active', '');
+                  document.documentElement.style.overflowY = 'scroll';
+                  document.body.style.overflowY = 'initial';
               }
 
-              var toggleNavButton = document.querySelector('.toggle-nav-button');
+              function clickWithDocNavInvoked(e) {
+                  if(clickOutsideBox(e, docNav) && clickOutsideBox(e, docNavPanel) && docNav.className.indexOf('active') !== -1) 
+                      closeDocNav();
+              }
 
-              window.addEventListener('mousedown', closeDocNav);        
-              window.addEventListener('touchstart', closeDocNav);
+              var docNavPanel = document.querySelector('.doc-nav-panel');
+
+              window.addEventListener('mousedown', clickWithDocNavInvoked);        
+              window.addEventListener('touchstart', clickWithDocNavInvoked);
+
+              var docNavLinks = document.querySelectorAll('.doc-nav a');
+
+              docNavLinks.forEach(function (link) {
+                  link.addEventListener('click', closeDocNav);
+              });
           }
       });
   }
@@ -471,6 +516,24 @@
 	
 	<div class="doc-nav-panel">
 		<div class="toggle-nav-button"></div>
+		<div class="doc-nav-panel-header">
+			<div class="doc-nav-panel-heading">Documentation</div>
+			<div class="doc-nav-panel-title">
+				
+					
+				
+					
+				
+					
+						Test API
+					
+				
+					
+				
+					
+				
+			</div>
+		</div>
 	</div>
 	<nav class="doc-nav">	
 		<div class="doc-nav-content">
@@ -991,7 +1054,7 @@
 </ul>
 <blockquote><div class="blockquote-content"><p>If you use <a href="http://eslint.org/">eslint</a> in your project, use  the <a href="https://www.npmjs.com/package/eslint-plugin-testcafe">TestCafe plugin</a>
 to avoid the <code>&#39;fixture&#39; is not defined</code> and <code>&#39;test&#39; is not defined</code> errors.</p>
-</div></blockquote><h2><a class="anchor" name="fixtures"></a>Fixtures <a class="permalink" href="#fixtures">#</a></h2>
+</div></blockquote><h2><a class="anchor" id="fixtures"></a>Fixtures <a class="permalink" href="#fixtures">#</a></h2>
 <p>TestCafe tests must be organized into categories called <em>fixtures</em>.
 A JavaScript, TypeScript or CoffeeScript file with TestCafe tests can contain one or more fixtures.</p>
 
@@ -1011,7 +1074,7 @@ fixture `fixtureName`
 </tbody></table></div>
 <p>This function returns the <code>fixture</code> object that allows you to configure the fixture - specify the <a href="#specifying-the-start-webpage">start webpage</a>, <a href="#specifying-testing-metadata">metadata</a> and <a href="#initialization-and-clean-up">initialization and clean-up code</a> for tests included in the fixture.</p>
 <blockquote><div class="blockquote-content"><p><a href="#tests">Tests</a> that constitute a fixture go after this declaration.</p>
-</div></blockquote><h2><a class="anchor" name="tests"></a>Tests <a class="permalink" href="#tests">#</a></h2>
+</div></blockquote><h2><a class="anchor" id="tests"></a>Tests <a class="permalink" href="#tests">#</a></h2>
 <p>To introduce a test, call the <code>test</code> function and pass the test code inside it.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">test( testName, fn(t) )
 </code></pre></div><div class="table-wrapper"><table><thead><tr>
@@ -1051,7 +1114,7 @@ To determine page elements&#39; state or obtain any other data from the client s
 <a href="obtaining-data-from-the-client/">client functions</a>.</p>
 
 <p>To check if the page state matches the expected one, use <a href="assertions/">assertions</a>.</p>
-<h3><a class="anchor" name="test-controller"></a>Test Controller <a class="permalink" href="#test-controller">#</a></h3>
+<h3><a class="anchor" id="test-controller"></a>Test Controller <a class="permalink" href="#test-controller">#</a></h3>
 <p>A <em>test controller</em> object <code>t</code> exposes the test API&#39;s methods. That is why it is
 passed to each function that is expected to contain server-side test code (like <a href="#tests">test</a>,
 <a href="#initialization-and-clean-up">beforeEach</a> or <a href="#initialization-and-clean-up">afterEach</a>).</p>
@@ -1076,7 +1139,7 @@ use the <a href="pausing-the-test.html">wait function</a> or <a href="assertions
 This is why <a href="selecting-page-elements/selectors/">selectors</a> and
 <a href="obtaining-data-from-the-client/">client functions</a> need the test controller object when they are
 called from Node.js callbacks.</p>
-<h4><a class="anchor" name="using-test-controller-outside-of-test-code"></a>Using Test Controller Outside of Test Code <a class="permalink" href="#using-test-controller-outside-of-test-code">#</a></h4>
+<h4><a class="anchor" id="using-test-controller-outside-of-test-code"></a>Using Test Controller Outside of Test Code <a class="permalink" href="#using-test-controller-outside-of-test-code">#</a></h4>
 <p>You may sometimes need to call the test API from outside the test code. For instance, your <a href="../recipes/using-page-model.html">page model</a>
 can contain methods that perform common operations used in different tests (like authentication).</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
@@ -1116,7 +1179,7 @@ Instead, you can import <code>t</code> to the page model file.</p>
 <span class="p">}</span>
 </code></pre></div>
 <p>TestCafe implicitly resolves test context and provides the right test controller.</p>
-<h3><a class="anchor" name="setting-test-speed"></a>Setting Test Speed <a class="permalink" href="#setting-test-speed">#</a></h3>
+<h3><a class="anchor" id="setting-test-speed"></a>Setting Test Speed <a class="permalink" href="#setting-test-speed">#</a></h3>
 <p>TestCafe allows you to specify the test execution speed.</p>
 
 <p>Tests are run at the maximum speed by default. You can use the <code>t.setTestSpeed</code> method
@@ -1149,7 +1212,7 @@ to specify the speed.</p>
         <span class="p">.</span><span class="nx">setTestSpeed</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">,</span> <span class="s1">' Parker'</span><span class="p">);</span>
 <span class="p">});</span>
-</code></pre></div><h3><a class="anchor" name="setting-page-load-timeout"></a>Setting Page Load Timeout <a class="permalink" href="#setting-page-load-timeout">#</a></h3>
+</code></pre></div><h3><a class="anchor" id="setting-page-load-timeout"></a>Setting Page Load Timeout <a class="permalink" href="#setting-page-load-timeout">#</a></h3>
 <p>The page load timeout defines the time passed after the <code>DOMContentLoaded</code> event within which the <code>window.load</code> event should be raised.</p>
 
 <p>After the timeout passes or the <code>window.load</code> event is raised (whichever happens first), TestCafe starts the test.</p>
@@ -1179,7 +1242,7 @@ to specify the speed.</p>
         <span class="p">.</span><span class="nx">navigateTo</span><span class="p">(</span><span class="s1">'http://devexpress.github.io/testcafe/'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div><blockquote><div class="blockquote-content"><p>Note that the <code>DOMContentLoaded</code> event is raised after the HTML document is loaded and parsed, while <code>window.load</code> is raised after all stylesheets, images and subframes are loaded. That is why <code>window.load</code> is fired after the <code>DOMContentLoaded</code> event with a certain delay.</p>
-</div></blockquote><h2><a class="anchor" name="specifying-the-start-webpage"></a>Specifying the Start Webpage <a class="permalink" href="#specifying-the-start-webpage">#</a></h2>
+</div></blockquote><h2><a class="anchor" id="specifying-the-start-webpage"></a>Specifying the Start Webpage <a class="permalink" href="#specifying-the-start-webpage">#</a></h2>
 <p>You can specify the web page where all tests in a fixture start using the <code>fixture.page</code> function.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">fixture.page( url )
 fixture.page `url`
@@ -1218,7 +1281,7 @@ test.page `url`
     <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">file</span><span class="err">:</span><span class="c1">///user/my-website/index.html`;</span>
 </code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">MyFixture</span><span class="err">`</span>
     <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="p">..</span><span class="o">/</span><span class="nx">my</span><span class="o">-</span><span class="nx">project</span><span class="o">/</span><span class="nx">index</span><span class="p">.</span><span class="nx">html</span><span class="err">`</span><span class="p">;</span>
-</code></pre></div><h2><a class="anchor" name="specifying-testing-metadata"></a>Specifying Testing Metadata <a class="permalink" href="#specifying-testing-metadata">#</a></h2>
+</code></pre></div><h2><a class="anchor" id="specifying-testing-metadata"></a>Specifying Testing Metadata <a class="permalink" href="#specifying-testing-metadata">#</a></h2>
 <p>TestCafe allows you to specify additional information for tests in the form of <em>key-value metadata</em> and use it in reports.</p>
 
 <p>To define metadata, use the <code>meta</code> method. You can call this method for a fixture and a test.</p>
@@ -1280,12 +1343,12 @@ test.page `url`
 <span class="nx">test</span>
     <span class="p">.</span><span class="nx">meta</span><span class="p">(</span><span class="s1">'creationDate'</span><span class="p">,</span> <span class="s1">'05/04/2018'</span><span class="p">);</span> <span class="c1">// The value of the creationDate entry is '05/04/2018'</span>
     <span class="p">(</span><span class="s1">'MyTest'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/* ... */</span><span class="p">});</span>
-</code></pre></div><h3><a class="anchor" name="using-metadata-in-reports"></a>Using Metadata in Reports <a class="permalink" href="#using-metadata-in-reports">#</a></h3>
+</code></pre></div><h3><a class="anchor" id="using-metadata-in-reports"></a>Using Metadata in Reports <a class="permalink" href="#using-metadata-in-reports">#</a></h3>
 <p>You can include testing metadata to reports using a <a href="../extending-testcafe/reporter-plugin/">custom reporter</a>. The reporter&#39;s <a href="../extending-testcafe/reporter-plugin/reporter-methods.html#reportfixturestart">reportFixtureStart</a> and <a href="../extending-testcafe/reporter-plugin/reporter-methods.html#reporttestdone">reportTestDone</a> methods can access the fixture and test metadata.</p>
-<h2><a class="anchor" name="initialization-and-clean-up"></a>Initialization and Clean-Up <a class="permalink" href="#initialization-and-clean-up">#</a></h2>
+<h2><a class="anchor" id="initialization-and-clean-up"></a>Initialization and Clean-Up <a class="permalink" href="#initialization-and-clean-up">#</a></h2>
 <p>TestCafe allows you to specify functions that are executed before a fixture or test is started and after it is finished.
 These functions are called <em>hook functions</em> or <em>hooks</em>.</p>
-<h3><a class="anchor" name="test-hooks"></a>Test Hooks <a class="permalink" href="#test-hooks">#</a></h3>
+<h3><a class="anchor" id="test-hooks"></a>Test Hooks <a class="permalink" href="#test-hooks">#</a></h3>
 <p>Test hooks are executed in each test run before a test is started and after it is finished. If a test runs in several browsers, test hooks are executed in each browser.</p>
 
 <p>At the moment test hooks run, the tested webpage is already loaded, so that you can use <a href="actions/">test actions</a> and other test run API inside test hooks.</p>
@@ -1335,7 +1398,7 @@ These functions are called <em>hook functions</em> or <em>hooks</em>.</p>
     <span class="p">.</span><span class="nx">after</span><span class="p">(</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
         <span class="cm">/* test finalization code */</span>
     <span class="p">});</span>
-</code></pre></div><h4><a class="anchor" name="sharing-variables-between-test-hooks-and-test-code"></a>Sharing Variables Between Test Hooks and Test Code <a class="permalink" href="#sharing-variables-between-test-hooks-and-test-code">#</a></h4>
+</code></pre></div><h4><a class="anchor" id="sharing-variables-between-test-hooks-and-test-code"></a>Sharing Variables Between Test Hooks and Test Code <a class="permalink" href="#sharing-variables-between-test-hooks-and-test-code">#</a></h4>
 <p>You can share variables between test hook functions and test code
 by using the <em>test context</em> object.</p>
 
@@ -1358,7 +1421,7 @@ by using the <em>test context</em> object.</p>
 </code></pre></div>
 <p>Each test run has its own test context.</p>
 <blockquote><div class="blockquote-content"><p><code>t.ctx</code> is initialized with an empty object without a prototype. You can iterate its keys without the <code>hasOwnProperty</code> check.</p>
-</div></blockquote><h3><a class="anchor" name="fixture-hooks"></a>Fixture Hooks <a class="permalink" href="#fixture-hooks">#</a></h3>
+</div></blockquote><h3><a class="anchor" id="fixture-hooks"></a>Fixture Hooks <a class="permalink" href="#fixture-hooks">#</a></h3>
 <p>Fixture hooks are executed before the first test in a fixture is started and after the last test is finished.</p>
 
 <p>Unlike <a href="#test-hooks">test hooks</a>, fixture hooks are executed between test runs and do not have access to the tested page.
@@ -1392,7 +1455,7 @@ Use them to perform server-side operations like preparing the server that hosts 
     <span class="p">.</span><span class="nx">after</span><span class="p">(</span> <span class="nx">async</span> <span class="nx">ctx</span> <span class="o">=&gt;</span> <span class="p">{</span>
         <span class="cm">/* fixture finalization code */</span>
     <span class="p">});</span>
-</code></pre></div><h4><a class="anchor" name="sharing-variables-between-fixture-hooks-and-test-code"></a>Sharing Variables Between Fixture Hooks and Test Code <a class="permalink" href="#sharing-variables-between-fixture-hooks-and-test-code">#</a></h4>
+</code></pre></div><h4><a class="anchor" id="sharing-variables-between-fixture-hooks-and-test-code"></a>Sharing Variables Between Fixture Hooks and Test Code <a class="permalink" href="#sharing-variables-between-fixture-hooks-and-test-code">#</a></h4>
 <p>Hook functions passed to <code>fixture.before</code> and <code>fixture.after</code> methods take a <code>ctx</code> parameter that contains <em>fixture context</em>.
 You can add properties to this parameter to share the value or object with test code.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">Fixture1</span><span class="err">`</span>
@@ -1424,7 +1487,7 @@ You can add properties to this parameter to share the value or object with test 
 <span class="nx">test</span><span class="p">(</span><span class="s1">'Test2'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">t</span><span class="p">.</span><span class="nx">fixtureCtx</span><span class="p">.</span><span class="nx">newProp</span> <span class="o">=</span> <span class="s1">'abc'</span><span class="p">;</span>
 <span class="p">});</span>
-</code></pre></div><h2><a class="anchor" name="skipping-tests"></a>Skipping Tests <a class="permalink" href="#skipping-tests">#</a></h2>
+</code></pre></div><h2><a class="anchor" id="skipping-tests"></a>Skipping Tests <a class="permalink" href="#skipping-tests">#</a></h2>
 <p>TestCafe allows you to specify that a particular test or fixture should be skipped when running tests.
 Use the <code>fixture.skip</code> and <code>test.skip</code> methods for this.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">fixture.skip
@@ -1497,18 +1560,6 @@ Use the <code>fixture.skip</code> and <code>test.skip</code> methods for this.</
      }
  });
 </script> 
-
-    <script defer src="/testcafe/scripts/cookie-notice.js" type="text/javascript"></script>
-<div class="cookie-notice">
-    <div class="close-icon"></div>
-    <div class="cookie-notice-content">
-        <div class="cookie-notice-message">
-            <div class="cookie-notice-header">Why We Use Cookies</div>
-            <div class="cookie-notice-text">This site uses cookies to make your browsing experience more convenient and personal. Cookies store useful information on your computer to help us improve the efficiency and relevance of our site for you. In some cases, they are essential to making the site work properly. By accessing this site, you consent to the use of cookies. For more information, refer to DevExpress' <a href="https://www.devexpress.com/AboutUs/privacy-policy.xml" target="_blank">privacy policy</a> and <a href="https://www.devexpress.com/AboutUs/cookie-policy.xml" target="_blank">cookie policy</a>.</div>
-        </div>
-        <div class="cookie-notice-button">I understand</div>
-    </div>
-</div>
 
   </body>
 

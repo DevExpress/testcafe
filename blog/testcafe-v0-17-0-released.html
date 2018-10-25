@@ -2,6 +2,10 @@
 <html>
 
   <head>
+  
+  
+  
+
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -18,13 +22,23 @@
   <meta property="og:url" content="http://devexpress.github.io/testcafe/blog/testcafe-v0-17-0-released.html" />
   <meta property="og:title" content="TestCafe v0.17.0 Released | TestCafe" />
 
+  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
+  
+  
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
   <link rel="canonical" href="http://devexpress.github.io/testcafe/blog/testcafe-v0-17-0-released.html">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="http://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+  <link rel="apple-touch-icon" sizes="180x180" href="/testcafe/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/testcafe/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/testcafe/favicon-16x16.png">
+  <link rel="manifest" href="/testcafe/site.webmanifest">
+  <meta name="msapplication-TileColor" content="#2d89ef">
+  <meta name="msapplication-config" content="/testcafe/browserconfig.xml" />
+  <meta name="theme-color" content="#ffffff">
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/highlight.min.js"></script>
   <script defer src="https://buttons.github.io/buttons.js"></script>
   <script defer type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.3.min.js"></script>
@@ -53,7 +67,7 @@
   
 
   
-  
+
   
 
   <script>
@@ -77,7 +91,6 @@
     }
   </script>
     
-    
     <script>
         if (isMobileDevice) {
             document.addEventListener('DOMContentLoaded', function (e) {
@@ -89,20 +102,25 @@
                         hamburgerButton.className = hamburgerButton.className.replace(' active', '');
                         siteNav.className = siteNav.className.replace(' active', '');
                         document.documentElement.style.overflowY = 'scroll';
+                        document.body.style.overflowY = 'initial';
                     }
                     else {
                         hamburgerButton.className += ' active';
                         siteNav.className += ' active';
                         document.documentElement.style.overflowY = 'hidden';
+                        document.body.style.overflowY = 'hidden';
                     }
                 });
 
                 var docTopNav          = document.querySelector('.doc-top-nav');
-                var siteNav            = document.querySelector('.site-nav');
                 var docMenuItem        = document.querySelector('.site-nav-tab');
                 var mainMenuSecondItem = document.querySelector('.site-nav-tab:nth-child(2)');
 
                 siteNav.insertBefore(docTopNav, mainMenuSecondItem);
+
+                var searchPanel = document.getElementById('search-panel');
+                
+                siteNav.insertBefore(searchPanel, docMenuItem);
 
                 var docMenuItemIcon = document.createElement('div');
 
@@ -127,7 +145,6 @@
             linkCss('/testcafe/css/mobile.css');
         }
     </script>
-    
 
   
 
@@ -159,7 +176,6 @@
 
                 if(article && !isMobileDevice)
                     article.style.marginTop = bodyMinimized ? '21px' : '72px';
-
                 if(gs && !isMobileDevice)
                     gs.style.paddingTop = bodyMinimized ? '21px' : '72px';
             }
@@ -183,6 +199,19 @@
 
 
   <body>
+
+    <script defer src="/testcafe/scripts/cookie-notice.js" type="text/javascript"></script>
+<div class="cookie-notice">
+    <div class="close-icon"></div>
+    <div class="cookie-notice-content">
+        <div class="cookie-notice-message">
+            <div class="cookie-notice-header">Why We Use Cookies</div>
+            <div class="cookie-notice-text">This site uses cookies to make your browsing experience more convenient and personal. Cookies store useful information on your computer to help us improve the efficiency and relevance of our site for you. In some cases, they are essential to making the site work properly. By accessing this site, you consent to the use of cookies. For more information, refer to DevExpress' <a href="https://www.devexpress.com/AboutUs/privacy-policy.xml" target="_blank">privacy policy</a> and <a href="https://www.devexpress.com/AboutUs/cookie-policy.xml" target="_blank">cookie policy</a>.</div>
+        </div>
+        <div class="cookie-notice-button">I understand</div>
+    </div>
+</div>
+
     <div class="page-content-wrapper">
 
       <header class="site-header fixed">
@@ -234,7 +263,7 @@
         <a class="github-button" href="https://github.com/DevExpress/testcafe" data-size="large" data-count-href="/DevExpress/testcafe/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star DevExpress/testcafe on GitHub"><span style="color:#ffffff">Star</span></a>
       </div>
       <div id="search-panel" class="hidden">
-          <input type="text" placeholder="Search query" id="search"/>
+          <input type="text" placeholder="Search documentation" id="search"/>
           <div id="close-search"></div>
       </div>
     </nav>
@@ -283,6 +312,7 @@
               hamburgerMenu.className = hamburgerMenu.className.replace(' active', '');
               hamburgerButton.className = hamburgerButton.className.replace(' active', '');
               document.documentElement.style.overflowY = 'scroll';
+              document.body.style.overflowY = 'initial';
           }
       }
 
@@ -296,17 +326,27 @@
           var docNav = document.querySelector('.doc-nav');
 
           if(docNav) {
-              function closeDocNav(e) {
-                  if(clickOutsideBox(e, docNav) && clickOutsideBox(e, toggleNavButton) && docNav.className.indexOf('active') !== -1) {
-                      docNav.className = docNav.className.replace(' active', '');
-                      document.documentElement.style.overflowY = 'scroll';
-                  }
+              function closeDocNav() {
+                  docNav.className = docNav.className.replace(' active', '');
+                  document.documentElement.style.overflowY = 'scroll';
+                  document.body.style.overflowY = 'initial';
               }
 
-              var toggleNavButton = document.querySelector('.toggle-nav-button');
+              function clickWithDocNavInvoked(e) {
+                  if(clickOutsideBox(e, docNav) && clickOutsideBox(e, docNavPanel) && docNav.className.indexOf('active') !== -1) 
+                      closeDocNav();
+              }
 
-              window.addEventListener('mousedown', closeDocNav);        
-              window.addEventListener('touchstart', closeDocNav);
+              var docNavPanel = document.querySelector('.doc-nav-panel');
+
+              window.addEventListener('mousedown', clickWithDocNavInvoked);        
+              window.addEventListener('touchstart', clickWithDocNavInvoked);
+
+              var docNavLinks = document.querySelectorAll('.doc-nav a');
+
+              docNavLinks.forEach(function (link) {
+                  link.addEventListener('click', closeDocNav);
+              });
           }
       });
   }
@@ -362,7 +402,7 @@
 <p>Read on to learn more.</p>
 
 <!--more-->
-<h2><a class="anchor" name="enhancements"></a>Enhancements <a class="permalink" href="#enhancements">#</a></h2><h3><a class="anchor" name="testing-electron-applications-testcafe-browser-provider-electron"></a>⚙ Testing Electron applications (<a href="https://github.com/DevExpress/testcafe-browser-provider-electron">testcafe-browser-provider-electron</a>) <a class="permalink" href="#testing-electron-applications-testcafe-browser-provider-electron">#</a></h3>
+<h2><a class="anchor" id="enhancements"></a>Enhancements <a class="permalink" href="#enhancements">#</a></h2><h3><a class="anchor" id="testing-electron-applications-testcafe-browser-provider-electron"></a>⚙ Testing Electron applications (<a href="https://github.com/DevExpress/testcafe-browser-provider-electron">testcafe-browser-provider-electron</a>) <a class="permalink" href="#testing-electron-applications-testcafe-browser-provider-electron">#</a></h3>
 <p>We have created a browser provider that allows you to test Electron applications with TestCafe.</p>
 
 <p>Getting it to work is simple. First, install the browser provider plugin from npm.</p>
@@ -391,7 +431,7 @@ at the test launch.</p>
     <span class="p">.</span><span class="nx">run</span><span class="p">();</span>
 </code></pre></div>
 <p>To learn more about the Electron browser provider, see the plugin <a href="https://github.com/DevExpress/testcafe-browser-provider-electron">readme</a>.</p>
-<h3><a class="anchor" name="concurrent-test-execution-1165"></a>⚙ Concurrent test execution (<a href="https://github.com/DevExpress/testcafe/issues/1165">#1165</a>) <a class="permalink" href="#concurrent-test-execution-1165">#</a></h3>
+<h3><a class="anchor" id="concurrent-test-execution-1165"></a>⚙ Concurrent test execution (<a href="https://github.com/DevExpress/testcafe/issues/1165">#1165</a>) <a class="permalink" href="#concurrent-test-execution-1165">#</a></h3>
 <p>We&#39;ve added concurrent test launch. This makes a test batch complete faster.</p>
 
 <p>By default TestCafe launches one instance of each specified browser. Tests run one by one in each of them.</p>
@@ -408,7 +448,7 @@ Specify the number of instances to invoke for each browser.</p>
     <span class="p">.</span><span class="nx">run</span><span class="p">();</span>
 </code></pre></div>
 <p>For details, see <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/concurrent-test-execution.html">Concurrent Test Execution</a>.</p>
-<h3><a class="anchor" name="output-test-run-reports-to-slack-and-teamcity-testcafe-reporter-slack-testcafe-reporter-teamcity"></a>⚙ Output test run reports to Slack and TeamCity (<a href="https://github.com/Shafied/testcafe-reporter-slack">testcafe-reporter-slack</a>, <a href="https://github.com/Soluto/testcafe-reporter-teamcity">testcafe-reporter-teamcity</a>) <a class="permalink" href="#output-test-run-reports-to-slack-and-teamcity-testcafe-reporter-slack-testcafe-reporter-teamcity">#</a></h3>
+<h3><a class="anchor" id="output-test-run-reports-to-slack-and-teamcity-testcafe-reporter-slack-testcafe-reporter-teamcity"></a>⚙ Output test run reports to Slack and TeamCity (<a href="https://github.com/Shafied/testcafe-reporter-slack">testcafe-reporter-slack</a>, <a href="https://github.com/Soluto/testcafe-reporter-teamcity">testcafe-reporter-teamcity</a>) <a class="permalink" href="#output-test-run-reports-to-slack-and-teamcity-testcafe-reporter-slack-testcafe-reporter-teamcity">#</a></h3>
 <p>Thanks to <a href="https://github.com/Shafied">@Shafied</a> and <a href="https://github.com/nirsky">@nirsky</a>, TestCafe ecosystem has gained two new reporter plugins.</p>
 
 <p>The Slack reporter allows you to create a chat bot that posts test run results to a Slack channel.</p>
@@ -418,14 +458,14 @@ Specify the number of instances to invoke for each browser.</p>
 <p>The TeamCity reporter enables you to display reports inside the TeamCity UI.</p>
 
 <p><img src="../images/testcafe-reporter-teamcity.png" alt="TeamCity Reporter"></p>
-<h3><a class="anchor" name="further-improvements-in-automatic-waiting-mechanism-1521"></a>⚙ Further improvements in automatic waiting mechanism (<a href="https://github.com/DevExpress/testcafe/issues/1521">#1521</a>) <a class="permalink" href="#further-improvements-in-automatic-waiting-mechanism-1521">#</a></h3>
+<h3><a class="anchor" id="further-improvements-in-automatic-waiting-mechanism-1521"></a>⚙ Further improvements in automatic waiting mechanism (<a href="https://github.com/DevExpress/testcafe/issues/1521">#1521</a>) <a class="permalink" href="#further-improvements-in-automatic-waiting-mechanism-1521">#</a></h3>
 <p>We have enhanced the waiting mechanism behavior in certain scenarios where you still used to need <code>wait</code> actions.
 Now automatic waiting is much smarter and chances that you need to wait manually are diminished.</p>
-<h3><a class="anchor" name="user-roles-preserve-the-local-storage-1454"></a>⚙ User roles preserve the local storage (<a href="https://github.com/DevExpress/testcafe/issues/1454">#1454</a>) <a class="permalink" href="#user-roles-preserve-the-local-storage-1454">#</a></h3>
+<h3><a class="anchor" id="user-roles-preserve-the-local-storage-1454"></a>⚙ User roles preserve the local storage (<a href="https://github.com/DevExpress/testcafe/issues/1454">#1454</a>) <a class="permalink" href="#user-roles-preserve-the-local-storage-1454">#</a></h3>
 <p>TestCafe now saves the local storage state when switching between roles. You get the same local storage content you left when you switch back.</p>
 
 <p>This is useful for testing websites that perform authentication via local storage instead of cookies.</p>
-<h2><a class="anchor" name="bug-fixes"></a>Bug Fixes <a class="permalink" href="#bug-fixes">#</a></h2>
+<h2><a class="anchor" id="bug-fixes"></a>Bug Fixes <a class="permalink" href="#bug-fixes">#</a></h2>
 <ul>
 <li>Selector&#39;s <code>withAttribute</code> method supports search by strict match (<a href="https://github.com/DevExpress/testcafe/issues/1548">#1548</a>)</li>
 <li>Description for the <code>path</code> parameter of the <code>t.takeScreenshot</code> action has been corrected (<a href="https://github.com/DevExpress/testcafe/issues/1515">#1515</a>)</li>
@@ -504,18 +544,6 @@ Now automatic waiting is much smarter and chances that you need to wait manually
      }
  });
 </script> 
-
-    <script defer src="/testcafe/scripts/cookie-notice.js" type="text/javascript"></script>
-<div class="cookie-notice">
-    <div class="close-icon"></div>
-    <div class="cookie-notice-content">
-        <div class="cookie-notice-message">
-            <div class="cookie-notice-header">Why We Use Cookies</div>
-            <div class="cookie-notice-text">This site uses cookies to make your browsing experience more convenient and personal. Cookies store useful information on your computer to help us improve the efficiency and relevance of our site for you. In some cases, they are essential to making the site work properly. By accessing this site, you consent to the use of cookies. For more information, refer to DevExpress' <a href="https://www.devexpress.com/AboutUs/privacy-policy.xml" target="_blank">privacy policy</a> and <a href="https://www.devexpress.com/AboutUs/cookie-policy.xml" target="_blank">cookie policy</a>.</div>
-        </div>
-        <div class="cookie-notice-button">I understand</div>
-    </div>
-</div>
 
   </body>
 

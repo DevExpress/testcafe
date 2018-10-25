@@ -2,6 +2,10 @@
 <html>
 
   <head>
+  
+  
+  
+
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -18,13 +22,23 @@
   <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browsers/browser-support.html" />
   <meta property="og:title" content="Browser Support | TestCafe" />
 
+  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
+  
+  
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
   <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browsers/browser-support.html">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="http://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+  <link rel="apple-touch-icon" sizes="180x180" href="/testcafe/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/testcafe/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/testcafe/favicon-16x16.png">
+  <link rel="manifest" href="/testcafe/site.webmanifest">
+  <meta name="msapplication-TileColor" content="#2d89ef">
+  <meta name="msapplication-config" content="/testcafe/browserconfig.xml" />
+  <meta name="theme-color" content="#ffffff">
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/highlight.min.js"></script>
   <script defer src="https://buttons.github.io/buttons.js"></script>
   <script defer type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.3.min.js"></script>
@@ -53,7 +67,16 @@
   
 
   
+
   
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/css/perfect-scrollbar.min.css">
+  <link rel="stylesheet" href="/testcafe/css/docs.css">
+  <style>
+      .ps-container > .ps-scrollbar-x-rail,
+      .ps-container > .ps-scrollbar-y-rail {
+          opacity: 0.6;
+      }
+  </style>
   
 
   <script>
@@ -77,7 +100,6 @@
     }
   </script>
     
-    
     <script>
         if (isMobileDevice) {
             document.addEventListener('DOMContentLoaded', function (e) {
@@ -89,20 +111,25 @@
                         hamburgerButton.className = hamburgerButton.className.replace(' active', '');
                         siteNav.className = siteNav.className.replace(' active', '');
                         document.documentElement.style.overflowY = 'scroll';
+                        document.body.style.overflowY = 'initial';
                     }
                     else {
                         hamburgerButton.className += ' active';
                         siteNav.className += ' active';
                         document.documentElement.style.overflowY = 'hidden';
+                        document.body.style.overflowY = 'hidden';
                     }
                 });
 
                 var docTopNav          = document.querySelector('.doc-top-nav');
-                var siteNav            = document.querySelector('.site-nav');
                 var docMenuItem        = document.querySelector('.site-nav-tab');
                 var mainMenuSecondItem = document.querySelector('.site-nav-tab:nth-child(2)');
 
                 siteNav.insertBefore(docTopNav, mainMenuSecondItem);
+
+                var searchPanel = document.getElementById('search-panel');
+                
+                siteNav.insertBefore(searchPanel, docMenuItem);
 
                 var docMenuItemIcon = document.createElement('div');
 
@@ -130,19 +157,10 @@
             linkCss('/testcafe/css/mobile.css');
         }
     </script>
-    
 
   
 
   
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/css/perfect-scrollbar.min.css">
-    <link rel="stylesheet" href="/testcafe/css/docs.css">
-    <style>
-        .ps-container > .ps-scrollbar-x-rail,
-        .ps-container > .ps-scrollbar-y-rail {
-            opacity: 0.6;
-        }
-    </style>
     <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/js/perfect-scrollbar.min.js"></script>
     <script defer type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.3.min.js"></script>
 
@@ -229,24 +247,28 @@
     </script>
     
     <script>
-        if (isMobileDevice && false == false) {
-            document.addEventListener('DOMContentLoaded', function (e) {
-                var toggleNavButton = document.querySelector('.toggle-nav-button');
-                var docNav          = document.querySelector('.doc-nav');
+        if (isMobileDevice) {
+            linkCss('/testcafe/css/docs.mobile.css');           
+            
+            if (false == false) {
+                document.addEventListener('DOMContentLoaded', function (e) {
+                    var docNavPanel = document.querySelector('.doc-nav-panel');
+                    var docNav      = document.querySelector('.doc-nav');
 
-                toggleNavButton.addEventListener('click', function (e) {
-                    if (docNav.className.indexOf('active') !== -1) {
-                        docNav.className = docNav.className.replace(' active', '');
-                        document.documentElement.style.overflowY = 'scroll';
-                    }
-                    else {
-                        docNav.className += ' active';
-                        document.documentElement.style.overflowY = 'hidden';
-                    }
+                    docNavPanel.addEventListener('click', function (e) {
+                        if (docNav.className.indexOf('active') !== -1) {
+                            docNav.className = docNav.className.replace(' active', '');
+                            document.documentElement.style.overflowY = 'scroll';
+                            document.body.style.overflowY = 'initial';
+                        }
+                        else {
+                            docNav.className += ' active';
+                            document.documentElement.style.overflowY = 'hidden';
+                            document.body.style.overflowY = 'hidden';
+                        }
+                    });
                 });
-            });
-
-            linkCss('/testcafe/css/docs.mobile.css');
+            }
         }
     </script>
   
@@ -269,7 +291,6 @@
 
                 if(article && !isMobileDevice)
                     article.style.marginTop = bodyMinimized ? '21px' : '72px';
-
                 if(gs && !isMobileDevice)
                     gs.style.paddingTop = bodyMinimized ? '21px' : '72px';
             }
@@ -293,6 +314,19 @@
 
 
   <body>
+
+    <script defer src="/testcafe/scripts/cookie-notice.js" type="text/javascript"></script>
+<div class="cookie-notice">
+    <div class="close-icon"></div>
+    <div class="cookie-notice-content">
+        <div class="cookie-notice-message">
+            <div class="cookie-notice-header">Why We Use Cookies</div>
+            <div class="cookie-notice-text">This site uses cookies to make your browsing experience more convenient and personal. Cookies store useful information on your computer to help us improve the efficiency and relevance of our site for you. In some cases, they are essential to making the site work properly. By accessing this site, you consent to the use of cookies. For more information, refer to DevExpress' <a href="https://www.devexpress.com/AboutUs/privacy-policy.xml" target="_blank">privacy policy</a> and <a href="https://www.devexpress.com/AboutUs/cookie-policy.xml" target="_blank">cookie policy</a>.</div>
+        </div>
+        <div class="cookie-notice-button">I understand</div>
+    </div>
+</div>
+
     <div class="page-content-wrapper">
 
       <header class="site-header fixed">
@@ -344,7 +378,7 @@
         <a class="github-button" href="https://github.com/DevExpress/testcafe" data-size="large" data-count-href="/DevExpress/testcafe/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star DevExpress/testcafe on GitHub"><span style="color:#ffffff">Star</span></a>
       </div>
       <div id="search-panel" class="hidden">
-          <input type="text" placeholder="Search query" id="search"/>
+          <input type="text" placeholder="Search documentation" id="search"/>
           <div id="close-search"></div>
       </div>
     </nav>
@@ -393,6 +427,7 @@
               hamburgerMenu.className = hamburgerMenu.className.replace(' active', '');
               hamburgerButton.className = hamburgerButton.className.replace(' active', '');
               document.documentElement.style.overflowY = 'scroll';
+              document.body.style.overflowY = 'initial';
           }
       }
 
@@ -406,17 +441,27 @@
           var docNav = document.querySelector('.doc-nav');
 
           if(docNav) {
-              function closeDocNav(e) {
-                  if(clickOutsideBox(e, docNav) && clickOutsideBox(e, toggleNavButton) && docNav.className.indexOf('active') !== -1) {
-                      docNav.className = docNav.className.replace(' active', '');
-                      document.documentElement.style.overflowY = 'scroll';
-                  }
+              function closeDocNav() {
+                  docNav.className = docNav.className.replace(' active', '');
+                  document.documentElement.style.overflowY = 'scroll';
+                  document.body.style.overflowY = 'initial';
               }
 
-              var toggleNavButton = document.querySelector('.toggle-nav-button');
+              function clickWithDocNavInvoked(e) {
+                  if(clickOutsideBox(e, docNav) && clickOutsideBox(e, docNavPanel) && docNav.className.indexOf('active') !== -1) 
+                      closeDocNav();
+              }
 
-              window.addEventListener('mousedown', closeDocNav);        
-              window.addEventListener('touchstart', closeDocNav);
+              var docNavPanel = document.querySelector('.doc-nav-panel');
+
+              window.addEventListener('mousedown', clickWithDocNavInvoked);        
+              window.addEventListener('touchstart', clickWithDocNavInvoked);
+
+              var docNavLinks = document.querySelectorAll('.doc-nav a');
+
+              docNavLinks.forEach(function (link) {
+                  link.addEventListener('click', closeDocNav);
+              });
           }
       });
   }
@@ -468,6 +513,24 @@
 	
 	<div class="doc-nav-panel">
 		<div class="toggle-nav-button"></div>
+		<div class="doc-nav-panel-header">
+			<div class="doc-nav-panel-heading">Documentation</div>
+			<div class="doc-nav-panel-title">
+				
+					
+				
+					
+						Using TestCafe
+					
+				
+					
+				
+					
+				
+					
+				
+			</div>
+		</div>
 	</div>
 	<nav class="doc-nav">	
 		<div class="doc-nav-content">
@@ -637,7 +700,7 @@
 <li><a href="#browsers-in-cloud-testing-services">Browsers in Cloud Testing Services</a></li>
 <li><a href="#nonconventional-browsers">Nonconventional Browsers</a></li>
 </ul>
-<h2><a class="anchor" name="officially-supported-browsers"></a>Officially Supported Browsers <a class="permalink" href="#officially-supported-browsers">#</a></h2>
+<h2><a class="anchor" id="officially-supported-browsers"></a>Officially Supported Browsers <a class="permalink" href="#officially-supported-browsers">#</a></h2>
 <p>While TestCafe is designed to support most modern browsers, there are a limited number
 of <em>officially supported</em> browsers against which TestCafe is actively tested.</p>
 
@@ -651,7 +714,7 @@ of <em>officially supported</em> browsers against which TestCafe is actively tes
 <li>Safari mobile</li>
 </ul>
 <blockquote><div class="blockquote-content"><p>TestCafe supports the latest version of each browser unless specified explicitly.</p>
-</div></blockquote><h2><a class="anchor" name="locally-installed-browsers"></a>Locally Installed Browsers <a class="permalink" href="#locally-installed-browsers">#</a></h2>
+</div></blockquote><h2><a class="anchor" id="locally-installed-browsers"></a>Locally Installed Browsers <a class="permalink" href="#locally-installed-browsers">#</a></h2>
 <p>TestCafe can automatically detect popular browsers installed on the local computer.
 You can use a short name - <em>browser alias</em> - to identify these browsers when launching tests.</p>
 
@@ -704,14 +767,14 @@ with the <a href="../../command-line-interface.html#-b---list-browsers">--list-b
 <li>Command line: <a href="../../command-line-interface.html#local-browsers">Local Browsers</a></li>
 <li>API: <a href="../../programming-interface/runner.html#browsers">runner.browsers</a></li>
 </ul>
-<h2><a class="anchor" name="portable-browsers"></a>Portable Browsers <a class="permalink" href="#portable-browsers">#</a></h2>
+<h2><a class="anchor" id="portable-browsers"></a>Portable Browsers <a class="permalink" href="#portable-browsers">#</a></h2>
 <p>To use a portable browser, specify the path to the browser executable file. For more information and examples, see:</p>
 
 <ul>
 <li>Command line: <a href="../../command-line-interface.html#portable-browsers">Portable Browsers</a></li>
 <li>API: <a href="../../programming-interface/runner.html#browsers">runner.browsers</a></li>
 </ul>
-<h2><a class="anchor" name="browsers-on-remote-devices"></a>Browsers on Remote Devices <a class="permalink" href="#browsers-on-remote-devices">#</a></h2>
+<h2><a class="anchor" id="browsers-on-remote-devices"></a>Browsers on Remote Devices <a class="permalink" href="#browsers-on-remote-devices">#</a></h2>
 <p>To run tests on a remote mobile and desktop device, this device must have network access to the TestCafe server.</p>
 
 <p>First, you will need to create a remote browser connection.</p>
@@ -723,7 +786,8 @@ with the <a href="../../command-line-interface.html#-b---list-browsers">--list-b
 
 <p>After that, TestCafe will provide a URL to open on the remote device in the browser against which you want to test.
 As you open this URL, the browser connects to the TestCafe server and starts testing.</p>
-<h2><a class="anchor" name="browsers-in-cloud-testing-services"></a>Browsers in Cloud Testing Services <a class="permalink" href="#browsers-in-cloud-testing-services">#</a></h2>
+<blockquote><div class="blockquote-content"><p>You cannot <a href="../../../test-api/actions/take-screenshot.html">take screenshots</a> or <a href="../../../test-api/actions/resize-window.html">resize the browser window</a> when you run tests in remote browsers.</p>
+</div></blockquote><h2><a class="anchor" id="browsers-in-cloud-testing-services"></a>Browsers in Cloud Testing Services <a class="permalink" href="#browsers-in-cloud-testing-services">#</a></h2>
 <p>TestCafe allows you to use browsers from cloud testing services. You can access them through <a href="../../../extending-testcafe/browser-provider-plugin/">browser provider plugins</a>.</p>
 
 <p>The following plugins for cloud services are currently provided by the TestCafe team.</p>
@@ -743,7 +807,7 @@ As you open this URL, the browser connects to the TestCafe server and starts tes
 <p>You can search npm for plugins developed by the community. Their names begin with the <code>testcafe-browser-provider-</code> prefix: <a href="https://www.npmjs.com/search?q=testcafe-browser-provider">https://www.npmjs.com/search?q=testcafe-browser-provider</a>.</p>
 
 <p>You can also create your own plugin. See <a href="../../../extending-testcafe/browser-provider-plugin/">Browser Provider Plugin</a> for instructions.</p>
-<h2><a class="anchor" name="nonconventional-browsers"></a>Nonconventional Browsers <a class="permalink" href="#nonconventional-browsers">#</a></h2>
+<h2><a class="anchor" id="nonconventional-browsers"></a>Nonconventional Browsers <a class="permalink" href="#nonconventional-browsers">#</a></h2>
 <p>To use a web browser of a different type, you will need a <a href="../../../extending-testcafe/browser-provider-plugin/">browser provider plugin</a>.</p>
 
 <p>You can search npm for plugins developed by the community. Their names begin with the <code>testcafe-browser-provider-</code> prefix: <a href="https://www.npmjs.com/search?q=testcafe-browser-provider">https://www.npmjs.com/search?q=testcafe-browser-provider</a>.</p>
@@ -788,18 +852,6 @@ As you open this URL, the browser connects to the TestCafe server and starts tes
      }
  });
 </script> 
-
-    <script defer src="/testcafe/scripts/cookie-notice.js" type="text/javascript"></script>
-<div class="cookie-notice">
-    <div class="close-icon"></div>
-    <div class="cookie-notice-content">
-        <div class="cookie-notice-message">
-            <div class="cookie-notice-header">Why We Use Cookies</div>
-            <div class="cookie-notice-text">This site uses cookies to make your browsing experience more convenient and personal. Cookies store useful information on your computer to help us improve the efficiency and relevance of our site for you. In some cases, they are essential to making the site work properly. By accessing this site, you consent to the use of cookies. For more information, refer to DevExpress' <a href="https://www.devexpress.com/AboutUs/privacy-policy.xml" target="_blank">privacy policy</a> and <a href="https://www.devexpress.com/AboutUs/cookie-policy.xml" target="_blank">cookie policy</a>.</div>
-        </div>
-        <div class="cookie-notice-button">I understand</div>
-    </div>
-</div>
 
   </body>
 

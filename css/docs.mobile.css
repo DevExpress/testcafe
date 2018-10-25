@@ -10,16 +10,28 @@ html body .page-content-wrapper .container .doc-nav-panel {
     width: 35px;
     height: 35px;
     float: left;
-    margin: 10px 30px 0px; }
+    margin: 12px 17px 0px 30px; }
+  html body .page-content-wrapper .container .doc-nav-panel .doc-nav-panel-header {
+    float: left;
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+    margin-top: 13px; }
+    html body .page-content-wrapper .container .doc-nav-panel .doc-nav-panel-header .doc-nav-panel-heading {
+      font-size: 16px;
+      font-weight: bold;
+      line-height: 0.5; }
+    html body .page-content-wrapper .container .doc-nav-panel .doc-nav-panel-header .doc-nav-panel-title {
+      font-size: 22px; }
 html body .page-content-wrapper .container .doc-nav {
-  position: absolute;
+  position: fixed;
   top: 120px;
+  bottom: 0px;
   width: 100%;
-  height: calc(100vh - 120px);
   left: -100%;
   transition: left .2s;
   overflow-y: auto;
-  margin-top: 0px;
+  margin: 0;
   background-color: #2e688a;
   color: #fff; }
   html body .page-content-wrapper .container .doc-nav .doc-nav-content {
@@ -54,6 +66,24 @@ html body .page-content-wrapper .container main .post-content .table-wrapper {
   html body .page-content-wrapper .container main .post-content .table-wrapper table {
     width: 100%;
     min-width: 500px;
-    margin: 0; }
+    margin: 0 0 3px 0; }
 html body .page-content-wrapper .container main .post-content pre > code {
-  font-size: 14px; }
+  font-size: 14px;
+  padding-left: 0;
+  padding-right: 0; }
+html body .page-content-wrapper .container main .post-content .table-wrapper::-webkit-scrollbar, html body .page-content-wrapper .container main .post-content pre > code::-webkit-scrollbar {
+  -webkit-appearance: none; }
+html body .page-content-wrapper .container main .post-content .table-wrapper::-webkit-scrollbar:vertical, html body .page-content-wrapper .container main .post-content pre > code::-webkit-scrollbar:vertical {
+  width: 0; }
+html body .page-content-wrapper .container main .post-content .table-wrapper::-webkit-scrollbar:horizontal, html body .page-content-wrapper .container main .post-content pre > code::-webkit-scrollbar:horizontal {
+  height: 4px; }
+html body .page-content-wrapper .container main .post-content .table-wrapper::-webkit-scrollbar-thumb, html body .page-content-wrapper .container main .post-content pre > code::-webkit-scrollbar-thumb {
+  background-color: #A4C9DA;
+  border: 1px solid #92B7C8;
+  box-sizing: border-box;
+  border-radius: 2px; }
+html body .page-content-wrapper .container main .post-content .table-wrapper::-webkit-scrollbar-track, html body .page-content-wrapper .container main .post-content pre > code::-webkit-scrollbar-track {
+  background-color: #E8E8E8;
+  border: 1px solid #E0E0E0;
+  box-sizing: border-box;
+  border-radius: 2px; }

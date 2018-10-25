@@ -1,0 +1,284 @@
+html body .page-content-wrapper main #main-form code {
+  font-size: 14px; }
+html body .page-content-wrapper main #main-form .banner {
+  padding: 44px 30px 10px; }
+  html body .page-content-wrapper main #main-form .banner .banner-content .banner-text {
+    float: none;
+    margin: 0; }
+    html body .page-content-wrapper main #main-form .banner .banner-content .banner-text .title {
+      font-weight: bold;
+      line-height: 39px;
+      font-size: 33px;
+      text-align: center;
+      color: #fff;
+      text-shadow: 0px 1px 0px rgba(0, 0, 0, 0.25); }
+    html body .page-content-wrapper main #main-form .banner .banner-content .banner-text .slogan {
+      font-weight: bold;
+      line-height: 1.5;
+      font-size: 18px;
+      text-align: center;
+      color: #404142;
+      padding-top: 25px; }
+    html body .page-content-wrapper main #main-form .banner .banner-content .banner-text .get-started-button {
+      width: 100%;
+      height: 55px;
+      font-weight: bold;
+      line-height: 55px;
+      font-size: 18px;
+      text-align: center;
+      margin-top: 25px;
+      vertical-align: middle; }
+  html body .page-content-wrapper main #main-form .banner .banner-content .values {
+    padding-top: 65px;
+    display: block; }
+    html body .page-content-wrapper main #main-form .banner .banner-content .values .value-container {
+      border: none;
+      width: 100%;
+      display: block;
+      padding: 0 0 40px 0; }
+      html body .page-content-wrapper main #main-form .banner .banner-content .values .value-container .value {
+        padding-left: 0;
+        background-position: top center; }
+        html body .page-content-wrapper main #main-form .banner .banner-content .values .value-container .value > p {
+          padding-top: 73px;
+          line-height: 1.3;
+          text-shadow: 0px 1px 0px rgba(0, 0, 0, 0.25);
+          text-align: center; }
+        html body .page-content-wrapper main #main-form .banner .banner-content .values .value-container .value .description {
+          margin-top: -7px;
+          font-size: 16px;
+          line-height: 1.6; }
+          html body .page-content-wrapper main #main-form .banner .banner-content .values .value-container .value .description .install-example {
+            display: block;
+            margin-bottom: 17px; }
+            html body .page-content-wrapper main #main-form .banner .banner-content .values .value-container .value .description .install-example code {
+              display: block; }
+html body .page-content-wrapper main #main-form .how-it-works-section {
+  padding: 0 30px 42px;
+  min-width: 0;
+  height: auto; }
+  html body .page-content-wrapper main #main-form .how-it-works-section .how-it-works-wrapper .how-it-works-content {
+    padding-left: 0;
+    margin-left: 0; }
+    html body .page-content-wrapper main #main-form .how-it-works-section .how-it-works-wrapper .how-it-works-content h1 {
+      margin: 32px 0 24px;
+      font-weight: bold;
+      line-height: normal;
+      font-size: 33px;
+      color: #000; }
+    html body .page-content-wrapper main #main-form .how-it-works-section .how-it-works-wrapper .how-it-works-content:before {
+      display: none; }
+    html body .page-content-wrapper main #main-form .how-it-works-section .how-it-works-wrapper .how-it-works-content .gallery-wrapper {
+      display: none; }
+    html body .page-content-wrapper main #main-form .how-it-works-section .how-it-works-wrapper .how-it-works-content .gallery-alt-text {
+      display: block; }
+      html body .page-content-wrapper main #main-form .how-it-works-section .how-it-works-wrapper .how-it-works-content .gallery-alt-text .gallery-alt-step {
+        margin-bottom: 25px; }
+        html body .page-content-wrapper main #main-form .how-it-works-section .how-it-works-wrapper .how-it-works-content .gallery-alt-text .gallery-alt-step .gallery-alt-step-content .gallery-alt-step-header h2 {
+          font-weight: 600;
+          line-height: 28px;
+          font-size: 24px;
+          color: #92B1C0;
+          margin: 0 auto 10px; }
+        html body .page-content-wrapper main #main-form .how-it-works-section .how-it-works-wrapper .how-it-works-content .gallery-alt-text .gallery-alt-step .gallery-alt-step-content .gallery-alt-step-description {
+          line-height: 1.6;
+          font-size: 16px;
+          color: #404142; }
+          html body .page-content-wrapper main #main-form .how-it-works-section .how-it-works-wrapper .how-it-works-content .gallery-alt-text .gallery-alt-step .gallery-alt-step-content .gallery-alt-step-description p {
+            margin-bottom: 5px; }
+        html body .page-content-wrapper main #main-form .how-it-works-section .how-it-works-wrapper .how-it-works-content .gallery-alt-text .gallery-alt-step .gallery-alt-step-illustration {
+          padding-top: 5px; }
+          html body .page-content-wrapper main #main-form .how-it-works-section .how-it-works-wrapper .how-it-works-content .gallery-alt-text .gallery-alt-step .gallery-alt-step-illustration code {
+            display: block;
+            font-family: Courier;
+            line-height: 15px;
+            font-size: 14px;
+            color: #516d7b;
+            overflow-x: scroll;
+            margin-bottom: 0; }
+          html body .page-content-wrapper main #main-form .how-it-works-section .how-it-works-wrapper .how-it-works-content .gallery-alt-text .gallery-alt-step .gallery-alt-step-illustration pre {
+            border: 1px solid #c8dfe8; }
+          html body .page-content-wrapper main #main-form .how-it-works-section .how-it-works-wrapper .how-it-works-content .gallery-alt-text .gallery-alt-step .gallery-alt-step-illustration pre > code {
+            padding: 0; }
+          html body .page-content-wrapper main #main-form .how-it-works-section .how-it-works-wrapper .how-it-works-content .gallery-alt-text .gallery-alt-step .gallery-alt-step-illustration pre, html body .page-content-wrapper main #main-form .how-it-works-section .how-it-works-wrapper .how-it-works-content .gallery-alt-text .gallery-alt-step .gallery-alt-step-illustration code {
+            background: #ebf8ff; }
+html body .page-content-wrapper main #main-form .features-section {
+  padding: 32px 0 36px; }
+  html body .page-content-wrapper main #main-form .features-section .features-content .features-header {
+    font-weight: bold;
+    line-height: normal;
+    font-size: 33px;
+    padding: 0 30px; }
+  html body .page-content-wrapper main #main-form .features-section .features-content .features-subheader {
+    font-weight: bold;
+    line-height: 21px;
+    font-size: 18px;
+    color: #404142;
+    padding: 0 30px; }
+  html body .page-content-wrapper main #main-form .features-section .features-content .features {
+    display: block;
+    padding: 55px 30px 0; }
+    html body .page-content-wrapper main #main-form .features-section .features-content .features .row {
+      display: block; }
+      html body .page-content-wrapper main #main-form .features-section .features-content .features .row .feature-container {
+        display: block;
+        width: 100%;
+        padding: 0;
+        border: none; }
+        html body .page-content-wrapper main #main-form .features-section .features-content .features .row .feature-container .feature {
+          padding-bottom: 40px;
+          padding-top: 68px;
+          font-weight: 600;
+          line-height: 1.3;
+          font-size: 24px;
+          text-shadow: 0px 1px 0px rgba(0, 0, 0, 0.25);
+          background-position: top center; }
+          html body .page-content-wrapper main #main-form .features-section .features-content .features .row .feature-container .feature p {
+            margin-bottom: 15px;
+            text-align: center; }
+          html body .page-content-wrapper main #main-form .features-section .features-content .features .row .feature-container .feature .description {
+            margin-top: 0;
+            font-weight: normal;
+            line-height: 1.6;
+            font-size: 16px;
+            text-shadow: none; }
+            html body .page-content-wrapper main #main-form .features-section .features-content .features .row .feature-container .feature .description .feature-5-code-mobile {
+              display: block;
+              overflow-x: scroll;
+              margin-bottom: 20px;
+              text-align: left; }
+            html body .page-content-wrapper main #main-form .features-section .features-content .features .row .feature-container .feature .description .feature-5-code {
+              display: none; }
+            html body .page-content-wrapper main #main-form .features-section .features-content .features .row .feature-container .feature .description p {
+              text-align: left; }
+  html body .page-content-wrapper main #main-form .features-section .features-content .testcafe-live-promo {
+    display: block;
+    margin-top: 0;
+    padding: 0 30px; }
+    html body .page-content-wrapper main #main-form .features-section .features-content .testcafe-live-promo .promo-block {
+      display: block;
+      margin-bottom: 30px; }
+      html body .page-content-wrapper main #main-form .features-section .features-content .testcafe-live-promo .promo-block .image {
+        background-image: url("/testcafe/images/landing-page/rapid-dev-icon-small.svg");
+        display: block;
+        margin: 0 auto 22px;
+        background-position-y: 0px;
+        width: 50px;
+        min-width: 0;
+        height: 44px; }
+      html body .page-content-wrapper main #main-form .features-section .features-content .testcafe-live-promo .promo-block .description {
+        display: block;
+        margin-left: 0;
+        max-width: inherit; }
+        html body .page-content-wrapper main #main-form .features-section .features-content .testcafe-live-promo .promo-block .description .header {
+          font-weight: 600;
+          line-height: 1.3;
+          font-size: 24px;
+          text-shadow: 0px 1px 0px rgba(0, 0, 0, 0.25);
+          text-align: center; }
+        html body .page-content-wrapper main #main-form .features-section .features-content .testcafe-live-promo .promo-block .description .text {
+          font-size: 16px;
+          line-height: 1.6; }
+        html body .page-content-wrapper main #main-form .features-section .features-content .testcafe-live-promo .promo-block .description .textcafe-live-install {
+          display: block;
+          margin-bottom: 0;
+          font-size: 14px; }
+    html body .page-content-wrapper main #main-form .features-section .features-content .testcafe-live-promo .buttons {
+      display: block; }
+      html body .page-content-wrapper main #main-form .features-section .features-content .testcafe-live-promo .buttons .video-button, html body .page-content-wrapper main #main-form .features-section .features-content .testcafe-live-promo .buttons .repo-button {
+        width: 100%;
+        display: block;
+        height: 55px;
+        background-image: none;
+        color: #fff;
+        background-color: #404142;
+        border-radius: 4px;
+        line-height: 55px;
+        margin-bottom: 10px;
+        border: none;
+        margin-left: 0;
+        padding-left: 0; }
+html body .page-content-wrapper main #main-form .testcafe-studio-promo-gradient {
+  display: none; }
+html body .page-content-wrapper main #main-form .testcafe-studio-promo .testcafe-studio-promo-content {
+  display: block;
+  padding: 10px 30px 0; }
+  html body .page-content-wrapper main #main-form .testcafe-studio-promo .testcafe-studio-promo-content .testcafe-studio-promo-description {
+    margin-right: 0; }
+    html body .page-content-wrapper main #main-form .testcafe-studio-promo .testcafe-studio-promo-content .testcafe-studio-promo-description .testcafe-studio-promo-header {
+      font-weight: bold;
+      line-height: normal;
+      font-size: 33px; }
+    html body .page-content-wrapper main #main-form .testcafe-studio-promo .testcafe-studio-promo-content .testcafe-studio-promo-description .testcafe-studio-promo-subheader {
+      font-weight: 600;
+      line-height: 1.6;
+      font-size: 16px;
+      margin-top: 20px; }
+    html body .page-content-wrapper main #main-form .testcafe-studio-promo .testcafe-studio-promo-content .testcafe-studio-promo-description .check-it-out-button {
+      width: 100%;
+      display: block;
+      height: 55px;
+      color: #fff;
+      background-color: #404142;
+      border-radius: 4px;
+      line-height: 55px;
+      margin-top: 29px; }
+  html body .page-content-wrapper main #main-form .testcafe-studio-promo .testcafe-studio-promo-content .testcafe-studio-promo-screenshot {
+    width: calc(100% + 60px);
+    min-width: 0;
+    height: auto;
+    background-size: contain;
+    margin-left: -30px;
+    margin-right: -30px; }
+html body .page-content-wrapper main #main-form .tweets-section {
+  display: none; }
+html body .page-content-wrapper main #main-form .follow-section {
+  padding: 50px 30px 40px;
+  text-align: left; }
+  html body .page-content-wrapper main #main-form .follow-section .follow-content .twitter {
+    display: block;
+    background-position-x: left;
+    background-position-y: 5px;
+    padding: 0 0 0 70px;
+    text-align: left; }
+    html body .page-content-wrapper main #main-form .follow-section .follow-content .twitter .header {
+      font-size: 18px; }
+    html body .page-content-wrapper main #main-form .follow-section .follow-content .twitter .subheader {
+      margin-top: -17px;
+      font-size: 16px;
+      line-height: 1.6; }
+  html body .page-content-wrapper main #main-form .follow-section .follow-content .separator {
+    display: none; }
+  html body .page-content-wrapper main #main-form .follow-section .follow-content .github {
+    display: none; }
+  html body .page-content-wrapper main #main-form .follow-section .follow-content .github-mobile {
+    background-repeat: no-repeat;
+    background-color: transparent;
+    background-image: url("/testcafe/images/landing-page/follow-on-github.svg");
+    background-position-x: left;
+    background-position-y: 26px;
+    display: block;
+    padding: 20px 0 0 70px;
+    text-align: left;
+    font-size: 18px;
+    color: #404142; }
+    html body .page-content-wrapper main #main-form .follow-section .follow-content .github-mobile .header {
+      font-size: 18px;
+      color: #8ab2c2; }
+      html body .page-content-wrapper main #main-form .follow-section .follow-content .github-mobile .header a {
+        text-decoration: underline;
+        color: #8ab2c2; }
+    html body .page-content-wrapper main #main-form .follow-section .follow-content .github-mobile .subheader {
+      font-size: 16px;
+      color: #404142;
+      margin-top: -17px;
+      line-height: 1.6; }
+      html body .page-content-wrapper main #main-form .follow-section .follow-content .github-mobile .subheader a {
+        text-decoration: underline;
+        color: #404142; }
+html body .page-content-wrapper .veil-on .player {
+  margin: 0;
+  transform: translate(-50%, -50%); }
+  html body .page-content-wrapper .veil-on .player #yt-iframe {
+    width: auto;
+    height: auto; }

@@ -2,6 +2,10 @@
 <html>
 
   <head>
+  
+  
+  
+
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -18,13 +22,23 @@
   <meta property="og:url" content="http://devexpress.github.io/testcafe/blog/testcafe-v0-16-0-released.html" />
   <meta property="og:title" content="TestCafe v0.16.0 Released | TestCafe" />
 
+  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
+  
+  
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
   <link rel="canonical" href="http://devexpress.github.io/testcafe/blog/testcafe-v0-16-0-released.html">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="http://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+  <link rel="apple-touch-icon" sizes="180x180" href="/testcafe/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/testcafe/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/testcafe/favicon-16x16.png">
+  <link rel="manifest" href="/testcafe/site.webmanifest">
+  <meta name="msapplication-TileColor" content="#2d89ef">
+  <meta name="msapplication-config" content="/testcafe/browserconfig.xml" />
+  <meta name="theme-color" content="#ffffff">
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/highlight.min.js"></script>
   <script defer src="https://buttons.github.io/buttons.js"></script>
   <script defer type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.3.min.js"></script>
@@ -53,7 +67,7 @@
   
 
   
-  
+
   
 
   <script>
@@ -77,7 +91,6 @@
     }
   </script>
     
-    
     <script>
         if (isMobileDevice) {
             document.addEventListener('DOMContentLoaded', function (e) {
@@ -89,20 +102,25 @@
                         hamburgerButton.className = hamburgerButton.className.replace(' active', '');
                         siteNav.className = siteNav.className.replace(' active', '');
                         document.documentElement.style.overflowY = 'scroll';
+                        document.body.style.overflowY = 'initial';
                     }
                     else {
                         hamburgerButton.className += ' active';
                         siteNav.className += ' active';
                         document.documentElement.style.overflowY = 'hidden';
+                        document.body.style.overflowY = 'hidden';
                     }
                 });
 
                 var docTopNav          = document.querySelector('.doc-top-nav');
-                var siteNav            = document.querySelector('.site-nav');
                 var docMenuItem        = document.querySelector('.site-nav-tab');
                 var mainMenuSecondItem = document.querySelector('.site-nav-tab:nth-child(2)');
 
                 siteNav.insertBefore(docTopNav, mainMenuSecondItem);
+
+                var searchPanel = document.getElementById('search-panel');
+                
+                siteNav.insertBefore(searchPanel, docMenuItem);
 
                 var docMenuItemIcon = document.createElement('div');
 
@@ -127,7 +145,6 @@
             linkCss('/testcafe/css/mobile.css');
         }
     </script>
-    
 
   
 
@@ -159,7 +176,6 @@
 
                 if(article && !isMobileDevice)
                     article.style.marginTop = bodyMinimized ? '21px' : '72px';
-
                 if(gs && !isMobileDevice)
                     gs.style.paddingTop = bodyMinimized ? '21px' : '72px';
             }
@@ -183,6 +199,19 @@
 
 
   <body>
+
+    <script defer src="/testcafe/scripts/cookie-notice.js" type="text/javascript"></script>
+<div class="cookie-notice">
+    <div class="close-icon"></div>
+    <div class="cookie-notice-content">
+        <div class="cookie-notice-message">
+            <div class="cookie-notice-header">Why We Use Cookies</div>
+            <div class="cookie-notice-text">This site uses cookies to make your browsing experience more convenient and personal. Cookies store useful information on your computer to help us improve the efficiency and relevance of our site for you. In some cases, they are essential to making the site work properly. By accessing this site, you consent to the use of cookies. For more information, refer to DevExpress' <a href="https://www.devexpress.com/AboutUs/privacy-policy.xml" target="_blank">privacy policy</a> and <a href="https://www.devexpress.com/AboutUs/cookie-policy.xml" target="_blank">cookie policy</a>.</div>
+        </div>
+        <div class="cookie-notice-button">I understand</div>
+    </div>
+</div>
+
     <div class="page-content-wrapper">
 
       <header class="site-header fixed">
@@ -234,7 +263,7 @@
         <a class="github-button" href="https://github.com/DevExpress/testcafe" data-size="large" data-count-href="/DevExpress/testcafe/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star DevExpress/testcafe on GitHub"><span style="color:#ffffff">Star</span></a>
       </div>
       <div id="search-panel" class="hidden">
-          <input type="text" placeholder="Search query" id="search"/>
+          <input type="text" placeholder="Search documentation" id="search"/>
           <div id="close-search"></div>
       </div>
     </nav>
@@ -283,6 +312,7 @@
               hamburgerMenu.className = hamburgerMenu.className.replace(' active', '');
               hamburgerButton.className = hamburgerButton.className.replace(' active', '');
               document.documentElement.style.overflowY = 'scroll';
+              document.body.style.overflowY = 'initial';
           }
       }
 
@@ -296,17 +326,27 @@
           var docNav = document.querySelector('.doc-nav');
 
           if(docNav) {
-              function closeDocNav(e) {
-                  if(clickOutsideBox(e, docNav) && clickOutsideBox(e, toggleNavButton) && docNav.className.indexOf('active') !== -1) {
-                      docNav.className = docNav.className.replace(' active', '');
-                      document.documentElement.style.overflowY = 'scroll';
-                  }
+              function closeDocNav() {
+                  docNav.className = docNav.className.replace(' active', '');
+                  document.documentElement.style.overflowY = 'scroll';
+                  document.body.style.overflowY = 'initial';
               }
 
-              var toggleNavButton = document.querySelector('.toggle-nav-button');
+              function clickWithDocNavInvoked(e) {
+                  if(clickOutsideBox(e, docNav) && clickOutsideBox(e, docNavPanel) && docNav.className.indexOf('active') !== -1) 
+                      closeDocNav();
+              }
 
-              window.addEventListener('mousedown', closeDocNav);        
-              window.addEventListener('touchstart', closeDocNav);
+              var docNavPanel = document.querySelector('.doc-nav-panel');
+
+              window.addEventListener('mousedown', clickWithDocNavInvoked);        
+              window.addEventListener('touchstart', clickWithDocNavInvoked);
+
+              var docNavLinks = document.querySelectorAll('.doc-nav a');
+
+              docNavLinks.forEach(function (link) {
+                  link.addEventListener('click', closeDocNav);
+              });
           }
       });
   }
@@ -360,7 +400,7 @@
 <p>TypeScript support, seamless testing in headless Chrome and device emulator, and numerous bug fixes.</p>
 
 <!--more-->
-<h2><a class="anchor" name="enhancements"></a>Enhancements <a class="permalink" href="#enhancements">#</a></h2><h3><a class="anchor" name="typescript-support-408"></a>⚙ TypeScript support (<a href="https://github.com/DevExpress/testcafe/issues/408">#408</a>) <a class="permalink" href="#typescript-support-408">#</a></h3>
+<h2><a class="anchor" id="enhancements"></a>Enhancements <a class="permalink" href="#enhancements">#</a></h2><h3><a class="anchor" id="typescript-support-408"></a>⚙ TypeScript support (<a href="https://github.com/DevExpress/testcafe/issues/408">#408</a>) <a class="permalink" href="#typescript-support-408">#</a></h3>
 <p>In this release, we have added the capability to write tests in <a href="https://www.typescriptlang.org/">TypeScript</a>. By using TypeScript to write your TestCafe tests, you get the advantages of strongly-typed languages such as: rich coding assistance, painless scalability, check-as-you-type code verification, and much more.</p>
 
 <p>TestCafe bundles TypeScript declaration file with the npm package, so you have no need to install any additional packages.</p>
@@ -373,7 +413,7 @@
 <p>and write your test.</p>
 
 <p>For details, see <a href="https://devexpress.github.io/testcafe/documentation/test-api/typescript-support.html">TypeScript Support</a></p>
-<h3><a class="anchor" name="support-running-in-chrome-in-headless-mode-and-in-device-emulator-1417"></a>⚙ Support running in Chrome in headless mode and in device emulator (<a href="https://github.com/DevExpress/testcafe/issues/1417">#1417</a>) <a class="permalink" href="#support-running-in-chrome-in-headless-mode-and-in-device-emulator-1417">#</a></h3>
+<h3><a class="anchor" id="support-running-in-chrome-in-headless-mode-and-in-device-emulator-1417"></a>⚙ Support running in Chrome in headless mode and in device emulator (<a href="https://github.com/DevExpress/testcafe/issues/1417">#1417</a>) <a class="permalink" href="#support-running-in-chrome-in-headless-mode-and-in-device-emulator-1417">#</a></h3>
 <p>Now TestCafe allows you to run your tests in Google Chrome in headless and device emulation modes.</p>
 
 <p><a href="https://developers.google.com/web/updates/2017/04/headless-chrome">Headless mode</a> allows you to run tests in Chrome without any visible UI shell. To run tests in headless mode, use the <code>:headless</code> postfix:</p>
@@ -383,13 +423,13 @@
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"chrome:emulation:device=iphone 6"</span> tests/sample-fixture.js
 </code></pre></div>
 <p>For details, see <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browsers/using-chrome-device-emulation.html">Using Chrome-specific Features</a>.</p>
-<h3><a class="anchor" name="support-html5-drag-and-drop-897"></a>⚙ Support HTML5 Drag and Drop (<a href="https://github.com/DevExpress/testcafe/issues/897">#897</a>) <a class="permalink" href="#support-html5-drag-and-drop-897">#</a></h3>
+<h3><a class="anchor" id="support-html5-drag-and-drop-897"></a>⚙ Support HTML5 Drag and Drop (<a href="https://github.com/DevExpress/testcafe/issues/897">#897</a>) <a class="permalink" href="#support-html5-drag-and-drop-897">#</a></h3>
 <p>Starting with this release, TestCafe supports HTML5 drag and drop, so you can test elements with the <code>draggable</code> <a href="http://w3c.github.io/html/editing.html#the-draggable-attribute">attribute</a>.</p>
-<h3><a class="anchor" name="fixed-url-for-opening-remote-browsers-1476"></a>⚙ Fixed URL for opening remote browsers (<a href="https://github.com/DevExpress/testcafe/issues/1476">#1476</a>) <a class="permalink" href="#fixed-url-for-opening-remote-browsers-1476">#</a></h3>
+<h3><a class="anchor" id="fixed-url-for-opening-remote-browsers-1476"></a>⚙ Fixed URL for opening remote browsers (<a href="https://github.com/DevExpress/testcafe/issues/1476">#1476</a>) <a class="permalink" href="#fixed-url-for-opening-remote-browsers-1476">#</a></h3>
 <p>We have simplified the format of links that TestCafe generates when you <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browsers/browser-support.html#browsers-on-remote-devices">run tests on remote browsers</a>.</p>
 
 <p>Now, you have no need to type a unique link for each test run, all the links became constant. So, it is easier now to run tests on a remote device repeatedly: you can run them by navigating a link from your browser history.</p>
-<h2><a class="anchor" name="bug-fixes"></a>Bug Fixes <a class="permalink" href="#bug-fixes">#</a></h2>
+<h2><a class="anchor" id="bug-fixes"></a>Bug Fixes <a class="permalink" href="#bug-fixes">#</a></h2>
 <ul>
 <li>No TestCafe UI on screenshots created during testing (<a href="https://github.com/DevExpress/testcafe/issues/1357">#1357</a>)</li>
 <li><code>mouseenter</code> and <code>mouseleave</code> events are not triggered during cursor moving (<a href="https://github.com/DevExpress/testcafe/issues/1426">#1426</a>)</li>
@@ -466,18 +506,6 @@
      }
  });
 </script> 
-
-    <script defer src="/testcafe/scripts/cookie-notice.js" type="text/javascript"></script>
-<div class="cookie-notice">
-    <div class="close-icon"></div>
-    <div class="cookie-notice-content">
-        <div class="cookie-notice-message">
-            <div class="cookie-notice-header">Why We Use Cookies</div>
-            <div class="cookie-notice-text">This site uses cookies to make your browsing experience more convenient and personal. Cookies store useful information on your computer to help us improve the efficiency and relevance of our site for you. In some cases, they are essential to making the site work properly. By accessing this site, you consent to the use of cookies. For more information, refer to DevExpress' <a href="https://www.devexpress.com/AboutUs/privacy-policy.xml" target="_blank">privacy policy</a> and <a href="https://www.devexpress.com/AboutUs/cookie-policy.xml" target="_blank">cookie policy</a>.</div>
-        </div>
-        <div class="cookie-notice-button">I understand</div>
-    </div>
-</div>
 
   </body>
 

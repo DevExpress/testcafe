@@ -19,7 +19,7 @@ html {
           html body .page-content-wrapper .site-header .site-header-content .hamburger-button {
             display: block;
             float: right;
-            padding: 21px 25px 20px 26px; }
+            padding: 21px 30px 20px 30px; }
             html body .page-content-wrapper .site-header .site-header-content .hamburger-button .hamburger-icon {
               height: 20px;
               width: 24px;
@@ -30,20 +30,24 @@ html {
               html body .page-content-wrapper .site-header .site-header-content .hamburger-button.active .hamburger-icon {
                 background-image: url("/testcafe/images/hamburger-menu-active.png"); }
           html body .page-content-wrapper .site-header .site-header-content .site-nav {
-            height: calc(100vh - 60px);
+            overflow-y: scroll;
             width: 100%;
-            position: absolute;
+            height: auto;
+            float: none;
+            position: fixed;
             background: #fff;
             top: 60px;
+            bottom: 0;
             right: -100%;
             transition: right .2s;
-            box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.1); }
+            box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.1);
+            z-index: 1; }
             html body .page-content-wrapper .site-header .site-header-content .site-nav .site-nav-tab {
               display: block;
               padding: 0; }
               html body .page-content-wrapper .site-header .site-header-content .site-nav .site-nav-tab .page-link {
                 display: block;
-                padding: 5px 7px 7px 30px;
+                padding: 9px 7px 9px 30px;
                 font-size: 18px; }
               html body .page-content-wrapper .site-header .site-header-content .site-nav .site-nav-tab .doc-menu-item-icon {
                 display: inline-block;
@@ -56,13 +60,14 @@ html {
               html body .page-content-wrapper .site-header .site-header-content .site-nav .site-nav-tab.active {
                 background-color: #fff;
                 border-radius: 0; }
-              html body .page-content-wrapper .site-header .site-header-content .site-nav .site-nav-tab:nth-child(1) {
-                padding: 15px 0 5px; }
-                html body .page-content-wrapper .site-header .site-header-content .site-nav .site-nav-tab:nth-child(1) .page-link {
+              html body .page-content-wrapper .site-header .site-header-content .site-nav .site-nav-tab:nth-child(2) {
+                padding: 15px 0 8px; }
+                html body .page-content-wrapper .site-header .site-header-content .site-nav .site-nav-tab:nth-child(2) .page-link {
                   display: inline; }
             html body .page-content-wrapper .site-header .site-header-content .site-nav .doc-top-nav {
               display: none;
               position: relative;
+              width: auto;
               height: 0;
               top: 0;
               background-color: #fff;
@@ -90,8 +95,25 @@ html {
               html body .page-content-wrapper .site-header .site-header-content .site-nav .doc-top-nav.expanded {
                 display: block;
                 height: auto; }
-            html body .page-content-wrapper .site-header .site-header-content .site-nav #search-panel, html body .page-content-wrapper .site-header .site-header-content .site-nav .star-button, html body .page-content-wrapper .site-header .site-header-content .site-nav #search-icon, html body .page-content-wrapper .site-header .site-header-content .site-nav #twitter-button {
+            html body .page-content-wrapper .site-header .site-header-content .site-nav .star-button, html body .page-content-wrapper .site-header .site-header-content .site-nav #search-icon, html body .page-content-wrapper .site-header .site-header-content .site-nav #twitter-button {
               display: none; }
+            html body .page-content-wrapper .site-header .site-header-content .site-nav #search-panel {
+              display: block;
+              opacity: 1;
+              background-color: #fff;
+              padding: 20px 30px 9px 30px;
+              top: 0; }
+              html body .page-content-wrapper .site-header .site-header-content .site-nav #search-panel .algolia-autocomplete {
+                width: 100%; }
+                html body .page-content-wrapper .site-header .site-header-content .site-nav #search-panel .algolia-autocomplete #search {
+                  font-size: 16px;
+                  width: calc(100% - 42px);
+                  border: 1px solid rgba(0, 0, 0, 0.2);
+                  border-radius: 4px; }
+                html body .page-content-wrapper .site-header .site-header-content .site-nav #search-panel .algolia-autocomplete .ds-dropdown-menu {
+                  min-width: 0; }
+              html body .page-content-wrapper .site-header .site-header-content .site-nav #search-panel #close-search {
+                display: none; }
             html body .page-content-wrapper .site-header .site-header-content .site-nav .hamburger-button {
               display: block; }
             html body .page-content-wrapper .site-header .site-header-content .site-nav.active {
@@ -109,8 +131,37 @@ html {
           margin: 0;
           padding: 70px 30px 0; }
     html body .site-footer {
-      height: 153px;
+      height: auto;
       z-index: -1; }
+      html body .site-footer .site-footer-content {
+        padding: 22px 30px;
+        text-align: left; }
+    html body .cookie-notice {
+      position: static; }
+      html body .cookie-notice .cookie-notice-content {
+        flex-direction: column;
+        padding: 17px 30px; }
+        html body .cookie-notice .cookie-notice-content .cookie-notice-message {
+          margin-bottom: 20px;
+          width: 100%;
+          max-width: initial; }
+          html body .cookie-notice .cookie-notice-content .cookie-notice-message .cookie-notice-header {
+            font-weight: bold;
+            line-height: 21px;
+            font-size: 14px; }
+          html body .cookie-notice .cookie-notice-content .cookie-notice-message .cookie-notice-text {
+            padding-right: 0;
+            font-size: 12px; }
+        html body .cookie-notice .cookie-notice-content .cookie-notice-button {
+          width: 100%;
+          padding: 0;
+          font-weight: bold;
+          line-height: 35px;
+          font-size: 18px;
+          text-align: center;
+          border-radius: 4px;
+          box-sizing: border-box;
+          height: 40px; }
     html body .cookie-notice .cookie-notice-content {
       flex-direction: column; }
       html body .cookie-notice .cookie-notice-content .cookie-notice-message {

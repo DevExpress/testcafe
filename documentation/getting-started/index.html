@@ -2,6 +2,10 @@
 <html>
 
   <head>
+  
+  
+  
+
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -18,13 +22,23 @@
   <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/getting-started/" />
   <meta property="og:title" content="Getting Started | TestCafe" />
 
+  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
+  
+  
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
   <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/getting-started/">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="http://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+  <link rel="apple-touch-icon" sizes="180x180" href="/testcafe/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/testcafe/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/testcafe/favicon-16x16.png">
+  <link rel="manifest" href="/testcafe/site.webmanifest">
+  <meta name="msapplication-TileColor" content="#2d89ef">
+  <meta name="msapplication-config" content="/testcafe/browserconfig.xml" />
+  <meta name="theme-color" content="#ffffff">
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/highlight.min.js"></script>
   <script defer src="https://buttons.github.io/buttons.js"></script>
   <script defer type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.3.min.js"></script>
@@ -53,7 +67,16 @@
   
 
   
+
   
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/css/perfect-scrollbar.min.css">
+  <link rel="stylesheet" href="/testcafe/css/docs.css">
+  <style>
+      .ps-container > .ps-scrollbar-x-rail,
+      .ps-container > .ps-scrollbar-y-rail {
+          opacity: 0.6;
+      }
+  </style>
   
 
   <script>
@@ -77,7 +100,6 @@
     }
   </script>
     
-    
     <script>
         if (isMobileDevice) {
             document.addEventListener('DOMContentLoaded', function (e) {
@@ -89,20 +111,25 @@
                         hamburgerButton.className = hamburgerButton.className.replace(' active', '');
                         siteNav.className = siteNav.className.replace(' active', '');
                         document.documentElement.style.overflowY = 'scroll';
+                        document.body.style.overflowY = 'initial';
                     }
                     else {
                         hamburgerButton.className += ' active';
                         siteNav.className += ' active';
                         document.documentElement.style.overflowY = 'hidden';
+                        document.body.style.overflowY = 'hidden';
                     }
                 });
 
                 var docTopNav          = document.querySelector('.doc-top-nav');
-                var siteNav            = document.querySelector('.site-nav');
                 var docMenuItem        = document.querySelector('.site-nav-tab');
                 var mainMenuSecondItem = document.querySelector('.site-nav-tab:nth-child(2)');
 
                 siteNav.insertBefore(docTopNav, mainMenuSecondItem);
+
+                var searchPanel = document.getElementById('search-panel');
+                
+                siteNav.insertBefore(searchPanel, docMenuItem);
 
                 var docMenuItemIcon = document.createElement('div');
 
@@ -130,19 +157,10 @@
             linkCss('/testcafe/css/mobile.css');
         }
     </script>
-    
 
   
 
   
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/css/perfect-scrollbar.min.css">
-    <link rel="stylesheet" href="/testcafe/css/docs.css">
-    <style>
-        .ps-container > .ps-scrollbar-x-rail,
-        .ps-container > .ps-scrollbar-y-rail {
-            opacity: 0.6;
-        }
-    </style>
     <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/js/perfect-scrollbar.min.js"></script>
     <script defer type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.3.min.js"></script>
 
@@ -229,24 +247,28 @@
     </script>
     
     <script>
-        if (isMobileDevice && true == false) {
-            document.addEventListener('DOMContentLoaded', function (e) {
-                var toggleNavButton = document.querySelector('.toggle-nav-button');
-                var docNav          = document.querySelector('.doc-nav');
+        if (isMobileDevice) {
+            linkCss('/testcafe/css/docs.mobile.css');           
+            
+            if (true == false) {
+                document.addEventListener('DOMContentLoaded', function (e) {
+                    var docNavPanel = document.querySelector('.doc-nav-panel');
+                    var docNav      = document.querySelector('.doc-nav');
 
-                toggleNavButton.addEventListener('click', function (e) {
-                    if (docNav.className.indexOf('active') !== -1) {
-                        docNav.className = docNav.className.replace(' active', '');
-                        document.documentElement.style.overflowY = 'scroll';
-                    }
-                    else {
-                        docNav.className += ' active';
-                        document.documentElement.style.overflowY = 'hidden';
-                    }
+                    docNavPanel.addEventListener('click', function (e) {
+                        if (docNav.className.indexOf('active') !== -1) {
+                            docNav.className = docNav.className.replace(' active', '');
+                            document.documentElement.style.overflowY = 'scroll';
+                            document.body.style.overflowY = 'initial';
+                        }
+                        else {
+                            docNav.className += ' active';
+                            document.documentElement.style.overflowY = 'hidden';
+                            document.body.style.overflowY = 'hidden';
+                        }
+                    });
                 });
-            });
-
-            linkCss('/testcafe/css/docs.mobile.css');
+            }
         }
     </script>
   
@@ -269,7 +291,6 @@
 
                 if(article && !isMobileDevice)
                     article.style.marginTop = bodyMinimized ? '21px' : '72px';
-
                 if(gs && !isMobileDevice)
                     gs.style.paddingTop = bodyMinimized ? '21px' : '72px';
             }
@@ -293,6 +314,19 @@
 
 
   <body>
+
+    <script defer src="/testcafe/scripts/cookie-notice.js" type="text/javascript"></script>
+<div class="cookie-notice">
+    <div class="close-icon"></div>
+    <div class="cookie-notice-content">
+        <div class="cookie-notice-message">
+            <div class="cookie-notice-header">Why We Use Cookies</div>
+            <div class="cookie-notice-text">This site uses cookies to make your browsing experience more convenient and personal. Cookies store useful information on your computer to help us improve the efficiency and relevance of our site for you. In some cases, they are essential to making the site work properly. By accessing this site, you consent to the use of cookies. For more information, refer to DevExpress' <a href="https://www.devexpress.com/AboutUs/privacy-policy.xml" target="_blank">privacy policy</a> and <a href="https://www.devexpress.com/AboutUs/cookie-policy.xml" target="_blank">cookie policy</a>.</div>
+        </div>
+        <div class="cookie-notice-button">I understand</div>
+    </div>
+</div>
+
     <div class="page-content-wrapper">
 
       <header class="site-header fixed">
@@ -344,7 +378,7 @@
         <a class="github-button" href="https://github.com/DevExpress/testcafe" data-size="large" data-count-href="/DevExpress/testcafe/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star DevExpress/testcafe on GitHub"><span style="color:#ffffff">Star</span></a>
       </div>
       <div id="search-panel" class="hidden">
-          <input type="text" placeholder="Search query" id="search"/>
+          <input type="text" placeholder="Search documentation" id="search"/>
           <div id="close-search"></div>
       </div>
     </nav>
@@ -393,6 +427,7 @@
               hamburgerMenu.className = hamburgerMenu.className.replace(' active', '');
               hamburgerButton.className = hamburgerButton.className.replace(' active', '');
               document.documentElement.style.overflowY = 'scroll';
+              document.body.style.overflowY = 'initial';
           }
       }
 
@@ -406,17 +441,27 @@
           var docNav = document.querySelector('.doc-nav');
 
           if(docNav) {
-              function closeDocNav(e) {
-                  if(clickOutsideBox(e, docNav) && clickOutsideBox(e, toggleNavButton) && docNav.className.indexOf('active') !== -1) {
-                      docNav.className = docNav.className.replace(' active', '');
-                      document.documentElement.style.overflowY = 'scroll';
-                  }
+              function closeDocNav() {
+                  docNav.className = docNav.className.replace(' active', '');
+                  document.documentElement.style.overflowY = 'scroll';
+                  document.body.style.overflowY = 'initial';
               }
 
-              var toggleNavButton = document.querySelector('.toggle-nav-button');
+              function clickWithDocNavInvoked(e) {
+                  if(clickOutsideBox(e, docNav) && clickOutsideBox(e, docNavPanel) && docNav.className.indexOf('active') !== -1) 
+                      closeDocNav();
+              }
 
-              window.addEventListener('mousedown', closeDocNav);        
-              window.addEventListener('touchstart', closeDocNav);
+              var docNavPanel = document.querySelector('.doc-nav-panel');
+
+              window.addEventListener('mousedown', clickWithDocNavInvoked);        
+              window.addEventListener('touchstart', clickWithDocNavInvoked);
+
+              var docNavLinks = document.querySelectorAll('.doc-nav a');
+
+              docNavLinks.forEach(function (link) {
+                  link.addEventListener('click', closeDocNav);
+              });
           }
       });
   }
@@ -498,12 +543,12 @@
 <li><a href="#assertions">Assertions</a></li>
 </ul></li>
 </ul>
-<h2><a class="anchor" name="installing-testcafe"></a>Installing TestCafe <a class="permalink" href="#installing-testcafe">#</a></h2>
+<h2><a class="anchor" id="installing-testcafe"></a>Installing TestCafe <a class="permalink" href="#installing-testcafe">#</a></h2>
 <p>Ensure that <a href="https://nodejs.org/">Node.js</a> and <a href="https://www.npmjs.com/">npm</a> are installed on your computer and run the following command:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">npm install -g testcafe
 </code></pre></div>
 <p>For more information, see <a href="../using-testcafe/installing-testcafe.html">Installing TestCafe</a>.</p>
-<h2><a class="anchor" name="creating-a-test"></a>Creating a Test <a class="permalink" href="#creating-a-test">#</a></h2>
+<h2><a class="anchor" id="creating-a-test"></a>Creating a Test <a class="permalink" href="#creating-a-test">#</a></h2>
 <p>TestCafe allows you to write tests using TypeScript or JavaScript (with its modern features like <code>async/await</code>).
 You get all the advantages of strongly-typed languages like rich coding assistance, painless scalability, check-as-you-type code verification, etc., by using TypeScript to write your TestCafe tests. For more information about writing tests in TypeScript, see <a href="../test-api/typescript-support.html">TypeScript Support</a>.</p>
 
@@ -530,7 +575,7 @@ Specify this page as a start page for the fixture using the <a href="../test-api
 <span class="nx">test</span><span class="p">(</span><span class="s1">'My first test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="c1">// Test code</span>
 <span class="p">});</span>
-</code></pre></div><h2><a class="anchor" name="running-the-test"></a>Running the Test <a class="permalink" href="#running-the-test">#</a></h2>
+</code></pre></div><h2><a class="anchor" id="running-the-test"></a>Running the Test <a class="permalink" href="#running-the-test">#</a></h2>
 <p>You can run the test from a command shell by calling a single command where you specify the <a href="../using-testcafe/command-line-interface.html#browser-list">target browser</a> and <a href="../using-testcafe/command-line-interface.html#file-pathglob-pattern">file path</a>.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test1.js
 </code></pre></div>
@@ -540,13 +585,13 @@ Inactive tabs and minimized browser windows switch to a lower resource consumpti
 where tests are not guaranteed to execute correctly.</p>
 </div></blockquote>
 <p>For more information on how to configure the test run, see <a href="../using-testcafe/command-line-interface.html">Command Line Interface</a>.</p>
-<h2><a class="anchor" name="viewing-the-test-results"></a>Viewing the Test Results <a class="permalink" href="#viewing-the-test-results">#</a></h2>
+<h2><a class="anchor" id="viewing-the-test-results"></a>Viewing the Test Results <a class="permalink" href="#viewing-the-test-results">#</a></h2>
 <p>While the test is running, TestCafe is gathering information about the test run and outputting the report in a command shell.</p>
 
 <p><img src="../../images/report.png" alt="Test Report"></p>
 
 <p>See <a href="../using-testcafe/common-concepts/reporters.html">Reporters</a> for more information.</p>
-<h2><a class="anchor" name="writing-test-code"></a>Writing Test Code <a class="permalink" href="#writing-test-code">#</a></h2><h3><a class="anchor" name="performing-actions-on-the-page"></a>Performing Actions on the Page <a class="permalink" href="#performing-actions-on-the-page">#</a></h3>
+<h2><a class="anchor" id="writing-test-code"></a>Writing Test Code <a class="permalink" href="#writing-test-code">#</a></h2><h3><a class="anchor" id="performing-actions-on-the-page"></a>Performing Actions on the Page <a class="permalink" href="#performing-actions-on-the-page">#</a></h3>
 <p>Every test should be capable of interacting with page content. To perform user actions, TestCafe provides
 a number of <a href="../test-api/actions/">actions</a>: <code>click</code>, <code>hover</code>, <code>typeText</code>, <code>setFilesToUpload</code>, etc.
 They can be called in a chain.</p>
@@ -566,7 +611,7 @@ They can be called in a chain.</p>
 <p>All test actions are implemented as async functions of the <a href="../test-api/test-code-structure.html#test-controller">test controller object</a> <code>t</code>.
 This object is used to access test run API.
 To wait for actions to complete, use the <code>await</code> keyword when calling these actions or action chains.</p>
-<h3><a class="anchor" name="observing-page-state"></a>Observing Page State <a class="permalink" href="#observing-page-state">#</a></h3>
+<h3><a class="anchor" id="observing-page-state"></a>Observing Page State <a class="permalink" href="#observing-page-state">#</a></h3>
 <p>TestCafe allows you to observe the page state.
 For this purpose, it offers special kinds of functions that will execute your code on the client:
 <a href="../test-api/selecting-page-elements/selectors/">Selector</a> used to get direct access to DOM elements
@@ -595,7 +640,7 @@ The following example demonstrates how to access the article header element and 
 <span class="p">});</span>
 </code></pre></div>
 <p>See <a href="../test-api/selecting-page-elements/">Selecting Page Elements</a> for more information.</p>
-<h3><a class="anchor" name="assertions"></a>Assertions <a class="permalink" href="#assertions">#</a></h3>
+<h3><a class="anchor" id="assertions"></a>Assertions <a class="permalink" href="#assertions">#</a></h3>
 <p>A functional test should also check the result of actions performed.
 For example, the article header on the &quot;Thank you&quot; page should address a user using the entered name.
 To check if the header is correct, you have to add an assertion to the test.</p>
@@ -653,18 +698,6 @@ To check if the header is correct, you have to add an assertion to the test.</p>
      }
  });
 </script> 
-
-    <script defer src="/testcafe/scripts/cookie-notice.js" type="text/javascript"></script>
-<div class="cookie-notice">
-    <div class="close-icon"></div>
-    <div class="cookie-notice-content">
-        <div class="cookie-notice-message">
-            <div class="cookie-notice-header">Why We Use Cookies</div>
-            <div class="cookie-notice-text">This site uses cookies to make your browsing experience more convenient and personal. Cookies store useful information on your computer to help us improve the efficiency and relevance of our site for you. In some cases, they are essential to making the site work properly. By accessing this site, you consent to the use of cookies. For more information, refer to DevExpress' <a href="https://www.devexpress.com/AboutUs/privacy-policy.xml" target="_blank">privacy policy</a> and <a href="https://www.devexpress.com/AboutUs/cookie-policy.xml" target="_blank">cookie policy</a>.</div>
-        </div>
-        <div class="cookie-notice-button">I understand</div>
-    </div>
-</div>
 
   </body>
 

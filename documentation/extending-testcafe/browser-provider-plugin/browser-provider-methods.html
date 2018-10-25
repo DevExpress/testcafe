@@ -2,6 +2,10 @@
 <html>
 
   <head>
+  
+  
+  
+
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -18,13 +22,23 @@
   <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/extending-testcafe/browser-provider-plugin/browser-provider-methods.html" />
   <meta property="og:title" content="Browser Provider Methods | TestCafe" />
 
+  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
+  
+  
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
   <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/extending-testcafe/browser-provider-plugin/browser-provider-methods.html">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="http://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+  <link rel="apple-touch-icon" sizes="180x180" href="/testcafe/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/testcafe/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/testcafe/favicon-16x16.png">
+  <link rel="manifest" href="/testcafe/site.webmanifest">
+  <meta name="msapplication-TileColor" content="#2d89ef">
+  <meta name="msapplication-config" content="/testcafe/browserconfig.xml" />
+  <meta name="theme-color" content="#ffffff">
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/highlight.min.js"></script>
   <script defer src="https://buttons.github.io/buttons.js"></script>
   <script defer type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.3.min.js"></script>
@@ -53,7 +67,16 @@
   
 
   
+
   
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/css/perfect-scrollbar.min.css">
+  <link rel="stylesheet" href="/testcafe/css/docs.css">
+  <style>
+      .ps-container > .ps-scrollbar-x-rail,
+      .ps-container > .ps-scrollbar-y-rail {
+          opacity: 0.6;
+      }
+  </style>
   
 
   <script>
@@ -77,7 +100,6 @@
     }
   </script>
     
-    
     <script>
         if (isMobileDevice) {
             document.addEventListener('DOMContentLoaded', function (e) {
@@ -89,20 +111,25 @@
                         hamburgerButton.className = hamburgerButton.className.replace(' active', '');
                         siteNav.className = siteNav.className.replace(' active', '');
                         document.documentElement.style.overflowY = 'scroll';
+                        document.body.style.overflowY = 'initial';
                     }
                     else {
                         hamburgerButton.className += ' active';
                         siteNav.className += ' active';
                         document.documentElement.style.overflowY = 'hidden';
+                        document.body.style.overflowY = 'hidden';
                     }
                 });
 
                 var docTopNav          = document.querySelector('.doc-top-nav');
-                var siteNav            = document.querySelector('.site-nav');
                 var docMenuItem        = document.querySelector('.site-nav-tab');
                 var mainMenuSecondItem = document.querySelector('.site-nav-tab:nth-child(2)');
 
                 siteNav.insertBefore(docTopNav, mainMenuSecondItem);
+
+                var searchPanel = document.getElementById('search-panel');
+                
+                siteNav.insertBefore(searchPanel, docMenuItem);
 
                 var docMenuItemIcon = document.createElement('div');
 
@@ -130,19 +157,10 @@
             linkCss('/testcafe/css/mobile.css');
         }
     </script>
-    
 
   
 
   
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/css/perfect-scrollbar.min.css">
-    <link rel="stylesheet" href="/testcafe/css/docs.css">
-    <style>
-        .ps-container > .ps-scrollbar-x-rail,
-        .ps-container > .ps-scrollbar-y-rail {
-            opacity: 0.6;
-        }
-    </style>
     <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/js/perfect-scrollbar.min.js"></script>
     <script defer type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.3.min.js"></script>
 
@@ -229,24 +247,28 @@
     </script>
     
     <script>
-        if (isMobileDevice && false == false) {
-            document.addEventListener('DOMContentLoaded', function (e) {
-                var toggleNavButton = document.querySelector('.toggle-nav-button');
-                var docNav          = document.querySelector('.doc-nav');
+        if (isMobileDevice) {
+            linkCss('/testcafe/css/docs.mobile.css');           
+            
+            if (false == false) {
+                document.addEventListener('DOMContentLoaded', function (e) {
+                    var docNavPanel = document.querySelector('.doc-nav-panel');
+                    var docNav      = document.querySelector('.doc-nav');
 
-                toggleNavButton.addEventListener('click', function (e) {
-                    if (docNav.className.indexOf('active') !== -1) {
-                        docNav.className = docNav.className.replace(' active', '');
-                        document.documentElement.style.overflowY = 'scroll';
-                    }
-                    else {
-                        docNav.className += ' active';
-                        document.documentElement.style.overflowY = 'hidden';
-                    }
+                    docNavPanel.addEventListener('click', function (e) {
+                        if (docNav.className.indexOf('active') !== -1) {
+                            docNav.className = docNav.className.replace(' active', '');
+                            document.documentElement.style.overflowY = 'scroll';
+                            document.body.style.overflowY = 'initial';
+                        }
+                        else {
+                            docNav.className += ' active';
+                            document.documentElement.style.overflowY = 'hidden';
+                            document.body.style.overflowY = 'hidden';
+                        }
+                    });
                 });
-            });
-
-            linkCss('/testcafe/css/docs.mobile.css');
+            }
         }
     </script>
   
@@ -269,7 +291,6 @@
 
                 if(article && !isMobileDevice)
                     article.style.marginTop = bodyMinimized ? '21px' : '72px';
-
                 if(gs && !isMobileDevice)
                     gs.style.paddingTop = bodyMinimized ? '21px' : '72px';
             }
@@ -293,6 +314,19 @@
 
 
   <body>
+
+    <script defer src="/testcafe/scripts/cookie-notice.js" type="text/javascript"></script>
+<div class="cookie-notice">
+    <div class="close-icon"></div>
+    <div class="cookie-notice-content">
+        <div class="cookie-notice-message">
+            <div class="cookie-notice-header">Why We Use Cookies</div>
+            <div class="cookie-notice-text">This site uses cookies to make your browsing experience more convenient and personal. Cookies store useful information on your computer to help us improve the efficiency and relevance of our site for you. In some cases, they are essential to making the site work properly. By accessing this site, you consent to the use of cookies. For more information, refer to DevExpress' <a href="https://www.devexpress.com/AboutUs/privacy-policy.xml" target="_blank">privacy policy</a> and <a href="https://www.devexpress.com/AboutUs/cookie-policy.xml" target="_blank">cookie policy</a>.</div>
+        </div>
+        <div class="cookie-notice-button">I understand</div>
+    </div>
+</div>
+
     <div class="page-content-wrapper">
 
       <header class="site-header fixed">
@@ -344,7 +378,7 @@
         <a class="github-button" href="https://github.com/DevExpress/testcafe" data-size="large" data-count-href="/DevExpress/testcafe/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star DevExpress/testcafe on GitHub"><span style="color:#ffffff">Star</span></a>
       </div>
       <div id="search-panel" class="hidden">
-          <input type="text" placeholder="Search query" id="search"/>
+          <input type="text" placeholder="Search documentation" id="search"/>
           <div id="close-search"></div>
       </div>
     </nav>
@@ -393,6 +427,7 @@
               hamburgerMenu.className = hamburgerMenu.className.replace(' active', '');
               hamburgerButton.className = hamburgerButton.className.replace(' active', '');
               document.documentElement.style.overflowY = 'scroll';
+              document.body.style.overflowY = 'initial';
           }
       }
 
@@ -406,17 +441,27 @@
           var docNav = document.querySelector('.doc-nav');
 
           if(docNav) {
-              function closeDocNav(e) {
-                  if(clickOutsideBox(e, docNav) && clickOutsideBox(e, toggleNavButton) && docNav.className.indexOf('active') !== -1) {
-                      docNav.className = docNav.className.replace(' active', '');
-                      document.documentElement.style.overflowY = 'scroll';
-                  }
+              function closeDocNav() {
+                  docNav.className = docNav.className.replace(' active', '');
+                  document.documentElement.style.overflowY = 'scroll';
+                  document.body.style.overflowY = 'initial';
               }
 
-              var toggleNavButton = document.querySelector('.toggle-nav-button');
+              function clickWithDocNavInvoked(e) {
+                  if(clickOutsideBox(e, docNav) && clickOutsideBox(e, docNavPanel) && docNav.className.indexOf('active') !== -1) 
+                      closeDocNav();
+              }
 
-              window.addEventListener('mousedown', closeDocNav);        
-              window.addEventListener('touchstart', closeDocNav);
+              var docNavPanel = document.querySelector('.doc-nav-panel');
+
+              window.addEventListener('mousedown', clickWithDocNavInvoked);        
+              window.addEventListener('touchstart', clickWithDocNavInvoked);
+
+              var docNavLinks = document.querySelectorAll('.doc-nav a');
+
+              docNavLinks.forEach(function (link) {
+                  link.addEventListener('click', closeDocNav);
+              });
           }
       });
   }
@@ -474,6 +519,24 @@
 	
 	<div class="doc-nav-panel">
 		<div class="toggle-nav-button"></div>
+		<div class="doc-nav-panel-header">
+			<div class="doc-nav-panel-heading">Documentation</div>
+			<div class="doc-nav-panel-title">
+				
+					
+				
+					
+				
+					
+				
+					
+						Extending TestCafe
+					
+				
+					
+				
+			</div>
+		</div>
 	</div>
 	<nav class="doc-nav">	
 		<div class="doc-nav-content">
@@ -543,7 +606,7 @@
 			<h1>Browser Provider Methods</h1>
 <p>To create a <a href=".#implementing-the-browser-provider">browser provider</a>, implement the following methods.</p>
 <blockquote><div class="blockquote-content"><p>While implementing the methods, you can utilize the <a href="https://github.com/DevExpress/testcafe-browser-tools">testcafe-browser-tools</a> library that contains methods for performing platform-dependent actions on browser windows. To do this, add this library as a dependency into your browser provider project.</p>
-</div></blockquote><h2><a class="anchor" name="required-methods"></a>Required Methods <a class="permalink" href="#required-methods">#</a></h2><h3><a class="anchor" name="openbrowser"></a>openBrowser <a class="permalink" href="#openbrowser">#</a></h3>
+</div></blockquote><h2><a class="anchor" id="required-methods"></a>Required Methods <a class="permalink" href="#required-methods">#</a></h2><h3><a class="anchor" id="openbrowser"></a>openBrowser <a class="permalink" href="#openbrowser">#</a></h3>
 <p>Runs the specified browser and opens the specified page in it.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">async openBrowser ( id, pageUrl, browserName )
 </code></pre></div><div class="table-wrapper"><table><thead><tr>
@@ -568,7 +631,7 @@
 </tr>
 </tbody></table></div>
 <p>See <a href=".#example">Example</a>.</p>
-<h3><a class="anchor" name="closebrowser"></a>closeBrowser <a class="permalink" href="#closebrowser">#</a></h3>
+<h3><a class="anchor" id="closebrowser"></a>closeBrowser <a class="permalink" href="#closebrowser">#</a></h3>
 <p>Closes the specified browser.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">async closeBrowser ( id )
 </code></pre></div><div class="table-wrapper"><table><thead><tr>
@@ -583,20 +646,20 @@
 </tr>
 </tbody></table></div>
 <p>See <a href=".#example">Example</a>.</p>
-<h2><a class="anchor" name="optional-methods"></a>Optional Methods <a class="permalink" href="#optional-methods">#</a></h2><h3><a class="anchor" name="init"></a>init <a class="permalink" href="#init">#</a></h3>
+<h2><a class="anchor" id="optional-methods"></a>Optional Methods <a class="permalink" href="#optional-methods">#</a></h2><h3><a class="anchor" id="init"></a>init <a class="permalink" href="#init">#</a></h3>
 <p>Performs initialization actions the provider may require. This method is called once before other provider methods are called.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">async init ()
 </code></pre></div>
 <p>For example, the <a href="https://github.com/ryx/testcafe-browser-provider-nightmare">Nightmare browser provider</a> uses this method to create a Nightmare instance.</p>
-<h3><a class="anchor" name="dispose"></a>dispose <a class="permalink" href="#dispose">#</a></h3>
+<h3><a class="anchor" id="dispose"></a>dispose <a class="permalink" href="#dispose">#</a></h3>
 <p>Performs cleanup actions for the provider data. This method is called before the <code>testcafe</code> process is finished.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">async dispose ()
-</code></pre></div><h3><a class="anchor" name="getbrowserlist"></a>getBrowserList <a class="permalink" href="#getbrowserlist">#</a></h3>
+</code></pre></div><h3><a class="anchor" id="getbrowserlist"></a>getBrowserList <a class="permalink" href="#getbrowserlist">#</a></h3>
 <p>Returns the array of names used to identify the browsers. This method is used if the provider supports multiple browsers.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">async getBrowserList ()
 </code></pre></div>
 <p>See <a href=".#example">Example</a>.</p>
-<h3><a class="anchor" name="isvalidbrowsername"></a>isValidBrowserName <a class="permalink" href="#isvalidbrowsername">#</a></h3>
+<h3><a class="anchor" id="isvalidbrowsername"></a>isValidBrowserName <a class="permalink" href="#isvalidbrowsername">#</a></h3>
 <p>Checks if the specified browser name exists. This method is used if the provider supports multiple browsers.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">async isValidBrowserName ( browserName )
 </code></pre></div><div class="table-wrapper"><table><thead><tr>
@@ -613,7 +676,7 @@
 <p>Returns <code>true</code> if the specified name exists, or <code>false</code> otherwise.</p>
 
 <p>See <a href=".#example">Example</a>.</p>
-<h3><a class="anchor" name="resizewindow"></a>resizeWindow <a class="permalink" href="#resizewindow">#</a></h3>
+<h3><a class="anchor" id="resizewindow"></a>resizeWindow <a class="permalink" href="#resizewindow">#</a></h3>
 <p>Resizes the browser window&#39;s client area to the specified width and height.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">async resizeWindow ( id, width, height, currentWidth, currentHeight )
 </code></pre></div><div class="table-wrapper"><table><thead><tr>
@@ -648,7 +711,7 @@
 </tr>
 </tbody></table></div>
 <p>See <a href=".#example">Example</a>.</p>
-<h3><a class="anchor" name="maximizewindow"></a>maximizeWindow <a class="permalink" href="#maximizewindow">#</a></h3>
+<h3><a class="anchor" id="maximizewindow"></a>maximizeWindow <a class="permalink" href="#maximizewindow">#</a></h3>
 <p>Maximizes the browser window.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">async maximizeWindow ( id )
 </code></pre></div><div class="table-wrapper"><table><thead><tr>
@@ -663,7 +726,7 @@
 </tr>
 </tbody></table></div>
 <p>See <a href=".#example">Example</a>.</p>
-<h3><a class="anchor" name="canresizewindowtodimensions"></a>canResizeWindowToDimensions <a class="permalink" href="#canresizewindowtodimensions">#</a></h3>
+<h3><a class="anchor" id="canresizewindowtodimensions"></a>canResizeWindowToDimensions <a class="permalink" href="#canresizewindowtodimensions">#</a></h3>
 <p>Checks if the browser window can be resized to the specified dimensions.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">async canResizeWindowToDimensions ( id, width, height )
 </code></pre></div><div class="table-wrapper"><table><thead><tr>
@@ -690,7 +753,7 @@
 <p>Returns <code>true</code> if the window can be resized to the specified <code>width</code> and <code>height</code>, or <code>false</code> otherwise.</p>
 
 <p>See <a href=".#example">Example</a>.</p>
-<h3><a class="anchor" name="takescreenshot"></a>takeScreenshot <a class="permalink" href="#takescreenshot">#</a></h3>
+<h3><a class="anchor" id="takescreenshot"></a>takeScreenshot <a class="permalink" href="#takescreenshot">#</a></h3>
 <p>Takes a screenshot of the browser window&#39;s client area.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">async takeScreenshot ( id, screenshotPath, pageWidth, pageHeight )
 </code></pre></div><div class="table-wrapper"><table><thead><tr>
@@ -759,18 +822,6 @@
      }
  });
 </script> 
-
-    <script defer src="/testcafe/scripts/cookie-notice.js" type="text/javascript"></script>
-<div class="cookie-notice">
-    <div class="close-icon"></div>
-    <div class="cookie-notice-content">
-        <div class="cookie-notice-message">
-            <div class="cookie-notice-header">Why We Use Cookies</div>
-            <div class="cookie-notice-text">This site uses cookies to make your browsing experience more convenient and personal. Cookies store useful information on your computer to help us improve the efficiency and relevance of our site for you. In some cases, they are essential to making the site work properly. By accessing this site, you consent to the use of cookies. For more information, refer to DevExpress' <a href="https://www.devexpress.com/AboutUs/privacy-policy.xml" target="_blank">privacy policy</a> and <a href="https://www.devexpress.com/AboutUs/cookie-policy.xml" target="_blank">cookie policy</a>.</div>
-        </div>
-        <div class="cookie-notice-button">I understand</div>
-    </div>
-</div>
 
   </body>
 

@@ -29,6 +29,11 @@ $(function() {
     var GALLERY_BROWSED_FLAG = "gallery-browsed";
     var TEST_SAMPLE_DOWNLOADED = "test-sample-downloaded";
 
+    var md = new MobileDetect(window.navigator.userAgent);
+    
+    if (md.mobile())
+        return;
+
     $("#main-gallery").dxGallery({
         dataSource: galleryData,
         width: 1030,
