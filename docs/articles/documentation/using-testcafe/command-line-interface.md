@@ -470,6 +470,7 @@ For example, the following command runs tests whose fixture's metadata have a `d
 ```sh
 testcafe ie my-tests --fixture-meta device=mobile,env=production
 ```
+
 ### --debug-on-fail
 
 Specifies whether to automatically enter the [debug mode](#-d---debug-mode) when a test fails.
