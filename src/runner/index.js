@@ -262,7 +262,7 @@ export default class Runner extends EventEmitter {
         this.opts.skipUncaughtErrors = !!skipUncaughtErrors;
         this.opts.stopOnFirstFail    = !!stopOnFirstFail;
 
-        Object.assign(this.bootstrapper, { disableTestSyntaxValidation });
+        this.bootstrapper.disableTestSyntaxValidation = disableTestSyntaxValidation;
 
         const runTaskPromise = Promise.resolve()
             .then(() => {
