@@ -1,0 +1,17 @@
+trigger:
+  paths:
+    include:
+    - /azure-pipelines
+    - /bin
+    - /src
+    - /test
+    - /Gulpfile.js
+    - /package.json
+
+jobs:
+- template: test-code-job-template.yml
+  parameters:
+    name: 'Tests'
+    task: 'test-functional-local-ie'
+    pool:
+      vmImage: vs2017-win2016

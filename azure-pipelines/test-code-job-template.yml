@@ -1,0 +1,30 @@
+parameters:
+  name: ''
+  task: ''
+  pool: ''
+
+jobs:
+- job: ${{ parameters.name }}
+  pool: ${{ parameters.pool }}
+
+  variables:
+    GULP_TASK: ${{ parameters.task }}
+
+  steps:
+  - bash: |
+      if [[ $BUILD_SOURCEVERSIONMESSAGE =~ ^\[docs\] ]] || [[ ! -f "appveyor.yml" ]]; then
+        echo '##vso[task.setvariable variable=isDocCommit]true'
+      fi
+    displayName: 'Check commit type'
+
+  - task: NodeTool@0
+    displayName: 'Install Node.js'
+    condition: not(variables['isDocCommit'])
+    inputs:
+      versionSpec: '11.x'
+
+  - bash: |
+      npm install
+      npm test
+    displayName: 'Run tests'
+    condition: not(variables['isDocCommit'])
