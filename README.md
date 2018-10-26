@@ -160,7 +160,7 @@ Read the [Getting Started](https://devexpress.github.io/testcafe/documentation/g
 
 ## Documentation
 
-Go to our website for full [documentation](http://devexpress.github.io/testcafe/documentation/using-testcafe/) on TestCafe.
+Go to our website for full [documentation](https://devexpress.github.io/testcafe/documentation/getting-started/) on TestCafe.
 
 ## Get Help
 
