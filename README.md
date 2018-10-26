@@ -38,7 +38,7 @@
 * [Documentation](#documentation)
 * [Get Help](#get-help)
 * [Stay in Touch](#stay-in-touch)
-* [Issue tracker](#issue-tracker)
+* [Issue Tracker](#issue-tracker)
 * [Contributing](#contributing)
 * [Plugins](#plugins)
 * [Different Versions of TestCafe](#different-versions-of-testcafe)
