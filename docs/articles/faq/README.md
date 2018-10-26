@@ -56,7 +56,7 @@ All three versions share the same core features:
 * You can extend it with [plugins](https://github.com/DevExpress/testcafe#plugins) and other Node.js modules.
 
 [TestCafe Studio](https://testcafe-studio.devexpress.com)  
-*first released in 2018, commercial desktop application*  
+*Preview released in 2018, commercial desktop application*  
 
 * Based on the open-source TestCafe, and supports its major features.
 * You can record tests or edit them as JavaScript or TypeScript code.
