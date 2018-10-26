@@ -1134,7 +1134,7 @@
 <span class="nx">test</span><span class="p">(</span><span class="s1">'My Test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">getChildNodeText</span><span class="p">(</span><span class="mi">0</span><span class="p">)).</span><span class="nx">contains</span><span class="p">(</span><span class="s1">'This is my tested page.'</span><span class="p">);</span>
 <span class="p">});</span>
-</code></pre></div><blockquote><div class="blockquote-content"><p>Note that the <code>getChildNodeText</code> client function uses the <code>testedPage</code> selector that is passed to it as a dependency. See <a href="../obtaining-data-from-the-client.html#optionsdependencies">options.dependencies</a> for more information.</p>
+</code></pre></div><blockquote><div class="blockquote-content"><p>Note that the <code>getChildNodeText</code> client function uses the <code>testedPage</code> selector that is passed to it as a dependency. See <a href=".#optionsdependencies">options.dependencies</a> for more information.</p>
 </div></blockquote><h2><a class="anchor" id="complex-dom-queries"></a>Complex DOM Queries <a class="permalink" href="#complex-dom-queries">#</a></h2>
 <p>Client functions can be helpful for complex DOM queries. For example, a tested page contains a table with some data, and you need to validate data from two columns only. To do this, obtain data from these columns, push them to an array and then compare the returned array with the expected one.</p>
 
