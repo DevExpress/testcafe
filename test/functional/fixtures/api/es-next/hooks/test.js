@@ -119,9 +119,9 @@ describe('[API] fixture.before/fixture.after hooks', () => {
             shouldFail: true,
             only:       'chrome, firefox'
         }).catch(errs => {
-            const allErrors = errs['chrome'].concat(errs['firefox']);
+            const allErrors = config.currentEnvironment.browsers.length === 1 ? errs : errs['chrome'].concat(errs['firefox']);
 
-            expect(allErrors.length).eql(6);
+            expect(allErrors.length).eql(config.currentEnvironment.browsers.length * 3);
 
             allErrors.forEach(err => {
                 expect(err).contains('Error in fixture.before hook');
