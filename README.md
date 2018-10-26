@@ -178,7 +178,7 @@ Use our GitHub issues page to [report bugs](https://github.com/DevExpress/testca
 
 Read our [Contributing Guide](https://github.com/DevExpress/testcafe/blob/master/CONTRIBUTING.md) to learn how to contribute to the project.
 
-To create your own plugin for TestCafe you can use these plugin generators:
+To create your own plugin for TestCafe, you can use these plugin generators:
 
 * [Build a browser provider](https://devexpress.github.io/testcafe/documentation/extending-testcafe/browser-provider-plugin/)
   to set up tests on your on-premises server farm, to use a cloud testing platform, or to start your local browsers in a special way. Use this [Yeoman generator](https://www.npmjs.com/package/generator-testcafe-browser-provider) to write only a few lines of code.
