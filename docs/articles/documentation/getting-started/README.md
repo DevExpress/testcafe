@@ -160,7 +160,7 @@ A functional test should also check the result of actions performed.
 For example, the article header on the "Thank you" page should address a user using the entered name.
 To check if the header is correct, you have to add an assertion to the test.
 
-The following test demonstrates how to use [build-in assertions](../test-api/assertions/README.md).
+The following test demonstrates how to use [built-in assertions](../test-api/assertions/README.md).
 
 ```js
 import { Selector } from 'testcafe';
