@@ -1042,6 +1042,7 @@ To interact with the page, use <a href="../actions/">test actions</a>.</p>
 <li><a href="#executing-client-functions">Executing Client Functions</a></li>
 <li><a href="#options">Options</a></li>
 <li><a href="#one-time-client-code-execution">One-Time Client Code Execution</a></li>
+<li><a href="#import-functions-to-be-used-as-client-function-dependencies">Import Functions to be Used as Client Function Dependencies</a></li>
 <li><a href="#calling-client-functions-from-nodejs-callbacks">Calling Client Functions from Node.js Callbacks</a></li>
 <li><a href="#limitations">Limitations</a></li>
 </ul>
@@ -1174,7 +1175,34 @@ use the <code>eval</code> method of the <a href="../test-code-structure.html#tes
     <span class="kr">const</span> <span class="nx">docURI</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nb">eval</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">documentURI</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div><blockquote><div class="blockquote-content"><p>Since the <code>eval</code> method returns a value, not an object, you cannot call other methods of the test controller in the chain after calling &#39;eval&#39;.</p>
-</div></blockquote><h2><a class="anchor" id="calling-client-functions-from-nodejs-callbacks"></a>Calling Client Functions from Node.js Callbacks <a class="permalink" href="#calling-client-functions-from-nodejs-callbacks">#</a></h2>
+</div></blockquote><h2><a class="anchor" id="import-functions-to-be-used-as-client-function-dependencies"></a>Import Functions to be Used as Client Function Dependencies <a class="permalink" href="#import-functions-to-be-used-as-client-function-dependencies">#</a></h2>
+<p>Assume you have a JS file <code>utils.js</code> with a function you need to use as a client function dependency in your test file.</p>
+
+<p><strong>utils.js</strong></p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">export</span> <span class="kd">function</span> <span class="nx">getDocumentURI</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nb">document</span><span class="p">.</span><span class="nx">documentURI</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Note that TestCafe internally processes test files with <a href="https://babeljs.io">Babel</a>. To avoid issues caused by code transpiling, use the <a href="https://nodejs.org/api/modules.html#modules_require">require</a> function instead of the <code>import</code> statement to import client function dependencies.</p>
+
+<p><strong>test.js</strong></p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+
+<span class="kr">const</span> <span class="nx">getDocumentURI</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'./utils.js'</span><span class="p">).</span><span class="nx">getDocumentURI</span><span class="p">;</span>
+
+<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`;</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">const</span> <span class="nx">getUri</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">getDocumentURI</span><span class="p">();</span>
+    <span class="p">},</span> <span class="p">{</span> <span class="na">dependencies</span><span class="p">:</span> <span class="p">{</span> <span class="nx">getDocumentURI</span> <span class="p">}</span> <span class="p">});</span>
+
+    <span class="kr">const</span> <span class="nx">uri</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">getUri</span><span class="p">();</span>
+
+    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">uri</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="s1">'http://devexpress.github.io/testcafe/example/'</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div><h2><a class="anchor" id="calling-client-functions-from-nodejs-callbacks"></a>Calling Client Functions from Node.js Callbacks <a class="permalink" href="#calling-client-functions-from-nodejs-callbacks">#</a></h2>
 <p>Client functions need access to the <a href="../test-code-structure.html#test-controller">test controller</a> to be executed.
 When called right from the test function, they implicitly obtain the test controller.</p>
 

@@ -254,9 +254,6 @@
 <loc>http://devexpress.github.io/testcafe/documentation/test-api/actions/navigate.html</loc>
 </url>
 <url>
-<loc>http://devexpress.github.io/testcafe/documentation/test-api/obtaining-data-from-the-client.html</loc>
-</url>
-<url>
 <loc>http://devexpress.github.io/testcafe/documentation/test-api/pausing-the-test.html</loc>
 </url>
 <url>
@@ -357,10 +354,10 @@
 </url>
 <url>
 <loc>http://devexpress.github.io/testcafe/example/</loc>
-<lastmod>2018-10-25T18:34:41+03:00</lastmod>
+<lastmod>2018-10-26T16:25:38+03:00</lastmod>
 </url>
 <url>
 <loc>http://devexpress.github.io/testcafe/example/thank-you.html</loc>
-<lastmod>2018-10-25T18:34:41+03:00</lastmod>
+<lastmod>2018-10-26T16:25:38+03:00</lastmod>
 </url>
 </urlset>
