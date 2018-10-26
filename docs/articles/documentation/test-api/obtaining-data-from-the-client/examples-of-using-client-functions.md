@@ -136,7 +136,7 @@ test('My Test', async t => {
 });
 ```
 
-> Note that the `getChildNodeText` client function uses the `testedPage` selector that is passed to it as a dependency. See [options.dependencies](../obtaining-data-from-the-client.md#optionsdependencies) for more information.
+> Note that the `getChildNodeText` client function uses the `testedPage` selector that is passed to it as a dependency. See [options.dependencies](README.md#optionsdependencies) for more information.
 
 ## Complex DOM Queries
 
