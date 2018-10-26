@@ -53,6 +53,14 @@ const TEST_DONE_CONFIRMATION_RESPONSE = 'test-done-confirmation';
 const MAX_RESPONSE_DELAY              = 2 * 60 * 1000;
 
 const ALL_DRIVER_TASKS_ADDED_TO_QUEUE_EVENT = 'all-driver-tasks-added-to-queue';
+const QUEUE_UNADDABLE_COMMANDS              = [
+    COMMAND_TYPE.wait,
+    COMMAND_TYPE.setPageLoadTimeout,
+    COMMAND_TYPE.debug,
+    COMMAND_TYPE.useRole,
+    COMMAND_TYPE.assertion,
+    COMMAND_TYPE.executeExpression
+];
 
 export default class TestRun extends EventEmitter {
     constructor (test, browserConnection, screenshotCapturer, warningLog, opts) {
@@ -475,8 +483,7 @@ export default class TestRun extends EventEmitter {
 
     // Execute command
     static _shouldAddCommandToQueue (command) {
-        return command.type !== COMMAND_TYPE.wait && command.type !== COMMAND_TYPE.setPageLoadTimeout &&
-               command.type !== COMMAND_TYPE.debug && command.type !== COMMAND_TYPE.useRole && command.type !== COMMAND_TYPE.assertion;
+        return !QUEUE_UNADDABLE_COMMANDS.includes(command.type);
     }
 
     async _executeExpression (command) {
