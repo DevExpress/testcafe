@@ -44,7 +44,8 @@ import {
     isBrowserManipulationCommand,
     isScreenshotCommand,
     isServiceCommand,
-    canSetDebuggerBreakpointBeforeCommand
+    canSetDebuggerBreakpointBeforeCommand,
+    isClientExecutableCommand
 } from './commands/utils';
 
 const TEST_RUN_TEMPLATE               = read('../client/test-run/index.js.mustache');
@@ -53,14 +54,6 @@ const TEST_DONE_CONFIRMATION_RESPONSE = 'test-done-confirmation';
 const MAX_RESPONSE_DELAY              = 2 * 60 * 1000;
 
 const ALL_DRIVER_TASKS_ADDED_TO_QUEUE_EVENT = 'all-driver-tasks-added-to-queue';
-const QUEUE_UNADDABLE_COMMANDS              = [
-    COMMAND_TYPE.wait,
-    COMMAND_TYPE.setPageLoadTimeout,
-    COMMAND_TYPE.debug,
-    COMMAND_TYPE.useRole,
-    COMMAND_TYPE.assertion,
-    COMMAND_TYPE.executeExpression
-];
 
 export default class TestRun extends EventEmitter {
     constructor (test, browserConnection, screenshotCapturer, warningLog, opts) {
@@ -482,10 +475,6 @@ export default class TestRun extends EventEmitter {
     }
 
     // Execute command
-    static _shouldAddCommandToQueue (command) {
-        return !QUEUE_UNADDABLE_COMMANDS.includes(command.type);
-    }
-
     async _executeExpression (command) {
         const { resultVariableName, isAsyncExpression } = command;
 
@@ -559,7 +548,7 @@ export default class TestRun extends EventEmitter {
         if (this.pendingPageError && isCommandRejectableByPageError(command))
             return this._rejectCommandWithPageError(callsite);
 
-        if (TestRun._shouldAddCommandToQueue(command))
+        if (isClientExecutableCommand(command))
             this.addingDriverTasksCount++;
 
         this._adjustConfigurationWithCommand(command);
