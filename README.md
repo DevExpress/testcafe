@@ -37,8 +37,8 @@
 * [Getting Started](#getting-started)
 * [Documentation](#documentation)
 * [Get Help](#get-help)
-* [Stay in Touch](#stay-in-touch)
 * [Issue Tracker](#issue-tracker)
+* [Stay in Touch](#stay-in-touch)
 * [Contributing](#contributing)
 * [Plugins](#plugins)
 * [Different Versions of TestCafe](#different-versions-of-testcafe)
@@ -166,13 +166,13 @@ Go to our website for full [documentation](https://devexpress.github.io/testcafe
 
 Join the TestCafe community on Stack Overflow to get help. Ask and answer [questions with the TestCafe tag](https://stackoverflow.com/questions/tagged/testcafe).
 
-## Stay in Touch
-
-Follow us on [Twitter](https://twitter.com/DXTestCafe). We post TestCafe news and updates, several times a week.
-
 ## Issue Tracker
 
 Use our GitHub issues page to [report bugs](https://github.com/DevExpress/testcafe/issues/new?template=bug-report.md) and [suggest improvements](https://github.com/DevExpress/testcafe/issues/new?template=feature_request.md).
+
+## Stay in Touch
+
+Follow us on [Twitter](https://twitter.com/DXTestCafe). We post TestCafe news and updates, several times a week.
 
 ## Contributing
 
