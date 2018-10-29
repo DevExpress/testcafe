@@ -4,9 +4,6 @@ import promisifyEvent from 'promisify-event';
 import Promise from 'pinkie';
 import { findProcess, killProcess } from './promisified-functions';
 
-
-const BROWSER_CLOSING_TIMEOUT = 5;
-
 async function runWMIC (args) {
     const wmicProcess = spawn('wmic.exe', args, { detached: true });
 
@@ -29,8 +26,8 @@ async function runWMIC (args) {
     }
 }
 
-async function findProcessWin (processOptions) {
-    const wmicArgs    = ['process', 'where', `commandline like '%${processOptions.arguments}%' and name <> 'cmd.exe' and name <> 'wmic.exe'`, 'get', 'processid'];
+async function findProcessWin (browserId) {
+    const wmicArgs    = ['process', 'where', `commandline like '%${browserId}%' and name <> 'cmd.exe' and name <> 'wmic.exe'`, 'get', 'processid'];
     const wmicOutput  = await runWMIC(wmicArgs);
     let processList = wmicOutput.split(/\s*\n/);
 
@@ -43,17 +40,25 @@ async function findProcessWin (processOptions) {
 }
 
 export default async function (browserId) {
-    const processOptions = { arguments: browserId, psargs: '-ef' };
-    const processList    = OS.win ? await findProcessWin(processOptions) : await findProcess(processOptions);
+    let processId = null;
 
-    if (!processList.length)
+    if (OS.win) {
+        const processList = await findProcessWin(browserId);
+
+        if (processList[0])
+            processId = processList[0].pid;
+    }
+    else
+        processId = await findProcess(browserId);
+
+    if (!processId)
         return true;
 
     try {
         if (OS.win)
-            process.kill(processList[0].pid);
+            process.kill(processId);
         else
-            await killProcess(processList[0].pid, { timeout: BROWSER_CLOSING_TIMEOUT });
+            await killProcess(processId);
 
         return true;
     }
