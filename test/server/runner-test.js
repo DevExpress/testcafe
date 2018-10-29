@@ -295,7 +295,7 @@ describe('Runner', () => {
                 });
         });
 
-        it('Should raise an error if the source and imported midule have no tests', () => {
+        it('Should raise an error if the source and imported module have no tests', () => {
             return runner
                 .browsers(connection)
                 .src(['test/server/data/test-suites/test-as-module/without-tests/testfile.js'])
