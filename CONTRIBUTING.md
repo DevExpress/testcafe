@@ -16,15 +16,14 @@ TestCafe has adopted a [Contributor Code of Conduct](CODE_OF_CONDUCT.md), abide 
 
 ## General Discussion
 
-If you have a question about TestCafe feel free to ask us on StackOverflow. We review and answer questions with the [TestCafe](https://stackoverflow.com/questions/tagged/testcafe) tag.
+Join the TestCafe community on Stack Overflow: ask and answer [questions with the TestCafe tag](https://stackoverflow.com/questions/tagged/testcafe).
 
 ## Reporting a Problem
 
 If you find a problem when using TestCafe, please file an issue in our [GitHub repository](https://github.com/DevExpress/testcafe/issues).
 However, to save some time, please search through the existing issues to see if the problem has already been reported or addressed.
 
-When you create a new issue, template text is automatically added to its body.
-To help us understand the issue you're describing, be sure to fill in all sections in this template.
+When you create a new issue, template text is automatically added to its body. To help us understand the issue you're describing, be sure to fill in all sections in this template. We process issues with insufficient details after all the others, which may take significant time without any guarantees.
 
 ## Code Contribution
 
