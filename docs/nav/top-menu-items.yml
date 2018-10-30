@@ -6,16 +6,10 @@
   external: true
 - text: FAQ
   url: /faq/
-# - text: Publications
-#   url: /publications/
 - text: Release Notes
   url: /blog/
-- text: Issues
-  url: https://github.com/DevExpress/testcafe/issues
-  external: true
-- text: Q&amp;A
-  url: https://stackoverflow.com/questions/tagged/testcafe
-  external: true
+- text: Support
+  url: /support/
 - text: TestCafe Studio
   url: https://testcafe-studio.devexpress.com
   external: true
