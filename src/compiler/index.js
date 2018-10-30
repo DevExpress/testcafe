@@ -23,8 +23,10 @@ const testFileCompilers = [
 ];
 
 export default class Compiler {
-    constructor (sources) {
+    constructor (sources, disableTestSyntaxValidation) {
         this.sources = sources;
+
+        this.disableTestSyntaxValidation = disableTestSyntaxValidation;
     }
 
     static getSupportedTestFileExtensions () {
@@ -43,7 +45,7 @@ export default class Compiler {
 
         code = stripBom(code).toString();
 
-        const compiler = find(testFileCompilers, c => c.canCompile(code, filename));
+        const compiler = find(testFileCompilers, c => c.canCompile(code, filename, this.disableTestSyntaxValidation));
 
         return compiler ? await compiler.compile(code, filename) : null;
     }

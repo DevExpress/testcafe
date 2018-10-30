@@ -47,6 +47,39 @@ describe('Compiler', function () {
     });
 
     describe('ES-next', function () {
+        it('Should compile test defined in separate module if option is enabled', function () {
+            const sources = [
+                'test/server/data/test-suites/test-as-module/with-tests/testfile.js'
+            ];
+
+            return compile(sources, true)
+                .then(function (compiled) {
+                    const tests    = compiled.tests;
+                    const fixtures = compiled.fixtures;
+
+                    expect(tests.length).eql(1);
+                    expect(fixtures.length).eql(1);
+
+                    expect(tests[0].name).eql('test');
+                    expect(fixtures[0].name).eql('Library tests');
+                });
+        });
+
+        it('Should not compile test defined in separate module if option is disabled', function () {
+            const sources = [
+                'test/server/data/test-suites/test-as-module/with-tests/testfile.js'
+            ];
+
+            return compile(sources)
+                .then(function (compiled) {
+                    const tests    = compiled.tests;
+                    const fixtures = compiled.fixtures;
+
+                    expect(tests.length).eql(0);
+                    expect(fixtures.length).eql(0);
+                });
+        });
+
         it('Should compile test files and their dependencies', function () {
             const sources = [
                 'test/server/data/test-suites/basic/testfile1.js',
@@ -140,6 +173,39 @@ describe('Compiler', function () {
 
 
     describe('TypeScript', function () {
+        it('Should compile test defined in separate module if option is enabled', function () {
+            const sources = [
+                'test/server/data/test-suites/test-as-module/with-tests/testfile.ts'
+            ];
+
+            return compile(sources, true)
+                .then(function (compiled) {
+                    const tests    = compiled.tests;
+                    const fixtures = compiled.fixtures;
+
+                    expect(tests.length).eql(1);
+                    expect(fixtures.length).eql(1);
+
+                    expect(tests[0].name).eql('test');
+                    expect(fixtures[0].name).eql('Library tests');
+                });
+        });
+
+        it('Should not compile test defined in separate module if option is disabled', function () {
+            const sources = [
+                'test/server/data/test-suites/test-as-module/with-tests/testfile.ts'
+            ];
+
+            return compile(sources)
+                .then(function (compiled) {
+                    const tests    = compiled.tests;
+                    const fixtures = compiled.fixtures;
+
+                    expect(tests.length).eql(0);
+                    expect(fixtures.length).eql(0);
+                });
+        });
+
         it('Should compile test files and their dependencies', function () {
             const sources = [
                 'test/server/data/test-suites/typescript-basic/testfile1.ts',
@@ -248,6 +314,40 @@ describe('Compiler', function () {
 
 
     describe('CoffeeScript', function () {
+        it('Should compile test defined in separate module if option is enabled', function () {
+            const sources = [
+                'test/server/data/test-suites/test-as-module/with-tests/testfile.coffee'
+            ];
+
+            return compile(sources, true)
+                .then(function (compiled) {
+                    const tests    = compiled.tests;
+                    const fixtures = compiled.fixtures;
+
+                    expect(tests.length).eql(1);
+                    expect(fixtures.length).eql(1);
+
+                    expect(tests[0].name).eql('test');
+                    expect(fixtures[0].name).eql('Library tests');
+                });
+        });
+
+        it('Should not compile test defined in separate module if option is disabled', function () {
+            const sources = [
+                'test/server/data/test-suites/test-as-module/with-tests/testfile.coffee'
+            ];
+
+            return compile(sources)
+                .then(function (compiled) {
+                    const tests    = compiled.tests;
+                    const fixtures = compiled.fixtures;
+
+                    expect(tests.length).eql(0);
+                    expect(fixtures.length).eql(0);
+                });
+        });
+
+
         it('Should compile test files and their dependencies', function () {
             const sources = [
                 'test/server/data/test-suites/coffeescript-basic/testfile1.coffee',

@@ -127,6 +127,8 @@ export default class CLIArgumentParser {
             .option('--dev', 'enables mechanisms to log and diagnose errors')
             .option('--qr-code', 'outputs QR-code that repeats URLs used to connect the remote browsers')
             .option('--sf, --stop-on-first-fail', 'stop an entire test run if any test fails')
+            .option('--disable-test-syntax-validation', 'disables checks for \'test\' and \'fixture\' directives to run dynamically loaded tests')
+
 
             // NOTE: these options will be handled by chalk internally
             .option('--color', 'force colors in command line')
