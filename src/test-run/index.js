@@ -45,7 +45,7 @@ import {
     isScreenshotCommand,
     isServiceCommand,
     canSetDebuggerBreakpointBeforeCommand,
-    isClientExecutableCommand
+    isExecutableOnClientCommand
 } from './commands/utils';
 
 const TEST_RUN_TEMPLATE               = read('../client/test-run/index.js.mustache');
@@ -548,7 +548,7 @@ export default class TestRun extends EventEmitter {
         if (this.pendingPageError && isCommandRejectableByPageError(command))
             return this._rejectCommandWithPageError(callsite);
 
-        if (isClientExecutableCommand(command))
+        if (isExecutableOnClientCommand(command))
             this.addingDriverTasksCount++;
 
         this._adjustConfigurationWithCommand(command);

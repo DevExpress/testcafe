@@ -79,11 +79,11 @@ export function isJSExpression (val) {
            typeof val.value === 'string';
 }
 
-export function isClientExecutableCommand (command) {
-    return command.type !== COMMAND_TYPE.wait &&
-           command.type !== COMMAND_TYPE.setPageLoadTimeout &&
-           command.type !== COMMAND_TYPE.debug &&
-           command.type !== COMMAND_TYPE.useRole &&
-           command.type !== COMMAND_TYPE.assertion &&
-           command.type !== COMMAND_TYPE.executeExpression;
+export function isExecutableOnClientCommand (command) {
+    return command.type !== TYPE.wait &&
+           command.type !== TYPE.setPageLoadTimeout &&
+           command.type !== TYPE.debug &&
+           command.type !== TYPE.useRole &&
+           command.type !== TYPE.assertion &&
+           command.type !== TYPE.executeExpression;
 }
