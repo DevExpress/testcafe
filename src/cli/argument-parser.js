@@ -8,6 +8,7 @@ import MESSAGE from '../errors/runtime/message';
 import { assertType, is } from '../errors/runtime/type-assertions';
 import getViewPortWidth from '../utils/get-viewport-width';
 import { wordWrap, splitQuotedText } from '../utils/string';
+import { isMatch } from 'lodash';
 import parseSslOptions from './parse-ssl-options';
 
 const REMOTE_ALIAS_RE = /^remote(?::(\d*))?$/;
@@ -60,6 +61,26 @@ export default class CLIArgumentParser {
         }
     }
 
+    static _optionValueToKeyValue (name, value) {
+        if (value === void 0)
+            return value;
+
+        const keyValue = value.split(',').reduce((obj, pair) => {
+            const [key, val] = pair.split('=');
+
+            if (!key || !val)
+                throw new GeneralError(MESSAGE.optionValueIsNotValidKeyValue, name);
+
+            obj[key] = val;
+            return obj;
+        }, {});
+
+        if (Object.keys(keyValue).length === 0)
+            throw new GeneralError(MESSAGE.optionValueIsNotValidKeyValue, name);
+
+        return keyValue;
+    }
+
     static _getDescription () {
         // NOTE: add empty line to workaround commander-forced indentation on the first line.
         return '\n' + wordWrap(DESCRIPTION, 2, getViewPortWidth(process.stdout));
@@ -89,6 +110,8 @@ export default class CLIArgumentParser {
             .option('-F, --fixture-grep <pattern>', 'run only fixtures matching the specified pattern')
             .option('-a, --app <command>', 'launch the tested app using the specified command before running tests')
             .option('-c, --concurrency <number>', 'run tests concurrently')
+            .option('--test-meta <key=value[,key2=value2,...]>', 'run only tests with matching metadata')
+            .option('--fixture-meta <key=value[,key2=value2,...]>', 'run only fixtures with matching metadata')
             .option('--debug-on-fail', 'pause the test if it fails')
             .option('--app-init-delay <ms>', 'specify how much time it takes for the tested app to initialize')
             .option('--selector-timeout <ms>', 'set the amount of time within which selectors make attempts to obtain a node to be returned')
@@ -104,6 +127,8 @@ export default class CLIArgumentParser {
             .option('--dev', 'enables mechanisms to log and diagnose errors')
             .option('--qr-code', 'outputs QR-code that repeats URLs used to connect the remote browsers')
             .option('--sf, --stop-on-first-fail', 'stop an entire test run if any test fails')
+            .option('--disable-test-syntax-validation', 'disables checks for \'test\' and \'fixture\' directives to run dynamically loaded tests')
+
 
             // NOTE: these options will be handled by chalk internally
             .option('--color', 'force colors in command line')
@@ -124,8 +149,10 @@ export default class CLIArgumentParser {
     _parseFilteringOptions () {
         this.opts.testGrep    = CLIArgumentParser._optionValueToRegExp('--test-grep', this.opts.testGrep);
         this.opts.fixtureGrep = CLIArgumentParser._optionValueToRegExp('--fixture-grep', this.opts.fixtureGrep);
+        this.opts.testMeta    = CLIArgumentParser._optionValueToKeyValue('--test-meta', this.opts.testMeta);
+        this.opts.fixtureMeta = CLIArgumentParser._optionValueToKeyValue('--fixture-meta', this.opts.fixtureMeta);
 
-        this.filter = (testName, fixtureName) => {
+        this.filter = (testName, fixtureName, fixturePath, testMeta, fixtureMeta) => {
 
             if (this.opts.test && testName !== this.opts.test)
                 return false;
@@ -137,6 +164,12 @@ export default class CLIArgumentParser {
                 return false;
 
             if (this.opts.fixtureGrep && !this.opts.fixtureGrep.test(fixtureName))
+                return false;
+
+            if (this.opts.testMeta && !isMatch(testMeta, this.opts.testMeta))
+                return false;
+
+            if (this.opts.fixtureMeta && !isMatch(fixtureMeta, this.opts.fixtureMeta))
                 return false;
 
             return true;

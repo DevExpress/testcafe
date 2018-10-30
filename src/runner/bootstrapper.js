@@ -15,13 +15,14 @@ export default class Bootstrapper {
     constructor (browserConnectionGateway) {
         this.browserConnectionGateway = browserConnectionGateway;
 
-        this.concurrency  = 1;
-        this.sources      = [];
-        this.browsers     = [];
-        this.reporters    = [];
-        this.filter       = null;
-        this.appCommand   = null;
-        this.appInitDelay = DEFAULT_APP_INIT_DELAY;
+        this.concurrency                 = 1;
+        this.sources                     = [];
+        this.browsers                    = [];
+        this.reporters                   = [];
+        this.filter                      = null;
+        this.appCommand                  = null;
+        this.appInitDelay                = DEFAULT_APP_INIT_DELAY;
+        this.disableTestSyntaxValidation = false;
     }
 
     static _splitBrowserInfo (browserInfo) {
@@ -73,7 +74,7 @@ export default class Bootstrapper {
             throw new GeneralError(MESSAGE.testSourcesNotSet);
 
         const parsedFileList = await parseFileList(this.sources, process.cwd());
-        const compiler       = new Compiler(parsedFileList);
+        const compiler       = new Compiler(parsedFileList, this.disableTestSyntaxValidation);
         let tests            = await compiler.getTests();
 
         const testsWithOnlyFlag = tests.filter(test => test.only);
@@ -82,7 +83,7 @@ export default class Bootstrapper {
             tests = testsWithOnlyFlag;
 
         if (this.filter)
-            tests = tests.filter(test => this.filter(test.name, test.fixture.name, test.fixture.path));
+            tests = tests.filter(test => this.filter(test.name, test.fixture.name, test.fixture.path, test.meta, test.fixture.meta));
 
         if (!tests.length)
             throw new GeneralError(MESSAGE.noTestsToRun);

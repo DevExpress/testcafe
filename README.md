@@ -264,7 +264,7 @@ There is a line of products called `TestCafe`. Below are the similarities and ke
   * You can extend it with [plugins](#plugins) and other Node.js modules.
 
 * [**TestCafe Studio**](https://testcafe-studio.devexpress.com/)<br/>
-  *first released in 2018, commercial desktop application*
+  *Preview released in 2018, commercial desktop application*
   * Based on the open-source TestCafe, and supports its major features.
   * You can record tests or edit them as JavaScript or TypeScript code.
   * New [Visual Test Recorder](https://testcafe-studio.devexpress.com/documentation/guides/record-tests/) and [IDE-like GUI](https://testcafe-studio.devexpress.com/documentation/guides/write-test-code.html) to record, edit, run and debug tests.

@@ -14,7 +14,8 @@ const testingEnvironmentNames = {
     localBrowsersIE:             'local-browsers-ie',
     localBrowsersChromeFirefox:  'local-browsers-chrome-firefox',
     localBrowsers:               'local-browsers',
-    localHeadlessBrowsers:       'local-headless-browsers',
+    localHeadlessChrome:         'local-headless-chrome',
+    localHeadlessFirefox:        'local-headless-firefox',
     oldBrowsers:                 'old-browsers',
     legacy:                      'legacy'
 };
@@ -136,7 +137,7 @@ testingEnvironments[testingEnvironmentNames.localBrowsersChromeFirefox] = {
     ]
 };
 
-testingEnvironments[testingEnvironmentNames.localHeadlessBrowsers] = {
+testingEnvironments[testingEnvironmentNames.localHeadlessChrome] = {
     isLocalBrowsers:    true,
     isHeadlessBrowsers: true,
 
@@ -146,7 +147,15 @@ testingEnvironments[testingEnvironmentNames.localHeadlessBrowsers] = {
             browserName: 'chrome:headless --no-sandbox',
             userAgent:   'headlesschrome',
             alias:       'chrome'
-        },
+        }
+    ]
+};
+
+testingEnvironments[testingEnvironmentNames.localHeadlessFirefox] = {
+    isLocalBrowsers:    true,
+    isHeadlessBrowsers: true,
+
+    browsers: [
         {
             platform:    'Windows 10',
             browserName: 'firefox:headless:disableMultiprocessing=true',

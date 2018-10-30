@@ -294,6 +294,16 @@ describe('Runner', () => {
                     expect(err.message).eql('No test file specified.');
                 });
         });
+
+        it('Should raise an error if the source and imported module have no tests', () => {
+            return runner
+                .browsers(connection)
+                .src(['test/server/data/test-suites/test-as-module/without-tests/testfile.js'])
+                .run()
+                .catch(err => {
+                    expect(err.message).eql('No tests to run. Either the test files contain no tests or the filter function is too restrictive.');
+                });
+        });
     });
 
     describe('.filter()', () => {
@@ -303,7 +313,8 @@ describe('Runner', () => {
                 .reporter('list')
                 .src([
                     'test/server/data/test-suites/basic/testfile1.js',
-                    'test/server/data/test-suites/basic/testfile2.js'
+                    'test/server/data/test-suites/basic/testfile2.js',
+                    'test/server/data/test-suites/filter/meta.js'
                 ]);
         });
 
@@ -334,7 +345,10 @@ describe('Runner', () => {
             const expectedTestNames = [
                 'Fixture1Test1',
                 'Fixture1Test2',
-                'Fixture3Test1'
+                'Fixture3Test1',
+                'Fixture4Test1',
+                'Fixture5Test1',
+                'Fixture5Test2'
             ];
 
             return testFilter(filter, expectedTestNames);
@@ -355,6 +369,22 @@ describe('Runner', () => {
             const filter = (testName, fixtureName, fixturePath) => fixturePath.includes('testfile2.js');
 
             const expectedTestNames = ['Fixture3Test1'];
+
+            return testFilter(filter, expectedTestNames);
+        });
+
+        it('Should filter by test meta', () => {
+            const filter = (testName, fixtureName, fixturePath, testMeta) => testMeta.meta === 'test';
+
+            const expectedTestNames = ['Fixture5Test2'];
+
+            return testFilter(filter, expectedTestNames);
+        });
+
+        it('Should filter by fixture meta', () => {
+            const filter = (testName, fixtureName, fixturePath, testMeta, fixtureMeta) => fixtureMeta.meta === 'test';
+
+            const expectedTestNames = ['Fixture4Test1'];
 
             return testFilter(filter, expectedTestNames);
         });

@@ -664,11 +664,17 @@ gulp.step('test-functional-local-chrome-firefox-run', () => {
 
 gulp.task('test-functional-local-chrome-firefox', gulp.series('build', 'test-functional-local-chrome-firefox-run'));
 
-gulp.step('test-functional-local-headless-run', () => {
-    return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.localHeadlessBrowsers);
+gulp.step('test-functional-local-headless-chrome-run', () => {
+    return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.localHeadlessChrome);
 });
 
-gulp.task('test-functional-local-headless', gulp.series('build', 'test-functional-local-headless-run'));
+gulp.task('test-functional-local-headless-chrome', gulp.series('build', 'test-functional-local-headless-chrome-run'));
+
+gulp.step('test-functional-local-headless-firefox-run', () => {
+    return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.localHeadlessFirefox);
+});
+
+gulp.task('test-functional-local-headless-firefox', gulp.series('build', 'test-functional-local-headless-firefox-run'));
 
 gulp.step('test-functional-local-legacy-run', () => {
     return testFunctional('test/functional/legacy-fixtures', functionalTestConfig.testingEnvironmentNames.legacy);
