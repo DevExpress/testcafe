@@ -1,3 +1,18 @@
+trigger:
+  branches:
+    exclude:
+    - build-bot-temp-*
+    - new-docs
+
+  paths:
+    include:
+    - /bin
+    - /src
+    - /test
+    - /azure-pipelines.yml
+    - /Gulpfile.js
+    - /package.json
+
 pool: 'BrowserStack agents'
 
 steps:
