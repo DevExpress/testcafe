@@ -44,7 +44,8 @@ import {
     isBrowserManipulationCommand,
     isScreenshotCommand,
     isServiceCommand,
-    canSetDebuggerBreakpointBeforeCommand
+    canSetDebuggerBreakpointBeforeCommand,
+    isExecutableOnClientCommand
 } from './commands/utils';
 
 const TEST_RUN_TEMPLATE               = read('../client/test-run/index.js.mustache');
@@ -474,11 +475,6 @@ export default class TestRun extends EventEmitter {
     }
 
     // Execute command
-    static _shouldAddCommandToQueue (command) {
-        return command.type !== COMMAND_TYPE.wait && command.type !== COMMAND_TYPE.setPageLoadTimeout &&
-               command.type !== COMMAND_TYPE.debug && command.type !== COMMAND_TYPE.useRole && command.type !== COMMAND_TYPE.assertion;
-    }
-
     async _executeExpression (command) {
         const { resultVariableName, isAsyncExpression } = command;
 
@@ -552,7 +548,7 @@ export default class TestRun extends EventEmitter {
         if (this.pendingPageError && isCommandRejectableByPageError(command))
             return this._rejectCommandWithPageError(callsite);
 
-        if (TestRun._shouldAddCommandToQueue(command))
+        if (isExecutableOnClientCommand(command))
             this.addingDriverTasksCount++;
 
         this._adjustConfigurationWithCommand(command);

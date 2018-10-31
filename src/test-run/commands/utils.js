@@ -20,7 +20,8 @@ function isClientFunctionCommand (command) {
 function isObservationCommand (command) {
     return isClientFunctionCommand(command) ||
            command.type === TYPE.wait ||
-           command.type === TYPE.assertion;
+           command.type === TYPE.assertion ||
+           command.type === TYPE.executeExpression;
 }
 
 function isWindowSwitchingCommand (command) {
@@ -76,4 +77,13 @@ export function isExecutableInTopWindowOnly (command) {
 export function isJSExpression (val) {
     return val !== null && typeof val === 'object' && val.type === RAW_API_JS_EXPRESSION_TYPE &&
            typeof val.value === 'string';
+}
+
+export function isExecutableOnClientCommand (command) {
+    return command.type !== TYPE.wait &&
+           command.type !== TYPE.setPageLoadTimeout &&
+           command.type !== TYPE.debug &&
+           command.type !== TYPE.useRole &&
+           command.type !== TYPE.assertion &&
+           command.type !== TYPE.executeExpression;
 }
