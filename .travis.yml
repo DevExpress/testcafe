@@ -1,8 +1,4 @@
-if: NOT (commit_message =~ /^\[docs\]/)
-
-branches:
-  except:
-  - new-docs
+if: NOT (commit_message =~ /^\[docs\]/ OR branch = 'new-docs')
 
 addons:
  chrome:  stable
