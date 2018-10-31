@@ -7,8 +7,8 @@ describe('[Regression](GH-2074)', function () {
                 if (Array.isArray(errors))
                     expect(errors[0]).contains('test is executed');
                 else {
-                    Object.values(errors).forEach(err => {
-                        expect(err[0]).contains('test is executed');
+                    Object.keys(errors).forEach(browser => {
+                        expect(errors[browser][0]).contains('test is executed');
                     });
                 }
             });

@@ -27,7 +27,7 @@ steps:
   condition: and(succeeded(), not(variables['isDocCommit']))
   timeoutInMinutes: 40
   inputs:
-    versionSpec: '11.x'
+    versionSpec: '6.x'
 
 - bash: |
     npm install --no-progress --loglevel error

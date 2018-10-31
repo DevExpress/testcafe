@@ -48,7 +48,7 @@ const getReporter = function (scope) {
 };
 
 describe('[API] t.takeScreenshot()', function () {
-    if (config.useLocalBrowsers) {
+    if (config.useLocalBrowsers && config.currentEnvironmentName !== config.testingEnvironmentNames.localBrowsersIE) {
         afterEach(assertionHelper.removeScreenshotDir);
 
         it('Should take a screenshot', function () {
@@ -250,7 +250,7 @@ describe('[API] t.takeScreenshot()', function () {
 });
 
 describe('[API] t.takeElementScreenshot()', function () {
-    if (config.useLocalBrowsers) {
+    if (config.useLocalBrowsers && config.currentEnvironmentName !== config.testingEnvironmentNames.localBrowsersIE) {
         afterEach(assertionHelper.removeScreenshotDir);
 
         it('Should take screenshot of an element', function () {
