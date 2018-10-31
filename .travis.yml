@@ -1,5 +1,9 @@
 if: NOT (commit_message =~ /^\[docs\]/)
 
+branches:
+  except:
+  - new-docs
+
 addons:
  chrome:  stable
  firefox: latest

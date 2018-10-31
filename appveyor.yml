@@ -4,6 +4,10 @@ clone_depth: 1
 skip_commits:
   message: /^\[docs\]/
 
+branches:
+  except:
+  - new-docs
+
 environment:
   NODEJS_VERSION: "stable"
 
