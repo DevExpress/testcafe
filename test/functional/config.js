@@ -30,8 +30,6 @@ testingEnvironments[testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers] = {
         accessKey: process.env.BROWSER_STACK_ACCESS_KEY
     },
 
-    retryTestPages: true,
-
     browsers: [
         {
             os:        'OS X',
@@ -61,8 +59,6 @@ testingEnvironments[testingEnvironmentNames.mobileBrowsers] = {
         username:  process.env.BROWSER_STACK_USERNAME,
         accessKey: process.env.BROWSER_STACK_ACCESS_KEY
     },
-
-    retryTestPages: true,
 
     browsers: [
         {
