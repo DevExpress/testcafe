@@ -1,3 +1,18 @@
+trigger:
+  branches:
+    exclude:
+    - build-bot-temp-*
+    - new-docs
+
+  paths:
+    include:
+    - /bin
+    - /src
+    - /test
+    - /azure-pipelines.yml
+    - /Gulpfile.js
+    - /package.json
+
 pool: 'BrowserStack agents'
 
 steps:
@@ -9,7 +24,8 @@ steps:
 
 - task: NodeTool@0
   displayName: 'Install Node.js'
-  condition: not(variables['isDocCommit'])
+  condition: and(succeeded(), not(variables['isDocCommit']))
+  timeoutInMinutes: 40
   inputs:
     versionSpec: '11.x'
 
@@ -17,4 +33,5 @@ steps:
     npm install --no-progress --loglevel error
     npm test
   displayName: 'Run tests'
-  condition: not(variables['isDocCommit'])
+  condition: and(succeeded(), not(variables['isDocCommit']))
+  timeoutInMinutes: 40

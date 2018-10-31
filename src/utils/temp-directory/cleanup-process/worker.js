@@ -3,7 +3,7 @@ import { inspect } from 'util';
 import del from 'del';
 import Promise from 'pinkie';
 import { noop } from 'lodash';
-import killBrowserProcess from '../../kill-browser-process';
+import { killBrowserProcess } from '../../process';
 import COMMANDS from './commands';
 
 
