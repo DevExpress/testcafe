@@ -35,6 +35,8 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [-T \<pattern\>, --test-grep \<pattern\>](#-t-pattern---test-grep-pattern)
   * [-f \<name\>, --fixture \<name\>](#-f-name---fixture-name)
   * [-F \<pattern\>, --fixture-grep \<pattern\>](#-f-pattern---fixture-grep-pattern)
+  * [--test-meta \<key=value\[,key2=value2,...\]\>](#--test-meta-keyvaluekey2value2)
+  * [--fixture-meta \<key=value\[,key2=value2,...\]\>](#--fixture-meta-keyvaluekey2value2)
   * [-a \<command\>, --app \<command\>](#-a-command---app-command)
   * [-c \<n\>, --concurrency \<n\>](#-c-n---concurrency-n)
   * [--debug-on-fail](#--debug-on-fail)
@@ -418,6 +420,26 @@ For example, the following command runs fixtures whose names match `Page.*`. The
 
 ```sh
 testcafe ie my-tests -F "Page.*"
+```
+
+### --test-meta \<key=value\[,key2=value2,...\]\>
+
+TestCafe runs tests whose [metadata](../test-api/test-code-structure.md#specifying-testing-metadata) [matches](https://lodash.com/docs/#isMatch) the specified key-value pair.
+
+For example, the following command runs tests whose metadata has the `device` property set to the `mobile` value and the `env` property set to the `production` value.
+
+```sh
+testcafe chrome my-tests --test-meta device=mobile,env=production
+```
+
+### --fixture-meta \<key=value\[,key2=value2,...\]\>
+
+TestCafe runs tests whose fixture's [metadata](../test-api/test-code-structure.md#specifying-testing-metadata) [matches](https://lodash.com/docs/#isMatch) the specified key-value pair.
+
+For example, the following command runs tests whose fixture's metadata has the `device` property set to the `mobile` value and the `env` property set to the `production` value.
+
+```sh
+testcafe chrome my-tests --fixture-meta device=mobile,env=production
 ```
 
 ### -a \<command\>, --app \<command\>
