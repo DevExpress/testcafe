@@ -27,7 +27,7 @@ function createConnection (browser) {
         .then(browserInfo => new BrowserConnection(testCafe.browserConnectionGateway, browserInfo, false));
 }
 
-async function run (pathToTest, filter) {
+function run (pathToTest, filter) {
     const src          = path.join(__dirname, pathToTest);
     const browserNames = config.currentEnvironment.browsers.map(browser => browser.browserName || browser.alias);
 
