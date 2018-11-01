@@ -74,7 +74,7 @@ Please follow the steps below when submitting your code.
 
 ### Documentation for the Current Functionality
 
-If you want to fix a bug in the current documentation or make an enhancement that relates to the existing functionality, the procedure is similar to code contribution.
+If you want to fix a bug in the current documentation or make an enhancement that relates to the existing functionality, follow the instructions below.
 
 1. Fork TestCafe and create a branch in your fork. Name this branch with an issue number followed by the `docs` postfix, e.g. `gh852-docs`.
 
