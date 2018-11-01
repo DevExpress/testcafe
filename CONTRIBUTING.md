@@ -9,6 +9,9 @@ To that end, please review our contribution guidelines first.
 * [General Discussion](#general-discussion)
 * [Reporting a Problem](#reporting-a-problem)
 * [Code Contribution](#code-contribution)
+* [Contribute to Documentation](#contribute-to-documentation)
+  * [Documentation for the Current Functionality](#documentation-for-the-current-functionality)
+  * [Documentation for New Features](#documentation-for-new-features)
 
 ## Code of Conduct
 
@@ -41,7 +44,7 @@ Please follow the steps below when submitting your code.
 
 5. Fork TestCafe and create a branch in your fork. Name this branch with an issue number, e.g. `gh852`, `gh853`.
   
-    > If you are going to update the documentation, do this in a separate branch, e.g. `gh852-docs`.
+    > If you are going to update the documentation, create a separate branch as described in [Contribute to Documentation](#contribute-to-documentation).
 
 6. Commit your changes into the branch.
 
@@ -61,11 +64,73 @@ Please follow the steps below when submitting your code.
 
 10. Push changes to your fork.
 
-11. Submit a pull request. If you are also updating the documentation, submit a separate pull request for these changes.
+11. Submit a pull request. If you are also updating the documentation, submit a separate pull request as described in [Contribute to Documentation](#contribute-to-documentation).
 
     The pull request name should describe what has been done and contain
     the [closes](https://github.com/blog/1506-closing-issues-via-pull-requests) directive
     with an appropriate issue number.
 
-    Documentation pull requests should have the `[docs]` prefix in their title.
-    This ensures that documentation tests are triggered against these pull requests.
+## Contribute to Documentation
+
+### Documentation for the Current Functionality
+
+If you want to fix a bug in the current documentation or make an enhancement that relates to the existing functionality, the procedure is similar to code contribution.
+
+1. Fork TestCafe and create a branch in your fork. Name this branch with an issue number followed by the `docs` postfix, e.g. `gh852-docs`.
+
+2. Commit your changes into the branch.
+
+    > Note that links in the documentation should point to `.md` files in the repository, so that the documentation is browsable on GitHub. When the website is built, all links are automatically modified to point to HTML pages.
+
+3. Fetch upstream changes and rebase your branch onto `master`.
+
+4. Run tests before submitting a pull request to ensure that Markdown is styled properly and there is no broken links.
+
+    ```sh
+    gulp test-website
+    ```
+
+5. Push changes to your fork.
+
+6. Submit a pull request. Documentation pull requests should have the `[docs]` prefix in their title. This ensures that documentation tests are triggered against these pull requests.
+
+### Documentation for New Features
+
+Documentation for new features is developed in a separate branch `new-docs`.
+
+Do the following to fetch this branch and commit to it.
+
+1. Fork TestCafe.
+
+2. Download the `new-docs` branch to your local repository and perform check-out.
+
+    ```sh
+    git fetch upstream new-docs:new-docs
+    git checkout new-docs
+    ```
+
+3. Set the local branch to track the remote `new-docs` branch.
+
+    ```sh
+    git branch -u upstream/new-docs
+    ```
+
+4. Create a new branch on top of `new-docs`.
+
+    ```sh
+    git checkout -b new-branch new-docs
+    ```
+
+5. Commit your changes into this branch.
+
+    > Note that links in the documentation should point to `.md` files in the repository, so that the documentation is browsable on GitHub. When the website is built, all links are automatically modified to point to HTML pages.
+
+6. Run tests before submitting a pull request to ensure that Markdown is styled properly and there is no broken links.
+
+    ```sh
+    gulp test-website
+    ```
+
+7. Push changes to your fork.
+
+8. Open a pull request against `DevExpress:new-docs`. Documentation pull requests should have the `[docs]` prefix in their title. This ensures that documentation tests are triggered against these pull requests.
