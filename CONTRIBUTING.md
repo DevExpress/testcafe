@@ -44,7 +44,7 @@ Please follow the steps below when submitting your code.
 
 5. Fork TestCafe and create a branch in your fork. Name this branch with an issue number, e.g. `gh852`, `gh853`.
   
-    > If you are going to update the documentation, create a separate branch as described in [Contribute to Documentation](#contribute-to-documentation).
+    > If you are going to update the documentation follow the steps described in [Contribute to Documentation](#contribute-to-documentation).
 
 6. Commit your changes into the branch.
 
