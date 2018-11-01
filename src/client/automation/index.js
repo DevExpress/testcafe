@@ -19,6 +19,7 @@ import {
 } from '../../test-run/commands/options';
 import AutomationSettings from './settings';
 import { getOffsetOptions } from './utils/offsets';
+import { getNextFocusableElement } from './playback/press/utils';
 import calculateSelectTextArguments from './playback/select/calculate-select-text-arguments';
 import ERROR_TYPES from './errors';
 import cursor from './cursor';
@@ -46,6 +47,7 @@ exports.AutomationSettings           = AutomationSettings;
 exports.getOffsetOptions             = getOffsetOptions;
 exports.calculateSelectTextArguments = calculateSelectTextArguments;
 exports.cursor                       = cursor;
+exports.getNextFocusableElement      = getNextFocusableElement;
 
 exports.get = require;
 

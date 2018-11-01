@@ -140,7 +140,7 @@ function correctFocusableElement (elements, element, skipRadioGroups) {
     return checkedRadioButtonElementWithSameName || element;
 }
 
-function getNextFocusableElement (element, reverse, skipRadioGroups) {
+export function getNextFocusableElement (element, reverse, skipRadioGroups) {
     const offset     = reverse ? -1 : 1;
     let allFocusable = domUtils.getFocusableElements(findDocument(element), true);
 
