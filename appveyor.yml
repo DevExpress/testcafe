@@ -9,7 +9,7 @@ branches:
   - new-docs
 
 environment:
-  NODEJS_VERSION: "6"
+  NODEJS_VERSION: "8"
 
   matrix:
     - GULP_TASK: "test-functional-local-ie"

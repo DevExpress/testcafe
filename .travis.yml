@@ -18,9 +18,9 @@ matrix:
     env: GULP_TASK="test-client-travis"
   - node_js: "8"
     env: GULP_TASK="test-client-travis-mobile"
-  - node_js: "6"
+  - node_js: "8"
     env: GULP_TASK="test-functional-local-headless-chrome"
-  - node_js: "6"
+  - node_js: "8"
     env: GULP_TASK="test-functional-local-headless-firefox"
  fast_finish: true
 
