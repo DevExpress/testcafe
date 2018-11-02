@@ -14,13 +14,13 @@ matrix:
     env: GULP_TASK="test-server"
   - node_js: "stable"
     env: GULP_TASK="test-server"
-  - node_js: "stable"
+  - node_js: "8"
     env: GULP_TASK="test-client-travis"
-  - node_js: "stable"
+  - node_js: "8"
     env: GULP_TASK="test-client-travis-mobile"
-  - node_js: "stable"
+  - node_js: "8"
     env: GULP_TASK="test-functional-local-headless-chrome"
-  - node_js: "stable"
+  - node_js: "8"
     env: GULP_TASK="test-functional-local-headless-firefox"
  fast_finish: true
 

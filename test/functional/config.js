@@ -110,6 +110,8 @@ testingEnvironments[testingEnvironmentNames.localBrowsers] = {
 testingEnvironments[testingEnvironmentNames.localBrowsersIE] = {
     isLocalBrowsers: true,
 
+    retryTestPages: true,
+
     browsers: [
         {
             platform:    'Windows 10',
@@ -141,6 +143,8 @@ testingEnvironments[testingEnvironmentNames.localHeadlessChrome] = {
     isLocalBrowsers:    true,
     isHeadlessBrowsers: true,
 
+    retryTestPages: true,
+
     browsers: [
         {
             platform:    'Windows 10',
@@ -154,6 +158,8 @@ testingEnvironments[testingEnvironmentNames.localHeadlessChrome] = {
 testingEnvironments[testingEnvironmentNames.localHeadlessFirefox] = {
     isLocalBrowsers:    true,
     isHeadlessBrowsers: true,
+
+    retryTestPages: true,
 
     browsers: [
         {
