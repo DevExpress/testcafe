@@ -53,7 +53,8 @@ html body .page-content-wrapper .site-header .site-header-content .site-nav #sea
       height: 245px;
       padding-top: 65px;
       line-height: 33px;
-      background-position: 30px 110px; }
+      background-position: 30px 110px;
+      margin-top: 0; }
       .support .tiles .col-2 .large-tile p {
         left: 30px;
         width: calc(100% - 30px); }
