@@ -13,11 +13,11 @@ html body .page-content-wrapper .site-header .site-header-content .site-nav #sea
       font-size: 36px; }
   .support .banner .support-search {
     margin: 0 auto;
-    max-width: none; }
+    max-width: none; 
+    padding-bottom: 48px; }
     .support .banner .support-search .algolia-autocomplete #support-search-input {
       width: calc(100% - 30px);
-      border-width: 4px;
-      margin-bottom: 48px; }
+      border-width: 4px; }
     .support .banner .support-search .algolia-autocomplete.algolia-autocomplete-left .ds-dropdown-menu, .support .banner .support-search .algolia-autocomplete.algolia-autocomplete-right .ds-dropdown-menu {
       min-width: 0; }
 .support .tiles {
