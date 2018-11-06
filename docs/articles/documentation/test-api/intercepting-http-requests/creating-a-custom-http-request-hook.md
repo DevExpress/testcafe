@@ -134,7 +134,7 @@ onRequest (event) {
 
 ### The onResponse Method
 
-The `onResponse` method's `event` object exposes the following properties:
+The `onResponse` method's `event` object exposes the following properties and methods:
 
 Property | Type | Description
 -------- | ---- | --------------
@@ -142,10 +142,17 @@ Property | Type | Description
 `headers`    | Object | The response headers in a property-value form.
 `body`       | [Buffer](https://nodejs.org/api/buffer.html) | The response body.
 
+Method                   | Parameter Types | Description
+------------------------ | --------------- | ------------
+`setHeader(name, value)` | String, String  | Sets the response's `name` header to the `value` value.
+`removeHeader(name)`     | String          | Removes the `name` header from the response.
+
 ```js
 onResponse (event) {
-    if(event.statusCode === 200)
+    if(event.statusCode === 200) {
         console.log(event.headers['Content-Type']);
+        event.setHeader('X-Frame-Options', 'sameorigin');
+    }
 }
 ```
 
