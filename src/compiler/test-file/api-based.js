@@ -72,7 +72,7 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
                 // NOTE: remove global API so that it will be unavailable for the dependencies
                 this._removeGlobalAPI();
 
-                if (APIBasedTestFileCompilerBase._isNodeModulesDep(filename))
+                if (APIBasedTestFileCompilerBase._isNodeModulesDep(filename) && origExt)
                     origExt(mod, filename);
 
                 else {
