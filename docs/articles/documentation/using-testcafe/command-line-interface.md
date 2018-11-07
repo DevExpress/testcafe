@@ -35,6 +35,8 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [-T \<pattern\>, --test-grep \<pattern\>](#-t-pattern---test-grep-pattern)
   * [-f \<name\>, --fixture \<name\>](#-f-name---fixture-name)
   * [-F \<pattern\>, --fixture-grep \<pattern\>](#-f-pattern---fixture-grep-pattern)
+  * [--test-meta \<key=value\[,key2=value2,...\]\>](#--test-meta-keyvaluekey2value2)
+  * [--fixture-meta \<key=value\[,key2=value2,...\]\>](#--fixture-meta-keyvaluekey2value2)
   * [-a \<command\>, --app \<command\>](#-a-command---app-command)
   * [-c \<n\>, --concurrency \<n\>](#-c-n---concurrency-n)
   * [--debug-on-fail](#--debug-on-fail)
@@ -51,6 +53,7 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [--dev](#--dev)
   * [--qr-code](#--qr-code)
   * [--sf, --stop-on-first-fail](#--sf---stop-on-first-fail)
+  * [--disable-test-syntax-validation](#--disable-test-syntax-validation)
   * [--color](#--color)
   * [--no-color](#--no-color)
 
@@ -420,6 +423,26 @@ For example, the following command runs fixtures whose names match `Page.*`. The
 testcafe ie my-tests -F "Page.*"
 ```
 
+### --test-meta \<key=value\[,key2=value2,...\]\>
+
+TestCafe runs tests whose [metadata](../test-api/test-code-structure.md#specifying-testing-metadata) [matches](https://lodash.com/docs/#isMatch) the specified key-value pair.
+
+For example, the following command runs tests whose metadata has the `device` property set to the `mobile` value and the `env` property set to the `production` value.
+
+```sh
+testcafe chrome my-tests --test-meta device=mobile,env=production
+```
+
+### --fixture-meta \<key=value\[,key2=value2,...\]\>
+
+TestCafe runs tests whose fixture's [metadata](../test-api/test-code-structure.md#specifying-testing-metadata) [matches](https://lodash.com/docs/#isMatch) the specified key-value pair.
+
+For example, the following command runs tests whose fixture's metadata has the `device` property set to the `mobile` value and the `env` property set to the `production` value.
+
+```sh
+testcafe chrome my-tests --fixture-meta device=mobile,env=production
+```
+
 ### -a \<command\>, --app \<command\>
 
 Executes the specified shell command before running tests. Use it to launch or deploy the application you are going to test.
@@ -620,6 +643,41 @@ Stops an entire test run if any test fails. This allows you not to wait for all 
 
 ```sh
 testcafe chrome my-tests --sf
+```
+
+### --disable-test-syntax-validation
+
+Disables checks for `test` and `fixture` directives in test files. Use this flag to run dynamically loaded tests.
+
+TestCafe requires test files to have the [fixture](../test-api/test-code-structure.md#fixtures) and [test](../test-api/test-code-structure.md#tests) directives. Otherwise, an error is thrown.
+
+However, when you import tests from external libraries or generate them dynamically, the `.js` file provided to TestCafe may not contain any tests.
+
+**external-lib.js**
+
+```js
+export default function runTests () {
+    fixture `External tests`
+        .page `http:///example.com`;
+
+    test('My Test', async t => {
+        // ...
+    });
+}
+```
+
+**test.js**
+
+```js
+import runTests from './external-lib';
+
+runTests();
+```
+
+In this instance, specify the `--disable-test-syntax-validation` flag to bypass checks for test syntax.
+
+```sh
+testcafe safari test.js --disable-test-syntax-validation
 ```
 
 ### --color
