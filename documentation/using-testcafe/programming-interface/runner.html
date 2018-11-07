@@ -777,7 +777,7 @@
 </tr>
 </thead><tbody><tr>
 <td><code>callback</code></td>
-<td><code>function(testName, fixtureName, fixturePath)</code></td>
+<td><code>function(testName, fixtureName, fixturePath, testMeta, fixtureMeta)</code></td>
 <td>The callback that determines if a particular test should be run.</td>
 </tr>
 </tbody></table></div>
@@ -806,12 +806,24 @@
 <td>String</td>
 <td>The path to the test fixture file.</td>
 </tr>
+<tr>
+<td><code>testMeta</code></td>
+<td>Object&lt;String, String&gt;</td>
+<td>The test metadata.</td>
+</tr>
+<tr>
+<td><code>fixtureMeta</code></td>
+<td>Object&lt;String, String&gt;</td>
+<td>The fixture metadata.</td>
+</tr>
 </tbody></table></div>
 <p><strong>Example</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">filter</span><span class="p">((</span><span class="nx">testName</span><span class="p">,</span> <span class="nx">fixtureName</span><span class="p">,</span> <span class="nx">fixturePath</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">filter</span><span class="p">((</span><span class="nx">testName</span><span class="p">,</span> <span class="nx">fixtureName</span><span class="p">,</span> <span class="nx">fixturePath</span><span class="p">,</span> <span class="nx">testMeta</span><span class="p">,</span> <span class="nx">fixtureMeta</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">fixturePath</span><span class="p">.</span><span class="nx">startsWith</span><span class="p">(</span><span class="s1">'D'</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
         <span class="nx">testName</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">someRe</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
-        <span class="nx">fixtureName</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">anotherRe</span><span class="p">);</span>
+        <span class="nx">fixtureName</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">anotherRe</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
+        <span class="nx">testMeta</span><span class="p">.</span><span class="nx">mobile</span> <span class="o">===</span> <span class="s1">'true'</span> <span class="o">&amp;&amp;</span>
+        <span class="nx">fixtureMeta</span><span class="p">.</span><span class="nx">env</span> <span class="o">===</span> <span class="s1">'staging'</span><span class="p">;</span>
 <span class="p">});</span>
 </code></pre></div><h3><a class="anchor" id="browsers"></a>browsers <a class="permalink" href="#browsers">#</a></h3>
 <p>Configures the test runner to run tests in the specified browsers.</p>
@@ -1142,6 +1154,12 @@ where tests are not guaranteed to execute correctly.</p>
 <td><code>stopOnFirstFail</code></td>
 <td>Boolean</td>
 <td>Defines whether to stop an entire test run if any test fails. This allows you not to wait for all the tests included in the test task to finish and allows focusing on the first error.</td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>disableTestSyntaxValidation</code></td>
+<td>Boolean</td>
+<td>Defines whether to disable checks for <a href="../../test-api/test-code-structure.html#tests">test</a> and <a href="../../test-api/test-code-structure.html#fixtures">fixture</a> directives in test files. Use this option to run dynamically loaded tests. See details in the <a href="../command-line-interface.html#--disable-test-syntax-validation">--disable-test-syntax-validation</a> command line option description.</td>
 <td><code>false</code></td>
 </tr>
 </tbody></table></div>

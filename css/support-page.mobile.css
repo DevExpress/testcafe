@@ -13,7 +13,7 @@ html body .page-content-wrapper .site-header .site-header-content .site-nav #sea
       font-size: 36px; }
   .support .banner .support-search {
     margin: 0 auto;
-    max-width: none; 
+    max-width: none;
     padding-bottom: 48px; }
     .support .banner .support-search .algolia-autocomplete #support-search-input {
       width: calc(100% - 30px);
