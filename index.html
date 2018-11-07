@@ -5,6 +5,7 @@
   
   
   
+  
 
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -75,6 +76,8 @@
 
   
 
+  
+
   <script>
     function linkCss (href) {
         var link  = document.createElement('link');
@@ -122,7 +125,7 @@
                 var mainMenuSecondItem = document.querySelector('.site-nav-tab:nth-child(2)');
 
                 siteNav.insertBefore(docTopNav, mainMenuSecondItem);
-
+                
                 var searchPanel = document.getElementById('search-panel');
                 
                 siteNav.insertBefore(searchPanel, docMenuItem);
@@ -162,6 +165,8 @@
         if (isMobileDevice)
             linkCss('/testcafe/css/landing-page.mobile.css');
     </script>
+
+  
 
   
 
@@ -238,7 +243,9 @@
 
     <div class="page-content-wrapper">
 
-      <header class="site-header ">
+      
+
+<header class="site-header ">
   <div class="site-header-content">
     <a class="site-logo" href="/testcafe/"></a>
     <div class="hamburger-button">
@@ -268,12 +275,7 @@
         
           
           <div class="site-nav-tab ">
-            <a class="page-link" href="https://github.com/DevExpress/testcafe/issues" target="_blank">Issues</a>
-          </div>
-        
-          
-          <div class="site-nav-tab ">
-            <a class="page-link" href="https://stackoverflow.com/questions/tagged/testcafe" target="_blank">Q&amp;A</a>
+            <a class="page-link" href="/testcafe/support/">Support</a>
           </div>
         
           
@@ -694,7 +696,8 @@ test('My first test', async t => {
 </footer>
 
 
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.js"></script>
+    
+<script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.js"></script>
 <script type="text/javascript"> var search = docsearch({
      apiKey: '938fb7894c0af8c01af3e2b4c53d4bdd',
      indexName: 'testcafe',

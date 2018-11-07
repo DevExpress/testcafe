@@ -1,0 +1,96 @@
+#search-icon {
+  background-image: url("/testcafe/images/search-disabled.svg");
+  cursor: default; }
+
+.support .banner {
+  padding-top: 53px;
+  height: 274px;
+  background-color: #a4cada;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.08); }
+  .support .banner .banner-header {
+    text-align: center;
+    color: #404142; }
+    .support .banner .banner-header h1 {
+      font-weight: bold;
+      font-size: 45px; }
+  .support .banner .support-search {
+    margin: 35px auto 0;
+    max-width: 868px; }
+    .support .banner .support-search .algolia-autocomplete {
+      width: 100%; }
+      .support .banner .support-search .algolia-autocomplete #support-search-input {
+        background-color: #EEF1F3;
+        background-image: url("/testcafe/images/support-search.svg");
+        background-position: center right 20px;
+        background-repeat: no-repeat;
+        width: 100%;
+        height: 70px;
+        border: 8px solid rgba(0, 0, 0, 0.12);
+        border-radius: 12px;
+        background-clip: padding-box;
+        padding: 0 0 0 20px;
+        font-size: 25px; }
+        .support .banner .support-search .algolia-autocomplete #support-search-input:focus {
+          outline: none; }
+    .support .banner .support-search .algolia-autocomplete.algolia-autocomplete-right .ds-dropdown-menu {
+      right: auto !important; }
+.support .tiles {
+  margin: 50px auto;
+  max-width: 1440px;
+  display: flex; }
+  .support .tiles .col-1 {
+    flex-grow: 2;
+    flex-basis: 0;
+    width: 66%;
+    display: flex;
+    flex-wrap: wrap; }
+    .support .tiles .col-1 a {
+      display: block;
+      width: 50%;
+      flex-grow: 1; }
+    .support .tiles .col-1 .small-tile {
+      height: 224px;
+      line-height: 224px;
+      background-position: 14% 54%;
+      background-repeat: no-repeat; }
+      .support .tiles .col-1 .small-tile p {
+        position: relative;
+        left: 31%;
+        width: 69%; }
+    .support .tiles .col-1 .docs-tile {
+      background-image: url("/testcafe/images/support-docs.svg"); }
+    .support .tiles .col-1 .issue-tile {
+      background-image: url("/testcafe/images/support-issue.svg"); }
+    .support .tiles .col-1 .faq-tile {
+      background-image: url("/testcafe/images/support-faq.svg"); }
+    .support .tiles .col-1 .feature-tile {
+      background-image: url("/testcafe/images/support-feature.svg"); }
+  .support .tiles .col-2 {
+    flex-grow: 1;
+    flex-basis: 0;
+    width: 33%; }
+    .support .tiles .col-2 .large-tile {
+      height: 468px;
+      padding-top: 175px;
+      background-repeat: no-repeat;
+      background-position: 40% 219px; }
+      .support .tiles .col-2 .large-tile p {
+        position: relative;
+        left: 14%;
+        width: 86%; }
+    .support .tiles .col-2 .stack-overflow-tile {
+      background-image: url("/testcafe/images/support-stack-overflow.svg"); }
+  .support .tiles .col-1 a, .support .tiles .col-2 a {
+    color: #000; }
+    .support .tiles .col-1 a:hover, .support .tiles .col-2 a:hover {
+      text-decoration: none; }
+  .support .tiles .col-1 .tile, .support .tiles .col-2 .tile {
+    border: 5px solid #FFF;
+    background-color: #EEF1F3;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin: 10px 10px;
+    font-size: 26px;
+    font-weight: 600; }
+    .support .tiles .col-1 .tile:hover, .support .tiles .col-2 .tile:hover {
+      border: 5px solid #ACC9D8; }

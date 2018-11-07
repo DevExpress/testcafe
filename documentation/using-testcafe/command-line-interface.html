@@ -5,6 +5,7 @@
   
   
   
+  
 
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -79,6 +80,8 @@
   </style>
   
 
+  
+
   <script>
     function linkCss (href) {
         var link  = document.createElement('link');
@@ -126,7 +129,7 @@
                 var mainMenuSecondItem = document.querySelector('.site-nav-tab:nth-child(2)');
 
                 siteNav.insertBefore(docTopNav, mainMenuSecondItem);
-
+                
                 var searchPanel = document.getElementById('search-panel');
                 
                 siteNav.insertBefore(searchPanel, docMenuItem);
@@ -157,6 +160,8 @@
             linkCss('/testcafe/css/mobile.css');
         }
     </script>
+
+  
 
   
 
@@ -329,7 +334,9 @@
 
     <div class="page-content-wrapper">
 
-      <header class="site-header fixed">
+      
+
+<header class="site-header fixed">
   <div class="site-header-content">
     <a class="site-logo" href="/testcafe/"></a>
     <div class="hamburger-button">
@@ -359,12 +366,7 @@
         
           
           <div class="site-nav-tab ">
-            <a class="page-link" href="https://github.com/DevExpress/testcafe/issues" target="_blank">Issues</a>
-          </div>
-        
-          
-          <div class="site-nav-tab ">
-            <a class="page-link" href="https://stackoverflow.com/questions/tagged/testcafe" target="_blank">Q&amp;A</a>
+            <a class="page-link" href="/testcafe/support/">Support</a>
           </div>
         
           
@@ -868,15 +870,15 @@ For example, this command runs tests from files that match <code>tests/*page*</c
 <p>The captured screenshots are organized into subdirectories within the base directory. The following path patterns are used to define a relative path and name for screenshots the <a href="../test-api/actions/take-screenshot.html">Take Screenshot</a> actions take:</p>
 
 <ul>
-<li><code>${DATE}_${TIME}\test-${TEST_INDEX}\${USERAGENT}\{$FILE_INDEX}.png</code> if the <a href="#-q---quarantine-mode">quarantine mode</a> is disabled;</li>
-<li><code>${DATE}_${TIME}\test-${TEST_INDEX}\run-${QUARANTINE_ATTEMPT}\${USERAGENT}\{$FILE_INDEX}.png</code> if the <a href="#-q---quarantine-mode">quarantine mode</a> is enabled.</li>
+<li><code>${DATE}_${TIME}\test-${TEST_INDEX}\${USERAGENT}\${FILE_INDEX}.png</code> if the <a href="#-q---quarantine-mode">quarantine mode</a> is disabled;</li>
+<li><code>${DATE}_${TIME}\test-${TEST_INDEX}\run-${QUARANTINE_ATTEMPT}\${USERAGENT}\${FILE_INDEX}.png</code> if the <a href="#-q---quarantine-mode">quarantine mode</a> is enabled.</li>
 </ul>
 
 <p>If TestCafe takes screenshots when a test fails (see <a href="#-s---screenshots-on-fails">--screenshots-on-fails</a> option), the following path patterns are used:</p>
 
 <ul>
-<li><code>${DATE}_${TIME}\test-${TEST_INDEX}\${USERAGENT}\errors\{$FILE_INDEX}.png</code>;</li>
-<li><code>${DATE}_${TIME}\test-${TEST_INDEX}\run-${QUARANTINE_ATTEMPT}\${USERAGENT}\errors\{$FILE_INDEX}.png</code> if the <a href="#-q---quarantine-mode">quarantine mode</a> is enabled.</li>
+<li><code>${DATE}_${TIME}\test-${TEST_INDEX}\${USERAGENT}\errors\${FILE_INDEX}.png</code>;</li>
+<li><code>${DATE}_${TIME}\test-${TEST_INDEX}\run-${QUARANTINE_ATTEMPT}\${USERAGENT}\errors\${FILE_INDEX}.png</code> if the <a href="#-q---quarantine-mode">quarantine mode</a> is enabled.</li>
 </ul>
 
 <p>You can also use the <a href="#-p---screenshot-path-pattern">--screenshot-path-pattern</a> option to specify a custom pattern.</p>
@@ -1132,7 +1134,8 @@ See <a href="common-concepts/connect-to-the-testcafe-server-over-https.html">Con
 </footer>
 
 
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.js"></script>
+    
+<script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.js"></script>
 <script type="text/javascript"> var search = docsearch({
      apiKey: '938fb7894c0af8c01af3e2b4c53d4bdd',
      indexName: 'testcafe',

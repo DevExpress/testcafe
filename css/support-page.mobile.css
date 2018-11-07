@@ -1,0 +1,63 @@
+html body .page-content-wrapper .site-header .site-header-content .site-nav #search-panel {
+  display: none; }
+
+.support .banner {
+  padding: 53px 15px 0;
+  height: auto;
+  min-height: 200px;
+  box-shadow: none; }
+  .support .banner .banner-header {
+    text-align: left;
+    margin-left: 4px; }
+    .support .banner .banner-header h1 {
+      font-size: 36px; }
+  .support .banner .support-search {
+    margin: 0 auto;
+    max-width: none; 
+    padding-bottom: 48px; }
+    .support .banner .support-search .algolia-autocomplete #support-search-input {
+      width: calc(100% - 30px);
+      border-width: 4px; }
+    .support .banner .support-search .algolia-autocomplete.algolia-autocomplete-left .ds-dropdown-menu, .support .banner .support-search .algolia-autocomplete.algolia-autocomplete-right .ds-dropdown-menu {
+      min-width: 0; }
+.support .tiles {
+  margin: 5px 0 40px 0;
+  display: block; }
+  .support .tiles .col-1 {
+    width: 100%;
+    display: block; }
+    .support .tiles .col-1 a {
+      width: 100%; }
+    .support .tiles .col-1 .tile {
+      margin: 0 10px; }
+    .support .tiles .col-1 .small-tile {
+      height: 88px;
+      line-height: normal;
+      background-position: 30px 50%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center; }
+      .support .tiles .col-1 .small-tile p {
+        left: 100px;
+        width: calc(100% - 120px);
+        margin-bottom: 0; }
+    @media screen and (max-width: 340px) {
+      .support .tiles .col-1 .small-tile {
+        background-position: 20px 50%; }
+        .support .tiles .col-1 .small-tile p {
+          left: 80px;
+          width: calc(100% - 100px); } }
+  .support .tiles .col-2 {
+    width: 100%; }
+    .support .tiles .col-2 .large-tile {
+      height: 245px;
+      padding-top: 65px;
+      line-height: 33px;
+      background-position: 30px 110px;
+      margin-top: 0; }
+      .support .tiles .col-2 .large-tile p {
+        left: 30px;
+        width: calc(100% - 30px); }
+    @media screen and (max-width: 375px) {
+      .support .tiles .col-2 .large-tile {
+        background-size: 240px; } }
