@@ -47,7 +47,7 @@ runner.run({ disableTestSyntaxValidation: true })
 
 ### Bug Fixes
 
-* The `touchstart` event now correctly records touches ([#2856](https://github.com/DevExpress/testcafe/issues/2856))
+* Touch events are now simulated with correct touch properties (`touches`, `targetTouches`, `changedTouches`) ([#2856](https://github.com/DevExpress/testcafe/issues/2856))
 * Google Chrome now closes correctly after tests are finished ([#2860](https://github.com/DevExpress/testcafe/issues/2860))
 * Internal attribute and node changes no longer provoke `MutationObserver` notifications ([testcafe-hammerhead/#1769](https://github.com/DevExpress/testcafe-hammerhead/issues/1769))
 * The `ECONNABORTED` error is no longer raised ([testcafe-hammerhead/#1744](https://github.com/DevExpress/testcafe-hammerhead/issues/1744))
