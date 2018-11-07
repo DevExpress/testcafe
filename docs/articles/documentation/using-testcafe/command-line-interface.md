@@ -669,7 +669,7 @@ export default function runTests () {
 **test.js**
 
 ```js
-import { runTests } from 'external-lib';
+import runTests from './external-lib';
 
 runTests();
 ```
