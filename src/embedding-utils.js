@@ -18,32 +18,32 @@ export default {
     COMMAND_TYPE,
     Assignable,
 
-    getTestList (...args) {
-        return getTestListModule.getTestList(...args);
+    get getTestList () {
+        return getTestListModule.getTestList;
     },
 
-    getTypeScriptTestList (...args) {
-        return getTypeScriptTestListModule.getTypeScriptTestList(...args);
+    get getTypeScriptTestList () {
+        return getTypeScriptTestListModule.getTypeScriptTestList;
     },
 
-    getCoffeeScriptTestList (...args) {
-        return getCoffeeScriptTestListModule.getCoffeeScriptTestList(...args);
+    get getCoffeeScriptTestList () {
+        return getCoffeeScriptTestListModule.getCoffeeScriptTestList;
     },
 
-    getTestListFromCode (...args) {
-        return getTestListModule.getTestListFromCode(...args);
+    get getTestListFromCode () {
+        return getTestListModule.getTestListFromCode;
     },
 
-    getTypeScriptTestListFromCode (...args) {
-        return getTypeScriptTestListModule.getTypeScriptTestListFromCode(...args);
+    get getTypeScriptTestListFromCode () {
+        return getTypeScriptTestListModule.getTypeScriptTestListFromCode;
     },
 
-    getCoffeeScriptTestListFromCode (...args) {
-        return getCoffeeScriptTestListModule.getCoffeeScriptTestListFromCode(...args);
+    get getCoffeeScriptTestListFromCode () {
+        return getCoffeeScriptTestListModule.getCoffeeScriptTestListFromCode;
     },
 
-    initSelector (...args) {
-        return initializers.initSelector(...args);
+    get initSelector () {
+        return initializers.initSelector;
     },
 
     ensureUploadDirectory (...args) {
