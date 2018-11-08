@@ -4,6 +4,7 @@ import * as testRunErrors from './errors/test-run';
 import TestRun from './test-run';
 import COMMAND_TYPE from './test-run/commands/type';
 import Assignable from './utils/assignable';
+import { UploadStorage } from 'testcafe-hammerhead';
 import { getTestList, getTestListFromCode } from './compiler/test-file/formats/es-next/get-test-list';
 import { getTypeScriptTestList, getTypeScriptTestListFromCode } from './compiler/test-file/formats/typescript/get-test-list';
 import { getCoffeeScriptTestList, getCoffeeScriptTestListFromCode } from './compiler/test-file/formats/coffeescript/get-test-list';
@@ -18,6 +19,7 @@ export default {
     getCoffeeScriptTestListFromCode,
     TestRunErrorFormattableAdapter,
     TestRun,
+    UploadStorage,
     testRunErrors,
     COMMAND_TYPE,
     Assignable,
