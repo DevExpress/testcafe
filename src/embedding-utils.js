@@ -1,4 +1,5 @@
 const lazyRequire                    = require('import-lazy')(require);
+const hammerhead                     = lazyRequire('testcafe-hammerhead');
 const ReporterPluginHost             = lazyRequire('./reporter/plugin-host');
 const TestRunErrorFormattableAdapter = lazyRequire('./errors/test-run/formattable-adapter');
 const testRunErrors                  = lazyRequire('./errors/test-run');
@@ -9,6 +10,7 @@ const getTestListModule              = lazyRequire('./compiler/test-file/formats
 const getTypeScriptTestListModule    = lazyRequire('./compiler/test-file/formats/typescript/get-test-list');
 const getCoffeeScriptTestListModule  = lazyRequire('./compiler/test-file/formats/coffeescript/get-test-list');
 const initializers                   = lazyRequire('./test-run/commands/validations/initializers');
+
 
 export default {
     get getTestList () {
@@ -44,6 +46,14 @@ export default {
     testRunErrors,
     COMMAND_TYPE,
     Assignable,
+
+    ensureUploadDirectory (...args) {
+        return hammerhead.UploadStorage.ensureUploadsRoot(...args);
+    },
+
+    copyFilesToUploadFolder (...args) {
+        return hammerhead.UploadStorage.copy(...args);
+    },
 
     buildReporterPlugin (pluginFactory, outStream) {
         const plugin = pluginFactory();
