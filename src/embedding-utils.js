@@ -11,41 +11,40 @@ const getTypeScriptTestListModule    = lazyRequire('./compiler/test-file/formats
 const getCoffeeScriptTestListModule  = lazyRequire('./compiler/test-file/formats/coffeescript/get-test-list');
 const initializers                   = lazyRequire('./test-run/commands/validations/initializers');
 
-
 export default {
-    get getTestList () {
-        return getTestListModule.getTestList;
-    },
-
-    get getTypeScriptTestList () {
-        return getTypeScriptTestListModule.getTypeScriptTestList;
-    },
-
-    get getCoffeeScriptTestList () {
-        return getCoffeeScriptTestListModule.getCoffeeScriptTestList;
-    },
-
-    get getTestListFromCode () {
-        return getTestListModule.getTestListFromCode;
-    },
-
-    get getTypeScriptTestListFromCode () {
-        return getTypeScriptTestListModule.getTypeScriptTestListFromCode;
-    },
-
-    get getCoffeeScriptTestListFromCode () {
-        return getCoffeeScriptTestListModule.getCoffeeScriptTestListFromCode;
-    },
-
-    get initSelector () {
-        return initializers.initSelector;
-    },
-
     TestRunErrorFormattableAdapter,
     TestRun,
     testRunErrors,
     COMMAND_TYPE,
     Assignable,
+
+    getTestList (...args) {
+        return getTestListModule.getTestList(...args);
+    },
+
+    getTypeScriptTestList (...args) {
+        return getTypeScriptTestListModule.getTypeScriptTestList(...args);
+    },
+
+    getCoffeeScriptTestList (...args) {
+        return getCoffeeScriptTestListModule.getCoffeeScriptTestList(...args);
+    },
+
+    getTestListFromCode (...args) {
+        return getTestListModule.getTestListFromCode(...args);
+    },
+
+    getTypeScriptTestListFromCode (...args) {
+        return getTypeScriptTestListModule.getTypeScriptTestListFromCode(...args);
+    },
+
+    getCoffeeScriptTestListFromCode (...args) {
+        return getCoffeeScriptTestListModule.getCoffeeScriptTestListFromCode(...args);
+    },
+
+    initSelector (...args) {
+        return initializers.initSelector(...args);
+    },
 
     ensureUploadDirectory (...args) {
         return hammerhead.UploadStorage.ensureUploadsRoot(...args);

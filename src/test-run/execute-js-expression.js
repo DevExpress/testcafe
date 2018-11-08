@@ -56,7 +56,7 @@ function createExecutionContext (testRun) {
     return createContext(sandbox);
 }
 
-export function executeJsExpression (expression, testRun, options) {
+export default function (expression, testRun, options) {
     const context = getContext(testRun, options);
 
     return runInContext(expression, context, { displayErrors: false });
