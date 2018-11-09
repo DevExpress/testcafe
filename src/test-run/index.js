@@ -5,39 +5,21 @@ import promisifyEvent from 'promisify-event';
 import Promise from 'pinkie';
 import Mustache from 'mustache';
 import debugLogger from '../notifications/debug-logger';
-import SessionController from './session-controller';
 import TestRunDebugLog from './debug-log';
 import TestRunErrorFormattableAdapter from '../errors/test-run/formattable-adapter';
 import TestCafeErrorList from '../errors/error-list';
-import { executeJsExpression } from './execute-js-expression';
 import { PageLoadError, RoleSwitchInRoleInitializerError } from '../errors/test-run/';
-import BrowserManipulationQueue from './browser-manipulation-queue';
 import PHASE from './phase';
 import CLIENT_MESSAGES from './client-messages';
 import COMMAND_TYPE from './commands/type';
-import AssertionExecutor from '../assertions/executor';
 import delay from '../utils/delay';
 import testRunMarker from './marker-symbol';
 import testRunTracker from '../api/test-run-tracker';
 import ROLE_PHASE from '../role/phase';
-import TestRunBookmark from './bookmark';
-import ClientFunctionBuilder from '../client-functions/client-function-builder';
 import ReporterPluginHost from '../reporter/plugin-host';
 import BrowserConsoleMessages from './browser-console-messages';
 import { UNSTABLE_NETWORK_MODE_HEADER } from '../browser/connection/unstable-network-mode';
 import WARNING_MESSAGE from '../notifications/warning-message';
-
-import { TakeScreenshotOnFailCommand } from './commands/browser-manipulation';
-import { SetNativeDialogHandlerCommand, SetTestSpeedCommand, SetPageLoadTimeoutCommand } from './commands/actions';
-
-
-import {
-    TestDoneCommand,
-    ShowAssertionRetriesStatusCommand,
-    HideAssertionRetriesStatusCommand,
-    SetBreakpointCommand,
-    BackupStoragesCommand
-} from './commands/service';
 
 import {
     isCommandRejectableByPageError,
@@ -47,6 +29,18 @@ import {
     canSetDebuggerBreakpointBeforeCommand,
     isExecutableOnClientCommand
 } from './commands/utils';
+
+const lazyRequire                 = require('import-lazy')(require);
+const SessionController           = lazyRequire('./session-controller');
+const ClientFunctionBuilder       = lazyRequire('../client-functions/client-function-builder');
+const executeJsExpression         = lazyRequire('./execute-js-expression');
+const BrowserManipulationQueue    = lazyRequire('./browser-manipulation-queue');
+const TestRunBookmark             = lazyRequire('./bookmark');
+const AssertionExecutor           = lazyRequire('../assertions/executor');
+const actionCommands              = lazyRequire('./commands/actions');
+const browserManipulationCommands = lazyRequire('./commands/browser-manipulation');
+const serviceCommands             = lazyRequire('./commands/service');
+
 
 const TEST_RUN_TEMPLATE               = read('../client/test-run/index.js.mustache');
 const IFRAME_TEST_RUN_TEMPLATE        = read('../client/test-run/iframe.js.mustache');
@@ -248,7 +242,7 @@ export default class TestRun extends EventEmitter {
             let screenshotPath = null;
 
             if (this.opts.takeScreenshotsOnFails)
-                screenshotPath = await this.executeCommand(new TakeScreenshotOnFailCommand());
+                screenshotPath = await this.executeCommand(new browserManipulationCommands.TakeScreenshotOnFailCommand());
 
             this.addError(err, screenshotPath);
             return false;
@@ -299,7 +293,7 @@ export default class TestRun extends EventEmitter {
         if (this.errs.length && this.debugOnFail)
             await this._enqueueSetBreakpointCommand(null, this.debugReporterPluginHost.formatError(this.errs[0]));
 
-        await this.executeCommand(new TestDoneCommand());
+        await this.executeCommand(new serviceCommands.TestDoneCommand());
 
         this._addPendingPageErrorIfAny();
 
@@ -374,7 +368,7 @@ export default class TestRun extends EventEmitter {
 
         debugLogger.showBreakpoint(this.session.id, this.browserConnection.userAgent, callsite, error);
 
-        this.debugging = await this.executeCommand(new SetBreakpointCommand(!!error), callsite);
+        this.debugging = await this.executeCommand(new serviceCommands.SetBreakpointCommand(!!error), callsite);
     }
 
     _removeAllNonServiceTasks () {
@@ -498,8 +492,8 @@ export default class TestRun extends EventEmitter {
         const assertionTimeout = command.options.timeout === void 0 ? this.opts.assertionTimeout : command.options.timeout;
         const executor         = new AssertionExecutor(command, assertionTimeout, callsite);
 
-        executor.once('start-assertion-retries', timeout => this.executeCommand(new ShowAssertionRetriesStatusCommand(timeout)));
-        executor.once('end-assertion-retries', success => this.executeCommand(new HideAssertionRetriesStatusCommand(success)));
+        executor.once('start-assertion-retries', timeout => this.executeCommand(new serviceCommands.ShowAssertionRetriesStatusCommand(timeout)));
+        executor.once('end-assertion-retries', success => this.executeCommand(new serviceCommands.HideAssertionRetriesStatusCommand(success)));
 
         return executor.run();
     }
@@ -598,7 +592,7 @@ export default class TestRun extends EventEmitter {
     async getStateSnapshot () {
         const state = this.session.getStateSnapshot();
 
-        state.storages = await this.executeCommand(new BackupStoragesCommand());
+        state.storages = await this.executeCommand(new serviceCommands.BackupStoragesCommand());
 
         return state;
     }
@@ -611,19 +605,19 @@ export default class TestRun extends EventEmitter {
         this.session.useStateSnapshot(null);
 
         if (this.activeDialogHandler) {
-            const removeDialogHandlerCommand = new SetNativeDialogHandlerCommand({ dialogHandler: { fn: null } });
+            const removeDialogHandlerCommand = new actionCommands.SetNativeDialogHandlerCommand({ dialogHandler: { fn: null } });
 
             await this.executeCommand(removeDialogHandlerCommand);
         }
 
         if (this.speed !== this.opts.speed) {
-            const setSpeedCommand = new SetTestSpeedCommand({ speed: this.opts.speed });
+            const setSpeedCommand = new actionCommands.SetTestSpeedCommand({ speed: this.opts.speed });
 
             await this.executeCommand(setSpeedCommand);
         }
 
         if (this.pageLoadTimeout !== this.opts.pageLoadTimeout) {
-            const setPageLoadTimeoutCommand = new SetPageLoadTimeoutCommand({ duration: this.opts.pageLoadTimeout });
+            const setPageLoadTimeoutCommand = new actionCommands.SetPageLoadTimeoutCommand({ duration: this.opts.pageLoadTimeout });
 
             await this.executeCommand(setPageLoadTimeoutCommand);
         }

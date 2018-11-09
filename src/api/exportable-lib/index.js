@@ -1,13 +1,18 @@
-import ClientFunctionBuilder from '../../client-functions/client-function-builder';
-import SelectorBuilder from '../../client-functions/selectors/selector-builder';
-import { createRole, createAnonymousRole } from '../../role';
-import testControllerProxy from '../test-controller/proxy';
-import createRequestLogger from '../request-hooks/request-logger';
-import createRequestMock from '../request-hooks/request-mock';
-import RequestHook from '../request-hooks/hook';
+const lazyRequire           = require('import-lazy')(require);
+const ClientFunctionBuilder = lazyRequire('../../client-functions/client-function-builder');
+const SelectorBuilder       = lazyRequire('../../client-functions/selectors/selector-builder');
+const role                  = lazyRequire('../../role');
+const createRequestLogger   = lazyRequire('../request-hooks/request-logger');
+const createRequestMock     = lazyRequire('../request-hooks/request-mock');
+
+// NOTE: We can't use lazy require for RequestHook, because it will break base class detection for inherited classes
+let RequestHook = null;
+
+// NOTE: We can't use lazy require for testControllerProxy, because it will break test controller detection
+let testControllerProxy = null;
 
 function Role (loginPage, initFn, options) {
-    return createRole(loginPage, initFn, options);
+    return role.createRole(loginPage, initFn, options);
 }
 
 function RequestMock () {
@@ -30,7 +35,9 @@ function Selector (fn, options) {
     return builder.getFunction();
 }
 
-Role.anonymous = createAnonymousRole;
+Object.defineProperty(Role, 'anonymous', {
+    get: () => role.createAnonymousRole
+});
 
 export default {
     Role,
@@ -43,7 +50,17 @@ export default {
 
     RequestMock,
 
-    RequestHook,
+    get RequestHook () {
+        if (!RequestHook)
+            RequestHook = require('../request-hooks/hook');
 
-    t: testControllerProxy
+        return RequestHook;
+    },
+
+    get t () {
+        if (!testControllerProxy)
+            testControllerProxy = require('../test-controller/proxy');
+
+        return testControllerProxy;
+    }
 };

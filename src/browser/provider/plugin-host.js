@@ -95,11 +95,12 @@ export default class BrowserProviderPluginHost {
     }
 
     // Extra functions
-    async isLocalBrowser (/* browserId, browserName */) {
+    // NOTE: The browserName argument is optional, and must be supplied if the browserId argument is not valid (browser is not opened)
+    async isLocalBrowser (/* browserId[, browserName] */) {
         return false;
     }
 
-    isHeadlessBrowser () {
+    isHeadlessBrowser (/* browserId */) {
         return false;
     }
 

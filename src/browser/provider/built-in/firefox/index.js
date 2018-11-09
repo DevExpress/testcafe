@@ -2,7 +2,6 @@ import OS from 'os-family';
 import getRuntimeInfo from './runtime-info';
 import { start as startLocalFirefox, stop as stopLocalFirefox } from './local-firefox';
 import MarionetteClient from './marionette-client';
-import getConfig from './config';
 import getMaximizedHeadlessWindowSize from '../../utils/get-maximized-headless-window-size';
 
 
@@ -59,16 +58,12 @@ export default {
         delete this.openedBrowsers[browserId];
     },
 
-    async isLocalBrowser (browserId, configString) {
-        const config = this.openedBrowsers[browserId] ? this.openedBrowsers[browserId].config : getConfig(configString);
-
-        return !config.headless;
+    async isLocalBrowser () {
+        return true;
     },
 
     isHeadlessBrowser (browserId) {
-        const config = this.openedBrowsers[browserId].config;
-
-        return config && config.headless;
+        return this.openedBrowsers[browserId].config.headless;
     },
 
     async takeScreenshot (browserId, path) {
