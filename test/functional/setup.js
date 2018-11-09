@@ -35,13 +35,6 @@ config.browsers = environment.browsers;
 
 const REQUESTED_MACHINES_COUNT = environment.browsers.length;
 
-/* eslint-disable no-process-exit */
-process.on('SIGINT', () => process.exit(1));
-process.on('SIGTERM', () => process.exit(1));
-process.on('SIGBREAK', () => process.exit(1));
-process.on('SIGHUP', () => process.exit(1));
-/* eslint-enable no-process-exit */
-
 function getBrowserInfo (settings) {
     return Promise
         .resolve()

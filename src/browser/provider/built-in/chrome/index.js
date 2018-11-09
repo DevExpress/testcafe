@@ -1,7 +1,6 @@
 import OS from 'os-family';
 import { parse as parseUrl } from 'url';
 import getRuntimeInfo from './runtime-info';
-import getConfig from './config';
 import { start as startLocalChrome, stop as stopLocalChrome } from './local-chrome';
 import * as cdp from './cdp';
 import getMaximizedHeadlessWindowSize from '../../utils/get-maximized-headless-window-size';
@@ -56,10 +55,8 @@ export default {
         return true;
     },
 
-    isHeadlessBrowser (browserId, configString) {
-        const config = this.openedBrowsers[browserId] ? this.openedBrowsers[browserId].config : getConfig(configString);
-
-        return config.headless;
+    isHeadlessBrowser (browserId) {
+        return this.openedBrowsers[browserId].config.headless;
     },
 
     async takeScreenshot (browserId, path) {

@@ -219,8 +219,8 @@ export default class BrowserProvider {
         return await this.plugin.isLocalBrowser(browserId, browserName);
     }
 
-    isHeadlessBrowser (browserId, browserName) {
-        return this.plugin.isHeadlessBrowser(browserId, browserName);
+    isHeadlessBrowser (browserId) {
+        return this.plugin.isHeadlessBrowser(browserId);
     }
 
     async openBrowser (browserId, pageUrl, browserName) {
