@@ -1,15 +1,19 @@
+import Promise from 'pinkie';
 import { find, sortBy } from 'lodash';
+import { writable as isWritableStream } from 'is-stream';
 import ReporterPluginHost from './plugin-host';
 
 export default class Reporter {
     constructor (plugin, task, outStream) {
         this.plugin = new ReporterPluginHost(plugin, outStream);
 
+        this.disposed        = false;
         this.passed          = 0;
         this.skipped         = task.tests.filter(test => test.skip).length;
         this.testCount       = task.tests.length - this.skipped;
         this.reportQueue     = Reporter._createReportQueue(task);
         this.stopOnFirstFail = task.opts.stopOnFirstFail;
+        this.outStream       = outStream;
 
         this._assignTaskEventHandlers(task);
     }
@@ -128,6 +132,23 @@ export default class Reporter {
             const endTime = new Date();
 
             this.plugin.reportTaskDone(endTime, this.passed, task.warningLog.messages);
+        });
+    }
+
+    async dispose () {
+        if (this.disposed)
+            return;
+
+        this.disposed = true;
+
+        if (!isWritableStream(this.outStream))
+            return;
+
+        this.outStream.end();
+
+        await new Promise(resolve => {
+            this.outStream.once('finish', resolve);
+            this.outStream.once('error', resolve);
         });
     }
 }

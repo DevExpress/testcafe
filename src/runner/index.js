@@ -1,4 +1,5 @@
 import { resolve as resolvePath } from 'path';
+import debug from 'debug';
 import Promise from 'pinkie';
 import promisifyEvent from 'promisify-event';
 import mapReverse from 'map-reverse';
@@ -14,9 +15,12 @@ import renderForbiddenCharsList from '../errors/render-forbidden-chars-list';
 import checkFilePath from '../utils/check-file-path';
 import { addRunningTest, removeRunningTest, startHandlingTestErrors, stopHandlingTestErrors } from '../utils/handle-errors';
 
+
 const DEFAULT_SELECTOR_TIMEOUT  = 10000;
 const DEFAULT_ASSERTION_TIMEOUT = 3000;
 const DEFAULT_PAGE_LOAD_TIMEOUT = 3000;
+
+const DEBUG_LOGGER = debug('testcafe:runner');
 
 export default class Runner extends EventEmitter {
     constructor (proxy, browserConnectionGateway, options = {}) {
@@ -41,18 +45,32 @@ export default class Runner extends EventEmitter {
         };
     }
 
-    static async _disposeTaskAndRelatedAssets (task, browserSet, testedApp) {
+
+    static _disposeBrowserSet (browserSet) {
+        return browserSet.dispose().catch(e => DEBUG_LOGGER(e));
+    }
+
+    static _disposeReporters (reporters) {
+        return Promise.all(reporters.map(reporter => reporter.dispose().catch(e => DEBUG_LOGGER(e))));
+    }
+
+    static _disposeTestedApp (testedApp) {
+        return testedApp ? testedApp.kill().catch(e => DEBUG_LOGGER(e)) : Promise.resolve();
+    }
+
+    static async _disposeTaskAndRelatedAssets (task, browserSet, reporters, testedApp) {
         task.abort();
         task.removeAllListeners();
 
-        await Runner._disposeBrowserSetAndTestedApp(browserSet, testedApp);
+        await Runner._disposeAssets(browserSet, reporters, testedApp);
     }
 
-    static async _disposeBrowserSetAndTestedApp (browserSet, testedApp) {
-        await browserSet.dispose();
-
-        if (testedApp)
-            await testedApp.kill();
+    static _disposeAssets (browserSet, reporters, testedApp) {
+        return Promise.all([
+            Runner._disposeBrowserSet(browserSet),
+            Runner._disposeReporters(reporters),
+            Runner._disposeTestedApp(testedApp)
+        ]);
     }
 
     _createCancelablePromise (taskPromise) {
@@ -81,7 +99,7 @@ export default class Runner extends EventEmitter {
         return failedTestCount;
     }
 
-    async _getTaskResult (task, browserSet, reporter, testedApp) {
+    async _getTaskResult (task, browserSet, reporters, testedApp) {
         task.on('browser-job-done', job => browserSet.releaseConnection(job.browserConnection));
 
         const promises = [
@@ -96,21 +114,21 @@ export default class Runner extends EventEmitter {
             await Promise.race(promises);
         }
         catch (err) {
-            await Runner._disposeTaskAndRelatedAssets(task, browserSet, testedApp);
+            await Runner._disposeTaskAndRelatedAssets(task, browserSet, reporters, testedApp);
 
             throw err;
         }
 
-        await Runner._disposeBrowserSetAndTestedApp(browserSet, testedApp);
+        await Runner._disposeAssets(browserSet, reporters, testedApp);
 
-        return this._getFailedTestCount(task, reporter);
+        return this._getFailedTestCount(task, reporters[0]);
     }
 
     _runTask (reporterPlugins, browserSet, tests, testedApp) {
         let completed           = false;
         const task              = new Task(tests, browserSet.browserConnectionGroups, this.proxy, this.opts);
         const reporters         = reporterPlugins.map(reporter => new Reporter(reporter.plugin, task, reporter.outStream));
-        const completionPromise = this._getTaskResult(task, browserSet, reporters[0], testedApp);
+        const completionPromise = this._getTaskResult(task, browserSet, reporters, testedApp);
 
         task.once('start', startHandlingTestErrors);
 
@@ -131,7 +149,7 @@ export default class Runner extends EventEmitter {
 
         const cancelTask = async () => {
             if (!completed)
-                await Runner._disposeTaskAndRelatedAssets(task, browserSet, testedApp);
+                await Runner._disposeTaskAndRelatedAssets(task, browserSet, reporters, testedApp);
         };
 
         return { completionPromise, cancelTask };
