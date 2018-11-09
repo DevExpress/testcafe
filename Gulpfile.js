@@ -766,8 +766,6 @@ gulp.task('docker-build', done => {
     done();
 });
 
-gulp.task('test-server-docker', gulp.series('test-server-run'));
-
 gulp.task('docker-test', done => {
     if (!process.env['DOCKER_HOST']) {
         try {
@@ -779,7 +777,7 @@ gulp.task('docker-test', done => {
         }
     }
 
-    childProcess.spawnSync(`docker build --build-arg tag=${PUBLISH_TAG} -q -t docker-server-tests -f docker-test/Dockerfile .`,
+    childProcess.spawnSync(`docker build --build-arg tag=${PUBLISH_TAG} -q -t docker-server-tests -f test/docker/Dockerfile .`,
         { stdio: 'inherit', env: process.env, shell: true });
 
     done();
