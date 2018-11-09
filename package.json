@@ -2,7 +2,7 @@
   "name": "testcafe",
   "description": "Automated browser testing for the modern web development stack.",
   "license": "MIT",
-  "version": "0.23.1",
+  "version": "0.23.2-alpha.1",
   "author": {
     "name": "Developer Express Inc.",
     "url": "https://www.devexpress.com/"
@@ -50,7 +50,7 @@
   ],
   "scripts": {
     "test": "gulp travis",
-    "publish-please": "publish-please",
+    "publish-please": "del-cli package-lock.json node_modules && npm i && publish-please",
     "prepublish": "publish-please guard"
   },
   "dependencies": {
@@ -136,6 +136,7 @@
     "chai-string": "^1.5.0",
     "connect": "^3.4.0",
     "cross-spawn": "^4.0.0",
+    "del-cli": "^1.1.0",
     "dom-walk": "^0.1.1",
     "eslint-plugin-hammerhead": "0.1.10",
     "express": "^4.13.3",
