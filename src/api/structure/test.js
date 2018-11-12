@@ -13,7 +13,7 @@ export default class Test extends TestingUnit {
         this.fn           = null;
         this.beforeFn     = null;
         this.afterFn      = null;
-        this.requestHooks = this.fixture.requestHooks.length ? Array.from(this.fixture.requestHooks) : [];
+        this.requestHooks = [];
 
         return this.apiOrigin;
     }
@@ -21,9 +21,11 @@ export default class Test extends TestingUnit {
     _add (name, fn) {
         assertType(is.string, 'apiOrigin', 'The test name', name);
         assertType(is.function, 'apiOrigin', 'The test body', fn);
+        assertType(is.nonNullObject, 'apiOrigin', `The fixture of '${name}' test`, this.fixture);
 
-        this.name = name;
-        this.fn   = wrapTestFunction(fn);
+        this.name         = name;
+        this.fn           = wrapTestFunction(fn);
+        this.requestHooks = union(this.requestHooks, Array.from(this.fixture.requestHooks));
 
         if (this.testFile.collectedTests.indexOf(this) < 0)
             this.testFile.collectedTests.push(this);
