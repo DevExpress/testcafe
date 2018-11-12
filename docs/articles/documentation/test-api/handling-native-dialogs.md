@@ -62,7 +62,7 @@ Dialog Type  | Return Value                                             | Defaul
 ------------ | -------------------------------------------------------- | --------------
 alert        | Ignored                                                  | 'OK' button.
 beforeunload | Ignored                                                  | 'Leave' button. There is no way to emulate 'Stay' programmatically.
-confirm      | `true` to answer 'Yes'; `false` to answer 'No'.          | 'No' button.
+confirm      | `true` to answer 'OK'; `false` to answer 'Cancel'.       | 'Cancel' button.
 prompt       | A string that contains text to be typed into the prompt. | 'Cancel' button.
 
 The following example demonstrates how to handle an alert dialog.
