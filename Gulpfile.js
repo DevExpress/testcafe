@@ -35,6 +35,7 @@ const listBrowsers         = require('testcafe-browser-tools').getInstallations;
 const npmAuditor           = require('npm-auditor');
 const checkLicenses        = require('./test/dependency-licenses-checker');
 const sourcemaps           = require('gulp-sourcemaps');
+const packageInfo          = require('./package');
 
 gulpStep.install();
 
@@ -739,6 +740,8 @@ function startDocker () {
 }
 
 gulp.task('docker-build', done => {
+    childProcess.execSync('npm pack', { env: process.env }).toString();
+
     if (!process.env['DOCKER_HOST']) {
         try {
             startDocker();
@@ -749,8 +752,9 @@ gulp.task('docker-build', done => {
         }
     }
 
-    const imageId = childProcess
-        .execSync('docker build -q -t testcafe -f docker/Dockerfile .', { env: process.env })
+    const packageId = `${packageInfo.name}-${packageInfo.version}.tgz`;
+    const command = `docker build --no-cache --build-arg packageId=${packageId} -q -t testcafe -f docker/Dockerfile .`;
+    const imageId = childProcess.execSync(command, { env: process.env })
         .toString()
         .replace(/\n/g, '');
 
@@ -762,12 +766,29 @@ gulp.task('docker-build', done => {
     done();
 });
 
+gulp.task('docker-test', done => {
+    if (!process.env['DOCKER_HOST']) {
+        try {
+            startDocker();
+        }
+        catch (e) {
+            throw new Error('Unable to initialize Docker environment. Use Docker terminal to run this task.\n' +
+                            e.stack);
+        }
+    }
+
+    childProcess.spawnSync(`docker build --build-arg tag=${PUBLISH_TAG} -q -t docker-server-tests -f test/docker/Dockerfile .`,
+        { stdio: 'inherit', env: process.env, shell: true });
+
+    done();
+});
+
 gulp.step('docker-publish-run', done => {
     childProcess.execSync('docker push testcafe/testcafe:' + PUBLISH_TAG, { stdio: 'inherit', env: process.env });
 
     done();
 });
 
-gulp.task('docker-publish', gulp.series('docker-build', 'docker-publish-run'));
+gulp.task('docker-publish', gulp.series('docker-build', 'docker-test', 'docker-publish-run'));
 
 gulp.task('travis', process.env.GULP_TASK ? gulp.series(process.env.GULP_TASK) : () => {});

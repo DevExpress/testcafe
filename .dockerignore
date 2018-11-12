@@ -1,6 +1,6 @@
 *
-!bin
 !docker
-!lib
-!ts-defs
-!package.json
+!test
+!Gulpfile.js
+!.publishrc
+!*.tgz
