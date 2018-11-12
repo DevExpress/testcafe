@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.23.2 (2018-11-12)
+
+### Bug Fixes
+
+* TestCafe no longer posts internal messages to the browser console ([#3099](https://github.com/DevExpress/testcafe/issues/3099))
+* The TestCafe process no longer terminates before the report is written to a file ([#2502](https://github.com/DevExpress/testcafe/issues/2502))
+
 ## v0.23.1 (2018-11-7)
 
 ### Enhancements
