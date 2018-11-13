@@ -785,11 +785,8 @@ gulp.task('docker-test', done => {
         }
     }
 
-    const result = childProcess.spawnSync(`docker build --no-cache --build-arg tag=${packageInfo.version} -q -t docker-server-tests -f test/docker/Dockerfile .`,
-        { stdio: 'inherit', env: process.env, shell: true });
-
-    if (result.status)
-        throw new Error('Tests failed');
+    childProcess.execSync(`docker build --no-cache --build-arg tag=${packageInfo.version} -q -t docker-server-tests -f test/docker/Dockerfile .`,
+        { stdio: 'inherit', env: process.env });
 
     done();
 });
