@@ -142,7 +142,25 @@ const CLIENT_TESTS_SAUCELABS_SETTINGS = {
 
 const CLIENT_TEST_LOCAL_BROWSERS_ALIASES = ['ie', 'edge', 'chrome', 'firefox', 'safari'];
 
-const PUBLISH_TAG = JSON.parse(fs.readFileSync(path.join(__dirname, '.publishrc')).toString()).publishTag;
+const PUBLISH_VERSION_RE = /^(\d+\.\d+\.\d+)(-alpha\.\d+)?$/;
+const PUBLISH_INFO       = getPublishInfo();
+
+function getPublishInfo () {
+    const matches = packageInfo.version.match(PUBLISH_VERSION_RE);
+
+    if (!matches)
+        throw new Error('Incorrect version in package.json');
+
+    const isAlpha = !!matches[2];
+    const version = !isAlpha ? matches[1] : 'alpha';
+    const tags    = [version];
+    const repo    = 'testcafe/testcafe';
+
+    if (!isAlpha)
+        tags.push('latest');
+
+    return { version, tags, repo };
+}
 
 let websiteServer = null;
 
@@ -752,16 +770,11 @@ gulp.task('docker-build', done => {
         }
     }
 
-    const packageId = `${packageInfo.name}-${packageInfo.version}.tgz`;
-    const command = `docker build --no-cache --build-arg packageId=${packageId} -q -t testcafe -f docker/Dockerfile .`;
-    const imageId = childProcess.execSync(command, { env: process.env })
-        .toString()
-        .replace(/\n/g, '');
+    const packageId  = `${packageInfo.name}-${packageInfo.version}.tgz`;
+    const tagCommand = PUBLISH_INFO.tags.map(tag => `-t ${PUBLISH_INFO.repo}:${tag}`).join(' ');
+    const command    = `docker build --no-cache --build-arg packageId=${packageId} -q ${tagCommand} -f docker/Dockerfile .`;
 
-    childProcess.execSync('docker tag ' + imageId + ' testcafe/testcafe:' + PUBLISH_TAG, {
-        stdio: 'inherit',
-        env:   process.env
-    });
+    childProcess.execSync(command, { env: process.env });
 
     done();
 });
@@ -777,14 +790,19 @@ gulp.task('docker-test', done => {
         }
     }
 
-    childProcess.spawnSync(`docker build --build-arg tag=${PUBLISH_TAG} -q -t docker-server-tests -f test/docker/Dockerfile .`,
+    const result = childProcess.spawnSync(`docker build --no-cache --build-arg tag=${PUBLISH_INFO.version} -q -t docker-server-tests -f test/docker/Dockerfile .`,
         { stdio: 'inherit', env: process.env, shell: true });
+
+    if (result.status)
+        throw new Error('Tests failed');
 
     done();
 });
 
 gulp.step('docker-publish-run', done => {
-    childProcess.execSync('docker push testcafe/testcafe:' + PUBLISH_TAG, { stdio: 'inherit', env: process.env });
+    PUBLISH_INFO.tags.forEach(tag => {
+        childProcess.execSync(`docker push ${PUBLISH_INFO.repo}:${tag}`, { stdio: 'inherit', env: process.env });
+    });
 
     done();
 });
