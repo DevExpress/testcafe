@@ -12,6 +12,8 @@ Mocking is useful when the tested app uses infrastructure that is difficult to d
 * [The onRequestTo Method](#the-onrequestto-method)
 * [The respond Method](#the-respond-method)
   * [A Custom Response Function](#a-custom-response-function)
+* [Examples](#examples)
+  * [Mocking Cross-Domain Responses](#mocking-cross-domain-responses)
 
 ## Creating a Mocker
 
@@ -117,3 +119,18 @@ Property | Type | Description
 Method | Description
 ------ | ---------------
 `setBody(value)` | Sets the response body.  Accepts a string as a parameter.
+
+## Examples
+
+### Mocking Cross-Domain Responses
+
+When you mock a cross-domain response (a response to a request to a different domain), set the response's `access-control-allow-origin` header to the tested site's domain (or an asterisk `*`) to pass [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) validation.
+
+```js
+fixture `My Fixture`
+    .page `https://my.domain/tested/page/`
+
+const mock = RequestMock()
+    .onRequestTo('https://different.domain/api/method/')
+    .respond({ data: 123 }, 500, {'access-control-allow-origin': 'https://my.domain'});
+```
