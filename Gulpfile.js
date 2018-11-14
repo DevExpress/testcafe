@@ -767,9 +767,9 @@ gulp.task('docker-build', done => {
 
     const packageId  = `${packageInfo.name}-${packageInfo.version}.tgz`;
     const tagCommand = PUBLISH_TAGS.map(tag => `-t ${PUBLISH_REPO}:${tag}`).join(' ');
-    const command    = `docker build --no-cache --build-arg packageId=${packageId} -q ${tagCommand} -f docker/Dockerfile .`;
+    const command    = `docker build --no-cache --build-arg packageId=${packageId} ${tagCommand} -f docker/Dockerfile .`;
 
-    childProcess.execSync(command, { env: process.env });
+    childProcess.execSync(command, { stdio: 'inherit', env: process.env });
 
     done();
 });
@@ -785,7 +785,7 @@ gulp.task('docker-test', done => {
         }
     }
 
-    childProcess.execSync(`docker build --no-cache --build-arg tag=${packageInfo.version} -q -t docker-server-tests -f test/docker/Dockerfile .`,
+    childProcess.execSync(`docker build --no-cache --build-arg tag=${packageInfo.version} -t docker-server-tests -f test/docker/Dockerfile .`,
         { stdio: 'inherit', env: process.env });
 
     done();
