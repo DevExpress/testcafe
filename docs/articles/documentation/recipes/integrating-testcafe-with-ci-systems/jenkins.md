@@ -11,7 +11,7 @@ This topic shows how you can integrate TestCafe tests into project build process
 
 ## Step 1 - Fetching Test Code From a Repository
 
-In this tutorial, we will use tests pubished in a separate repository on GitHub - [ci-integration-demo](https://github.com/VasilyStrelyaev/ci-integration-demo). If you use a different version control system, search for a plugin that integrates it with Jenkins.
+In this tutorial, we will use tests published in a separate repository on GitHub - [ci-integration-demo](https://github.com/VasilyStrelyaev/ci-integration-demo). If you use a different version control system, search for a plugin that integrates it with Jenkins.
 
 Open your project and choose **Configure** from the right pane.
 
