@@ -5,7 +5,7 @@ interface ClientFunctionOptions {
      *  Contains functions, variables or objects used by the client function internally.
      *  Properties of the `dependencies` object will be added to the client function's scope as variables.
      */
-    dependencies?: { [key: string]: any },
+    dependencies?: {[key: string]: any},
     /**
      * If you need to call a client function from a Node.js callback, assign the current test controller to the `boundTestRun` option.
      */
@@ -88,7 +88,7 @@ interface NodeSnapshot {
     /**
      * Attributes of the element.
      */
-    attributes?: { [name: string]: string };
+    attributes?: {[name: string]: string};
     /**
      * The size of the element and its position relative to the viewport.
      */
@@ -191,7 +191,7 @@ interface NodeSnapshot {
     /**
      * The computed values of element's CSS properties.
      */
-    style?: { [prop: string]: string };
+    style?: {[prop: string]: string};
     /**
      * The name of the element.
      * See https://developer.mozilla.org/en-US/docs/Web/API/Element/tagName
@@ -286,7 +286,7 @@ interface SelectorAPI {
     /**
      * Attributes of the element.
      */
-    attributes: Promise<{ [name: string]: string }>;
+    attributes: Promise<{[name: string]: string}>;
     /**
      * The size of the element and its position relative to the viewport.
      */
@@ -389,7 +389,7 @@ interface SelectorAPI {
     /**
      * The computed values of element's CSS properties.
      */
-    style: Promise<{ [prop: string]: string }>;
+    style: Promise<{[prop: string]: string}>;
     /**
      * The name of the element.
      * See https://developer.mozilla.org/en-US/docs/Web/API/Element/tagName
@@ -480,7 +480,7 @@ interface SelectorAPI {
      * @param dependencies - Predicate dependencies.
      */
     filter(filterFn: (node: Element, idx: number) => boolean,
-        dependencies?: { [key: string]: any }): Selector;
+           dependencies?: {[key: string]: any}): Selector;
     /**
      * Creates a selector that filters a matching set leaving only visible elements.
      */
@@ -505,7 +505,7 @@ interface SelectorAPI {
      * @param dependencies - Predicate dependencies.
      */
     find(filterFn: (node: Element, idx: number, originNode: Element) => boolean,
-        dependencies?: { [key: string]: any }): Selector;
+         dependencies?: {[key: string]: any}): Selector;
     /**
      * Finds all parents of all nodes in the matching set (first element in the set will be the closest parent).
      */
@@ -532,7 +532,7 @@ interface SelectorAPI {
      * @param dependencies - Predicate dependencies.
      */
     parent(filterFn: (node: Element, idx: number, originNode: Element) => boolean,
-        dependencies?: { [key: string]: any }): Selector;
+           dependencies?: {[key: string]: any}): Selector;
     /**
      * Finds all child elements (not nodes) of all nodes in the matching set.
      */
@@ -559,7 +559,7 @@ interface SelectorAPI {
      * @param dependencies - Predicate dependencies.
      */
     child(filterFn: (node: Element, idx: number, originNode: Element) => boolean,
-        dependencies?: { [key: string]: any }): Selector;
+          dependencies?: {[key: string]: any}): Selector;
     /**
      * Finds all sibling elements (not nodes) of all nodes in the matching set.
      */
@@ -586,7 +586,7 @@ interface SelectorAPI {
      * @param dependencies - Predicate dependencies.
      */
     sibling(filterFn: (node: Element, idx: number, originNode: Element) => boolean,
-        dependencies?: { [key: string]: any }): Selector;
+            dependencies?: {[key: string]: any}): Selector;
     /**
      * Finds all succeeding sibling elements (not nodes) of all nodes in the matching set.
      */
@@ -613,7 +613,7 @@ interface SelectorAPI {
      * @param dependencies - Predicate dependencies.
      */
     nextSibling(filterFn: (node: Element, idx: number, originNode: Element) => boolean,
-        dependencies?: { [key: string]: any }): Selector;
+                dependencies?: {[key: string]: any}): Selector;
     /**
      * Finds all preceding sibling elements (not nodes) of all nodes in the matching set.
      */
@@ -640,7 +640,7 @@ interface SelectorAPI {
      * @param dependencies - Predicate dependencies.
      */
     prevSibling(filterFn: (node: Element, idx: number, originNode: Element) => boolean,
-        dependencies?: { [key: string]: any }): Selector;
+                dependencies?: {[key: string]: any}): Selector;
     /**
      * `true if` at least one matching element exists.
      */
@@ -657,7 +657,7 @@ interface SelectorAPI {
      * @param props `[prop]` - The function that calculate property values. Executed on the client side in the browser.
      * @param props `node` - The matching DOM node for which custom property is calculated.
      */
-    addCustomDOMProperties(props: { [prop: string]: (node: Element) => any }): Selector;
+    addCustomDOMProperties(props: {[prop: string]: (node: Element) => any}): Selector;
     /**
      * Adds custom selector methods.
      *
@@ -894,7 +894,7 @@ interface RequestLoggerOptions {
     /**
      * Specifies whether the request body should be logged.
      */
-    logRequestBody?: boolean;
+   logRequestBody?: boolean;
     /**
      * Specifies whether the request body should be stored as a String or a Buffer.
      */
@@ -1033,7 +1033,7 @@ interface TestController {
      * @param options - A set of options that provide additional parameters for the action.
      */
     click(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-        options?: ClickActionOptions): TestControllerPromise;
+          options?: ClickActionOptions): TestControllerPromise;
     /**
      * Right-clicks a webpage element.
      *
@@ -1041,7 +1041,7 @@ interface TestController {
      * @param options - A set of options that provide additional parameters for the action.
      */
     rightClick(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-        options?: ClickActionOptions): TestControllerPromise;
+               options?: ClickActionOptions): TestControllerPromise;
     /**
      * Double-clicks a webpage element.
      *
@@ -1057,7 +1057,7 @@ interface TestController {
      * @param options - A set of options that provide additional parameters for the action.
      */
     hover(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-        options?: MouseActionOptions): TestControllerPromise;
+          options?: MouseActionOptions): TestControllerPromise;
     /**
      * Drags an element by an offset.
      *
@@ -1067,9 +1067,9 @@ interface TestController {
      * @param options - A set of options that provide additional parameters for the action.
      */
     drag(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-        dragOffsetX: number,
-        dragOffsetY: number,
-        options?: MouseActionOptions): TestControllerPromise;
+         dragOffsetX: number,
+         dragOffsetY: number,
+         options?: MouseActionOptions): TestControllerPromise;
     /**
      * Drags an element onto another one.
      *
@@ -1078,8 +1078,8 @@ interface TestController {
      * @param options - A set of options that provide additional parameters for the action.
      */
     dragToElement(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-        destinationSelector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-        options?: DragToElementOptions): TestControllerPromise;
+                  destinationSelector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
+                  options?: DragToElementOptions): TestControllerPromise;
     /**
      * Types the specified text into an input element.
      *
@@ -1088,8 +1088,8 @@ interface TestController {
      * @param options - A set of options that provide additional parameters for the action.
      */
     typeText(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-        text: string,
-        options?: TypeActionOptions): TestControllerPromise;
+             text: string,
+             options?: TypeActionOptions): TestControllerPromise;
     /**
      * Selects text in input elements.
      *
@@ -1099,9 +1099,9 @@ interface TestController {
      * @param options - A set of options that provide additional parameters for the action.
      */
     selectText(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-        startPos?: number,
-        endPos?: number,
-        options?: ActionOptions): TestControllerPromise;
+               startPos?: number,
+               endPos?: number,
+               options?: ActionOptions): TestControllerPromise;
     /**
      * Selects `<textarea>` content.
      *
@@ -1113,11 +1113,11 @@ interface TestController {
      * @param options
      */
     selectTextAreaContent(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-        startLine?: number,
-        startPos?: number,
-        endLine?: number,
-        endPos?: number,
-        options?: ActionOptions): TestControllerPromise;
+                          startLine?: number,
+                          startPos?: number,
+                          endLine?: number,
+                          endPos?: number,
+                          options?: ActionOptions): TestControllerPromise;
     /**
      * Performs selection within editable content
      *
@@ -1126,8 +1126,8 @@ interface TestController {
      * @param options - A set of options that provide additional parameters for the action.
      */
     selectEditableContent(startSelector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-        endSelector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-        options?: ActionOptions): TestControllerPromise;
+                          endSelector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
+                          options?: ActionOptions): TestControllerPromise;
     /**
      * Presses the specified keyboard keys.
      *
@@ -1155,7 +1155,7 @@ interface TestController {
      * @param filePath - The path to the uploaded file, or several such paths. Relative paths resolve from the folder with the test file.
      */
     setFilesToUpload(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-        filePath: String | String[]): TestControllerPromise;
+                     filePath: String | String[]): TestControllerPromise;
     /**
      * Removes all file paths from the specified file upload input.
      *
@@ -1179,8 +1179,8 @@ interface TestController {
      * If path doesn't have .png extension, it will be added automatically.
      */
     takeElementScreenshot(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-        path?: string,
-        options?: TakeElementScreenshotOptions): TestControllerPromise
+                          path?:    string,
+                          options?: TakeElementScreenshotOptions): TestControllerPromise
     /**
      * Sets the browser window size.
      *
@@ -1229,7 +1229,7 @@ interface TestController {
      * @param options - Handler options.
      */
     setNativeDialogHandler(fn: ((type: 'alert' | 'confirm' | 'beforeunload' | 'prompt', text: string, url: string) => any) | null,
-        options?: ClientFunctionOptions): TestControllerPromise;
+                           options?: ClientFunctionOptions): TestControllerPromise;
     /**
      * Returns a stack of history entries (i.e., an array in which the latest dialog has an index of 0). Each entry
      * corresponds to a certain native dialog that appears in the main window or in an `<iframe>`.
@@ -1393,14 +1393,14 @@ interface Assertion<E = any> {
      * @param message - An assertion message that will be displayed in the report if the test fails.
      * @param options - Assertion options.
      */
-    typeOf(typeName: 'function' | 'object' | 'number' | 'string' | 'boolean' | 'undefined' | 'regex' | 'null', message?: string, options?: AssertionOptions): TestControllerPromise;
+    typeOf(typeName: 'function' | 'object' | 'number' | 'string' | 'boolean' | 'undefined' | 'regex', message?: string, options?: AssertionOptions): TestControllerPromise;
     /**
      * Asserts that type of `actual` is `typeName`.
      *
      * @param typeName - The expected type of an `actual` value.
      * @param options - Assertion options.
      */
-    typeOf(typeName: 'function' | 'object' | 'number' | 'string' | 'boolean' | 'undefined' | 'regex' | 'null', options?: AssertionOptions): TestControllerPromise;
+    typeOf(typeName: 'function' | 'object' | 'number' | 'string' | 'boolean' | 'undefined' | 'regex', options?: AssertionOptions): TestControllerPromise;
     /**
      * Asserts that type of `actual` is not `typeName`.
      *
@@ -1408,14 +1408,14 @@ interface Assertion<E = any> {
      * @param message - An assertion message that will be displayed in the report if the test fails.
      * @param options - Assertion options.
      */
-    notTypeOf(typeName: 'function' | 'object' | 'number' | 'string' | 'boolean' | 'undefined' | 'regex' | 'null', message?: string, options?: AssertionOptions): TestControllerPromise;
+    notTypeOf(typeName: 'function' | 'object' | 'number' | 'string' | 'boolean' | 'undefined' | 'regex', message?: string, options?: AssertionOptions): TestControllerPromise;
     /**
      * Asserts that type of `actual` is not `typeName`.
      *
      * @param typeName - An unexpected type of an `actual` value.
      * @param options - Assertion options.
      */
-    notTypeOf(typeName: 'function' | 'object' | 'number' | 'string' | 'boolean' | 'undefined' | 'regex' | 'null', options?: AssertionOptions): TestControllerPromise;
+    notTypeOf(typeName: 'function' | 'object' | 'number' | 'string' | 'boolean' | 'undefined' | 'regex', options?: AssertionOptions): TestControllerPromise;
     /**
      * Asserts that `actual` is strictly greater than `expected`.
      *
@@ -1552,7 +1552,7 @@ declare module 'testcafe' {
      * @param options - Selector options.
      */
     export function Selector(init: string | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection) | Selector | NodeSnapshot | SelectorPromise,
-        options?: SelectorOptions): Selector;
+                             options?: SelectorOptions): Selector;
 
     /**
      * Creates a client function.
@@ -1663,14 +1663,14 @@ interface FixtureFn {
      * @param fn - An asynchronous hook function that contains initialization or clean-up code.
      * @param fn `ctx` - A fixture context object used to share variables between fixture hooks and test code.
      */
-    before(fn: (ctx: { [key: string]: any }) => Promise<any>): this;
+    before(fn: (ctx: {[key: string]: any}) => Promise<any>): this;
     /**
      * Specifies the fixture hook that is executed after the end of the last test in the fixture.
      *
      * @param fn - An asynchronous hook function that contains initialization or clean-up code.
      * @param fn `ctx` - A fixture context object used to share variables between fixture hooks and test code.
      */
-    after(fn: (ctx: { [key: string]: any }) => Promise<any>): this;
+    after(fn: (ctx: {[key: string]: any}) => Promise<any>): this;
     /**
      * Specifies the hook that is executed on the start of each test in the fixture.
      *
