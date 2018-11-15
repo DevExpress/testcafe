@@ -9,6 +9,7 @@ This section describes how to integrate TestCafe into build process on popular c
 
 * [AppVeyor](appveyor.md)
 * [CircleCI](circleci.md)
+* [GitLab](gitlab.md)
 * [Jenkins](jenkins.md)
 * [TeamCity](teamcity.md)
 * [Travis](travis.md)

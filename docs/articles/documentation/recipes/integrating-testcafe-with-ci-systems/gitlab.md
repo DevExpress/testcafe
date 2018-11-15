@@ -1,0 +1,102 @@
+---
+layout: docs
+title: Integrate TestCafe with GitLab
+permalink: /documentation/recipes/integrating-testcafe-with-ci-systems/gitlab.html
+---
+# Integrate TestCafe with GitLab
+
+This topic describes how to integrate TestCafe tests into a [GitLab](https://gitlab.com) project's build process.
+
+GitLab offers a built-in continuous integration service. You can read more about it in [GitLab documentation](https://docs.gitlab.com/ee/ci/quick_start/README.html).
+
+To run tests with TestCafe, you need a virtual machine with Node.js, TestCafe and main browsers installed. Instead of installing them manually, you can use a [Docker](https://www.docker.com/) image.
+
+## Option 1 - Use TestCafe Docker Image
+
+The easiest way to run TestCafe tests is use an official TestCafe [Docker image](https://hub.docker.com/r/testcafe/testcafe/) based on Alpine Linux with preinstalled Node.js, TestCafe, Firefox and Chromium.
+
+Open the `.gitlab-ci.yml` file that stores GitLab CI configuration. If you don't have this file yet, create it in the repository's root directory.
+
+Create a new [job](https://docs.gitlab.com/ee/ci/pipelines.html#jobs). To do this, add the following settings to `.gitlab-ci.yml` at the top level:
+
+```yaml
+e2e_tests:
+  image:
+    name: testcafe/testcafe
+    entrypoint: ["/bin/sh", "-c"]
+  script:
+    - /opt/testcafe/docker/testcafe-docker.sh firefox:headless,chromium tests/**/*
+```
+
+* `e2e_tests` - the job's name. You can choose any name you wish.
+* `image` - Docker image settings.
+* `name` - the TestCafe image's name. You can find it on [Docker Hub](https://hub.docker.com/r/testcafe/testcafe/).
+* `entrypoint` - overrides the image's [ENTRYPOINT](https://docs.docker.com/glossary/?term=ENTRYPOINT) to be `/bin/sh`. You need to specify this setting because the TestCafe image has the default `ENTRYPOINT` set to the `testcafe` command, while GitLab uses `sh` to run test scripts. The `-c` flag indicates that the subsequent argument is a command rather than a script.
+* `script` - the command that runs TestCafe tests. `/opt/testcafe/docker/testcafe-docker.sh` points to a script that prepares the environment to run a browser and starts TestCafe. Its arguments are standard TestCafe [command line parameters](../../using-testcafe/command-line-interface.md).
+
+For more information about the `.gitlab-ci.yml` syntax, see [Configuration of your jobs with .gitlab-ci.yml](https://docs.gitlab.com/ee/ci/yaml/README.html).
+
+Commit `.gitlab-ci.yml` and push the changes to the repository. Now you have a new [job](https://docs.gitlab.com/ee/ci/pipelines.html#jobs) that can be executed by any [GitLab Runner](https://docs.gitlab.com/ee/ci/runners/README.html).
+
+## Option 2 - Install TestCafe to a Docker Image
+
+If you use a Docker image that does not have TestCafe preinstalled, you can install it from `npm` before tests are run.
+
+First, add TestCafe to your project development dependencies. Open `package.json` or, if you don't have it, create it in the repository root. Then add `testcafe` to the `devDependencies` section.
+
+```json
+{
+    "devDependencies": {
+        "testcafe": "^0.23.2"
+    }
+}
+```
+
+Now TestCafe can be installed with the `npm install` command.
+
+Since TestCafe is installed locally, the test run command that uses TestCafe should be also added to `package.json` to the `scripts` section.
+
+```json
+{
+    "scripts": {
+        "test": "testcafe chrome:headless tests/**/*"
+    },
+    "devDependencies": {
+        "testcafe": "^0.23.2"
+    }
+}
+```
+
+This allows you to run tests using `npm test`.
+
+Finally, open `.gitlab-ci.yml` (or create it in the repository root) and add a [job](https://docs.gitlab.com/ee/ci/pipelines.html#jobs) that installs TestCafe and runs tests.
+
+```yaml
+e2e_tests:
+  image: circleci/node:8.12-browsers
+  before_script:
+    - npm install
+  script:
+    - npm test
+```
+
+* `e2e_tests` - the job's name. You can choose any name you wish.
+* `image` - the Docker image's name. This job uses an image with Node.js and popular browsers provided by [CircleCI](https://circleci.com/).
+* `before_script` - defines a command to run before tests start. Install TestCafe at this stage.
+* `script` - the command that runs TestCafe tests.
+
+Commit `.gitlab-ci.yml` and `package.json`, then push the changes to the repository.
+
+## View Test Results
+
+Go to your project page. In the right-side panel, hover over the **CI/CD** category and click **Jobs**.
+
+![GitLab Project - Go to Jobs](../../../images/gitlab/select-jobs.png)
+
+The **Jobs** page displays a list of all recently executed jobs. Click a job's status to view details.
+
+![GitLab Project - View Job List](../../../images/gitlab/select-a-failing-job.png)
+
+On the detail page, you can see a job log with the TestCafe report.
+
+![GitLab Project - View Job Details](../../../images/gitlab/job-log.png)

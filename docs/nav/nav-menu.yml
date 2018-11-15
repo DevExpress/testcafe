@@ -206,6 +206,8 @@
         url: /documentation/recipes/integrating-testcafe-with-ci-systems/appveyor.md
       - name: CircleCI
         url: /documentation/recipes/integrating-testcafe-with-ci-systems/circleci.md
+      - name: GitLab
+        url: /documentation/recipes/integrating-testcafe-with-ci-systems/gitlab.md
       - name: Jenkins
         url: /documentation/recipes/integrating-testcafe-with-ci-systems/jenkins.md
       - name: TeamCity
