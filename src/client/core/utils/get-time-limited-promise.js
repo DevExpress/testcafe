@@ -4,5 +4,14 @@ import { timeLimitedPromiseTimeoutExpired } from '../../../errors/runtime/messag
 
 
 export default function (promise, ms) {
-    return Promise.race([promise, delay(ms).then(() => Promise.reject(new Error(timeLimitedPromiseTimeoutExpired)))]);
+    let isTimeoutExceeded = false;
+
+    return Promise.race([promise, delay(ms).then(() => {
+        isTimeoutExceeded = true;
+    })])
+        .then(value => {
+            if (isTimeoutExceeded)
+                Promise.reject(new Error(timeLimitedPromiseTimeoutExpired));
+            return value;
+        });
 }
