@@ -36,6 +36,7 @@ const npmAuditor           = require('npm-auditor');
 const checkLicenses        = require('./test/dependency-licenses-checker');
 const sourcemaps           = require('gulp-sourcemaps');
 const packageInfo          = require('./package');
+const getPublishTags       = require('./docker/get-publish-tags');
 
 gulpStep.install();
 
@@ -142,20 +143,8 @@ const CLIENT_TESTS_SAUCELABS_SETTINGS = {
 
 const CLIENT_TEST_LOCAL_BROWSERS_ALIASES = ['ie', 'edge', 'chrome', 'firefox', 'safari'];
 
-const PUBLISH_VERSION_RE = /^\d+\.\d+\.\d+(-alpha\.\d+)?$/;
-const PUBLISH_TAGS       = getPublishTags();
-const PUBLISH_REPO       = 'testcafe/testcafe';
-
-function getPublishTags () {
-    const matches = packageInfo.version.match(PUBLISH_VERSION_RE);
-
-    if (!matches)
-        throw new Error('Incorrect version in package.json');
-
-    const isAlpha = !!matches[1];
-
-    return [packageInfo.version, isAlpha ? 'alpha' : 'latest'];
-}
+const PUBLISH_TAGS = getPublishTags(packageInfo);
+const PUBLISH_REPO = 'testcafe/testcafe';
 
 let websiteServer = null;
 
@@ -182,6 +171,7 @@ gulp.task('lint', () => {
     return gulp
         .src([
             'examples/**/*.js',
+            'docker/*.js',
             'src/**/*.js',
             'test/**/*.js',
             '!test/client/vendor/**/*.*',
