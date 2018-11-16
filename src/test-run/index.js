@@ -696,12 +696,18 @@ const ServiceMessages = TestRun.prototype;
 ServiceMessages[CLIENT_MESSAGES.ready] = function (msg) {
     this.debugLog.driverMessage(msg);
 
+    const pendingRequest = this.pendingRequest;
+
     this._clearPendingRequest();
 
     // NOTE: the driver sends the status for the second time if it didn't get a response at the
     // first try. This is possible when the page was unloaded after the driver sent the status.
-    if (msg.status.id === this.lastDriverStatusId)
+    if (msg.status.id === this.lastDriverStatusId) {
+        if (pendingRequest)
+            pendingRequest.resolve(null);
+
         return this.lastDriverStatusResponse;
+    }
 
     this.lastDriverStatusId       = msg.status.id;
     this.lastDriverStatusResponse = this._handleDriverRequest(msg.status);
