@@ -45,7 +45,7 @@ const serviceCommands             = lazyRequire('./commands/service');
 const TEST_RUN_TEMPLATE               = read('../client/test-run/index.js.mustache');
 const IFRAME_TEST_RUN_TEMPLATE        = read('../client/test-run/iframe.js.mustache');
 const TEST_DONE_CONFIRMATION_RESPONSE = 'test-done-confirmation';
-const MAX_RESPONSE_DELAY              = 2 * 60 * 1000;
+const MAX_RESPONSE_DELAY              = 3000;
 
 const ALL_DRIVER_TASKS_ADDED_TO_QUEUE_EVENT = 'all-driver-tasks-added-to-queue';
 
@@ -696,18 +696,12 @@ const ServiceMessages = TestRun.prototype;
 ServiceMessages[CLIENT_MESSAGES.ready] = function (msg) {
     this.debugLog.driverMessage(msg);
 
-    const pendingRequest = this.pendingRequest;
-
     this._clearPendingRequest();
 
     // NOTE: the driver sends the status for the second time if it didn't get a response at the
     // first try. This is possible when the page was unloaded after the driver sent the status.
-    if (msg.status.id === this.lastDriverStatusId) {
-        if (pendingRequest)
-            pendingRequest.resolve(null);
-
+    if (msg.status.id === this.lastDriverStatusId)
         return this.lastDriverStatusResponse;
-    }
 
     this.lastDriverStatusId       = msg.status.id;
     this.lastDriverStatusResponse = this._handleDriverRequest(msg.status);
@@ -715,8 +709,8 @@ ServiceMessages[CLIENT_MESSAGES.ready] = function (msg) {
     if (this.lastDriverStatusResponse)
         return this.lastDriverStatusResponse;
 
-    // NOTE: browsers abort an opened xhr request after a certain timeout (the actual duration depends on the browser).
-    // To avoid this, we send an empty response after 2 minutes if we didn't get any command.
+    // NOTE: we send an empty response after the MAX_RESPONSE_DELAY timeout is exceeded to keep connection
+    // with the client and prevent the response timeout exception on the client side
     const responseTimeout = setTimeout(() => this._resolvePendingRequest(null), MAX_RESPONSE_DELAY);
 
     return new Promise((resolve, reject) => {
