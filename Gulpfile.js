@@ -36,6 +36,7 @@ const npmAuditor           = require('npm-auditor');
 const checkLicenses        = require('./test/dependency-licenses-checker');
 const sourcemaps           = require('gulp-sourcemaps');
 const packageInfo          = require('./package');
+const getPublishTags       = require('./docker/get-publish-tags');
 
 gulpStep.install();
 
@@ -142,7 +143,8 @@ const CLIENT_TESTS_SAUCELABS_SETTINGS = {
 
 const CLIENT_TEST_LOCAL_BROWSERS_ALIASES = ['ie', 'edge', 'chrome', 'firefox', 'safari'];
 
-const PUBLISH_TAG = JSON.parse(fs.readFileSync(path.join(__dirname, '.publishrc')).toString()).publishTag;
+const PUBLISH_TAGS = getPublishTags(packageInfo);
+const PUBLISH_REPO = 'testcafe/testcafe';
 
 let websiteServer = null;
 
@@ -169,6 +171,7 @@ gulp.task('lint', () => {
     return gulp
         .src([
             'examples/**/*.js',
+            'docker/*.js',
             'src/**/*.js',
             'test/**/*.js',
             '!test/client/vendor/**/*.*',
@@ -752,16 +755,11 @@ gulp.task('docker-build', done => {
         }
     }
 
-    const packageId = `${packageInfo.name}-${packageInfo.version}.tgz`;
-    const command = `docker build --no-cache --build-arg packageId=${packageId} -q -t testcafe -f docker/Dockerfile .`;
-    const imageId = childProcess.execSync(command, { env: process.env })
-        .toString()
-        .replace(/\n/g, '');
+    const packageId  = `${packageInfo.name}-${packageInfo.version}.tgz`;
+    const tagCommand = PUBLISH_TAGS.map(tag => `-t ${PUBLISH_REPO}:${tag}`).join(' ');
+    const command    = `docker build --no-cache --build-arg packageId=${packageId} ${tagCommand} -f docker/Dockerfile .`;
 
-    childProcess.execSync('docker tag ' + imageId + ' testcafe/testcafe:' + PUBLISH_TAG, {
-        stdio: 'inherit',
-        env:   process.env
-    });
+    childProcess.execSync(command, { stdio: 'inherit', env: process.env });
 
     done();
 });
@@ -777,14 +775,16 @@ gulp.task('docker-test', done => {
         }
     }
 
-    childProcess.spawnSync(`docker build --build-arg tag=${PUBLISH_TAG} -q -t docker-server-tests -f test/docker/Dockerfile .`,
-        { stdio: 'inherit', env: process.env, shell: true });
+    childProcess.execSync(`docker build --no-cache --build-arg tag=${packageInfo.version} -t docker-server-tests -f test/docker/Dockerfile .`,
+        { stdio: 'inherit', env: process.env });
 
     done();
 });
 
 gulp.step('docker-publish-run', done => {
-    childProcess.execSync('docker push testcafe/testcafe:' + PUBLISH_TAG, { stdio: 'inherit', env: process.env });
+    PUBLISH_TAGS.forEach(tag => {
+        childProcess.execSync(`docker push ${PUBLISH_REPO}:${tag}`, { stdio: 'inherit', env: process.env });
+    });
 
     done();
 });
