@@ -1,23 +1,24 @@
 ---
 layout: docs
-title: Mocking HTTP Responses
-permalink: /documentation/test-api/intercepting-http-requests/mocking-http-responses.html
-checked: true
+title: Mocking HTTP Requests
+permalink: /documentation/test-api/intercepting-http-requests/mocking-http-requests.html
+redirect_from:
+  - /documentation/test-api/intercepting-http-requests/mocking-http-responses.html
 ---
-# Mocking HTTP Responses
+# Mocking HTTP Requests
 
-Mocking is useful when the tested app uses infrastructure that is difficult to deploy during the test run. In this instance, you can intercept requests to this resource and mock the responses using TestCafe.
+Mocking is useful when the tested app uses infrastructure that is difficult to deploy during the test run. In this instance, you can intercept requests to this resource and mock them using TestCafe.
 
 * [Creating a Mocker](#creating-a-mocker)
 * [The onRequestTo Method](#the-onrequestto-method)
 * [The respond Method](#the-respond-method)
   * [A Custom Response Function](#a-custom-response-function)
 * [Examples](#examples)
-  * [Mocking Cross-Domain Responses](#mocking-cross-domain-responses)
+  * [Mocking Cross-Domain Requests](#mocking-cross-domain-requests)
 
 ## Creating a Mocker
 
-To create a response mocker, use the `RequestMock` constructor.
+To create a request mocker, use the `RequestMock` constructor.
 
 ```js
 var mock = RequestMock()
@@ -118,13 +119,15 @@ Property | Type | Description
 
 Method | Description
 ------ | ---------------
-`setBody(value)` | Sets the response body.  Accepts a string as a parameter.
+`setBody(value)` | Sets the response body. Accepts a string as a parameter.
 
 ## Examples
 
-### Mocking Cross-Domain Responses
+### Mocking Cross-Domain Requests
 
-When you mock a cross-domain response (a response to a request to a different domain), set the response's `access-control-allow-origin` header to the tested site's domain (or an asterisk `*`) to pass [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) validation.
+When you mock a cross-domain request, specify the allowed origin in the response's [access-control-allow-origin](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin) header to pass [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) validation.
+
+If you specify the [access-control-allow-credentials](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Credentials) header in the response, provide the tested site's domain in the `access-control-allow-origin` header.
 
 ```js
 fixture `My Fixture`
@@ -132,5 +135,14 @@ fixture `My Fixture`
 
 const mock = RequestMock()
     .onRequestTo('https://different.domain/api/method/')
-    .respond({ data: 123 }, 500, {'access-control-allow-origin': 'https://my.domain'});
+    .respond({ data: 123 }, 500, {
+        'access-control-allow-credentials': true,
+        'access-control-allow-origin': 'https://my.domain'
+    });
+```
+
+In case you do not enable `access-control-allow-credentials`, you can also pass an asterisk `*` as the `access-control-allow-origin` value to indicate that cross-origin requests are permitted from any domain.
+
+```js
+    .respond({ data: 123 }, 500, { 'access-control-allow-origin': '*' });
 ```

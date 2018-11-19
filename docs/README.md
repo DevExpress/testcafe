@@ -65,7 +65,7 @@
     * [Examples of Using Client Functions](articles/documentation/test-api/obtaining-data-from-the-client/examples-of-using-client-functions.md)
   * [Intercepting HTTP Requests](articles/documentation/test-api/intercepting-http-requests/README.md)
     * [Logging HTTP Requests](articles/documentation/test-api/intercepting-http-requests/logging-http-requests.md)
-    * [Mocking HTTP Responses](articles/documentation/test-api/intercepting-http-requests/mocking-http-responses.md)
+    * [Mocking HTTP Requests](articles/documentation/test-api/intercepting-http-requests/mocking-http-requests.md)
     * [Creating a Custom HTTP Request Hook](articles/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.md)
     * [Specifying Which Requests are Handled by the Hook](articles/documentation/test-api/intercepting-http-requests/specifying-which-requests-are-handled-by-the-hook.md)
     * [Attaching Hooks to Tests and Fixtures](articles/documentation/test-api/intercepting-http-requests/attaching-hooks-to-tests-and-fixtures.md)
