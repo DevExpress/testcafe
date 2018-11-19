@@ -18,6 +18,10 @@ export default class Reporter {
         this._assignTaskEventHandlers(task);
     }
 
+    static _usesSpecialStream () {
+        return this.outStream.isTTY || this.outStream === process.stdout || this.outStream === process.stderr;
+    }
+
     static _createReportQueue (task) {
         const runsPerTest = task.browserConnectionGroups.length;
 
@@ -141,7 +145,7 @@ export default class Reporter {
 
         this.disposed = true;
 
-        if (!isWritableStream(this.outStream))
+        if (!this.outStream || this._usesSpecialStream() || !isWritableStream(this.outStream))
             return;
 
         this.outStream.end();

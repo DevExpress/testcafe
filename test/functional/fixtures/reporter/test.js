@@ -2,6 +2,15 @@ const expect               = require('chai').expect;
 const { createTestStream, createAsyncTestStream } = require('../../utils/stream');
 
 describe('Reporter', () => {
+    const stdoutWrite = process.stdout.write;
+    const stderrWrite = process.stderr.write;
+
+
+    afterEach(() => {
+        process.stdout.write = stdoutWrite;
+        process.stderr.write = stdoutWrite;
+    });
+
     it('Should support several different reporters for a test run', function () {
         const stream1 = createTestStream();
         const stream2 = createTestStream();
@@ -64,6 +73,140 @@ describe('Reporter', () => {
         return runTests('testcafe-fixtures/index-test.js', 'Simple test', runOpts)
             .then(() => {
                 expect(stream.finalCalled).to.be.ok;
+            });
+    });
+
+    it('Should not close stdout when it is specified as a reporter stream (GH-3114)', function () {
+        let streamFinished = false;
+
+        process.stdout.write = () => {
+            process.stdout.write = stdoutWrite;
+        };
+
+        process.stdout.on('finish', () => {
+            streamFinished = false;
+        });
+
+        const runOpts = {
+            only:      ['chrome'],
+            reporters: [
+                {
+                    reporter:  'json',
+                    outStream: process.stdout
+                }
+            ]
+        };
+
+        return runTests('testcafe-fixtures/index-test.js', 'Simple test', runOpts)
+            .then(() => {
+                process.stdout.write = stdoutWrite;
+
+                expect(streamFinished).to.be.not.ok;
+            });
+    });
+
+    it('Should not close stderr when it is specified as a reporter stream (GH-3114)', function () {
+        let streamFinished = false;
+
+        process.stderr.write = () => {
+            process.stderr.write = stderrWrite;
+        };
+
+        process.stderr.on('finish', () => {
+            streamFinished = false;
+        });
+
+        const runOpts = {
+            only:      ['chrome'],
+            reporters: [
+                {
+                    reporter:  'json',
+                    outStream: process.stderr
+                }
+            ]
+        };
+
+        return runTests('testcafe-fixtures/index-test.js', 'Simple test', runOpts)
+            .then(() => {
+                process.stderr.write = stderrWrite;
+
+                expect(streamFinished).to.be.not.ok;
+            });
+    });
+
+    it('Should ot close stdout when null is specified as a reporter stream (GH-3114)', function () {
+        let streamFinished = false;
+
+        process.stdout.write = () => {
+            process.stdout.write = stdoutWrite;
+        };
+
+        process.stdout.on('finish', () => {
+            streamFinished = false;
+        });
+
+        const runOpts = {
+            only:      ['chrome'],
+            reporters: [
+                {
+                    reporter:  'json',
+                    outStream: null
+                }
+            ]
+        };
+
+        return runTests('testcafe-fixtures/index-test.js', 'Simple test', runOpts)
+            .then(() => {
+                expect(streamFinished).to.be.not.ok;
+            });
+    });
+
+    it.only('Should ot close stdout when undefined is specified as a reporter stream (GH-3114)', function () {
+        let streamFinished = false;
+
+        process.stdout.write = () => {
+            process.stdout.write = stdoutWrite;
+        };
+
+        process.stdout.on('finish', () => {
+            streamFinished = false;
+        });
+
+        const runOpts = {
+            only:      ['chrome'],
+            reporters: [
+                {
+                    reporter:  'json',
+                    outStream: void 0
+                }
+            ]
+        };
+
+        return runTests('testcafe-fixtures/index-test.js', 'Simple test', runOpts)
+            .then(() => {
+                expect(streamFinished).to.be.not.ok;
+            });
+    });
+
+
+    it('Should not close tty streams (GH-3114)', function () {
+        const stream = createAsyncTestStream({ shouldFail: true });
+
+        stream.isTTY = true;
+
+        const runOpts = {
+            only:      ['chrome'],
+            reporters: [
+                {
+                    reporter:  'json',
+                    outStream: stream
+                }
+            ]
+        };
+
+        return runTests('testcafe-fixtures/index-test.js', 'Simple test', runOpts)
+            .then(() => {
+                expect(stream.finalCalled).to.be.not.ok;
             });
     });
 });
