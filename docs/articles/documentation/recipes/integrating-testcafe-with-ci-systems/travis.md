@@ -49,7 +49,7 @@ Install TestCafe [locally](../../using-testcafe/installing-testcafe.md#locally) 
 
 ## Step 3 - Configure Travis to use Xvfb
 
-Travis CI uses Ubuntu Server virtual machines, that do not have regular graphical environment like Unity, GNOME or KDE installed, So you have to setup and use [Xvfb](https://www.x.org/archive/X11R7.6/doc/man/man1/Xvfb.1.xhtml) to run browsers headlessly.
+Travis CI uses Ubuntu Server virtual machines that do not have regular graphical environment like Unity, GNOME or KDE installed, so you have to setup and use [Xvfb](https://www.x.org/archive/X11R7.6/doc/man/man1/Xvfb.1.xhtml) to run browsers headlessly.
 
 The following sections are required in your `.travis.yml` to start `Xvfb`:
 
