@@ -130,6 +130,7 @@ describe('Screenshots on fails', function () {
         it('Should show a warning on an attempt to capture a screenshot for a remote browser', () => {
             return runTests('./testcafe-fixtures/screenshots-on-fails.js', 'Screenshot on the ensureElement method fail',
                 {
+                    only:               'chrome',
                     shouldFail:         true,
                     screenshotsOnFails: true,
                     selectorTimeout:    0,
