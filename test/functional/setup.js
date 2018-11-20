@@ -1,14 +1,15 @@
+const path                 = require('path');
+const Promise              = require('pinkie');
 const SlConnector          = require('saucelabs-connector');
 const BsConnector          = require('browserstack-connector');
-const Promise              = require('pinkie');
 const caller               = require('caller');
-const path                 = require('path');
 const promisifyEvent       = require('promisify-event');
 const createTestCafe       = require('../../lib');
 const browserProviderPool  = require('../../lib/browser/provider/pool');
 const BrowserConnection    = require('../../lib/browser/connection');
 const config               = require('./config.js');
 const site                 = require('./site');
+const RemoteConnector      = require('./remote-connector');
 const getTestError         = require('./get-test-error.js');
 const { createTestStream } = require('./utils/stream');
 
@@ -34,6 +35,12 @@ const isBrowserStack  = browserProvider === config.browserProviderNames.browsers
 config.browsers = environment.browsers;
 
 const REQUESTED_MACHINES_COUNT = environment.browsers.length;
+
+const REMOTE_CONNECTORS_MAP = {
+    [config.browserProviderNames.browserstack]: BsConnector,
+    [config.browserProviderNames.sauceLabs]:    SlConnector,
+    [config.browserProviderNames.remote]:       RemoteConnector
+};
 
 function getBrowserInfo (settings) {
     return Promise
@@ -63,7 +70,7 @@ function initBrowsersInfo () {
 }
 
 function openRemoteBrowsers () {
-    const Connector = isBrowserStack ? BsConnector : SlConnector;
+    const Connector = REMOTE_CONNECTORS_MAP[browserProvider];
 
     connector = new Connector(environment[browserProvider].username, environment[browserProvider].accessKey,
         { servicePort: config.browserstackConnectorServicePort });
@@ -93,7 +100,7 @@ function openRemoteBrowsers () {
         });
 }
 
-function openLocalBrowsers () {
+function waitUntilBrowsersConnected () {
     return Promise.all(browsersInfo.map(browserInfo => {
         if (browserInfo.connection.opened)
             return Promise.resolve();
@@ -141,16 +148,18 @@ before(function () {
 
             site.create(config.site.ports, config.site.viewsPath);
 
-            if (!config.useLocalBrowsers) {
-                // NOTE: we need to disable this particular timeout for preventing mocha timeout
-                // error while establishing connection to Sauce Labs. If connection wouldn't be
-                // established after a specified number of attempts, an error will be thrown.
-                mocha.timeout(0);
+            if (config.useLocalBrowsers)
+                return Promise.resolve();
 
-                return openRemoteBrowsers();
-            }
+            // NOTE: we need to disable this particular timeout for preventing mocha timeout
+            // error while establishing connection to Sauce Labs. If connection wouldn't be
+            // established after a specified number of attempts, an error will be thrown.
+            mocha.timeout(0);
 
-            return openLocalBrowsers();
+            return openRemoteBrowsers();
+        })
+        .then(() => {
+            return waitUntilBrowsersConnected();
         })
         .then(() => {
             global.testReport = null;

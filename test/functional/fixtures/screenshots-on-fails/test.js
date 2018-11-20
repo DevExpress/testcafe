@@ -7,11 +7,10 @@ const REPORT_SCREENSHOT_PATH_TEXT_RE     = /___test-screenshots___[\\/]\d{4,4}-\
 const ERROR_SCREENSHOT_PATH_RE           = /Screenshot: .*?___test-screenshots___[\\/]\d{4,4}-\d{2,2}-\d{2,2}_\d{2,2}-\d{2,2}-\d{2,2}[\\/]test-1[\\/]\S+[\\/]errors[\\/]\d.png/;
 const QUARANTINE_MODE_SCREENSHOT_PATH_RE = /Screenshot: .*?___test-screenshots___[\\/]\d{4,4}-\d{2,2}-\d{2,2}_\d{2,2}-\d{2,2}-\d{2,2}[\\/]test-1[\\/]run-3[\\/]\S+[\\/]errors[\\/]\d.png/;
 
-if (config.useLocalBrowsers && config.currentEnvironmentName !== config.testingEnvironmentNames.localBrowsersIE) {
-    describe('Screenshots on fails', function () {
+describe('Screenshots on fails', function () {
+    afterEach(assertionHelper.removeScreenshotDir);
 
-        afterEach(assertionHelper.removeScreenshotDir);
-
+    if (config.useLocalBrowsers && config.currentEnvironmentName !== config.testingEnvironmentNames.localBrowsersIE) {
         it('Should take a screenshot if the ensureElement method fails', function () {
             return runTests('./testcafe-fixtures/screenshots-on-fails.js', 'Screenshot on the ensureElement method fail',
                 {
@@ -126,5 +125,24 @@ if (config.useLocalBrowsers && config.currentEnvironmentName !== config.testingE
                     expect(result).eql(true);
                 });
         });
-    });
-}
+    }
+    else if (!config.useLocalBrowsers) {
+        it('Should show a warning on an attempt to capture a screenshot for a remote browser', () => {
+            return runTests('./testcafe-fixtures/screenshots-on-fails.js', 'Screenshot on the ensureElement method fail',
+                {
+                    shouldFail:         true,
+                    screenshotsOnFails: true,
+                    selectorTimeout:    0,
+                    setScreenshotPath:  true
+                })
+                .catch(() => {
+                    expect(testReport.warnings).eql([
+                        'The screenshot and window resize functionalities are not supported in a remote browser. ' +
+                        'They can function only if the browser is running on the same machine and ' +
+                        'in the same environment as the TestCafe server.'
+                    ]);
+                });
+        });
+    }
+});
+
