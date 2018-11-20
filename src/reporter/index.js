@@ -18,8 +18,8 @@ export default class Reporter {
         this._assignTaskEventHandlers(task);
     }
 
-    static _usesSpecialStream () {
-        return this.outStream.isTTY || this.outStream === process.stdout || this.outStream === process.stderr;
+    static _isSpecialStream (stream) {
+        return stream.isTTY || stream === process.stdout || stream === process.stderr;
     }
 
     static _createReportQueue (task) {
@@ -145,7 +145,7 @@ export default class Reporter {
 
         this.disposed = true;
 
-        if (!this.outStream || this._usesSpecialStream() || !isWritableStream(this.outStream))
+        if (!this.outStream || Reporter._isSpecialStream(this.outStream) || !isWritableStream(this.outStream))
             return;
 
         this.outStream.end();
