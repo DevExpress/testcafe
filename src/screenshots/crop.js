@@ -11,13 +11,16 @@ import WARNING_MESSAGES from '../notifications/warning-message';
 
 
 function readPng (filePath) {
-    const png           = new PNG();
+    const stream = fs.createReadStream(filePath);
+    const png    = new PNG();
+
     const parsedPromise = Promise.race([
         promisifyEvent(png, 'parsed'),
-        promisifyEvent(png, 'error')
+        promisifyEvent(png, 'error'),
+        promisifyEvent(stream, 'error')
     ]);
 
-    fs.createReadStream(filePath).pipe(png);
+    stream.pipe(png);
 
     return parsedPromise
         .then(() => png);
