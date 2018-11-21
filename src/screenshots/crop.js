@@ -27,13 +27,16 @@ function readPng (filePath) {
 }
 
 function writePng (filePath, png) {
-    const outStream     = fs.createWriteStream(filePath);
+    const outStream = fs.createWriteStream(filePath);
+    const pngStream = png.pack();
+
     const finishPromise = Promise.race([
         promisifyEvent(outStream, 'finish'),
-        promisifyEvent(outStream, 'error')
+        promisifyEvent(outStream, 'error'),
+        promisifyEvent(pngStream, 'error')
     ]);
 
-    png.pack().pipe(outStream);
+    pngStream.pipe(outStream);
 
     return finishPromise;
 }
