@@ -5,7 +5,8 @@ const hostname            = isTravisEnvironment ? os.hostname() : '127.0.0.1';
 
 const browserProviderNames = {
     sauceLabs:    'sauceLabs',
-    browserstack: 'browserstack'
+    browserstack: 'browserstack',
+    remote:       'remote'
 };
 
 const testingEnvironmentNames = {
@@ -16,6 +17,7 @@ const testingEnvironmentNames = {
     localBrowsers:               'local-browsers',
     localHeadlessChrome:         'local-headless-chrome',
     localHeadlessFirefox:        'local-headless-firefox',
+    remote:                      'remote',
     oldBrowsers:                 'old-browsers',
     legacy:                      'legacy'
 };
@@ -168,6 +170,20 @@ testingEnvironments[testingEnvironmentNames.localHeadlessFirefox] = {
             alias:       'firefox'
         }
     ]
+};
+
+testingEnvironments[testingEnvironmentNames.remote] = {
+    remote: true,
+
+    browsers: [{
+        get qrCode () {
+            return !!process.env.QR_CODE;
+        },
+
+        get alias () {
+            return process.env.BROWSER_ALIAS || 'chrome';
+        }
+    }]
 };
 
 testingEnvironments[testingEnvironmentNames.oldBrowsers] = {

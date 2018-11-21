@@ -6,6 +6,7 @@ import { isInQueue, addToQueue } from '../utils/async-queue';
 import WARNING_MESSAGE from '../notifications/warning-message';
 import escapeUserAgent from '../utils/escape-user-agent';
 import correctFilePath from '../utils/correct-file-path';
+import { stat } from '../utils/promisified-functions';
 
 export default class Capturer {
     constructor (baseScreenshotsPath, testEntry, connection, pathPattern, warningLog) {
@@ -53,6 +54,17 @@ export default class Capturer {
             width:  Math.floor(Capturer._getDimensionWithoutScrollbar(innerWidth, documentWidth, bodyWidth) * dpr),
             height: Math.floor(Capturer._getDimensionWithoutScrollbar(innerHeight, documentHeight, bodyHeight) * dpr)
         };
+    }
+
+    static async _isScreenshotCaptured (screenshotPath) {
+        try {
+            const stats = await stat(screenshotPath);
+
+            return stats.isFile();
+        }
+        catch (e) {
+            return false;
+        }
     }
 
     _joinWithBaseScreenshotPath (path) {
@@ -105,6 +117,9 @@ export default class Capturer {
 
         await addToQueue(screenshotPath, async () => {
             await this._takeScreenshot(screenshotPath, ... pageDimensions ? [pageDimensions.innerWidth, pageDimensions.innerHeight] : []);
+
+            if (!await Capturer._isScreenshotCaptured(screenshotPath))
+                return;
 
             await cropScreenshot(screenshotPath, markSeed, Capturer._getClientAreaDimensions(pageDimensions), Capturer._getCropDimensions(cropDimensions, pageDimensions));
 

@@ -53,8 +53,10 @@ ll
         'client-scripts-bundle'
     ]);
 
-const ARGS     = minimist(process.argv.slice(2));
-const DEV_MODE = 'dev' in ARGS;
+const ARGS          = minimist(process.argv.slice(2));
+const DEV_MODE      = 'dev' in ARGS;
+const QR_CODE       = 'qr-code' in ARGS;
+const BROWSER_ALIAS = ARGS['browser-alias'];
 
 const CLIENT_TESTS_PATH        = 'test/client/fixtures';
 const CLIENT_TESTS_LEGACY_PATH = 'test/client/legacy-fixtures';
@@ -679,6 +681,18 @@ gulp.step('test-functional-local-headless-firefox-run', () => {
 });
 
 gulp.task('test-functional-local-headless-firefox', gulp.series('build', 'test-functional-local-headless-firefox-run'));
+
+gulp.step('test-functional-remote-run', () => {
+    if (QR_CODE)
+        process.env.QR_CODE = 'true';
+
+    if (BROWSER_ALIAS)
+        process.env.BROWSER_ALIAS = BROWSER_ALIAS;
+
+    return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.remote, functionalTestConfig.browserProviderNames.remote);
+});
+
+gulp.task('test-functional-remote', gulp.series('build', 'test-functional-remote-run'));
 
 gulp.step('test-functional-local-legacy-run', () => {
     return testFunctional('test/functional/legacy-fixtures', functionalTestConfig.testingEnvironmentNames.legacy);
