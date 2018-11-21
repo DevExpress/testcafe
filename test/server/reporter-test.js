@@ -1,10 +1,13 @@
 const expect            = require('chai').expect;
-const EventEmitter      = require('events').EventEmitter;
+const Emittery          = require('emittery/legacy');
 const Promise           = require('pinkie');
 const { chunk, random } = require('lodash');
 const Reporter          = require('../../lib/reporter');
+const delay             = require('../../lib/utils/delay');
+
 
 describe('Reporter', () => {
+    const calls = [];
     // Runnable configuration mocks
     const screenshotDir = '/screenshots/1445437598847';
 
@@ -241,7 +244,7 @@ describe('Reporter', () => {
         }
     }
 
-    class TaskMock extends EventEmitter {
+    class TaskMock extends Emittery {
         constructor () {
             super();
 
@@ -260,27 +263,27 @@ describe('Reporter', () => {
     }
 
     // Browser job emulation
-    function delay () {
+    function delay2 () {
         return new Promise(resolve => {
-            setTimeout(resolve, random(0, 10));
+            setTimeout(resolve, random(100, 500));
         });
     }
 
     function emulateBrowserJob (taskMock, testRunMocks) {
         return testRunMocks.reduce((chain, testRun) => {
             return chain
-                .then(() => {
-                    taskMock.emit('test-run-start', testRun);
-                })
-                .then(delay)
-                .then(() => {
-                    taskMock.emit('test-run-done', testRun);
-                })
-                .then(delay);
-        }, delay());
+                .then(() => taskMock.emit('test-run-start', testRun))
+                .then(() => calls.push('test-run-start'))
+                .then(delay2)
+                .then(() => taskMock.emit('test-run-done', testRun))
+                .then(() => calls.push('test-run-done'))
+                .then(delay2);
+        }, delay2());
     }
 
-    it('Should analyze task progress and call appropriate plugin methods', () => {
+    it('Should analyze task progress and call appropriate plugin methods', function () {
+        this.timeout(20000);
+
         const taskMock = new TaskMock();
 
         const expectedCalls = [
@@ -305,6 +308,9 @@ describe('Reporter', () => {
                     }
                 ]
             },
+            'task-start',
+            'test-run-start',
+            'test-run-start',
             {
                 method: 'reportTestDone',
                 args:   [
@@ -332,6 +338,10 @@ describe('Reporter', () => {
                     }
                 ]
             },
+            'test-run-done',
+            'test-run-done',
+            'test-run-start',
+            'test-run-start',
             {
                 method: 'reportTestDone',
                 args:   [
@@ -376,6 +386,10 @@ describe('Reporter', () => {
                     }
                 ]
             },
+            'test-run-done',
+            'test-run-done',
+            'test-run-start',
+            'test-run-start',
             {
                 method: 'reportTestDone',
                 args:   [
@@ -404,6 +418,10 @@ describe('Reporter', () => {
                     }
                 ]
             },
+            'test-run-done',
+            'test-run-done',
+            'test-run-start',
+            'test-run-start',
             {
                 method: 'reportTestDone',
                 args:   [
@@ -422,6 +440,10 @@ describe('Reporter', () => {
                     }
                 ]
             },
+            'test-run-done',
+            'test-run-done',
+            'test-run-start',
+            'test-run-start',
             {
                 method: 'reportTestDone',
                 args:   [
@@ -448,6 +470,10 @@ describe('Reporter', () => {
                     null
                 ]
             },
+            'test-run-done',
+            'test-run-done',
+            'test-run-start',
+            'test-run-start',
             {
                 method: 'reportTestDone',
                 args:   [
@@ -472,6 +498,8 @@ describe('Reporter', () => {
                     }
                 ]
             },
+            'test-run-done',
+            'test-run-done',
             {
                 method: 'reportTaskDone',
                 args:   [
@@ -479,11 +507,12 @@ describe('Reporter', () => {
                     4,
                     ['warning1', 'warning2']
                 ]
-            }
+            },
+            'task-done'
         ];
 
         const reporter = new Reporter({
-            calls: [],
+            calls: calls,
 
             reportTaskStart: function (...args) {
                 expect(args[0]).to.be.a('date');
@@ -491,11 +520,13 @@ describe('Reporter', () => {
                 // NOTE: replace startTime
                 args[0] = new Date('Thu Jan 01 1970 00:00:00 UTC');
 
-                this.calls.push({ method: 'reportTaskStart', args: args });
+                return delay(1000)
+                    .then(() => this.calls.push({ method: 'reportTaskStart', args: args }));
             },
 
             reportFixtureStart: function () {
-                this.calls.push({ method: 'reportFixtureStart', args: Array.prototype.slice.call(arguments) });
+                return delay(1000)
+                    .then(() => this.calls.push({ method: 'reportFixtureStart', args: Array.prototype.slice.call(arguments) }));
             },
 
             reportTestDone: function (...args) {
@@ -504,7 +535,8 @@ describe('Reporter', () => {
                 // NOTE: replace durationMs
                 args[1].durationMs = 74000;
 
-                this.calls.push({ method: 'reportTestDone', args: args });
+                return delay(1000)
+                    .then(() => this.calls.push({ method: 'reportTestDone', args: args }));
             },
 
             reportTaskDone: function (...args) {
@@ -513,19 +545,23 @@ describe('Reporter', () => {
                 // NOTE: replace endTime
                 args[0] = new Date('Thu Jan 01 1970 00:15:25 UTC');
 
-                this.calls.push({ method: 'reportTaskDone', args: args });
+                return delay(1000)
+                    .then(() => this.calls.push({ method: 'reportTaskDone', args: args }));
             }
         }, taskMock);
 
-        taskMock.emit('start');
-
-        return Promise
-            .all([
-                emulateBrowserJob(taskMock, chromeTestRunMocks),
-                emulateBrowserJob(taskMock, firefoxTestRunMocks)
-            ])
+        return taskMock
+            .emit('start')
             .then(() => {
-                taskMock.emit('done');
+                calls.push('task-start');
+                return Promise.all([
+                    emulateBrowserJob(taskMock, chromeTestRunMocks),
+                    emulateBrowserJob(taskMock, firefoxTestRunMocks)
+                ]);
+            })
+            .then(() => taskMock.emit('done'))
+            .then(() => {
+                calls.push('task-done');
 
                 expect(reporter.plugin.calls).eql(expectedCalls);
             });

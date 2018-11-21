@@ -1,4 +1,4 @@
-import EventEmitter from 'events';
+import Emittery from 'emittery/legacy';
 import { TestRun as LegacyTestRun } from 'testcafe-legacy-api';
 import TestRun from '../test-run';
 import SessionController from '../test-run/session-controller';
@@ -24,7 +24,7 @@ class Quarantine {
     }
 }
 
-export default class TestRunController extends EventEmitter {
+export default class TestRunController extends Emittery {
     constructor (test, index, proxy, screenshots, warningLog, fixtureHookController, opts) {
         super();
 
@@ -90,17 +90,17 @@ export default class TestRunController extends EventEmitter {
         return isFirstAttempt ? hasErrors : !failedThresholdReached && !passedThresholdReached;
     }
 
-    _keepInQuarantine () {
-        this._restartTest();
+    async _keepInQuarantine () {
+        await this._restartTest();
     }
 
-    _restartTest () {
-        this.emit('test-run-restart');
+    async _restartTest () {
+        await this.emit('test-run-restart');
     }
 
     async _testRunDoneInQuarantineMode () {
         if (this._shouldKeepInQuarantine())
-            this._keepInQuarantine();
+            await this._keepInQuarantine();
         else
             await this._endQuarantine();
     }
@@ -119,7 +119,7 @@ export default class TestRunController extends EventEmitter {
 
         this.done = true;
 
-        this.emit('test-run-done');
+        await this.emit('test-run-done');
     }
 
     async _testRunDisconnected (connection) {
@@ -130,7 +130,7 @@ export default class TestRunController extends EventEmitter {
 
             await connection.restartBrowser();
 
-            this._restartTest();
+            await this._restartTest();
         }
     }
 
@@ -144,7 +144,7 @@ export default class TestRunController extends EventEmitter {
         const hookOk = await this.fixtureHookController.runFixtureBeforeHookIfNecessary(testRun);
 
         if (this.test.skip || !hookOk) {
-            this.emit('test-run-start');
+            await this.emit('test-run-start');
             await this._emitTestRunDone();
             return null;
         }

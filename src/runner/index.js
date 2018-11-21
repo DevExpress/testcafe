@@ -60,7 +60,7 @@ export default class Runner extends EventEmitter {
 
     static async _disposeTaskAndRelatedAssets (task, browserSet, reporters, testedApp) {
         task.abort();
-        task.removeAllListeners();
+        task.clearListeners();
 
         await Runner._disposeAssets(browserSet, reporters, testedApp);
     }
@@ -103,7 +103,7 @@ export default class Runner extends EventEmitter {
         task.on('browser-job-done', job => browserSet.releaseConnection(job.browserConnection));
 
         const promises = [
-            promisifyEvent(task, 'done'),
+            task.once('done'),
             promisifyEvent(browserSet, 'error')
         ];
 
@@ -130,14 +130,14 @@ export default class Runner extends EventEmitter {
         const reporters         = reporterPlugins.map(reporter => new Reporter(reporter.plugin, task, reporter.outStream));
         const completionPromise = this._getTaskResult(task, browserSet, reporters, testedApp);
 
-        task.once('start', startHandlingTestErrors);
+        task.on('start', startHandlingTestErrors);
 
         if (!this.opts.skipUncaughtErrors) {
             task.on('test-run-start', addRunningTest);
             task.on('test-run-done', removeRunningTest);
         }
 
-        task.once('done', stopHandlingTestErrors);
+        task.on('done', stopHandlingTestErrors);
 
         const setCompleted = () => {
             completed = true;

@@ -1,11 +1,11 @@
-import { EventEmitter } from 'events';
 import { pull as remove } from 'lodash';
+import Emittery from 'emittery/legacy';
 import BrowserJob from './browser-job';
 import Screenshots from '../screenshots';
 import WarningLog from '../notifications/warning-log';
 import FixtureHookController from './fixture-hook-controller';
 
-export default class Task extends EventEmitter {
+export default class Task extends Emittery {
     constructor (tests, browserConnectionGroups, proxy, opts) {
         super();
 
@@ -22,28 +22,29 @@ export default class Task extends EventEmitter {
 
     _assignBrowserJobEventHandlers (job) {
         job.on('test-run-start', testRun => this.emit('test-run-start', testRun));
-        job.on('test-run-done', testRun => {
-            this.emit('test-run-done', testRun);
+
+        job.on('test-run-done', async testRun => {
+            await this.emit('test-run-done', testRun);
 
             if (this.opts.stopOnFirstFail && testRun.errs.length) {
                 this.abort();
-                this.emit('done');
+                await this.emit('done');
             }
         });
 
-        job.once('start', () => {
+        job.on('start', async () => {
             if (!this.running) {
                 this.running = true;
-                this.emit('start');
+                await this.emit('start');
             }
         });
 
-        job.once('done', () => {
+        job.on('done', async () => {
             remove(this.pendingBrowserJobs, job);
-            this.emit('browser-job-done', job);
+            await this.emit('browser-job-done', job);
 
             if (!this.pendingBrowserJobs.length)
-                this.emit('done');
+                await this.emit('done');
         });
     }
 

@@ -1,13 +1,13 @@
 import Promise from 'pinkie';
-import { EventEmitter } from 'events';
 import { remove } from 'lodash';
+import Emittery from 'emittery';
 import TestRunController from './test-run-controller';
 import SessionController from '../test-run/session-controller';
 import RESULT from './browser-job-result';
 
 
 // Browser job
-export default class BrowserJob extends EventEmitter {
+export default class BrowserJob extends Emittery {
     constructor (tests, browserConnections, proxy, screenshots, warningLog, fixtureHookController, opts) {
         super();
 
@@ -76,7 +76,7 @@ export default class BrowserJob extends EventEmitter {
         while (this.completionQueue.length && this.completionQueue[0].done) {
             testRunController = this.completionQueue.shift();
 
-            this.emit('test-run-done', testRunController.testRun);
+            await this.emit('test-run-done', testRunController.testRun);
         }
 
         if (!this.completionQueue.length && !this.hasQueuedTestRuns) {
@@ -106,7 +106,7 @@ export default class BrowserJob extends EventEmitter {
 
             if (!this.started) {
                 this.started = true;
-                this.emit('start');
+                await this.emit('start');
             }
 
             const testRunUrl = await testRunController.start(connection);
@@ -119,7 +119,7 @@ export default class BrowserJob extends EventEmitter {
     }
 
     abort () {
-        this.removeAllListeners();
+        this.clearListeners();
         this._setResult(RESULT.aborted);
         this.browserConnections.map(bc => bc.removeJob(this));
     }
