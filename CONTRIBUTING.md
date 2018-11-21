@@ -1,9 +1,8 @@
 # Contributing to TestCafe
 
-TestCafe would not be possible without active support from the community. We certainly appreciate and would
-encourage your contributions, no matter how large or small.
+TestCafe would not be possible without active support from the community. We appreciate and encourage your contributions, no matter how big  or small.
 
-To that end, please review our contribution guidelines first.
+Review our contribution guidelines:
 
 * [Code of Conduct](#code-of-conduct)
 * [General Discussion](#general-discussion)
@@ -15,7 +14,7 @@ To that end, please review our contribution guidelines first.
 
 ## Code of Conduct
 
-TestCafe has adopted a [Contributor Code of Conduct](CODE_OF_CONDUCT.md), abide by its terms.
+TestCafe abides by the [Contributor Code of Conduct](CODE_OF_CONDUCT.md).
 
 ## General Discussion
 
@@ -30,7 +29,7 @@ When you create a new issue, template text is automatically added to its body. T
 
 ## Code Contribution
 
-Please follow the steps below when submitting your code.
+Follow the steps below when submitting your code.
 
 1. Search the [list of issues](https://github.com/DevExpress/testcafe/issues) to see if there
   is an issue for the bug or feature you are going to work on. If you do not find one, please create your own.
