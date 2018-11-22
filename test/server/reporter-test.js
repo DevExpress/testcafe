@@ -1,10 +1,9 @@
-const expect            = require('chai').expect;
+const { expect }        = require('chai');
 const Promise           = require('pinkie');
 const { chunk, random } = require('lodash');
 const Reporter          = require('../../lib/reporter');
 const AsyncEventEmitter = require('../../lib/utils/async-event-emitter');
 const delay             = require('../../lib/utils/delay');
-
 
 describe('Reporter', () => {
     // Runnable configuration mocks

@@ -3,7 +3,6 @@
 // Do not use any browser or node-specific API!
 // -------------------------------------------------------------
 
-
 export default {
     browserDisconnected:                                            'The {userAgent} browser disconnected. This problem may appear when a browser hangs or is closed, or due to network issues.',
     cantRunAgainstDisconnectedBrowsers:                             'The following browsers disconnected: {userAgents}. Tests will not be run.',
@@ -39,5 +38,6 @@ export default {
     requestHookConfigureAPIError:                                   'There was an error while configuring the request hook:\n\n{requestHookName}: {errMsg}',
     timeLimitedPromiseTimeoutExpired:                               'Timeout expired for a time limited promise',
     forbiddenCharatersInScreenshotPath:                             'There are forbidden characters in the "{screenshotPath}" {screenshotPathType}:\n {forbiddenCharsDescription}',
-    cantUseScreenshotPathPatternWithoutBaseScreenshotPathSpecified: 'Cannot use the screenshot path pattern without a base screenshot path specified'
+    cantUseScreenshotPathPatternWithoutBaseScreenshotPathSpecified: 'Cannot use the screenshot path pattern without a base screenshot path specified',
+    multipleAPIMethodCallForbidden:                                 'It\'s forbidden to call "{methodName}" method several times. Instead of this pass an array to the "{methodName}" method.'
 };

@@ -1,4 +1,3 @@
-import fs from 'fs';
 import chalk from 'chalk';
 import { GeneralError, APIError } from '../errors/runtime';
 import MESSAGE from '../errors/runtime/message';
@@ -7,7 +6,6 @@ import TerminationHandler from './termination-handler';
 import log from './log';
 import remotesWizard from './remotes-wizard';
 import createTestCafe from '../';
-
 
 let showMessageOnExit = true;
 let exitMessageShown  = false;
@@ -71,20 +69,14 @@ async function runTests (argParser) {
 
     log.showSpinner();
 
-    const testCafe     = await createTestCafe(opts.hostname, port1, port2, opts.ssl, opts.dev);
+    const testCafe       = await createTestCafe(opts.hostname, port1, port2, opts.ssl, opts.dev);
     const concurrency    = argParser.concurrency || 1;
     const remoteBrowsers = await remotesWizard(testCafe, argParser.remoteCount, opts.qrCode);
     const browsers       = argParser.browsers.concat(remoteBrowsers);
     const runner         = testCafe.createRunner();
-    let failed         = 0;
-    const reporters      = argParser.opts.reporters.map(r => {
-        return {
-            name:      r.name,
-            outStream: r.outFile ? fs.createWriteStream(r.outFile) : void 0
-        };
-    });
+    let failed           = 0;
 
-    reporters.forEach(r => runner.reporter(r.name, r.outStream));
+    argParser.opts.reporters.map(r => runner.reporter(r.name, r.outFile));
 
     runner
         .useProxy(externalProxyHost, proxyBypass)

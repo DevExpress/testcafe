@@ -1,10 +1,10 @@
-const expect               = require('chai').expect;
+const expect                                      = require('chai').expect;
 const { createTestStream, createAsyncTestStream } = require('../../utils/stream');
+const fs                                          = require('fs');
 
 describe('Reporter', () => {
     const stdoutWrite = process.stdout.write;
     const stderrWrite = process.stderr.write;
-
 
     afterEach(() => {
         process.stdout.write = stdoutWrite;
@@ -188,7 +188,6 @@ describe('Reporter', () => {
             });
     });
 
-
     it('Should not close tty streams (GH-3114)', function () {
         const stream = createAsyncTestStream({ shouldFail: true });
 
@@ -207,6 +206,32 @@ describe('Reporter', () => {
         return runTests('testcafe-fixtures/index-test.js', 'Simple test', runOpts)
             .then(() => {
                 expect(stream.finalCalled).to.be.not.ok;
+            });
+    });
+
+    it('Should support filename as reporter output', () => {
+        const testStream     = createTestStream();
+        const reportFileName = 'list.report';
+
+        return runTests('testcafe-fixtures/index-test.js', 'Simple test', {
+            only:      ['chrome'],
+            reporters: [
+                {
+                    reporter:  'list',
+                    outStream: testStream
+                },
+                {
+                    reporter:  'list',
+                    outStream: reportFileName
+                }
+            ]
+        })
+            .then(() => {
+                const reportDataFromFile = fs.readFileSync(reportFileName).toString();
+
+                expect(testStream.data).eql(reportDataFromFile);
+
+                fs.unlinkSync(reportFileName);
             });
     });
 });

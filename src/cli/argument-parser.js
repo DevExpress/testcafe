@@ -9,7 +9,7 @@ import { assertType, is } from '../errors/runtime/type-assertions';
 import getViewPortWidth from '../utils/get-viewport-width';
 import { wordWrap, splitQuotedText } from '../utils/string';
 import { isMatch } from 'lodash';
-import parseSslOptions from './parse-ssl-options';
+import parseSslOptions from '../utils/parse-ssl-options';
 
 const REMOTE_ALIAS_RE = /^remote(?::(\d*))?$/;
 
@@ -236,9 +236,9 @@ export default class CLIArgumentParser {
             .filter(browser => browser && this._filterAndCountRemotes(browser));
     }
 
-    _parseSslOptions () {
+    async _parseSslOptions () {
         if (this.opts.ssl)
-            this.opts.ssl = parseSslOptions(this.opts.ssl);
+            this.opts.ssl = await parseSslOptions(this.opts.ssl);
     }
 
     async _parseReporters () {
@@ -299,9 +299,9 @@ export default class CLIArgumentParser {
         this._parsePorts();
         this._parseBrowserList();
         this._parseConcurrency();
-        this._parseSslOptions();
         this._parseFileList();
 
+        await this._parseSslOptions();
         await this._parseReporters();
     }
 }

@@ -14,19 +14,17 @@ const Runner                   = lazyRequire('./runner');
 require('coffeescript');
 
 export default class TestCafe {
-    constructor (hostname, port1, port2, options = {}) {
+    constructor (configuration) {
         this._setupSourceMapsSupport();
-
         errorHandlers.registerErrorHandlers();
 
-        if (options.retryTestPages)
-            options.staticContentCaching = { maxAge: 3600, mustRevalidate: false };
+        const { hostname, port1, port2, options } = configuration.startOptions;
 
         this.closed                   = false;
         this.proxy                    = new hammerhead.Proxy(hostname, port1, port2, options);
-        this.browserConnectionGateway = new BrowserConnectionGateway(this.proxy, { retryTestPages: options.retryTestPages });
+        this.browserConnectionGateway = new BrowserConnectionGateway(this.proxy, { retryTestPages: configuration.getOption('retryTestPages') });
         this.runners                  = [];
-        this.retryTestPages           = options.retryTestPages;
+        this.configuration            = configuration;
 
         this._registerAssets(options.developmentMode);
     }
@@ -71,7 +69,7 @@ export default class TestCafe {
     }
 
     createRunner () {
-        const newRunner = new Runner(this.proxy, this.browserConnectionGateway, { retryTestPages: this.retryTestPages });
+        const newRunner = new Runner(this.proxy, this.browserConnectionGateway, this.configuration.clone());
 
         this.runners.push(newRunner);
 

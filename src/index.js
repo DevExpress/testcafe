@@ -3,6 +3,7 @@ import { GeneralError } from './errors/runtime';
 import MESSAGE from './errors/runtime/message';
 import embeddingUtils from './embedding-utils';
 import exportableLib from './api/exportable-lib';
+import initConfiguration from './configuration/init';
 
 const lazyRequire   = require('import-lazy')(require);
 const TestCafe      = lazyRequire('./testcafe');
@@ -38,17 +39,24 @@ async function getValidPort (port) {
 
 // API
 async function createTestCafe (hostname, port1, port2, sslOptions, developmentMode, retryTestPages) {
-    [hostname, port1, port2] = await Promise.all([
-        getValidHostname(hostname),
-        getValidPort(port1),
-        getValidPort(port2)
-    ]);
-
-    const testcafe = new TestCafe(hostname, port1, port2, {
+    const configuration = await initConfiguration({
+        hostname,
+        port1,
+        port2,
         ssl: sslOptions,
         developmentMode,
         retryTestPages
     });
+
+    [hostname, port1, port2] = await Promise.all([
+        getValidHostname(configuration.getOption('hostname')),
+        getValidPort(configuration.getOption('port1')),
+        getValidPort(configuration.getOption('port2'))
+    ]);
+
+    configuration.mergeOptions({ hostname, port1, port2 });
+
+    const testcafe = new TestCafe(configuration);
 
     setupExitHook(cb => testcafe.close().then(cb));
 
