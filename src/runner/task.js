@@ -1,5 +1,5 @@
 import { pull as remove } from 'lodash';
-import Emittery from 'emittery/legacy';
+import Emittery from '../utils/async-emitter';
 import BrowserJob from './browser-job';
 import Screenshots from '../screenshots';
 import WarningLog from '../notifications/warning-log';
@@ -40,8 +40,9 @@ export default class Task extends Emittery {
         });
 
         job.on('done', async () => {
-            remove(this.pendingBrowserJobs, job);
             await this.emit('browser-job-done', job);
+
+            remove(this.pendingBrowserJobs, job);
 
             if (!this.pendingBrowserJobs.length)
                 await this.emit('done');

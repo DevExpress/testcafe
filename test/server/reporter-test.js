@@ -1,8 +1,8 @@
 const expect            = require('chai').expect;
-const Emittery          = require('emittery/legacy');
 const Promise           = require('pinkie');
 const { chunk, random } = require('lodash');
 const Reporter          = require('../../lib/reporter');
+const Emittery          = require('../../lib/utils/async-emitter');
 const delay             = require('../../lib/utils/delay');
 
 

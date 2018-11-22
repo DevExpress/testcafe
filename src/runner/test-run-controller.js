@@ -1,4 +1,4 @@
-import Emittery from 'emittery/legacy';
+import Emittery from '../utils/async-emitter';
 import { TestRun as LegacyTestRun } from 'testcafe-legacy-api';
 import TestRun from '../test-run';
 import SessionController from '../test-run/session-controller';

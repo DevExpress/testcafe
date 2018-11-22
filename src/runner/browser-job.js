@@ -1,6 +1,6 @@
 import Promise from 'pinkie';
 import { remove } from 'lodash';
-import Emittery from 'emittery';
+import Emittery from '../utils/async-emitter';
 import TestRunController from './test-run-controller';
 import SessionController from '../test-run/session-controller';
 import RESULT from './browser-job-result';

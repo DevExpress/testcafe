@@ -59,7 +59,8 @@ export function addRunningTest (testRun) {
 }
 
 export function removeRunningTest (testRun) {
-    delete runningTests[testRun.id];
+    if (testRun)
+        delete runningTests[testRun.id];
 }
 
 export function startHandlingTestErrors () {
