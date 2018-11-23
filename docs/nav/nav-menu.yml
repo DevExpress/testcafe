@@ -204,6 +204,8 @@
       content:
       - name: AppVeyor
         url: /documentation/recipes/integrating-testcafe-with-ci-systems/appveyor.md
+      - name: Azure DevOps
+        url: /documentation/recipes/integrating-testcafe-with-ci-systems/azure-devops.md
       - name: CircleCI
         url: /documentation/recipes/integrating-testcafe-with-ci-systems/circleci.md
       - name: Jenkins
