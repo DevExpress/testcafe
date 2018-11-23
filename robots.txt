@@ -1,1 +1,1 @@
-Sitemap: http://devexpress.github.io/testcafe/sitemap.xml
+Sitemap: https://devexpress.github.io/testcafe/sitemap.xml
