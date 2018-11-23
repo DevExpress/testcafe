@@ -3,10 +3,10 @@
   <channel>
     <title>TestCafe</title>
     <description></description>
-    <link>http://devexpress.github.io/testcafe/</link>
-    <atom:link href="http://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 07 Nov 2018 19:07:22 +0300</pubDate>
-    <lastBuildDate>Wed, 07 Nov 2018 19:07:22 +0300</lastBuildDate>
+    <link>https://devexpress.github.io/testcafe/</link>
+    <atom:link href="https://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Fri, 23 Nov 2018 12:41:13 +0300</pubDate>
+    <lastBuildDate>Fri, 23 Nov 2018 12:41:13 +0300</lastBuildDate>
     <generator>Jekyll v3.8.4</generator>
     
       <item>
@@ -47,8 +47,8 @@
 &lt;/ul&gt;
 </description>
         <pubDate>Wed, 07 Nov 2018 00:00:00 +0300</pubDate>
-        <link>http://devexpress.github.io/testcafe/blog/testcafe-v0-23-1-released.html</link>
-        <guid isPermaLink="true">http://devexpress.github.io/testcafe/blog/testcafe-v0-23-1-released.html</guid>
+        <link>https://devexpress.github.io/testcafe/blog/testcafe-v0-23-1-released.html</link>
+        <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v0-23-1-released.html</guid>
         
         
       </item>
@@ -100,8 +100,8 @@ If the same problem occurs with this test two more times, the test run finishes 
 &lt;/ul&gt;
 </description>
         <pubDate>Thu, 25 Oct 2018 00:00:00 +0300</pubDate>
-        <link>http://devexpress.github.io/testcafe/blog/testcafe-v0-23-0-released.html</link>
-        <guid isPermaLink="true">http://devexpress.github.io/testcafe/blog/testcafe-v0-23-0-released.html</guid>
+        <link>https://devexpress.github.io/testcafe/blog/testcafe-v0-23-0-released.html</link>
+        <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v0-23-0-released.html</guid>
         
         
       </item>
@@ -159,8 +159,8 @@ If the same problem occurs with this test two more times, the test run finishes 
 &lt;/ul&gt;
 </description>
         <pubDate>Mon, 03 Sep 2018 00:00:00 +0300</pubDate>
-        <link>http://devexpress.github.io/testcafe/blog/testcafe-v0-22-0-released.html</link>
-        <guid isPermaLink="true">http://devexpress.github.io/testcafe/blog/testcafe-v0-22-0-released.html</guid>
+        <link>https://devexpress.github.io/testcafe/blog/testcafe-v0-22-0-released.html</link>
+        <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v0-22-0-released.html</guid>
         
         
       </item>
@@ -242,8 +242,8 @@ If the same problem occurs with this test two more times, the test run finishes 
 &lt;/ul&gt;
 </description>
         <pubDate>Thu, 02 Aug 2018 00:00:00 +0300</pubDate>
-        <link>http://devexpress.github.io/testcafe/blog/testcafe-v0-21-0-released.html</link>
-        <guid isPermaLink="true">http://devexpress.github.io/testcafe/blog/testcafe-v0-21-0-released.html</guid>
+        <link>https://devexpress.github.io/testcafe/blog/testcafe-v0-21-0-released.html</link>
+        <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v0-21-0-released.html</guid>
         
         
       </item>
@@ -303,8 +303,8 @@ If the same problem occurs with this test two more times, the test run finishes 
 &lt;/ul&gt;
 </description>
         <pubDate>Tue, 15 May 2018 00:00:00 +0300</pubDate>
-        <link>http://devexpress.github.io/testcafe/blog/testcafe-v0-20-0-released.html</link>
-        <guid isPermaLink="true">http://devexpress.github.io/testcafe/blog/testcafe-v0-20-0-released.html</guid>
+        <link>https://devexpress.github.io/testcafe/blog/testcafe-v0-20-0-released.html</link>
+        <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v0-20-0-released.html</guid>
         
         
       </item>
@@ -402,8 +402,8 @@ If the same problem occurs with this test two more times, the test run finishes 
 &lt;/ul&gt;
 </description>
         <pubDate>Thu, 01 Mar 2018 00:00:00 +0300</pubDate>
-        <link>http://devexpress.github.io/testcafe/blog/testcafe-v0-19-0-released.html</link>
-        <guid isPermaLink="true">http://devexpress.github.io/testcafe/blog/testcafe-v0-19-0-released.html</guid>
+        <link>https://devexpress.github.io/testcafe/blog/testcafe-v0-19-0-released.html</link>
+        <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v0-19-0-released.html</guid>
         
         
       </item>
@@ -589,8 +589,8 @@ Now TestCafe exits gracefully closing all browsers opened for testing.&lt;/p&gt;
 &lt;/ul&gt;
 </description>
         <pubDate>Tue, 10 Oct 2017 00:00:00 +0300</pubDate>
-        <link>http://devexpress.github.io/testcafe/blog/testcafe-v0-18-0-released.html</link>
-        <guid isPermaLink="true">http://devexpress.github.io/testcafe/blog/testcafe-v0-18-0-released.html</guid>
+        <link>https://devexpress.github.io/testcafe/blog/testcafe-v0-18-0-released.html</link>
+        <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v0-18-0-released.html</guid>
         
         
       </item>
@@ -608,8 +608,8 @@ Now TestCafe exits gracefully closing all browsers opened for testing.&lt;/p&gt;
 &lt;p&gt;A major release of TestCafe v0.18.0 with a bunch of new features is coming soon.&lt;/p&gt;
 </description>
         <pubDate>Fri, 29 Sep 2017 00:00:00 +0300</pubDate>
-        <link>http://devexpress.github.io/testcafe/blog/testcafe-v0-18-0-alpha1-released.html</link>
-        <guid isPermaLink="true">http://devexpress.github.io/testcafe/blog/testcafe-v0-18-0-alpha1-released.html</guid>
+        <link>https://devexpress.github.io/testcafe/blog/testcafe-v0-18-0-alpha1-released.html</link>
+        <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v0-18-0-alpha1-released.html</guid>
         
         
       </item>
@@ -706,8 +706,8 @@ Now automatic waiting is much smarter and chances that you need to wait manually
 &lt;/ul&gt;
 </description>
         <pubDate>Wed, 02 Aug 2017 00:00:00 +0300</pubDate>
-        <link>http://devexpress.github.io/testcafe/blog/testcafe-v0-17-0-released.html</link>
-        <guid isPermaLink="true">http://devexpress.github.io/testcafe/blog/testcafe-v0-17-0-released.html</guid>
+        <link>https://devexpress.github.io/testcafe/blog/testcafe-v0-17-0-released.html</link>
+        <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v0-17-0-released.html</guid>
         
         
       </item>
@@ -766,8 +766,8 @@ Now automatic waiting is much smarter and chances that you need to wait manually
 &lt;/ul&gt;
 </description>
         <pubDate>Tue, 13 Jun 2017 00:00:00 +0300</pubDate>
-        <link>http://devexpress.github.io/testcafe/blog/testcafe-v0-16-0-released.html</link>
-        <guid isPermaLink="true">http://devexpress.github.io/testcafe/blog/testcafe-v0-16-0-released.html</guid>
+        <link>https://devexpress.github.io/testcafe/blog/testcafe-v0-16-0-released.html</link>
+        <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v0-16-0-released.html</guid>
         
         
       </item>
