@@ -46,8 +46,10 @@ Use the content CircleCI provides by default with two changes:
 * Since you are going to perform browser testing, you need a virtual machine image that has all popular browsers pre-installed. So use the following image
 
     ```yml
-    - image: circleci/node:7.10-browsers
+    - image: circleci/node:x.y-browsers
     ```
+
+    ***Replace*** `x.y` with the latest available Node.js version. See the [image's page](https://hub.docker.com/r/circleci/node/tags/) on Docker Hub for the list of available versions.
 
 * Add a step that imports test results to the end of the YAML. The results will be displayed in the **Test Summary** section.
 
@@ -59,33 +61,19 @@ Use the content CircleCI provides by default with two changes:
 The resulting YAML will look as follows.
 
 ```yml
-{% raw %}
-# Javascript Node CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-javascript/ for more details
-#
 version: 2
 jobs:
   build:
     docker:
-      # specify the version you desire here
-      - image: circleci/node:7.10-browsers
-
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/mongo:3.4.4
+      - image: circleci/node:x.y-browsers
 
     working_directory: ~/repo
 
     steps:
       - checkout
-
-      # Download and cache dependencies
       - restore_cache:
           keys:
           - v1-dependencies-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
 
       - run: yarn install
@@ -95,15 +83,30 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
-      # run tests!
       - run: yarn test
 
       - store_test_results:
           path: /tmp/test-results
-{% endraw %}
 ```
 
-Next, create a `package.json` file in the repository root directory. Provide a command to run tests and add TestCafe as a dependency.
+Next, add `testcafe` and `testcafe-reporter-xunit` to project's development dependencies. Open the repository root and execute the following command:
+
+```sh
+npm --save-dev testcafe testcafe-reporter-xunit
+```
+
+This command installs the `testcafe` and `testcafe-reporter-xunit` modules locally and adds them to `package.json`.
+
+```json
+{
+  "devDependencies": {
+      "testcafe": "^x.y.z",
+      "testcafe-reporter-xunit": "^x.y.z"
+  }
+}
+```
+
+Provide a command to run tests in the `scripts` section.
 
 ```json
 {
@@ -111,8 +114,8 @@ Next, create a `package.json` file in the repository root directory. Provide a c
     "test": "testcafe chrome:headless tests/**/* -r xunit:/tmp/test-results/res.xml"
   },
   "devDependencies": {
-      "testcafe": "^0.18.4",
-      "testcafe-reporter-xunit": "^2.1.0"
+      "testcafe": "^x.y.z",
+      "testcafe-reporter-xunit": "^x.y.z"
   }
 }
 ```
