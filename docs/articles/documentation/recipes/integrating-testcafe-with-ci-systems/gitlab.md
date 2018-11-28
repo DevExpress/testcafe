@@ -42,17 +42,21 @@ Commit `.gitlab-ci.yml` and push the changes to the repository. Now you have a n
 
 If you use a Docker image that does not have TestCafe preinstalled, you can install it from `npm` before tests are run.
 
-First, add TestCafe to your project development dependencies. Open `package.json` or, if you don't have it, create it in the repository root. Then add `testcafe` to the `devDependencies` section.
+First, add TestCafe to your project development dependencies. Open the repository root and execute the following command:
+
+```sh
+npm --save-dev testcafe
+```
+
+This installs the latest TestCafe version locally and adds it to the `devDependencies` section in the `package.json` file.
 
 ```json
 {
     "devDependencies": {
-        "testcafe": "^0.23.2"
+        "testcafe": "^x.y.z"
     }
 }
 ```
-
-Now TestCafe can be installed with the `npm install` command.
 
 Since TestCafe is installed locally, the test run command that uses TestCafe should be also added to `package.json` to the `scripts` section.
 
@@ -62,7 +66,7 @@ Since TestCafe is installed locally, the test run command that uses TestCafe sho
         "test": "testcafe chrome:headless tests/**/*"
     },
     "devDependencies": {
-        "testcafe": "^0.23.2"
+        "testcafe": "^x.y.z"
     }
 }
 ```
@@ -73,7 +77,7 @@ Finally, open `.gitlab-ci.yml` (or create it in the repository root) and add a [
 
 ```yaml
 e2e_tests:
-  image: circleci/node:8.12-browsers
+  image: circleci/node:x.y-browsers
   before_script:
     - npm install
   script:
@@ -81,7 +85,7 @@ e2e_tests:
 ```
 
 * `e2e_tests` - the job's name. You can choose any name you wish.
-* `image` - the Docker image's name. This job uses an image with Node.js and popular browsers provided by [CircleCI](https://circleci.com/).
+* `image` - the Docker image's name. This job uses an image with Node.js and popular browsers provided by [CircleCI](https://circleci.com/). **Replace** `x.y` with the desired Node.js version. You can find the list of available versions on the [image's page](https://hub.docker.com/r/circleci/node/tags/) on Docker Hub.
 * `before_script` - defines a command to run before tests start. Install TestCafe at this stage.
 * `script` - the command that runs TestCafe tests.
 
