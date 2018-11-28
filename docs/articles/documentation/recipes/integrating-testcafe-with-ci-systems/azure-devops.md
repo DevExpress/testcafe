@@ -9,21 +9,25 @@ This topic describes how to integrate TestCafe tests into an [Azure DevOps Serve
 
 ## Step 1 - Add TestCafe Dependency to the Project
 
-Open `package.json` or create it in the repository root. Add `testcafe` to the `devDependencies` section.
+Open the repository's root directory and execute the following command:
+
+```sh
+npm --save-dev testcafe
+```
+
+This command installs the latest TestCafe version locally and adds it to the `devDependencies` section in the `package.json` file.
 
 ```json
 {
     "devDependencies": {
-        "testcafe": "^0.23.2"
+        "testcafe": "^x.y.z"
     }
 }
 ```
 
-Now TestCafe can be installed with the `npm install` command.
-
 ## Step 2 - Provide a Command to Run Tests
 
-Since TestCafe is installed locally, the test run command that uses TestCafe should be also added to `package.json` to the `scripts` section.
+Since TestCafe is installed locally, a test run command that launches TestCafe should be also added to `package.json` to the `scripts` section.
 
 ```json
 {
@@ -31,7 +35,7 @@ Since TestCafe is installed locally, the test run command that uses TestCafe sho
         "test": "testcafe chrome:headless tests/**/*"
     },
     "devDependencies": {
-        "testcafe": "^0.23.2"
+        "testcafe": "^x.y.z"
     }
 }
 ```
@@ -52,6 +56,10 @@ jobs:
   pool:
     vmImage: 'Ubuntu 16.04'
   steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: 'x.y'
+    displayName: 'Install Node.js'
   - script: npm install
     displayName: 'Install TestCafe'
   - script: npm test
@@ -60,11 +68,14 @@ jobs:
 
 * `jobs` - the list of [jobs](https://docs.microsoft.com/en-us/azure/devops/pipelines/process/phases?view=vsts&tabs=yaml).
 * `job` - the job name. You can choose any name you wish.
-* `pool` - the [agent pool](https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/pools-queues?view=vsts) that executes this build task.
+* `pool` - the [agent pool](https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/pools-queues?view=vsts) that executes this build job.
 * `vmImage` - the [agent's](https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/agents?view=vsts) virtual machine image name. This tutorial uses a [Microsoft-hosted agent](https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=vsts&tabs=yaml) that runs on an Ubuntu 16.04 machine. You can find the list of software installed on this machine in the [Azure Pipelines GitHub repository](https://github.com/Microsoft/azure-pipelines-image-generation/blob/master/images/linux/Ubuntu1604-README.md).
 * `steps` - the list of steps performed when executing a job.
-* `script` - a console command executed at this step.
+* `task` - adds a [Node.js installer task](https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/tool/node-js?view=vsts)  to the job. This task installs Node.js and adds it to the `PATH` variable.
+* `inputs` - specifies input variables for the task.
+* `versionSpec` - the Node.js version to install. You can find the latest LTS version number on the [Node.js website](https://nodejs.org/en/).
 * `displayName` - a step name displayed in build results.
+* `script` - a console command executed at this step.
 
 The first step in this task installs TestCafe with `npm install` and the second step runs TestCafe tests using `npm test`.
 
@@ -104,7 +115,7 @@ Select **Node Tool Installer** from the task list. This task installs Node.js an
 
 The task is now added to the pipeline. Click its name in the pipeline to enter the task settings.
 
-On the settings screen, specify the Node.js version to install - `8.x`.
+On the settings screen, specify the Node.js version to install. Use the latest LTS version - you can find its number on the [Node.js website](https://nodejs.org/en/).
 
 ![Specify Node.js Version](../../../images/azure/set-node-version.png)
 
