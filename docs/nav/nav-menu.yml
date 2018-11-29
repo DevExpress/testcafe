@@ -199,6 +199,8 @@
       url: /documentation/recipes/debug-in-chrome-dev-tools.md
     - name: Debug in Visual Studio Code
       url: /documentation/recipes/debug-in-visual-studio-code.md
+    - name: Debug in WebStorm
+      url: /documentation/recipes/debug-in-webstorm.md
     - name: Integrating TestCafe with CI Systems
       url: /documentation/recipes/integrating-testcafe-with-ci-systems/README.md
       content:
