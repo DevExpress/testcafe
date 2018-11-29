@@ -94,7 +94,7 @@ function insertIframesContentElements (elements, iframes) {
     for (i = 0; i < sortedIframes.length; i++) {
         //NOTE: We can get elements of the same domain iframe only
         try {
-            iframeFocusedElements = getFocusableElements(sortedIframes[i].contentDocument);
+            iframeFocusedElements = getFocusableElements(nativeMethods.contentDocumentGetter.call(sortedIframes[i]));
         }
         catch (e) {
             iframeFocusedElements = [];
@@ -407,7 +407,7 @@ export function isIFrameWindowInDOM (win) {
     if ((browserUtils.isFirefox || browserUtils.isWebKit) && win.top !== win && !frameElement)
         return true;
 
-    return !!(frameElement && frameElement.contentDocument);
+    return !!(frameElement && nativeMethods.contentDocumentGetter.call(frameElement));
 }
 
 export function isTopWindow (win) {
@@ -424,7 +424,7 @@ export function findIframeByWindow (iframeWindow, iframeDestinationWindow) {
     const iframes = (iframeDestinationWindow || window).document.getElementsByTagName('iframe');
 
     for (let i = 0; i < iframes.length; i++) {
-        if (iframes[i].contentWindow === iframeWindow)
+        if (nativeMethods.contentWindowGetter.call(iframes[i]) === iframeWindow)
             return iframes[i];
     }
 

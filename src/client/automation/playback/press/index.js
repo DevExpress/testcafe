@@ -8,6 +8,7 @@ import AutomationSettings from '../../settings';
 const Promise        = hammerhead.Promise;
 const browserUtils   = hammerhead.utils.browser;
 const messageSandbox = hammerhead.eventSandbox.message;
+const nativeMethods  = hammerhead.nativeMethods;
 
 
 const PRESS_REQUEST_CMD  = 'automation|press|request';
@@ -159,14 +160,14 @@ export default class PressAutomation {
         const activeElement         = domUtils.getActiveElement();
         const activeElementIsIframe = domUtils.isIframeElement(activeElement);
 
-        if (window.top === window && activeElementIsIframe && activeElement.contentWindow) {
+        if (window.top === window && activeElementIsIframe && nativeMethods.contentWindowGetter.call(activeElement)) {
             const msg = {
                 cmd:             PRESS_REQUEST_CMD,
                 keyCombinations: this.keyCombinations,
                 options:         this.options
             };
 
-            return sendRequestToFrame(msg, PRESS_RESPONSE_CMD, activeElement.contentWindow);
+            return sendRequestToFrame(msg, PRESS_RESPONSE_CMD, nativeMethods.contentWindowGetter.call(activeElement));
         }
 
         return promiseUtils.each(this.keyCombinations, combination => {
