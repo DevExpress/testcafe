@@ -65,6 +65,7 @@ Since TestCafe is installed locally, the test run command that uses TestCafe sho
     "scripts": {
         "test": "testcafe chrome:headless tests/**/*"
     },
+
     "devDependencies": {
         "testcafe": "^x.y.z"
     }
