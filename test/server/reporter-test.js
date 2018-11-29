@@ -2,7 +2,7 @@ const expect            = require('chai').expect;
 const Promise           = require('pinkie');
 const { chunk, random } = require('lodash');
 const Reporter          = require('../../lib/reporter');
-const Emittery          = require('../../lib/utils/async-emitter');
+const AsyncEventEmitter = require('../../lib/utils/async-event-emitter');
 const delay             = require('../../lib/utils/delay');
 
 
@@ -243,7 +243,7 @@ describe('Reporter', () => {
         }
     }
 
-    class TaskMock extends Emittery {
+    class TaskMock extends AsyncEventEmitter {
         constructor () {
             super();
 

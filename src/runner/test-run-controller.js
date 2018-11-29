@@ -1,4 +1,4 @@
-import Emittery from '../utils/async-emitter';
+import AsyncEventEmitter from '../utils/async-event-emitter';
 import { TestRun as LegacyTestRun } from 'testcafe-legacy-api';
 import TestRun from '../test-run';
 import SessionController from '../test-run/session-controller';
@@ -24,7 +24,7 @@ class Quarantine {
     }
 }
 
-export default class TestRunController extends Emittery {
+export default class TestRunController extends AsyncEventEmitter {
     constructor (test, index, proxy, screenshots, warningLog, fixtureHookController, opts) {
         super();
 

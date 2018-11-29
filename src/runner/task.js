@@ -1,11 +1,11 @@
 import { pull as remove } from 'lodash';
-import Emittery from '../utils/async-emitter';
+import AsyncEventEmitter from '../utils/async-event-emitter';
 import BrowserJob from './browser-job';
 import Screenshots from '../screenshots';
 import WarningLog from '../notifications/warning-log';
 import FixtureHookController from './fixture-hook-controller';
 
-export default class Task extends Emittery {
+export default class Task extends AsyncEventEmitter {
     constructor (tests, browserConnectionGroups, proxy, opts) {
         super();
 
@@ -32,14 +32,14 @@ export default class Task extends Emittery {
             }
         });
 
-        job.on('start', async () => {
+        job.once('start', async () => {
             if (!this.running) {
                 this.running = true;
                 await this.emit('start');
             }
         });
 
-        job.on('done', async () => {
+        job.once('done', async () => {
             await this.emit('browser-job-done', job);
 
             remove(this.pendingBrowserJobs, job);

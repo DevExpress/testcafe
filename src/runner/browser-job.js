@@ -1,13 +1,13 @@
 import Promise from 'pinkie';
 import { remove } from 'lodash';
-import Emittery from '../utils/async-emitter';
+import AsyncEventEmitter from '../utils/async-event-emitter';
 import TestRunController from './test-run-controller';
 import SessionController from '../test-run/session-controller';
 import RESULT from './browser-job-result';
 
 
 // Browser job
-export default class BrowserJob extends Emittery {
+export default class BrowserJob extends AsyncEventEmitter {
     constructor (tests, browserConnections, proxy, screenshots, warningLog, fixtureHookController, opts) {
         super();
 

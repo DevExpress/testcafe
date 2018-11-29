@@ -50,6 +50,7 @@
   ],
   "scripts": {
     "test": "gulp travis",
+    "testme": "testcafe %NODE_DEBUG_OPTION% chrome test.js",
     "publish-please": "del-cli package-lock.json node_modules && npm i && publish-please",
     "prepublish": "publish-please guard"
   },
@@ -129,7 +130,6 @@
     "@types/chai": "^3.5.2",
     "babel-eslint": "^7.1.1",
     "babel-plugin-add-module-exports": "^0.2.0",
-    "babel-plugin-istanbul": "^5.1.0",
     "basic-auth": "^1.1.0",
     "body-parser": "^1.17.1",
     "broken-link-checker": "^0.7.0",
@@ -171,7 +171,6 @@
     "minimist": "^1.2.0",
     "multer": "^1.1.0",
     "npm-auditor": "^1.1.1",
-    "nyc": "^13.1.0",
     "openssl-self-signed-certificate": "^1.1.6",
     "opn": "^4.0.2",
     "publish-please": "^3.0.2",
@@ -180,7 +179,6 @@
     "run-sequence": "^1.2.2",
     "saucelabs-connector": "^0.2.0",
     "serve-static": "^1.10.0",
-    "sinon": "^7.1.1",
     "stack-chain": "^2.0.0",
     "strip-ansi": "^3.0.0",
     "webmake": "0.3.42"

@@ -126,7 +126,7 @@ export default class Reporter {
     _assignTaskEventHandlers () {
         const task = this.task;
 
-        task.on('start', async () => {
+        task.once('start', async () => {
             const startTime  = new Date();
             const userAgents = task.browserConnectionGroups.map(group => group[0].userAgent);
             const first      = this.reportQueue[0];
@@ -156,7 +156,7 @@ export default class Reporter {
             await reportItem.pendingPromise;
         });
 
-        task.on('done', async () => {
+        task.once('done', async () => {
             const endTime = new Date();
 
             await this.plugin.reportTaskDone(endTime, this.passed, task.warningLog.messages);
