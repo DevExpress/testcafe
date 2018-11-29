@@ -59,7 +59,7 @@ jobs:
   steps:
   - task: NodeTool@0
     inputs:
-      versionSpec: 'x.y'
+      versionSpec: 'x.y' # Replace with an actual version
     displayName: 'Install Node.js'
   - script: npm install
     displayName: 'Install TestCafe'
