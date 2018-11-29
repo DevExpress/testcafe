@@ -34,6 +34,7 @@ Add a `debug` script to the `scripts` section in `package.json`. This script con
     "scripts": {
         "debug": "testcafe $NODE_DEBUG_OPTION chrome"
     },
+
     "devDependencies": {
         "testcafe": "^x.y.z"
     }
