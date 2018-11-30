@@ -56,11 +56,12 @@ export default class Configuration {
             const optionsObj = JSON.parse(configurationFileContent);
 
             this._options = Configuration._fromObj(optionsObj);
-            await this._prepareOptions();
         }
         catch (e) {
             console.log(ERR_CONFIG_FILE_IS_NOT_WELLFORMATTED); // eslint-disable-line no-console
         }
+
+        await this._prepareOptions();
     }
 
     async _prepareOptions () {
@@ -69,7 +70,11 @@ export default class Configuration {
     }
 
     _prepareFilterFn () {
-        const filterOption                                                    = this._options[OPTION_NAMES.filter];
+        const filterOption = this._ensureOption(OPTION_NAMES.filter, null);
+
+        if (!filterOption.value)
+            return;
+
         const { test, fixture, testGrep, fixtureGrep, testMeta, fixtureMeta } = filterOption;
 
         const opts = {
