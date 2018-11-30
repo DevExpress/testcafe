@@ -47,9 +47,13 @@ Path to test files will be specified in the debug configuration at the next step
 
 ## Step 3 - Create a Debug Configuration
 
-Open WebStorm and click **Add Configuration** in the top-right corner to create a new debug configuration.
+Open WebStorm. If no build or run configuration is set up at the moment, click **Add Configuration** in the top-right corner.
 
 ![Click Add Configuration](../../images/webstorm/press-add-configuration.png)
+
+Otherwise, open the configuration drop-down menu and select **Edit Configurations...**.
+
+![Edit Configurations](../../images/webstorm/edit-configurations.png)
 
 This invokes the **Run/Debug Configurations** dialog.
 
