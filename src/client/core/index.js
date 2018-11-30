@@ -62,11 +62,11 @@ exports.selectorAttributeFilter = selectorAttributeFilter;
 
 exports.get = require;
 
-hammerhead.nativeMethods.objectDefineProperty.call(window, window, '%testCafeCore%', {
-    configurable: true,
-    value:        exports
-});
+const nativeMethods    = hammerhead.nativeMethods;
+const evalIframeScript = hammerhead.EVENTS.evalIframeScript;
+
+nativeMethods.objectDefineProperty(window, '%testCafeCore%', { configurable: true, value: exports });
 
 // NOTE: initTestCafeCore defined in wrapper template
 /* global initTestCafeCore */
-hammerhead.on(hammerhead.EVENTS.evalIframeScript, e => initTestCafeCore(e.iframe.contentWindow, true));
+hammerhead.on(evalIframeScript, e => initTestCafeCore(nativeMethods.contentWindowGetter.call(e.iframe), true));

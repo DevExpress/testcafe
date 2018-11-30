@@ -55,7 +55,8 @@ const transport      = hammerhead.transport;
 const Promise        = hammerhead.Promise;
 const messageSandbox = hammerhead.eventSandbox.message;
 const storages       = hammerhead.storages;
-const DateCtor       = hammerhead.nativeMethods.date;
+const nativeMethods  = hammerhead.nativeMethods;
+const DateCtor       = nativeMethods.date;
 
 const TEST_DONE_SENT_FLAG                  = 'testcafe|driver|test-done-sent-flag';
 const PENDING_STATUS                       = 'testcafe|driver|pending-status';
@@ -331,7 +332,8 @@ export default class Driver {
                 if (!domUtils.isIframeElement(iframe))
                     throw new ActionElementNotIframeError();
 
-                return this._ensureChildDriverLink(iframe.contentWindow, iframeErrorCtors.NotLoadedError, commandSelectorTimeout);
+                return this._ensureChildDriverLink(nativeMethods.contentWindowGetter.call(iframe),
+                    iframeErrorCtors.NotLoadedError, commandSelectorTimeout);
             })
             .then(childDriverLink => {
                 childDriverLink.availabilityTimeout = commandSelectorTimeout;
