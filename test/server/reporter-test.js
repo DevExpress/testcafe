@@ -1,8 +1,10 @@
 const expect            = require('chai').expect;
-const EventEmitter      = require('events').EventEmitter;
 const Promise           = require('pinkie');
 const { chunk, random } = require('lodash');
 const Reporter          = require('../../lib/reporter');
+const AsyncEventEmitter = require('../../lib/utils/async-event-emitter');
+const delay             = require('../../lib/utils/delay');
+
 
 describe('Reporter', () => {
     // Runnable configuration mocks
@@ -241,7 +243,7 @@ describe('Reporter', () => {
         }
     }
 
-    class TaskMock extends EventEmitter {
+    class TaskMock extends AsyncEventEmitter {
         constructor () {
             super();
 
@@ -259,31 +261,74 @@ describe('Reporter', () => {
         }
     }
 
+    let log = [];
+
     // Browser job emulation
-    function delay () {
-        return new Promise(resolve => {
-            setTimeout(resolve, random(0, 10));
-        });
+    function randomDelay () {
+        return delay(random(100, 500));
     }
 
     function emulateBrowserJob (taskMock, testRunMocks) {
         return testRunMocks.reduce((chain, testRun) => {
             return chain
-                .then(() => {
-                    taskMock.emit('test-run-start', testRun);
-                })
-                .then(delay)
-                .then(() => {
-                    taskMock.emit('test-run-done', testRun);
-                })
-                .then(delay);
-        }, delay());
+                .then(() => taskMock.emit('test-run-start', testRun))
+                .then(() => log.push('test-run-start resolved'))
+                .then(randomDelay)
+                .then(() => taskMock.emit('test-run-done', testRun))
+                .then(() => log.push('test-run-done resolved'))
+                .then(randomDelay);
+        }, randomDelay());
     }
 
-    it('Should analyze task progress and call appropriate plugin methods', () => {
+    function createReporter (taskMock) {
+        return new Reporter({
+            reportTaskStart: function (...args) {
+                expect(args[0]).to.be.a('date');
+
+                // NOTE: replace startTime
+                args[0] = new Date('Thu Jan 01 1970 00:00:00 UTC');
+
+                return delay(1000)
+                    .then(() => log.push({ method: 'reportTaskStart', args: args }));
+            },
+
+            reportFixtureStart: function () {
+                return delay(1000)
+                    .then(() => log.push({ method: 'reportFixtureStart', args: Array.prototype.slice.call(arguments) }));
+            },
+
+            reportTestDone: function (...args) {
+                expect(args[1].durationMs).to.be.an('number');
+
+                // NOTE: replace durationMs
+                args[1].durationMs = 74000;
+
+                return delay(1000)
+                    .then(() => log.push({ method: 'reportTestDone', args: args }));
+            },
+
+            reportTaskDone: function (...args) {
+                expect(args[0]).to.be.a('date');
+
+                // NOTE: replace endTime
+                args[0] = new Date('Thu Jan 01 1970 00:15:25 UTC');
+
+                return delay(1000)
+                    .then(() => log.push({ method: 'reportTaskDone', args: args }));
+            }
+        }, taskMock);
+    }
+
+    beforeEach(() => {
+        log = [];
+    });
+
+    it('Should analyze task progress and call appropriate plugin methods', function () {
+        this.timeout(30000);
+
         const taskMock = new TaskMock();
 
-        const expectedCalls = [
+        const expectedLog = [
             {
                 method: 'reportTaskStart',
                 args:   [
@@ -305,6 +350,9 @@ describe('Reporter', () => {
                     }
                 ]
             },
+            'task-start resolved',
+            'test-run-start resolved',
+            'test-run-start resolved',
             {
                 method: 'reportTestDone',
                 args:   [
@@ -332,6 +380,10 @@ describe('Reporter', () => {
                     }
                 ]
             },
+            'test-run-done resolved',
+            'test-run-done resolved',
+            'test-run-start resolved',
+            'test-run-start resolved',
             {
                 method: 'reportTestDone',
                 args:   [
@@ -376,6 +428,10 @@ describe('Reporter', () => {
                     }
                 ]
             },
+            'test-run-done resolved',
+            'test-run-done resolved',
+            'test-run-start resolved',
+            'test-run-start resolved',
             {
                 method: 'reportTestDone',
                 args:   [
@@ -404,6 +460,10 @@ describe('Reporter', () => {
                     }
                 ]
             },
+            'test-run-done resolved',
+            'test-run-done resolved',
+            'test-run-start resolved',
+            'test-run-start resolved',
             {
                 method: 'reportTestDone',
                 args:   [
@@ -422,6 +482,10 @@ describe('Reporter', () => {
                     }
                 ]
             },
+            'test-run-done resolved',
+            'test-run-done resolved',
+            'test-run-start resolved',
+            'test-run-start resolved',
             {
                 method: 'reportTestDone',
                 args:   [
@@ -448,6 +512,10 @@ describe('Reporter', () => {
                     null
                 ]
             },
+            'test-run-done resolved',
+            'test-run-done resolved',
+            'test-run-start resolved',
+            'test-run-start resolved',
             {
                 method: 'reportTestDone',
                 args:   [
@@ -472,6 +540,8 @@ describe('Reporter', () => {
                     }
                 ]
             },
+            'test-run-done resolved',
+            'test-run-done resolved',
             {
                 method: 'reportTaskDone',
                 args:   [
@@ -479,55 +549,26 @@ describe('Reporter', () => {
                     4,
                     ['warning1', 'warning2']
                 ]
-            }
+            },
+            'task-done resolved'
         ];
 
-        const reporter = new Reporter({
-            calls: [],
+        createReporter(taskMock);
 
-            reportTaskStart: function (...args) {
-                expect(args[0]).to.be.a('date');
-
-                // NOTE: replace startTime
-                args[0] = new Date('Thu Jan 01 1970 00:00:00 UTC');
-
-                this.calls.push({ method: 'reportTaskStart', args: args });
-            },
-
-            reportFixtureStart: function () {
-                this.calls.push({ method: 'reportFixtureStart', args: Array.prototype.slice.call(arguments) });
-            },
-
-            reportTestDone: function (...args) {
-                expect(args[1].durationMs).to.be.an('number');
-
-                // NOTE: replace durationMs
-                args[1].durationMs = 74000;
-
-                this.calls.push({ method: 'reportTestDone', args: args });
-            },
-
-            reportTaskDone: function (...args) {
-                expect(args[0]).to.be.a('date');
-
-                // NOTE: replace endTime
-                args[0] = new Date('Thu Jan 01 1970 00:15:25 UTC');
-
-                this.calls.push({ method: 'reportTaskDone', args: args });
-            }
-        }, taskMock);
-
-        taskMock.emit('start');
-
-        return Promise
-            .all([
-                emulateBrowserJob(taskMock, chromeTestRunMocks),
-                emulateBrowserJob(taskMock, firefoxTestRunMocks)
-            ])
+        return taskMock
+            .emit('start')
             .then(() => {
-                taskMock.emit('done');
+                log.push('task-start resolved');
+                return Promise.all([
+                    emulateBrowserJob(taskMock, chromeTestRunMocks),
+                    emulateBrowserJob(taskMock, firefoxTestRunMocks)
+                ]);
+            })
+            .then(() => taskMock.emit('done'))
+            .then(() => {
+                log.push('task-done resolved');
 
-                expect(reporter.plugin.calls).eql(expectedCalls);
+                expect(log).eql(expectedLog);
             });
     });
 
