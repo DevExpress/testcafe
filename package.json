@@ -50,7 +50,6 @@
   ],
   "scripts": {
     "test": "gulp travis",
-    "testme": "testcafe %NODE_DEBUG_OPTION% chrome test.js",
     "publish-please": "del-cli package-lock.json node_modules && npm i && publish-please",
     "prepublish": "publish-please guard"
   },
