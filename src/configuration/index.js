@@ -3,7 +3,7 @@ import Promise from 'pinkie';
 import { fsObjectExists, readFile } from '../utils/promisified-functions';
 import Option from './option';
 import optionSource from './option-source';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, castArray } from 'lodash';
 import { ensureOptionValue as ensureSslOptionValue } from '../utils/parse-ssl-options';
 import OPTION_NAMES from './option-names';
 import { optionValueToRegExp } from './option-conversion';
@@ -67,6 +67,17 @@ export default class Configuration {
     async _prepareOptions () {
         await this._prepareSslOptions();
         this._prepareFilterFn();
+        this._ensureArrayOption(OPTION_NAMES.src);
+        this._ensureArrayOption(OPTION_NAMES.browsers);
+    }
+
+    _ensureArrayOption (name) {
+        const options = this._options[name];
+
+        if (!options)
+            return;
+
+        options.value = castArray(options.value);
     }
 
     _prepareFilterFn () {

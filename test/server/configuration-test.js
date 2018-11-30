@@ -38,15 +38,12 @@ describe('Configuration', () => {
             'hostname': '123.456.789',
             'port1':    1234,
             'port2':    5678,
-            'src':      [
-                'path1/folder',
-                'path2/folder'
-            ],
-            'ssl': {
+            'src':      'path1/folder',
+            'ssl':      {
                 'key':                keyFile.name,
                 'rejectUnauthorized': 'true'
             },
-            'browsers':    [ 'chrome', 'ie' ],
+            'browsers':    'ie',
             'concurrency': 0.5,
             'filter':      {
                 'fixture':     'testFixture',
@@ -86,8 +83,8 @@ describe('Configuration', () => {
 
                         expect(ssl.key).eql(keyFileContent);
                         expect(ssl.rejectUnauthorized).eql(true);
-                        expect(configuration.getOption('src')).eql([ 'path1/folder', 'path2/folder' ]);
-                        expect(configuration.getOption('browsers')).eql([ 'chrome', 'ie' ]);
+                        expect(configuration.getOption('src')).eql([ 'path1/folder' ]);
+                        expect(configuration.getOption('browsers')).eql([ 'ie' ]);
                         expect(configuration.getOption('concurrency')).eql(0.5);
                         expect(configuration.getOption('filter')).instanceof(Function);
                     });
