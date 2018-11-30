@@ -47,7 +47,12 @@ describe('Configuration', () => {
                 'rejectUnauthorized': 'true'
             },
             'browsers':    [ 'chrome', 'ie' ],
-            'concurrency': 0.5
+            'concurrency': 0.5,
+            'filter':      {
+                'fixture':     'testFixture',
+                'test':        'some test',
+                'fixtureGrep': '^Unstable'
+            }
         });
     });
 
@@ -84,6 +89,7 @@ describe('Configuration', () => {
                         expect(configuration.getOption('src')).eql([ 'path1/folder', 'path2/folder' ]);
                         expect(configuration.getOption('browsers')).eql([ 'chrome', 'ie' ]);
                         expect(configuration.getOption('concurrency')).eql(0.5);
+                        expect(configuration.getOption('filter')).instanceof(Function);
                     });
             });
         });

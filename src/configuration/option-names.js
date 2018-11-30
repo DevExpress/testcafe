@@ -2,6 +2,7 @@ export default {
     src:                         'src',
     browsers:                    'browsers',
     concurrency:                 'concurrency',
+    filter:                      'filter',
     ssl:                         'ssl',
     skipUncaughtErrors:          'skipUncaughtErrors',
     speed:                       'speed',

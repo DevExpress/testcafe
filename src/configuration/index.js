@@ -6,6 +6,8 @@ import optionSource from './option-source';
 import { cloneDeep } from 'lodash';
 import { ensureOptionValue as ensureSslOptionValue } from '../utils/parse-ssl-options';
 import OPTION_NAMES from './option-names';
+import { optionValueToRegExp } from './option-conversion';
+import createFilterFn from '../utils/create-filter-fn';
 
 const CONFIGURATION_FILENAME = '.testcaferc.json';
 
@@ -63,6 +65,23 @@ export default class Configuration {
 
     async _prepareOptions () {
         await this._prepareSslOptions();
+        this._prepareFilterFn();
+    }
+
+    _prepareFilterFn () {
+        const filterOption                                                    = this._options[OPTION_NAMES.filter];
+        const { test, fixture, testGrep, fixtureGrep, testMeta, fixtureMeta } = filterOption;
+
+        const opts = {
+            testGrep:    optionValueToRegExp('testGrep', testGrep),
+            fixtureGrep: optionValueToRegExp('FixtureGrep', fixtureGrep),
+            test,
+            fixture,
+            testMeta,
+            fixtureMeta
+        };
+
+        filterOption.value = createFilterFn(opts);
     }
 
     async _prepareSslOptions () {

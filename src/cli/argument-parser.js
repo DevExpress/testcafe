@@ -8,8 +8,9 @@ import MESSAGE from '../errors/runtime/message';
 import { assertType, is } from '../errors/runtime/type-assertions';
 import getViewPortWidth from '../utils/get-viewport-width';
 import { wordWrap, splitQuotedText } from '../utils/string';
-import { isMatch } from 'lodash';
 import parseSslOptions from '../utils/parse-ssl-options';
+import createFilterFn from '../utils/create-filter-fn';
+import { optionValueToRegExp, optionValueToKeyValue } from '../configuration/option-conversion';
 
 const REMOTE_ALIAS_RE = /^remote(?::(\d*))?$/;
 
@@ -47,38 +48,6 @@ export default class CLIArgumentParser {
         assertType(is.nonNegativeNumberString, null, 'Port number', value);
 
         return parseInt(value, 10);
-    }
-
-    static _optionValueToRegExp (name, value) {
-        if (value === void 0)
-            return value;
-
-        try {
-            return new RegExp(value);
-        }
-        catch (err) {
-            throw new GeneralError(MESSAGE.optionValueIsNotValidRegExp, name);
-        }
-    }
-
-    static _optionValueToKeyValue (name, value) {
-        if (value === void 0)
-            return value;
-
-        const keyValue = value.split(',').reduce((obj, pair) => {
-            const [key, val] = pair.split('=');
-
-            if (!key || !val)
-                throw new GeneralError(MESSAGE.optionValueIsNotValidKeyValue, name);
-
-            obj[key] = val;
-            return obj;
-        }, {});
-
-        if (Object.keys(keyValue).length === 0)
-            throw new GeneralError(MESSAGE.optionValueIsNotValidKeyValue, name);
-
-        return keyValue;
     }
 
     static _getDescription () {
@@ -147,33 +116,12 @@ export default class CLIArgumentParser {
     }
 
     _parseFilteringOptions () {
-        this.opts.testGrep    = CLIArgumentParser._optionValueToRegExp('--test-grep', this.opts.testGrep);
-        this.opts.fixtureGrep = CLIArgumentParser._optionValueToRegExp('--fixture-grep', this.opts.fixtureGrep);
-        this.opts.testMeta    = CLIArgumentParser._optionValueToKeyValue('--test-meta', this.opts.testMeta);
-        this.opts.fixtureMeta = CLIArgumentParser._optionValueToKeyValue('--fixture-meta', this.opts.fixtureMeta);
+        this.opts.testGrep    = optionValueToRegExp('--test-grep', this.opts.testGrep);
+        this.opts.fixtureGrep = optionValueToRegExp('--fixture-grep', this.opts.fixtureGrep);
+        this.opts.testMeta    = optionValueToKeyValue('--test-meta', this.opts.testMeta);
+        this.opts.fixtureMeta = optionValueToKeyValue('--fixture-meta', this.opts.fixtureMeta);
 
-        this.filter = (testName, fixtureName, fixturePath, testMeta, fixtureMeta) => {
-
-            if (this.opts.test && testName !== this.opts.test)
-                return false;
-
-            if (this.opts.testGrep && !this.opts.testGrep.test(testName))
-                return false;
-
-            if (this.opts.fixture && fixtureName !== this.opts.fixture)
-                return false;
-
-            if (this.opts.fixtureGrep && !this.opts.fixtureGrep.test(fixtureName))
-                return false;
-
-            if (this.opts.testMeta && !isMatch(testMeta, this.opts.testMeta))
-                return false;
-
-            if (this.opts.fixtureMeta && !isMatch(fixtureMeta, this.opts.fixtureMeta))
-                return false;
-
-            return true;
-        };
+        this.filter = createFilterFn(this.opts);
     }
 
     _parseAppInitDelay () {
