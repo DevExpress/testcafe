@@ -1,4 +1,3 @@
-// NOTE: for Node 8.x and later just use a simple import import Emittery from 'emittery';
 import Emittery from 'emittery/legacy';
 import Promise from 'pinkie';
 
