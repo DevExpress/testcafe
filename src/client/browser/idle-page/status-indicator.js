@@ -180,7 +180,7 @@ export default class StatusIndicator {
     }
 
     _drawCircle (strokeStyle, centralAngle, startAngle) {
-        const radius = this.spinnerCenter - SPINNER_WIDTH / 2;
+        const radius = Math.max(0, this.spinnerCenter - SPINNER_WIDTH / 2);
 
         this.canvasContext.beginPath();
 
