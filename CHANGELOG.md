@@ -1,5 +1,21 @@
 # Changelog
 
+## v0.23.3 (2018-12-3)
+
+### Bug Fixes
+
+* The TestCafe Docker image now includes version tags ([#2315](https://github.com/DevExpress/testcafe/issues/2315))
+* Tests now fail with a meaningful error if no fixture is defined ([#2913](https://github.com/DevExpress/testcafe/issues/2913))
+* Tests now resume correctly after a long waiting ([#3070](https://github.com/DevExpress/testcafe/issues/3070))
+* TestCafe now throws a meaningful exception when taking screenshots in a browser that does not support it ([#2878](https://github.com/DevExpress/testcafe/issues/2878))
+* Events are now simulated in the correct order when focusing an element after another element was focused on the `changed` event ([#3098](https://github.com/DevExpress/testcafe/issues/3098))
+* The `Invalid calling object` exception is no longer thrown in IE11 ([testcafe-hammerhead/#1846](https://github.com/DevExpress/testcafe-hammerhead/issues/1846))
+* The JSON parse error is no longer thrown when sending an XHR request ([testcafe-hammerhead/#1839](https://github.com/DevExpress/testcafe-hammerhead/issues/1839))
+* Overridden functions now have the right prototype in an `iframe` without `src` ([testcafe-hammerhead/#1824](https://github.com/DevExpress/testcafe-hammerhead/issues/1824))
+* `gulp-testcafe` now correctly closes Chrome after tests are finished ([testcafe-hammerhead/#1826](https://github.com/DevExpress/testcafe-hammerhead/issues/1826))
+* Saving the `window` prototype to a property now works correctly ([testcafe-hammerhead/#1828](https://github.com/DevExpress/testcafe-hammerhead/issues/1828))
+* Hammerhead is now retained after `document.close` in Firefox ([testcafe-hammerhead/#1821](https://github.com/DevExpress/testcafe-hammerhead/issues/1821))
+
 ## v0.23.2 (2018-11-12)
 
 ### Bug Fixes
