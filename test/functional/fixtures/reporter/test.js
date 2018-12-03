@@ -2,7 +2,7 @@ const expect                                      = require('chai').expect;
 const { createTestStream, createAsyncTestStream } = require('../../utils/stream');
 const fs                                          = require('fs');
 
-describe('Reporter', () => {
+describe.only('Reporter', () => {
     const stdoutWrite = process.stdout.write;
     const stderrWrite = process.stderr.write;
 
@@ -130,33 +130,6 @@ describe('Reporter', () => {
             .then(() => {
                 process.stderr.write = stderrWrite;
 
-                expect(streamFinished).to.be.not.ok;
-            });
-    });
-
-    it('Should ot close stdout when null is specified as a reporter stream (GH-3114)', function () {
-        let streamFinished = false;
-
-        process.stdout.write = () => {
-            process.stdout.write = stdoutWrite;
-        };
-
-        process.stdout.on('finish', () => {
-            streamFinished = false;
-        });
-
-        const runOpts = {
-            only:     ['chrome'],
-            reporter: [
-                {
-                    name:      'json',
-                    outStream: null
-                }
-            ]
-        };
-
-        return runTests('testcafe-fixtures/index-test.js', 'Simple test', runOpts)
-            .then(() => {
                 expect(streamFinished).to.be.not.ok;
             });
     });

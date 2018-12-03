@@ -200,6 +200,15 @@ describe('Runner', () => {
                 expect(err.message).startsWith('It\'s forbidden to call "reporter" method several times');
             }
         });
+
+        it('Should raise an error if null is specified as a reporter output stream (GH-3114)', () => {
+            try {
+                runner.reporter('json', null);
+            }
+            catch (e) {
+                expect(e.message).eql('The specified reporter output should be filename or writable stream');
+            }
+        });
     });
 
     describe('.screenshots()', () => {

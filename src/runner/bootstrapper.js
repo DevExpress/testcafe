@@ -96,7 +96,7 @@ export default class Bootstrapper {
 
     async _ensureOutStream (outStream) {
         if (typeof outStream === 'string') {
-            const fullReporterOutputPath = path.resolvePath(process.cwd(), outStream);
+            const fullReporterOutputPath = path.resolve(process.cwd(), outStream);
 
             await makeDir(path.dirname(fullReporterOutputPath));
 
