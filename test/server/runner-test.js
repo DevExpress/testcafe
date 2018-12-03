@@ -200,10 +200,6 @@ describe('Runner', () => {
                 expect(err.message).startsWith('It\'s forbidden to call "reporter" method several times');
             }
         });
-
-        it('Should accept reporters in different formats', () => {
-
-        });
     });
 
     describe('.screenshots()', () => {

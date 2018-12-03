@@ -220,7 +220,7 @@ before(function () {
                 };
 
                 if (customReporters)
-                    customReporters.forEach(r => runner.reporter(r.reporter, r.outStream));
+                    runner.reporter(customReporters);
                 else
                     runner.reporter('json', stream);
 
