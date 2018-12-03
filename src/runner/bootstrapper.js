@@ -8,6 +8,9 @@ import MESSAGE from '../errors/runtime/message';
 import BrowserSet from './browser-set';
 import TestedApp from './tested-app';
 import parseFileList from '../utils/parse-file-list';
+import path from 'path';
+import fs from 'fs';
+import makeDir from 'make-dir';
 
 const DEFAULT_APP_INIT_DELAY = 1000;
 
@@ -91,7 +94,19 @@ export default class Bootstrapper {
         return tests;
     }
 
-    _getReporterPlugins () {
+    async _ensureOutStream (outStream) {
+        if (typeof outStream === 'string') {
+            const fullReporterOutputPath = path.resolvePath(process.cwd(), outStream);
+
+            await makeDir(path.dirname(fullReporterOutputPath));
+
+            outStream = fs.createWriteStream(fullReporterOutputPath);
+        }
+
+        return outStream;
+    }
+
+    async _getReporterPlugins () {
         const stdoutReporters = filter(this.reporters, r => isUndefined(r.outStream) || r.outStream === process.stdout);
 
         if (stdoutReporters.length > 1)
@@ -104,8 +119,10 @@ export default class Bootstrapper {
             });
         }
 
-        return this.reporters.map(({ name, outStream }) => {
+        return Promise.all(this.reporters.map(async ({ name, outStream }) => {
             let pluginFactory = name;
+
+            outStream = await this._ensureOutStream(outStream);
 
             if (typeof pluginFactory !== 'function') {
                 try {
@@ -120,7 +137,7 @@ export default class Bootstrapper {
                 plugin: pluginFactory(),
                 outStream
             };
-        });
+        }));
     }
 
     async _startTestedApp () {
@@ -192,7 +209,7 @@ export default class Bootstrapper {
 
     // API
     async createRunnableConfiguration () {
-        const reporterPlugins = this._getReporterPlugins();
+        const reporterPlugins = await this._getReporterPlugins();
 
         // NOTE: If a user forgot to specify a browser, but has specified a path to tests, the specified path will be
         // considered as the browser argument, and the tests path argument will have the predefined default value.

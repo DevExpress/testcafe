@@ -1,5 +1,4 @@
 import { resolve as resolvePath } from 'path';
-import fs from 'fs';
 import debug from 'debug';
 import Promise from 'pinkie';
 import { writable as isWritableStream } from 'is-stream';
@@ -225,15 +224,6 @@ export default class Runner extends EventEmitter {
             throw new GeneralError(MESSAGE.invalidReporterOutput);
     }
 
-    _ensureReporterOutStream (outStream) {
-        if (typeof outStream === 'string') {
-            outStream = resolvePath(process.cwd(), outStream);
-            outStream = fs.createWriteStream(outStream);
-        }
-
-        return outStream;
-    }
-
     _setBootstrapperOptions () {
         this.bootstrapper.sources                     = this.configuration.getOption(OPTION_NAMES.src) || this.bootstrapper.sources;
         this.bootstrapper.browsers                    = this.configuration.getOption(OPTION_NAMES.browsers) || this.bootstrapper.browsers;
@@ -256,11 +246,7 @@ export default class Runner extends EventEmitter {
             reporters.push(reporter);
         }
 
-        reporters.forEach(r => {
-            this._validateReporterOutput(r.outStream);
-
-            r.outStream = this._ensureReporterOutStream(r.outStream);
-        });
+        reporters.forEach(r => this._validateReporterOutput(r.outStream));
 
         return reporters;
     }

@@ -1,8 +1,6 @@
-import { resolve, dirname } from 'path';
 import { Command } from 'commander';
 import dedent from 'dedent';
 import { readSync as read } from 'read-file-relative';
-import makeDir from 'make-dir';
 import { GeneralError } from '../errors/runtime';
 import MESSAGE from '../errors/runtime/message';
 import { assertType, is } from '../errors/runtime/type-assertions';
@@ -208,14 +206,6 @@ export default class CLIArgumentParser {
 
             return { name, outStream: outFile };
         });
-
-        for (const reporter of this.opts.reporter) {
-            if (reporter.outFile) {
-                reporter.outFile = resolve(this.cwd, reporter.outFile);
-
-                await makeDir(dirname(reporter.outFile));
-            }
-        }
     }
 
     _parseFileList () {
