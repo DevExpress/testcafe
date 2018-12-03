@@ -219,8 +219,17 @@ export default class Runner extends EventEmitter {
             throw new GeneralError(MESSAGE.forbiddenCharatersInScreenshotPath, screenshotPath, pathType, renderForbiddenCharsList(forbiddenCharsList));
     }
 
-    _validateReporterOutput (obj) {
-        if (obj !== void 0 && typeof obj !== 'string' && !isWritableStream(obj))
+    static _isStreamMock (obj) {
+        return obj &&
+               typeof obj.write === 'function' &&
+               typeof obj.end === 'function';
+    }
+
+    static _validateReporterOutput (obj) {
+        if (obj !== void 0 &&
+            typeof obj !== 'string' &&
+            !isWritableStream(obj) &&
+            !Runner._isStreamMock(obj))
             throw new GeneralError(MESSAGE.invalidReporterOutput);
     }
 
@@ -246,7 +255,7 @@ export default class Runner extends EventEmitter {
             reporters.push(reporter);
         }
 
-        reporters.forEach(r => this._validateReporterOutput(r.outStream));
+        reporters.forEach(r => Runner._validateReporterOutput(r.outStream));
 
         return reporters;
     }
