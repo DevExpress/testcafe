@@ -3,6 +3,7 @@ export default {
     browsers:                    'browsers',
     concurrency:                 'concurrency',
     filter:                      'filter',
+    reporter:                    'reporter',
     ssl:                         'ssl',
     skipUncaughtErrors:          'skipUncaughtErrors',
     speed:                       'speed',

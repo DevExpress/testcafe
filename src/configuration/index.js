@@ -69,6 +69,7 @@ export default class Configuration {
         this._prepareFilterFn();
         this._ensureArrayOption(OPTION_NAMES.src);
         this._ensureArrayOption(OPTION_NAMES.browsers);
+        this._ensureArrayOption(OPTION_NAMES.reporter);
     }
 
     _ensureArrayOption (name) {

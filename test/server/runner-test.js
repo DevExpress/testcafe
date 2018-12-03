@@ -143,8 +143,7 @@ describe('Runner', () => {
         it('Should raise an error if several reporters are going to write to the stdout', () => {
             return runner
                 .browsers(connection)
-                .reporter('json')
-                .reporter('xunit')
+                .reporter(['json', 'xunit'])
                 .src('test/server/data/test-suites/basic/testfile2.js')
                 .run()
                 .then(() => {
@@ -187,6 +186,23 @@ describe('Runner', () => {
             catch (e) {
                 expect(e.message).eql('The specified reporter output should be filename or writable stream');
             }
+        });
+
+        it('Should raise an error for the multiple ".reporter" method call', () => {
+            try {
+                runner
+                    .reporter('json')
+                    .reporter('xunit');
+
+                throw new Error('Should raise an appropriate error.');
+            }
+            catch (err) {
+                expect(err.message).startsWith('It\'s forbidden to call "reporter" method several times');
+            }
+        });
+
+        it('Should accept reporters in different formats', () => {
+
         });
     });
 

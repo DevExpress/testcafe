@@ -17,6 +17,7 @@ import renderForbiddenCharsList from '../errors/render-forbidden-chars-list';
 import checkFilePath from '../utils/check-file-path';
 import { addRunningTest, removeRunningTest, startHandlingTestErrors, stopHandlingTestErrors } from '../utils/handle-errors';
 import OPTION_NAMES from '../configuration/option-names';
+import FlagList from '../utils/flag-list';
 
 const DEBUG_LOGGER = debug('testcafe:runner');
 
@@ -35,10 +36,10 @@ export default class Runner extends EventEmitter {
         this.pendingTaskPromises = [];
         this.configuration       = configuration;
 
-        this.apiMethodWasCalled = {
-            src:      false,
-            browsers: false
-        };
+        this.apiMethodWasCalled = new FlagList({
+            initialFlagValue: false,
+            flags:            [OPTION_NAMES.src, OPTION_NAMES.browsers, OPTION_NAMES.reporter]
+        });
     }
 
     static _disposeBrowserSet (browserSet) {
@@ -224,13 +225,13 @@ export default class Runner extends EventEmitter {
             throw new GeneralError(MESSAGE.invalidReporterOutput);
     }
 
-    _ensureReporterOutStream (fileNameOrStream) {
-        if (typeof fileNameOrStream === 'string') {
-            fileNameOrStream = resolvePath(process.cwd(), fileNameOrStream);
-            fileNameOrStream = fs.createWriteStream(fileNameOrStream);
+    _ensureReporterOutStream (outStream) {
+        if (typeof outStream === 'string') {
+            outStream = resolvePath(process.cwd(), outStream);
+            outStream = fs.createWriteStream(outStream);
         }
 
-        return fileNameOrStream;
+        return outStream;
     }
 
     _setBootstrapperOptions () {
@@ -241,6 +242,27 @@ export default class Runner extends EventEmitter {
         this.bootstrapper.appInitDelay                = this.configuration.getOption(OPTION_NAMES.appInitDelay) || this.bootstrapper.appInitDelay;
         this.bootstrapper.disableTestSyntaxValidation = this.configuration.getOption(OPTION_NAMES.disableTestSyntaxValidation);
         this.bootstrapper.filter                      = this.configuration.getOption(OPTION_NAMES.filter) || this.bootstrapper.filter;
+        this.bootstrapper.reporters                   = this.configuration.getOption(OPTION_NAMES.reporter) || this.bootstrapper.reporters;
+    }
+
+    _prepareReporters (name, outStream) {
+        let reporters = [];
+
+        if (name instanceof Array)
+            reporters = name.map(r => typeof r === 'string' ? { name: r } : r);
+        else {
+            const reporter = { name, outStream };
+
+            reporters.push(reporter);
+        }
+
+        reporters.forEach(r => {
+            this._validateReporterOutput(r.outStream);
+
+            r.outStream = this._ensureReporterOutStream(r.outStream);
+        });
+
+        return reporters;
     }
 
     // API
@@ -255,7 +277,7 @@ export default class Runner extends EventEmitter {
 
     src (...sources) {
         if (this.apiMethodWasCalled.src)
-            throw new GeneralError(MESSAGE.multipleAPIMethodCallForbidden, 'src');
+            throw new GeneralError(MESSAGE.multipleAPIMethodCallForbidden, OPTION_NAMES.src);
 
         sources = flatten(sources);
         this.configuration.mergeOptions({ [OPTION_NAMES.src]: sources });
@@ -267,7 +289,7 @@ export default class Runner extends EventEmitter {
 
     browsers (...browsers) {
         if (this.apiMethodWasCalled.browsers)
-            throw new GeneralError(MESSAGE.multipleAPIMethodCallForbidden, 'browsers');
+            throw new GeneralError(MESSAGE.multipleAPIMethodCallForbidden, OPTION_NAMES.browsers);
 
         browsers = flatten(browsers);
         this.configuration.mergeOptions({ browsers });
@@ -284,14 +306,14 @@ export default class Runner extends EventEmitter {
     }
 
     reporter (name, fileNameOrStream) {
-        this._validateReporterOutput(fileNameOrStream);
+        if (this.apiMethodWasCalled.reporter)
+            throw new GeneralError(MESSAGE.multipleAPIMethodCallForbidden, OPTION_NAMES.reporter);
 
-        fileNameOrStream = this._ensureReporterOutStream(fileNameOrStream);
+        const reporters = this._prepareReporters(name, fileNameOrStream);
 
-        this.bootstrapper.reporters.push({
-            name,
-            outStream: fileNameOrStream
-        });
+        this.configuration.mergeOptions({ [OPTION_NAMES.reporter]: reporters });
+
+        this.apiMethodWasCalled.reporter = true;
 
         return this;
     }
@@ -328,8 +350,7 @@ export default class Runner extends EventEmitter {
     }
 
     run ({ skipJsErrors, disablePageReloads, quarantineMode, debugMode, selectorTimeout, assertionTimeout, pageLoadTimeout, speed = 1, debugOnFail, skipUncaughtErrors, stopOnFirstFail, disableTestSyntaxValidation } = {}) {
-        this.apiMethodWasCalled.src      = false;
-        this.apiMethodWasCalled.browsers = false;
+        this.apiMethodWasCalled.reset();
 
         this.configuration.mergeOptions({
             skipJsErrors:                !!skipJsErrors,

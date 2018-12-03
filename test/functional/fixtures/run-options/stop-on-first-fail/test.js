@@ -33,8 +33,8 @@ describe('Stop test task on first failed test', () => {
         return runTests('./testcafe-fixtures/stop-on-first-fail-test.js', void 0, {
             shouldFail:      true,
             stopOnFirstFail: true,
-            reporters:       [{
-                reporter:  'spec',
+            reporter:        [{
+                name:     'spec',
                 outStream: stream
             }]
         }).catch(() => {

@@ -186,7 +186,7 @@ before(function () {
                 const appInitDelay                = opts && opts.appInitDelay;
                 const externalProxyHost           = opts && opts.useProxy;
                 const proxyBypass                 = opts && opts.proxyBypass;
-                const customReporters             = opts && opts.reporters;
+                const customReporters             = opts && opts.reporter;
                 const skipUncaughtErrors          = opts && opts.skipUncaughtErrors;
                 const stopOnFirstFail             = opts && opts.stopOnFirstFail;
                 const disableTestSyntaxValidation = opts && opts.disableTestSyntaxValidation;

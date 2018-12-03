@@ -16,14 +16,14 @@ describe('Reporter', () => {
         const stream2 = createTestStream();
 
         return runTests('testcafe-fixtures/index-test.js', 'Simple test', {
-            only:      ['chrome'],
-            reporters: [
+            only:     ['chrome'],
+            reporter: [
                 {
-                    reporter:  'json',
+                    name:     'json',
                     outStream: stream1
                 },
                 {
-                    reporter:  'list',
+                    name:     'list',
                     outStream: stream2
                 }
             ]
@@ -42,10 +42,10 @@ describe('Reporter', () => {
         const stream = createAsyncTestStream();
 
         const runOpts = {
-            only:      ['chrome'],
-            reporters: [
+            only:     ['chrome'],
+            reporter: [
                 {
-                    reporter:  'json',
+                    name:     'json',
                     outStream: stream
                 }
             ]
@@ -61,10 +61,10 @@ describe('Reporter', () => {
         const stream = createAsyncTestStream({ shouldFail: true });
 
         const runOpts = {
-            only:      ['chrome'],
-            reporters: [
+            only:     ['chrome'],
+            reporter: [
                 {
-                    reporter:  'json',
+                    name:     'json',
                     outStream: stream
                 }
             ]
@@ -88,10 +88,10 @@ describe('Reporter', () => {
         });
 
         const runOpts = {
-            only:      ['chrome'],
-            reporters: [
+            only:     ['chrome'],
+            reporter: [
                 {
-                    reporter:  'json',
+                    name:     'json',
                     outStream: process.stdout
                 }
             ]
@@ -117,10 +117,10 @@ describe('Reporter', () => {
         });
 
         const runOpts = {
-            only:      ['chrome'],
-            reporters: [
+            only:     ['chrome'],
+            reporter: [
                 {
-                    reporter:  'json',
+                    name:     'json',
                     outStream: process.stderr
                 }
             ]
@@ -146,10 +146,10 @@ describe('Reporter', () => {
         });
 
         const runOpts = {
-            only:      ['chrome'],
-            reporters: [
+            only:     ['chrome'],
+            reporter: [
                 {
-                    reporter:  'json',
+                    name:     'json',
                     outStream: null
                 }
             ]
@@ -173,10 +173,10 @@ describe('Reporter', () => {
         });
 
         const runOpts = {
-            only:      ['chrome'],
-            reporters: [
+            only:     ['chrome'],
+            reporter: [
                 {
-                    reporter:  'json',
+                    name:     'json',
                     outStream: void 0
                 }
             ]
@@ -194,10 +194,10 @@ describe('Reporter', () => {
         stream.isTTY = true;
 
         const runOpts = {
-            only:      ['chrome'],
-            reporters: [
+            only:     ['chrome'],
+            reporter: [
                 {
-                    reporter:  'json',
+                    name:     'json',
                     outStream: stream
                 }
             ]
@@ -214,14 +214,14 @@ describe('Reporter', () => {
         const reportFileName = 'list.report';
 
         return runTests('testcafe-fixtures/index-test.js', 'Simple test', {
-            only:      ['chrome'],
-            reporters: [
+            only:     ['chrome'],
+            reporter: [
                 {
-                    reporter:  'list',
+                    name:      'list',
                     outStream: testStream
                 },
                 {
-                    reporter:  'list',
+                    name:      'list',
                     outStream: reportFileName
                 }
             ]

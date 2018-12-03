@@ -191,13 +191,13 @@ export default class CLIArgumentParser {
 
     async _parseReporters () {
         if (!this.opts.reporter) {
-            this.opts.reporters = [];
+            this.opts.reporter = [];
             return;
         }
 
         const reporters = this.opts.reporter.split(',');
 
-        this.opts.reporters = reporters.map(reporter => {
+        this.opts.reporter = reporters.map(reporter => {
             const separatorIndex = reporter.indexOf(':');
 
             if (separatorIndex < 0)
@@ -206,10 +206,10 @@ export default class CLIArgumentParser {
             const name    = reporter.substring(0, separatorIndex);
             const outFile = reporter.substring(separatorIndex + 1);
 
-            return { name, outFile };
+            return { name, outStream: outFile };
         });
 
-        for (const reporter of this.opts.reporters) {
+        for (const reporter of this.opts.reporter) {
             if (reporter.outFile) {
                 reporter.outFile = resolve(this.cwd, reporter.outFile);
 

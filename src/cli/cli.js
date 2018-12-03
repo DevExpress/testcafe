@@ -76,12 +76,11 @@ async function runTests (argParser) {
     const runner         = testCafe.createRunner();
     let failed           = 0;
 
-    argParser.opts.reporters.map(r => runner.reporter(r.name, r.outFile));
-
     runner
         .useProxy(externalProxyHost, proxyBypass)
         .src(argParser.src)
         .browsers(browsers)
+        .reporter(argParser.opts.reporter)
         .concurrency(concurrency)
         .filter(argParser.filter)
         .screenshots(opts.screenshots, opts.screenshotsOnFails, opts.screenshotPathPattern)
