@@ -57,7 +57,6 @@ export default class CLIArgumentParser {
         const version = JSON.parse(read('../../package.json')).version;
 
         this.program
-
             .version(version, '-v, --version')
             .usage('[options] <comma-separated-browser-list> <file-or-glob ...>')
             .description(CLIArgumentParser._getDescription())
@@ -95,7 +94,6 @@ export default class CLIArgumentParser {
             .option('--qr-code', 'outputs QR-code that repeats URLs used to connect the remote browsers')
             .option('--sf, --stop-on-first-fail', 'stop an entire test run if any test fails')
             .option('--disable-test-syntax-validation', 'disables checks for \'test\' and \'fixture\' directives to run dynamically loaded tests')
-
 
             // NOTE: these options will be handled by chalk internally
             .option('--color', 'force colors in command line')
@@ -188,12 +186,7 @@ export default class CLIArgumentParser {
     }
 
     async _parseReporters () {
-        if (!this.opts.reporter) {
-            this.opts.reporter = [];
-            return;
-        }
-
-        const reporters = this.opts.reporter.split(',');
+        const reporters = this.opts.reporter ? this.opts.reporter.split(',') : [];
 
         this.opts.reporter = reporters.map(reporter => {
             const separatorIndex = reporter.indexOf(':');
