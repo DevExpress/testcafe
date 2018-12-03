@@ -61,6 +61,7 @@ Use the content CircleCI provides by default with two changes:
 The resulting YAML will look as follows.
 
 ```yml
+{% raw %}
 version: 2
 jobs:
   build:
@@ -87,6 +88,7 @@ jobs:
 
       - store_test_results:
           path: /tmp/test-results
+{% endraw %}
 ```
 
 Next, add `testcafe` and `testcafe-reporter-xunit` to project's development dependencies. Open the repository root and execute the following command:
