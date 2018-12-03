@@ -1,5 +1,4 @@
 import testCafeCore from '../../deps/testcafe-core';
-import { utils } from '../../deps/hammerhead';
 import SelectBaseAutomation from './base';
 import * as selectUtils from './utils';
 
@@ -10,7 +9,7 @@ const positionUtils = testCafeCore.positionUtils;
 
 export default class SelectTextAutomation extends SelectBaseAutomation {
     constructor (element, startPos, endPos, actionOptions) {
-        super(element, utils.extend(actionOptions, { offsetX: 0, offsetY: 0 }));
+        super(element, actionOptions);
 
         this.startPos = startPos;
         this.endPos   = endPos;
