@@ -309,7 +309,7 @@ $(document).ready(function () {
         const center      = position.findCenter($draggable[0]);
         const pointTo     = { x: center.x + dragOffsetX, y: center.y + dragOffsetY };
 
-        const dragAutomation = new DragToOffsetAutomation($draggable[0], dragOffsetX, dragOffsetY, new MouseOptions());
+        const dragAutomation = new DragToOffsetAutomation($draggable[0], dragOffsetX, dragOffsetY, new MouseOptions({ offsetX: 0, offsetY: 0 }));
 
         dragAutomation
             .run()

@@ -59,11 +59,19 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
             .then(() => delay(this.automationSettings.mouseActionStepDelay));
     }
 
-    _wrapAction (action) {
-        let { offsetX, offsetY } = getOffsetOptions(this.element);
+    _getElementOffset () {
+        const defaultOffsets = getOffsetOptions(this.element);
 
-        offsetX = this.options.offsetX || offsetX;
-        offsetY = this.options.offsetY || offsetY;
+        let { offsetX, offsetY } = this.options;
+
+        offsetX = offsetX || offsetX === 0 ? offsetX : defaultOffsets.offsetX;
+        offsetY = offsetY || offsetY === 0 ? offsetY : defaultOffsets.offsetY;
+
+        return { offsetX, offsetY };
+    }
+
+    _wrapAction (action) {
+        const { offsetX, offsetY } = this._getElementOffset();
 
         const screenPointBeforeAction    = getAutomationPoint(this.element, offsetX, offsetY);
         const clientPositionBeforeAction = positionUtils.getClientPosition(this.element);
