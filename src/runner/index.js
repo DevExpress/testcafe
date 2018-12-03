@@ -239,7 +239,7 @@ export default class Runner extends EventEmitter {
         let reporters = [];
 
         if (name instanceof Array)
-            reporters = name.map(r => typeof r === 'string' ? { name: r } : r);
+            reporters = name.map(r => typeof r === 'string' || typeof r === 'function' ? { name: r } : r);
         else {
             const reporter = { name, outStream };
 
