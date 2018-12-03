@@ -3,6 +3,7 @@ import { delay, positionUtils, domUtils, arrayUtils, serviceUtils } from '../dep
 import getAutomationPoint from '../utils/get-automation-point';
 import screenPointToClient from '../utils/screen-point-to-client';
 import getDevicePoint from '../utils/get-device-point';
+import { getOffsetOptions } from '../utils/offsets';
 import { fromPoint as getElementFromPoint } from '../get-element';
 import AUTOMATION_ERROR_TYPES from '../errors';
 import AutomationSettings from '../settings';
@@ -59,8 +60,11 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
     }
 
     _wrapAction (action) {
-        const offsetX                    = this.options.offsetX;
-        const offsetY                    = this.options.offsetY;
+        let { offsetX, offsetY } = getOffsetOptions(this.element);
+
+        offsetX = this.options.offsetX || offsetX;
+        offsetY = this.options.offsetY || offsetY;
+
         const screenPointBeforeAction    = getAutomationPoint(this.element, offsetX, offsetY);
         const clientPositionBeforeAction = positionUtils.getClientPosition(this.element);
 
