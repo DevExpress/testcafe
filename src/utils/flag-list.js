@@ -1,12 +1,16 @@
 export default class FlagList {
     constructor ({ initialFlagValue, flags }) {
-        this.initialFlagValue = initialFlagValue;
-        flags.forEach(flag => this[flag] = initialFlagValue);
+        Object.defineProperty(this, '_initialFlagValue', { writable: true, value: initialFlagValue });
+
+        flags.forEach(flag => {
+            this[flag] = initialFlagValue;
+        });
     }
 
     reset () {
         Object.getOwnPropertyNames(this)
-            .filter(name => name !== 'initialFlagValue')
-            .forEach(name => this[name] = !this.initialFlagValue);
+            .forEach(name => {
+                this[name] = !this._initialFlagValue;
+            });
     }
 }

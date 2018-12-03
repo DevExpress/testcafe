@@ -34,7 +34,7 @@ describe('Stop test task on first failed test', () => {
             shouldFail:      true,
             stopOnFirstFail: true,
             reporter:        [{
-                name:     'spec',
+                name:      'spec',
                 outStream: stream
             }]
         }).catch(() => {

@@ -29,7 +29,8 @@ describe('Configuration', () => {
         configuration = new Configuration();
         configPath    = configuration.filePath;
 
-        const keyFile = tmp.fileSync();
+        const keyFile            = tmp.fileSync();
+        const reporterOutputFile = tmp.fileSync();
 
         keyFileContent = Buffer.from(nanoid());
         fs.writeFileSync(keyFile.name, keyFileContent);
@@ -49,7 +50,8 @@ describe('Configuration', () => {
                 'fixture':     'testFixture',
                 'test':        'some test',
                 'fixtureGrep': '^Unstable'
-            }
+            },
+            'reporter': [ { name: 'json', outFile: reporterOutputFile.name } ]
         });
     });
 
