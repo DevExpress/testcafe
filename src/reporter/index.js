@@ -1,5 +1,5 @@
 import Promise from 'pinkie';
-import { find, sortBy } from 'lodash';
+import { find, sortBy, union } from 'lodash';
 import { writable as isWritableStream } from 'is-stream';
 import ReporterPluginHost from './plugin-host';
 
@@ -10,8 +10,9 @@ export default class Reporter {
 
         this.disposed        = false;
         this.passed          = 0;
-        this.skipped         = task.tests.filter(test => test.skip).length;
-        this.testCount       = task.tests.length - this.skipped;
+        this.failed          = 0;
+        this.skipped         = 0;
+        this.testCount       = task.tests.filter(test => !test.skip).length;
         this.reportQueue     = Reporter._createReportQueue(task);
         this.stopOnFirstFail = task.opts.stopOnFirstFail;
         this.outStream       = outStream;
@@ -43,6 +44,7 @@ export default class Reporter {
             screenshots:    [],
             quarantine:     null,
             errs:           [],
+            warnings:       [],
             unstable:       false,
             startTime:      null,
             testRunInfo:    null,
@@ -61,6 +63,7 @@ export default class Reporter {
     static _createTestRunInfo (reportItem) {
         return {
             errs:           sortBy(reportItem.errs, ['userAgent', 'type']),
+            warnings:       reportItem.warnings,
             durationMs:     new Date() - reportItem.startTime,
             unstable:       reportItem.unstable,
             screenshotPath: reportItem.screenshotPath,
@@ -114,7 +117,11 @@ export default class Reporter {
         if (!reportItem.testRunInfo) {
             reportItem.testRunInfo = Reporter._createTestRunInfo(reportItem);
 
-            if (!reportItem.errs.length && !reportItem.test.skip)
+            if (reportItem.test.skip)
+                this.skipped++;
+            else if (reportItem.errs.length)
+                this.failed++;
+            else
                 this.passed++;
         }
 
@@ -149,6 +156,7 @@ export default class Reporter {
             reportItem.pendingRuns = isTestRunStoppedTaskExecution ? 0 : reportItem.pendingRuns - 1;
             reportItem.unstable    = reportItem.unstable || testRun.unstable;
             reportItem.errs        = reportItem.errs.concat(testRun.errs);
+            reportItem.warnings    = testRun.warningLog ? union(reportItem.warnings, testRun.warningLog.messages) : [];
 
             if (!reportItem.pendingRuns)
                 await this._resolveReportItem(reportItem, testRun);
@@ -159,7 +167,13 @@ export default class Reporter {
         task.once('done', async () => {
             const endTime = new Date();
 
-            await this.plugin.reportTaskDone(endTime, this.passed, task.warningLog.messages);
+            const result = {
+                passedCount:  this.passed,
+                failedCount:  this.failed,
+                skippedCount: this.skipped
+            };
+
+            await this.plugin.reportTaskDone(endTime, this.passed, task.warningLog.messages, result);
         });
     }
 
