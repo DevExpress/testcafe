@@ -2,7 +2,7 @@ const expect                                      = require('chai').expect;
 const { createTestStream, createAsyncTestStream } = require('../../utils/stream');
 const fs                                          = require('fs');
 
-describe.only('Reporter', () => {
+describe('Reporter', () => {
     const stdoutWrite = process.stdout.write;
     const stderrWrite = process.stderr.write;
 
