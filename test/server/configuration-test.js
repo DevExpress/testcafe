@@ -51,7 +51,7 @@ describe('Configuration', () => {
                 'test':        'some test',
                 'fixtureGrep': '^Unstable'
             },
-            'reporter': [ { name: 'json', outFile: reporterOutputFile.name } ]
+            'reporter': 'json'
         });
     });
 
@@ -89,6 +89,7 @@ describe('Configuration', () => {
                         expect(configuration.getOption('browsers')).eql([ 'ie' ]);
                         expect(configuration.getOption('concurrency')).eql(0.5);
                         expect(configuration.getOption('filter')).instanceof(Function);
+                        expect(configuration.getOption('reporter')).eql([ 'json' ]);
                     });
             });
         });
