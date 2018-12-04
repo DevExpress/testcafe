@@ -7,6 +7,8 @@ import getMaximizedHeadlessWindowSize from '../../utils/get-maximized-headless-w
 import { GET_WINDOW_DIMENSIONS_INFO_SCRIPT } from '../../utils/client-functions';
 
 
+const MIN_AVAILABLE_DIMENSION = 50;
+
 export default {
     openedBrowsers: {},
 
@@ -32,6 +34,8 @@ export default {
         await cdp.createClient(runtimeInfo);
 
         this.openedBrowsers[browserId] = runtimeInfo;
+
+        await this._ensureWindowIsExpanded(browserId, runtimeInfo.viewportSize);
     },
 
     async closeBrowser (browserId) {
@@ -95,5 +99,14 @@ export default {
             hasChromelessScreenshots:       !!client,
             hasCanResizeWindowToDimensions: false
         };
+    },
+
+    async _ensureWindowIsExpanded (browserId, { height, width, availableHeight, availableWidth, outerWidth, outerHeight }) {
+        if (height < MIN_AVAILABLE_DIMENSION || width < MIN_AVAILABLE_DIMENSION) {
+            const newHeight = availableHeight;
+            const newWidth  = Math.floor(availableWidth / 2);
+
+            await this.resizeWindow(browserId, newWidth, newHeight, outerWidth, outerHeight);
+        }
     }
 };
