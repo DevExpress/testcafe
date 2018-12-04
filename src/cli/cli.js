@@ -70,7 +70,6 @@ async function runTests (argParser) {
     log.showSpinner();
 
     const testCafe       = await createTestCafe(opts.hostname, port1, port2, opts.ssl, opts.dev);
-    const concurrency    = argParser.concurrency || 1;
     const remoteBrowsers = await remotesWizard(testCafe, argParser.remoteCount, opts.qrCode);
     const browsers       = argParser.browsers.concat(remoteBrowsers);
     const runner         = testCafe.createRunner();
@@ -81,7 +80,7 @@ async function runTests (argParser) {
         .src(argParser.src)
         .browsers(browsers)
         .reporter(argParser.opts.reporter)
-        .concurrency(concurrency)
+        .concurrency(argParser.concurrency)
         .filter(argParser.filter)
         .screenshots(opts.screenshots, opts.screenshotsOnFails, opts.screenshotPathPattern)
         .startApp(opts.app, opts.appInitDelay);
