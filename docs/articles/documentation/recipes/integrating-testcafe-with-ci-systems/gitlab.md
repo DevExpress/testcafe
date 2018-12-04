@@ -55,7 +55,7 @@ This installs the latest TestCafe version locally and adds it to the `devDepende
 ```json
 {
     "devDependencies": {
-        "testcafe": "^x.y.z"
+        "testcafe": "*"
     }
 }
 ```
@@ -69,7 +69,7 @@ Since TestCafe is installed locally, the test run command that uses TestCafe sho
     },
 
     "devDependencies": {
-        "testcafe": "^x.y.z"
+        "testcafe": "*"
     }
 }
 ```
@@ -80,7 +80,9 @@ Finally, open `.gitlab-ci.yml` (or create it in the repository root) and add a [
 
 ```yaml
 e2e_tests:
-  image: circleci/node:x.y-browsers
+  # Replace '10.14' with the latest Node.js LTS version
+  # available on Docker Hub
+  image: circleci/node:10.14-browsers
   before_script:
     - npm install
   script:
@@ -88,7 +90,7 @@ e2e_tests:
 ```
 
 * `e2e_tests` - the job's name. You can choose any name you wish.
-* `image` - the Docker image's name. This job uses an image with Node.js and popular browsers provided by [CircleCI](https://circleci.com/). **Replace** `x.y` with the desired Node.js version. You can find the list of available versions on the [image's page](https://hub.docker.com/r/circleci/node/tags/) on Docker Hub.
+* `image` - the Docker image's name. This job uses an image with Node.js and popular browsers provided by [CircleCI](https://circleci.com/). **Replace** `10.14` with the desired Node.js version. You can find the list of available versions on the [image's page](https://hub.docker.com/r/circleci/node/tags/) on Docker Hub.
 * `before_script` - defines a command to run before tests start. Install TestCafe at this stage.
 * `script` - the command that runs TestCafe tests.
 
