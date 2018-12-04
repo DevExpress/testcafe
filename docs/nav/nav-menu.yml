@@ -140,8 +140,8 @@
     content:
     - name: Logging HTTP Requests
       url: /documentation/test-api/intercepting-http-requests/logging-http-requests.md
-    - name: Mocking HTTP Responses
-      url: /documentation/test-api/intercepting-http-requests/mocking-http-responses.md
+    - name: Mocking HTTP Requests
+      url: /documentation/test-api/intercepting-http-requests/mocking-http-requests.md
     - name: Creating a Custom HTTP Request Hook
       url: /documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.md
     - name: Specifying Which Requests are Handled by the Hook
