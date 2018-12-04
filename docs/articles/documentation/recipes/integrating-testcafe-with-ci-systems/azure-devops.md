@@ -20,7 +20,7 @@ This command installs the latest TestCafe version locally and adds it to the `de
 ```json
 {
     "devDependencies": {
-        "testcafe": "^x.y.z"
+        "testcafe": "*"
     }
 }
 ```
@@ -36,7 +36,7 @@ Since TestCafe is installed locally, a test run command that launches TestCafe s
     },
 
     "devDependencies": {
-        "testcafe": "^x.y.z"
+        "testcafe": "*"
     }
 }
 ```
@@ -59,7 +59,8 @@ jobs:
   steps:
   - task: NodeTool@0
     inputs:
-      versionSpec: 'x.y' # Replace with an actual version
+      # Replace '10.14' with the latest Node.js LTS version
+      versionSpec: '10.14'
     displayName: 'Install Node.js'
   - script: npm install
     displayName: 'Install TestCafe'
