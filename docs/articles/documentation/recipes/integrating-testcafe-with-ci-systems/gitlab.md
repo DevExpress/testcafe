@@ -9,11 +9,13 @@ This topic describes how to integrate TestCafe tests into a [GitLab](https://git
 
 GitLab offers a built-in continuous integration service. You can read more about it in [GitLab documentation](https://docs.gitlab.com/ee/ci/quick_start/README.html).
 
-To run tests with TestCafe, you need a virtual machine with Node.js, TestCafe and main browsers installed. Instead of installing them manually, you can use a [Docker](https://www.docker.com/) image.
+To run tests with TestCafe, you need a virtual machine with Node.js, TestCafe and browsers. Instead of installing them manually, you can use a [Docker](https://www.docker.com/) image.
+
+The easiest way to run TestCafe tests is [use an official TestCafe Docker image](#option-1---use-testcafe-docker-image) based on Alpine Linux with preinstalled Node.js, TestCafe, Firefox and Chromium.
+
+However, if you already have a Docker image prepared to deploy your web application and run tests, you can [install TestCafe to this image before testing](#option-2---install-testcafe-to-a-docker-image).
 
 ## Option 1 - Use TestCafe Docker Image
-
-The easiest way to run TestCafe tests is use an official TestCafe [Docker image](https://hub.docker.com/r/testcafe/testcafe/) based on Alpine Linux with preinstalled Node.js, TestCafe, Firefox and Chromium.
 
 Open the `.gitlab-ci.yml` file that stores GitLab CI configuration. If you don't have this file yet, create it in the repository's root directory.
 
