@@ -20,7 +20,7 @@ It installs TestCafe locally and adds it to the `devDependencies` section in `pa
 ```json
 {
     "devDependencies": {
-        "testcafe": "^x.y.z"
+        "testcafe": "*"
     }
 }
 ```
@@ -36,7 +36,7 @@ Add a `debug` script to the `scripts` section in `package.json`. This script con
     },
 
     "devDependencies": {
-        "testcafe": "^x.y.z"
+        "testcafe": "*"
     }
 }
 ```
@@ -75,31 +75,31 @@ Select the npm script (`debug`) in the **Scripts** field.
 
 ![Select Debug](../../images/webstorm/select-debug.png)
 
-### WebStorm version prior to 2018.3
+* **WebStorm version prior to 2018.3**
 
-Specify the path to the test file you wish to debug in the **Arguments** field.
+    Specify the path to the test file you wish to debug in the **Arguments** field.
 
-![Enter File Path](../../images/webstorm/file-path-entered.png)
+    ![Enter File Path](../../images/webstorm/file-path-entered.png)
 
-Change this setting later to debug a different file.
+    Change this setting later to debug a different file.
 
-### WebStorm version 2018.3 and newer
+* **WebStorm version 2018.3 and newer**
 
-Click the **+** button in the **Arguments** field to insert a macro.
+    Click the **+** button in the **Arguments** field to insert a macro.
 
-![Click Add Macro Button](../../images/webstorm/click-add-macro-button.png)
+    ![Click Add Macro Button](../../images/webstorm/click-add-macro-button.png)
 
-This invokes the **Macros** dialog.
+    This invokes the **Macros** dialog.
 
-Select `FilePath` to insert the path to the current file.
+    Select `FilePath` to insert the path to the current file.
 
-![Select Macro](../../images/webstorm/select-macros.png)
+    ![Select Macro](../../images/webstorm/select-macros.png)
 
-Click **Insert**. A macro `$FilePath$` is inserted to the **Arguments** field.
+    Click **Insert**. A macro `$FilePath$` is inserted to the **Arguments** field.
 
-![Enter Macro](../../images/webstorm/macros-entered.png)
+    ![Enter Macro](../../images/webstorm/macros-entered.png)
 
-This allows WebStorm to debug the currently opened test file.
+    This allows WebStorm to debug the currently opened test file.
 
 Click **OK** to save changes.
 
@@ -117,4 +117,4 @@ TestCafe runs the test and stops at the breakpoint.
 
 Now you can use WebStorm debugging tools to inspect the code, step over to the next command, etc.
 
-> The debugger may consider TestCafe actions called in a chain as a single command. To correctly step between actions, you may need to add `await t.` before each of them.
+> The debugger may consider TestCafe actions called in a chain as a single command. Add `await t.` before each action to correctly step between them. Nevertheless, if you put a breakpoint at each chained action, the debugger stops at these breakpoints.
