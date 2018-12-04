@@ -187,7 +187,7 @@ describe('[API] t.takeScreenshot()', function () {
                 setScreenshotPath:  true,
                 quarantineMode:     true,
                 screenshotsOnFails: true,
-                reporter:           [{ reporter }]
+                reporter:           [ reporter ]
             })
                 .then(function () {
                     const getScreenshotsInfo = (screenshotPath, thumbnailPath, attempt, userAgent, takenOnFail) => {
