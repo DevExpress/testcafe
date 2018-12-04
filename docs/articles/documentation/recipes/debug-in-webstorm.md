@@ -117,4 +117,4 @@ TestCafe runs the test and stops at the breakpoint.
 
 Now you can use WebStorm debugging tools to inspect the code, step over to the next command, etc.
 
-> The debugger may consider TestCafe actions called in a chain as a single command. Add `await t.` before each action to correctly step between them. Nevertheless, if you put a breakpoint at each chained action, the debugger stops at these breakpoints.
+> The debugger may consider a TestCafe action chain as a single command and therefore fail to correctly step between these actions. In this instance, put a breakpoint at each chained action.
