@@ -29,8 +29,7 @@ describe('Configuration', () => {
         configuration = new Configuration();
         configPath    = configuration.filePath;
 
-        const keyFile            = tmp.fileSync();
-        const reporterOutputFile = tmp.fileSync();
+        const keyFile = tmp.fileSync();
 
         keyFileContent = Buffer.from(nanoid());
         fs.writeFileSync(keyFile.name, keyFileContent);
