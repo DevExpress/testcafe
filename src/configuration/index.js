@@ -1,4 +1,3 @@
-import path from 'path';
 import Promise from 'pinkie';
 import { fsObjectExists, readFile } from '../utils/promisified-functions';
 import Option from './option';
@@ -8,6 +7,7 @@ import { ensureOptionValue as ensureSslOptionValue } from '../utils/parse-ssl-op
 import OPTION_NAMES from './option-names';
 import { optionValueToRegExp } from './option-conversion';
 import createFilterFn from '../utils/create-filter-fn';
+import resolvePathRelativelyCwd from '../utils/resolve-path-relatively-cwd';
 
 const CONFIGURATION_FILENAME = '.testcaferc.json';
 
@@ -22,7 +22,7 @@ const STATIC_CONTENT_CACHING_SETTINGS = {
 export default class Configuration {
     constructor () {
         this._options  = {};
-        this._filePath = path.resolve(process.cwd(), CONFIGURATION_FILENAME);
+        this._filePath = resolvePathRelativelyCwd(CONFIGURATION_FILENAME);
     }
 
     static _fromObj (obj) {

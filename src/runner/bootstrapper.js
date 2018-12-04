@@ -11,6 +11,7 @@ import parseFileList from '../utils/parse-file-list';
 import path from 'path';
 import fs from 'fs';
 import makeDir from 'make-dir';
+import resolvePathRelativelyCwd from '../utils/resolve-path-relatively-cwd';
 
 const DEFAULT_APP_INIT_DELAY = 1000;
 
@@ -96,7 +97,7 @@ export default class Bootstrapper {
 
     async _ensureOutStream (outStream) {
         if (typeof outStream === 'string') {
-            const fullReporterOutputPath = path.resolve(process.cwd(), outStream);
+            const fullReporterOutputPath = resolvePathRelativelyCwd(outStream);
 
             await makeDir(path.dirname(fullReporterOutputPath));
 

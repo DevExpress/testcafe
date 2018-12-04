@@ -10,6 +10,7 @@ const parseFileList                    = require('../../lib/utils/parse-file-lis
 const TempDirectory                    = require('../../lib/utils/temp-directory');
 const { replaceLeadingSpacesWithNbsp } = require('../../lib/utils/string');
 const getCommonPath                    = require('../../lib/utils/get-common-path');
+const resolvePathRelativelyCwd         = require('../../lib/utils/resolve-path-relatively-cwd');
 
 
 describe('Utils', () => {
@@ -88,8 +89,7 @@ describe('Utils', () => {
     });
 
     describe('Temp Directory', () => {
-        const TMP_ROOT = path.join(process.cwd(), '__tmp__');
-
+        const TMP_ROOT     = resolvePathRelativelyCwd('__tmp__');
         const savedTmpRoot = TempDirectory.TEMP_DIRECTORIES_ROOT;
 
         beforeEach(() => {
