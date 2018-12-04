@@ -22,7 +22,7 @@ Join the TestCafe community on Stack Overflow: ask and answer [questions with th
 
 ## Reporting a Problem
 
-If you find a problem when using TestCafe, please file an issue in our [GitHub repository](https://github.com/DevExpress/testcafe/issues).
+If you encounter a bug when using TestCafe, please file an issue in our [GitHub repository](https://github.com/DevExpress/testcafe/issues).
 However, to save some time, please search through the existing issues to see if the problem has already been reported or addressed.
 
 When you create a new issue, template text is automatically added to its body. To help us understand the issue you're describing, be sure to fill in all sections in this template. We process issues with insufficient details after all the others, which may take significant time without any guarantees.
