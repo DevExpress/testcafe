@@ -12,12 +12,12 @@ Before you debug in Visual Studio Code, ensure that your root test directory con
 ```json
 {
   "devDependencies": {
-    "testcafe": "x.y.z"
+    "testcafe": "*"
   }
 }
 ```
 
-where `x.y.z` is the TestCafe version you use.
+You can replace `*` with the actual TestCafe version you use.
 
 Then you need to install TestCafe locally in the test directory.
 
