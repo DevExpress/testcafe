@@ -23,16 +23,15 @@ Join the TestCafe community on Stack Overflow: ask and answer [questions with th
 ## Reporting a Problem
 
 If you encounter a bug when using TestCafe, please file an issue in our [GitHub repository](https://github.com/DevExpress/testcafe/issues).
-However, to save some time, please search through the existing issues to see if the problem has already been reported or addressed.
+We recommend searching through the existing issues to see if the problem has already been reported or addressed.
 
-When you create a new issue, template text is automatically added to its body. To help us understand the issue you're describing, be sure to fill in all sections in this template. We process issues with insufficient details after all the others, which may take significant time without any guarantees.
+When you create a new issue, the template text is automatically added to its body. You should complete all the sections in this template to help us understand the issue you are describing. Missing information could delay the processing time.
 
 ## Code Contribution
 
 Follow the steps below when submitting your code.
 
-1. Search the [list of issues](https://github.com/DevExpress/testcafe/issues) to see if there
-  is an issue for the bug or feature you are going to work on. If you do not find one, please create your own.
+1. Search the [list of issues](https://github.com/DevExpress/testcafe/issues) to see if there is an issue for the bug or feature you are going to work on or create a new one.
 
 2. If you are going to address an existing issue, check the comment thread to make sure that nobody is working on it at the moment.
 
@@ -41,7 +40,7 @@ Follow the steps below when submitting your code.
 4. Core team members may need to discuss the details of the proposed fix with you. As soon as you get the green light from them,
   leave a comment saying that you are currently working on this issue.
 
-5. Fork TestCafe and create a branch in your fork. Name this branch with an issue number, e.g. `gh852`, `gh853`.
+5. Fork TestCafe and create a branch in your fork. Name this branch with an issue number, for example `gh852`, `gh853`.
   
     > If you are going to update the documentation follow the steps described in [Contribute to Documentation](#contribute-to-documentation).
 
@@ -79,7 +78,7 @@ If you want to fix a bug in the current documentation or make an enhancement tha
 
 2. Commit your changes into the branch.
 
-    > Note that links in the documentation should point to `.md` files in the repository, so that the documentation is browsable on GitHub. When the website is built, all links are automatically modified to point to HTML pages.
+    > Note that links in the documentation should point to `.md` files in the repository, so that the documentation is browsable on GitHub. When the website is built, all links are automatically modified to HTML links.
 
 3. Fetch upstream changes and rebase your branch onto `master`.
 
@@ -95,7 +94,7 @@ If you want to fix a bug in the current documentation or make an enhancement tha
 
 ### Documentation for New Features
 
-Documentation for new features is developed in a separate branch `new-docs`.
+Documentation for new features is written in a separate branch `new-docs`.
 
 Do the following to fetch this branch and commit to it.
 
@@ -114,7 +113,7 @@ Do the following to fetch this branch and commit to it.
     git branch -u upstream/new-docs
     ```
 
-4. Create a new branch on top of `new-docs`.
+4. Create a new branch at the top of `new-docs`.
 
     ```sh
     git checkout -b new-branch new-docs
@@ -122,7 +121,7 @@ Do the following to fetch this branch and commit to it.
 
 5. Commit your changes into this branch.
 
-    > Note that links in the documentation should point to `.md` files in the repository, so that the documentation is browsable on GitHub. When the website is built, all links are automatically modified to point to HTML pages.
+    > Note that links in the documentation should point to `.md` files in the repository, so that the documentation is browsable on GitHub. When the website is built, all links are automatically modified to HTML links.
 
 6. Run tests before submitting a pull request to ensure that Markdown is styled properly and there is no broken links.
 
