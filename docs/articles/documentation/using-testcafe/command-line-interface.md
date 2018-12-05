@@ -427,7 +427,7 @@ testcafe ie my-tests -F "Page.*"
 
 TestCafe runs tests whose [metadata](../test-api/test-code-structure.md#specifying-testing-metadata) [matches](https://lodash.com/docs/#isMatch) the specified key-value pair.
 
-For example, the following command runs tests whose metadata has the `device` property set to the `mobile` value and the `env` property set to the `production` value.
+For example, the following command runs tests whose metadata's `device` property is set to `mobile`, and `env` property is set to `production`.
 
 ```sh
 testcafe chrome my-tests --test-meta device=mobile,env=production
@@ -445,7 +445,7 @@ testcafe chrome my-tests --fixture-meta device=mobile,env=production
 
 ### -a \<command\>, --app \<command\>
 
-Executes the specified shell command before running tests. Use it to launch or deploy the application you are going to test.
+Executes the specified shell command before running tests. Use it to set up the application you are going to test.
 
 An application is automatically terminated after testing is finished.
 
@@ -649,9 +649,9 @@ testcafe chrome my-tests --sf
 
 Disables checks for `test` and `fixture` directives in test files. Use this flag to run dynamically loaded tests.
 
-TestCafe requires test files to have the [fixture](../test-api/test-code-structure.md#fixtures) and [test](../test-api/test-code-structure.md#tests) directives. Otherwise, an error is thrown.
+Test files should have the [fixture](../test-api/test-code-structure.md#fixtures) and [test](../test-api/test-code-structure.md#tests) directives. Otherwise, an error is thrown.
 
-However, when you import tests from external libraries or generate them dynamically, the `.js` file provided to TestCafe may not contain any tests.
+However, the `.js` file may not contain tests when you import tests from external libraries or generate them dynamically.
 
 **external-lib.js**
 
@@ -674,7 +674,7 @@ import runTests from './external-lib';
 runTests();
 ```
 
-In this instance, specify the `--disable-test-syntax-validation` flag to bypass checks for test syntax.
+In this instance, specify the `--disable-test-syntax-validation` flag to bypass test syntax checks.
 
 ```sh
 testcafe safari test.js --disable-test-syntax-validation
