@@ -5,7 +5,7 @@ permalink: /documentation/recipes/integrating-testcafe-with-ci-systems/
 ---
 # Integrating TestCafe with CI Systems
 
-This section describes how to integrate TestCafe into build process on popular continuous integration systems.
+This section describes how to integrate TestCafe into a build process on popular continuous integration systems.
 
 * [AppVeyor](appveyor.md)
 * [CircleCI](circleci.md)
