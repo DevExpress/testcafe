@@ -243,7 +243,7 @@ describe('Runner', () => {
                 .run();
         });
 
-        it('Should throw an error if screenshot path pattern is specified without a base screenshot path', () => {
+        it('Should throw an error if the screenshot path pattern is specified without a base screenshot path', () => {
             return runner
                 .browsers(connection)
                 .screenshots(void 0, true, '${DATE}')
