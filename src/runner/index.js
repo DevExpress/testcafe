@@ -159,7 +159,7 @@ export default class Runner extends EventEmitter {
         assets.forEach(asset => this.proxy.GET(asset.path, asset.info));
     }
 
-    _validSpeedOption () {
+    _validateSpeedOption () {
         const speed = this.opts.speed;
 
         if (typeof speed !== 'number' || isNaN(speed) || speed < 0.01 || speed > 1)
@@ -193,7 +193,7 @@ export default class Runner extends EventEmitter {
         this.opts.proxyBypass = proxyBypass;
     }
 
-    _validateScreenshotsOptions () {
+    _validateScreenshotOptions () {
         const screenshotPath        = this.opts.screenshotPath;
         const screenshotPathPattern = this.opts.screenshotPathPattern;
 
@@ -211,8 +211,8 @@ export default class Runner extends EventEmitter {
     }
 
     _validateRunOptions () {
-        this._validateScreenshotsOptions();
-        this._validSpeedOption();
+        this._validateScreenshotOptions();
+        this._validateSpeedOption();
         this._validateConcurrencyOption();
         this._validateProxyBypassOption();
     }
