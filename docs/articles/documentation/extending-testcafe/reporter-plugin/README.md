@@ -60,7 +60,7 @@ Once the reporter has been scaffolded out, go to the reporter directory and open
 You would need to implement four [reporter methods](reporter-methods.md).
 
 ```js
-reportTaskStart (/* startTime, userAgents, testCount */) {
+reportTaskStart (/* startTime, userAgents, testCount, reportPath */) {
     throw new Error('Not implemented');
 },
 

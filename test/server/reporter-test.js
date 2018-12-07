@@ -337,7 +337,8 @@ describe('Reporter', () => {
                         'Chrome',
                         'Firefox'
                     ],
-                    6
+                    6,
+                    ''
                 ]
             },
             {
