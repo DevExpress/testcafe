@@ -159,12 +159,43 @@ export default class Runner extends EventEmitter {
         assets.forEach(asset => this.proxy.GET(asset.path, asset.info));
     }
 
-    _validateRunOptions () {
-        const concurrency           = this.bootstrapper.concurrency;
-        const speed                 = this.opts.speed;
+    _validateSpeedOption () {
+        const speed = this.opts.speed;
+
+        if (typeof speed !== 'number' || isNaN(speed) || speed < 0.01 || speed > 1)
+            throw new GeneralError(MESSAGE.invalidSpeedValue);
+    }
+
+    _validateConcurrencyOption () {
+        const concurrency = this.bootstrapper.concurrency;
+
+        if (typeof concurrency !== 'number' || isNaN(concurrency) || concurrency < 1)
+            throw new GeneralError(MESSAGE.invalidConcurrencyFactor);
+    }
+
+    _validateProxyBypassOption () {
+        let proxyBypass = this.opts.proxyBypass;
+
+        if (!proxyBypass)
+            return;
+
+        assertType([ is.string, is.array ], null, '"proxyBypass" argument', proxyBypass);
+
+        if (typeof proxyBypass === 'string')
+            proxyBypass = [proxyBypass];
+
+        proxyBypass = proxyBypass.reduce((arr, rules) => {
+            assertType(is.string, null, '"proxyBypass" argument', rules);
+
+            return arr.concat(rules.split(','));
+        }, []);
+
+        this.opts.proxyBypass = proxyBypass;
+    }
+
+    _validateScreenshotOptions () {
         const screenshotPath        = this.opts.screenshotPath;
         const screenshotPathPattern = this.opts.screenshotPathPattern;
-        let proxyBypass             = this.opts.proxyBypass;
 
         if (screenshotPath) {
             this._validateScreenshotPath(screenshotPath, 'screenshots base directory path');
@@ -175,26 +206,15 @@ export default class Runner extends EventEmitter {
         if (screenshotPathPattern)
             this._validateScreenshotPath(screenshotPathPattern, 'screenshots path pattern');
 
-        if (typeof speed !== 'number' || isNaN(speed) || speed < 0.01 || speed > 1)
-            throw new GeneralError(MESSAGE.invalidSpeedValue);
+        if (!screenshotPath && screenshotPathPattern)
+            throw new GeneralError(MESSAGE.cantUseScreenshotPathPatternWithoutBaseScreenshotPathSpecified);
+    }
 
-        if (typeof concurrency !== 'number' || isNaN(concurrency) || concurrency < 1)
-            throw new GeneralError(MESSAGE.invalidConcurrencyFactor);
-
-        if (proxyBypass) {
-            assertType([ is.string, is.array ], null, '"proxyBypass" argument', proxyBypass);
-
-            if (typeof proxyBypass === 'string')
-                proxyBypass = [proxyBypass];
-
-            proxyBypass = proxyBypass.reduce((arr, rules) => {
-                assertType(is.string, null, '"proxyBypass" argument', rules);
-
-                return arr.concat(rules.split(','));
-            }, []);
-
-            this.opts.proxyBypass = proxyBypass;
-        }
+    _validateRunOptions () {
+        this._validateScreenshotOptions();
+        this._validateSpeedOption();
+        this._validateConcurrencyOption();
+        this._validateProxyBypassOption();
     }
 
     _validateScreenshotPath (screenshotPath, pathType) {

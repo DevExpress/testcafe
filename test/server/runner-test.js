@@ -242,6 +242,20 @@ describe('Runner', () => {
                 .src('test/server/data/test-suites/basic/testfile2.js')
                 .run();
         });
+
+        it('Should throw an error if the screenshot path pattern is specified without a base screenshot path', () => {
+            return runner
+                .browsers(connection)
+                .screenshots(void 0, true, '${DATE}')
+                .src('test/server/data/test-suites/basic/testfile2.js')
+                .run()
+                .then(() => {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(err => {
+                    expect(err.message).eql('Cannot use the screenshot path pattern without a base screenshot path specified');
+                });
+        });
     });
 
     describe('.src()', () => {
