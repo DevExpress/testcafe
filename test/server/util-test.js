@@ -2,6 +2,7 @@ const path                             = require('path');
 const Module                           = require('module');
 const fs                               = require('fs');
 const del                              = require('del');
+const OS                               = require('os-family');
 const expect                           = require('chai').expect;
 const correctFilePath                  = require('../../lib/utils/correct-file-path');
 const escapeUserAgent                  = require('../../lib/utils/escape-user-agent');
@@ -68,6 +69,22 @@ describe('Utils', () => {
                 expect(actualFiles).eql(expectedFiles);
             });
         });
+
+        if (OS.win) {
+            it('File on same drive but with different letter case in label (win only)', () => {
+                const { root, dir, base } = path.parse(process.cwd());
+
+                const cwd1 = path.join(root.toLowerCase(), path.relative(root, dir), base);
+                const cwd2 = path.join(root.toUpperCase(), path.relative(root, dir), base);
+
+                const sources  = [path.resolve(cwd1, 'test/server/data/file-list/file-1.js')];
+                const expected = [path.resolve(cwd2, 'test/server/data/file-list/file-1.js')];
+
+                return parseFileList(sources, cwd2).then(actualFiles => {
+                    expect(actualFiles).eql(expected);
+                });
+            });
+        }
     });
 
     describe('Temp Directory', () => {
