@@ -46,10 +46,12 @@ Use the content CircleCI provides by default with two changes:
 * Since you are going to perform browser testing, you need a virtual machine image that has all popular browsers pre-installed. So use the following image
 
     ```yml
-    - image: circleci/node:x.y-browsers
+    # Replace '10.14' with the latest Node.js LTS version
+    # available on Docker Hub
+    - image: circleci/node:10.14-browsers
     ```
 
-    ***Replace*** `x.y` with the latest available Node.js version. See the [image's page](https://hub.docker.com/r/circleci/node/tags/) on Docker Hub for the list of available versions.
+    Replace `10.14` with the latest available Node.js LTS version. See the [image's page](https://hub.docker.com/r/circleci/node/tags/) on Docker Hub for the list of available versions.
 
 * Add a step that imports test results to the end of the YAML. The results will be displayed in the **Test Summary** section.
 
@@ -66,7 +68,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/node:x.y-browsers
+      - image: circleci/node:10.14-browsers
 
     working_directory: ~/repo
 
@@ -102,8 +104,8 @@ This command installs the `testcafe` and `testcafe-reporter-xunit` modules local
 ```json
 {
   "devDependencies": {
-      "testcafe": "^x.y.z",
-      "testcafe-reporter-xunit": "^x.y.z"
+      "testcafe": "*",
+      "testcafe-reporter-xunit": "*"
   }
 }
 ```
@@ -116,8 +118,8 @@ Provide a command to run tests in the `scripts` section.
     "test": "testcafe chrome:headless tests/**/* -r xunit:/tmp/test-results/res.xml"
   },
   "devDependencies": {
-      "testcafe": "^x.y.z",
-      "testcafe-reporter-xunit": "^x.y.z"
+      "testcafe": "*",
+      "testcafe-reporter-xunit": "*"
   }
 }
 ```
