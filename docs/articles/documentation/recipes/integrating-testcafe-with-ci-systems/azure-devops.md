@@ -5,7 +5,7 @@ permalink: /documentation/recipes/integrating-testcafe-with-ci-systems/azure-dev
 ---
 # Integrating TestCafe with Azure DevOps
 
-This topic describes how to integrate TestCafe tests into an [Azure DevOps Server](https://azure.microsoft.com/en-us/services/devops/server/) and [Azure Pipelines](https://azure.microsoft.com/en-us/services/devops/pipelines/) project's build process.
+This topic describes how to integrate TestCafe tests into an [Azure DevOps Server](https://azure.microsoft.com/en-us/services/devops/server/) and an [Azure Pipelines](https://azure.microsoft.com/en-us/services/devops/pipelines/) project's build process.
 
 ## Step 1 - Add TestCafe Dependency to the Project
 
@@ -27,7 +27,7 @@ This command installs the latest TestCafe version locally and adds it to the `de
 
 ## Step 2 - Provide a Command to Run Tests
 
-Since TestCafe is installed locally, a test run command that launches TestCafe should be also added to `package.json` to the `scripts` section.
+The test run command that uses TestCafe should be also added to `package.json` to the `scripts` section because TestCafe is installed locally.
 
 ```json
 {
@@ -41,7 +41,7 @@ Since TestCafe is installed locally, a test run command that launches TestCafe s
 }
 ```
 
-This allows you to run tests using `npm test`.
+This allows you to use `npm test` to run tests.
 
 ## Step 3 - Configure a Build Task
 
@@ -49,7 +49,7 @@ Now you are ready to create a build task.
 
 ### Configure Build Task on Azure Pipelines
 
-Open `azure-pipelines.yml` or create it in the repository root and add the following [job](https://docs.microsoft.com/en-us/azure/devops/pipelines/process/phases?view=vsts&tabs=yaml).
+Open `azure-pipelines.yml` or create it in the repository root and add the following [job](https://docs.microsoft.com/en-us/azure/devops/pipelines/process/phases?view=vsts&tabs=yaml):
 
 ```yaml
 jobs:
@@ -69,13 +69,13 @@ jobs:
 ```
 
 * `jobs` - the list of [jobs](https://docs.microsoft.com/en-us/azure/devops/pipelines/process/phases?view=vsts&tabs=yaml).
-* `job` - the job name. You can choose any name you wish.
+* `job` - the job name.
 * `pool` - the [agent pool](https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/pools-queues?view=vsts) that executes this build job.
 * `vmImage` - the [agent's](https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/agents?view=vsts) virtual machine image name. This tutorial uses a [Microsoft-hosted agent](https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=vsts&tabs=yaml) that runs on an Ubuntu 16.04 machine. You can find the list of software installed on this machine in the [Azure Pipelines GitHub repository](https://github.com/Microsoft/azure-pipelines-image-generation/blob/master/images/linux/Ubuntu1604-README.md).
 * `steps` - the list of steps performed when executing a job.
 * `task` - adds a [Node.js installer task](https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/tool/node-js?view=vsts)  to the job. This task installs Node.js and adds it to the `PATH` variable.
 * `inputs` - specifies input variables for the task.
-* `versionSpec` - the Node.js version to install. You can find the latest LTS version number on the [Node.js website](https://nodejs.org/en/).
+* `versionSpec` - the Node.js version to install. The latest LTS version number is available on the [Node.js website](https://nodejs.org/en/).
 * `displayName` - a step name displayed in build results.
 * `script` - a console command executed at this step.
 
@@ -85,7 +85,7 @@ Commit your changes and push them to the repository.
 
 ### Configure Build Task on Azure DevOps Server
 
-Hover over the **Pipelines** section and click **Builds** in the popup menu.
+Hover over the **Pipelines** section and click **Builds** in the pop-up menu.
 
 ![Select Builds](../../../images/azure/select-builds.png)
 
@@ -117,7 +117,7 @@ Select **Node Tool Installer** from the task list. This task installs Node.js an
 
 The task is now added to the pipeline. Click its name in the pipeline to enter the task settings.
 
-On the settings screen, specify the Node.js version to install. Use the latest LTS version - you can find its number on the [Node.js website](https://nodejs.org/en/).
+On the settings screen, specify the Node.js version to install. Use the latest LTS version - it is available on the [Node.js website](https://nodejs.org/en/).
 
 ![Specify Node.js Version](../../../images/azure/set-node-version.png)
 
@@ -125,7 +125,7 @@ Now add another task that runs a shell command. Click the **+** button again and
 
 ![Add a Command Line Task](../../../images/azure/add-command-line.png)
 
-Configure this command to install TestCafe. Open its settings, specify a meaningful name and enter the following command:
+Configure this command to install TestCafe. Open its settings, specify a name and enter the following command:
 
 ```cmd
 npm install
@@ -153,7 +153,7 @@ This opens the **Save build pipeline and queue** window. Specify an optional com
 
 ### Option 1 - Enable Continuous Integration
 
-You can set Azure DevOps to run the pipeline every time your code changes. To do this, you need to enable continuous integration.
+You can enable continuous integration in Azure DevOps to specify that the pipeline is run every time your code changes.
 
 On Azure Pipelines, continuous integration is enabled for every newly created build.
 
@@ -169,19 +169,19 @@ Click the repository name under the **Continuous integration** header and check 
 
 ![Triggers Tab](../../../images/azure/enable-ci.png)
 
-If you need to build a specific branch or path, you can add **Branch filters** and/or **Path filters**.
+To build a specific branch or path, add **Branch filters** and/or **Path filters**.
 
-Now the build is triggered by code changes in the repository.
+Now, changes to code in the repository trigger the build.
 
 ### Option 2 - Run the Build Manually
 
-To run the build manually, select the build and click **Queue**.
+Select the build and click **Queue** to run the build.
 
 On Azure DevOps Server, you can find this button under the build header.
 
 ![Queue Task - Server](../../../images/azure/queue-task-server.png)
 
-On Azure Pipelines, this button is located in the top-right corner.
+On Azure Pipelines, this button is in the top-right corner.
 
 ![Queue Task - Pipelines](../../../images/azure/queue-task-pipelines.png)
 
