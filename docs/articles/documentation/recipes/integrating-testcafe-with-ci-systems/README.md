@@ -8,6 +8,7 @@ permalink: /documentation/recipes/integrating-testcafe-with-ci-systems/
 This section describes how to integrate TestCafe into a build process on popular continuous integration systems.
 
 * [AppVeyor](appveyor.md)
+* [Azure DevOps](azure-devops.md)
 * [CircleCI](circleci.md)
 * [GitLab](gitlab.md)
 * [Jenkins](jenkins.md)

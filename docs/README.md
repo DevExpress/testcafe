@@ -93,6 +93,7 @@
   * [Debug in Visual Studio Code](articles/documentation/recipes/debug-in-visual-studio-code.md)
   * [Integrating TestCafe with CI Systems](articles/documentation/recipes/integrating-testcafe-with-ci-systems/README.md)
     * [AppVeyor](articles/documentation/recipes/integrating-testcafe-with-ci-systems/appveyor.md)
+    * [Azure DevOps](articles/documentation/recipes/integrating-testcafe-with-ci-systems/azure-devops.md)
     * [CircleCI](articles/documentation/recipes/integrating-testcafe-with-ci-systems/circleci.md)
     * [GitLab](articles/documentation/recipes/integrating-testcafe-with-ci-systems/gitlab.md)
     * [Jenkins](articles/documentation/recipes/integrating-testcafe-with-ci-systems/jenkins.md)
