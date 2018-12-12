@@ -5,17 +5,15 @@ permalink: /documentation/recipes/debug-in-webstorm.html
 ---
 # Debug in WebStorm
 
-This topic describes how to debug your TestCafe tests in [WebStorm](https://www.jetbrains.com/webstorm/) with a Node.js debugger.
+This topic describes how to debug TestCafe tests in [WebStorm](https://www.jetbrains.com/webstorm/) with a Node.js debugger.
 
 ## Step 1 - Install TestCafe
 
-Execute the following command:
+Execute the following command to install TestCafe locally and add it to the `devDependencies` section in `package.jso`n:
 
 ```sh
 npm --save-dev testcafe
 ```
-
-It installs TestCafe locally and adds it to the `devDependencies` section in `package.json`.
 
 ```json
 {
@@ -43,19 +41,17 @@ Add a `debug` script to the `scripts` section in `package.json`. This script con
 
 The `$NODE_DEBUG_OPTION` placeholder marks a place where Node.js debugger options are inserted before execution.
 
-Path to test files will be specified in the debug configuration at the next steps.
+The path to test files is specified in the debug configuration ([step 4](#step-4---specify-configuration-options)).
 
 ## Step 3 - Create a Debug Configuration
 
-Open WebStorm. If no build or run configuration is set up at the moment, click **Add Configuration** in the top-right corner.
+Open WebStorm. If no build or run configuration is set up, click **Add Configuration** in the top-right corner.
 
 ![Click Add Configuration](../../images/webstorm/press-add-configuration.png)
 
-Otherwise, open the configuration drop-down menu and select **Edit Configurations...**.
+Otherwise, open the configuration drop-down menu and select **Edit Configurations...** to invoke the **Run/Debug Configurations** dialog.
 
 ![Edit Configurations](../../images/webstorm/edit-configurations.png)
-
-This invokes the **Run/Debug Configurations** dialog.
 
 Click the **+** button to create a new configuration from a template.
 
