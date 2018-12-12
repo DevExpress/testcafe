@@ -5,13 +5,11 @@ const runningTests     = {};
 let handlingTestErrors = false;
 
 function printErrorMessagesAndTerminate (...messages) {
-    /* eslint-disable no-process-exit */
-    /* eslint-disable no-console */
+    // eslint-disable-next-line no-console
     messages.map(msg => console.log(msg));
 
+    // eslint-disable=next-line no-process-exit
     setTimeout(() => process.exit(1), 0);
-    /* eslint-enable no-process-exit */
-    /* eslint-enable no-console */
 }
 
 function handleTestRunError (ErrorCtor, message) {
