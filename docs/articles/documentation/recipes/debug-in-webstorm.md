@@ -9,7 +9,7 @@ This topic describes how to debug TestCafe tests in [WebStorm](https://www.jetbr
 
 ## Step 1 - Install TestCafe
 
-Execute the following command to install TestCafe locally and add it to the `devDependencies` section in `package.jso`n:
+Execute the following command to install TestCafe locally and add it to the `devDependencies` section in `package.json`:
 
 ```sh
 npm --save-dev testcafe
@@ -45,15 +45,15 @@ The path to test files is specified in the debug configuration ([step 4](#step-4
 
 ## Step 3 - Create a Debug Configuration
 
-Open WebStorm. If no build or run configuration is set up, click **Add Configuration** in the top-right corner.
+Open WebStorm. If no build or run configuration is set up, click **Add Configuration** in the top-right corner to invoke the **Run/Debug Configurations** dialog.
 
 ![Click Add Configuration](../../images/webstorm/press-add-configuration.png)
 
-Otherwise, open the configuration drop-down menu and select **Edit Configurations...** to invoke the **Run/Debug Configurations** dialog.
+Otherwise, open the configuration drop-down menu and select **Edit Configurations...**.
 
 ![Edit Configurations](../../images/webstorm/edit-configurations.png)
 
-Click the **+** button to create a new configuration from a template.
+In the **Run/Debug Configurations** dialog, click the **+** button to create a new configuration from a template.
 
 ![Create Configuration](../../images/webstorm/new-configuration.png)
 
