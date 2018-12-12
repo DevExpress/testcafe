@@ -7,17 +7,15 @@ permalink: /documentation/recipes/integrating-testcafe-with-ci-systems/gitlab.ht
 
 This topic describes how to integrate TestCafe tests into a [GitLab](https://gitlab.com) project's build process.
 
-GitLab offers a built-in continuous integration service. You can read more about it in [GitLab documentation](https://docs.gitlab.com/ee/ci/quick_start/README.html).
+GitLab has a built-in continuous integration service. Refer to the [GitLab documentation](https://docs.gitlab.com/ee/ci/quick_start/README.html) for more information.
 
-To run tests with TestCafe, you need a virtual machine with Node.js, TestCafe and browsers. Instead of installing them manually, you can use a [Docker](https://www.docker.com/) image.
+To run tests with TestCafe, you need a virtual machine with Node.js, TestCafe and browsers. You can [use a TestCafe Docker image](#option-1---use-testcafe-docker-image) with pre-installed software.
 
-The easiest way to run TestCafe tests is [use an official TestCafe Docker image](#option-1---use-testcafe-docker-image) based on Alpine Linux with preinstalled Node.js, TestCafe, Firefox and Chromium.
-
-However, if you already have a Docker image prepared to deploy your web application and run tests, you can [install TestCafe to this image before testing](#option-2---install-testcafe-to-a-docker-image).
+However, if you already have a Docker image prepared to deploy your web application and run tests, you can [install TestCafe on this image before testing](#option-2---install-testcafe-on-a-docker-image).
 
 ## Option 1 - Use TestCafe Docker Image
 
-Open the `.gitlab-ci.yml` file that stores GitLab CI configuration. If you don't have this file yet, create it in the repository's root directory.
+Open the `.gitlab-ci.yml` file that stores the GitLab CI configuration. If this file does not exist, create it in the repository's root directory.
 
 Create a new [job](https://docs.gitlab.com/ee/ci/pipelines.html#jobs). To do this, add the following settings to `.gitlab-ci.yml` at the top level:
 
@@ -30,19 +28,19 @@ e2e_tests:
     - /opt/testcafe/docker/testcafe-docker.sh firefox:headless,chromium tests/**/*
 ```
 
-* `e2e_tests` - the job's name. You can choose any name you wish.
+* `e2e_tests` - the job's name.
 * `image` - Docker image settings.
 * `name` - the TestCafe image's name. You can find it on [Docker Hub](https://hub.docker.com/r/testcafe/testcafe/).
-* `entrypoint` - overrides the image's [ENTRYPOINT](https://docs.docker.com/glossary/?term=ENTRYPOINT) to be `/bin/sh`. You need to specify this setting because the TestCafe image has the default `ENTRYPOINT` set to the `testcafe` command, while GitLab uses `sh` to run test scripts. The `-c` flag indicates that the subsequent argument is a command rather than a script.
+* `entrypoint` - overrides the image's [ENTRYPOINT](https://docs.docker.com/glossary/?term=ENTRYPOINT) and sets it as `/bin/sh`. You should specify this setting because the TestCafe image's default `ENTRYPOINT` is set to the `testcafe` command and GitLab uses `sh` to run test scripts. The `-c` flag indicates that the subsequent argument is a command rather than a script.
 * `script` - the command that runs TestCafe tests. `/opt/testcafe/docker/testcafe-docker.sh` points to a script that prepares the environment to run a browser and starts TestCafe. Its arguments are standard TestCafe [command line parameters](../../using-testcafe/command-line-interface.md).
 
-For more information about the `.gitlab-ci.yml` syntax, see [Configuration of your jobs with .gitlab-ci.yml](https://docs.gitlab.com/ee/ci/yaml/README.html).
+See [Configuration of your jobs with .gitlab-ci.yml](https://docs.gitlab.com/ee/ci/yaml/README.html) for more information about the `.gitlab-ci.yml` syntax.
 
-Commit `.gitlab-ci.yml` and push the changes to the repository. Now you have a new [job](https://docs.gitlab.com/ee/ci/pipelines.html#jobs) that can be executed by any [GitLab Runner](https://docs.gitlab.com/ee/ci/runners/README.html).
+Commit `.gitlab-ci.yml` and push the changes to the repository. This creates a new [job](https://docs.gitlab.com/ee/ci/pipelines.html#jobs) that any [GitLab Runner](https://docs.gitlab.com/ee/ci/runners/README.html) can execute.
 
-## Option 2 - Install TestCafe to a Docker Image
+## Option 2 - Install TestCafe on a Docker Image
 
-If you use a Docker image that does not have TestCafe preinstalled, you can install it from `npm` before tests are run.
+You can install TestCafe from `npm` before tests are run if you use a Docker image that does not have TestCafe pre-installed.
 
 First, add TestCafe to your project development dependencies. Open the repository root and execute the following command:
 
@@ -60,7 +58,7 @@ This installs the latest TestCafe version locally and adds it to the `devDepende
 }
 ```
 
-Since TestCafe is installed locally, the test run command that uses TestCafe should be also added to `package.json` to the `scripts` section.
+The test run command that uses TestCafe should be also added to `package.json` to the `scripts` section because TestCafe is installed locally.
 
 ```json
 {
@@ -74,7 +72,7 @@ Since TestCafe is installed locally, the test run command that uses TestCafe sho
 }
 ```
 
-This allows you to run tests using `npm test`.
+This allows you to use `npm test` to run tests.
 
 Finally, open `.gitlab-ci.yml` (or create it in the repository root) and add a [job](https://docs.gitlab.com/ee/ci/pipelines.html#jobs) that installs TestCafe and runs tests.
 
@@ -89,7 +87,7 @@ e2e_tests:
     - npm test
 ```
 
-* `e2e_tests` - the job's name. You can choose any name you wish.
+* `e2e_tests` - the job's name.
 * `image` - the Docker image's name. This job uses an image with Node.js and popular browsers provided by [CircleCI](https://circleci.com/). **Replace** `10.14` with the desired Node.js version. You can find the list of available versions on the [image's page](https://hub.docker.com/r/circleci/node/tags/) on Docker Hub.
 * `before_script` - defines a command to run before tests start. Install TestCafe at this stage.
 * `script` - the command that runs TestCafe tests.
@@ -102,7 +100,7 @@ Go to your project page. In the right-side panel, hover over the **CI/CD** categ
 
 ![GitLab Project - Go to Jobs](../../../images/gitlab/select-jobs.png)
 
-The **Jobs** page displays a list of all recently executed jobs. Click a job's status to view details.
+The **Jobs** page displays a list of all recently executed jobs. Click a job's status to view its details.
 
 ![GitLab Project - View Job List](../../../images/gitlab/select-a-failing-job.png)
 
