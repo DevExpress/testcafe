@@ -11,6 +11,7 @@ This section provides examples and recipes of how to use TestCafe in different s
 
 * [Debug in Chrome Developer Tools](debug-in-chrome-dev-tools.md)
 * [Debug in Visual Studio Code](debug-in-visual-studio-code.md)
+* [Debug in WebStorm](debug-in-webstorm.md)
 * [Finding Code Issues with Flow Type Checker](finding-code-issues-with-flow-type-checker.md)
 * [Integrating TestCafe with CI Systems](integrating-testcafe-with-ci-systems/README.md)
 * [Running Tests Using Travis CI and Sauce Labs](running-tests-using-travis-ci-and-sauce-labs.md)

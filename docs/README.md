@@ -91,6 +91,7 @@
 * [RECIPES](articles/documentation/recipes/README.md)
   * [Debug in Chrome Developer Tools](articles/documentation/recipes/debug-in-chrome-dev-tools.md)
   * [Debug in Visual Studio Code](articles/documentation/recipes/debug-in-visual-studio-code.md)
+  * [Debug in WebStorm](articles/documentation/recipes/debug-in-webstorm.md)
   * [Integrating TestCafe with CI Systems](articles/documentation/recipes/integrating-testcafe-with-ci-systems/README.md)
     * [AppVeyor](articles/documentation/recipes/integrating-testcafe-with-ci-systems/appveyor.md)
     * [Azure DevOps](articles/documentation/recipes/integrating-testcafe-with-ci-systems/azure-devops.md)
