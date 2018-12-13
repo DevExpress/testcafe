@@ -4,6 +4,7 @@
 
 ### Bug Fixes
 
+* Remote browsers now start after tests are compiled ([#3219](https://github.com/DevExpress/testcafe/issues/3219)) by [@link89](https://github.com/link89)
 * The TestCafe Docker image now includes version tags ([#2315](https://github.com/DevExpress/testcafe/issues/2315))
 * Tests now fail with a meaningful error if no fixture is defined ([#2913](https://github.com/DevExpress/testcafe/issues/2913))
 * Tests now resume correctly after a long waiting ([#3070](https://github.com/DevExpress/testcafe/issues/3070))
