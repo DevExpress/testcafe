@@ -1,9 +1,11 @@
 ---
 layout: docs
-title: Integrating TestCafe with CI Systems
-permalink: /documentation/recipes/integrating-testcafe-with-ci-systems/
+title: Continuous Integration
+permalink: /documentation/continuous-integration/
+redirect_from:
+  - /documentation/recipes/integrating-testcafe-with-ci-systems/
 ---
-# Integrating TestCafe with CI Systems
+# Contiuous Integration
 
 This section describes how to integrate TestCafe into a build process on popular continuous integration systems.
 

@@ -190,8 +190,23 @@
     content:
     - name: Browser Provider Methods
       url: /documentation/extending-testcafe/browser-provider-plugin/browser-provider-methods.md
-#  - name: Selector Extensions
-#    url: .
+- name: CONTINUOUS INTEGRATION
+  url: /documentation/continuous-integration/README.md
+  content:
+  - name: AppVeyor
+    url: /documentation/continuous-integration/appveyor.md
+  - name: Azure DevOps
+    url: /documentation/continuous-integration/azure-devops.md
+  - name: CircleCI
+    url: /documentation/continuous-integration/circleci.md
+  - name: GitLab
+    url: /documentation/continuous-integration/gitlab.md
+  - name: Jenkins
+    url: /documentation/continuous-integration/jenkins.md
+  - name: TeamCity
+    url: /documentation/continuous-integration/teamcity.md
+  - name: Travis
+    url: /documentation/continuous-integration/travis.md
 - name: RECIPES
   url: /documentation/recipes/README.md
   content:
@@ -201,23 +216,6 @@
       url: /documentation/recipes/debug-in-visual-studio-code.md
     - name: Debug in WebStorm
       url: /documentation/recipes/debug-in-webstorm.md
-    - name: Integrating TestCafe with CI Systems
-      url: /documentation/recipes/integrating-testcafe-with-ci-systems/README.md
-      content:
-      - name: AppVeyor
-        url: /documentation/recipes/integrating-testcafe-with-ci-systems/appveyor.md
-      - name: Azure DevOps
-        url: /documentation/recipes/integrating-testcafe-with-ci-systems/azure-devops.md
-      - name: CircleCI
-        url: /documentation/recipes/integrating-testcafe-with-ci-systems/circleci.md
-      - name: GitLab
-        url: /documentation/recipes/integrating-testcafe-with-ci-systems/gitlab.md
-      - name: Jenkins
-        url: /documentation/recipes/integrating-testcafe-with-ci-systems/jenkins.md
-      - name: TeamCity
-        url: /documentation/recipes/integrating-testcafe-with-ci-systems/teamcity.md
-      - name: Travis
-        url: /documentation/recipes/integrating-testcafe-with-ci-systems/travis.md
     - name: Finding Code Issues with Flow Type Checker
       url: /documentation/recipes/finding-code-issues-with-flow-type-checker.md
     - name: Running Tests Using Travis CI and Sauce Labs

@@ -1,7 +1,7 @@
 ---
 layout: docs
 title: Integrate TestCafe with GitLab
-permalink: /documentation/recipes/integrating-testcafe-with-ci-systems/gitlab.html
+permalink: /documentation/continuous-integration/gitlab.html
 ---
 # Integrate TestCafe with GitLab
 
@@ -98,12 +98,12 @@ Commit `.gitlab-ci.yml` and `package.json`, then push the changes to the reposit
 
 Go to your project page. In the right-side panel, hover over the **CI/CD** category and click **Jobs**.
 
-![GitLab Project - Go to Jobs](../../../images/gitlab/select-jobs.png)
+![GitLab Project - Go to Jobs](../../images/gitlab/select-jobs.png)
 
 The **Jobs** page displays a list of all recently executed jobs. Click a job's status to view its details.
 
-![GitLab Project - View Job List](../../../images/gitlab/select-a-failing-job.png)
+![GitLab Project - View Job List](../../images/gitlab/select-a-failing-job.png)
 
 On the detail page, you can see a job log with the TestCafe report.
 
-![GitLab Project - View Job Details](../../../images/gitlab/job-log.png)
+![GitLab Project - View Job Details](../../images/gitlab/job-log.png)
