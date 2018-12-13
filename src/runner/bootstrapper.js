@@ -138,7 +138,7 @@ export default class Bootstrapper {
     async _canUseParallelBootstrapping (browserInfo) {
         const isLocalPromises = browserInfo.map(browser => browser.provider.isLocalBrowser(null, browserInfo.browserName));
         const isLocalBrowsers = await Promise.all(isLocalPromises);
-        
+
         return isLocalBrowsers.every(result => result);
     }
 
