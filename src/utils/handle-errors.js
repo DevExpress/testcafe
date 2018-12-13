@@ -4,23 +4,27 @@ import util from 'util';
 const runningTests     = {};
 let handlingTestErrors = false;
 
+function printErrorMessagesAndTerminate (...messages) {
+    // eslint-disable-next-line no-console
+    messages.map(msg => console.log(msg));
+
+    // eslint-disable-next-line no-process-exit
+    setTimeout(() => process.exit(1), 0);
+}
+
+function handleTestRunError (ErrorCtor, message) {
+    Object.values(runningTests).forEach(testRun => {
+        testRun.addError(new ErrorCtor(message));
+
+        removeRunningTest(testRun);
+    });
+}
+
 function handleError (ErrorCtor, message) {
-    if (handlingTestErrors) {
-        Object.values(runningTests).forEach(testRun => {
-            testRun.addError(new ErrorCtor(message));
-
-            removeRunningTest(testRun);
-        });
-    }
-    else {
-        /* eslint-disable no-process-exit */
-        /* eslint-disable no-console */
-        console.log(message);
-
-        setTimeout(() => process.exit(1), 0);
-        /* eslint-enable no-process-exit */
-        /* eslint-enable no-console */
-    }
+    if (handlingTestErrors)
+        handleTestRunError(ErrorCtor, message);
+    else
+        printErrorMessagesAndTerminate(message);
 }
 
 function formatUnhandledRejectionReason (reason) {
@@ -36,22 +40,28 @@ function formatUnhandledRejectionReason (reason) {
     return util.inspect(reason, { depth: 2, breakLength: Infinity });
 }
 
-function onUnhandledRejection (reason) {
-    if (reason && reason.isRejectedDriverTask)
-        return;
+function formatError (ErrorCtor, error) {
+    if (ErrorCtor === UncaughtExceptionError)
+        return error.stack;
 
-    const message = formatUnhandledRejectionReason(reason);
+    if (ErrorCtor === UnhandledPromiseRejectionError)
+        return formatUnhandledRejectionReason(error);
 
-    handleError(UnhandledPromiseRejectionError, message);
+    return error;
 }
 
-function onUncaughtException (err) {
-    handleError(UncaughtExceptionError, err.stack);
+function handleUnexpectedError (ErrorCtor, error) {
+    try {
+        handleError(ErrorCtor, formatError(ErrorCtor, error));
+    }
+    catch (e) {
+        printErrorMessagesAndTerminate(error, e);
+    }
 }
 
 export function registerErrorHandlers () {
-    process.on('unhandledRejection', onUnhandledRejection);
-    process.on('uncaughtException', onUncaughtException);
+    process.on('unhandledRejection', e => handleUnexpectedError(UnhandledPromiseRejectionError, e));
+    process.on('uncaughtException', e => handleUnexpectedError(UncaughtExceptionError, e));
 }
 
 export function addRunningTest (testRun) {
