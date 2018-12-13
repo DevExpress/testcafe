@@ -139,7 +139,7 @@ export default class Bootstrapper {
         const isLocalPromises = browserInfo.map(browser => browser.provider.isLocalBrowser(null, browserInfo.browserName));
         const isLocalBrowsers = await Promise.all(isLocalPromises);
         
-        return isLocalBrowsers.every(result => result));
+        return isLocalBrowsers.every(result => result);
     }
 
     async _bootstrapSequence (browserInfo) {
