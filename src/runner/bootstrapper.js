@@ -136,7 +136,9 @@ export default class Bootstrapper {
     }
 
     _canUseParallelBootstrapping (browserInfo) {
-        return browserInfo.every(browser => browser.provider.isLocalBrowser(null, browserInfo.browserName));
+        const isLocalPromises = browserInfo.map(browser => browser.provider.isLocalBrowser(null, browserInfo.browserName));
+
+        return Promise.all(isLocalPromises).then(result => result.every(r => r));
     }
 
     async _bootstrapSequence (browserInfo) {
@@ -197,7 +199,7 @@ export default class Bootstrapper {
         // So, we need to retrieve the browser aliases and paths before tests compilation.
         const browserInfo = await this._getBrowserInfo();
 
-        if (this._canUseParallelBootstrapping(browserInfo))
+        if (await this._canUseParallelBootstrapping(browserInfo))
             return { reporterPlugins, ...await this._bootstrapParallel(browserInfo) };
 
         return { reporterPlugins, ...await this._bootstrapSequence(browserInfo) };
