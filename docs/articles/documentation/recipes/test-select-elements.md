@@ -1,9 +1,11 @@
 ---
 layout: docs
-title: Testing &lt;select&gt; Elements
-permalink: /documentation/recipes/testing-select-elements.html
+title: Test &lt;select&gt; Elements
+permalink: /documentation/recipes/test-select-elements.html
+redirect_from:
+  - /documentation/recipes/testing-select-elements.html
 ---
-# Testing \<select\> Elements
+# Test \<select\> Elements
 
 This recipe shows how to test `<select>` elements and pick options from the drop-down list.
 

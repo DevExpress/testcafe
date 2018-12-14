@@ -1,9 +1,11 @@
 ---
 layout: docs
-title: Using TestCafe with Grunt
-permalink: /documentation/recipes/using-testcafe-with-grunt.html
+title: Use TestCafe with Grunt
+permalink: /documentation/recipes/use-task-runners/grunt.html
+redirect_from:
+  - /documentation/recipes/using-testcafe-with-grunt.html
 ---
-# Using TestCafe with Grunt
+# Use TestCafe with Grunt
 
 You can easily integrate TestCafe with the [Grunt.js](https://gruntjs.com/) task runner.
 This recipe shows how to configure a Grunt task to run TestCafe tests.

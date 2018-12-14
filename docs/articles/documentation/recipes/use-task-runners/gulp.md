@@ -1,9 +1,11 @@
 ---
 layout: docs
-title: Using TestCafe with Gulp
-permalink: /documentation/recipes/using-testcafe-with-gulp.html
+title: Use TestCafe with Gulp
+permalink: /documentation/recipes/use-task-runners/gulp.html
+redirect_from:
+  - /documentation/recipes/using-testcafe-with-grunt.html
 ---
-# Using TestCafe with Gulp
+# Use TestCafe with Gulp
 
 If you are using Gulp to organize your build process,
 you can easily integrate TestCafe into the workflow.

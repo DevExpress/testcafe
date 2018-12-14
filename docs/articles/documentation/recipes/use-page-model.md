@@ -1,9 +1,11 @@
 ---
 layout: docs
-title: Using Page Model
-permalink: /documentation/recipes/using-page-model.html
+title: Use Page Model
+permalink: /documentation/recipes/use-page-model.html
+redirect_from:
+  - /documentation/recipes/using-page-model.html
 ---
-# Using Page Model
+# Use Page Model
 
 [Page Model](http://martinfowler.com/bliki/PageObject.html) is a test automation pattern that allows you to create an abstraction of the tested page
 and use it in test code to refer to page elements.

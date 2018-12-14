@@ -1,9 +1,11 @@
 ---
 layout: docs
-title: Finding Code Issues with Flow Type Checker
-permalink: /documentation/recipes/finding-code-issues-with-flow-type-checker.html
+title: Find Code Issues with Flow Type Checker
+permalink: /documentation/recipes/find-code-issues-with-flow-type-checker.html
+redirect_from:
+  - /documentation/recipes/finding-code-issues-with-flow-type-checker.html
 ---
-# Finding Code Issues with Flow Type Checker
+# Find Code Issues with Flow Type Checker
 
 [Flow](https://flow.org/en/) is a static type checker for JavaScript. It can help you identify problems in your code
 by infering variable types or analyzing [static type annotations](https://flow.org/en/docs/types/). For more information, see the [Flow documentation](https://flow.org/en/docs/).

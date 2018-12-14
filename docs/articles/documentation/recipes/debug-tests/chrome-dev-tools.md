@@ -1,11 +1,12 @@
 ---
 layout: docs
-title: Debug in Chrome Developer Tools
-permalink: /documentation/recipes/debug-in-chrome-dev-tools.html
+title: Debug Tests in Chrome Developer Tools
+permalink: /documentation/recipes/debug-tests/chrome-dev-tools.html
 redirect_from:
+  - /documentation/recipes/debug-in-chrome-dev-tools.html
   - /documentation/recipes/debugging-with-chrome-dev-tools.html
 ---
-# Debug in Chrome Developer Tools
+# Debug Tests in Chrome Developer Tools
 
 Starting with version 6.3.0, Node.js allows you to debug applications in Chrome Developer Tools.
 If you have Chrome and an appropriate version of Node.js installed on your machine,
@@ -36,9 +37,9 @@ test('My test', async t => {
 
 Navigate to `chrome://inspect` in Google Chrome. In the **Remote Target** section, find the Node.js debugger and click **Inspect**.
 
-![Inspect Page in Google Chrome](../../images/chrome-dev-tools/chrome-inspect.png)
+![Inspect Page in Google Chrome](../../../images/chrome-dev-tools/chrome-inspect.png)
 
 Chrome will invoke its Developer Tools and the debugger will stop test execution at the first line.
 Click the **Resume script execution** button or press F5 to continue. After that, text execution will pause at the `debugger` keyword allowing you to debug test code.
 
-![Debugging in Chrome Dev Tools](../../images/chrome-dev-tools/chrome-dev-tools.png)
+![Debugging in Chrome Dev Tools](../../../images/chrome-dev-tools/chrome-dev-tools.png)
