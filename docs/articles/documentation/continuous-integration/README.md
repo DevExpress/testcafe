@@ -16,3 +16,4 @@ This section describes how to integrate TestCafe into a build process on popular
 * [Jenkins](jenkins.md)
 * [TeamCity](teamcity.md)
 * [Travis](travis.md)
+* [Travis + Sauce Labs](travis-and-sauce-labs.md)

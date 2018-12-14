@@ -1,11 +1,11 @@
 ---
 layout: docs
-title: Run Tests in Firefox and Chrome Using Travis CI
+title: Run Tests in Travis CI
 permalink: /documentation/continuous-integration/travis.html
 redirect_from:
   - /documentation/recipes/integrating-testcafe-with-ci-systems/travis.html
 ---
-# Run Tests in Firefox and Chrome Using Travis CI
+# Run Tests in Travis CI
 
 You can automatically run tests as a part of your build process using TestCafe and [Travis CI](https://travis-ci.org/).
 There are Linux versions of Chrome and Firefox browsers available for Travis CI builds, so you can run your tests completely in the cloud.

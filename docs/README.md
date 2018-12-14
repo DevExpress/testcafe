@@ -96,6 +96,7 @@
   * [Jenkins](articles/documentation/continuous-integration/jenkins.md)
   * [TeamCity](articles/documentation/continuous-integration/teamcity.md)
   * [Travis](articles/documentation/continuous-integration/travis.md)
+  * [Travis + Sauce Labs](articles/documentation/continuous-integration/travis-and-sauce-labs.md)
 * [RECIPES](articles/documentation/recipes/README.md)
   * [Debug in Chrome Developer Tools](articles/documentation/recipes/debug-in-chrome-dev-tools.md)
   * [Debug in Visual Studio Code](articles/documentation/recipes/debug-in-visual-studio-code.md)

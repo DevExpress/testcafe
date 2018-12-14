@@ -207,6 +207,8 @@
     url: /documentation/continuous-integration/teamcity.md
   - name: Travis
     url: /documentation/continuous-integration/travis.md
+  - name: Travis + Sauce Labs
+    url: /documentation/continuous-integration/travis-and-sauce-labs.md
 - name: RECIPES
   url: /documentation/recipes/README.md
   content:
@@ -218,8 +220,6 @@
       url: /documentation/recipes/debug-in-webstorm.md
     - name: Finding Code Issues with Flow Type Checker
       url: /documentation/recipes/finding-code-issues-with-flow-type-checker.md
-    - name: Running Tests Using Travis CI and Sauce Labs
-      url: /documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.md
     - name: Testing &lt;select&gt; Elements
       url: /documentation/recipes/testing-select-elements.md
     - name: Test Static HTML Pages
