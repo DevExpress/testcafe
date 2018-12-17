@@ -119,7 +119,7 @@ describe('Runner', () => {
                 throw new Error('Should raise an appropriate error.');
             }
             catch (err) {
-                expect(err.message).startsWith('It\'s forbidden to call "browsers" method several times');
+                expect(err.message).startsWith('It\'s forbidden to call the "browsers" method several times. Instead of this');
             }
         });
     });
@@ -184,7 +184,7 @@ describe('Runner', () => {
                 throw new Error('Should raise a valid error.');
             }
             catch (e) {
-                expect(e.message).eql('The specified reporter output should be filename or writable stream.');
+                expect(e.message).eql('The specified reporter output should be a filename or a writable stream.');
             }
         });
 
@@ -197,7 +197,7 @@ describe('Runner', () => {
                 throw new Error('Should raise an appropriate error.');
             }
             catch (err) {
-                expect(err.message).startsWith('It\'s forbidden to call "reporter" method several times');
+                expect(err.message).startsWith('It\'s forbidden to call the "reporter" method several times. Instead of this');
             }
         });
 
@@ -206,7 +206,7 @@ describe('Runner', () => {
                 runner.reporter('json', null);
             }
             catch (e) {
-                expect(e.message).eql('The specified reporter output should be filename or writable stream.');
+                expect(e.message).eql('The specified reporter output should be a filename or a writable stream.');
             }
         });
     });
@@ -345,7 +345,7 @@ describe('Runner', () => {
                 throw new Error('Should raise an appropriate error.');
             }
             catch (err) {
-                expect(err.message).startsWith('It\'s forbidden to call "src" method several times');
+                expect(err.message).startsWith('It\'s forbidden to call the "src" method several times. Instead of this');
             }
         });
     });

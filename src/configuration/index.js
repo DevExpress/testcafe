@@ -12,8 +12,8 @@ import JSON5 from 'json5';
 
 const CONFIGURATION_FILENAME = '.testcaferc.json';
 
-const ERR_READ_CONFIG_FILE                 = 'An error is occurred during reading the configuration filename.';
-const ERR_CONFIG_FILE_IS_NOT_WELLFORMATTED = 'Configuration filename is not well-formatted.';
+const ERR_READ_CONFIG_FILE             = 'An error is occurred during reading the configuration file.';
+const ERR_CONFIG_FILE_CANNOT_BE_PARSED = "Failed to parse the '.testcaferc.json' file.\n\n The file is not well-formed JSON.";
 
 const STATIC_CONTENT_CACHING_SETTINGS = {
     maxAge:         3600,
@@ -59,7 +59,7 @@ export default class Configuration {
             this._options = Configuration._fromObj(optionsObj);
         }
         catch (e) {
-            console.log(ERR_CONFIG_FILE_IS_NOT_WELLFORMATTED); // eslint-disable-line no-console
+            console.log(ERR_CONFIG_FILE_CANNOT_BE_PARSED); // eslint-disable-line no-console
         }
 
         await this._prepareOptions();
@@ -150,7 +150,7 @@ export default class Configuration {
         });
 
         if (overridenOptions.length)
-            console.log(`${overridenOptions.map(option => `"${option}"`).join(', ')} option${overridenOptions.length > 1 ? 's' : ''} from configuration file will be ignored.`); // eslint-disable-line no-console
+            console.log(`The ${overridenOptions.map(option => `"${option}"`).join(', ')} option${overridenOptions.length > 1 ? 's' : ''} from configuration file will be ignored.`); // eslint-disable-line no-console
     }
 
     getOption (key) {

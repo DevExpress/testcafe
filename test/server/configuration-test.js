@@ -70,7 +70,7 @@ describe('Configuration', () => {
                         console.log = savedConsoleLog;
 
                         expect(configuration.getOption('hostname')).eql(void 0);
-                        expect(consoleMsg).eql('Configuration filename is not well-formatted.');
+                        expect(consoleMsg).eql("Failed to parse the '.testcaferc.json' file.\n\n The file is not well-formed JSON.");
                     });
             });
 
@@ -115,7 +115,7 @@ describe('Configuration', () => {
                     console.log = savedConsoleLog;
 
                     expect(configuration.getOption('hostname')).eql('anotherHostname');
-                    expect(consoleMsg).eql('"hostname" option from configuration file will be ignored.');
+                    expect(consoleMsg).eql('The "hostname" option from configuration file will be ignored.');
                 });
         });
 
@@ -134,7 +134,7 @@ describe('Configuration', () => {
                     expect(configuration.getOption('hostname')).eql('anotherHostname');
                     expect(configuration.getOption('port1')).eql('anotherPort1');
                     expect(configuration.getOption('port2')).eql('anotherPort2');
-                    expect(consoleMsg).eql('"hostname", "port1", "port2" options from configuration file will be ignored.');
+                    expect(consoleMsg).eql('The "hostname", "port1", "port2" options from configuration file will be ignored.');
                 });
         });
 
