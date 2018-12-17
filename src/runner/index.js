@@ -1,7 +1,7 @@
 import { resolve as resolvePath } from 'path';
 import debug from 'debug';
 import Promise from 'pinkie';
-import { writable as isWritableStream } from 'is-stream';
+import { writable as isWritableStream, transform as isTransformStream, duplex as isDuplexStream } from 'is-stream';
 import promisifyEvent from 'promisify-event';
 import mapReverse from 'map-reverse';
 import { EventEmitter } from 'events';
@@ -21,9 +21,9 @@ import FlagList from '../utils/flag-list';
 const DEBUG_LOGGER = debug('testcafe:runner');
 
 const DEFAULT_TIMEOUT = {
-    SELECTOR:  10000,
-    ASSERTION: 3000,
-    PAGE_LOAD: 3000
+    selector:  10000,
+    assertion: 3000,
+    pageLoad:  3000
 };
 
 export default class Runner extends EventEmitter {
@@ -226,10 +226,14 @@ export default class Runner extends EventEmitter {
     }
 
     static _validateReporterOutput (obj) {
-        if (obj !== void 0 &&
-            typeof obj !== 'string' &&
-            !isWritableStream(obj) &&
-            !Runner._isStreamMock(obj))
+        const isValidReporterOutput = obj === void 0 ||
+                                      typeof obj === 'string' ||
+                                      isWritableStream(obj) ||
+                                      isTransformStream(obj) ||
+                                      isDuplexStream(obj) ||
+                                      Runner._isStreamMock(obj);
+
+        if (!isValidReporterOutput)
             throw new GeneralError(MESSAGE.invalidReporterOutput);
     }
 
@@ -353,9 +357,9 @@ export default class Runner extends EventEmitter {
             quarantineMode:              !!quarantineMode,
             debugMode:                   !!debugMode,
             debugOnFail:                 !!debugOnFail,
-            selectorTimeout:             selectorTimeout === void 0 ? DEFAULT_TIMEOUT.SELECTOR : selectorTimeout,
-            assertionTimeout:            assertionTimeout === void 0 ? DEFAULT_TIMEOUT.ASSERTION : assertionTimeout,
-            pageLoadTimeout:             pageLoadTimeout === void 0 ? DEFAULT_TIMEOUT.PAGE_LOAD : pageLoadTimeout,
+            selectorTimeout:             selectorTimeout === void 0 ? DEFAULT_TIMEOUT.selector : selectorTimeout,
+            assertionTimeout:            assertionTimeout === void 0 ? DEFAULT_TIMEOUT.assertion : assertionTimeout,
+            pageLoadTimeout:             pageLoadTimeout === void 0 ? DEFAULT_TIMEOUT.pageLoad : pageLoadTimeout,
             speed:                       speed,
             skipUncaughtErrors:          !!skipUncaughtErrors,
             stopOnFirstFail:             !!stopOnFirstFail,

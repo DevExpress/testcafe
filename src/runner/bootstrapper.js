@@ -96,15 +96,14 @@ export default class Bootstrapper {
     }
 
     async _ensureOutStream (outStream) {
-        if (typeof outStream === 'string') {
-            const fullReporterOutputPath = resolvePathRelativelyCwd(outStream);
+        if (typeof outStream !== 'string')
+            return outStream;
 
-            await makeDir(path.dirname(fullReporterOutputPath));
+        const fullReporterOutputPath = resolvePathRelativelyCwd(outStream);
 
-            outStream = fs.createWriteStream(fullReporterOutputPath);
-        }
+        await makeDir(path.dirname(fullReporterOutputPath));
 
-        return outStream;
+        return fs.createWriteStream(fullReporterOutputPath);
     }
 
     async _getReporterPlugins () {

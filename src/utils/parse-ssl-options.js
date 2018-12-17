@@ -42,15 +42,14 @@ export default async function (optionsStr = '') {
 
 export async function ensureOptionValue (optionName, optionValue) {
     optionValue = convertToBestFitType(optionValue);
-    optionValue = await ensureFileOptionValue(optionName, optionValue);
 
-    return optionValue;
+    return await ensureFileOptionValue(optionName, optionValue);
 }
 
 async function ensureFileOptionValue (optionName, optionValue) {
-    if (FILE_OPTION_NAMES.includes(optionName) &&
-        optionValue.length < OS_MAX_PATH_LENGTH &&
-        await fsObjectExists(optionValue))
+    const isFileOption = FILE_OPTION_NAMES.includes(optionName) && optionValue.length < OS_MAX_PATH_LENGTH;
+
+    if (isFileOption && await fsObjectExists(optionValue))
         optionValue = await readFile(optionValue);
 
     return optionValue;
