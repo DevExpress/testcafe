@@ -8,6 +8,7 @@ import OPTION_NAMES from './option-names';
 import { optionValueToRegExp } from './option-conversion';
 import createFilterFn from '../utils/create-filter-fn';
 import resolvePathRelativelyCwd from '../utils/resolve-path-relatively-cwd';
+import JSON5 from 'json5';
 
 const CONFIGURATION_FILENAME = '.testcaferc.json';
 
@@ -53,7 +54,7 @@ export default class Configuration {
         }
 
         try {
-            const optionsObj = JSON.parse(configurationFileContent);
+            const optionsObj = JSON5.parse(configurationFileContent);
 
             this._options = Configuration._fromObj(optionsObj);
         }

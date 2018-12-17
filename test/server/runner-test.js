@@ -184,7 +184,7 @@ describe('Runner', () => {
                 throw new Error('Should raise a valid error.');
             }
             catch (e) {
-                expect(e.message).eql('The specified reporter output should be filename or writable stream');
+                expect(e.message).eql('The specified reporter output should be filename or writable stream.');
             }
         });
 
@@ -206,7 +206,7 @@ describe('Runner', () => {
                 runner.reporter('json', null);
             }
             catch (e) {
-                expect(e.message).eql('The specified reporter output should be filename or writable stream');
+                expect(e.message).eql('The specified reporter output should be filename or writable stream.');
             }
         });
     });
