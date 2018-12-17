@@ -37,7 +37,7 @@ class RequestLoggerImplementation extends RequestHook {
             throw new APIError('RequestLogger', MESSAGE.requestHookConfigureAPIError, 'RequestLogger', 'Cannot stringify the response body because it is not logged. Specify { logResponseBody: true } in log options.');
     }
 
-    onRequest (event) {
+    async onRequest (event) {
         const userAgent = parseUserAgent(event._requestInfo.userAgent).toString();
 
         const loggedReq = {
@@ -59,7 +59,7 @@ class RequestLoggerImplementation extends RequestHook {
         this._internalRequests[loggedReq.id] = loggedReq;
     }
 
-    onResponse (event) {
+    async onResponse (event) {
         const loggerReq = this._internalRequests[event.requestId];
 
         // NOTE: If the 'clear' method is called during a long running request,
