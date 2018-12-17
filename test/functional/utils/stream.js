@@ -3,7 +3,7 @@ const { Writable: WritableStream } = require('stream');
 
 const ASYNC_REPORTER_FINALIZING_TIMEOUT = 2000;
 
-module.exports.createTestStream = () => {
+module.exports.createSimpleTestStream = () => {
     return {
         data: '',
 
@@ -44,6 +44,30 @@ module.exports.createAsyncTestStream = ({ shouldFail } = {}) => {
             }, ASYNC_REPORTER_FINALIZING_TIMEOUT);
         }
     });
+};
+
+module.exports.createSyncTestStream = () => {
+    const SyncTestStream = class extends WritableStream {
+        _callLastArg (args) {
+            const lastArg = args && args.pop();
+
+            if (typeof lastArg === 'function')
+                lastArg();
+        }
+
+        write (...args) {
+            this._callLastArg(args);
+        }
+
+        end (...args) {
+            this.finalCalled = true;
+
+            this.emit('finish');
+            this._callLastArg(args);
+        }
+    };
+
+    return new SyncTestStream();
 };
 
 module.exports.createNullStream = () => {

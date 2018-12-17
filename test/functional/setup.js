@@ -1,17 +1,17 @@
-const path                 = require('path');
-const Promise              = require('pinkie');
-const SlConnector          = require('saucelabs-connector');
-const BsConnector          = require('browserstack-connector');
-const caller               = require('caller');
-const promisifyEvent       = require('promisify-event');
-const createTestCafe       = require('../../lib');
-const browserProviderPool  = require('../../lib/browser/provider/pool');
-const BrowserConnection    = require('../../lib/browser/connection');
-const config               = require('./config.js');
-const site                 = require('./site');
-const RemoteConnector      = require('./remote-connector');
-const getTestError         = require('./get-test-error.js');
-const { createTestStream } = require('./utils/stream');
+const path                       = require('path');
+const Promise                    = require('pinkie');
+const SlConnector                = require('saucelabs-connector');
+const BsConnector                = require('browserstack-connector');
+const caller                     = require('caller');
+const promisifyEvent             = require('promisify-event');
+const createTestCafe             = require('../../lib');
+const browserProviderPool        = require('../../lib/browser/provider/pool');
+const BrowserConnection          = require('../../lib/browser/connection');
+const config                     = require('./config.js');
+const site                       = require('./site');
+const RemoteConnector            = require('./remote-connector');
+const getTestError               = require('./get-test-error.js');
+const { createSimpleTestStream } = require('./utils/stream');
 
 let testCafe     = null;
 let browsersInfo = null;
@@ -174,7 +174,7 @@ before(function () {
             global.testCafe   = testCafe;
 
             global.runTests = (fixture, testName, opts) => {
-                const stream                      = createTestStream();
+                const stream                      = createSimpleTestStream();
                 const runner                      = testCafe.createRunner();
                 const fixturePath                 = typeof fixture !== 'string' ||
                                                     path.isAbsolute(fixture) ? fixture : path.join(path.dirname(caller()), fixture);

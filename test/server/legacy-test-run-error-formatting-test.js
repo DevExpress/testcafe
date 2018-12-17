@@ -1,9 +1,9 @@
-const expect               = require('chai').expect;
-const read                 = require('read-file-relative').readSync;
-const remove               = require('lodash').pull;
-const ReporterPluginHost   = require('../../lib/reporter/plugin-host');
-const testCafeLegacyApi    = require('testcafe-legacy-api');
-const { createTestStream } = require('../functional/utils/stream');
+const expect                     = require('chai').expect;
+const read                       = require('read-file-relative').readSync;
+const remove                     = require('lodash').pull;
+const ReporterPluginHost         = require('../../lib/reporter/plugin-host');
+const testCafeLegacyApi          = require('testcafe-legacy-api');
+const { createSimpleTestStream } = require('../functional/utils/stream');
 
 const TEST_RUN_ERROR_TYPE                  = testCafeLegacyApi.TEST_RUN_ERROR_TYPE;
 const LegacyTestRunErrorFormattableAdapter = testCafeLegacyApi.TestRunErrorFormattableAdapter;
@@ -14,7 +14,7 @@ const userAgentMock = 'Chrome 15.0.874 / Mac OS X 10.8.1';
 
 function assertErrorMessage (file, err, callsite) {
     const screenshotPath = '/unix/path/with/<tag>';
-    const outStreamMock  = createTestStream();
+    const outStreamMock  = createSimpleTestStream();
     const plugin         = new ReporterPluginHost({}, outStreamMock);
 
     const errAdapter = new LegacyTestRunErrorFormattableAdapter(err, {
