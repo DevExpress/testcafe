@@ -1585,12 +1585,12 @@ declare module 'testcafe' {
         /**
          * The `onRequest` method is called before sending the request.
          */
-        onRequest(requestEvent: object): void;
+        onRequest(requestEvent: object): Promise<void>;
 
         /**
          * The `onResponse` method is called after sending the request
          */
-        onResponse(responseEvent: object): void;
+        onResponse(responseEvent: object): Promise<void>;
     }
 
     export var Role: {
