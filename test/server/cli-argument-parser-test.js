@@ -145,14 +145,14 @@ describe('CLI argument parser', function () {
         it('Should parse "--concurrency" option as a number', function () {
             return parse('--concurrency 2')
                 .then(function (parser) {
-                    expect(parser.concurrency).eql(2);
+                    expect(parser.opts.concurrency).eql(2);
                 });
         });
 
         it('Should parse "-c" option as a number', function () {
             return parse('-c 2')
                 .then(function (parser) {
-                    expect(parser.concurrency).eql(2);
+                    expect(parser.opts.concurrency).eql(2);
                 });
         });
     });

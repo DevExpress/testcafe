@@ -80,7 +80,7 @@ async function runTests (argParser) {
         .src(argParser.src)
         .browsers(browsers)
         .reporter(argParser.opts.reporter)
-        .concurrency(argParser.concurrency)
+        .concurrency(argParser.opts.concurrency)
         .filter(argParser.filter)
         .screenshots(opts.screenshots, opts.screenshotsOnFails, opts.screenshotPathPattern)
         .startApp(opts.app, opts.appInitDelay);

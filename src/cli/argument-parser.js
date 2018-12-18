@@ -159,7 +159,7 @@ export default class CLIArgumentParser {
 
     _parseConcurrency () {
         if (this.opts.concurrency)
-            this.concurrency = parseInt(this.opts.concurrency, 10);
+            this.opts.concurrency = parseInt(this.opts.concurrency, 10);
     }
 
     _parsePorts () {
