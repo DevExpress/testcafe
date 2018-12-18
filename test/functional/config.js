@@ -70,8 +70,8 @@ testingEnvironments[testingEnvironmentNames.mobileBrowsers] = {
         {
             realMobile: true,
             os:         'ios',
-            osVersion:  '11.2',
-            device:     'iPad Pro',
+            osVersion:  '11.3',
+            device:     'iPad 6th',
             name:       'Mobile Safari',
             alias:      'ipad'
         },
