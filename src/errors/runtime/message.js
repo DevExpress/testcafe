@@ -39,6 +39,6 @@ export default {
     timeLimitedPromiseTimeoutExpired:                               'Timeout expired for a time limited promise',
     forbiddenCharatersInScreenshotPath:                             'There are forbidden characters in the "{screenshotPath}" {screenshotPathType}:\n {forbiddenCharsDescription}',
     cantUseScreenshotPathPatternWithoutBaseScreenshotPathSpecified: 'Cannot use the screenshot path pattern without a base screenshot path specified',
-    multipleAPIMethodCallForbidden:                                 'It\'s forbidden to call the "{methodName}" method several times. Instead of this pass an array to the method.',
-    invalidReporterOutput:                                          'The specified reporter output should be a filename or a writable stream.'
+    multipleAPIMethodCallForbidden:                                 'It\'s forbidden to call the "{methodName}" method several times. Pass an array of parameters to this method instead.',
+    invalidReporterOutput:                                          "The specified reporter's output should be a filename or a stream (writable, transform, or duplex)."
 };
