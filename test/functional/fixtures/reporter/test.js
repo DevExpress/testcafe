@@ -134,7 +134,7 @@ describe('Reporter', () => {
             });
     });
 
-    it('Should ot close stdout when undefined is specified as a reporter stream (GH-3114)', function () {
+    it('Should not close stdout when undefined is specified as a reporter stream (GH-3114)', function () {
         let streamFinished = false;
 
         process.stdout.write = () => {

@@ -61,7 +61,7 @@ describe('Configuration', () => {
 
     describe('Load', () => {
         describe('Exists', () => {
-            it('Config is not well-formatted', () => {
+            it('Config is not well-formed', () => {
                 fs.writeFileSync(configPath, '{');
                 console.log = consoleLogWrapper;
 

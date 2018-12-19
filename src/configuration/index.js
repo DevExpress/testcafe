@@ -9,11 +9,10 @@ import { optionValueToRegExp } from './option-conversion';
 import createFilterFn from '../utils/create-filter-fn';
 import resolvePathRelativelyCwd from '../utils/resolve-path-relatively-cwd';
 import JSON5 from 'json5';
+import warningMessage from '../notifications/warning-message';
+import renderTemplate from '../utils/render-template';
 
 const CONFIGURATION_FILENAME = '.testcaferc.json';
-
-const ERR_READ_CONFIG_FILE             = 'An error is occurred during reading the configuration file.';
-const ERR_CONFIG_FILE_CANNOT_BE_PARSED = "Failed to parse the '.testcaferc.json' file.\n\n The file is not well-formed JSON.";
 
 const STATIC_CONTENT_CACHING_SETTINGS = {
     maxAge:         3600,
@@ -50,7 +49,7 @@ export default class Configuration {
             configurationFileContent = await readFile(this.filePath);
         }
         catch (e) {
-            console.log(ERR_READ_CONFIG_FILE); // eslint-disable-line no-console
+            console.log(warningMessage.errorReadConfigFile); // eslint-disable-line no-console
         }
 
         try {
@@ -59,7 +58,7 @@ export default class Configuration {
             this._options = Configuration._fromObj(optionsObj);
         }
         catch (e) {
-            console.log(ERR_CONFIG_FILE_CANNOT_BE_PARSED); // eslint-disable-line no-console
+            console.log(warningMessage.errorConfigFileCannotBeParsed); // eslint-disable-line no-console
         }
 
         await this._prepareOptions();
@@ -149,8 +148,12 @@ export default class Configuration {
             option.source = optionSource.input;
         });
 
-        if (overridenOptions.length)
-            console.log(`The ${overridenOptions.map(option => `"${option}"`).join(', ')} option${overridenOptions.length > 1 ? 's' : ''} from configuration file will be ignored.`); // eslint-disable-line no-console
+        if (overridenOptions.length) {
+            const optionsStr    = overridenOptions.map(option => `"${option}"`).join(', ');
+            const optionsSuffix = overridenOptions.length > 1 ? 's' : '';
+
+            console.log(renderTemplate(warningMessage.configOptionsWereOverriden, optionsStr, optionsSuffix)); // eslint-disable-line no-console
+        }
     }
 
     getOption (key) {
