@@ -1,7 +1,7 @@
 const os = require('os');
 
 const isTravisEnvironment = !!process.env.TRAVIS;
-const hostname            = isTravisEnvironment ? os.hostname() : '127.0.0.1';
+const hostname            = isTravisEnvironment ? os.hostname() : 'bs-local.com';
 
 const browserProviderNames = {
     sauceLabs:    'sauceLabs',
@@ -37,7 +37,7 @@ testingEnvironments[testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers] = {
     browsers: [
         {
             os:        'OS X',
-            osVersion: 'HIgh Sierra',
+            osVersion: 'High Sierra',
             name:      'safari',
             alias:     'safari'
         },
@@ -70,8 +70,8 @@ testingEnvironments[testingEnvironmentNames.mobileBrowsers] = {
         {
             realMobile: true,
             os:         'ios',
-            osVersion:  '11.2',
-            device:     'iPad Pro',
+            osVersion:  '11.4',
+            device:     'iPad Pro 12.9',
             name:       'Mobile Safari',
             alias:      'ipad'
         },
