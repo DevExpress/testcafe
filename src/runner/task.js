@@ -1,7 +1,9 @@
 import { pull as remove } from 'lodash';
+import moment from 'moment';
 import AsyncEventEmitter from '../utils/async-event-emitter';
 import BrowserJob from './browser-job';
 import Screenshots from '../screenshots';
+import VideoRecorder from '../video-recorder';
 import WarningLog from '../notifications/warning-log';
 import FixtureHookController from './fixture-hook-controller';
 
@@ -9,6 +11,7 @@ export default class Task extends AsyncEventEmitter {
     constructor (tests, browserConnectionGroups, proxy, opts) {
         super();
 
+        this.timeStamp               = moment();
         this.running                 = false;
         this.browserConnectionGroups = browserConnectionGroups;
         this.tests                   = tests;
@@ -18,6 +21,9 @@ export default class Task extends AsyncEventEmitter {
 
         this.fixtureHookController = new FixtureHookController(tests, browserConnectionGroups.length);
         this.pendingBrowserJobs    = this._createBrowserJobs(proxy, this.opts);
+
+        if (this.opts.videoPath)
+            this.videoRecorders = this._createVideoRecorders(this.pendingBrowserJobs);
     }
 
     _assignBrowserJobEventHandlers (job) {
@@ -58,6 +64,12 @@ export default class Task extends AsyncEventEmitter {
 
             return job;
         });
+    }
+
+    _createVideoRecorders (browserJobs) {
+        const videoOptions = { timeStamp: this.timeStamp, ...this.opts.videoOptions };
+
+        return browserJobs.map(browserJob => new VideoRecorder(browserJob, this.opts.videoPath, videoOptions, this.opts.videoEncodingOptions));
     }
 
     // API

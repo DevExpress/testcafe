@@ -11,8 +11,9 @@ const consoleWrapper = require('./helpers/console-wrapper');
 describe('Configuration', () => {
     let configuration     = null;
     let configPath        = null;
-    const savedConsoleLog = console.log;
     let keyFileContent    = null;
+
+    consoleWrapper.init();
 
     tmp.setGracefulCleanup();
 
@@ -53,6 +54,7 @@ describe('Configuration', () => {
         if (fs.existsSync(configPath))
             fs.unlinkSync(configPath);
 
+        consoleWrapper.unwrap();
         consoleWrapper.messages.clear();
     });
 
@@ -60,11 +62,11 @@ describe('Configuration', () => {
         describe('Exists', () => {
             it('Config is not well-formed', () => {
                 fs.writeFileSync(configPath, '{');
-                console.log = consoleWrapper.log;
+                consoleWrapper.wrap();
 
                 return configuration.init()
                     .then(() => {
-                        console.log = savedConsoleLog;
+                        consoleWrapper.unwrap();
 
                         expect(configuration.getOption('hostname')).eql(void 0);
                         expect(consoleWrapper.messages.log).contains("Failed to parse the '.testcaferc.json' file.");
@@ -149,21 +151,22 @@ describe('Configuration', () => {
 
     describe('Merge options', () => {
         it('One', () => {
-            console.log = consoleWrapper.log;
+            consoleWrapper.wrap();
 
             return configuration.init()
                 .then(() => {
                     configuration.mergeOptions({ 'hostname': 'anotherHostname' });
                     configuration.notifyAboutOverridenOptions();
-                    console.log = savedConsoleLog;
+
+                    consoleWrapper.unwrap();
 
                     expect(configuration.getOption('hostname')).eql('anotherHostname');
-                    expect(consoleWrapper.messages.log).eql('The "hostname" option from the configuration file will be ignored.');
+                    expect(consoleWrapper.messages.log).eql('The "hostname" option from the configuration file will be ignored.\n');
                 });
         });
 
         it('Many', () => {
-            console.log = consoleWrapper.log;
+            consoleWrapper.wrap();
 
             return configuration.init()
                 .then(() => {
@@ -175,12 +178,12 @@ describe('Configuration', () => {
 
                     configuration.notifyAboutOverridenOptions();
 
-                    console.log = savedConsoleLog;
+                    consoleWrapper.unwrap();
 
                     expect(configuration.getOption('hostname')).eql('anotherHostname');
                     expect(configuration.getOption('port1')).eql('anotherPort1');
                     expect(configuration.getOption('port2')).eql('anotherPort2');
-                    expect(consoleWrapper.messages.log).eql('The "hostname", "port1", "port2" options from the configuration file will be ignored.');
+                    expect(consoleWrapper.messages.log).eql('The "hostname", "port1", "port2" options from the configuration file will be ignored.\n');
                 });
         });
 

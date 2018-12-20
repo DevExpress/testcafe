@@ -6,7 +6,7 @@ import MESSAGE from '../errors/runtime/message';
 import { assertType, is } from '../errors/runtime/type-assertions';
 import getViewPortWidth from '../utils/get-viewport-width';
 import { wordWrap, splitQuotedText } from '../utils/string';
-import parseSslOptions from '../utils/parse-ssl-options';
+import { getSSLOptions, getVideoOptions } from '../utils/get-options';
 import getFilterFn from '../utils/get-filter-fn';
 
 const REMOTE_ALIAS_RE = /^remote(?::(\d*))?$/;
@@ -89,6 +89,9 @@ export default class CLIArgumentParser {
             .option('--proxy <host>', 'specify the host of the proxy server')
             .option('--proxy-bypass <rules>', 'specify a comma-separated list of rules that define URLs accessed bypassing the proxy server')
             .option('--ssl <options>', 'specify SSL options to run TestCafe proxy server over the HTTPS protocol')
+            .option('--video <path>', ' record videos of test runs')
+            .option('--video-options <option=value[,...]>', 'specify video recording options')
+            .option('--video-encoding-options <option=value[,...]>', 'specify encoding options')
             .option('--disable-page-reloads', 'disable page reloads between tests')
             .option('--dev', 'enables mechanisms to log and diagnose errors')
             .option('--qr-code', 'outputs QR-code that repeats URLs used to connect the remote browsers')
@@ -177,7 +180,7 @@ export default class CLIArgumentParser {
 
     async _parseSslOptions () {
         if (this.opts.ssl)
-            this.opts.ssl = await parseSslOptions(this.opts.ssl);
+            this.opts.ssl = await getSSLOptions(this.opts.ssl);
     }
 
     async _parseReporters () {
@@ -198,6 +201,11 @@ export default class CLIArgumentParser {
 
     _parseFileList () {
         this.src = this.program.args.slice(1);
+    }
+
+    async _parseVideoOptions () {
+        this.opts.videoOptions         = typeof this.opts.videoOptions === 'string' ? await getVideoOptions(this.opts.videoOptions) : null;
+        this.opts.videoEncodingOptions = typeof this.opts.videoEncodingOptions === 'string' ? await getVideoOptions(this.opts.videoEncodingOptions) : null;
     }
 
     _getProviderName () {
@@ -227,6 +235,7 @@ export default class CLIArgumentParser {
         this._parseConcurrency();
         this._parseFileList();
 
+        await this._parseVideoOptions();
         await this._parseSslOptions();
         await this._parseReporters();
     }

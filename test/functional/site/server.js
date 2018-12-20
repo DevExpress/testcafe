@@ -19,6 +19,13 @@ const CONTENT_TYPES = {
     '.png':  'image/png'
 };
 
+const NON_CACHEABLE_PAGES = [
+    '/fixtures/api/es-next/roles/pages',
+    '/fixtures/api/es-next/request-hooks/pages',
+    '/fixtures/regression/gh-2015/pages',
+    '/fixtures/regression/gh-2282/pages'
+];
+
 const UPLOAD_SUCCESS_PAGE_TEMPLATE = readSync('./views/upload-success.html.mustache');
 
 
@@ -66,7 +73,7 @@ Server.prototype._setupRoutes = function () {
             .then(function (content) {
                 res.setHeader('content-type', CONTENT_TYPES[path.extname(resourcePath)]);
 
-                if (!reqPath.startsWith('/fixtures/api/es-next/roles/pages') && !reqPath.startsWith('/fixtures/api/es-next/request-hooks/pages'))
+                if (NON_CACHEABLE_PAGES.every(pagePrefix => !reqPath.startsWith(pagePrefix)))
                     res.setHeader('cache-control', 'max-age=3600');
 
                 setTimeout(function () {

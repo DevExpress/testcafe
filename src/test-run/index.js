@@ -1,9 +1,9 @@
-import EventEmitter from 'events';
 import { pull as remove } from 'lodash';
 import { readSync as read } from 'read-file-relative';
 import promisifyEvent from 'promisify-event';
 import Promise from 'pinkie';
 import Mustache from 'mustache';
+import AsyncEventEmitter from '../utils/async-event-emitter';
 import debugLogger from '../notifications/debug-logger';
 import TestRunDebugLog from './debug-log';
 import TestRunErrorFormattableAdapter from '../errors/test-run/formattable-adapter';
@@ -50,7 +50,7 @@ const MAX_RESPONSE_DELAY              = 3000;
 
 const ALL_DRIVER_TASKS_ADDED_TO_QUEUE_EVENT = 'all-driver-tasks-added-to-queue';
 
-export default class TestRun extends EventEmitter {
+export default class TestRun extends AsyncEventEmitter {
     constructor (test, browserConnection, screenshotCapturer, globalWarningLog, opts) {
         super();
 
@@ -275,11 +275,15 @@ export default class TestRun extends EventEmitter {
     async start () {
         testRunTracker.activeTestRuns[this.session.id] = this;
 
-        this.emit('start');
+        await this.emit('start');
 
         const onDisconnected = err => this._disconnect(err);
 
         this.browserConnection.once('disconnected', onDisconnected);
+
+        await this.once('connected');
+
+        await this.emit('ready');
 
         if (await this._runBeforeHook()) {
             await this._executeTestFn(PHASE.inTest, this.test.fn);
@@ -294,13 +298,15 @@ export default class TestRun extends EventEmitter {
         if (this.errs.length && this.debugOnFail)
             await this._enqueueSetBreakpointCommand(null, this.debugReporterPluginHost.formatError(this.errs[0]));
 
+        await this.emit('before-done');
+
         await this.executeCommand(new serviceCommands.TestDoneCommand());
 
         this._addPendingPageErrorIfAny();
 
         delete testRunTracker.activeTestRuns[this.session.id];
 
-        this.emit('done');
+        await this.emit('done');
     }
 
     _evaluate (code) {
@@ -342,12 +348,12 @@ export default class TestRun extends EventEmitter {
         if (this.pendingRequest)
             this._resolvePendingRequest(command);
 
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             this.addingDriverTasksCount--;
             this.driverTaskQueue.push({ command, resolve, reject, callsite });
 
             if (!this.addingDriverTasksCount)
-                this.emit(ALL_DRIVER_TASKS_ADDED_TO_QUEUE_EVENT, this.driverTaskQueue.length);
+                await this.emit(ALL_DRIVER_TASKS_ADDED_TO_QUEUE_EVENT, this.driverTaskQueue.length);
         });
     }
 
@@ -694,8 +700,11 @@ export default class TestRun extends EventEmitter {
 // Service message handlers
 const ServiceMessages = TestRun.prototype;
 
+// NOTE: this function is time-critical and must return ASAP to avoid client disconnection
 ServiceMessages[CLIENT_MESSAGES.ready] = function (msg) {
     this.debugLog.driverMessage(msg);
+
+    this.emit('connected');
 
     this._clearPendingRequest();
 

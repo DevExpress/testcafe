@@ -24,10 +24,9 @@ function modifyFileRoot (baseDir, file) {
 
 async function getDefaultDirs (baseDir) {
     return await globby(DEFAULT_TEST_LOOKUP_DIRS, {
-        cwd:             baseDir,
-        nocase:          true,
-        onlyDirectories: true,
-        onlyFiles:       false
+        cwd:    baseDir,
+        nocase: true,
+        silent: true
     });
 }
 

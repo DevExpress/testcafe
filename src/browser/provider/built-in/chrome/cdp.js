@@ -45,6 +45,20 @@ async function setEmulation (runtimeInfo) {
     await resizeWindow({ width: config.width, height: config.height }, runtimeInfo);
 }
 
+async function getScreenshotData (client) {
+    const { visualViewport } = await client.Page.getLayoutMetrics();
+
+    const clipRegion = {
+        x:      visualViewport.pageX,
+        y:      visualViewport.pageY,
+        width:  visualViewport.clientWidth,
+        height: visualViewport.clientHeight,
+        scale:  visualViewport.scale
+    };
+
+    return await client.Page.captureScreenshot({ fromSurface: true, clip: clipRegion });
+}
+
 export async function createClient (runtimeInfo) {
     const { browserId, config, cdpPort } = runtimeInfo;
 
@@ -99,20 +113,16 @@ export async function updateMobileViewportSize (runtimeInfo) {
     runtimeInfo.viewportSize.height = windowDimensions.outerHeight;
 }
 
+export async function getVideoFrameData ({ client }) {
+    const frameData = await getScreenshotData(client);
+
+    return Buffer.from(frameData.data, 'base64');
+}
+
 export async function takeScreenshot (path, { client }) {
-    const { visualViewport } = await client.Page.getLayoutMetrics();
+    const screenshotData = await getScreenshotData(client);
 
-    const clipRegion = {
-        x:      visualViewport.pageX,
-        y:      visualViewport.pageY,
-        width:  visualViewport.clientWidth,
-        height: visualViewport.clientHeight,
-        scale:  visualViewport.scale
-    };
-
-    const screenshot = await client.Page.captureScreenshot({ fromSurface: true, clip: clipRegion });
-
-    await writeFile(path, screenshot.data, { encoding: 'base64' });
+    await writeFile(path, screenshotData.data, { encoding: 'base64' });
 }
 
 export async function resizeWindow (newDimensions, runtimeInfo) {

@@ -186,9 +186,12 @@ before(function () {
                 const pageLoadTimeout             = opts && opts.pageLoadTimeout || FUNCTIONAL_TESTS_PAGE_LOAD_TIMEOUT;
                 const onlyOption                  = opts && opts.only;
                 const skipOption                  = opts && opts.skip;
-                const screenshotPath              = opts && opts.setScreenshotPath ? '___test-screenshots___' : '';
+                const screenshotPath              = opts && opts.setScreenshotPath ? config.testScreenshotsDir : '';
                 const screenshotPathPattern       = opts && opts.screenshotPathPattern;
                 const screenshotsOnFails          = opts && opts.screenshotsOnFails;
+                const videoPath                   = opts && opts.setVideoPath ? config.testVideosDir : '';
+                const videoOptions                = opts && opts.videoOptions;
+                const videoEncodingOptions        = opts && opts.videoEncodingOptions;
                 const speed                       = opts && opts.speed;
                 const appCommand                  = opts && opts.appCommand;
                 const appInitDelay                = opts && opts.appInitDelay;
@@ -241,6 +244,7 @@ before(function () {
                     })
                     .src(fixturePath)
                     .screenshots(screenshotPath, screenshotsOnFails, screenshotPathPattern)
+                    .video(videoPath, videoOptions, videoEncodingOptions)
                     .startApp(appCommand, appInitDelay)
                     .run({
                         skipJsErrors,

@@ -5,8 +5,6 @@ import escapeUserAgent from '../utils/escape-user-agent';
 const DATE_FORMAT = 'YYYY-MM-DD';
 const TIME_FORMAT = 'HH-mm-ss';
 
-const SCRENSHOT_EXTENTION = 'png';
-
 const ERRORS_FOLDER = 'errors';
 
 const PLACEHOLDERS = {
@@ -21,33 +19,40 @@ const PLACEHOLDERS = {
     BROWSER:            '${BROWSER}',
     BROWSER_VERSION:    '${BROWSER_VERSION}',
     OS:                 '${OS}',
-    OS_VERSION:         '${OS_VERSION}'
+    OS_VERSION:         '${OS_VERSION}',
+    GENERIC_TEST_NAME:  '${GENERIC_TEST_NAME}',
+    GENERIC_RUN_NAME:   '${GENERIC_RUN_NAME}'
 };
 
-const DEFAULT_PATH_PATTERN_FOR_REPORT      = `${PLACEHOLDERS.DATE}_${PLACEHOLDERS.TIME}\\test-${PLACEHOLDERS.TEST_INDEX}`;
-const DEFAULT_PATH_PATTERN                 = `${DEFAULT_PATH_PATTERN_FOR_REPORT}\\${PLACEHOLDERS.USERAGENT}\\${PLACEHOLDERS.FILE_INDEX}.${SCRENSHOT_EXTENTION}`;
-const QUARANTINE_MODE_DEFAULT_PATH_PATTERN = `${DEFAULT_PATH_PATTERN_FOR_REPORT}\\run-${PLACEHOLDERS.QUARANTINE_ATTEMPT}\\${PLACEHOLDERS.USERAGENT}\\${PLACEHOLDERS.FILE_INDEX}.${SCRENSHOT_EXTENTION}`;
+const DEFAULT_PATH_PATTERN_FOR_REPORT = `${PLACEHOLDERS.DATE}_${PLACEHOLDERS.TIME}\\${PLACEHOLDERS.GENERIC_TEST_NAME}\\` +
+                                        `${PLACEHOLDERS.GENERIC_RUN_NAME}\\${PLACEHOLDERS.USERAGENT}\\${PLACEHOLDERS.FILE_INDEX}`;
+
+const GENERIC_TEST_NAME_TEMPLATE = data => data.testIndex ? `test-${data.testIndex}` : '';
+const GENERIC_RUN_NAME_TEMPLATE  = data => data.quarantineAttempt ? `run-${data.quarantineAttempt}` : '';
 
 export default class PathPattern {
-    constructor (pattern, data) {
-        this.pattern              = this._ensurePattern(pattern, data.quarantineAttempt);
+    constructor (pattern, fileExtension, data) {
+        this.pattern              = this._ensurePattern(pattern);
         this.data                 = this._addDefaultFields(data);
         this.placeholderToDataMap = this._createPlaceholderToDataMap();
+        this.fileExtension        = fileExtension;
     }
 
-    _ensurePattern (pattern, quarantineAttempt) {
+    _ensurePattern (pattern) {
         if (pattern)
             return pattern;
 
-        return quarantineAttempt ? QUARANTINE_MODE_DEFAULT_PATH_PATTERN : DEFAULT_PATH_PATTERN;
+        return DEFAULT_PATH_PATTERN_FOR_REPORT;
     }
 
     _addDefaultFields (data) {
         const defaultFields = {
-            formattedDate:  data.now.format(DATE_FORMAT),
-            formattedTime:  data.now.format(TIME_FORMAT),
-            fileIndex:      1,
-            errorFileIndex: 1
+            genericTestName: GENERIC_TEST_NAME_TEMPLATE(data),
+            genericRunName:  GENERIC_RUN_NAME_TEMPLATE(data),
+            formattedDate:   data.now.format(DATE_FORMAT),
+            formattedTime:   data.now.format(TIME_FORMAT),
+            fileIndex:       1,
+            errorFileIndex:  1
         };
 
         return Object.assign({}, defaultFields, data);
@@ -55,6 +60,8 @@ export default class PathPattern {
 
     _createPlaceholderToDataMap () {
         return {
+            [PLACEHOLDERS.GENERIC_TEST_NAME]:  this.data.genericTestName,
+            [PLACEHOLDERS.GENERIC_RUN_NAME]:   this.data.genericRunName,
             [PLACEHOLDERS.DATE]:               this.data.formattedDate,
             [PLACEHOLDERS.TIME]:               this.data.formattedTime,
             [PLACEHOLDERS.TEST_INDEX]:         this.data.testIndex,
@@ -103,7 +110,7 @@ export default class PathPattern {
     getPath (forError) {
         const path = PathPattern._buildPath(this.pattern, this.placeholderToDataMap, forError);
 
-        return correctFilePath(path, SCRENSHOT_EXTENTION);
+        return correctFilePath(path, this.fileExtension);
     }
 
     // For testing purposes
