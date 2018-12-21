@@ -59,13 +59,13 @@ describe('Configuration', () => {
             fs.unlinkSync(configPath);
     });
 
-    describe('Load', () => {
+    describe('Init', () => {
         describe('Exists', () => {
             it('Config is not well-formed', () => {
                 fs.writeFileSync(configPath, '{');
                 console.log = consoleLogWrapper;
 
-                return configuration.load()
+                return configuration.init()
                     .then(() => {
                         console.log = savedConsoleLog;
 
@@ -74,8 +74,8 @@ describe('Configuration', () => {
                     });
             });
 
-            it('Load options', () => {
-                return configuration.load()
+            it('Options', () => {
+                return configuration.init()
                     .then(() => {
                         expect(configuration.getOption('hostname')).eql('123.456.789');
                         expect(configuration.getOption('port1')).eql(1234);
@@ -98,7 +98,7 @@ describe('Configuration', () => {
 
             const defaultOptions = cloneDeep(configuration._options);
 
-            return configuration.load()
+            return configuration.init()
                 .then(() => {
                     expect(configuration._options).to.deep.equal(defaultOptions);
                 });
@@ -109,7 +109,7 @@ describe('Configuration', () => {
         it('One', () => {
             console.log = consoleLogWrapper;
 
-            return configuration.load()
+            return configuration.init()
                 .then(() => {
                     configuration.mergeOptions({ 'hostname': 'anotherHostname' });
                     console.log = savedConsoleLog;
@@ -122,7 +122,7 @@ describe('Configuration', () => {
         it('Many', () => {
             console.log = consoleLogWrapper;
 
-            return configuration.load()
+            return configuration.init()
                 .then(() => {
                     configuration.mergeOptions({
                         'hostname': 'anotherHostname',
@@ -139,7 +139,7 @@ describe('Configuration', () => {
         });
 
         it('Should ignore an option with undefined value', () => {
-            return configuration.load()
+            return configuration.init()
                 .then(() => {
                     configuration.mergeOptions({ 'hostname': void 0 });
 

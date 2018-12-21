@@ -28,9 +28,7 @@ export default class Configuration {
     static _fromObj (obj) {
         const result = Object.create(null);
 
-        Object.entries(obj).forEach(entry => {
-            const key    = entry[0];
-            const value  = entry[1];
+        Object.entries(obj).forEach(([ key, value ]) => {
             const option = new Option(key, value);
 
             result[key] = option;
@@ -39,7 +37,7 @@ export default class Configuration {
         return result;
     }
 
-    async load () {
+    async _load () {
         if (!await fsObjectExists(this.filePath))
             return;
 
@@ -107,10 +105,7 @@ export default class Configuration {
         if (!sslOptions)
             return;
 
-        await Promise.all(Object.entries(sslOptions.value).map(async entry => {
-            const key   = entry[0];
-            const value = entry[1];
-
+        await Promise.all(Object.entries(sslOptions.value).map(async ([ key, value ]) => {
             sslOptions.value[key] = await ensureSslOptionValue(key, value);
         }));
     }
@@ -129,12 +124,15 @@ export default class Configuration {
         return option;
     }
 
+    async init (options = {}) {
+        await this._load();
+        this.mergeOptions(options);
+    }
+
     mergeOptions (options) {
         const overridenOptions = [];
 
-        Object.entries(options).map(item => {
-            const key    = item[0];
-            const value  = item[1];
+        Object.entries(options).map(([ key, value ]) => {
             const option = this._ensureOption(key, value, optionSource.input);
 
             if (value === void 0)
@@ -171,10 +169,7 @@ export default class Configuration {
     getOptions () {
         const result = Object.create(null);
 
-        Object.entries(this._options).forEach(keyValueOption => {
-            const name   = keyValueOption[0];
-            const option = keyValueOption[1];
-
+        Object.entries(this._options).forEach(([ name, option ]) => {
             result[name] = option.value;
         });
 
