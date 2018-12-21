@@ -28,7 +28,7 @@ export default class Configuration {
     static _fromObj (obj) {
         const result = Object.create(null);
 
-        Object.entries(obj).forEach(([ key, value ]) => {
+        Object.entries(obj).forEach(([key, value]) => {
             const option = new Option(key, value);
 
             result[key] = option;
@@ -105,7 +105,7 @@ export default class Configuration {
         if (!sslOptions)
             return;
 
-        await Promise.all(Object.entries(sslOptions.value).map(async ([ key, value ]) => {
+        await Promise.all(Object.entries(sslOptions.value).map(async ([key, value]) => {
             sslOptions.value[key] = await ensureSslOptionValue(key, value);
         }));
     }
@@ -132,7 +132,7 @@ export default class Configuration {
     mergeOptions (options) {
         const overridenOptions = [];
 
-        Object.entries(options).map(([ key, value ]) => {
+        Object.entries(options).map(([key, value]) => {
             const option = this._ensureOption(key, value, optionSource.input);
 
             if (value === void 0)
@@ -169,7 +169,7 @@ export default class Configuration {
     getOptions () {
         const result = Object.create(null);
 
-        Object.entries(this._options).forEach(([ name, option ]) => {
+        Object.entries(this._options).forEach(([name, option]) => {
             result[name] = option.value;
         });
 
