@@ -1,7 +1,7 @@
 ---
 layout: docs
 title: Integrate TestCafe with GitLab
-permalink: /documentation/recipes/integrating-testcafe-with-ci-systems/gitlab.html
+permalink: /documentation/continuous-integration/gitlab.html
 ---
 # Integrate TestCafe with GitLab
 
@@ -32,7 +32,7 @@ e2e_tests:
 * `image` - Docker image settings.
 * `name` - the TestCafe image's name. You can find it on [Docker Hub](https://hub.docker.com/r/testcafe/testcafe/).
 * `entrypoint` - overrides the image's [ENTRYPOINT](https://docs.docker.com/glossary/?term=ENTRYPOINT) and sets it as `/bin/sh`. You should specify this setting because the TestCafe image's default `ENTRYPOINT` is set to the `testcafe` command and GitLab uses `sh` to run test scripts. The `-c` flag indicates that the subsequent argument is a command rather than a script.
-* `script` - the command that runs TestCafe tests. `/opt/testcafe/docker/testcafe-docker.sh` points to a script that prepares the environment to run a browser and starts TestCafe. Its arguments are standard TestCafe [command line parameters](../../using-testcafe/command-line-interface.md).
+* `script` - the command that runs TestCafe tests. `/opt/testcafe/docker/testcafe-docker.sh` points to a script that prepares the environment to run a browser and starts TestCafe. Its arguments are standard TestCafe [command line parameters](../using-testcafe/command-line-interface.md).
 
 See [Configuration of your jobs with .gitlab-ci.yml](https://docs.gitlab.com/ee/ci/yaml/README.html) for more information about the `.gitlab-ci.yml` syntax.
 
@@ -98,12 +98,12 @@ Commit `.gitlab-ci.yml` and `package.json`, then push the changes to the reposit
 
 Go to your project page. In the right-side panel, hover over the **CI/CD** category and click **Jobs**.
 
-![GitLab Project - Go to Jobs](../../../images/gitlab/select-jobs.png)
+![GitLab Project - Go to Jobs](../../images/gitlab/select-jobs.png)
 
 The **Jobs** page displays a list of all recently executed jobs. Click a job's status to view its details.
 
-![GitLab Project - View Job List](../../../images/gitlab/select-a-failing-job.png)
+![GitLab Project - View Job List](../../images/gitlab/select-a-failing-job.png)
 
 On the detail page, you can see a job log with the TestCafe report.
 
-![GitLab Project - View Job Details](../../../images/gitlab/job-log.png)
+![GitLab Project - View Job Details](../../images/gitlab/job-log.png)

@@ -1,9 +1,11 @@
 ---
 layout: docs
-title: Integrating TestCafe with CircelCI
-permalink: /documentation/recipes/integrating-testcafe-with-ci-systems/circleci.html
+title: Integrate TestCafe with CircelCI
+permalink: /documentation/continuous-integration/circleci.html
+redirect_from:
+  - /documentation/recipes/integrating-testcafe-with-ci-systems/circleci.html
 ---
-# Integrating TestCafe with CircelCI
+# Integrate TestCafe with CircelCI
 
 This topic describes how to integrate TestCafe tests into a [CircelCI](https://circleci.com/) project's build process.
 
@@ -19,23 +21,23 @@ Log in to CircleCI using your GitHub account.
 
 If this is the first time you are using CircleCI, you will start from an empty workspace. Create your first project by clicking the **Add Project** button.
 
-![Clicking the Add Project Button](../../../images/circle-ci/add-new-project.png)
+![Clicking the Add Project Button](../../images/circle-ci/add-new-project.png)
 
 You will see the list of GitHub projects associated with your account.
 
 Find `ci-integration-demo` and click **Setup project**.
 
-![Set Up Project](../../../images/circle-ci/set-up-project.png)
+![Set Up Project](../../images/circle-ci/set-up-project.png)
 
 The *Setup Project* screen will appear.
 
 In the **Operating System** section, select *Linux*. Then select *2.0* in the **Platform** section.
 
-![Select OS and Platform](../../../images/circle-ci/os-and-platform.png)
+![Select OS and Platform](../../images/circle-ci/os-and-platform.png)
 
 In the **Language** section, select *Node*.
 
-![Select Language](../../../images/circle-ci/language.png)
+![Select Language](../../images/circle-ci/language.png)
 
 ## Step 2 - Configuring the Build
 
@@ -132,10 +134,10 @@ Finally, push all changes to GitHub.
 
 Use the **Start building** button to trigger a build.
 
-![Starting Build](../../../images/circle-ci/start-building.png)
+![Starting Build](../../images/circle-ci/start-building.png)
 
 ## Step 4 - Viewing Test Results
 
 Go to the **Builds** section and choose a build to view its results.
 
-![Test Results](../../../images/circle-ci/fail-report.png)
+![Test Results](../../images/circle-ci/fail-report.png)

@@ -1,9 +1,11 @@
 ---
 layout: docs
-title: Running Tests Using Travis CI and Sauce Labs
-permalink: /documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.html
+title: Run Tests on Sauce Labs with Travis CI
+permalink: /documentation/continuous-integration/travis-and-sauce-labs.html
+redirect_from:
+  - /documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.html
 ---
-# Running Tests Using Travis CI and Sauce Labs
+# Run Tests on Sauce Labs with Travis CI
 
 You can automatically run tests as a part of your build process using TestCafe and [Travis CI](https://travis-ci.org/).
 TestCafe also allows you to use [Sauce Labs](https://saucelabs.com/) browsers for testing.
@@ -20,18 +22,18 @@ Suppose you have a GitHub project for which you need to automatically run tests 
 
 > TestCafe provides an [example](https://github.com/DevExpress/testcafe/tree/master/examples/running-tests-using-travis-and-saucelabs/) that can show you how to run tests with Travis CI and Sauce Labs.
 
-## Step 1 - Install TestCafe and create tests
+## Step 1 - Install TestCafe and Create Tests
 
 Install TestCafe [locally](../using-testcafe/installing-testcafe.md#locally) in your project and [create tests](../getting-started/README.md#creating-a-test).
 
-## Step 2 - Enable Travis for your project
+## Step 2 - Enable Travis for Your Project
 
 1. [Sign in to Travis CI](https://travis-ci.org/auth) with your GitHub account. Travis CI will synchronize your repositories from GitHub. You can see them on your [profile page](https://travis-ci.org/profile).
 2. Enable Travis CI for a repository you want to build by flicking the switch on.
 
      ![Enable Travis for a repository](../../images/travis-step-2-2.png)
 
-     By default, Travic CI runs builds on pushes and pull requests. You can manage this behavior in your repository's settings.
+     By default, Travis CI runs builds on pushes and pull requests. You can manage this behavior in your repository's settings.
 
      ![Enable builds](../../images/travis-step-2-4.png)
 
@@ -49,14 +51,14 @@ Install TestCafe [locally](../using-testcafe/installing-testcafe.md#locally) in 
 
      Commit and push this file to your repository.
 
-## Step 3 - Configure Travis to use Sauce Labs
+## Step 3 - Configure Travis to Use Sauce Labs
 
 1. Save your Sauce Labs username and access key to the SAUCE\_USERNAME and SAUCE\_ACCESS\_KEY environment variables, as described in [SauceLabs documentation](https://wiki.saucelabs.com/display/DOCS/Best+Practice%3A+Use+Environment+Variables+for+Authentication+Credentials).
 2. Go to the repository settings in Travis CI. In the **Environment Variables** section, define the SAUCE\_USERNAME and SAUCE\_ACCESS\_KEY variables (see [Defining Variables in Repository Settings](https://docs.travis-ci.com/user/environment-variables/#Defining-Variables-in-Repository-Settings)).
 
      ![Define variables](../../images/travis-step-3-2.png)
 
-## Step 4 - Install the Sauce Labs browser provider plugin
+## Step 4 - Install the Sauce Labs Browser Provider Plugin
 
 To run TestCafe tests in the cloud using Sauce Labs browsers, you need to install the [testcafe-browser-provider-saucelabs](https://www.npmjs.com/package/testcafe-browser-provider-saucelabs) plugin locally to your project.
 To do this, run the following command.
@@ -67,7 +69,7 @@ npm install --save-dev testcafe-browser-provider-saucelabs
 
 For more information on testing in cloud browsers, see [Browsers in Cloud Testing Services](../using-testcafe/common-concepts/browsers/browser-support.md#browsers-in-cloud-testing-services).
 
-## Step 5 - Add the `test` script to package.json
+## Step 5 - Add the `test` Script to package.json
 
 To test a project, Travis runs test scripts. For Node.js projects, the default test script is `npm test`.
 To tell npm how to run your tests, add the `test` script to the project's package.json file. Use `testcafe` command in the script to run tests on a Sauce Labs browser.
@@ -89,7 +91,7 @@ This command will be automatically executed before running tests. After tests ar
 }
 ```
 
-## Step 6 - Trigger a Travis CI build
+## Step 6 - Trigger a Travis CI Build
 
 You can trigger a Travis CI build by pushing commits to your repository or creating a pull request.
 
