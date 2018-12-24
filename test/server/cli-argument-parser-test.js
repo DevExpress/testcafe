@@ -145,14 +145,14 @@ describe('CLI argument parser', function () {
         it('Should parse "--concurrency" option as a number', function () {
             return parse('--concurrency 2')
                 .then(function (parser) {
-                    expect(parser.concurrency).eql(2);
+                    expect(parser.opts.concurrency).eql(2);
                 });
         });
 
         it('Should parse "-c" option as a number', function () {
             return parse('-c 2')
                 .then(function (parser) {
-                    expect(parser.concurrency).eql(2);
+                    expect(parser.opts.concurrency).eql(2);
                 });
         });
     });
@@ -408,10 +408,10 @@ describe('CLI argument parser', function () {
 
         return parse('-r list,json:' + filePath)
             .then(function (parser) {
-                expect(parser.opts.reporters[0].name).eql('list');
-                expect(parser.opts.reporters[0].outFile).to.be.undefined;
-                expect(parser.opts.reporters[1].name).eql('json');
-                expect(parser.opts.reporters[1].outFile).eql(path.resolve(cwd, filePath));
+                expect(parser.opts.reporter[0].name).eql('list');
+                expect(parser.opts.reporter[0].outStream).to.be.undefined;
+                expect(parser.opts.reporter[1].name).eql('json');
+                expect(parser.opts.reporter[1].outStream).eql(path.resolve(cwd, filePath));
             });
     });
 
@@ -420,7 +420,7 @@ describe('CLI argument parser', function () {
             .then(parser => {
                 expect(parser.browsers).eql(['ie']);
                 expect(parser.src).eql(['test/server/data/file-list/file-1.js']);
-                expect(parser.opts.reporters[0].name).eql('list');
+                expect(parser.opts.reporter[0].name).eql('list');
                 expect(parser.opts.hostname).eql('myhost');
                 expect(parser.opts.app).eql('run-app');
                 expect(parser.opts.screenshots).to.be.undefined;

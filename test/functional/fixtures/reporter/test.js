@@ -1,10 +1,10 @@
-const expect               = require('chai').expect;
+const expect                                      = require('chai').expect;
 const { createTestStream, createAsyncTestStream } = require('../../utils/stream');
+const fs                                          = require('fs');
 
 describe('Reporter', () => {
     const stdoutWrite = process.stdout.write;
     const stderrWrite = process.stderr.write;
-
 
     afterEach(() => {
         process.stdout.write = stdoutWrite;
@@ -16,14 +16,14 @@ describe('Reporter', () => {
         const stream2 = createTestStream();
 
         return runTests('testcafe-fixtures/index-test.js', 'Simple test', {
-            only:      ['chrome'],
-            reporters: [
+            only:     ['chrome'],
+            reporter: [
                 {
-                    reporter:  'json',
+                    name:      'json',
                     outStream: stream1
                 },
                 {
-                    reporter:  'list',
+                    name:      'list',
                     outStream: stream2
                 }
             ]
@@ -42,10 +42,10 @@ describe('Reporter', () => {
         const stream = createAsyncTestStream();
 
         const runOpts = {
-            only:      ['chrome'],
-            reporters: [
+            only:     ['chrome'],
+            reporter: [
                 {
-                    reporter:  'json',
+                    name:      'json',
                     outStream: stream
                 }
             ]
@@ -61,10 +61,10 @@ describe('Reporter', () => {
         const stream = createAsyncTestStream({ shouldFail: true });
 
         const runOpts = {
-            only:      ['chrome'],
-            reporters: [
+            only:     ['chrome'],
+            reporter: [
                 {
-                    reporter:  'json',
+                    name:      'json',
                     outStream: stream
                 }
             ]
@@ -88,10 +88,10 @@ describe('Reporter', () => {
         });
 
         const runOpts = {
-            only:      ['chrome'],
-            reporters: [
+            only:     ['chrome'],
+            reporter: [
                 {
-                    reporter:  'json',
+                    name:      'json',
                     outStream: process.stdout
                 }
             ]
@@ -117,10 +117,10 @@ describe('Reporter', () => {
         });
 
         const runOpts = {
-            only:      ['chrome'],
-            reporters: [
+            only:     ['chrome'],
+            reporter: [
                 {
-                    reporter:  'json',
+                    name:      'json',
                     outStream: process.stderr
                 }
             ]
@@ -134,7 +134,7 @@ describe('Reporter', () => {
             });
     });
 
-    it('Should ot close stdout when null is specified as a reporter stream (GH-3114)', function () {
+    it('Should not close stdout when undefined is specified as a reporter stream (GH-3114)', function () {
         let streamFinished = false;
 
         process.stdout.write = () => {
@@ -146,37 +146,10 @@ describe('Reporter', () => {
         });
 
         const runOpts = {
-            only:      ['chrome'],
-            reporters: [
+            only:     ['chrome'],
+            reporter: [
                 {
-                    reporter:  'json',
-                    outStream: null
-                }
-            ]
-        };
-
-        return runTests('testcafe-fixtures/index-test.js', 'Simple test', runOpts)
-            .then(() => {
-                expect(streamFinished).to.be.not.ok;
-            });
-    });
-
-    it('Should ot close stdout when undefined is specified as a reporter stream (GH-3114)', function () {
-        let streamFinished = false;
-
-        process.stdout.write = () => {
-            process.stdout.write = stdoutWrite;
-        };
-
-        process.stdout.on('finish', () => {
-            streamFinished = false;
-        });
-
-        const runOpts = {
-            only:      ['chrome'],
-            reporters: [
-                {
-                    reporter:  'json',
+                    name:      'json',
                     outStream: void 0
                 }
             ]
@@ -188,17 +161,16 @@ describe('Reporter', () => {
             });
     });
 
-
     it('Should not close tty streams (GH-3114)', function () {
         const stream = createAsyncTestStream({ shouldFail: true });
 
         stream.isTTY = true;
 
         const runOpts = {
-            only:      ['chrome'],
-            reporters: [
+            only:     ['chrome'],
+            reporter: [
                 {
-                    reporter:  'json',
+                    name:      'json',
                     outStream: stream
                 }
             ]
@@ -207,6 +179,32 @@ describe('Reporter', () => {
         return runTests('testcafe-fixtures/index-test.js', 'Simple test', runOpts)
             .then(() => {
                 expect(stream.finalCalled).to.be.not.ok;
+            });
+    });
+
+    it('Should support filename as reporter output', () => {
+        const testStream     = createTestStream();
+        const reportFileName = 'list.report';
+
+        return runTests('testcafe-fixtures/index-test.js', 'Simple test', {
+            only:     ['chrome'],
+            reporter: [
+                {
+                    name:      'list',
+                    outStream: testStream
+                },
+                {
+                    name:      'list',
+                    outStream: reportFileName
+                }
+            ]
+        })
+            .then(() => {
+                const reportDataFromFile = fs.readFileSync(reportFileName).toString();
+
+                expect(testStream.data).eql(reportDataFromFile);
+
+                fs.unlinkSync(reportFileName);
             });
     });
 });

@@ -1,6 +1,7 @@
 import { resolve as resolvePath } from 'path';
 import debug from 'debug';
 import Promise from 'pinkie';
+import { writable as isWritableStream, transform as isTransformStream, duplex as isDuplexStream } from 'is-stream';
 import promisifyEvent from 'promisify-event';
 import mapReverse from 'map-reverse';
 import { EventEmitter } from 'events';
@@ -14,37 +15,31 @@ import { assertType, is } from '../errors/runtime/type-assertions';
 import renderForbiddenCharsList from '../errors/render-forbidden-chars-list';
 import checkFilePath from '../utils/check-file-path';
 import { addRunningTest, removeRunningTest, startHandlingTestErrors, stopHandlingTestErrors } from '../utils/handle-errors';
-
-
-const DEFAULT_SELECTOR_TIMEOUT  = 10000;
-const DEFAULT_ASSERTION_TIMEOUT = 3000;
-const DEFAULT_PAGE_LOAD_TIMEOUT = 3000;
+import OPTION_NAMES from '../configuration/option-names';
+import FlagList from '../utils/flag-list';
 
 const DEBUG_LOGGER = debug('testcafe:runner');
 
+const DEFAULT_TIMEOUT = {
+    selector:  10000,
+    assertion: 3000,
+    pageLoad:  3000
+};
+
 export default class Runner extends EventEmitter {
-    constructor (proxy, browserConnectionGateway, options = {}) {
+    constructor (proxy, browserConnectionGateway, configuration) {
         super();
 
         this.proxy               = proxy;
         this.bootstrapper        = new Bootstrapper(browserConnectionGateway);
         this.pendingTaskPromises = [];
+        this.configuration       = configuration;
 
-        this.opts = {
-            externalProxyHost:      null,
-            proxyBypass:            null,
-            screenshotPath:         null,
-            takeScreenshotsOnFails: false,
-            screenshotPathPattern:  null,
-            skipJsErrors:           false,
-            quarantineMode:         false,
-            debugMode:              false,
-            retryTestPages:         options.retryTestPages,
-            selectorTimeout:        DEFAULT_SELECTOR_TIMEOUT,
-            pageLoadTimeout:        DEFAULT_PAGE_LOAD_TIMEOUT
-        };
+        this.apiMethodWasCalled = new FlagList({
+            initialFlagValue: false,
+            flags:            [OPTION_NAMES.src, OPTION_NAMES.browsers, OPTION_NAMES.reporter]
+        });
     }
-
 
     static _disposeBrowserSet (browserSet) {
         return browserSet.dispose().catch(e => DEBUG_LOGGER(e));
@@ -126,13 +121,13 @@ export default class Runner extends EventEmitter {
 
     _runTask (reporterPlugins, browserSet, tests, testedApp) {
         let completed           = false;
-        const task              = new Task(tests, browserSet.browserConnectionGroups, this.proxy, this.opts);
+        const task              = new Task(tests, browserSet.browserConnectionGroups, this.proxy, this.configuration.getOptions());
         const reporters         = reporterPlugins.map(reporter => new Reporter(reporter.plugin, task, reporter.outStream));
         const completionPromise = this._getTaskResult(task, browserSet, reporters, testedApp);
 
         task.on('start', startHandlingTestErrors);
 
-        if (!this.opts.skipUncaughtErrors) {
+        if (!this.configuration.getOption(OPTION_NAMES.skipUncaughtErrors)) {
             task.once('test-run-start', addRunningTest);
             task.once('test-run-done', removeRunningTest);
         }
@@ -160,23 +155,29 @@ export default class Runner extends EventEmitter {
     }
 
     _validateSpeedOption () {
-        const speed = this.opts.speed;
+        const speed = this.configuration.getOption(OPTION_NAMES.speed);
+
+        if (speed === void 0)
+            return;
 
         if (typeof speed !== 'number' || isNaN(speed) || speed < 0.01 || speed > 1)
             throw new GeneralError(MESSAGE.invalidSpeedValue);
     }
 
     _validateConcurrencyOption () {
-        const concurrency = this.bootstrapper.concurrency;
+        const concurrency = this.configuration.getOption(OPTION_NAMES.concurrency);
+
+        if (concurrency === void 0)
+            return;
 
         if (typeof concurrency !== 'number' || isNaN(concurrency) || concurrency < 1)
             throw new GeneralError(MESSAGE.invalidConcurrencyFactor);
     }
 
     _validateProxyBypassOption () {
-        let proxyBypass = this.opts.proxyBypass;
+        let proxyBypass = this.configuration.getOption(OPTION_NAMES.proxyBypass);
 
-        if (!proxyBypass)
+        if (proxyBypass === void 0)
             return;
 
         assertType([ is.string, is.array ], null, '"proxyBypass" argument', proxyBypass);
@@ -190,17 +191,17 @@ export default class Runner extends EventEmitter {
             return arr.concat(rules.split(','));
         }, []);
 
-        this.opts.proxyBypass = proxyBypass;
+        this.configuration.mergeOptions({ proxyBypass });
     }
 
     _validateScreenshotOptions () {
-        const screenshotPath        = this.opts.screenshotPath;
-        const screenshotPathPattern = this.opts.screenshotPathPattern;
+        const screenshotPath        = this.configuration.getOption(OPTION_NAMES.screenshotPath);
+        const screenshotPathPattern = this.configuration.getOption(OPTION_NAMES.screenshotPathPattern);
 
         if (screenshotPath) {
             this._validateScreenshotPath(screenshotPath, 'screenshots base directory path');
 
-            this.opts.screenshotPath = resolvePath(screenshotPath);
+            this.configuration.mergeOptions({ [OPTION_NAMES.screenshotPath]: resolvePath(screenshotPath) });
         }
 
         if (screenshotPathPattern)
@@ -224,83 +225,154 @@ export default class Runner extends EventEmitter {
             throw new GeneralError(MESSAGE.forbiddenCharatersInScreenshotPath, screenshotPath, pathType, renderForbiddenCharsList(forbiddenCharsList));
     }
 
+    static _isStreamMock (obj) {
+        return obj &&
+               typeof obj.write === 'function' &&
+               typeof obj.end === 'function';
+    }
+
+    static _validateReporterOutput (obj) {
+        const isValidReporterOutput = obj === void 0 ||
+                                      typeof obj === 'string' ||
+                                      isWritableStream(obj) ||
+                                      isTransformStream(obj) ||
+                                      isDuplexStream(obj) ||
+                                      Runner._isStreamMock(obj);
+
+        if (!isValidReporterOutput)
+            throw new GeneralError(MESSAGE.invalidReporterOutput);
+    }
+
+    _setBootstrapperOptions () {
+        this.bootstrapper.sources                     = this.configuration.getOption(OPTION_NAMES.src) || this.bootstrapper.sources;
+        this.bootstrapper.browsers                    = this.configuration.getOption(OPTION_NAMES.browsers) || this.bootstrapper.browsers;
+        this.bootstrapper.concurrency                 = this.configuration.getOption(OPTION_NAMES.concurrency) || this.bootstrapper.concurrency;
+        this.bootstrapper.appCommand                  = this.configuration.getOption(OPTION_NAMES.appCommand) || this.bootstrapper.appCommand;
+        this.bootstrapper.appInitDelay                = this.configuration.getOption(OPTION_NAMES.appInitDelay) || this.bootstrapper.appInitDelay;
+        this.bootstrapper.disableTestSyntaxValidation = this.configuration.getOption(OPTION_NAMES.disableTestSyntaxValidation);
+        this.bootstrapper.filter                      = this.configuration.getOption(OPTION_NAMES.filter) || this.bootstrapper.filter;
+        this.bootstrapper.reporters                   = this.configuration.getOption(OPTION_NAMES.reporter) || this.bootstrapper.reporters;
+    }
+
+    _prepareReporters (name, outStream) {
+        let reporters = [];
+
+        if (name instanceof Array)
+            reporters = name.map(r => typeof r === 'string' || typeof r === 'function' ? { name: r } : r);
+        else {
+            const reporter = { name, outStream };
+
+            reporters.push(reporter);
+        }
+
+        reporters.forEach(r => Runner._validateReporterOutput(r.outStream));
+
+        return reporters;
+    }
+
     // API
     embeddingOptions (opts) {
-        this._registerAssets(opts.assets);
-        this.opts.TestRunCtor = opts.TestRunCtor;
+        const { assets, TestRunCtor } = opts;
+
+        this._registerAssets(assets);
+        this.configuration.mergeOptions({ TestRunCtor });
 
         return this;
     }
 
     src (...sources) {
-        this.bootstrapper.sources = this.bootstrapper.sources.concat(flatten(sources));
+        if (this.apiMethodWasCalled.src)
+            throw new GeneralError(MESSAGE.multipleAPIMethodCallForbidden, OPTION_NAMES.src);
+
+        sources = flatten(sources);
+        this.configuration.mergeOptions({ [OPTION_NAMES.src]: sources });
+
+        this.apiMethodWasCalled.src = true;
 
         return this;
     }
 
     browsers (...browsers) {
-        this.bootstrapper.browsers = this.bootstrapper.browsers.concat(flatten(browsers));
+        if (this.apiMethodWasCalled.browsers)
+            throw new GeneralError(MESSAGE.multipleAPIMethodCallForbidden, OPTION_NAMES.browsers);
+
+        browsers = flatten(browsers);
+        this.configuration.mergeOptions({ browsers });
+
+        this.apiMethodWasCalled.browsers = true;
 
         return this;
     }
 
     concurrency (concurrency) {
-        this.bootstrapper.concurrency = concurrency;
+        this.configuration.mergeOptions({ concurrency });
 
         return this;
     }
 
-    reporter (name, outStream) {
-        this.bootstrapper.reporters.push({
-            name,
-            outStream
-        });
+    reporter (name, fileNameOrStream) {
+        if (this.apiMethodWasCalled.reporter)
+            throw new GeneralError(MESSAGE.multipleAPIMethodCallForbidden, OPTION_NAMES.reporter);
+
+        const reporters = this._prepareReporters(name, fileNameOrStream);
+
+        this.configuration.mergeOptions({ [OPTION_NAMES.reporter]: reporters });
+
+        this.apiMethodWasCalled.reporter = true;
 
         return this;
     }
 
     filter (filter) {
-        this.bootstrapper.filter = filter;
+        this.configuration.mergeOptions({ filter });
 
         return this;
     }
 
     useProxy (externalProxyHost, proxyBypass) {
-        this.opts.externalProxyHost = externalProxyHost;
-        this.opts.proxyBypass       = proxyBypass;
+        this.configuration.mergeOptions({ externalProxyHost, proxyBypass });
 
         return this;
     }
 
     screenshots (path, takeOnFails = false, pattern = null) {
-        this.opts.takeScreenshotsOnFails = takeOnFails;
-        this.opts.screenshotPath         = path;
-        this.opts.screenshotPathPattern  = pattern;
+        this.configuration.mergeOptions({
+            [OPTION_NAMES.screenshotPath]:         path,
+            [OPTION_NAMES.takeScreenshotsOnFails]: takeOnFails,
+            [OPTION_NAMES.screenshotPathPattern]:  pattern
+        });
 
         return this;
     }
 
     startApp (command, initDelay) {
-        this.bootstrapper.appCommand   = command;
-        this.bootstrapper.appInitDelay = initDelay;
+        this.configuration.mergeOptions({
+            [OPTION_NAMES.appCommand]:   command,
+            [OPTION_NAMES.appInitDelay]: initDelay
+        });
 
         return this;
     }
 
     run ({ skipJsErrors, disablePageReloads, quarantineMode, debugMode, selectorTimeout, assertionTimeout, pageLoadTimeout, speed = 1, debugOnFail, skipUncaughtErrors, stopOnFirstFail, disableTestSyntaxValidation } = {}) {
-        this.opts.skipJsErrors       = !!skipJsErrors;
-        this.opts.disablePageReloads = !!disablePageReloads;
-        this.opts.quarantineMode     = !!quarantineMode;
-        this.opts.debugMode          = !!debugMode;
-        this.opts.debugOnFail        = !!debugOnFail;
-        this.opts.selectorTimeout    = selectorTimeout === void 0 ? DEFAULT_SELECTOR_TIMEOUT : selectorTimeout;
-        this.opts.assertionTimeout   = assertionTimeout === void 0 ? DEFAULT_ASSERTION_TIMEOUT : assertionTimeout;
-        this.opts.pageLoadTimeout    = pageLoadTimeout === void 0 ? DEFAULT_PAGE_LOAD_TIMEOUT : pageLoadTimeout;
-        this.opts.speed              = speed;
-        this.opts.skipUncaughtErrors = !!skipUncaughtErrors;
-        this.opts.stopOnFirstFail    = !!stopOnFirstFail;
+        this.apiMethodWasCalled.reset();
 
-        this.bootstrapper.disableTestSyntaxValidation = disableTestSyntaxValidation;
+        this.configuration.mergeOptions({
+            skipJsErrors:                !!skipJsErrors,
+            disablePageReloads:          !!disablePageReloads,
+            quarantineMode:              !!quarantineMode,
+            debugMode:                   !!debugMode,
+            debugOnFail:                 !!debugOnFail,
+            selectorTimeout:             selectorTimeout === void 0 ? DEFAULT_TIMEOUT.selector : selectorTimeout,
+            assertionTimeout:            assertionTimeout === void 0 ? DEFAULT_TIMEOUT.assertion : assertionTimeout,
+            pageLoadTimeout:             pageLoadTimeout === void 0 ? DEFAULT_TIMEOUT.pageLoad : pageLoadTimeout,
+            speed:                       speed,
+            skipUncaughtErrors:          !!skipUncaughtErrors,
+            stopOnFirstFail:             !!stopOnFirstFail,
+            disableTestSyntaxValidation: !!disableTestSyntaxValidation
+        });
+
+        this._setBootstrapperOptions();
 
         const runTaskPromise = Promise.resolve()
             .then(() => {

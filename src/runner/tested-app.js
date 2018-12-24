@@ -1,14 +1,14 @@
 import { exec } from 'child_process';
-import { join as pathJoin, delimiter as pathDelimiter } from 'path';
+import { delimiter as pathDelimiter } from 'path';
 import Promise from 'pinkie';
 import kill from 'tree-kill';
 import OS from 'os-family';
 import delay from '../utils/delay';
 import { GeneralError } from '../errors/runtime';
 import MESSAGE from '../errors/runtime/message';
+import resolvePathRelativelyCwd from '../utils/resolve-path-relatively-cwd';
 
-
-const MODULES_BIN_DIR = pathJoin(process.cwd(), './node_modules/.bin');
+const MODULES_BIN_DIR = resolvePathRelativelyCwd('./node_modules/.bin');
 
 const ENV_PATH_KEY = (function () {
     if (OS.win) {

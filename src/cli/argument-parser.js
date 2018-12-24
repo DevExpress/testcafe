@@ -1,15 +1,14 @@
-import { resolve, dirname } from 'path';
 import { Command } from 'commander';
 import dedent from 'dedent';
 import { readSync as read } from 'read-file-relative';
-import makeDir from 'make-dir';
 import { GeneralError } from '../errors/runtime';
 import MESSAGE from '../errors/runtime/message';
 import { assertType, is } from '../errors/runtime/type-assertions';
 import getViewPortWidth from '../utils/get-viewport-width';
 import { wordWrap, splitQuotedText } from '../utils/string';
-import { isMatch } from 'lodash';
-import parseSslOptions from './parse-ssl-options';
+import parseSslOptions from '../utils/parse-ssl-options';
+import createFilterFn from '../utils/create-filter-fn';
+import { optionValueToRegExp, optionValueToKeyValue } from '../configuration/option-conversion';
 
 const REMOTE_ALIAS_RE = /^remote(?::(\d*))?$/;
 
@@ -49,38 +48,6 @@ export default class CLIArgumentParser {
         return parseInt(value, 10);
     }
 
-    static _optionValueToRegExp (name, value) {
-        if (value === void 0)
-            return value;
-
-        try {
-            return new RegExp(value);
-        }
-        catch (err) {
-            throw new GeneralError(MESSAGE.optionValueIsNotValidRegExp, name);
-        }
-    }
-
-    static _optionValueToKeyValue (name, value) {
-        if (value === void 0)
-            return value;
-
-        const keyValue = value.split(',').reduce((obj, pair) => {
-            const [key, val] = pair.split('=');
-
-            if (!key || !val)
-                throw new GeneralError(MESSAGE.optionValueIsNotValidKeyValue, name);
-
-            obj[key] = val;
-            return obj;
-        }, {});
-
-        if (Object.keys(keyValue).length === 0)
-            throw new GeneralError(MESSAGE.optionValueIsNotValidKeyValue, name);
-
-        return keyValue;
-    }
-
     static _getDescription () {
         // NOTE: add empty line to workaround commander-forced indentation on the first line.
         return '\n' + wordWrap(DESCRIPTION, 2, getViewPortWidth(process.stdout));
@@ -90,7 +57,6 @@ export default class CLIArgumentParser {
         const version = JSON.parse(read('../../package.json')).version;
 
         this.program
-
             .version(version, '-v, --version')
             .usage('[options] <comma-separated-browser-list> <file-or-glob ...>')
             .description(CLIArgumentParser._getDescription())
@@ -129,7 +95,6 @@ export default class CLIArgumentParser {
             .option('--sf, --stop-on-first-fail', 'stop an entire test run if any test fails')
             .option('--disable-test-syntax-validation', 'disables checks for \'test\' and \'fixture\' directives to run dynamically loaded tests')
 
-
             // NOTE: these options will be handled by chalk internally
             .option('--color', 'force colors in command line')
             .option('--no-color', 'disable colors in command line');
@@ -147,33 +112,12 @@ export default class CLIArgumentParser {
     }
 
     _parseFilteringOptions () {
-        this.opts.testGrep    = CLIArgumentParser._optionValueToRegExp('--test-grep', this.opts.testGrep);
-        this.opts.fixtureGrep = CLIArgumentParser._optionValueToRegExp('--fixture-grep', this.opts.fixtureGrep);
-        this.opts.testMeta    = CLIArgumentParser._optionValueToKeyValue('--test-meta', this.opts.testMeta);
-        this.opts.fixtureMeta = CLIArgumentParser._optionValueToKeyValue('--fixture-meta', this.opts.fixtureMeta);
+        this.opts.testGrep    = optionValueToRegExp('--test-grep', this.opts.testGrep);
+        this.opts.fixtureGrep = optionValueToRegExp('--fixture-grep', this.opts.fixtureGrep);
+        this.opts.testMeta    = optionValueToKeyValue('--test-meta', this.opts.testMeta);
+        this.opts.fixtureMeta = optionValueToKeyValue('--fixture-meta', this.opts.fixtureMeta);
 
-        this.filter = (testName, fixtureName, fixturePath, testMeta, fixtureMeta) => {
-
-            if (this.opts.test && testName !== this.opts.test)
-                return false;
-
-            if (this.opts.testGrep && !this.opts.testGrep.test(testName))
-                return false;
-
-            if (this.opts.fixture && fixtureName !== this.opts.fixture)
-                return false;
-
-            if (this.opts.fixtureGrep && !this.opts.fixtureGrep.test(fixtureName))
-                return false;
-
-            if (this.opts.testMeta && !isMatch(testMeta, this.opts.testMeta))
-                return false;
-
-            if (this.opts.fixtureMeta && !isMatch(fixtureMeta, this.opts.fixtureMeta))
-                return false;
-
-            return true;
-        };
+        this.filter = createFilterFn(this.opts);
     }
 
     _parseAppInitDelay () {
@@ -215,7 +159,7 @@ export default class CLIArgumentParser {
 
     _parseConcurrency () {
         if (this.opts.concurrency)
-            this.concurrency = parseInt(this.opts.concurrency, 10);
+            this.opts.concurrency = parseInt(this.opts.concurrency, 10);
     }
 
     _parsePorts () {
@@ -236,20 +180,15 @@ export default class CLIArgumentParser {
             .filter(browser => browser && this._filterAndCountRemotes(browser));
     }
 
-    _parseSslOptions () {
+    async _parseSslOptions () {
         if (this.opts.ssl)
-            this.opts.ssl = parseSslOptions(this.opts.ssl);
+            this.opts.ssl = await parseSslOptions(this.opts.ssl);
     }
 
     async _parseReporters () {
-        if (!this.opts.reporter) {
-            this.opts.reporters = [];
-            return;
-        }
+        const reporters = this.opts.reporter ? this.opts.reporter.split(',') : [];
 
-        const reporters = this.opts.reporter.split(',');
-
-        this.opts.reporters = reporters.map(reporter => {
+        this.opts.reporter = reporters.map(reporter => {
             const separatorIndex = reporter.indexOf(':');
 
             if (separatorIndex < 0)
@@ -258,16 +197,8 @@ export default class CLIArgumentParser {
             const name    = reporter.substring(0, separatorIndex);
             const outFile = reporter.substring(separatorIndex + 1);
 
-            return { name, outFile };
+            return { name, outStream: outFile };
         });
-
-        for (const reporter of this.opts.reporters) {
-            if (reporter.outFile) {
-                reporter.outFile = resolve(this.cwd, reporter.outFile);
-
-                await makeDir(dirname(reporter.outFile));
-            }
-        }
     }
 
     _parseFileList () {
@@ -299,9 +230,9 @@ export default class CLIArgumentParser {
         this._parsePorts();
         this._parseBrowserList();
         this._parseConcurrency();
-        this._parseSslOptions();
         this._parseFileList();
 
+        await this._parseSslOptions();
         await this._parseReporters();
     }
 }

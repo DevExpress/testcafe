@@ -1,5 +1,6 @@
-import fs from 'fs';
 import os from 'os';
+import Promise from 'pinkie';
+import { fsObjectExists, readFile } from './promisified-functions';
 
 const MAX_PATH_LENGTH = {
     'Linux':      4096,
@@ -15,7 +16,7 @@ const FILE_OPTION_NAMES          = ['cert', 'key', 'pfx'];
 const NUMBER_REG_EX              = /^[0-9-.,]+$/;
 const BOOLEAN_STRING_VALUES      = ['true', 'false'];
 
-export default function (optionsStr = '') {
+export default async function (optionsStr = '') {
     const splittedOptions = optionsStr.split(OPTIONS_SEPARATOR);
 
     if (!splittedOptions.length)
@@ -23,7 +24,7 @@ export default function (optionsStr = '') {
 
     const parsedOptions = {};
 
-    splittedOptions.forEach(item => {
+    await Promise.all(splittedOptions.map(async item => {
         const keyValuePair = item.split(OPTION_KEY_VALUE_SEPARATOR);
         const key          = keyValuePair[0];
         let value          = keyValuePair[1];
@@ -31,15 +32,27 @@ export default function (optionsStr = '') {
         if (!key || !value)
             return;
 
-        value = convertToBestFitType(value);
-
-        if (FILE_OPTION_NAMES.includes(key) && value.length < OS_MAX_PATH_LENGTH && fs.existsSync(value))
-            value = fs.readFileSync(value);
+        value = await ensureOptionValue(key, value);
 
         parsedOptions[key] = value;
-    });
+    }));
 
     return parsedOptions;
+}
+
+export async function ensureOptionValue (optionName, optionValue) {
+    optionValue = convertToBestFitType(optionValue);
+
+    return await ensureFileOptionValue(optionName, optionValue);
+}
+
+async function ensureFileOptionValue (optionName, optionValue) {
+    const isFileOption = FILE_OPTION_NAMES.includes(optionName) && optionValue.length < OS_MAX_PATH_LENGTH;
+
+    if (isFileOption && await fsObjectExists(optionValue))
+        optionValue = await readFile(optionValue);
+
+    return optionValue;
 }
 
 function convertToBestFitType (valueStr) {
