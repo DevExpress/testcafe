@@ -498,6 +498,10 @@
         </div>
       
         <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/continuous-integration/">Continuous Integration</a>      
+        </div>
+      
+        <div class="doc-top-nav-tab " >
           <a href="/testcafe/documentation/recipes/">Recipes</a>      
         </div>
       
@@ -523,6 +527,8 @@
 				
 					
 						Using TestCafe
+					
+				
 					
 				
 					
@@ -676,6 +682,9 @@
 			</ul>
 		</div>
 	</nav>
+	
+
+	
 	
 
 	
@@ -998,7 +1007,7 @@ it is paused within this hook before the first action.</p>
 </code></pre></div><h3><a class="anchor" id="--test-meta-keyvaluekey2value2"></a>--test-meta &lt;key=value[,key2=value2,...]&gt; <a class="permalink" href="#--test-meta-keyvaluekey2value2">#</a></h3>
 <p>TestCafe runs tests whose <a href="../test-api/test-code-structure.html#specifying-testing-metadata">metadata</a> <a href="https://lodash.com/docs/#isMatch">matches</a> the specified key-value pair.</p>
 
-<p>For example, the following command runs tests whose metadata has the <code>device</code> property set to the <code>mobile</code> value and the <code>env</code> property set to the <code>production</code> value.</p>
+<p>For example, the following command runs tests whose metadata&#39;s <code>device</code> property is set to <code>mobile</code>, and <code>env</code> property is set to <code>production</code>.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests --test-meta <span class="nv">device</span><span class="o">=</span>mobile,env<span class="o">=</span>production
 </code></pre></div><h3><a class="anchor" id="--fixture-meta-keyvaluekey2value2"></a>--fixture-meta &lt;key=value[,key2=value2,...]&gt; <a class="permalink" href="#--fixture-meta-keyvaluekey2value2">#</a></h3>
 <p>TestCafe runs tests whose fixture&#39;s <a href="../test-api/test-code-structure.html#specifying-testing-metadata">metadata</a> <a href="https://lodash.com/docs/#isMatch">matches</a> the specified key-value pair.</p>
@@ -1006,7 +1015,7 @@ it is paused within this hook before the first action.</p>
 <p>For example, the following command runs tests whose fixture&#39;s metadata has the <code>device</code> property set to the <code>mobile</code> value and the <code>env</code> property set to the <code>production</code> value.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests --fixture-meta <span class="nv">device</span><span class="o">=</span>mobile,env<span class="o">=</span>production
 </code></pre></div><h3><a class="anchor" id="-a-command---app-command"></a>-a &lt;command&gt;, --app &lt;command&gt; <a class="permalink" href="#-a-command---app-command">#</a></h3>
-<p>Executes the specified shell command before running tests. Use it to launch or deploy the application you are going to test.</p>
+<p>Executes the specified shell command before running tests. Use it to set up the application you are going to test.</p>
 
 <p>An application is automatically terminated after testing is finished.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests --app <span class="s2">"node server.js"</span>
@@ -1125,9 +1134,9 @@ See <a href="common-concepts/connect-to-the-testcafe-server-over-https.html">Con
 </code></pre></div><h3><a class="anchor" id="--disable-test-syntax-validation"></a>--disable-test-syntax-validation <a class="permalink" href="#--disable-test-syntax-validation">#</a></h3>
 <p>Disables checks for <code>test</code> and <code>fixture</code> directives in test files. Use this flag to run dynamically loaded tests.</p>
 
-<p>TestCafe requires test files to have the <a href="../test-api/test-code-structure.html#fixtures">fixture</a> and <a href="../test-api/test-code-structure.html#tests">test</a> directives. Otherwise, an error is thrown.</p>
+<p>Test files should have the <a href="../test-api/test-code-structure.html#fixtures">fixture</a> and <a href="../test-api/test-code-structure.html#tests">test</a> directives. Otherwise, an error is thrown.</p>
 
-<p>However, when you import tests from external libraries or generate them dynamically, the <code>.js</code> file provided to TestCafe may not contain any tests.</p>
+<p>However, the <code>.js</code> file may not contain tests when you import tests from external libraries or generate them dynamically.</p>
 
 <p><strong>external-lib.js</strong></p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">export</span> <span class="k">default</span> <span class="kd">function</span> <span class="nx">runTests</span> <span class="p">()</span> <span class="p">{</span>
@@ -1144,7 +1153,7 @@ See <a href="common-concepts/connect-to-the-testcafe-server-over-https.html">Con
 
 <span class="nx">runTests</span><span class="p">();</span>
 </code></pre></div>
-<p>In this instance, specify the <code>--disable-test-syntax-validation</code> flag to bypass checks for test syntax.</p>
+<p>In this instance, specify the <code>--disable-test-syntax-validation</code> flag to bypass test syntax checks.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe safari test.js --disable-test-syntax-validation
 </code></pre></div><h3><a class="anchor" id="--color"></a>--color <a class="permalink" href="#--color">#</a></h3>
 <p>Enables colors in the command line.</p>

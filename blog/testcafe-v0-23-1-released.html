@@ -15,7 +15,7 @@
   
   <title>TestCafe v0.23.1 Released | TestCafe</title>
 
-  <meta name="description" content="TestCafe v0.23.1 ReleasedSelect tests and fixtures to run by their metadata and run dynamically loaded tests.">
+  <meta name="description" content="TestCafe v0.23.1 ReleasedUse metadata to select and run tests and fixtures, and load tests dynamically.">
   <meta name="viewport" content="width=device-width">
 
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
@@ -383,6 +383,10 @@
         </div>
       
         <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/continuous-integration/">Continuous Integration</a>      
+        </div>
+      
+        <div class="doc-top-nav-tab " >
           <a href="/testcafe/documentation/recipes/">Recipes</a>      
         </div>
       
@@ -399,27 +403,23 @@
         </div>
         <article class="post-content">
             <h1>TestCafe v0.23.1 Released</h1>
-<p>Select tests and fixtures to run by their metadata and run dynamically loaded tests.</p>
+<p>Use metadata to select and run tests and fixtures, and load tests dynamically.</p>
 
 <!--more-->
 <h2><a class="anchor" id="enhancements"></a>Enhancements <a class="permalink" href="#enhancements">#</a></h2><h3><a class="anchor" id="select-tests-and-fixtures-to-run-by-their-metadata-2527-by-nickcis"></a>⚙ Select Tests and Fixtures to Run by Their Metadata (<a href="https://github.com/DevExpress/testcafe/issues/2527">#2527</a>) by <a href="https://github.com/NickCis">@NickCis</a> <a class="permalink" href="#select-tests-and-fixtures-to-run-by-their-metadata-2527-by-nickcis">#</a></h3>
-<p>You can now run only those tests or fixtures whose <a href="https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#specifying-testing-metadata">metadata</a> contains a specific set of values.</p>
-
-<p>Use the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--test-meta-keyvaluekey2value2">--test-meta</a> flag to specify values to look for in test metadata.</p>
+<p>You can now run only those tests or fixtures whose <a href="https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#specifying-testing-metadata">metadata</a> contains a specific set of values. Use the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--test-meta-keyvaluekey2value2">--test-meta</a> and <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--fixture-meta-keyvaluekey2value2">--fixture-meta</a> flags to specify these values.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests --test-meta <span class="nv">device</span><span class="o">=</span>mobile,env<span class="o">=</span>production
+</code></pre></div><div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests --fixture-meta <span class="nv">subsystem</span><span class="o">=</span>payments,type<span class="o">=</span>regression
 </code></pre></div>
-<p>To select fixtures by their metadata, use the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--fixture-meta-keyvaluekey2value2">--fixture-meta</a> flag.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests --fixture-meta <span class="nv">subsystem</span><span class="o">=</span>payments,type<span class="o">=</span>regression
-</code></pre></div>
-<p>In the API, test and fixture metadata is now passed to the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#filter">runner.filter</a> method in the <code>testMeta</code> and <code>fixtureMeta</code> parameters. Use this metadata to decide whether to run the current test.</p>
+<p>In the API, test and fixture metadata is now passed to the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#filter">runner.filter</a> method in the <code>testMeta</code> and <code>fixtureMeta</code> parameters. Use this metadata to build a logic that determines whether to run the current test.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">filter</span><span class="p">((</span><span class="nx">testName</span><span class="p">,</span> <span class="nx">fixtureName</span><span class="p">,</span> <span class="nx">fixturePath</span><span class="p">,</span> <span class="nx">testMeta</span><span class="p">,</span> <span class="nx">fixtureMeta</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">testMeta</span><span class="p">.</span><span class="nx">mobile</span> <span class="o">===</span> <span class="s1">'true'</span> <span class="o">&amp;&amp;</span>
         <span class="nx">fixtureMeta</span><span class="p">.</span><span class="nx">env</span> <span class="o">===</span> <span class="s1">'staging'</span><span class="p">;</span>
 <span class="p">});</span>
 </code></pre></div><h3><a class="anchor" id="run-dynamically-loaded-tests-2074"></a>⚙ Run Dynamically Loaded Tests (<a href="https://github.com/DevExpress/testcafe/issues/2074">#2074</a>) <a class="permalink" href="#run-dynamically-loaded-tests-2074">#</a></h3>
-<p>You can now run tests imported from external libraries or generated dynamically even if the <code>.js</code> file you provide to TestCafe does not contain any tests.</p>
+<p>You can now run tests imported from external libraries or generated dynamically even if the <code>.js</code> file does not contain any tests.</p>
 
-<p>Previously, this was not possible because TestCafe required test files to contain the <a href="https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#fixtures">fixture</a> and <a href="https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#tests">test</a> directives. Now you can bypass this check. To do this, provide the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--disable-test-syntax-validation">--disable-test-syntax-validation</a> command line flag.</p>
+<p>This was not possible previously because test files should contain the <a href="https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#fixtures">fixture</a> and <a href="https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#tests">test</a> directives. However, you can now provide the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--disable-test-syntax-validation">--disable-test-syntax-validation</a> command line flag to bypass this check.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe safari test.js --disable-test-syntax-validation
 </code></pre></div>
 <p>In the API, use the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#run">disableTestSyntaxValidation</a> option.</p>
@@ -428,7 +428,7 @@
 <ul>
 <li>Touch events are now simulated with correct touch properties (<code>touches</code>, <code>targetTouches</code>, <code>changedTouches</code>) (<a href="https://github.com/DevExpress/testcafe/issues/2856">#2856</a>)</li>
 <li>Google Chrome now closes correctly on macOS after tests are finished (<a href="https://github.com/DevExpress/testcafe/issues/2860">#2860</a>)</li>
-<li>Internal attribute and node changes no longer provoke <code>MutationObserver</code> notifications (<a href="https://github.com/DevExpress/testcafe-hammerhead/issues/1769">testcafe-hammerhead/#1769</a>)</li>
+<li>Internal attribute and node changes no longer trigger <code>MutationObserver</code> notifications (<a href="https://github.com/DevExpress/testcafe-hammerhead/issues/1769">testcafe-hammerhead/#1769</a>)</li>
 <li>The <code>ECONNABORTED</code> error is no longer raised (<a href="https://github.com/DevExpress/testcafe-hammerhead/issues/1744">testcafe-hammerhead/#1744</a>)</li>
 <li>Websites that use <code>Location.ancestorOrigins</code> are now proxied correctly (<a href="https://github.com/DevExpress/testcafe-hammerhead/issues/1342">testcafe-hammerhead/#1342</a>)</li>
 </ul>
