@@ -97,7 +97,7 @@ export default class SessionController extends Session {
 
         if (!sessionInfo.url) {
             const pageUrl             = testRun.test.pageUrl;
-            const externalProxyHost   = testRun.opts.externalProxyHost;
+            const externalProxyHost   = testRun.opts.proxy;
             let externalProxySettings = null;
 
             if (externalProxyHost) {

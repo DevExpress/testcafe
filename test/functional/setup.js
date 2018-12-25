@@ -184,7 +184,7 @@ before(function () {
                 const speed                       = opts && opts.speed;
                 const appCommand                  = opts && opts.appCommand;
                 const appInitDelay                = opts && opts.appInitDelay;
-                const externalProxyHost           = opts && opts.useProxy;
+                const proxy                       = opts && opts.useProxy;
                 const proxyBypass                 = opts && opts.proxyBypass;
                 const customReporters             = opts && opts.reporter;
                 const skipUncaughtErrors          = opts && opts.skipUncaughtErrors;
@@ -225,7 +225,7 @@ before(function () {
                     runner.reporter('json', stream);
 
                 return runner
-                    .useProxy(externalProxyHost, proxyBypass)
+                    .useProxy(proxy, proxyBypass)
                     .browsers(connections)
 
                     .filter(test => {
