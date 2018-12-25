@@ -383,6 +383,10 @@
         </div>
       
         <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/continuous-integration/">Continuous Integration</a>      
+        </div>
+      
+        <div class="doc-top-nav-tab " >
           <a href="/testcafe/documentation/recipes/">Recipes</a>      
         </div>
       
@@ -496,13 +500,13 @@ a <a href="https://devexpress.github.io/testcafe/documentation/test-api/selectin
 <span class="kr">const</span> <span class="nx">id</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'.someClass'</span><span class="p">).</span><span class="nx">id</span><span class="p">;</span>
 </code></pre></div>
 <ul>
-<li><code>selectorOptions.index</code> - use <a href="http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#nth">selector.nth()</a> instead.</li>
-<li><code>selectorOptions.text</code> - use <a href="http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#withtext">selector.withText()</a> instead.</li>
+<li><code>selectorOptions.index</code> - use <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#nth">selector.nth()</a> instead.</li>
+<li><code>selectorOptions.text</code> - use <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#withtext">selector.withText()</a> instead.</li>
 <li><code>selectorOptions.dependencies</code> - use <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#filter-dom-nodes">filtering</a> and <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#search-for-elements-in-the-dom-hierarchy">hierarchical</a> methods to build combined selectors instead.</li>
 </ul>
 <h3><a class="anchor" id="built-in-assertions-998"></a>⚙ Built-in assertions. (<a href="https://github.com/DevExpress/testcafe/issues/998">#998</a>) <a class="permalink" href="#built-in-assertions-998">#</a></h3>
-<p>TestCafe now ships with <a href="http://devexpress.github.io/testcafe/documentation/test-api/assertions/assertion-api.html">numerous built-in BDD-style assertions</a>.
-If the TestCafe assertion receives a <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/using-selectors.html#define-assertion-actual-value">Selector&#39;s DOM node state property</a> as an actual value, TestCafe uses the <a href="http://devexpress.github.io/testcafe/documentation/test-api/assertions/index.html#smart-assertion-query-mechanism">smart assertion query mechanism</a>:
+<p>TestCafe now ships with <a href="https://devexpress.github.io/testcafe/documentation/test-api/assertions/assertion-api.html">numerous built-in BDD-style assertions</a>.
+If the TestCafe assertion receives a <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/using-selectors.html#define-assertion-actual-value">Selector&#39;s DOM node state property</a> as an actual value, TestCafe uses the <a href="https://devexpress.github.io/testcafe/documentation/test-api/assertions/index.html#smart-assertion-query-mechanism">smart assertion query mechanism</a>:
 if an assertion did not passed, the test does not fail immediately. The assertion retries to pass multiple times and each time it re-requests the actual shorthand value. The test fails if the assertion could not complete successfully within a timeout.
 This approach allows you to create stable tests that lack random errors and decrease the amount of time required to run all your tests due to the lack of extra waitings.</p>
 

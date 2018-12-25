@@ -497,6 +497,10 @@
           <a href="/testcafe/documentation/extending-testcafe/">Extending TestCafe</a>      
         </div>
       
+        <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/continuous-integration/">Continuous Integration</a>      
+        </div>
+      
         <div class="doc-top-nav-tab active" >
           <a href="/testcafe/documentation/recipes/">Recipes</a>      
         </div>
@@ -522,11 +526,16 @@
 
 	
 	
+
+	
+	
 	<div class="doc-nav-panel">
 		<div class="toggle-nav-button"></div>
 		<div class="doc-nav-panel-header">
 			<div class="doc-nav-panel-heading">Documentation</div>
 			<div class="doc-nav-panel-title">
+				
+					
 				
 					
 				
@@ -566,46 +575,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/recipes/integrating-testcafe-with-ci-systems/"  >Integrating TestCafe with CI Systems</a>
-		
-			<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/recipes/integrating-testcafe-with-ci-systems/appveyor.html"  >AppVeyor</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/recipes/integrating-testcafe-with-ci-systems/circleci.html"  >CircleCI</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/recipes/integrating-testcafe-with-ci-systems/jenkins.html"  >Jenkins</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/recipes/integrating-testcafe-with-ci-systems/teamcity.html"  >TeamCity</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/recipes/integrating-testcafe-with-ci-systems/travis.html"  >Travis</a>
-		
-    </li>
-
-</ul>
+<a href="/testcafe/documentation/recipes/debug-in-webstorm.html"  >Debug in WebStorm</a>
 		
     </li>
 
@@ -613,13 +583,6 @@
 		    
 		
 <a href="/testcafe/documentation/recipes/finding-code-issues-with-flow-type-checker.html"  >Finding Code Issues with Flow Type Checker</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.html"  >Running Tests Using Travis CI and Sauce Labs</a>
 		
     </li>
 
@@ -682,11 +645,11 @@
 <p>Before you debug in Visual Studio Code, ensure that your root test directory contains a <code>package.json</code> file that includes <code>testcafe</code> in the <code>devDependencies</code> section.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
   </span><span class="nt">"devDependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="nt">"testcafe"</span><span class="p">:</span><span class="w"> </span><span class="s2">"x.y.z"</span><span class="w">
+    </span><span class="nt">"testcafe"</span><span class="p">:</span><span class="w"> </span><span class="s2">"*"</span><span class="w">
   </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
-<p>where <code>x.y.z</code> is the TestCafe version you use.</p>
+<p>You can replace <code>*</code> with the actual TestCafe version you use.</p>
 
 <p>Then you need to install TestCafe locally in the test directory.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">npm install

@@ -498,6 +498,10 @@
         </div>
       
         <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/continuous-integration/">Continuous Integration</a>      
+        </div>
+      
+        <div class="doc-top-nav-tab " >
           <a href="/testcafe/documentation/recipes/">Recipes</a>      
         </div>
       
@@ -523,6 +527,8 @@
 				
 					
 						Using TestCafe
+					
+				
 					
 				
 					
@@ -686,6 +692,9 @@
 
 	
 	
+
+	
+	
 	
 
 
@@ -781,7 +790,7 @@
 <td>The callback that determines if a particular test should be run.</td>
 </tr>
 </tbody></table></div>
-<p>The callback function is called for each test in the files specified using the <a href="#src">src</a> method.</p>
+<p>The callback function is called for each test in the files the <a href="#src">src</a> method specifies.</p>
 
 <p>Return <code>true</code> from the callback to include the current test or <code>false</code> to exclude it.</p>
 
@@ -1141,19 +1150,19 @@ where tests are not guaranteed to execute correctly.</p>
 <tr>
 <td><code>pageLoadTimeout</code></td>
 <td>Number</td>
-<td>Specifies the time (in milliseconds) passed after the <code>DOMContentLoaded</code> event, within which TestCafe waits for the <code>window.load</code> event to fire. After the timeout passes or the <code>window.load</code> event is raised (whichever happens first), TestCafe starts the test. You can set this timeout to <code>0</code> to skip waiting for <code>window.load</code>.</td>
+<td>Specifies the time (in milliseconds) TestCafe waits for the <code>window.load</code> event to fire after the <code>DOMContentLoaded</code> event. After the timeout passes or the <code>window.load</code> event is raised (whichever happens first), TestCafe starts the test. You can set this timeout to <code>0</code> to skip waiting for <code>window.load</code>.</td>
 <td><code>3000</code></td>
 </tr>
 <tr>
 <td><code>speed</code></td>
 <td>Number</td>
-<td>Specifies the test execution speed. Should be a number between <code>1</code> (the fastest) and <code>0.01</code> (the slowest). If speed is also specified for an <a href="../../test-api/actions/action-options.html#basic-action-options">individual action</a>, the action speed setting overrides test speed.</td>
+<td>Specifies the test execution speed. A number between <code>1</code> (fastest) and <code>0.01</code> (slowest). If an <a href="../../test-api/actions/action-options.html#basic-action-options">individual action&#39;s</a> speed is also specified, the action speed setting overrides the test speed.</td>
 <td><code>1</code></td>
 </tr>
 <tr>
 <td><code>stopOnFirstFail</code></td>
 <td>Boolean</td>
-<td>Defines whether to stop an entire test run if any test fails. This allows you not to wait for all the tests included in the test task to finish and allows focusing on the first error.</td>
+<td>Defines whether to stop a test run if a test fails. This allows you not to wait for all the tests to finish and to focus on the first error.</td>
 <td><code>false</code></td>
 </tr>
 <tr>

@@ -17,7 +17,7 @@
       .doc-top-nav .doc-top-nav-content .doc-top-nav-wrapper .doc-top-nav-tab {
         display: inline-block;
         margin: 10px 0 20px;
-        padding: 5px 15px 15px 15px; }
+        padding: 5px 15px 12px 15px; }
         .doc-top-nav .doc-top-nav-content .doc-top-nav-wrapper .doc-top-nav-tab.active {
           background-color: #fdfdfd;
           border-radius: 5px 5px 0 0; }
