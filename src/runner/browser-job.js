@@ -80,7 +80,8 @@ export default class BrowserJob extends AsyncEventEmitter {
         }
 
         if (!this.completionQueue.length && !this.hasQueuedTestRuns) {
-            SessionController.closeSession(testRunController.testRun);
+            if (!this.opts.live)
+                SessionController.closeSession(testRunController.testRun);
 
             this
                 ._setResult(RESULT.done, { total: this.total, passed: this.passed })

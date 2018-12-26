@@ -73,6 +73,7 @@ const SEND_STATUS_REQUEST_TIME_LIMIT       = 5000;
 const SEND_STATUS_REQUEST_RETRY_DELAY      = 300;
 const SEND_STATUS_REQUEST_RETRY_COUNT      = 5;
 const CHECK_STATUS_RETRY_DELAY             = 1000;
+const UNLOCK_PAGE_COMMAND                  = 'unlock-page';
 
 const ACTION_IFRAME_ERROR_CTORS = {
     NotLoadedError:   ActionIframeIsNotLoadedError,
@@ -132,6 +133,8 @@ export default class Driver {
         hammerhead.on(hammerhead.EVENTS.uncaughtJsError, err => this._onJsError(err));
         hammerhead.on(hammerhead.EVENTS.unhandledRejection, err => this._onJsError(err));
         hammerhead.on(hammerhead.EVENTS.consoleMethCalled, e => this._onConsoleMessage(e));
+
+        this.setCustomCommandHandlers(UNLOCK_PAGE_COMMAND, () => this._unlockPageAfterTestIsDone());
     }
 
     set speed (val) {
@@ -163,6 +166,12 @@ export default class Driver {
             this.contextStorage.setItem(PENDING_PAGE_ERROR, error);
 
         return null;
+    }
+
+    _unlockPageAfterTestIsDone () {
+        disableRealEventsPreventing();
+
+        return Promise.resolve();
     }
 
     _failIfClientCodeExecutionIsInterrupted () {

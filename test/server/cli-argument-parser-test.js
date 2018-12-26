@@ -456,6 +456,7 @@ describe('CLI argument parser', function () {
             { long: '--fixture-grep', short: '-F' },
             { long: '--app', short: '-a' },
             { long: '--concurrency', short: '-c' },
+            { long: '--live', short: '-L' },
             { long: '--test-meta' },
             { long: '--fixture-meta' },
             { long: '--debug-on-fail' },
@@ -472,7 +473,7 @@ describe('CLI argument parser', function () {
             { long: '--dev' },
             { long: '--ssl' },
             { long: '--qr-code' },
-            { long: '--skip-uncaught-errors' },
+            { long: '--skip-uncaught-errors', short: '-u' },
             { long: '--color' },
             { long: '--no-color' },
             { long: '--stop-on-first-fail', short: '--sf' },
@@ -484,8 +485,13 @@ describe('CLI argument parser', function () {
 
         expect(options.length).eql(EXPECTED_OPTIONS.length, WARNING);
 
-        for (let i = 0; i < EXPECTED_OPTIONS.length; i++)
-            expect(find(options, EXPECTED_OPTIONS[i])).not.eql(void 0, WARNING);
+        for (let i = 0; i < EXPECTED_OPTIONS.length; i++) {
+            const option = find(options, EXPECTED_OPTIONS[i]);
+
+            expect(option).not.eql(void 0, WARNING);
+            expect(option.long).eql(EXPECTED_OPTIONS[i].long, WARNING);
+            expect(option.short).eql(EXPECTED_OPTIONS[i].short, WARNING);
+        }
     });
 });
 
