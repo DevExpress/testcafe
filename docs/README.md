@@ -11,6 +11,7 @@
     * [BrowserConnection Class](articles/documentation/using-testcafe/programming-interface/browserconnection.md)
     * [Runner Class](articles/documentation/using-testcafe/programming-interface/runner.md)
     * [createTestCafe Factory](articles/documentation/using-testcafe/programming-interface/createtestcafe.md)
+  * [Configuration File](articles/documentation/using-testcafe/configuration-file.md)
   * [Using TestCafe Docker Image](articles/documentation/using-testcafe/using-testcafe-docker-image.md)
   * [Common Concepts](articles/documentation/using-testcafe/common-concepts/README.md)
     * [Browsers](articles/documentation/using-testcafe/common-concepts/browsers/README.md)
