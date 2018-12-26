@@ -212,23 +212,29 @@
 - name: RECIPES
   url: /documentation/recipes/README.md
   content:
-    - name: Debug in Chrome Developer Tools
-      url: /documentation/recipes/debug-in-chrome-dev-tools.md
-    - name: Debug in Visual Studio Code
-      url: /documentation/recipes/debug-in-visual-studio-code.md
-    - name: Debug in WebStorm
-      url: /documentation/recipes/debug-in-webstorm.md
-    - name: Finding Code Issues with Flow Type Checker
-      url: /documentation/recipes/finding-code-issues-with-flow-type-checker.md
-    - name: Testing &lt;select&gt; Elements
-      url: /documentation/recipes/testing-select-elements.md
+    - name: Debug Tests
+      url: /documentation/recipes/debug-tests/README.md
+      content:
+        - name: Chrome Developer Tools
+          url: /documentation/recipes/debug-tests/chrome-dev-tools.md
+        - name: Visual Studio Code
+          url: /documentation/recipes/debug-tests/visual-studio-code.md
+        - name: WebStorm
+          url: /documentation/recipes/debug-tests/webstorm.md
+    - name: Find Code Issues with Flow Type Checker
+      url: /documentation/recipes/find-code-issues-with-flow-type-checker.md
+    - name: Test &lt;select&gt; Elements
+      url: /documentation/recipes/test-select-elements.md
     - name: Test Static HTML Pages
       url: /documentation/recipes/test-static-html-pages.md
-    - name: Testing on Remote Computers and Mobile Devices
-      url: /documentation/recipes/testing-on-remote-computers-and-mobile-devices.md
-    - name: Using Page Model
-      url: /documentation/recipes/using-page-model.md
-    - name: Using TestCafe with Grunt
-      url: /documentation/recipes/using-testcafe-with-grunt.md
-    - name: Using TestCafe with Gulp
-      url: /documentation/recipes/using-testcafe-with-gulp.md
+    - name: Test on Remote Computers and Mobile Devices
+      url: /documentation/recipes/test-on-remote-computers-and-mobile-devices.md
+    - name: Use Page Model
+      url: /documentation/recipes/use-page-model.md
+    - name: Use Task Runners
+      url: /documentation/recipes/use-task-runners/README.md
+      content:
+        - name: Grunt
+          url: /documentation/recipes/use-task-runners/grunt.md
+        - name: Gulp
+          url: /documentation/recipes/use-task-runners/gulp.md

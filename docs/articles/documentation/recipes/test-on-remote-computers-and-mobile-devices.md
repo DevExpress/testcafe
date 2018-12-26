@@ -1,9 +1,11 @@
 ---
 layout: docs
-title: Testing on Remote Computers and Mobile Devices
-permalink: /documentation/recipes/testing-on-remote-computers-and-mobile-devices.html
+title: Test on Remote Computers and Mobile Devices
+permalink: /documentation/recipes/test-on-remote-computers-and-mobile-devices.html
+redirect_from:
+  - /documentation/recipes/testing-on-remote-computers-and-mobile-devices.html
 ---
-# Testing on Remote Computers and Mobile Devices
+# Test on Remote Computers and Mobile Devices
 
 TestCafe allows you to run tests on any device that has network access to the machine where TestCafe is installed.
 
