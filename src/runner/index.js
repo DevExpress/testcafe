@@ -329,8 +329,8 @@ export default class Runner extends EventEmitter {
         return this;
     }
 
-    useProxy (externalProxyHost, proxyBypass) {
-        this.configuration.mergeOptions({ externalProxyHost, proxyBypass });
+    useProxy (proxy, proxyBypass) {
+        this.configuration.mergeOptions({ proxy, proxyBypass });
 
         return this;
     }

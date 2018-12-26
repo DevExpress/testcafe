@@ -64,7 +64,7 @@ async function runTests (argParser) {
     const opts              = argParser.opts;
     const port1             = opts.ports && opts.ports[0];
     const port2             = opts.ports && opts.ports[1];
-    const externalProxyHost = opts.proxy;
+    const proxy             = opts.proxy;
     const proxyBypass       = opts.proxyBypass;
 
     log.showSpinner();
@@ -76,7 +76,7 @@ async function runTests (argParser) {
     let failed           = 0;
 
     runner
-        .useProxy(externalProxyHost, proxyBypass)
+        .useProxy(proxy, proxyBypass)
         .src(argParser.src)
         .browsers(browsers)
         .reporter(argParser.opts.reporter)
