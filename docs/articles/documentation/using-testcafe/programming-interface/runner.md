@@ -163,7 +163,11 @@ Use the `path:` prefix. Enclose the path in backticks if it contains spaces.
 runner.browsers('path:`C:\\Program Files\\Internet Explorer\\iexplore.exe`');
 ```
 
-> Do not use the `path:` prefix if you need to run a browser in the [headless mode](../common-concepts/browsers/testing-in-headless-mode.md), use [device emulation](../common-concepts/browsers/using-chrome-device-emulation.md) or [user profiles](../common-concepts/browsers/user-profiles.md). Specify the [browser alias](../common-concepts/browsers/browser-support.md#locally-installed-browsers) in these cases.
+Do not use the `path:` prefix if you need to run a browser in the [headless mode](../common-concepts/browsers/testing-in-headless-mode.md), use [device emulation](../common-concepts/browsers/using-chrome-device-emulation.md) or [user profiles](../common-concepts/browsers/user-profiles.md). Specify the [browser alias](#using-browser-aliases) in these cases and omit backticks.
+
+```js
+runner.browsers('chrome:D:\\Google Chrome Portable\\GoogleChromePortable.exe:headless');
+```
 
 #### Specifying the Path with Command Line Parameters
 
@@ -172,6 +176,12 @@ runner.browsers({
     path: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
     cmd: '--new-window'
 });
+```
+
+You cannot pass browser parameters in the `path` property for the [headless mode](../common-concepts/browsers/testing-in-headless-mode.md), [device emulation](../common-concepts/browsers/using-chrome-device-emulation.md) or [user profiles](../common-concepts/browsers/user-profiles.md). To enable these features, use a string with a [browser alias](#using-browser-aliases).
+
+```js
+runner.browsers('chrome:D:\\Google Chrome Portable\\GoogleChromePortable.exe:headless --new-window')
 ```
 
 #### Passing a Remote Browser Connection
