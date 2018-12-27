@@ -2,8 +2,7 @@ import EventEmitter from 'events';
 import fs from 'fs';
 import ModulesGraph from './modules-graph';
 
-const LOCK_CACHE_TIMEOUT   = 200;
-const FILE_RELEASE_TIMEOUT = 300;
+const WATCH_LOCKED_TIMEOUT = 700;
 
 export default class FileWatcher extends EventEmitter {
     constructor (files) {
@@ -20,11 +19,6 @@ export default class FileWatcher extends EventEmitter {
     }
 
     _onChanged (file) {
-        if (this.lockedFiles[file])
-            return;
-
-        this.lockedFiles[file] = true;
-
         const cache = require.cache;
 
         if (!this.modulesGraph) {
@@ -39,11 +33,18 @@ export default class FileWatcher extends EventEmitter {
         this.lastChangedFiles.push(file);
         this.modulesGraph.clearParentsCache(cache, file);
 
-        setTimeout(() => {
-            this.lockedFiles[file] = void 0;
-        }, LOCK_CACHE_TIMEOUT);
-
         this.emit(this.FILE_CHANGED_EVENT, { file });
+    }
+
+    _watch (file) {
+        if (this.lockedFiles[file])
+            return;
+
+        this.lockedFiles[file] = setTimeout(() => {
+            this._onChanged(file);
+
+            delete this.lockedFiles[file];
+        }, WATCH_LOCKED_TIMEOUT);
     }
 
     addFile (file) {
@@ -53,11 +54,7 @@ export default class FileWatcher extends EventEmitter {
                 this.modulesGraph.addNode(file, require.cache);
             }
 
-            this.watchers[file] = fs.watch(file, () => {
-                setTimeout(() => {
-                    this._onChanged(file);
-                }, FILE_RELEASE_TIMEOUT);
-            });
+            this.watchers[file] = fs.watch(file, () => this._watch(file));
         }
     }
 }
