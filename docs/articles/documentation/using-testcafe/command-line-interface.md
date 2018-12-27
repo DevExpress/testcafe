@@ -110,6 +110,8 @@ In `Unix` shells like `bash`, `zsh`, `csh` (macOS, Linux, Windows Subsystem for 
 testcafe 'path:`C:\Program Files (x86)\Firefox Portable\firefox.exe`' tests/sample-fixture.js
 ```
 
+> Do not use the `path:` prefix if you need to run a browser in the [headless mode](common-concepts/browsers/testing-in-headless-mode.md), use [device emulation](common-concepts/browsers/using-chrome-device-emulation.md) or [user profiles](common-concepts/browsers/user-profiles.md). Specify the [browser alias](common-concepts/browsers/browser-support.md#locally-installed-browsers) in these cases.
+
 ### Testing in Headless Mode
 
 To run tests in the headless mode in Google Chrome or Firefox, use the `:headless` postfix:

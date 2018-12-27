@@ -163,6 +163,8 @@ Use the `path:` prefix. Enclose the path in backticks if it contains spaces.
 runner.browsers('path:`C:\\Program Files\\Internet Explorer\\iexplore.exe`');
 ```
 
+> Do not use the `path:` prefix if you need to run a browser in the [headless mode](../common-concepts/browsers/testing-in-headless-mode.md), use [device emulation](../common-concepts/browsers/using-chrome-device-emulation.md) or [user profiles](../common-concepts/browsers/user-profiles.md). Specify the [browser alias](../common-concepts/browsers/browser-support.md#locally-installed-browsers) in these cases.
+
 #### Specifying the Path with Command Line Parameters
 
 ```js
