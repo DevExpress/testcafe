@@ -125,7 +125,7 @@ See [Testing in Headless Mode](common-concepts/browsers/testing-in-headless-mode
 To run tests in Chrome's device emulation mode, specify `:emulation` and [device parameters](common-concepts/browsers/using-chrome-device-emulation.md#emulator-parameters).
 
 ```sh
-testcafe "chrome:emulation:device=iphone 6" tests/sample-fixture.js
+testcafe "chrome:emulation:device=iphone X" tests/sample-fixture.js
 ```
 
 See [Using Chrome Device Emulation](common-concepts/browsers/using-chrome-device-emulation.md) for more details.

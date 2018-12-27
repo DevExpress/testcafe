@@ -8,13 +8,13 @@ permalink: /documentation/using-testcafe/common-concepts/browsers/using-chrome-d
 You can run test in Chrome's built-in [device emulator](https://developers.google.com/web/tools/chrome-devtools/device-mode/). To do this, use the `emulation` browser parameter. Specify the target device with the `device` parameter.
 
 ```sh
-testcafe "chrome:emulation:device=iphone 6" tests/sample-fixture.js
+testcafe "chrome:emulation:device=iphone X" tests/sample-fixture.js
 ```
 
 ```js
 runner
     .src('tests/sample-fixture.js')
-    .browsers('chrome:emulation:device=iphone 6')
+    .browsers('chrome:emulation:device=iphone X')
     .run();
 ```
 
@@ -34,14 +34,20 @@ runner
 You can combine both device emulation and headless mode.
 
 ```sh
-testcafe "chrome:headless:emulation:device=iphone 6;cdpPort=9223" tests/sample-fixture.js
+testcafe "chrome:headless:emulation:device=iphone X;cdpPort=9223" tests/sample-fixture.js
 ```
 
 ```js
 runner
     .src('tests/sample-fixture.js')
-    .browsers('chrome:headless:emulation:device=iphone 6;cdpPort=9223')
+    .browsers('chrome:headless:emulation:device=iphone X;cdpPort=9223')
     .run();
+```
+
+To enable device emulation in a portable Chrome, also use the [browser alias](browser-support.md#locally-installed-browsers). The `path:` prefix does not work in this case.
+
+```sh
+testcafe "chrome:d:\chrome_portable\chrome.exe:emulation:device=iphone X" tests/test.js
 ```
 
 ## Emulator Parameters
