@@ -13,15 +13,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <title>Recipes | TestCafe</title>
+  <title>Debug Tests in WebStorm | TestCafe</title>
 
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
 
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://devexpress.github.io/testcafe/documentation/recipes/" />
-  <meta property="og:title" content="Recipes | TestCafe" />
+  <meta property="og:url" content="https://devexpress.github.io/testcafe/documentation/recipes/debug-tests/webstorm.html" />
+  <meta property="og:title" content="Debug Tests in WebStorm | TestCafe" />
 
   
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
@@ -29,7 +29,7 @@
   
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
-  <link rel="canonical" href="https://devexpress.github.io/testcafe/documentation/recipes/">
+  <link rel="canonical" href="https://devexpress.github.io/testcafe/documentation/recipes/debug-tests/webstorm.html">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="https://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
@@ -582,7 +582,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/recipes/debug-tests/webstorm.html"  >WebStorm</a>
+<a href="/testcafe/documentation/recipes/debug-tests/webstorm.html" class="active" >WebStorm</a>
 		
     </li>
 
@@ -663,19 +663,98 @@
 	<article class="doc">
 		<div class="post-content">
 
-			<h1>Recipes</h1>
-<p>This section provides examples and recipes of how to use TestCafe in different scenarios.</p>
+			<h1>Debug Tests in WebStorm</h1>
+<p>This topic describes how to debug TestCafe tests in <a href="https://www.jetbrains.com/webstorm/">WebStorm</a> with a Node.js debugger.</p>
+<h2><a class="anchor" id="step-1---install-testcafe"></a>Step 1 - Install TestCafe <a class="permalink" href="#step-1---install-testcafe">#</a></h2>
+<p>Execute the following command to install TestCafe locally and add it to the <code>devDependencies</code> section in <code>package.json</code>:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm --save-dev testcafe
+</code></pre></div><div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"devDependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"testcafe"</span><span class="p">:</span><span class="w"> </span><span class="s2">"*"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><h2><a class="anchor" id="step-2---add-a-command-to-debug-testcafe"></a>Step 2 - Add a Command To Debug TestCafe <a class="permalink" href="#step-2---add-a-command-to-debug-testcafe">#</a></h2>
+<p>Add a <code>debug</code> script to the <code>scripts</code> section in <code>package.json</code>. This script contains a command that runs TestCafe and specifies the target browser.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"debug"</span><span class="p">:</span><span class="w"> </span><span class="s2">"testcafe $NODE_DEBUG_OPTION chrome"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+
+    </span><span class="nt">"devDependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"testcafe"</span><span class="p">:</span><span class="w"> </span><span class="s2">"*"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>The <code>$NODE_DEBUG_OPTION</code> placeholder marks a place where Node.js debugger options are inserted before execution.</p>
+
+<p>The path to test files is specified in the debug configuration (<a href="#step-4---specify-configuration-options">step 4</a>).</p>
+<h2><a class="anchor" id="step-3---create-a-debug-configuration"></a>Step 3 - Create a Debug Configuration <a class="permalink" href="#step-3---create-a-debug-configuration">#</a></h2>
+<p>Open WebStorm. If no build or run configuration is set up, click <strong>Add Configuration</strong> in the top-right corner to invoke the <strong>Run/Debug Configurations</strong> dialog.</p>
+
+<p><img src="../../../images/webstorm/press-add-configuration.png" alt="Click Add Configuration"></p>
+
+<p>Otherwise, open the configuration drop-down menu and select <strong>Edit Configurations...</strong>.</p>
+
+<p><img src="../../../images/webstorm/edit-configurations.png" alt="Edit Configurations"></p>
+
+<p>In the <strong>Run/Debug Configurations</strong> dialog, click the <strong>+</strong> button to create a new configuration from a template.</p>
+
+<p><img src="../../../images/webstorm/new-configuration.png" alt="Create Configuration"></p>
+
+<p>In the list of templates, select <strong>npm</strong>.</p>
+
+<p><img src="../../../images/webstorm/select-npm-template.png" alt="Create Configuration"></p>
+
+<p>This creates a default npm configuration.</p>
+
+<p><img src="../../../images/webstorm/configuration.png" alt="Create Configuration"></p>
+<h2><a class="anchor" id="step-4---specify-configuration-options"></a>Step 4 - Specify Configuration Options <a class="permalink" href="#step-4---specify-configuration-options">#</a></h2>
+<p>Select the npm script (<code>debug</code>) in the <strong>Scripts</strong> field.</p>
+
+<p><img src="../../../images/webstorm/select-debug.png" alt="Select Debug"></p>
 
 <ul>
-<li><a href="debug-tests/">Debug Tests</a></li>
-<li><a href="find-code-issues-with-flow-type-checker.html">Find Code Issues with Flow Type Checker</a></li>
-<li><a href="test-select-elements.html">Test &lt;select&gt; Elements</a></li>
-<li><a href="test-static-html-pages.html">Test Static HTML Pages</a></li>
-<li><a href="test-on-remote-computers-and-mobile-devices.html">Test on Remote Computers and Mobile Devices</a></li>
-<li><a href="use-page-model.html">Use Page Model</a></li>
-<li><a href="use-task-runners/">Use Task Runners</a></li>
+<li><p><strong>WebStorm version prior to 2018.3</strong></p>
+
+<p>Specify the path to the test file you wish to debug in the <strong>Arguments</strong> field.</p>
+
+<p><img src="../../../images/webstorm/file-path-entered.png" alt="Enter File Path"></p>
+
+<p>Change this setting later to debug a different file.</p></li>
+<li><p><strong>WebStorm version 2018.3 and newer</strong></p>
+
+<p>Click the <strong>+</strong> button in the <strong>Arguments</strong> field to insert a macro.</p>
+
+<p><img src="../../../images/webstorm/click-add-macro-button.png" alt="Click Add Macro Button"></p>
+
+<p>This invokes the <strong>Macros</strong> dialog.</p>
+
+<p>Select <code>FilePath</code> to insert the path to the current file.</p>
+
+<p><img src="../../../images/webstorm/select-macros.png" alt="Select Macro"></p>
+
+<p>Click <strong>Insert</strong>. A macro <code>$FilePath$</code> is inserted to the <strong>Arguments</strong> field.</p>
+
+<p><img src="../../../images/webstorm/macros-entered.png" alt="Enter Macro"></p>
+
+<p>This allows WebStorm to debug the currently opened test file.</p></li>
 </ul>
 
+<p>Click <strong>OK</strong> to save changes.</p>
+<h2><a class="anchor" id="step-5---debug-tests"></a>Step 5 - Debug Tests <a class="permalink" href="#step-5---debug-tests">#</a></h2>
+<p>Open the file you wish to debug and put a breakpoint into it.</p>
+
+<p>Select the debug configuration you have created and click <strong>Debug</strong>.</p>
+
+<p><img src="../../../images/webstorm/press-debug.png" alt="Press Debug"></p>
+
+<p>TestCafe runs the test and stops at the breakpoint.</p>
+
+<p><img src="../../../images/webstorm/stop-on-breakpoint.png" alt="Stop on Breakpoint"></p>
+
+<p>Now you can use WebStorm debugging tools to inspect the code, step over to the next command, etc.</p>
+<blockquote><div class="blockquote-content"><p>The debugger may consider a TestCafe action chain as a single command and therefore fail to correctly step between these actions. In this instance, put a breakpoint at each chained action.</p>
+</div></blockquote>
 
 		</div>
 	</article>
