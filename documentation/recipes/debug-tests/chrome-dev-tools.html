@@ -13,15 +13,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <title>Recipes | TestCafe</title>
+  <title>Debug Tests in Chrome Developer Tools | TestCafe</title>
 
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
 
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://devexpress.github.io/testcafe/documentation/recipes/" />
-  <meta property="og:title" content="Recipes | TestCafe" />
+  <meta property="og:url" content="https://devexpress.github.io/testcafe/documentation/recipes/debug-tests/chrome-dev-tools.html" />
+  <meta property="og:title" content="Debug Tests in Chrome Developer Tools | TestCafe" />
 
   
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
@@ -29,7 +29,7 @@
   
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
-  <link rel="canonical" href="https://devexpress.github.io/testcafe/documentation/recipes/">
+  <link rel="canonical" href="https://devexpress.github.io/testcafe/documentation/recipes/debug-tests/chrome-dev-tools.html">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="https://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
@@ -568,7 +568,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/recipes/debug-tests/chrome-dev-tools.html"  >Chrome Developer Tools</a>
+<a href="/testcafe/documentation/recipes/debug-tests/chrome-dev-tools.html" class="active" >Chrome Developer Tools</a>
 		
     </li>
 
@@ -663,18 +663,35 @@
 	<article class="doc">
 		<div class="post-content">
 
-			<h1>Recipes</h1>
-<p>This section provides examples and recipes of how to use TestCafe in different scenarios.</p>
+			<h1>Debug Tests in Chrome Developer Tools</h1>
+<p>Starting with version 6.3.0, Node.js allows you to debug applications in Chrome Developer Tools.
+If you have Chrome and an appropriate version of Node.js installed on your machine,
+you can debug TestCafe test code.</p>
+<blockquote><div class="blockquote-content"><p>This topic describes steps that apply to Node.js v8 and newer.</p>
+</div></blockquote>
+<p>First, run TestCafe in the Node.js debugging mode. To do this, add the <code>--inspect-brk</code> flag to the test run command.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe --inspect-brk chrome ./tests
+</code></pre></div>
+<p>Put the <code>debugger</code> keyword in test code where you want to stop.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">https</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example`;</span>
 
-<ul>
-<li><a href="debug-tests/">Debug Tests</a></li>
-<li><a href="find-code-issues-with-flow-type-checker.html">Find Code Issues with Flow Type Checker</a></li>
-<li><a href="test-select-elements.html">Test &lt;select&gt; Elements</a></li>
-<li><a href="test-static-html-pages.html">Test Static HTML Pages</a></li>
-<li><a href="test-on-remote-computers-and-mobile-devices.html">Test on Remote Computers and Mobile Devices</a></li>
-<li><a href="use-page-model.html">Use Page Model</a></li>
-<li><a href="use-task-runners/">Use Task Runners</a></li>
-</ul>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">debugger</span><span class="p">;</span>
+    <span class="nx">await</span> <span class="nx">t</span>
+        <span class="p">.</span><span class="nx">setNativeDialogHandler</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">);</span>
+        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#populate'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div>
+<p>Navigate to <code>chrome://inspect</code> in Google Chrome. In the <strong>Remote Target</strong> section, find the Node.js debugger and click <strong>Inspect</strong>.</p>
+
+<p><img src="../../../images/chrome-dev-tools/chrome-inspect.png" alt="Inspect Page in Google Chrome"></p>
+
+<p>Chrome will invoke its Developer Tools and the debugger will stop test execution at the first line.
+Click the <strong>Resume script execution</strong> button or press F5 to continue. After that, text execution will pause at the <code>debugger</code> keyword allowing you to debug test code.</p>
+
+<p><img src="../../../images/chrome-dev-tools/chrome-dev-tools.png" alt="Debugging in Chrome Dev Tools"></p>
 
 
 		</div>

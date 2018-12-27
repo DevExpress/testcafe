@@ -13,15 +13,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <title>Recipes | TestCafe</title>
+  <title>Debug Tests in Visual Studio Code | TestCafe</title>
 
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
 
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://devexpress.github.io/testcafe/documentation/recipes/" />
-  <meta property="og:title" content="Recipes | TestCafe" />
+  <meta property="og:url" content="https://devexpress.github.io/testcafe/documentation/recipes/debug-tests/visual-studio-code.html" />
+  <meta property="og:title" content="Debug Tests in Visual Studio Code | TestCafe" />
 
   
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
@@ -29,7 +29,7 @@
   
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
-  <link rel="canonical" href="https://devexpress.github.io/testcafe/documentation/recipes/">
+  <link rel="canonical" href="https://devexpress.github.io/testcafe/documentation/recipes/debug-tests/visual-studio-code.html">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="https://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
@@ -575,7 +575,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/recipes/debug-tests/visual-studio-code.html"  >Visual Studio Code</a>
+<a href="/testcafe/documentation/recipes/debug-tests/visual-studio-code.html" class="active" >Visual Studio Code</a>
 		
     </li>
 
@@ -663,19 +663,63 @@
 	<article class="doc">
 		<div class="post-content">
 
-			<h1>Recipes</h1>
-<p>This section provides examples and recipes of how to use TestCafe in different scenarios.</p>
+			<h1>Debug Tests in Visual Studio Code</h1>
+<p>Before you debug in Visual Studio Code, ensure that your root test directory contains a <code>package.json</code> file that includes <code>testcafe</code> in the <code>devDependencies</code> section.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+  </span><span class="nt">"devDependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"testcafe"</span><span class="p">:</span><span class="w"> </span><span class="s2">"*"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>You can replace <code>*</code> with the actual TestCafe version you use.</p>
+
+<p>Then you need to install TestCafe locally in the test directory.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm install
+</code></pre></div>
+<p>The next step adds a launch configuration used to run TestCafe tests.</p>
+
+<p><img src="../../../images/recipe-vscode-configuration-file.png" alt="Configuration File"></p>
+
+<p>See the <a href="https://code.visualstudio.com/docs/editor/debugging#_launch-configurations">Visual Studio Code documentation</a> to learn how to create a configuration.</p>
+
+<p>You need to add the following configuration to the <code>launch.json</code> file.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"node"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"protocol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"inspector"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"request"</span><span class="p">:</span><span class="w"> </span><span class="s2">"launch"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Launch test files with TestCafe"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"program"</span><span class="p">:</span><span class="w"> </span><span class="s2">"${workspaceRoot}/node_modules/testcafe/bin/testcafe.js"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"args"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="s2">"firefox"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"${relativeFile}"</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="nt">"console"</span><span class="p">:</span><span class="w"> </span><span class="s2">"integratedTerminal"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"cwd"</span><span class="p">:</span><span class="w"> </span><span class="s2">"${workspaceRoot}"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>This configuration contains the following attributes:</p>
 
 <ul>
-<li><a href="debug-tests/">Debug Tests</a></li>
-<li><a href="find-code-issues-with-flow-type-checker.html">Find Code Issues with Flow Type Checker</a></li>
-<li><a href="test-select-elements.html">Test &lt;select&gt; Elements</a></li>
-<li><a href="test-static-html-pages.html">Test Static HTML Pages</a></li>
-<li><a href="test-on-remote-computers-and-mobile-devices.html">Test on Remote Computers and Mobile Devices</a></li>
-<li><a href="use-page-model.html">Use Page Model</a></li>
-<li><a href="use-task-runners/">Use Task Runners</a></li>
+<li><code>type</code> - specifies the configuration type. Set to <code>node</code> for a Node.js configuration.</li>
+<li><code>protocol</code> - specifies the Node.js <a href="https://code.visualstudio.com/docs/nodejs/nodejs-debugging#_supported-nodelike-runtimes">debugger wire protocol</a>. Note that the inspector protocol is supported in Node.js v6.3 (or v6.9 for Windows) or later. For early versions, omit this property. In that case, Node.js uses a legacy debugger protocol. The legacy protocol has issues with source map support, therefore newer versions of Node.js are recommended.</li>
+<li><code>request</code> - specifies the request type. Set to <code>launch</code> since this configuration launches a program.</li>
+<li><code>name</code> - specifies the configuration name.</li>
+<li><code>program</code> - path to the executed JS file. In this case, this file is the TestCafe module.</li>
+<li><code>args</code> - <a href="../../using-testcafe/command-line-interface.html">command line arguments</a> passed to the launched program. In this case, they specify the browser in which the tests should run and the relative path to the test file.</li>
+<li><code>console</code> - the console where the test run report is printed. In this case, the report is output to the integrated terminal. You can learn about other available values in the <a href="https://code.visualstudio.com/docs/editor/debugging#_launchjson-attributes">Launch.json attributes</a> topic.</li>
+<li><code>cwd</code> - the current working directory. Set to the workspace root.</li>
 </ul>
 
+<p>Save the <code>launch.json</code> file. The new configuration then appears in the configuration drop-down.</p>
+
+<p><img src="../../../images/recipe-vscode-select-configuration.png" alt="Select Configuration"></p>
+
+<p>Now you can open a file with TestCafe tests, select the <code>&quot;Launch test files with TestCafe&quot;</code> configuration and click the <strong>Run</strong> button.
+Tests run with the debugger attached. You can put breakpoints in test code and the debugger stops at them.</p>
+
+<p><img src="../../../images/recipe-vscode-debugging-breakpoint.png" alt="Stop at a Breakpoint"></p>
+<blockquote class="important"><div class="blockquote-content"><p>If you do not select the <code>&quot;Launch test files with TestCafe&quot;</code> configuration, Visual Studio Code tries to run the test file as a program and throws an error.</p>
+</div></blockquote>
 
 		</div>
 	</article>
