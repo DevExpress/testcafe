@@ -181,7 +181,7 @@ runner.browsers({
 You cannot pass browser parameters in the `path` property for the [headless mode](../common-concepts/browsers/testing-in-headless-mode.md), [device emulation](../common-concepts/browsers/using-chrome-device-emulation.md) or [user profiles](../common-concepts/browsers/user-profiles.md). To enable these features, use a string with a [browser alias](#using-browser-aliases).
 
 ```js
-runner.browsers('chrome:D:\\Google Chrome Portable\\GoogleChromePortable.exe:headless --new-window')
+runner.browsers('chrome:D:\\Google Chrome Portable\\GoogleChromePortable.exe:headless --dns-prefetch-disable')
 ```
 
 #### Passing a Remote Browser Connection
