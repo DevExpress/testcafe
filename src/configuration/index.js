@@ -25,6 +25,12 @@ export default class Configuration {
         this._filePath = resolvePathRelativelyCwd(CONFIGURATION_FILENAME);
     }
 
+    static _isArrayWithOneUndefinedItem (obj) {
+        return Array.isArray(obj) &&
+               obj.length === 1 &&
+               obj[0] === void 0;
+    }
+
     static _fromObj (obj) {
         const result = Object.create(null);
 
@@ -135,7 +141,7 @@ export default class Configuration {
         Object.entries(options).map(([key, value]) => {
             const option = this._ensureOption(key, value, optionSource.input);
 
-            if (value === void 0)
+            if (value === void 0 || Configuration._isArrayWithOneUndefinedItem(value))
                 return;
 
             if (option.value !== value &&

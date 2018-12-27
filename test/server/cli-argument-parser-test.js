@@ -348,6 +348,13 @@ describe('CLI argument parser', function () {
                     expect(parser.filter('thetest2', 'thefixture1', null, { test: 'test' }, { fixture: 'test' })).to.be.false;
                 });
         });
+
+        it("'.filter' property should equal undefined if filtering options are not provided", () => {
+            return parse('param1')
+                .then(parser => {
+                    expect(parser.filter).is.undefined;
+                });
+        });
     });
 
     describe('Ssl options', () => {
@@ -487,5 +494,12 @@ describe('CLI argument parser', function () {
         for (let i = 0; i < EXPECTED_OPTIONS.length; i++)
             expect(find(options, EXPECTED_OPTIONS[i])).not.eql(void 0, WARNING);
     });
-});
 
+    it('If "browser" and "src" parameters are omitted when they should be parsed as undefined values', () => {
+        return parse('')
+            .then(parser => {
+                expect(parser.browsers).is.undefined;
+                expect(parser.src).is.undefined;
+            });
+    });
+});

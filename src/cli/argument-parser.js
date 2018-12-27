@@ -117,7 +117,16 @@ export default class CLIArgumentParser {
         this.opts.testMeta    = optionValueToKeyValue('--test-meta', this.opts.testMeta);
         this.opts.fixtureMeta = optionValueToKeyValue('--fixture-meta', this.opts.fixtureMeta);
 
-        this.filter = createFilterFn(this.opts);
+        const allFilteringOptionsAreUndefined = [
+            this.opts.testGrep,
+            this.opts.fixtureGrep,
+            this.opts.testMeta,
+            this.opts.fixtureMeta,
+            this.opts.test,
+            this.opts.fixture
+        ].every(item => item === void 0);
+
+        this.filter = allFilteringOptionsAreUndefined ? void 0 : createFilterFn(this.opts);
     }
 
     _parseAppInitDelay () {
@@ -178,6 +187,9 @@ export default class CLIArgumentParser {
 
         this.browsers = splitQuotedText(browsersArg, ',')
             .filter(browser => browser && this._filterAndCountRemotes(browser));
+
+        if (!this.browsers.length)
+            this.browsers = void 0;
     }
 
     async _parseSslOptions () {
@@ -203,6 +215,9 @@ export default class CLIArgumentParser {
 
     _parseFileList () {
         this.src = this.program.args.slice(1);
+
+        if (!this.src.length)
+            this.src = void 0;
     }
 
     _getProviderName () {

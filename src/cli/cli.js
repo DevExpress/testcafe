@@ -71,7 +71,7 @@ async function runTests (argParser) {
 
     const testCafe       = await createTestCafe(opts.hostname, port1, port2, opts.ssl, opts.dev);
     const remoteBrowsers = await remotesWizard(testCafe, argParser.remoteCount, opts.qrCode);
-    const browsers       = argParser.browsers.concat(remoteBrowsers);
+    const browsers       = argParser.browsers && argParser.browsers.concat(remoteBrowsers);
     const runner         = testCafe.createRunner();
     let failed           = 0;
 
