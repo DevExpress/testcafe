@@ -625,8 +625,12 @@ gulp.task('test-docs-travis', gulp.parallel('test-website-travis', 'lint'));
 
 
 function testFunctional (fixturesDir, testingEnvironmentName, browserProviderName) {
-    process.env.TESTING_ENVIRONMENT   = testingEnvironmentName;
-    process.env.BROWSER_PROVIDER      = browserProviderName;
+    process.env.TESTING_ENVIRONMENT       = testingEnvironmentName;
+    process.env.BROWSER_PROVIDER          = browserProviderName;
+    process.env.BROWSERSTACK_USE_AUTOMATE = 1;
+
+    if (!process.env.BROWSERSTACK_NO_LOCAL)
+        process.env.BROWSERSTACK_NO_LOCAL = 1;
 
     if (DEV_MODE)
         process.env.DEV_MODE = 'true';

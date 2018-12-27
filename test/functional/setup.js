@@ -42,11 +42,13 @@ const REMOTE_CONNECTORS_MAP = {
     [config.browserProviderNames.remote]:       RemoteConnector
 };
 
+const USE_PROVIDER_POOL = config.useLocalBrowsers || isBrowserStack;
+
 function getBrowserInfo (settings) {
     return Promise
         .resolve()
         .then(() => {
-            if (!config.useLocalBrowsers)
+            if (!USE_PROVIDER_POOL)
                 return testCafe.createBrowserConnection();
 
             return browserProviderPool
@@ -148,7 +150,7 @@ before(function () {
 
             site.create(config.site.ports, config.site.viewsPath);
 
-            if (config.useLocalBrowsers)
+            if (USE_PROVIDER_POOL)
                 return Promise.resolve();
 
             // NOTE: we need to disable this particular timeout for preventing mocha timeout
@@ -278,7 +280,7 @@ after(function () {
     delete global.runTests;
     delete global.testReport;
 
-    if (!config.useLocalBrowsers)
+    if (!USE_PROVIDER_POOL)
         return closeRemoteBrowsers();
 
     return closeLocalBrowsers();
