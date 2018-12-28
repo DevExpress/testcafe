@@ -149,24 +149,12 @@ runner.browsers(['safari', 'chrome']);
 runner.browsers('saucelabs:Chrome@52.0:Windows 8.1');
 ```
 
-* using [headless mode](../common-concepts/browsers/testing-in-headless-mode.md)
-
-```js
-runner.browsers('chrome:headless');
-```
-
 #### Specifying the Path to the Browser Executable
 
 Use the `path:` prefix. Enclose the path in backticks if it contains spaces.
 
 ```js
 runner.browsers('path:`C:\\Program Files\\Internet Explorer\\iexplore.exe`');
-```
-
-Do not use the `path:` prefix if you need to run a browser in the [headless mode](../common-concepts/browsers/testing-in-headless-mode.md), use [device emulation](../common-concepts/browsers/using-chrome-device-emulation.md) or [user profiles](../common-concepts/browsers/user-profiles.md). Specify the [browser alias](#using-browser-aliases) in these cases and omit backticks.
-
-```js
-runner.browsers('chrome:D:\\Google Chrome Portable\\GoogleChromePortable.exe:headless');
 ```
 
 #### Specifying the Path with Command Line Parameters
@@ -178,11 +166,21 @@ runner.browsers({
 });
 ```
 
-You cannot pass browser parameters in the `path` property for the [headless mode](../common-concepts/browsers/testing-in-headless-mode.md), [device emulation](../common-concepts/browsers/using-chrome-device-emulation.md) or [user profiles](../common-concepts/browsers/user-profiles.md). To enable these features, use a string with a [browser alias](#using-browser-aliases).
+#### Headless Mode, Device Emulation and User Profiles
+
+You can add postfixes to browser aliases to run tests in the [headless mode](../common-concepts/browsers/testing-in-headless-mode.md), use [Chrome device emulation](../common-concepts/browsers/using-chrome-device-emulation.md) or [user profiles](../common-concepts/browsers/user-profiles.md).
 
 ```js
-runner.browsers('chrome:D:\\Google Chrome Portable\\GoogleChromePortable.exe:headless --dns-prefetch-disable')
+runner.browsers('chrome:headless');
 ```
+
+For portable browsers, use the browser alias followed by the path to an exacutable.
+
+```js
+runner.browsers('firefox:/home/user/apps/firerox.app:userProfile');
+```
+
+> The `path:` prefix does not support postfixes.
 
 #### Passing a Remote Browser Connection
 
