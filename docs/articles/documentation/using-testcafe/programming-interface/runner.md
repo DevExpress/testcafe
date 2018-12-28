@@ -174,10 +174,10 @@ You can add postfixes to browser aliases to run tests in the [headless mode](../
 runner.browsers('chrome:headless');
 ```
 
-For portable browsers, use the browser alias followed by the path to an exacutable.
+For portable browsers, use the browser alias followed by the path to an executable.
 
 ```js
-runner.browsers('firefox:/home/user/apps/firerox.app:userProfile');
+runner.browsers('firefox:/home/user/apps/firefox.app:userProfile');
 ```
 
 > The `path:` prefix does not support postfixes.
