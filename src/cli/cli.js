@@ -75,6 +75,8 @@ async function runTests (argParser) {
     const runner         = testCafe.createRunner();
     let failed           = 0;
 
+    runner.isCli = true;
+
     runner
         .useProxy(proxy, proxyBypass)
         .src(argParser.src)
