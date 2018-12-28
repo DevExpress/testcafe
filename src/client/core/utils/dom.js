@@ -47,6 +47,7 @@ export const getMapContainer                        = hammerhead.utils.dom.getMa
 export const getTagName                             = hammerhead.utils.dom.getTagName;
 export const closest                                = hammerhead.utils.dom.closest;
 export const getParents                             = hammerhead.utils.dom.getParents;
+export const findParent                             = hammerhead.utils.dom.findParent;
 export const getTopSameDomainWindow                 = hammerhead.utils.dom.getTopSameDomainWindow;
 
 export const isRadioButtonElement = el => isInputElement(el) && el.type === 'radio';
@@ -498,18 +499,4 @@ export function setElementValue (element, value) {
     /*eslint-enable no-restricted-properties*/
 
     return value;
-}
-
-export function findParent (node, includeSelf = false, predicate) {
-    if (!includeSelf)
-        node = node.parentNode;
-
-    while (node) {
-        if (typeof predicate !== 'function' || predicate(node))
-            return node;
-
-        node = node.parentNode;
-    }
-
-    return null;
 }
