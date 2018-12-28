@@ -138,7 +138,7 @@ describe('Configuration', () => {
                 });
         });
 
-        it('Should ignore an option with the undefined value', () => {
+        it('Should ignore an option with the "undefined" value', () => {
             return configuration.init()
                 .then(() => {
                     configuration.mergeOptions({ 'hostname': void 0 });
