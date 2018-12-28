@@ -903,4 +903,21 @@ describe('Runner', () => {
                 });
         });
     });
+
+    it('Should interpret the empty array of the arguments as the "undefined" value (only in CLI mode for "browsers" and "src" methods)', () => {
+        runner.isCli = true;
+
+        runner
+            .src('/path-to-test')
+            .browsers('ie');
+
+        runner.apiMethodWasCalled.reset();
+
+        runner
+            .src([])
+            .browsers([]);
+
+        expect(runner.configuration.getOption('src')).eql(['/path-to-test']);
+        expect(runner.configuration.getOption('browsers')).eql(['ie']);
+    });
 });

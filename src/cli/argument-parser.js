@@ -117,7 +117,16 @@ export default class CLIArgumentParser {
         this.opts.testMeta    = optionValueToKeyValue('--test-meta', this.opts.testMeta);
         this.opts.fixtureMeta = optionValueToKeyValue('--fixture-meta', this.opts.fixtureMeta);
 
-        this.filter = createFilterFn(this.opts);
+        const allFilteringOptionsAreUndefined = [
+            this.opts.testGrep,
+            this.opts.fixtureGrep,
+            this.opts.testMeta,
+            this.opts.fixtureMeta,
+            this.opts.test,
+            this.opts.fixture
+        ].every(item => item === void 0);
+
+        this.filter = allFilteringOptionsAreUndefined ? void 0 : createFilterFn(this.opts);
     }
 
     _parseAppInitDelay () {

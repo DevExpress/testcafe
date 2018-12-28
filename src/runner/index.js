@@ -34,6 +34,7 @@ export default class Runner extends EventEmitter {
         this.bootstrapper        = new Bootstrapper(browserConnectionGateway);
         this.pendingTaskPromises = [];
         this.configuration       = configuration;
+        this.isCli               = false;
 
         this.apiMethodWasCalled = new FlagList({
             initialFlagValue: false,
@@ -66,6 +67,15 @@ export default class Runner extends EventEmitter {
             Runner._disposeReporters(reporters),
             Runner._disposeTestedApp(testedApp)
         ]);
+    }
+
+    _prepareRestParameter (array) {
+        array = flatten(array);
+
+        if (this.isCli)
+            return array.length === 0 ? void 0 : array;
+
+        return array;
     }
 
     _createCancelablePromise (taskPromise) {
@@ -284,7 +294,7 @@ export default class Runner extends EventEmitter {
         if (this.apiMethodWasCalled.src)
             throw new GeneralError(MESSAGE.multipleAPIMethodCallForbidden, OPTION_NAMES.src);
 
-        sources = flatten(sources);
+        sources = this._prepareRestParameter(sources);
         this.configuration.mergeOptions({ [OPTION_NAMES.src]: sources });
 
         this.apiMethodWasCalled.src = true;
@@ -296,7 +306,7 @@ export default class Runner extends EventEmitter {
         if (this.apiMethodWasCalled.browsers)
             throw new GeneralError(MESSAGE.multipleAPIMethodCallForbidden, OPTION_NAMES.browsers);
 
-        browsers = flatten(browsers);
+        browsers = this._prepareRestParameter(browsers);
         this.configuration.mergeOptions({ browsers });
 
         this.apiMethodWasCalled.browsers = true;
