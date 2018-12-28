@@ -68,6 +68,12 @@ export default class Runner extends EventEmitter {
         ]);
     }
 
+    static _prepareRestParameter (array) {
+        array = flatten(array);
+
+        return array.length === 0 ? void 0 : array;
+    }
+
     _createCancelablePromise (taskPromise) {
         const promise           = taskPromise.then(({ completionPromise }) => completionPromise);
         const removeFromPending = () => remove(this.pendingTaskPromises, promise);
@@ -284,7 +290,7 @@ export default class Runner extends EventEmitter {
         if (this.apiMethodWasCalled.src)
             throw new GeneralError(MESSAGE.multipleAPIMethodCallForbidden, OPTION_NAMES.src);
 
-        sources = flatten(sources);
+        sources = Runner._prepareRestParameter(sources);
         this.configuration.mergeOptions({ [OPTION_NAMES.src]: sources });
 
         this.apiMethodWasCalled.src = true;
@@ -296,7 +302,7 @@ export default class Runner extends EventEmitter {
         if (this.apiMethodWasCalled.browsers)
             throw new GeneralError(MESSAGE.multipleAPIMethodCallForbidden, OPTION_NAMES.browsers);
 
-        browsers = flatten(browsers);
+        browsers = Runner._prepareRestParameter(browsers);
         this.configuration.mergeOptions({ browsers });
 
         this.apiMethodWasCalled.browsers = true;

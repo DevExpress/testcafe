@@ -146,14 +146,5 @@ describe('Configuration', () => {
                     expect(configuration.getOption('hostname')).eql('123.456.789');
                 });
         });
-
-        it('Should ignore an option with value that equals the array with one undefined item', () => {
-            return configuration.init()
-                .then(() => {
-                    configuration.mergeOptions({ 'src': [void 0] });
-
-                    expect(configuration.getOption('src')).eql(['path1/folder']);
-                });
-        });
     });
 });

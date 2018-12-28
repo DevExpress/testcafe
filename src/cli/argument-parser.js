@@ -187,9 +187,6 @@ export default class CLIArgumentParser {
 
         this.browsers = splitQuotedText(browsersArg, ',')
             .filter(browser => browser && this._filterAndCountRemotes(browser));
-
-        if (!this.browsers.length)
-            this.browsers = void 0;
     }
 
     async _parseSslOptions () {
@@ -215,9 +212,6 @@ export default class CLIArgumentParser {
 
     _parseFileList () {
         this.src = this.program.args.slice(1);
-
-        if (!this.src.length)
-            this.src = void 0;
     }
 
     _getProviderName () {
