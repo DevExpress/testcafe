@@ -1,25 +1,25 @@
 import Promise from 'pinkie';
 import TestRun from '../test-run';
+import { TEST_RUN_STATE } from './test-run-state';
 import COMMAND_TYPE from '../test-run/commands/type';
 
 const UNLOCK_PAGE_COMMAND      = 'unlock-page';
 const TEST_RUN_ABORTED_MESSAGE = 'Test run aborted';
 
-export const TestRunCtorFactory = function (callbacks, command, liveTestRunStorage) {
+export const TestRunCtorFactory = function (callbacks) {
     const { created, started, done, readyToNext } = callbacks;
-    const { registerStopHandler }    = command;
 
     return class LiveModeTestRun extends TestRun {
         constructor (test, browserConnection, screenshotCapturer, warningLog, opts) {
             super(test, browserConnection, screenshotCapturer, warningLog, opts);
 
-            this[liveTestRunStorage] = { test, stopping: false, stop: false, isInRoleInitializing: false };
-
             created(this, test);
 
-            registerStopHandler(this, () => {
-                this[liveTestRunStorage].stop = true;
-            });
+            this.state                = TEST_RUN_STATE.created;
+            this.finish               = null;
+            this.stopping             = false;
+            this.isInRoleInitializing = false;
+            this.stopped              = false;
         }
 
         start () {
@@ -27,17 +27,21 @@ export const TestRunCtorFactory = function (callbacks, command, liveTestRunStora
             super.start.apply(this, arguments);
         }
 
+        stop () {
+            this.stopped = true;
+        }
+
         _useRole (...args) {
-            this[liveTestRunStorage].isInRoleInitializing = true;
+            this.isInRoleInitializing = true;
 
             return super._useRole.apply(this, args)
                 .then(res => {
-                    this[liveTestRunStorage].isInRoleInitializing = false;
+                    this.isInRoleInitializing = false;
 
                     return res;
                 })
                 .catch(err => {
-                    this[liveTestRunStorage].isInRoleInitializing = false;
+                    this.isInRoleInitializing = false;
 
                     throw err;
                 });
@@ -46,7 +50,7 @@ export const TestRunCtorFactory = function (callbacks, command, liveTestRunStora
         executeCommand (commandToExec, callsite, forced) {
             // NOTE: don't close the page and the session when the last test in the queue is done
             if (commandToExec.type === COMMAND_TYPE.testDone && !forced) {
-                done(this, this[liveTestRunStorage].stop)
+                done(this, this.stopped)
                     .then(() => this.executeCommand(commandToExec, callsite, true))
                     .then(() => readyToNext(this));
 
@@ -55,9 +59,9 @@ export const TestRunCtorFactory = function (callbacks, command, liveTestRunStora
                 return Promise.resolve();
             }
 
-            if (this[liveTestRunStorage].stop && !this[liveTestRunStorage].stopping &&
-                !this[liveTestRunStorage].isInRoleInitializing) {
-                this[liveTestRunStorage].stopping = true;
+            if (this.stopped && !this.stopping &&
+                !this.isInRoleInitializing) {
+                this.stopping = true;
 
                 return Promise.reject(new Error(TEST_RUN_ABORTED_MESSAGE));
             }
