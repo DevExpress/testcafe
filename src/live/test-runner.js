@@ -76,7 +76,7 @@ class LiveModeRunner extends Runner {
 
     run (options) {
         if (this.preventRunCall)
-            throw new GeneralError(MESSAGE.cannotRunMultipleLiveModeRunnerMultipleTimes);
+            throw new GeneralError(MESSAGE.cannotRunLiveModeRunnerMultipleTimes);
 
         this.preventRunCall = true;
 
