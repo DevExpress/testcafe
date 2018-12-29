@@ -217,10 +217,11 @@ describe('Reporter', () => {
         const stream = createSyncTestStream();
 
         const runOpts = {
-            only:      ['chrome'],
-            reporters: [
+            only: ['chrome'],
+
+            reporter: [
                 {
-                    reporter:  'json',
+                    name:      'json',
                     outStream: stream
                 }
             ]
