@@ -64,6 +64,8 @@ To run tests in host machine browsers, connect them as [remote browsers](command
 docker run --net=host -v /d/tests:/tests -it testcafe/testcafe remote /tests/test.js
 ```
 
+Note that the `--net=host` option can weaken container security. If this is important for you, you can follow the instruction in the [Test on Remote Devices](#test-on-remote-devices) section instead. In this case, specify `localhost` as the hostname and omit the `--add-host` parameter.
+
 ## Test on Remote Devices
 
 Add the following options to the `docker run` command to run tests on a remote desktop or mobile device:
