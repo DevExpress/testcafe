@@ -42,12 +42,12 @@ class LiveModeController extends EventEmitter {
         if (!this.runner || !this.running) {
             this.logger.writeNothingToStopMessage();
 
-            return;
+            return Promise.resolve();
         }
 
         this.logger.writeStopRunningMessage();
 
-        this.runner.stop()
+        return this.runner.stop()
             .then(() => {
                 this.restarting = false;
                 this.running    = false;
@@ -56,29 +56,28 @@ class LiveModeController extends EventEmitter {
 
     _restart () {
         if (this.restarting || this.watchingPaused)
-            return;
+            return Promise.resolve();
 
         this.restarting = true;
 
         if (this.running) {
-            this._stop()
+            return this._stop()
                 .then(() => this.logger.writeTestsFinishedMessage())
                 .then(() => this._runTests());
         }
-        else
-            this._runTests();
+
+        return this._runTests();
     }
 
     _exit () {
-        if (!this.stopping)
-            return;
+        if (this.stopping)
+            return Promise.resolve();
 
         this.logger.writeExitMessage();
 
         this.stopping = true;
 
-        if (this.runner)
-            this.runner.exit();
+        return this.runner ? this.runner.exit() : Promise.resolve();
     }
 
     _createFileWatcher (src) {
