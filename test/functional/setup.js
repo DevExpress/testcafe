@@ -42,11 +42,13 @@ const REMOTE_CONNECTORS_MAP = {
     [config.browserProviderNames.remote]:       RemoteConnector
 };
 
+const USE_PROVIDER_POOL = config.useLocalBrowsers || isBrowserStack;
+
 function getBrowserInfo (settings) {
     return Promise
         .resolve()
         .then(() => {
-            if (!config.useLocalBrowsers)
+            if (!USE_PROVIDER_POOL)
                 return testCafe.createBrowserConnection();
 
             return browserProviderPool
@@ -100,13 +102,18 @@ function openRemoteBrowsers () {
         });
 }
 
-function waitUntilBrowsersConnected () {
-    return Promise.all(browsersInfo.map(browserInfo => {
-        if (browserInfo.connection.opened)
-            return Promise.resolve();
+function waitUtilBrowserConnectionOpened (connection) {
+    const connectedPromise = connection.opened ? Promise.resolve() : promisifyEvent(connection, 'opened');
 
-        return promisifyEvent(browserInfo.connection, 'opened');
-    }));
+    return connectedPromise
+        .then(() => {
+            // eslint-disable-next-line no-console
+            console.log(`Connected ${connection.userAgent}`);
+        });
+}
+
+function waitUntilBrowsersConnected () {
+    return Promise.all(browsersInfo.map(browserInfo => waitUtilBrowserConnectionOpened(browserInfo.connection)));
 }
 
 function closeRemoteBrowsers () {
@@ -148,13 +155,14 @@ before(function () {
 
             site.create(config.site.ports, config.site.viewsPath);
 
-            if (config.useLocalBrowsers)
-                return Promise.resolve();
-
             // NOTE: we need to disable this particular timeout for preventing mocha timeout
             // error while establishing connection to Sauce Labs. If connection wouldn't be
             // established after a specified number of attempts, an error will be thrown.
-            mocha.timeout(0);
+            if (isBrowserStack || !USE_PROVIDER_POOL)
+                mocha.timeout(0);
+
+            if (USE_PROVIDER_POOL)
+                return Promise.resolve();
 
             return openRemoteBrowsers();
         })
@@ -278,7 +286,7 @@ after(function () {
     delete global.runTests;
     delete global.testReport;
 
-    if (!config.useLocalBrowsers)
+    if (!USE_PROVIDER_POOL)
         return closeRemoteBrowsers();
 
     return closeLocalBrowsers();

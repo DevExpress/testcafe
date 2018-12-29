@@ -1,7 +1,7 @@
 const os = require('os');
 
 const isTravisEnvironment = !!process.env.TRAVIS;
-const hostname            = isTravisEnvironment ? os.hostname() : 'bs-local.com';
+const hostname            = isTravisEnvironment ? os.hostname() : '127.0.0.1';
 
 const browserProviderNames = {
     sauceLabs:    'sauceLabs',
@@ -36,22 +36,16 @@ testingEnvironments[testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers] = {
 
     browsers: [
         {
-            os:        'OS X',
-            osVersion: 'High Sierra',
-            name:      'safari',
-            alias:     'safari'
+            browserName: 'browserstack:safari@11.1:OS X High Sierra',
+            alias:       'safari'
         },
         {
-            os:        'OS X',
-            osVersion: 'High Sierra',
-            name:      'chrome',
-            alias:     'chrome-osx'
+            browserName: 'browserstack:chrome@71:OS X High Sierra',
+            alias:       'chrome-osx'
         },
         {
-            os:        'OS X',
-            osVersion: 'High Sierra',
-            name:      'firefox',
-            alias:     'firefox-osx'
+            browserName: 'browserstack:firefox@64:OS X High Sierra',
+            alias:       'firefox-osx'
         }
     ]
 };
@@ -68,20 +62,12 @@ testingEnvironments[testingEnvironmentNames.mobileBrowsers] = {
 
     browsers: [
         {
-            realMobile: true,
-            os:         'ios',
-            osVersion:  '11.4',
-            device:     'iPad Pro 12.9',
-            name:       'Mobile Safari',
-            alias:      'ipad'
+            browserName: 'browserstack:iPad Pro 12.9@11.4',
+            alias:       'ipad'
         },
         {
-            realMobile: true,
-            os:         'ios',
-            osVersion:  '10.3',
-            device:     'iPhone 7 Plus',
-            name:       'Mobile Safari',
-            alias:      'iphone'
+            browserName: 'browserstack:iPhone 7 Plus@10.3',
+            alias:       'iphone'
         }
     ]
 };

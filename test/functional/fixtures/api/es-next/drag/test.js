@@ -7,7 +7,7 @@ describe('[API] Drag actions', function () {
             return runTests('./testcafe-fixtures/drag-test.js', 'Drag to offset', { shouldFail: true, only: 'chrome' })
                 .catch(function (errs) {
                     expect(errs[0]).to.contain('Drag to offset completed successfully');
-                    expect(errs[0]).to.contain('>  9 |    await t.drag(\'#draggable-div-1\'');
+                    expect(errs[0]).to.contain('> 10 |    await t.drag(\'#draggable-div-1\'');
                 });
         });
 
@@ -22,7 +22,7 @@ describe('[API] Drag actions', function () {
                         'function, CSS selector string, another Selector, node snapshot or a Promise returned ' +
                         'by a Selector, but object was passed.'
                     );
-                    expect(errs[0]).to.contain('> 16 |    await t.drag({}, 10, 20);');
+                    expect(errs[0]).to.contain('> 17 |    await t.drag({}, 10, 20);');
                 });
         });
 
@@ -33,7 +33,7 @@ describe('[API] Drag actions', function () {
             })
                 .catch(function (errs) {
                     expect(errs[0]).to.contain('The "dragOffsetX" argument is expected to be an integer, but it was NaN.');
-                    expect(errs[0]).to.contain('> 20 |    await t.drag(\'#draggable-div-1\', NaN, 20);');
+                    expect(errs[0]).to.contain('> 21 |    await t.drag(\'#draggable-div-1\', NaN, 20);');
                 });
         });
 
@@ -44,7 +44,7 @@ describe('[API] Drag actions', function () {
             })
                 .catch(function (errs) {
                     expect(errs[0]).to.contain('The "dragOffsetY" argument is expected to be an integer, but it was 3.14.');
-                    expect(errs[0]).to.contain('> 24 |    await t.drag(\'#draggable-div-1\', 10, 3.14);');
+                    expect(errs[0]).to.contain('> 25 |    await t.drag(\'#draggable-div-1\', 10, 3.14);');
                 });
         });
 
@@ -55,7 +55,7 @@ describe('[API] Drag actions', function () {
             })
                 .catch(function (errs) {
                     expect(errs[0]).to.contain('The "offsetX" option is expected to be an integer, but it was string.');
-                    expect(errs[0]).to.contain('> 28 |    await t.drag(\'#draggable-div-1\', 10, 20, { offsetX: \'test\' });');
+                    expect(errs[0]).to.contain('> 29 |    await t.drag(\'#draggable-div-1\', 10, 20, { offsetX: \'test\' });');
                 });
         });
     });
@@ -65,7 +65,7 @@ describe('[API] Drag actions', function () {
             return runTests('./testcafe-fixtures/drag-test.js', 'Drag to element', { shouldFail: true, only: 'chrome' })
                 .catch(function (errs) {
                     expect(errs[0]).to.contain('Drag to element completed successfully');
-                    expect(errs[0]).to.contain('> 32 |    await t.dragToElement(\'#draggable-div-2\', \'#destination-div\'');
+                    expect(errs[0]).to.contain('> 33 |    await t.dragToElement(\'#draggable-div-2\', \'#destination-div\'');
                 });
         });
 
@@ -80,7 +80,7 @@ describe('[API] Drag actions', function () {
                         'function, CSS selector string, another Selector, node snapshot or a Promise returned ' +
                         'by a Selector, but undefined was passed.'
                     );
-                    expect(errs[0]).to.contain('> 39 |    await t.dragToElement(void 0, \'#destination-div\');');
+                    expect(errs[0]).to.contain('> 40 |    await t.dragToElement(void 0, \'#destination-div\');');
                 });
         });
 
@@ -95,7 +95,7 @@ describe('[API] Drag actions', function () {
                         'with a function, CSS selector string, another Selector, node snapshot or a Promise ' +
                         'returned by a Selector, but object was passed.'
                     );
-                    expect(errs[0]).to.contain('> 43 |    await t.dragToElement(\'#draggable-div-2\', null);');
+                    expect(errs[0]).to.contain('> 44 |    await t.dragToElement(\'#draggable-div-2\', null);');
                 });
         });
 
@@ -106,7 +106,7 @@ describe('[API] Drag actions', function () {
             })
                 .catch(function (errs) {
                     expect(errs[0]).to.contain('The "modifiers.shift" option is expected to be a boolean value, but it was number.');
-                    expect(errs[0]).to.contain('> 47 |    await t.dragToElement(\'#draggable-div-2\', \'#destination-div\'');
+                    expect(errs[0]).to.contain('> 48 |    await t.dragToElement(\'#draggable-div-2\', \'#destination-div\'');
                 });
         });
 
@@ -114,7 +114,7 @@ describe('[API] Drag actions', function () {
             return runTests('./testcafe-fixtures/drag-test.js', 'Destination element selector returns text node', { shouldFail: true })
                 .catch(function (errs) {
                     expect(errs[0]).to.contains('The element that matches the specified "destinationSelector" is not visible.');
-                    expect(errs[0]).to.contains(' > 55 |    await t.dragToElement(\'#draggable-div-2\', getDocument);');
+                    expect(errs[0]).to.contains(' > 56 |    await t.dragToElement(\'#draggable-div-2\', getDocument);');
                 });
         });
 

@@ -1,5 +1,6 @@
 import { ClientFunction } from 'testcafe';
 import { saveWindowState, restoreWindowState } from '../../../../window-helpers';
+import config from '../../../../config';
 
 
 const removeBodyMargin = ClientFunction(() => {
@@ -8,11 +9,17 @@ const removeBodyMargin = ClientFunction(() => {
 
 fixture `GH-1940 - Should scroll to element when body has scroll`
     .beforeEach(async t => {
+        if (!config.useLocalBrowsers)
+            return;
+
         await saveWindowState(t);
 
         await t.resizeWindow(700, 400);
     })
     .afterEach(async t => {
+        if (!config.useLocalBrowsers)
+            return;
+
         await restoreWindowState(t);
     });
 
