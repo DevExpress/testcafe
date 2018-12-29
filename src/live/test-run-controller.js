@@ -9,7 +9,6 @@ class LiveModeTestRunController extends EventEmitter {
 
         this.RUN_FINISHED_EVENT = 'run-finished-event';
         this.RUN_STOPPED_EVENT  = 'run-stopped-event';
-        this.RUN_STARTED_EVENT  = 'run-started-event';
 
         this.testWrappers      = [];
         this.expectedTestCount = 0;
@@ -68,9 +67,6 @@ class LiveModeTestRunController extends EventEmitter {
     }
 
     _onTestRunStarted (testRun) {
-        if (!this.testWrappers.filter(w => w.state !== TEST_STATE.created).length)
-            this.emit(this.RUN_STARTED_EVENT, {});
-
         testRun.state             = TEST_RUN_STATE.running;
         testRun.testWrapper.state = TEST_STATE.running;
     }

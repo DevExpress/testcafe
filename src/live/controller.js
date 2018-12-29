@@ -8,7 +8,7 @@ import Promise from 'pinkie';
 const REQUIRED_MODULE_FOUND_EVENT = 'require-module-found';
 const LOCK_KEY_PRESS_TIMEOUT      = 1000;
 
-class Controller extends EventEmitter {
+class LiveModeController extends EventEmitter {
     constructor (runner) {
         super();
 
@@ -32,52 +32,53 @@ class Controller extends EventEmitter {
             .then(() => this.logger.writeIntroMessage(files));
     }
 
-    toggleWatching () {
+    _toggleWatching () {
         this.watchingPaused = !this.watchingPaused;
 
         this.logger.writeToggleWatchingMessage(!this.watchingPaused);
     }
 
-    stop () {
+    _stop () {
         if (!this.runner || !this.running) {
             this.logger.writeNothingToStopMessage();
 
-            return Promise.resolve();
+            return;
         }
 
         this.logger.writeStopRunningMessage();
 
-        return this.runner.stop()
+        this.runner.stop()
             .then(() => {
                 this.restarting = false;
                 this.running    = false;
             });
     }
 
-    restart () {
+    _restart () {
         if (this.restarting || this.watchingPaused)
-            return Promise.resolve();
+            return;
 
         this.restarting = true;
 
         if (this.running) {
-            return this.stop()
+            this._stop()
                 .then(() => this.logger.writeTestsFinishedMessage())
                 .then(() => this._runTests());
         }
-
-        return this._runTests();
+        else
+            this._runTests();
     }
 
-    exit () {
-        if (this.stopping)
-            return Promise.resolve();
+    _exit () {
+        if (!this.stopping)
+            return;
 
         this.logger.writeExitMessage();
 
         this.stopping = true;
 
-        return this.runner ? this.runner.exit() : Promise.resolve();
+        if (this.runner)
+            this.runner.exit();
     }
 
     _createFileWatcher (src) {
@@ -106,13 +107,13 @@ class Controller extends EventEmitter {
             if (key && key.ctrl) {
                 switch (key.name) {
                     case 's':
-                        return this.stop();
+                        return this._stop();
                     case 'r':
-                        return this.restart();
+                        return this._restart();
                     case 'c':
-                        return this.exit();
+                        return this._exit();
                     case 'w':
-                        return this.toggleWatching();
+                        return this._toggleWatching();
                 }
             }
 
@@ -121,8 +122,6 @@ class Controller extends EventEmitter {
     }
 
     _listenTestRunnerEvents () {
-        this.runner.on(this.runner.TEST_RUN_STARTED, () => this.logger.writeTestsStartedMessage());
-
         this.runner.on(this.runner.TEST_RUN_DONE_EVENT, e => {
             this.running = false;
 
@@ -159,4 +158,4 @@ class Controller extends EventEmitter {
     }
 }
 
-export default Controller;
+export default LiveModeController;

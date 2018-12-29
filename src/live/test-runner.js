@@ -1,7 +1,7 @@
 import Promise from 'pinkie';
 import { noop } from 'lodash';
 import LiveModeTestRunController from './test-run-controller';
-import Controller from './controller';
+import LiveModeController from './controller';
 import Runner from '../runner';
 import LiveModeBootstrapper from './bootstrapper';
 import parseFileList from '../utils/parse-file-list';
@@ -13,7 +13,6 @@ class LiveModeRunner extends Runner {
         super(proxy, browserConnectionGateway, options);
 
         /* EVENTS */
-        this.TEST_RUN_STARTED            = 'test-run-started';
         this.TEST_RUN_DONE_EVENT         = 'test-run-done';
         this.REQUIRED_MODULE_FOUND_EVENT = 'require-module-found';
 
@@ -23,8 +22,6 @@ class LiveModeRunner extends Runner {
         this.preventRunCall      = false;
 
         this.testRunController = new LiveModeTestRunController();
-
-        this.testRunController.on(this.testRunController.RUN_STARTED_EVENT, () => this.emit(this.TEST_RUN_STARTED, {}));
 
         this.embeddingOptions({
             TestRunCtor: this.testRunController.TestRunCtor,
@@ -89,12 +86,8 @@ class LiveModeRunner extends Runner {
         return fileListPromise
             .then(files => this.controller.init(files))
             .then(() => this._createRunnableConfiguration())
-            .then(() => {
-                return this.runTests(true);
-            })
-            .then(() => {
-                return this._waitInfinite();
-            })
+            .then(() => this.runTests(true))
+            .then(() => this._waitInfinite())
             .then(() => {
                 this.preventRunCall = false;
             });
@@ -126,10 +119,10 @@ class LiveModeRunner extends Runner {
             .then(() => this.stopInfiniteWaiting());
     }
 
-    _finishPreviousTestRuns () {
-        if (this.liveConfigurationCache.tests)
-            return this.testRunController.run(this.liveConfigurationCache.tests.filter(t => !t.skip).length);
-        return Promise.resolve();
+    async _finishPreviousTestRuns () {
+        if (!this.liveConfigurationCache.tests) return;
+
+        this.testRunController.run(this.liveConfigurationCache.tests.filter(t => !t.skip).length);
     }
 
     _validateRunnableConfiguration (isFirstRun) {
@@ -159,7 +152,7 @@ class LiveModeRunner extends Runner {
     }
 
     _createController () {
-        return new Controller(this);
+        return new LiveModeController(this);
     }
 
     _waitInfinite () {

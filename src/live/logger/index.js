@@ -2,10 +2,7 @@ const origStrOutWrite = process.stdout.write;
 
 export default class Logger {
     constructor () {
-        this.testingStarted = false;
-        this.aborted        = false;
-        this.running        = false;
-        this.watching       = true;
+        this.watching = true;
 
         process.stdout.write = (...args) => this._onStdoutWrite(...args);
 
@@ -41,11 +38,8 @@ You can use the following keys in the terminal:
     }
 
     _onStdoutWrite (msg) {
-        if (msg.indexOf(this.MESSAGES.testRunAborted) > -1) {
-            this.aborted = true;
-
+        if (msg.indexOf(this.MESSAGES.testRunAborted) > -1)
             this._write(this.MESSAGES.testRunAborted);
-        }
         else
             this._write(msg);
     }
@@ -63,28 +57,21 @@ You can use the following keys in the terminal:
             files.forEach(file => {
                 this._write('  ' + file + '\n');
             });
+
             this._write('\n');
         }
     }
 
     writeRunTestsMessage (sourcesChanged) {
-        this.testingStarted = true;
-        this.aborted        = false;
+        const statusMessage = sourcesChanged ? this.MESSAGES.sourceChanged : this.MESSAGES.testRunStarting;
 
-        if (sourcesChanged)
-            this._status(this.MESSAGES.sourceChanged);
-        else
-            this._status(this.MESSAGES.testRunStarting);
-    }
-
-    writeTestsStartedMessage () {
-        this.running = true;
+        this._status(statusMessage);
     }
 
     writeTestsFinishedMessage () {
-        this.running = false;
+        const statusMessage = this.watching ? this.MESSAGES.testRunFinishedWatching : this.MESSAGES.testRunFinishedNotWatching;
 
-        this._status(this.watching ? this.MESSAGES.testRunFinishedWatching : this.MESSAGES.testRunFinishedNotWatching);
+        this._status(statusMessage);
     }
 
     writeStopRunningMessage () {
@@ -98,10 +85,9 @@ You can use the following keys in the terminal:
     writeToggleWatchingMessage (enable) {
         this.watching = enable;
 
-        if (enable)
-            this._status(this.MESSAGES.fileWatchingEnabled);
-        else
-            this._status(this.MESSAGES.fileWatchingDisabled);
+        const statusMessage = enable ? this.MESSAGES.fileWatchingEnabled : this.MESSAGES.fileWatchingDisabled;
+
+        this._status(statusMessage);
     }
 
     writeExitMessage () {

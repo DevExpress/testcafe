@@ -17,15 +17,13 @@ export default class ModulesGraph {
 
         const children = cached && cached.children.map(child => child.id);
 
-        if (children) {
-            children.forEach(child => {
-                if (child.indexOf('node_modules') > -1)
-                    return;
+        if (!children) return;
 
+        children.filter(child => child.indexOf('node_modules') === -1)
+            .forEach(child => {
                 this.addNode(child, cache);
                 this.graph.setEdge(node, child);
             });
-        }
     }
 
     addNode (node, cache) {
@@ -66,6 +64,8 @@ export default class ModulesGraph {
         if (!parentEdges || !parentEdges.length)
             return;
 
-        parentEdges.map(edge => edge.v).forEach(parent => this.clearParentsCache(cache, parent));
+        parentEdges
+            .map(edge => edge.v)
+            .forEach(parent => this.clearParentsCache(cache, parent));
     }
 }
