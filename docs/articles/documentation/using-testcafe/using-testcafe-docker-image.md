@@ -41,7 +41,7 @@ This command takes the following parameters:
     In modern Docker for Windows, you also need to share a drive to reach it from Docker containers. For more information, see [Docker for Windows documentation](https://docs.docker.com/docker-for-windows/#shared-drives).
 
 * `-it testcafe/testcafe` - runs TestCafe in the interactive mode with the console enabled;
-* `${TESTCAFE_ARGS}` - arguments passed to the `testcafe` command. You can use any arguments from the TestCafe [CLI](command-line-interface.md);
+* `${TESTCAFE_ARGS}` - arguments passed to the `testcafe` command. You can use any arguments from the TestCafe [command line interface](command-line-interface.md);
 
     `-it testcafe/testcafe 'chromium --no-sandbox,firefox' /tests/test.js`
 
@@ -53,21 +53,35 @@ This command takes the following parameters:
 
     > If tests use other Node.js modules, these modules should be located in the tests directory or its child directories. TestCafe will not be able to find modules in the parent directories.
 
-## Testing in Remote Browsers
+## Test on the Host Machine
 
-You need to add the following options to the `docker run` command to run tests in a [remote browser](command-line-interface.md#remote-browsers), e.g. on a mobile device.
+To run tests in host machine browsers, connect them as [remote browsers](command-line-interface.md#remote-browsers). Do the following:
 
-* add the `-P` flag to publish all exposed ports;
-* use the [--hostname](command-line-interface.md#--hostname-name) TestCafe flag to specify the host machine name;
+* pass the `--net=host` parameter to specify that the container should use the `host` network;
 * specify the `remote` keyword as the browser name.
+
+```sh
+docker run --net=host -v /d/tests:/tests -it testcafe/testcafe remote /tests/test.js
+```
+
+Note that the `--net=host` option can weaken container security. If this is important for you, you can follow the instruction in the [Test on Remote Devices](#test-on-remote-devices) section instead. In this case, specify `localhost` as the hostname and omit the `--add-host` parameter.
+
+## Test on Remote Devices
+
+Add the following options to the `docker run` command to run tests on a remote desktop or mobile device:
+
+* map the `1337` and `1338` container ports to the corresponding host ports with the `-p` flag;
+* use the [--hostname](command-line-interface.md#--hostname-name) TestCafe flag to specify the host machine name;
+* pass the `--add-host` parameter to map the host machine name to the container's localhost IP;
+* specify the `remote` keyword as the browser name. See [Remote Browsers](command-line-interface.md#remote-browsers).
 
 The example below shows a command that runs tests in a remote browser.
 
 ```sh
-docker run -v /d/tests:/tests -P -it testcafe/testcafe --hostname $EXTERNAL_HOSTNAME remote /tests/test.js
+docker run --add-host=${EXTERNAL_HOSTNAME}:127.0.0.1 -p 1337:1337 -p 1338:1338 -v /d/tests:/tests -it testcafe/testcafe --hostname ${EXTERNAL_HOSTNAME} remote /tests/test.js
 ```
 
-where `$EXTERNAL_HOSTNAME` is the host machine name.
+where `${EXTERNAL_HOSTNAME}` is the host machine name visible to the remote device.
 
 If Docker reports that the default ports `1337` and `1338` are occupied by some other process, kill this process or choose different ports. Use the `netstat` command to determine which process occupies the default ports.
 
@@ -80,10 +94,10 @@ Linux   | `netstat -anp`
 If you choose to use different ports, publish them in the Docker container (use the `-p` flag) and specify them to TestCafe (use the [--ports](command-line-interface.md#--ports-port1port2) option).
 
 ```sh
-docker run -v /d/tests:/tests -p $PORT1 -p $PORT2 -it testcafe/testcafe --hostname $EXTERNAL_HOSTNAME --ports $PORT1,$PORT2 remote /tests/test.js
+docker run --add-host=${EXTERNAL_HOSTNAME}:127.0.0.1 -p ${PORT1}:${PORT1} -p ${PORT2}:${PORT2} -v /d/tests:/tests -it testcafe/testcafe --hostname ${EXTERNAL_HOSTNAME} --ports ${PORT1},${PORT2} remote /tests/test.js
 ```
 
-where `$PORT1` and `$PORT2` are vacant container's ports, `$EXTERNAL_HOSTNAME` is the host machine name.
+where `${PORT1}` and `${PORT2}` are vacant container's ports, `${EXTERNAL_HOSTNAME}` is the host machine name.
 
 ## Testing Heavy Websites
 
@@ -92,7 +106,7 @@ If you are testing a heavy website, you may need to allocate extra resources for
 The most common case is when the temporary file storage `/dev/shm` runs out of free space. The following example shows how to allow additional space (1GB) for this storage using the `--shm-size` option.
 
 ```sh
-docker run --shm-size=1g -v ${TEST_FOLDER}:/tests -it testcafe/testcafe ${TESTCAFE_ARGS}
+docker run --shm-size=1g -v /d/tests:/tests -it testcafe/testcafe firefox /tests/test.js
 ```
 
 You can find a complete list of options that manage runtime constraints on resources in the [Docker documentation](https://docs.docker.com/engine/reference/run/#runtime-constraints-on-resources).
