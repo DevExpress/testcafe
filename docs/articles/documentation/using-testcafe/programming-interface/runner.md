@@ -149,12 +149,6 @@ runner.browsers(['safari', 'chrome']);
 runner.browsers('saucelabs:Chrome@52.0:Windows 8.1');
 ```
 
-* using [headless mode](../common-concepts/browsers/testing-in-headless-mode.md)
-
-```js
-runner.browsers('chrome:headless');
-```
-
 #### Specifying the Path to the Browser Executable
 
 Use the `path:` prefix. Enclose the path in backticks if it contains spaces.
@@ -171,6 +165,22 @@ runner.browsers({
     cmd: '--new-window'
 });
 ```
+
+#### Headless Mode, Device Emulation and User Profiles
+
+You can add postfixes to browser aliases to run tests in the [headless mode](../common-concepts/browsers/testing-in-headless-mode.md), use [Chrome device emulation](../common-concepts/browsers/using-chrome-device-emulation.md) or [user profiles](../common-concepts/browsers/user-profiles.md).
+
+```js
+runner.browsers('chrome:headless');
+```
+
+For portable browsers, use the browser alias followed by the path to an executable.
+
+```js
+runner.browsers('firefox:/home/user/apps/firefox.app:userProfile');
+```
+
+> The `path:` prefix does not support postfixes.
 
 #### Passing a Remote Browser Connection
 
