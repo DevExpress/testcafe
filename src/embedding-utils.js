@@ -8,6 +8,7 @@ const getTestListModule              = lazyRequire('./compiler/test-file/formats
 const getTypeScriptTestListModule    = lazyRequire('./compiler/test-file/formats/typescript/get-test-list');
 const getCoffeeScriptTestListModule  = lazyRequire('./compiler/test-file/formats/coffeescript/get-test-list');
 const initializers                   = lazyRequire('./test-run/commands/validations/initializers');
+const createCommandFromObject        = lazyRequire('./test-run/commands/from-object');
 
 // NOTE: we can't use lazy require for TestRun and Assignable, because it breaks prototype chain for inherited classes
 let TestRun    = null;
@@ -58,6 +59,10 @@ export default {
 
     get initSelector () {
         return initializers.initSelector;
+    },
+
+    get createCommandFromObject () {
+        return createCommandFromObject;
     },
 
     ensureUploadDirectory (...args) {
