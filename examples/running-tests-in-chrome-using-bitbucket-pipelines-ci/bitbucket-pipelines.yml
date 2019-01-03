@@ -1,0 +1,15 @@
+image: zenika/alpine-chrome:with-node
+    pipelines:
+      pull-requests:
+        '**':
+          - step:
+              script:
+                - npm ci
+                - npm test
+
+      branches:
+        master:
+          - step:
+              script:
+                - npm ci
+                - npm test
