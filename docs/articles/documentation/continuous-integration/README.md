@@ -11,6 +11,7 @@ This section describes how to integrate TestCafe into a build process on popular
 
 * [AppVeyor](appveyor.md)
 * [Azure DevOps](azure-devops.md)
+* [Bitbucket Pipelines CI](bitbucket-pipelines.md)
 * [CircleCI](circleci.md)
 * [GitLab](gitlab.md)
 * [Jenkins](jenkins.md)
