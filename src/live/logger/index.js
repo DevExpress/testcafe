@@ -1,10 +1,6 @@
-const origStrOutWrite = process.stdout.write;
-
 export default class Logger {
     constructor () {
         this.watching = true;
-
-        process.stdout.write = (...args) => this._onStdoutWrite(...args);
 
         this.MESSAGES = {
             intro: `
@@ -29,19 +25,11 @@ You can use the following keys in the terminal:
             nothingToStop:              'There are no tests running at the moment.',
             testCafeStopping:           'Stopping TestCafe Live...',
             watchingFiles:              'Watching files:',
-            testRunAborted:             'Test run aborted'
         };
     }
 
     _write (msg) {
-        origStrOutWrite.call(process.stdout, msg);
-    }
-
-    _onStdoutWrite (msg) {
-        if (msg.indexOf(this.MESSAGES.testRunAborted) > -1)
-            this._write(this.MESSAGES.testRunAborted);
-        else
-            this._write(msg);
+        process.stdout.write(msg);
     }
 
     _status (msg) {
