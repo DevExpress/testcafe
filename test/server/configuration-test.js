@@ -87,8 +87,12 @@ describe('Configuration', () => {
                         expect(configuration.getOption('src')).eql([ 'path1/folder' ]);
                         expect(configuration.getOption('browsers')).eql([ 'ie' ]);
                         expect(configuration.getOption('concurrency')).eql(0.5);
-                        expect(configuration.getOption('filter')).instanceof(Function);
-                        expect(configuration.getOption('reporter')).eql([ 'json' ]);
+                        expect(configuration.getOption('filter')).to.be.a('function');
+
+                        const reporters = configuration.getOption('reporter');
+
+                        expect(reporters.length).eql(1);
+                        expect(reporters[0].name).eql('json');
                     });
             });
         });
