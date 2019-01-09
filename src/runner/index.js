@@ -1,7 +1,6 @@
 import { resolve as resolvePath } from 'path';
 import debug from 'debug';
 import Promise from 'pinkie';
-import { writable as isWritableStream, transform as isTransformStream, duplex as isDuplexStream } from 'is-stream';
 import promisifyEvent from 'promisify-event';
 import mapReverse from 'map-reverse';
 import { EventEmitter } from 'events';
@@ -17,6 +16,7 @@ import checkFilePath from '../utils/check-file-path';
 import { addRunningTest, removeRunningTest, startHandlingTestErrors, stopHandlingTestErrors } from '../utils/handle-errors';
 import OPTION_NAMES from '../configuration/option-names';
 import FlagList from '../utils/flag-list';
+import prepareReporters from '../utils/prepare-reporters';
 
 const DEBUG_LOGGER = debug('testcafe:runner');
 
@@ -69,7 +69,7 @@ export default class Runner extends EventEmitter {
         ]);
     }
 
-    _prepareRestParameter (array) {
+    _prepareArrayParameter (array) {
         array = flatten(array);
 
         if (this.isCli)
@@ -235,24 +235,6 @@ export default class Runner extends EventEmitter {
             throw new GeneralError(MESSAGE.forbiddenCharatersInScreenshotPath, screenshotPath, pathType, renderForbiddenCharsList(forbiddenCharsList));
     }
 
-    static _isStreamMock (obj) {
-        return obj &&
-               typeof obj.write === 'function' &&
-               typeof obj.end === 'function';
-    }
-
-    static _validateReporterOutput (obj) {
-        const isValidReporterOutput = obj === void 0 ||
-                                      typeof obj === 'string' ||
-                                      isWritableStream(obj) ||
-                                      isTransformStream(obj) ||
-                                      isDuplexStream(obj) ||
-                                      Runner._isStreamMock(obj);
-
-        if (!isValidReporterOutput)
-            throw new GeneralError(MESSAGE.invalidReporterOutput);
-    }
-
     _setBootstrapperOptions () {
         this.bootstrapper.sources                     = this.configuration.getOption(OPTION_NAMES.src) || this.bootstrapper.sources;
         this.bootstrapper.browsers                    = this.configuration.getOption(OPTION_NAMES.browsers) || this.bootstrapper.browsers;
@@ -262,22 +244,6 @@ export default class Runner extends EventEmitter {
         this.bootstrapper.disableTestSyntaxValidation = this.configuration.getOption(OPTION_NAMES.disableTestSyntaxValidation);
         this.bootstrapper.filter                      = this.configuration.getOption(OPTION_NAMES.filter) || this.bootstrapper.filter;
         this.bootstrapper.reporters                   = this.configuration.getOption(OPTION_NAMES.reporter) || this.bootstrapper.reporters;
-    }
-
-    _prepareReporters (name, outStream) {
-        let reporters = [];
-
-        if (name instanceof Array)
-            reporters = name.map(r => typeof r === 'string' || typeof r === 'function' ? { name: r } : r);
-        else {
-            const reporter = { name, outStream };
-
-            reporters.push(reporter);
-        }
-
-        reporters.forEach(r => Runner._validateReporterOutput(r.outStream));
-
-        return reporters;
     }
 
     // API
@@ -294,7 +260,7 @@ export default class Runner extends EventEmitter {
         if (this.apiMethodWasCalled.src)
             throw new GeneralError(MESSAGE.multipleAPIMethodCallForbidden, OPTION_NAMES.src);
 
-        sources = this._prepareRestParameter(sources);
+        sources = this._prepareArrayParameter(sources);
         this.configuration.mergeOptions({ [OPTION_NAMES.src]: sources });
 
         this.apiMethodWasCalled.src = true;
@@ -306,7 +272,7 @@ export default class Runner extends EventEmitter {
         if (this.apiMethodWasCalled.browsers)
             throw new GeneralError(MESSAGE.multipleAPIMethodCallForbidden, OPTION_NAMES.browsers);
 
-        browsers = this._prepareRestParameter(browsers);
+        browsers = this._prepareArrayParameter(browsers);
         this.configuration.mergeOptions({ browsers });
 
         this.apiMethodWasCalled.browsers = true;
@@ -324,7 +290,9 @@ export default class Runner extends EventEmitter {
         if (this.apiMethodWasCalled.reporter)
             throw new GeneralError(MESSAGE.multipleAPIMethodCallForbidden, OPTION_NAMES.reporter);
 
-        const reporters = this._prepareReporters(name, fileNameOrStream);
+        let reporters = prepareReporters(name, fileNameOrStream);
+
+        reporters = this._prepareArrayParameter(reporters);
 
         this.configuration.mergeOptions({ [OPTION_NAMES.reporter]: reporters });
 

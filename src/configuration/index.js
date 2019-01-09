@@ -5,12 +5,12 @@ import optionSource from './option-source';
 import { cloneDeep, castArray } from 'lodash';
 import { ensureOptionValue as ensureSslOptionValue } from '../utils/parse-ssl-options';
 import OPTION_NAMES from './option-names';
-import { optionValueToRegExp } from './option-conversion';
-import createFilterFn from '../utils/create-filter-fn';
+import getFilterFn from '../utils/get-filter-fn';
 import resolvePathRelativelyCwd from '../utils/resolve-path-relatively-cwd';
 import JSON5 from 'json5';
 import warningMessage from '../notifications/warning-message';
 import renderTemplate from '../utils/render-template';
+import prepareReporters from '../utils/prepare-reporters';
 
 const CONFIGURATION_FILENAME = '.testcaferc.json';
 
@@ -67,7 +67,7 @@ export default class Configuration {
         this._prepareFilterFn();
         this._ensureArrayOption(OPTION_NAMES.src);
         this._ensureArrayOption(OPTION_NAMES.browsers);
-        this._ensureArrayOption(OPTION_NAMES.reporter);
+        this._prepareReporters();
     }
 
     _ensureArrayOption (name) {
@@ -85,18 +85,16 @@ export default class Configuration {
         if (!filterOption.value)
             return;
 
-        const { test, fixture, testGrep, fixtureGrep, testMeta, fixtureMeta } = filterOption;
+        filterOption.value = getFilterFn(filterOption.value);
+    }
 
-        const opts = {
-            testGrep:    optionValueToRegExp('testGrep', testGrep),
-            fixtureGrep: optionValueToRegExp('FixtureGrep', fixtureGrep),
-            test,
-            fixture,
-            testMeta,
-            fixtureMeta
-        };
+    _prepareReporters () {
+        const reporterOption = this._options[OPTION_NAMES.reporter];
 
-        filterOption.value = createFilterFn(opts);
+        if (!reporterOption)
+            return;
+
+        reporterOption.value = prepareReporters(reporterOption.value);
     }
 
     async _prepareSslOptions () {

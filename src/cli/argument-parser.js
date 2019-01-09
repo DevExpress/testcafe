@@ -7,8 +7,7 @@ import { assertType, is } from '../errors/runtime/type-assertions';
 import getViewPortWidth from '../utils/get-viewport-width';
 import { wordWrap, splitQuotedText } from '../utils/string';
 import parseSslOptions from '../utils/parse-ssl-options';
-import createFilterFn from '../utils/create-filter-fn';
-import { optionValueToRegExp, optionValueToKeyValue } from '../configuration/option-conversion';
+import getFilterFn from '../utils/get-filter-fn';
 
 const REMOTE_ALIAS_RE = /^remote(?::(\d*))?$/;
 
@@ -112,21 +111,7 @@ export default class CLIArgumentParser {
     }
 
     _parseFilteringOptions () {
-        this.opts.testGrep    = optionValueToRegExp('--test-grep', this.opts.testGrep);
-        this.opts.fixtureGrep = optionValueToRegExp('--fixture-grep', this.opts.fixtureGrep);
-        this.opts.testMeta    = optionValueToKeyValue('--test-meta', this.opts.testMeta);
-        this.opts.fixtureMeta = optionValueToKeyValue('--fixture-meta', this.opts.fixtureMeta);
-
-        const allFilteringOptionsAreUndefined = [
-            this.opts.testGrep,
-            this.opts.fixtureGrep,
-            this.opts.testMeta,
-            this.opts.fixtureMeta,
-            this.opts.test,
-            this.opts.fixture
-        ].every(item => item === void 0);
-
-        this.filter = allFilteringOptionsAreUndefined ? void 0 : createFilterFn(this.opts);
+        this.filter = getFilterFn(this.opts);
     }
 
     _parseAppInitDelay () {
