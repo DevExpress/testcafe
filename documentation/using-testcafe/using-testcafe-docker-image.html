@@ -730,7 +730,7 @@ Therefore, you can avoid manual installation of browsers and the testing framewo
 
 <p>In modern Docker for Windows, you also need to share a drive to reach it from Docker containers. For more information, see <a href="https://docs.docker.com/docker-for-windows/#shared-drives">Docker for Windows documentation</a>.</p></li>
 <li><p><code>-it testcafe/testcafe</code> - runs TestCafe in the interactive mode with the console enabled;</p></li>
-<li><p><code>${TESTCAFE_ARGS}</code> - arguments passed to the <code>testcafe</code> command. You can use any arguments from the TestCafe <a href="command-line-interface.html">CLI</a>;</p>
+<li><p><code>${TESTCAFE_ARGS}</code> - arguments passed to the <code>testcafe</code> command. You can use any arguments from the TestCafe <a href="command-line-interface.html">command line interface</a>;</p>
 
 <p><code>-it testcafe/testcafe &#39;chromium --no-sandbox,firefox&#39; /tests/test.js</code></p>
 
@@ -742,19 +742,30 @@ Therefore, you can avoid manual installation of browsers and the testing framewo
 <blockquote><div class="blockquote-content"><p>If tests use other Node.js modules, these modules should be located in the tests directory or its child directories. TestCafe will not be able to find modules in the parent directories.</p>
 </div></blockquote></li>
 </ul>
-<h2><a class="anchor" id="testing-in-remote-browsers"></a>Testing in Remote Browsers <a class="permalink" href="#testing-in-remote-browsers">#</a></h2>
-<p>You need to add the following options to the <code>docker run</code> command to run tests in a <a href="command-line-interface.html#remote-browsers">remote browser</a>, e.g. on a mobile device.</p>
+<h2><a class="anchor" id="test-on-the-host-machine"></a>Test on the Host Machine <a class="permalink" href="#test-on-the-host-machine">#</a></h2>
+<p>To run tests in host machine browsers, connect them as <a href="command-line-interface.html#remote-browsers">remote browsers</a>. Do the following:</p>
 
 <ul>
-<li>add the <code>-P</code> flag to publish all exposed ports;</li>
-<li>use the <a href="command-line-interface.html#--hostname-name">--hostname</a> TestCafe flag to specify the host machine name;</li>
+<li>pass the <code>--net=host</code> parameter to specify that the container should use the <code>host</code> network;</li>
 <li>specify the <code>remote</code> keyword as the browser name.</li>
+</ul>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">docker run --net<span class="o">=</span>host -v /d/tests:/tests -it testcafe/testcafe remote /tests/test.js
+</code></pre></div>
+<p>Note that the <code>--net=host</code> option can weaken container security. If this is important for you, you can follow the instruction in the <a href="#test-on-remote-devices">Test on Remote Devices</a> section instead. In this case, specify <code>localhost</code> as the hostname and omit the <code>--add-host</code> parameter.</p>
+<h2><a class="anchor" id="test-on-remote-devices"></a>Test on Remote Devices <a class="permalink" href="#test-on-remote-devices">#</a></h2>
+<p>Add the following options to the <code>docker run</code> command to run tests on a remote desktop or mobile device:</p>
+
+<ul>
+<li>map the <code>1337</code> and <code>1338</code> container ports to the corresponding host ports with the <code>-p</code> flag;</li>
+<li>use the <a href="command-line-interface.html#--hostname-name">--hostname</a> TestCafe flag to specify the host machine name;</li>
+<li>pass the <code>--add-host</code> parameter to map the host machine name to the container&#39;s localhost IP;</li>
+<li>specify the <code>remote</code> keyword as the browser name. See <a href="command-line-interface.html#remote-browsers">Remote Browsers</a>.</li>
 </ul>
 
 <p>The example below shows a command that runs tests in a remote browser.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">docker run -v /d/tests:/tests -P -it testcafe/testcafe --hostname <span class="nv">$EXTERNAL_HOSTNAME</span> remote /tests/test.js
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">docker run --add-host<span class="o">=</span><span class="k">${</span><span class="nv">EXTERNAL_HOSTNAME</span><span class="k">}</span>:127.0.0.1 -p 1337:1337 -p 1338:1338 -v /d/tests:/tests -it testcafe/testcafe --hostname <span class="k">${</span><span class="nv">EXTERNAL_HOSTNAME</span><span class="k">}</span> remote /tests/test.js
 </code></pre></div>
-<p>where <code>$EXTERNAL_HOSTNAME</code> is the host machine name.</p>
+<p>where <code>${EXTERNAL_HOSTNAME}</code> is the host machine name visible to the remote device.</p>
 
 <p>If Docker reports that the default ports <code>1337</code> and <code>1338</code> are occupied by some other process, kill this process or choose different ports. Use the <code>netstat</code> command to determine which process occupies the default ports.</p>
 <div class="table-wrapper"><table><thead><tr>
@@ -775,14 +786,14 @@ Therefore, you can avoid manual installation of browsers and the testing framewo
 </tr>
 </tbody></table></div>
 <p>If you choose to use different ports, publish them in the Docker container (use the <code>-p</code> flag) and specify them to TestCafe (use the <a href="command-line-interface.html#--ports-port1port2">--ports</a> option).</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">docker run -v /d/tests:/tests -p <span class="nv">$PORT1</span> -p <span class="nv">$PORT2</span> -it testcafe/testcafe --hostname <span class="nv">$EXTERNAL_HOSTNAME</span> --ports <span class="nv">$PORT1</span>,<span class="nv">$PORT2</span> remote /tests/test.js
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">docker run --add-host<span class="o">=</span><span class="k">${</span><span class="nv">EXTERNAL_HOSTNAME</span><span class="k">}</span>:127.0.0.1 -p <span class="k">${</span><span class="nv">PORT1</span><span class="k">}</span>:<span class="k">${</span><span class="nv">PORT1</span><span class="k">}</span> -p <span class="k">${</span><span class="nv">PORT2</span><span class="k">}</span>:<span class="k">${</span><span class="nv">PORT2</span><span class="k">}</span> -v /d/tests:/tests -it testcafe/testcafe --hostname <span class="k">${</span><span class="nv">EXTERNAL_HOSTNAME</span><span class="k">}</span> --ports <span class="k">${</span><span class="nv">PORT1</span><span class="k">}</span>,<span class="k">${</span><span class="nv">PORT2</span><span class="k">}</span> remote /tests/test.js
 </code></pre></div>
-<p>where <code>$PORT1</code> and <code>$PORT2</code> are vacant container&#39;s ports, <code>$EXTERNAL_HOSTNAME</code> is the host machine name.</p>
+<p>where <code>${PORT1}</code> and <code>${PORT2}</code> are vacant container&#39;s ports, <code>${EXTERNAL_HOSTNAME}</code> is the host machine name.</p>
 <h2><a class="anchor" id="testing-heavy-websites"></a>Testing Heavy Websites <a class="permalink" href="#testing-heavy-websites">#</a></h2>
 <p>If you are testing a heavy website, you may need to allocate extra resources for the Docker image.</p>
 
 <p>The most common case is when the temporary file storage <code>/dev/shm</code> runs out of free space. The following example shows how to allow additional space (1GB) for this storage using the <code>--shm-size</code> option.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">docker run --shm-size<span class="o">=</span>1g -v <span class="k">${</span><span class="nv">TEST_FOLDER</span><span class="k">}</span>:/tests -it testcafe/testcafe <span class="k">${</span><span class="nv">TESTCAFE_ARGS</span><span class="k">}</span>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">docker run --shm-size<span class="o">=</span>1g -v /d/tests:/tests -it testcafe/testcafe firefox /tests/test.js
 </code></pre></div>
 <p>You can find a complete list of options that manage runtime constraints on resources in the <a href="https://docs.docker.com/engine/reference/run/#runtime-constraints-on-resources">Docker documentation</a>.</p>
 
@@ -800,7 +811,7 @@ Therefore, you can avoid manual installation of browsers and the testing framewo
         <div class="footer-col-1">
             <p><strong>TestCafe</strong>: A node.js tool to automate end-to-end web testing<br/>
             Use of this site constitutes acceptance of our <a href="https://www.devexpress.com/aboutus/privacy-policy.xml"  target="_blank">Privacy Policy</a><br/>
-            Copyright © 2012-2018 Developer Express Inc.</p>
+            Copyright © 2012-2019 Developer Express Inc.</p>
         </div>
     </div>
 </footer>

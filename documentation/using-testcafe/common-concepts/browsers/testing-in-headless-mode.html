@@ -703,14 +703,14 @@
 		<div class="post-content">
 
 			<h1>Testing in Headless Mode</h1>
-<p>TestCafe allows you to run tests in Google Chrome and Mozilla Firefox without any visible UI shell - in the headless mode (<a href="https://developers.google.com/web/updates/2017/04/headless-chrome">Chrome Headless</a>, <a href="https://developer.mozilla.org/en-US/Firefox/Headless_mode">Firefox Headless</a>). Use the <code>headless</code> browser parameter to launch a browser in the headless mode.</p>
+<p>TestCafe allows you to run tests in Google Chrome and Mozilla Firefox without any visible UI shell - in the headless mode (<a href="https://developers.google.com/web/updates/2017/04/headless-chrome">Chrome Headless</a>, <a href="https://developer.mozilla.org/en-US/Firefox/Headless_mode">Firefox Headless</a>). Use the <code>:headless</code> parameter to launch a browser in the headless mode.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"chrome:headless"</span> tests/sample-fixture.js
 </code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span>
     <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">'tests/sample-fixture.js'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="s1">'chrome:headless'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">run</span><span class="p">();</span>
 </code></pre></div>
-<p>Specify a path to the browser executable if you use a portable version of the browser:</p>
+<p>Specify a path to the browser executable if you use a portable version of the browser. Use the <a href="browser-support.html#locally-installed-browsers">browser alias</a> instead of the <code>path:</code> prefix.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"firefox:path/to/firefox:headless"</span> tests/sample-fixture.js
 </code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span>
     <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">'tests/sample-fixture.js'</span><span class="p">)</span>
@@ -745,7 +745,7 @@
         <div class="footer-col-1">
             <p><strong>TestCafe</strong>: A node.js tool to automate end-to-end web testing<br/>
             Use of this site constitutes acceptance of our <a href="https://www.devexpress.com/aboutus/privacy-policy.xml"  target="_blank">Privacy Policy</a><br/>
-            Copyright © 2012-2018 Developer Express Inc.</p>
+            Copyright © 2012-2019 Developer Express Inc.</p>
         </div>
     </div>
 </footer>
