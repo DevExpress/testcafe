@@ -1,9 +1,11 @@
 const path                             = require('path');
+const { PassThrough }                  = require('stream');
 const Module                           = require('module');
 const fs                               = require('fs');
 const del                              = require('del');
 const OS                               = require('os-family');
-const expect                           = require('chai').expect;
+const { expect }                       = require('chai');
+const { noop }                         = require('lodash');
 const correctFilePath                  = require('../../lib/utils/correct-file-path');
 const escapeUserAgent                  = require('../../lib/utils/escape-user-agent');
 const parseFileList                    = require('../../lib/utils/parse-file-list');
@@ -11,7 +13,8 @@ const TempDirectory                    = require('../../lib/utils/temp-directory
 const { replaceLeadingSpacesWithNbsp } = require('../../lib/utils/string');
 const getCommonPath                    = require('../../lib/utils/get-common-path');
 const resolvePathRelativelyCwd         = require('../../lib/utils/resolve-path-relatively-cwd');
-
+const getFilterFn                      = require('../../lib/utils/get-filter-fn');
+const prepareReporters                 = require('../../lib/utils/prepare-reporters');
 
 describe('Utils', () => {
     it('Correct File Path', () => {
@@ -160,6 +163,11 @@ describe('Utils', () => {
         expect(getCommonPath([paths[1], paths[2], paths[3]])).eql(paths[0]);
     });
 
+    it('Get Filter Fn', () => {
+        expect(getFilterFn({})).is.undefined;
+        expect(getFilterFn({ fixture: 'test' })).to.be.a('function');
+    });
+
     describe('Moment Module Loader', () => {
         const moduleCacheDesciptor    = Object.getOwnPropertyDescriptor(Module, '_cache');
         const originalLoad            = Module._load;
@@ -208,6 +216,92 @@ describe('Utils', () => {
             const moment = require('../../lib/utils/moment-loader');
 
             expect(moment.duration.format).to.be.ok;
+        });
+    });
+
+    describe('Prepare reporters', () => {
+        it('Single string name', () => {
+            const result = prepareReporters('minimal');
+
+            expect(result).instanceOf(Array);
+            expect(result.length).eql(1);
+            expect(result[0].name).eql('minimal');
+            expect(result[0].outStream).is.undefined;
+        });
+
+        it('Array of string names', () => {
+            const result = prepareReporters(['json', 'minimal']);
+
+            expect(result.length).eql(2);
+            expect(result[0].name).eql('json');
+            expect(result[1].name).eql('minimal');
+        });
+
+        it('Function as reporter name', () => {
+            const fn1 = function () { };
+            const fn2 = function () { };
+
+            const result = prepareReporters([fn1, fn2]);
+
+            expect(result.length).eql(2);
+            expect(result[0].name).eql(fn1);
+            expect(result[1].name).eql(fn2);
+        });
+
+        it('Name and output stream', () => {
+            const result = prepareReporters('minimal', 'path/to/file');
+
+            expect(result.length).eql(1);
+            expect(result[0].name).eql('minimal');
+            expect(result[0].outStream).eql('path/to/file');
+        });
+
+        it('Array of names and output streams', () => {
+            const data = [
+                {
+                    name:      'minimal',
+                    outStream: 'path/to/file/1'
+                },
+                {
+                    name:      'json',
+                    outStream: 'path/to/file/2'
+                }
+            ];
+
+            const result = prepareReporters(data);
+
+            expect(result).eql(data);
+        });
+
+        it('Reporter output validation', () => {
+            const shouldThrowCases = [
+                {},
+                null,
+                9,
+                function () {}
+            ];
+
+            shouldThrowCases.forEach(output => {
+                expect(() => {
+                    prepareReporters('test', output);
+                }).to.throw("The specified reporter's output should be a filename");
+            });
+
+            const shouldNotThrowCases = [
+                void 0,
+                'path/to/file',
+                {
+                    write: noop,
+                    end:   noop
+                },
+                new PassThrough()
+            ];
+
+            shouldNotThrowCases.forEach(output => {
+                expect(() => {
+                    prepareReporters('test', output);
+                }).to.not.throw();
+            });
         });
     });
 });

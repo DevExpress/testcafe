@@ -62,7 +62,7 @@ testingEnvironments[testingEnvironmentNames.mobileBrowsers] = {
 
     browsers: [
         {
-            browserName: 'browserstack:iPad Pro 12.9@11.4',
+            browserName: 'browserstack:iPad Pro 12.9 2017@11.4',
             alias:       'ipad'
         },
         {
