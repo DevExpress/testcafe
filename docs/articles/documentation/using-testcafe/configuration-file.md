@@ -7,9 +7,9 @@ permalink: /documentation/using-testcafe/configuration-file.html
 
 TestCafe uses the `.testcaferc.json` configuration file to store its settings.
 
-> Important! Settings you specify when you run TestCafe from the [command line](command-line-interface.md) and [programming interfaces](programming-interface/README.md) override settings from `.testcaferc.json`. TestCafe prints a message in the console when this happens.
+> Important! Settings you specify when you run TestCafe from the [command line](command-line-interface.md) and [programming interfaces](programming-interface/README.md) override settings from `.testcaferc.json`. TestCafe prints information about every overridden property in the console.
 
-Keep `.testcaferc.json` in a directory from which you run TestCafe. Most often, this is the project's root directory.
+Keep `.testcaferc.json` in a directory from which you run TestCafe. Most often, this is the project's root directory. TestCafe does not take into account configuration files located in other directories (for instance, project's subdirectories).
 
 A configuration file can include the following settings:
 
@@ -21,6 +21,7 @@ A configuration file can include the following settings:
 * [screenshotPathPattern](#screenshotpathpattern)
 * [quarantineMode](#quarantinemode)
 * [debugMode](#debugmode)
+* [debugOnFail](#debugonfail)
 * [skipJsErrors](#skipjserrors)
 * [skipUncaughtErrors](#skipuncaughterrors)
 * [filter](#filter)
@@ -31,9 +32,8 @@ A configuration file can include the following settings:
   * [testMeta](#filtertestmeta)
   * [fixtureMeta](#filterfixturemeta)
 * [appCommand](#appcommand)
-* [concurrency](#concurrency)
-* [debugOnFail](#debugonfail)
 * [appInitDelay](#appinitdelay)
+* [concurrency](#concurrency)
 * [selectorTimeout](#selectortimeout)
 * [assertionTimeout](#assertiontimeout)
 * [pageLoadTimeout](#pageloadtimeout)
@@ -49,6 +49,8 @@ A configuration file can include the following settings:
 * [disableTestSyntaxValidation](#disabletestsyntaxvalidation)
 * [color](#color)
 * [noColor](#nocolor)
+
+> The configuration file uses [JSON5 syntax](https://json5.org/). This allows you to use JavaScript identifiers as object keys, single-quoted strings, comments and other JSON5 features.
 
 ## browsers
 
@@ -261,6 +263,23 @@ See the [--debug-mode](command-line-interface.md#-d---debug-mode) command line p
 *CLI*: [-d, --debug-mode](command-line-interface.md#-d---debug-mode)  
 *API*: [runner.run({ debugMode })](programming-interface/runner.md#run)
 
+## debugOnFail
+
+Specifies whether to automatically enter the debug mode when a test fails.
+
+```json
+{
+    "debugOnFail": true
+}
+```
+
+If this option is enabled, TestCafe pauses the test when it fails. This allows you to view the tested page and determine the cause of the fail.
+
+When you are done, click the **Finish** button in the footer to end test execution.
+
+*CLI*: [--debug-on-fail](command-line-interface.md#--debug-on-fail)  
+*API*: [runner.run({ debugOnFail })](programming-interface/runner.md#run)
+
 ## skipJsErrors
 
 Ignores JavaScript errors on a webpage.
@@ -414,40 +433,6 @@ The [appInitDelay](#appinitdelay) property specifies the amount of time allowed 
 *CLI*: [-a, --app](command-line-interface.md#-a-command---app-command)  
 *API*: [runner.startApp](programming-interface/runner.md#startapp)
 
-## concurrency
-
-Specifies the number of browser instances that should run tests concurrently.
-
-```json
-{
-    "concurrency": 3
-}
-```
-
-TestCafe opens several instances of the same browser and creates a pool of browser instances. Tests are run concurrently against this pool, that is, each test is run in the first free instance.
-
-See [Concurrent Test Execution](common-concepts/concurrent-test-execution.md) for more information about concurrent test execution.
-
-*CLI*: [-c, --concurrency](command-line-interface.md#-c-n---concurrency-n)  
-*API*: [runner.concurrency](programming-interface/runner.md#concurrency)
-
-## debugOnFail
-
-Specifies whether to automatically enter the debug mode when a test fails.
-
-```json
-{
-    "debugOnFail": true
-}
-```
-
-If this option is enabled, TestCafe pauses the test when it fails. This allows you to view the tested page and determine the cause of the fail.
-
-When you are done, click the **Finish** button in the footer to end test execution.
-
-*CLI*: [--debug-on-fail](command-line-interface.md#--debug-on-fail)  
-*API*: [runner.run({ debugOnFail })](programming-interface/runner.md#run)
-
 ## appInitDelay
 
 Specifies the time (in milliseconds) allowed for an application launched using the [appCommand](#appcommand) option to initialize.
@@ -465,6 +450,23 @@ TestCafe waits for the specified time before it starts running tests.
 
 *CLI*: [--app-init-delay](command-line-interface.md#--app-init-delay-ms)  
 *API*: [runner.startApp](programming-interface/runner.md#startapp)
+
+## concurrency
+
+Specifies the number of browser instances that should run tests concurrently.
+
+```json
+{
+    "concurrency": 3
+}
+```
+
+TestCafe opens several instances of the same browser and creates a pool of browser instances. Tests are run concurrently against this pool, that is, each test is run in the first free instance.
+
+See [Concurrent Test Execution](common-concepts/concurrent-test-execution.md) for more information about concurrent test execution.
+
+*CLI*: [-c, --concurrency](command-line-interface.md#-c-n---concurrency-n)  
+*API*: [runner.concurrency](programming-interface/runner.md#concurrency)
 
 ## selectorTimeout
 

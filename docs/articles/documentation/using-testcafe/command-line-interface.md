@@ -29,6 +29,7 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [-p, --screenshot-path-pattern](#-p---screenshot-path-pattern)
   * [-q, --quarantine-mode](#-q---quarantine-mode)
   * [-d, --debug-mode](#-d---debug-mode)
+  * [--debug-on-fail](#--debug-on-fail)
   * [-e, --skip-js-errors](#-e---skip-js-errors)
   * [-u, --skip-uncaught-errors](#-u---skip-uncaught-errors)
   * [-t \<name\>, --test \<name\>](#-t-name---test-name)
@@ -38,9 +39,8 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [--test-meta \<key=value\[,key2=value2,...\]\>](#--test-meta-keyvaluekey2value2)
   * [--fixture-meta \<key=value\[,key2=value2,...\]\>](#--fixture-meta-keyvaluekey2value2)
   * [-a \<command\>, --app \<command\>](#-a-command---app-command)
-  * [-c \<n\>, --concurrency \<n\>](#-c-n---concurrency-n)
-  * [--debug-on-fail](#--debug-on-fail)
   * [--app-init-delay \<ms\>](#--app-init-delay-ms)
+  * [-c \<n\>, --concurrency \<n\>](#-c-n---concurrency-n)
   * [--selector-timeout \<ms\>](#--selector-timeout-ms)
   * [--assertion-timeout \<ms\>](#--assertion-timeout-ms)
   * [--page-load-timeout \<ms\>](#--page-load-timeout-ms)
@@ -57,7 +57,7 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [--color](#--color)
   * [--no-color](#--no-color)
 
-When you execute the `testcafe` command, TestCafe first reads settings from the `.testcaferc.json` [configuration file](configuration-file.md) if this file exists. Then it applies settings provided in the command line. Command line settings override values from the configuration file in case they differ. TestCafe prints a message in the console when this happens.
+When you execute the `testcafe` command, TestCafe first reads settings from the `.testcaferc.json` [configuration file](configuration-file.md) if this file exists. Then it applies settings provided in the command line. Command line settings override values from the configuration file in case they differ. TestCafe prints information about every overridden property in the console.
 
 If the [browsers](configuration-file.md#browsers) and [src](configuration-file.md#src) properties are specified in the configuration file, you can omit any of them, or both, in the command line.
 
@@ -381,6 +381,20 @@ You can also use the **Unlock page** switch in the footer to unlock the tested p
 
 *Overrides a configuration file property*: [debugMode](configuration-file.md#debugmode).
 
+### --debug-on-fail
+
+Specifies whether to automatically enter the [debug mode](#-d---debug-mode) when a test fails.
+
+```sh
+testcafe chrome tests/sample-fixture.js --debug-on-fail
+```
+
+If this option is enabled, TestCafe pauses the test when it fails. This allows you to view the tested page and determine the cause of the fail.
+
+When you are done, click the **Finish** button in the footer to end test execution.
+
+*Overrides a configuration file property*: [debugOnFail](configuration-file.md#debugonfail).
+
 ### -e, --skip-js-errors
 
 When a JavaScript error occurs on a tested web page, TestCafe stops test execution and posts an error message and a stack trace to a report. To ignore JavaScript errors, use the `-e`(`--skip-js-errors`) option.
@@ -493,6 +507,20 @@ Use the [--app-init-delay](#--app-init-delay-ms) option to specify the amount of
 
 *Overrides a configuration file property*: [appCommand](configuration-file.md#appcommand).
 
+### --app-init-delay \<ms\>
+
+Specifies the time (in milliseconds) allowed for an application launched using the [--app](#-a-command---app-command) option to initialize.
+
+TestCafe waits for the specified time before it starts running tests.
+
+**Default value**: `1000`
+
+```sh
+testcafe chrome my-tests --app "node server.js" --app-init-delay 4000
+```
+
+*Overrides a configuration file property*: [appInitDelay](configuration-file.md#appinitdelay).
+
 ### -c \<n\>, --concurrency \<n\>
 
 Specifies that tests should run concurrently.
@@ -509,34 +537,6 @@ testcafe -c 3 chrome tests/sample-fixture.js
 ```
 
 *Overrides a configuration file property*: [concurrency](configuration-file.md#concurrency).
-
-### --debug-on-fail
-
-Specifies whether to automatically enter the [debug mode](#-d---debug-mode) when a test fails.
-
-```sh
-testcafe chrome tests/sample-fixture.js --debug-on-fail
-```
-
-If this option is enabled, TestCafe pauses the test when it fails. This allows you to view the tested page and determine the cause of the fail.
-
-When you are done, click the **Finish** button in the footer to end test execution.
-
-*Overrides a configuration file property*: [debugOnFail](configuration-file.md#debugonfail).
-
-### --app-init-delay \<ms\>
-
-Specifies the time (in milliseconds) allowed for an application launched using the [--app](#-a-command---app-command) option to initialize.
-
-TestCafe waits for the specified time before it starts running tests.
-
-**Default value**: `1000`
-
-```sh
-testcafe chrome my-tests --app "node server.js" --app-init-delay 4000
-```
-
-*Overrides a configuration file property*: [appInitDelay](configuration-file.md#appinitdelay).
 
 ### --selector-timeout \<ms\>
 

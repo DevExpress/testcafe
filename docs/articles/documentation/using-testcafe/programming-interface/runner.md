@@ -67,8 +67,6 @@ Parameter | Type                | Description
 --------- | ------------------- | ----------------------------------------------------------------------------
 `source`  | String &#124; Array | The relative or absolute path to a test fixture file, or several such paths. You can use [glob patterns](https://github.com/isaacs/node-glob#glob-primer) to include (or exclude) multiple files.
 
-You cannot call `src` multiple times for the same test runner. To provide multiple test files and/or templates, pass an array.
-
 You do not need to call this function if you specify the [src](../configuration-file.md#src) property in the [configuration file](../configuration-file.md).
 
 *Overrides a configuration file property*: [src](../configuration-file.md#src)
@@ -138,8 +136,6 @@ Parameter Type                                                                  
 String &#124; Array                                                                                           | A different browser alias for each browser type. See [Browser Support](../common-concepts/browsers/browser-support.md) for more details.                            | [Local browsers](../common-concepts/browsers/browser-support.md#locally-installed-browsers), [cloud browsers](../common-concepts/browsers/browser-support.md#browsers-in-cloud-testing-services), and [browsers accessed through *browser provider plugins*](../common-concepts/browsers/browser-support.md#nonconventional-browsers).                                                                 |
  `{path: String, cmd: String}`                                                                        | The path to the browser's executable (`path`) and command line parameters (`cmd`). The `cmd` property is optional.                                                     | [Local](../common-concepts/browsers/browser-support.md#locally-installed-browsers) and [portable](../common-concepts/browsers/browser-support.md#portable-browsers) browsers
 [BrowserConnection](browserconnection.md)                                                            | The remote browser connection.                                                                                                                                        | [Remote browsers](../common-concepts/browsers/browser-support.md#browsers-on-remote-devices)
-
-You cannot call `browser` multiple times for the same test runner. To run tests in multiple browsers, pass an array.
 
 You do not need to call this function if you specify the [browsers](../configuration-file.md#browsers) property in the [configuration file](../configuration-file.md).
 
@@ -261,7 +257,7 @@ Parameter                | Type                        | Description            
 `name`                   | String              | The name of the [reporter](../common-concepts/reporters.md) to use.
 `outStream`&#160;*(optional)* | String &#124; Writable Stream implementer | The file path where the report is written or the output stream. | `stdout`
 
-You cannot call `reporter` multiple times for the same test runner. To use multiple reporters, pass an array. Note that only one reporter can write to `stdout`.
+Note that if you use multiple reporters, only one can write to `stdout`.
 
 *Overrides configuration file property*: [reporter](../configuration-file.md#reporter)
 
@@ -421,7 +417,7 @@ Runs tests according to the current configuration. Returns the number of failed 
 async run(options) → Promise<Number>
 ```
 
-Before TestCafe runs tests, it reads settings from the `.testcaferc.json` [configuration file](../configuration-file.md) if this file exists. Then it applies settings specified in the programming API. API settings override values from the configuration file in case they differ. TestCafe prints a message in the console when this happens.
+Before TestCafe runs tests, it reads settings from the `.testcaferc.json` [configuration file](../configuration-file.md) if this file exists. Then it applies settings specified in the programming API. API settings override values from the configuration file in case they differ. TestCafe prints information about every overridden property in the console.
 
 > Important! Make sure to keep the browser tab that is running tests active. Do not minimize the browser window.
 > Inactive tabs and minimized browser windows switch to a lower resource consumption mode
