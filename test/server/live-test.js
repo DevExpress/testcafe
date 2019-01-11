@@ -86,10 +86,6 @@ class RunnerMock extends LiveModeRunner {
         return new ControllerMock(this);
     }
 
-    _waitInfinite () {
-        return Promise.resolve();
-    }
-
     _runTask () {
         return Promise.resolve();
     }
@@ -110,6 +106,9 @@ class RunnerMock extends LiveModeRunner {
                 this.runCount++;
 
                 return super.runTests();
+            })
+            .then(() => {
+                this.stopInfiniteWaiting();
             });
     }
 

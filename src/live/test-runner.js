@@ -83,14 +83,15 @@ class LiveModeRunner extends Runner {
 
         const fileListPromise = parseFileList(this.bootstrapper.sources, process.cwd());
 
-        return fileListPromise
+        fileListPromise
             .then(files => this.controller.init(files))
             .then(() => this._createRunnableConfiguration())
-            .then(() => this.runTests(true))
-            .then(() => this._waitInfinite())
-            .then(() => {
-                this.preventRunCall = false;
-            });
+            .then(() => this.runTests(true));
+
+
+        return this._waitInfinite().then(() => {
+            this.preventRunCall = false;
+        });
     }
 
     stop () {

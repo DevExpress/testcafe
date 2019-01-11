@@ -27,6 +27,7 @@ class LiveModeController extends EventEmitter {
         this._listenKeyPress();
         this._initFileWatching(files);
         this._listenTestRunnerEvents();
+        this._setRunning();
 
         return Promise.resolve()
             .then(() => this.logger.writeIntroMessage(files));
@@ -144,12 +145,16 @@ class LiveModeController extends EventEmitter {
         fileWatcher.on(fileWatcher.FILE_CHANGED_EVENT, () => this._runTests(true));
     }
 
+    _setRunning () {
+        this.running    = true;
+        this.restarting = false;
+    }
+
     _runTests (sourceChanged) {
         if (this.watchingPaused || this.running)
             return Promise.resolve();
 
-        this.running    = true;
-        this.restarting = false;
+        this._setRunning();
 
         this.logger.writeRunTestsMessage(sourceChanged);
 
