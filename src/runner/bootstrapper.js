@@ -108,7 +108,7 @@ export default class Bootstrapper {
 
     static _addDefaultReporter (reporters) {
         reporters.push({
-            name:      'spec',
+            name: 'spec',
             file: process.stdout
         });
     }
