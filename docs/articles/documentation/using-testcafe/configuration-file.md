@@ -160,13 +160,13 @@ Specifies the name of a [built-in](common-concepts/reporters.md) or [custom repo
 }
 ```
 
-This configuration outputs the test report to `stdout`. To save a report to a file, pass an object whose `name` property specifies the reporter name and `fileName` property specifies the path to the file.
+This configuration outputs the test report to `stdout`. To save a report to a file, pass an object whose `name` property specifies the reporter name and `file` property specifies the path to the file.
 
 ```json
 {
     "reporter": {
         "name": "xunit",
-        "fileName": "reports/report.xml"
+        "file": "reports/report.xml"
     }
 }
 ```
@@ -181,7 +181,7 @@ You can use multiple reporters, but note that only one reporter can write to `st
         },
         {
             "name": "json",
-            "fileName": "reports/report.json"
+            "file": "reports/report.json"
         }
     ]
 }
