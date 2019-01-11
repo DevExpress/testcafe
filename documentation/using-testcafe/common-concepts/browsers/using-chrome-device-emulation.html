@@ -704,10 +704,10 @@
 
 			<h1>Using Chrome Device Emulation</h1>
 <p>You can run test in Chrome&#39;s built-in <a href="https://developers.google.com/web/tools/chrome-devtools/device-mode/">device emulator</a>. To do this, use the <code>emulation</code> browser parameter. Specify the target device with the <code>device</code> parameter.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"chrome:emulation:device=iphone 6"</span> tests/sample-fixture.js
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"chrome:emulation:device=iphone X"</span> tests/sample-fixture.js
 </code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span>
     <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">'tests/sample-fixture.js'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="s1">'chrome:emulation:device=iphone 6'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="s1">'chrome:emulation:device=iphone X'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">run</span><span class="p">();</span>
 </code></pre></div>
 <p>Alternatively, you can configure the device emulator by providing <code>width</code>, <code>height</code>, <code>orientation</code>, etc.</p>
@@ -718,11 +718,14 @@
     <span class="p">.</span><span class="nx">run</span><span class="p">();</span>
 </code></pre></div>
 <p>You can combine both device emulation and headless mode.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"chrome:headless:emulation:device=iphone 6;cdpPort=9223"</span> tests/sample-fixture.js
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"chrome:headless:emulation:device=iphone X;cdpPort=9223"</span> tests/sample-fixture.js
 </code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span>
     <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">'tests/sample-fixture.js'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="s1">'chrome:headless:emulation:device=iphone 6;cdpPort=9223'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="s1">'chrome:headless:emulation:device=iphone X;cdpPort=9223'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">run</span><span class="p">();</span>
+</code></pre></div>
+<p>To enable device emulation in a portable Chrome, also use the <a href="browser-support.html#locally-installed-browsers">browser alias</a>. The <code>path:</code> prefix does not work in this case.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"chrome:d:</span><span class="se">\c</span><span class="s2">hrome_portable</span><span class="se">\c</span><span class="s2">hrome.exe:emulation:device=iphone X"</span> tests/test.js
 </code></pre></div><h2><a class="anchor" id="emulator-parameters"></a>Emulator Parameters <a class="permalink" href="#emulator-parameters">#</a></h2>
 <p>Use the following parameters to configure Chrome device emulator. Specify them after the <code>emulation</code> parameter as in the examples above.</p>
 <div class="table-wrapper"><table><thead><tr>
@@ -800,7 +803,7 @@
         <div class="footer-col-1">
             <p><strong>TestCafe</strong>: A node.js tool to automate end-to-end web testing<br/>
             Use of this site constitutes acceptance of our <a href="https://www.devexpress.com/aboutus/privacy-policy.xml"  target="_blank">Privacy Policy</a><br/>
-            Copyright © 2012-2018 Developer Express Inc.</p>
+            Copyright © 2012-2019 Developer Express Inc.</p>
         </div>
     </div>
 </footer>

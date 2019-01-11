@@ -705,12 +705,15 @@
 			<h1>User Profiles</h1>
 <p>By default, TestCafe launches browsers (Google Chrome and Mozilla Firefox so far) with a clean profile, i.e. without extensions, bookmarks and other profile settings. This was done to minimize the influence of profile parameters on test runs.</p>
 
-<p>However, if you need to start a browser with the current user profile, you can do this by specifying the <code>:userProfile</code> browser flag.</p>
+<p>However, if you need to start a browser with the current user profile, you can do this by specifying the <code>:userProfile</code> flag after the <a href="browser-support.html#locally-installed-browsers">browser alias</a>.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe firefox:userProfile tests/test.js
 </code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span>
     <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">'tests/fixture1.js'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="s1">'firefox:userProfile'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">run</span><span class="p">();</span>
+</code></pre></div>
+<p>When you pass the <code>:userProfile</code> flag to a portable browser, also use the <a href="browser-support.html#locally-installed-browsers">browser alias</a>. The <code>path:</code> prefix does not work in this case.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome:d:<span class="se">\c</span>hrome_portable<span class="se">\c</span>hrome.exe:userProfile tests/test.js
 </code></pre></div>
 
 		</div>
@@ -726,7 +729,7 @@
         <div class="footer-col-1">
             <p><strong>TestCafe</strong>: A node.js tool to automate end-to-end web testing<br/>
             Use of this site constitutes acceptance of our <a href="https://www.devexpress.com/aboutus/privacy-policy.xml"  target="_blank">Privacy Policy</a><br/>
-            Copyright © 2012-2018 Developer Express Inc.</p>
+            Copyright © 2012-2019 Developer Express Inc.</p>
         </div>
     </div>
 </footer>
