@@ -94,7 +94,9 @@ export default class Configuration {
         if (!reporterOption)
             return;
 
-        reporterOption.value = prepareReporters(reporterOption.value);
+        const optionValue = castArray(reporterOption.value);
+
+        reporterOption.value = prepareReporters(optionValue);
     }
 
     async _prepareSslOptions () {

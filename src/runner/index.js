@@ -286,11 +286,11 @@ export default class Runner extends EventEmitter {
         return this;
     }
 
-    reporter (name, fileNameOrStream) {
+    reporter (name, fileOrStream) {
         if (this.apiMethodWasCalled.reporter)
             throw new GeneralError(MESSAGE.multipleAPIMethodCallForbidden, OPTION_NAMES.reporter);
 
-        let reporters = prepareReporters(name, fileNameOrStream);
+        let reporters = prepareReporters(name, fileOrStream);
 
         reporters = this._prepareArrayParameter(reporters);
 

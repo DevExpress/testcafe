@@ -49,8 +49,7 @@ describe('Configuration', () => {
                 'fixture':     'testFixture',
                 'test':        'some test',
                 'fixtureGrep': '^Unstable'
-            },
-            'reporter': 'json'
+            }
         });
     });
 
@@ -88,11 +87,52 @@ describe('Configuration', () => {
                         expect(configuration.getOption('browsers')).eql([ 'ie' ]);
                         expect(configuration.getOption('concurrency')).eql(0.5);
                         expect(configuration.getOption('filter')).to.be.a('function');
+                    });
+            });
 
-                        const reporters = configuration.getOption('reporter');
+            it('"Reporter" option', () => {
+                let optionValue = null;
 
-                        expect(reporters.length).eql(1);
-                        expect(reporters[0].name).eql('json');
+                createConfigFile({
+                    reporter: 'json'
+                });
+
+                return configuration
+                    .init()
+                    .then(() => {
+                        optionValue = configuration.getOption('reporter');
+
+                        expect(optionValue.length).eql(1);
+                        expect(optionValue[0].name).eql('json');
+
+                        createConfigFile({
+                            reporter: ['json', 'minimal']
+                        });
+
+                        return configuration.init();
+                    })
+                    .then(() => {
+                        optionValue = configuration.getOption('reporter');
+
+                        expect(optionValue.length).eql(2);
+                        expect(optionValue[0].name).eql('json');
+                        expect(optionValue[1].name).eql('minimal');
+
+                        createConfigFile({
+                            reporter: [ {
+                                name: 'json',
+                                file: 'path/to/file'
+                            }]
+                        });
+
+                        return configuration.init();
+                    })
+                    .then(() => {
+                        optionValue = configuration.getOption('reporter');
+
+                        expect(optionValue.length).eql(1);
+                        expect(optionValue[0].name).eql('json');
+                        expect(optionValue[0].file).eql('path/to/file');
                     });
             });
         });
