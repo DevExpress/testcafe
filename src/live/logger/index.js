@@ -39,15 +39,16 @@ You can use the following keys in the terminal:
     writeIntroMessage (files) {
         this._write(this.MESSAGES.intro);
 
-        if (Array.isArray(files)) {
-            this._status(this.MESSAGES.watchingFiles);
+        if (!Array.isArray(files))
+            return;
 
-            files.forEach(file => {
-                this._write('  ' + file + '\n');
-            });
+        this._status(this.MESSAGES.watchingFiles);
 
-            this._write('\n');
-        }
+        files.forEach(file => {
+            this._write('  ' + file + '\n');
+        });
+
+        this._write('\n');
     }
 
     writeRunTestsMessage (sourcesChanged) {

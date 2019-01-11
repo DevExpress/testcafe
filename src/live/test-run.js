@@ -2,8 +2,8 @@ import Promise from 'pinkie';
 import TestRun from '../test-run';
 import { TEST_RUN_STATE } from './test-run-state';
 import COMMAND_TYPE from '../test-run/commands/type';
+import { UnlockPageCommand } from '../test-run/commands/service';
 
-const UNLOCK_PAGE_COMMAND      = 'unlock-page';
 const TEST_RUN_ABORTED_MESSAGE = 'Test run aborted';
 
 export const TestRunCtorFactory = function (callbacks) {
@@ -54,7 +54,7 @@ export const TestRunCtorFactory = function (callbacks) {
                     .then(() => this.executeCommand(commandToExec, callsite, true))
                     .then(() => readyToNext(this));
 
-                this.executeCommand({ type: UNLOCK_PAGE_COMMAND }, null);
+                this.executeCommand(new UnlockPageCommand(), null);
 
                 return Promise.resolve();
             }
