@@ -165,18 +165,20 @@ export default class Reporter {
 
     async dispose () {
         if (this.disposed)
-            return;
+            return Promise.resolve();
 
         this.disposed = true;
 
         if (!this.outStream || Reporter._isSpecialStream(this.outStream) || !isWritableStream(this.outStream))
-            return;
+            return Promise.resolve();
 
-        this.outStream.end();
-
-        await new Promise(resolve => {
+        const streamFinishedPromise = new Promise(resolve => {
             this.outStream.once('finish', resolve);
             this.outStream.once('error', resolve);
         });
+
+        this.outStream.end();
+
+        return streamFinishedPromise;
     }
 }

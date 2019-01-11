@@ -1,6 +1,11 @@
-const expect                                      = require('chai').expect;
-const { createTestStream, createAsyncTestStream } = require('../../utils/stream');
-const fs                                          = require('fs');
+const expect = require('chai').expect;
+const fs     = require('fs');
+
+const {
+    createSimpleTestStream,
+    createAsyncTestStream,
+    createSyncTestStream
+} = require('../../utils/stream');
 
 describe('Reporter', () => {
     const stdoutWrite = process.stdout.write;
@@ -12,8 +17,8 @@ describe('Reporter', () => {
     });
 
     it('Should support several different reporters for a test run', function () {
-        const stream1 = createTestStream();
-        const stream2 = createTestStream();
+        const stream1 = createSimpleTestStream();
+        const stream2 = createSimpleTestStream();
 
         return runTests('testcafe-fixtures/index-test.js', 'Simple test', {
             only:     ['chrome'],
@@ -183,7 +188,7 @@ describe('Reporter', () => {
     });
 
     it('Should support filename as reporter output', () => {
-        const testStream     = createTestStream();
+        const testStream     = createSimpleTestStream();
         const reportFileName = 'list.report';
 
         return runTests('testcafe-fixtures/index-test.js', 'Simple test', {
@@ -205,6 +210,26 @@ describe('Reporter', () => {
                 expect(testStream.data).eql(reportDataFromFile);
 
                 fs.unlinkSync(reportFileName);
+            });
+    });
+
+    it('Should work with streams that emit the "finish" event synchronously (GH-3209)', function () {
+        const stream = createSyncTestStream();
+
+        const runOpts = {
+            only: ['chrome'],
+
+            reporter: [
+                {
+                    name:      'json',
+                    outStream: stream
+                }
+            ]
+        };
+
+        return runTests('testcafe-fixtures/index-test.js', 'Simple test', runOpts)
+            .then(() => {
+                expect(stream.finalCalled).to.be.ok;
             });
     });
 });
