@@ -16,6 +16,8 @@
       url: /documentation/using-testcafe/programming-interface/browserconnection.md
     - name: Runner Class
       url: /documentation/using-testcafe/programming-interface/runner.md
+    - name: LiveModeRunner Class
+      url: /documentation/using-testcafe/programming-interface/livemoderunner.md
     - name: createTestCafe Factory
       url: /documentation/using-testcafe/programming-interface/createtestcafe.md
   - name: Configuration File
@@ -38,6 +40,8 @@
         url: /documentation/using-testcafe/common-concepts/browsers/user-profiles.md
     - name: Concurrent Test Execution
       url: /documentation/using-testcafe/common-concepts/concurrent-test-execution.md
+    - name: Live Mode
+      url: /documentation/using-testcafe/common-concepts/live-mode.md
     - name: Reporters
       url: /documentation/using-testcafe/common-concepts/reporters.md
     - name: Connect to the TestCafe Server over HTTPS
