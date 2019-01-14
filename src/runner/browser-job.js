@@ -97,7 +97,10 @@ export default class BrowserJob extends AsyncEventEmitter {
         while (this.testRunControllerQueue.length) {
             // NOTE: before hook for test run fixture is currently
             // executing, so test run is temporary blocked
-            if (this.testRunControllerQueue[0].blocked)
+            const isBlocked             = this.testRunControllerQueue[0].blocked;
+            const hasIncompleteTestRuns = this.completionQueue.some(controller => !controller.done);
+
+            if (isBlocked || hasIncompleteTestRuns)
                 break;
 
             const testRunController = this.testRunControllerQueue.shift();
