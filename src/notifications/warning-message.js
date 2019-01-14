@@ -11,7 +11,7 @@ export default {
     maximizeError:                           'Was unable to maximize the window due to an error.\n\n{errMessage}',
     requestMockCORSValidationFailed:         '{RequestHook}: CORS validation failed for a request specified as {requestFilterRule}',
     debugInHeadlessError:                    'You cannot debug in headless mode.',
-    errorReadConfigFile:                     'An error is occurred during reading the configuration file.',
-    errorConfigFileCannotBeParsed:           "Failed to parse the '.testcaferc.json' file.\n\n The file is not well-formed JSON.",
-    configOptionsWereOverriden:              'The {optionsString} option{suffix} from configuration file will be ignored.'
+    errorReadConfigFile:                     'An error has occurred while reading the configuration file.',
+    errorConfigFileCannotBeParsed:           "Failed to parse the '.testcaferc.json' file.\\n\\nThis file is not a well-formed JSON file.",
+    configOptionsWereOverriden:              'The {optionsString} option{suffix} from the configuration file will be ignored.'
 };

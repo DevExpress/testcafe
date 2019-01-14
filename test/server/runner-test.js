@@ -119,7 +119,7 @@ describe('Runner', () => {
                 throw new Error('Should raise an appropriate error.');
             }
             catch (err) {
-                expect(err.message).startsWith('It\'s forbidden to call the "browsers" method several times. Pass an array');
+                expect(err.message).startsWith('You cannot call the "browsers" method more than once. Pass an array of parameters');
             }
         });
     });
@@ -184,7 +184,7 @@ describe('Runner', () => {
                 throw new Error('Should raise a valid error.');
             }
             catch (e) {
-                expect(e.message).eql("The specified reporter's output should be a filename or a stream (writable, transform, or duplex).");
+                expect(e.message).eql("Specify a file name or a writable stream as the reporter's output target.");
             }
         });
 
@@ -197,7 +197,7 @@ describe('Runner', () => {
                 throw new Error('Should raise an appropriate error.');
             }
             catch (err) {
-                expect(err.message).startsWith('It\'s forbidden to call the "reporter" method several times. Pass an array');
+                expect(err.message).startsWith('You cannot call the "reporter" method more than once. Pass an array of parameters');
             }
         });
 
@@ -206,7 +206,7 @@ describe('Runner', () => {
                 runner.reporter('json', null);
             }
             catch (e) {
-                expect(e.message).eql("The specified reporter's output should be a filename or a stream (writable, transform, or duplex).");
+                expect(e.message).eql("Specify a file name or a writable stream as the reporter's output target.");
             }
         });
     });
@@ -345,7 +345,7 @@ describe('Runner', () => {
                 throw new Error('Should raise an appropriate error.');
             }
             catch (err) {
-                expect(err.message).startsWith('It\'s forbidden to call the "src" method several times. Pass an array');
+                expect(err.message).startsWith('You cannot call the "src" method more than once. Pass an array of parameters');
             }
         });
     });
