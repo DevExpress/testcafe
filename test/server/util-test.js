@@ -284,7 +284,7 @@ describe('Utils', () => {
             shouldThrowCases.forEach(output => {
                 expect(() => {
                     prepareReporters('test', output);
-                }).to.throw("The specified reporter's output should be a filename");
+                }).to.throw("Specify a file name or a writable stream as the reporter's output target");
             });
 
             const shouldNotThrowCases = [
