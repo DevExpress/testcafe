@@ -106,23 +106,26 @@ export default class Bootstrapper {
         return fs.createWriteStream(fullReporterOutputPath);
     }
 
+    static _addDefaultReporter (reporters) {
+        reporters.push({
+            name: 'spec',
+            file: process.stdout
+        });
+    }
+
     async _getReporterPlugins () {
-        const stdoutReporters = filter(this.reporters, r => isUndefined(r.outStream) || r.outStream === process.stdout);
+        const stdoutReporters = filter(this.reporters, r => isUndefined(r.file) || r.file === process.stdout);
 
         if (stdoutReporters.length > 1)
             throw new GeneralError(MESSAGE.multipleStdoutReporters, stdoutReporters.map(r => r.name).join(', '));
 
-        if (!this.reporters.length) {
-            this.reporters.push({
-                name:      'spec',
-                outStream: process.stdout
-            });
-        }
+        if (!this.reporters.length)
+            Bootstrapper._addDefaultReporter(this.reporters);
 
-        return Promise.all(this.reporters.map(async ({ name, outStream }) => {
+        return Promise.all(this.reporters.map(async ({ name, file }) => {
             let pluginFactory = name;
 
-            outStream = await this._ensureOutStream(outStream);
+            const outStream = await this._ensureOutStream(file);
 
             if (typeof pluginFactory !== 'function') {
                 try {

@@ -189,10 +189,10 @@ export default class CLIArgumentParser {
             if (separatorIndex < 0)
                 return { name: reporter };
 
-            const name    = reporter.substring(0, separatorIndex);
-            const outFile = reporter.substring(separatorIndex + 1);
+            const name = reporter.substring(0, separatorIndex);
+            const file = reporter.substring(separatorIndex + 1);
 
-            return { name, outStream: outFile };
+            return { name, file };
         });
     }
 

@@ -253,7 +253,7 @@ describe('Utils', () => {
 
             expect(result.length).eql(1);
             expect(result[0].name).eql('minimal');
-            expect(result[0].outStream).eql('path/to/file');
+            expect(result[0].file).eql('path/to/file');
         });
 
         it('Array of names and output streams', () => {

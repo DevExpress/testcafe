@@ -18,18 +18,26 @@ function validateReporterOutput (obj) {
         throw new GeneralError(MESSAGE.invalidReporterOutput);
 }
 
-export default function (name, outStream) {
+export default function (name, file) {
     let reporters = [];
 
     if (name instanceof Array)
         reporters = name.map(r => typeof r === 'string' || typeof r === 'function' ? { name: r } : r);
     else {
-        const reporter = { name, outStream };
+        const reporter = { name, file };
 
         reporters.push(reporter);
     }
 
-    reporters.forEach(r => validateReporterOutput(r.outStream));
+    reporters.forEach(r => {
+        if (r.outStream === void 0)
+            return;
+
+        r.file = r.outStream;
+
+        delete r.outStream;
+    });
+    reporters.forEach(r => validateReporterOutput(r.file));
 
     return reporters;
 }
