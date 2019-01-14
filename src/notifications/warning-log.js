@@ -1,8 +1,8 @@
 import renderTemplate from '../utils/render-template';
 
 export default class WarningLog {
-    constructor (parentLog = null) {
-        this.parentLog = parentLog;
+    constructor (globalLog = null) {
+        this.globalLog = globalLog;
         this.messages  = [];
     }
 
@@ -17,7 +17,7 @@ export default class WarningLog {
 
         this.addPlainMessage(msg);
 
-        if (this.parentLog)
-            this.parentLog.addPlainMessage(msg);
+        if (this.globalLog)
+            this.globalLog.addPlainMessage(msg);
     }
 }
