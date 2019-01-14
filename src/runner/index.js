@@ -31,7 +31,7 @@ export default class Runner extends EventEmitter {
         super();
 
         this.proxy               = proxy;
-        this.bootstrapper        = new Bootstrapper(browserConnectionGateway);
+        this.bootstrapper        = this._createBootstrapper(browserConnectionGateway);
         this.pendingTaskPromises = [];
         this.configuration       = configuration;
         this.isCli               = false;
@@ -42,30 +42,34 @@ export default class Runner extends EventEmitter {
         });
     }
 
-    static _disposeBrowserSet (browserSet) {
+    _createBootstrapper (browserConnectionGateway) {
+        return new Bootstrapper(browserConnectionGateway);
+    }
+
+    _disposeBrowserSet (browserSet) {
         return browserSet.dispose().catch(e => DEBUG_LOGGER(e));
     }
 
-    static _disposeReporters (reporters) {
+    _disposeReporters (reporters) {
         return Promise.all(reporters.map(reporter => reporter.dispose().catch(e => DEBUG_LOGGER(e))));
     }
 
-    static _disposeTestedApp (testedApp) {
+    _disposeTestedApp (testedApp) {
         return testedApp ? testedApp.kill().catch(e => DEBUG_LOGGER(e)) : Promise.resolve();
     }
 
-    static async _disposeTaskAndRelatedAssets (task, browserSet, reporters, testedApp) {
+    async _disposeTaskAndRelatedAssets (task, browserSet, reporters, testedApp) {
         task.abort();
         task.clearListeners();
 
-        await Runner._disposeAssets(browserSet, reporters, testedApp);
+        await this._disposeAssets(browserSet, reporters, testedApp);
     }
 
-    static _disposeAssets (browserSet, reporters, testedApp) {
+    _disposeAssets (browserSet, reporters, testedApp) {
         return Promise.all([
-            Runner._disposeBrowserSet(browserSet),
-            Runner._disposeReporters(reporters),
-            Runner._disposeTestedApp(testedApp)
+            this._disposeBrowserSet(browserSet),
+            this._disposeReporters(reporters),
+            this._disposeTestedApp(testedApp)
         ]);
     }
 
@@ -107,9 +111,15 @@ export default class Runner extends EventEmitter {
     async _getTaskResult (task, browserSet, reporters, testedApp) {
         task.on('browser-job-done', job => browserSet.releaseConnection(job.browserConnection));
 
+        const browserSetErrorPromise = promisifyEvent(browserSet, 'error');
+
+        const taskDonePromise = task.once('done')
+            .then(() => browserSetErrorPromise.cancel());
+
+
         const promises = [
-            task.once('done'),
-            promisifyEvent(browserSet, 'error')
+            taskDonePromise,
+            browserSetErrorPromise
         ];
 
         if (testedApp)
@@ -119,19 +129,23 @@ export default class Runner extends EventEmitter {
             await Promise.race(promises);
         }
         catch (err) {
-            await Runner._disposeTaskAndRelatedAssets(task, browserSet, reporters, testedApp);
+            await this._disposeTaskAndRelatedAssets(task, browserSet, reporters, testedApp);
 
             throw err;
         }
 
-        await Runner._disposeAssets(browserSet, reporters, testedApp);
+        await this._disposeAssets(browserSet, reporters, testedApp);
 
         return this._getFailedTestCount(task, reporters[0]);
     }
 
+    _createTask (tests, browserConnectionGroups, proxy, opts) {
+        return new Task(tests, browserConnectionGroups, proxy, opts);
+    }
+
     _runTask (reporterPlugins, browserSet, tests, testedApp) {
         let completed           = false;
-        const task              = new Task(tests, browserSet.browserConnectionGroups, this.proxy, this.configuration.getOptions());
+        const task              = this._createTask(tests, browserSet.browserConnectionGroups, this.proxy, this.configuration.getOptions());
         const reporters         = reporterPlugins.map(reporter => new Reporter(reporter.plugin, task, reporter.outStream));
         const completionPromise = this._getTaskResult(task, browserSet, reporters, testedApp);
 
@@ -154,7 +168,7 @@ export default class Runner extends EventEmitter {
 
         const cancelTask = async () => {
             if (!completed)
-                await Runner._disposeTaskAndRelatedAssets(task, browserSet, reporters, testedApp);
+                await this._disposeTaskAndRelatedAssets(task, browserSet, reporters, testedApp);
         };
 
         return { completionPromise, cancelTask };
@@ -226,6 +240,10 @@ export default class Runner extends EventEmitter {
         this._validateSpeedOption();
         this._validateConcurrencyOption();
         this._validateProxyBypassOption();
+    }
+
+    _createRunnableConfiguration () {
+        return this.bootstrapper.createRunnableConfiguration();
     }
 
     _validateScreenshotPath (screenshotPath, pathType) {
@@ -332,8 +350,24 @@ export default class Runner extends EventEmitter {
         return this;
     }
 
-    run ({ skipJsErrors, disablePageReloads, quarantineMode, debugMode, selectorTimeout, assertionTimeout, pageLoadTimeout, speed = 1, debugOnFail, skipUncaughtErrors, stopOnFirstFail, disableTestSyntaxValidation } = {}) {
+    run (options = {}) {
         this.apiMethodWasCalled.reset();
+
+        const {
+            skipJsErrors,
+            disablePageReloads,
+            quarantineMode,
+            debugMode,
+            selectorTimeout,
+            assertionTimeout,
+            pageLoadTimeout,
+            speed = 1,
+            debugOnFail,
+            skipUncaughtErrors,
+            stopOnFirstFail,
+            disableTestSyntaxValidation
+        } = options;
+
 
         this.configuration.mergeOptions({
             skipJsErrors:                !!skipJsErrors,
@@ -356,7 +390,7 @@ export default class Runner extends EventEmitter {
             .then(() => {
                 this._validateRunOptions();
 
-                return this.bootstrapper.createRunnableConfiguration();
+                return this._createRunnableConfiguration();
             })
             .then(({ reporterPlugins, browserSet, tests, testedApp }) => {
                 this.emit('done-bootstrapping');

@@ -62,10 +62,14 @@ export default class Compiler {
             tests        = tests.concat(await Promise.all(compileUnits));
         }
 
-        testFileCompilers.forEach(c => c.cleanUp());
+        Compiler.cleanUp();
 
         tests = flatten(tests).filter(test => !!test);
 
         return tests;
+    }
+
+    static cleanUp () {
+        testFileCompilers.forEach(c => c.cleanUp());
     }
 }

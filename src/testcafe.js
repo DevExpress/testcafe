@@ -1,4 +1,6 @@
 import Promise from 'pinkie';
+import { GeneralError } from './errors/runtime';
+import MESSAGE from './errors/runtime/message';
 
 const lazyRequire              = require('import-lazy')(require);
 const sourceMapSupport         = lazyRequire('source-map-support');
@@ -9,6 +11,7 @@ const BrowserConnectionGateway = lazyRequire('./browser/connection/gateway');
 const BrowserConnection        = lazyRequire('./browser/connection');
 const browserProviderPool      = lazyRequire('./browser/provider/pool');
 const Runner                   = lazyRequire('./runner');
+const LiveModeRunner           = lazyRequire('./live/test-runner');
 
 // NOTE: CoffeeScript can't be loaded lazily, because it will break stack traces
 require('coffeescript');
@@ -61,6 +64,15 @@ export default class TestCafe {
         });
     }
 
+    _createRunner (isLiveMode) {
+        const Ctor      = isLiveMode ? LiveModeRunner : Runner;
+        const newRunner = new Ctor(this.proxy, this.browserConnectionGateway, this.configuration.clone());
+
+        this.runners.push(newRunner);
+
+        return newRunner;
+    }
+
     // API
     async createBrowserConnection () {
         const browserInfo = await browserProviderPool.getBrowserInfo('remote');
@@ -69,11 +81,14 @@ export default class TestCafe {
     }
 
     createRunner () {
-        const newRunner = new Runner(this.proxy, this.browserConnectionGateway, this.configuration.clone());
+        return this._createRunner(false);
+    }
 
-        this.runners.push(newRunner);
+    createLiveModeRunner () {
+        if (this.runners.some(runner => runner instanceof LiveModeRunner))
+            throw new GeneralError(MESSAGE.cannotCreateMultipleLiveModeRunners);
 
-        return newRunner;
+        return this._createRunner(true);
     }
 
     async close () {

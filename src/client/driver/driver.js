@@ -132,6 +132,8 @@ export default class Driver {
         hammerhead.on(hammerhead.EVENTS.uncaughtJsError, err => this._onJsError(err));
         hammerhead.on(hammerhead.EVENTS.unhandledRejection, err => this._onJsError(err));
         hammerhead.on(hammerhead.EVENTS.consoleMethCalled, e => this._onConsoleMessage(e));
+
+        this.setCustomCommandHandlers(COMMAND_TYPE.unlockPage, () => this._unlockPageAfterTestIsDone());
     }
 
     set speed (val) {
@@ -163,6 +165,12 @@ export default class Driver {
             this.contextStorage.setItem(PENDING_PAGE_ERROR, error);
 
         return null;
+    }
+
+    _unlockPageAfterTestIsDone () {
+        disableRealEventsPreventing();
+
+        return Promise.resolve();
     }
 
     _failIfClientCodeExecutionIsInterrupted () {
