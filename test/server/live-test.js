@@ -268,7 +268,7 @@ describe('TestCafe Live', function () {
             testCafe.createLiveModeRunner();
         }
         catch (err) {
-            expect(err.message.indexOf('Cannot create multiple Live Mode runners') > -1).to.be.true;
+            expect(err.message.indexOf('Cannot create multiple live mode runners') > -1).to.be.true;
         }
     });
 
@@ -282,7 +282,7 @@ describe('TestCafe Live', function () {
             runner.run();
         }
         catch (err) {
-            expect(err.message.indexOf('Cannot run Live Mode runner multiple times') > -1).to.be.true;
+            expect(err.message.indexOf('Cannot run a live mode runner multiple times') > -1).to.be.true;
         }
     });
 

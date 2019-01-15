@@ -4,7 +4,7 @@ import { TEST_RUN_STATE } from './test-run-state';
 import COMMAND_TYPE from '../test-run/commands/type';
 import { UnlockPageCommand } from '../test-run/commands/service';
 
-const TEST_RUN_ABORTED_MESSAGE = 'Test run aborted';
+const TEST_RUN_ABORTED_MESSAGE = 'The test run has been aborted.';
 
 export const TestRunCtorFactory = function (callbacks) {
     const { created, started, done, readyToNext } = callbacks;
