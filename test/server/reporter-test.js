@@ -104,6 +104,22 @@ describe('Reporter', () => {
             meta:    {
                 run: 'run-001'
             }
+        },
+        {
+            name:    'fixture3test2',
+            skip:    true,
+            fixture: fixtureMocks[2],
+            meta:    {
+                run: 'run-001'
+            }
+        },
+        {
+            name:    'fixture3test3',
+            skip:    false,
+            fixture: fixtureMocks[2],
+            meta:    {
+                run: 'run-001'
+            }
         }
     ];
 
@@ -115,6 +131,7 @@ describe('Reporter', () => {
             unstable:          true,
             browserConnection: browserConnectionMocks[0],
             errs:              [],
+            warningLog:        { messages: [] },
             quarantine:        {
                 attempts: [['1', '2'], []]
             }
@@ -125,6 +142,7 @@ describe('Reporter', () => {
             test:              testMocks[1],
             unstable:          false,
             browserConnection: browserConnectionMocks[0],
+            warningLog:        { messages: [] },
 
             errs: [
                 { text: 'err1' },
@@ -137,8 +155,8 @@ describe('Reporter', () => {
             test:              testMocks[2],
             unstable:          false,
             browserConnection: browserConnectionMocks[0],
-            errs:              []
-
+            errs:              [],
+            warningLog:        { messages: [] },
         },
 
         //fixture2test1
@@ -146,7 +164,8 @@ describe('Reporter', () => {
             test:              testMocks[3],
             unstable:          false,
             browserConnection: browserConnectionMocks[0],
-            errs:              []
+            errs:              [],
+            warningLog:        { messages: [] },
         },
 
         //fixture2test2
@@ -154,7 +173,8 @@ describe('Reporter', () => {
             test:              testMocks[4],
             unstable:          false,
             browserConnection: browserConnectionMocks[0],
-            errs:              []
+            errs:              [],
+            warningLog:        { messages: [] },
         },
 
         //fixture3test1
@@ -162,7 +182,26 @@ describe('Reporter', () => {
             test:              testMocks[5],
             unstable:          false,
             browserConnection: browserConnectionMocks[0],
-            errs:              []
+            errs:              [],
+            warningLog:        { messages: [] },
+        },
+
+        //fixture3test2
+        {
+            test:              testMocks[6],
+            unstable:          true,
+            browserConnection: browserConnectionMocks[1],
+            errs:              [],
+            warningLog:        { messages: [] },
+        },
+
+        //fixture3test3
+        {
+            test:              testMocks[7],
+            unstable:          true,
+            browserConnection: browserConnectionMocks[1],
+            errs:              [],
+            warningLog:        { messages: ['warning2'] }
         }
     ];
 
@@ -173,6 +212,7 @@ describe('Reporter', () => {
             unstable:          true,
             browserConnection: browserConnectionMocks[1],
             errs:              [],
+            warningLog:        { messages: [] },
             quarantine:        {
                 attempts: [['1', '2'], []]
             }
@@ -183,8 +223,8 @@ describe('Reporter', () => {
             test:              testMocks[1],
             unstable:          false,
             browserConnection: browserConnectionMocks[1],
-
-            errs: [{ text: 'err1' }]
+            errs:              [{ text: 'err1' }],
+            warningLog:        { messages: [] }
         },
 
         //fixture1test3
@@ -192,7 +232,8 @@ describe('Reporter', () => {
             test:              testMocks[2],
             unstable:          false,
             browserConnection: browserConnectionMocks[1],
-            errs:              []
+            errs:              [],
+            warningLog:        { messages: [] }
         },
 
         //fixture2test1
@@ -200,7 +241,8 @@ describe('Reporter', () => {
             test:              testMocks[3],
             unstable:          false,
             browserConnection: browserConnectionMocks[1],
-            errs:              []
+            errs:              [],
+            warningLog:        { messages: [] }
         },
 
         //fixture2test2
@@ -208,7 +250,8 @@ describe('Reporter', () => {
             test:              testMocks[4],
             unstable:          false,
             browserConnection: browserConnectionMocks[1],
-            errs:              []
+            errs:              [],
+            warningLog:        { messages: [] }
         },
 
         //fixture3test1
@@ -216,7 +259,26 @@ describe('Reporter', () => {
             test:              testMocks[5],
             unstable:          true,
             browserConnection: browserConnectionMocks[1],
-            errs:              [{ text: 'err1' }]
+            errs:              [{ text: 'err1' }],
+            warningLog:        { messages: ['warning1'] }
+        },
+
+        //fixture3test2
+        {
+            test:              testMocks[6],
+            unstable:          true,
+            browserConnection: browserConnectionMocks[1],
+            errs:              [],
+            warningLog:        { messages: [] }
+        },
+
+        //fixture3test3
+        {
+            test:              testMocks[7],
+            unstable:          true,
+            browserConnection: browserConnectionMocks[1],
+            errs:              [],
+            warningLog:        { messages: ['warning2', 'warning3'] }
         }
     ];
 
@@ -254,7 +316,8 @@ describe('Reporter', () => {
             this.warningLog = {
                 messages: [
                     'warning1',
-                    'warning2'
+                    'warning2',
+                    'warning3'
                 ]
             };
         }
@@ -336,7 +399,7 @@ describe('Reporter', () => {
                         'Chrome',
                         'Firefox'
                     ],
-                    6
+                    7
                 ]
             },
             {
@@ -358,6 +421,7 @@ describe('Reporter', () => {
                     'fixture1test1',
                     {
                         errs:       [],
+                        warnings:   [],
                         durationMs: 74000,
                         unstable:   true,
                         skipped:    false,
@@ -403,6 +467,7 @@ describe('Reporter', () => {
                             }
                         ],
 
+                        warnings:       [],
                         durationMs:     74000,
                         unstable:       false,
                         skipped:        false,
@@ -437,6 +502,7 @@ describe('Reporter', () => {
                     'fixture1test3',
                     {
                         errs:           [],
+                        warnings:       [],
                         durationMs:     74000,
                         unstable:       false,
                         skipped:        false,
@@ -469,6 +535,7 @@ describe('Reporter', () => {
                     'fixture2test1',
                     {
                         errs:           [],
+                        warnings:       [],
                         durationMs:     74000,
                         unstable:       false,
                         skipped:        false,
@@ -491,6 +558,7 @@ describe('Reporter', () => {
                     'fixture2test2',
                     {
                         errs:           [],
+                        warnings:       [],
                         durationMs:     74000,
                         unstable:       false,
                         skipped:        false,
@@ -527,6 +595,53 @@ describe('Reporter', () => {
                             }
                         ],
 
+                        warnings:       ['warning1'],
+                        durationMs:     74000,
+                        unstable:       true,
+                        skipped:        false,
+                        quarantine:     null,
+                        screenshotPath: null,
+                        screenshots:    []
+                    },
+                    {
+                        run: 'run-001'
+                    }
+                ]
+            },
+            'test-run-done resolved',
+            'test-run-done resolved',
+            'test-run-start resolved',
+            'test-run-start resolved',
+            {
+                method: 'reportTestDone',
+                args:   [
+                    'fixture3test2',
+                    {
+                        errs:           [],
+                        warnings:       [],
+                        durationMs:     74000,
+                        unstable:       true,
+                        skipped:        true,
+                        quarantine:     null,
+                        screenshotPath: null,
+                        screenshots:    []
+                    },
+                    {
+                        run: 'run-001'
+                    }
+                ]
+            },
+            'test-run-done resolved',
+            'test-run-done resolved',
+            'test-run-start resolved',
+            'test-run-start resolved',
+            {
+                method: 'reportTestDone',
+                args:   [
+                    'fixture3test3',
+                    {
+                        errs:           [],
+                        warnings:       ['warning2', 'warning3'],
                         durationMs:     74000,
                         unstable:       true,
                         skipped:        false,
@@ -545,8 +660,9 @@ describe('Reporter', () => {
                 method: 'reportTaskDone',
                 args:   [
                     new Date('1970-01-01T00:15:25.000Z'),
-                    4,
-                    ['warning1', 'warning2']
+                    5,
+                    ['warning1', 'warning2', 'warning3'],
+                    { passedCount: 5, failedCount: 2, skippedCount: 1 }
                 ]
             },
             'task-done resolved'

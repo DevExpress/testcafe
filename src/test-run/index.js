@@ -19,6 +19,7 @@ import ROLE_PHASE from '../role/phase';
 import ReporterPluginHost from '../reporter/plugin-host';
 import BrowserConsoleMessages from './browser-console-messages';
 import { UNSTABLE_NETWORK_MODE_HEADER } from '../browser/connection/unstable-network-mode';
+import WarningLog from '../notifications/warning-log';
 import WARNING_MESSAGE from '../notifications/warning-message';
 
 import {
@@ -50,10 +51,12 @@ const MAX_RESPONSE_DELAY              = 3000;
 const ALL_DRIVER_TASKS_ADDED_TO_QUEUE_EVENT = 'all-driver-tasks-added-to-queue';
 
 export default class TestRun extends EventEmitter {
-    constructor (test, browserConnection, screenshotCapturer, warningLog, opts) {
+    constructor (test, browserConnection, screenshotCapturer, globalWarningLog, opts) {
         super();
 
         this[testRunMarker] = true;
+
+        this.warningLog = new WarningLog(globalWarningLog);
 
         this.opts              = opts;
         this.test              = test;
@@ -100,13 +103,11 @@ export default class TestRun extends EventEmitter {
         this.disableDebugBreakpoints = false;
         this.debugReporterPluginHost = new ReporterPluginHost({ noColors: false });
 
-        this.browserManipulationQueue = new BrowserManipulationQueue(browserConnection, screenshotCapturer, warningLog);
+        this.browserManipulationQueue = new BrowserManipulationQueue(browserConnection, screenshotCapturer, this.warningLog);
 
         this.debugLog = new TestRunDebugLog(this.browserConnection.userAgent);
 
         this.quarantine = null;
-
-        this.warningLog = warningLog;
 
         this.injectable.scripts.push('/testcafe-core.js');
         this.injectable.scripts.push('/testcafe-ui.js');
