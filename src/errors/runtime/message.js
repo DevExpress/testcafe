@@ -4,8 +4,8 @@
 // -------------------------------------------------------------
 
 export default {
-    cannotCreateMultipleLiveModeRunners:                            'Cannot create multiple Live Mode runners',
-    cannotRunLiveModeRunnerMultipleTimes:                           'Cannot run Live Mode runner multiple times',
+    cannotCreateMultipleLiveModeRunners:                            'Cannot create multiple live mode runners.',
+    cannotRunLiveModeRunnerMultipleTimes:                           'Cannot run a live mode runner multiple times.',
     browserDisconnected:                                            'The {userAgent} browser disconnected. This problem may appear when a browser hangs or is closed, or due to network issues.',
     cantRunAgainstDisconnectedBrowsers:                             'The following browsers disconnected: {userAgents}. Tests will not be run.',
     cantEstablishBrowserConnection:                                 'Unable to establish one or more of the specified browser connections. This can be caused by network issues or remote device failure.',

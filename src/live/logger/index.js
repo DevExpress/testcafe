@@ -4,27 +4,28 @@ export default class Logger {
 
         this.MESSAGES = {
             intro: `
-TestCafe Live watches the files and reruns
-the tests once you've saved your changes.
+Live mode is enabled.
+TestCafe now watches source files and reruns
+the tests once the changes are saved.
                     
 You can use the following keys in the terminal:
-'ctrl+s' - stop current test run;
-'ctrl+r' - restart current test run;
-'ctrl+w' - turn off/on watching;
-'ctrl+c' - close browsers and terminate the process.
+'Ctrl+S' - stops the test run;
+'Ctrl+R' - restarts the test run;
+'Ctrl+W' - enables/disables watching files;
+'Ctrl+C' - quits live mode and closes the browsers.
 
 `,
 
-            sourceChanged:              'Sources have been changed. Test run is starting...',
-            testRunStarting:            'Test run is starting...',
-            testRunStopping:            'Current test run is stopping...',
-            testRunFinishedWatching:    'Make changes in the source files or press ctrl+r to restart test run.',
-            testRunFinishedNotWatching: 'Press ctrl+r to restart test run.',
-            fileWatchingEnabled:        'File watching enabled. Save changes in your files to run tests.',
-            fileWatchingDisabled:       'File watching disabled.',
+            sourceChanged:              'The sources have changed. A test run is starting...',
+            testRunStarting:            'A test run is starting...',
+            testRunStopping:            'The test run is stopping...',
+            testRunFinishedWatching:    'Make changes to the source files or press Ctrl+R to restart the test run.',
+            testRunFinishedNotWatching: 'Press Ctrl+R to restart the test run.',
+            fileWatchingEnabled:        'TestCafe is watching the source files. Save the changes to run tests.',
+            fileWatchingDisabled:       'TestCafe is not watching the source files.',
             nothingToStop:              'There are no tests running at the moment.',
-            testCafeStopping:           'Stopping TestCafe Live...',
-            watchingFiles:              'Watching files:',
+            testCafeStopping:           'Stopping TestCafe live mode...',
+            watchingFiles:              'Watching the following files:',
         };
     }
 
