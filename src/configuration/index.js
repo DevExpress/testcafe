@@ -19,10 +19,30 @@ const STATIC_CONTENT_CACHING_SETTINGS = {
     mustRevalidate: false
 };
 
+const OPTION_FLAG_NAMES = [
+    OPTION_NAMES.skipJsErrors,
+    OPTION_NAMES.disablePageReloads,
+    OPTION_NAMES.quarantineMode,
+    OPTION_NAMES.debugMode,
+    OPTION_NAMES.debugOnFail,
+    OPTION_NAMES.skipUncaughtErrors,
+    OPTION_NAMES.stopOnFirstFail,
+    OPTION_NAMES.disableTestSyntaxValidation
+];
+
+const DEFAULT_TIMEOUT = {
+    selector:  10000,
+    assertion: 3000,
+    pageLoad:  3000
+};
+
+const DEFAULT_SPEED_VALUE = 1;
+
 export default class Configuration {
     constructor () {
         this._options  = {};
         this._filePath = resolvePathRelativelyCwd(CONFIGURATION_FILENAME);
+        this._overridenOptions = [];
     }
 
     static _fromObj (obj) {
@@ -59,10 +79,10 @@ export default class Configuration {
             console.log(warningMessage.errorConfigFileCannotBeParsed); // eslint-disable-line no-console
         }
 
-        await this._prepareOptions();
+        await this._afterLoadNormalization();
     }
 
-    async _prepareOptions () {
+    async _afterLoadNormalization () {
         await this._prepareSslOptions();
         this._prepareFilterFn();
         this._ensureArrayOption(OPTION_NAMES.src);
@@ -130,8 +150,6 @@ export default class Configuration {
     }
 
     mergeOptions (options) {
-        const overridenOptions = [];
-
         Object.entries(options).map(([key, value]) => {
             const option = this._ensureOption(key, value, optionSource.input);
 
@@ -140,18 +158,43 @@ export default class Configuration {
 
             if (option.value !== value &&
                 option.source === optionSource.configuration)
-                overridenOptions.push(key);
+                this._overridenOptions.push(key);
 
             option.value  = value;
             option.source = optionSource.input;
         });
+    }
 
-        if (overridenOptions.length) {
-            const optionsStr    = overridenOptions.map(option => `"${option}"`).join(', ');
-            const optionsSuffix = overridenOptions.length > 1 ? 's' : '';
+    _prepareFlags () {
+        OPTION_FLAG_NAMES.forEach(name => {
+            const option = this._ensureOption(name, void 0, optionSource.configuration);
 
-            console.log(renderTemplate(warningMessage.configOptionsWereOverriden, optionsStr, optionsSuffix)); // eslint-disable-line no-console
-        }
+            option.value = !!option.value;
+        });
+    }
+
+    _setDefaultValues () {
+        this._ensureOption(OPTION_NAMES.selectorTimeout, DEFAULT_TIMEOUT.selector, optionSource.configuration);
+        this._ensureOption(OPTION_NAMES.assertionTimeout, DEFAULT_TIMEOUT.assertion, optionSource.configuration);
+        this._ensureOption(OPTION_NAMES.pageLoadTimeout, DEFAULT_TIMEOUT.pageLoad, optionSource.configuration);
+        this._ensureOption(OPTION_NAMES.speed, DEFAULT_SPEED_VALUE, optionSource.configuration);
+    }
+
+    prepare() {
+        this._prepareFlags();
+        this._setDefaultValues();
+    }
+
+    displayOverridenOptions () {
+        if (!this._overridenOptions.length)
+            return;
+
+        const optionsStr    = this._overridenOptions.map(option => `"${option}"`).join(', ');
+        const optionsSuffix = this._overridenOptions.length > 1 ? 's' : '';
+
+        console.log(renderTemplate(warningMessage.configOptionsWereOverriden, optionsStr, optionsSuffix)); // eslint-disable-line no-console
+
+        this._overridenOptions = [];
     }
 
     getOption (key) {
@@ -166,7 +209,7 @@ export default class Configuration {
         return option.value;
     }
 
-    getOptions () {
+    getValues () {
         const result = Object.create(null);
 
         Object.entries(this._options).forEach(([name, option]) => {

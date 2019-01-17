@@ -13,5 +13,12 @@ export default {
     proxyBypass:                 'proxyBypass',
     appCommand:                  'appCommand',
     appInitDelay:                'appInitDelay',
-    disableTestSyntaxValidation: 'disableTestSyntaxValidation'
+    disableTestSyntaxValidation: 'disableTestSyntaxValidation',
+    skipJsErrors:                'skipJsErrors',
+    disablePageReloads:          'disablePageReloads',
+    quarantineMode:              'quarantineMode',
+    debugMode:                   'debugMode',
+    debugOnFail:                 'debugOnFail',
+    skipUncaughtErrors:          'skipUncaughtErrors',
+    stopOnFirstFail:             'stopOnFirstFail'
 };
