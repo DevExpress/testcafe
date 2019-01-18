@@ -115,11 +115,7 @@
     "source-map-support": "^0.5.5",
     "strip-bom": "^2.0.0",
     "testcafe-browser-tools": "1.6.5",
-<<<<<<< HEAD
     "testcafe-hammerhead": "14.4.11",
-=======
-    "testcafe-hammerhead": "https://github.com/miherlosev/tmp/files/2763449/testcafe-hammerhead-14.4.8.zip",
->>>>>>> new build
     "testcafe-legacy-api": "3.1.9",
     "testcafe-reporter-json": "^2.1.0",
     "testcafe-reporter-list": "^2.1.0",
