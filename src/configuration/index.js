@@ -197,7 +197,7 @@ export default class Configuration {
         return option.value;
     }
 
-    getValues () {
+    getOptions () {
         const result = Object.create(null);
 
         Object.entries(this._options).forEach(([name, option]) => {
