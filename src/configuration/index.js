@@ -11,7 +11,13 @@ import JSON5 from 'json5';
 import warningMessage from '../notifications/warning-message';
 import renderTemplate from '../utils/render-template';
 import prepareReporters from '../utils/prepare-reporters';
-import { DEFAULT_TIMEOUT, DEFAULT_SPEED_VALUE, STATIC_CONTENT_CACHING_SETTINGS } from './default-values';
+import {
+    DEFAULT_TIMEOUT,
+    DEFAULT_SPEED_VALUE,
+    STATIC_CONTENT_CACHING_SETTINGS,
+    DEFAULT_APP_INIT_DELAY,
+    DEFAULT_CONCURRENCY_VALUE
+} from './default-values';
 
 const CONFIGURATION_FILENAME = '.testcaferc.json';
 
@@ -166,6 +172,8 @@ export default class Configuration {
         this._ensureOption(OPTION_NAMES.assertionTimeout, DEFAULT_TIMEOUT.assertion, optionSource.configuration);
         this._ensureOption(OPTION_NAMES.pageLoadTimeout, DEFAULT_TIMEOUT.pageLoad, optionSource.configuration);
         this._ensureOption(OPTION_NAMES.speed, DEFAULT_SPEED_VALUE, optionSource.configuration);
+        this._ensureOption(OPTION_NAMES.appInitDelay, DEFAULT_APP_INIT_DELAY, optionSource.configuration);
+        this._ensureOption(OPTION_NAMES.concurrency, DEFAULT_CONCURRENCY_VALUE, optionSource.configuration);
     }
 
     prepare () {

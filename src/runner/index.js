@@ -250,9 +250,9 @@ export default class Runner extends EventEmitter {
     _setBootstrapperOptions () {
         this.bootstrapper.sources                     = this.configuration.getOption(OPTION_NAMES.src) || this.bootstrapper.sources;
         this.bootstrapper.browsers                    = this.configuration.getOption(OPTION_NAMES.browsers) || this.bootstrapper.browsers;
-        this.bootstrapper.concurrency                 = this.configuration.getOption(OPTION_NAMES.concurrency) || this.bootstrapper.concurrency;
+        this.bootstrapper.concurrency                 = this.configuration.getOption(OPTION_NAMES.concurrency);
         this.bootstrapper.appCommand                  = this.configuration.getOption(OPTION_NAMES.appCommand) || this.bootstrapper.appCommand;
-        this.bootstrapper.appInitDelay                = this.configuration.getOption(OPTION_NAMES.appInitDelay) || this.bootstrapper.appInitDelay;
+        this.bootstrapper.appInitDelay                = this.configuration.getOption(OPTION_NAMES.appInitDelay);
         this.bootstrapper.disableTestSyntaxValidation = this.configuration.getOption(OPTION_NAMES.disableTestSyntaxValidation);
         this.bootstrapper.filter                      = this.configuration.getOption(OPTION_NAMES.filter) || this.bootstrapper.filter;
         this.bootstrapper.reporters                   = this.configuration.getOption(OPTION_NAMES.reporter) || this.bootstrapper.reporters;

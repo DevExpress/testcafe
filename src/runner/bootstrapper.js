@@ -13,19 +13,17 @@ import fs from 'fs';
 import makeDir from 'make-dir';
 import resolvePathRelativelyCwd from '../utils/resolve-path-relatively-cwd';
 
-const DEFAULT_APP_INIT_DELAY = 1000;
-
 export default class Bootstrapper {
     constructor (browserConnectionGateway) {
         this.browserConnectionGateway = browserConnectionGateway;
 
-        this.concurrency                 = 1;
+        this.concurrency                 = null;
         this.sources                     = [];
         this.browsers                    = [];
         this.reporters                   = [];
         this.filter                      = null;
         this.appCommand                  = null;
-        this.appInitDelay                = DEFAULT_APP_INIT_DELAY;
+        this.appInitDelay                = null;
         this.disableTestSyntaxValidation = false;
     }
 
