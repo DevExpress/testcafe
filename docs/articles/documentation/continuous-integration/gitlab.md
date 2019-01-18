@@ -45,7 +45,7 @@ You can install TestCafe from `npm` before tests are run if you use a Docker ima
 First, add TestCafe to your project development dependencies. Open the repository root and execute the following command:
 
 ```sh
-npm --save-dev testcafe
+npm install --save-dev testcafe
 ```
 
 This installs the latest TestCafe version locally and adds it to the `devDependencies` section in the `package.json` file.

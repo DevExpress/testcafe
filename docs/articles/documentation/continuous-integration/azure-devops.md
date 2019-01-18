@@ -12,7 +12,7 @@ This topic describes how to integrate TestCafe tests into an [Azure DevOps Serve
 Open the repository's root directory and execute the following command:
 
 ```sh
-npm --save-dev testcafe
+npm install --save-dev testcafe
 ```
 
 This command installs the latest TestCafe version locally and adds it to the `devDependencies` section in the `package.json` file.
