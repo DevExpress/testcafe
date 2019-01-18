@@ -138,10 +138,13 @@ export default class Configuration {
         return option;
     }
 
-    _ensureOptionWithValue (name, value, source) {
-        const option = this._ensureOption(name, value, source);
+    _ensureOptionWithValue (name, defaultValue, source) {
+        const option = this._ensureOption(name, defaultValue, source);
 
-        option.value  = value;
+        if (option.value !== void 0)
+            return;
+
+        option.value  = defaultValue;
         option.source = source;
     }
 
