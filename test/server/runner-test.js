@@ -1,3 +1,5 @@
+/*eslint-disable no-console */
+
 const path                    = require('path');
 const chai                    = require('chai');
 const { expect }              = chai;
@@ -12,6 +14,7 @@ const BrowserConnection       = require('../../lib/browser/connection');
 const BrowserSet              = require('../../lib/runner/browser-set');
 const browserProviderPool     = require('../../lib/browser/provider/pool');
 const delay                   = require('../../lib/utils/delay');
+const consoleWrapper          = require('./helpers/console-wrapper');
 
 chai.use(require('chai-string'));
 
@@ -64,6 +67,10 @@ describe('Runner', () => {
 
     beforeEach(() => {
         runner = testCafe.createRunner();
+    });
+
+    afterEach(() => {
+        consoleWrapper.messages.clear();
     });
 
     describe('.browsers()', () => {
@@ -270,6 +277,21 @@ describe('Runner', () => {
                 })
                 .catch(err => {
                     expect(err.message).eql('Cannot use the screenshot path pattern without a base screenshot path specified');
+                });
+        });
+
+        it('Should not display a message about "overriden options" after call "screenshots" method with undefined arguments', () => {
+            const savedConsoleLog = console.log;
+
+            console.log = consoleWrapper.log;
+
+            return runner
+                .screenshots(void 0, void 0, void 0)
+                .run({ skipJsErrors: true })
+                .catch(() => {
+                    console.log = savedConsoleLog;
+
+                    expect(consoleWrapper.messages.log).eql(null);
                 });
         });
     });
@@ -678,6 +700,20 @@ describe('Runner', () => {
                     expect(exceptionCount).to.be.eql(3);
 
                     delete runner.configuration._options.proxyBypass;
+                });
+        });
+
+        it('Should not display a message about "overriden options" after call "run" method with flags with undefined value', () => {
+            const savedConsoleLog = console.log;
+
+            console.log = consoleWrapper.log;
+
+            return runner
+                .run()
+                .catch(() => {
+                    console.log = savedConsoleLog;
+
+                    expect(consoleWrapper.messages.log).eql(null);
                 });
         });
     });

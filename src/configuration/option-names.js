@@ -5,7 +5,6 @@ export default {
     filter:                      'filter',
     reporter:                    'reporter',
     ssl:                         'ssl',
-    skipUncaughtErrors:          'skipUncaughtErrors',
     speed:                       'speed',
     screenshotPath:              'screenshotPath',
     screenshotPathPattern:       'screenshotPathPattern',

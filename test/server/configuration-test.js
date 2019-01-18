@@ -1,24 +1,20 @@
 /*eslint-disable no-console */
 
-const Configuration = require('../../lib/configuration');
-const { cloneDeep } = require('lodash');
-const { expect }    = require('chai');
-const fs            = require('fs');
-const tmp           = require('tmp');
-const nanoid        = require('nanoid');
+const Configuration  = require('../../lib/configuration');
+const { cloneDeep }  = require('lodash');
+const { expect }     = require('chai');
+const fs             = require('fs');
+const tmp            = require('tmp');
+const nanoid         = require('nanoid');
+const consoleWrapper = require('./helpers/console-wrapper');
 
 describe('Configuration', () => {
     let configuration     = null;
     let configPath        = null;
     const savedConsoleLog = console.log;
-    let consoleMsg        = null;
     let keyFileContent    = null;
 
     tmp.setGracefulCleanup();
-
-    const consoleLogWrapper = (...args) => {
-        consoleMsg = args.join();
-    };
 
     const createConfigFile = options => {
         options = options || {};
@@ -56,20 +52,22 @@ describe('Configuration', () => {
     afterEach(() => {
         if (fs.existsSync(configPath))
             fs.unlinkSync(configPath);
+
+        consoleWrapper.messages.clear();
     });
 
     describe('Init', () => {
         describe('Exists', () => {
             it('Config is not well-formed', () => {
                 fs.writeFileSync(configPath, '{');
-                console.log = consoleLogWrapper;
+                console.log = consoleWrapper.log;
 
                 return configuration.init()
                     .then(() => {
                         console.log = savedConsoleLog;
 
                         expect(configuration.getOption('hostname')).eql(void 0);
-                        expect(consoleMsg).contains("Failed to parse the '.testcaferc.json' file.");
+                        expect(consoleWrapper.messages.log).contains("Failed to parse the '.testcaferc.json' file.");
                     });
             });
 
@@ -151,20 +149,21 @@ describe('Configuration', () => {
 
     describe('Merge options', () => {
         it('One', () => {
-            console.log = consoleLogWrapper;
+            console.log = consoleWrapper.log;
 
             return configuration.init()
                 .then(() => {
                     configuration.mergeOptions({ 'hostname': 'anotherHostname' });
+                    configuration.notifyAboutOverridenOptions();
                     console.log = savedConsoleLog;
 
                     expect(configuration.getOption('hostname')).eql('anotherHostname');
-                    expect(consoleMsg).eql('The "hostname" option from the configuration file will be ignored.');
+                    expect(consoleWrapper.messages.log).eql('The "hostname" option from the configuration file will be ignored.');
                 });
         });
 
         it('Many', () => {
-            console.log = consoleLogWrapper;
+            console.log = consoleWrapper.log;
 
             return configuration.init()
                 .then(() => {
@@ -173,12 +172,15 @@ describe('Configuration', () => {
                         'port1':    'anotherPort1',
                         'port2':    'anotherPort2'
                     });
+
+                    configuration.notifyAboutOverridenOptions();
+
                     console.log = savedConsoleLog;
 
                     expect(configuration.getOption('hostname')).eql('anotherHostname');
                     expect(configuration.getOption('port1')).eql('anotherPort1');
                     expect(configuration.getOption('port2')).eql('anotherPort2');
-                    expect(consoleMsg).eql('The "hostname", "port1", "port2" options from the configuration file will be ignored.');
+                    expect(consoleWrapper.messages.log).eql('The "hostname", "port1", "port2" options from the configuration file will be ignored.');
                 });
         });
 

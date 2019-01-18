@@ -11,13 +11,9 @@ import JSON5 from 'json5';
 import warningMessage from '../notifications/warning-message';
 import renderTemplate from '../utils/render-template';
 import prepareReporters from '../utils/prepare-reporters';
+import { DEFAULT_TIMEOUT, DEFAULT_SPEED_VALUE, STATIC_CONTENT_CACHING_SETTINGS } from './default-values';
 
 const CONFIGURATION_FILENAME = '.testcaferc.json';
-
-const STATIC_CONTENT_CACHING_SETTINGS = {
-    maxAge:         3600,
-    mustRevalidate: false
-};
 
 const OPTION_FLAG_NAMES = [
     OPTION_NAMES.skipJsErrors,
@@ -29,14 +25,6 @@ const OPTION_FLAG_NAMES = [
     OPTION_NAMES.stopOnFirstFail,
     OPTION_NAMES.disableTestSyntaxValidation
 ];
-
-const DEFAULT_TIMEOUT = {
-    selector:  10000,
-    assertion: 3000,
-    pageLoad:  3000
-};
-
-const DEFAULT_SPEED_VALUE = 1;
 
 export default class Configuration {
     constructor () {
@@ -180,12 +168,12 @@ export default class Configuration {
         this._ensureOption(OPTION_NAMES.speed, DEFAULT_SPEED_VALUE, optionSource.configuration);
     }
 
-    prepare() {
+    prepare () {
         this._prepareFlags();
         this._setDefaultValues();
     }
 
-    displayOverridenOptions () {
+    notifyAboutOverridenOptions () {
         if (!this._overridenOptions.length)
             return;
 

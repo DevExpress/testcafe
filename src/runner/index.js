@@ -378,7 +378,7 @@ export default class Runner extends EventEmitter {
         });
 
         this.configuration.prepare();
-        this.configuration.displayOverridenOptions();
+        this.configuration.notifyAboutOverridenOptions();
 
         this._setBootstrapperOptions();
 
