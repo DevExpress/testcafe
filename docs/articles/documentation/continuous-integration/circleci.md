@@ -98,7 +98,7 @@ jobs:
 Next, add `testcafe` and `testcafe-reporter-xunit` to project's development dependencies. Open the repository root and execute the following command:
 
 ```sh
-npm --save-dev testcafe testcafe-reporter-xunit
+npm install --save-dev testcafe testcafe-reporter-xunit
 ```
 
 This command installs the `testcafe` and `testcafe-reporter-xunit` modules locally and adds them to `package.json`.

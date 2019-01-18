@@ -12,7 +12,7 @@ This topic describes how to debug TestCafe tests in [WebStorm](https://www.jetbr
 Execute the following command to install TestCafe locally and add it to the `devDependencies` section in `package.json`:
 
 ```sh
-npm --save-dev testcafe
+npm install --save-dev testcafe
 ```
 
 ```json
