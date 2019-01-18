@@ -73,10 +73,10 @@ export default class Configuration {
             console.log(warningMessage.errorConfigFileCannotBeParsed); // eslint-disable-line no-console
         }
 
-        await this._afterLoadNormalization();
+        await this._normalizeOptionsAfterLoad();
     }
 
-    async _afterLoadNormalization () {
+    async _normalizeOptionsAfterLoad () {
         await this._prepareSslOptions();
         this._prepareFilterFn();
         this._ensureArrayOption(OPTION_NAMES.src);
