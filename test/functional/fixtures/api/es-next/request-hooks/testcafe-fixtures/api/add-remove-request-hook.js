@@ -19,7 +19,13 @@ class TestRequestHook extends RequestHook {
     async onRequest () {}
 
     async onResponse () {
-        this.onResponseCallCountInternal++;
+        return new Promise(resolve => {
+            setTimeout(() => {
+                this.onResponseCallCountInternal++;
+
+                resolve();
+            }, 100);
+        });
     }
 }
 
