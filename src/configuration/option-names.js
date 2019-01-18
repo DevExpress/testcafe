@@ -19,5 +19,8 @@ export default {
     debugMode:                   'debugMode',
     debugOnFail:                 'debugOnFail',
     skipUncaughtErrors:          'skipUncaughtErrors',
-    stopOnFirstFail:             'stopOnFirstFail'
+    stopOnFirstFail:             'stopOnFirstFail',
+    selectorTimeout:             'selectorTimeout',
+    assertionTimeout:            'assertionTimeout',
+    pageLoadTimeout:             'pageLoadTimeout'
 };

@@ -138,6 +138,13 @@ export default class Configuration {
         return option;
     }
 
+    _ensureOptionWithValue (name, value, source) {
+        const option = this._ensureOption(name, value, source);
+
+        option.value  = value;
+        option.source = source;
+    }
+
     async init (options = {}) {
         await this._load();
         this.mergeOptions(options);
@@ -168,12 +175,12 @@ export default class Configuration {
     }
 
     _setDefaultValues () {
-        this._ensureOption(OPTION_NAMES.selectorTimeout, DEFAULT_TIMEOUT.selector, optionSource.configuration);
-        this._ensureOption(OPTION_NAMES.assertionTimeout, DEFAULT_TIMEOUT.assertion, optionSource.configuration);
-        this._ensureOption(OPTION_NAMES.pageLoadTimeout, DEFAULT_TIMEOUT.pageLoad, optionSource.configuration);
-        this._ensureOption(OPTION_NAMES.speed, DEFAULT_SPEED_VALUE, optionSource.configuration);
-        this._ensureOption(OPTION_NAMES.appInitDelay, DEFAULT_APP_INIT_DELAY, optionSource.configuration);
-        this._ensureOption(OPTION_NAMES.concurrency, DEFAULT_CONCURRENCY_VALUE, optionSource.configuration);
+        this._ensureOptionWithValue(OPTION_NAMES.selectorTimeout, DEFAULT_TIMEOUT.selector, optionSource.configuration);
+        this._ensureOptionWithValue(OPTION_NAMES.assertionTimeout, DEFAULT_TIMEOUT.assertion, optionSource.configuration);
+        this._ensureOptionWithValue(OPTION_NAMES.pageLoadTimeout, DEFAULT_TIMEOUT.pageLoad, optionSource.configuration);
+        this._ensureOptionWithValue(OPTION_NAMES.speed, DEFAULT_SPEED_VALUE, optionSource.configuration);
+        this._ensureOptionWithValue(OPTION_NAMES.appInitDelay, DEFAULT_APP_INIT_DELAY, optionSource.configuration);
+        this._ensureOptionWithValue(OPTION_NAMES.concurrency, DEFAULT_CONCURRENCY_VALUE, optionSource.configuration);
     }
 
     prepare () {
