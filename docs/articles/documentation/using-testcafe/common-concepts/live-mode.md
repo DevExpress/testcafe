@@ -7,7 +7,7 @@ permalink: /documentation/using-testcafe/common-concepts/live-mode.html
 
 Live mode keeps the TestCafe process and browsers opened the whole time you are working on tests. Changes you make in code immediately restart the tests. That is, live mode allows you to see test results instantly.
 
-ANIMATION
+![Live mode demonstrated in action](../../../images/testcafe-live.gif)
 
 > This feature replaces the `testcafe-live` module, which is now deprecated.
 
