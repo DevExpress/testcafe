@@ -9,7 +9,7 @@ Live mode keeps the TestCafe process and browsers opened the whole time you are 
 
 ![Live mode demonstrated in action](../../../images/testcafe-live.gif)
 
-> This feature replaces the `testcafe-live` module, which is now deprecated.
+> This feature replaces the `testcafe-live` module. This module is now deprecated.
 
 ## How to Enable Live Mode
 
@@ -56,7 +56,7 @@ You can use live mode with any browsers: local, remote, mobile or headless.
 
 ### Console Commands in Live Mode
 
-* `ctrl+s` - stops the current test run;
-* `ctrl+r` - restarts the current test run;
-* `ctrl+w` - turns off/on the file watcher;
-* `ctrl+c` - closes opened browsers and terminates the process.
+* `Ctrl+S` - stops the current test run;
+* `Ctrl+R` - restarts the current test run;
+* `Ctrl+W` - turns off/on the file watcher;
+* `Ctrl+C` - closes opened browsers and terminates the process.
