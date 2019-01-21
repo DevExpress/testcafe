@@ -6,11 +6,11 @@ class CustomRequestHook extends RequestHook {
         super();
     }
 
-    onRequest (event: object) {
+    async onRequest (event: object) {
 
     }
 
-    onResponse (event: object) {
+    async onResponse (event: object) {
 
     }
 }

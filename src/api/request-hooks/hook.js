@@ -27,7 +27,7 @@ export default class RequestHook {
         });
     }
 
-    onRequest (/*RequestEvent event*/) {
+    async onRequest (/*RequestEvent event*/) {
         throw new Error('Not implemented');
     }
 
@@ -39,7 +39,7 @@ export default class RequestHook {
         event.opts.includeBody    = this.responseEventConfigureOpts.includeBody;
     }
 
-    onResponse (/*ResponseEvent event*/) {
+    async onResponse (/*ResponseEvent event*/) {
         throw new Error('Not implemented');
     }
 }

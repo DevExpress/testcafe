@@ -12,13 +12,13 @@ class RequestMock extends RequestHook {
         this.mocks                        = new Map();
     }
 
-    onRequest (event) {
+    async onRequest (event) {
         const mock = this.mocks.get(event._requestFilterRule);
 
         event.setMock(mock);
     }
 
-    onResponse (event) {
+    async onResponse (event) {
         if (event.statusCode === SAME_ORIGIN_CHECK_FAILED_STATUS_CODE)
             this.warningLog.addWarning(WARNING_MESSAGE.requestMockCORSValidationFailed, RequestMock.name, event._requestFilterRule);
     }
