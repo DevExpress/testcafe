@@ -50,7 +50,7 @@ A configuration file can include the following settings:
 * [color](#color)
 * [noColor](#nocolor)
 
-> The configuration file uses [JSON5 syntax](https://json5.org/). This allows you to use JavaScript identifiers as object keys, single-quoted strings, comments and other JSON5 features.
+> The configuration file supports [JSON5 syntax](https://json5.org/). This allows you to use JavaScript identifiers as object keys, single-quoted strings, comments and other JSON5 features.
 
 ## browsers
 
