@@ -29,7 +29,8 @@ const OPTION_FLAG_NAMES = [
     OPTION_NAMES.debugOnFail,
     OPTION_NAMES.skipUncaughtErrors,
     OPTION_NAMES.stopOnFirstFail,
-    OPTION_NAMES.disableTestSyntaxValidation
+    OPTION_NAMES.disableTestSyntaxValidation,
+    OPTION_NAMES.takeScreenshotsOnFails
 ];
 
 export default class Configuration {
