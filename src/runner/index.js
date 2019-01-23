@@ -20,12 +20,6 @@ import prepareReporters from '../utils/prepare-reporters';
 
 const DEBUG_LOGGER = debug('testcafe:runner');
 
-const DEFAULT_TIMEOUT = {
-    selector:  10000,
-    assertion: 3000,
-    pageLoad:  3000
-};
-
 export default class Runner extends EventEmitter {
     constructor (proxy, browserConnectionGateway, configuration) {
         super();
@@ -256,9 +250,9 @@ export default class Runner extends EventEmitter {
     _setBootstrapperOptions () {
         this.bootstrapper.sources                     = this.configuration.getOption(OPTION_NAMES.src) || this.bootstrapper.sources;
         this.bootstrapper.browsers                    = this.configuration.getOption(OPTION_NAMES.browsers) || this.bootstrapper.browsers;
-        this.bootstrapper.concurrency                 = this.configuration.getOption(OPTION_NAMES.concurrency) || this.bootstrapper.concurrency;
+        this.bootstrapper.concurrency                 = this.configuration.getOption(OPTION_NAMES.concurrency);
         this.bootstrapper.appCommand                  = this.configuration.getOption(OPTION_NAMES.appCommand) || this.bootstrapper.appCommand;
-        this.bootstrapper.appInitDelay                = this.configuration.getOption(OPTION_NAMES.appInitDelay) || this.bootstrapper.appInitDelay;
+        this.bootstrapper.appInitDelay                = this.configuration.getOption(OPTION_NAMES.appInitDelay);
         this.bootstrapper.disableTestSyntaxValidation = this.configuration.getOption(OPTION_NAMES.disableTestSyntaxValidation);
         this.bootstrapper.filter                      = this.configuration.getOption(OPTION_NAMES.filter) || this.bootstrapper.filter;
         this.bootstrapper.reporters                   = this.configuration.getOption(OPTION_NAMES.reporter) || this.bootstrapper.reporters;
@@ -331,7 +325,7 @@ export default class Runner extends EventEmitter {
         return this;
     }
 
-    screenshots (path, takeOnFails = false, pattern = null) {
+    screenshots (path, takeOnFails, pattern) {
         this.configuration.mergeOptions({
             [OPTION_NAMES.screenshotPath]:         path,
             [OPTION_NAMES.takeScreenshotsOnFails]: takeOnFails,
@@ -361,28 +355,30 @@ export default class Runner extends EventEmitter {
             selectorTimeout,
             assertionTimeout,
             pageLoadTimeout,
-            speed = 1,
+            speed,
             debugOnFail,
             skipUncaughtErrors,
             stopOnFirstFail,
             disableTestSyntaxValidation
         } = options;
 
-
         this.configuration.mergeOptions({
-            skipJsErrors:                !!skipJsErrors,
-            disablePageReloads:          !!disablePageReloads,
-            quarantineMode:              !!quarantineMode,
-            debugMode:                   !!debugMode,
-            debugOnFail:                 !!debugOnFail,
-            selectorTimeout:             selectorTimeout === void 0 ? DEFAULT_TIMEOUT.selector : selectorTimeout,
-            assertionTimeout:            assertionTimeout === void 0 ? DEFAULT_TIMEOUT.assertion : assertionTimeout,
-            pageLoadTimeout:             pageLoadTimeout === void 0 ? DEFAULT_TIMEOUT.pageLoad : pageLoadTimeout,
+            skipJsErrors:                skipJsErrors,
+            disablePageReloads:          disablePageReloads,
+            quarantineMode:              quarantineMode,
+            debugMode:                   debugMode,
+            debugOnFail:                 debugOnFail,
+            selectorTimeout:             selectorTimeout,
+            assertionTimeout:            assertionTimeout,
+            pageLoadTimeout:             pageLoadTimeout,
             speed:                       speed,
-            skipUncaughtErrors:          !!skipUncaughtErrors,
-            stopOnFirstFail:             !!stopOnFirstFail,
-            disableTestSyntaxValidation: !!disableTestSyntaxValidation
+            skipUncaughtErrors:          skipUncaughtErrors,
+            stopOnFirstFail:             stopOnFirstFail,
+            disableTestSyntaxValidation: disableTestSyntaxValidation
         });
+
+        this.configuration.prepare();
+        this.configuration.notifyAboutOverridenOptions();
 
         this._setBootstrapperOptions();
 

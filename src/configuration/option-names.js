@@ -5,7 +5,6 @@ export default {
     filter:                      'filter',
     reporter:                    'reporter',
     ssl:                         'ssl',
-    skipUncaughtErrors:          'skipUncaughtErrors',
     speed:                       'speed',
     screenshotPath:              'screenshotPath',
     screenshotPathPattern:       'screenshotPathPattern',
@@ -13,5 +12,15 @@ export default {
     proxyBypass:                 'proxyBypass',
     appCommand:                  'appCommand',
     appInitDelay:                'appInitDelay',
-    disableTestSyntaxValidation: 'disableTestSyntaxValidation'
+    disableTestSyntaxValidation: 'disableTestSyntaxValidation',
+    skipJsErrors:                'skipJsErrors',
+    disablePageReloads:          'disablePageReloads',
+    quarantineMode:              'quarantineMode',
+    debugMode:                   'debugMode',
+    debugOnFail:                 'debugOnFail',
+    skipUncaughtErrors:          'skipUncaughtErrors',
+    stopOnFirstFail:             'stopOnFirstFail',
+    selectorTimeout:             'selectorTimeout',
+    assertionTimeout:            'assertionTimeout',
+    pageLoadTimeout:             'pageLoadTimeout'
 };
