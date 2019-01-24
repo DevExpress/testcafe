@@ -124,7 +124,7 @@ export default class VideoRecorder {
         const connectionCapabilities = await testRun.browserConnection.provider.hasCustomActionForBrowser(connection.id);
 
         if (!connectionCapabilities || !connectionCapabilities.hasGetVideoFrameData) {
-            this.browserJob.warningLog.addWarning(WARNING_MESSAGES.videoNotSupportedByBrowserProvider, connection.browserInfo.providerName);
+            this.browserJob.warningLog.addWarning(WARNING_MESSAGES.videoNotSupportedByBrowserProvider, connection.browserInfo.alias);
 
             return;
         }

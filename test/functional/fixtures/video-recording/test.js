@@ -13,9 +13,6 @@ if (config.useLocalBrowsers) {
                 setVideoPath: true,
                 shouldFail:   true
             })
-                .then(() => {
-                    throw new Error('Promise rejection expected');
-                })
                 .catch(errors => {
                     expect(errors.length).to.equal(2);
                     expect(errors[0]).to.match(/^Error: Error 1/);
@@ -37,9 +34,6 @@ if (config.useLocalBrowsers) {
                     singleFile: true
                 }
             })
-                .then(() => {
-                    throw new Error('Promise rejection expected');
-                })
                 .catch(assertionHelper.getVideoFilesList)
                 .catch(errors => {
                     expect(errors.length).to.equal(2);
@@ -61,9 +55,6 @@ if (config.useLocalBrowsers) {
                     failedOnly: true
                 }
             })
-                .then(() => {
-                    throw new Error('Promise rejection expected');
-                })
                 .catch(assertionHelper.getVideoFilesList)
                 .catch(errors => {
                     expect(errors.length).to.equal(2);
@@ -86,9 +77,6 @@ if (config.useLocalBrowsers) {
                     singleFile: true
                 }
             })
-                .then(() => {
-                    throw new Error('Promise rejection expected');
-                })
                 .catch(assertionHelper.getVideoFilesList)
                 .catch(errors => {
                     expect(errors.length).to.equal(2);
