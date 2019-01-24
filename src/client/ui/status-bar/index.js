@@ -87,7 +87,7 @@ export default class StatusBar extends serviceUtils.EventEmitter {
         this.animationInterval = null;
         this.showingTimeout    = null;
 
-        this.windowHeight = styleUtils.getHeight(window);
+        this.windowHeight = document.documentElement ? styleUtils.getHeight(window) : window.innerHeight;
 
         this.state = {
             created:          false,
