@@ -238,7 +238,7 @@ export default class Runner extends EventEmitter {
 
         if (!videoPath) {
             if (videoOptions || videoEncodingOptions)
-                throw new GeneralError(MESSAGE.cantSetVideoOptionsWithoutBaseVideoPathSpecified);
+                throw new GeneralError(MESSAGE.cannotSetVideoOptionsWithoutBaseVideoPathSpecified);
 
             return;
         }
@@ -257,7 +257,7 @@ export default class Runner extends EventEmitter {
             videoOptions.ffmpegPath = await detectFFMPEG();
 
         if (!videoOptions.ffmpegPath)
-            throw new GeneralError(MESSAGE.cantFindFFMPEG);
+            throw new GeneralError(MESSAGE.cannotFindFFMPEG);
     }
 
     async _validateRunOptions () {

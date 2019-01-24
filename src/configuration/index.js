@@ -62,7 +62,7 @@ export default class Configuration {
             return true;
         }
         catch (error) {
-            DEBUG_LOGGER(renderTemplate(WARNING_MESSAGES.cantFindConfigurationFile, path, error.stack));
+            DEBUG_LOGGER(renderTemplate(WARNING_MESSAGES.cannotFindConfigurationFile, path, error.stack));
 
             return false;
         }
@@ -91,7 +91,7 @@ export default class Configuration {
             configurationFileContent = await readFile(this.filePath);
         }
         catch (error) {
-            Configuration._showWarningForError(error, WARNING_MESSAGES.cantReadConfigFile);
+            Configuration._showWarningForError(error, WARNING_MESSAGES.cannotReadConfigFile);
 
             return;
         }
@@ -102,7 +102,7 @@ export default class Configuration {
             this._options = Configuration._fromObj(optionsObj);
         }
         catch (error) {
-            Configuration._showWarningForError(error, WARNING_MESSAGES.cantParseConfigFile);
+            Configuration._showWarningForError(error, WARNING_MESSAGES.cannotParseConfigFile);
 
             return;
         }

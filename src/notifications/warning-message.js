@@ -12,15 +12,15 @@ export default {
     maximizeError:                           'Was unable to maximize the window due to an error.\n\n{errMessage}',
     requestMockCORSValidationFailed:         '{RequestHook}: CORS validation failed for a request specified as {requestFilterRule}',
     debugInHeadlessError:                    'You cannot debug in headless mode.',
-    cantReadConfigFile:                      'An error has occurred while reading the configuration file.',
-    cantParseConfigFile:                     "Failed to parse the '.testcaferc.json' file.\\n\\nThis file is not a well-formed JSON file.",
+    cannotReadConfigFile:                    'An error has occurred while reading the configuration file.',
+    cannotParseConfigFile:                   "Failed to parse the '.testcaferc.json' file.\\n\\nThis file is not a well-formed JSON file.",
     configOptionsWereOverriden:              'The {optionsString} option{suffix} from the configuration file will be ignored.',
 
-    cantFindSSLCertFile: 'Unable to find the "{path}" file, specified by the "{option}" ssl option. Error details:\n' +
-                         '\n' +
-                         '{err}',
+    cannotFindSSLCertFile: 'Unable to find the "{path}" file, specified by the "{option}" ssl option. Error details:\n' +
+                           '\n' +
+                           '{err}',
 
-    cantFindConfigurationFile: 'Unable to find the "{path}" configuration file. Error details:\n' +
-                               '\n' +
-                               '{err}'
+    cannotFindConfigurationFile: 'Unable to find the "{path}" configuration file. Error details:\n' +
+                                 '\n' +
+                                 '{err}'
 };

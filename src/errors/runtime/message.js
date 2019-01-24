@@ -35,13 +35,13 @@ export default {
     testControllerProxyCantResolveTestRun:                          `Cannot implicitly resolve the test run in the context of which the test controller action should be executed. Use test function's 't' argument instead.`,
     timeLimitedPromiseTimeoutExpired:                               'Timeout expired for a time limited promise',
     cantUseScreenshotPathPatternWithoutBaseScreenshotPathSpecified: 'Cannot use the screenshot path pattern without a base screenshot path specified',
-    cantSetVideoOptionsWithoutBaseVideoPathSpecified:               'Unable to set video or encoding options when video recording is disabled. Specify the base path where video files are stored to enable recording.',
+    cannotSetVideoOptionsWithoutBaseVideoPathSpecified:             'Unable to set video or encoding options when video recording is disabled. Specify the base path where video files are stored to enable recording.',
     multipleAPIMethodCallForbidden:                                 'You cannot call the "{methodName}" method more than once. Pass an array of parameters to this method instead.',
     invalidReporterOutput:                                          "Specify a file name or a writable stream as the reporter's output target.",
 
-    cantReadSSLCertFile: 'Unable to read the "{path}" file, specified by the "{option}" ssl option. Error details:\n' +
-                         '\n' +
-                         '{err}',
+    cannotReadSSLCertFile: 'Unable to read the "{path}" file, specified by the "{option}" ssl option. Error details:\n' +
+                           '\n' +
+                           '{err}',
 
     cannotPrepareTestsDueToError: 'Cannot prepare tests due to an error.\n' +
                                   '\n' +
@@ -66,9 +66,9 @@ export default {
     forbiddenCharatersInScreenshotPath: 'There are forbidden characters in the "{screenshotPath}" {screenshotPathType}:\n' +
                                         ' {forbiddenCharsDescription}',
 
-    cantFindFFMPEG: 'Unable to locate the FFmpeg executable required to record videos. Do one of the following:\n' +
-                    '\n' +
-                    '* add the FFmpeg installation directory to the PATH environment variable,\n' +
-                    '* specify the path to the FFmpeg executable in the FFMPEG_PATH environment variable or the ffmpegPath video option,\n' +
-                    '* install the @ffmpeg-installer/ffmpeg package from npm.',
+    cannotFindFFMPEG: 'Unable to locate the FFmpeg executable required to record videos. Do one of the following:\n' +
+                      '\n' +
+                      '* add the FFmpeg installation directory to the PATH environment variable,\n' +
+                      '* specify the path to the FFmpeg executable in the FFMPEG_PATH environment variable or the ffmpegPath video option,\n' +
+                      '* install the @ffmpeg-installer/ffmpeg package from npm.',
 };

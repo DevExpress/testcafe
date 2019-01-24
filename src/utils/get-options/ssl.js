@@ -34,7 +34,7 @@ export default function (optionString) {
                 await stat(value);
             }
             catch (error) {
-                DEBUG_LOGGER(renderTemplate(WARNING_MESSAGES.cantFindSSLCertFile, value, key, error.stack));
+                DEBUG_LOGGER(renderTemplate(WARNING_MESSAGES.cannotFindSSLCertFile, value, key, error.stack));
 
                 return value;
             }
@@ -43,7 +43,7 @@ export default function (optionString) {
                 return await readFile(value);
             }
             catch (error) {
-                throw new GeneralError(ERROR_MESSAGES.cantReadSSLCertFile, value, key, error.stack);
+                throw new GeneralError(ERROR_MESSAGES.cannotReadSSLCertFile, value, key, error.stack);
             }
         }
     });
