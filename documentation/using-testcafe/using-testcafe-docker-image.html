@@ -706,7 +706,7 @@
 <p>TestCafe provides a preconfigured Docker image with Chromium and Firefox installed.
 Therefore, you can avoid manual installation of browsers and the testing framework on the server.</p>
 
-<p>To learn how to install Docker to your system, see <a href="https://docs.docker.com/engine/installation/">Install Docker</a>.</p>
+<p>To learn how to install Docker on your system, see <a href="https://docs.docker.com/engine/installation/">Install Docker</a>.</p>
 
 <p>After Docker is installed, download the TestCafe Docker image from the repository.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">docker pull testcafe/testcafe
@@ -725,6 +725,8 @@ Therefore, you can avoid manual installation of browsers and the testing framewo
 <p><code>-v //c/Users/Username/tests:/tests</code></p>
 
 <p><code>-v //d/tests:/myTests</code></p>
+
+<p>Files referenced in tests (page models, utilities, Node.js modules) should be located in the mapped host directory or its subdirectories. Otherwise, they could not be accessed from the container.</p>
 
 <p>If you are running a Windows machine with Docker Toolbox, note that Docker containers can only access the <code>C:\Users</code> directory by default. If you need to run tests from other directories, share these directories as described in the <a href="https://docs.docker.com/toolbox/toolbox_install_windows/#optional-add-shared-directories">Docker documentation</a>.</p>
 

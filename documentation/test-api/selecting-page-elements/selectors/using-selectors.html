@@ -1115,11 +1115,11 @@ exposed by the selector in a single object.</p>
     <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`;</span>
 
 <span class="nx">test</span><span class="p">(</span><span class="s1">'DOM Node Snapshot'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">sliderHandle</span>        <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#slider'</span><span class="p">).</span><span class="nx">child</span><span class="p">(</span><span class="s1">'span'</span><span class="p">);</span>
-    <span class="kr">const</span> <span class="nx">sliderHandleSnaphot</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sliderHandle</span><span class="p">();</span>
+    <span class="kr">const</span> <span class="nx">sliderHandle</span>         <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#slider'</span><span class="p">).</span><span class="nx">child</span><span class="p">(</span><span class="s1">'span'</span><span class="p">);</span>
+    <span class="kr">const</span> <span class="nx">sliderHandleSnapshot</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sliderHandle</span><span class="p">();</span>
 
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">sliderHandleSnaphot</span><span class="p">.</span><span class="nx">hasClass</span><span class="p">(</span><span class="s1">'ui-slider-handle'</span><span class="p">));</span>    <span class="c1">// =&gt; true</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">sliderHandleSnaphot</span><span class="p">.</span><span class="nx">childElementCount</span><span class="p">);</span>               <span class="c1">// =&gt; 0</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">sliderHandleSnapshot</span><span class="p">.</span><span class="nx">hasClass</span><span class="p">(</span><span class="s1">'ui-slider-handle'</span><span class="p">));</span>    <span class="c1">// =&gt; true</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">sliderHandleSnapshot</span><span class="p">.</span><span class="nx">childElementCount</span><span class="p">);</span>               <span class="c1">// =&gt; 0</span>
 <span class="p">});</span>
 </code></pre></div>
 <p>Note that if a selector initializer has several matching DOM nodes on the page,
