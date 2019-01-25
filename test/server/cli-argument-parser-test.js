@@ -406,7 +406,38 @@ describe('CLI argument parser', function () {
                         expect(parser.opts.ssl.key).eql(keyFileContent);
                     });
             });
+
+            it('Should throw an error if a file is not readable', () => {
+                return parse(`--ssl key=${__dirname}`)
+                    .catch(error => {
+                        expect(error.message).to.include(
+                            `Unable to read the "${__dirname}" file, specified by the "key" ssl option. Error details:`
+                        );
+                    })
+                    .then(() => parse(`--ssl cert=${__dirname}`))
+                    .catch(error => {
+                        expect(error.message).to.include(
+                            `Unable to read the "${__dirname}" file, specified by the "cert" ssl option. Error details:`
+                        );
+                    })
+                    .then(() => parse(`--ssl pfx=${__dirname}`))
+                    .catch(error => {
+                        expect(error.message).to.include(
+                            `Unable to read the "${__dirname}" file, specified by the "pfx" ssl option. Error details:`
+                        );
+                    });
+            });
         });
+    });
+
+    it('Should parse video recording options', () => {
+        return parse(`--video /home/user/video --video-options singleFile=true,failedOnly --video-encoding-options c:v=x264`)
+            .then(parser => {
+                expect(parser.opts.video).eql('/home/user/video');
+                expect(parser.opts.videoOptions.singleFile).eql(true);
+                expect(parser.opts.videoOptions.failedOnly).eql(true);
+                expect(parser.opts.videoEncodingOptions['c:v']).eql('x264');
+            });
     });
 
     it('Should parse reporters and their output file paths and ensure they exist', function () {
@@ -484,7 +515,10 @@ describe('CLI argument parser', function () {
             { long: '--color' },
             { long: '--no-color' },
             { long: '--stop-on-first-fail', short: '--sf' },
-            { long: '--disable-test-syntax-validation' }
+            { long: '--disable-test-syntax-validation' },
+            { long: '--video' },
+            { long: '--video-options' },
+            { long: '--video-encoding-options' }
         ];
 
         const parser  = new CliArgumentParser('');

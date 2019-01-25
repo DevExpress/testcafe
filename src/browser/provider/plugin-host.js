@@ -109,6 +109,7 @@ export default class BrowserProviderPluginHost {
             hasCloseBrowser:                this.hasOwnProperty('closeBrowser'),
             hasResizeWindow:                this.hasOwnProperty('resizeWindow'),
             hasTakeScreenshot:              this.hasOwnProperty('takeScreenshot'),
+            hasGetVideoFrameData:           this.hasOwnProperty('getVideoFrameData'),
             hasCanResizeWindowToDimensions: this.hasOwnProperty('canResizeWindowToDimensions'),
             hasMaximizeWindow:              this.hasOwnProperty('maximizeWindow'),
             hasChromelessScreenshots:       false
@@ -129,6 +130,12 @@ export default class BrowserProviderPluginHost {
 
     async maximizeWindow (browserId) {
         this.reportWarning(browserId, WARNING_MESSAGE.maximizeNotSupportedByBrowserProvider, this[name]);
+    }
+
+    async getVideoFrameData (browserId) {
+        const browserAlias = BrowserConnection.getById(browserId).browserInfo.alias;
+
+        this.reportWarning(browserId, WARNING_MESSAGE.videoNotSupportedByBrowserProvider, browserAlias);
     }
 
     async reportJobResult (/*browserId, status, data*/) {

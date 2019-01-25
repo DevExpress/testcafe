@@ -64,7 +64,7 @@ export default class TestRunController extends AsyncEventEmitter {
         return test.isLegacy ? LegacyTestRun : TestRun;
     }
 
-    _createTestRun (connection) {
+    async _createTestRun (connection) {
         const screenshotCapturer = this.screenshots.createCapturerFor(this.test, this.index, this.quarantine, connection, this.warningLog);
         const TestRunCtor        = this.TestRunCtor;
 
@@ -72,6 +72,13 @@ export default class TestRunController extends AsyncEventEmitter {
 
         if (this.testRun.addQuarantineInfo)
             this.testRun.addQuarantineInfo(this.quarantine);
+
+        await this.emit('test-run-create', {
+            testRun:    this.testRun,
+            test:       this.test,
+            index:      this.index,
+            quarantine: this.quarantine,
+        });
 
         return this.testRun;
     }
@@ -144,7 +151,7 @@ export default class TestRunController extends AsyncEventEmitter {
     }
 
     async start (connection) {
-        const testRun = this._createTestRun(connection);
+        const testRun = await this._createTestRun(connection);
 
         const hookOk = await this.fixtureHookController.runFixtureBeforeHookIfNecessary(testRun);
 
@@ -155,6 +162,8 @@ export default class TestRunController extends AsyncEventEmitter {
         }
 
         testRun.once('start', () => this.emit('test-run-start'));
+        testRun.once('ready', () => this.emit('test-run-ready'));
+        testRun.once('before-done', () => this.emit('test-run-before-done'));
         testRun.once('done', () => this._testRunDone());
         testRun.once('disconnected', () => this._testRunDisconnected(connection));
 

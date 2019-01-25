@@ -1,4 +1,5 @@
 const expect         = require('chai').expect;
+const globby         = require('globby');
 const path           = require('path');
 const fs             = require('fs');
 const Promise        = require('pinkie');
@@ -8,7 +9,7 @@ const pngjs          = require('pngjs');
 const config         = require('./config.js');
 
 
-const SCREENSHOTS_PATH               = '___test-screenshots___';
+const SCREENSHOTS_PATH               = config.testScreenshotsDir;
 const THUMBNAILS_DIR_NAME            = 'thumbnails';
 const ERRORS_DIR_NAME                = 'errors';
 const TASK_DIR_RE                    = /\d{4,4}-\d{2,2}-\d{2,2}_\d{2,2}-\d{2,2}-\d{2,2}/;
@@ -19,6 +20,8 @@ const RUN_DIR_NAME_RE                = /run-\d+/;
 const GREEN_PIXEL                    = [0, 255, 0, 255];
 const RED_PIXEL                      = [255, 0, 0, 255];
 
+const VIDEOS_PATH      = config.testVideosDir;
+const VIDEO_FILES_GLOB = path.join(VIDEOS_PATH, '**', '*');
 
 function hasPixel (png, pixel, x, y) {
     const baseIndex = (png.width * y + x) * 4;
@@ -311,11 +314,19 @@ exports.isScreenshotsEqual = function (customPath, referenceImagePathGetter) {
     });
 };
 
-exports.removeScreenshotDir = function () {
-    if (isDirExists(SCREENSHOTS_PATH))
-        return del(SCREENSHOTS_PATH);
+function removeDir (dirPath) {
+    if (isDirExists(dirPath))
+        return del(dirPath);
 
     return Promise.resolve();
+}
+
+exports.removeScreenshotDir = () => removeDir(SCREENSHOTS_PATH);
+
+exports.removeVideosDir = () => removeDir(VIDEOS_PATH);
+
+exports.getVideoFilesList = () => {
+    return globby(VIDEO_FILES_GLOB, { nodir: true });
 };
 
 exports.SCREENSHOTS_PATH = SCREENSHOTS_PATH;

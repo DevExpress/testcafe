@@ -22,5 +22,8 @@ export default {
     stopOnFirstFail:             'stopOnFirstFail',
     selectorTimeout:             'selectorTimeout',
     assertionTimeout:            'assertionTimeout',
-    pageLoadTimeout:             'pageLoadTimeout'
+    pageLoadTimeout:             'pageLoadTimeout',
+    videoPath:                   'videoPath',
+    videoOptions:                'videoOptions',
+    videoEncodingOptions:        'videoEncodingOptions'
 };

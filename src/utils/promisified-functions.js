@@ -7,7 +7,6 @@ export const stat           = promisify(fs.stat);
 export const writeFile      = promisify(fs.writeFile);
 export const readFile       = promisify(fs.readFile);
 export const deleteFile     = promisify(fs.unlink);
-export const fsObjectExists = fsPath => stat(fsPath).then(() => true, () => false);
 
 export const exec = promisify(childProcess.exec);
 

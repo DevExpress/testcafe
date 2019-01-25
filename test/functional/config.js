@@ -273,5 +273,8 @@ module.exports = {
 
     browserstackConnectorServicePort: 9200,
 
-    browsers: []
+    browsers: [],
+
+    testScreenshotsDir: '___test-screenshots___',
+    testVideosDir:      '___test-videos___'
 };

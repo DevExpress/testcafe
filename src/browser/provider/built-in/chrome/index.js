@@ -88,6 +88,10 @@ export default {
         await this.resizeWindow(browserId, maximumSize.width, maximumSize.height, maximumSize.width, maximumSize.height);
     },
 
+    async getVideoFrameData (browserId) {
+        return await cdp.getVideoFrameData(this.openedBrowsers[browserId]);
+    },
+
     async hasCustomActionForBrowser (browserId) {
         const { config, client } = this.openedBrowsers[browserId];
 
@@ -97,6 +101,7 @@ export default {
             hasMaximizeWindow:              !!client && config.headless,
             hasTakeScreenshot:              !!client,
             hasChromelessScreenshots:       !!client,
+            hasGetVideoFrameData:           !!client,
             hasCanResizeWindowToDimensions: false
         };
     },

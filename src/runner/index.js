@@ -12,6 +12,7 @@ import { GeneralError } from '../errors/runtime';
 import MESSAGE from '../errors/runtime/message';
 import { assertType, is } from '../errors/runtime/type-assertions';
 import renderForbiddenCharsList from '../errors/render-forbidden-chars-list';
+import detectFFMPEG from '../utils/detect-ffmpeg';
 import checkFilePath from '../utils/check-file-path';
 import { addRunningTest, removeRunningTest, startHandlingTestErrors, stopHandlingTestErrors } from '../utils/handle-errors';
 import OPTION_NAMES from '../configuration/option-names';
@@ -229,8 +230,39 @@ export default class Runner extends EventEmitter {
             throw new GeneralError(MESSAGE.cantUseScreenshotPathPatternWithoutBaseScreenshotPathSpecified);
     }
 
-    _validateRunOptions () {
+    async _validateVideoOptions () {
+        const videoPath            = this.configuration.getOption(OPTION_NAMES.videoPath);
+        const videoEncodingOptions = this.configuration.getOption(OPTION_NAMES.videoEncodingOptions);
+
+        let videoOptions = this.configuration.getOption(OPTION_NAMES.videoOptions);
+
+        if (!videoPath) {
+            if (videoOptions || videoEncodingOptions)
+                throw new GeneralError(MESSAGE.cannotSetVideoOptionsWithoutBaseVideoPathSpecified);
+
+            return;
+        }
+
+        this.configuration.mergeOptions({ [OPTION_NAMES.videoPath]: resolvePath(videoPath) });
+
+        if (!videoOptions) {
+            videoOptions = {};
+
+            this.configuration.mergeOptions({ [OPTION_NAMES.videoOptions]: videoOptions });
+        }
+
+        if (videoOptions.ffmpegPath)
+            videoOptions.ffmpegPath = resolvePath(videoOptions.ffmpegPath);
+        else
+            videoOptions.ffmpegPath = await detectFFMPEG();
+
+        if (!videoOptions.ffmpegPath)
+            throw new GeneralError(MESSAGE.cannotFindFFMPEG);
+    }
+
+    async _validateRunOptions () {
         this._validateScreenshotOptions();
+        await this._validateVideoOptions();
         this._validateSpeedOption();
         this._validateConcurrencyOption();
         this._validateProxyBypassOption();
@@ -335,6 +367,16 @@ export default class Runner extends EventEmitter {
         return this;
     }
 
+    video (path, options, encodingOptions) {
+        this.configuration.mergeOptions({
+            [OPTION_NAMES.videoPath]:            path,
+            [OPTION_NAMES.videoOptions]:         options,
+            [OPTION_NAMES.videoEncodingOptions]: encodingOptions
+        });
+
+        return this;
+    }
+
     startApp (command, initDelay) {
         this.configuration.mergeOptions({
             [OPTION_NAMES.appCommand]:   command,
@@ -383,11 +425,8 @@ export default class Runner extends EventEmitter {
         this._setBootstrapperOptions();
 
         const runTaskPromise = Promise.resolve()
-            .then(() => {
-                this._validateRunOptions();
-
-                return this._createRunnableConfiguration();
-            })
+            .then(() => this._validateRunOptions())
+            .then(() => this._createRunnableConfiguration())
             .then(({ reporterPlugins, browserSet, tests, testedApp }) => {
                 this.emit('done-bootstrapping');
 

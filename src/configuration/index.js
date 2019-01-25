@@ -1,16 +1,17 @@
-import Promise from 'pinkie';
-import { fsObjectExists, readFile } from '../utils/promisified-functions';
+import debug from 'debug';
+import { stat, readFile } from '../utils/promisified-functions';
 import Option from './option';
 import optionSource from './option-source';
 import { cloneDeep, castArray } from 'lodash';
-import { ensureOptionValue as ensureSslOptionValue } from '../utils/parse-ssl-options';
+import { getSSLOptions } from '../utils/get-options';
 import OPTION_NAMES from './option-names';
 import getFilterFn from '../utils/get-filter-fn';
 import resolvePathRelativelyCwd from '../utils/resolve-path-relatively-cwd';
 import JSON5 from 'json5';
-import warningMessage from '../notifications/warning-message';
 import renderTemplate from '../utils/render-template';
 import prepareReporters from '../utils/prepare-reporters';
+import WARNING_MESSAGES from '../notifications/warning-message';
+
 import {
     DEFAULT_TIMEOUT,
     DEFAULT_SPEED_VALUE,
@@ -18,6 +19,8 @@ import {
     DEFAULT_APP_INIT_DELAY,
     DEFAULT_CONCURRENCY_VALUE
 } from './default-values';
+
+const DEBUG_LOGGER = debug('testcafe:configuration');
 
 const CONFIGURATION_FILENAME = '.testcaferc.json';
 
@@ -52,8 +55,34 @@ export default class Configuration {
         return result;
     }
 
+    static async _isConfigurationFileExists (path) {
+        try {
+            await stat(path);
+
+            return true;
+        }
+        catch (error) {
+            DEBUG_LOGGER(renderTemplate(WARNING_MESSAGES.cannotFindConfigurationFile, path, error.stack));
+
+            return false;
+        }
+    }
+
+    static _showConsoleWarning (message) {
+        process.stdout.write(message + '\n');
+    }
+
+    static _showWarningForError (error, warningTemplate, ...args) {
+        const message = renderTemplate(warningTemplate, ...args);
+
+        Configuration._showConsoleWarning(message);
+
+        DEBUG_LOGGER(message);
+        DEBUG_LOGGER(error);
+    }
+
     async _load () {
-        if (!await fsObjectExists(this.filePath))
+        if (!await Configuration._isConfigurationFileExists(this.filePath))
             return;
 
         let configurationFileContent = null;
@@ -61,8 +90,10 @@ export default class Configuration {
         try {
             configurationFileContent = await readFile(this.filePath);
         }
-        catch (e) {
-            console.log(warningMessage.errorReadConfigFile); // eslint-disable-line no-console
+        catch (error) {
+            Configuration._showWarningForError(error, WARNING_MESSAGES.cannotReadConfigFile);
+
+            return;
         }
 
         try {
@@ -70,8 +101,10 @@ export default class Configuration {
 
             this._options = Configuration._fromObj(optionsObj);
         }
-        catch (e) {
-            console.log(warningMessage.errorConfigFileCannotBeParsed); // eslint-disable-line no-console
+        catch (error) {
+            Configuration._showWarningForError(error, WARNING_MESSAGES.cannotParseConfigFile);
+
+            return;
         }
 
         await this._normalizeOptionsAfterLoad();
@@ -120,9 +153,7 @@ export default class Configuration {
         if (!sslOptions)
             return;
 
-        await Promise.all(Object.entries(sslOptions.value).map(async ([key, value]) => {
-            sslOptions.value[key] = await ensureSslOptionValue(key, value);
-        }));
+        sslOptions.value = await getSSLOptions(sslOptions.value);
     }
 
     _ensureOption (name, value, source) {
@@ -199,7 +230,7 @@ export default class Configuration {
         const optionsStr    = this._overridenOptions.map(option => `"${option}"`).join(', ');
         const optionsSuffix = this._overridenOptions.length > 1 ? 's' : '';
 
-        console.log(renderTemplate(warningMessage.configOptionsWereOverriden, optionsStr, optionsSuffix)); // eslint-disable-line no-console
+        Configuration._showConsoleWarning(renderTemplate(WARNING_MESSAGES.configOptionsWereOverriden, optionsStr, optionsSuffix));
 
         this._overridenOptions = [];
     }

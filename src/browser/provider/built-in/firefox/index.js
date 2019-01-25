@@ -84,6 +84,12 @@ export default {
         await this.resizeWindow(browserId, maximumSize.width, maximumSize.height);
     },
 
+    async getVideoFrameData (browserId) {
+        const { marionetteClient } = this.openedBrowsers[browserId];
+
+        return await marionetteClient.getVideoFrameData();
+    },
+
     async hasCustomActionForBrowser (browserId) {
         const { config, marionetteClient } = this.openedBrowsers[browserId];
 
@@ -91,6 +97,7 @@ export default {
             hasCloseBrowser:                true,
             hasTakeScreenshot:              !!marionetteClient,
             hasChromelessScreenshots:       !!marionetteClient,
+            hasGetVideoFrameData:           !!marionetteClient,
             hasResizeWindow:                !!marionetteClient && config.headless,
             hasMaximizeWindow:              !!marionetteClient && config.headless,
             hasCanResizeWindowToDimensions: false

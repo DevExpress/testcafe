@@ -1,8 +1,7 @@
 import { ClientFunction } from 'testcafe';
 import { expect } from 'chai';
 
-fixture `Page load`
-    .page `http://localhost:3000/fixtures/api/es-next/native-dialogs-handling/pages/page-load.html`;
+fixture `Page load`;
 
 
 const getResult = ClientFunction(() => document.getElementById('result').textContent);
@@ -16,7 +15,8 @@ test('Expected dialogs after page load', async t => {
                 return true;
 
             return null;
-        });
+        })
+        .navigateTo(pageUrl);
 
     expect(await getResult()).equals('true');
 
@@ -36,6 +36,8 @@ test('Expected dialogs after page load', async t => {
     ]);
 });
 
-test('Unexpected alert after page load', async t => {
-    await t.click('body');
-});
+test
+    .page(pageUrl)
+    ('Unexpected alert after page load', async t => {
+        await t.click('body');
+    });

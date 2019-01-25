@@ -18,7 +18,6 @@ export default {
     multipleStdoutReporters:                                        'Multiple reporters attempting to write to stdout: "{reporters}". Only one reporter can write to stdout.',
     optionValueIsNotValidRegExp:                                    'The "{optionName}" option value is not a valid regular expression.',
     optionValueIsNotValidKeyValue:                                  'The "{optionName}" option value is not a valid key-value pair.',
-    testedAppFailedWithError:                                       'Tested app failed with an error:\n\n{errMessage}',
     invalidSpeedValue:                                              'Speed should be a number between 0.01 and 1.',
     invalidConcurrencyFactor:                                       'The concurrency factor should be an integer greater or equal to 1.',
     cannotDivideRemotesCountByConcurrency:                          'The number of remote browsers should be divisible by the factor of concurrency.',
@@ -26,8 +25,6 @@ export default {
     portIsNotFree:                                                  'The specified {portNum} port is already in use by another program.',
     invalidHostname:                                                'The specified "{hostname}" hostname cannot be resolved to the current machine.',
     cantFindSpecifiedTestSource:                                    'Cannot find a test source file at "{path}".',
-    cannotParseRawFile:                                             'Cannot parse a test source file in the raw format at "{path}" due to an error.\n\n{errMessage}',
-    cannotPrepareTestsDueToError:                                   'Cannot prepare tests due to an error.\n\n{errMessage}',
     clientFunctionCodeIsNotAFunction:                               '{#instantiationCallsiteName} code is expected to be specified as a function, but {type} was passed.',
     selectorInitializedWithWrongType:                               '{#instantiationCallsiteName} is expected to be initialized with a function, CSS selector string, another Selector, node snapshot or a Promise returned by a Selector, but {type} was passed.',
     clientFunctionCantResolveTestRun:                               "{#instantiationCallsiteName} cannot implicitly resolve the test run in context of which it should be executed. If you need to call {#instantiationCallsiteName} from the Node.js API callback, pass the test controller manually via {#instantiationCallsiteName}'s `.with({ boundTestRun: t })` method first. Note that you cannot execute {#instantiationCallsiteName} outside the test code.",
@@ -35,12 +32,43 @@ export default {
     invalidClientFunctionTestRunBinding:                            'The "boundTestRun" option value is expected to be a test controller.',
     invalidValueType:                                               '{smthg} is expected to be a {type}, but it was {actual}.',
     unsupportedUrlProtocol:                                         'The specified "{url}" test page URL uses an unsupported {protocol}:// protocol. Only relative URLs or absolute URLs with http://, https:// and file:// protocols are supported.',
-    unableToOpenBrowser:                                            'Was unable to open the browser "{alias}" due to error.\n\n{errMessage}',
     testControllerProxyCantResolveTestRun:                          `Cannot implicitly resolve the test run in the context of which the test controller action should be executed. Use test function's 't' argument instead.`,
-    requestHookConfigureAPIError:                                   'There was an error while configuring the request hook:\n\n{requestHookName}: {errMsg}',
     timeLimitedPromiseTimeoutExpired:                               'Timeout expired for a time limited promise',
-    forbiddenCharatersInScreenshotPath:                             'There are forbidden characters in the "{screenshotPath}" {screenshotPathType}:\n {forbiddenCharsDescription}',
     cantUseScreenshotPathPatternWithoutBaseScreenshotPathSpecified: 'Cannot use the screenshot path pattern without a base screenshot path specified',
+    cannotSetVideoOptionsWithoutBaseVideoPathSpecified:             'Unable to set video or encoding options when video recording is disabled. Specify the base path where video files are stored to enable recording.',
     multipleAPIMethodCallForbidden:                                 'You cannot call the "{methodName}" method more than once. Pass an array of parameters to this method instead.',
-    invalidReporterOutput:                                          "Specify a file name or a writable stream as the reporter's output target."
+    invalidReporterOutput:                                          "Specify a file name or a writable stream as the reporter's output target.",
+
+    cannotReadSSLCertFile: 'Unable to read the "{path}" file, specified by the "{option}" ssl option. Error details:\n' +
+                           '\n' +
+                           '{err}',
+
+    cannotPrepareTestsDueToError: 'Cannot prepare tests due to an error.\n' +
+                                  '\n' +
+                                  '{errMessage}',
+
+    cannotParseRawFile: 'Cannot parse a test source file in the raw format at "{path}" due to an error.\n' +
+                        '\n' +
+                        '{errMessage}',
+
+    testedAppFailedWithError: 'Tested app failed with an error:\n' +
+                              '\n' +
+                              '{errMessage}',
+
+    unableToOpenBrowser: 'Was unable to open the browser "{alias}" due to error.\n' +
+                         '\n' +
+                         '{errMessage}',
+
+    requestHookConfigureAPIError: 'There was an error while configuring the request hook:\n' +
+                                  '\n' +
+                                  '{requestHookName}: {errMsg}',
+
+    forbiddenCharatersInScreenshotPath: 'There are forbidden characters in the "{screenshotPath}" {screenshotPathType}:\n' +
+                                        ' {forbiddenCharsDescription}',
+
+    cannotFindFFMPEG: 'Unable to locate the FFmpeg executable required to record videos. Do one of the following:\n' +
+                      '\n' +
+                      '* add the FFmpeg installation directory to the PATH environment variable,\n' +
+                      '* specify the path to the FFmpeg executable in the FFMPEG_PATH environment variable or the ffmpegPath video option,\n' +
+                      '* install the @ffmpeg-installer/ffmpeg package from npm.',
 };

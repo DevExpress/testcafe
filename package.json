@@ -130,6 +130,7 @@
   },
   "devDependencies": {
     "@belym.a.2105/broken-link-checker": "^0.7.9",
+    "@ffmpeg-installer/ffmpeg": "^1.0.17",
     "@types/chai": "^3.5.2",
     "babel-eslint": "^7.1.1",
     "babel-plugin-add-module-exports": "^0.2.0",
