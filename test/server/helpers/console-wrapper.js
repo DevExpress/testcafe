@@ -1,3 +1,5 @@
+const log = require('../../../lib/cli/log');
+
 module.exports = {
     originalLogFunction: null,
 
@@ -10,16 +12,15 @@ module.exports = {
     },
 
     init () {
-        this.originalLogFunction = process.stdout.write;
+        this.originalLogFunction = log.write;
     },
 
     wrap () {
-        process.stdout.write = this.log;
+        log.write = this.log;
     },
 
     unwrap () {
-        process.stdout.write = this.originalLogFunction;
-
+        log.write = this.originalLogFunction;
     },
 
     // NOTE: We can't write `wrapper.log` as a method and use `this` inside it because it will replace a method of another object

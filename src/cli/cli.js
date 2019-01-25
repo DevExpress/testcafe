@@ -15,9 +15,7 @@ function exitHandler (terminationLevel) {
     if (showMessageOnExit && !exitMessageShown) {
         exitMessageShown = true;
 
-        log.hideSpinner();
         log.write('Stopping TestCafe...');
-        log.showSpinner();
 
         process.on('exit', () => log.hideSpinner(true));
     }
