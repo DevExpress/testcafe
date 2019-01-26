@@ -1543,16 +1543,214 @@ interface Assertion {
 
 }
 
+interface TestCafe {
+    /**
+     * Creates the test runner that is used to configure and launch test tasks.
+     */
+    createRunner(): Runner;
+
+    /**
+     * Creates a remote browser connection.
+     */
+    createBrowserConnection(): Promise<BrowserConnection>;
+
+    /**
+     * Stops the TestCafe server. Forcibly closes all connections and pending test runs immediately.
+     */
+    close(): void;
+}
+
+interface Runner {
+    /**
+     * Configures the test runner to run tests from the specified files.
+     *
+     * @param source - The relative or absolute path to a test fixture file, or several such paths. You can use glob patterns to include (or exclude) multiple files.
+     */
+    src(source: string | string[]): this;
+
+    /**
+     * Allows you to select which tests should be run.
+     *
+     * @param callback - The callback that determines if a particular test should be run.
+     * @param callback `testName` - The name of the test.
+     * @param callback `fixtureName` - The name of the test fixture.
+     * @param callback `fixturePath` - The path to the test fixture file.
+     * @param callback `testMeta` - The test metadata.
+     * @param callback `fixtureMeta` - The fixture metadata.
+     */
+    filter(
+        callback: (
+        testName: string,
+        fixtureName: string,
+        fixturePath: string,
+        testMeta: Record<string, string>,
+        fixtureMeta: Record<string, string>
+        ) => boolean
+    ): this;
+
+    /**
+     * Configures the test runner to run tests in the specified browsers.
+     *
+     * @param browser - A different browser alias for each browser type.
+     */
+    browsers(browser: string | string[]): this;
+
+    /**
+     * Configures the test runner to run tests in the specified browsers.
+     *
+     * @param browser - The path to the browser's executable (path) and command line parameters (cmd).
+     */
+    browsers(browser: { path: string; cmd?: string }): this;
+
+    /**
+     * Configures the test runner to run tests in the specified browsers.
+     *
+     * @param browser - The remote browser connection.
+     */
+    browsers(browser: BrowserConnection): this;
+
+    /**
+     * Enables TestCafe to take screenshots of the tested webpages.
+     *
+     * @param path - The base path where the screenshots are saved. Note that to construct a complete path to these screenshots, TestCafe uses default path patterns.
+     * @param takeOnFails - Specifies if screenshots should be taken automatically when a test fails.
+     * @param pathPattern - The pattern to compose screenshot files' relative path and name.
+     */
+    screenshots(path: string, takeOnFails?: boolean, pathPattern?: string): this;
+
+    /**
+     * Configures TestCafe's reporting feature.
+     *
+     * @param name - The name of the reporter to use.
+     * @param outStream - The stream to which the report is written.
+     */
+    reporter(name: string, outStream?: NodeJS.WritableStream): this;
+
+    /**
+     * Configures TestCafe's reporting feature.
+     *
+     * @param reporters An array of reporters
+     */
+    reporter(reporters: Array<string | { name: string, file?: string | NodeJS.WritableStream }>): this;
+
+    /**
+     * Specifies that tests should run concurrently.
+     *
+     * @param n - The number of browser instances that are invoked.
+     */
+    concurrency(n: number): this;
+
+    /**
+     * Specifies a shell command that is executed before running tests. Use it to launch or deploy the application that is tested.
+     *
+     * @param command - The shell command to be executed.
+     * @param initDelay - The amount of time (in milliseconds) allowed for the command to initialize the tested application.
+     */
+    startApp(command: string, initDelay?: number): this;
+
+    /**
+     * Specifies the proxy server used in your local network to access the Internet. Allows you to bypass the proxy when accessing specific resources.
+     *
+     * @param host - The proxy server host.
+     * @param bypassRules - A set of rules that specify which resources are accessed bypassing the proxy.
+     */
+    useProxy(host: string, bypassRules?: string | string[]): this;
+
+    /**
+     * Runs tests according to the current configuration. Returns the number of failed tests.
+     */
+    run(options?: Partial<RunOptions>): Promise<number>;
+
+    /**
+     * Stops all the pending test tasks.
+     */
+    stop(): void;
+}
+
+interface BrowserConnection {
+    /**
+     * A URL that should be visited from a remote browser in order to connect it to the TestCafe server.
+     */
+    url: string;
+
+    /**
+     * Fires when a remote browser connects to the TestCafe server.
+     */
+    once(event: 'ready', callback: Function): void;
+}
+
+interface RunOptions {
+    /**
+     * Defines whether to continue running a test after a JavaScript error occurs on a page (`true`), or consider such a test failed (`false`).
+     */
+    skipJsErrors: boolean;
+    /**
+     * Defines whether to continue running a test after an uncaught error or unhandled promise rejection occurs on the server (`true`), or consider such a test failed (`false`).
+     */
+    skipUncaughtErrors: boolean;
+    /**
+     * Defines whether to enable the quarantine mode.
+     */
+    quarantineMode: boolean;
+    /**
+     * Specifies if tests run in the debug mode. If this option is enabled, test execution is paused before the first action or assertion allowing you to invoke the developer tools and debug. In the debug mode, you can execute the test step-by-step to reproduce its incorrect behavior. You can also use the Unlock page switch in the footer to unlock the tested page and interact with its elements.
+     */
+    debugMode: boolean;
+    /**
+     * Specifies whether to enter the debug mode when a test fails. If enabled, the test is paused at the moment it fails, so that you can explore the tested page to determine what caused the failure.
+     */
+    debugOnFail: boolean;
+    /**
+     * Specifies the time (in milliseconds) within which selectors make attempts to obtain a node to be returned.
+     */
+    selectorTimeout: number;
+    /**
+     * Specifies the time (in milliseconds) within which TestCafe makes attempts to successfully execute an assertion if a selector property or a client function was passed as an actual value.
+     */
+    assertionTimeout: number;
+    /**
+     * Specifies the time (in milliseconds) TestCafe waits for the  window.load event to fire after the  DOMContentLoaded event. After the timeout passes or the window.load event is raised (whichever happens first), TestCafe starts the test. You can set this timeout to 0 to skip waiting for window.load.
+     */
+    pageLoadTimeout: number;
+    /**
+     * Specifies the test execution speed. A number between 1 (fastest) and 0.01 (slowest). If an individual action's speed is also specified, the action speed setting overrides the test speed.
+     */
+    speed: number;
+    /**
+     * Defines whether to stop a test run if a test fails. This allows you not to wait for all the tests to finish and to focus on the first error.
+     */
+    stopOnFirstFail: boolean;
+    /**
+     * Defines whether to disable checks for test and fixture directives in test files. Use this option to run dynamically loaded tests.
+     */
+    disableTestSyntaxValidation: boolean;
+}
+
 // Exportable lib
 declare module 'testcafe' {
+    import { TlsOptions } from 'tls';
+
+    interface TestCafeFactory {
+        (hostname?: string, port1?: number, port2?: number, sslOptions?: TlsOptions, developmentMode?: boolean): Promise<
+            TestCafe
+        >;
+    }
+
     /**
      * Creates a selector.
      *
      * @param init - Selector initializer.
      * @param options - Selector options.
      */
-    export function Selector(init: string | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection) | Selector | NodeSnapshot | SelectorPromise,
-                             options?: SelectorOptions): Selector;
+    export function Selector(
+        init:
+            | string
+            | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection)
+            | Selector
+            | NodeSnapshot
+            | SelectorPromise,
+        options?: SelectorOptions
+    ): Selector;
 
     /**
      * Creates a client function.
@@ -1570,7 +1768,10 @@ declare module 'testcafe' {
     /**
      * Creates a request logger
      */
-    export function RequestLogger(filter?: string | RegExp | object | ((req: any) => boolean), options?: RequestLoggerOptions): RequestLogger;
+    export function RequestLogger(
+        filter?: string | RegExp | object | ((req: any) => boolean),
+        options?: RequestLoggerOptions
+    ): RequestLogger;
 
     /** The RequestHook class used to create a custom HTTP request hook **/
     export class RequestHook {
@@ -1593,7 +1794,10 @@ declare module 'testcafe' {
         onResponse(responseEvent: object): Promise<void>;
     }
 
-    export var Role: {
+    /**
+     * Creates a Role
+     */
+    export const Role: {
         /**
          * Creates a user role.
          *
@@ -1612,7 +1816,11 @@ declare module 'testcafe' {
     /**
      * The test controller used to access test run API.
      */
-    export var t: TestController;
+    export const t: TestController;
+
+    const testCafeFactory: TestCafeFactory;
+
+    export default testCafeFactory;
 }
 
 
