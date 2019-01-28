@@ -624,7 +624,7 @@ gulp.task('publish-website', gulp.series('build-website-production', 'website-pu
 gulp.task('test-docs-travis', gulp.parallel('test-website-travis', 'lint'));
 
 
-function testFunctional (fixturesDir, testingEnvironmentName, browserProviderName) {
+function testFunctional (fixturesDir, testingEnvironmentName, browserProviderName, testDirGlob) {
     process.env.TESTING_ENVIRONMENT       = testingEnvironmentName;
     process.env.BROWSER_PROVIDER          = browserProviderName;
     process.env.BROWSERSTACK_USE_AUTOMATE = 1;
@@ -636,7 +636,7 @@ function testFunctional (fixturesDir, testingEnvironmentName, browserProviderNam
         process.env.DEV_MODE = 'true';
 
     return gulp
-        .src(['test/functional/setup.js', fixturesDir + '/**/test.js'])
+        .src(['test/functional/setup.js', fixturesDir + '/' + (testDirGlob || '**') + '/test.js'])
         .pipe(mocha({
             ui:       'bdd',
             reporter: 'spec',
@@ -645,10 +645,16 @@ function testFunctional (fixturesDir, testingEnvironmentName, browserProviderNam
 }
 
 gulp.step('test-functional-travis-desktop-osx-and-ms-edge-run', () => {
-    return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers, functionalTestConfig.browserProviderNames.browserstack);
+    return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers, functionalTestConfig.browserProviderNames.browserstack, '**/!(iframe-switching)');
 });
 
-gulp.task('test-functional-travis-desktop-osx-and-ms-edge', gulp.series('build', 'test-functional-travis-desktop-osx-and-ms-edge-run'));
+
+gulp.step('test-iframes-functional-travis-desktop-osx-and-ms-edge-run', () => {
+    return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers, functionalTestConfig.browserProviderNames.browserstack, '**/iframe-switching');
+});
+
+gulp.task('test-functional-travis-desktop-osx-and-ms-edge', gulp.series('build', 'test-functional-travis-desktop-osx-and-ms-edge-run', 'test-functional-travis-desktop-osx-and-ms-edge-run'));
+
 
 gulp.step('test-functional-travis-mobile-run', () => {
     return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.mobileBrowsers, functionalTestConfig.browserProviderNames.browserstack);
