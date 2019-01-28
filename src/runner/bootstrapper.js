@@ -24,7 +24,6 @@ export default class Bootstrapper {
         this.filter                      = null;
         this.appCommand                  = null;
         this.appInitDelay                = null;
-        this.disableTestSyntaxValidation = false;
     }
 
     static _splitBrowserInfo (browserInfo) {
@@ -76,7 +75,7 @@ export default class Bootstrapper {
             throw new GeneralError(MESSAGE.testSourcesNotSet);
 
         const parsedFileList = await parseFileList(this.sources, process.cwd());
-        const compiler       = new Compiler(parsedFileList, this.disableTestSyntaxValidation);
+        const compiler       = new Compiler(parsedFileList);
         let tests            = await compiler.getTests();
 
         const testsWithOnlyFlag = tests.filter(test => test.only);

@@ -515,7 +515,6 @@ describe('CLI argument parser', function () {
             { long: '--color' },
             { long: '--no-color' },
             { long: '--stop-on-first-fail', short: '--sf' },
-            { long: '--disable-test-syntax-validation' },
             { long: '--video' },
             { long: '--video-options' },
             { long: '--video-encoding-options' }

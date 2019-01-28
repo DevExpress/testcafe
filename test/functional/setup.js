@@ -200,7 +200,6 @@ before(function () {
                 const customReporters             = opts && opts.reporter;
                 const skipUncaughtErrors          = opts && opts.skipUncaughtErrors;
                 const stopOnFirstFail             = opts && opts.stopOnFirstFail;
-                const disableTestSyntaxValidation = opts && opts.disableTestSyntaxValidation;
 
                 const actualBrowsers = browsersInfo.filter(browserInfo => {
                     const { alias, userAgent } = browserInfo.settings;
@@ -255,8 +254,7 @@ before(function () {
                         pageLoadTimeout,
                         speed,
                         stopOnFirstFail,
-                        skipUncaughtErrors,
-                        disableTestSyntaxValidation
+                        skipUncaughtErrors
                     })
                     .then(failedCount => {
                         if (customReporters)
