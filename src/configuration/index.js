@@ -11,6 +11,7 @@ import JSON5 from 'json5';
 import renderTemplate from '../utils/render-template';
 import prepareReporters from '../utils/prepare-reporters';
 import WARNING_MESSAGES from '../notifications/warning-message';
+import log from '../cli/log';
 
 import {
     DEFAULT_TIMEOUT,
@@ -69,7 +70,7 @@ export default class Configuration {
     }
 
     static _showConsoleWarning (message) {
-        process.stdout.write(message + '\n');
+        log.write(message);
     }
 
     static _showWarningForError (error, warningTemplate, ...args) {

@@ -161,7 +161,7 @@ describe('Configuration', () => {
                     consoleWrapper.unwrap();
 
                     expect(configuration.getOption('hostname')).eql('anotherHostname');
-                    expect(consoleWrapper.messages.log).eql('The "hostname" option from the configuration file will be ignored.\n');
+                    expect(consoleWrapper.messages.log).eql('The "hostname" option from the configuration file will be ignored.');
                 });
         });
 
@@ -183,7 +183,7 @@ describe('Configuration', () => {
                     expect(configuration.getOption('hostname')).eql('anotherHostname');
                     expect(configuration.getOption('port1')).eql('anotherPort1');
                     expect(configuration.getOption('port2')).eql('anotherPort2');
-                    expect(consoleWrapper.messages.log).eql('The "hostname", "port1", "port2" options from the configuration file will be ignored.\n');
+                    expect(consoleWrapper.messages.log).eql('The "hostname", "port1", "port2" options from the configuration file will be ignored.');
                 });
         });
 

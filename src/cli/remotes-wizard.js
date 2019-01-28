@@ -34,9 +34,7 @@ export default async function (testCafe, remoteCount, showQRCode) {
                 .createBrowserConnection()
                 .then(bc => promisifyEvent(bc, 'ready').then(() => bc))
                 .then(bc => {
-                    log.hideSpinner();
                     log.write(`${chalk.green('CONNECTED')} ${bc.userAgent}`);
-                    log.showSpinner();
                     return bc;
                 })
             );
