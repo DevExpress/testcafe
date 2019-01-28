@@ -1,6 +1,6 @@
 import { Selector } from 'testcafe';
 
-fixture `Should not raise an error when an iframe is rewrited`
+fixture `Should not raise an error when an iframe is rewritten`
     .page `http://localhost:3000/fixtures/regression/gh-3343/pages/index.html`;
 
 test('Rewrite an iframe', async t => {
