@@ -31,8 +31,8 @@ export default class VideoRecorder {
         this.timeStamp         = opts.timeStamp;
         this.encodingOptions   = encodingOpts;
 
-        this.tempDirectory = new TempDirectory(TEMP_DIR_PREFIX);
-        this.tempVideoPath = '';
+        this.tempDirectory       = new TempDirectory(TEMP_DIR_PREFIX);
+        this.tempVideoPath       = '';
         this.tempMergeConfigPath = '';
 
         this.firstFile = true;
@@ -129,7 +129,7 @@ export default class VideoRecorder {
             return;
         }
 
-        this.testRunInfo[testRun.id] = testRunInfo;
+        this.testRunInfo[index] = testRunInfo;
 
         testRunInfo.tempFiles = this._generateTempNames(connection.id);
 
@@ -139,8 +139,8 @@ export default class VideoRecorder {
         await testRunInfo.videoRecorder.init();
     }
 
-    async _onTestRunReady (testRun) {
-        const testRunInfo = this.testRunInfo[testRun.id];
+    async _onTestRunReady (testRunController) {
+        const testRunInfo = this.testRunInfo[testRunController.index];
 
         if (!testRunInfo)
             return;
@@ -148,19 +148,19 @@ export default class VideoRecorder {
         await testRunInfo.videoRecorder.startCapturing();
     }
 
-    async _onTestRunBeforeDone (testRun) {
-        const testRunInfo = this.testRunInfo[testRun.id];
+    async _onTestRunBeforeDone (testRunController) {
+        const testRunInfo = this.testRunInfo[testRunController.index];
 
         if (!testRunInfo)
             return;
 
-        delete this.testRunInfo[testRun.id];
+        delete this.testRunInfo[testRunController.index];
 
         await testRunInfo.videoRecorder.finishCapturing();
 
         const videoPath = this._getTargetVideoPath(testRunInfo);
 
-        if (this.failedOnly && !testRun.errs.length)
+        if (this.failedOnly && !testRunController.testRun.errs.length)
             return;
 
         await makeDir(dirname(videoPath));
