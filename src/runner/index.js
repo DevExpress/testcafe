@@ -280,14 +280,13 @@ export default class Runner extends EventEmitter {
     }
 
     _setBootstrapperOptions () {
-        this.bootstrapper.sources                     = this.configuration.getOption(OPTION_NAMES.src) || this.bootstrapper.sources;
-        this.bootstrapper.browsers                    = this.configuration.getOption(OPTION_NAMES.browsers) || this.bootstrapper.browsers;
-        this.bootstrapper.concurrency                 = this.configuration.getOption(OPTION_NAMES.concurrency);
-        this.bootstrapper.appCommand                  = this.configuration.getOption(OPTION_NAMES.appCommand) || this.bootstrapper.appCommand;
-        this.bootstrapper.appInitDelay                = this.configuration.getOption(OPTION_NAMES.appInitDelay);
-        this.bootstrapper.disableTestSyntaxValidation = this.configuration.getOption(OPTION_NAMES.disableTestSyntaxValidation);
-        this.bootstrapper.filter                      = this.configuration.getOption(OPTION_NAMES.filter) || this.bootstrapper.filter;
-        this.bootstrapper.reporters                   = this.configuration.getOption(OPTION_NAMES.reporter) || this.bootstrapper.reporters;
+        this.bootstrapper.sources      = this.configuration.getOption(OPTION_NAMES.src) || this.bootstrapper.sources;
+        this.bootstrapper.browsers     = this.configuration.getOption(OPTION_NAMES.browsers) || this.bootstrapper.browsers;
+        this.bootstrapper.concurrency  = this.configuration.getOption(OPTION_NAMES.concurrency);
+        this.bootstrapper.appCommand   = this.configuration.getOption(OPTION_NAMES.appCommand) || this.bootstrapper.appCommand;
+        this.bootstrapper.appInitDelay = this.configuration.getOption(OPTION_NAMES.appInitDelay);
+        this.bootstrapper.filter       = this.configuration.getOption(OPTION_NAMES.filter) || this.bootstrapper.filter;
+        this.bootstrapper.reporters    = this.configuration.getOption(OPTION_NAMES.reporter) || this.bootstrapper.reporters;
     }
 
     // API
@@ -400,23 +399,21 @@ export default class Runner extends EventEmitter {
             speed,
             debugOnFail,
             skipUncaughtErrors,
-            stopOnFirstFail,
-            disableTestSyntaxValidation
+            stopOnFirstFail
         } = options;
 
         this.configuration.mergeOptions({
-            skipJsErrors:                skipJsErrors,
-            disablePageReloads:          disablePageReloads,
-            quarantineMode:              quarantineMode,
-            debugMode:                   debugMode,
-            debugOnFail:                 debugOnFail,
-            selectorTimeout:             selectorTimeout,
-            assertionTimeout:            assertionTimeout,
-            pageLoadTimeout:             pageLoadTimeout,
-            speed:                       speed,
-            skipUncaughtErrors:          skipUncaughtErrors,
-            stopOnFirstFail:             stopOnFirstFail,
-            disableTestSyntaxValidation: disableTestSyntaxValidation
+            skipJsErrors:       skipJsErrors,
+            disablePageReloads: disablePageReloads,
+            quarantineMode:     quarantineMode,
+            debugMode:          debugMode,
+            debugOnFail:        debugOnFail,
+            selectorTimeout:    selectorTimeout,
+            assertionTimeout:   assertionTimeout,
+            pageLoadTimeout:    pageLoadTimeout,
+            speed:              speed,
+            skipUncaughtErrors: skipUncaughtErrors,
+            stopOnFirstFail:    stopOnFirstFail
         });
 
         this.configuration.prepare();

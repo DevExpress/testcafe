@@ -65,21 +65,6 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Should not compile test defined in separate module if option is disabled', function () {
-            const sources = [
-                'test/server/data/test-suites/test-as-module/with-tests/testfile.js'
-            ];
-
-            return compile(sources)
-                .then(function (compiled) {
-                    const tests    = compiled.tests;
-                    const fixtures = compiled.fixtures;
-
-                    expect(tests.length).eql(0);
-                    expect(fixtures.length).eql(0);
-                });
-        });
-
         it('Should compile test files and their dependencies', function () {
             const sources = [
                 'test/server/data/test-suites/basic/testfile1.js',
@@ -188,21 +173,6 @@ describe('Compiler', function () {
 
                     expect(tests[0].name).eql('test');
                     expect(fixtures[0].name).eql('Library tests');
-                });
-        });
-
-        it('Should not compile test defined in separate module if option is disabled', function () {
-            const sources = [
-                'test/server/data/test-suites/test-as-module/with-tests/testfile.ts'
-            ];
-
-            return compile(sources)
-                .then(function (compiled) {
-                    const tests    = compiled.tests;
-                    const fixtures = compiled.fixtures;
-
-                    expect(tests.length).eql(0);
-                    expect(fixtures.length).eql(0);
                 });
         });
 
@@ -341,22 +311,6 @@ describe('Compiler', function () {
                     expect(fixtures[0].name).eql('Library tests');
                 });
         });
-
-        it('Should not compile test defined in separate module if option is disabled', function () {
-            const sources = [
-                'test/server/data/test-suites/test-as-module/with-tests/testfile.coffee'
-            ];
-
-            return compile(sources)
-                .then(function (compiled) {
-                    const tests    = compiled.tests;
-                    const fixtures = compiled.fixtures;
-
-                    expect(tests.length).eql(0);
-                    expect(fixtures.length).eql(0);
-                });
-        });
-
 
         it('Should compile test files and their dependencies', function () {
             const sources = [

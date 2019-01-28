@@ -184,7 +184,7 @@
     "serve-static": "^1.10.0",
     "stack-chain": "^2.0.0",
     "strip-ansi": "^3.0.0",
-    "testcafe-browser-provider-browserstack": "^1.6.0",
+    "testcafe-browser-provider-browserstack": "^1.7.1",
     "webmake": "0.3.42"
   }
 }
