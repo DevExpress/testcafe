@@ -25,7 +25,7 @@ steps:
 - task: NodeTool@0
   displayName: 'Install Node.js'
   condition: and(succeeded(), not(variables['isDocCommit']))
-  timeoutInMinutes: 40
+  timeoutInMinutes: 50
   inputs:
     versionSpec: '8.x'
 
@@ -34,4 +34,4 @@ steps:
     npm test
   displayName: 'Run tests'
   condition: and(succeeded(), not(variables['isDocCommit']))
-  timeoutInMinutes: 40
+  timeoutInMinutes: 50
