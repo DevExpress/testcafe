@@ -5,7 +5,7 @@ fixture `gh845`
     .page `http://localhost:3000/fixtures/regression/gh-845/pages/index.html`;
 
 
-const MAX_UNLOADING_TIMEOUT = 15 * 1000;
+const MAX_UNLOADING_TIMEOUT = 17 * 1000;
 const getDelay              = ClientFunction(() => Date.now() - window.startTime);
 const setStartTime          = ClientFunction(() => {
     window.startTime = Date.now();
