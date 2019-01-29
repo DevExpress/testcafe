@@ -294,6 +294,13 @@ describe('Compiler', function () {
                     expect(result.exportableLib).eql(result.exportableLibInDep);
                 });
         });
+
+        it('Should start and terminate runner w/out errors', () => {
+            return compile('test/server/data/test-suites/typescript-runner/runner.ts')
+                .then(function (compiled) {
+                    expect(compiled.tests.length).gt(0);
+                });
+        });
     });
 
 
