@@ -110,7 +110,7 @@ export default class TestRunController extends AsyncEventEmitter {
         const errors         = this.testRun.errs;
         const hasErrors      = !!errors.length;
         const attempts       = this.quarantine.attempts;
-        const isFirstAttempt = !attempts.length;
+        const isFirstAttempt = this._isFirstQuarantineAttempt();
 
         attempts.push(errors);
 
@@ -154,7 +154,16 @@ export default class TestRunController extends AsyncEventEmitter {
     }
 
     async _testRunBeforeDone () {
-        if (!this.quarantine || this.quarantine.isThresholdReached(this.testRun.errs))
+        let raiseEvent = !this.quarantine;
+
+        if (!raiseEvent) {
+            const isSuccessfulQuarantineFirstAttempt = this._isFirstQuarantineAttempt() && !this.testRun.errs.length;
+            const isAttemptsThresholdReached         = this.quarantine.isThresholdReached(this.testRun.errs);
+
+            raiseEvent = isSuccessfulQuarantineFirstAttempt || isAttemptsThresholdReached;
+        }
+
+        if (raiseEvent)
             await this.emit('test-run-before-done');
     }
 
