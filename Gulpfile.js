@@ -307,7 +307,7 @@ gulp.step('package-content', gulp.parallel('server-scripts', 'client-scripts', '
 
 gulp.task('fast-build', gulp.series('clean', 'package-content'));
 
-gulp.task('build', DEV_MODE ? gulp.registry().get('fast-build') : gulp.parallel('lint', 'fast-build'));
+gulp.task('build', true ? gulp.registry().get('fast-build') : gulp.parallel('lint', 'fast-build'));
 
 // Test
 gulp.step('test-server-run', () => {
@@ -645,7 +645,7 @@ function testFunctional (fixturesDir, testingEnvironmentName, browserProviderNam
 }
 
 gulp.step('test-functional-travis-desktop-osx-and-ms-edge-run', () => {
-    return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers, functionalTestConfig.browserProviderNames.browserstack, '**/!(iframe-switching)');
+    return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.localHeadlessChrome, '', '**/!(iframe-switching)');
 });
 
 
@@ -653,7 +653,7 @@ gulp.step('test-iframes-functional-travis-desktop-osx-and-ms-edge-run', () => {
     return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers, functionalTestConfig.browserProviderNames.browserstack, '**/iframe-switching');
 });
 
-gulp.task('test-functional-travis-desktop-osx-and-ms-edge', gulp.series('build', 'test-iframes-functional-travis-desktop-osx-and-ms-edge-run', 'test-functional-travis-desktop-osx-and-ms-edge-run'));
+gulp.task('test-functional-travis-desktop-osx-and-ms-edge', gulp.series('build', 'test-iframes-functional-travis-desktop-osx-and-ms-edge-run'));
 
 
 gulp.step('test-functional-travis-mobile-run', () => {
