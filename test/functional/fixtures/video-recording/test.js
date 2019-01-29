@@ -87,5 +87,17 @@ if (config.useLocalBrowsers) {
                     expect(videoFiles.length).to.equal(1 * config.browsers.length);
                 });
         });
+
+        it('Should record video with quarantine mode enabled', () => {
+            return runTests('./testcafe-fixtures/quarantine-test.js', '', {
+                only:           'chrome',
+                quarantineMode: true,
+                setVideoPath:   true
+            })
+                .then(assertionHelper.getVideoFilesList)
+                .then(videoFiles => {
+                    expect(videoFiles.length).to.equal(2);
+                });
+        });
     });
 }
