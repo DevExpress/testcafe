@@ -653,7 +653,7 @@ gulp.step('test-iframes-functional-travis-desktop-osx-and-ms-edge-run', () => {
     return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers, functionalTestConfig.browserProviderNames.browserstack, '**/iframe-switching');
 });
 
-gulp.task('test-functional-travis-desktop-osx-and-ms-edge', gulp.series('build', 'test-functional-travis-desktop-osx-and-ms-edge-run', 'test-functional-travis-desktop-osx-and-ms-edge-run'));
+gulp.task('test-functional-travis-desktop-osx-and-ms-edge', gulp.series('build', 'test-iframes-functional-travis-desktop-osx-and-ms-edge-run', 'test-functional-travis-desktop-osx-and-ms-edge-run'));
 
 
 gulp.step('test-functional-travis-mobile-run', () => {
