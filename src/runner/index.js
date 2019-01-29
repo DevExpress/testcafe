@@ -280,6 +280,9 @@ export default class Runner extends EventEmitter {
     }
 
     _setBootstrapperOptions () {
+        this.configuration.prepare();
+        this.configuration.notifyAboutOverridenOptions();
+
         this.bootstrapper.sources      = this.configuration.getOption(OPTION_NAMES.src) || this.bootstrapper.sources;
         this.bootstrapper.browsers     = this.configuration.getOption(OPTION_NAMES.browsers) || this.bootstrapper.browsers;
         this.bootstrapper.concurrency  = this.configuration.getOption(OPTION_NAMES.concurrency);
@@ -415,9 +418,6 @@ export default class Runner extends EventEmitter {
             skipUncaughtErrors: skipUncaughtErrors,
             stopOnFirstFail:    stopOnFirstFail
         });
-
-        this.configuration.prepare();
-        this.configuration.notifyAboutOverridenOptions();
 
         this._setBootstrapperOptions();
 
