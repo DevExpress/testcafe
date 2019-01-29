@@ -21,7 +21,7 @@ class FileWatcherMock extends FileWatcher {
     }
 
     addFile (file) {
-        if (file.indexOf('node_modules') > -1)
+        if (file.replace(/^\/usr\/lib\/node_modules\/testcafe/, '').indexOf('node_modules') > -1)
             return;
 
         this.files = this.files || [];
