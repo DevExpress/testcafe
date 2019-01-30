@@ -67,7 +67,9 @@ Parameter | Type                | Description
 --------- | ------------------- | ----------------------------------------------------------------------------
 `source`  | String &#124; Array | The relative or absolute path to a test fixture file, or several such paths. You can use [glob patterns](https://github.com/isaacs/node-glob#glob-primer) to include (or exclude) multiple files.
 
-If you call the method several times, all the specified sources are added to the test runner.
+You do not need to call this function if you specify the [src](../configuration-file.md#src) property in the [configuration file](../configuration-file.md).
+
+*Overrides a configuration file property*: [src](../configuration-file.md#src)
 
 **Examples**
 
@@ -105,6 +107,8 @@ Parameter     | Type                     | Description
 `testMeta`    | Object\<String, String\> | The test metadata.
 `fixtureMeta` | Object\<String, String\> | The fixture metadata.
 
+*Overrides a configuration file property*: [filter](../configuration-file.md#filter)
+
 **Example**
 
 ```js
@@ -129,11 +133,13 @@ The `browser` parameter can be any of the following objects or an `Array` of the
 
 Parameter Type                                                                                        | Description                            | Browser Type
 ---------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------
-String                                                                                                | A different browser alias for each browser type. See [Browser Support](../common-concepts/browsers/browser-support.md) for more details.                            | [Local browsers](../common-concepts/browsers/browser-support.md#locally-installed-browsers), [cloud browsers](../common-concepts/browsers/browser-support.md#browsers-in-cloud-testing-services), and [browsers accessed through *browser provider plugins*](../common-concepts/browsers/browser-support.md#nonconventional-browsers).                                                                 |
+String &#124; Array                                                                                           | A different browser alias for each browser type. See [Browser Support](../common-concepts/browsers/browser-support.md) for more details.                            | [Local browsers](../common-concepts/browsers/browser-support.md#locally-installed-browsers), [cloud browsers](../common-concepts/browsers/browser-support.md#browsers-in-cloud-testing-services), and [browsers accessed through *browser provider plugins*](../common-concepts/browsers/browser-support.md#nonconventional-browsers).                                                                 |
  `{path: String, cmd: String}`                                                                        | The path to the browser's executable (`path`) and command line parameters (`cmd`). The `cmd` property is optional.                                                     | [Local](../common-concepts/browsers/browser-support.md#locally-installed-browsers) and [portable](../common-concepts/browsers/browser-support.md#portable-browsers) browsers
 [BrowserConnection](browserconnection.md)                                                            | The remote browser connection.                                                                                                                                        | [Remote browsers](../common-concepts/browsers/browser-support.md#browsers-on-remote-devices)
 
-You can use different object types in one function call. If you call the method several times, all the specified browsers are added to the test runner.
+You do not need to call this function if you specify the [browsers](../configuration-file.md#browsers) property in the [configuration file](../configuration-file.md).
+
+*Overrides a configuration file property*: [browsers](../configuration-file.md#browsers)
 
 #### Using Browser Aliases
 
@@ -235,6 +241,12 @@ Set the `takeOnFails` parameter to `true` to take a screenshot when a test fails
 
 > Important! TestCafe does not take screenshots if the `screenshots` function is not called.
 
+*Overrides configuration file properties*:
+
+* [screenshotPath](../configuration-file.md#screenshotpath)
+* [takeScreenshotsOnFails](../configuration-file.md#takescreenshotsonfails)
+* [screenshotPathPattern](../configuration-file.md#screenshotpathpattern)
+
 **Example**
 
 ```js
@@ -246,15 +258,18 @@ runner.screenshots('reports/screenshots/', true, '${DATE}_${TIME}/test-${TEST_IN
 Configures TestCafe's reporting feature.
 
 ```text
-reporter(name [, outStream]) → this
+reporter(name, outStream) → this
+reporter([{ name, outStream }]) → this
 ```
 
 Parameter                | Type                        | Description                                     | Default
 ------------------------ | --------------------------- | ----------------------------------------------- | --------
-`name`                   | String                      | The name of the [reporter](../common-concepts/reporters.md) to use.
-`outStream`&#160;*(optional)* | Writable Stream implementer | The stream to which the report is written. | `stdout`
+`name`                   | String              | The name of the [reporter](../common-concepts/reporters.md) to use.
+`outStream`&#160;*(optional)* | String &#124; Writable Stream implementer | The file path where the report is written or the output stream. | `stdout`
 
-To use multiple reporters, call this method several times with different reporter names. Note that only one reporter can write to `stdout`.
+Note that if you use multiple reporters, only one can write to `stdout`.
+
+*Overrides configuration file property*: [reporter](../configuration-file.md#reporter)
 
 #### Specifying the Reporter
 
@@ -265,32 +280,18 @@ runner.reporter('minimal');
 #### Saving the Report to a File
 
 ```js
-const stream = fs.createWriteStream('report.xml');
-
-runner
-    .src('tests/sample-fixture.js')
-    .browsers('chrome')
-    .reporter('xunit', stream)
-    .run()
-    .then(failedCount => {
-        stream.end();
-    });
+runner.reporter('xunit', 'reports/report.xml');
 ```
 
 #### Using Multiple Reporters
 
 ```js
-const stream = fs.createWriteStream('report.json');
-
-runner
-    .src('tests/sample-fixture.js')
-    .browsers('chrome')
-    .reporter('json', stream)
-    .reporter('list')
-    .run()
-    .then(failedCount => {
-        stream.end();
-    });
+runner.reporter([{
+        name: 'spec'
+    }, {
+        name: 'json',
+        outStream: 'reports/report.json'
+    }]);
 ```
 
 #### Implementing a Custom Stream
@@ -328,6 +329,8 @@ Parameter | Type    | Description
 
 See [Concurrent Test Execution](../common-concepts/concurrent-test-execution.md) to learn more about concurrent test execution.
 
+*Overrides a configuration file property*: [concurrency](../configuration-file.md#concurrency)
+
 The following example shows how to run tests in three Chrome instances:
 
 ```js
@@ -355,6 +358,11 @@ Parameter         | Type    | Description   Default
 
 > TestCafe adds `node_modules/.bin` to `PATH` so that you can use binaries the locally installed dependencies provide without prefixes.
 
+*Overrides configuration file properties*:
+
+* [appCommand](../configuration-file.md#appcommand)
+* [appInitDelay](../configuration-file.md#appinitdelay)
+
 **Example**
 
 ```js
@@ -379,6 +387,11 @@ If you access the Internet through a proxy server, use the `useProxy` method to 
 When using a proxy server, you may still need to access local or external resources directly. In this instance, provide their URLs in the `bypassRules` option.
 
 The `bypassRules` parameter takes one or several URLs that require direct access. You can replace parts of the URL with the `*` wildcard that corresponds to a string of any length. Wildcards at the beginning and end of the rules can be omitted (`*.mycompany.com` and `.mycompany.com` have the same effect).
+
+*Overrides configuration file properties*:
+
+* [proxy](../configuration-file.md#proxy)
+* [proxyBypass](../configuration-file.md#proxybypass)
 
 **Examples**
 
@@ -414,6 +427,8 @@ Runs tests according to the current configuration. Returns the number of failed 
 async run(options) → Promise<Number>
 ```
 
+Before TestCafe runs tests, it reads settings from the `.testcaferc.json` [configuration file](../configuration-file.md) if this file exists. Then it applies settings specified in the programming API. API settings override values from the configuration file in case they differ. TestCafe prints information about every overridden property in the console.
+
 > Important! Make sure to keep the browser tab that is running tests active. Do not minimize the browser window.
 > Inactive tabs and minimized browser windows switch to a lower resource consumption mode
 > where tests are not guaranteed to execute correctly.
@@ -435,6 +450,20 @@ Parameter         | Type    | Description                                       
 `disableTestSyntaxValidation` | Boolean | Defines whether to disable checks for [test](../../test-api/test-code-structure.md#tests) and [fixture](../../test-api/test-code-structure.md#fixtures) directives in test files. Use this option to run dynamically loaded tests. See details in the [--disable-test-syntax-validation](../command-line-interface.md#--disable-test-syntax-validation) command line option description. | `false`
 
 After all tests are finished, call the [testcafe.close](testcafe.md#close) function to stop the TestCafe server.
+
+*Overrides configuration file properties*:
+
+* [skipJsErrors](../configuration-file.md#skipjserrors)
+* [skipUncaughtErrors](../configuration-file.md#skipuncaughterrors)
+* [quarantineMode](../configuration-file.md#quarantinemode)
+* [debugMode](../configuration-file.md#debugmode)
+* [debugOnFail](../configuration-file.md#debugonfail)
+* [selectorTimeout](../configuration-file.md#selectortimeout)
+* [assertionTimeout](../configuration-file.md#assertiontimeout)
+* [pageLoadTimeout](../configuration-file.md#pageloadtimeout)
+* [speed](../configuration-file.md#speed)
+* [stopOnFirstFail](../configuration-file.md#stoponfirstfail)
+* [disableTestSyntaxValidation](../configuration-file.md#disabletestsyntaxvalidation)
 
 **Example**
 

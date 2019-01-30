@@ -19,6 +19,13 @@ Parameter                     | Type   | Description                            
 `sslOptions`&#160;*(optional)*     | Object | Options that allow you to establish an HTTPS connection between the TestCafe server and the client browser. This object should contain options required to initialize [a Node.js HTTPS server](https://nodejs.org/api/https.html#https_https_createserver_options_requestlistener). The most commonly used SSL options are described in the [TLS topic](https://nodejs.org/api/tls.html#tls_tls_createsecurecontext_options) in Node.js documentation. See [Connect to the TestCafe Server over HTTPS](../common-concepts/connect-to-the-testcafe-server-over-https.md) for more information.
 `developmentMode`&#160;*(optional)* | Boolean | Enables/disables mechanisms to log and diagnose errors. You should enable this option if you are going to contact TestCafe Support to report an issue. | `false`
 
+*Overrides configuration file properties*:
+
+* [hostname](../configuration-file.md#hostname)
+* [port1, port2](../configuration-file.md#port1-port2)
+* [ssl](../configuration-file.md#ssl)
+* [developmentMode](../configuration-file.md#developmentmode)
+
 **Example**
 
 Create a `TestCafe` instance with the `createTestCafe` function.
