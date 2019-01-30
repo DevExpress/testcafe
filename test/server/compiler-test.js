@@ -241,6 +241,8 @@ describe('Compiler', function () {
         });
 
         it('Should complile ts-definitions successfully with the `--strict` option enabled', function () {
+            this.timeout(60000);
+
             const tscPath  = path.resolve('node_modules/typescript/bin/tsc');
             const defsPath = path.resolve('ts-defs/index.d.ts');
             const args     = '--strict';
@@ -257,6 +259,8 @@ describe('Compiler', function () {
         });
 
         it('Should provide API definitions', function () {
+            this.timeout(60000);
+
             const typescriptDefsFolder = 'test/server/data/test-suites/typescript-defs/';
             const src                  = [];
 
