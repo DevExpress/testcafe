@@ -23,13 +23,27 @@ class Quarantine {
         return this.attempts.length + 1;
     }
 
-    isThresholdReached () {
-        const failedTimes            = this.getFailedAttempts().length;
-        const passedTimes            = this.getPassedAttempts().length;
+    isThresholdReached (extraErrors) {
+        const { failedTimes, passedTimes } = this._getAttemptsResult(extraErrors);
+
         const failedThresholdReached = failedTimes >= QUARANTINE_THRESHOLD;
         const passedThresholdReached = passedTimes >= QUARANTINE_THRESHOLD;
 
         return failedThresholdReached || passedThresholdReached;
+    }
+
+    _getAttemptsResult (extraErrors) {
+        let failedTimes = this.getFailedAttempts().length;
+        let passedTimes = this.getPassedAttempts().length;
+
+        if (extraErrors) {
+            if (extraErrors.length)
+                failedTimes += extraErrors.length;
+            else
+                passedTimes += 1;
+        }
+
+        return { failedTimes, passedTimes };
     }
 }
 
@@ -73,12 +87,14 @@ export default class TestRunController extends AsyncEventEmitter {
         if (this.testRun.addQuarantineInfo)
             this.testRun.addQuarantineInfo(this.quarantine);
 
-        await this.emit('test-run-create', {
-            testRun:    this.testRun,
-            test:       this.test,
-            index:      this.index,
-            quarantine: this.quarantine,
-        });
+        if (!this.quarantine || this._isFirstQuarantineAttempt()) {
+            await this.emit('test-run-create', {
+                testRun:    this.testRun,
+                test:       this.test,
+                index:      this.index,
+                quarantine: this.quarantine,
+            });
+        }
 
         return this.testRun;
     }
@@ -91,15 +107,18 @@ export default class TestRunController extends AsyncEventEmitter {
     }
 
     _shouldKeepInQuarantine () {
-        const errors    = this.testRun.errs;
-        const hasErrors = !!errors.length;
-        const attempts  = this.quarantine.attempts;
+        const errors         = this.testRun.errs;
+        const hasErrors      = !!errors.length;
+        const attempts       = this.quarantine.attempts;
+        const isFirstAttempt = this._isFirstQuarantineAttempt();
 
         attempts.push(errors);
 
-        const isFirstAttempt = attempts.length === 1;
-
         return isFirstAttempt ? hasErrors : !this.quarantine.isThresholdReached();
+    }
+
+    _isFirstQuarantineAttempt () {
+        return this.quarantine && !this.quarantine.attempts.length;
     }
 
     async _keepInQuarantine () {
@@ -134,6 +153,20 @@ export default class TestRunController extends AsyncEventEmitter {
         await this.emit('test-run-done');
     }
 
+    async _testRunBeforeDone () {
+        let raiseEvent = !this.quarantine;
+
+        if (!raiseEvent) {
+            const isSuccessfulQuarantineFirstAttempt = this._isFirstQuarantineAttempt() && !this.testRun.errs.length;
+            const isAttemptsThresholdReached         = this.quarantine.isThresholdReached(this.testRun.errs);
+
+            raiseEvent = isSuccessfulQuarantineFirstAttempt || isAttemptsThresholdReached;
+        }
+
+        if (raiseEvent)
+            await this.emit('test-run-before-done');
+    }
+
     async _testRunDisconnected (connection) {
         this.disconnectionCount++;
 
@@ -162,8 +195,11 @@ export default class TestRunController extends AsyncEventEmitter {
         }
 
         testRun.once('start', () => this.emit('test-run-start'));
-        testRun.once('ready', () => this.emit('test-run-ready'));
-        testRun.once('before-done', () => this.emit('test-run-before-done'));
+        testRun.once('ready', () => {
+            if (!this.quarantine || this._isFirstQuarantineAttempt())
+                this.emit('test-run-ready');
+        });
+        testRun.once('before-done', () => this._testRunBeforeDone());
         testRun.once('done', () => this._testRunDone());
         testRun.once('disconnected', () => this._testRunDisconnected(connection));
 
