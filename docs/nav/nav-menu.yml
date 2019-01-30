@@ -18,6 +18,8 @@
       url: /documentation/using-testcafe/programming-interface/runner.md
     - name: createTestCafe Factory
       url: /documentation/using-testcafe/programming-interface/createtestcafe.md
+  - name: Configuration File
+    url: /documentation/using-testcafe/configuration-file.md
   - name: Using TestCafe Docker Image
     url: /documentation/using-testcafe/using-testcafe-docker-image.md
   - name: Common Concepts
