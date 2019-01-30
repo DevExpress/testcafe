@@ -89,12 +89,23 @@ class LiveModeRunner extends Runner {
             .then(() => this.runTests(true));
 
 
-        return this._waitInfinite().then(() => {
-            this.preventRunCall = false;
-        });
+        return this._waitInfinite()
+            .then(() => {
+                if (this.liveConfigurationCache) {
+                    const { browserSet } = this.liveConfigurationCache;
+
+                    if (browserSet)
+                        browserSet.browserConnections.forEach(bc => bc.forceIdle());
+                }
+
+                this.controller.dispose();
+            })
+            .then(() => {
+                this.preventRunCall = false;
+            });
     }
 
-    stop () {
+    suspend () {
         if (!this.tcRunnerTaskPromise)
             return Promise.resolve();
 

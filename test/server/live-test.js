@@ -50,6 +50,9 @@ class ControllerMock extends LiveModeController {
         };
     }
 
+    dispose () {
+    }
+
     _createFileWatcher (src) {
         this.fileWatcher = new FileWatcherMock(src);
 

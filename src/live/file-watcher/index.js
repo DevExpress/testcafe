@@ -47,6 +47,12 @@ export default class FileWatcher extends EventEmitter {
         }, WATCH_LOCKED_TIMEOUT);
     }
 
+    stop () {
+        Object.values(this.watchers).forEach(watcher => {
+            watcher.close();
+        });
+    }
+
     addFile (file) {
         if (!this.watchers[file] && file.indexOf('node_modules') < 0) {
             if (this.modulesGraph) {
