@@ -26,10 +26,10 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [-r \<name\[:output\],\[...\]\>, --reporter \<name\[:output\],\[...\]\>](#-r-nameoutput---reporter-nameoutput)
   * [-s \<path\>, --screenshots \<path\>](#-s-path---screenshots-path)
   * [-S, --screenshots-on-fails](#-s---screenshots-on-fails)
-  * [-p, --screenshot-path-pattern](#-p---screenshot-path-pattern)
+  * [-p \<pattern\>, --screenshot-path-pattern \<pattern\>](#-p-pattern---screenshot-path-pattern-pattern)
   * [--video \<basePath\>](#--video-basepath)
   * [--video-options \<option=value\[,option2=value2,...\]\>](#--video-options-optionvalueoption2value2)
-  * [--video-encoding-options \<option=value\[,option2=value2,...\]\>](##--video-encoding-options-optionvalueoption2value2)
+  * [--video-encoding-options \<option=value\[,option2=value2,...\]\>](#--video-encoding-options-optionvalueoption2value2)
   * [-q, --quarantine-mode](#-q---quarantine-mode)
   * [-d, --debug-mode](#-d---debug-mode)
   * [--debug-on-fail](#--debug-on-fail)
@@ -310,7 +310,7 @@ If TestCafe takes screenshots when a test fails (see [--screenshots-on-fails](#-
 * `${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/errors/${FILE_INDEX}.png`;
 * `${DATE}_${TIME}/test-${TEST_INDEX}/run-${QUARANTINE_ATTEMPT}/${USERAGENT}/errors/${FILE_INDEX}.png` if the [quarantine mode](#-q---quarantine-mode) is enabled.
 
-You can also use the [--screenshot-path-pattern](#-p---screenshot-path-pattern) option to specify a custom pattern.
+You can also use the [--screenshot-path-pattern](#-p-pattern---screenshot-path-pattern-pattern) option to specify a custom pattern.
 
 ### -S, --screenshots-on-fails
 
@@ -326,7 +326,7 @@ testcafe all tests/sample-fixture.js -S -s screenshots
 
 *Related configuration file property*: [takeScreenshotsOnFails](configuration-file.md#takescreenshotsonfails).
 
-### -p, --screenshot-path-pattern
+### -p \<pattern\>, --screenshot-path-pattern \<pattern\>
 
 Specifies a custom pattern to compose screenshot files' relative path and name. This pattern overrides the default [path pattern](#screenshot-path-patterns).
 
@@ -377,7 +377,9 @@ If TestCafe is unable to find the FFmpeg library automatically, do one of the fo
 
 Videos are saved in the `.mp4` format.
 
-Use the [--video-options](#--video-options-optionvalueoption2value2) and [--video-encoding-options](##--video-encoding-options-optionvalueoption2value2) flags to provide options that define how videos are recorded.
+Use the [--video-options](#--video-options-optionvalueoption2value2) and [--video-encoding-options](#--video-encoding-options-optionvalueoption2value2) flags to provide options that define how videos are recorded.
+
+*Overrides a configuration file property*: [videoPath](configuration-file.md#videopath).
 
 #### Video Path Patterns
 
@@ -386,7 +388,7 @@ The relative path to a video file and its name are composed according to the fol
 * `${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.mp4` if the [quarantine mode](#-q---quarantine-mode) is disabled;
 * `${DATE}_${TIME}/test-${TEST_INDEX}/run-${QUARANTINE_ATTEMPT}/${USERAGENT}/${FILE_INDEX}.mp4` if the [quarantine mode](#-q---quarantine-mode) is enabled.
 
-These patterns use the same placeholders as the [screenshot path patterns](#-p---screenshot-path-pattern). Pass the `pathPattern` parameter in [--video-options](#--video-options-optionvalueoption2value2) to specify a custom pattern.
+These patterns use the same placeholders as the [screenshot path patterns](#-p-pattern---screenshot-path-pattern-pattern). Pass the `pathPattern` parameter in [--video-options](#--video-options-optionvalueoption2value2) to specify a custom pattern.
 
 ### --video-options \<option=value\[,option2=value2,...\]\>
 
@@ -403,7 +405,7 @@ Option | Type | Description | Default Value
 `failedOnly` | Boolean | `true` to record only failed tests; `false` to record all tests. | `false`
 `singleFile` | Boolean | `true` to save the entire recording as a single file; `false` to create a separate file for each test. | `false`
 `ffmpegPath` | String | The path to the FFmpeg codec executable. | Auto-detected
-`pathPattern` | String | A pattern that defines how TestCafe composes the relative path to a video file and the file name. Use the same placeholders as in the [screenshot path patterns](#-p---screenshot-path-pattern). See an example below. | See [--video](#--video-basepath).
+`pathPattern` | String | A pattern that defines how TestCafe composes the relative path to a video file and the file name. Use the same placeholders as in the [screenshot path patterns](#-p-pattern---screenshot-path-pattern-pattern). See an example below. | See [--video](#--video-basepath).
 `timeStamp` | Date | The timestamp recorded as the video creation time. | The moment when the test task starts.
 
 The following example shows how to specify a custom path pattern:
@@ -413,6 +415,8 @@ testcafe chrome test.js --video videos/ --video-options pathPattern=${TEST_INDEX
 ```
 
 > Use the [--video](#--video-basepath) flag to enable video recording.
+
+*Overrides a configuration file property*: [videoOptions](configuration-file.md#videooptions).
 
 ### --video-encoding-options \<option=value\[,option2=value2,...\]\>
 
@@ -425,6 +429,8 @@ testcafe chrome test.js --video videos/ --video-encoding-options r=20,aspect=4:3
 You can pass all the options supported by the FFmpeg library. Refer to [the FFmpeg documentation](https://ffmpeg.org/ffmpeg.html#Options) for information about the available options.
 
 > Use the [--video](#--video-basepath) flag to enable video recording.
+
+*Overrides a configuration file property*: [videoEncodingOptions](configuration-file.md#videoencodingoptions).
 
 ### -q, --quarantine-mode
 

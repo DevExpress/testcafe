@@ -223,7 +223,7 @@ Parameter                  | Type    | Description                              
 -------------------------- | ------- | ----------------------------------------------------------------------------- | -------
 `path`                     | String  | The base path where the screenshots are saved. Note that to construct a complete path to these screenshots, TestCafe uses default [path patterns](../command-line-interface.md#screenshot-path-patterns). You can override these patterns using the method's `screenshotPathPattern` parameter.
 `takeOnFails`&#160;*(optional)* | Boolean | Specifies if screenshots should be taken automatically when a test fails. | `false`
-`sceenshotPathPattern`&#160;*(optional)* | String | The pattern to compose screenshot files' relative path and name. See [--screenshot-path-pattern](../command-line-interface.md#-p---screenshot-path-pattern) for information about the available placeholders.
+`sceenshotPathPattern`&#160;*(optional)* | String | The pattern to compose screenshot files' relative path and name. See [--screenshot-path-pattern](../command-line-interface.md#-p-pattern---screenshot-path-pattern-pattern) for information about the available placeholders.
 
 The `screenshots` function should be called to allow TestCafe to take screenshots
 when the [t.takeScreenshot](../../test-api/actions/take-screenshot.md) action is called from test code.
@@ -263,10 +263,16 @@ Parameter                | Type                        | Description
 If TestCafe is unable to find the FFmpeg library automatically, do one of the following:
 
 * Add the FFmpeg installation directory to the system's `PATH` environment variable;
-* Specify the path to the FFmpeg executable in the `FFMPEG_PATH` environment variable or the `ffmpegPath` parameter in [--video-options](#--video-options-optionvalueoption2value2);
+* Specify the path to the FFmpeg executable in the `FFMPEG_PATH` environment variable or the `options.ffmpegPath` parameter;
 * Install the `@ffmpeg-installer/ffmpeg` package from npm.
 
 Videos are saved in the `.mp4` format.
+
+*Overrides configuration file properties*:
+
+* [videoPath](../configuration-file.md#videopath)
+* [videoOptions](../configuration-file.md#videooptions)
+* [videoEncodingOptions](../configuration-file.md#videoencodingoptions)
 
 **Example**
 
