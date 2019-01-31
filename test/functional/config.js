@@ -32,8 +32,6 @@ testingEnvironments[testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers] = {
         accessKey: process.env.BROWSER_STACK_ACCESS_KEY
     },
 
-    retryTestPages: true,
-
     browsers: [
         {
             browserName: 'browserstack:safari@11.1:OS X High Sierra',
