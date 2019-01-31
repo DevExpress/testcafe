@@ -625,6 +625,10 @@ gulp.task('test-docs-travis', gulp.parallel('test-website-travis', 'lint'));
 
 
 function testFunctional (fixturesDir, testingEnvironmentName, browserProviderName, testDirGlob) {
+    Object.keys(require.cache).forEach(module => {
+        delete require.cache[module];
+    });
+
     process.env.TESTING_ENVIRONMENT       = testingEnvironmentName;
     process.env.BROWSER_PROVIDER          = browserProviderName;
     process.env.BROWSERSTACK_USE_AUTOMATE = 1;
