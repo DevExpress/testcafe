@@ -116,7 +116,10 @@ export default class VideoRecorder {
         await this.tempDirectory.dispose();
     }
 
-    async _onTestRunCreate ({ testRun, quarantine, test, index }) {
+    async _onTestRunCreate ({ testRun, legacy, quarantine, test, index }) {
+        if (legacy)
+            return;
+
         const testRunInfo = { testRun, quarantine, test, index };
 
         const connection = testRun.browserConnection;

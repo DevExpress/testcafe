@@ -90,6 +90,7 @@ export default class TestRunController extends AsyncEventEmitter {
         if (!this.quarantine || this._isFirstQuarantineAttempt()) {
             await this.emit('test-run-create', {
                 testRun:    this.testRun,
+                legacy:     TestRunCtor === LegacyTestRun,
                 test:       this.test,
                 index:      this.index,
                 quarantine: this.quarantine,
