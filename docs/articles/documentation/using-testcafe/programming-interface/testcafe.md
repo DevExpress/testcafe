@@ -103,7 +103,7 @@ createTestCafe('localhost', 1337, 1338)
 
 ### createLiveModeRunner
 
-Creates a [test runner](runner.md) that runs TestCafe in [live mode](../common-concepts/live-mode.md). In this mode, TestCafe watches for changes you make in the test files. These changes immediately restart the tests so that you can see the effect.
+Creates a [test runner](livemoderunner.md) that runs TestCafe in [live mode](../common-concepts/live-mode.md). In this mode, TestCafe watches for changes you make in the test files. These changes immediately restart the tests so that you can see the effect.
 
 ```text
 createLiveModeRunner() → LiveModeRunner
