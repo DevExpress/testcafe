@@ -452,7 +452,6 @@ After all tests are finished, call the [testcafe.close](testcafe.md#close) funct
 * [pageLoadTimeout](../configuration-file.md#pageloadtimeout)
 * [speed](../configuration-file.md#speed)
 * [stopOnFirstFail](../configuration-file.md#stoponfirstfail)
-* [disableTestSyntaxValidation](../configuration-file.md#disabletestsyntaxvalidation)
 
 **Example**
 
