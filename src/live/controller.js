@@ -2,7 +2,7 @@ import EventEmitter from 'events';
 import FileWatcher from './file-watcher';
 import Logger from './logger';
 import process from 'process';
-import keypress from 'keypress';
+import readline from 'readline';
 import Promise from 'pinkie';
 
 const REQUIRED_MODULE_FOUND_EVENT = 'require-module-found';
@@ -20,10 +20,10 @@ class LiveModeController extends EventEmitter {
         this.logger         = new Logger();
         this.runner         = runner;
         this.lockKeyPress   = false;
+        this.fileWatcher    = null;
     }
 
     init (files) {
-        this._prepareProcessStdin();
         this._listenKeyPress();
         this._initFileWatching(files);
         this._listenTestRunnerEvents();
@@ -31,6 +31,12 @@ class LiveModeController extends EventEmitter {
 
         return Promise.resolve()
             .then(() => this.logger.writeIntroMessage(files));
+    }
+
+    dispose () {
+        this.fileWatcher.stop();
+        process.stdin.setRawMode(false);
+        this.rl.close();
     }
 
     _toggleWatching () {
@@ -48,7 +54,7 @@ class LiveModeController extends EventEmitter {
 
         this.logger.writeStopRunningMessage();
 
-        return this.runner.stop()
+        return this.runner.suspend()
             .then(() => {
                 this.restarting = false;
                 this.running    = false;
@@ -85,14 +91,15 @@ class LiveModeController extends EventEmitter {
         return new FileWatcher(src);
     }
 
-    _prepareProcessStdin () {
-        if (process.stdout.isTTY)
-            process.stdin.setRawMode(true);
-    }
-
     _listenKeyPress () {
-        // Listen commands
-        keypress(process.stdin);
+        readline.emitKeypressEvents(process.stdin);
+        if (process.stdin.isTTY)
+            process.stdin.setRawMode(true);
+
+        this.rl = readline.createInterface({
+            input:  process.stdin,
+            output: process.stdout
+        });
 
         process.stdin.on('keypress', (ch, key) => {
             if (this.lockKeyPress)
@@ -138,11 +145,11 @@ class LiveModeController extends EventEmitter {
     }
 
     _initFileWatching (src) {
-        const fileWatcher = this._createFileWatcher(src);
+        this.fileWatcher = this._createFileWatcher(src);
 
-        this.on(REQUIRED_MODULE_FOUND_EVENT, e => fileWatcher.addFile(e.filename));
+        this.on(REQUIRED_MODULE_FOUND_EVENT, e => this.fileWatcher.addFile(e.filename));
 
-        fileWatcher.on(fileWatcher.FILE_CHANGED_EVENT, () => this._runTests(true));
+        this.fileWatcher.on(this.fileWatcher.FILE_CHANGED_EVENT, () => this._runTests(true));
     }
 
     _setRunning () {
