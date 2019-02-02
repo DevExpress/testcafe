@@ -208,6 +208,7 @@ describe('TestCafe Live', function () {
                 expect(tests.length).eql(2);
                 expect(tests[0].name).eql('test2');
                 expect(tests[1].name).eql('test3');
+                expect(runner.testRunController.expectedTestCount).eql(2);
             });
     });
 

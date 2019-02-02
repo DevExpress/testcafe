@@ -28,10 +28,12 @@ class LiveModeTestRunController extends EventEmitter {
         return this._testRunCtor;
     }
 
-    run (testCount) {
-        const readyToNextPromises = [];
-
+    setExpectedTestCount (testCount) {
         this.expectedTestCount = testCount;
+    }
+
+    run () {
+        const readyToNextPromises = [];
 
         this.testWrappers.forEach(testWrapper => {
             testWrapper.testRuns.forEach(testRun => {
