@@ -204,7 +204,7 @@ Enables screenshots and specifies the base directory where they are saved.
 }
 ```
 
-See [Screenshot Path Patterns](command-line-interface.md#screenshot-path-patterns) for more information on how TestCafe organizes screenshots into subdirectories.
+See [Screenshots](common-concepts/screenshots-and-videos.md#screenshots) for details.
 
 *CLI*: [-s, --screenshots](command-line-interface.md#-s-path---screenshots-path)  
 *API*: [runner.screenshots](programming-interface/runner.md#screenshots)
@@ -234,7 +234,9 @@ Specifies a custom pattern to compose screenshot files' relative path and name.
 }
 ```
 
-See the [--screenshot-path-pattern](command-line-interface.md#-p-pattern---screenshot-path-pattern-pattern) command line parameter for information about the available placeholders.
+See [Path Pattern Placeholders](common-concepts/screenshots-and-videos.md#path-pattern-placeholders) for information about the available placeholders.
+
+> Use the [screenshotPath](#screenshotpath) option to enable screenshots.
 
 *CLI*: [-p, --screenshot-path-pattern](command-line-interface.md#-p-pattern---screenshot-path-pattern-pattern)  
 *API*: [runner.screenshots](programming-interface/runner.md#screenshots)
@@ -249,11 +251,7 @@ Enables TestCafe to record videos of test runs and specifies the base directory 
 }
 ```
 
-See [Video Path Patterns](command-line-interface.md#video-path-patterns) for more information on how TestCafe organizes videos into subdirectories.
-
-Use the [videoOptions](#videooptions) and [videoEncodingOptions](#videoencodingoptions) properties to provide options that define how videos are recorded.
-
-See the [--video](command-line-interface.md#--video-basepath) command line parameter description for details on video recording.
+See [Record Videos](common-concepts/screenshots-and-videos.md#record-videos) for details.
 
 *CLI*: [--video](command-line-interface.md#--video-basepath)  
 *API*: [runner.video](programming-interface/runner.md#video)
@@ -272,7 +270,7 @@ Specifies options that define how TestCafe records videos of test runs.
 }
 ```
 
-See the [--video-options](command-line-interface.md#--video-options-optionvalueoption2value2) command line parameter description for the available options.
+See [Basic Video Options](common-concepts/screenshots-and-videos.md#basic-video-options) for the available options.
 
 > Use the [videoPath](#videopath) option to enable video recording.
 

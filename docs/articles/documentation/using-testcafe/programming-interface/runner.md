@@ -221,16 +221,13 @@ screenshots(path [, takeOnFails, pathPattern]) → this
 
 Parameter                  | Type    | Description                                                                   | Default
 -------------------------- | ------- | ----------------------------------------------------------------------------- | -------
-`path`                     | String  | The base path where the screenshots are saved. Note that to construct a complete path to these screenshots, TestCafe uses default [path patterns](../command-line-interface.md#screenshot-path-patterns). You can override these patterns using the method's `screenshotPathPattern` parameter.
+`path`                     | String  | The base path where the screenshots are saved. Note that to construct a complete path to these screenshots, TestCafe uses default [path patterns](../common-concepts/screenshots-and-videos.md#default-path-patterns). You can override these patterns using the method's `screenshotPathPattern` parameter.
 `takeOnFails`&#160;*(optional)* | Boolean | Specifies if screenshots should be taken automatically when a test fails. | `false`
-`sceenshotPathPattern`&#160;*(optional)* | String | The pattern to compose screenshot files' relative path and name. See [--screenshot-path-pattern](../command-line-interface.md#-p-pattern---screenshot-path-pattern-pattern) for information about the available placeholders.
-
-The `screenshots` function should be called to allow TestCafe to take screenshots
-when the [t.takeScreenshot](../../test-api/actions/take-screenshot.md) action is called from test code.
-
-Set the `takeOnFails` parameter to `true` to take a screenshot when a test fails.
+`sceenshotPathPattern`&#160;*(optional)* | String | The pattern to compose screenshot files' relative path and name. See [Path Pattern Placeholders](../common-concepts/screenshots-and-videos.md#path-pattern-placeholders) for information about the available placeholders.
 
 > Important! TestCafe does not take screenshots if the `screenshots` function is not called.
+
+See [Screenshots](../common-concepts/screenshots-and-videos.md#screenshots) for details.
 
 *Related configuration file properties*:
 
@@ -254,19 +251,11 @@ video(path [, options, encodingOptions]) → this
 
 Parameter                | Type                        | Description
 ------------------------ | --------------------------- | -----------
-`path`                   | String                      | The base directory where videos are saved. Relative paths to video files are composed according to [path patterns](../command-line-interface.md#video-path-patterns). You can also use the `options.pathPattern` property to specify a custom pattern.
-`options`&#160;*(optional)* | Object | Options that define how videos are recorded. See the [--video-options](../command-line-interface.md#--video-options-optionvalueoption2value2) command line flag description for a list of options.
+`path`                   | String                      | The base directory where videos are saved. Relative paths to video files are composed according to [path patterns](../common-concepts/screenshots-and-videos.md#default-path-patterns). You can also use the `options.pathPattern` property to specify a custom pattern.
+`options`&#160;*(optional)* | Object | Options that define how videos are recorded. See [Basic Video Options](../common-concepts/screenshots-and-videos.md#basic-video-options) for a list of options.
 `encodingOptions`&#160;*(optional)* | Object | Options that specify video encoding. You can pass all the options supported by the FFmpeg library. Refer to [the FFmpeg documentation](https://ffmpeg.org/ffmpeg.html#Options) for information about the available options.
 
-> Important! You need to install [the FFmpeg library](https://ffmpeg.org/) to record videos.
-
-If TestCafe is unable to find the FFmpeg library automatically, do one of the following:
-
-* Add the FFmpeg installation directory to the system's `PATH` environment variable;
-* Specify the path to the FFmpeg executable in the `FFMPEG_PATH` environment variable or the `options.ffmpegPath` parameter;
-* Install the `@ffmpeg-installer/ffmpeg` package from npm.
-
-Videos are saved in the `.mp4` format.
+See [Record Videos](../common-concepts/screenshots-and-videos.md#record-videos) for details.
 
 *Overrides configuration file properties*:
 
