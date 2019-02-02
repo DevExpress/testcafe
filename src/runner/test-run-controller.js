@@ -6,6 +6,9 @@ import SessionController from '../test-run/session-controller';
 const QUARANTINE_THRESHOLD = 3;
 const DISCONNECT_THRESHOLD = 3;
 
+const QUARANTINE_FAILED_THRESHOLD = Number(process.env.QUARANTINE_FAILED_THRESHOLD) || QUARANTINE_THRESHOLD;
+const QUARANTINE_PASSED_THRESHOLD = Number(process.env.QUARANTINE_PASSED_THRESHOLD) || QUARANTINE_THRESHOLD;
+
 class Quarantine {
     constructor () {
         this.attempts = [];
@@ -26,8 +29,8 @@ class Quarantine {
     isThresholdReached (extraErrors) {
         const { failedTimes, passedTimes } = this._getAttemptsResult(extraErrors);
 
-        const failedThresholdReached = failedTimes >= QUARANTINE_THRESHOLD;
-        const passedThresholdReached = passedTimes >= QUARANTINE_THRESHOLD;
+        const failedThresholdReached = failedTimes >= QUARANTINE_FAILED_THRESHOLD;
+        const passedThresholdReached = passedTimes >= QUARANTINE_PASSED_THRESHOLD;
 
         return failedThresholdReached || passedThresholdReached;
     }
