@@ -44,7 +44,7 @@ createTestCafe('localhost', 1337, 1338)
 
 When you run tests with live mode enabled, TestCafe opens the browsers, run tests there, shows the reports and waits for your further actions.
 
-Then TestCafe starts watching for changes in the test files and all files that are referenced in them (like helper modules). Once you make changes in any of those files and save them, TestCafe immediately reruns the tests.
+Then TestCafe starts watching for changes in the test files and all files referenced in them (like page objects or helper modules). Once you make changes in any of those files and save them, TestCafe immediately reruns the tests.
 
 When the tests are done, browsers stay on the last opened page so you can work with it and explore it with the browser's developer tools.
 
@@ -54,7 +54,7 @@ You can use live mode with any browsers: local, remote, mobile or headless.
 
 **Tip:** use the [only](../../test-api/test-code-structure.md#skipping-tests) function to work with a single test.
 
-### Console Commands in Live Mode
+### Console Shortcuts in Live Mode
 
 * `Ctrl+S` - stops the current test run;
 * `Ctrl+R` - restarts the current test run;

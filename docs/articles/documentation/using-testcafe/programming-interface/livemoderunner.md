@@ -53,3 +53,5 @@ This implies the following limitations:
 
 * You cannot create multiple live mode runners for a single [TestCafe server](testcafe.md) instance.
 * You cannot call the [runner.run](runner.md#run) method more than once for a single `LiveModeRunner`.
+
+In rare cases when you need multiple live mode sessions running in parallel, you can create several [TestCafe server instances](testcafe.md).

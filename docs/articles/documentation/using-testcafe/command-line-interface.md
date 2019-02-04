@@ -696,7 +696,7 @@ See [Connect to the TestCafe Server over HTTPS](common-concepts/connect-to-the-t
 
 ### -L, --live
 
-Enables live mode. In this mode, TestCafe watches for changes you make in the test files. These changes immediately restart the tests so that you can see the effect.
+Enables live mode. In this mode, TestCafe watches for changes you make in the test files and all files referenced in them (like page objects or helper modules). These changes immediately restart the tests so that you can see the effect.
 
 See [Live Mode](common-concepts/live-mode.md) for more information.
 

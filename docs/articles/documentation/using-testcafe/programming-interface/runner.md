@@ -486,7 +486,7 @@ createTestCafe('localhost', 1337, 1338)
 If a browser stops responding while it executes tests, TestCafe restarts the browser and reruns the current test in a new browser instance.
 If the same problem occurs with this test two more times, the test run finishes and an error is thrown.
 
-> When you use a [LiveModeRunner](livemoderunner.md), you can call the `runner.run` method only once. This is because a TestCafe server can handle only one watcher that tracks changes to test files.
+> When you use a [LiveModeRunner](livemoderunner.md), you can call the `runner.run` method only once. In rare cases when you need multiple live mode sessions running in parallel, you can create several [TestCafe server instances](testcafe.md).
 
 #### Cancelling Test Tasks
 
