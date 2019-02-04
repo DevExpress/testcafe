@@ -20,15 +20,15 @@ const PLACEHOLDERS = {
     BROWSER_VERSION:    '${BROWSER_VERSION}',
     OS:                 '${OS}',
     OS_VERSION:         '${OS_VERSION}',
-    GENERIC_TEST_NAME:  '${GENERIC_TEST_NAME}',
-    GENERIC_RUN_NAME:   '${GENERIC_RUN_NAME}'
+    TEST_ID:            '${TEST_ID}',
+    RUN_ID:             '${RUN_ID}'
 };
 
-const DEFAULT_PATH_PATTERN_FOR_REPORT = `${PLACEHOLDERS.DATE}_${PLACEHOLDERS.TIME}\\${PLACEHOLDERS.GENERIC_TEST_NAME}\\` +
-                                        `${PLACEHOLDERS.GENERIC_RUN_NAME}\\${PLACEHOLDERS.USERAGENT}\\${PLACEHOLDERS.FILE_INDEX}`;
+const DEFAULT_PATH_PATTERN_FOR_REPORT = `${PLACEHOLDERS.DATE}_${PLACEHOLDERS.TIME}\\${PLACEHOLDERS.TEST_ID}\\` +
+                                        `${PLACEHOLDERS.RUN_ID}\\${PLACEHOLDERS.USERAGENT}\\${PLACEHOLDERS.FILE_INDEX}`;
 
-const GENERIC_TEST_NAME_TEMPLATE = data => data.testIndex ? `test-${data.testIndex}` : '';
-const GENERIC_RUN_NAME_TEMPLATE  = data => data.quarantineAttempt ? `run-${data.quarantineAttempt}` : '';
+const TEST_ID_TEMPLATE = data => data.testIndex ? `test-${data.testIndex}` : '';
+const RUN_ID_TEMPLATE  = data => data.quarantineAttempt ? `run-${data.quarantineAttempt}` : '';
 
 export default class PathPattern {
     constructor (pattern, fileExtension, data) {
@@ -47,12 +47,12 @@ export default class PathPattern {
 
     _addDefaultFields (data) {
         const defaultFields = {
-            genericTestName: GENERIC_TEST_NAME_TEMPLATE(data),
-            genericRunName:  GENERIC_RUN_NAME_TEMPLATE(data),
-            formattedDate:   data.now.format(DATE_FORMAT),
-            formattedTime:   data.now.format(TIME_FORMAT),
-            fileIndex:       1,
-            errorFileIndex:  1
+            testId:         TEST_ID_TEMPLATE(data),
+            runId:          RUN_ID_TEMPLATE(data),
+            formattedDate:  data.now.format(DATE_FORMAT),
+            formattedTime:  data.now.format(TIME_FORMAT),
+            fileIndex:      1,
+            errorFileIndex: 1
         };
 
         return Object.assign({}, defaultFields, data);
@@ -60,8 +60,8 @@ export default class PathPattern {
 
     _createPlaceholderToDataMap () {
         return {
-            [PLACEHOLDERS.GENERIC_TEST_NAME]:  this.data.genericTestName,
-            [PLACEHOLDERS.GENERIC_RUN_NAME]:   this.data.genericRunName,
+            [PLACEHOLDERS.TEST_ID]:            this.data.testId,
+            [PLACEHOLDERS.RUN_ID]:             this.data.runId,
             [PLACEHOLDERS.DATE]:               this.data.formattedDate,
             [PLACEHOLDERS.TIME]:               this.data.formattedTime,
             [PLACEHOLDERS.TEST_INDEX]:         this.data.testIndex,

@@ -1,6 +1,7 @@
 const path    = require('path');
 const Promise = require('pinkie');
 const expect  = require('chai').expect;
+const isCI    = require('is-ci');
 const config  = require('../../config');
 
 
@@ -40,15 +41,6 @@ if (config.useLocalBrowsers) {
                 .browsers(browsers)
                 .concurrency(concurrency)
                 .run();
-        }
-
-        function getResults (testData) {
-            return JSON.parse(testData)
-                .fixtures[0]
-                .tests
-                .filter(function (test) {
-                    return test.name.toLowerCase() === 'results';
-                })[0];
         }
 
         function createConnections (count) {
@@ -95,39 +87,41 @@ if (config.useLocalBrowsers) {
         }
 
         beforeEach(function () {
+            global.timeline = [];
+
             data = '';
+        });
+
+        afterEach(function () {
+            delete global.timeline;
         });
 
         it('Should run tests sequentially if concurrency = 1', function () {
             return run('chrome:headless --no-sandbox', 1, './testcafe-fixtures/sequential-test.js')
-                .then(failedCount => {
-                    const results = getResults(data);
-
-                    expect(results.errs).eql([]);
-                    expect(failedCount).eql(0);
+                .then(() => {
+                    expect(global.timeline).eql(['long started', 'long finished', 'short started', 'short finished']);
                 });
         });
 
         it('Should run tests concurrently if concurrency > 1', function () {
             return run('chrome:headless --no-sandbox', 2, './testcafe-fixtures/concurrent-test.js')
-                .then(failedCount => {
-                    const results = getResults(data);
-
-                    expect(results.errs).eql([]);
-                    expect(failedCount).eql(0);
+                .then(() => {
+                    expect(global.timeline).eql(['long started', 'short started', 'short finished', 'long finished']);
                 });
         });
 
-        // NOTE: don't work on TravisCI, fix it ASAP
-        it.skip('Should run tests concurrently in different browser kinds', function () {
-            return run(['chrome:headless --no-sandbox', 'chrome:headless --no-sandbox --user-agent="TestAgent"'], 2, './testcafe-fixtures/multibrowser-concurrent-test.js')
-                .then(failedCount => {
-                    const results = getResults(data);
+        // TODO: this test doesn't work on CI due to big resource demands
+        if (!isCI) {
+            it('Should run tests concurrently in different browser kinds', function () {
+                return run(['chrome:headless --no-sandbox', 'chrome:headless --no-sandbox --user-agent="TestAgent"'], 2, './testcafe-fixtures/multibrowser-concurrent-test.js')
+                    .then(() => {
+                        expect(Object.keys(global.timeline).length).gt(1);
 
-                    expect(results.errs).eql([]);
-                    expect(failedCount).eql(0);
-                });
-        });
+                        for (const browserTimeline of Object.values(global.timeline))
+                            expect(browserTimeline).eql(['test started', 'test started', 'short finished', 'long finished']);
+                    });
+            });
+        }
 
         it('Should report fixture start correctly if second fixture finishes before first', function () {
             return run('chrome:headless --no-sandbox', 2, ['./testcafe-fixtures/multifixture-test-a.js', './testcafe-fixtures/multifixture-test-b.js'], customReporter)

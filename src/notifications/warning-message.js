@@ -5,7 +5,7 @@ export default {
     screenshotRewritingError:                'The file at "{screenshotPath}" already exists. It has just been rewritten with a recent screenshot. This situation can possibly cause issues. To avoid them, make sure that each screenshot has a unique path. If a test runs in multiple browsers, consider including the user agent in the screenshot path or generate a unique identifier in another way.',
     browserManipulationsOnRemoteBrowser:     'The screenshot and window resize functionalities are not supported in a remote browser. They can function only if the browser is running on the same machine and in the same environment as the TestCafe server.',
     screenshotNotSupportedByBrowserProvider: 'The screenshot functionality is not supported by the "{providerName}" browser provider.',
-    videoNotSupportedByBrowserProvider:      'The video recording functionality is not supported by the "{browserAlias}" browser.',
+    videoNotSupportedByBrowser:              'Video recording is not supported by the "{browserAlias}" browser.',
     resizeNotSupportedByBrowserProvider:     'The window resize functionality is not supported by the "{providerName}" browser provider.',
     maximizeNotSupportedByBrowserProvider:   'The window maximization functionality is not supported by the "{providerName}" browser provider.',
     resizeError:                             'Was unable to resize the window due to an error.\n\n{errMessage}',
