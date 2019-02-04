@@ -34,7 +34,7 @@ export default {
     unsupportedUrlProtocol:                                         'The specified "{url}" test page URL uses an unsupported {protocol}:// protocol. Only relative URLs or absolute URLs with http://, https:// and file:// protocols are supported.',
     testControllerProxyCantResolveTestRun:                          `Cannot implicitly resolve the test run in the context of which the test controller action should be executed. Use test function's 't' argument instead.`,
     timeLimitedPromiseTimeoutExpired:                               'Timeout expired for a time limited promise',
-    cantUseScreenshotPathPatternWithoutBaseScreenshotPathSpecified: 'Unable to set the screenshot path pattern when screenshots are disabled. Specify the base path where screenshots are stored to enable them.​',
+    cantUseScreenshotPathPatternWithoutBaseScreenshotPathSpecified: 'Unable to set the screenshot path pattern when screenshots are disabled. Specify the base path where screenshots are stored to enable them.',
     cannotSetVideoOptionsWithoutBaseVideoPathSpecified:             'Unable to set video or encoding options when video recording is disabled. Specify the base path where video files are stored to enable recording.',
     multipleAPIMethodCallForbidden:                                 'You cannot call the "{methodName}" method more than once. Pass an array of parameters to this method instead.',
     invalidReporterOutput:                                          "Specify a file name or a writable stream as the reporter's output target.",
