@@ -221,7 +221,7 @@ screenshots(path [, takeOnFails, pathPattern]) → this
 
 Parameter                  | Type    | Description                                                                   | Default
 -------------------------- | ------- | ----------------------------------------------------------------------------- | -------
-`path`                     | String  | The base path where the screenshots are saved. Note that to construct a complete path to these screenshots, TestCafe uses default [path patterns](../common-concepts/screenshots-and-videos.md#default-path-patterns). You can override these patterns using the method's `screenshotPathPattern` parameter.
+`path`                     | String  | The base path where the screenshots are saved. Note that to construct a complete path to these screenshots, TestCafe uses the default [path patterns](../common-concepts/screenshots-and-videos.md#default-path-patterns). You can override these patterns using the method's `screenshotPathPattern` parameter.
 `takeOnFails`&#160;*(optional)* | Boolean | Specifies if screenshots should be taken automatically when a test fails. | `false`
 `sceenshotPathPattern`&#160;*(optional)* | String | The pattern to compose screenshot files' relative path and name. See [Path Pattern Placeholders](../common-concepts/screenshots-and-videos.md#path-pattern-placeholders) for information about the available placeholders.
 

@@ -322,6 +322,12 @@ testcafe all tests/sample-fixture.js -s screenshots -p '${DATE}_${TIME}/test-${T
 
 See [Path Pattern Placeholders](common-concepts/screenshots-and-videos.md#path-pattern-placeholders) for information about the available placeholders.
 
+In Windows `cmd.exe` shell, enclose the pattern in double quotes if it contains spaces:
+
+```sh
+testcafe all tests/sample-fixture.js -s screenshots -p "${DATE} ${TIME}/test ${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png"
+```
+
 > Use the [-s (--screenshots)](#-s-path---screenshots-path) flag to enable screenshots.
 
 *Related configuration file property*: [screenshotPathPattern](configuration-file.md#screenshotpathpattern).
@@ -331,7 +337,7 @@ See [Path Pattern Placeholders](common-concepts/screenshots-and-videos.md#path-p
 Enables TestCafe to record videos of test runs and specifies the base directory to save these videos.
 
 ```sh
-testcafe chrome test.js --video reports/screen-captures/
+testcafe chrome test.js --video reports/screen-captures
 ```
 
 See [Record Videos](common-concepts/screenshots-and-videos.md#record-videos) for details.
@@ -343,7 +349,7 @@ See [Record Videos](common-concepts/screenshots-and-videos.md#record-videos) for
 Specifies options that define how TestCafe records videos of test runs.
 
 ```sh
-testcafe chrome test.js --video videos/ --video-options singleFile=true,failedOnly=true
+testcafe chrome test.js --video videos --video-options singleFile=true,failedOnly=true
 ```
 
 See [Basic Video Options](common-concepts/screenshots-and-videos.md#basic-video-options) for details.
@@ -357,7 +363,7 @@ See [Basic Video Options](common-concepts/screenshots-and-videos.md#basic-video-
 Specifies video encoding options.
 
 ```sh
-testcafe chrome test.js --video videos/ --video-encoding-options r=20,aspect=4:3
+testcafe chrome test.js --video videos --video-encoding-options r=20,aspect=4:3
 ```
 
 See [Video Encoding Options](common-concepts/screenshots-and-videos.md#video-encoding-options) for details.

@@ -247,7 +247,7 @@ Enables TestCafe to record videos of test runs and specifies the base directory 
 
 ```json
 {
-    "videoPath": "reports/screen-captures/"
+    "videoPath": "reports/screen-captures"
 }
 ```
 
