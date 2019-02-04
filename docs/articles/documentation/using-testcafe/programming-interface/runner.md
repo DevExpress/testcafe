@@ -248,14 +248,14 @@ runner.screenshots('reports/screenshots/', true, '${DATE}_${TIME}/test-${TEST_IN
 Configures TestCafe's reporting feature.
 
 ```text
-reporter(name, outStream) → this
-reporter([{ name, outStream }]) → this
+reporter(name, output) → this
+reporter([{ name, output }]) → this
 ```
 
 Parameter                | Type                        | Description                                     | Default
 ------------------------ | --------------------------- | ----------------------------------------------- | --------
 `name`                   | String              | The name of the [reporter](../common-concepts/reporters.md) to use.
-`outStream`&#160;*(optional)* | String &#124; Writable Stream implementer | The file path where the report is written or the output stream. | `stdout`
+`output`&#160;*(optional)* | String &#124; Writable Stream implementer | The file path where the report is written or the output stream. | `stdout`
 
 Note that if you use multiple reporters, only one can write to `stdout`.
 
@@ -280,7 +280,7 @@ runner.reporter([{
         name: 'spec'
     }, {
         name: 'json',
-        outStream: 'reports/report.json'
+        output: 'reports/report.json'
     }]);
 ```
 
