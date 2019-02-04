@@ -7,6 +7,8 @@ permalink: /blog/:title.html
 
 TestCafe v1.0.0 release introduces minor changes to the behavior and programming interface. This document lists these changes and describes how to address them.
 
+<!--more-->
+
 * [Test Syntax Validation Disabled: All Input Files Are Executed](#test-syntax-validation-disabled-all-input-files-are-executed)
 * [Custom Request Hooks: Asynchronous API](#custom-request-hooks-asynchronous-api)
 * [Custom Reporter Plugins: Asynchronous API](#custom-reporter-plugins-asynchronous-api)
