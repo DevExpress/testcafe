@@ -87,11 +87,11 @@ runner
 
 Starting with v1.0.0, pass arrays to these methods to specify multiple values.
 
-To use a reporter that writes to a file, add a `{ name, outStream }` object to an array (see the [runner.reporter](../documentation/using-testcafe/programming-interface/runner.md#reporter) description for details).
+To use a reporter that writes to a file, add a `{ name, output }` object to an array (see the [runner.reporter](../documentation/using-testcafe/programming-interface/runner.md#reporter) description for details).
 
 ```js
 runner
     .src(['/home/user/tests/fixture1.js', 'fixture5.js'])
     .browsers(['chrome', 'firefox:headless'])
-    .reporter(['minimal', { name: 'json', outStream: 'report.json' }]);
+    .reporter(['minimal', { name: 'json', output: 'report.json' }]);
 ```
