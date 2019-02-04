@@ -110,7 +110,7 @@ if (config.useLocalBrowsers) {
                 });
         });
 
-        // NOTE: don't work stable on CI due to big resource demands
+        // TODO: this test doesn't work on CI due to big resource demands
         if (!isCI) {
             it('Should run tests concurrently in different browser kinds', function () {
                 return run(['chrome:headless --no-sandbox', 'chrome:headless --no-sandbox --user-agent="TestAgent"'], 2, './testcafe-fixtures/multibrowser-concurrent-test.js')
