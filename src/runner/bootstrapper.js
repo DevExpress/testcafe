@@ -119,10 +119,10 @@ export default class Bootstrapper {
         if (!this.reporters.length)
             Bootstrapper._addDefaultReporter(this.reporters);
 
-        return Promise.all(this.reporters.map(async ({ name, file }) => {
+        return Promise.all(this.reporters.map(async ({ name, output }) => {
             let pluginFactory = name;
 
-            const outStream = await this._ensureOutStream(file);
+            const outStream = await this._ensureOutStream(output);
 
             if (typeof pluginFactory !== 'function') {
                 try {

@@ -226,7 +226,7 @@ describe('Utils', () => {
             expect(result).instanceOf(Array);
             expect(result.length).eql(1);
             expect(result[0].name).eql('minimal');
-            expect(result[0].outStream).is.undefined;
+            expect(result[0].output).is.undefined;
         });
 
         it('Array of string names', () => {
@@ -253,7 +253,7 @@ describe('Utils', () => {
 
             expect(result.length).eql(1);
             expect(result[0].name).eql('minimal');
-            expect(result[0].file).eql('path/to/file');
+            expect(result[0].output).eql('path/to/file');
         });
 
         it('Array of names and output streams', () => {

@@ -34,8 +34,8 @@ describe('Stop test task on first failed test', () => {
             shouldFail:      true,
             stopOnFirstFail: true,
             reporter:        [{
-                name:      'spec',
-                outStream: stream
+                name:   'spec',
+                output: stream
             }]
         }).catch(() => {
             const pluginHost  = new ReporterPluginHost({ noColors: true });
