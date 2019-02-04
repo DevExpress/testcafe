@@ -48,11 +48,11 @@ Then TestCafe starts watching for changes in the test files and all files that a
 
 When the tests are done, browsers stay on the last opened page so you can work with it and explore it with the browser's developer tools.
 
-> To work with a single test, use the [only](../../test-api/test-code-structure.md#skipping-tests) function.
-
 You can use live mode with any browsers: local, remote, mobile or headless.
 
-> Live mode is designed to work with tests locally. Do not use it in CI systems.
+> Important! Live mode is designed to work with tests locally. Do not use it in CI systems.
+
+**Tip:** use the [only](../../test-api/test-code-structure.md#skipping-tests) function to work with a single test.
 
 ### Console Commands in Live Mode
 
