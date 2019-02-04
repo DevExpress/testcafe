@@ -135,7 +135,7 @@ export default class BrowserProviderPluginHost {
     async getVideoFrameData (browserId) {
         const browserAlias = BrowserConnection.getById(browserId).browserInfo.alias;
 
-        this.reportWarning(browserId, WARNING_MESSAGE.videoNotSupportedByBrowserProvider, browserAlias);
+        this.reportWarning(browserId, WARNING_MESSAGE.videoNotSupportedByBrowser, browserAlias);
     }
 
     async reportJobResult (/*browserId, status, data*/) {
