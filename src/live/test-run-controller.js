@@ -28,10 +28,12 @@ class LiveModeTestRunController extends EventEmitter {
         return this._testRunCtor;
     }
 
-    run (testCount) {
-        const readyToNextPromises = [];
-
+    setExpectedTestCount (testCount) {
         this.expectedTestCount = testCount;
+    }
+
+    run () {
+        const readyToNextPromises = [];
 
         this.testWrappers.forEach(testWrapper => {
             testWrapper.testRuns.forEach(testRun => {
@@ -55,15 +57,26 @@ class LiveModeTestRunController extends EventEmitter {
         });
     }
 
+    _getTestWrapper (test) {
+        return this.testWrappers.find(w => w.test === test);
+    }
+
     _onTestRunCreated (testRun) {
-        const testWrapper = {
-            state:    TEST_STATE.created,
-            testRuns: [testRun]
-        };
+        let testWrapper = this._getTestWrapper(testRun.test);
+
+        if (!testWrapper) {
+            testWrapper = {
+                test:     testRun.test,
+                state:    TEST_STATE.created,
+                testRuns: []
+            };
+
+            this.testWrappers.push(testWrapper);
+        }
+
+        testWrapper.testRuns.push(testRun);
 
         testRun.testWrapper = testWrapper;
-
-        this.testWrappers.push(testWrapper);
     }
 
     _onTestRunStarted (testRun) {

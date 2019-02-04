@@ -39,6 +39,9 @@ class LiveModeRunner extends Runner {
                 return this._validateRunnableConfiguration(isFirstRun);
             })
             .then(() => {
+                this.testRunController.setExpectedTestCount(this.liveConfigurationCache.tests.filter(t => !t.skip).length);
+            })
+            .then(() => {
                 this.tcRunnerTaskPromise = super.run(this.opts);
 
                 return this.tcRunnerTaskPromise;
@@ -89,7 +92,7 @@ class LiveModeRunner extends Runner {
             .then(() => this.runTests(true));
 
 
-        return this._waitInfinite()
+        return this._waitUntilExit()
             .then(() => {
                 if (this.liveConfigurationCache) {
                     const { browserSet } = this.liveConfigurationCache;
@@ -134,7 +137,7 @@ class LiveModeRunner extends Runner {
     async _finishPreviousTestRuns () {
         if (!this.liveConfigurationCache.tests) return;
 
-        this.testRunController.run(this.liveConfigurationCache.tests.filter(t => !t.skip).length);
+        this.testRunController.run();
     }
 
     _validateRunnableConfiguration (isFirstRun) {
@@ -167,7 +170,7 @@ class LiveModeRunner extends Runner {
         return new LiveModeController(this);
     }
 
-    _waitInfinite () {
+    _waitUntilExit () {
         return new Promise(resolve => {
             this.stopInfiniteWaiting = resolve;
         });

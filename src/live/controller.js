@@ -21,6 +21,7 @@ class LiveModeController extends EventEmitter {
         this.runner         = runner;
         this.lockKeyPress   = false;
         this.fileWatcher    = null;
+        this.rl             = null;
     }
 
     init (files) {
