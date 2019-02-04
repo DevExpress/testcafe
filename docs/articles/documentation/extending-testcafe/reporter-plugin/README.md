@@ -108,15 +108,37 @@ async reportFixtureStart (name, path, meta) {
 },
 
 async reportTestDone (name, testRunInfo, meta) {
-    const hasErr = !!testRunInfo.errs.length;
-    const result = hasErr ? `passed` : `failed`;
+    const errors      = testRunInfo.errs;
+    const warnings    = testRunInfo.warnings;
+    const hasErrors   = !!errors.length;
+    const hasWarnings = !!warnings.length;
+    const result      = hasErrors ? `passed` : `failed`;
 
     name = `${this.currentFixtureName} - ${name}`;
 
     const title = `${result} ${name}`;
 
-    this.write(title)
-        .newline();
+    this.write(title);
+
+    if(hasErrors) {
+        this.newline()
+            .write('Errors:');
+
+        errors.forEach(error => {
+            this.newline()
+                .write(this.formatError(error));
+        });
+    }
+
+    if(hasWarnings) {
+        this.newline()
+            .write('Warnings:');
+
+        warnings.forEach(warning => {
+            this.newline()
+                .write(warning);
+        });
+    }
 },
 
 async reportTaskDone (endTime, passed, warnings, result) {
@@ -129,6 +151,8 @@ async reportTaskDone (endTime, passed, warnings, result) {
                  `${result.passedCount} passed`;
 
     footer += ` (Duration: ${durationStr})`;
+    footer += ` (Skipped: ${result.skippedCount})`;
+    footer += ` (Warnings: ${warnings.length})`;
 
     this.write(footer)
         .newline();

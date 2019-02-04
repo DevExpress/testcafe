@@ -241,7 +241,7 @@ formatError (err, prefix = '') → String
 
 Parameter     | Type   | Description
 ------------- | ------ | -------------------------------------------------------------------
-`err`         | String | The error message you need to format.
+`err`         | Object | The error object you need to format.
 `prefix = ''` | String | The string that is prepended to the error. By default, it is empty.
 
 **Example**
