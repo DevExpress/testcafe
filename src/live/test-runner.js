@@ -92,7 +92,7 @@ class LiveModeRunner extends Runner {
             .then(() => this.runTests(true));
 
 
-        return this._waitInfinite()
+        return this._waitUntilExit()
             .then(() => {
                 if (this.liveConfigurationCache) {
                     const { browserSet } = this.liveConfigurationCache;
@@ -170,7 +170,7 @@ class LiveModeRunner extends Runner {
         return new LiveModeController(this);
     }
 
-    _waitInfinite () {
+    _waitUntilExit () {
         return new Promise(resolve => {
             this.stopInfiniteWaiting = resolve;
         });

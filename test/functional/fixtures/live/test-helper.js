@@ -6,5 +6,6 @@ class TestCompleteWatcher extends EventEmitter {
 }
 
 module.exports = {
-    watcher: new TestCompleteWatcher()
+    watcher: new TestCompleteWatcher(),
+    counter: 0
 };
