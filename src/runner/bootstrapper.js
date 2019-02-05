@@ -111,7 +111,7 @@ export default class Bootstrapper {
     }
 
     async _getReporterPlugins () {
-        const stdoutReporters = filter(this.reporters, r => isUndefined(r.file) || r.file === process.stdout);
+        const stdoutReporters = filter(this.reporters, r => isUndefined(r.output) || r.output === process.stdout);
 
         if (stdoutReporters.length > 1)
             throw new GeneralError(MESSAGE.multipleStdoutReporters, stdoutReporters.map(r => r.name).join(', '));
