@@ -221,10 +221,6 @@ Thank you to all the people who already contributed to TestCafe!
 
 TestCafe developers and community members made these plugins:
 
-* **Rapid test development tool**<br/>
-  Changes in test code immediately restart the test, and you see the results instantly.
-  * [TestCafe Live](https://github.com/DevExpress/testcafe-live) (by [@DevExpress](https://github.com/DevExpress))
-
 * **Browser Providers**<br/>
   Allow you to use TestCafe with cloud browser providers and emulators.
   * [SauceLabs provider](https://github.com/DevExpress/testcafe-browser-provider-saucelabs) (by [@AndreyBelym](https://github.com/AndreyBelym))
