@@ -8,11 +8,12 @@ permalink: /documentation/using-testcafe/common-concepts/screenshots-and-videos.
 TestCafe allows you to take screenshots of the webpage under test and record videos of test runs.
 
 * [Screenshots](#screenshots)
+  * [Prerequisites for Screenshots](#prerequisites-for-screenshots)
   * [Enable Screenshots](#enable-screenshots)
   * [Take Screenshots at Arbitrary Moments During Test Run](#take-screenshots-at-arbitrary-moments-during-test-run)
   * [Take Screenshots When a Test Fails](#take-screenshots-when-a-test-fails)
 * [Record Videos](#record-videos)
-  * [Prerequisites](#prerequisites)
+  * [Prerequisites for Video Recording](#prerequisites-for-video-recording)
   * [Enable Video Recording](#enable-video-recording)
   * [Basic Video Options](#basic-video-options)
   * [Video Encoding Options](#video-encoding-options)
@@ -24,6 +25,14 @@ TestCafe allows you to take screenshots of the webpage under test and record vid
   * [Path Pattern Placeholders](#path-pattern-placeholders)
 
 ## Screenshots
+
+TestCafe allows you to take screenshots of the webpage under test at any moment during test run, or automatically whenever a test fails.
+
+> Important! Screenshots are not supported when you run tests in [remote browsers](browsers/browser-support.md#browsers-on-remote-devices).
+
+### Prerequisites for Screenshots
+
+Screenshots require .NET 4.0 or newer installed on Windows machines and an [ICCCM/EWMH-compliant window manager](https://en.wikipedia.org/wiki/Comparison_of_X_window_managers) on Linux.
 
 ### Enable Screenshots
 
@@ -98,7 +107,9 @@ You can configure TestCafe to automatically take a screenshot whenever a test fa
 
 TestCafe allows you to record videos of test runs.
 
-### Prerequisites
+> Important! Video recording is supported in Google Chrome and Mozilla Firefox only. TestCafe cannot record videos when you run tests in [remote browsers](browsers/browser-support.md#browsers-on-remote-devices).
+
+### Prerequisites for Video Recording
 
 You need to install [the FFmpeg library](https://ffmpeg.org/) to record videos.
 

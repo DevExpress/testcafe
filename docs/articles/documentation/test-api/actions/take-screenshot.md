@@ -6,13 +6,11 @@ checked: true
 ---
 # Take Screenshot
 
-This topic describes how to take screenshots of the tested page.
+This topic describes how to use test actions to take screenshots of the tested page.
 
-> Important! Screenshot actions are not supported when you run tests in [remote browsers](../../using-testcafe/common-concepts/browsers/browser-support.md#browsers-on-remote-devices).
+> Important! Screenshot actions are ignored if the screenshot directory is not specified with the [runner.screenshots](../../using-testcafe/programming-interface/runner.md#screenshots) API method or the [-s (--screenshots)](../../using-testcafe/command-line-interface.md#-s-path---screenshots-path) command line option.
 
-**Note**: these actions require .NET 4.0 or newer installed on Windows machines and an [ICCCM/EWMH-compliant window manager](https://en.wikipedia.org/wiki/Comparison_of_X_window_managers) on Linux.
-
-> Important! Screenshot actions are ignored if the screenshot directory is not specified with the [runner.screenshots](../../using-testcafe/programming-interface/runner.md#screenshots) API method or the [--screenshots](../../using-testcafe/command-line-interface.md#-s-path---screenshots-path) command line option.
+See [Screenshots](../../using-testcafe/common-concepts/screenshots-and-videos.md#screenshots) for more information about this feature.
 
 ## Take a Screenshot of the Entire Page
 
@@ -51,7 +49,7 @@ Takes a screenshot of the specified page element.
 Parameter                | Type   | Description
 ------------------------ | ------ | -----------------------------------------------------------------------------------------------------
 `selector`               | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the webpage element whose screenshot should be taken. See [Selecting Target Elements](README.md#selecting-target-elements).
-`path`&#160;*(optional)* | String | The screenshot file's relative path and name. The path is relative to the root directory specified by using the [runner.screenshots](../../using-testcafe/programming-interface/runner.md#screenshots) API method or the [screenshots](../../using-testcafe/command-line-interface.md#-s-path---screenshots-path) command line option. This path overrides the relative path the default or custom [path patterns](../../using-testcafe/common-concepts/screenshots-and-videos.md#where-screenshots-and-videos-are-saved) specify.
+`path`&#160;*(optional)* | String | The screenshot file's relative path and name. The path is relative to the root directory specified by using the [runner.screenshots](../../using-testcafe/programming-interface/runner.md#screenshots) API method or the [-s (--screenshots)](../../using-testcafe/command-line-interface.md#-s-path---screenshots-path) command line option. This path overrides the relative path the default or custom [path patterns](../../using-testcafe/common-concepts/screenshots-and-videos.md#where-screenshots-and-videos-are-saved) specify.
 `options`&#160;*(optional)*   | Object | Options that define how the screenshot is taken. See details below.
 
 ```js
