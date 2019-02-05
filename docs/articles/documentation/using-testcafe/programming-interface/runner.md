@@ -249,13 +249,17 @@ Configures TestCafe's reporting feature.
 
 ```text
 reporter(name, output) → this
-reporter([{ name, output }]) → this
+reporter([ name | { name, output }]) → this
 ```
 
 Parameter                | Type                        | Description                                     | Default
 ------------------------ | --------------------------- | ----------------------------------------------- | --------
 `name`                   | String              | The name of the [reporter](../common-concepts/reporters.md) to use.
 `output`&#160;*(optional)* | String &#124; Writable Stream implementer | The file path where the report is written or the output stream. | `stdout`
+
+To use a single reporter, specify a reporter name and, optionally, an output target as the second parameter.
+
+To use multiple reporters, pass an array to this method. This array can include both strings (the reporter name) and `{ name, output }` objects (if you wish to specify the output target). See examples below.
 
 Note that if you use multiple reporters, only one can write to `stdout`.
 
@@ -276,12 +280,10 @@ runner.reporter('xunit', 'reports/report.xml');
 #### Using Multiple Reporters
 
 ```js
-runner.reporter([{
-        name: 'spec'
-    }, {
-        name: 'json',
-        output: 'reports/report.json'
-    }]);
+runner.reporter(['spec', {
+    name: 'json',
+    output: 'reports/report.json'
+}]);
 ```
 
 #### Implementing a Custom Stream
