@@ -1,4 +1,4 @@
-image: zenika/alpine-chrome:with-node
+image: circleci/node:10.14-browsers
     pipelines:
       pull-requests:
         '**':

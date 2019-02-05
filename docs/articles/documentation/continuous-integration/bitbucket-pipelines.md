@@ -8,7 +8,7 @@ redirect_from:
 # Run Tests in Bitbucket Pipelines CI
 
 You can automatically run tests as a part of your build process using TestCafe and [Bitbucket Pipelines CI](https://bitbucket.org/product/features/pipelines).
-The Bitbucket Pipelines support Docker containers, and there are some available with both Chrome e Firefox browsers included (also in headless mode)
+The Bitbucket Pipelines support Docker containers, and there are some available with both Chrome e Firefox browsers included (also in headless mode).
 
 Suppose you have a Bitbucket project for which you need to automatically run tests in the cloud when the project is modified. To do this, go through the following steps.
 
@@ -26,11 +26,47 @@ Install TestCafe [locally](../using-testcafe/installing-testcafe.md#locally) in 
 ## Step 2 - Enable Bitbucket Pipelines for your project
 
 1. To enable the Bitbucket Pipelines for your project you need to create a `bitbucket-pipelines.yml` file in your project root folder.
-2. Configuring the right environment can be tedious but luckily Bitbucket Pipelines can use Docker containers, some already configured to work with Chrome and Firefox. The `zenika/alpine-chrome:with-node` image comes already configured and ready to use for Chrome headless or Puppeteer.
-3. An example template can have the following content to run on Pull Requests:
+2. Configuring the right environment can be tedious but luckily Bitbucket Pipelines can use Docker containers, some already configured to work with Chrome and Firefox. You can [use a TestCafe Docker image](#option-1---use-testcafe-docker-image) with pre-installed software.
+However, if you already have a Docker image prepared to deploy your web application and run tests, you can [install TestCafe on this image before testing](#option-2---install-testcafe-on-a-docker-image).
+3. Configure the template to execute on Pull Request update
+
+
+For more templates or more information about the Pipelines see the [Atlassian Bitbucket Support page](https://confluence.atlassian.com/bitbucket/get-started-with-bitbucket-pipelines-792298921.html)
+
+### Option 1 - Use TestCafe Docker Image
+
+In the `image` field of the `bitbucket-pipelines.yml` file you can set the `testcafe/testcafe` image and then use the custom launcher when the PR is updated:
 
     ```yaml
-    image: zenika/alpine-chrome:with-node
+    image: testcafe/testcafe
+    pipelines:
+      pull-requests:
+        '**':
+          - step:
+              script:
+                - npm ci
+                - /opt/testcafe/docker/testcafe-docker.sh firefox:headless,chromium tests/**/*
+
+      branches:
+        master:
+          - step:
+              script:
+                - npm ci
+                - /opt/testcafe/docker/testcafe-docker.sh firefox:headless,chromium tests/**/*
+    ```
+
+The custom launcher script `/opt/testcafe/docker/testcafe-docker.sh` points to a script that prepares the environment to run a browser and starts TestCafe. Its arguments are standard TestCafe [command line parameters](../using-testcafe/command-line-interface.md).
+
+Commit and push this file to your repository.
+
+### Option 2 - Install TestCafe on a Docker Image
+
+Open the `bitbucket-pipelines.yml` file and use an image with Node.js with browsers already installed in it:
+
+    ```yaml
+    # Replace '10.14' with the latest Node.js LTS version
+    # available on Docker Hub
+    image: circleci/node:10.14-browsers
     pipelines:
       pull-requests:
         '**':
@@ -49,11 +85,12 @@ Install TestCafe [locally](../using-testcafe/installing-testcafe.md#locally) in 
 
     Commit and push this file to your repository.
 
-For more templates or more information about the Pipelines see the [Atlassian Bitbucket Support page](https://confluence.atlassian.com/bitbucket/get-started-with-bitbucket-pipelines-792298921.html)
-
 ## Step 3 - Add the `test` script to package.json
 
 To test a project, Bitbucket Pipelines runs test scripts. For Node.js projects, the default test script is `npm test`.
+
+**Note**: if you used [Option #1](#option-1---use-testcafe-docker-image) you can skip this step already and go to [Step 4](#step-4---trigger-a-bitbucket-pipelines-ci-build).
+
 To tell npm how to run your tests, add the `test` script to the project's package.json file. Use `testcafe` command in the script to run tests in Chrome in Headless mode.
 
 ```text
