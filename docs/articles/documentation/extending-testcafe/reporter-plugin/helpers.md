@@ -40,11 +40,11 @@ newline () → this
 **Example**
 
 ```js
-reportTaskDone (endTime, passed) {
+async reportTaskDone (endTime, passed, warnings, result) {
     ...
-    const summary = passed === this.testCount ?
-                  `${this.testCount} passed` :
-                  `${this.testCount - passed}/${this.testCount} failed`;
+    const summary = result.failedCount ?
+                    `${result.failedCount}/${this.testCount} failed` :
+                    `${result.passedCount} passed`;
 
     this.newline()
         .write(summary)
@@ -67,11 +67,11 @@ Parameter | Type   | Description
 **Example**
 
 ```js
-reportTaskDone (endTime, passed) {
+async reportTaskDone (endTime, passed, warnings, result) {
     ...
-    const summary = passed === this.testCount ?
-                  `${this.testCount} passed` :
-                  `${this.testCount - passed}/${this.testCount} failed`;
+    const summary = result.failedCount ?
+                    `${result.failedCount}/${this.testCount} failed` :
+                    `${result.passedCount} passed`;
 
     this.write(summary)
         .newline();
@@ -95,7 +95,7 @@ Parameter | Type    | Description
 The following example demonstrates how to enable word wrapping in case the `title` string is long.
 
 ```js
-reportTestDone (name, errs) {
+async reportTestDone (name, testRunInfo, meta) {
     ...
     name = `${this.currentFixtureName} - ${name}`;
 
@@ -123,11 +123,11 @@ Parameter | Type    | Description
 The following example demonstrates how to indent summary information by four spaces.
 
 ```js
-reportTaskDone (endTime, passed) {
+async reportTaskDone (endTime, passed, warnings, result) {
     ...
-    const summary = passed === this.testCount ?
-                  `${this.testCount} passed` :
-                  `${this.testCount - passed}/${this.testCount} failed`;
+    const summary = result.failedCount ?
+                    `${result.failedCount}/${this.testCount} failed` :
+                    `${result.passedCount} passed`;
 
     this.setIndent(4)
         .write(summary);
@@ -155,7 +155,7 @@ Parameter   | Type   | Description
 This example demonstrates how you can indent each line in the `str` string by four spaces.
 
 ```js
-reportTaskStart (startTime, userAgents, testCount) {
+async reportTaskStart (startTime, userAgents, testCount) {
     let str = `Start running tests\nBrowsers used for testing: ${userAgents}`;
     str = this.indentString(str, 4);
 
@@ -186,8 +186,8 @@ The following example demonstrates how to break the `title` string to the next l
 ```js
 const LINE_WIDTH = 50;
 
-reportTestDone (name, errs) {
-    const hasErr    = !!errs.length;
+async reportTestDone (name, testRunInfo, meta) {
+    const hasErr    = !!testRunInfo.errs.length;
     const result    = hasErr ? `passed` : `failed`;
 
     name = `${this.currentFixtureName} - ${name}`;
@@ -224,7 +224,7 @@ Parameter   | Type   | Description
 The following example demonstrates how to escape the fixture name *Tests for the "Example" page* for HTML.
 
 ```js
-reportFixtureStart (name) {
+async reportFixtureStart (name, path, meta) {
     this.currentFixtureName = this.escapeHtml(name);
     this.write(this.currentFixtureName);
 }
@@ -241,7 +241,7 @@ formatError (err, prefix = '') → String
 
 Parameter     | Type   | Description
 ------------- | ------ | -------------------------------------------------------------------
-`err`         | String | The error message you need to format.
+`err`         | Object | The error object you need to format.
 `prefix = ''` | String | The string that is prepended to the error. By default, it is empty.
 
 **Example**
@@ -249,9 +249,9 @@ Parameter     | Type   | Description
 The following example demonstrates how to add numbering to the errors.
 
 ```js
-reportTestDone (name, errs){
+async reportTestDone (name, testRunInfo, meta) {
     ...
-    const hasErr = !!errs.length;
+    const hasErr = !!testRunInfo.errs.length;
 
     if (hasErr) {
         errs.forEach((err, idx) => {
@@ -283,8 +283,8 @@ chalk.<style>[.<style>...](string, [string...]) → this
 The following example demonstrates how to color test results.
 
 ```js
-reportTestDone (name, errs) {
-    const hasErr = !!errs.length;
+async reportTestDone (name, testRunInfo, meta) {
+    const hasErr = !!testRunInfo.errs.length;
     const result = hasErr ? this.chalk.green(`passed`) : this.chalk.red(`failed`);
 
     name = `${this.currentFixtureName} - ${name}`;
@@ -303,7 +303,7 @@ export default function () {
     return {
         noColors: true,
 
-        reportTaskStart (startTime, userAgents, testCount) {
+        async reportTaskStart (startTime, userAgents, testCount) {
             ...
         },
 
@@ -325,7 +325,7 @@ moment().format() → this
 **Example**
 
 ```js
-reportTaskDone (endTime, passed) {
+async reportTaskDone (endTime, passed, warnings, result) {
     const durationMs  = endTime - this.startTime;
     const durationStr = this.moment
                             .duration(durationMs)
