@@ -72,7 +72,7 @@ If the same problem occurs with this test two more times, the test run finishes 
 
 The `browser-list-comma-separated` argument specifies the list of browsers (separated by commas) where tests are run.
 
-*Overrides a configuration file property*: [browsers](configuration-file.md#browsers).
+*Related configuration file property*: [browsers](configuration-file.md#browsers).
 
 ### Local Browsers
 
@@ -202,7 +202,7 @@ Only installed and portable browsers located on the current machine can be launc
 
 The `file-or-glob ...` argument specifies the files or directories (separated by a space) from which to run these tests.
 
-*Overrides a configuration file property*: [src](configuration-file.md#src).
+*Related configuration file property*: [src](configuration-file.md#src).
 
 For example, this command runs all tests in the `my-tests` directory:
 
@@ -283,7 +283,7 @@ testcafe all tests/sample-fixture.js -r spec,xunit:report.xml
 
 Note that only one reporter can write to `stdout`. All other reporters must output to files.
 
-*Overrides a configuration file property*: [reporter](configuration-file.md#reporter).
+*Related configuration file property*: [reporter](configuration-file.md#reporter).
 
 ### -s \<path\>, --screenshots \<path\>
 
@@ -293,7 +293,7 @@ Enables screenshots and specifies the base directory where they are saved.
 testcafe all tests/sample-fixture.js -s screenshots
 ```
 
-*Overrides a configuration file property*: [screenshotPath](configuration-file.md#screenshotpath).
+*Related configuration file property*: [screenshotPath](configuration-file.md#screenshotpath).
 
 #### Path Patterns
 
@@ -321,7 +321,7 @@ For example, the following command runs tests from the
 testcafe all tests/sample-fixture.js -S -s screenshots
 ```
 
-*Overrides a configuration file property*: [takeScreenshotsOnFails](configuration-file.md#takescreenshotsonfails).
+*Related configuration file property*: [takeScreenshotsOnFails](configuration-file.md#takescreenshotsonfails).
 
 ### -p, --screenshot-path-pattern
 
@@ -354,7 +354,7 @@ In Windows `cmd.exe` shell, use double quotes because single quotes do not escap
 testcafe all tests/sample-fixture.js -s screenshots -p "${DATE} ${TIME}/test ${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png"
 ```
 
-*Overrides a configuration file property*: [screenshotPathPattern](configuration-file.md#screenshotpathpattern).
+*Related configuration file property*: [screenshotPathPattern](configuration-file.md#screenshotpathpattern).
 
 ### -q, --quarantine-mode
 
@@ -364,7 +364,7 @@ Enables the [quarantine mode](programming-interface/runner.md#quarantine-mode) f
 testcafe all tests/sample-fixture.js -q
 ```
 
-*Overrides a configuration file property*: [quarantineMode](configuration-file.md#quarantinemode).
+*Related configuration file property*: [quarantineMode](configuration-file.md#quarantinemode).
 
 ### -d, --debug-mode
 
@@ -379,7 +379,7 @@ The footer displays a status bar in which you can resume test execution or skip 
 
 You can also use the **Unlock page** switch in the footer to unlock the tested page and interact with its elements.
 
-*Overrides a configuration file property*: [debugMode](configuration-file.md#debugmode).
+*Related configuration file property*: [debugMode](configuration-file.md#debugmode).
 
 ### --debug-on-fail
 
@@ -393,7 +393,7 @@ If this option is enabled, TestCafe pauses the test when it fails. This allows y
 
 When you are done, click the **Finish** button in the footer to end test execution.
 
-*Overrides a configuration file property*: [debugOnFail](configuration-file.md#debugonfail).
+*Related configuration file property*: [debugOnFail](configuration-file.md#debugonfail).
 
 ### -e, --skip-js-errors
 
@@ -405,7 +405,7 @@ For example, the following command runs tests from the specified file and forces
 testcafe ie tests/sample-fixture.js -e
 ```
 
-*Overrides a configuration file property*: [skipJsErrors](configuration-file.md#skipjserrors).
+*Related configuration file property*: [skipJsErrors](configuration-file.md#skipjserrors).
 
 ### -u, --skip-uncaught-errors
 
@@ -419,7 +419,7 @@ For example, the following command runs tests from the specified file and forces
 testcafe ie tests/sample-fixture.js -u
 ```
 
-*Overrides a configuration file property*: [skipUncaughtErrors](configuration-file.md#skipuncaughterrors).
+*Related configuration file property*: [skipUncaughtErrors](configuration-file.md#skipuncaughterrors).
 
 ### -t \<name\>, --test \<name\>
 
@@ -431,7 +431,7 @@ For example, the following command runs only the `"Click a label"` test from the
 testcafe ie tests/sample-fixture.js -t "Click a label"
 ```
 
-*Overrides a configuration file property*: [filter.test](configuration-file.md#filtertest).
+*Related configuration file property*: [filter.test](configuration-file.md#filtertest).
 
 ### -T \<pattern\>, --test-grep \<pattern\>
 
@@ -443,7 +443,7 @@ For example, the following command runs tests whose names match `Click.*`. These
 testcafe ie my-tests -T "Click.*"
 ```
 
-*Overrides a configuration file property*: [filter.testGrep](configuration-file.md#filtertestgrep).
+*Related configuration file property*: [filter.testGrep](configuration-file.md#filtertestgrep).
 
 ### -f \<name\>, --fixture \<name\>
 
@@ -453,7 +453,7 @@ TestCafe runs a fixture with the specified name.
 testcafe ie my-tests -f "Sample fixture"
 ```
 
-*Overrides a configuration file property*: [filter.fixture](configuration-file.md#filterfixture).
+*Related configuration file property*: [filter.fixture](configuration-file.md#filterfixture).
 
 ### -F \<pattern\>, --fixture-grep \<pattern\>
 
@@ -465,7 +465,7 @@ For example, the following command runs fixtures whose names match `Page.*`. The
 testcafe ie my-tests -F "Page.*"
 ```
 
-*Overrides a configuration file property*: [filter.fixtureGrep](configuration-file.md#filterfixturegrep).
+*Related configuration file property*: [filter.fixtureGrep](configuration-file.md#filterfixturegrep).
 
 ### --test-meta \<key=value\[,key2=value2,...\]\>
 
@@ -477,7 +477,7 @@ For example, the following command runs tests whose metadata has the `device` pr
 testcafe chrome my-tests --test-meta device=mobile,env=production
 ```
 
-*Overrides a configuration file property*: [filter.testMeta](configuration-file.md#filtertestmeta).
+*Related configuration file property*: [filter.testMeta](configuration-file.md#filtertestmeta).
 
 ### --fixture-meta \<key=value\[,key2=value2,...\]\>
 
@@ -489,7 +489,7 @@ For example, the following command runs tests whose fixture's metadata has the `
 testcafe chrome my-tests --fixture-meta device=mobile,env=production
 ```
 
-*Overrides a configuration file property*: [filter.fixtureMeta](configuration-file.md#filterfixturemeta).
+*Related configuration file property*: [filter.fixtureMeta](configuration-file.md#filterfixturemeta).
 
 ### -a \<command\>, --app \<command\>
 
@@ -505,7 +505,7 @@ testcafe chrome my-tests --app "node server.js"
 
 Use the [--app-init-delay](#--app-init-delay-ms) option to specify the amount of time allowed for this command to initialize the tested application.
 
-*Overrides a configuration file property*: [appCommand](configuration-file.md#appcommand).
+*Related configuration file property*: [appCommand](configuration-file.md#appcommand).
 
 ### --app-init-delay \<ms\>
 
@@ -519,7 +519,7 @@ TestCafe waits for the specified time before it starts running tests.
 testcafe chrome my-tests --app "node server.js" --app-init-delay 4000
 ```
 
-*Overrides a configuration file property*: [appInitDelay](configuration-file.md#appinitdelay).
+*Related configuration file property*: [appInitDelay](configuration-file.md#appinitdelay).
 
 ### -c \<n\>, --concurrency \<n\>
 
@@ -536,7 +536,7 @@ The following example shows how to run tests in three Chrome instances:
 testcafe -c 3 chrome tests/sample-fixture.js
 ```
 
-*Overrides a configuration file property*: [concurrency](configuration-file.md#concurrency).
+*Related configuration file property*: [concurrency](configuration-file.md#concurrency).
 
 ### --selector-timeout \<ms\>
 
@@ -548,7 +548,7 @@ Specifies the time (in milliseconds) within which [selectors](../test-api/select
 testcafe ie my-tests --selector-timeout 500000
 ```
 
-*Overrides a configuration file property*: [selectorTimeout](configuration-file.md#selectortimeout).
+*Related configuration file property*: [selectorTimeout](configuration-file.md#selectortimeout).
 
 ### --assertion-timeout \<ms\>
 
@@ -563,7 +563,7 @@ See [Smart Assertion Query Mechanism](../test-api/assertions/README.md#smart-ass
 testcafe ie my-tests --assertion-timeout 10000
 ```
 
-*Overrides a configuration file property*: [assertionTimeout](configuration-file.md#assertiontimeout).
+*Related configuration file property*: [assertionTimeout](configuration-file.md#assertiontimeout).
 
 ### --page-load-timeout \<ms\>
 
@@ -581,7 +581,7 @@ You can set the page load timeout to `0` to skip waiting for the `window.load` e
 testcafe ie my-tests --page-load-timeout 0
 ```
 
-*Overrides a configuration file property*: [pageLoadTimeout](configuration-file.md#pageloadtimeout).
+*Related configuration file property*: [pageLoadTimeout](configuration-file.md#pageloadtimeout).
 
 ### --speed \<factor\>
 
@@ -600,7 +600,7 @@ If the speed is also specified for an [individual action](../test-api/actions/ac
 
 **Default value**: `1`
 
-*Overrides a configuration file property*: [speed](configuration-file.md#speed).
+*Related configuration file property*: [speed](configuration-file.md#speed).
 
 ### --ports \<port1,port2\>
 
@@ -612,7 +612,7 @@ TestCafe automatically selects ports if ports are not specified.
 testcafe chrome my-tests --ports 12345,54321
 ```
 
-*Overrides configuration file properties*: [port1, port2](configuration-file.md#port1-port2).
+*Related configuration file properties*: [port1, port2](configuration-file.md#port1-port2).
 
 ### --hostname \<name\>
 
@@ -624,7 +624,7 @@ If the hostname is not specified, TestCafe uses the operating system's hostname 
 testcafe chrome my-tests --hostname host.mycorp.com
 ```
 
-*Overrides a configuration file property*: [hostname](configuration-file.md#hostname).
+*Related configuration file property*: [hostname](configuration-file.md#hostname).
 
 ### --proxy \<host\>
 
@@ -644,7 +644,7 @@ You can also specify authentication credentials with the proxy host.
 testcafe chrome my-tests/**/*.js --proxy username:password@proxy.mycorp.com
 ```
 
-*Overrides a configuration file property*: [proxy](configuration-file.md#proxy).
+*Related configuration file property*: [proxy](configuration-file.md#proxy).
 
 ### --proxy-bypass \<rules\>
 
@@ -672,7 +672,7 @@ The `*.mycompany.com` value means that all URLs in the `mycompany.com` subdomain
 testcafe chrome my-tests/**/*.js --proxy proxy.corp.mycompany.com --proxy-bypass *.mycompany.com
 ```
 
-*Overrides a configuration file property*: [proxyBypass](configuration-file.md#proxybypass).
+*Related configuration file property*: [proxyBypass](configuration-file.md#proxybypass).
 
 ### --ssl \<options\>
 
@@ -691,7 +691,7 @@ Provide the `--ssl` flag if the tested webpage uses browser features that requir
 secure origin ([Service Workers](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API), [Geolocation API](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API), [ApplePaySession](https://developer.apple.com/documentation/apple_pay_on_the_web/applepaysession), [SubtleCrypto](https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto), etc).
 See [Connect to the TestCafe Server over HTTPS](common-concepts/connect-to-the-testcafe-server-over-https.md) for more information.
 
-*Overrides a configuration file property*: [ssl](configuration-file.md#ssl).
+*Related configuration file property*: [ssl](configuration-file.md#ssl).
 
 ### --dev
 
@@ -701,7 +701,7 @@ Enables mechanisms to log and diagnose errors. You should enable this option if 
 testcafe chrome my-tests --dev
 ```
 
-*Overrides a configuration file property*: [developmentMode](configuration-file.md#developmentmode).
+*Related configuration file property*: [developmentMode](configuration-file.md#developmentmode).
 
 ### --qr-code
 
@@ -711,7 +711,7 @@ Outputs a QR-code that represents URLs used to connect the [remote browsers](#re
 testcafe remote my-tests --qr-code
 ```
 
-*Overrides a configuration file property*: [qrCode](configuration-file.md#qrcode).
+*Related configuration file property*: [qrCode](configuration-file.md#qrcode).
 
 ### --sf, --stop-on-first-fail
 
@@ -721,7 +721,7 @@ Stops an entire test run if any test fails. This allows you not to wait for all 
 testcafe chrome my-tests --sf
 ```
 
-*Overrides a configuration file property*: [stopOnFirstFail](configuration-file.md#stoponfirstfail).
+*Related configuration file property*: [stopOnFirstFail](configuration-file.md#stoponfirstfail).
 
 ### --disable-test-syntax-validation
 
@@ -758,16 +758,16 @@ In this instance, specify the `--disable-test-syntax-validation` flag to bypass 
 testcafe safari test.js --disable-test-syntax-validation
 ```
 
-*Overrides a configuration file property*: [disableTestSyntaxValidation](configuration-file.md#disabletestsyntaxvalidation).
+*Related configuration file property*: [disableTestSyntaxValidation](configuration-file.md#disabletestsyntaxvalidation).
 
 ### --color
 
 Enables colors in the command line.
 
-*Overrides a configuration file property*: [color](configuration-file.md#color).
+*Related configuration file property*: [color](configuration-file.md#color).
 
 ### --no-color
 
 Disables colors in the command line.
 
-*Overrides a configuration file property*: [noColor](configuration-file.md#nocolor).
+*Related configuration file property*: [noColor](configuration-file.md#nocolor).

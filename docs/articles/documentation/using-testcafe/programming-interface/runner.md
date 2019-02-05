@@ -69,7 +69,7 @@ Parameter | Type                | Description
 
 You do not need to call this function if you specify the [src](../configuration-file.md#src) property in the [configuration file](../configuration-file.md).
 
-*Overrides a configuration file property*: [src](../configuration-file.md#src)
+*Related configuration file property*: [src](../configuration-file.md#src)
 
 **Examples**
 
@@ -107,7 +107,7 @@ Parameter     | Type                     | Description
 `testMeta`    | Object\<String, String\> | The test metadata.
 `fixtureMeta` | Object\<String, String\> | The fixture metadata.
 
-*Overrides a configuration file property*: [filter](../configuration-file.md#filter)
+*Related configuration file property*: [filter](../configuration-file.md#filter)
 
 **Example**
 
@@ -139,7 +139,7 @@ String &#124; Array                                                             
 
 You do not need to call this function if you specify the [browsers](../configuration-file.md#browsers) property in the [configuration file](../configuration-file.md).
 
-*Overrides a configuration file property*: [browsers](../configuration-file.md#browsers)
+*Related configuration file property*: [browsers](../configuration-file.md#browsers)
 
 #### Using Browser Aliases
 
@@ -231,7 +231,7 @@ Set the `takeOnFails` parameter to `true` to take a screenshot when a test fails
 
 > Important! TestCafe does not take screenshots if the `screenshots` function is not called.
 
-*Overrides configuration file properties*:
+*Related configuration file properties*:
 
 * [screenshotPath](../configuration-file.md#screenshotpath)
 * [takeScreenshotsOnFails](../configuration-file.md#takescreenshotsonfails)
@@ -319,7 +319,7 @@ Parameter | Type    | Description
 
 See [Concurrent Test Execution](../common-concepts/concurrent-test-execution.md) to learn more about concurrent test execution.
 
-*Overrides a configuration file property*: [concurrency](../configuration-file.md#concurrency)
+*Related configuration file property*: [concurrency](../configuration-file.md#concurrency)
 
 The following example shows how to run tests in three Chrome instances:
 
@@ -348,7 +348,7 @@ Parameter         | Type    | Description   Default
 
 > TestCafe adds `node_modules/.bin` to `PATH` so that you can use binaries the locally installed dependencies provide without prefixes.
 
-*Overrides configuration file properties*:
+*Related configuration file properties*:
 
 * [appCommand](../configuration-file.md#appcommand)
 * [appInitDelay](../configuration-file.md#appinitdelay)
@@ -378,7 +378,7 @@ When using a proxy server, you may still need to access local or external resour
 
 The `bypassRules` parameter takes one or several URLs that require direct access. You can replace parts of the URL with the `*` wildcard that corresponds to a string of any length. Wildcards at the beginning and end of the rules can be omitted (`*.mycompany.com` and `.mycompany.com` have the same effect).
 
-*Overrides configuration file properties*:
+*Related configuration file properties*:
 
 * [proxy](../configuration-file.md#proxy)
 * [proxyBypass](../configuration-file.md#proxybypass)
@@ -441,7 +441,7 @@ Parameter         | Type    | Description                                       
 
 After all tests are finished, call the [testcafe.close](testcafe.md#close) function to stop the TestCafe server.
 
-*Overrides configuration file properties*:
+*Related configuration file properties*:
 
 * [skipJsErrors](../configuration-file.md#skipjserrors)
 * [skipUncaughtErrors](../configuration-file.md#skipuncaughterrors)
