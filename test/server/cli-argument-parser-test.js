@@ -447,9 +447,9 @@ describe('CLI argument parser', function () {
         return parse('-r list,json:' + filePath)
             .then(function (parser) {
                 expect(parser.opts.reporter[0].name).eql('list');
-                expect(parser.opts.reporter[0].outStream).to.be.undefined;
+                expect(parser.opts.reporter[0].output).to.be.undefined;
                 expect(parser.opts.reporter[1].name).eql('json');
-                expect(parser.opts.reporter[1].file).eql(path.resolve(cwd, filePath));
+                expect(parser.opts.reporter[1].output).eql(path.resolve(cwd, filePath));
             });
     });
 

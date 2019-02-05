@@ -24,12 +24,12 @@ describe('Reporter', () => {
             only:     ['chrome'],
             reporter: [
                 {
-                    name:      'json',
-                    outStream: stream1
+                    name:   'json',
+                    output: stream1
                 },
                 {
-                    name:      'list',
-                    outStream: stream2
+                    name:   'list',
+                    output: stream2
                 }
             ]
         })
@@ -50,8 +50,8 @@ describe('Reporter', () => {
             only:     ['chrome'],
             reporter: [
                 {
-                    name:      'json',
-                    outStream: stream
+                    name:   'json',
+                    output: stream
                 }
             ]
         };
@@ -69,8 +69,8 @@ describe('Reporter', () => {
             only:     ['chrome'],
             reporter: [
                 {
-                    name:      'json',
-                    outStream: stream
+                    name:   'json',
+                    output: stream
                 }
             ]
         };
@@ -96,8 +96,8 @@ describe('Reporter', () => {
             only:     ['chrome'],
             reporter: [
                 {
-                    name:      'json',
-                    outStream: process.stdout
+                    name:   'json',
+                    output: process.stdout
                 }
             ]
         };
@@ -125,8 +125,8 @@ describe('Reporter', () => {
             only:     ['chrome'],
             reporter: [
                 {
-                    name:      'json',
-                    outStream: process.stderr
+                    name:   'json',
+                    output: process.stderr
                 }
             ]
         };
@@ -154,8 +154,8 @@ describe('Reporter', () => {
             only:     ['chrome'],
             reporter: [
                 {
-                    name:      'json',
-                    outStream: void 0
+                    name:   'json',
+                    output: void 0
                 }
             ]
         };
@@ -175,8 +175,8 @@ describe('Reporter', () => {
             only:     ['chrome'],
             reporter: [
                 {
-                    name:      'json',
-                    outStream: stream
+                    name:   'json',
+                    output: stream
                 }
             ]
         };
@@ -195,12 +195,12 @@ describe('Reporter', () => {
             only:     ['chrome'],
             reporter: [
                 {
-                    name:      'list',
-                    outStream: testStream
+                    name:   'list',
+                    output: testStream
                 },
                 {
-                    name:      'list',
-                    outStream: reportFileName
+                    name:   'list',
+                    output: reportFileName
                 }
             ]
         })
@@ -221,8 +221,8 @@ describe('Reporter', () => {
 
             reporter: [
                 {
-                    name:      'json',
-                    outStream: stream
+                    name:   'json',
+                    output: stream
                 }
             ]
         };
