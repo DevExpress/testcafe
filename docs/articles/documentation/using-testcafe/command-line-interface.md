@@ -53,7 +53,6 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [--dev](#--dev)
   * [--qr-code](#--qr-code)
   * [--sf, --stop-on-first-fail](#--sf---stop-on-first-fail)
-  * [--disable-test-syntax-validation](#--disable-test-syntax-validation)
   * [--color](#--color)
   * [--no-color](#--no-color)
 
@@ -724,43 +723,6 @@ testcafe chrome my-tests --sf
 ```
 
 *Related configuration file property*: [stopOnFirstFail](configuration-file.md#stoponfirstfail).
-
-### --disable-test-syntax-validation
-
-Disables checks for `test` and `fixture` directives in test files. Use this flag to run dynamically loaded tests.
-
-Test files should have the [fixture](../test-api/test-code-structure.md#fixtures) and [test](../test-api/test-code-structure.md#tests) directives. Otherwise, an error is thrown.
-
-However, the `.js` file may not contain tests when you import tests from external libraries or generate them dynamically.
-
-**external-lib.js**
-
-```js
-export default function runTests () {
-    fixture `External tests`
-        .page `http:///example.com`;
-
-    test('My Test', async t => {
-        // ...
-    });
-}
-```
-
-**test.js**
-
-```js
-import runTests from './external-lib';
-
-runTests();
-```
-
-In this instance, specify the `--disable-test-syntax-validation` flag to bypass test syntax checks.
-
-```sh
-testcafe safari test.js --disable-test-syntax-validation
-```
-
-*Related configuration file property*: [disableTestSyntaxValidation](configuration-file.md#disabletestsyntaxvalidation).
 
 ### --color
 

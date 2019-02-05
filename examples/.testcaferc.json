@@ -45,6 +45,5 @@
         "rejectUnauthorized": true
     },
     "developmentMode": true,
-    "qrCode": true,
-    "disableTestSyntaxValidation": true
+    "qrCode": true
 }

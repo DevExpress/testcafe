@@ -447,7 +447,6 @@ Parameter         | Type    | Description                                       
 `pageLoadTimeout` | Number  |  Specifies the time (in milliseconds) TestCafe waits for the `window.load` event to fire after the `DOMContentLoaded` event. After the timeout passes or the `window.load` event is raised (whichever happens first), TestCafe starts the test. You can set this timeout to `0` to skip waiting for `window.load`. | `3000`
 `speed`           | Number  | Specifies the test execution speed. A number between `1` (fastest) and `0.01` (slowest). If an [individual action's](../../test-api/actions/action-options.md#basic-action-options) speed is also specified, the action speed setting overrides the test speed. | `1`
 `stopOnFirstFail`    | Boolean | Defines whether to stop a test run if a test fails. This allows you not to wait for all the tests to finish and to focus on the first error. | `false`
-`disableTestSyntaxValidation` | Boolean | Defines whether to disable checks for [test](../../test-api/test-code-structure.md#tests) and [fixture](../../test-api/test-code-structure.md#fixtures) directives in test files. Use this option to run dynamically loaded tests. See details in the [--disable-test-syntax-validation](../command-line-interface.md#--disable-test-syntax-validation) command line option description. | `false`
 
 After all tests are finished, call the [testcafe.close](testcafe.md#close) function to stop the TestCafe server.
 
@@ -463,7 +462,6 @@ After all tests are finished, call the [testcafe.close](testcafe.md#close) funct
 * [pageLoadTimeout](../configuration-file.md#pageloadtimeout)
 * [speed](../configuration-file.md#speed)
 * [stopOnFirstFail](../configuration-file.md#stoponfirstfail)
-* [disableTestSyntaxValidation](../configuration-file.md#disabletestsyntaxvalidation)
 
 **Example**
 
