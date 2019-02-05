@@ -342,7 +342,7 @@ testcafe chrome test.js --video reports/screen-captures
 
 See [Record Videos](common-concepts/screenshots-and-videos.md#record-videos) for details.
 
-*Overrides a configuration file property*: [videoPath](configuration-file.md#videopath).
+*Related configuration file property*: [videoPath](configuration-file.md#videopath).
 
 ### --video-options \<option=value\[,option2=value2,...\]\>
 
@@ -356,7 +356,7 @@ See [Basic Video Options](common-concepts/screenshots-and-videos.md#basic-video-
 
 > Use the [--video](#--video-basepath) flag to enable video recording.
 
-*Overrides a configuration file property*: [videoOptions](configuration-file.md#videooptions).
+*Related configuration file property*: [videoOptions](configuration-file.md#videooptions).
 
 ### --video-encoding-options \<option=value\[,option2=value2,...\]\>
 
@@ -370,7 +370,7 @@ See [Video Encoding Options](common-concepts/screenshots-and-videos.md#video-enc
 
 > Use the [--video](#--video-basepath) flag to enable video recording.
 
-*Overrides a configuration file property*: [videoEncodingOptions](configuration-file.md#videoencodingoptions).
+*Related configuration file property*: [videoEncodingOptions](configuration-file.md#videoencodingoptions).
 
 ### -q, --quarantine-mode
 

@@ -257,7 +257,7 @@ Parameter                | Type                        | Description
 
 See [Record Videos](../common-concepts/screenshots-and-videos.md#record-videos) for details.
 
-*Overrides configuration file properties*:
+*Related configuration file properties*:
 
 * [videoPath](../configuration-file.md#videopath)
 * [videoOptions](../configuration-file.md#videooptions)
@@ -296,7 +296,7 @@ To use multiple reporters, pass an array to this method. This array can include 
 
 Note that if you use multiple reporters, only one can write to `stdout`.
 
-*Overrides configuration file property*: [reporter](../configuration-file.md#reporter)
+*Related configuration file property*: [reporter](../configuration-file.md#reporter)
 
 #### Specifying the Reporter
 
