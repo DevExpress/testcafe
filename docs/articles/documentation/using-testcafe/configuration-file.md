@@ -46,7 +46,6 @@ A configuration file can include the following settings:
 * [developmentMode](#developmentmode)
 * [qrCode](#qrcode)
 * [stopOnFirstFail](#stoponfirstfail)
-* [disableTestSyntaxValidation](#disabletestsyntaxvalidation)
 * [color](#color)
 * [noColor](#nocolor)
 
@@ -676,21 +675,6 @@ Stops an entire test run if any test fails.
 
 *CLI*: [--sf, --stop-on-first-fail](command-line-interface.md#--sf---stop-on-first-fail)  
 *API*: [runner.run({ stopOnFirstFail })](programming-interface/runner.md#run)
-
-## disableTestSyntaxValidation
-
-Disables checks for `test` and `fixture` directives in test files. Enable this property to run dynamically loaded tests.
-
-```json
-{
-    "disableTestSyntaxValidation": true
-}
-```
-
-See the [--disable-test-syntax-validation](command-line-interface.md#--disable-test-syntax-validation) command line parameter for details.
-
-*CLI*: [--disable-test-syntax-validation](command-line-interface.md#--disable-test-syntax-validation)  
-*API*: [runner.run({ disableTestSyntaxValidation })](programming-interface/runner.md#run)
 
 ## color
 
