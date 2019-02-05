@@ -1622,16 +1622,16 @@ interface Runner {
      * Configures TestCafe's reporting feature.
      *
      * @param name - The name of the reporter to use.
-     * @param outStream - The stream to which the report is written.
+     * @param output - The stream or the name of the file to which the report is written.
      */
-    reporter(name: string, outStream?: NodeJS.WritableStream): this;
+    reporter(name: string, output?: string | NodeJS.WritableStream): this;
 
     /**
      * Configures TestCafe's reporting feature.
      *
      * @param reporters An array of reporters
      */
-    reporter(reporters: Array<string | { name: string, file?: string | NodeJS.WritableStream }>): this;
+    reporter(reporters: Array<string | { name: string, output?: string | NodeJS.WritableStream }>): this;
 
     /**
      * Specifies that tests should run concurrently.
