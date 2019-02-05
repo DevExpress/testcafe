@@ -22,6 +22,31 @@ Starting with v1.0.0, input script files are **never** validated. This means tha
 
 The `--disable-test-syntax-validation` command line flag and the `disableTestSyntaxValidation` option for the [runner.run](../documentation/using-testcafe/programming-interface/runner.md#run) API method that disabled test syntax validation were removed in v1.0.0.
 
+### What Improved
+
+You can now load tests dynamically without additional customization. The following example illustrates how tests can be imported from an external library.
+
+**external-lib.js**
+
+```js
+export default function runTests () {
+    fixture `External tests`
+        .page `http:///example.com`;
+
+    test('My Test', async t => {
+        // ...
+    });
+}
+```
+
+**test.js**
+
+```js
+import runTests from './external-lib';
+
+runTests();
+```
+
 ## Custom Request Hooks: Asynchronous API
 
 [Request hook](../documentation/test-api/intercepting-http-requests/README.md) methods became asynchronous in TestCafe v1.0.0.
@@ -44,6 +69,10 @@ class MyRequestHook extends RequestHook {
     }
 }
 ```
+
+### What Improved
+
+You can call asynchronous [fs](https://nodejs.org/api/fs.html) functions, invoke a [child_process](https://nodejs.org/api/child_process.html), or perform asynchronous network requests (to a database or any other server) from inside the hooks.
 
 ## Custom Reporter Plugins: Asynchronous API
 
@@ -71,6 +100,10 @@ async reportTaskDone (endTime, passed, warnings, result) {
 }
 ```
 
+### What Improved
+
+Reporters can call asynchronous [fs](https://nodejs.org/api/fs.html) functions, invoke a [child_process](https://nodejs.org/api/child_process.html), or perform asynchronous network requests (to send an email, use REST API, connect to a database, etc).
+
 ## Programming Interface: Multiple Method Calls Prohibited
 
 Previous versions allowed you to call the [runner.src](../documentation/using-testcafe/programming-interface/runner.md#src), [runner.browsers](../documentation/using-testcafe/programming-interface/runner.md#browsers) and [runner.reporter](../documentation/using-testcafe/programming-interface/runner.md#reporter) methods several times to specify multiple test files, browsers or reporters.
@@ -97,3 +130,7 @@ runner
     .browsers(['chrome', 'firefox:headless'])
     .reporter(['minimal', { name: 'json', output: 'report.json' }]);
 ```
+
+### What Improved
+
+This change was necessary to implement the [configuration file](../documentation/using-testcafe/configuration-file.md) in a way that is consistent with the API and command line interface.
