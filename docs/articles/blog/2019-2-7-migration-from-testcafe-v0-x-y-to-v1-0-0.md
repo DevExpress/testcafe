@@ -22,7 +22,7 @@ Starting with v1.0.0, input script files are **never** validated. This means tha
 
 The `--disable-test-syntax-validation` command line flag and the `disableTestSyntaxValidation` option for the [runner.run](../documentation/using-testcafe/programming-interface/runner.md#run) API method that disabled test syntax validation were removed in v1.0.0.
 
-### What Improved
+### What Has Improved
 
 You can now load tests dynamically without additional customization. The following example illustrates how tests can be imported from an external library.
 
@@ -70,7 +70,7 @@ class MyRequestHook extends RequestHook {
 }
 ```
 
-### What Improved
+### What Has Improved
 
 You can call asynchronous [fs](https://nodejs.org/api/fs.html) functions, invoke a [child_process](https://nodejs.org/api/child_process.html), or perform asynchronous network requests (to a database or any other server) from inside the hooks.
 
@@ -100,7 +100,7 @@ async reportTaskDone (endTime, passed, warnings, result) {
 }
 ```
 
-### What Improved
+### What Has Improved
 
 Reporters can call asynchronous [fs](https://nodejs.org/api/fs.html) functions, invoke a [child_process](https://nodejs.org/api/child_process.html), or perform asynchronous network requests (to send an email, use REST API, connect to a database, etc).
 
@@ -131,6 +131,6 @@ runner
     .reporter(['minimal', { name: 'json', output: 'report.json' }]);
 ```
 
-### What Improved
+### What Has Improved
 
 This change was necessary to implement the [configuration file](../documentation/using-testcafe/configuration-file.md) in a way that is consistent with the API and command line interface.
