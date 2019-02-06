@@ -19,6 +19,9 @@ A configuration file can include the following settings:
 * [screenshotPath](#screenshotpath)
 * [takeScreenshotsOnFails](#takescreenshotsonfails)
 * [screenshotPathPattern](#screenshotpathpattern)
+* [videoPath](#videopath)
+* [videoOptions](#videooptions)
+* [videoEncodingOptions](#videoencodingoptions)
 * [quarantineMode](#quarantinemode)
 * [debugMode](#debugmode)
 * [debugOnFail](#debugonfail)
@@ -201,7 +204,7 @@ Enables screenshots and specifies the base directory where they are saved.
 }
 ```
 
-See [Path Patterns](command-line-interface.md#path-patterns) for more information on how TestCafe organizes screenshots into subdirectories.
+See [Screenshots](common-concepts/screenshots-and-videos.md#screenshots) for details.
 
 *CLI*: [-s, --screenshots](command-line-interface.md#-s-path---screenshots-path)  
 *API*: [runner.screenshots](programming-interface/runner.md#screenshots)
@@ -231,10 +234,68 @@ Specifies a custom pattern to compose screenshot files' relative path and name.
 }
 ```
 
-See the [--screenshot-path-pattern](command-line-interface.md#-p---screenshot-path-pattern) command line parameter for information about the available placeholders.
+See [Path Pattern Placeholders](common-concepts/screenshots-and-videos.md#path-pattern-placeholders) for information about the available placeholders.
 
-*CLI*: [-p, --screenshot-path-pattern](command-line-interface.md#-p---screenshot-path-pattern)  
+> Use the [screenshotPath](#screenshotpath) option to enable screenshots.
+
+*CLI*: [-p, --screenshot-path-pattern](command-line-interface.md#-p-pattern---screenshot-path-pattern-pattern)  
 *API*: [runner.screenshots](programming-interface/runner.md#screenshots)
+
+## videoPath
+
+Enables TestCafe to record videos of test runs and specifies the base directory to save these videos.
+
+```json
+{
+    "videoPath": "reports/screen-captures"
+}
+```
+
+See [Record Videos](common-concepts/screenshots-and-videos.md#record-videos) for details.
+
+*CLI*: [--video](command-line-interface.md#--video-basepath)  
+*API*: [runner.video](programming-interface/runner.md#video)
+
+## videoOptions
+
+Specifies options that define how TestCafe records videos of test runs.
+
+```json
+{
+    "videoOptions": {
+        "singleFile": true,
+        "failedOnly": true,
+        "pathPattern": "${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.mp4"
+    }
+}
+```
+
+See [Basic Video Options](common-concepts/screenshots-and-videos.md#basic-video-options) for the available options.
+
+> Use the [videoPath](#videopath) option to enable video recording.
+
+*CLI*: [--video-options](command-line-interface.md#--video-options-optionvalueoption2value2)  
+*API*: [runner.video](programming-interface/runner.md#video)
+
+## videoEncodingOptions
+
+Specifies video encoding options.
+
+```json
+{
+    "videoEncodingOptions": {
+        "r": 20,
+        "aspect": "4:3"
+    }
+}
+```
+
+You can pass all the options supported by the FFmpeg library. Refer to [the FFmpeg documentation](https://ffmpeg.org/ffmpeg.html#Options) for information about the available options.
+
+> Use the [videoPath](#videopath) option to enable video recording.
+
+*CLI*: [--video-encoding-options](command-line-interface.md#--video-encoding-options-optionvalueoption2value2)  
+*API*: [runner.video](programming-interface/runner.md#video)
 
 ## quarantineMode
 

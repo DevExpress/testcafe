@@ -26,7 +26,10 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [-r \<name\[:output\],\[...\]\>, --reporter \<name\[:output\],\[...\]\>](#-r-nameoutput---reporter-nameoutput)
   * [-s \<path\>, --screenshots \<path\>](#-s-path---screenshots-path)
   * [-S, --screenshots-on-fails](#-s---screenshots-on-fails)
-  * [-p, --screenshot-path-pattern](#-p---screenshot-path-pattern)
+  * [-p \<pattern\>, --screenshot-path-pattern \<pattern\>](#-p-pattern---screenshot-path-pattern-pattern)
+  * [--video \<basePath\>](#--video-basepath)
+  * [--video-options \<option=value\[,option2=value2,...\]\>](#--video-options-optionvalueoption2value2)
+  * [--video-encoding-options \<option=value\[,option2=value2,...\]\>](#--video-encoding-options-optionvalueoption2value2)
   * [-q, --quarantine-mode](#-q---quarantine-mode)
   * [-d, --debug-mode](#-d---debug-mode)
   * [--debug-on-fail](#--debug-on-fail)
@@ -295,29 +298,15 @@ Enables screenshots and specifies the base directory where they are saved.
 testcafe all tests/sample-fixture.js -s screenshots
 ```
 
+See [Screenshots](common-concepts/screenshots-and-videos.md#screenshots) for details.
+
 *Related configuration file property*: [screenshotPath](configuration-file.md#screenshotpath).
-
-#### Path Patterns
-
-The captured screenshots are organized into subdirectories within the base directory. The following path patterns are used to define a relative path and name for screenshots the [Take Screenshot](../test-api/actions/take-screenshot.md) actions take:
-
-* `${DATE}_${TIME}\test-${TEST_INDEX}\${USERAGENT}\${FILE_INDEX}.png` if the [quarantine mode](#-q---quarantine-mode) is disabled;
-* `${DATE}_${TIME}\test-${TEST_INDEX}\run-${QUARANTINE_ATTEMPT}\${USERAGENT}\${FILE_INDEX}.png` if the [quarantine mode](#-q---quarantine-mode) is enabled.
-
-If TestCafe takes screenshots when a test fails (see [--screenshots-on-fails](#-s---screenshots-on-fails) option), the following path patterns are used:
-
-* `${DATE}_${TIME}\test-${TEST_INDEX}\${USERAGENT}\errors\${FILE_INDEX}.png`;
-* `${DATE}_${TIME}\test-${TEST_INDEX}\run-${QUARANTINE_ATTEMPT}\${USERAGENT}\errors\${FILE_INDEX}.png` if the [quarantine mode](#-q---quarantine-mode) is enabled.
-
-You can also use the [--screenshot-path-pattern](#-p---screenshot-path-pattern) option to specify a custom pattern.
 
 ### -S, --screenshots-on-fails
 
-Takes a screenshot whenever a test fails. Screenshots are saved to the directory specified in the [--screenshots](#-s-path---screenshots-path) option.
+Takes a screenshot whenever a test fails. Screenshots are saved to the directory specified in the [-s (--screenshots)](#-s-path---screenshots-path) option.
 
-For example, the following command runs tests from the
-  `sample-fixture.js` file in all browsers, takes screenshots if tests fail,
-  and saves the screenshots to the `screenshots` directory:
+For example, the following command runs tests from the `sample-fixture.js` file in all browsers, takes screenshots if tests fail, and saves the screenshots to the `screenshots` directory:
 
 ```sh
 testcafe all tests/sample-fixture.js -S -s screenshots
@@ -325,38 +314,65 @@ testcafe all tests/sample-fixture.js -S -s screenshots
 
 *Related configuration file property*: [takeScreenshotsOnFails](configuration-file.md#takescreenshotsonfails).
 
-### -p, --screenshot-path-pattern
+### -p \<pattern\>, --screenshot-path-pattern \<pattern\>
 
-Specifies a custom pattern to compose screenshot files' relative path and name. This pattern overrides the default [path pattern](#path-patterns).
-
-You can use the following placeholders in the pattern:
-
-Placeholder | Description
------------ | ------------
-`${DATE}` | The test run's start date (YYYY-MM-DD).
-`${TIME}` | The test run's start time (HH-mm-ss).
-`${TEST_INDEX}` | The test's index.
-`${FILE_INDEX}` | The screenshot file's index.
-`${QUARANTINE_ATTEMPT}` | The [quarantine](programming-interface/runner.md#quarantine-mode) attempt's number. If the quarantine mode is disabled, the `${QUARANTINE_ATTEMPT}` placeholder's value is 1.
-`${FIXTURE}` | The fixture's name.
-`${TEST}` | The test's name.
-`${USERAGENT}` | The combination of `${BROWSER}`, `${BROWSER_VERSION}`, `${OS}`, and `${OS_VERSION}` (separated by underscores).
-`${BROWSER}` | The browser's name.
-`${BROWSER_VERSION}` | The browser's version.
-`${OS}` | The operation system's name.
-`${OS_VERSION}` | The operation system's version.
+Specifies a custom pattern to compose screenshot files' relative path and name.
 
 ```sh
 testcafe all tests/sample-fixture.js -s screenshots -p '${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png'
 ```
 
-In Windows `cmd.exe` shell, use double quotes because single quotes do not escape spaces.
+See [Path Pattern Placeholders](common-concepts/screenshots-and-videos.md#path-pattern-placeholders) for information about the available placeholders.
+
+In Windows `cmd.exe` shell, enclose the pattern in double quotes if it contains spaces:
 
 ```sh
 testcafe all tests/sample-fixture.js -s screenshots -p "${DATE} ${TIME}/test ${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png"
 ```
 
+> Use the [-s (--screenshots)](#-s-path---screenshots-path) flag to enable screenshots.
+
 *Related configuration file property*: [screenshotPathPattern](configuration-file.md#screenshotpathpattern).
+
+### --video \<basePath\>
+
+Enables TestCafe to record videos of test runs and specifies the base directory to save these videos.
+
+```sh
+testcafe chrome test.js --video reports/screen-captures
+```
+
+See [Record Videos](common-concepts/screenshots-and-videos.md#record-videos) for details.
+
+*Related configuration file property*: [videoPath](configuration-file.md#videopath).
+
+### --video-options \<option=value\[,option2=value2,...\]\>
+
+Specifies options that define how TestCafe records videos of test runs.
+
+```sh
+testcafe chrome test.js --video videos --video-options singleFile=true,failedOnly=true
+```
+
+See [Basic Video Options](common-concepts/screenshots-and-videos.md#basic-video-options) for details.
+
+> Use the [--video](#--video-basepath) flag to enable video recording.
+
+*Related configuration file property*: [videoOptions](configuration-file.md#videooptions).
+
+### --video-encoding-options \<option=value\[,option2=value2,...\]\>
+
+Specifies video encoding options.
+
+```sh
+testcafe chrome test.js --video videos --video-encoding-options r=20,aspect=4:3
+```
+
+See [Video Encoding Options](common-concepts/screenshots-and-videos.md#video-encoding-options) for details.
+
+> Use the [--video](#--video-basepath) flag to enable video recording.
+
+*Related configuration file property*: [videoEncodingOptions](configuration-file.md#videoencodingoptions).
 
 ### -q, --quarantine-mode
 

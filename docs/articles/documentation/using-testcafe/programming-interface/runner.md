@@ -42,6 +42,7 @@ createTestCafe('localhost', 1337, 1338)
     * [Specifying the Path with Command Line Parameters](#specifying-the-path-with-command-line-parameters)
     * [Passing a Remote Browser Connection](#passing-a-remote-browser-connection)
 * [screenshots](#screenshots)
+* [video](#video)
 * [reporter](#reporter)
     * [Specifying the Reporter](#specifying-the-reporter)
     * [Saving the Report to a File](#saving-the-report-to-a-file)
@@ -230,16 +231,13 @@ screenshots(path [, takeOnFails, pathPattern]) → this
 
 Parameter                  | Type    | Description                                                                   | Default
 -------------------------- | ------- | ----------------------------------------------------------------------------- | -------
-`path`                     | String  | The base path where the screenshots are saved. Note that to construct a complete path to these screenshots, TestCafe uses default [path patterns](../command-line-interface.md#path-patterns). You can override these patterns using the method's `screenshotPathPattern` parameter.
+`path`                     | String  | The base path where the screenshots are saved. Note that to construct a complete path to these screenshots, TestCafe uses the default [path patterns](../common-concepts/screenshots-and-videos.md#default-path-patterns). You can override these patterns using the method's `screenshotPathPattern` parameter.
 `takeOnFails`&#160;*(optional)* | Boolean | Specifies if screenshots should be taken automatically when a test fails. | `false`
-`sceenshotPathPattern`&#160;*(optional)* | String | The pattern to compose screenshot files' relative path and name. See [--screenshot-path-pattern](../command-line-interface.md#-p---screenshot-path-pattern) for information about the available placeholders.
-
-The `screenshots` function should be called to allow TestCafe to take screenshots
-when the [t.takeScreenshot](../../test-api/actions/take-screenshot.md) action is called from test code.
-
-Set the `takeOnFails` parameter to `true` to take a screenshot when a test fails.
+`sceenshotPathPattern`&#160;*(optional)* | String | The pattern to compose screenshot files' relative path and name. See [Path Pattern Placeholders](../common-concepts/screenshots-and-videos.md#path-pattern-placeholders) for information about the available placeholders.
 
 > Important! TestCafe does not take screenshots if the `screenshots` function is not called.
+
+See [Screenshots](../common-concepts/screenshots-and-videos.md#screenshots) for details.
 
 *Related configuration file properties*:
 
@@ -251,6 +249,41 @@ Set the `takeOnFails` parameter to `true` to take a screenshot when a test fails
 
 ```js
 runner.screenshots('reports/screenshots/', true, '${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png');
+```
+
+### video
+
+Enables TestCafe to record videos of test runs.
+
+```text
+video(path [, options, encodingOptions]) → this
+```
+
+Parameter                | Type                        | Description
+------------------------ | --------------------------- | -----------
+`path`                   | String                      | The base directory where videos are saved. Relative paths to video files are composed according to [path patterns](../common-concepts/screenshots-and-videos.md#default-path-patterns). You can also use the `options.pathPattern` property to specify a custom pattern.
+`options`&#160;*(optional)* | Object | Options that define how videos are recorded. See [Basic Video Options](../common-concepts/screenshots-and-videos.md#basic-video-options) for a list of options.
+`encodingOptions`&#160;*(optional)* | Object | Options that specify video encoding. You can pass all the options supported by the FFmpeg library. Refer to [the FFmpeg documentation](https://ffmpeg.org/ffmpeg.html#Options) for information about the available options.
+
+See [Record Videos](../common-concepts/screenshots-and-videos.md#record-videos) for details.
+
+*Related configuration file properties*:
+
+* [videoPath](../configuration-file.md#videopath)
+* [videoOptions](../configuration-file.md#videooptions)
+* [videoEncodingOptions](../configuration-file.md#videoencodingoptions)
+
+**Example**
+
+```js
+runner.video('reports/videos/', {
+    singleFile: true,
+    failedOnly: true,
+    pathPattern: '${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.mp4'
+}, {
+    r: 20,
+    aspect: '4:3'
+});
 ```
 
 ### reporter
@@ -273,7 +306,7 @@ To use multiple reporters, pass an array to this method. This array can include 
 
 Note that if you use multiple reporters, only one can write to `stdout`.
 
-*Overrides configuration file property*: [reporter](../configuration-file.md#reporter)
+*Related configuration file property*: [reporter](../configuration-file.md#reporter)
 
 #### Specifying the Reporter
 

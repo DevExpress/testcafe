@@ -42,6 +42,8 @@
       url: /documentation/using-testcafe/common-concepts/concurrent-test-execution.md
     - name: Live Mode
       url: /documentation/using-testcafe/common-concepts/live-mode.md
+    - name: Screenshots and Videos
+      url: /documentation/using-testcafe/common-concepts/screenshots-and-videos.md
     - name: Reporters
       url: /documentation/using-testcafe/common-concepts/reporters.md
     - name: Connect to the TestCafe Server over HTTPS
