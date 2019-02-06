@@ -452,6 +452,7 @@ gulp.task('lint-docs', () => {
         'docs/articles/**/*.md',
         '!docs/articles/faq/**/*.md',
         '!docs/articles/documentation/recipes/**/*.md',
+        '!docs/articles/blog/**/*.md',
         'examples/**/*.md'
     ]).then(files => {
         return lintFiles(files, require('./.md-lint/docs.json'));
@@ -463,6 +464,12 @@ gulp.task('lint-docs', () => {
         return lintFiles(files, require('./.md-lint/faq.json'));
     });
 
+    const lintBlog = globby([
+        'docs/articles/blog/**/*.md'
+    ]).then(files => {
+        return lintFiles(files, require('./.md-lint/blog.json'));
+    });
+
     const lintRecipes = globby([
         'docs/articles/documentation/recipes/**/*.md'
     ]).then(files => {
@@ -472,7 +479,7 @@ gulp.task('lint-docs', () => {
     const lintReadme    = lintFiles('README.md', require('./.md-lint/readme.json'));
     const lintChangelog = lintFiles('CHANGELOG.md', require('./.md-lint/changelog.json'));
 
-    return Promise.all([lintDocsAndExamples, lintReadme, lintChangelog, lintRecipes, lintFaq]);
+    return Promise.all([lintDocsAndExamples, lintReadme, lintChangelog, lintRecipes, lintFaq, lintBlog]);
 });
 
 gulp.task('clean-website', () => {
