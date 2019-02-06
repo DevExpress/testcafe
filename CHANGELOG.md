@@ -166,7 +166,7 @@ TestCafe records all tests and saves each recording in a separate file. You can 
 
 #### :gear: Configuration File ([#3131](https://github.com/DevExpress/testcafe/issues/3131))
 
-TestCafe now allows you to store its settings in the `.testcaferc.json` [configuration file](https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html) (with support for `JSON5` syntax).
+TestCafe now allows you to store its settings in the `.testcaferc.json` [configuration file](https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html) (with support for [JSON5 syntax](https://json5.org/)).
 
 ```json
 {
