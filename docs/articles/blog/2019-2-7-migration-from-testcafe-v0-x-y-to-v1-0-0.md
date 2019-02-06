@@ -29,11 +29,11 @@ You can now load tests dynamically without additional customization. The followi
 **external-lib.js**
 
 ```js
-export default function runTests () {
-    fixture `External tests`
-        .page `http:///example.com`;
+export default function runFixture(name, url) {
+    fixture(name)
+        .page(url);
 
-    test('My Test', async t => {
+    test(`${url} test`, async t => {
         // ...
     });
 }
@@ -42,9 +42,12 @@ export default function runTests () {
 **test.js**
 
 ```js
-import runTests from './external-lib';
+import runFixture from './external-lib';
 
-runTests();
+const fixtureName = 'My fixture';
+const url = 'https://testPage';
+
+runFixture(fixtureName, url);
 ```
 
 ## Custom Request Hooks: Asynchronous API
