@@ -12,6 +12,65 @@ Starting with v1.0.0, input script files are **never** validated. This means tha
 
 The `--disable-test-syntax-validation` command line flag and the `disableTestSyntaxValidation` option for the [runner.run](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#run) API method that disabled test syntax validation were removed in v1.0.0.
 
+##### What Has Improved
+
+You can now load tests dynamically without additional customization. The following example illustrates how tests can be imported from an external library.
+
+**external-lib.js**
+
+```js
+export default function runFixture(name, url) {
+    fixture(name)
+        .page(url);
+
+    test(`${url} test`, async t => {
+        // ...
+    });
+}
+```
+
+**test.js**
+
+```js
+import runFixture from './external-lib';
+
+const fixtureName = 'My fixture';
+const url = 'https://testPage';
+
+runFixture(fixtureName, url);
+```
+
+#### :boom: Programming Interface: Multiple Method Calls Prohibited
+
+Previous versions allowed you to call the [runner.src](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#src), [runner.browsers](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#browsers) and [runner.reporter](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#reporter) methods several times to specify multiple test files, browsers or reporters.
+
+```js
+const stream = fs.createWriteStream('report.json');
+
+runner
+    .src('/home/user/tests/fixture1.js')
+    .src('fixture5.js')
+    .browsers('chrome')
+    .browsers('firefox:headless')
+    .reporter('minimal')
+    .reporter('json', stream);
+```
+
+Starting with v1.0.0, pass arrays to these methods to specify multiple values.
+
+To use a reporter that writes to a file, add a `{ name, output }` object to an array (see the [runner.reporter](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#reporter) description for details).
+
+```js
+runner
+    .src(['/home/user/tests/fixture1.js', 'fixture5.js'])
+    .browsers(['chrome', 'firefox:headless'])
+    .reporter(['minimal', { name: 'json', output: 'report.json' }]);
+```
+
+##### What Has Improved
+
+This change was necessary to implement the [configuration file](../documentation/using-testcafe/configuration-file.md) in a way that is consistent with the API and command line interface.
+
 #### :boom: Custom Request Hooks: Asynchronous API
 
 [Request hook](https://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/) methods became asynchronous in TestCafe v1.0.0.
@@ -37,6 +96,10 @@ class MyRequestHook extends RequestHook {
     }
 }
 ```
+
+##### What Has Improved
+
+You can call asynchronous [fs](https://nodejs.org/api/fs.html) functions, invoke a [child_process](https://nodejs.org/api/child_process.html), or perform asynchronous network requests (to a database or any other server) from inside the hooks.
 
 #### :boom: Custom Reporter Plugins: Asynchronous API
 
@@ -67,32 +130,9 @@ async reportTaskDone (endTime, passed, warnings, result) {
 }
 ```
 
-#### :boom: Programming Interface: Multiple Method Calls Prohibited
+##### What Has Improved
 
-Previous versions allowed you to call the [runner.src](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#src), [runner.browsers](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#browsers) and [runner.reporter](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#reporter) methods several times to specify multiple test files, browsers or reporters.
-
-```js
-const stream = fs.createWriteStream('report.json');
-
-runner
-    .src('/home/user/tests/fixture1.js')
-    .src('fixture5.js')
-    .browsers('chrome')
-    .browsers('firefox:headless')
-    .reporter('minimal')
-    .reporter('json', stream);
-```
-
-Starting with v1.0.0, pass arrays to these methods to specify multiple values.
-
-To use a reporter that writes to a file, add a `{ name, output }` object to an array (see the [runner.reporter](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#reporter) description for details).
-
-```js
-runner
-    .src(['/home/user/tests/fixture1.js', 'fixture5.js'])
-    .browsers(['chrome', 'firefox:headless'])
-    .reporter(['minimal', { name: 'json', output: 'report.json' }]);
-```
+Reporters can call asynchronous [fs](https://nodejs.org/api/fs.html) functions, invoke a [child_process](https://nodejs.org/api/child_process.html), or perform asynchronous network requests (to send an email, use REST API, connect to a database, etc).
 
 ### Enhancements
 
