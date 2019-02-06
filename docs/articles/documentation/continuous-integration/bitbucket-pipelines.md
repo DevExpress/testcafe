@@ -30,7 +30,6 @@ Install TestCafe [locally](../using-testcafe/installing-testcafe.md#locally) in 
 However, if you already have a Docker image prepared to deploy your web application and run tests, you can [install TestCafe on this image before testing](#option-2---install-testcafe-on-a-docker-image).
 3. Configure the template to execute on Pull Request update
 
-
 For more templates or more information about the Pipelines see the [Atlassian Bitbucket Support page](https://confluence.atlassian.com/bitbucket/get-started-with-bitbucket-pipelines-792298921.html)
 
 ### Option 1 - Use TestCafe Docker Image
