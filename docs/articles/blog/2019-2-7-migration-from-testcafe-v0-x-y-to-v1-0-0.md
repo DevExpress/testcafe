@@ -89,7 +89,7 @@ If the [onRequest](../documentation/test-api/intercepting-http-requests/creating
 
 This does not necessarily leads to unexpected behavior, but still be aware of possible side effects.
 
-To avoid issues in the future, please also add `async` to the [onRequest](../documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.md#the-onrequest-method) and [onResponse](../documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.md#the-onresponse-method) methods.
+Since the [onRequest](../documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.md#the-onrequest-method) and [onResponse](../documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.md#the-onresponse-method) methods are now asynchronous, add the `async` keyword to their declarations.
 
 ```js
 import { RequestHook } from 'testcafe';
@@ -122,7 +122,7 @@ Similarly to [request hooks](#custom-request-hooks-asynchronous-api), if any of 
 
 Side effects may show up in certain cases.
 
-To avoid issues in the future, please also add `async` to the reporter methods.
+Since the reporter methods are now asynchronous, add the `async` keyword to their declarations.
 
 ```js
 async reportTaskStart (startTime, userAgents, testCount) {
