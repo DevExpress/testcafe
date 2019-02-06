@@ -42,7 +42,7 @@ createTestCafe('localhost', 1337, 1338)
 
 ## How Live Mode Works
 
-When you run tests with live mode enabled, TestCafe opens the browsers, run tests there, shows the reports and waits for your further actions.
+When you run tests with live mode enabled, TestCafe opens the browsers, runs tests there, shows the reports and waits for your further actions.
 
 Then TestCafe starts watching for changes in the test files and all files referenced in them (like page objects or helper modules). Once you make changes in any of those files and save them, TestCafe immediately reruns the tests.
 
