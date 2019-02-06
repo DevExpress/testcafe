@@ -50,6 +50,7 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [--proxy \<host\>](#--proxy-host)
   * [--proxy-bypass \<rules\>](#--proxy-bypass-rules)
   * [--ssl \<options\>](#--ssl-options)
+  * [-L, --live](#-l---live)
   * [--dev](#--dev)
   * [--qr-code](#--qr-code)
   * [--sf, --stop-on-first-fail](#--sf---stop-on-first-fail)
@@ -693,6 +694,12 @@ secure origin ([Service Workers](https://developer.mozilla.org/en-US/docs/Web/AP
 See [Connect to the TestCafe Server over HTTPS](common-concepts/connect-to-the-testcafe-server-over-https.md) for more information.
 
 *Related configuration file property*: [ssl](configuration-file.md#ssl).
+
+### -L, --live
+
+Enables live mode. In this mode, TestCafe watches for changes you make in the test files and all files referenced in them (like page objects or helper modules). These changes immediately restart the tests so that you can see the effect.
+
+See [Live Mode](common-concepts/live-mode.md) for more information.
 
 ### --dev
 
