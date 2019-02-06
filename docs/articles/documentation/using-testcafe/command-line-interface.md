@@ -23,7 +23,7 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [-h, --help](#-h---help)
   * [-v, --version](#-v---version)
   * [-b, --list-browsers](#-b---list-browsers)
-  * [-r \<name\[:file\],\[...\]\>, --reporter \<name\[:file\],\[...\]\>](#-r-namefile---reporter-namefile)
+  * [-r \<name\[:output\],\[...\]\>, --reporter \<name\[:output\],\[...\]\>](#-r-nameoutput---reporter-nameoutput)
   * [-s \<path\>, --screenshots \<path\>](#-s-path---screenshots-path)
   * [-S, --screenshots-on-fails](#-s---screenshots-on-fails)
   * [-p, --screenshot-path-pattern](#-p---screenshot-path-pattern)
@@ -251,7 +251,7 @@ Lists the aliases of the [auto-detected browsers](common-concepts/browsers/brows
 testcafe --list-browsers
 ```
 
-### -r \<name\[:file\],\[...\]\>, --reporter \<name\[:file\],\[...\]\>
+### -r \<name\[:output\],\[...\]\>, --reporter \<name\[:output\],\[...\]\>
 
 Specifies the name of a [built-in](common-concepts/reporters.md) or [custom reporter](../extending-testcafe/reporter-plugin/README.md) that is used to generate test reports.
 

@@ -622,7 +622,7 @@ TestCafe provides full-featured WebSocket support (`wss` and `ws` protocols, req
 
 ### --reporter flag name fixed ([#1881](https://github.com/DevExpress/testcafe/issues/1881))
 
-In v0.18.0, we accidentally changed the [--reporter](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-r-namefile---reporter-namefile) CLI flag to `--reporters`. In this recovery release, we roll back to the previous flag name.
+In v0.18.0, we accidentally changed the [--reporter](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-r-nameoutput---reporter-nameoutput) CLI flag to `--reporters`. In this recovery release, we roll back to the previous flag name.
 
 ### Compatibility with RequireJS restored ([#1874](https://github.com/DevExpress/testcafe/issues/1874))
 

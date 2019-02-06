@@ -3,7 +3,7 @@
     "src": ["/home/user/auth-tests/fixture-1.js", "/home/user/mobile-tests/"],
     "reporter": {
         "name": "xunit",
-        "file": "reports/report.xml"
+        "output": "reports/report.xml"
     },
     "screenshotPath": "/home/user/tests/screenshots/",
     "screenshotPathPattern": "${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png",
