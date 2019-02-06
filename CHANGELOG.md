@@ -20,14 +20,18 @@ If you use a [custom request hook](https://devexpress.github.io/testcafe/documen
 
 ```js
 import { RequestHook } from 'testcafe';
+
 class MyRequestHook extends RequestHook {
+
     constructor (requestFilterRules, responseEventConfigureOpts) {
         super(requestFilterRules, responseEventConfigureOpts);
         // ...
     }
+
     async onRequest (event) {
         // ...
     }
+
     async onResponse (event) {
         // ...
     }
@@ -49,12 +53,15 @@ If you maintain a custom reporter plugin, add the `async` keyword before each re
 async reportTaskStart (startTime, userAgents, testCount) {
     // ...
 },
+
 async reportFixtureStart (name, path, meta) {
     // ...
 },
+
 async reportTestDone (name, testRunInfo, meta) {
     // ...
 },
+
 async reportTaskDone (endTime, passed, warnings, result) {
     // ...
 }
@@ -89,7 +96,7 @@ runner
 
 ### Enhancements
 
-#### :gear: Video Recording [#2151](https://github.com/DevExpress/testcafe/issues/2151)
+#### :gear: Video Recording ([#2151](https://github.com/DevExpress/testcafe/issues/2151))
 
 You can now [record videos of test runs](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/screenshots-and-videos.html#record-videos). To enable video recording, [install the FFmpeg library](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/screenshots-and-videos.html#prerequisites) and then do one of the following:
 
@@ -115,7 +122,7 @@ You can now [record videos of test runs](https://devexpress.github.io/testcafe/d
 
 TestCafe records all tests and saves each recording in a separate file. You can change this behavior in [video options](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/screenshots-and-videos.html#basic-video-options). You can also customize [video encoding parameters](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/screenshots-and-videos.html#video-encoding-options).
 
-#### :gear: Configuration File [#3131](https://github.com/DevExpress/testcafe/issues/3131)
+#### :gear: Configuration File ([#3131](https://github.com/DevExpress/testcafe/issues/3131))
 
 TestCafe now allows you to store its settings in the `.testcaferc.json` [configuration file](https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html) (with support for `JSON5` syntax).
 
@@ -142,7 +149,7 @@ Settings you specify when you launch tests from the command line and programming
 
 See [Configuration File](https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html) for more information.
 
-#### :gear: Live Mode [#3215](https://github.com/DevExpress/testcafe/issues/3215)
+#### :gear: Live Mode ([#3215](https://github.com/DevExpress/testcafe/issues/3215))
 
 We have integrated the [testcafe-live](https://github.com/DevExpress/testcafe-live) module into our main code so you can now use the new [live mode](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/live-mode.html).
 
@@ -173,6 +180,48 @@ createTestCafe('localhost', 1337, 1338)
         testcafe.close();
     });
 ```
+
+#### :gear: Custom Reporter API Enhancements (Part of [#2753](https://github.com/DevExpress/testcafe/issues/2753); [Pull Request](https://github.com/DevExpress/testcafe/pull/3177))
+
+* You can now access warnings that appeared during the test run from the [reportTestDone](https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reporttestdone) method. Use the `warnings` property of the [testRunInfo](https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#testruninfo-object) object.
+
+    ```js
+    async reportTestDone (name, testRunInfo, meta) {
+        const warnings    = testRunInfo.warnings;
+        const hasWarnings = !!warnings.length;
+
+        if(hasWarnings) {
+            this.newline()
+                .write('Warnings:');
+
+            warnings.forEach(warning => {
+                this.newline()
+                    .write(warning);
+            });
+        }
+    }
+    ```
+
+* The [reportTaskDone](https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reporttaskdone) method now receives the [result](https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#result-object) parameter that contains information about the number of passed, failed, and skipped tests.
+
+    ```js
+    async reportTaskDone (endTime, passed, warnings, result) {
+        this.write(`Testing finished!`)
+            .newline()
+            .write(`Passed: ${result.passedCount}`)
+            .newline()
+            .write(`Failed: ${result.failedCount}`)
+            .newline();
+            .write(`Skipped: ${result.skippedCount}`)
+            .newline();
+    }
+    ```
+
+#### :gear: Typings for Programming Interface ([#3341](https://github.com/DevExpress/testcafe/issues/3341)) by [@infctr](https://github.com/infctr)
+
+TestCafe [programming interface](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/) now features TypeScript typings.
+
+![API Typings](docs/articles/images/api-typings.png)
 
 #### :gear: Programming Interface: Simpler API to Write Reports to a File
 
