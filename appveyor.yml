@@ -31,7 +31,6 @@ for:
 
   environment:
     matrix:
-    - GULP_TASK: "test-functional-local-chrome-firefox"
     - GULP_TASK: "test-functional-local-legacy"
 
 install:
