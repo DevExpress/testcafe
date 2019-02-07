@@ -1,25 +1,28 @@
 import EventEmitter from 'events';
 import Promise from 'pinkie';
+import noop from 'lodash';
 import { TestRunCtorFactory } from './test-run';
-import { TEST_STATE, TEST_RUN_STATE } from './test-run-state';
+import TEST_RUN_STATE from './test-run-state';
 
 class LiveModeTestRunController extends EventEmitter {
     constructor () {
         super();
 
-        this.RUN_FINISHED_EVENT = 'run-finished-event';
-        this.RUN_STOPPED_EVENT  = 'run-stopped-event';
-
         this.testWrappers      = [];
         this.expectedTestCount = 0;
         this._testRunCtor      = null;
+
+        this.testRuns                = {};
+        this.allTestsCompletePromise = Promise.resolve();
+        this.completeAllRunningTests = noop;
+
+        this.on('all-tests-complete', () => this.completeAllRunningTests());
     }
 
     get TestRunCtor () {
         if (!this._testRunCtor) {
             this._testRunCtor = TestRunCtorFactory({
                 created:     testRun => this._onTestRunCreated(testRun),
-                started:     testRun => this._onTestRunStarted(testRun),
                 done:        (testRun, forced) => this._onTestRunDone(testRun, forced),
                 readyToNext: testRun => this._onTestRunReadyToNext(testRun)
             });
@@ -32,28 +35,30 @@ class LiveModeTestRunController extends EventEmitter {
         this.expectedTestCount = testCount;
     }
 
+    _getTestRuns () {
+        return [].concat(...Object.values(this.testRuns));
+    }
+
     run () {
         const readyToNextPromises = [];
 
-        this.testWrappers.forEach(testWrapper => {
-            testWrapper.testRuns.forEach(testRun => {
-                if (testRun.finish) {
-                    readyToNextPromises.push(testRun.readyToNextPromise);
-                    testRun.finish();
-                }
-            });
+        const testRuns = [].concat(...Object.values(this.testRuns));
+
+        testRuns.forEach(testRun => {
+            if (testRun.finish) {
+                readyToNextPromises.push(testRun.readyToNextPromise);
+                testRun.finish();
+            }
         });
 
-        this.testWrappers = [];
+        this.testRuns = {};
 
         return Promise.all(readyToNextPromises);
     }
 
     stop () {
-        const runningTestWrappers = this.testWrappers.filter(w => w.state === TEST_STATE.running);
-
-        runningTestWrappers.forEach(testWrapper => {
-            testWrapper.testRuns.forEach(testRun => testRun.stop());
+        this._getTestRuns().forEach(testRun => {
+            testRun.stop();
         });
     }
 
@@ -62,57 +67,35 @@ class LiveModeTestRunController extends EventEmitter {
     }
 
     _onTestRunCreated (testRun) {
-        let testWrapper = this._getTestWrapper(testRun.test);
 
-        if (!testWrapper) {
-            testWrapper = {
-                test:     testRun.test,
-                state:    TEST_STATE.created,
-                testRuns: []
-            };
+        this.allTestsCompletePromise = new Promise(resolve => {
+            this.completeAllRunningTests = resolve;
+        });
 
-            this.testWrappers.push(testWrapper);
-        }
+        const connectionId = testRun.browserConnection.id;
 
-        testWrapper.testRuns.push(testRun);
+        this.testRuns[connectionId] = this.testRuns[connectionId] || [];
 
-        testRun.testWrapper = testWrapper;
+        this.testRuns[connectionId].push(testRun);
     }
 
-    _onTestRunStarted (testRun) {
-        testRun.state             = TEST_RUN_STATE.running;
-        testRun.testWrapper.state = TEST_STATE.running;
-    }
+    _onTestRunDone (testRun) {
+        testRun.state = TEST_RUN_STATE.done;
 
-    _onTestRunDone (testRun, forced) {
-        const testWrapper = testRun.testWrapper;
+        const hasRunningTests = this._getTestRuns().some(t => t.state !== TEST_RUN_STATE.done);
 
-        testRun.state = TEST_RUN_STATE.waitingForDone;
+        if (!hasRunningTests)
+            this.emit('all-tests-complete');
 
-        const waitingTestRunCount = testWrapper.testRuns.filter(w => w.state === TEST_RUN_STATE.created).length;
-        const runningTestRunCount = testWrapper.testRuns.filter(w => w.state === TEST_RUN_STATE.running).length;
-
-        const waitForOtherTestRuns = runningTestRunCount || waitingTestRunCount && !forced;
-
-        if (!waitForOtherTestRuns) {
-            testWrapper.state = TEST_STATE.done;
-
-            //check other active tests
-            setTimeout(() => {
-                const hasTestsToRun = this.testWrappers.length < this.expectedTestCount ||
-                                      this.testWrappers.some(w => w.state === TEST_STATE.created) ||
-                                      testRun.quarantine && !testRun.quarantine.isThresholdReached();
-
-                if (!forced && hasTestsToRun)
-                    testWrapper.testRuns.forEach(w => w.finish());
-                else
-                    this.emit(forced ? this.RUN_STOPPED_EVENT : this.RUN_FINISHED_EVENT);
-            }, 0);
-        }
+        const browserTestRuns = this.testRuns[testRun.browserConnection.id];
 
         testRun.readyToNextPromise = new Promise(resolve => {
             testRun.setReadyToNext = resolve;
         });
+
+
+        if (browserTestRuns.length < this.expectedTestCount || browserTestRuns.some(t => t.state !== TEST_RUN_STATE.done))
+            return Promise.resolve();
 
         return new Promise(resolve => {
             testRun.finish = () => {
