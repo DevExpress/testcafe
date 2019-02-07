@@ -1,5 +1,289 @@
 # Changelog
 
+## v1.0.0 (2018-2-7)
+
+### Breaking Changes
+
+#### :boom: Test Syntax Validation Disabled: All Input Files Are Executed
+
+Previous versions performed *test syntax validation* within input script files before executing them. Only files that contained the [fixture](https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#fixtures) and [test](https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#tests) directives were executed.
+
+Starting with v1.0.0, input script files are **never** validated. This means that TestCafe executes all the scripts you specify as test sources. If you use Glob patterns to specify input test files, please recheck these patterns to avoid unintended file matches.
+
+The `--disable-test-syntax-validation` command line flag and the `disableTestSyntaxValidation` option for the [runner.run](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#run) API method that disabled test syntax validation were removed in v1.0.0.
+
+##### What Has Improved
+
+You can now load tests dynamically without additional customization. The following example illustrates how tests can be imported from an external library.
+
+**external-lib.js**
+
+```js
+export default function runFixture(name, url) {
+    fixture(name)
+        .page(url);
+
+    test(`${url} test`, async t => {
+        // ...
+    });
+}
+```
+
+**test.js**
+
+```js
+import runFixture from './external-lib';
+
+const fixtureName = 'My fixture';
+const url = 'https://testPage';
+
+runFixture(fixtureName, url);
+```
+
+#### :boom: Programming Interface: Multiple Method Calls Prohibited
+
+Previous versions allowed you to call the [runner.src](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#src), [runner.browsers](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#browsers) and [runner.reporter](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#reporter) methods several times to specify multiple test files, browsers or reporters.
+
+```js
+const stream = fs.createWriteStream('report.json');
+
+runner
+    .src('/home/user/tests/fixture1.js')
+    .src('fixture5.js')
+    .browsers('chrome')
+    .browsers('firefox:headless')
+    .reporter('minimal')
+    .reporter('json', stream);
+```
+
+Starting with v1.0.0, pass arrays to these methods to specify multiple values.
+
+To use a reporter that writes to a file, add a `{ name, output }` object to an array (see the [runner.reporter](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#reporter) description for details).
+
+```js
+runner
+    .src(['/home/user/tests/fixture1.js', 'fixture5.js'])
+    .browsers(['chrome', 'firefox:headless'])
+    .reporter(['minimal', { name: 'json', output: 'report.json' }]);
+```
+
+##### What Has Improved
+
+This change was necessary to implement the [configuration file](../documentation/using-testcafe/configuration-file.md) in a way that is consistent with the API and command line interface.
+
+#### :boom: Custom Request Hooks: Asynchronous API
+
+[Request hook](https://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/) methods became asynchronous in TestCafe v1.0.0.
+
+If the [onRequest](https://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html#the-onrequest-method) or [onResponse](https://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html#the-onresponse-method) method in your custom hook returns a Promise, TestCafe now waits for this Promise to resolve.
+
+This does not necessarily leads to unexpected behavior, but still be aware of possible side effects.
+
+Since the [onRequest](https://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html#the-onrequest-method) and [onResponse](https://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html#the-onresponse-method) methods are now asynchronous, add the `async` keyword to their declarations.
+
+```js
+import { RequestHook } from 'testcafe';
+
+class MyRequestHook extends RequestHook {
+    constructor (requestFilterRules, responseEventConfigureOpts) {
+        super(requestFilterRules, responseEventConfigureOpts);
+        // ...
+    }
+
+    async onRequest (event) {
+        // ...
+    }
+
+    async onResponse (event) {
+        // ...
+    }
+}
+```
+
+##### What Has Improved
+
+You can call asynchronous [fs](https://nodejs.org/api/fs.html) functions, invoke a [child_process](https://nodejs.org/api/child_process.html), or perform asynchronous network requests (to a database or any other server) from inside the hooks.
+
+#### :boom: Custom Reporter Plugins: Asynchronous API
+
+TestCafe v1.0.0 also introduces asynchronous API for [reporter plugins](https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/).
+
+Similarly to [request hooks](#-boom-custom-request-hooks-asynchronous-api), if any of the custom reporter's methods ([reportTaskStart](https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reporttaskstart), [reportFixtureStart](https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reportfixturestart), [reportTestDone](https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reporttestdone) or [reportTaskDone](https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reporttaskdone)) returns a Promise, this Promise is now awaited.
+
+Side effects may show up in certain cases.
+
+Since the reporter methods are now asynchronous, add the `async` keyword to their declarations.
+
+```js
+async reportTaskStart (startTime, userAgents, testCount) {
+    // ...
+},
+
+async reportFixtureStart (name, path, meta) {
+    // ...
+},
+
+async reportTestDone (name, testRunInfo, meta) {
+    // ...
+},
+
+async reportTaskDone (endTime, passed, warnings, result) {
+    // ...
+}
+```
+
+##### What Has Improved
+
+Reporters can call asynchronous [fs](https://nodejs.org/api/fs.html) functions, invoke a [child_process](https://nodejs.org/api/child_process.html), or perform asynchronous network requests (to send an email, use REST API, connect to a database, etc).
+
+### Enhancements
+
+#### :gear: Video Recording ([#2151](https://github.com/DevExpress/testcafe/issues/2151))
+
+You can now [record videos of test runs](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/screenshots-and-videos.html#record-videos) in Google Chrome and Mozilla Firefox. To enable video recording, [install the FFmpeg library](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/screenshots-and-videos.html#prerequisites) and then do one of the following:
+
+* specify the [--video](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--video-basepath) command line flag,
+
+    ```sh
+    testcafe chrome test.js --video artifacts/videos/
+    ```
+
+* call the [runner.video](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#video) API method,
+
+    ```js
+    runner.video('artifacts/videos/');
+    ```
+
+* specify the [videoPath](https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#videopath) configuration file property (configuration file is also a new feature, see below).
+
+    ```json
+    {
+        "videoPath": "artifacts/videos/"
+    }
+    ```
+
+TestCafe records all tests and saves each recording in a separate file. You can change this behavior in [video options](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/screenshots-and-videos.html#basic-video-options). You can also customize [video encoding parameters](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/screenshots-and-videos.html#video-encoding-options).
+
+#### :gear: Configuration File ([#3131](https://github.com/DevExpress/testcafe/issues/3131))
+
+TestCafe now allows you to store its settings in the `.testcaferc.json` [configuration file](https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html) (with support for [JSON5 syntax](https://json5.org/)).
+
+```json
+{
+    "browsers": "chrome",
+    "src": ["/home/user/auth-tests/fixture-1.js", "/home/user/mobile-tests/"],
+    "reporter": {
+        "name": "xunit",
+        "output": "reports/report.xml"
+    },
+    "screenshotPath": "/home/user/tests/screenshots/",
+    "takeScreenshotsOnFails": true,
+    "videoPath": "/home/user/tests/videos/",
+    "pageLoadTimeout": 1000,
+    "hostname": "host.mycorp.com"
+    // and more
+}
+```
+
+Keep the configuration file in the project's root directory from which you run TestCafe.
+
+Settings you specify when you launch tests from the command line and programming interfaces override settings from `.testcaferc.json`.
+
+See [Configuration File](https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html) for more information.
+
+#### :gear: Live Mode ([#3215](https://github.com/DevExpress/testcafe/issues/3215))
+
+We have integrated the [testcafe-live](https://github.com/DevExpress/testcafe-live) module into our main code so you can now use the new [live mode](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/live-mode.html).
+
+Live mode keeps the TestCafe process and browsers opened the whole time you are working on tests. Changes you make in code immediately restart the tests. That is, live mode allows you to see test results instantly. See [How Live Mode Works](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/live-mode.html#how-live-mode-works).
+
+Use the [-L (--live)](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-l---live) flag to enable live mode from the command line interface.
+
+```sh
+testcafe chrome tests/test.js -L
+```
+
+In the API, create a [live mode runner](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/livemoderunner.html) with the [testcafe.createLiveModeRunner](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/testcafe.html#createlivemoderunner) function and use it instead of a [regular test runner](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html).
+
+```js
+const createTestCafe = require('testcafe');
+let testcafe         = null;
+
+createTestCafe('localhost', 1337, 1338)
+    .then(tc => {
+        testcafe         = tc;
+        const liveRunner = testcafe.createLiveModeRunner();
+        return liveRunner
+            .src('tests/test.js')
+            .browsers('chrome')
+            .run();
+    })
+    .then(() => {
+        testcafe.close();
+    });
+```
+
+#### :gear: Custom Reporter API Enhancements (Part of [#2753](https://github.com/DevExpress/testcafe/issues/2753); [Pull Request](https://github.com/DevExpress/testcafe/pull/3177))
+
+* You can now access warnings that appeared during the test run from the [reportTestDone](https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reporttestdone) method. Use the `warnings` property of the [testRunInfo](https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#testruninfo-object) object.
+
+    ```js
+    async reportTestDone (name, testRunInfo, meta) {
+        const warnings    = testRunInfo.warnings;
+        const hasWarnings = !!warnings.length;
+
+        if(hasWarnings) {
+            this.newline()
+                .write('Warnings:');
+
+            warnings.forEach(warning => {
+                this.newline()
+                    .write(warning);
+            });
+        }
+    }
+    ```
+
+* The [reportTaskDone](https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reporttaskdone) method now receives the [result](https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#result-object) parameter that contains information about the number of passed, failed, and skipped tests.
+
+    ```js
+    async reportTaskDone (endTime, passed, warnings, result) {
+        this.write(`Testing finished!`)
+            .newline()
+            .write(`Passed: ${result.passedCount}`)
+            .newline()
+            .write(`Failed: ${result.failedCount}`)
+            .newline();
+            .write(`Skipped: ${result.skippedCount}`)
+            .newline();
+    }
+    ```
+
+#### :gear: Typings for Programming Interface ([#3341](https://github.com/DevExpress/testcafe/issues/3341)) by [@infctr](https://github.com/infctr)
+
+TestCafe [programming interface](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/) now features TypeScript typings.
+
+![API Typings](docs/articles/images/api-typings.png)
+
+#### :gear: Programming Interface: Simpler API to Write Reports to a File
+
+You no longer need to use `fs.createWriteStream` to create a stream that writes a report to a file. You can now pass the file name as the [runner.reporter](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#reporter) parameter.
+
+```js
+runnner.reporter('json', 'reports/report.json');
+```
+
+### Bug Fixes
+
+* The test runner no longer hangs when a custom reporter implementation uses synchronous callbacks ([#3209](https://github.com/DevExpress/testcafe/issues/3209))
+* Fixture hooks for two adjacent fixtures are now executed in the correct order ([#3298](https://github.com/DevExpress/testcafe/issues/3298))
+* Iframes no longer throw an error after a `document.open` call in IE and Edge ([#3343](https://github.com/DevExpress/testcafe/issues/3343))
+* TestCafe no longer triggers a click event when you disable a button with a `span` element inside ([#2902](https://github.com/DevExpress/testcafe/issues/2902))
+* Fixed a bug that led to errors in certain cases ([#3189](https://github.com/DevExpress/testcafe/issues/3189))
+* We have improved the status panel design and adaptivity ([#3073](https://github.com/DevExpress/testcafe/issues/3073))
+* Redirects through several pages in iframes now work correctly ([testcafe-hammerhead/#1825](https://github.com/DevExpress/testcafe-hammerhead/issues/1825))
+* TestCafe can now correctly work with pages that override `HTMLElement.classList` in IE11 ([testcafe-hammerhead/#1890](https://github.com/DevExpress/testcafe-hammerhead/issues/1890))
+
 ## v0.23.3 (2018-12-19)
 
 ### Bug Fixes
