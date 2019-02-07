@@ -267,7 +267,7 @@ code {
           text-decoration: none; }
     .features-section .features-content .testcafe-live-promo {
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
       margin-top: 30px; }
       .features-section .features-content .testcafe-live-promo .promo-block {
@@ -296,13 +296,14 @@ code {
             margin-bottom: 15px; }
       .features-section .features-content .testcafe-live-promo .buttons {
         display: flex;
-        justify-content: space-between; }
+        justify-content: space-between;
+        margin-left: 60px; }
         .features-section .features-content .testcafe-live-promo .buttons .video-button {
           width: 326px;
           height: 61px;
           text-align: center;
           padding-left: 10px;
-          line-height: 63px;
+          line-height: 61px;
           font-size: 18px;
           font-weight: bold;
           color: #404142;
@@ -320,29 +321,24 @@ code {
             text-decoration: none;
             color: #ffffff;
             background-color: #404142; }
-        .features-section .features-content .testcafe-live-promo .buttons .repo-button {
-          width: 320px;
+        .features-section .features-content .testcafe-live-promo .buttons .learn-more-button {
+          width: 326px;
           height: 61px;
           text-align: center;
-          padding-left: 10px;
-          line-height: 56px;
+          line-height: 61px;
           font-size: 18px;
           font-weight: bold;
           color: #404142;
-          background-image: url("/testcafe/images/landing-page/rapid-dev-github-icon.svg");
-          background-repeat: no-repeat;
-          background-position: 15px 13px;
-          border: 2px solid #ffffff;
+          background-color: #ffffff;
           border-radius: 5px;
-          cursor: pointer;
-          margin-left: 40px;
-          box-sizing: border-box; }
+          cursor: pointer; }
           @media (max-width: 1480px) {
-            .features-section .features-content .testcafe-live-promo .buttons .repo-button {
-              width: 280px; } }
-          .features-section .features-content .testcafe-live-promo .buttons .repo-button:hover {
+            .features-section .features-content .testcafe-live-promo .buttons .learn-more-button {
+              width: 286px; } }
+          .features-section .features-content .testcafe-live-promo .buttons .learn-more-button:hover {
             text-decoration: none;
-            background-color: #ffffff; }
+            color: #ffffff;
+            background-color: #404142; }
 
 .testcafe-studio-promo-gradient {
   background: linear-gradient(#2ca8d4, #36b6e4);

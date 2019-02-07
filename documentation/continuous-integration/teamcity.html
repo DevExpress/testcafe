@@ -646,15 +646,15 @@
 
 <p>Click the <strong>Edit Configuration Settings</strong> link.</p>
 
-<p><img src="../../images/teamcity/edit-configuration.png" alt="Click Edit Configuration Settings"></p>
+<p><img src="../../images/teamcity/edit-configuration.png" alt="Click Edit Configuration Settings" title=""></p>
 
 <p>In the configuration settings, add a build step that runs TestCafe. First, select <strong>Build Steps</strong> from the left menu.</p>
 
-<p><img src="../../images/teamcity/configure-build-steps.png" alt="Click Build Steps"></p>
+<p><img src="../../images/teamcity/configure-build-steps.png" alt="Click Build Steps" title=""></p>
 
 <p>This opens the <strong>Build Steps</strong> page. On this page, click the <strong>Add build step</strong> button.</p>
 
-<p><img src="../../images/teamcity/add-build-step.png" alt="Click Add Build Step"></p>
+<p><img src="../../images/teamcity/add-build-step.png" alt="Click Add Build Step" title=""></p>
 
 <p>The <strong>New build step</strong> page will be opened. Configure this step to run TestCafe using the command line.</p>
 
@@ -662,7 +662,7 @@
 
 <p>Parameters used in this example specify Google Chrome as the target browser, <code>tests</code> as the folder that contains test fixtures and TeamCity reporter as a plugin used to output test run reports.</p>
 
-<p><img src="../../images/teamcity/create-new-build-step.png" alt="Create New Build Step"></p>
+<p><img src="../../images/teamcity/create-new-build-step.png" alt="Create New Build Step" title=""></p>
 
 <p>Click <strong>Save</strong>.</p>
 <h2><a class="anchor" id="fetching-test-code"></a>Fetching Test Code <a class="permalink" href="#fetching-test-code">#</a></h2>
@@ -670,29 +670,29 @@
 
 <p>Open project settings and click <strong>Connections</strong>.</p>
 
-<p><img src="../../images/teamcity/configure-connections.png" alt="Open Connections Page"></p>
+<p><img src="../../images/teamcity/configure-connections.png" alt="Open Connections Page" title=""></p>
 
 <p>On the <strong>Connections</strong> page, click <strong>Add Connection</strong>.</p>
 
-<p><img src="../../images/teamcity/add-connection.png" alt="Adding a Connection"></p>
+<p><img src="../../images/teamcity/add-connection.png" alt="Adding a Connection" title=""></p>
 
 <p>The <strong>Add Connection</strong> dialog will be invoked.</p>
 
 <p>Select <em>GitHub.com</em> as the <strong>Connection type</strong> and click <strong>Register TeamCity</strong> to set up OAuth authentication with GitHub.</p>
 
-<p><img src="../../images/teamcity/add-connection-register.png" alt="Registering the Connection"></p>
+<p><img src="../../images/teamcity/add-connection-register.png" alt="Registering the Connection" title=""></p>
 
 <p>You will be redirected to GitHub. In the <strong>Register a new OAuth application</strong> dialog, specify the application name, homepage URL and authorization callback URL as they are provided by TeamCity and click <strong>Register application</strong>.</p>
 
-<p><img src="../../images/teamcity/add-connection-register-github.png" alt="Registering OAuth Application on GitHub"></p>
+<p><img src="../../images/teamcity/add-connection-register-github.png" alt="Registering OAuth Application on GitHub" title=""></p>
 
 <p>A page with client application ID and secret will open.</p>
 
-<p><img src="../../images/teamcity/add-connection-register-credentials.png" alt="OAuth Credentials"></p>
+<p><img src="../../images/teamcity/add-connection-register-credentials.png" alt="OAuth Credentials" title=""></p>
 
 <p>Copy and paste them to TeamCity and click <strong>Save</strong>.</p>
 
-<p><img src="../../images/teamcity/add-connection-finish-register.png" alt="Saving the Connection"></p>
+<p><img src="../../images/teamcity/add-connection-finish-register.png" alt="Saving the Connection" title=""></p>
 
 <p>Now the connection is created.</p>
 
@@ -700,33 +700,33 @@
 
 <p>Go to the configuration parameters and click <strong>Version Control Settings</strong>.</p>
 
-<p><img src="../../images/teamcity/configuration-vcs.png" alt="Version Control Menu Item"></p>
+<p><img src="../../images/teamcity/configuration-vcs.png" alt="Version Control Menu Item" title=""></p>
 
 <p>On the <strong>VCS Roots</strong> page, click <strong>Attach VCS root</strong>.</p>
 
-<p><img src="../../images/teamcity/attach-vcs-root.png" alt="Attaching VCS Root"></p>
+<p><img src="../../images/teamcity/attach-vcs-root.png" alt="Attaching VCS Root" title=""></p>
 
 <p>Select <strong>Git</strong> as the <strong>Type of VCS</strong>. Enter the <strong>Root name</strong>.</p>
 
-<p><img src="../../images/teamcity/attach-vcs-root-p2.png" alt="Specifying VCS Type and Root Name"></p>
+<p><img src="../../images/teamcity/attach-vcs-root-p2.png" alt="Specifying VCS Type and Root Name" title=""></p>
 
 <p>In the <strong>Fetch URL</strong> field, click the GitHub logo. A drop-down list of GitHub repos associated with your account will open. Select <code>ci-integration-demo</code>.</p>
 
-<p><img src="../../images/teamcity/attach-vcs-root-repo.png" alt="Select a GitHub Repo"></p>
+<p><img src="../../images/teamcity/attach-vcs-root-repo.png" alt="Select a GitHub Repo" title=""></p>
 
 <p>In the <strong>Authentication Settings</strong> section, select <em>Password</em> as the <strong>Authentication Method</strong>, enter your credentials and click <strong>Create</strong>.</p>
 
-<p><img src="../../images/teamcity/attach-vcs-root-p3.png" alt="Providing Credentials"></p>
+<p><img src="../../images/teamcity/attach-vcs-root-p3.png" alt="Providing Credentials" title=""></p>
 
 <p>Now the TeamCity build configuration will fetch tests from the <code>ci-integration-demo</code> repo each time it runs.</p>
 <h2><a class="anchor" id="running-the-build"></a>Running the Build <a class="permalink" href="#running-the-build">#</a></h2>
 <p>Now you can run the build using the <strong>Run</strong> button.</p>
 
-<p><img src="../../images/teamcity/run-build.png" alt="Run a Build"></p>
+<p><img src="../../images/teamcity/run-build.png" alt="Run a Build" title=""></p>
 <h2><a class="anchor" id="viewing-test-results"></a>Viewing Test Results <a class="permalink" href="#viewing-test-results">#</a></h2>
 <p>Open the <strong>Overview</strong> tab and see which tests failed and why.</p>
 
-<p><img src="../../images/teamcity/test-results.png" alt="Test Results"></p>
+<p><img src="../../images/teamcity/test-results.png" alt="Test Results" title=""></p>
 
 
 		</div>

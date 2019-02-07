@@ -1062,11 +1062,11 @@
         <span class="c1">// ...</span>
     <span class="p">}</span>
 
-    <span class="nx">onRequest</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">async</span> <span class="nx">onRequest</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
         <span class="c1">// ...</span>
     <span class="p">}</span>
 
-    <span class="nx">onResponse</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">async</span> <span class="nx">onResponse</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
         <span class="c1">// ...</span>
     <span class="p">}</span>
 <span class="p">}</span>
@@ -1079,10 +1079,10 @@
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div></li>
-<li><p>The <code>onRequest</code> method is called before sending the request. Use this method to handle sending the request. You can change the request parameters before it is sent.</p>
+<li><p>The <code>onRequest</code> asynchronous method is called before sending the request. Use this method to handle sending the request. You can change the request parameters before it is sent.</p>
 
 <p>This method is abstract in the base class and needs to be overriden in the subclass.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">onRequest</span> <span class="p">(</span><span class="cm">/*RequestEvent event*/</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">async</span> <span class="nx">onRequest</span> <span class="p">(</span><span class="cm">/*RequestEvent event*/</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">'Not implemented'</span><span class="p">);</span>
 <span class="p">}</span>
 </code></pre></div></li>
@@ -1096,8 +1096,8 @@
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div></li>
-<li><p>Finally, the <code>onResponse</code> method is called. This an abstract method in the base class. Override it in the descendant to handle sending the request.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">onResponse</span> <span class="p">(</span><span class="cm">/*ResponseEvent event*/</span><span class="p">)</span> <span class="p">{</span>
+<li><p>Finally, the <code>onResponse</code> asynchronous method is called. This an abstract method in the base class. Override it in the descendant to handle sending the request.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">async</span> <span class="nx">onResponse</span> <span class="p">(</span><span class="cm">/*ResponseEvent event*/</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">'Not implemented'</span><span class="p">);</span>
 <span class="p">}</span>
 </code></pre></div></li>
@@ -1117,10 +1117,10 @@
         <span class="kr">super</span><span class="p">(</span><span class="nx">requestFilterRules</span><span class="p">,</span> <span class="nx">responseEventConfigureOpts</span><span class="p">);</span>
         <span class="c1">// ...</span>
     <span class="p">}</span>
-    <span class="nx">onRequest</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">async</span> <span class="nx">onRequest</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
         <span class="c1">// ...</span>
     <span class="p">}</span>
-    <span class="nx">onResponse</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">async</span> <span class="nx">onResponse</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
         <span class="c1">// ...</span>
     <span class="p">}</span>
 <span class="p">}</span>
@@ -1143,7 +1143,7 @@
 <td>Boolean</td>
 <td>Specifies if the request is performed using AJAX.</td>
 </tr>
-</tbody></table></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">onRequest</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+</tbody></table></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">async</span> <span class="nx">onRequest</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">if</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">isAjax</span><span class="p">)</span> <span class="p">{</span>
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">requestOptions</span><span class="p">.</span><span class="nx">url</span><span class="p">);</span>
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">requestOptions</span><span class="p">.</span><span class="nx">credentials</span><span class="p">.</span><span class="nx">username</span><span class="p">);</span>
@@ -1173,7 +1173,7 @@
 <td><a href="https://nodejs.org/api/buffer.html">Buffer</a></td>
 <td>The response body.</td>
 </tr>
-</tbody></table></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">onResponse</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+</tbody></table></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">async</span> <span class="nx">onResponse</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">if</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">statusCode</span> <span class="o">===</span> <span class="mi">200</span><span class="p">)</span>
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">headers</span><span class="p">[</span><span class="s1">'Content-Type'</span><span class="p">]);</span>
 <span class="p">}</span>

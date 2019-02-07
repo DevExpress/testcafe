@@ -655,19 +655,19 @@ Then Yeoman will automatically scaffold out your reporter, install the required 
 <p>Once the reporter has been scaffolded out, go to the reporter directory and open the <code>src/index.js</code> file.</p>
 
 <p>You would need to implement four <a href="reporter-methods.html">reporter methods</a>.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">reportTaskStart</span> <span class="p">(</span><span class="cm">/* startTime, userAgents, testCount */</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">async</span> <span class="nx">reportTaskStart</span> <span class="p">(</span><span class="cm">/* startTime, userAgents, testCount */</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">'Not implemented'</span><span class="p">);</span>
 <span class="p">},</span>
 
-<span class="nx">reportFixtureStart</span> <span class="p">(</span><span class="cm">/* name, path */</span><span class="p">)</span> <span class="p">{</span>
+<span class="nx">async</span> <span class="nx">reportFixtureStart</span> <span class="p">(</span><span class="cm">/* name, path, meta */</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">'Not implemented'</span><span class="p">);</span>
 <span class="p">},</span>
 
-<span class="nx">reportTestDone</span> <span class="p">(</span><span class="cm">/* name, errs, durationMs, unstable, screenshotPath */</span><span class="p">)</span> <span class="p">{</span>
+<span class="nx">async</span> <span class="nx">reportTestDone</span> <span class="p">(</span><span class="cm">/* name, testRunInfo, meta */</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">'Not implemented'</span><span class="p">);</span>
 <span class="p">},</span>
 
-<span class="nx">reportTaskDone</span> <span class="p">(</span><span class="cm">/* endTime, passed */</span><span class="p">)</span> <span class="p">{</span>
+<span class="nx">async</span> <span class="nx">reportTaskDone</span> <span class="p">(</span><span class="cm">/* endTime, passed, warnings, result */</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">'Not implemented'</span><span class="p">);</span>
 <span class="p">}</span>
 </code></pre></div>
@@ -686,7 +686,7 @@ To color the output, use the <a href="helpers.html#chalk">chalk</a> methods.</p>
 so that the generated report contains information about user agents used for testing,
 the result of individual test execution, summary information about passed/failed tests,
 and the overall duration of the tests.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">reportTaskStart</span> <span class="p">(</span><span class="nx">startTime</span><span class="p">,</span> <span class="nx">userAgents</span><span class="p">,</span> <span class="nx">testCount</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">async</span> <span class="nx">reportTaskStart</span> <span class="p">(</span><span class="nx">startTime</span><span class="p">,</span> <span class="nx">userAgents</span><span class="p">,</span> <span class="nx">testCount</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">startTime</span> <span class="o">=</span> <span class="nx">startTime</span><span class="p">;</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">testCount</span> <span class="o">=</span> <span class="nx">testCount</span><span class="p">;</span>
 
@@ -695,32 +695,56 @@ and the overall duration of the tests.</p>
         <span class="p">.</span><span class="nx">newline</span><span class="p">();</span>
 <span class="p">},</span>
 
-<span class="nx">reportFixtureStart</span> <span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+<span class="nx">async</span> <span class="nx">reportFixtureStart</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">path</span><span class="p">,</span> <span class="nx">meta</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">currentFixtureName</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
 <span class="p">},</span>
 
-<span class="nx">reportTestDone</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">errs</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">hasErr</span> <span class="o">=</span> <span class="o">!!</span><span class="nx">errs</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
-    <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">hasErr</span> <span class="p">?</span> <span class="err">`</span><span class="nx">passed</span><span class="err">`</span> <span class="p">:</span> <span class="err">`</span><span class="nx">failed</span><span class="err">`</span><span class="p">;</span>
+<span class="nx">async</span> <span class="nx">reportTestDone</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">testRunInfo</span><span class="p">,</span> <span class="nx">meta</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kr">const</span> <span class="nx">errors</span>      <span class="o">=</span> <span class="nx">testRunInfo</span><span class="p">.</span><span class="nx">errs</span><span class="p">;</span>
+    <span class="kr">const</span> <span class="nx">warnings</span>    <span class="o">=</span> <span class="nx">testRunInfo</span><span class="p">.</span><span class="nx">warnings</span><span class="p">;</span>
+    <span class="kr">const</span> <span class="nx">hasErrors</span>   <span class="o">=</span> <span class="o">!!</span><span class="nx">errors</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+    <span class="kr">const</span> <span class="nx">hasWarnings</span> <span class="o">=</span> <span class="o">!!</span><span class="nx">warnings</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+    <span class="kr">const</span> <span class="nx">result</span>      <span class="o">=</span> <span class="nx">hasErrors</span> <span class="p">?</span> <span class="err">`</span><span class="nx">passed</span><span class="err">`</span> <span class="p">:</span> <span class="err">`</span><span class="nx">failed</span><span class="err">`</span><span class="p">;</span>
 
     <span class="nx">name</span> <span class="o">=</span> <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">currentFixtureName</span><span class="p">}</span> <span class="o">-</span> <span class="nx">$</span><span class="p">{</span><span class="nx">name</span><span class="p">}</span><span class="err">`</span><span class="p">;</span>
 
     <span class="kr">const</span> <span class="nx">title</span> <span class="o">=</span> <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="nx">result</span><span class="p">}</span> <span class="nx">$</span><span class="p">{</span><span class="nx">name</span><span class="p">}</span><span class="err">`</span><span class="p">;</span>
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">title</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">newline</span><span class="p">();</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">title</span><span class="p">);</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="nx">hasErrors</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">newline</span><span class="p">()</span>
+            <span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s1">'Errors:'</span><span class="p">);</span>
+
+        <span class="nx">errors</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">error</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">newline</span><span class="p">()</span>
+                <span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">formatError</span><span class="p">(</span><span class="nx">error</span><span class="p">));</span>
+        <span class="p">});</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="nx">hasWarnings</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">newline</span><span class="p">()</span>
+            <span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s1">'Warnings:'</span><span class="p">);</span>
+
+        <span class="nx">warnings</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">warning</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">newline</span><span class="p">()</span>
+                <span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">warning</span><span class="p">);</span>
+        <span class="p">});</span>
+    <span class="p">}</span>
 <span class="p">},</span>
 
-<span class="nx">reportTaskDone</span> <span class="p">(</span><span class="nx">endTime</span><span class="p">,</span> <span class="nx">passed</span><span class="p">)</span> <span class="p">{</span>
+<span class="nx">async</span> <span class="nx">reportTaskDone</span> <span class="p">(</span><span class="nx">endTime</span><span class="p">,</span> <span class="nx">passed</span><span class="p">,</span> <span class="nx">warnings</span><span class="p">,</span> <span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
     <span class="kr">const</span> <span class="nx">durationMs</span>  <span class="o">=</span> <span class="nx">endTime</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">startTime</span><span class="p">;</span>
     <span class="kr">const</span> <span class="nx">durationStr</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">moment</span>
                             <span class="p">.</span><span class="nx">duration</span><span class="p">(</span><span class="nx">durationMs</span><span class="p">)</span>
                             <span class="p">.</span><span class="nx">format</span><span class="p">(</span><span class="s1">'h[h] mm[m] ss[s]'</span><span class="p">);</span>
-    <span class="kd">let</span> <span class="nx">footer</span> <span class="o">=</span> <span class="nx">passed</span> <span class="o">===</span> <span class="k">this</span><span class="p">.</span><span class="nx">testCount</span> <span class="p">?</span>
-                 <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">testCount</span><span class="p">}</span> <span class="nx">passed</span><span class="err">`</span> <span class="p">:</span>
-                 <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">testCount</span> <span class="o">-</span> <span class="nx">passed</span><span class="p">}</span><span class="sr">/${this.testCount} failed`</span><span class="err">;
-</span>
-    <span class="nx">footer</span> <span class="o">+=</span> <span class="err">`</span> <span class="p">(</span><span class="nx">Duration</span><span class="err">:</span> <span class="nx">$</span><span class="p">{</span><span class="nx">durationStr</span><span class="p">})</span><span class="err">`</span><span class="p">;</span>
+    <span class="kd">let</span> <span class="nx">footer</span> <span class="o">=</span> <span class="nx">result</span><span class="p">.</span><span class="nx">failedCount</span> <span class="p">?</span>
+                 <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="nx">result</span><span class="p">.</span><span class="nx">failedCount</span><span class="p">}</span><span class="sr">/${this.testCount} failed` </span><span class="err">:
+</span>                 <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="nx">result</span><span class="p">.</span><span class="nx">passedCount</span><span class="p">}</span> <span class="nx">passed</span><span class="err">`</span><span class="p">;</span>
+
+    <span class="nx">footer</span> <span class="o">+=</span> <span class="err">`</span> <span class="p">(</span><span class="nx">Duration</span><span class="p">:</span> <span class="nx">$</span><span class="p">{</span><span class="nx">durationStr</span><span class="p">})</span><span class="err">`</span><span class="p">;</span>
+    <span class="nx">footer</span> <span class="o">+=</span> <span class="err">`</span> <span class="p">(</span><span class="na">Skipped</span><span class="p">:</span> <span class="nx">$</span><span class="p">{</span><span class="nx">result</span><span class="p">.</span><span class="nx">skippedCount</span><span class="p">})</span><span class="err">`</span><span class="p">;</span>
+    <span class="nx">footer</span> <span class="o">+=</span> <span class="err">`</span> <span class="p">(</span><span class="na">Warnings</span><span class="p">:</span> <span class="nx">$</span><span class="p">{</span><span class="nx">warnings</span><span class="p">.</span><span class="nx">length</span><span class="p">})</span><span class="err">`</span><span class="p">;</span>
 
     <span class="k">this</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">footer</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">newline</span><span class="p">();</span>

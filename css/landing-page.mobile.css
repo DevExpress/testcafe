@@ -184,8 +184,9 @@ html body .page-content-wrapper main #main-form .features-section {
           margin-bottom: 0;
           font-size: 14px; }
     html body .page-content-wrapper main #main-form .features-section .features-content .testcafe-live-promo .buttons {
-      display: block; }
-      html body .page-content-wrapper main #main-form .features-section .features-content .testcafe-live-promo .buttons .video-button, html body .page-content-wrapper main #main-form .features-section .features-content .testcafe-live-promo .buttons .repo-button {
+      display: block;
+      margin-left: 0; }
+      html body .page-content-wrapper main #main-form .features-section .features-content .testcafe-live-promo .buttons .video-button, html body .page-content-wrapper main #main-form .features-section .features-content .testcafe-live-promo .buttons .learn-more-button {
         width: 100%;
         display: block;
         height: 55px;
