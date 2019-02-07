@@ -1194,7 +1194,7 @@ use the <code>eval</code> method of the <a href="../test-code-structure.html#tes
     <span class="k">return</span> <span class="nb">document</span><span class="p">.</span><span class="nx">documentURI</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>Note that TestCafe internally processes test files with <a href="https://babeljs.io">Babel</a>. To avoid issues caused by code transpiling, use the <a href="https://nodejs.org/api/modules.html#modules_require">require</a> function instead of the <code>import</code> statement to import client function dependencies.</p>
+<p>Note that TestCafe internally processes test files with <a href="https://babeljs.io">Babel</a>. To avoid issues caused by code transpiling, use the <a href="https://nodejs.org/api/modules.html#modules_require_id">require</a> function instead of the <code>import</code> statement to import client function dependencies.</p>
 
 <p><strong>test.js</strong></p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>

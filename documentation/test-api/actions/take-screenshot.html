@@ -1036,12 +1036,11 @@
 		<div class="post-content">
 
 			<h1>Take Screenshot</h1>
-<p>This topic describes how to take screenshots of the tested page.</p>
-<blockquote class="important"><div class="blockquote-content"><p>Screenshot actions are not supported when you run tests in <a href="../../using-testcafe/common-concepts/browsers/browser-support.html#browsers-on-remote-devices">remote browsers</a>.</p>
+<p>This topic describes how to use test actions to take screenshots of the tested page.</p>
+<blockquote class="important"><div class="blockquote-content"><p>Screenshot actions are ignored if the screenshot directory is not specified with the <a href="../../using-testcafe/programming-interface/runner.html#screenshots">runner.screenshots</a> API method or the <a href="../../using-testcafe/command-line-interface.html#-s-path---screenshots-path">-s (--screenshots)</a> command line option.</p>
 </div></blockquote>
-<p><strong>Note</strong>: these actions require .NET 4.0 or newer installed on Windows machines and an <a href="https://en.wikipedia.org/wiki/Comparison_of_X_window_managers">ICCCM/EWMH-compliant window manager</a> on Linux.</p>
-<blockquote class="important"><div class="blockquote-content"><p>Screenshot actions are ignored if the screenshot directory is not specified with the <a href="../../using-testcafe/programming-interface/runner.html#screenshots">runner.screenshots</a> API method or the <a href="../../using-testcafe/command-line-interface.html#-s-path---screenshots-path">--screenshots</a> command line option.</p>
-</div></blockquote><h2><a class="anchor" id="take-a-screenshot-of-the-entire-page"></a>Take a Screenshot of the Entire Page <a class="permalink" href="#take-a-screenshot-of-the-entire-page">#</a></h2><div class="highlight"><pre><code class="language-text" data-lang="text">t.takeScreenshot( [path] )
+<p>See <a href="../../using-testcafe/common-concepts/screenshots-and-videos.html#screenshots">Screenshots</a> for more information about this feature.</p>
+<h2><a class="anchor" id="take-a-screenshot-of-the-entire-page"></a>Take a Screenshot of the Entire Page <a class="permalink" href="#take-a-screenshot-of-the-entire-page">#</a></h2><div class="highlight"><pre><code class="language-text" data-lang="text">t.takeScreenshot( [path] )
 </code></pre></div><div class="table-wrapper"><table><thead><tr>
 <th>Parameter</th>
 <th>Type</th>
@@ -1050,7 +1049,7 @@
 </thead><tbody><tr>
 <td><code>path</code>&#160;<em>(optional)</em></td>
 <td>String</td>
-<td>The screenshot file&#39;s relative path and name. The path is relative to the base directory specified by the <a href="../../using-testcafe/programming-interface/runner.html#screenshots">runner.screenshots</a> API method or the <a href="../../using-testcafe/command-line-interface.html#-s-path---screenshots-path">screenshots</a> command line option. This path overrides the relative path the default or custom <a href="../../using-testcafe/command-line-interface.html#path-patterns">path patterns</a> specify.</td>
+<td>The screenshot file&#39;s relative path and name. The path is relative to the base directory specified by the <a href="../../using-testcafe/programming-interface/runner.html#screenshots">runner.screenshots</a> API method or the <a href="../../using-testcafe/command-line-interface.html#-s-path---screenshots-path">-s (--screenshots)</a> command line option. This path overrides the relative path the default or custom <a href="../../using-testcafe/common-concepts/screenshots-and-videos.html#where-screenshots-and-videos-are-saved">path patterns</a> specify.</td>
 </tr>
 </tbody></table></div>
 <p>The following example shows how to use the <code>t.takeScreenshot</code> action:</p>
@@ -1081,7 +1080,7 @@
 <tr>
 <td><code>path</code>&#160;<em>(optional)</em></td>
 <td>String</td>
-<td>The screenshot file&#39;s relative path and name. The path is relative to the root directory specified by using the <a href="../../using-testcafe/programming-interface/runner.html#screenshots">runner.screenshots</a> API method or the <a href="../../using-testcafe/command-line-interface.html#-s-path---screenshots-path">screenshots</a> command line option. This path overrides the relative path the default or custom <a href="../../using-testcafe/command-line-interface.html#path-patterns">path patterns</a> specify.</td>
+<td>The screenshot file&#39;s relative path and name. The path is relative to the root directory specified by using the <a href="../../using-testcafe/programming-interface/runner.html#screenshots">runner.screenshots</a> API method or the <a href="../../using-testcafe/command-line-interface.html#-s-path---screenshots-path">-s (--screenshots)</a> command line option. This path overrides the relative path the default or custom <a href="../../using-testcafe/common-concepts/screenshots-and-videos.html#where-screenshots-and-videos-are-saved">path patterns</a> specify.</td>
 </tr>
 <tr>
 <td><code>options</code>&#160;<em>(optional)</em></td>
@@ -1165,7 +1164,7 @@
 <td>The right edge of the cropping rectangle. The coordinate is calculated from the element&#39;s left edge. If a negative number is passed, the coordinate is calculated from the element&#39;s right edge.</td>
 </tr>
 </tbody></table></div>
-<p><img src="../../../images/screenshot-crop.png" alt="Crop Rectangle"></p>
+<p><img src="../../../images/screenshot-crop.png" alt="Crop Rectangle" title=""></p>
 
 <p><strong>Example</strong></p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>

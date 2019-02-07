@@ -1,0 +1,1306 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  
+  
+  
+  
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <title>Configuration File | TestCafe</title>
+
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
+
+  <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html" />
+  <meta property="og:title" content="Configuration File | TestCafe" />
+
+  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
+  
+  
+  <link rel="shortcut icon" href="/testcafe/favicon.ico">
+  <link rel="stylesheet" href="/testcafe/css/main.css">
+  <link rel="canonical" href="https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html">
+  <link rel="alternate" type="application/rss+xml" title="TestCafe" href="https://devexpress.github.io/testcafe/feed.xml">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+  <link rel="apple-touch-icon" sizes="180x180" href="/testcafe/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/testcafe/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/testcafe/favicon-16x16.png">
+  <link rel="manifest" href="/testcafe/site.webmanifest">
+  <meta name="msapplication-TileColor" content="#2d89ef">
+  <meta name="msapplication-config" content="/testcafe/browserconfig.xml" />
+  <meta name="theme-color" content="#ffffff">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/highlight.min.js"></script>
+  <script defer src="https://buttons.github.io/buttons.js"></script>
+  <script defer type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.3.min.js"></script>
+  <script src="/testcafe/scripts/mobile-detect.min.js" type="text/javascript"></script>
+  <script>
+     var md             = new MobileDetect(window.navigator.userAgent);
+     var isMobileDevice = !!md.mobile();
+  </script>
+  <script>
+      document.addEventListener('DOMContentLoaded', function (e) {
+          hljs.initHighlightingOnLoad();
+      });
+  </script>
+
+  
+  <script>
+    // Google Analytics
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-83678642-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+
+  
+
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/css/perfect-scrollbar.min.css">
+  <link rel="stylesheet" href="/testcafe/css/docs.css">
+  <style>
+      .ps-container > .ps-scrollbar-x-rail,
+      .ps-container > .ps-scrollbar-y-rail {
+          opacity: 0.6;
+      }
+  </style>
+  
+
+  
+
+  <script>
+    function linkCss (href) {
+        var link  = document.createElement('link');
+        var html  = document.querySelector('html');
+        var head  = document.head;
+
+        link.rel  = 'stylesheet';
+        link.type = 'text/css';
+        link.href = href;
+        link.media = 'all';
+
+        head.appendChild(link);
+
+        window.addEventListener('load', function () {
+            html.style.display = 'block';
+        });
+
+        html.style.display = 'none';
+    }
+  </script>
+    
+    <script>
+        if (isMobileDevice) {
+            document.addEventListener('DOMContentLoaded', function (e) {
+                var siteNav         = document.querySelector('.site-nav');
+                var hamburgerButton = document.querySelector('.hamburger-button');
+
+                hamburgerButton.addEventListener('click', function (e) {
+                    if (hamburgerButton.className.indexOf('active') !== -1) {
+                        hamburgerButton.className = hamburgerButton.className.replace(' active', '');
+                        siteNav.className = siteNav.className.replace(' active', '');
+                        document.documentElement.style.overflowY = 'scroll';
+                        document.body.style.overflowY = 'initial';
+                    }
+                    else {
+                        hamburgerButton.className += ' active';
+                        siteNav.className += ' active';
+                        document.documentElement.style.overflowY = 'hidden';
+                        document.body.style.overflowY = 'hidden';
+                    }
+                });
+
+                var docTopNav          = document.querySelector('.doc-top-nav');
+                var docMenuItem        = document.querySelector('.site-nav-tab');
+                var mainMenuSecondItem = document.querySelector('.site-nav-tab:nth-child(2)');
+
+                siteNav.insertBefore(docTopNav, mainMenuSecondItem);
+                
+                var searchPanel = document.getElementById('search-panel');
+                
+                siteNav.insertBefore(searchPanel, docMenuItem);
+
+                var docMenuItemIcon = document.createElement('div');
+
+                docMenuItemIcon.className = 'doc-menu-item-icon';
+                docMenuItem.appendChild(docMenuItemIcon);
+
+                
+                    docMenuItem.className += ' expanded';
+                    docTopNav.className += ' expanded';
+                
+
+                docMenuItem.addEventListener('click', function (e) {
+                    if (docTopNav.className.indexOf('expanded') !== -1) {
+                        docMenuItem.className = docMenuItem.className.replace(' expanded', '');
+                        docTopNav.className = docTopNav.className.replace(' expanded', '');
+                    }
+                    else {
+                        docMenuItem.className += ' expanded';
+                        docTopNav.className += ' expanded';
+                    }
+                    e.preventDefault();
+                });
+            });
+
+            linkCss('/testcafe/css/mobile.css');
+        }
+    </script>
+
+  
+
+  
+
+  
+    <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/js/perfect-scrollbar.min.js"></script>
+    <script defer type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.3.min.js"></script>
+
+    <script>
+        var MIN_BODY_WIDTH = 1230;
+        var FOOTER_HEIGHT  = 113;
+        var HEADER_HEIGHT  = 126;
+
+        var nav            = null;
+        var article        = null;
+
+        function setNavTopPosition () {
+            var top = null;
+
+            if (document.body.clientWidth > MIN_BODY_WIDTH) {
+                if (nav.style.top !== HEADER_HEIGHT + 'px') {
+                    nav.style.top = HEADER_HEIGHT + 'px';
+                    Ps.update(nav);
+                }
+            }
+            else {
+                top = window.pageYOffset <= HEADER_HEIGHT ? HEADER_HEIGHT - window.pageYOffset + 'px' : '0';
+
+                if (nav.style.top !== top) {
+                    nav.style.top = top;
+                    Ps.update(nav);
+                }
+            }
+        }
+
+        function setNavBottomPosition () {
+            var footerVisibleHeight = FOOTER_HEIGHT - document.body.scrollHeight + window.pageYOffset +
+                                      document.body.clientHeight;
+
+            if (footerVisibleHeight > 0) {
+                if (nav.style.bottom !== footerVisibleHeight + 'px') {
+                    nav.style.bottom = footerVisibleHeight + 'px';
+                    Ps.update(nav);
+                }
+            }
+            else if (nav.style.bottom !== '0') {
+                nav.style.bottom = '0';
+                Ps.update(nav);
+            }
+        }
+
+        function updatePosition () {
+            nav.style.marginLeft = '-' + window.pageXOffset + 'px';
+
+            setNavBottomPosition();
+            setNavTopPosition();
+        }
+
+        function changeBodyHeight () {
+            if (document.body.style.height !== window.innerHeight + 'px')
+                document.body.style.height = window.innerHeight + 'px';
+        }
+
+        function initScrollBar() {
+            Ps.initialize(nav);
+
+            window.addEventListener('resize', function () {
+                Ps.update(nav);
+            });
+        }
+
+        function initNav() {
+            initScrollBar();
+            updatePosition();
+            window.addEventListener('scroll', updatePosition);
+            window.addEventListener('resize', updatePosition);
+        }
+
+        document.addEventListener('DOMContentLoaded', function (e) {
+            if (isMobileDevice)
+                return;
+
+            nav     = document.querySelector('.doc-nav');
+            article = document.querySelector('.doc');
+
+            if (nav)
+                initNav(nav);
+        });
+    </script>
+    
+    <script>
+        if (isMobileDevice) {
+            linkCss('/testcafe/css/docs.mobile.css');           
+            
+            if (false == false) {
+                document.addEventListener('DOMContentLoaded', function (e) {
+                    var docNavPanel = document.querySelector('.doc-nav-panel');
+                    var docNav      = document.querySelector('.doc-nav');
+
+                    docNavPanel.addEventListener('click', function (e) {
+                        if (docNav.className.indexOf('active') !== -1) {
+                            docNav.className = docNav.className.replace(' active', '');
+                            document.documentElement.style.overflowY = 'scroll';
+                            document.body.style.overflowY = 'initial';
+                        }
+                        else {
+                            docNav.className += ' active';
+                            document.documentElement.style.overflowY = 'hidden';
+                            document.body.style.overflowY = 'hidden';
+                        }
+                    });
+                });
+            }
+        }
+    </script>
+  
+    <script>
+        function initHeader(siteHeader, contentWrapper, docTopMenu, article, gs) {
+            var MIN_BODY_WIDTH = 1230;
+
+            function updateHeader() {
+                var bodyMinimized = document.body.clientWidth === MIN_BODY_WIDTH;
+
+                
+
+                siteHeader.style.position = bodyMinimized ? 'static' : '';
+
+                if(docTopMenu)
+                    docTopMenu.style.position = bodyMinimized ? 'static' : '';
+
+                if(contentWrapper)
+                    contentWrapper.style.paddingTop = bodyMinimized ? '0' : '';
+
+                if(article && !isMobileDevice)
+                    article.style.marginTop = bodyMinimized ? '21px' : '72px';
+                if(gs && !isMobileDevice)
+                    gs.style.paddingTop = bodyMinimized ? '21px' : '72px';
+            }
+
+            updateHeader();
+            window.addEventListener('scroll', updateHeader);
+            window.addEventListener('resize', updateHeader);
+        }
+        document.addEventListener('DOMContentLoaded', function (e) {
+            var contentWrapper = document.querySelector('.container');
+            var siteHeader     = document.querySelector('.site-header');
+            var docTopMenu     = document.querySelector('.doc-top-nav');
+            var article        = document.querySelector('.doc');
+            var gs             = document.querySelector('.gs');
+
+            if(siteHeader)
+                initHeader(siteHeader, contentWrapper, docTopMenu, article, gs);
+        });
+    </script>
+</head>
+
+
+  <body>
+
+    <script defer src="/testcafe/scripts/cookie-notice.js" type="text/javascript"></script>
+<div class="cookie-notice">
+    <div class="close-icon"></div>
+    <div class="cookie-notice-content">
+        <div class="cookie-notice-message">
+            <div class="cookie-notice-header">Why We Use Cookies</div>
+            <div class="cookie-notice-text">This site uses cookies to make your browsing experience more convenient and personal. Cookies store useful information on your computer to help us improve the efficiency and relevance of our site for you. In some cases, they are essential to making the site work properly. By accessing this site, you consent to the use of cookies. For more information, refer to DevExpress' <a href="https://www.devexpress.com/AboutUs/privacy-policy.xml" target="_blank">privacy policy</a> and <a href="https://www.devexpress.com/AboutUs/cookie-policy.xml" target="_blank">cookie policy</a>.</div>
+        </div>
+        <div class="cookie-notice-button">I understand</div>
+    </div>
+</div>
+
+    <div class="page-content-wrapper">
+
+      
+
+<header class="site-header fixed">
+  <div class="site-header-content">
+    <a class="site-logo" href="/testcafe/"></a>
+    <div class="hamburger-button">
+        <div class="hamburger-icon"></div>
+    </div>
+    <nav class="site-nav">
+        
+          
+          <div class="site-nav-tab active">
+            <a class="page-link" href="/testcafe/documentation/getting-started/">Documentation</a>
+          </div>
+        
+          
+          <div class="site-nav-tab ">
+            <a class="page-link" href="https://github.com/DevExpress/testcafe" target="_blank">GitHub</a>
+          </div>
+        
+          
+          <div class="site-nav-tab ">
+            <a class="page-link" href="/testcafe/faq/">FAQ</a>
+          </div>
+        
+          
+          <div class="site-nav-tab ">
+            <a class="page-link" href="/testcafe/blog/">Release Notes</a>
+          </div>
+        
+          
+          <div class="site-nav-tab ">
+            <a class="page-link" href="/testcafe/support/">Support</a>
+          </div>
+        
+          
+          <div class="site-nav-tab ">
+            <a class="page-link" id="studio-link" href="https://testcafe-studio.devexpress.com" target="_blank">TestCafe Studio</a>
+          </div>
+        
+      <a id="twitter-button" href="https://twitter.com/dxtestcafe" target="_blank"></a>
+      <div id="search-icon"></div>
+      <div class="star-button">
+        <a class="github-button" href="https://github.com/DevExpress/testcafe" data-size="large" data-count-href="/DevExpress/testcafe/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star DevExpress/testcafe on GitHub"><span style="color:#ffffff">Star</span></a>
+      </div>
+      <div id="search-panel" class="hidden">
+          <input type="text" placeholder="Search documentation" id="search"/>
+          <div id="close-search"></div>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<script>
+  function has(parentEl, el)  {
+    var descendants = parentEl.getElementsByTagName('*');
+    
+    for(i = 0; i < descendants.length; i++) 
+        if(descendants[i] === el) return true;
+
+    return false;
+  }
+
+  function clickOutsideBox(e, box) {
+      return box !== e.target && !has(box, e.target);
+  }  
+
+  function closeSearchBox(e) {
+      if(clickOutsideBox(e, searchPanel) && searchPanel.className.indexOf('hidden') === -1) 
+          searchPanel.className += ' hidden';
+  }
+
+  var searchButton      = document.getElementById('search-icon');
+  var searchPanel       = document.getElementById('search-panel');
+  var searchInput       = document.getElementById('search');
+  var closeSearchButton = document.getElementById('close-search');
+
+  searchButton.addEventListener('click', function () {
+      searchPanel.className = searchPanel.className.replace(/hidden/,'');
+      searchInput.focus();      
+  });
+  
+  closeSearchButton.addEventListener('click', function () {
+      searchPanel.className += ' hidden';
+  });
+
+  window.addEventListener('mousedown', closeSearchBox);        
+  window.addEventListener('touchstart', closeSearchBox);
+
+  if (window.isMobileDevice) {
+      function closeHamburgerMenuBox(e) {
+          if(clickOutsideBox(e, hamburgerMenu) && clickOutsideBox(e, hamburgerButton) && hamburgerMenu.className.indexOf('active') !== -1) {
+              hamburgerMenu.className = hamburgerMenu.className.replace(' active', '');
+              hamburgerButton.className = hamburgerButton.className.replace(' active', '');
+              document.documentElement.style.overflowY = 'scroll';
+              document.body.style.overflowY = 'initial';
+          }
+      }
+
+      var hamburgerMenu = document.querySelector('.site-nav');
+      var hamburgerButton = document.querySelector('.hamburger-button');
+
+      window.addEventListener('mousedown', closeHamburgerMenuBox);        
+      window.addEventListener('touchstart', closeHamburgerMenuBox);
+
+      window.addEventListener('DOMContentLoaded', function (e) {
+          var docNav = document.querySelector('.doc-nav');
+
+          if(docNav) {
+              function closeDocNav() {
+                  docNav.className = docNav.className.replace(' active', '');
+                  document.documentElement.style.overflowY = 'scroll';
+                  document.body.style.overflowY = 'initial';
+              }
+
+              function clickWithDocNavInvoked(e) {
+                  if(clickOutsideBox(e, docNav) && clickOutsideBox(e, docNavPanel) && docNav.className.indexOf('active') !== -1) 
+                      closeDocNav();
+              }
+
+              var docNavPanel = document.querySelector('.doc-nav-panel');
+
+              window.addEventListener('mousedown', clickWithDocNavInvoked);        
+              window.addEventListener('touchstart', clickWithDocNavInvoked);
+
+              var docNavLinks = document.querySelectorAll('.doc-nav a');
+
+              docNavLinks.forEach(function (link) {
+                  link.addEventListener('click', closeDocNav);
+              });
+          }
+      });
+  }
+</script>
+
+<script>
+  var studioLink = document.getElementById('studio-link');
+
+  studioLink.addEventListener('click', function () {
+      ga('send', 'event', 'topMenu', 'studioLinkClicked');
+  });
+</script>
+
+<div class="doc-top-nav">
+  <div class="doc-top-nav-content">
+    <div class="doc-top-nav-wrapper">
+      
+        <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/getting-started/">Getting Started</a>      
+        </div>
+      
+        <div class="doc-top-nav-tab active" >
+          <a href="/testcafe/documentation/using-testcafe/">Using TestCafe</a>      
+        </div>
+      
+        <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/test-api/">Test API</a>      
+        </div>
+      
+        <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/extending-testcafe/">Extending TestCafe</a>      
+        </div>
+      
+        <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/continuous-integration/">Continuous Integration</a>      
+        </div>
+      
+        <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/recipes/">Recipes</a>      
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+
+      <div class="container">
+    
+	
+	
+
+	
+	
+	<div class="doc-nav-panel">
+		<div class="toggle-nav-button"></div>
+		<div class="doc-nav-panel-header">
+			<div class="doc-nav-panel-heading">Documentation</div>
+			<div class="doc-nav-panel-title">
+				
+					
+				
+					
+						Using TestCafe
+					
+				
+					
+				
+					
+				
+					
+				
+					
+				
+			</div>
+		</div>
+	</div>
+	<nav class="doc-nav">	
+		<div class="doc-nav-content">
+			<ul>
+				<li>
+				<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/installing-testcafe.html"  >Installing TestCafe</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/command-line-interface.html"  >Command Line Interface</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/programming-interface/"  >Programming Interface</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/programming-interface/testcafe.html"  >TestCafe Class</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/programming-interface/browserconnection.html"  >BrowserConnection Class</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/programming-interface/runner.html"  >Runner Class</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/programming-interface/livemoderunner.html"  >LiveModeRunner Class</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/programming-interface/createtestcafe.html"  >createTestCafe Factory</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/configuration-file.html" class="active" >Configuration File</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/using-testcafe-docker-image.html"  >Using TestCafe Docker Image</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/common-concepts/"  >Common Concepts</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/common-concepts/browsers/"  >Browsers</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/common-concepts/browsers/browser-support.html"  >Browser Support</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/common-concepts/browsers/testing-in-headless-mode.html"  >Testing in Headless Mode</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/common-concepts/browsers/using-chrome-device-emulation.html"  >Using Chrome Device Emulation</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/common-concepts/browsers/user-profiles.html"  >User Profiles</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/common-concepts/concurrent-test-execution.html"  >Concurrent Test Execution</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/common-concepts/live-mode.html"  >Live Mode</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/common-concepts/screenshots-and-videos.html"  >Screenshots and Videos</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/common-concepts/reporters.html"  >Reporters</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/common-concepts/connect-to-the-testcafe-server-over-https.html"  >Connect to the TestCafe Server over HTTPS</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+</ul>
+				</li>
+			</ul>
+		</div>
+	</nav>
+	
+
+	
+	
+
+	
+	
+
+	
+	
+
+	
+	
+	
+
+
+<main>
+	<article class="doc">
+		<div class="post-content">
+
+			<h1>Configuration File</h1>
+<p>TestCafe uses the <code>.testcaferc.json</code> configuration file to store its settings.</p>
+<blockquote class="important"><div class="blockquote-content"><p>Settings you specify when you run TestCafe from the <a href="command-line-interface.html">command line</a> and <a href="programming-interface/">programming interfaces</a> override settings from <code>.testcaferc.json</code>. TestCafe prints information about every overridden property in the console.</p>
+</div></blockquote>
+<p>Keep <code>.testcaferc.json</code> in a directory from which you run TestCafe. Most often, this is the project&#39;s root directory. TestCafe does not take into account configuration files located in other directories (for instance, project&#39;s subdirectories).</p>
+
+<p>A configuration file can include the following settings:</p>
+
+<ul>
+<li><a href="#browsers">browsers</a></li>
+<li><a href="#src">src</a></li>
+<li><a href="#reporter">reporter</a></li>
+<li><a href="#screenshotpath">screenshotPath</a></li>
+<li><a href="#takescreenshotsonfails">takeScreenshotsOnFails</a></li>
+<li><a href="#screenshotpathpattern">screenshotPathPattern</a></li>
+<li><a href="#videopath">videoPath</a></li>
+<li><a href="#videooptions">videoOptions</a></li>
+<li><a href="#videoencodingoptions">videoEncodingOptions</a></li>
+<li><a href="#quarantinemode">quarantineMode</a></li>
+<li><a href="#debugmode">debugMode</a></li>
+<li><a href="#debugonfail">debugOnFail</a></li>
+<li><a href="#skipjserrors">skipJsErrors</a></li>
+<li><a href="#skipuncaughterrors">skipUncaughtErrors</a></li>
+<li><a href="#filter">filter</a>
+
+<ul>
+<li><a href="#filtertest">test</a></li>
+<li><a href="#filtertestgrep">testGrep</a></li>
+<li><a href="#filterfixture">fixture</a></li>
+<li><a href="#filterfixturegrep">fixtureGrep</a></li>
+<li><a href="#filtertestmeta">testMeta</a></li>
+<li><a href="#filterfixturemeta">fixtureMeta</a></li>
+</ul></li>
+<li><a href="#appcommand">appCommand</a></li>
+<li><a href="#appinitdelay">appInitDelay</a></li>
+<li><a href="#concurrency">concurrency</a></li>
+<li><a href="#selectortimeout">selectorTimeout</a></li>
+<li><a href="#assertiontimeout">assertionTimeout</a></li>
+<li><a href="#pageloadtimeout">pageLoadTimeout</a></li>
+<li><a href="#speed">speed</a></li>
+<li><a href="#port1-port2">port1, port2</a></li>
+<li><a href="#hostname">hostname</a></li>
+<li><a href="#proxy">proxy</a></li>
+<li><a href="#proxybypass">proxyBypass</a></li>
+<li><a href="#ssl">ssl</a></li>
+<li><a href="#developmentmode">developmentMode</a></li>
+<li><a href="#qrcode">qrCode</a></li>
+<li><a href="#stoponfirstfail">stopOnFirstFail</a></li>
+<li><a href="#color">color</a></li>
+<li><a href="#nocolor">noColor</a></li>
+</ul>
+
+<p>The configuration file supports <a href="https://json5.org/">JSON5 syntax</a>. This allows you to use JavaScript identifiers as object keys, single-quoted strings, comments and other JSON5 features.</p>
+<blockquote><div class="blockquote-content"><p>You can find a complete configuration file example <a href="https://github.com/DevExpress/testcafe/blob/master/examples/.testcaferc.json">in our GitHub repository</a>.</p>
+</div></blockquote><h2><a class="anchor" id="browsers"></a>browsers <a class="permalink" href="#browsers">#</a></h2>
+<p>Specifies one or several browsers in which test should be run.</p>
+
+<p>You can use <a href="common-concepts/browsers/browser-support.html#locally-installed-browsers">browser aliases</a> to specify locally installed browsers.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"browsers"</span><span class="p">:</span><span class="w"> </span><span class="s2">"chrome"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"browsers"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"ie"</span><span class="p">,</span><span class="w"> </span><span class="s2">"firefox"</span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>Use the <code>all</code> alias to run tests in all the installed browsers.</p>
+
+<p>To specify a browser by the path to its executable, use the <code>path:</code> prefix. Enclose the path in backticks if it contains spaces.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"browsers"</span><span class="p">:</span><span class="w"> </span><span class="s2">"path:`C:\\Program Files\\Internet Explorer\\iexplore.exe`"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>Alternatively, you can pass an object whose <code>path</code> property specifies the path to the browser executable. In this case, you can also provide an optional <code>cmd</code> property that contains command line parameters passed to the browser.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"browsers"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/home/user/portable/firefox.app"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"cmd"</span><span class="p">:</span><span class="w"> </span><span class="s2">"--no-remote"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>To run tests in <a href="common-concepts/browsers/browser-support.html#browsers-in-cloud-testing-services">cloud browsers</a> or <a href="common-concepts/browsers/browser-support.html#nonconventional-browsers">other browsers</a> accessed through a <a href="../extending-testcafe/browser-provider-plugin/">browser provider plugin</a>,
+specify the browser&#39;s alias that consists of the <code>{browser-provider-name}</code> prefix and the name of a browser (the latter can be omitted); for example, <code>saucelabs:Chrome@52.0:Windows 8.1</code>.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"browsers"</span><span class="p">:</span><span class="w"> </span><span class="s2">"saucelabs:Chrome@52.0:Windows 8.1"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>To run tests in a <a href="common-concepts/browsers/browser-support.html#browsers-on-remote-devices">browser on a remote device</a>, specify <code>remote</code> as a browser alias.</p>
+
+<p>If you want to connect multiple browsers, specify <code>remote:</code> and the number of browsers. For example, if you need to use four remote browsers, specify <code>remote:4</code>.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"browsers"</span><span class="p">:</span><span class="w"> </span><span class="s2">"remote:4"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>You can add postfixes to browser aliases to run tests in the <a href="common-concepts/browsers/testing-in-headless-mode.html">headless mode</a>, use <a href="common-concepts/browsers/using-chrome-device-emulation.html">Chrome device emulation</a> or <a href="common-concepts/browsers/user-profiles.html">user profiles</a>.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"browsers"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"firefox:headless"</span><span class="p">,</span><span class="w"> </span><span class="s2">"chrome:emulation:device=iphone X"</span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><blockquote><div class="blockquote-content"><p>You cannot add postfixes when you use the <code>path:</code> prefix or pass a <code>{ path, cmd }</code> object.</p>
+</div></blockquote>
+<p><em>CLI</em>: <a href="command-line-interface.html#browser-list">Browser List</a><br>
+<em>API</em>: <a href="programming-interface/runner.html#browsers">runner.browsers</a>, <a href="programming-interface/browserconnection.html">BrowserConnection</a></p>
+<h2><a class="anchor" id="src"></a>src <a class="permalink" href="#src">#</a></h2>
+<p>Specifies files or directories from which to run tests.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"src"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/home/user/tests/fixture.js"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"src"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"/home/user/auth-tests/fixture-1.js"</span><span class="p">,</span><span class="w"> </span><span class="s2">"/home/user/mobile-tests/"</span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>You can use <a href="https://github.com/isaacs/node-glob#glob-primer">globbing patterns</a> to specify a set of files.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"src"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"/home/user/tests/**/*.js"</span><span class="p">,</span><span class="w"> </span><span class="s2">"!/home/user/tests/foo.js"</span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p><em>CLI</em>: <a href="command-line-interface.html#file-pathglob-pattern">File Path/Glob Pattern</a><br>
+<em>API</em>: <a href="programming-interface/runner.html#src">runner.src</a></p>
+<h2><a class="anchor" id="reporter"></a>reporter <a class="permalink" href="#reporter">#</a></h2>
+<p>Specifies the name of a <a href="common-concepts/reporters.html">built-in</a> or <a href="../extending-testcafe/reporter-plugin/">custom reporter</a> that should generate test reports.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"reporter"</span><span class="p">:</span><span class="w"> </span><span class="s2">"list"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>This configuration outputs the test report to <code>stdout</code>. To save a report to a file, pass an object whose <code>name</code> property specifies the reporter name and <code>output</code> property specifies the path to the file.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"reporter"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"xunit"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"output"</span><span class="p">:</span><span class="w"> </span><span class="s2">"reports/report.xml"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>You can use multiple reporters, but note that only one reporter can write to <code>stdout</code>. All other reporters must output to files.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"reporter"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"spec"</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"json"</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"output"</span><span class="p">:</span><span class="w"> </span><span class="s2">"reports/report.json"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p><em>CLI</em>: <a href="command-line-interface.html#-r-nameoutput---reporter-nameoutput">-r, --reporter</a><br>
+<em>API</em>: <a href="programming-interface/runner.html#reporter">runner.reporter</a></p>
+<h2><a class="anchor" id="screenshotpath"></a>screenshotPath <a class="permalink" href="#screenshotpath">#</a></h2>
+<p>Enables screenshots and specifies the base directory where they are saved.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"screenshotPath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/home/user/tests/screenshots/"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>See <a href="common-concepts/screenshots-and-videos.html#screenshots">Screenshots</a> for details.</p>
+
+<p><em>CLI</em>: <a href="command-line-interface.html#-s-path---screenshots-path">-s, --screenshots</a><br>
+<em>API</em>: <a href="programming-interface/runner.html#screenshots">runner.screenshots</a></p>
+<h2><a class="anchor" id="takescreenshotsonfails"></a>takeScreenshotsOnFails <a class="permalink" href="#takescreenshotsonfails">#</a></h2>
+<p>Specifies that a screenshot should be taken whenever a test fails.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"takeScreenshotsOnFails"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>Screenshots are saved to the directory specified in the <a href="#screenshotpath">screenshotPath</a> option.</p>
+
+<p><em>CLI</em>: <a href="command-line-interface.html#-s---screenshots-on-fails">-S, --screenshots-on-fails</a><br>
+<em>API</em>: <a href="programming-interface/runner.html#screenshots">runner.screenshots</a></p>
+<h2><a class="anchor" id="screenshotpathpattern"></a>screenshotPathPattern <a class="permalink" href="#screenshotpathpattern">#</a></h2>
+<p>Specifies a custom pattern to compose screenshot files&#39; relative path and name.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"screenshotPathPattern"</span><span class="p">:</span><span class="w"> </span><span class="s2">"${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>See <a href="common-concepts/screenshots-and-videos.html#path-pattern-placeholders">Path Pattern Placeholders</a> for information about the available placeholders.</p>
+<blockquote><div class="blockquote-content"><p>Use the <a href="#screenshotpath">screenshotPath</a> option to enable screenshots.</p>
+</div></blockquote>
+<p><em>CLI</em>: <a href="command-line-interface.html#-p-pattern---screenshot-path-pattern-pattern">-p, --screenshot-path-pattern</a><br>
+<em>API</em>: <a href="programming-interface/runner.html#screenshots">runner.screenshots</a></p>
+<h2><a class="anchor" id="videopath"></a>videoPath <a class="permalink" href="#videopath">#</a></h2>
+<p>Enables TestCafe to record videos of test runs and specifies the base directory to save these videos.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"videoPath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"reports/screen-captures"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>See <a href="common-concepts/screenshots-and-videos.html#record-videos">Record Videos</a> for details.</p>
+
+<p><em>CLI</em>: <a href="command-line-interface.html#--video-basepath">--video</a><br>
+<em>API</em>: <a href="programming-interface/runner.html#video">runner.video</a></p>
+<h2><a class="anchor" id="videooptions"></a>videoOptions <a class="permalink" href="#videooptions">#</a></h2>
+<p>Specifies options that define how TestCafe records videos of test runs.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"videoOptions"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"singleFile"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"failedOnly"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"pathPattern"</span><span class="p">:</span><span class="w"> </span><span class="s2">"${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.mp4"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>See <a href="common-concepts/screenshots-and-videos.html#basic-video-options">Basic Video Options</a> for the available options.</p>
+<blockquote><div class="blockquote-content"><p>Use the <a href="#videopath">videoPath</a> option to enable video recording.</p>
+</div></blockquote>
+<p><em>CLI</em>: <a href="command-line-interface.html#--video-options-optionvalueoption2value2">--video-options</a><br>
+<em>API</em>: <a href="programming-interface/runner.html#video">runner.video</a></p>
+<h2><a class="anchor" id="videoencodingoptions"></a>videoEncodingOptions <a class="permalink" href="#videoencodingoptions">#</a></h2>
+<p>Specifies video encoding options.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"videoEncodingOptions"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"r"</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"aspect"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4:3"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>You can pass all the options supported by the FFmpeg library. Refer to <a href="https://ffmpeg.org/ffmpeg.html#Options">the FFmpeg documentation</a> for information about the available options.</p>
+<blockquote><div class="blockquote-content"><p>Use the <a href="#videopath">videoPath</a> option to enable video recording.</p>
+</div></blockquote>
+<p><em>CLI</em>: <a href="command-line-interface.html#--video-encoding-options-optionvalueoption2value2">--video-encoding-options</a><br>
+<em>API</em>: <a href="programming-interface/runner.html#video">runner.video</a></p>
+<h2><a class="anchor" id="quarantinemode"></a>quarantineMode <a class="permalink" href="#quarantinemode">#</a></h2>
+<p>Enables the <a href="programming-interface/runner.html#quarantine-mode">quarantine mode</a> for tests that fail.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"quarantineMode"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p><em>CLI</em>: <a href="command-line-interface.html#-q---quarantine-mode">-q, --quarantine-mode</a><br>
+<em>API</em>: <a href="programming-interface/runner.html#run">runner.run({ quarantineMode })</a></p>
+<h2><a class="anchor" id="debugmode"></a>debugMode <a class="permalink" href="#debugmode">#</a></h2>
+<p>Runs tests in the debugging mode.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"debugMode"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>See the <a href="command-line-interface.html#-d---debug-mode">--debug-mode</a> command line parameter for details.</p>
+
+<p><em>CLI</em>: <a href="command-line-interface.html#-d---debug-mode">-d, --debug-mode</a><br>
+<em>API</em>: <a href="programming-interface/runner.html#run">runner.run({ debugMode })</a></p>
+<h2><a class="anchor" id="debugonfail"></a>debugOnFail <a class="permalink" href="#debugonfail">#</a></h2>
+<p>Specifies whether to automatically enter the debug mode when a test fails.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"debugOnFail"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>If this option is enabled, TestCafe pauses the test when it fails. This allows you to view the tested page and determine the cause of the fail.</p>
+
+<p>When you are done, click the <strong>Finish</strong> button in the footer to end test execution.</p>
+
+<p><em>CLI</em>: <a href="command-line-interface.html#--debug-on-fail">--debug-on-fail</a><br>
+<em>API</em>: <a href="programming-interface/runner.html#run">runner.run({ debugOnFail })</a></p>
+<h2><a class="anchor" id="skipjserrors"></a>skipJsErrors <a class="permalink" href="#skipjserrors">#</a></h2>
+<p>Ignores JavaScript errors on a webpage.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"skipJsErrors"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>When a JavaScript error occurs on a tested web page, TestCafe stops test execution and posts an error message and a stack trace to a report. To ignore JavaScript errors, set the <code>skipJsErrors</code> property to <code>true</code>.</p>
+
+<p><em>CLI</em>: <a href="command-line-interface.html#-e---skip-js-errors">-e, --skip-js-errors</a><br>
+<em>API</em>: <a href="programming-interface/runner.html#run">runner.run({ skipJsErrors })</a></p>
+<h2><a class="anchor" id="skipuncaughterrors"></a>skipUncaughtErrors <a class="permalink" href="#skipuncaughterrors">#</a></h2>
+<p>Ignores uncaught errors and unhandled promise rejections in test code.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"skipUncaughtErrors"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>When an uncaught error or unhandled promise rejection occurs on the server during test execution, TestCafe stops the test and posts an error message to a report. To ignore these errors, use the <code>skipUncaughtErrors</code> property.</p>
+
+<p><em>CLI</em>: <a href="command-line-interface.html#-u---skip-uncaught-errors">-u, --skip-uncaught-errors</a><br>
+<em>API</em>: <a href="programming-interface/runner.html#run">runner.run({ skipUncaughtErrors })</a></p>
+<h2><a class="anchor" id="filter"></a>filter <a class="permalink" href="#filter">#</a></h2>
+<p>Allows you to specify which tests or fixtures to run. Use the following properties individually or in combination.</p>
+<h3><a class="anchor" id="filtertest"></a>filter.test <a class="permalink" href="#filtertest">#</a></h3>
+<p>Runs a test with the specified name.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"filter"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"test"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Click a label"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p><em>CLI</em>: <a href="command-line-interface.html#-t-name---test-name">-t, --test</a><br>
+<em>API</em>: <a href="programming-interface/runner.html#filter">runner.filter</a></p>
+<h3><a class="anchor" id="filtertestgrep"></a>filter.testGrep <a class="permalink" href="#filtertestgrep">#</a></h3>
+<p>Runs tests whose names match the specified <code>grep</code> pattern.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"filter"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"testGrep"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Click.*"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p><em>CLI</em>: <a href="command-line-interface.html#-t-pattern---test-grep-pattern">-T, --test-grep</a><br>
+<em>API</em>: <a href="programming-interface/runner.html#filter">runner.filter</a></p>
+<h3><a class="anchor" id="filterfixture"></a>filter.fixture <a class="permalink" href="#filterfixture">#</a></h3>
+<p>Runs a fixture with the specified name.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"filter"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"fixture"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Sample fixture"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p><em>CLI</em>: <a href="command-line-interface.html#-f-name---fixture-name">-f, --fixture</a><br>
+<em>API</em>: <a href="programming-interface/runner.html#filter">runner.filter</a></p>
+<h3><a class="anchor" id="filterfixturegrep"></a>filter.fixtureGrep <a class="permalink" href="#filterfixturegrep">#</a></h3>
+<p>Runs tests whose names match the specified <code>grep</code> pattern.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"filter"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"fixtureGrep"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Page.*"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p><em>CLI</em>: <a href="command-line-interface.html#-f-pattern---fixture-grep-pattern">-F, --fixture-grep</a><br>
+<em>API</em>: <a href="programming-interface/runner.html#filter">runner.filter</a></p>
+<h3><a class="anchor" id="filtertestmeta"></a>filter.testMeta <a class="permalink" href="#filtertestmeta">#</a></h3>
+<p>Runs tests whose <a href="../test-api/test-code-structure.html#specifying-testing-metadata">metadata</a> <a href="https://lodash.com/docs/#isMatch">matches</a> the specified key-value pair.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"filter"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"testMeta"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nt">"device"</span><span class="p">:</span><span class="w"> </span><span class="s2">"mobile"</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"env"</span><span class="p">:</span><span class="w"> </span><span class="s2">"production"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>This configuration runs tests whose metadata&#39;s <code>device</code> property is set to <code>mobile</code>, and <code>env</code> property is set to <code>production</code>.</p>
+
+<p><em>CLI</em>: <a href="command-line-interface.html#--test-meta-keyvaluekey2value2">--test-meta</a><br>
+<em>API</em>: <a href="programming-interface/runner.html#filter">runner.filter</a></p>
+<h3><a class="anchor" id="filterfixturemeta"></a>filter.fixtureMeta <a class="permalink" href="#filterfixturemeta">#</a></h3>
+<p>Runs tests whose fixture&#39;s <a href="../test-api/test-code-structure.html#specifying-testing-metadata">metadata</a> <a href="https://lodash.com/docs/#isMatch">matches</a> the specified key-value pair.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"filter"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"fixtureMeta"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nt">"device"</span><span class="p">:</span><span class="w"> </span><span class="s2">"mobile"</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"env"</span><span class="p">:</span><span class="w"> </span><span class="s2">"production"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>This configuration runs tests whose fixture&#39;s metadata has the <code>device</code> property set to <code>mobile</code> and the <code>env</code> property set to the <code>production</code>.</p>
+
+<p><em>CLI</em>: <a href="command-line-interface.html#--fixture-meta-keyvaluekey2value2">--fixture-meta</a><br>
+<em>API</em>: <a href="programming-interface/runner.html#filter">runner.filter</a></p>
+<h2><a class="anchor" id="appcommand"></a>appCommand <a class="permalink" href="#appcommand">#</a></h2>
+<p>Executes the specified shell command before running tests.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"appCommand"</span><span class="p">:</span><span class="w"> </span><span class="s2">"node server.js"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>Use the <code>appCommand</code> property to launch the application you are going to test. This application is automatically terminated after testing is finished.</p>
+
+<p>The <a href="#appinitdelay">appInitDelay</a> property specifies the amount of time allowed for this command to initialize the tested application.</p>
+<blockquote><div class="blockquote-content"><p>TestCafe adds <code>node_modules/.bin</code> to <code>PATH</code> so that you can use the binaries the locally installed dependencies provide without prefixes.</p>
+</div></blockquote>
+<p><em>CLI</em>: <a href="command-line-interface.html#-a-command---app-command">-a, --app</a><br>
+<em>API</em>: <a href="programming-interface/runner.html#startapp">runner.startApp</a></p>
+<h2><a class="anchor" id="appinitdelay"></a>appInitDelay <a class="permalink" href="#appinitdelay">#</a></h2>
+<p>Specifies the time (in milliseconds) allowed for an application launched using the <a href="#appcommand">appCommand</a> option to initialize.</p>
+
+<p>TestCafe waits for the specified time before it starts running tests.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"appCommand"</span><span class="p">:</span><span class="w"> </span><span class="s2">"node server.js"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"appInitDelay"</span><span class="p">:</span><span class="w"> </span><span class="mi">3000</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p><strong>Default value</strong>: <code>1000</code></p>
+
+<p><em>CLI</em>: <a href="command-line-interface.html#--app-init-delay-ms">--app-init-delay</a><br>
+<em>API</em>: <a href="programming-interface/runner.html#startapp">runner.startApp</a></p>
+<h2><a class="anchor" id="concurrency"></a>concurrency <a class="permalink" href="#concurrency">#</a></h2>
+<p>Specifies the number of browser instances that should run tests concurrently.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"concurrency"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>TestCafe opens several instances of the same browser and creates a pool of browser instances. Tests are run concurrently against this pool, that is, each test is run in the first free instance.</p>
+
+<p>See <a href="common-concepts/concurrent-test-execution.html">Concurrent Test Execution</a> for more information about concurrent test execution.</p>
+
+<p><em>CLI</em>: <a href="command-line-interface.html#-c-n---concurrency-n">-c, --concurrency</a><br>
+<em>API</em>: <a href="programming-interface/runner.html#concurrency">runner.concurrency</a></p>
+<h2><a class="anchor" id="selectortimeout"></a>selectorTimeout <a class="permalink" href="#selectortimeout">#</a></h2>
+<p>Specifies the time (in milliseconds) within which <a href="../test-api/selecting-page-elements/selectors/">selectors</a> attempt to obtain a node to be returned. See <a href="../test-api/selecting-page-elements/selectors/using-selectors.html#selector-timeout">Selector Timeout</a> for details.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"selectorTimeout"</span><span class="p">:</span><span class="w"> </span><span class="mi">3000</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p><strong>Default value</strong>: <code>10000</code></p>
+
+<p><em>CLI</em>: <a href="command-line-interface.html#--selector-timeout-ms">--selector-timeout</a><br>
+<em>API</em>: <a href="programming-interface/runner.html#run">runner.run({ selectorTimeout })</a></p>
+<h2><a class="anchor" id="assertiontimeout"></a>assertionTimeout <a class="permalink" href="#assertiontimeout">#</a></h2>
+<p>Specifies the time (in milliseconds) TestCafe attempts to successfully execute an <a href="../test-api/assertions/">assertion</a>
+if a <a href="../test-api/selecting-page-elements/selectors/using-selectors.html#define-assertion-actual-value">selector property</a>
+or a <a href="../test-api/obtaining-data-from-the-client/">client function</a> was passed as an actual value.
+See <a href="../test-api/assertions/#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a>.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"assertionTimeout"</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p><strong>Default value</strong>: <code>3000</code></p>
+
+<p><em>CLI</em>: <a href="command-line-interface.html#--assertion-timeout-ms">--assertion-timeout</a><br>
+<em>API</em>: <a href="programming-interface/runner.html#run">runner.run({ assertionTimeout })</a></p>
+<h2><a class="anchor" id="pageloadtimeout"></a>pageLoadTimeout <a class="permalink" href="#pageloadtimeout">#</a></h2>
+<p>Specifies the time (in milliseconds) passed after the <code>DOMContentLoaded</code> event, within which TestCafe waits for the <code>window.load</code> event to fire.</p>
+
+<p>After the timeout passes or the <code>window.load</code> event is raised (whichever happens first), TestCafe starts the test.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"pageLoadTimeout"</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p><strong>Default value</strong>: <code>3000</code></p>
+
+<p>See the command line <a href="command-line-interface.html#--page-load-timeout-ms">--page-load-timeout</a> parameter for details.</p>
+
+<p><em>CLI</em>: <a href="command-line-interface.html#--page-load-timeout-ms">--page-load-timeout</a><br>
+<em>API</em>: <a href="programming-interface/runner.html#run">runner.run({ pageLoadTimeout })</a></p>
+<h2><a class="anchor" id="speed"></a>speed <a class="permalink" href="#speed">#</a></h2>
+<p>Specifies the test execution speed.</p>
+
+<p>Tests are run at the maximum speed by default. You can use this option
+to slow the test down.</p>
+
+<p>Provide a number between <code>1</code> (the fastest) and <code>0.01</code> (the slowest).</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"speed"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.1</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p><strong>Default value</strong>: <code>1</code></p>
+
+<p>If the speed is also specified for an <a href="../test-api/actions/action-options.html#basic-action-options">individual action</a>, the action&#39;s speed setting overrides the test speed.</p>
+
+<p><em>CLI</em>: <a href="command-line-interface.html#--speed-factor">--speed</a><br>
+<em>API</em>: <a href="programming-interface/runner.html#run">runner.run({ speed })</a></p>
+<h2><a class="anchor" id="port1-port2"></a>port1, port2 <a class="permalink" href="#port1-port2">#</a></h2>
+<p>Specifies custom port numbers TestCafe uses to perform testing. The number range is [0-65535].</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"port1"</span><span class="p">:</span><span class="w"> </span><span class="mi">12345</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"port2"</span><span class="p">:</span><span class="w"> </span><span class="mi">54321</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>TestCafe automatically selects ports if ports are not specified.</p>
+
+<p><em>CLI</em>: <a href="command-line-interface.html#--ports-port1port2">--ports</a><br>
+<em>API</em>: <a href="programming-interface/createtestcafe.html">createTestCafe</a></p>
+<h2><a class="anchor" id="hostname"></a>hostname <a class="permalink" href="#hostname">#</a></h2>
+<p>Specifies your computer&#39;s hostname. It is used when you run tests in remote browsers.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"hostname"</span><span class="p">:</span><span class="w"> </span><span class="s2">"host.mycorp.com"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>If the hostname is not specified, TestCafe uses the operating system&#39;s hostname or the current machine&#39;s network IP address.</p>
+
+<p><em>CLI</em>: <a href="command-line-interface.html#--hostname-name">--hostname</a><br>
+<em>API</em>: <a href="programming-interface/createtestcafe.html">createTestCafe</a></p>
+<h2><a class="anchor" id="proxy"></a>proxy <a class="permalink" href="#proxy">#</a></h2>
+<p>Specifies the proxy server used in your local network to access the Internet.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"proxy"</span><span class="p">:</span><span class="w"> </span><span class="s2">"proxy.corp.mycompany.com"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"proxy"</span><span class="p">:</span><span class="w"> </span><span class="s2">"172.0.10.10:8080"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>You can also specify authentication credentials with the proxy host.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"proxy"</span><span class="p">:</span><span class="w"> </span><span class="s2">"username:password@proxy.mycorp.com"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p><em>CLI</em>: <a href="command-line-interface.html#--proxy-host">--proxy</a><br>
+<em>API</em>: <a href="programming-interface/runner.html#useproxy">runner.useProxy</a></p>
+<h2><a class="anchor" id="proxybypass"></a>proxyBypass <a class="permalink" href="#proxybypass">#</a></h2>
+<p>Specifies the resources accessed bypassing the proxy server.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"proxyBypass"</span><span class="p">:</span><span class="w"> </span><span class="s2">"*.mycompany.com"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"proxyBypass"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"localhost:8080"</span><span class="p">,</span><span class="w"> </span><span class="s2">"internal-resource.corp.mycompany.com"</span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>See the <a href="command-line-interface.html#--proxy-bypass-rules">--proxy-bypass</a> command line parameter for details.</p>
+
+<p><em>CLI</em>: <a href="command-line-interface.html#--proxy-bypass-rules">--proxy-bypass</a><br>
+<em>API</em>: <a href="programming-interface/runner.html#useproxy">runner.useProxy</a></p>
+<h2><a class="anchor" id="ssl"></a>ssl <a class="permalink" href="#ssl">#</a></h2>
+<p>Provides options that allow you to establish an HTTPS connection between the client browser and the TestCafe server.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"ssl"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"pfx"</span><span class="p">:</span><span class="w"> </span><span class="s2">"path/to/file.pfx"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"rejectUnauthorized"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>See the <a href="command-line-interface.html#--ssl-options">--ssl</a> command line parameter for details.</p>
+
+<p><em>CLI</em>: <a href="command-line-interface.html#--ssl-options">--ssl</a><br>
+<em>API</em>: <a href="programming-interface/createtestcafe.html">createTestCafe</a></p>
+<h2><a class="anchor" id="developmentmode"></a>developmentMode <a class="permalink" href="#developmentmode">#</a></h2>
+<p>Enables mechanisms to log and diagnose errors. You should enable this option if you are going to contact TestCafe Support to report an issue.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"developmentMode"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p><em>CLI</em>: <a href="command-line-interface.html#--dev">--dev</a><br>
+<em>API</em>: <a href="programming-interface/createtestcafe.html">createTestCafe</a></p>
+<h2><a class="anchor" id="qrcode"></a>qrCode <a class="permalink" href="#qrcode">#</a></h2>
+<p>If you launch TestCafe from the console, outputs a QR-code that represents URLs used to connect the remote browsers.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"qrCode"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p><em>CLI</em>: <a href="command-line-interface.html#--qr-code">--qr-code</a>  </p>
+<h2><a class="anchor" id="stoponfirstfail"></a>stopOnFirstFail <a class="permalink" href="#stoponfirstfail">#</a></h2>
+<p>Stops an entire test run if any test fails.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"stopOnFirstFail"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p><em>CLI</em>: <a href="command-line-interface.html#--sf---stop-on-first-fail">--sf, --stop-on-first-fail</a><br>
+<em>API</em>: <a href="programming-interface/runner.html#run">runner.run({ stopOnFirstFail })</a></p>
+<h2><a class="anchor" id="color"></a>color <a class="permalink" href="#color">#</a></h2>
+<p>Enables colors in the command line.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"color"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p><em>CLI</em>: <a href="command-line-interface.html#--color">--color</a></p>
+<h2><a class="anchor" id="nocolor"></a>noColor <a class="permalink" href="#nocolor">#</a></h2>
+<p>Disables colors in the command line.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"noColor"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p><em>CLI</em>: <a href="command-line-interface.html#--no-color">--no-color</a></p>
+
+
+		</div>
+	</article>
+</main>
+</div>
+
+      <div class="push"></div>
+    </div>
+
+    <footer class="site-footer">
+    <div class="site-footer-content">
+        <div class="footer-col-1">
+            <p><strong>TestCafe</strong>: A node.js tool to automate end-to-end web testing<br/>
+            Use of this site constitutes acceptance of our <a href="https://www.devexpress.com/aboutus/privacy-policy.xml"  target="_blank">Privacy Policy</a><br/>
+            Copyright © 2012-2019 Developer Express Inc.</p>
+        </div>
+    </div>
+</footer>
+
+
+    
+<script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.js"></script>
+<script type="text/javascript"> var search = docsearch({
+     apiKey: '938fb7894c0af8c01af3e2b4c53d4bdd',
+     indexName: 'testcafe',
+     inputSelector: '#search',
+     debug: false // Set debug to true if you want to inspect the dropdown
+ });
+
+ search.autocomplete.on('autocomplete:opened', function(e) {
+     var searchInput = document.querySelector('#search');
+     var dropdown    = document.querySelector('.ds-dropdown-menu');
+     
+     if(searchInput && dropdown) {
+         dropdown.style.maxWidth = "none";
+         dropdown.style.width = searchInput.offsetWidth + "px";
+     }
+ });
+</script> 
+
+  </body>
+
+</html>

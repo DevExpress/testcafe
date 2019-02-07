@@ -591,11 +591,25 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/using-testcafe/programming-interface/livemoderunner.html"  >LiveModeRunner Class</a>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/using-testcafe/programming-interface/createtestcafe.html"  >createTestCafe Factory</a>
 		
     </li>
 
 </ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/configuration-file.html"  >Configuration File</a>
 		
     </li>
 
@@ -662,6 +676,20 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/using-testcafe/common-concepts/live-mode.html"  >Live Mode</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/common-concepts/screenshots-and-videos.html"  >Screenshots and Videos</a>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/using-testcafe/common-concepts/reporters.html"  >Reporters</a>
 		
     </li>
@@ -718,6 +746,7 @@
 <ul>
 <li><a href="#createbrowserconnection">createBrowserConnection</a></li>
 <li><a href="#createrunner">createRunner</a></li>
+<li><a href="#createlivemoderunner">createLiveModeRunner</a></li>
 <li><a href="#close">close</a></li>
 </ul>
 <h3><a class="anchor" id="createbrowserconnection"></a>createBrowserConnection <a class="permalink" href="#createbrowserconnection">#</a></h3>
@@ -756,7 +785,7 @@
         <span class="p">});</span>
     <span class="p">});</span>
 </code></pre></div><h3><a class="anchor" id="createrunner"></a>createRunner <a class="permalink" href="#createrunner">#</a></h3>
-<p>Creates the <a href="runner.html">test runner</a> that is used to configure and launch test tasks.</p>
+<p>Creates a <a href="runner.html">test runner</a> that is used to configure and launch test tasks.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">createRunner() → Runner
 </code></pre></div>
 <p><strong>Example</strong></p>
@@ -777,7 +806,31 @@
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Tests failed: '</span> <span class="o">+</span> <span class="nx">failedCount</span><span class="p">);</span>
         <span class="nx">testcafe</span><span class="p">.</span><span class="nx">close</span><span class="p">();</span>
     <span class="p">});</span>
-</code></pre></div><h3><a class="anchor" id="close"></a>close <a class="permalink" href="#close">#</a></h3>
+</code></pre></div><h3><a class="anchor" id="createlivemoderunner"></a>createLiveModeRunner <a class="permalink" href="#createlivemoderunner">#</a></h3>
+<p>Creates a <a href="livemoderunner.html">test runner</a> that runs TestCafe in <a href="../common-concepts/live-mode.html">live mode</a>. In this mode, TestCafe watches for changes you make in the test files and all files referenced in them (like page objects or helper modules). These changes immediately restart the tests so that you can see the effect.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">createLiveModeRunner() → LiveModeRunner
+</code></pre></div>
+<p><a href="livemoderunner.html">LiveModeRunner</a> is a <a href="runner.html">Runner</a> descendant and provides the same API (with certain <a href="livemoderunner.html#limitations">limitations</a>).</p>
+
+<p><strong>Example</strong></p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">createTestCafe</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'testcafe'</span><span class="p">);</span>
+<span class="kd">let</span> <span class="nx">testcafe</span>         <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+
+<span class="nx">createTestCafe</span><span class="p">(</span><span class="s1">'localhost'</span><span class="p">,</span> <span class="mi">1337</span><span class="p">,</span> <span class="mi">1338</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">tc</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nx">testcafe</span>         <span class="o">=</span> <span class="nx">tc</span><span class="p">;</span>
+        <span class="kr">const</span> <span class="nx">liveRunner</span> <span class="o">=</span> <span class="nx">testcafe</span><span class="p">.</span><span class="nx">createLiveModeRunner</span><span class="p">();</span>
+
+        <span class="k">return</span> <span class="nx">liveRunner</span>
+            <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">'tests/test.js'</span><span class="p">)</span>
+            <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="s1">'chrome'</span><span class="p">)</span>
+            <span class="p">.</span><span class="nx">run</span><span class="p">();</span>
+    <span class="p">})</span>
+    <span class="p">.</span><span class="nx">then</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nx">testcafe</span><span class="p">.</span><span class="nx">close</span><span class="p">();</span>
+    <span class="p">});</span>
+</code></pre></div><blockquote class="important"><div class="blockquote-content"><p>You cannot create multiple live mode runners for the same TestCafe server instance. This is because a TestCafe server can handle only one watcher that tracks changes to test files.</p>
+</div></blockquote><h3><a class="anchor" id="close"></a>close <a class="permalink" href="#close">#</a></h3>
 <p>Stops the TestCafe server. Forcibly closes all connections and pending test runs immediately.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">async close()
 </code></pre></div>

@@ -56,6 +56,12 @@ img {
   vertical-align: middle; }
 
 /**
+ * Videos
+ */
+video {
+  max-width: 100%; }
+
+/**
  * Figures
  */
 figure > img {

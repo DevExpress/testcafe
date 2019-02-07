@@ -591,11 +591,25 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/using-testcafe/programming-interface/livemoderunner.html"  >LiveModeRunner Class</a>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/using-testcafe/programming-interface/createtestcafe.html"  >createTestCafe Factory</a>
 		
     </li>
 
 </ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/configuration-file.html"  >Configuration File</a>
 		
     </li>
 
@@ -656,6 +670,20 @@
 		    
 		
 <a href="/testcafe/documentation/using-testcafe/common-concepts/concurrent-test-execution.html"  >Concurrent Test Execution</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/common-concepts/live-mode.html"  >Live Mode</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/common-concepts/screenshots-and-videos.html"  >Screenshots and Videos</a>
 		
     </li>
 
@@ -738,6 +766,7 @@
 <li><a href="#passing-a-remote-browser-connection">Passing a Remote Browser Connection</a></li>
 </ul></li>
 <li><a href="#screenshots">screenshots</a></li>
+<li><a href="#video">video</a></li>
 <li><a href="#reporter">reporter</a>
 
 <ul>
@@ -771,7 +800,9 @@
 <td>The relative or absolute path to a test fixture file, or several such paths. You can use <a href="https://github.com/isaacs/node-glob#glob-primer">glob patterns</a> to include (or exclude) multiple files.</td>
 </tr>
 </tbody></table></div>
-<p>If you call the method several times, all the specified sources are added to the test runner.</p>
+<p>You do not need to call this function if you specify the <a href="../configuration-file.html#src">src</a> property in the <a href="../configuration-file.html">configuration file</a>.</p>
+
+<p><em>Related configuration file property</em>: <a href="../configuration-file.html#src">src</a></p>
 
 <p><strong>Examples</strong></p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">src</span><span class="p">([</span><span class="s1">'/home/user/tests/fixture1.js'</span><span class="p">,</span> <span class="s1">'fixture5.js'</span><span class="p">]);</span>
@@ -826,6 +857,8 @@
 <td>The fixture metadata.</td>
 </tr>
 </tbody></table></div>
+<p><em>Related configuration file property</em>: <a href="../configuration-file.html#filter">filter</a></p>
+
 <p><strong>Example</strong></p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">filter</span><span class="p">((</span><span class="nx">testName</span><span class="p">,</span> <span class="nx">fixtureName</span><span class="p">,</span> <span class="nx">fixturePath</span><span class="p">,</span> <span class="nx">testMeta</span><span class="p">,</span> <span class="nx">fixtureMeta</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">fixturePath</span><span class="p">.</span><span class="nx">startsWith</span><span class="p">(</span><span class="s1">'D'</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
@@ -845,7 +878,7 @@
 <th>Browser Type</th>
 </tr>
 </thead><tbody><tr>
-<td>String</td>
+<td>String &#124; Array</td>
 <td>A different browser alias for each browser type. See <a href="../common-concepts/browsers/browser-support.html">Browser Support</a> for more details.</td>
 <td><a href="../common-concepts/browsers/browser-support.html#locally-installed-browsers">Local browsers</a>, <a href="../common-concepts/browsers/browser-support.html#browsers-in-cloud-testing-services">cloud browsers</a>, and <a href="../common-concepts/browsers/browser-support.html#nonconventional-browsers">browsers accessed through <em>browser provider plugins</em></a>.</td>
 </tr>
@@ -860,7 +893,9 @@
 <td><a href="../common-concepts/browsers/browser-support.html#browsers-on-remote-devices">Remote browsers</a></td>
 </tr>
 </tbody></table></div>
-<p>You can use different object types in one function call. If you call the method several times, all the specified browsers are added to the test runner.</p>
+<p>You do not need to call this function if you specify the <a href="../configuration-file.html#browsers">browsers</a> property in the <a href="../configuration-file.html">configuration file</a>.</p>
+
+<p><em>Related configuration file property</em>: <a href="../configuration-file.html#browsers">browsers</a></p>
 <h4><a class="anchor" id="using-browser-aliases"></a>Using Browser Aliases <a class="permalink" href="#using-browser-aliases">#</a></h4>
 <ul>
 <li>running local browsers</li>
@@ -924,7 +959,7 @@
 </thead><tbody><tr>
 <td><code>path</code></td>
 <td>String</td>
-<td>The base path where the screenshots are saved. Note that to construct a complete path to these screenshots, TestCafe uses default <a href="../command-line-interface.html#path-patterns">path patterns</a>. You can override these patterns using the method&#39;s <code>screenshotPathPattern</code> parameter.</td>
+<td>The base path where the screenshots are saved. Note that to construct a complete path to these screenshots, TestCafe uses the default <a href="../common-concepts/screenshots-and-videos.html#default-path-patterns">path patterns</a>. You can override these patterns using the method&#39;s <code>screenshotPathPattern</code> parameter.</td>
 <td></td>
 </tr>
 <tr>
@@ -936,21 +971,70 @@
 <tr>
 <td><code>sceenshotPathPattern</code>&#160;<em>(optional)</em></td>
 <td>String</td>
-<td>The pattern to compose screenshot files&#39; relative path and name. See <a href="../command-line-interface.html#-p---screenshot-path-pattern">--screenshot-path-pattern</a> for information about the available placeholders.</td>
+<td>The pattern to compose screenshot files&#39; relative path and name. See <a href="../common-concepts/screenshots-and-videos.html#path-pattern-placeholders">Path Pattern Placeholders</a> for information about the available placeholders.</td>
 <td></td>
 </tr>
-</tbody></table></div>
-<p>The <code>screenshots</code> function should be called to allow TestCafe to take screenshots
-when the <a href="../../test-api/actions/take-screenshot.html">t.takeScreenshot</a> action is called from test code.</p>
-
-<p>Set the <code>takeOnFails</code> parameter to <code>true</code> to take a screenshot when a test fails.</p>
-<blockquote class="important"><div class="blockquote-content"><p>TestCafe does not take screenshots if the <code>screenshots</code> function is not called.</p>
+</tbody></table></div><blockquote class="important"><div class="blockquote-content"><p>TestCafe does not take screenshots if the <code>screenshots</code> function is not called.</p>
 </div></blockquote>
+<p>See <a href="../common-concepts/screenshots-and-videos.html#screenshots">Screenshots</a> for details.</p>
+
+<p><em>Related configuration file properties</em>:</p>
+
+<ul>
+<li><a href="../configuration-file.html#screenshotpath">screenshotPath</a></li>
+<li><a href="../configuration-file.html#takescreenshotsonfails">takeScreenshotsOnFails</a></li>
+<li><a href="../configuration-file.html#screenshotpathpattern">screenshotPathPattern</a></li>
+</ul>
+
 <p><strong>Example</strong></p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">screenshots</span><span class="p">(</span><span class="s1">'reports/screenshots/'</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="s1">'${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png'</span><span class="p">);</span>
+</code></pre></div><h3><a class="anchor" id="video"></a>video <a class="permalink" href="#video">#</a></h3>
+<p>Enables TestCafe to record videos of test runs.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">video(path [, options, encodingOptions]) → this
+</code></pre></div><div class="table-wrapper"><table><thead><tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody><tr>
+<td><code>path</code></td>
+<td>String</td>
+<td>The base directory where videos are saved. Relative paths to video files are composed according to <a href="../common-concepts/screenshots-and-videos.html#default-path-patterns">path patterns</a>. You can also use the <code>options.pathPattern</code> property to specify a custom pattern.</td>
+</tr>
+<tr>
+<td><code>options</code>&#160;<em>(optional)</em></td>
+<td>Object</td>
+<td>Options that define how videos are recorded. See <a href="../common-concepts/screenshots-and-videos.html#basic-video-options">Basic Video Options</a> for a list of options.</td>
+</tr>
+<tr>
+<td><code>encodingOptions</code>&#160;<em>(optional)</em></td>
+<td>Object</td>
+<td>Options that specify video encoding. You can pass all the options supported by the FFmpeg library. Refer to <a href="https://ffmpeg.org/ffmpeg.html#Options">the FFmpeg documentation</a> for information about the available options.</td>
+</tr>
+</tbody></table></div>
+<p>See <a href="../common-concepts/screenshots-and-videos.html#record-videos">Record Videos</a> for details.</p>
+
+<p><em>Related configuration file properties</em>:</p>
+
+<ul>
+<li><a href="../configuration-file.html#videopath">videoPath</a></li>
+<li><a href="../configuration-file.html#videooptions">videoOptions</a></li>
+<li><a href="../configuration-file.html#videoencodingoptions">videoEncodingOptions</a></li>
+</ul>
+
+<p><strong>Example</strong></p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">video</span><span class="p">(</span><span class="s1">'reports/videos/'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="na">singleFile</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="na">failedOnly</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="na">pathPattern</span><span class="p">:</span> <span class="s1">'${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.mp4'</span>
+<span class="p">},</span> <span class="p">{</span>
+    <span class="na">r</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+    <span class="na">aspect</span><span class="p">:</span> <span class="s1">'4:3'</span>
+<span class="p">});</span>
 </code></pre></div><h3><a class="anchor" id="reporter"></a>reporter <a class="permalink" href="#reporter">#</a></h3>
 <p>Configures TestCafe&#39;s reporting feature.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">reporter(name [, outStream]) → this
+<div class="highlight"><pre><code class="language-text" data-lang="text">reporter(name, output) → this
+reporter([ name | { name, output }]) → this
 </code></pre></div><div class="table-wrapper"><table><thead><tr>
 <th>Parameter</th>
 <th>Type</th>
@@ -964,35 +1048,25 @@ when the <a href="../../test-api/actions/take-screenshot.html">t.takeScreenshot<
 <td></td>
 </tr>
 <tr>
-<td><code>outStream</code>&#160;<em>(optional)</em></td>
-<td>Writable Stream implementer</td>
-<td>The stream to which the report is written.</td>
+<td><code>output</code>&#160;<em>(optional)</em></td>
+<td>String &#124; Writable Stream implementer</td>
+<td>The file path where the report is written or the output stream.</td>
 <td><code>stdout</code></td>
 </tr>
 </tbody></table></div>
-<p>To use multiple reporters, call this method several times with different reporter names. Note that only one reporter can write to <code>stdout</code>.</p>
+<p>To use a single reporter, specify a reporter name and, optionally, an output target as the second parameter.</p>
+
+<p>To use multiple reporters, pass an array to this method. This array can include both strings (the reporter name) and <code>{ name, output }</code> objects (if you wish to specify the output target). See examples below.</p>
+
+<p>Note that if you use multiple reporters, only one can write to <code>stdout</code>.</p>
+
+<p><em>Related configuration file property</em>: <a href="../configuration-file.html#reporter">reporter</a></p>
 <h4><a class="anchor" id="specifying-the-reporter"></a>Specifying the Reporter <a class="permalink" href="#specifying-the-reporter">#</a></h4><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">reporter</span><span class="p">(</span><span class="s1">'minimal'</span><span class="p">);</span>
-</code></pre></div><h4><a class="anchor" id="saving-the-report-to-a-file"></a>Saving the Report to a File <a class="permalink" href="#saving-the-report-to-a-file">#</a></h4><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">stream</span> <span class="o">=</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">createWriteStream</span><span class="p">(</span><span class="s1">'report.xml'</span><span class="p">);</span>
-
-<span class="nx">runner</span>
-    <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">'tests/sample-fixture.js'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="s1">'chrome'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">reporter</span><span class="p">(</span><span class="s1">'xunit'</span><span class="p">,</span> <span class="nx">stream</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">run</span><span class="p">()</span>
-    <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">failedCount</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="nx">stream</span><span class="p">.</span><span class="nx">end</span><span class="p">();</span>
-    <span class="p">});</span>
-</code></pre></div><h4><a class="anchor" id="using-multiple-reporters"></a>Using Multiple Reporters <a class="permalink" href="#using-multiple-reporters">#</a></h4><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">stream</span> <span class="o">=</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">createWriteStream</span><span class="p">(</span><span class="s1">'report.json'</span><span class="p">);</span>
-
-<span class="nx">runner</span>
-    <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">'tests/sample-fixture.js'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="s1">'chrome'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">reporter</span><span class="p">(</span><span class="s1">'json'</span><span class="p">,</span> <span class="nx">stream</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">reporter</span><span class="p">(</span><span class="s1">'list'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">run</span><span class="p">()</span>
-    <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">failedCount</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="nx">stream</span><span class="p">.</span><span class="nx">end</span><span class="p">();</span>
-    <span class="p">});</span>
+</code></pre></div><h4><a class="anchor" id="saving-the-report-to-a-file"></a>Saving the Report to a File <a class="permalink" href="#saving-the-report-to-a-file">#</a></h4><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">reporter</span><span class="p">(</span><span class="s1">'xunit'</span><span class="p">,</span> <span class="s1">'reports/report.xml'</span><span class="p">);</span>
+</code></pre></div><h4><a class="anchor" id="using-multiple-reporters"></a>Using Multiple Reporters <a class="permalink" href="#using-multiple-reporters">#</a></h4><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">reporter</span><span class="p">([</span><span class="s1">'spec'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="na">name</span><span class="p">:</span> <span class="s1">'json'</span><span class="p">,</span>
+    <span class="na">output</span><span class="p">:</span> <span class="s1">'reports/report.json'</span>
+<span class="p">}]);</span>
 </code></pre></div><h4><a class="anchor" id="implementing-a-custom-stream"></a>Implementing a Custom Stream <a class="permalink" href="#implementing-a-custom-stream">#</a></h4><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">class</span> <span class="nx">MyStream</span> <span class="kr">extends</span> <span class="nx">stream</span><span class="p">.</span><span class="nx">Writable</span> <span class="p">{</span>
     <span class="nx">_write</span><span class="p">(</span><span class="nx">chunk</span><span class="p">,</span> <span class="nx">encoding</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
         <span class="nx">doSomething</span><span class="p">(</span><span class="nx">chunk</span><span class="p">);</span>
@@ -1025,6 +1099,8 @@ Tests are run concurrently against this pool, that is, each test is run in the f
 </tbody></table></div>
 <p>See <a href="../common-concepts/concurrent-test-execution.html">Concurrent Test Execution</a> to learn more about concurrent test execution.</p>
 
+<p><em>Related configuration file property</em>: <a href="../configuration-file.html#concurrency">concurrency</a></p>
+
 <p>The following example shows how to run tests in three Chrome instances:</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span>
     <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="s1">'chrome'</span><span class="p">)</span>
@@ -1053,6 +1129,13 @@ Tests are run concurrently against this pool, that is, each test is run in the f
 </tr>
 </tbody></table></div><blockquote><div class="blockquote-content"><p>TestCafe adds <code>node_modules/.bin</code> to <code>PATH</code> so that you can use binaries the locally installed dependencies provide without prefixes.</p>
 </div></blockquote>
+<p><em>Related configuration file properties</em>:</p>
+
+<ul>
+<li><a href="../configuration-file.html#appcommand">appCommand</a></li>
+<li><a href="../configuration-file.html#appinitdelay">appInitDelay</a></li>
+</ul>
+
 <p><strong>Example</strong></p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">startApp</span><span class="p">(</span><span class="s1">'node server.js'</span><span class="p">,</span> <span class="mi">4000</span><span class="p">);</span>
 </code></pre></div><h3><a class="anchor" id="useproxy"></a>useProxy <a class="permalink" href="#useproxy">#</a></h3>
@@ -1080,6 +1163,13 @@ Tests are run concurrently against this pool, that is, each test is run in the f
 
 <p>The <code>bypassRules</code> parameter takes one or several URLs that require direct access. You can replace parts of the URL with the <code>*</code> wildcard that corresponds to a string of any length. Wildcards at the beginning and end of the rules can be omitted (<code>*.mycompany.com</code> and <code>.mycompany.com</code> have the same effect).</p>
 
+<p><em>Related configuration file properties</em>:</p>
+
+<ul>
+<li><a href="../configuration-file.html#proxy">proxy</a></li>
+<li><a href="../configuration-file.html#proxybypass">proxyBypass</a></li>
+</ul>
+
 <p><strong>Examples</strong></p>
 
 <p>The following example shows how to use the proxy server at <code>proxy.corp.mycompany.com</code>:</p>
@@ -1096,7 +1186,9 @@ Tests are run concurrently against this pool, that is, each test is run in the f
 </code></pre></div><h3><a class="anchor" id="run"></a>run <a class="permalink" href="#run">#</a></h3>
 <p>Runs tests according to the current configuration. Returns the number of failed tests.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">async run(options) → Promise&lt;Number&gt;
-</code></pre></div><blockquote class="important"><div class="blockquote-content"><p>Make sure to keep the browser tab that is running tests active. Do not minimize the browser window.
+</code></pre></div>
+<p>Before TestCafe runs tests, it reads settings from the <code>.testcaferc.json</code> <a href="../configuration-file.html">configuration file</a> if this file exists. Then it applies settings specified in the programming API. API settings override values from the configuration file in case they differ. TestCafe prints information about every overridden property in the console.</p>
+<blockquote class="important"><div class="blockquote-content"><p>Make sure to keep the browser tab that is running tests active. Do not minimize the browser window.
 Inactive tabs and minimized browser windows switch to a lower resource consumption mode
 where tests are not guaranteed to execute correctly.</p>
 </div></blockquote>
@@ -1167,14 +1259,23 @@ where tests are not guaranteed to execute correctly.</p>
 <td>Defines whether to stop a test run if a test fails. This allows you not to wait for all the tests to finish and to focus on the first error.</td>
 <td><code>false</code></td>
 </tr>
-<tr>
-<td><code>disableTestSyntaxValidation</code></td>
-<td>Boolean</td>
-<td>Defines whether to disable checks for <a href="../../test-api/test-code-structure.html#tests">test</a> and <a href="../../test-api/test-code-structure.html#fixtures">fixture</a> directives in test files. Use this option to run dynamically loaded tests. See details in the <a href="../command-line-interface.html#--disable-test-syntax-validation">--disable-test-syntax-validation</a> command line option description.</td>
-<td><code>false</code></td>
-</tr>
 </tbody></table></div>
 <p>After all tests are finished, call the <a href="testcafe.html#close">testcafe.close</a> function to stop the TestCafe server.</p>
+
+<p><em>Related configuration file properties</em>:</p>
+
+<ul>
+<li><a href="../configuration-file.html#skipjserrors">skipJsErrors</a></li>
+<li><a href="../configuration-file.html#skipuncaughterrors">skipUncaughtErrors</a></li>
+<li><a href="../configuration-file.html#quarantinemode">quarantineMode</a></li>
+<li><a href="../configuration-file.html#debugmode">debugMode</a></li>
+<li><a href="../configuration-file.html#debugonfail">debugOnFail</a></li>
+<li><a href="../configuration-file.html#selectortimeout">selectorTimeout</a></li>
+<li><a href="../configuration-file.html#assertiontimeout">assertionTimeout</a></li>
+<li><a href="../configuration-file.html#pageloadtimeout">pageLoadTimeout</a></li>
+<li><a href="../configuration-file.html#speed">speed</a></li>
+<li><a href="../configuration-file.html#stoponfirstfail">stopOnFirstFail</a></li>
+</ul>
 
 <p><strong>Example</strong></p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">createTestCafe</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'testcafe'</span><span class="p">);</span>
@@ -1203,7 +1304,8 @@ where tests are not guaranteed to execute correctly.</p>
 </code></pre></div>
 <p>If a browser stops responding while it executes tests, TestCafe restarts the browser and reruns the current test in a new browser instance.
 If the same problem occurs with this test two more times, the test run finishes and an error is thrown.</p>
-<h4><a class="anchor" id="cancelling-test-tasks"></a>Cancelling Test Tasks <a class="permalink" href="#cancelling-test-tasks">#</a></h4>
+<blockquote><div class="blockquote-content"><p>When you use a <a href="livemoderunner.html">LiveModeRunner</a>, you can call the <code>runner.run</code> method only once. In rare cases when you need multiple live mode sessions running in parallel, you can create several <a href="testcafe.html">TestCafe server instances</a>.</p>
+</div></blockquote><h4><a class="anchor" id="cancelling-test-tasks"></a>Cancelling Test Tasks <a class="permalink" href="#cancelling-test-tasks">#</a></h4>
 <p>You can stop an individual test task at any moment by cancelling the corresponding promise.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">taskPromise</span> <span class="o">=</span> <span class="nx">runner</span>
     <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">'tests/fixture1.js'</span><span class="p">)</span>

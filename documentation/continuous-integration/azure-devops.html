@@ -690,60 +690,60 @@
 <h3><a class="anchor" id="configure-build-task-on-azure-devops-server"></a>Configure Build Task on Azure DevOps Server <a class="permalink" href="#configure-build-task-on-azure-devops-server">#</a></h3>
 <p>Hover over the <strong>Pipelines</strong> section and click <strong>Builds</strong> in the pop-up menu.</p>
 
-<p><img src="../../images/azure/select-builds.png" alt="Select Builds"></p>
+<p><img src="../../images/azure/select-builds.png" alt="Select Builds" title=""></p>
 
 <p>Click the <strong>New</strong> button and select <strong>New build pipeline</strong>.</p>
 
-<p><img src="../../images/azure/create-new-pipeline.png" alt="Create New Pipeline"></p>
+<p><img src="../../images/azure/create-new-pipeline.png" alt="Create New Pipeline" title=""></p>
 
 <p>Azure DevOps Server asks you to select the repository that contains your code. Enter the repository details and click <strong>Continue</strong>.</p>
 
-<p><img src="../../images/azure/select-repo.png" alt="Select Repository"></p>
+<p><img src="../../images/azure/select-repo.png" alt="Select Repository" title=""></p>
 
 <p>The next screen prompts you to select a build template. Choose to start with an empty job.</p>
 
-<p><img src="../../images/azure/create-empty-job.png" alt="Create an Empty Job"></p>
+<p><img src="../../images/azure/create-empty-job.png" alt="Create an Empty Job" title=""></p>
 
 <p>On the next screen, select an <a href="https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/pools-queues?view=vsts">agent pool</a> to run the job.</p>
 <blockquote class="important"><div class="blockquote-content"><p>The agent should run on a machine with all the necessary browsers installed.</p>
 </div></blockquote>
-<p><img src="../../images/azure/select-agent-pool.png" alt="Select Agent Pool"></p>
+<p><img src="../../images/azure/select-agent-pool.png" alt="Select Agent Pool" title=""></p>
 
 <p>Now you can add tasks to the job. Click the <strong>+</strong> button to create a new task.</p>
 
-<p><img src="../../images/azure/add-new-task.png" alt="Create New Task"></p>
+<p><img src="../../images/azure/add-new-task.png" alt="Create New Task" title=""></p>
 
 <p>Select <strong>Node Tool Installer</strong> from the task list. This task installs Node.js and adds it to the <code>PATH</code> variable.</p>
 
-<p><img src="../../images/azure/add-node-installer.png" alt="Add Node.js Installer"></p>
+<p><img src="../../images/azure/add-node-installer.png" alt="Add Node.js Installer" title=""></p>
 
 <p>The task is now added to the pipeline. Click its name in the pipeline to enter the task settings.</p>
 
 <p>On the settings screen, specify the Node.js version to install. Use the latest LTS version - it is available on the <a href="https://nodejs.org/en/">Node.js website</a>.</p>
 
-<p><img src="../../images/azure/set-node-version.png" alt="Specify Node.js Version"></p>
+<p><img src="../../images/azure/set-node-version.png" alt="Specify Node.js Version" title=""></p>
 
 <p>Now add another task that runs a shell command. Click the <strong>+</strong> button again and select <strong>Command Line</strong> from the task list.</p>
 
-<p><img src="../../images/azure/add-command-line.png" alt="Add a Command Line Task"></p>
+<p><img src="../../images/azure/add-command-line.png" alt="Add a Command Line Task" title=""></p>
 
 <p>Configure this command to install TestCafe. Open its settings, specify a name and enter the following command:</p>
 <div class="highlight"><pre><code class="language-cmd" data-lang="cmd">npm install
 </code></pre></div>
-<p><img src="../../images/azure/npm-install.png" alt="Install TestCafe"></p>
+<p><img src="../../images/azure/npm-install.png" alt="Install TestCafe" title=""></p>
 
 <p>In the same manner, add another <strong>Command Line</strong> task that runs TestCafe tests.</p>
 <div class="highlight"><pre><code class="language-cmd" data-lang="cmd">npm test
 </code></pre></div>
-<p><img src="../../images/azure/npm-test.png" alt="Run TestCafe Tests"></p>
+<p><img src="../../images/azure/npm-test.png" alt="Run TestCafe Tests" title=""></p>
 
 <p>Save the changes and run this task using the <strong>Save &amp; queue</strong> button.</p>
 
-<p><img src="../../images/azure/save-pipeline.png" alt="Save Pipeline"></p>
+<p><img src="../../images/azure/save-pipeline.png" alt="Save Pipeline" title=""></p>
 
 <p>This opens the <strong>Save build pipeline and queue</strong> window. Specify an optional comment that describes the changes you have made. Select an agent pool that runs this task, the repository branch and the commit that contains code to build. You can leave the <strong>Commit</strong> field blank to use the latest commit. Click <strong>Save &amp; queue</strong>.</p>
 
-<p><img src="../../images/azure/save-options.png" alt="Save Pipeline"></p>
+<p><img src="../../images/azure/save-options.png" alt="Save Pipeline" title=""></p>
 <h2><a class="anchor" id="step-4---run-test-task-and-view-results"></a>Step 4 - Run Test Task and View Results <a class="permalink" href="#step-4---run-test-task-and-view-results">#</a></h2><h3><a class="anchor" id="option-1---enable-continuous-integration"></a>Option 1 - Enable Continuous Integration <a class="permalink" href="#option-1---enable-continuous-integration">#</a></h3>
 <p>You can enable continuous integration in Azure DevOps to specify that the pipeline is run every time your code changes.</p>
 
@@ -751,15 +751,15 @@
 
 <p>On Azure DevOps Server, select the build and click <strong>Edit</strong>.</p>
 
-<p><img src="../../images/azure/edit-task-server.png" alt="Edit Build"></p>
+<p><img src="../../images/azure/edit-task-server.png" alt="Edit Build" title=""></p>
 
 <p>Then open the <strong>Triggers</strong> tab.</p>
 
-<p><img src="../../images/azure/set-ci.png" alt="Triggers Tab"></p>
+<p><img src="../../images/azure/set-ci.png" alt="Triggers Tab" title=""></p>
 
 <p>Click the repository name under the <strong>Continuous integration</strong> header and check <strong>Enable continuous integration</strong>.</p>
 
-<p><img src="../../images/azure/enable-ci.png" alt="Triggers Tab"></p>
+<p><img src="../../images/azure/enable-ci.png" alt="Triggers Tab" title=""></p>
 
 <p>To build a specific branch or path, add <strong>Branch filters</strong> and/or <strong>Path filters</strong>.</p>
 
@@ -769,27 +769,27 @@
 
 <p>On Azure DevOps Server, you can find this button under the build header.</p>
 
-<p><img src="../../images/azure/queue-task-server.png" alt="Queue Task - Server"></p>
+<p><img src="../../images/azure/queue-task-server.png" alt="Queue Task - Server" title=""></p>
 
 <p>On Azure Pipelines, this button is in the top-right corner.</p>
 
-<p><img src="../../images/azure/queue-task-pipelines.png" alt="Queue Task - Pipelines"></p>
+<p><img src="../../images/azure/queue-task-pipelines.png" alt="Queue Task - Pipelines" title=""></p>
 
 <p>This opens the <strong>Queue build</strong> window. Specify the branch and commit that should be built. You can leave the <strong>Commit</strong> field blank to use the latest commit. On Azure DevOps Server, specify the agent pool that should run the task. Click <strong>Queue</strong>.</p>
 
-<p><img src="../../images/azure/queue-task-parameters.png" alt="Queue Task - Parameters"></p>
+<p><img src="../../images/azure/queue-task-parameters.png" alt="Queue Task - Parameters" title=""></p>
 <h3><a class="anchor" id="view-test-results"></a>View Test Results <a class="permalink" href="#view-test-results">#</a></h3>
 <p>Select the build and click the commit whose results you want to view.</p>
 
-<p><img src="../../images/azure/view-results-select-commit.png" alt="View Results - Select Commit"></p>
+<p><img src="../../images/azure/view-results-select-commit.png" alt="View Results - Select Commit" title=""></p>
 
 <p>In the detail view, select a task to view its log.</p>
 
-<p><img src="../../images/azure/view-results-select-task.png" alt="View Results - Select Task"></p>
+<p><img src="../../images/azure/view-results-select-task.png" alt="View Results - Select Task" title=""></p>
 
 <p>This displays a detailed log that includes a TestCafe report.</p>
 
-<p><img src="../../images/azure/view-results-log.png" alt="View Results - Log"></p>
+<p><img src="../../images/azure/view-results-log.png" alt="View Results - Log" title=""></p>
 
 
 		</div>

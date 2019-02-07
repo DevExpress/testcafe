@@ -1087,18 +1087,18 @@ and, optionally, other arguments.</p>
 </code></pre></div><h2><a class="anchor" id="smart-assertion-query-mechanism"></a>Smart Assertion Query Mechanism <a class="permalink" href="#smart-assertion-query-mechanism">#</a></h2>
 <p>You can perform the required assertions immediately after test action is executed in synchronous functional testing.</p>
 
-<p><img src="../../../images/assertions/synchronous-testing.png" alt="Synchronous Functional Testing"></p>
+<p><img src="../../../images/assertions/synchronous-testing.png" alt="Synchronous Functional Testing" title=""></p>
 
 <p>Functional tests are asynchronous on the web. This means that we cannot get the expected changes immediately after an end-user&#39;s actions.
 For example, it can take time for the tested web page to send a request to the server for the required data, or an end-user&#39;s action launches an animation after which the web page reaches its final state.
 All these intervals cannot be pre-calculated because they depend on various factors: computer performance,
 network connection speed, etc. In this case, if we perform assertions immediately after the test action finished, we can get an inconclusive result.</p>
 
-<p><img src="../../../images/assertions/asynchronous-testing.png" alt="Asynchronous Functional Testing"></p>
+<p><img src="../../../images/assertions/asynchronous-testing.png" alt="Asynchronous Functional Testing" title=""></p>
 
 <p>An additional timeout is usually added when performing asynchronous functional tests.</p>
 
-<p><img src="../../../images/assertions/extra-waiting.png" alt="Asynchronous Functional Testing with Extra Waiting"></p>
+<p><img src="../../../images/assertions/extra-waiting.png" alt="Asynchronous Functional Testing with Extra Waiting" title=""></p>
 
 <p>To stabilize such tests, you need to add a timeout that enables the required changes to be applied successfully.
 Note that adding such timeouts can increase the test&#39;s duration.</p>
@@ -1110,7 +1110,7 @@ if an assertion did not pass, the test does not fail immediately. The assertion 
 each time it requests the actual property value. The test fails if the assertion could not complete successfully
 within a timeout:</p>
 
-<p><img src="../../../images/assertions/query-mechanism.png" alt="TestCafe Smart Assertion Query Mechanism"></p>
+<p><img src="../../../images/assertions/query-mechanism.png" alt="TestCafe Smart Assertion Query Mechanism" title=""></p>
 
 <p><strong>Example:</strong></p>
 

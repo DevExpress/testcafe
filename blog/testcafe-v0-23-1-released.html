@@ -419,10 +419,10 @@
 </code></pre></div><h3><a class="anchor" id="run-dynamically-loaded-tests-2074"></a>⚙ Run Dynamically Loaded Tests (<a href="https://github.com/DevExpress/testcafe/issues/2074">#2074</a>) <a class="permalink" href="#run-dynamically-loaded-tests-2074">#</a></h3>
 <p>You can now run tests imported from external libraries or generated dynamically even if the <code>.js</code> file does not contain any tests.</p>
 
-<p>This was not possible previously because test files should contain the <a href="https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#fixtures">fixture</a> and <a href="https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#tests">test</a> directives. However, you can now provide the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--disable-test-syntax-validation">--disable-test-syntax-validation</a> command line flag to bypass this check.</p>
+<p>This was not possible previously because test files should contain the <a href="https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#fixtures">fixture</a> and <a href="https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#tests">test</a> directives. However, you can now provide the <code>--disable-test-syntax-validation</code> command line flag to bypass this check.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe safari test.js --disable-test-syntax-validation
 </code></pre></div>
-<p>In the API, use the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#run">disableTestSyntaxValidation</a> option.</p>
+<p>In the API, use the <code>disableTestSyntaxValidation</code> option.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">run</span><span class="p">({</span> <span class="na">disableTestSyntaxValidation</span><span class="p">:</span> <span class="kc">true</span> <span class="p">})</span>
 </code></pre></div><h2><a class="anchor" id="bug-fixes"></a>Bug Fixes <a class="permalink" href="#bug-fixes">#</a></h2>
 <ul>

@@ -5,9 +5,257 @@
     <description></description>
     <link>https://devexpress.github.io/testcafe/</link>
     <atom:link href="https://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 25 Jan 2019 14:35:28 +0300</pubDate>
-    <lastBuildDate>Fri, 25 Jan 2019 14:35:28 +0300</lastBuildDate>
+    <pubDate>Thu, 07 Feb 2019 17:14:08 +0300</pubDate>
+    <lastBuildDate>Thu, 07 Feb 2019 17:14:08 +0300</lastBuildDate>
     <generator>Jekyll v3.8.4</generator>
+    
+      <item>
+        <title>TestCafe v1.0.0 Released</title>
+        <description>&lt;h1&gt;TestCafe v1.0.0 Released&lt;/h1&gt;
+&lt;p&gt;Meet TestCafe v1.0.0, our first major update that includes some big features: video recording, configuration file, &amp;quot;live mode&amp;quot; for rapid test development and much more.&lt;/p&gt;
+
+&lt;!--more--&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;breaking-changes&quot;&gt;&lt;/a&gt;Breaking Changes &lt;a class=&quot;permalink&quot; href=&quot;#breaking-changes&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;TestCafe v1.0.0 introduces minor changes to the behavior and programming interface. You can find the details in the &lt;a href=&quot;https://devexpress.github.io/testcafe/blog/migration-from-testcafe-v0-x-y-to-v1-0-0.html&quot;&gt;migration guide&lt;/a&gt;.&lt;/p&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;enhancements&quot;&gt;&lt;/a&gt;Enhancements &lt;a class=&quot;permalink&quot; href=&quot;#enhancements&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;video-recording-2151&quot;&gt;&lt;/a&gt;⚙ Video Recording (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2151&quot;&gt;#2151&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#video-recording-2151&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;You can now &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/screenshots-and-videos.html#record-videos&quot;&gt;record videos of test runs&lt;/a&gt; in Google Chrome and Mozilla Firefox. To enable video recording, &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/screenshots-and-videos.html#prerequisites&quot;&gt;install the FFmpeg library&lt;/a&gt; and then do one of the following:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;specify the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--video-basepath&quot;&gt;--video&lt;/a&gt; command line flag,&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe chrome test.js --video artifacts/videos/
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;call the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#video&quot;&gt;runner.video&lt;/a&gt; API method,&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;video&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'artifacts/videos/'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;specify the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#videopath&quot;&gt;videoPath&lt;/a&gt; configuration file property (configuration file is also a new feature, see below).&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;videoPath&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;artifacts/videos/&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;TestCafe records all tests and saves each recording in a separate file. You can change this behavior in &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/screenshots-and-videos.html#basic-video-options&quot;&gt;video options&lt;/a&gt;. You can also customize &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/screenshots-and-videos.html#video-encoding-options&quot;&gt;video encoding parameters&lt;/a&gt;.&lt;/p&gt;
+&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;configuration-file-3131&quot;&gt;&lt;/a&gt;⚙ Configuration File (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/3131&quot;&gt;#3131&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#configuration-file-3131&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;TestCafe now allows you to store its settings in the &lt;code&gt;.testcaferc.json&lt;/code&gt; &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html&quot;&gt;configuration file&lt;/a&gt; (with support for &lt;code&gt;JSON5&lt;/code&gt; syntax).&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;browsers&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;chrome&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;src&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/home/user/auth-tests/fixture-1.js&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/home/user/mobile-tests/&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;reporter&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;xunit&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;output&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;reports/report.xml&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;screenshotPath&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/home/user/tests/screenshots/&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;takeScreenshotsOnFails&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;videoPath&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/home/user/tests/videos/&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;pageLoadTimeout&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;hostname&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;host.mycorp.com&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;and&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;more&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Keep the configuration file in the project&amp;#39;s root directory from which you run TestCafe.&lt;/p&gt;
+
+&lt;p&gt;Settings you specify when you launch tests from the command line and programming interfaces override settings from &lt;code&gt;.testcaferc.json&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;See &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html&quot;&gt;Configuration File&lt;/a&gt; for more information.&lt;/p&gt;
+&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;live-mode-3215&quot;&gt;&lt;/a&gt;⚙ Live Mode (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/3215&quot;&gt;#3215&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#live-mode-3215&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;We have integrated the &lt;a href=&quot;https://github.com/DevExpress/testcafe-live&quot;&gt;testcafe-live&lt;/a&gt; module into our main code so you can now use the new &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/live-mode.html&quot;&gt;live mode&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Live mode keeps the TestCafe process and browsers opened the whole time you are working on tests. Changes you make in code immediately restart the tests. That is, live mode allows you to see test results instantly. See &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/live-mode.html#how-live-mode-works&quot;&gt;How Live Mode Works&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Use the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-l---live&quot;&gt;-L (--live)&lt;/a&gt; flag to enable live mode from the command line interface.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe chrome tests/test.js -L
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;In the API, create a &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/livemoderunner.html&quot;&gt;live mode runner&lt;/a&gt; with the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/testcafe.html#createlivemoderunner&quot;&gt;testcafe.createLiveModeRunner&lt;/a&gt; function and use it instead of a &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html&quot;&gt;regular test runner&lt;/a&gt;.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;createTestCafe&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'testcafe'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;testcafe&lt;/span&gt;         &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;createTestCafe&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'localhost'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1337&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1338&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;tc&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;testcafe&lt;/span&gt;         &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;tc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;liveRunner&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;testcafe&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;createLiveModeRunner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;liveRunner&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'tests/test.js'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;browsers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'chrome'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;testcafe&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;close&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;custom-reporter-api-enhancements-part-of-2753-pull-request&quot;&gt;&lt;/a&gt;⚙ Custom Reporter API Enhancements (Part of &lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2753&quot;&gt;#2753&lt;/a&gt;; &lt;a href=&quot;https://github.com/DevExpress/testcafe/pull/3177&quot;&gt;Pull Request&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#custom-reporter-api-enhancements-part-of-2753-pull-request&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;You can now access warnings that appeared during the test run from the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reporttestdone&quot;&gt;reportTestDone&lt;/a&gt; method. Use the &lt;code&gt;warnings&lt;/code&gt; property of the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#testruninfo-object&quot;&gt;testRunInfo&lt;/a&gt; object.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;reportTestDone&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;testRunInfo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;meta&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;warnings&lt;/span&gt;    &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;testRunInfo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;warnings&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;hasWarnings&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!!&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;warnings&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;hasWarnings&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;newline&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Warnings:'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+        &lt;span class=&quot;nx&quot;&gt;warnings&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;forEach&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;warning&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;newline&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+                &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;warning&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;The &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reporttaskdone&quot;&gt;reportTaskDone&lt;/a&gt; method now receives the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#result-object&quot;&gt;result&lt;/a&gt; parameter that contains information about the number of passed, failed, and skipped tests.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;reportTaskDone&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;endTime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;passed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;warnings&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Testing&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;finished&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;newline&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Passed&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;passedCount&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;newline&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Failed&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;failedCount&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;newline&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Skipped&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;skippedCount&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;newline&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;typings-for-programming-interface-3341-by-infctr&quot;&gt;&lt;/a&gt;⚙ Typings for Programming Interface (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/3341&quot;&gt;#3341&lt;/a&gt;) by &lt;a href=&quot;https://github.com/infctr&quot;&gt;@infctr&lt;/a&gt; &lt;a class=&quot;permalink&quot; href=&quot;#typings-for-programming-interface-3341-by-infctr&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;TestCafe &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/&quot;&gt;programming interface&lt;/a&gt; now features TypeScript typings.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../images/api-typings.png&quot; alt=&quot;API Typings&quot; title=&quot;&quot;&gt;&lt;/p&gt;
+&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;programming-interface-simpler-api-to-write-reports-to-a-file&quot;&gt;&lt;/a&gt;⚙ Programming Interface: Simpler API to Write Reports to a File &lt;a class=&quot;permalink&quot; href=&quot;#programming-interface-simpler-api-to-write-reports-to-a-file&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;You no longer need to use &lt;code&gt;fs.createWriteStream&lt;/code&gt; to create a stream that writes a report to a file. You can now pass the file name as the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#reporter&quot;&gt;runner.reporter&lt;/a&gt; parameter.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;runnner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;reporter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'json'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'reports/report.json'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;bug-fixes&quot;&gt;&lt;/a&gt;Bug Fixes &lt;a class=&quot;permalink&quot; href=&quot;#bug-fixes&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;The test runner no longer hangs when a custom reporter implementation uses synchronous callbacks (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/3209&quot;&gt;#3209&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Fixture hooks for two adjacent fixtures are now executed in the correct order (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/3298&quot;&gt;#3298&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Iframes no longer throw an error after a &lt;code&gt;document.open&lt;/code&gt; call in IE and Edge (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/3343&quot;&gt;#3343&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;TestCafe no longer triggers a click event when you disable a button with a &lt;code&gt;span&lt;/code&gt; element inside (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2902&quot;&gt;#2902&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Fixed a bug that led to errors in certain cases (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/3189&quot;&gt;#3189&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;We have improved the status panel design and adaptivity (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/3073&quot;&gt;#3073&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Redirects through several pages in iframes now work correctly (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1825&quot;&gt;testcafe-hammerhead/#1825&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;TestCafe can now correctly work with pages that override &lt;code&gt;HTMLElement.classList&lt;/code&gt; in IE11 (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1890&quot;&gt;testcafe-hammerhead/#1890&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Thu, 07 Feb 2019 00:00:00 +0300</pubDate>
+        <link>https://devexpress.github.io/testcafe/blog/testcafe-v1-0-0-released.html</link>
+        <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v1-0-0-released.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Migration from TestCafe v0.x.y to v1.0.0</title>
+        <description>&lt;h1&gt;Migration from TestCafe v0.x.y to v1.0.0&lt;/h1&gt;
+&lt;p&gt;TestCafe v1.0.0 release introduces minor changes to the behavior and programming interface. This document lists these changes and describes how to address them.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#test-syntax-validation-disabled-all-input-files-are-executed&quot;&gt;Test Syntax Validation Disabled: All Input Files Are Executed&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#custom-request-hooks-asynchronous-api&quot;&gt;Custom Request Hooks: Asynchronous API&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#custom-reporter-plugins-asynchronous-api&quot;&gt;Custom Reporter Plugins: Asynchronous API&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#programming-interface-multiple-method-calls-prohibited&quot;&gt;Programming Interface: Multiple Method Calls Prohibited&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;test-syntax-validation-disabled-all-input-files-are-executed&quot;&gt;&lt;/a&gt;Test Syntax Validation Disabled: All Input Files Are Executed &lt;a class=&quot;permalink&quot; href=&quot;#test-syntax-validation-disabled-all-input-files-are-executed&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Previous versions performed &lt;em&gt;test syntax validation&lt;/em&gt; within input script files before executing them. Only files that contained the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#fixtures&quot;&gt;fixture&lt;/a&gt; and &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#tests&quot;&gt;test&lt;/a&gt; directives were executed.&lt;/p&gt;
+
+&lt;p&gt;Starting with v1.0.0, input script files are &lt;strong&gt;never&lt;/strong&gt; validated. This means that TestCafe executes all the scripts you specify as test sources. If you use Glob patterns to specify input test files, please recheck these patterns to avoid unintended file matches.&lt;/p&gt;
+
+&lt;p&gt;The &lt;code&gt;--disable-test-syntax-validation&lt;/code&gt; command line flag and the &lt;code&gt;disableTestSyntaxValidation&lt;/code&gt; option for the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#run&quot;&gt;runner.run&lt;/a&gt; API method that disabled test syntax validation were removed in v1.0.0.&lt;/p&gt;
+&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;what-has-improved&quot;&gt;&lt;/a&gt;What Has Improved &lt;a class=&quot;permalink&quot; href=&quot;#what-has-improved&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;You can now load tests dynamically without additional customization. The following example illustrates how tests can be imported from an external library.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;external-lib.js&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kr&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;default&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;runFixture&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+    &lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;test.js&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kr&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;runFixture&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'./external-lib'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fixtureName&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'My fixture'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'https://testPage'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;runFixture&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;fixtureName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;programming-interface-multiple-method-calls-prohibited&quot;&gt;&lt;/a&gt;Programming Interface: Multiple Method Calls Prohibited &lt;a class=&quot;permalink&quot; href=&quot;#programming-interface-multiple-method-calls-prohibited&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Previous versions allowed you to call the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#src&quot;&gt;runner.src&lt;/a&gt;, &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#browsers&quot;&gt;runner.browsers&lt;/a&gt; and &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#reporter&quot;&gt;runner.reporter&lt;/a&gt; methods several times to specify multiple test files, browsers or reporters.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;stream&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;createWriteStream&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'report.json'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'/home/user/tests/fixture1.js'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'fixture5.js'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;browsers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'chrome'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;browsers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'firefox:headless'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;reporter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'minimal'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;reporter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'json'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;stream&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Starting with v1.0.0, pass arrays to these methods to specify multiple values.&lt;/p&gt;
+
+&lt;p&gt;To use a reporter that writes to a file, add a &lt;code&gt;{ name, output }&lt;/code&gt; object to an array (see the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#reporter&quot;&gt;runner.reporter&lt;/a&gt; description for details).&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'/home/user/tests/fixture1.js'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'fixture5.js'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;browsers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'chrome'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'firefox:headless'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;reporter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'minimal'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'json'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;output&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'report.json'&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}]);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;what-has-improved&quot;&gt;&lt;/a&gt;What Has Improved &lt;a class=&quot;permalink&quot; href=&quot;#what-has-improved&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;This change was necessary to implement the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html&quot;&gt;configuration file&lt;/a&gt; in a way that is consistent with the API and command line interface.&lt;/p&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;custom-request-hooks-asynchronous-api&quot;&gt;&lt;/a&gt;Custom Request Hooks: Asynchronous API &lt;a class=&quot;permalink&quot; href=&quot;#custom-request-hooks-asynchronous-api&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/&quot;&gt;Request hook&lt;/a&gt; methods became asynchronous in TestCafe v1.0.0.&lt;/p&gt;
+
+&lt;p&gt;If the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html#the-onrequest-method&quot;&gt;onRequest&lt;/a&gt; or &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html#the-onresponse-method&quot;&gt;onResponse&lt;/a&gt; method in your custom hook returns a Promise, TestCafe now waits for this Promise to resolve.&lt;/p&gt;
+
+&lt;p&gt;This does not necessarily leads to unexpected behavior, but still be aware of possible side effects.&lt;/p&gt;
+
+&lt;p&gt;Since the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html#the-onrequest-method&quot;&gt;onRequest&lt;/a&gt; and &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html#the-onresponse-method&quot;&gt;onResponse&lt;/a&gt; methods are now asynchronous, add the &lt;code&gt;async&lt;/code&gt; keyword to their declarations.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kr&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;RequestHook&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'testcafe'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kr&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;MyRequestHook&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;RequestHook&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;constructor&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;requestFilterRules&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;responseEventConfigureOpts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;kr&quot;&gt;super&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;requestFilterRules&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;responseEventConfigureOpts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;nx&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;onRequest&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;nx&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;onResponse&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;what-has-improved&quot;&gt;&lt;/a&gt;What Has Improved &lt;a class=&quot;permalink&quot; href=&quot;#what-has-improved&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;You can call asynchronous &lt;a href=&quot;https://nodejs.org/api/fs.html&quot;&gt;fs&lt;/a&gt; functions, invoke a &lt;a href=&quot;https://nodejs.org/api/child_process.html&quot;&gt;child_process&lt;/a&gt;, or perform asynchronous network requests (to a database or any other server) from inside the hooks.&lt;/p&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;custom-reporter-plugins-asynchronous-api&quot;&gt;&lt;/a&gt;Custom Reporter Plugins: Asynchronous API &lt;a class=&quot;permalink&quot; href=&quot;#custom-reporter-plugins-asynchronous-api&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;TestCafe v1.0.0 also introduces asynchronous API for &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/&quot;&gt;reporter plugins&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Similarly to &lt;a href=&quot;#custom-request-hooks-asynchronous-api&quot;&gt;request hooks&lt;/a&gt;, if any of the custom reporter&amp;#39;s methods (&lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reporttaskstart&quot;&gt;reportTaskStart&lt;/a&gt;, &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reportfixturestart&quot;&gt;reportFixtureStart&lt;/a&gt;, &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reporttestdone&quot;&gt;reportTestDone&lt;/a&gt; or &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reporttaskdone&quot;&gt;reportTaskDone&lt;/a&gt;) returns a Promise, this Promise is now awaited.&lt;/p&gt;
+
+&lt;p&gt;Side effects may show up in certain cases.&lt;/p&gt;
+
+&lt;p&gt;Since the reporter methods are now asynchronous, add the &lt;code&gt;async&lt;/code&gt; keyword to their declarations.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;reportTaskStart&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;startTime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;userAgents&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;testCount&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;reportFixtureStart&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;meta&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;reportTestDone&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;testRunInfo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;meta&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;reportTaskDone&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;endTime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;passed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;warnings&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;what-has-improved&quot;&gt;&lt;/a&gt;What Has Improved &lt;a class=&quot;permalink&quot; href=&quot;#what-has-improved&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Reporters can call asynchronous &lt;a href=&quot;https://nodejs.org/api/fs.html&quot;&gt;fs&lt;/a&gt; functions, invoke a &lt;a href=&quot;https://nodejs.org/api/child_process.html&quot;&gt;child_process&lt;/a&gt;, or perform asynchronous network requests (to send an email, use REST API, connect to a database, etc).&lt;/p&gt;
+</description>
+        <pubDate>Thu, 07 Feb 2019 00:00:00 +0300</pubDate>
+        <link>https://devexpress.github.io/testcafe/blog/migration-from-testcafe-v0-x-y-to-v1-0-0.html</link>
+        <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/migration-from-testcafe-v0-x-y-to-v1-0-0.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>TestCafe v0.23.1 Released</title>
@@ -28,10 +276,10 @@
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;run-dynamically-loaded-tests-2074&quot;&gt;&lt;/a&gt;⚙ Run Dynamically Loaded Tests (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2074&quot;&gt;#2074&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#run-dynamically-loaded-tests-2074&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;You can now run tests imported from external libraries or generated dynamically even if the &lt;code&gt;.js&lt;/code&gt; file does not contain any tests.&lt;/p&gt;
 
-&lt;p&gt;This was not possible previously because test files should contain the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#fixtures&quot;&gt;fixture&lt;/a&gt; and &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#tests&quot;&gt;test&lt;/a&gt; directives. However, you can now provide the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--disable-test-syntax-validation&quot;&gt;--disable-test-syntax-validation&lt;/a&gt; command line flag to bypass this check.&lt;/p&gt;
+&lt;p&gt;This was not possible previously because test files should contain the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#fixtures&quot;&gt;fixture&lt;/a&gt; and &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#tests&quot;&gt;test&lt;/a&gt; directives. However, you can now provide the &lt;code&gt;--disable-test-syntax-validation&lt;/code&gt; command line flag to bypass this check.&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe safari test.js --disable-test-syntax-validation
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;In the API, use the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#run&quot;&gt;disableTestSyntaxValidation&lt;/a&gt; option.&lt;/p&gt;
+&lt;p&gt;In the API, use the &lt;code&gt;disableTestSyntaxValidation&lt;/code&gt; option.&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;disableTestSyntaxValidation&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;bug-fixes&quot;&gt;&lt;/a&gt;Bug Fixes &lt;a class=&quot;permalink&quot; href=&quot;#bug-fixes&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;ul&gt;
@@ -66,7 +314,7 @@
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;view-the-javascript-errors-stack-traces-in-reports-2043&quot;&gt;&lt;/a&gt;⚙ View the JavaScript Errors&amp;#39; Stack Traces in Reports (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2043&quot;&gt;#2043&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#view-the-javascript-errors-stack-traces-in-reports-2043&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;Now when a JavaScript error occurs on the tested webpage, the test run report includes a stack trace for this error (only if the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-e---skip-js-errors&quot;&gt;--skip-js-errors&lt;/a&gt; option is disabled).&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;../images/client-error-stack-report.png&quot; alt=&quot;A report that contains a stack trace for a client JS error&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../images/client-error-stack-report.png&quot; alt=&quot;A report that contains a stack trace for a client JS error&quot; title=&quot;&quot;&gt;&lt;/p&gt;
 &lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;browsers-are-automatically-restarted-when-they-stop-responding-1815&quot;&gt;&lt;/a&gt;⚙ Browsers are Automatically Restarted When They Stop Responding (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1815&quot;&gt;#1815&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#browsers-are-automatically-restarted-when-they-stop-responding-1815&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;If a browser stops responding while it executes tests, TestCafe restarts the browser and reruns the current test in a new browser instance.
 If the same problem occurs with this test two more times, the test run finishes and an error is thrown.&lt;/p&gt;
@@ -126,7 +374,7 @@ If the same problem occurs with this test two more times, the test run finishes 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;failed-selector-method-pinpointed-in-the-report-2568&quot;&gt;&lt;/a&gt;⚙ Failed Selector Method Pinpointed in the Report (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2568&quot;&gt;#2568&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#failed-selector-method-pinpointed-in-the-report-2568&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;Now the test run report can identify which selector&amp;#39;s method does not match any DOM element.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;../images/failed-selector-report.png&quot; alt=&quot;Failed Selector Report&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../images/failed-selector-report.png&quot; alt=&quot;Failed Selector Report&quot; title=&quot;&quot;&gt;&lt;/p&gt;
 &lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;fail-on-uncaught-server-errors-2546&quot;&gt;&lt;/a&gt;⚙ Fail on Uncaught Server Errors (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2546&quot;&gt;#2546&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#fail-on-uncaught-server-errors-2546&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;Previously, TestCafe ignored uncaught errors and unhandled promise rejections that occurred on the server. Whenever an error or a promise rejection happened, test execution continued.&lt;/p&gt;
 
@@ -314,7 +562,7 @@ If the same problem occurs with this test two more times, the test run finishes 
 &lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;testcafe-live-see-instant-feedback-when-working-on-tests-1624&quot;&gt;&lt;/a&gt;TestCafe Live: See instant feedback when working on tests (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1624&quot;&gt;#1624&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#testcafe-live-see-instant-feedback-when-working-on-tests-1624&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;TestCafe Live provides a service that keeps the TestCafe process and browsers opened the whole time you are working on tests. Changes you make in code immediately restart the tests. That is, TestCafe Live allows you to see test results instantly.&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=RWQtB6Xv01Q&quot;&gt;&lt;img src=&quot;https://raw.githubusercontent.com/DevExpress/testcafe/master/media/changelog/testcafe-live-video.png&quot; alt=&quot;TestCafe Live Video&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=RWQtB6Xv01Q&quot;&gt;&lt;img src=&quot;https://raw.githubusercontent.com/DevExpress/testcafe/master/media/changelog/testcafe-live-video.png&quot; alt=&quot;TestCafe Live Video&quot; title=&quot;&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;For more information, see &lt;a href=&quot;https://github.com/DevExpress/testcafe-live&quot;&gt;the TestCafe Live repository&lt;/a&gt;.&lt;/p&gt;
 &lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;enhancements&quot;&gt;&lt;/a&gt;Enhancements &lt;a class=&quot;permalink&quot; href=&quot;#enhancements&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;taking-screenshots-of-individual-page-elements-1496&quot;&gt;&lt;/a&gt;⚙ Taking Screenshots of Individual Page Elements (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1496&quot;&gt;#1496&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#taking-screenshots-of-individual-page-elements-1496&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
@@ -466,7 +714,7 @@ you can now do this by specifying multiple reporters when running tests.&lt;/p&g
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;interacting-with-the-tested-page-in-debug-mode-1848&quot;&gt;&lt;/a&gt;⚙ Interacting with the tested page in debug mode (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1848&quot;&gt;#1848&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#interacting-with-the-tested-page-in-debug-mode-1848&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;When debugging your tests, you can now interact with the tested page. Click the &lt;strong&gt;Unlock page&lt;/strong&gt; button in the page footer to enable interaction.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;../images/unlock-page-button.png&quot; alt=&quot;Unlock page button&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../images/unlock-page-button.png&quot; alt=&quot;Unlock page button&quot; title=&quot;&quot;&gt;&lt;/p&gt;
 
 &lt;p&gt;After that, you can do anything with the webpage. This gives you additional powers to detect problems in your tests.&lt;/p&gt;
 
@@ -606,164 +854,6 @@ Now TestCafe exits gracefully closing all browsers opened for testing.&lt;/p&gt;
         <pubDate>Fri, 29 Sep 2017 00:00:00 +0300</pubDate>
         <link>https://devexpress.github.io/testcafe/blog/testcafe-v0-18-0-alpha1-released.html</link>
         <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v0-18-0-alpha1-released.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>TestCafe v0.17.0 Released</title>
-        <description>&lt;h1&gt;TestCafe v0.17.0 Released: Testing Electron Apps and Concurrent Test Execution&lt;/h1&gt;
-&lt;p&gt;With this release, we have prepared a bunch of new features. Two big news are the Electron browser provider and concurrent test execution.&lt;/p&gt;
-
-&lt;p&gt;Read on to learn more.&lt;/p&gt;
-
-&lt;!--more--&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;enhancements&quot;&gt;&lt;/a&gt;Enhancements &lt;a class=&quot;permalink&quot; href=&quot;#enhancements&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;testing-electron-applications-testcafe-browser-provider-electron&quot;&gt;&lt;/a&gt;⚙ Testing Electron applications (&lt;a href=&quot;https://github.com/DevExpress/testcafe-browser-provider-electron&quot;&gt;testcafe-browser-provider-electron&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#testing-electron-applications-testcafe-browser-provider-electron&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;We have created a browser provider that allows you to test Electron applications with TestCafe.&lt;/p&gt;
-
-&lt;p&gt;Getting it to work is simple. First, install the browser provider plugin from npm.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;npm install testcafe-browser-provider-electron
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;We assume that you have a JavaScript application that you wish to run in Electron.&lt;/p&gt;
-
-&lt;p&gt;Create a &lt;code&gt;.testcafe-electron-rc&lt;/code&gt; file that contains configurations for the Electron plugin.
-The only required setting here is &lt;code&gt;mainWindowUrl&lt;/code&gt;. It&amp;#39;s a URL (or path) to the main window page relative to the application directory.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;mainWindowUrl&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;./index.html&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Place this file into the application root directory.&lt;/p&gt;
-
-&lt;p&gt;At the next step, install the Electron module.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;npm install electron@latest
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Now you are ready to run tests. Specify the &lt;code&gt;electron&lt;/code&gt; browser name and the application path
-at the test launch.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe &lt;span class=&quot;s2&quot;&gt;&quot;electron:/home/user/electron-app&quot;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;path/to/test/file.js&quot;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;testCafe&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;createRunner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'path/to/test/file.js'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;browsers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'electron:/home/user/electron-app'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;To learn more about the Electron browser provider, see the plugin &lt;a href=&quot;https://github.com/DevExpress/testcafe-browser-provider-electron&quot;&gt;readme&lt;/a&gt;.&lt;/p&gt;
-&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;concurrent-test-execution-1165&quot;&gt;&lt;/a&gt;⚙ Concurrent test execution (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1165&quot;&gt;#1165&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#concurrent-test-execution-1165&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;We&amp;#39;ve added concurrent test launch. This makes a test batch complete faster.&lt;/p&gt;
-
-&lt;p&gt;By default TestCafe launches one instance of each specified browser. Tests run one by one in each of them.&lt;/p&gt;
-
-&lt;p&gt;Enable &lt;em&gt;concurrency&lt;/em&gt; and TestCafe will launch multiple instances of each browser. It will distribute the test batch among them. The tests will run in parallel.&lt;/p&gt;
-
-&lt;p&gt;To enable concurrency, add &lt;code&gt;-c&lt;/code&gt;in the command line. Or use the &lt;code&gt;runner.concurrency()&lt;/code&gt; API method.
-Specify the number of instances to invoke for each browser.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;testcafe&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;chrome&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;tests&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;js&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;testRunPromise&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'tests/test.js'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;browsers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'chrome'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;concurrency&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;For details, see &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/concurrent-test-execution.html&quot;&gt;Concurrent Test Execution&lt;/a&gt;.&lt;/p&gt;
-&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;output-test-run-reports-to-slack-and-teamcity-testcafe-reporter-slack-testcafe-reporter-teamcity&quot;&gt;&lt;/a&gt;⚙ Output test run reports to Slack and TeamCity (&lt;a href=&quot;https://github.com/Shafied/testcafe-reporter-slack&quot;&gt;testcafe-reporter-slack&lt;/a&gt;, &lt;a href=&quot;https://github.com/Soluto/testcafe-reporter-teamcity&quot;&gt;testcafe-reporter-teamcity&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#output-test-run-reports-to-slack-and-teamcity-testcafe-reporter-slack-testcafe-reporter-teamcity&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;Thanks to &lt;a href=&quot;https://github.com/Shafied&quot;&gt;@Shafied&lt;/a&gt; and &lt;a href=&quot;https://github.com/nirsky&quot;&gt;@nirsky&lt;/a&gt;, TestCafe ecosystem has gained two new reporter plugins.&lt;/p&gt;
-
-&lt;p&gt;The Slack reporter allows you to create a chat bot that posts test run results to a Slack channel.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;../images/testcafe-slack-reporter.png&quot; alt=&quot;Slack Reporter&quot;&gt;&lt;/p&gt;
-
-&lt;p&gt;The TeamCity reporter enables you to display reports inside the TeamCity UI.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;../images/testcafe-reporter-teamcity.png&quot; alt=&quot;TeamCity Reporter&quot;&gt;&lt;/p&gt;
-&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;further-improvements-in-automatic-waiting-mechanism-1521&quot;&gt;&lt;/a&gt;⚙ Further improvements in automatic waiting mechanism (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1521&quot;&gt;#1521&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#further-improvements-in-automatic-waiting-mechanism-1521&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;We have enhanced the waiting mechanism behavior in certain scenarios where you still used to need &lt;code&gt;wait&lt;/code&gt; actions.
-Now automatic waiting is much smarter and chances that you need to wait manually are diminished.&lt;/p&gt;
-&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;user-roles-preserve-the-local-storage-1454&quot;&gt;&lt;/a&gt;⚙ User roles preserve the local storage (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1454&quot;&gt;#1454&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#user-roles-preserve-the-local-storage-1454&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;TestCafe now saves the local storage state when switching between roles. You get the same local storage content you left when you switch back.&lt;/p&gt;
-
-&lt;p&gt;This is useful for testing websites that perform authentication via local storage instead of cookies.&lt;/p&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;bug-fixes&quot;&gt;&lt;/a&gt;Bug Fixes &lt;a class=&quot;permalink&quot; href=&quot;#bug-fixes&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Selector&amp;#39;s &lt;code&gt;withAttribute&lt;/code&gt; method supports search by strict match (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1548&quot;&gt;#1548&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Description for the &lt;code&gt;path&lt;/code&gt; parameter of the &lt;code&gt;t.takeScreenshot&lt;/code&gt; action has been corrected (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1515&quot;&gt;#1515&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Local storage is now cleaned appropriately after the test run.(&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1546&quot;&gt;#1546&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;TestCafe now checks element visibility with a timeout when the target element&amp;#39;s &lt;code&gt;style.top&lt;/code&gt; is negative (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1185&quot;&gt;#1185&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Fetching an absolute CORS URL now works correctly. (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1629&quot;&gt;#1629&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Add partial support for proxying live node collections (the &lt;code&gt;GetElementsByTagName&lt;/code&gt; method) (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1442&quot;&gt;#1442&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;TypeScript performance has been enhanced. (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1591&quot;&gt;#1591&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;The right port is now applied to a cross-domain iframe location after redirect. (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1191&quot;&gt;testcafe-hammerhead/#1191&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;All internal properties are marked as non-enumerable. (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1182&quot;&gt;testcafe-hammerhead/#1182&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Support proxying pages with defined referrer policy. (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1195&quot;&gt;testcafe-hammerhead/#1195&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;WebWorker content is now correctly proxied in FireFox 54. (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1216&quot;&gt;testcafe-hammerhead/#1216&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Code instrumentation for the &lt;code&gt;document.activeElement&lt;/code&gt; property works properly if it is &lt;code&gt;null&lt;/code&gt;. (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1226&quot;&gt;testcafe-hammerhead/#1226&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;length&lt;/code&gt;, &lt;code&gt;item&lt;/code&gt; and &lt;code&gt;namedItem&lt;/code&gt; are no longer own properties of &lt;code&gt;LiveNodeListWrapper&lt;/code&gt;. (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1222&quot;&gt;testcafe-hammerhead/#1222&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;The &lt;code&gt;scope&lt;/code&gt; option in the &lt;code&gt;serviceWorker.register&lt;/code&gt; function is now processed correctly. (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1233&quot;&gt;testcafe-hammerhead/#1233&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Promises from a fetch request are now processed correctly. (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1234&quot;&gt;testcafe-hammerhead/#1234&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Fix transpiling for the &lt;code&gt;for..of&lt;/code&gt; loop to support browsers without &lt;code&gt;window.Iterator&lt;/code&gt;. (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1231&quot;&gt;testcafe-hammerhead/#1231&lt;/a&gt;)&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Wed, 02 Aug 2017 00:00:00 +0300</pubDate>
-        <link>https://devexpress.github.io/testcafe/blog/testcafe-v0-17-0-released.html</link>
-        <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v0-17-0-released.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>TestCafe v0.16.0 Released</title>
-        <description>&lt;h1&gt;TestCafe v0.16.0 Released&lt;/h1&gt;
-&lt;p&gt;TypeScript support, seamless testing in headless Chrome and device emulator, and numerous bug fixes.&lt;/p&gt;
-
-&lt;!--more--&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;enhancements&quot;&gt;&lt;/a&gt;Enhancements &lt;a class=&quot;permalink&quot; href=&quot;#enhancements&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;typescript-support-408&quot;&gt;&lt;/a&gt;⚙ TypeScript support (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/408&quot;&gt;#408&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#typescript-support-408&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;In this release, we have added the capability to write tests in &lt;a href=&quot;https://www.typescriptlang.org/&quot;&gt;TypeScript&lt;/a&gt;. By using TypeScript to write your TestCafe tests, you get the advantages of strongly-typed languages such as: rich coding assistance, painless scalability, check-as-you-type code verification, and much more.&lt;/p&gt;
-
-&lt;p&gt;TestCafe bundles TypeScript declaration file with the npm package, so you have no need to install any additional packages.&lt;/p&gt;
-
-&lt;p&gt;Just create a &lt;code&gt;.ts&lt;/code&gt; file with the&lt;/p&gt;
-
-&lt;!-- Use `js` instead of `ts` for this code block for proper code highlighting --&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kr&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'testcafe'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;and write your test.&lt;/p&gt;
-
-&lt;p&gt;For details, see &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/typescript-support.html&quot;&gt;TypeScript Support&lt;/a&gt;&lt;/p&gt;
-&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;support-running-in-chrome-in-headless-mode-and-in-device-emulator-1417&quot;&gt;&lt;/a&gt;⚙ Support running in Chrome in headless mode and in device emulator (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1417&quot;&gt;#1417&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#support-running-in-chrome-in-headless-mode-and-in-device-emulator-1417&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;Now TestCafe allows you to run your tests in Google Chrome in headless and device emulation modes.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://developers.google.com/web/updates/2017/04/headless-chrome&quot;&gt;Headless mode&lt;/a&gt; allows you to run tests in Chrome without any visible UI shell. To run tests in headless mode, use the &lt;code&gt;:headless&lt;/code&gt; postfix:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe &lt;span class=&quot;s2&quot;&gt;&quot;chrome:headless&quot;&lt;/span&gt; tests/sample-fixture.js
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Device emulation mode allows you to check how your tests works on mobile devices via Chrome&amp;#39;s built-in &lt;a href=&quot;https://developers.google.com/web/tools/chrome-devtools/device-mode/&quot;&gt;device emulator&lt;/a&gt;. To run tests in device emulation mode, specify &lt;code&gt;emulation:&lt;/code&gt; and &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browsers/using-chrome-device-emulation.html#emulator-parameters&quot;&gt;device parameters&lt;/a&gt;:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe &lt;span class=&quot;s2&quot;&gt;&quot;chrome:emulation:device=iphone 6&quot;&lt;/span&gt; tests/sample-fixture.js
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;For details, see &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browsers/using-chrome-device-emulation.html&quot;&gt;Using Chrome-specific Features&lt;/a&gt;.&lt;/p&gt;
-&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;support-html5-drag-and-drop-897&quot;&gt;&lt;/a&gt;⚙ Support HTML5 Drag and Drop (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/897&quot;&gt;#897&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#support-html5-drag-and-drop-897&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;Starting with this release, TestCafe supports HTML5 drag and drop, so you can test elements with the &lt;code&gt;draggable&lt;/code&gt; &lt;a href=&quot;http://w3c.github.io/html/editing.html#the-draggable-attribute&quot;&gt;attribute&lt;/a&gt;.&lt;/p&gt;
-&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;fixed-url-for-opening-remote-browsers-1476&quot;&gt;&lt;/a&gt;⚙ Fixed URL for opening remote browsers (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1476&quot;&gt;#1476&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#fixed-url-for-opening-remote-browsers-1476&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;We have simplified the format of links that TestCafe generates when you &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browsers/browser-support.html#browsers-on-remote-devices&quot;&gt;run tests on remote browsers&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Now, you have no need to type a unique link for each test run, all the links became constant. So, it is easier now to run tests on a remote device repeatedly: you can run them by navigating a link from your browser history.&lt;/p&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;bug-fixes&quot;&gt;&lt;/a&gt;Bug Fixes &lt;a class=&quot;permalink&quot; href=&quot;#bug-fixes&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;No TestCafe UI on screenshots created during testing (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1357&quot;&gt;#1357&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;mouseenter&lt;/code&gt; and &lt;code&gt;mouseleave&lt;/code&gt; events are not triggered during cursor moving (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1426&quot;&gt;#1426&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;The runner&amp;#39;s speed option affects the speed of &lt;code&gt;doubleClick&lt;/code&gt; action (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1486&quot;&gt;#1486&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Press action shortcuts work wrong if input&amp;#39;s value ends with &amp;#39;.&amp;#39; or starts with &amp;#39;-.&amp;#39; (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1499&quot;&gt;#1499&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;A test report has too small line length on Travis (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1469&quot;&gt;#1469&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Service messages with cookies do not have enough time to come to server before a new page is loaded (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1086&quot;&gt;testcafe-hammerhead/#1086&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;The &lt;code&gt;window.history.replaceState&lt;/code&gt; function is overridden incorrectly (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1146&quot;&gt;testcafe-hammerhead/#1146&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Hammerhead crashes if a script file contains a sourcemap comment (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1052&quot;&gt;testcafe-hammerhead/#1052&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;The proxy should override the &lt;code&gt;DOMParser.parseFromString&lt;/code&gt; method (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1133&quot;&gt;testcafe-hammerhead/#1133&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;The &lt;code&gt;fetch&lt;/code&gt; method should emulate the native behaviour on merging headers (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1116&quot;&gt;testcafe-hammerhead/#1116&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;The &lt;code&gt;EventSource&lt;/code&gt; requests are broken when used via proxy (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1106&quot;&gt;testcafe-hammerhead/#1106&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;The code processing may cause syntax errors in some cases because of wrong &lt;code&gt;location&lt;/code&gt; property wrapping (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1101&quot;&gt;testcafe-hammerhead/#1101&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;When calling the &lt;code&gt;fetch&lt;/code&gt; function without parameters, we should return its native result instead of &lt;code&gt;window.Promise.reject&lt;/code&gt; (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1099&quot;&gt;testcafe-hammerhead/#1099&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;The &lt;code&gt;querySelector&lt;/code&gt; function is overridden incorrectly (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1131&quot;&gt;testcafe-hammerhead/#1131&lt;/a&gt;)&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Tue, 13 Jun 2017 00:00:00 +0300</pubDate>
-        <link>https://devexpress.github.io/testcafe/blog/testcafe-v0-16-0-released.html</link>
-        <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v0-16-0-released.html</guid>
         
         
       </item>
