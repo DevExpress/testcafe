@@ -23,12 +23,16 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [-h, --help](#-h---help)
   * [-v, --version](#-v---version)
   * [-b, --list-browsers](#-b---list-browsers)
-  * [-r \<name\[:file\],\[...\]\>, --reporter \<name\[:file\],\[...\]\>](#-r-namefile---reporter-namefile)
+  * [-r \<name\[:output\],\[...\]\>, --reporter \<name\[:output\],\[...\]\>](#-r-nameoutput---reporter-nameoutput)
   * [-s \<path\>, --screenshots \<path\>](#-s-path---screenshots-path)
   * [-S, --screenshots-on-fails](#-s---screenshots-on-fails)
-  * [-p, --screenshot-path-pattern](#-p---screenshot-path-pattern)
+  * [-p \<pattern\>, --screenshot-path-pattern \<pattern\>](#-p-pattern---screenshot-path-pattern-pattern)
+  * [--video \<basePath\>](#--video-basepath)
+  * [--video-options \<option=value\[,option2=value2,...\]\>](#--video-options-optionvalueoption2value2)
+  * [--video-encoding-options \<option=value\[,option2=value2,...\]\>](#--video-encoding-options-optionvalueoption2value2)
   * [-q, --quarantine-mode](#-q---quarantine-mode)
   * [-d, --debug-mode](#-d---debug-mode)
+  * [--debug-on-fail](#--debug-on-fail)
   * [-e, --skip-js-errors](#-e---skip-js-errors)
   * [-u, --skip-uncaught-errors](#-u---skip-uncaught-errors)
   * [-t \<name\>, --test \<name\>](#-t-name---test-name)
@@ -38,9 +42,8 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [--test-meta \<key=value\[,key2=value2,...\]\>](#--test-meta-keyvaluekey2value2)
   * [--fixture-meta \<key=value\[,key2=value2,...\]\>](#--fixture-meta-keyvaluekey2value2)
   * [-a \<command\>, --app \<command\>](#-a-command---app-command)
-  * [-c \<n\>, --concurrency \<n\>](#-c-n---concurrency-n)
-  * [--debug-on-fail](#--debug-on-fail)
   * [--app-init-delay \<ms\>](#--app-init-delay-ms)
+  * [-c \<n\>, --concurrency \<n\>](#-c-n---concurrency-n)
   * [--selector-timeout \<ms\>](#--selector-timeout-ms)
   * [--assertion-timeout \<ms\>](#--assertion-timeout-ms)
   * [--page-load-timeout \<ms\>](#--page-load-timeout-ms)
@@ -50,12 +53,16 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [--proxy \<host\>](#--proxy-host)
   * [--proxy-bypass \<rules\>](#--proxy-bypass-rules)
   * [--ssl \<options\>](#--ssl-options)
+  * [-L, --live](#-l---live)
   * [--dev](#--dev)
   * [--qr-code](#--qr-code)
   * [--sf, --stop-on-first-fail](#--sf---stop-on-first-fail)
-  * [--disable-test-syntax-validation](#--disable-test-syntax-validation)
   * [--color](#--color)
   * [--no-color](#--no-color)
+
+When you execute the `testcafe` command, TestCafe first reads settings from the `.testcaferc.json` [configuration file](configuration-file.md) if this file exists. Then it applies settings provided in the command line. Command line settings override values from the configuration file in case they differ. TestCafe prints information about every overridden property in the console.
+
+If the [browsers](configuration-file.md#browsers) and [src](configuration-file.md#src) properties are specified in the configuration file, you can omit any of them, or both, in the command line.
 
 > Important! Make sure to keep the browser tab that is running tests active. Do not minimize the browser window.
 > Inactive tabs and minimized browser windows switch to a lower resource consumption mode
@@ -68,7 +75,7 @@ If the same problem occurs with this test two more times, the test run finishes 
 
 The `browser-list-comma-separated` argument specifies the list of browsers (separated by commas) where tests are run.
 
-> You can specify different browser types in one command call.
+*Related configuration file property*: [browsers](configuration-file.md#browsers).
 
 ### Local Browsers
 
@@ -200,6 +207,8 @@ Only installed and portable browsers located on the current machine can be launc
 
 The `file-or-glob ...` argument specifies the files or directories (separated by a space) from which to run these tests.
 
+*Related configuration file property*: [src](configuration-file.md#src).
+
 For example, this command runs all tests in the `my-tests` directory:
 
 ```sh
@@ -247,7 +256,7 @@ Lists the aliases of the [auto-detected browsers](common-concepts/browsers/brows
 testcafe --list-browsers
 ```
 
-### -r \<name\[:file\],\[...\]\>, --reporter \<name\[:file\],\[...\]\>
+### -r \<name\[:output\],\[...\]\>, --reporter \<name\[:output\],\[...\]\>
 
 Specifies the name of a [built-in](common-concepts/reporters.md) or [custom reporter](../extending-testcafe/reporter-plugin/README.md) that is used to generate test reports.
 
@@ -279,6 +288,8 @@ testcafe all tests/sample-fixture.js -r spec,xunit:report.xml
 
 Note that only one reporter can write to `stdout`. All other reporters must output to files.
 
+*Related configuration file property*: [reporter](configuration-file.md#reporter).
+
 ### -s \<path\>, --screenshots \<path\>
 
 Enables screenshots and specifies the base directory where they are saved.
@@ -287,62 +298,81 @@ Enables screenshots and specifies the base directory where they are saved.
 testcafe all tests/sample-fixture.js -s screenshots
 ```
 
-#### Path Patterns
+See [Screenshots](common-concepts/screenshots-and-videos.md#screenshots) for details.
 
-The captured screenshots are organized into subdirectories within the base directory. The following path patterns are used to define a relative path and name for screenshots the [Take Screenshot](../test-api/actions/take-screenshot.md) actions take:
-
-* `${DATE}_${TIME}\test-${TEST_INDEX}\${USERAGENT}\${FILE_INDEX}.png` if the [quarantine mode](#-q---quarantine-mode) is disabled;
-* `${DATE}_${TIME}\test-${TEST_INDEX}\run-${QUARANTINE_ATTEMPT}\${USERAGENT}\${FILE_INDEX}.png` if the [quarantine mode](#-q---quarantine-mode) is enabled.
-
-If TestCafe takes screenshots when a test fails (see [--screenshots-on-fails](#-s---screenshots-on-fails) option), the following path patterns are used:
-
-* `${DATE}_${TIME}\test-${TEST_INDEX}\${USERAGENT}\errors\${FILE_INDEX}.png`;
-* `${DATE}_${TIME}\test-${TEST_INDEX}\run-${QUARANTINE_ATTEMPT}\${USERAGENT}\errors\${FILE_INDEX}.png` if the [quarantine mode](#-q---quarantine-mode) is enabled.
-
-You can also use the [--screenshot-path-pattern](#-p---screenshot-path-pattern) option to specify a custom pattern.
+*Related configuration file property*: [screenshotPath](configuration-file.md#screenshotpath).
 
 ### -S, --screenshots-on-fails
 
-Takes a screenshot whenever a test fails. Screenshots are saved to the directory specified in the **-screenshots \<path\>** option.
+Takes a screenshot whenever a test fails. Screenshots are saved to the directory specified in the [-s (--screenshots)](#-s-path---screenshots-path) option.
 
-For example, the following command runs tests from the
-  `sample-fixture.js` file in all browsers, takes screenshots if tests fail,
-  and saves the screenshots to the `screenshots` directory:
+For example, the following command runs tests from the `sample-fixture.js` file in all browsers, takes screenshots if tests fail, and saves the screenshots to the `screenshots` directory:
 
 ```sh
 testcafe all tests/sample-fixture.js -S -s screenshots
 ```
 
-### -p, --screenshot-path-pattern
+*Related configuration file property*: [takeScreenshotsOnFails](configuration-file.md#takescreenshotsonfails).
 
-Specifies a custom pattern to compose screenshot files' relative path and name. This pattern overrides the default [path pattern](#path-patterns).
+### -p \<pattern\>, --screenshot-path-pattern \<pattern\>
 
-You can use the following placeholders in the pattern:
-
-Placeholder | Description
------------ | ------------
-`${DATE}` | The test run's start date (YYYY-MM-DD).
-`${TIME}` | The test run's start time (HH-mm-ss).
-`${TEST_INDEX}` | The test's index.
-`${FILE_INDEX}` | The screenshot file's index.
-`${QUARANTINE_ATTEMPT}` | The [quarantine](programming-interface/runner.md#quarantine-mode) attempt's number. If the quarantine mode is disabled, the `${QUARANTINE_ATTEMPT}` placeholder's value is 1.
-`${FIXTURE}` | The fixture's name.
-`${TEST}` | The test's name.
-`${USERAGENT}` | The combination of `${BROWSER}`, `${BROWSER_VERSION}`, `${OS}`, and `${OS_VERSION}` (separated by underscores).
-`${BROWSER}` | The browser's name.
-`${BROWSER_VERSION}` | The browser's version.
-`${OS}` | The operation system's name.
-`${OS_VERSION}` | The operation system's version.
+Specifies a custom pattern to compose screenshot files' relative path and name.
 
 ```sh
 testcafe all tests/sample-fixture.js -s screenshots -p '${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png'
 ```
 
-In Windows `cmd.exe` shell, use double quotes because single quotes do not escape spaces.
+See [Path Pattern Placeholders](common-concepts/screenshots-and-videos.md#path-pattern-placeholders) for information about the available placeholders.
+
+In Windows `cmd.exe` shell, enclose the pattern in double quotes if it contains spaces:
 
 ```sh
 testcafe all tests/sample-fixture.js -s screenshots -p "${DATE} ${TIME}/test ${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png"
 ```
+
+> Use the [-s (--screenshots)](#-s-path---screenshots-path) flag to enable screenshots.
+
+*Related configuration file property*: [screenshotPathPattern](configuration-file.md#screenshotpathpattern).
+
+### --video \<basePath\>
+
+Enables TestCafe to record videos of test runs and specifies the base directory to save these videos.
+
+```sh
+testcafe chrome test.js --video reports/screen-captures
+```
+
+See [Record Videos](common-concepts/screenshots-and-videos.md#record-videos) for details.
+
+*Related configuration file property*: [videoPath](configuration-file.md#videopath).
+
+### --video-options \<option=value\[,option2=value2,...\]\>
+
+Specifies options that define how TestCafe records videos of test runs.
+
+```sh
+testcafe chrome test.js --video videos --video-options singleFile=true,failedOnly=true
+```
+
+See [Basic Video Options](common-concepts/screenshots-and-videos.md#basic-video-options) for details.
+
+> Use the [--video](#--video-basepath) flag to enable video recording.
+
+*Related configuration file property*: [videoOptions](configuration-file.md#videooptions).
+
+### --video-encoding-options \<option=value\[,option2=value2,...\]\>
+
+Specifies video encoding options.
+
+```sh
+testcafe chrome test.js --video videos --video-encoding-options r=20,aspect=4:3
+```
+
+See [Video Encoding Options](common-concepts/screenshots-and-videos.md#video-encoding-options) for details.
+
+> Use the [--video](#--video-basepath) flag to enable video recording.
+
+*Related configuration file property*: [videoEncodingOptions](configuration-file.md#videoencodingoptions).
 
 ### -q, --quarantine-mode
 
@@ -351,6 +381,8 @@ Enables the [quarantine mode](programming-interface/runner.md#quarantine-mode) f
 ```sh
 testcafe all tests/sample-fixture.js -q
 ```
+
+*Related configuration file property*: [quarantineMode](configuration-file.md#quarantinemode).
 
 ### -d, --debug-mode
 
@@ -365,6 +397,22 @@ The footer displays a status bar in which you can resume test execution or skip 
 
 You can also use the **Unlock page** switch in the footer to unlock the tested page and interact with its elements.
 
+*Related configuration file property*: [debugMode](configuration-file.md#debugmode).
+
+### --debug-on-fail
+
+Specifies whether to automatically enter the [debug mode](#-d---debug-mode) when a test fails.
+
+```sh
+testcafe chrome tests/sample-fixture.js --debug-on-fail
+```
+
+If this option is enabled, TestCafe pauses the test when it fails. This allows you to view the tested page and determine the cause of the fail.
+
+When you are done, click the **Finish** button in the footer to end test execution.
+
+*Related configuration file property*: [debugOnFail](configuration-file.md#debugonfail).
+
 ### -e, --skip-js-errors
 
 When a JavaScript error occurs on a tested web page, TestCafe stops test execution and posts an error message and a stack trace to a report. To ignore JavaScript errors, use the `-e`(`--skip-js-errors`) option.
@@ -375,9 +423,11 @@ For example, the following command runs tests from the specified file and forces
 testcafe ie tests/sample-fixture.js -e
 ```
 
+*Related configuration file property*: [skipJsErrors](configuration-file.md#skipjserrors).
+
 ### -u, --skip-uncaught-errors
 
-When an uncaught error or unhandled promise rejection occurs on the server during test execution, TestCafe stops the test and posts an error message to a report. Note that if you run tests [concurrently](#-c-n---concurrency-n) and such an error occurs in any test, all tests that are running at this moment will fail.
+When an uncaught error or unhandled promise rejection occurs on the server during test execution, TestCafe stops the test and posts an error message to a report.
 
 To ignore these errors, use the `-u`(`--skip-uncaught-errors`) option.
 
@@ -386,6 +436,8 @@ For example, the following command runs tests from the specified file and forces
 ```sh
 testcafe ie tests/sample-fixture.js -u
 ```
+
+*Related configuration file property*: [skipUncaughtErrors](configuration-file.md#skipuncaughterrors).
 
 ### -t \<name\>, --test \<name\>
 
@@ -397,9 +449,11 @@ For example, the following command runs only the `"Click a label"` test from the
 testcafe ie tests/sample-fixture.js -t "Click a label"
 ```
 
+*Related configuration file property*: [filter.test](configuration-file.md#filtertest).
+
 ### -T \<pattern\>, --test-grep \<pattern\>
 
-TestCafe runs tests whose names match the specified pattern.
+TestCafe runs tests whose names match the specified `grep` pattern.
 
 For example, the following command runs tests whose names match `Click.*`. These can be `Click a label`, `Click a button`, etc.
 
@@ -407,23 +461,29 @@ For example, the following command runs tests whose names match `Click.*`. These
 testcafe ie my-tests -T "Click.*"
 ```
 
+*Related configuration file property*: [filter.testGrep](configuration-file.md#filtertestgrep).
+
 ### -f \<name\>, --fixture \<name\>
 
 TestCafe runs a fixture with the specified name.
 
 ```sh
-testcafe ie my-tests -f sample-fixture
+testcafe ie my-tests -f "Sample fixture"
 ```
+
+*Related configuration file property*: [filter.fixture](configuration-file.md#filterfixture).
 
 ### -F \<pattern\>, --fixture-grep \<pattern\>
 
-TestCafe runs fixtures whose names match the specified pattern.
+TestCafe runs fixtures whose names match the specified `grep` pattern.
 
 For example, the following command runs fixtures whose names match `Page.*`. These can be `Page1`, `Page2`, etc.
 
 ```sh
 testcafe ie my-tests -F "Page.*"
 ```
+
+*Related configuration file property*: [filter.fixtureGrep](configuration-file.md#filterfixturegrep).
 
 ### --test-meta \<key=value\[,key2=value2,...\]\>
 
@@ -435,6 +495,8 @@ For example, the following command runs tests whose metadata's `device` property
 testcafe chrome my-tests --test-meta device=mobile,env=production
 ```
 
+*Related configuration file property*: [filter.testMeta](configuration-file.md#filtertestmeta).
+
 ### --fixture-meta \<key=value\[,key2=value2,...\]\>
 
 TestCafe runs tests whose fixture's [metadata](../test-api/test-code-structure.md#specifying-testing-metadata) [matches](https://lodash.com/docs/#isMatch) the specified key-value pair.
@@ -444,6 +506,8 @@ For example, the following command runs tests whose fixture's metadata has the `
 ```sh
 testcafe chrome my-tests --fixture-meta device=mobile,env=production
 ```
+
+*Related configuration file property*: [filter.fixtureMeta](configuration-file.md#filterfixturemeta).
 
 ### -a \<command\>, --app \<command\>
 
@@ -458,6 +522,22 @@ testcafe chrome my-tests --app "node server.js"
 > TestCafe adds `node_modules/.bin` to `PATH` so that you can use the binaries the locally installed dependencies provide without prefixes.
 
 Use the [--app-init-delay](#--app-init-delay-ms) option to specify the amount of time allowed for this command to initialize the tested application.
+
+*Related configuration file property*: [appCommand](configuration-file.md#appcommand).
+
+### --app-init-delay \<ms\>
+
+Specifies the time (in milliseconds) allowed for an application launched using the [--app](#-a-command---app-command) option to initialize.
+
+TestCafe waits for the specified time before it starts running tests.
+
+**Default value**: `1000`
+
+```sh
+testcafe chrome my-tests --app "node server.js" --app-init-delay 4000
+```
+
+*Related configuration file property*: [appInitDelay](configuration-file.md#appinitdelay).
 
 ### -c \<n\>, --concurrency \<n\>
 
@@ -474,25 +554,7 @@ The following example shows how to run tests in three Chrome instances:
 testcafe -c 3 chrome tests/sample-fixture.js
 ```
 
-### --debug-on-fail
-
-Specifies whether to automatically enter the [debug mode](#-d---debug-mode) when a test fails.
-
-If this option is enabled, TestCafe pauses the test when it fails. This allows you to view the tested page and determine the cause of the fail.
-
-When you are done, click the **Finish** button in the footer to end test execution.
-
-### --app-init-delay \<ms\>
-
-Specifies the time (in milliseconds) allowed for an application launched using the [--app](#-a-command---app-command) option to initialize.
-
-TestCafe waits for the specified time before it starts running tests.
-
-**Default value**: `1000`
-
-```sh
-testcafe chrome my-tests --app "node server.js" --app-init-delay 4000
-```
+*Related configuration file property*: [concurrency](configuration-file.md#concurrency).
 
 ### --selector-timeout \<ms\>
 
@@ -503,6 +565,8 @@ Specifies the time (in milliseconds) within which [selectors](../test-api/select
 ```sh
 testcafe ie my-tests --selector-timeout 500000
 ```
+
+*Related configuration file property*: [selectorTimeout](configuration-file.md#selectortimeout).
 
 ### --assertion-timeout \<ms\>
 
@@ -516,6 +580,8 @@ See [Smart Assertion Query Mechanism](../test-api/assertions/README.md#smart-ass
 ```sh
 testcafe ie my-tests --assertion-timeout 10000
 ```
+
+*Related configuration file property*: [assertionTimeout](configuration-file.md#assertiontimeout).
 
 ### --page-load-timeout \<ms\>
 
@@ -532,6 +598,8 @@ You can set the page load timeout to `0` to skip waiting for the `window.load` e
 ```sh
 testcafe ie my-tests --page-load-timeout 0
 ```
+
+*Related configuration file property*: [pageLoadTimeout](configuration-file.md#pageloadtimeout).
 
 ### --speed \<factor\>
 
@@ -550,17 +618,31 @@ If the speed is also specified for an [individual action](../test-api/actions/ac
 
 **Default value**: `1`
 
+*Related configuration file property*: [speed](configuration-file.md#speed).
+
 ### --ports \<port1,port2\>
 
 Specifies custom port numbers TestCafe uses to perform testing. The number range is [0-65535].
 
 TestCafe automatically selects ports if ports are not specified.
 
+```sh
+testcafe chrome my-tests --ports 12345,54321
+```
+
+*Related configuration file properties*: [port1, port2](configuration-file.md#port1-port2).
+
 ### --hostname \<name\>
 
 Specifies your computer's hostname. It is used when running tests in [remote browsers](#remote-browsers).
 
 If the hostname is not specified, TestCafe uses the operating system's hostname or the current machine's network IP address.
+
+```sh
+testcafe chrome my-tests --hostname host.mycorp.com
+```
+
+*Related configuration file property*: [hostname](configuration-file.md#hostname).
 
 ### --proxy \<host\>
 
@@ -579,6 +661,8 @@ You can also specify authentication credentials with the proxy host.
 ```js
 testcafe chrome my-tests/**/*.js --proxy username:password@proxy.mycorp.com
 ```
+
+*Related configuration file property*: [proxy](configuration-file.md#proxy).
 
 ### --proxy-bypass \<rules\>
 
@@ -606,6 +690,8 @@ The `*.mycompany.com` value means that all URLs in the `mycompany.com` subdomain
 testcafe chrome my-tests/**/*.js --proxy proxy.corp.mycompany.com --proxy-bypass *.mycompany.com
 ```
 
+*Related configuration file property*: [proxyBypass](configuration-file.md#proxybypass).
+
 ### --ssl \<options\>
 
 Provides options that allow you to establish an HTTPS connection between the client browser and the TestCafe server.
@@ -623,6 +709,14 @@ Provide the `--ssl` flag if the tested webpage uses browser features that requir
 secure origin ([Service Workers](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API), [Geolocation API](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API), [ApplePaySession](https://developer.apple.com/documentation/apple_pay_on_the_web/applepaysession), [SubtleCrypto](https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto), etc).
 See [Connect to the TestCafe Server over HTTPS](common-concepts/connect-to-the-testcafe-server-over-https.md) for more information.
 
+*Related configuration file property*: [ssl](configuration-file.md#ssl).
+
+### -L, --live
+
+Enables live mode. In this mode, TestCafe watches for changes you make in the test files and all files referenced in them (like page objects or helper modules). These changes immediately restart the tests so that you can see the effect.
+
+See [Live Mode](common-concepts/live-mode.md) for more information.
+
 ### --dev
 
 Enables mechanisms to log and diagnose errors. You should enable this option if you are going to contact TestCafe Support to report an issue.
@@ -630,6 +724,8 @@ Enables mechanisms to log and diagnose errors. You should enable this option if 
 ```sh
 testcafe chrome my-tests --dev
 ```
+
+*Related configuration file property*: [developmentMode](configuration-file.md#developmentmode).
 
 ### --qr-code
 
@@ -639,6 +735,8 @@ Outputs a QR-code that represents URLs used to connect the [remote browsers](#re
 testcafe remote my-tests --qr-code
 ```
 
+*Related configuration file property*: [qrCode](configuration-file.md#qrcode).
+
 ### --sf, --stop-on-first-fail
 
 Stops an entire test run if any test fails. This allows you not to wait for all the tests included in the test task to finish and allows focusing on the first error.
@@ -647,45 +745,16 @@ Stops an entire test run if any test fails. This allows you not to wait for all 
 testcafe chrome my-tests --sf
 ```
 
-### --disable-test-syntax-validation
-
-Disables checks for `test` and `fixture` directives in test files. Use this flag to run dynamically loaded tests.
-
-Test files should have the [fixture](../test-api/test-code-structure.md#fixtures) and [test](../test-api/test-code-structure.md#tests) directives. Otherwise, an error is thrown.
-
-However, the `.js` file may not contain tests when you import tests from external libraries or generate them dynamically.
-
-**external-lib.js**
-
-```js
-export default function runTests () {
-    fixture `External tests`
-        .page `http:///example.com`;
-
-    test('My Test', async t => {
-        // ...
-    });
-}
-```
-
-**test.js**
-
-```js
-import runTests from './external-lib';
-
-runTests();
-```
-
-In this instance, specify the `--disable-test-syntax-validation` flag to bypass test syntax checks.
-
-```sh
-testcafe safari test.js --disable-test-syntax-validation
-```
+*Related configuration file property*: [stopOnFirstFail](configuration-file.md#stoponfirstfail).
 
 ### --color
 
 Enables colors in the command line.
 
+*Related configuration file property*: [color](configuration-file.md#color).
+
 ### --no-color
 
 Disables colors in the command line.
+
+*Related configuration file property*: [noColor](configuration-file.md#nocolor).

@@ -20,7 +20,7 @@ You should implement the following methods to create a [reporter](README.md#impl
 Fires when a test task starts.
 
 ```text
-reportTaskStart (startTime, userAgents, testCount)
+async reportTaskStart (startTime, userAgents, testCount)
 ```
 
 Parameter    | Type             | Description
@@ -32,7 +32,7 @@ Parameter    | Type             | Description
 **Example**
 
 ```js
-reportTaskStart (startTime, userAgents, testCount) {
+async reportTaskStart (startTime, userAgents, testCount) {
     this.startTime = startTime;
     this.testCount = testCount;
 
@@ -53,7 +53,7 @@ reportTaskStart (startTime, userAgents, testCount) {
 Fires each time a fixture starts.
 
 ```text
-reportFixtureStart (name, path, meta)
+async reportFixtureStart (name, path, meta)
 ```
 
 Parameter | Type   | Description
@@ -65,7 +65,7 @@ Parameter | Type   | Description
 **Example**
 
 ```js
-reportFixtureStart (name, path, meta) {
+async reportFixtureStart (name, path, meta) {
     this.currentFixtureName = name;
     this.currentFixtureMeta = meta;
     this.write(`Starting fixture: ${name} ${meta.fixtureID}`)
@@ -80,7 +80,7 @@ reportFixtureStart (name, path, meta) {
 Fires each time a test ends.
 
 ```text
-reportTestDone (name, testRunInfo, meta)
+async reportTestDone (name, testRunInfo, meta)
 ```
 
 Parameter     | Type   | Description
@@ -92,9 +92,10 @@ Parameter     | Type   | Description
 **Example**
 
 ```js
-reportTestDone (name, testRunInfo, meta) {
-    const hasErr = !!testRunInfo.errs.length;
-    const result = testRunInfo.skipped ? 'skipped' : hasErr ? `passed` : `failed`;
+async reportTestDone (name, testRunInfo, meta) {
+    const hasErr      = !!testRunInfo.errs.length;
+    const hasWarnings = !!testRunInfo.warnings.length;
+    const result      = testRunInfo.skipped ? 'skipped' : hasErr ? `passed` : `failed`;
 
     name = `${this.currentFixtureName} - ${name}`;
 
@@ -107,7 +108,10 @@ reportTestDone (name, testRunInfo, meta) {
         title += ` (screenshots: ${testRunInfo.screenshotPath})`;
 
     if (meta.severity)
-        title += ' (meta.severity)';
+        title += ` (${meta.severity})`;
+
+    if (hasWarnings)
+        title += ' (with warnings)';
 
     this.write(title)
         .newline();
@@ -125,7 +129,8 @@ The `testRunInfo` object provides detailed information about the test run. The o
 
 Property            | Type             | Description
 ------------------- | ---------------- | --------------------------------------------------------
-`errs`              | Array of Strings | An array of errors that occurred during the test run.
+`errs`              | Array of Objects | An array of errors that occurred during the test run. Use the [formatError](helpers.md#formaterror) helper to stringify objects in this array.
+`warnings`          | Array of Strings | An array of warnings that appeared during the test run.
 `durationMs`        | Number           | The time spent on test execution (in milliseconds).
 `unstable`          | Boolean          | Specifies if the test is marked as unstable.
 `screenshotPath`    | String           | The path where screenshots are saved.
@@ -158,7 +163,7 @@ The&nbsp;quarantine&nbsp;attempt's&nbsp;number. |  The object that provides info
 Fires when the task ends.
 
 ```text
-reportTaskDone (endTime, passed, warnings)
+async reportTaskDone (endTime, passed, warnings, result)
 ```
 
 Parameter  | Type             | Description
@@ -166,17 +171,18 @@ Parameter  | Type             | Description
 `endTime`  | Date             | The date and time when testing completed.
 `passed`   | Number           | The number of passed tests.
 `warnings` | Array of Strings | An array of warnings that occurred during a task run.
+`result`   | Object           | Contains information about the task results.
 
 **Example**
 
 ```js
-reportTaskDone (endTime, passed) {
+async reportTaskDone (endTime, passed, warnings, result) {
     const time = this.moment(endTime).format('M/D/YYYY h:mm:ss a');
     const durationMs  = endTime - this.startTime;
     const durationStr = this.moment.duration(durationMs).format('h[h] mm[m] ss[s]');
-    const result = passed === this.testCount ?
-                `${this.testCount} passed` :
-                `${this.testCount - passed}/${this.testCount} failed`;
+    const summary = result.failedCount ?
+                    `${result.failedCount}/${this.testCount} failed` :
+                    `${result.passedCount} passed`;
 
     this.write(`Testing finished: ${time}`)
         .newline()
@@ -190,3 +196,13 @@ reportTaskDone (endTime, passed) {
 //=> Duration: 15m 25s
 //=> 2/6 failed
 ```
+
+### result Object
+
+The `result` object contains information about the task results. The object has the following properties:
+
+Parameter      | Type   | Description
+-------------- | ------ | ----------------------------------------------
+`passedCount`  | Number | The number of passed tests.
+`failedCount`  | Number | The number of failed tests.
+`skippedCount` | Number | The number of skipped tests.

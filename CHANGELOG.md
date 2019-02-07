@@ -337,13 +337,13 @@ runner.filter((testName, fixtureName, fixturePath, testMeta, fixtureMeta) => {
 
 You can now run tests imported from external libraries or generated dynamically even if the `.js` file does not contain any tests.
 
-This was not possible previously because test files should contain the [fixture](https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#fixtures) and [test](https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#tests) directives. However, you can now provide the [--disable-test-syntax-validation](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--disable-test-syntax-validation) command line flag to bypass this check.
+This was not possible previously because test files should contain the [fixture](https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#fixtures) and [test](https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#tests) directives. However, you can now provide the `--disable-test-syntax-validation` command line flag to bypass this check.
 
 ```sh
 testcafe safari test.js --disable-test-syntax-validation
 ```
 
-In the API, use the [disableTestSyntaxValidation](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#run) option.
+In the API, use the `disableTestSyntaxValidation` option.
 
 ```js
 runner.run({ disableTestSyntaxValidation: true })
@@ -541,7 +541,7 @@ See [Connect to TestCafe Server over HTTPS](https://devexpress.github.io/testcaf
 
 #### :gear: Construct Screenshot Paths with Patterns ([#2152](https://github.com/DevExpress/testcafe/issues/2152))
 
-You can now use patterns to construct paths to screenshots. TestCafe provides a number of placeholders you can include in the path, for example, `${DATE}`, `${TIME}`, `${USERAGENT}`, etc. For a complete list, refer to the command line [--screenshot-path-pattern flag description](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-p---screenshot-path-pattern).
+You can now use patterns to construct paths to screenshots. TestCafe provides a number of placeholders you can include in the path, for example, `${DATE}`, `${TIME}`, `${USERAGENT}`, etc. For a complete list, refer to the command line [--screenshot-path-pattern flag description](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-p-pattern---screenshot-path-pattern-pattern).
 
 You specify a screenshot path pattern when you run tests. Each time TestCafe takes a screenshot, it substitutes the placeholders with actual values and saves the screenshot to the resulting path.
 
@@ -926,7 +926,7 @@ TestCafe provides full-featured WebSocket support (`wss` and `ws` protocols, req
 
 ### --reporter flag name fixed ([#1881](https://github.com/DevExpress/testcafe/issues/1881))
 
-In v0.18.0, we accidentally changed the [--reporter](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-r-namefile---reporter-namefile) CLI flag to `--reporters`. In this recovery release, we roll back to the previous flag name.
+In v0.18.0, we accidentally changed the [--reporter](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-r-nameoutput---reporter-nameoutput) CLI flag to `--reporters`. In this recovery release, we roll back to the previous flag name.
 
 ### Compatibility with RequireJS restored ([#1874](https://github.com/DevExpress/testcafe/issues/1874))
 
