@@ -190,7 +190,7 @@ code {
 
 .features-section {
   background: #a4cada;
-  padding: 42px 100px 74px; }
+  padding: 42px 100px 40px; }
   @media (max-width: 1270px) {
     .features-section {
       padding-left: 70px;
@@ -269,17 +269,16 @@ code {
       display: flex;
       justify-content: center;
       align-items: center;
-      margin-top: 30px; }
+      margin-top: 40px; }
       .features-section .features-content .testcafe-live-promo .promo-block {
         display: flex;
         justify-content: space-between; }
         .features-section .features-content .testcafe-live-promo .promo-block .image {
           background-image: url("/testcafe/images/landing-page/rapid-dev-icon.svg");
           background-repeat: no-repeat;
-          background-position-y: 9px;
+          background-position-y: center;
           width: 83px;
           min-width: 83px;
-          height: 84px;
           display: inline-block;
           vertical-align: top; }
         .features-section .features-content .testcafe-live-promo .promo-block .description {
