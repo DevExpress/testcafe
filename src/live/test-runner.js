@@ -16,10 +16,11 @@ class LiveModeRunner extends Runner {
         this.TEST_RUN_DONE_EVENT         = 'test-run-done';
         this.REQUIRED_MODULE_FOUND_EVENT = 'require-module-found';
 
-        this.stopping            = false;
-        this.tcRunnerTaskPromise = null;
-        this.stopInfiniteWaiting = noop;
-        this.preventRunCall      = false;
+        this.stopping              = false;
+        this.tcRunnerTaskPromise   = null;
+        this.stopInfiniteWaiting   = noop;
+        this.rejectInfiniteWaiting = noop;
+        this.preventRunCall        = false;
 
         this.testRunController = new LiveModeTestRunController();
 
@@ -58,6 +59,13 @@ class LiveModeRunner extends Runner {
             });
     }
 
+    _validateRunOptions () {
+        return super._validateRunOptions()
+            .catch(err => {
+                this.rejectInfiniteWaiting(err);
+            });
+    }
+
     _createRunnableConfiguration () {
         if (this.liveConfigurationCache)
             return Promise.resolve(this.liveConfigurationCache);
@@ -67,6 +75,9 @@ class LiveModeRunner extends Runner {
                 this.liveConfigurationCache = configuration;
 
                 return configuration;
+            })
+            .catch(err => {
+                this.rejectInfiniteWaiting(err);
             });
     }
 
@@ -171,8 +182,9 @@ class LiveModeRunner extends Runner {
     }
 
     _waitUntilExit () {
-        return new Promise(resolve => {
-            this.stopInfiniteWaiting = resolve;
+        return new Promise((resolve, reject) => {
+            this.stopInfiniteWaiting   = resolve;
+            this.rejectInfiniteWaiting = reject;
         });
     }
 
