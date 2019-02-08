@@ -1,13 +1,13 @@
 import Promise from 'pinkie';
 import TestRun from '../test-run';
-import { TEST_RUN_STATE } from './test-run-state';
+import TEST_RUN_STATE from './test-run-state';
 import COMMAND_TYPE from '../test-run/commands/type';
 import { UnlockPageCommand } from '../test-run/commands/service';
 
 const TEST_RUN_ABORTED_MESSAGE = 'The test run has been aborted.';
 
 export const TestRunCtorFactory = function (callbacks) {
-    const { created, started, done, readyToNext } = callbacks;
+    const { created, done, readyToNext } = callbacks;
 
     return class LiveModeTestRun extends TestRun {
         constructor (test, browserConnection, screenshotCapturer, warningLog, opts) {
@@ -20,11 +20,6 @@ export const TestRunCtorFactory = function (callbacks) {
             this.stopping             = false;
             this.isInRoleInitializing = false;
             this.stopped              = false;
-        }
-
-        start () {
-            started(this);
-            super.start.apply(this, arguments);
         }
 
         stop () {

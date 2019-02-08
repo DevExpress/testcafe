@@ -9,10 +9,7 @@ fixture `Live`
         helper.watcher.emit('test-complete');
     });
 
-test('First', async t => {
-    await t.click('body');
-});
-
-test('Second', async t => {
-    await t.click('body');
-});
+for (let i = 0; i < helper.testCount; i++) {
+    test(`${i}`, async () => {
+    });
+}

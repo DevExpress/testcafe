@@ -10,6 +10,7 @@ if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {
         it('Live smoke', () => {
             let cafe       = null;
             const browsers = ['chrome', 'firefox'];
+            const runCount = 2;
 
             return createTestCafe('127.0.0.1', 1335, 1336)
                 .then(tc => {
@@ -24,7 +25,12 @@ if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {
                     runner.controller.dispose           = () => { };
 
                     helper.watcher.once('test-complete', () => {
-                        runner.exit();
+                        setTimeout(() => {
+                            runner.controller._restart()
+                                .then(() => {
+                                    runner.exit();
+                                });
+                        }, 1000);
                     });
 
                     return runner
@@ -33,7 +39,7 @@ if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {
                         .run();
                 })
                 .then(() => {
-                    expect(helper.counter).eql(browsers.length * 2);
+                    expect(helper.counter).eql(browsers.length * helper.testCount * runCount);
 
                     return cafe.close();
                 });

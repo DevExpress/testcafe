@@ -123,18 +123,17 @@ class LiveModeRunner extends Runner {
         if (!this.tcRunnerTaskPromise)
             return Promise.resolve();
 
-        return new Promise(resolve => {
-            this.testRunController.once(this.testRunController.RUN_STOPPED_EVENT, () => {
+        this.stopping = true;
+        this.testRunController.stop();
+        this.tcRunnerTaskPromise.cancel();
+
+
+        return this.testRunController.allTestsCompletePromise
+            .then(() => {
                 this.stopping = false;
-                resolve();
 
                 this.emit(this.TEST_RUN_DONE_EVENT, {});
             });
-
-            this.stopping = true;
-            this.testRunController.stop();
-            this.tcRunnerTaskPromise.cancel();
-        });
     }
 
     exit () {
