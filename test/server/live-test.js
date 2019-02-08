@@ -74,11 +74,12 @@ class BootstrapperMock extends LiveModeBootstrapper {
 }
 
 class RunnerMock extends LiveModeRunner {
-    constructor ({ proxy, browserConnectionGateway, configuration }, runTimeout = 0) {
+    constructor ({ proxy, browserConnectionGateway, configuration }, { runTimeout = 0, errorOnValidate = false }) {
         super(proxy, browserConnectionGateway, configuration.clone());
 
-        this.runCount   = 0;
-        this.runTimeout = runTimeout;
+        this.runCount        = 0;
+        this.runTimeout      = runTimeout;
+        this.errorOnValidate = errorOnValidate;
     }
 
     get watchedFiles () {
@@ -99,6 +100,12 @@ class RunnerMock extends LiveModeRunner {
 
     _createCancelablePromise (promise) {
         return promise;
+    }
+
+    _validateScreenshotOptions () {
+        if (this.errorOnValidate)
+            throw new Error('validationError');
+        super._validateScreenshotOptions();
     }
 
     runTests () {
@@ -145,8 +152,8 @@ describe('TestCafe Live', function () {
     let testCafe = null;
     let runner   = null;
 
-    function runTests (fileName, runTimeout) {
-        runner = new RunnerMock(testCafe, runTimeout);
+    function runTests (fileName, options = {}) {
+        runner = new RunnerMock(testCafe, options);
 
         return runner
             .src(fileName)
@@ -278,7 +285,7 @@ describe('TestCafe Live', function () {
 
     it('same runner runs twice', function () {
         try {
-            runner = new RunnerMock(testCafe);
+            runner = new RunnerMock(testCafe, {});
 
             runner.browsers('chrome');
 
@@ -288,6 +295,13 @@ describe('TestCafe Live', function () {
         catch (err) {
             expect(err.message.indexOf('Cannot run a live mode runner multiple times') > -1).to.be.true;
         }
+    });
+
+    it('error on validate', function () {
+        return runTests(testFileWithSingleTestPath, { errorOnValidate: true })
+            .catch(err => {
+                expect(err.message.indexOf('validationError') > -1).to.be.true;
+            });
     });
 
     describe('Controller', function () {
@@ -328,7 +342,7 @@ describe('TestCafe Live', function () {
         });
 
         it('stop', function () {
-            return runTests(testFileWithSingleTestPath, 100)
+            return runTests(testFileWithSingleTestPath, { runTimeout: 100 })
                 .then(() => {
                     expect(runner.runCount).eql(1);
                     runner.controller._restart();
