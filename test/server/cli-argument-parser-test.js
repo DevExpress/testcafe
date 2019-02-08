@@ -430,15 +430,27 @@ describe('CLI argument parser', function () {
         });
     });
 
-    it('Should parse video recording options', () => {
-        return parse(`--video /home/user/video --video-options singleFile=true,failedOnly --video-encoding-options c:v=x264`)
-            .then(parser => {
-                expect(parser.opts.video).eql('/home/user/video');
-                expect(parser.opts.videoOptions.singleFile).eql(true);
-                expect(parser.opts.videoOptions.failedOnly).eql(true);
-                expect(parser.opts.videoEncodingOptions['c:v']).eql('x264');
-            });
+    describe('Video options', () => {
+        it('Should parse video recording options', () => {
+            return parse(`--video /home/user/video --video-options singleFile=true,failedOnly --video-encoding-options c:v=x264`)
+                .then(parser => {
+                    expect(parser.opts.video).eql('/home/user/video');
+                    expect(parser.opts.videoOptions.singleFile).eql(true);
+                    expect(parser.opts.videoOptions.failedOnly).eql(true);
+                    expect(parser.opts.videoEncodingOptions['c:v']).eql('x264');
+                });
+        });
+
+        it('Should provide "undefined" as a default value for video recording options', () => {
+            return parse(``)
+                .then(parser => {
+                    expect(parser.opts.video).eql(void 0);
+                    expect(parser.opts.videoOptions).eql(void 0);
+                    expect(parser.opts.videoEncodingOptions).eql(void 0);
+                });
+        });
     });
+
 
     it('Should parse reporters and their output file paths and ensure they exist', function () {
         const cwd      = process.cwd();

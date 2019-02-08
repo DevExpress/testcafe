@@ -203,8 +203,11 @@ export default class CLIArgumentParser {
     }
 
     async _parseVideoOptions () {
-        this.opts.videoOptions         = typeof this.opts.videoOptions === 'string' ? await getVideoOptions(this.opts.videoOptions) : null;
-        this.opts.videoEncodingOptions = typeof this.opts.videoEncodingOptions === 'string' ? await getVideoOptions(this.opts.videoEncodingOptions) : null;
+        if (this.opts.videoOptions)
+            this.opts.videoOptions = await getVideoOptions(this.opts.videoOptions);
+
+        if (this.opts.videoEncodingOptions)
+            this.opts.videoEncodingOptions = await getVideoOptions(this.opts.videoEncodingOptions);
     }
 
     _getProviderName () {
