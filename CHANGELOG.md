@@ -1,6 +1,6 @@
 # Changelog
 
-## v1.0.0 (2018-2-7)
+## v1.0.0 (2019-2-7)
 
 ### Breaking Changes
 
