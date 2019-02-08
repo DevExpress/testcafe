@@ -168,7 +168,7 @@ TestCafe records all tests and saves each recording in a separate file. You can 
 
 TestCafe now allows you to store its settings in the `.testcaferc.json` [configuration file](https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html) (with support for [JSON5 syntax](https://json5.org/)).
 
-```json
+```json5
 {
     "browsers": "chrome",
     "src": ["/home/user/auth-tests/fixture-1.js", "/home/user/mobile-tests/"],
