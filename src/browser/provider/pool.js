@@ -44,6 +44,9 @@ export default {
     },
 
     async _parseAlias (alias) {
+        if (alias.browserName && alias.providerName && alias.provider)
+            return alias;
+
         if (alias && alias.path)
             return this._handlePathAndCmd(alias);
 

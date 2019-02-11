@@ -170,7 +170,7 @@ export default class CLIArgumentParser {
         }
     }
 
-    _parseBrowserList () {
+    async _parseBrowserList () {
         const browsersArg = this.program.args[0] || '';
 
         this.browsers = splitQuotedText(browsersArg, ',')

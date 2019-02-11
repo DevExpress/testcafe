@@ -1,11 +1,18 @@
 import chalk from 'chalk';
-import { GeneralError, APIError } from '../errors/runtime';
+import Promise from 'pinkie';
+import { partition } from 'lodash';
+import { GeneralError, APIError, CompositeError } from '../errors/runtime';
 import MESSAGE from '../errors/runtime/message';
 import CliArgumentParser from './argument-parser';
 import TerminationHandler from './termination-handler';
 import log from './log';
+import OPTION_NAMES from '../configuration/option-names';
 import remotesWizard from './remotes-wizard';
 import createTestCafe from '../';
+
+// NOTE: Load the provider pool lazily to reduce startup time
+const lazyRequire         = require('import-lazy')(require);
+const browserProviderPool = lazyRequire('../browser/provider/pool');
 
 let showMessageOnExit = true;
 let exitMessageShown  = false;
@@ -58,6 +65,37 @@ function error (err) {
     exit(1);
 }
 
+async function getBrowserInfo (browser) {
+    try {
+        return {
+            error: null,
+            info:  await browserProviderPool.getBrowserInfo(browser)
+        };
+    }
+    catch (err) {
+        return {
+            error: err,
+            info:  null
+        };
+    }
+}
+
+async function getBrowsersAndSources (testCafe, argParser) {
+    const configuration   = testCafe.configuration;
+    const browsersOptions = configuration.getOption(OPTION_NAMES.browsers);
+
+    if (!browsersOptions)
+        return [argParser.browsers, argParser.src];
+
+    const browserInfo              = await Promise.all(argParser.browsers.map(browser => getBrowserInfo(browser)));
+    const [parsedInfo, failedInfo] = partition(browserInfo, info => !info.error);
+
+    if (!parsedInfo.length)
+        return [[], [argParser.browsers, ...argParser.src]];
+
+    throw new CompositeError(failedInfo.map(info => info.error));
+}
+
 async function runTests (argParser) {
     const opts              = argParser.opts;
     const port1             = opts.ports && opts.ports[0];
@@ -67,10 +105,13 @@ async function runTests (argParser) {
 
     log.showSpinner();
 
-    const testCafe       = await createTestCafe(opts.hostname, port1, port2, opts.ssl, opts.dev);
-    const remoteBrowsers = await remotesWizard(testCafe, argParser.remoteCount, opts.qrCode);
-    const browsers       = argParser.browsers.concat(remoteBrowsers);
-    const runner         = opts.live ? testCafe.createLiveModeRunner() : testCafe.createRunner();
+    const testCafe = await createTestCafe(opts.hostname, port1, port2, opts.ssl, opts.dev);
+
+    const [automatedBrowsers, sources] = await getBrowsersAndSources(testCafe, argParser);
+    const remoteBrowsers               = await remotesWizard(testCafe, argParser.remoteCount, opts.qrCode);
+    const browsers                     = automatedBrowsers.concat(remoteBrowsers);
+
+    const runner = opts.live ? testCafe.createLiveModeRunner() : testCafe.createRunner();
 
     let failed = 0;
 
@@ -79,7 +120,7 @@ async function runTests (argParser) {
 
     runner
         .useProxy(proxy, proxyBypass)
-        .src(argParser.src)
+        .src(sources)
         .browsers(browsers)
         .reporter(argParser.opts.reporter)
         .concurrency(argParser.opts.concurrency)
@@ -103,9 +144,6 @@ async function runTests (argParser) {
 }
 
 async function listBrowsers (providerName = 'locally-installed') {
-    // NOTE: Load the provider pool lazily to reduce startup time
-    const browserProviderPool = require('../browser/provider/pool');
-
     const provider = await browserProviderPool.getProvider(providerName);
 
     if (!provider)
