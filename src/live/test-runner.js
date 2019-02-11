@@ -187,7 +187,7 @@ class LiveModeRunner extends Runner {
         });
     }
 
-    _disposeBrowserSet () {
+    _disposeAssets () {
         return Promise.resolve();
     }
 }
