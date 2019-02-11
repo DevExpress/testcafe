@@ -8,7 +8,7 @@ redirect_from:
 # Run Tests in Bitbucket Pipelines CI
 
 You can automatically run tests as a part of your build process using TestCafe and [Bitbucket Pipelines CI](https://bitbucket.org/product/features/pipelines).
-The Bitbucket Pipelines support Docker containers, and there are some available with both Chrome e Firefox browsers included (also in headless mode).
+The Bitbucket Pipelines support Docker containers, and there are some available with both Chrome and Firefox browsers included (also in headless mode).
 
 Suppose you have a Bitbucket project for which you need to automatically run tests in the cloud when the project is modified. To do this, go through the following steps.
 
