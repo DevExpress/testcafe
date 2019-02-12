@@ -54,7 +54,7 @@ describe('Browser connection', function () {
     });
 
     afterEach(function () {
-        connection.forceIdle();
+        connection._forceIdle();
         connection.close();
     });
 

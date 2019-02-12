@@ -58,7 +58,7 @@ export default class BrowserConnection extends EventEmitter {
         this.statusDoneUrl = `${gateway.domain}${this.statusDoneRelativeUrl}`;
 
         this.on('error', () => {
-            this.forceIdle();
+            this._forceIdle();
             this.close();
         });
 
@@ -104,7 +104,7 @@ export default class BrowserConnection extends EventEmitter {
         }
     }
 
-    forceIdle () {
+    _forceIdle () {
         if (!this.idle) {
             this.switchingToIdle = false;
             this.idle            = true;
@@ -153,7 +153,7 @@ export default class BrowserConnection extends EventEmitter {
     async restartBrowser () {
         this.ready = false;
 
-        this.forceIdle();
+        this._forceIdle();
 
         let resolveTimeout   = null;
         let isTimeoutExpired = false;
