@@ -3,7 +3,7 @@ const read                                              = require('read-file-rel
 const { escapeRegExp, pull: remove }                    = require('lodash');
 const ReporterPluginHost                                = require('../../lib/reporter/plugin-host');
 const TEST_RUN_PHASE                                    = require('../../lib/test-run/phase');
-const TYPE                                              = require('../../lib/errors/types');
+const { TestRunErrors }                                 = require('../../lib/errors/types');
 const TestRunErrorFormattableAdapter                    = require('../../lib/errors/test-run/formattable-adapter');
 const testCallsite                                      = require('./data/test-callsite');
 const AssertionExecutableArgumentError                  = require('../../lib/errors/test-run').AssertionExecutableArgumentError;
@@ -69,7 +69,7 @@ const { createSimpleTestStream }                        = require('../functional
 
 const TEST_FILE_STACK_ENTRY_RE = new RegExp('\\s*\\n?\\(' + escapeRegExp(require.resolve('./data/test-callsite')), 'g');
 
-const untestedErrorTypes = Object.keys(TYPE).map(key => TYPE[key].name);
+const untestedErrorTypes = Object.keys(TestRunErrors).map(key => TestRunErrors[key].name);
 
 const userAgentMock = 'Chrome 15.0.874 / Mac OS X 10.8.1';
 

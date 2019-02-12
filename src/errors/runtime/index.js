@@ -5,17 +5,25 @@ import { getCallsiteForMethod } from '../get-callsite';
 import renderTemplate from '../../utils/render-template';
 import { RuntimeErrors } from '../types';
 
-
 const ERROR_SEPARATOR = '\n\n';
+
+class ProcessTemplateInstruction {
+    constructor (processFn) {
+        this.processFn = processFn;
+    }
+}
 
 // Errors
 export class GeneralError extends Error {
     constructor (...args) {
-        const errorType = args[0];
-        const template = TEMPLATES[errorType.name];
+        const errorType = args.shift();
+        const template  = TEMPLATES[errorType.name];
 
         super(renderTemplate(template, ...args));
+
+        this.data = args;
         this.code = errorType.code;
+        this.type = errorType.name;
         Error.captureStackTrace(this, GeneralError);
     }
 }
@@ -34,11 +42,18 @@ export class TestCompilationError extends Error {
 }
 
 export class APIError extends Error {
-    constructor (methodName, errType, ...args) {
-        const template   = TEMPLATES[errType.name];
+    constructor (methodName, errorType, ...args) {
+        let template = TEMPLATES[errorType.name];
+
+        template = APIError._prepareTemplateAndArgsIfNecessary(template, args);
+
         const rawMessage = renderTemplate(template, ...args);
 
         super(renderTemplate(TEMPLATES[RuntimeErrors.cannotPrepareTestsDueToError.name], rawMessage));
+
+        this.data = args;
+        this.code = errorType.code;
+        this.type = errorType.name;
 
         // NOTE: `rawMessage` is used in error substitution if it occurs in test run.
         this.rawMessage  = rawMessage;
@@ -84,13 +99,24 @@ export class APIError extends Error {
 
         return this.message + ERROR_SEPARATOR + renderedCallsite;
     }
+
+    static _prepareTemplateAndArgsIfNecessary (template, args) {
+        const lastArg = args.pop();
+
+        if (lastArg instanceof ProcessTemplateInstruction)
+            template = lastArg.processFn(template);
+        else
+            args.push(lastArg);
+
+        return template;
+    }
 }
 
 export class ClientFunctionAPIError extends APIError {
-    constructor (methodName, instantiationCallsiteName, template, ...args) {
-        template = template.replace(/\{#instantiationCallsiteName\}/g, instantiationCallsiteName);
+    constructor (methodName, instantiationCallsiteName, errorType, ...args) {
+        args.push(new ProcessTemplateInstruction(template => template.replace(/\{#instantiationCallsiteName\}/g, instantiationCallsiteName)));
 
-        super(methodName, template, ...args);
+        super(methodName, errorType, ...args);
     }
 }
 
