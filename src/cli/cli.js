@@ -1,6 +1,6 @@
 import chalk from 'chalk';
 import { GeneralError, APIError } from '../errors/runtime';
-import MESSAGE from '../errors/runtime/message';
+import { RuntimeErrors } from '../errors/types';
 import CliArgumentParser from './argument-parser';
 import TerminationHandler from './termination-handler';
 import log from './log';
@@ -114,7 +114,7 @@ async function listBrowsers (providerName = 'locally-installed') {
     const provider = await browserProviderPool.getProvider(providerName);
 
     if (!provider)
-        throw new GeneralError(MESSAGE.browserProviderNotFound, providerName);
+        throw new GeneralError(RuntimeErrors.browserProviderNotFound, providerName);
 
     if (provider.isMultiBrowser) {
         const browserNames = await provider.getBrowserList();

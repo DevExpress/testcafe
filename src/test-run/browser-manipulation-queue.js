@@ -3,7 +3,7 @@ import { isServiceCommand } from './commands/utils';
 import COMMAND_TYPE from './commands/type';
 import WARNING_MESSAGE from '../notifications/warning-message';
 import { WindowDimensionsOverflowError } from '../errors/test-run/';
-import ERROR_TYPE from '../errors/test-run/type';
+import ERROR_TYPE from '../errors/type';
 
 
 export default class BrowserManipulationQueue {

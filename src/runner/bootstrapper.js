@@ -4,7 +4,7 @@ import Compiler from '../compiler';
 import BrowserConnection from '../browser/connection';
 import { GeneralError } from '../errors/runtime';
 import browserProviderPool from '../browser/provider/pool';
-import MESSAGE from '../errors/runtime/message';
+import { RuntimeErrors } from '../errors/types';
 import BrowserSet from './browser-set';
 import TestedApp from './tested-app';
 import parseFileList from '../utils/parse-file-list';
@@ -42,7 +42,7 @@ export default class Bootstrapper {
 
     async _getBrowserInfo () {
         if (!this.browsers.length)
-            throw new GeneralError(MESSAGE.browserNotSet);
+            throw new GeneralError(RuntimeErrors.browserNotSet);
 
         const browserInfo = await Promise.all(this.browsers.map(browser => browserProviderPool.getBrowserInfo(browser)));
 
@@ -61,7 +61,7 @@ export default class Bootstrapper {
         const { automated, remotes } = Bootstrapper._splitBrowserInfo(browserInfo);
 
         if (remotes && remotes.length % this.concurrency)
-            throw new GeneralError(MESSAGE.cannotDivideRemotesCountByConcurrency);
+            throw new GeneralError(RuntimeErrors.cannotDivideRemotesCountByConcurrency);
 
         let browserConnections = this._createAutomatedConnections(automated);
 
@@ -72,7 +72,7 @@ export default class Bootstrapper {
 
     async _getTests () {
         if (!this.sources.length)
-            throw new GeneralError(MESSAGE.testSourcesNotSet);
+            throw new GeneralError(RuntimeErrors.testSourcesNotSet);
 
         const parsedFileList = await parseFileList(this.sources, process.cwd());
         const compiler       = new Compiler(parsedFileList);
@@ -87,7 +87,7 @@ export default class Bootstrapper {
             tests = tests.filter(test => this.filter(test.name, test.fixture.name, test.fixture.path, test.meta, test.fixture.meta));
 
         if (!tests.length)
-            throw new GeneralError(MESSAGE.noTestsToRun);
+            throw new GeneralError(RuntimeErrors.noTestsToRun);
 
         return tests;
     }
@@ -114,7 +114,7 @@ export default class Bootstrapper {
         const stdoutReporters = filter(this.reporters, r => isUndefined(r.output) || r.output === process.stdout);
 
         if (stdoutReporters.length > 1)
-            throw new GeneralError(MESSAGE.multipleStdoutReporters, stdoutReporters.map(r => r.name).join(', '));
+            throw new GeneralError(RuntimeErrors.multipleStdoutReporters, stdoutReporters.map(r => r.name).join(', '));
 
         if (!this.reporters.length)
             Bootstrapper._addDefaultReporter(this.reporters);
@@ -129,7 +129,7 @@ export default class Bootstrapper {
                     pluginFactory = require('testcafe-reporter-' + name);
                 }
                 catch (err) {
-                    throw new GeneralError(MESSAGE.cantFindReporterForAlias, name);
+                    throw new GeneralError(RuntimeErrors.cantFindReporterForAlias, name);
                 }
             }
 

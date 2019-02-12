@@ -6,7 +6,7 @@ import Runner from '../runner';
 import LiveModeBootstrapper from './bootstrapper';
 import parseFileList from '../utils/parse-file-list';
 import { GeneralError } from '../errors/runtime';
-import MESSAGE from '../errors/runtime/message';
+import { RuntimeErrors } from '../errors/types';
 
 class LiveModeRunner extends Runner {
     constructor (proxy, browserConnectionGateway, options) {
@@ -88,7 +88,7 @@ class LiveModeRunner extends Runner {
 
     run (options) {
         if (this.preventRunCall)
-            throw new GeneralError(MESSAGE.cannotRunLiveModeRunnerMultipleTimes);
+            throw new GeneralError(RuntimeErrors.cannotRunLiveModeRunnerMultipleTimes);
 
         this.preventRunCall = true;
 

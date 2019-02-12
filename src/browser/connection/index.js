@@ -9,7 +9,7 @@ import nanoid from 'nanoid';
 import COMMAND from './command';
 import STATUS from './status';
 import { GeneralError } from '../../errors/runtime';
-import MESSAGE from '../../errors/runtime/message';
+import { RuntimeErrors } from '../../errors/types';
 
 const IDLE_PAGE_TEMPLATE = read('../../client/browser/idle-page/index.html.mustache');
 const connections        = {};
@@ -85,7 +85,7 @@ export default class BrowserConnection extends EventEmitter {
         }
         catch (err) {
             this.emit('error', new GeneralError(
-                MESSAGE.unableToOpenBrowser,
+                RuntimeErrors.unableToOpenBrowser,
                 this.browserInfo.providerName + ':' + this.browserInfo.browserName,
                 err.stack
             ));
@@ -113,7 +113,7 @@ export default class BrowserConnection extends EventEmitter {
     }
 
     _createBrowserDisconnectedError () {
-        return new GeneralError(MESSAGE.browserDisconnected, this.userAgent);
+        return new GeneralError(RuntimeErrors.browserDisconnected, this.userAgent);
     }
 
     _waitForHeartbeat () {

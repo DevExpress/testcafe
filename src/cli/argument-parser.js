@@ -2,7 +2,7 @@ import { Command } from 'commander';
 import dedent from 'dedent';
 import { readSync as read } from 'read-file-relative';
 import { GeneralError } from '../errors/runtime';
-import MESSAGE from '../errors/runtime/message';
+import { RuntimeErrors } from '../errors/types';
 import { assertType, is } from '../errors/runtime/type-assertions';
 import getViewPortWidth from '../utils/get-viewport-width';
 import { wordWrap, splitQuotedText } from '../utils/string';
@@ -166,7 +166,7 @@ export default class CLIArgumentParser {
                 .map(CLIArgumentParser._parsePortNumber);
 
             if (this.opts.ports.length < 2)
-                throw new GeneralError(MESSAGE.portsOptionRequiresTwoNumbers);
+                throw new GeneralError(RuntimeErrors.portsOptionRequiresTwoNumbers);
         }
     }
 

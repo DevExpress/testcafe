@@ -1,6 +1,6 @@
 import Promise from 'pinkie';
 import { GeneralError } from './errors/runtime';
-import MESSAGE from './errors/runtime/message';
+import { RuntimeErrors } from './errors/types';
 
 const lazyRequire              = require('import-lazy')(require);
 const sourceMapSupport         = lazyRequire('source-map-support');
@@ -86,7 +86,7 @@ export default class TestCafe {
 
     createLiveModeRunner () {
         if (this.runners.some(runner => runner instanceof LiveModeRunner))
-            throw new GeneralError(MESSAGE.cannotCreateMultipleLiveModeRunners);
+            throw new GeneralError(RuntimeErrors.cannotCreateMultipleLiveModeRunners);
 
         return this._createRunner(true);
     }

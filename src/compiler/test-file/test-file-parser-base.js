@@ -2,8 +2,7 @@ import fs from 'fs';
 import promisify from '../../utils/promisify';
 import { format } from 'util';
 import { GeneralError } from '../../errors/runtime';
-
-import MESSAGE from '../../errors/runtime/message';
+import { RuntimeErrors } from '../../errors/types';
 
 const readFile = promisify(fs.readFile);
 
@@ -248,7 +247,7 @@ export class TestFileParserBase {
         }
 
         catch (err) {
-            throw new GeneralError(MESSAGE.cantFindSpecifiedTestSource, filePath);
+            throw new GeneralError(RuntimeErrors.cantFindSpecifiedTestSource, filePath);
         }
 
         return fileContent;

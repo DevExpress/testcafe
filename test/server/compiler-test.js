@@ -3,7 +3,7 @@ const path              = require('path');
 const fs                = require('fs');
 const Promise           = require('pinkie');
 const renderers         = require('callsite-record').renderers;
-const ERR_TYPE          = require('../../lib/errors/test-run/type');
+const ERR_TYPE          = require('../../lib/errors/types');
 const exportableLib     = require('../../lib/api/exportable-lib');
 const createStackFilter = require('../../lib/errors/create-stack-filter.js');
 const assertError       = require('./helpers/assert-error').assertError;
@@ -479,7 +479,7 @@ describe('Compiler', function () {
                         throw new Error('Promise rejection is expected');
                     })
                     .catch(function (errList) {
-                        expect(errList.items[0].type).eql(ERR_TYPE.uncaughtErrorInTestCode);
+                        expect(errList.items[0].type).eql(ERR_TYPE.uncaughtErrorInTestCode.name);
                         expect(errList.items[0].errMsg).contains('test-error');
                         expect(testRun.commands.length).eql(1);
                     });

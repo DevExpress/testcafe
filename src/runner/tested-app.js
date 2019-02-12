@@ -5,7 +5,7 @@ import kill from 'tree-kill';
 import OS from 'os-family';
 import delay from '../utils/delay';
 import { GeneralError } from '../errors/runtime';
-import MESSAGE from '../errors/runtime/message';
+import { RuntimeErrors } from '../errors/types';
 import resolvePathRelativelyCwd from '../utils/resolve-path-relatively-cwd';
 
 const MODULES_BIN_DIR = resolvePathRelativelyCwd('./node_modules/.bin');
@@ -47,7 +47,7 @@ export default class TestedApp {
                 if (!this.killed && err) {
                     const message = err.stack || String(err);
 
-                    reject(new GeneralError(MESSAGE.testedAppFailedWithError, message));
+                    reject(new GeneralError(RuntimeErrors.testedAppFailedWithError, message));
                 }
             });
         });

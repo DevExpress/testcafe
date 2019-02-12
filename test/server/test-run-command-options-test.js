@@ -10,7 +10,7 @@ const TypeOptions              = require('../../lib/test-run/commands/options').
 const ElementScreenshotOptions = require('../../lib/test-run/commands/options').ElementScreenshotOptions;
 const ResizeToFitDeviceOptions = require('../../lib/test-run/commands/options').ResizeToFitDeviceOptions;
 const AssertionOptions         = require('../../lib/test-run/commands/options').AssertionOptions;
-const ERROR_TYPE               = require('../../lib/errors/test-run/type');
+const ERROR_TYPE               = require('../../lib/errors/types');
 
 // NOTE: chai's throws doesn't perform deep comparison of error objects
 function assertThrow (fn, expectedErr) {
@@ -270,7 +270,8 @@ describe('Test run command options', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSpeedOptionError,
+                    type:            ERROR_TYPE.actionSpeedOptionError.name,
+                    code:            'E12',
                     actualValue:     'string',
                     optionName:      'speed',
                     callsite:        null
@@ -283,7 +284,8 @@ describe('Test run command options', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSpeedOptionError,
+                    type:            ERROR_TYPE.actionSpeedOptionError.name,
+                    code:            'E12',
                     actualValue:     5,
                     optionName:      'speed',
                     callsite:        null
@@ -296,7 +298,8 @@ describe('Test run command options', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSpeedOptionError,
+                    type:            ERROR_TYPE.actionSpeedOptionError.name,
+                    code:            'E12',
                     actualValue:     0,
                     optionName:      'speed',
                     callsite:        null
@@ -311,7 +314,8 @@ describe('Test run command options', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionIntegerOptionError,
+                    type:            ERROR_TYPE.actionIntegerOptionError.name,
+                    code:            'E9',
                     actualValue:     'object',
                     optionName:      'offsetX',
                     callsite:        null
@@ -324,7 +328,8 @@ describe('Test run command options', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionIntegerOptionError,
+                    type:            ERROR_TYPE.actionIntegerOptionError.name,
+                    code:            'E9',
                     actualValue:     NaN,
                     optionName:      'offsetX',
                     callsite:        null
@@ -337,7 +342,8 @@ describe('Test run command options', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionIntegerOptionError,
+                    type:            ERROR_TYPE.actionIntegerOptionError.name,
+                    code:            'E9',
                     actualValue:     3.14,
                     optionName:      'offsetX',
                     callsite:        null
@@ -352,7 +358,8 @@ describe('Test run command options', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionBooleanOptionError,
+                    type:            ERROR_TYPE.actionBooleanOptionError.name,
+                    code:            'E11',
                     actualValue:     'number',
                     optionName:      'modifiers.ctrl',
                     callsite:        null
@@ -365,7 +372,8 @@ describe('Test run command options', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionBooleanOptionError,
+                    type:            ERROR_TYPE.actionBooleanOptionError.name,
+                    code:            'E11',
                     actualValue:     'number',
                     optionName:      'modifiers.alt',
                     callsite:        null
@@ -378,7 +386,8 @@ describe('Test run command options', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionBooleanOptionError,
+                    type:            ERROR_TYPE.actionBooleanOptionError.name,
+                    code:            'E11',
                     actualValue:     'number',
                     optionName:      'modifiers.shift',
                     callsite:        null
@@ -391,7 +400,8 @@ describe('Test run command options', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionBooleanOptionError,
+                    type:            ERROR_TYPE.actionBooleanOptionError.name,
+                    code:            'E11',
                     actualValue:     'number',
                     optionName:      'modifiers.meta',
                     callsite:        null
@@ -406,7 +416,8 @@ describe('Test run command options', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionPositiveIntegerOptionError,
+                    type:            ERROR_TYPE.actionPositiveIntegerOptionError.name,
+                    code:            'E10',
                     actualValue:     -1,
                     optionName:      'caretPos',
                     callsite:        null
@@ -419,7 +430,8 @@ describe('Test run command options', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionPositiveIntegerOptionError,
+                    type:            ERROR_TYPE.actionPositiveIntegerOptionError.name,
+                    code:            'E10',
                     actualValue:     3.14,
                     optionName:      'caretPos',
                     callsite:        null
@@ -434,7 +446,8 @@ describe('Test run command options', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionBooleanOptionError,
+                    type:            ERROR_TYPE.actionBooleanOptionError.name,
+                    code:            'E11',
                     actualValue:     'number',
                     optionName:      'replace',
                     callsite:        null
@@ -449,7 +462,8 @@ describe('Test run command options', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionIntegerOptionError,
+                    type:            ERROR_TYPE.actionIntegerOptionError.name,
+                    code:            'E9',
                     actualValue:     'object',
                     optionName:      'destinationOffsetX',
                     callsite:        null
@@ -462,7 +476,8 @@ describe('Test run command options', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionIntegerOptionError,
+                    type:            ERROR_TYPE.actionIntegerOptionError.name,
+                    code:            'E9',
                     actualValue:     NaN,
                     optionName:      'destinationOffsetY',
                     callsite:        null
@@ -477,7 +492,8 @@ describe('Test run command options', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionBooleanOptionError,
+                    type:            ERROR_TYPE.actionBooleanOptionError.name,
+                    code:            'E11',
                     actualValue:     'number',
                     optionName:      'portraitOrientation',
                     callsite:        null
@@ -492,7 +508,8 @@ describe('Test run command options', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionPositiveIntegerOptionError,
+                    type:            ERROR_TYPE.actionPositiveIntegerOptionError.name,
+                    code:            'E10',
                     actualValue:     -1,
                     optionName:      'timeout',
                     callsite:        null
@@ -505,7 +522,8 @@ describe('Test run command options', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionPositiveIntegerOptionError,
+                    type:            ERROR_TYPE.actionPositiveIntegerOptionError.name,
+                    code:            'E10',
                     actualValue:     'string',
                     optionName:      'timeout',
                     callsite:        null

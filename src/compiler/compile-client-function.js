@@ -3,7 +3,7 @@ import asyncToGenerator from 'babel-runtime/helpers/asyncToGenerator';
 import { noop } from 'lodash';
 import loadBabelLibs from './load-babel-libs';
 import { ClientFunctionAPIError } from '../errors/runtime';
-import MESSAGE from '../errors/runtime/message';
+import { RuntimeErrors } from '../errors/types';
 
 const ANONYMOUS_FN_RE                = /^function\s*\*?\s*\(/;
 const ES6_OBJ_METHOD_NAME_RE         = /^(\S+?)\s*\(/;
@@ -102,7 +102,7 @@ function makeFnCodeSuitableForParsing (fnCode) {
 
 export default function compileClientFunction (fnCode, dependencies, instantiationCallsiteName, compilationCallsiteName) {
     if (fnCode === ASYNC_TO_GENERATOR_OUTPUT_CODE)
-        throw new ClientFunctionAPIError(compilationCallsiteName, instantiationCallsiteName, MESSAGE.regeneratorInClientFunctionCode);
+        throw new ClientFunctionAPIError(compilationCallsiteName, instantiationCallsiteName, RuntimeErrors.regeneratorInClientFunctionCode);
 
     fnCode = makeFnCodeSuitableForParsing(fnCode);
 
@@ -113,7 +113,7 @@ export default function compileClientFunction (fnCode, dependencies, instantiati
     // NOTE: check compiled code for regenerator injection: we have either generator
     // recompiled in Node.js 4+ for client or async function declared in function code.
     if (REGENERATOR_FOOTPRINTS_RE.test(fnCode))
-        throw new ClientFunctionAPIError(compilationCallsiteName, instantiationCallsiteName, MESSAGE.regeneratorInClientFunctionCode);
+        throw new ClientFunctionAPIError(compilationCallsiteName, instantiationCallsiteName, RuntimeErrors.regeneratorInClientFunctionCode);
 
     if (!TRAILING_SEMICOLON_RE.test(fnCode))
         fnCode += ';';

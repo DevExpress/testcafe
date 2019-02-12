@@ -1,8 +1,9 @@
 import { renderers } from 'callsite-record';
-import MESSAGE from './message';
+import TEMPLATES from './templates';
 import createStackFilter from '../create-stack-filter';
 import { getCallsiteForMethod } from '../get-callsite';
 import renderTemplate from '../../utils/render-template';
+import { RuntimeErrors } from '../types';
 
 
 const ERROR_SEPARATOR = '\n\n';
@@ -10,25 +11,34 @@ const ERROR_SEPARATOR = '\n\n';
 // Errors
 export class GeneralError extends Error {
     constructor (...args) {
-        super(renderTemplate(...args));
+        const errorType = args[0];
+        const template = TEMPLATES[errorType.name];
+
+        super(renderTemplate(template, ...args));
+        this.code = errorType.code;
         Error.captureStackTrace(this, GeneralError);
     }
 }
 
 export class TestCompilationError extends Error {
     constructor (originalError) {
-        super(renderTemplate(MESSAGE.cannotPrepareTestsDueToError, originalError.toString()));
+        const template = TEMPLATES[RuntimeErrors.cannotPrepareTestsDueToError.name];
+
+        super(renderTemplate(template, originalError.toString()));
+
+        this.code = RuntimeErrors.cannotPrepareTestsDueToError.code;
 
         // NOTE: stack includes message as well.
-        this.stack = renderTemplate(MESSAGE.cannotPrepareTestsDueToError, originalError.stack);
+        this.stack = renderTemplate(template, originalError.stack);
     }
 }
 
 export class APIError extends Error {
-    constructor (methodName, template, ...args) {
+    constructor (methodName, errType, ...args) {
+        const template   = TEMPLATES[errType.name];
         const rawMessage = renderTemplate(template, ...args);
 
-        super(renderTemplate(MESSAGE.cannotPrepareTestsDueToError, rawMessage));
+        super(renderTemplate(TEMPLATES[RuntimeErrors.cannotPrepareTestsDueToError.name], rawMessage));
 
         // NOTE: `rawMessage` is used in error substitution if it occurs in test run.
         this.rawMessage  = rawMessage;

@@ -1,5 +1,5 @@
 import TEST_RUN_PHASE from '../test-run/phase';
-import ERR_TYPE from '../errors/test-run/type';
+import ERR_TYPE from '../errors/type';
 
 import {
     SwitchToMainWindowCommand,

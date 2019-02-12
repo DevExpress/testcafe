@@ -1,6 +1,6 @@
 import { isFinite as isFiniteNumber, isRegExp, isNil as isNullOrUndefined } from 'lodash';
 import { APIError, GeneralError } from './';
-import MESSAGE from './message';
+import { RuntimeErrors } from '../types';
 import RequestHook from '../../api/request-hooks/hook';
 
 const START_FROM_VOWEL_RE = /^[aeiou]/i;
@@ -110,7 +110,7 @@ export function assertType (types, callsiteName, what, value) {
 
     if (!pass) {
         throw callsiteName ?
-            new APIError(callsiteName, MESSAGE.invalidValueType, what, expectedTypeMsg, actualMsg) :
-            new GeneralError(MESSAGE.invalidValueType, what, expectedTypeMsg, actualMsg);
+            new APIError(callsiteName, RuntimeErrors.invalidValueType, what, expectedTypeMsg, actualMsg) :
+            new GeneralError(RuntimeErrors.invalidValueType, what, expectedTypeMsg, actualMsg);
     }
 }
