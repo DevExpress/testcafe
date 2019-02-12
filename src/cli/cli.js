@@ -1,13 +1,11 @@
 import chalk from 'chalk';
-import Promise from 'pinkie';
-import { partition } from 'lodash';
-import { GeneralError, APIError, CompositeError } from '../errors/runtime';
+import { GeneralError, APIError } from '../errors/runtime';
 import MESSAGE from '../errors/runtime/message';
 import CliArgumentParser from './argument-parser';
 import TerminationHandler from './termination-handler';
 import log from './log';
-import OPTION_NAMES from '../configuration/option-names';
 import remotesWizard from './remotes-wizard';
+import correctBrowsersAndSources from './correct-browsers-and-sources';
 import createTestCafe from '../';
 
 // NOTE: Load the provider pool lazily to reduce startup time
@@ -63,37 +61,6 @@ function error (err) {
     exit(1);
 }
 
-async function getBrowserInfo (browser) {
-    try {
-        return {
-            error: null,
-            info:  await browserProviderPool.getBrowserInfo(browser)
-        };
-    }
-    catch (err) {
-        return {
-            error: err,
-            info:  null
-        };
-    }
-}
-
-async function getBrowsersAndSources (testCafe, argParser) {
-    const configuration   = testCafe.configuration;
-    const browsersOptions = configuration.getOption(OPTION_NAMES.browsers);
-
-    if (!browsersOptions)
-        return [argParser.browsers, argParser.src];
-
-    const browserInfo              = await Promise.all(argParser.browsers.map(browser => getBrowserInfo(browser)));
-    const [parsedInfo, failedInfo] = partition(browserInfo, info => !info.error);
-
-    if (!parsedInfo.length)
-        return [[], [argParser.browsers, ...argParser.src]];
-
-    throw new CompositeError(failedInfo.map(info => info.error));
-}
-
 async function runTests (argParser) {
     const opts              = argParser.opts;
     const port1             = opts.ports && opts.ports[0];
@@ -105,7 +72,7 @@ async function runTests (argParser) {
 
     const testCafe = await createTestCafe(opts.hostname, port1, port2, opts.ssl, opts.dev);
 
-    const [automatedBrowsers, sources] = await getBrowsersAndSources(testCafe, argParser);
+    const [automatedBrowsers, sources] = await correctBrowsersAndSources(argParser, testCafe.configuration);
     const remoteBrowsers               = await remotesWizard(testCafe, argParser.remoteCount, opts.qrCode);
     const browsers                     = automatedBrowsers.concat(remoteBrowsers);
 
