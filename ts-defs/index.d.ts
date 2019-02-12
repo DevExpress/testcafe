@@ -667,7 +667,7 @@ interface SelectorAPI {
      * @param methods `node` - The matching DOM node for which custom method is executed.
      * @param methods `methodParams` - Custom method parameters.
      */
-    addCustomMethods(methods: { [method: string]: (node: Element, ...methodParams: any[]) => any }, opts?: { returnDOMNodes?: boolean }): Selector;
+    addCustomMethods(methods: {[method: string]: (node: Element, ...methodParams: any[]) => any }, opts?: {returnDOMNodes?: boolean}): Selector;
     /**
      * Returns a new selector with a different set of options that includes options from the
      * original selector and new `options` that overwrite the original ones.
@@ -1021,11 +1021,11 @@ interface TestController {
     /**
      * Dictionary that is shared between test hook functions and test code.
      */
-    ctx: { [key: string]: any };
+    ctx: {[key: string]: any};
     /**
      * Dictionary that is shared between `fixture.before` and `fixture.after`, test hook functions and test code.
      */
-    readonly fixtureCtx: { [key: string]: any };
+    readonly fixtureCtx: {[key: string]: any};
     /**
      * Clicks a webpage element.
      *
