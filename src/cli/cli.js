@@ -48,12 +48,10 @@ function error (err) {
 
     let message = null;
 
-    // HACK: workaround for the `instanceof` problem
-    // (see: http://stackoverflow.com/questions/33870684/why-doesnt-instanceof-work-on-instances-of-error-subclasses-under-babel-node)
-    if (err.constructor === GeneralError)
+    if (err instanceof GeneralError)
         message = err.message;
 
-    else if (err.constructor === APIError)
+    else if (err instanceof APIError)
         message = err.coloredStack;
 
     else

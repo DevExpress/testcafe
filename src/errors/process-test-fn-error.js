@@ -27,7 +27,7 @@ export default function processTestFnError (err) {
     if (err && (err.isTestCafeError || err instanceof TestCafeErrorList))
         return err;
 
-    if (err && err.constructor === APIError)
+    if (err && err instanceof APIError)
         return new UncaughtErrorInTestCode(err.rawMessage, err.callsite);
 
     if (err instanceof Error) {

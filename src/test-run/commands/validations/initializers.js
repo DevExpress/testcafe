@@ -29,7 +29,7 @@ export function initSelector (name, val, { testRun, ...options }) {
         return builder.getCommand([]);
     }
     catch (err) {
-        const msg = err.constructor === APIError ? err.rawMessage : err.message;
+        const msg = err instanceof APIError ? err.rawMessage : err.message;
 
         throw new ActionSelectorError(name, msg);
     }
