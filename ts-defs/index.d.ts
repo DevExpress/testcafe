@@ -25,7 +25,7 @@ interface ClientFunction<R = any, A extends any[]= any[]> {
      *
      * @param options - New options.
      */
-    with(options: ClientFunctionOptions): ClientFunction;
+    with(options: ClientFunctionOptions): ClientFunction<R, A>;
 }
 
 // NodeSnapshot
@@ -1758,7 +1758,7 @@ declare module 'testcafe' {
      * @param fn - Function code.
      * @param options - Function options.
      */
-    export function ClientFunction(fn: Function, options?: ClientFunctionOptions): ClientFunction;
+    export function ClientFunction<R, A extends any[]>(fn: (...args: A) => R, options?: ClientFunctionOptions): ClientFunction<R, A>;
 
     /**
      * Creates a request mock
