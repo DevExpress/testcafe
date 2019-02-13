@@ -1,5 +1,5 @@
-const expect                  = require('chai').expect;
-const parseBrowsersAndSources = require('../../lib/cli/correct-browsers-and-sources');
+const expect                    = require('chai').expect;
+const correctBrowsersAndSources = require('../../lib/cli/correct-browsers-and-sources');
 
 class ConfigurationMock {
     constructor (opts) {
@@ -20,7 +20,7 @@ class ConfigurationMock {
 class ArgsMock {
     constructor (args) {
         this.args     = args;
-        this.browsers = args[0].split(',');
+        this.browsers = args[0] && args[0].split(',');
         this.src      = args.slice(1);
     }
 }
@@ -35,8 +35,8 @@ describe('CLI Correct browsers and sources', () => {
             'test2.js'
         ]);
 
-        return parseBrowsersAndSources(args, configuration)
-            .then(([browsers, sources]) => {
+        return correctBrowsersAndSources(args, configuration)
+            .then(({ browsers, sources }) => {
                 expect(browsers).to.be.empty;
                 expect(sources).to.be.deep.equal(['test1.js', 'test2.js']);
             });
@@ -52,8 +52,8 @@ describe('CLI Correct browsers and sources', () => {
             'test1.js'
         ]);
 
-        return parseBrowsersAndSources(args, configuration)
-            .then(([browsers, sources]) => {
+        return correctBrowsersAndSources(args, configuration)
+            .then(({ browsers, sources }) => {
                 expect(browsers).to.be.deep.equal(['firefox', 'chrome']);
                 expect(sources).to.be.deep.equal(['test1.js']);
             });
@@ -69,8 +69,8 @@ describe('CLI Correct browsers and sources', () => {
             'bar-test.js'
         ]);
 
-        return parseBrowsersAndSources(args, configuration)
-            .then(([browsers, sources]) => {
+        return correctBrowsersAndSources(args, configuration)
+            .then(({ browsers, sources }) => {
                 expect(browsers).to.be.deep.equal(['foo-test.js']);
                 expect(sources).to.be.deep.equal(['bar-test.js']);
             });
@@ -86,13 +86,26 @@ describe('CLI Correct browsers and sources', () => {
             '[e2e,store]basket-page-test.js'
         ]);
 
-        return parseBrowsersAndSources(args, configuration)
-            .then(([browsers, sources]) => {
+        return correctBrowsersAndSources(args, configuration)
+            .then(({ browsers, sources }) => {
                 expect(browsers).to.be.deep.equal([]);
                 expect(sources).to.be.deep.equal(['[e2e,admin]user-manager-test.js', '[e2e,store]basket-page-test.js']);
             });
     });
 
+    it('Should handle empty CLI arguments', () => {
+        const configuration = new ConfigurationMock({
+            browsers: ['chrome']
+        });
+
+        const args = new ArgsMock([]);
+
+        return correctBrowsersAndSources(args, configuration)
+            .then(({ browsers, sources }) => {
+                expect(browsers).to.be.empty;
+                expect(sources).to.be.empty;
+            });
+    });
 
     it('Should throw an error if browsers from the config are overridden with valid & invalid browsers from CLI', () => {
         const configuration = new ConfigurationMock({
@@ -104,7 +117,7 @@ describe('CLI Correct browsers and sources', () => {
             'test1.js'
         ]);
 
-        return parseBrowsersAndSources(args, configuration)
+        return correctBrowsersAndSources(args, configuration)
             .then(() => {
                 throw new Error('Promise rejection expected');
             })

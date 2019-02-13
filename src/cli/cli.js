@@ -72,9 +72,11 @@ async function runTests (argParser) {
 
     const testCafe = await createTestCafe(opts.hostname, port1, port2, opts.ssl, opts.dev);
 
-    const [automatedBrowsers, sources] = await correctBrowsersAndSources(argParser, testCafe.configuration);
-    const remoteBrowsers               = await remotesWizard(testCafe, argParser.remoteCount, opts.qrCode);
-    const browsers                     = automatedBrowsers.concat(remoteBrowsers);
+    const correctedBrowsersAndSources = await correctBrowsersAndSources(argParser, testCafe.configuration);
+    const automatedBrowsers           = correctedBrowsersAndSources.browsers;
+    const remoteBrowsers              = await remotesWizard(testCafe, argParser.remoteCount, opts.qrCode);
+    const browsers                    = automatedBrowsers.concat(remoteBrowsers);
+    const sources                     = correctedBrowsersAndSources.sources;
 
     const runner = opts.live ? testCafe.createLiveModeRunner() : testCafe.createRunner();
 
