@@ -1,13 +1,13 @@
-const expect            = require('chai').expect;
-const path              = require('path');
-const fs                = require('fs');
-const Promise           = require('pinkie');
-const { TestRunErrors } = require('../../lib/errors/types');
-const exportableLib     = require('../../lib/api/exportable-lib');
-const createStackFilter = require('../../lib/errors/create-stack-filter.js');
-const assertError       = require('./helpers/assert-error').assertError;
-const compile           = require('./helpers/compile');
-const { exec }          = require('child_process');
+const expect              = require('chai').expect;
+const path                = require('path');
+const fs                  = require('fs');
+const Promise             = require('pinkie');
+const { TEST_RUN_ERRORS } = require('../../lib/errors/types');
+const exportableLib       = require('../../lib/api/exportable-lib');
+const createStackFilter   = require('../../lib/errors/create-stack-filter.js');
+const assertError         = require('./helpers/assert-error').assertError;
+const compile             = require('./helpers/compile');
+const { exec }            = require('child_process');
 
 require('source-map-support').install();
 
@@ -478,7 +478,7 @@ describe('Compiler', function () {
                         throw new Error('Promise rejection is expected');
                     })
                     .catch(function (errList) {
-                        expect(errList.items[0].type).eql(TestRunErrors.uncaughtErrorInTestCode.name);
+                        expect(errList.items[0].type).eql(TEST_RUN_ERRORS.uncaughtErrorInTestCode.name);
                         expect(errList.items[0].errMsg).contains('test-error');
                         expect(testRun.commands.length).eql(1);
                     });

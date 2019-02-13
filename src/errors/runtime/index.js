@@ -3,7 +3,7 @@ import TEMPLATES from './templates';
 import createStackFilter from '../create-stack-filter';
 import { getCallsiteForMethod } from '../get-callsite';
 import renderTemplate from '../../utils/render-template';
-import { RuntimeErrors } from '../types';
+import { RUNTIME_ERRORS } from '../types';
 
 const ERROR_SEPARATOR = '\n\n';
 
@@ -30,11 +30,11 @@ export class GeneralError extends Error {
 
 export class TestCompilationError extends Error {
     constructor (originalError) {
-        const template = TEMPLATES[RuntimeErrors.cannotPrepareTestsDueToError.name];
+        const template = TEMPLATES[RUNTIME_ERRORS.cannotPrepareTestsDueToError.name];
 
         super(renderTemplate(template, originalError.toString()));
 
-        this.code = RuntimeErrors.cannotPrepareTestsDueToError.code;
+        this.code = RUNTIME_ERRORS.cannotPrepareTestsDueToError.code;
 
         // NOTE: stack includes message as well.
         this.stack = renderTemplate(template, originalError.stack);
@@ -49,7 +49,7 @@ export class APIError extends Error {
 
         const rawMessage = renderTemplate(template, ...args);
 
-        super(renderTemplate(TEMPLATES[RuntimeErrors.cannotPrepareTestsDueToError.name], rawMessage));
+        super(renderTemplate(TEMPLATES[RUNTIME_ERRORS.cannotPrepareTestsDueToError.name], rawMessage));
 
         this.data = args;
         this.code = errorType.code;

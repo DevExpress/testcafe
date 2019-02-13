@@ -9,7 +9,7 @@ import CoffeeScriptTestFileCompiler from './test-file/formats/coffeescript/compi
 import RawTestFileCompiler from './test-file/formats/raw';
 import { readFile } from '../utils/promisified-functions';
 import { GeneralError } from '../errors/runtime';
-import { RuntimeErrors } from '../errors/types';
+import { RUNTIME_ERRORS } from '../errors/types';
 
 
 const SOURCE_CHUNK_LENGTH = 1000;
@@ -38,7 +38,7 @@ export default class Compiler {
             code = await readFile(filename);
         }
         catch (err) {
-            throw new GeneralError(RuntimeErrors.cantFindSpecifiedTestSource, filename);
+            throw new GeneralError(RUNTIME_ERRORS.cantFindSpecifiedTestSource, filename);
         }
 
         code = stripBom(code).toString();

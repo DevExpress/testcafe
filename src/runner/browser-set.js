@@ -5,7 +5,7 @@ import promisifyEvent from 'promisify-event';
 import { noop, pull as remove, flatten } from 'lodash';
 import mapReverse from 'map-reverse';
 import { GeneralError } from '../errors/runtime';
-import { RuntimeErrors } from '../errors/types';
+import { RUNTIME_ERRORS } from '../errors/types';
 
 const LOCAL_BROWSERS_READY_TIMEOUT  = 2 * 60 * 1000;
 const REMOTE_BROWSERS_READY_TIMEOUT = 6 * 60 * 1000;
@@ -81,7 +81,7 @@ export default class BrowserSet extends EventEmitter {
                 .map(bc => promisifyEvent(bc, 'opened'))
         );
 
-        const timeoutError = new GeneralError(RuntimeErrors.cantEstablishBrowserConnection);
+        const timeoutError = new GeneralError(RUNTIME_ERRORS.cantEstablishBrowserConnection);
         const readyTimeout = await this._getReadyTimeout();
 
         await this._createPendingConnectionPromise(connectionsReadyPromise, readyTimeout, timeoutError);
@@ -93,7 +93,7 @@ export default class BrowserSet extends EventEmitter {
             .map(bc => bc.userAgent);
 
         if (disconnectedUserAgents.length)
-            throw new GeneralError(RuntimeErrors.cantRunAgainstDisconnectedBrowsers, disconnectedUserAgents.join(', '));
+            throw new GeneralError(RUNTIME_ERRORS.cantRunAgainstDisconnectedBrowsers, disconnectedUserAgents.join(', '));
     }
 
 

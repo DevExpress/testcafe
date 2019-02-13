@@ -3,7 +3,7 @@ const read                                              = require('read-file-rel
 const { escapeRegExp, pull: remove }                    = require('lodash');
 const ReporterPluginHost                                = require('../../lib/reporter/plugin-host');
 const TEST_RUN_PHASE                                    = require('../../lib/test-run/phase');
-const { TestRunErrors, RuntimeErrors }                  = require('../../lib/errors/types');
+const { TEST_RUN_ERRORS, RUNTIME_ERRORS }               = require('../../lib/errors/types');
 const TestRunErrorFormattableAdapter                    = require('../../lib/errors/test-run/formattable-adapter');
 const testCallsite                                      = require('./data/test-callsite');
 const AssertionExecutableArgumentError                  = require('../../lib/errors/test-run').AssertionExecutableArgumentError;
@@ -69,7 +69,7 @@ const { createSimpleTestStream }                        = require('../functional
 
 const TEST_FILE_STACK_ENTRY_RE = new RegExp('\\s*\\n?\\(' + escapeRegExp(require.resolve('./data/test-callsite')), 'g');
 
-const untestedErrorTypes = Object.keys(TestRunErrors).map(key => TestRunErrors[key].name);
+const untestedErrorTypes = Object.keys(TEST_RUN_ERRORS).map(key => TEST_RUN_ERRORS[key].name);
 
 const userAgentMock = 'Chrome 15.0.874 / Mac OS X 10.8.1';
 
@@ -377,8 +377,8 @@ describe('Error formatting', () => {
                 }, []);
             }
 
-            const testRunErrorCodes                    = Object.values(TestRunErrors).map(item => item.code);
-            const runtimeErrorCodes                    = Object.values(RuntimeErrors).map(item => item.code);
+            const testRunErrorCodes                    = Object.values(TEST_RUN_ERRORS).map(item => item.code);
+            const runtimeErrorCodes                    = Object.values(RUNTIME_ERRORS).map(item => item.code);
             const testRunErrorCodeDublicates           = getDublicates(testRunErrorCodes);
             const runtimeErrorCodeDublicates           = getDublicates(runtimeErrorCodes);
             const testRunAndRuntimeErrorCodeDublicates = getDublicates(testRunErrorCodes.concat(runtimeErrorCodes));

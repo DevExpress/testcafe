@@ -3,7 +3,7 @@
 // Do not use any browser or node-specific API!
 // -------------------------------------------------------------
 
-export const TestRunErrors = {
+export const TEST_RUN_ERRORS = {
     uncaughtErrorOnPage:                               { name: 'uncaughtErrorOnPage', code: 'E1' },
     uncaughtErrorInTestCode:                           { name: 'uncaughtErrorInTestCode', code: 'E2' },
     uncaughtNonErrorObjectInTestCode:                  { name: 'uncaughtNonErrorObjectInTestCode', code: 'E3' },
@@ -65,7 +65,7 @@ export const TestRunErrors = {
     assertionUnawaitedPromiseError:                    { name: 'assertionUnawaitedPromiseError', code: 'E61' }
 };
 
-export const RuntimeErrors = {
+export const RUNTIME_ERRORS = {
     cannotCreateMultipleLiveModeRunners:                            { name: 'cannotCreateMultipleLiveModeRunners', code: 'E1000' },
     cannotRunLiveModeRunnerMultipleTimes:                           { name: 'cannotRunLiveModeRunnerMultipleTimes', code: 'E1001' },
     browserDisconnected:                                            { name: 'browserDisconnected', code: 'E1002' },

@@ -1,6 +1,6 @@
 import Promise from 'pinkie';
 import { GeneralError } from './errors/runtime';
-import { RuntimeErrors } from './errors/types';
+import { RUNTIME_ERRORS } from './errors/types';
 import embeddingUtils from './embedding-utils';
 import exportableLib from './api/exportable-lib';
 import Configuration from './configuration';
@@ -16,7 +16,7 @@ async function getValidHostname (hostname) {
         const valid = await endpointUtils.isMyHostname(hostname);
 
         if (!valid)
-            throw new GeneralError(RuntimeErrors.invalidHostname, hostname);
+            throw new GeneralError(RUNTIME_ERRORS.invalidHostname, hostname);
     }
     else
         hostname = endpointUtils.getIPAddress();
@@ -29,7 +29,7 @@ async function getValidPort (port) {
         const isFree = await endpointUtils.isFreePort(port);
 
         if (!isFree)
-            throw new GeneralError(RuntimeErrors.portIsNotFree, port);
+            throw new GeneralError(RUNTIME_ERRORS.portIsNotFree, port);
     }
     else
         port = await endpointUtils.getFreePort();

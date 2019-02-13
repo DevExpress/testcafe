@@ -1,15 +1,15 @@
 import { Promise } from '../deps/hammerhead';
 import delay from './delay';
-import { RuntimeErrors } from '../../../errors/types';
+import { RUNTIME_ERRORS } from '../../../errors/types';
 import TEMPLATES from '../../../errors/runtime/templates';
 
-const timeLimitedPromiseTimeoutExpiredTemplate = TEMPLATES[RuntimeErrors.timeLimitedPromiseTimeoutExpired];
+const timeLimitedPromiseTimeoutExpiredTemplate = TEMPLATES[RUNTIME_ERRORS.timeLimitedPromiseTimeoutExpired];
 
 class TimeLimitedPromiseTimeoutExpiredError extends Error {
     constructor () {
         super(timeLimitedPromiseTimeoutExpiredTemplate);
 
-        this.code = RuntimeErrors.timeLimitedPromiseTimeoutExpired.code;
+        this.code = RUNTIME_ERRORS.timeLimitedPromiseTimeoutExpired.code;
     }
 }
 
