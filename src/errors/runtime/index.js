@@ -4,15 +4,14 @@ import createStackFilter from '../create-stack-filter';
 import { getCallsiteForMethod } from '../get-callsite';
 import renderTemplate from '../../utils/render-template';
 
+
+const ERROR_SEPARATOR = '\n\n';
+
 // Errors
 export class GeneralError extends Error {
     constructor (...args) {
         super(renderTemplate(...args));
         Error.captureStackTrace(this, GeneralError);
-
-        // HACK: workaround for the `instanceof` problem
-        // (see: http://stackoverflow.com/questions/33870684/why-doesnt-instanceof-work-on-instances-of-error-subclasses-under-babel-node)
-        this.constructor = GeneralError;
     }
 }
 
@@ -21,8 +20,7 @@ export class TestCompilationError extends Error {
         super(renderTemplate(MESSAGE.cannotPrepareTestsDueToError, originalError.toString()));
 
         // NOTE: stack includes message as well.
-        this.stack       = renderTemplate(MESSAGE.cannotPrepareTestsDueToError, originalError.stack);
-        this.constructor = TestCompilationError;
+        this.stack = renderTemplate(MESSAGE.cannotPrepareTestsDueToError, originalError.stack);
     }
 }
 
@@ -35,26 +33,46 @@ export class APIError extends Error {
         // NOTE: `rawMessage` is used in error substitution if it occurs in test run.
         this.rawMessage  = rawMessage;
         this.callsite    = getCallsiteForMethod(methodName);
-        this.constructor = APIError;
 
-        // HACK: prototype properties don't work with built-in subclasses
-        // (see: http://stackoverflow.com/questions/33870684/why-doesnt-instanceof-work-on-instances-of-error-subclasses-under-babel-node)
-        Object.defineProperty(this, 'stack', {
-            get: () => APIError._createStack(this.message, this.callsite, renderers.noColor)
-        });
+        // NOTE: We need property getters here because callsite can be replaced by an external code.
+        // See https://github.com/DevExpress/testcafe/blob/v1.0.0/src/compiler/test-file/formats/raw.js#L22
+        // Also we can't use an ES6 getter for the 'stack' property, because it will create a getter on the class prototype
+        // that cannot override the instance property created by the Error parent class.
+        Object.defineProperties(this, {
+            'stack': {
+                get: () => this._createStack(renderers.noColor)
+            },
 
-        Object.defineProperty(this, 'coloredStack', {
-            get: () => APIError._createStack(this.message, this.callsite, renderers.default)
+            'coloredStack': {
+                get: () => this._createStack(renderers.default)
+            }
         });
     }
 
-    static _createStack (message, callsiteRecord, renderer) {
-        return message +
-               '\n\n' +
-               callsiteRecord.renderSync({
-                   renderer:    renderer,
-                   stackFilter: createStackFilter(Error.stackTraceLimit)
-               });
+    _renderCallsite (renderer) {
+        if (!this.callsite)
+            return '';
+
+        // NOTE: Callsite will throw during rendering if it can't find a target file for the specified function or method:
+        // https://github.com/inikulin/callsite-record/issues/2#issuecomment-223263941
+        try {
+            return this.callsite.renderSync({
+                renderer:    renderer,
+                stackFilter: createStackFilter(Error.stackTraceLimit)
+            });
+        }
+        catch (error) {
+            return '';
+        }
+    }
+
+    _createStack (renderer) {
+        const renderedCallsite = this._renderCallsite(renderer);
+
+        if (!renderedCallsite)
+            return this.message;
+
+        return this.message + ERROR_SEPARATOR + renderedCallsite;
     }
 }
 
@@ -63,5 +81,13 @@ export class ClientFunctionAPIError extends APIError {
         template = template.replace(/\{#instantiationCallsiteName\}/g, instantiationCallsiteName);
 
         super(methodName, template, ...args);
+    }
+}
+
+export class CompositeError extends Error {
+    constructor (errors) {
+        super(errors.map(({ message }) => message).join(ERROR_SEPARATOR));
+
+        this.stack = errors.map(({ stack }) => stack).join(ERROR_SEPARATOR);
     }
 }

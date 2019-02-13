@@ -217,6 +217,8 @@ export default class CLIArgumentParser {
     async parse (argv) {
         this.program.parse(argv);
 
+        this.args = this.program.args;
+
         this.opts = this.program.opts();
 
         // NOTE: the '-list-browsers' option only lists browsers and immediately exits the app.
