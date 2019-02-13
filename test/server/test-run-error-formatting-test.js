@@ -1,6 +1,6 @@
 const expect                                            = require('chai').expect;
 const read                                              = require('read-file-relative').readSync;
-const { escapeRegExp, pull: remove }                    = require('lodash');
+const { escapeRegExp, pull: remove, values }                    = require('lodash');
 const ReporterPluginHost                                = require('../../lib/reporter/plugin-host');
 const TEST_RUN_PHASE                                    = require('../../lib/test-run/phase');
 const { TEST_RUN_ERRORS, RUNTIME_ERRORS }               = require('../../lib/errors/types');
@@ -377,8 +377,8 @@ describe('Error formatting', () => {
                 }, []);
             }
 
-            const testRunErrorCodes                    = Object.values(TEST_RUN_ERRORS).map(item => item.code);
-            const runtimeErrorCodes                    = Object.values(RUNTIME_ERRORS).map(item => item.code);
+            const testRunErrorCodes                    = values(TEST_RUN_ERRORS).map(item => item.code);
+            const runtimeErrorCodes                    = values(RUNTIME_ERRORS).map(item => item.code);
             const testRunErrorCodeDublicates           = getDublicates(testRunErrorCodes);
             const runtimeErrorCodeDublicates           = getDublicates(runtimeErrorCodes);
             const testRunAndRuntimeErrorCodeDublicates = getDublicates(testRunErrorCodes.concat(runtimeErrorCodes));
