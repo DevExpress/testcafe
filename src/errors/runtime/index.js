@@ -16,25 +16,25 @@ class ProcessTemplateInstruction {
 // Errors
 export class GeneralError extends Error {
     constructor (...args) {
-        const errorType = args.shift();
-        const template  = TEMPLATES[errorType.name];
+        const errorType      = args.shift();
+        const { code, name } = errorType;
+        const template       = TEMPLATES[name];
 
         super(renderTemplate(template, ...args));
 
-        this.data = args;
-        this.code = errorType.code;
-        this.type = errorType.name;
+        Object.assign(this, { code, type: name, data: args });
         Error.captureStackTrace(this, GeneralError);
     }
 }
 
 export class TestCompilationError extends Error {
     constructor (originalError) {
-        const template = TEMPLATES[RUNTIME_ERRORS.cannotPrepareTestsDueToError.name];
+        const { code, name } = RUNTIME_ERRORS.cannotPrepareTestsDueToError;
+        const template       = TEMPLATES[name];
 
         super(renderTemplate(template, originalError.toString()));
 
-        this.code = RUNTIME_ERRORS.cannotPrepareTestsDueToError.code;
+        Object.assign(this, { code, type: name });
 
         // NOTE: stack includes message as well.
         this.stack = renderTemplate(template, originalError.stack);
@@ -43,7 +43,8 @@ export class TestCompilationError extends Error {
 
 export class APIError extends Error {
     constructor (methodName, errorType, ...args) {
-        let template = TEMPLATES[errorType.name];
+        const { code, name } = errorType;
+        let template         = TEMPLATES[name];
 
         template = APIError._prepareTemplateAndArgsIfNecessary(template, args);
 
@@ -51,9 +52,7 @@ export class APIError extends Error {
 
         super(renderTemplate(TEMPLATES[RUNTIME_ERRORS.cannotPrepareTestsDueToError.name], rawMessage));
 
-        this.data = args;
-        this.code = errorType.code;
-        this.type = errorType.name;
+        Object.assign(this, { code, type: name, data: args });
 
         // NOTE: `rawMessage` is used in error substitution if it occurs in test run.
         this.rawMessage  = rawMessage;

@@ -137,7 +137,7 @@ class LiveModeController extends EventEmitter {
                 this.logger.writeTestsFinishedMessage();
 
             if (e.err)
-                this.logger.err(`ERROR: ${e.err}`);
+                this.logger.err(e.err);
         });
 
         this.runner.on(this.runner.REQUIRED_MODULE_FOUND_EVENT, e => {
