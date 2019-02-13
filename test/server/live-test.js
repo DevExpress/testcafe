@@ -80,6 +80,7 @@ class RunnerMock extends LiveModeRunner {
         this.runCount        = 0;
         this.runTimeout      = runTimeout;
         this.errorOnValidate = errorOnValidate;
+        this.disposed        = false;
     }
 
     get watchedFiles () {
@@ -92,6 +93,12 @@ class RunnerMock extends LiveModeRunner {
 
     _runTask () {
         return Promise.resolve();
+    }
+
+    _dispose () {
+        this.disposed = true;
+
+        return super._dispose();
     }
 
     _createBootstrapper (browserConnectionGateway) {
@@ -185,6 +192,7 @@ describe('TestCafe Live', function () {
 
                 expect(tests.length).eql(1);
                 expect(tests[0].name).eql('test1');
+                expect(runner.disposed).eql(true);
                 expect(runner.watchedFiles).eql([testFileWithSingleTestPath]);
             });
     });

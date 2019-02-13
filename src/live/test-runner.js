@@ -21,6 +21,7 @@ class LiveModeRunner extends Runner {
         this.stopInfiniteWaiting   = noop;
         this.rejectInfiniteWaiting = noop;
         this.preventRunCall        = false;
+        this.assets                = null;
 
         this.testRunController = new LiveModeTestRunController();
 
@@ -105,14 +106,7 @@ class LiveModeRunner extends Runner {
 
         return this._waitUntilExit()
             .then(() => {
-                if (this.liveConfigurationCache) {
-                    const { browserSet } = this.liveConfigurationCache;
-
-                    if (browserSet)
-                        browserSet.browserConnections.forEach(bc => bc.forceIdle());
-                }
-
-                this.controller.dispose();
+                return this._dispose();
             })
             .then(() => {
                 this.preventRunCall = false;
@@ -187,8 +181,21 @@ class LiveModeRunner extends Runner {
         });
     }
 
-    _disposeBrowserSet () {
+    _disposeAssets (browserSet, reporters, testedApp) {
+        this.assets = { browserSet, reporters, testedApp };
+
         return Promise.resolve();
+    }
+
+    _dispose () {
+        this.controller.dispose();
+
+        if (!this.assets)
+            return Promise.resolve();
+
+        const { browserSet, reporters, testedApp } = this.assets;
+
+        return super._disposeAssets(browserSet, reporters, testedApp);
     }
 }
 
