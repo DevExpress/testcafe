@@ -52,17 +52,17 @@ export const TestRunErrors = {
     setNativeDialogHandlerCodeWrongTypeError:          { name: 'setNativeDialogHandlerCodeWrongTypeError', code: 'E48' },
     clientFunctionExecutionInterruptionError:          { name: 'clientFunctionExecutionInterruptionError', code: 'E49' },
     domNodeClientFunctionResultError:                  { name: 'domNodeClientFunctionResultError', code: 'E50' },
-    invalidSelectorResultError:                        { name: 'invalidSelectorResultError', code: 'E50' },
-    cantObtainInfoForElementSpecifiedBySelectorError:  { name: 'cantObtainInfoForElementSpecifiedBySelectorError', code: 'E51' },
-    externalAssertionLibraryError:                     { name: 'externalAssertionLibraryError', code: 'E52' },
-    pageLoadError:                                     { name: 'pageLoadError', code: 'E53' },
-    windowDimensionsOverflowError:                     { name: 'windowDimensionsOverflowError', code: 'E54' },
-    forbiddenCharactersInScreenshotPathError:          { name: 'forbiddenCharactersInScreenshotPathError', code: 'E55' },
-    invalidElementScreenshotDimensionsError:           { name: 'invalidElementScreenshotDimensionsError', code: 'E56' },
-    roleSwitchInRoleInitializerError:                  { name: 'roleSwitchInRoleInitializerError', code: 'E57' },
-    assertionExecutableArgumentError:                  { name: 'assertionExecutableArgumentError', code: 'E58' },
-    assertionWithoutMethodCallError:                   { name: 'assertionWithoutMethodCallError', code: 'E59' },
-    assertionUnawaitedPromiseError:                    { name: 'assertionUnawaitedPromiseError', code: 'E60' }
+    invalidSelectorResultError:                        { name: 'invalidSelectorResultError', code: 'E51' },
+    cantObtainInfoForElementSpecifiedBySelectorError:  { name: 'cantObtainInfoForElementSpecifiedBySelectorError', code: 'E52' },
+    externalAssertionLibraryError:                     { name: 'externalAssertionLibraryError', code: 'E53' },
+    pageLoadError:                                     { name: 'pageLoadError', code: 'E54' },
+    windowDimensionsOverflowError:                     { name: 'windowDimensionsOverflowError', code: 'E55' },
+    forbiddenCharactersInScreenshotPathError:          { name: 'forbiddenCharactersInScreenshotPathError', code: 'E56' },
+    invalidElementScreenshotDimensionsError:           { name: 'invalidElementScreenshotDimensionsError', code: 'E57' },
+    roleSwitchInRoleInitializerError:                  { name: 'roleSwitchInRoleInitializerError', code: 'E58' },
+    assertionExecutableArgumentError:                  { name: 'assertionExecutableArgumentError', code: 'E59' },
+    assertionWithoutMethodCallError:                   { name: 'assertionWithoutMethodCallError', code: 'E60' },
+    assertionUnawaitedPromiseError:                    { name: 'assertionUnawaitedPromiseError', code: 'E61' }
 };
 
 export const RuntimeErrors = {

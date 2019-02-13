@@ -2931,7 +2931,7 @@ describe('Test run commands', function () {
                     actualValue:     'invalid js code',
                     errMsg:          'Unexpected identifier',
                     type:            TestRunErrors.assertionExecutableArgumentError.name,
-                    code:            'E58',
+                    code:            'E59',
                     callsite:        null
                 }
             );

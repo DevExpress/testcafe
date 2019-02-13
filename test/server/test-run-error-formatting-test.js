@@ -3,7 +3,7 @@ const read                                              = require('read-file-rel
 const { escapeRegExp, pull: remove }                    = require('lodash');
 const ReporterPluginHost                                = require('../../lib/reporter/plugin-host');
 const TEST_RUN_PHASE                                    = require('../../lib/test-run/phase');
-const { TestRunErrors }                                 = require('../../lib/errors/types');
+const { TestRunErrors, RuntimeErrors }                  = require('../../lib/errors/types');
 const TestRunErrorFormattableAdapter                    = require('../../lib/errors/test-run/formattable-adapter');
 const testCallsite                                      = require('./data/test-callsite');
 const AssertionExecutableArgumentError                  = require('../../lib/errors/test-run').AssertionExecutableArgumentError;
@@ -365,6 +365,27 @@ describe('Error formatting', () => {
     describe('Test coverage', () => {
         it('Should test messages for all error codes', () => {
             expect(untestedErrorTypes).to.be.empty;
+        });
+
+        it('Errors codes should be unique', () => {
+            function getDublicates (codes) {
+                return codes.reduce((dublicates, currentItem, index, arr) => {
+                    if (arr.indexOf(currentItem) !== index && dublicates.indexOf(currentItem) === -1)
+                        dublicates.push(currentItem);
+
+                    return dublicates;
+                }, []);
+            }
+
+            const testRunErrorCodes                    = Object.values(TestRunErrors).map(item => item.code);
+            const runtimeErrorCodes                    = Object.values(RuntimeErrors).map(item => item.code);
+            const testRunErrorCodeDublicates           = getDublicates(testRunErrorCodes);
+            const runtimeErrorCodeDublicates           = getDublicates(runtimeErrorCodes);
+            const testRunAndRuntimeErrorCodeDublicates = getDublicates(testRunErrorCodes.concat(runtimeErrorCodes));
+
+            expect(testRunErrorCodeDublicates, 'TestRunErrorCode dublicates').to.be.empty;
+            expect(runtimeErrorCodeDublicates, 'RuntimeErrorCode dublicates').to.be.empty;
+            expect(testRunAndRuntimeErrorCodeDublicates, 'Intersections between TestRunErrorCodes and RuntimeErrorCodes').to.be.empty;
         });
     });
 });
