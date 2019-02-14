@@ -16,25 +16,23 @@ class ProcessTemplateInstruction {
 // Errors
 export class GeneralError extends Error {
     constructor (...args) {
-        const errorType      = args.shift();
-        const { code, name } = errorType;
-        const template       = TEMPLATES[name];
+        const code     = args.shift();
+        const template = TEMPLATES[code];
 
         super(renderTemplate(template, ...args));
 
-        Object.assign(this, { code, type: name, data: args });
+        Object.assign(this, { code, data: args });
         Error.captureStackTrace(this, GeneralError);
     }
 }
 
 export class TestCompilationError extends Error {
     constructor (originalError) {
-        const { code, name } = RUNTIME_ERRORS.cannotPrepareTestsDueToError;
-        const template       = TEMPLATES[name];
+        const template = TEMPLATES[RUNTIME_ERRORS.cannotPrepareTestsDueToError];
 
         super(renderTemplate(template, originalError.toString()));
 
-        Object.assign(this, { code, type: name });
+        Object.assign(this, { code: RUNTIME_ERRORS.cannotPrepareTestsDueToError });
 
         // NOTE: stack includes message as well.
         this.stack = renderTemplate(template, originalError.stack);
@@ -42,17 +40,16 @@ export class TestCompilationError extends Error {
 }
 
 export class APIError extends Error {
-    constructor (methodName, errorType, ...args) {
-        const { code, name } = errorType;
-        let template         = TEMPLATES[name];
+    constructor (methodName, code, ...args) {
+        let template = TEMPLATES[code];
 
         template = APIError._prepareTemplateAndArgsIfNecessary(template, args);
 
         const rawMessage = renderTemplate(template, ...args);
 
-        super(renderTemplate(TEMPLATES[RUNTIME_ERRORS.cannotPrepareTestsDueToError.name], rawMessage));
+        super(renderTemplate(TEMPLATES[RUNTIME_ERRORS.cannotPrepareTestsDueToError], rawMessage));
 
-        Object.assign(this, { code, type: name, data: args });
+        Object.assign(this, { code, data: args });
 
         // NOTE: `rawMessage` is used in error substitution if it occurs in test run.
         this.rawMessage  = rawMessage;
@@ -112,10 +109,10 @@ export class APIError extends Error {
 }
 
 export class ClientFunctionAPIError extends APIError {
-    constructor (methodName, instantiationCallsiteName, errorType, ...args) {
+    constructor (methodName, instantiationCallsiteName, errorCode, ...args) {
         args.push(new ProcessTemplateInstruction(template => template.replace(/\{#instantiationCallsiteName\}/g, instantiationCallsiteName)));
 
-        super(methodName, errorType, ...args);
+        super(methodName, errorCode, ...args);
     }
 }
 

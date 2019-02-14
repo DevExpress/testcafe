@@ -69,7 +69,7 @@ const { createSimpleTestStream }                        = require('../functional
 
 const TEST_FILE_STACK_ENTRY_RE = new RegExp('\\s*\\n?\\(' + escapeRegExp(require.resolve('./data/test-callsite')), 'g');
 
-const untestedErrorTypes = Object.keys(TEST_RUN_ERRORS).map(key => TEST_RUN_ERRORS[key].name);
+const untestedErrorTypes = Object.keys(TEST_RUN_ERRORS).map(key => TEST_RUN_ERRORS[key]);
 
 const userAgentMock = 'Chrome 15.0.874 / Mac OS X 10.8.1';
 
@@ -112,8 +112,8 @@ function assertErrorMessage (file, err) {
 
     // NOTE: check that the list of error types contains an
     // error of this type and remove tested messages from the list
-    expect(untestedErrorTypes.includes(err.type)).to.be.ok;
-    remove(untestedErrorTypes, err.type);
+    expect(untestedErrorTypes.includes(err.code)).to.be.ok;
+    remove(untestedErrorTypes, err.code);
 }
 
 describe('Error formatting', () => {
@@ -377,8 +377,8 @@ describe('Error formatting', () => {
                 }, []);
             }
 
-            const testRunErrorCodes                    = values(TEST_RUN_ERRORS).map(item => item.code);
-            const runtimeErrorCodes                    = values(RUNTIME_ERRORS).map(item => item.code);
+            const testRunErrorCodes                    = values(TEST_RUN_ERRORS);
+            const runtimeErrorCodes                    = values(RUNTIME_ERRORS);
             const testRunErrorCodeDublicates           = getDublicates(testRunErrorCodes);
             const runtimeErrorCodeDublicates           = getDublicates(runtimeErrorCodes);
             const testRunAndRuntimeErrorCodeDublicates = getDublicates(testRunErrorCodes.concat(runtimeErrorCodes));

@@ -7,17 +7,16 @@ import { TEST_RUN_ERRORS } from '../types';
 // Base
 //--------------------------------------------------------------------
 class TestRunErrorBase {
-    constructor (type) {
-        this.type            = type.name;
-        this.code            = type.code;
+    constructor (code) {
+        this.code            = code;
         this.isTestCafeError = true;
         this.callsite        = null;
     }
 }
 
 class ActionOptionErrorBase extends TestRunErrorBase {
-    constructor (type, optionName, actualValue) {
-        super(type);
+    constructor (code, optionName, actualValue) {
+        super(code);
 
         this.optionName  = optionName;
         this.actualValue = actualValue;
@@ -25,8 +24,8 @@ class ActionOptionErrorBase extends TestRunErrorBase {
 }
 
 class ActionArgumentErrorBase extends TestRunErrorBase {
-    constructor (type, argumentName, actualValue) {
-        super(type);
+    constructor (code, argumentName, actualValue) {
+        super(code);
 
         this.argumentName = argumentName;
         this.actualValue  = actualValue;
@@ -65,8 +64,8 @@ export class DomNodeClientFunctionResultError extends TestRunErrorBase {
 // Selector errors
 //--------------------------------------------------------------------
 class SelectorErrorBase extends TestRunErrorBase {
-    constructor (type, { apiFnChain, apiFnIndex }) {
-        super(type);
+    constructor (code, { apiFnChain, apiFnIndex }) {
+        super(code);
 
         this.apiFnChain = apiFnChain;
         this.apiFnIndex = apiFnIndex;

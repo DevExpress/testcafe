@@ -1,7 +1,6 @@
 const expect                  = require('chai').expect;
 const TYPE                    = require('../../lib/test-run/commands/type');
 const createCommandFromObject = require('../../lib/test-run/commands/from-object');
-const { TEST_RUN_ERRORS }       = require('../../lib/errors/types');
 const SelectorBuilder         = require('../../lib/client-functions/selectors/selector-builder');
 const assertThrow             = require('./helpers/assert-error').assertThrow;
 
@@ -1172,7 +1171,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionSelectorError.name,
                     code:            'E23',
                     selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
@@ -1191,7 +1189,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionSelectorError.name,
                     code:            'E23',
                     selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
@@ -1211,7 +1208,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionOptionsTypeError.name,
                     code:            'E14',
                     actualType:      'number',
                     callsite:        null
@@ -1230,7 +1226,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionIntegerOptionError.name,
                     code:            'E9',
                     optionName:      'offsetX',
                     actualValue:     'string',
@@ -1250,7 +1245,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionIntegerOptionError.name,
                     code:            'E9',
                     optionName:      'offsetX',
                     actualValue:     10.5,
@@ -1268,7 +1262,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionSelectorError.name,
                     code:            'E23',
                     selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
@@ -1287,7 +1280,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionSelectorError.name,
                     code:            'E23',
                     selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector,' +
@@ -1307,7 +1299,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionOptionsTypeError.name,
                     code:            'E14',
                     actualType:      'string',
                     callsite:        null
@@ -1326,7 +1317,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionIntegerOptionError.name,
                     code:            'E9',
                     optionName:      'offsetX',
                     actualValue:     'boolean',
@@ -1348,7 +1338,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionBooleanOptionError.name,
                     code:            'E11',
                     optionName:      'modifiers.shift',
                     actualValue:     'string',
@@ -1366,7 +1355,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionSelectorError.name,
                     code:            'E23',
                     selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
@@ -1385,7 +1373,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionSelectorError.name,
                     code:            'E23',
                     selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
@@ -1405,7 +1392,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionOptionsTypeError.name,
                     code:            'E14',
                     actualType:      'number',
                     callsite:        null
@@ -1424,7 +1410,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionPositiveIntegerOptionError.name,
                     code:            'E10',
                     optionName:      'caretPos',
                     actualValue:     'string',
@@ -1442,7 +1427,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionSelectorError.name,
                     code:            'E23',
                     selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
@@ -1461,7 +1445,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionSelectorError.name,
                     code:            'E23',
                     selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
@@ -1481,7 +1464,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionOptionsTypeError.name,
                     code:            'E14',
                     actualType:      'boolean',
                     callsite:        null
@@ -1500,7 +1482,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionIntegerOptionError.name,
                     code:            'E9',
                     optionName:      'offsetX',
                     actualValue:     'string',
@@ -1520,7 +1501,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionIntegerOptionError.name,
                     code:            'E9',
                     optionName:      'offsetY',
                     actualValue:     1.01,
@@ -1538,7 +1518,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionSelectorError.name,
                     code:            'E23',
                     selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
@@ -1557,7 +1536,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionSelectorError.name,
                     code:            'E23',
                     selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
@@ -1576,7 +1554,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionIntegerArgumentError.name,
                     code:            'E20',
                     argumentName:    'dragOffsetX',
                     actualValue:     'undefined',
@@ -1594,7 +1571,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionIntegerArgumentError.name,
                     code:            'E20',
                     argumentName:    'dragOffsetY',
                     actualValue:     'undefined',
@@ -1613,7 +1589,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionIntegerArgumentError.name,
                     code:            'E20',
                     argumentName:    'dragOffsetY',
                     actualValue:     10.5,
@@ -1633,7 +1608,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionOptionsTypeError.name,
                     code:            'E14',
                     actualType:      'number',
                     callsite:        null
@@ -1650,7 +1624,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionSelectorError.name,
                     code:            'E23',
                     selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
@@ -1669,7 +1642,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionSelectorError.name,
                     code:            'E23',
                     selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
@@ -1688,7 +1660,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionSelectorError.name,
                     code:            'E23',
                     selectorName:    'destinationSelector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
@@ -1708,7 +1679,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionSelectorError.name,
                     code:            'E23',
                     selectorName:    'destinationSelector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
@@ -1729,7 +1699,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionOptionsTypeError.name,
                     code:            'E14',
                     actualType:      'number',
                     callsite:        null
@@ -1746,7 +1715,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionSelectorError.name,
                     code:            'E23',
                     selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
@@ -1765,7 +1733,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionSelectorError.name,
                     code:            'E23',
                     selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
@@ -1784,7 +1751,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionStringArgumentError.name,
                     code:            'E16',
                     argumentName:    'text',
                     actualValue:     'undefined',
@@ -1802,7 +1768,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionStringArgumentError.name,
                     code:            'E16',
                     argumentName:    'text',
                     actualValue:     'number',
@@ -1820,7 +1785,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionStringArgumentError.name,
                     code:            'E16',
                     argumentName:    'text',
                     actualValue:     '""',
@@ -1839,7 +1803,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionOptionsTypeError.name,
                     code:            'E14',
                     actualType:      'boolean',
                     callsite:        null
@@ -1859,7 +1822,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionIntegerOptionError.name,
                     code:            'E9',
                     optionName:      'offsetX',
                     actualValue:     'string',
@@ -1880,7 +1842,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionBooleanOptionError.name,
                     code:            'E11',
                     optionName:      'replace',
                     actualValue:     'number',
@@ -1898,7 +1859,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionSelectorError.name,
                     code:            'E23',
                     selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
@@ -1917,7 +1877,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionSelectorError.name,
                     code:            'E23',
                     selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
@@ -1937,7 +1896,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionPositiveIntegerArgumentError.name,
                     code:            'E22',
                     argumentName:    'startPos',
                     actualValue:     'string',
@@ -1955,7 +1913,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionPositiveIntegerArgumentError.name,
                     code:            'E22',
                     argumentName:    'startPos',
                     actualValue:     5.5,
@@ -1973,7 +1930,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionPositiveIntegerArgumentError.name,
                     code:            'E22',
                     argumentName:    'endPos',
                     actualValue:     NaN,
@@ -1991,7 +1947,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionPositiveIntegerArgumentError.name,
                     code:            'E22',
                     argumentName:    'endPos',
                     actualValue:     -1,
@@ -2009,7 +1964,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionOptionsTypeError.name,
                     code:            'E14',
                     actualType:      'number',
                     callsite:        null
@@ -2026,7 +1980,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionSelectorError.name,
                     code:            'E23',
                     selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
@@ -2045,7 +1998,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionSelectorError.name,
                     code:            'E23',
                     selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
@@ -2065,7 +2017,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionPositiveIntegerArgumentError.name,
                     code:            'E22',
                     argumentName:    'startLine',
                     actualValue:     'string',
@@ -2083,7 +2034,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionPositiveIntegerArgumentError.name,
                     code:            'E22',
                     argumentName:    'startLine',
                     actualValue:     5.5,
@@ -2101,7 +2051,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionPositiveIntegerArgumentError.name,
                     code:            'E22',
                     argumentName:    'endLine',
                     actualValue:     NaN,
@@ -2119,7 +2068,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionPositiveIntegerArgumentError.name,
                     code:            'E22',
                     argumentName:    'endLine',
                     actualValue:     -1,
@@ -2137,7 +2085,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionOptionsTypeError.name,
                     code:            'E14',
                     actualType:      'number',
                     callsite:        null
@@ -2154,7 +2101,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionSelectorError.name,
                     code:            'E23',
                     selectorName:    'startSelector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
@@ -2173,7 +2119,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionSelectorError.name,
                     code:            'E23',
                     selectorName:    'startSelector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
@@ -2193,7 +2138,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionSelectorError.name,
                     code:            'E23',
                     selectorName:    'endSelector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
@@ -2214,7 +2158,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionOptionsTypeError.name,
                     code:            'E14',
                     actualType:      'number',
                     callsite:        null
@@ -2231,7 +2174,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionStringArgumentError.name,
                     code:            'E16',
                     argumentName:    'keys',
                     actualValue:     'undefined',
@@ -2248,7 +2190,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionStringArgumentError.name,
                     code:            'E16',
                     argumentName:    'keys',
                     actualValue:     'boolean',
@@ -2265,7 +2206,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionStringArgumentError.name,
                     code:            'E16',
                     argumentName:    'keys',
                     actualValue:     '""',
@@ -2283,7 +2223,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionOptionsTypeError.name,
                     code:            'E14',
                     actualType:      'number',
                     callsite:        null
@@ -2300,7 +2239,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionPositiveIntegerArgumentError.name,
                     code:            'E22',
                     argumentName:    'timeout',
                     actualValue:     'undefined',
@@ -2317,7 +2255,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionPositiveIntegerArgumentError.name,
                     code:            'E22',
                     argumentName:    'timeout',
                     actualValue:     -5,
@@ -2335,7 +2272,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionStringArgumentError.name,
                     code:            'E16',
                     argumentName:    'url',
                     actualValue:     'undefined',
@@ -2352,7 +2288,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionStringArgumentError.name,
                     code:            'E16',
                     argumentName:    'url',
                     actualValue:     'boolean',
@@ -2369,7 +2304,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionStringArgumentError.name,
                     code:            'E16',
                     argumentName:    'url',
                     actualValue:     '""',
@@ -2397,7 +2331,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionSelectorError.name,
                     code:            'E23',
                     selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
@@ -2416,7 +2349,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionSelectorError.name,
                     code:            'E23',
                     selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
@@ -2435,7 +2367,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionStringOrStringArrayArgumentError.name,
                     code:            'E18',
                     argumentName:    'filePath',
                     actualValue:     'undefined',
@@ -2453,7 +2384,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionStringOrStringArrayArgumentError.name,
                     code:            'E18',
                     argumentName:    'filePath',
                     actualValue:     'number',
@@ -2471,7 +2401,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionStringOrStringArrayArgumentError.name,
                     code:            'E18',
                     argumentName:    'filePath',
                     actualValue:     '""',
@@ -2489,7 +2418,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionStringOrStringArrayArgumentError.name,
                     code:            'E18',
                     argumentName:    'filePath',
                     actualValue:     'object',
@@ -2507,7 +2435,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionStringOrStringArrayArgumentError.name,
                     code:            'E18',
                     argumentName:    'filePath',
                     actualValue:     '[]',
@@ -2525,7 +2452,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionStringArrayElementError.name,
                     code:            'E19',
                     argumentName:    'filePath',
                     actualValue:     'number',
@@ -2544,7 +2470,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionStringArrayElementError.name,
                     code:            'E19',
                     argumentName:    'filePath',
                     actualValue:     '""',
@@ -2563,7 +2488,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionSelectorError.name,
                     code:            'E23',
                     selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
@@ -2582,7 +2506,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionSelectorError.name,
                     code:            'E23',
                     selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
@@ -2603,7 +2526,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionStringArgumentError.name,
                     code:            'E16',
                     actualValue:     'number',
                     argumentName:    'path',
@@ -2620,7 +2542,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionStringArgumentError.name,
                     code:            'E16',
                     actualValue:     '""',
                     argumentName:    'path',
@@ -2638,7 +2559,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionPositiveIntegerArgumentError.name,
                     code:            'E22',
                     argumentName:    'width',
                     actualValue:     'undefined',
@@ -2656,7 +2576,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionPositiveIntegerArgumentError.name,
                     code:            'E22',
                     argumentName:    'height',
                     actualValue:     -5,
@@ -2674,7 +2593,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionStringArgumentError.name,
                     code:            'E16',
                     argumentName:    'device',
                     actualValue:     'undefined',
@@ -2691,7 +2609,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionStringArgumentError.name,
                     code:            'E16',
                     argumentName:    'device',
                     actualValue:     'number',
@@ -2708,7 +2625,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionStringArgumentError.name,
                     code:            'E16',
                     argumentName:    'device',
                     actualValue:     '""',
@@ -2725,7 +2641,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionUnsupportedDeviceTypeError.name,
                     code:            'E38',
                     argumentName:    'device',
                     actualValue:     'iPhone 555',
@@ -2743,7 +2658,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionBooleanOptionError.name,
                     code:            'E11',
                     optionName:      'portraitOrientation',
                     actualValue:     'object',
@@ -2761,7 +2675,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.setTestSpeedArgumentError.name,
                     code:            'E47',
                     argumentName:    'speed',
                     actualValue:     'undefined',
@@ -2778,7 +2691,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.setTestSpeedArgumentError.name,
                     code:            'E47',
                     argumentName:    'speed',
                     actualValue:     2,
@@ -2796,7 +2708,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionPositiveIntegerArgumentError.name,
                     code:            'E22',
                     argumentName:    'duration',
                     actualValue:     'undefined',
@@ -2813,7 +2724,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionPositiveIntegerArgumentError.name,
                     code:            'E22',
                     argumentName:    'duration',
                     actualValue:     -1,
@@ -2831,7 +2741,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionStringArgumentError.name,
                     code:            'E16',
                     argumentName:    'assertionType',
                     actualValue:     'undefined',
@@ -2848,7 +2757,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionStringArgumentError.name,
                     code:            'E16',
                     argumentName:    'assertionType',
                     actualValue:     'number',
@@ -2866,7 +2774,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionOptionsTypeError.name,
                     code:            'E14',
                     actualType:      'number',
                     callsite:        null
@@ -2885,7 +2792,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionPositiveIntegerOptionError.name,
                     code:            'E10',
                     optionName:      'timeout',
                     actualValue:     'string',
@@ -2905,7 +2811,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionPositiveIntegerOptionError.name,
                     code:            'E10',
                     optionName:      'timeout',
                     actualValue:     10.5,
@@ -2930,7 +2835,6 @@ describe('Test run commands', () => {
                     argumentName:    'actual',
                     actualValue:     'invalid js code',
                     errMsg:          'Unexpected identifier',
-                    type:            TEST_RUN_ERRORS.assertionExecutableArgumentError.name,
                     code:            'E59',
                     callsite:        null
                 }
@@ -2946,7 +2850,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionStringArgumentError.name,
                     code:            'E16',
                     argumentName:    'expression',
                     actualValue:     'undefined',
@@ -2963,7 +2866,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionStringArgumentError.name,
                     code:            'E16',
                     argumentName:    'expression',
                     actualValue:     'number',
@@ -2981,7 +2883,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionBooleanArgumentError.name,
                     code:            'E15',
                     actualValue:     'number',
                     argumentName:    'isAsyncExpression',
@@ -3000,7 +2901,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionStringArgumentError.name,
                     code:            'E16',
                     argumentName:    'resultVariableName',
                     actualValue:     'number',
@@ -3019,7 +2919,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionStringArgumentError.name,
                     code:            'E16',
                     argumentName:    'resultVariableName',
                     actualValue:     '""',
@@ -3041,7 +2940,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionSelectorError.name,
                     code:            'E23',
                     selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
@@ -3063,7 +2961,6 @@ describe('Test run commands', () => {
                 },
                 {
                     isTestCafeError: true,
-                    type:            TEST_RUN_ERRORS.actionSelectorError.name,
                     code:            'E23',
                     selectorName:    'selector',
                     errMsg:          'yo is not defined',
