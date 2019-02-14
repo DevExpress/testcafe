@@ -9,7 +9,7 @@ class TimeLimitedPromiseTimeoutExpiredError extends Error {
     constructor () {
         super(timeLimitedPromiseTimeoutExpiredTemplate);
 
-        this.code = RUNTIME_ERRORS.timeLimitedPromiseTimeoutExpired.code;
+        this.code = RUNTIME_ERRORS.timeLimitedPromiseTimeoutExpired;
     }
 }
 
