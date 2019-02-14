@@ -73,10 +73,10 @@ export default class TestRunBookmark {
                 await this.testRun.executeCommand(switchWorkingFrameCommand);
             }
             catch (err) {
-                if (err.type === TEST_RUN_ERRORS.actionElementNotFoundError)
+                if (err.code === TEST_RUN_ERRORS.actionElementNotFoundError)
                     throw new CurrentIframeNotFoundError();
 
-                if (err.type === TEST_RUN_ERRORS.actionIframeIsNotLoadedError)
+                if (err.code === TEST_RUN_ERRORS.actionIframeIsNotLoadedError)
                     throw new CurrentIframeIsNotLoadedError();
 
                 throw err;
