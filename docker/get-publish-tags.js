@@ -9,5 +9,5 @@ module.exports = function getPublishTags (packageInfo) {
     if (!VALID_TAGS_LIST.includes(tag))
         throw new Error('Incorrect version in package.json');
 
-    return tag;
+    return [packageInfo.version, tag];
 };
