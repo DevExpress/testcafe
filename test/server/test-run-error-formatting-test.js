@@ -1,6 +1,6 @@
 const expect                                            = require('chai').expect;
 const read                                              = require('read-file-relative').readSync;
-const { escapeRegExp, pull: remove, values }            = require('lodash');
+const { escapeRegExp, pull: remove, chain, values }     = require('lodash');
 const ReporterPluginHost                                = require('../../lib/reporter/plugin-host');
 const TEST_RUN_PHASE                                    = require('../../lib/test-run/phase');
 const { TEST_RUN_ERRORS, RUNTIME_ERRORS }               = require('../../lib/errors/types');
@@ -369,12 +369,7 @@ describe('Error formatting', () => {
 
         it('Errors codes should be unique', () => {
             function getDuplicates (codes) {
-                return codes.reduce((duplicates, currentItem, index, arr) => {
-                    if (arr.indexOf(currentItem) !== index && duplicates.indexOf(currentItem) === -1)
-                        duplicates.push(currentItem);
-
-                    return duplicates;
-                }, []);
+                return chain(codes).groupBy().pickBy(x => x.length > 1).keys().value();
             }
 
             const testRunErrorCodes                    = values(TEST_RUN_ERRORS);
