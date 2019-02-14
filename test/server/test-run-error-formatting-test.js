@@ -1,6 +1,6 @@
 const expect                                            = require('chai').expect;
 const read                                              = require('read-file-relative').readSync;
-const { escapeRegExp, pull: remove, values }                    = require('lodash');
+const { escapeRegExp, pull: remove, values }            = require('lodash');
 const ReporterPluginHost                                = require('../../lib/reporter/plugin-host');
 const TEST_RUN_PHASE                                    = require('../../lib/test-run/phase');
 const { TEST_RUN_ERRORS, RUNTIME_ERRORS }               = require('../../lib/errors/types');
@@ -368,24 +368,24 @@ describe('Error formatting', () => {
         });
 
         it('Errors codes should be unique', () => {
-            function getDublicates (codes) {
-                return codes.reduce((dublicates, currentItem, index, arr) => {
-                    if (arr.indexOf(currentItem) !== index && dublicates.indexOf(currentItem) === -1)
-                        dublicates.push(currentItem);
+            function getDuplicates (codes) {
+                return codes.reduce((duplicates, currentItem, index, arr) => {
+                    if (arr.indexOf(currentItem) !== index && duplicates.indexOf(currentItem) === -1)
+                        duplicates.push(currentItem);
 
-                    return dublicates;
+                    return duplicates;
                 }, []);
             }
 
             const testRunErrorCodes                    = values(TEST_RUN_ERRORS);
             const runtimeErrorCodes                    = values(RUNTIME_ERRORS);
-            const testRunErrorCodeDublicates           = getDublicates(testRunErrorCodes);
-            const runtimeErrorCodeDublicates           = getDublicates(runtimeErrorCodes);
-            const testRunAndRuntimeErrorCodeDublicates = getDublicates(testRunErrorCodes.concat(runtimeErrorCodes));
+            const testRunErrorCodeDuplicates           = getDuplicates(testRunErrorCodes);
+            const runtimeErrorCodeDuplicates           = getDuplicates(runtimeErrorCodes);
+            const testRunAndRuntimeErrorCodeDuplicates = getDuplicates(testRunErrorCodes.concat(runtimeErrorCodes));
 
-            expect(testRunErrorCodeDublicates, 'TestRunErrorCode dublicates').to.be.empty;
-            expect(runtimeErrorCodeDublicates, 'RuntimeErrorCode dublicates').to.be.empty;
-            expect(testRunAndRuntimeErrorCodeDublicates, 'Intersections between TestRunErrorCodes and RuntimeErrorCodes').to.be.empty;
+            expect(testRunErrorCodeDuplicates, 'TestRunErrorCode duplicates').to.be.empty;
+            expect(runtimeErrorCodeDuplicates, 'RuntimeErrorCode duplicates').to.be.empty;
+            expect(testRunAndRuntimeErrorCodeDuplicates, 'Intersections between TestRunErrorCodes and RuntimeErrorCodes').to.be.empty;
         });
     });
 });
