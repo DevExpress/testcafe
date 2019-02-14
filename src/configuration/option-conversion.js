@@ -16,6 +16,9 @@ export function optionValueToRegExp (name, value) {
 export function optionValueToKeyValue (name, value) {
     if (value === void 0)
         return value;
+        
+    if (typeof value === "object") 
+        return value;
 
     const keyValue = value.split(',').reduce((obj, pair) => {
         const [key, val] = pair.split('=');
