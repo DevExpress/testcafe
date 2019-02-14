@@ -1,5 +1,22 @@
 # Changelog
 
+## v1.0.1 (2019-2-15)
+
+### :gear: Package dependencies have been upgraded to avoid CVEs found in the 'lodash' package
+
+### Bug Fixes
+
+* TestCafe no longer hangs when CLI argument validation failed in Live mode ([#3402](https://github.com/DevExpress/testcafe/issues/3402))
+* TestCafe no longer fail with the `ERR_STREAM_WRITE_AFTER_END` error after restarting tests in Live mode ([#3322](https://github.com/DevExpress/testcafe/issues/3322))
+* Now TestCafe doesn't ignore video and encoding specified in a configuration file ([#3415](https://github.com/DevExpress/testcafe/issues/3415))
+* Now you can specify only tests in TestCafe CLI if browsers are specified in a configuration file ([#3421](https://github.com/DevExpress/testcafe/issues/3421))
+* TestCafe no longer stops executing tests in Live mode with multiple browsers when tests don't contain any action ([#3410](https://github.com/DevExpress/testcafe/issues/3410))
+* Now TestCafe correctly handles the `data-parsley-multiple` attribute ([testcafe-hammerhead/#1845](https://github.com/DevExpress/testcafe-hammerhead/issues/1845))
+* Now TestCafe allow passing the `headers` option of the `fetch` function as an Array ([testcafe-hammerhead/#1898](https://github.com/DevExpress/testcafe-hammerhead/issues/1898))
+* No error occurs when page scripts pass a number as an argument to the `window.open` function ([testcafe-hammerhead/#1908](https://github.com/DevExpress/testcafe-hammerhead/issues/1908))
+* Now TestCafe correctly processes rewritten stylesheets ([testcafe-hammerhead/#1919](https://github.com/DevExpress/testcafe-hammerhead/pull/1919))
+* TestCafe correctly processes sourcemaps in stylesheets now ([testcafe-hammerhead/#1907](https://github.com/DevExpress/testcafe-hammerhead/issues/1907))
+
 ## v1.0.0 (2019-2-7)
 
 ### Breaking Changes
