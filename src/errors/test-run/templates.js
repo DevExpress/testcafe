@@ -94,8 +94,10 @@ export default {
 
     [TYPE.uncaughtErrorOnPage]: err => markup(err, `
         A JavaScript error occurred on ${formatUrl(err.pageDestUrl)}.
-        If this error occurs when TestCafe is not used, you can turn the --skip-js-errors option on.
-        If the error occurs only with TestCafe then it's a bug. Write a new issue about it at: ${formatUrl(EXTERNAL_LINKS.createNewIssue)}.
+        At this moment, TestCafe tracks uncaught JavaScript errors on the page. Try to manually perform the test scenario.
+        If this error still occurs then it means you site has uncaught JavaScript errors. To disable JavaScript error tracking you can turn the --skip-js-errors option on.
+        If the error occurs only with TestCafe then it is a bug. Write a new issue about it at:
+        ${formatUrl(EXTERNAL_LINKS.createNewIssue)}.
 
         JavaScript error details:
         ${replaceLeadingSpacesWithNbsp(escapeHtml(err.errStack))}

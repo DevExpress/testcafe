@@ -1,7 +1,10 @@
 A JavaScript error occurred on "http://example.org".
-If this error occurs when TestCafe is not used, you can turn the
+At this moment, TestCafe tracks uncaught JavaScript errors on the page. Try
+to manually perform the test scenario.
+If this error still occurs then it means you site has uncaught JavaScript
+errors. To disable JavaScript error tracking you can turn the
 --skip-js-errors option on.
-If the error occurs only with TestCafe then it's a bug. Write a new issue
+If the error occurs only with TestCafe then it is a bug. Write a new issue
 about it at:
 "https://github.com/DevExpress/testcafe/issues/new?template=bug-report.md".
 
