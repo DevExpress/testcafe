@@ -3,11 +3,11 @@ import ERROR_MESSAGES from '../../errors/runtime/message';
 import { GeneralError } from '../../errors/runtime';
 
 
-export default function (optionName, options) {
-    const metaOptions = baseGetOptions(options, {
+export default async function (optionName, options) {
+    const metaOptions = await baseGetOptions(options, {
         skipOptionValueTypeConversion: true,
 
-        onOptionParsed (key, value) {
+        async onOptionParsed (key, value) {
             if (!key || !value)
                 throw new GeneralError(ERROR_MESSAGES.optionValueIsNotValidKeyValue, optionName);
 
