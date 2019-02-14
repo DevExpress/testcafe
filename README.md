@@ -1,8 +1,8 @@
-<h1 align="center">
+<p align="center">
     <a href="https://devexpress.github.io/testcafe">
         <img src="https://raw.githubusercontent.com/DevExpress/testcafe/master/media/testcafe-logo.svg?sanitize=true" alt="testcafe" />
     </a>
-</h1>
+</p>
 
 <p align="center">
 <a href="https://ci.appveyor.com/project/DevExpress/testcafe"><img alt="Functional Windows desktop" src="https://ci.appveyor.com/api/projects/status/ftelkyuiji8lyadf?svg=true"></a>
@@ -15,10 +15,17 @@
 </p>
 
 <p align="center">
-<a href="https://devexpress.github.io/testcafe">https://devexpress.github.io/testcafe</a>
+  <a href="https://devexpress.github.io/testcafe/">Homepage</a> &nbsp&nbsp•&nbsp&nbsp
+  <a href="https://devexpress.github.io/testcafe/documentation/getting-started/">Documentation</a> &nbsp&nbsp•&nbsp&nbsp
+  <a href="https://devexpress.github.io/testcafe/faq/">FAQ</a> &nbsp&nbsp•&nbsp&nbsp
+  <a href="https://devexpress.github.io/testcafe/support/">Support</a>
 </p>
 
-----
+<p align="center">
+  <a href="https://www.devexpress.com/products/testcafestudio/?utm_source=github.com&utm_medium=referral&utm_campaign=tc-gh-banner">
+    <img src="https://raw.github.com/DevExpress/testcafe/master/media/testcafe-studio-banner.png" alt="testcafe-studio" />
+  </a>
+</p>
 
 * **Works on all popular environments**: TestCafe runs on Windows, MacOS, and Linux. It supports desktop, mobile, remote and cloud [browsers](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browsers/browser-support.html) (UI or headless).
 * **1 minute to set up**: You [do not need WebDriver](https://devexpress.github.io/testcafe/faq/#i-have-heard-that-testcafe-does-not-use-selenium-how-does-it-operate) or any other testing software. Install TestCafe with one command, and you are ready to test: `npm install -g testcafe`
@@ -89,7 +96,7 @@ You can run TestCafe from a console, and its reports can be viewed in a CI syste
 
 We've got one more tool for you!
 
-Check out [TestCafe Studio](https://testcafe-studio.devexpress.com): all the perks of TestCafe + GUI + Visual Test Recorder
+Check out [TestCafe Studio](https://www.devexpress.com/products/testcafestudio/?utm_source=github.com&utm_medium=referral&utm_campaign=tc-gh-ide): all the perks of TestCafe + GUI + Visual Test Recorder
 
 ![Get Started with TestCafe Studio](https://raw.githubusercontent.com/DevExpress/testcafe/master/media/testcafe-studio-get-started.gif)
 
@@ -262,7 +269,7 @@ TestCafe developers and community members made these plugins:
 * **ESLint**<br/>
   Use ESLint when writing and editing TestCafe tests.
   * [ESLint plugin](https://github.com/miherlosev/eslint-plugin-testcafe) (by [@miherlosev](https://github.com/miherlosev))
-  
+
 ## Different Versions of TestCafe
 
 There is a line of products called `TestCafe`. Below are the similarities and key differences between them.
@@ -285,11 +292,11 @@ There is a line of products called `TestCafe`. Below are the similarities and ke
   * Easy integration: it is a node.js solution with CLI and reporters for popular CI systems.
   * You can extend it with [plugins](#plugins) and other Node.js modules.
 
-* [**TestCafe Studio**](https://testcafe-studio.devexpress.com/)<br/>
+* [**TestCafe Studio**](https://www.devexpress.com/products/testcafestudio/?utm_source=github.com&utm_medium=referral&utm_campaign=tc-gh-diff)<br/>
   *Preview released in 2018, commercial desktop application*
   * Based on the open-source TestCafe, and supports its major features.
   * You can record tests or edit them as JavaScript or TypeScript code.
-  * New [Visual Test Recorder](https://testcafe-studio.devexpress.com/documentation/guides/record-tests/) and [IDE-like GUI](https://testcafe-studio.devexpress.com/documentation/guides/write-test-code.html) to record, edit, run and debug tests.
+  * New [Visual Test Recorder](https://docs.devexpress.com/TestCafeStudio/400165/guides/record-tests?utm_source=github.com&utm_medium=referral&utm_campaign=tc-gh-diff) and [IDE-like GUI](https://docs.devexpress.com/TestCafeStudio/400176/guides/write-test-scripts?utm_source=github.com&utm_medium=referral&utm_campaign=tc-gh-diff) to record, edit, run and debug tests.
   * Currently available as a free preview version. The release version will replace the 2013 version of TestCafe.
 
 ## Badge
