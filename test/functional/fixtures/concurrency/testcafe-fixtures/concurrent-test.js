@@ -3,7 +3,7 @@ fixture `Concurrent`.page`../pages/index.html`;
 global.timeline = [];
 
 test('Long test', async t => {
-    global.timeline.push('long started');
+    global.timeline.push('test started');
 
     await t.wait(10000);
 
@@ -11,7 +11,7 @@ test('Long test', async t => {
 });
 
 test('Short test', async t => {
-    global.timeline.push('short started');
+    global.timeline.push('test started');
 
     await t.wait(1000);
 

@@ -106,7 +106,7 @@ if (config.useLocalBrowsers) {
         it('Should run tests concurrently if concurrency > 1', function () {
             return run('chrome:headless --no-sandbox', 2, './testcafe-fixtures/concurrent-test.js')
                 .then(() => {
-                    expect(global.timeline).eql(['long started', 'short started', 'short finished', 'long finished']);
+                    expect(global.timeline).eql(['test started', 'test started', 'short finished', 'long finished']);
                 });
         });
 
