@@ -6,7 +6,7 @@ import { RUNTIME_ERRORS } from '../errors/types';
 import { assertType, is } from '../errors/runtime/type-assertions';
 import getViewPortWidth from '../utils/get-viewport-width';
 import { wordWrap, splitQuotedText } from '../utils/string';
-import { getSSLOptions, getVideoOptions } from '../utils/get-options';
+import { getSSLOptions, getVideoOptions, getMetaOptions } from '../utils/get-options';
 import getFilterFn from '../utils/get-filter-fn';
 
 const REMOTE_ALIAS_RE = /^remote(?::(\d*))?$/;
@@ -45,6 +45,18 @@ export default class CLIArgumentParser {
         assertType(is.nonNegativeNumberString, null, 'Port number', value);
 
         return parseInt(value, 10);
+    }
+
+    static _optionValueToRegExp (name, value) {
+        if (value === void 0)
+            return value;
+
+        try {
+            return new RegExp(value);
+        }
+        catch (err) {
+            throw new GeneralError(MESSAGE.optionValueIsNotValidRegExp, name);
+        }
     }
 
     static _getDescription () {
@@ -113,7 +125,19 @@ export default class CLIArgumentParser {
         return true;
     }
 
-    _parseFilteringOptions () {
+    async _parseFilteringOptions () {
+        if (this.opts.testGrep)
+            this.opts.testGrep = CLIArgumentParser._optionValueToRegExp('--test-grep', this.opts.testGrep);
+
+        if (this.opts.fixtureGrep)
+            this.opts.fixtureGrep = CLIArgumentParser._optionValueToRegExp('--fixture-grep', this.opts.fixtureGrep);
+
+        if (this.opts.testMeta)
+            this.opts.testMeta = await getMetaOptions('--test-meta', this.opts.testMeta);
+
+        if (this.opts.fixtureMeta)
+            this.opts.fixtureMeta = await getMetaOptions('--fixture-meta', this.opts.fixtureMeta);
+
         this.filter = getFilterFn(this.opts);
     }
 
@@ -228,7 +252,6 @@ export default class CLIArgumentParser {
             return;
         }
 
-        this._parseFilteringOptions();
         this._parseSelectorTimeout();
         this._parseAssertionTimeout();
         this._parsePageLoadTimeout();
@@ -239,6 +262,7 @@ export default class CLIArgumentParser {
         this._parseConcurrency();
         this._parseFileList();
 
+        await this._parseFilteringOptions();
         await this._parseVideoOptions();
         await this._parseSslOptions();
         await this._parseReporters();

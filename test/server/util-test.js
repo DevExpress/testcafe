@@ -163,9 +163,52 @@ describe('Utils', () => {
         expect(getCommonPath([paths[1], paths[2], paths[3]])).eql(paths[0]);
     });
 
-    it('Get Filter Fn', () => {
-        expect(getFilterFn({})).is.undefined;
-        expect(getFilterFn({ fixture: 'test' })).to.be.a('function');
+    describe('Get Filter Fn', () => {
+        it('Should return "undefined" if no filtering options were specified', () => {
+            expect(getFilterFn({})).is.undefined;
+        });
+
+        it('Should filter by a test name', () => {
+            const filter = getFilterFn({ test: 'test' });
+
+            expect(filter('test', void 0, void 0, void 0, void 0)).to.be.true;
+            expect(filter('test2', void 0, void 0, void 0, void 0)).to.be.false;
+        });
+
+        it('Should filter by a fixture name', () => {
+            const filter = getFilterFn({ fixture: 'fixture' });
+
+            expect(filter(void 0, 'fixture', void 0, void 0, void 0)).to.be.true;
+            expect(filter(void 0, 'fixture1', void 0, void 0, void 0)).to.be.false;
+        });
+
+        it('Should filter by a test name RegExp', () => {
+            const filter = getFilterFn({ testGrep: /test\d/ });
+
+            expect(filter('test1', void 0, void 0, void 0, void 0)).to.be.true;
+            expect(filter('testX', void 0, void 0, void 0, void 0)).to.be.false;
+        });
+
+        it('Should filter by a fixture name RegExp', () => {
+            const filter = getFilterFn({ fixtureGrep: /fixture\d/ });
+
+            expect(filter(void 0, 'fixture1', void 0, void 0, void 0)).to.be.true;
+            expect(filter(void 0, 'fixtureA', void 0, void 0, void 0)).to.be.false;
+        });
+
+        it('Should filter by a test meta', () => {
+            const filter = getFilterFn({ testMeta: { test: 'meta' } });
+
+            expect(filter(void 0, void 0, void 0, { test: 'meta' }, void 0)).to.be.true;
+            expect(filter(void 0, void 0, void 0, { test: 'metaX' }, void 0)).to.be.false;
+        });
+
+        it('Should filter by a fixture meta', () => {
+            const filter = getFilterFn({ fixtureMeta: { fixture: 'meta' } });
+
+            expect(filter(void 0, void 0, void 0, void 0, { fixture: 'meta' })).to.be.true;
+            expect(filter(void 0, void 0, void 0, void 0, { fixture: 'metaX' })).to.be.false;
+        });
     });
 
     describe('Moment Module Loader', () => {

@@ -1,5 +1,4 @@
 import { isMatch } from 'lodash';
-import { optionValueToRegExp, optionValueToKeyValue } from '../configuration/option-conversion';
 
 function isAllFilteringOptionsAreUndefined (opts) {
     return [
@@ -10,15 +9,6 @@ function isAllFilteringOptionsAreUndefined (opts) {
         opts.test,
         opts.fixture
     ].every(item => item === void 0);
-}
-
-function prepareOptionValues (opts) {
-    opts.testGrep    = optionValueToRegExp('--test-grep', opts.testGrep);
-    opts.fixtureGrep = optionValueToRegExp('--fixture-grep', opts.fixtureGrep);
-    opts.testMeta    = optionValueToKeyValue('--test-meta', opts.testMeta);
-    opts.fixtureMeta = optionValueToKeyValue('--fixture-meta', opts.fixtureMeta);
-
-    return opts;
 }
 
 function createFilterFn (opts) {
@@ -48,8 +38,6 @@ function createFilterFn (opts) {
 export default function (opts) {
     if (isAllFilteringOptionsAreUndefined(opts))
         return void 0;
-
-    opts = prepareOptionValues(opts);
 
     return createFilterFn(opts);
 }
