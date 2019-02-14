@@ -1,12 +1,13 @@
-const PUBLISH_VERSION_RE = /^\d+\.\d+\.\d+(-alpha\.\d+)?$/;
+const semver = require('semver');
+
+const DEFAULT_TAG     = 'latest';
+const VALID_TAGS_LIST = [DEFAULT_TAG, 'alpha', 'rc'];
 
 module.exports = function getPublishTags (packageInfo) {
-    const matches = packageInfo.version.match(PUBLISH_VERSION_RE);
+    const tag = semver.parse(packageInfo.version).prerelease[0] || DEFAULT_TAG;
 
-    if (!matches)
+    if (!VALID_TAGS_LIST.includes(tag))
         throw new Error('Incorrect version in package.json');
 
-    const isAlpha = !!matches[1];
-
-    return [packageInfo.version, isAlpha ? 'alpha' : 'latest'];
+    return tag;
 };

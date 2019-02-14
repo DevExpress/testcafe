@@ -181,6 +181,7 @@
     "request": "^2.58.0",
     "run-sequence": "^1.2.2",
     "saucelabs-connector": "^0.2.0",
+    "semver": "^5.6.0",
     "serve-static": "^1.10.0",
     "stack-chain": "^2.0.0",
     "strip-ansi": "^3.0.0",
