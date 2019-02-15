@@ -478,7 +478,7 @@ describe('Compiler', function () {
                         throw new Error('Promise rejection is expected');
                     })
                     .catch(function (errList) {
-                        expect(errList.items[0].type).eql(TEST_RUN_ERRORS.uncaughtErrorInTestCode.name);
+                        expect(errList.items[0].code).eql(TEST_RUN_ERRORS.uncaughtErrorInTestCode);
                         expect(errList.items[0].errMsg).contains('test-error');
                         expect(testRun.commands.length).eql(1);
                     });

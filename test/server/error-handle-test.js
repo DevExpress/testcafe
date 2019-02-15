@@ -121,7 +121,7 @@ describe('Global error handlers', () => {
             })
             .then(() => {
                 expect(unhandledRejectionRaised).eql(true);
-                expect(testRunMock.errors[0].type).eql(TEST_RUN_ERRORS.unhandledPromiseRejection.name);
+                expect(testRunMock.errors[0].code).eql(TEST_RUN_ERRORS.unhandledPromiseRejection);
             });
     });
 });

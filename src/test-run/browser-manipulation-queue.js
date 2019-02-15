@@ -59,7 +59,7 @@ export default class BrowserManipulationQueue {
             return await capture();
         }
         catch (err) {
-            if (err.type === TEST_RUN_ERRORS.invalidElementScreenshotDimensionsError)
+            if (err.code === TEST_RUN_ERRORS.invalidElementScreenshotDimensionsError)
                 throw err;
 
             this.warningLog.addWarning(WARNING_MESSAGE.screenshotError, err.stack);

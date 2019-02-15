@@ -107,5 +107,6 @@ export const RUNTIME_ERRORS = {
     unableToOpenBrowser:                                            'E1038',
     requestHookConfigureAPIError:                                   'E1039',
     forbiddenCharatersInScreenshotPath:                             'E1040',
-    cannotFindFFMPEG:                                               'E1041'
+    cannotFindFFMPEG:                                               'E1041',
+    compositeArgumentsError:                                        'E1042'
 };

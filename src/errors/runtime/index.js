@@ -109,10 +109,10 @@ export class APIError extends Error {
 }
 
 export class ClientFunctionAPIError extends APIError {
-    constructor (methodName, instantiationCallsiteName, errorCode, ...args) {
+    constructor (methodName, instantiationCallsiteName, code, ...args) {
         args.push(new ProcessTemplateInstruction(template => template.replace(/\{#instantiationCallsiteName\}/g, instantiationCallsiteName)));
 
-        super(methodName, errorCode, ...args);
+        super(methodName, code, ...args);
     }
 }
 
@@ -121,5 +121,6 @@ export class CompositeError extends Error {
         super(errors.map(({ message }) => message).join(ERROR_SEPARATOR));
 
         this.stack = errors.map(({ stack }) => stack).join(ERROR_SEPARATOR);
+        this.code  = RUNTIME_ERRORS.compositeArgumentsError;
     }
 }
