@@ -39,14 +39,14 @@ describe('[API] TestController', () => {
         const missingAwaitErrMsg = 'A call to an async function is not awaited. Use the "await" keyword before actions, ' +
                                    'assertions or chains of them to ensure that they run in the right sequence.';
 
-        it('Should track missing `await`', () => {
+        it.only('Should track missing `await`', () => {
             return runTests('./testcafe-fixtures/test-controller-test.js', 'Missing await', {
                 shouldFail: true,
                 only:       'chrome'
             })
                 .catch(errs => {
-                    expect(errs[0]).to.contains(missingAwaitErrMsg);
-                    expect(errs[0]).to.contains('> 28 |    t.click(\'#page2-btn1\');');
+                    expect(errs[1]).to.contains(missingAwaitErrMsg);
+                    expect(errs[1]).to.contains('> 28 |    t.click(\'#page2-btn1\');');
                 });
         });
 
@@ -54,8 +54,8 @@ describe('[API] TestController', () => {
             return runTests('./testcafe-fixtures/test-controller-test.js', 'Missing await in chain',
                 { shouldFail: true, only: 'chrome' })
                 .catch(errs => {
-                    expect(errs[0]).to.contains(missingAwaitErrMsg);
-                    expect(errs[0]).to.contains("> 38 |        .click('#page2-btn2');");
+                    expect(errs[1]).to.contains(missingAwaitErrMsg);
+                    expect(errs[1]).to.contains("> 38 |        .click('#page2-btn2');");
                 });
         });
 
@@ -72,10 +72,10 @@ describe('[API] TestController', () => {
             return runTests('./testcafe-fixtures/test-controller-test.js', 'Error caused by action with missing await',
                 { shouldFail: true, only: 'chrome' })
                 .catch(errs => {
-                    expect(errs[0]).to.contains(missingAwaitErrMsg);
-                    expect(errs[0]).to.contains("> 48 |    t.click('#error');");
-                    expect(errs[1]).to.contains('Error callsite test');
+                    expect(errs[1]).to.contains(missingAwaitErrMsg);
                     expect(errs[1]).to.contains("> 48 |    t.click('#error');");
+                    expect(errs[0]).to.contains('Error callsite test');
+                    expect(errs[0]).to.contains("> 48 |    t.click('#error');");
                 });
         });
 
