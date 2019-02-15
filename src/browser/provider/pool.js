@@ -44,6 +44,9 @@ export default {
     },
 
     async _parseAlias (alias) {
+        if (alias.browserName && alias.providerName && alias.provider)
+            return alias;
+
         if (alias && alias.path)
             return this._handlePathAndCmd(alias);
 
@@ -106,7 +109,7 @@ export default {
         if (!await provider.isValidBrowserName(browserName))
             throw new GeneralError(MESSAGE.cantFindBrowser, alias);
 
-        return browserInfo;
+        return { alias, ...browserInfo };
     },
 
     addProvider (providerName, providerObject) {

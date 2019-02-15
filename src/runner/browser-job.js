@@ -1,13 +1,13 @@
 import Promise from 'pinkie';
-import { EventEmitter } from 'events';
 import { remove } from 'lodash';
+import AsyncEventEmitter from '../utils/async-event-emitter';
 import TestRunController from './test-run-controller';
 import SessionController from '../test-run/session-controller';
 import RESULT from './browser-job-result';
 
 
 // Browser job
-export default class BrowserJob extends EventEmitter {
+export default class BrowserJob extends AsyncEventEmitter {
     constructor (tests, browserConnections, proxy, screenshots, warningLog, fixtureHookController, opts) {
         super();
 
@@ -36,8 +36,11 @@ export default class BrowserJob extends EventEmitter {
         const testRunController = new TestRunController(test, index + 1, this.proxy, this.screenshots, this.warningLog,
             this.fixtureHookController, this.opts);
 
+        testRunController.on('test-run-create', testRunInfo => this.emit('test-run-create', testRunInfo));
         testRunController.on('test-run-start', () => this.emit('test-run-start', testRunController.testRun));
+        testRunController.on('test-run-ready', () => this.emit('test-run-ready', testRunController));
         testRunController.on('test-run-restart', () => this._onTestRunRestart(testRunController));
+        testRunController.on('test-run-before-done', () => this.emit('test-run-before-done', testRunController));
         testRunController.on('test-run-done', () => this._onTestRunDone(testRunController));
 
         return testRunController;
@@ -76,11 +79,12 @@ export default class BrowserJob extends EventEmitter {
         while (this.completionQueue.length && this.completionQueue[0].done) {
             testRunController = this.completionQueue.shift();
 
-            this.emit('test-run-done', testRunController.testRun);
+            await this.emit('test-run-done', testRunController.testRun);
         }
 
         if (!this.completionQueue.length && !this.hasQueuedTestRuns) {
-            SessionController.closeSession(testRunController.testRun);
+            if (!this.opts.live)
+                SessionController.closeSession(testRunController.testRun);
 
             this
                 ._setResult(RESULT.done, { total: this.total, passed: this.passed })
@@ -97,7 +101,11 @@ export default class BrowserJob extends EventEmitter {
         while (this.testRunControllerQueue.length) {
             // NOTE: before hook for test run fixture is currently
             // executing, so test run is temporary blocked
-            if (this.testRunControllerQueue[0].blocked)
+            const isBlocked             = this.testRunControllerQueue[0].blocked;
+            const isConcurrency         = this.opts.concurrency > 1;
+            const hasIncompleteTestRuns = this.completionQueue.some(controller => !controller.done);
+
+            if (isBlocked || hasIncompleteTestRuns && !isConcurrency)
                 break;
 
             const testRunController = this.testRunControllerQueue.shift();
@@ -106,7 +114,7 @@ export default class BrowserJob extends EventEmitter {
 
             if (!this.started) {
                 this.started = true;
-                this.emit('start');
+                await this.emit('start');
             }
 
             const testRunUrl = await testRunController.start(connection);
@@ -119,7 +127,7 @@ export default class BrowserJob extends EventEmitter {
     }
 
     abort () {
-        this.removeAllListeners();
+        this.clearListeners();
         this._setResult(RESULT.aborted);
         this.browserConnections.map(bc => bc.removeJob(this));
     }

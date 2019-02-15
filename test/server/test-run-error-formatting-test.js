@@ -65,7 +65,7 @@ const InvalidElementScreenshotDimensionsError           = require('../../lib/err
 const SetTestSpeedArgumentError                         = require('../../lib/errors/test-run').SetTestSpeedArgumentError;
 const RoleSwitchInRoleInitializerError                  = require('../../lib/errors/test-run').RoleSwitchInRoleInitializerError;
 const ActionRoleArgumentError                           = require('../../lib/errors/test-run').ActionRoleArgumentError;
-const { createTestStream }                              = require('../functional/utils/stream');
+const { createSimpleTestStream }                        = require('../functional/utils/stream');
 
 const TEST_FILE_STACK_ENTRY_RE = new RegExp('\\s*\\n?\\(' + escapeRegExp(require.resolve('./data/test-callsite')), 'g');
 
@@ -88,7 +88,7 @@ const longSelector = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, s
 
 function assertErrorMessage (file, err) {
     const screenshotPath = '/unix/path/with/<tag>';
-    const outStreamMock  = createTestStream();
+    const outStreamMock  = createSimpleTestStream();
     const plugin         = new ReporterPluginHost({}, outStreamMock);
 
     const errAdapter = new TestRunErrorFormattableAdapter(err, {

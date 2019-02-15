@@ -17,10 +17,8 @@ describe('[API] fixture.beforeEach/fixture.afterEach hooks', () => {
                 expect(errs[0]).eql(test1Err);
                 expect(errs[0].indexOf(
                     '- Error in fixture.afterEach hook - ' +
-                    'Error on page "http://localhost:3000/fixtures/api/es-next/hooks/pages/index.html":  ' +
-                    'Error: [beforeEach][test][afterEach]'
-                )).eql(0);
-
+                    'A JavaScript error occurred on "http://localhost:3000/fixtures/api/es-next/hooks/pages/index.html"')).eql(0);
+                expect(errs[0].indexOf('Error: [beforeEach][test][afterEach]') > 0);
                 expect(errs[0]).contains(">  9 |            .click('#failAndReport');");
             });
     });
@@ -30,9 +28,8 @@ describe('[API] fixture.beforeEach/fixture.afterEach hooks', () => {
             .catch(errs => {
                 expect(errs[0].indexOf(
                     '- Error in fixture.beforeEach hook - ' +
-                    'Error on page "http://localhost:3000/fixtures/api/es-next/hooks/pages/index.html":  ' +
-                    'Error: [beforeEach]'
-                )).eql(0);
+                    'A JavaScript error occurred on "http://localhost:3000/fixtures/api/es-next/hooks/pages/index.html"')).eql(0);
+                expect(errs[0].indexOf('Error: [beforeEach]') > 0);
                 expect(errs[0]).contains(">  6 |            .click('#failAndReport');");
             });
     });
@@ -41,14 +38,12 @@ describe('[API] fixture.beforeEach/fixture.afterEach hooks', () => {
         return runTests('./testcafe-fixtures/fail-in-test.js', 'Test', { shouldFail: true, only: 'chrome' })
             .catch(errs => {
                 expect(errs[0].indexOf(
-                    'Error on page "http://localhost:3000/fixtures/api/es-next/hooks/pages/index.html":  ' +
-                    'Error: [beforeEach] '
-                )).eql(0);
+                    'A JavaScript error occurred on "http://localhost:3000/fixtures/api/es-next/hooks/pages/index.html"')).eql(0);
+                expect(errs[0].indexOf('Error: [beforeEach]') > 0);
                 expect(errs[1].indexOf(
                     '- Error in fixture.afterEach hook - ' +
-                    'Error on page "http://localhost:3000/fixtures/api/es-next/hooks/pages/index.html":  ' +
-                    'Error: [beforeEach][afterEach]'
-                )).eql(0);
+                    'A JavaScript error occurred on "http://localhost:3000/fixtures/api/es-next/hooks/pages/index.html"')).eql(0);
+                expect(errs[1].indexOf('Error: [beforeEach][afterEach]') > 0);
                 expect(errs[0]).contains("> 13 |    await t.click('#failAndReport');");
                 expect(errs[1]).contains(">  9 |            .click('#failAndReport');");
             });

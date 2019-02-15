@@ -64,11 +64,10 @@ exports.show = function (showTopRoot) {
 exports.showScreenshotMark = url => screenshotMark.show(url);
 exports.hideScreenshotMark = () => screenshotMark.hide();
 
-hammerhead.nativeMethods.objectDefineProperty.call(window, window, '%testCafeUI%', {
-    configurable: true,
-    value:        exports
-});
+const nativeMethods    = hammerhead.nativeMethods;
+const evalIframeScript = hammerhead.EVENTS.evalIframeScript;
 
-/* eslint-disable no-undef */
-hammerhead.on(hammerhead.EVENTS.evalIframeScript, e => initTestCafeUI(e.iframe.contentWindow, true));
-/* eslint-enable no-undef */
+nativeMethods.objectDefineProperty(window, '%testCafeUI%', { configurable: true, value: exports });
+
+// eslint-disable-next-line no-undef
+hammerhead.on(evalIframeScript, e => initTestCafeUI(nativeMethods.contentWindowGetter.call(e.iframe), true));

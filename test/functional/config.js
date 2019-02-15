@@ -5,7 +5,8 @@ const hostname            = isTravisEnvironment ? os.hostname() : '127.0.0.1';
 
 const browserProviderNames = {
     sauceLabs:    'sauceLabs',
-    browserstack: 'browserstack'
+    browserstack: 'browserstack',
+    remote:       'remote'
 };
 
 const testingEnvironmentNames = {
@@ -16,6 +17,7 @@ const testingEnvironmentNames = {
     localBrowsers:               'local-browsers',
     localHeadlessChrome:         'local-headless-chrome',
     localHeadlessFirefox:        'local-headless-firefox',
+    remote:                      'remote',
     oldBrowsers:                 'old-browsers',
     legacy:                      'legacy'
 };
@@ -34,22 +36,16 @@ testingEnvironments[testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers] = {
 
     browsers: [
         {
-            os:        'OS X',
-            osVersion: 'HIgh Sierra',
-            name:      'safari',
-            alias:     'safari'
+            browserName: 'browserstack:safari@11.1:OS X High Sierra',
+            alias:       'safari'
         },
         {
-            os:        'OS X',
-            osVersion: 'High Sierra',
-            name:      'chrome',
-            alias:     'chrome-osx'
+            browserName: 'browserstack:chrome@71:OS X High Sierra',
+            alias:       'chrome-osx'
         },
         {
-            os:        'OS X',
-            osVersion: 'High Sierra',
-            name:      'firefox',
-            alias:     'firefox-osx'
+            browserName: 'browserstack:firefox@64:OS X High Sierra',
+            alias:       'firefox-osx'
         }
     ]
 };
@@ -66,20 +62,12 @@ testingEnvironments[testingEnvironmentNames.mobileBrowsers] = {
 
     browsers: [
         {
-            realMobile: true,
-            os:         'ios',
-            osVersion:  '11.2',
-            device:     'iPad Pro',
-            name:       'Mobile Safari',
-            alias:      'ipad'
+            browserName: 'browserstack:iPad Pro 12.9 2017@11',
+            alias:       'ipad'
         },
         {
-            realMobile: true,
-            os:         'ios',
-            osVersion:  '10.3',
-            device:     'iPhone 7 Plus',
-            name:       'Mobile Safari',
-            alias:      'iphone'
+            browserName: 'browserstack:iPhone 7 Plus@10',
+            alias:       'iphone'
         }
     ]
 };
@@ -170,6 +158,20 @@ testingEnvironments[testingEnvironmentNames.localHeadlessFirefox] = {
     ]
 };
 
+testingEnvironments[testingEnvironmentNames.remote] = {
+    remote: true,
+
+    browsers: [{
+        get qrCode () {
+            return !!process.env.QR_CODE;
+        },
+
+        get alias () {
+            return process.env.BROWSER_ALIAS || 'chrome';
+        }
+    }]
+};
+
 testingEnvironments[testingEnvironmentNames.oldBrowsers] = {
     jobName: 'functional tests - ms desktop browsers',
 
@@ -205,12 +207,6 @@ testingEnvironments[testingEnvironmentNames.legacy] = {
             platform:    'Windows 10',
             browserName: 'chrome',
             alias:       'chrome'
-        },
-        {
-            platform:    'Windows 10',
-            browserName: 'ie',
-            version:     '11.0',
-            alias:       'ie'
         }
     ]
 };
@@ -271,5 +267,8 @@ module.exports = {
 
     browserstackConnectorServicePort: 9200,
 
-    browsers: []
+    browsers: [],
+
+    testScreenshotsDir: '___test-screenshots___',
+    testVideosDir:      '___test-videos___'
 };

@@ -144,9 +144,7 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
             APIBasedTestFileCompilerBase._execAsModule(compiledCode, filename);
         }
         catch (err) {
-            // HACK: workaround for the `instanceof` problem
-            // (see: http://stackoverflow.com/questions/33870684/why-doesnt-instanceof-work-on-instances-of-error-subclasses-under-babel-node)
-            if (err.constructor !== APIError)
+            if (!(err instanceof APIError))
                 throw new TestCompilationError(stackCleaningHook.cleanError(err));
 
             throw err;

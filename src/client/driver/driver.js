@@ -55,7 +55,8 @@ const transport      = hammerhead.transport;
 const Promise        = hammerhead.Promise;
 const messageSandbox = hammerhead.eventSandbox.message;
 const storages       = hammerhead.storages;
-const DateCtor       = hammerhead.nativeMethods.date;
+const nativeMethods  = hammerhead.nativeMethods;
+const DateCtor       = nativeMethods.date;
 
 const TEST_DONE_SENT_FLAG                  = 'testcafe|driver|test-done-sent-flag';
 const PENDING_STATUS                       = 'testcafe|driver|pending-status';
@@ -68,7 +69,7 @@ const ASSERTION_RETRIES_TIMEOUT            = 'testcafe|driver|assertion-retries-
 const ASSERTION_RETRIES_START_TIME         = 'testcafe|driver|assertion-retries-start-time';
 const CONSOLE_MESSAGES                     = 'testcafe|driver|console-messages';
 const CHECK_IFRAME_DRIVER_LINK_DELAY       = 500;
-const SEND_STATUS_REQUEST_TIME_LIMIT       = 1000;
+const SEND_STATUS_REQUEST_TIME_LIMIT       = 5000;
 const SEND_STATUS_REQUEST_RETRY_DELAY      = 300;
 const SEND_STATUS_REQUEST_RETRY_COUNT      = 5;
 const CHECK_STATUS_RETRY_DELAY             = 1000;
@@ -131,6 +132,8 @@ export default class Driver {
         hammerhead.on(hammerhead.EVENTS.uncaughtJsError, err => this._onJsError(err));
         hammerhead.on(hammerhead.EVENTS.unhandledRejection, err => this._onJsError(err));
         hammerhead.on(hammerhead.EVENTS.consoleMethCalled, e => this._onConsoleMessage(e));
+
+        this.setCustomCommandHandlers(COMMAND_TYPE.unlockPage, () => this._unlockPageAfterTestIsDone());
     }
 
     set speed (val) {
@@ -162,6 +165,12 @@ export default class Driver {
             this.contextStorage.setItem(PENDING_PAGE_ERROR, error);
 
         return null;
+    }
+
+    _unlockPageAfterTestIsDone () {
+        disableRealEventsPreventing();
+
+        return Promise.resolve();
     }
 
     _failIfClientCodeExecutionIsInterrupted () {
@@ -331,7 +340,8 @@ export default class Driver {
                 if (!domUtils.isIframeElement(iframe))
                     throw new ActionElementNotIframeError();
 
-                return this._ensureChildDriverLink(iframe.contentWindow, iframeErrorCtors.NotLoadedError, commandSelectorTimeout);
+                return this._ensureChildDriverLink(nativeMethods.contentWindowGetter.call(iframe),
+                    iframeErrorCtors.NotLoadedError, commandSelectorTimeout);
             })
             .then(childDriverLink => {
                 childDriverLink.availabilityTimeout = commandSelectorTimeout;

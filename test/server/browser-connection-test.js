@@ -6,7 +6,6 @@ const createTestCafe      = require('../../lib/');
 const COMMAND             = require('../../lib/browser/connection/command');
 const browserProviderPool = require('../../lib/browser/provider/pool');
 
-
 const promisedRequest = promisify(request);
 
 describe('Browser connection', function () {

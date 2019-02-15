@@ -68,14 +68,13 @@ export function getDeepActiveElement (currentDocument) {
     if (!activeElement || !domUtils.isDomElement(activeElement))
         activeElement = doc.body;
 
-    if (activeElement && domUtils.isIframeElement(activeElement) && activeElement.contentDocument) {
+    if (activeElement && domUtils.isIframeElement(activeElement) &&
+        nativeMethods.contentDocumentGetter.call(activeElement)) {
         try {
-            activeElementInIframe = getDeepActiveElement(activeElement.contentDocument);
+            activeElementInIframe = getDeepActiveElement(nativeMethods.contentDocumentGetter.call(activeElement));
         }
-        /*eslint-disable no-empty */
-        catch (e) {
+        catch (e) { // eslint-disable-line no-empty
         }
-        /*eslint-enable no-empty */
     }
 
     return activeElementInIframe || activeElement;

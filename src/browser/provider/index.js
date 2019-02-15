@@ -303,6 +303,10 @@ export default class BrowserProvider {
         await this.plugin.takeScreenshot(browserId, screenshotPath, pageWidth, pageHeight);
     }
 
+    async getVideoFrameData (browserId) {
+        return this.plugin.getVideoFrameData(browserId);
+    }
+
     async hasCustomActionForBrowser (browserId) {
         return this.plugin.hasCustomActionForBrowser(browserId);
     }

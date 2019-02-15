@@ -48,9 +48,9 @@ const getReporter = function (scope) {
 };
 
 describe('[API] t.takeScreenshot()', function () {
-    if (config.useLocalBrowsers && config.currentEnvironmentName !== config.testingEnvironmentNames.localBrowsersIE) {
-        afterEach(assertionHelper.removeScreenshotDir);
+    afterEach(assertionHelper.removeScreenshotDir);
 
+    if (config.useLocalBrowsers && config.currentEnvironmentName !== config.testingEnvironmentNames.localBrowsersIE) {
         it('Should take a screenshot', function () {
             return runTests('./testcafe-fixtures/take-screenshot.js', 'Take a screenshot', { setScreenshotPath: true })
                 .then(function () {
@@ -187,7 +187,7 @@ describe('[API] t.takeScreenshot()', function () {
                 setScreenshotPath:  true,
                 quarantineMode:     true,
                 screenshotsOnFails: true,
-                reporters:          [{ reporter }]
+                reporter:           [ reporter ]
             })
                 .then(function () {
                     const getScreenshotsInfo = (screenshotPath, thumbnailPath, attempt, userAgent, takenOnFail) => {
@@ -247,12 +247,25 @@ describe('[API] t.takeScreenshot()', function () {
                 });
         });
     }
+    else if (!config.useLocalBrowsers) {
+        it('Should show a warning on an attempt to capture a screenshot for a remote browser', () => {
+            return runTests('./testcafe-fixtures/take-screenshot.js', 'Take a screenshot',
+                { only: 'chrome', setScreenshotPath: true })
+                .then(() => {
+                    expect(testReport.warnings).eql([
+                        'The screenshot and window resize functionalities are not supported in a remote browser. ' +
+                        'They can function only if the browser is running on the same machine and ' +
+                        'in the same environment as the TestCafe server.'
+                    ]);
+                });
+        });
+    }
 });
 
 describe('[API] t.takeElementScreenshot()', function () {
-    if (config.useLocalBrowsers && config.currentEnvironmentName !== config.testingEnvironmentNames.localBrowsersIE) {
-        afterEach(assertionHelper.removeScreenshotDir);
+    afterEach(assertionHelper.removeScreenshotDir);
 
+    if (config.useLocalBrowsers && config.currentEnvironmentName !== config.testingEnvironmentNames.localBrowsersIE) {
         it('Should take screenshot of an element', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Element',
                 { setScreenshotPath: true })
@@ -546,6 +559,19 @@ describe('[API] t.takeElementScreenshot()', function () {
                 })
                 .then(function (result) {
                     expect(result).eql(true);
+                });
+        });
+    }
+    else if (!config.useLocalBrowsers) {
+        it('Should show a warning on an attempt to capture an element screenshot for a remote browser', () => {
+            return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Element',
+                { only: 'chrome', setScreenshotPath: true })
+                .then(() => {
+                    expect(testReport.warnings).eql([
+                        'The screenshot and window resize functionalities are not supported in a remote browser. ' +
+                        'They can function only if the browser is running on the same machine and ' +
+                        'in the same environment as the TestCafe server.'
+                    ]);
                 });
         });
     }

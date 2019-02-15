@@ -33,3 +33,9 @@ export class BackupStoragesCommand {
         this.type = TYPE.backupStorages;
     }
 }
+
+export class UnlockPageCommand {
+    constructor () {
+        this.type = TYPE.unlockPage;
+    }
+}

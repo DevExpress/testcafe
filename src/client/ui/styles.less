@@ -384,6 +384,7 @@
 
                 .status {
                     display: inline-block;
+                    vertical-align: top;
                     margin-top: 7px;
                     color: #36B6E5;
                     line-height: 27px;
@@ -396,6 +397,7 @@
                     border: 1px solid #38A3D5;
                     .rounded-corners(3px);
                     position: relative;
+                    vertical-align: top;
                     top: 3px;
 
                     .unlock-page-container {
@@ -443,6 +445,7 @@
                             .sprite-icon();
 
                             display: inline-block;
+                            margin-top: 6px;
                             width: 12px;
                             height: 16px;
                         }
@@ -636,6 +639,17 @@
                     right: 0;
                     text-align: center !important;
                 }
+            }
+        }
+
+        &.only-icon-fixture-view {
+            .info-container {
+                width: 100%;
+            }
+
+            .status-container {
+                width: 0;
+                display: none;
             }
         }
 

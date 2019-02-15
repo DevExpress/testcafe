@@ -42,6 +42,7 @@ createTestCafe('localhost', 1337, 1338)
     * [Specifying the Path with Command Line Parameters](#specifying-the-path-with-command-line-parameters)
     * [Passing a Remote Browser Connection](#passing-a-remote-browser-connection)
 * [screenshots](#screenshots)
+* [video](#video)
 * [reporter](#reporter)
     * [Specifying the Reporter](#specifying-the-reporter)
     * [Saving the Report to a File](#saving-the-report-to-a-file)
@@ -67,7 +68,9 @@ Parameter | Type                | Description
 --------- | ------------------- | ----------------------------------------------------------------------------
 `source`  | String &#124; Array | The relative or absolute path to a test fixture file, or several such paths. You can use [glob patterns](https://github.com/isaacs/node-glob#glob-primer) to include (or exclude) multiple files.
 
-If you call the method several times, all the specified sources are added to the test runner.
+You do not need to call this function if you specify the [src](../configuration-file.md#src) property in the [configuration file](../configuration-file.md).
+
+*Related configuration file property*: [src](../configuration-file.md#src)
 
 **Examples**
 
@@ -91,7 +94,7 @@ Parameter  | Type                                                               
 ---------- | --------------------------------------------------------------------- | ----------------------------------------------------------------
 `callback` | `function(testName, fixtureName, fixturePath, testMeta, fixtureMeta)` | The callback that determines if a particular test should be run.
 
-The callback function is called for each test in the files specified using the [src](#src) method.
+The callback function is called for each test in the files the [src](#src) method specifies.
 
 Return `true` from the callback to include the current test or `false` to exclude it.
 
@@ -104,6 +107,8 @@ Parameter     | Type                     | Description
 `fixturePath` | String                   | The path to the test fixture file.
 `testMeta`    | Object\<String, String\> | The test metadata.
 `fixtureMeta` | Object\<String, String\> | The fixture metadata.
+
+*Related configuration file property*: [filter](../configuration-file.md#filter)
 
 **Example**
 
@@ -129,11 +134,13 @@ The `browser` parameter can be any of the following objects or an `Array` of the
 
 Parameter Type                                                                                        | Description                            | Browser Type
 ---------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------
-String                                                                                                | A different browser alias for each browser type. See [Browser Support](../common-concepts/browsers/browser-support.md) for more details.                            | [Local browsers](../common-concepts/browsers/browser-support.md#locally-installed-browsers), [cloud browsers](../common-concepts/browsers/browser-support.md#browsers-in-cloud-testing-services), and [browsers accessed through *browser provider plugins*](../common-concepts/browsers/browser-support.md#nonconventional-browsers).                                                                 |
+String &#124; Array                                                                                           | A different browser alias for each browser type. See [Browser Support](../common-concepts/browsers/browser-support.md) for more details.                            | [Local browsers](../common-concepts/browsers/browser-support.md#locally-installed-browsers), [cloud browsers](../common-concepts/browsers/browser-support.md#browsers-in-cloud-testing-services), and [browsers accessed through *browser provider plugins*](../common-concepts/browsers/browser-support.md#nonconventional-browsers).                                                                 |
  `{path: String, cmd: String}`                                                                        | The path to the browser's executable (`path`) and command line parameters (`cmd`). The `cmd` property is optional.                                                     | [Local](../common-concepts/browsers/browser-support.md#locally-installed-browsers) and [portable](../common-concepts/browsers/browser-support.md#portable-browsers) browsers
 [BrowserConnection](browserconnection.md)                                                            | The remote browser connection.                                                                                                                                        | [Remote browsers](../common-concepts/browsers/browser-support.md#browsers-on-remote-devices)
 
-You can use different object types in one function call. If you call the method several times, all the specified browsers are added to the test runner.
+You do not need to call this function if you specify the [browsers](../configuration-file.md#browsers) property in the [configuration file](../configuration-file.md).
+
+*Related configuration file property*: [browsers](../configuration-file.md#browsers)
 
 #### Using Browser Aliases
 
@@ -147,12 +154,6 @@ runner.browsers(['safari', 'chrome']);
 
 ```js
 runner.browsers('saucelabs:Chrome@52.0:Windows 8.1');
-```
-
-* using [headless mode](../common-concepts/browsers/testing-in-headless-mode.md)
-
-```js
-runner.browsers('chrome:headless');
 ```
 
 #### Specifying the Path to the Browser Executable
@@ -171,6 +172,22 @@ runner.browsers({
     cmd: '--new-window'
 });
 ```
+
+#### Headless Mode, Device Emulation and User Profiles
+
+You can add postfixes to browser aliases to run tests in the [headless mode](../common-concepts/browsers/testing-in-headless-mode.md), use [Chrome device emulation](../common-concepts/browsers/using-chrome-device-emulation.md) or [user profiles](../common-concepts/browsers/user-profiles.md).
+
+```js
+runner.browsers('chrome:headless');
+```
+
+For portable browsers, use the browser alias followed by the path to an executable.
+
+```js
+runner.browsers('firefox:/home/user/apps/firefox.app:userProfile');
+```
+
+> The `path:` prefix does not support postfixes.
 
 #### Passing a Remote Browser Connection
 
@@ -214,16 +231,19 @@ screenshots(path [, takeOnFails, pathPattern]) → this
 
 Parameter                  | Type    | Description                                                                   | Default
 -------------------------- | ------- | ----------------------------------------------------------------------------- | -------
-`path`                     | String  | The base path where the screenshots are saved. Note that to construct a complete path to these screenshots, TestCafe uses default [path patterns](../command-line-interface.md#path-patterns). You can override these patterns using the method's `screenshotPathPattern` parameter.
+`path`                     | String  | The base path where the screenshots are saved. Note that to construct a complete path to these screenshots, TestCafe uses the default [path patterns](../common-concepts/screenshots-and-videos.md#default-path-patterns). You can override these patterns using the method's `screenshotPathPattern` parameter.
 `takeOnFails`&#160;*(optional)* | Boolean | Specifies if screenshots should be taken automatically when a test fails. | `false`
-`sceenshotPathPattern`&#160;*(optional)* | String | The pattern to compose screenshot files' relative path and name. See [--screenshot-path-pattern](../command-line-interface.md#-p---screenshot-path-pattern) for information about the available placeholders.
-
-The `screenshots` function should be called to allow TestCafe to take screenshots
-when the [t.takeScreenshot](../../test-api/actions/take-screenshot.md) action is called from test code.
-
-Set the `takeOnFails` parameter to `true` to take a screenshot when a test fails.
+`sceenshotPathPattern`&#160;*(optional)* | String | The pattern to compose screenshot files' relative path and name. See [Path Pattern Placeholders](../common-concepts/screenshots-and-videos.md#path-pattern-placeholders) for information about the available placeholders.
 
 > Important! TestCafe does not take screenshots if the `screenshots` function is not called.
+
+See [Screenshots](../common-concepts/screenshots-and-videos.md#screenshots) for details.
+
+*Related configuration file properties*:
+
+* [screenshotPath](../configuration-file.md#screenshotpath)
+* [takeScreenshotsOnFails](../configuration-file.md#takescreenshotsonfails)
+* [screenshotPathPattern](../configuration-file.md#screenshotpathpattern)
 
 **Example**
 
@@ -231,20 +251,62 @@ Set the `takeOnFails` parameter to `true` to take a screenshot when a test fails
 runner.screenshots('reports/screenshots/', true, '${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png');
 ```
 
+### video
+
+Enables TestCafe to record videos of test runs.
+
+```text
+video(path [, options, encodingOptions]) → this
+```
+
+Parameter                | Type                        | Description
+------------------------ | --------------------------- | -----------
+`path`                   | String                      | The base directory where videos are saved. Relative paths to video files are composed according to [path patterns](../common-concepts/screenshots-and-videos.md#default-path-patterns). You can also use the `options.pathPattern` property to specify a custom pattern.
+`options`&#160;*(optional)* | Object | Options that define how videos are recorded. See [Basic Video Options](../common-concepts/screenshots-and-videos.md#basic-video-options) for a list of options.
+`encodingOptions`&#160;*(optional)* | Object | Options that specify video encoding. You can pass all the options supported by the FFmpeg library. Refer to [the FFmpeg documentation](https://ffmpeg.org/ffmpeg.html#Options) for information about the available options.
+
+See [Record Videos](../common-concepts/screenshots-and-videos.md#record-videos) for details.
+
+*Related configuration file properties*:
+
+* [videoPath](../configuration-file.md#videopath)
+* [videoOptions](../configuration-file.md#videooptions)
+* [videoEncodingOptions](../configuration-file.md#videoencodingoptions)
+
+**Example**
+
+```js
+runner.video('reports/videos/', {
+    singleFile: true,
+    failedOnly: true,
+    pathPattern: '${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.mp4'
+}, {
+    r: 20,
+    aspect: '4:3'
+});
+```
+
 ### reporter
 
 Configures TestCafe's reporting feature.
 
 ```text
-reporter(name [, outStream]) → this
+reporter(name, output) → this
+reporter([ name | { name, output }]) → this
 ```
 
 Parameter                | Type                        | Description                                     | Default
 ------------------------ | --------------------------- | ----------------------------------------------- | --------
-`name`                   | String                      | The name of the [reporter](../common-concepts/reporters.md) to use.
-`outStream`&#160;*(optional)* | Writable Stream implementer | The stream to which the report is written. | `stdout`
+`name`                   | String              | The name of the [reporter](../common-concepts/reporters.md) to use.
+`output`&#160;*(optional)* | String &#124; Writable Stream implementer | The file path where the report is written or the output stream. | `stdout`
 
-To use multiple reporters, call this method several times with different reporter names. Note that only one reporter can write to `stdout`.
+To use a single reporter, specify a reporter name and, optionally, an output target as the second parameter.
+
+To use multiple reporters, pass an array to this method. This array can include both strings (the reporter name) and `{ name, output }` objects (if you wish to specify the output target). See examples below.
+
+Note that if you use multiple reporters, only one can write to `stdout`.
+
+*Related configuration file property*: [reporter](../configuration-file.md#reporter)
 
 #### Specifying the Reporter
 
@@ -255,32 +317,16 @@ runner.reporter('minimal');
 #### Saving the Report to a File
 
 ```js
-const stream = fs.createWriteStream('report.xml');
-
-runner
-    .src('tests/sample-fixture.js')
-    .browsers('chrome')
-    .reporter('xunit', stream)
-    .run()
-    .then(failedCount => {
-        stream.end();
-    });
+runner.reporter('xunit', 'reports/report.xml');
 ```
 
 #### Using Multiple Reporters
 
 ```js
-const stream = fs.createWriteStream('report.json');
-
-runner
-    .src('tests/sample-fixture.js')
-    .browsers('chrome')
-    .reporter('json', stream)
-    .reporter('list')
-    .run()
-    .then(failedCount => {
-        stream.end();
-    });
+runner.reporter(['spec', {
+    name: 'json',
+    output: 'reports/report.json'
+}]);
 ```
 
 #### Implementing a Custom Stream
@@ -318,6 +364,8 @@ Parameter | Type    | Description
 
 See [Concurrent Test Execution](../common-concepts/concurrent-test-execution.md) to learn more about concurrent test execution.
 
+*Related configuration file property*: [concurrency](../configuration-file.md#concurrency)
+
 The following example shows how to run tests in three Chrome instances:
 
 ```js
@@ -345,6 +393,11 @@ Parameter         | Type    | Description   Default
 
 > TestCafe adds `node_modules/.bin` to `PATH` so that you can use binaries the locally installed dependencies provide without prefixes.
 
+*Related configuration file properties*:
+
+* [appCommand](../configuration-file.md#appcommand)
+* [appInitDelay](../configuration-file.md#appinitdelay)
+
 **Example**
 
 ```js
@@ -369,6 +422,11 @@ If you access the Internet through a proxy server, use the `useProxy` method to 
 When using a proxy server, you may still need to access local or external resources directly. In this instance, provide their URLs in the `bypassRules` option.
 
 The `bypassRules` parameter takes one or several URLs that require direct access. You can replace parts of the URL with the `*` wildcard that corresponds to a string of any length. Wildcards at the beginning and end of the rules can be omitted (`*.mycompany.com` and `.mycompany.com` have the same effect).
+
+*Related configuration file properties*:
+
+* [proxy](../configuration-file.md#proxy)
+* [proxyBypass](../configuration-file.md#proxybypass)
 
 **Examples**
 
@@ -404,6 +462,8 @@ Runs tests according to the current configuration. Returns the number of failed 
 async run(options) → Promise<Number>
 ```
 
+Before TestCafe runs tests, it reads settings from the `.testcaferc.json` [configuration file](../configuration-file.md) if this file exists. Then it applies settings specified in the programming API. API settings override values from the configuration file in case they differ. TestCafe prints information about every overridden property in the console.
+
 > Important! Make sure to keep the browser tab that is running tests active. Do not minimize the browser window.
 > Inactive tabs and minimized browser windows switch to a lower resource consumption mode
 > where tests are not guaranteed to execute correctly.
@@ -419,12 +479,24 @@ Parameter         | Type    | Description                                       
 `debugOnFail`     | Boolean | Specifies whether to enter the debug mode when a test fails. If enabled, the test is paused at the moment it fails, so that you can explore the tested page to determine what caused the failure. | `false`
 `selectorTimeout` | Number  | Specifies the time (in milliseconds) within which [selectors](../../test-api/selecting-page-elements/selectors/README.md) make attempts to obtain a node to be returned. See [Selector Timeout](../../test-api/selecting-page-elements/selectors/using-selectors.md#selector-timeout). | `10000`
 `assertionTimeout` | Number  | Specifies the time (in milliseconds) within which TestCafe makes attempts  to successfully execute an [assertion](../../test-api/assertions/README.md) if [a selector property](../../test-api/selecting-page-elements/selectors/using-selectors.md#define-assertion-actual-value) or a [client function](../../test-api/obtaining-data-from-the-client/README.md) was passed as an actual value. See [Smart Assertion Query Mechanism](../../test-api/assertions/README.md#smart-assertion-query-mechanism). | `3000`
-`pageLoadTimeout` | Number  | Specifies the time (in milliseconds) passed after the `DOMContentLoaded` event, within which TestCafe waits for the `window.load` event to fire. After the timeout passes or the `window.load` event is raised (whichever happens first), TestCafe starts the test. You can set this timeout to `0` to skip waiting for `window.load`. | `3000`
-`speed`           | Number  | Specifies the test execution speed. Should be a number between `1` (the fastest) and `0.01` (the slowest). If speed is also specified for an [individual action](../../test-api/actions/action-options.md#basic-action-options), the action speed setting overrides test speed. | `1`
-`stopOnFirstFail`    | Boolean | Defines whether to stop an entire test run if any test fails. This allows you not to wait for all the tests included in the test task to finish and allows focusing on the first error. | `false`
-`disableTestSyntaxValidation` | Boolean | Defines whether to disable checks for [test](../../test-api/test-code-structure.md#tests) and [fixture](../../test-api/test-code-structure.md#fixtures) directives in test files. Use this option to run dynamically loaded tests. See details in the [--disable-test-syntax-validation](../command-line-interface.md#--disable-test-syntax-validation) command line option description. | `false`
+`pageLoadTimeout` | Number  |  Specifies the time (in milliseconds) TestCafe waits for the `window.load` event to fire after the `DOMContentLoaded` event. After the timeout passes or the `window.load` event is raised (whichever happens first), TestCafe starts the test. You can set this timeout to `0` to skip waiting for `window.load`. | `3000`
+`speed`           | Number  | Specifies the test execution speed. A number between `1` (fastest) and `0.01` (slowest). If an [individual action's](../../test-api/actions/action-options.md#basic-action-options) speed is also specified, the action speed setting overrides the test speed. | `1`
+`stopOnFirstFail`    | Boolean | Defines whether to stop a test run if a test fails. This allows you not to wait for all the tests to finish and to focus on the first error. | `false`
 
 After all tests are finished, call the [testcafe.close](testcafe.md#close) function to stop the TestCafe server.
+
+*Related configuration file properties*:
+
+* [skipJsErrors](../configuration-file.md#skipjserrors)
+* [skipUncaughtErrors](../configuration-file.md#skipuncaughterrors)
+* [quarantineMode](../configuration-file.md#quarantinemode)
+* [debugMode](../configuration-file.md#debugmode)
+* [debugOnFail](../configuration-file.md#debugonfail)
+* [selectorTimeout](../configuration-file.md#selectortimeout)
+* [assertionTimeout](../configuration-file.md#assertiontimeout)
+* [pageLoadTimeout](../configuration-file.md#pageloadtimeout)
+* [speed](../configuration-file.md#speed)
+* [stopOnFirstFail](../configuration-file.md#stoponfirstfail)
 
 **Example**
 
@@ -456,6 +528,8 @@ createTestCafe('localhost', 1337, 1338)
 
 If a browser stops responding while it executes tests, TestCafe restarts the browser and reruns the current test in a new browser instance.
 If the same problem occurs with this test two more times, the test run finishes and an error is thrown.
+
+> When you use a [LiveModeRunner](livemoderunner.md), you can call the `runner.run` method only once. In rare cases when you need multiple live mode sessions running in parallel, you can create several [TestCafe server instances](testcafe.md).
 
 #### Cancelling Test Tasks
 

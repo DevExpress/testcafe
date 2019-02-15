@@ -1,6 +1,7 @@
 // NOTE: to preserve callsites, add new tests AFTER the existing ones
 import { Selector } from 'testcafe';
 import { saveWindowState, restoreWindowState } from '../../../../../window-helpers';
+import config from '../../../../../config';
 
 fixture `Drag`
     .page `http://localhost:3000/fixtures/api/es-next/drag/pages/index.html`;
@@ -57,10 +58,16 @@ test('Destination element selector returns text node', async t => {
 
 test
     .before(async t => {
+        if (!config.useLocalBrowsers)
+            return;
+
         await saveWindowState(t);
         await t.maximizeWindow();
     })
     .after(async t => {
+        if (!config.useLocalBrowsers)
+            return;
+
         await restoreWindowState(t);
     })
     ('Drag to element with destination offsets', async t => {

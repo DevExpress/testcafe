@@ -37,7 +37,15 @@ export default {
     },
 
     write (text) {
+        const isAnimating = !!this.animation;
+
+        if (isAnimating)
+            this.hideSpinner();
+
         console.error(text);
+
+        if (isAnimating)
+            this.showSpinner();
     }
 };
 

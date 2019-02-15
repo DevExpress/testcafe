@@ -87,11 +87,11 @@ fixture `My fixture`
     .page `http://devexpress.github.io/testcafe/example/`;
 
 test('DOM Node Snapshot', async t => {
-    const sliderHandle        = Selector('#slider').child('span');
-    const sliderHandleSnaphot = await sliderHandle();
+    const sliderHandle         = Selector('#slider').child('span');
+    const sliderHandleSnapshot = await sliderHandle();
 
-    console.log(sliderHandleSnaphot.hasClass('ui-slider-handle'));    // => true
-    console.log(sliderHandleSnaphot.childElementCount);               // => 0
+    console.log(sliderHandleSnapshot.hasClass('ui-slider-handle'));    // => true
+    console.log(sliderHandleSnapshot.childElementCount);               // => 0
 });
 ```
 

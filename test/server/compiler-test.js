@@ -65,21 +65,6 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Should not compile test defined in separate module if option is disabled', function () {
-            const sources = [
-                'test/server/data/test-suites/test-as-module/with-tests/testfile.js'
-            ];
-
-            return compile(sources)
-                .then(function (compiled) {
-                    const tests    = compiled.tests;
-                    const fixtures = compiled.fixtures;
-
-                    expect(tests.length).eql(0);
-                    expect(fixtures.length).eql(0);
-                });
-        });
-
         it('Should compile test files and their dependencies', function () {
             const sources = [
                 'test/server/data/test-suites/basic/testfile1.js',
@@ -191,21 +176,6 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Should not compile test defined in separate module if option is disabled', function () {
-            const sources = [
-                'test/server/data/test-suites/test-as-module/with-tests/testfile.ts'
-            ];
-
-            return compile(sources)
-                .then(function (compiled) {
-                    const tests    = compiled.tests;
-                    const fixtures = compiled.fixtures;
-
-                    expect(tests.length).eql(0);
-                    expect(fixtures.length).eql(0);
-                });
-        });
-
         it('Should compile test files and their dependencies', function () {
             const sources = [
                 'test/server/data/test-suites/typescript-basic/testfile1.ts',
@@ -271,6 +241,8 @@ describe('Compiler', function () {
         });
 
         it('Should complile ts-definitions successfully with the `--strict` option enabled', function () {
+            this.timeout(60000);
+
             const tscPath  = path.resolve('node_modules/typescript/bin/tsc');
             const defsPath = path.resolve('ts-defs/index.d.ts');
             const args     = '--strict';
@@ -287,6 +259,8 @@ describe('Compiler', function () {
         });
 
         it('Should provide API definitions', function () {
+            this.timeout(60000);
+
             const typescriptDefsFolder = 'test/server/data/test-suites/typescript-defs/';
             const src                  = [];
 
@@ -320,6 +294,13 @@ describe('Compiler', function () {
                     expect(result.exportableLib).eql(result.exportableLibInDep);
                 });
         });
+
+        it('Should start and terminate runner w/out errors', () => {
+            return compile('test/server/data/test-suites/typescript-runner/runner.ts')
+                .then(function (compiled) {
+                    expect(compiled.tests.length).gt(0);
+                });
+        });
     });
 
 
@@ -341,22 +322,6 @@ describe('Compiler', function () {
                     expect(fixtures[0].name).eql('Library tests');
                 });
         });
-
-        it('Should not compile test defined in separate module if option is disabled', function () {
-            const sources = [
-                'test/server/data/test-suites/test-as-module/with-tests/testfile.coffee'
-            ];
-
-            return compile(sources)
-                .then(function (compiled) {
-                    const tests    = compiled.tests;
-                    const fixtures = compiled.fixtures;
-
-                    expect(tests.length).eql(0);
-                    expect(fixtures.length).eql(0);
-                });
-        });
-
 
         it('Should compile test files and their dependencies', function () {
             const sources = [

@@ -143,6 +143,10 @@ module.exports = class MarionetteClient {
         return responsePacket.body[3];
     }
 
+    async _getScreenshotData () {
+        return await this._getResponse({ command: COMMANDS.takeScreenshot });
+    }
+
     async connect () {
         await this._connectSocket(this.port, this.host);
 
@@ -169,9 +173,15 @@ module.exports = class MarionetteClient {
     }
 
     async takeScreenshot (path) {
-        const screenshot = await this._getResponse({ command: COMMANDS.takeScreenshot });
+        const screenshotData = await this._getScreenshotData();
 
-        await writeFile(path, screenshot.value, { encoding: 'base64' });
+        await writeFile(path, screenshotData.value, { encoding: 'base64' });
+    }
+
+    async getVideoFrameData () {
+        const frameData = await this._getScreenshotData();
+
+        return Buffer.from(frameData.value, 'base64');
     }
 
     async setWindowSize (width, height) {

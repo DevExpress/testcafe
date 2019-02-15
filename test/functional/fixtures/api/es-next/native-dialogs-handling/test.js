@@ -78,7 +78,7 @@ describe('Native dialogs handling', function () {
                 { shouldFail: true })
                 .catch(function (errs) {
                     errorInEachBrowserContains(errs, getNativeDialogNotHandledErrorText('alert', pageLoadingUrl), 0);
-                    errorInEachBrowserContains(errs, '> 40 |    await t.click(\'body\');', 0);
+                    errorInEachBrowserContains(errs, '> 42 |        await t.click(\'body\');', 0);
                 });
         });
     });

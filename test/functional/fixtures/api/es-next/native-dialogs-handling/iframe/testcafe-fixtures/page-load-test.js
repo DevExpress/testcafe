@@ -1,7 +1,6 @@
 import { expect } from 'chai';
 
-fixture `Page load`
-    .page `http://localhost:3000/fixtures/api/es-next/native-dialogs-handling/iframe/pages/page-load.html`;
+fixture `Page load`;
 
 
 const pageUrl   = 'http://localhost:3000/fixtures/api/es-next/native-dialogs-handling/iframe/pages/page-load.html';
@@ -10,7 +9,8 @@ const iframeUrl = 'http://localhost:3000/fixtures/api/es-next/native-dialogs-han
 
 test('Expected dialogs after page load', async t => {
     await t
-        .setNativeDialogHandler(() => null);
+        .setNativeDialogHandler(() => null)
+        .navigateTo(pageUrl);
 
     // NOTE: waiting for iframe loading
     await t.switchToIframe('#iframe');
@@ -24,6 +24,8 @@ test('Expected dialogs after page load', async t => {
     ]);
 });
 
-test('Unexpected alert after page load', async t => {
-    await t.click('body');
-});
+test
+    .page(pageUrl)
+    ('Unexpected alert after page load', async t => {
+        await t.click('body');
+    });

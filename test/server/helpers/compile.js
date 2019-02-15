@@ -2,14 +2,14 @@ const sortBy   = require('lodash').sortBy;
 const resolve  = require('path').resolve;
 const Compiler = require('../../../lib/compiler');
 
-module.exports = function compile (sources, disableTestSyntaxValidation = false) {
+module.exports = function compile (sources) {
     sources = Array.isArray(sources) ? sources : [sources];
 
     sources = sources.map(function (filename) {
         return resolve(filename);
     });
 
-    const compiler = new Compiler(sources, disableTestSyntaxValidation);
+    const compiler = new Compiler(sources);
 
     return compiler.getTests()
         .then(function (tests) {

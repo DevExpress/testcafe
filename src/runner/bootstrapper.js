@@ -8,21 +8,22 @@ import MESSAGE from '../errors/runtime/message';
 import BrowserSet from './browser-set';
 import TestedApp from './tested-app';
 import parseFileList from '../utils/parse-file-list';
-
-const DEFAULT_APP_INIT_DELAY = 1000;
+import path from 'path';
+import fs from 'fs';
+import makeDir from 'make-dir';
+import resolvePathRelativelyCwd from '../utils/resolve-path-relatively-cwd';
 
 export default class Bootstrapper {
     constructor (browserConnectionGateway) {
         this.browserConnectionGateway = browserConnectionGateway;
 
-        this.concurrency                 = 1;
+        this.concurrency                 = null;
         this.sources                     = [];
         this.browsers                    = [];
         this.reporters                   = [];
         this.filter                      = null;
         this.appCommand                  = null;
-        this.appInitDelay                = DEFAULT_APP_INIT_DELAY;
-        this.disableTestSyntaxValidation = false;
+        this.appInitDelay                = null;
     }
 
     static _splitBrowserInfo (browserInfo) {
@@ -74,7 +75,7 @@ export default class Bootstrapper {
             throw new GeneralError(MESSAGE.testSourcesNotSet);
 
         const parsedFileList = await parseFileList(this.sources, process.cwd());
-        const compiler       = new Compiler(parsedFileList, this.disableTestSyntaxValidation);
+        const compiler       = new Compiler(parsedFileList);
         let tests            = await compiler.getTests();
 
         const testsWithOnlyFlag = tests.filter(test => test.only);
@@ -91,21 +92,37 @@ export default class Bootstrapper {
         return tests;
     }
 
-    _getReporterPlugins () {
-        const stdoutReporters = filter(this.reporters, r => isUndefined(r.outStream) || r.outStream === process.stdout);
+    async _ensureOutStream (outStream) {
+        if (typeof outStream !== 'string')
+            return outStream;
+
+        const fullReporterOutputPath = resolvePathRelativelyCwd(outStream);
+
+        await makeDir(path.dirname(fullReporterOutputPath));
+
+        return fs.createWriteStream(fullReporterOutputPath);
+    }
+
+    static _addDefaultReporter (reporters) {
+        reporters.push({
+            name: 'spec',
+            file: process.stdout
+        });
+    }
+
+    async _getReporterPlugins () {
+        const stdoutReporters = filter(this.reporters, r => isUndefined(r.output) || r.output === process.stdout);
 
         if (stdoutReporters.length > 1)
             throw new GeneralError(MESSAGE.multipleStdoutReporters, stdoutReporters.map(r => r.name).join(', '));
 
-        if (!this.reporters.length) {
-            this.reporters.push({
-                name:      'spec',
-                outStream: process.stdout
-            });
-        }
+        if (!this.reporters.length)
+            Bootstrapper._addDefaultReporter(this.reporters);
 
-        return this.reporters.map(({ name, outStream }) => {
+        return Promise.all(this.reporters.map(async ({ name, output }) => {
             let pluginFactory = name;
+
+            const outStream = await this._ensureOutStream(output);
 
             if (typeof pluginFactory !== 'function') {
                 try {
@@ -120,7 +137,7 @@ export default class Bootstrapper {
                 plugin: pluginFactory(),
                 outStream
             };
-        });
+        }));
     }
 
     async _startTestedApp () {
@@ -135,8 +152,11 @@ export default class Bootstrapper {
         return null;
     }
 
-    _canUseParallelBootstrapping (browserInfo) {
-        return browserInfo.every(browser => browser.provider.isLocalBrowser(null, browserInfo.browserName));
+    async _canUseParallelBootstrapping (browserInfo) {
+        const isLocalPromises = browserInfo.map(browser => browser.provider.isLocalBrowser(null, browserInfo.browserName));
+        const isLocalBrowsers = await Promise.all(isLocalPromises);
+
+        return isLocalBrowsers.every(result => result);
     }
 
     async _bootstrapSequence (browserInfo) {
@@ -189,7 +209,7 @@ export default class Bootstrapper {
 
     // API
     async createRunnableConfiguration () {
-        const reporterPlugins = this._getReporterPlugins();
+        const reporterPlugins = await this._getReporterPlugins();
 
         // NOTE: If a user forgot to specify a browser, but has specified a path to tests, the specified path will be
         // considered as the browser argument, and the tests path argument will have the predefined default value.
@@ -197,7 +217,7 @@ export default class Bootstrapper {
         // So, we need to retrieve the browser aliases and paths before tests compilation.
         const browserInfo = await this._getBrowserInfo();
 
-        if (this._canUseParallelBootstrapping(browserInfo))
+        if (await this._canUseParallelBootstrapping(browserInfo))
             return { reporterPlugins, ...await this._bootstrapParallel(browserInfo) };
 
         return { reporterPlugins, ...await this._bootstrapSequence(browserInfo) };

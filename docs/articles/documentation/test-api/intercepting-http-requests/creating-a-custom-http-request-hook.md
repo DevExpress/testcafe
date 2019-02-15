@@ -33,11 +33,11 @@ You can create your own request hook to handle HTTP requests. This topic describ
             // ...
         }
 
-        onRequest (event) {
+        async onRequest (event) {
             // ...
         }
 
-        onResponse (event) {
+        async onResponse (event) {
             // ...
         }
     }
@@ -54,12 +54,12 @@ You can create your own request hook to handle HTTP requests. This topic describ
     }
     ```
 
-* The `onRequest` method is called before sending the request. Use this method to handle sending the request. You can change the request parameters before it is sent.
+* The `onRequest` asynchronous method is called before sending the request. Use this method to handle sending the request. You can change the request parameters before it is sent.
 
     This method is abstract in the base class and needs to be overriden in the subclass.
 
     ```js
-    onRequest (/*RequestEvent event*/) {
+    async onRequest (/*RequestEvent event*/) {
         throw new Error('Not implemented');
     }
     ```
@@ -77,10 +77,10 @@ You can create your own request hook to handle HTTP requests. This topic describ
     }
     ```
 
-* Finally, the `onResponse` method is called. This an abstract method in the base class. Override it in the descendant to handle sending the request.
+* Finally, the `onResponse` asynchronous method is called. This an abstract method in the base class. Override it in the descendant to handle sending the request.
 
     ```js
-    onResponse (/*ResponseEvent event*/) {
+    async onResponse (/*ResponseEvent event*/) {
         throw new Error('Not implemented');
     }
     ```
@@ -101,10 +101,10 @@ class MyRequestHook extends RequestHook {
         super(requestFilterRules, responseEventConfigureOpts);
         // ...
     }
-    onRequest (event) {
+    async onRequest (event) {
         // ...
     }
-    onResponse (event) {
+    async onResponse (event) {
         // ...
     }
 }
@@ -122,7 +122,7 @@ Property | Type | Description
 `isAjax`         | Boolean | Specifies if the request is performed using AJAX.
 
 ```js
-onRequest (event) {
+async onRequest (event) {
     if(event.isAjax) {
         console.log(event.requestOptions.url);
         console.log(event.requestOptions.credentials.username);
@@ -143,7 +143,7 @@ Property | Type | Description
 `body`       | [Buffer](https://nodejs.org/api/buffer.html) | The response body.
 
 ```js
-onResponse (event) {
+async onResponse (event) {
     if(event.statusCode === 200)
         console.log(event.headers['Content-Type']);
 }

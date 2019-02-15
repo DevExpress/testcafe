@@ -15,9 +15,8 @@ describe('[Raw API] fixture.beforeEach/fixture.afterEach hooks', () => {
                 expect(errs[0]).eql(test1Err);
                 expect(errs[0]).contains(
                     '- Error in fixture.afterEach hook - ' +
-                    'Error on page "http://localhost:3000/fixtures/api/raw/hooks/pages/index.html":  ' +
-                    'Error: [beforeEach][test][afterEach]'
-                );
+                    'A JavaScript error occurred on "http://localhost:3000/fixtures/api/raw/hooks/pages/index.html"');
+                expect(errs[0]).contains('Error: [beforeEach][test][afterEach]');
 
             });
     });
@@ -30,21 +29,19 @@ describe('[Raw API] fixture.beforeEach/fixture.afterEach hooks', () => {
             .catch(errs => {
                 expect(errs[0]).contains(
                     '- Error in fixture.beforeEach hook - ' +
-                    'Error on page "http://localhost:3000/fixtures/api/raw/hooks/pages/index.html":  ' +
-                    'Error: [beforeEach]'
-                );
-
+                    'A JavaScript error occurred on "http://localhost:3000/fixtures/api/raw/hooks/pages/index.html"');
+                expect(errs[0]).contains('Error: [beforeEach]');
             });
     });
 
     it('Should run test and afterEach and beforeEach if test fails', () => {
         return runTests('./testcafe-fixtures/fail-in-test.testcafe', 'Test', { shouldFail: true, only: 'chrome' })
             .catch(errs => {
-                expect(errs[0]).to.contains('Error on page "http://localhost:3000/fixtures/api/raw/hooks/pages/index.html":  ' +
-                                            'Error: [beforeEach]');
+                expect(errs[0]).to.contains('A JavaScript error occurred on "http://localhost:3000/fixtures/api/raw/hooks/pages/index.html"');
+                expect(errs[0]).to.contains('Error: [beforeEach]');
                 expect(errs[1]).to.contains('- Error in fixture.afterEach hook - ' +
-                                            'Error on page "http://localhost:3000/fixtures/api/raw/hooks/pages/index.html":  ' +
-                                            'Error: [beforeEach][afterEach]');
+                                            'A JavaScript error occurred on "http://localhost:3000/fixtures/api/raw/hooks/pages/index.html"');
+                expect(errs[1]).to.contains('Error: [beforeEach][afterEach]');
             });
     });
 });

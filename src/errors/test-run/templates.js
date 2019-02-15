@@ -18,6 +18,15 @@ const SUBTITLES = {
     [TEST_RUN_PHASE.inBookmarkRestore]:       '<span class="subtitle">Error while restoring configuration after Role switch</span>\n'
 };
 
+const EXTERNAL_LINKS = {
+    createNewIssue: 'https://github.com/DevExpress/testcafe/issues/new?template=bug-report.md',
+    viewportSizes:  'http://viewportsizes.com'
+};
+
+function formatUrl (url) {
+    return `<a href="${url}">${url}</a>`;
+}
+
 function formatSelectorCallstack (apiFnChain, apiFnIndex, viewportWidth) {
     if (typeof apiFnIndex === 'undefined')
         return '';
@@ -84,8 +93,13 @@ export default {
     `),
 
     [TYPE.uncaughtErrorOnPage]: err => markup(err, `
-        Error on page <a href="${err.pageDestUrl}">${err.pageDestUrl}</a>:
+        A JavaScript error occurred on ${formatUrl(err.pageDestUrl)}.
+        At this moment, TestCafe tracks uncaught JavaScript errors on the page. Try to manually perform the test scenario.
+        If this error still occurs then it means you site has uncaught JavaScript errors. To disable JavaScript error tracking you can turn the --skip-js-errors option on.
+        If the error occurs only with TestCafe then it is a bug. Write a new issue about it at:
+        ${formatUrl(EXTERNAL_LINKS.createNewIssue)}.
 
+        JavaScript error details:
         ${replaceLeadingSpacesWithNbsp(escapeHtml(err.errStack))}
     `),
 
@@ -94,11 +108,11 @@ export default {
     `),
 
     [TYPE.nativeDialogNotHandledError]: err => markup(err, `
-        A native ${err.dialogType} dialog was invoked on page <a href="${err.pageUrl}">${err.pageUrl}</a>, but no handler was set for it. Use the "setNativeDialogHandler" function to introduce a handler function for native dialogs.
+        A native ${err.dialogType} dialog was invoked on page ${formatUrl(err.pageUrl)}, but no handler was set for it. Use the "setNativeDialogHandler" function to introduce a handler function for native dialogs.
     `),
 
     [TYPE.uncaughtErrorInNativeDialogHandler]: err => markup(err, `
-        An error occurred in the native dialog handler called for a native ${err.dialogType} dialog on page <a href="${err.pageUrl}">${err.pageUrl}</a>:
+        An error occurred in the native dialog handler called for a native ${err.dialogType} dialog on page ${formatUrl(err.pageUrl)}:
 
         ${escapeHtml(err.errMsg)}
     `),
@@ -241,7 +255,7 @@ export default {
     `),
 
     [TYPE.actionUnsupportedDeviceTypeError]: err => markup(err, `
-        The "${err.argumentName}" argument specifies an unsupported "${err.actualValue}" device. For a list of supported devices, refer to <a href="http://viewportsizes.com">http://viewportsizes.com</a>.
+        The "${err.argumentName}" argument specifies an unsupported "${err.actualValue}" device. For a list of supported devices, refer to ${formatUrl(EXTERNAL_LINKS.viewportSizes)}.
     `),
 
     [TYPE.actionInvalidScrollTargetError]: err => markup(err, `

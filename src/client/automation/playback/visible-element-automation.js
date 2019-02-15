@@ -3,6 +3,7 @@ import { delay, positionUtils, domUtils, arrayUtils, serviceUtils } from '../dep
 import getAutomationPoint from '../utils/get-automation-point';
 import screenPointToClient from '../utils/screen-point-to-client';
 import getDevicePoint from '../utils/get-device-point';
+import { getOffsetOptions } from '../utils/offsets';
 import { fromPoint as getElementFromPoint } from '../get-element';
 import AUTOMATION_ERROR_TYPES from '../errors';
 import AutomationSettings from '../settings';
@@ -58,9 +59,20 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
             .then(() => delay(this.automationSettings.mouseActionStepDelay));
     }
 
+    _getElementOffset () {
+        const defaultOffsets = getOffsetOptions(this.element);
+
+        let { offsetX, offsetY } = this.options;
+
+        offsetX = offsetX || offsetX === 0 ? offsetX : defaultOffsets.offsetX;
+        offsetY = offsetY || offsetY === 0 ? offsetY : defaultOffsets.offsetY;
+
+        return { offsetX, offsetY };
+    }
+
     _wrapAction (action) {
-        const offsetX                    = this.options.offsetX;
-        const offsetY                    = this.options.offsetY;
+        const { offsetX, offsetY } = this._getElementOffset();
+
         const screenPointBeforeAction    = getAutomationPoint(this.element, offsetX, offsetY);
         const clientPositionBeforeAction = positionUtils.getClientPosition(this.element);
 
