@@ -1,14 +1,18 @@
 import { isMatch } from 'lodash';
 
+const FILTERING_OPTIONS = {
+    testGrep:    'testGrep',
+    fixtureGrep: 'fixtureGrep',
+    testMeta:    'testMeta',
+    fixtureMeta: 'fixtureMeta',
+    test:        'test',
+    fixture:     'fixture'
+};
+
 function isAllFilteringOptionsAreUndefined (opts) {
-    return [
-        opts.testGrep,
-        opts.fixtureGrep,
-        opts.testMeta,
-        opts.fixtureMeta,
-        opts.test,
-        opts.fixture
-    ].every(item => item === void 0);
+    return Object
+        .keys(FILTERING_OPTIONS)
+        .every(option => opts[option] === void 0);
 }
 
 function createFilterFn (opts) {

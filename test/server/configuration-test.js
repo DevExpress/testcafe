@@ -45,6 +45,7 @@ describe('Configuration', () => {
             'filter':      {
                 'fixture':     'testFixture',
                 'test':        'some test',
+                'testGrep':    'Hello [Ww]orld',
                 'fixtureGrep': '^Unstable'
             }
         });
