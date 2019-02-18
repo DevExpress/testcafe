@@ -490,7 +490,7 @@ export default class TestRun extends AsyncEventEmitter {
         if (isAsyncExpression)
             expression = `(async () => { return ${expression}; }).apply(this);`;
 
-        const result = this._evaluate(expression);
+        const result = executeJsExpression(expression, this, { skipVisibilityCheck: false });
 
         return isAsyncExpression ? await result : result;
     }
