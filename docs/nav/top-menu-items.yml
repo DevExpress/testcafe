@@ -11,6 +11,6 @@
 - text: Support
   url: /support/
 - text: TestCafe Studio
-  url: https://testcafe-studio.devexpress.com
+  url: https://www.devexpress.com/products/testcafestudio/
   external: true
   id: studio-link
