@@ -28,11 +28,15 @@ export class GeneralError extends Error {
 
 export class TestCompilationError extends Error {
     constructor (originalError) {
-        const template = TEMPLATES[RUNTIME_ERRORS.cannotPrepareTestsDueToError];
+        const template     = TEMPLATES[RUNTIME_ERRORS.cannotPrepareTestsDueToError];
+        const errorMessage = originalError.toString();
 
-        super(renderTemplate(template, originalError.toString()));
+        super(renderTemplate(template, errorMessage));
 
-        Object.assign(this, { code: RUNTIME_ERRORS.cannotPrepareTestsDueToError });
+        Object.assign(this, {
+            code: RUNTIME_ERRORS.cannotPrepareTestsDueToError,
+            data: [ { errorMessage } ]
+        });
 
         // NOTE: stack includes message as well.
         this.stack = renderTemplate(template, originalError.stack);
