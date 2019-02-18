@@ -35,7 +35,7 @@ export class TestCompilationError extends Error {
 
         Object.assign(this, {
             code: RUNTIME_ERRORS.cannotPrepareTestsDueToError,
-            data: [ { errorMessage } ]
+            data: [ errorMessage ]
         });
 
         // NOTE: stack includes message as well.
