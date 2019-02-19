@@ -91,6 +91,7 @@
 * [CONTINUOUS INTEGRATION](articles/documentation/continuous-integration/README.md)
   * [AppVeyor](articles/documentation/continuous-integration/appveyor.md)
   * [Azure DevOps](articles/documentation/continuous-integration/azure-devops.md)
+  * [Bitbucket Pipelines](articles/documentation/continuous-integration/bitbucket-pipelines.md)
   * [CircleCI](articles/documentation/continuous-integration/circleci.md)
   * [GitLab](articles/documentation/continuous-integration/gitlab.md)
   * [Jenkins](articles/documentation/continuous-integration/jenkins.md)
