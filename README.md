@@ -224,6 +224,10 @@ Thank you to all the people who already contributed to TestCafe!
 :---: |:---: |:---: |:---: |:---: |:---: |
 [bsmithb2](https://github.com/bsmithb2) |[link89](https://github.com/link89) |[murajun1978](https://github.com/murajun1978) |[pietrovich](https://github.com/pietrovich) |[superroma](https://github.com/superroma) |[arubtsov](https://github.com/arubtsov) |
 
+[<img alt="intermike" src="https://avatars0.githubusercontent.com/u/10540148?v=4&s=117" width="117">](https://github.com/intermike) |[<img alt="DevSide" src="https://avatars2.githubusercontent.com/u/6873926?v=4&s=117" width="117">](https://github.com/DevSide) |[<img alt="b12031106" src="https://avatars1.githubusercontent.com/u/2063566?v=4&s=117" width="117">](https://github.com/b12031106) |
+:---: |:---: |:---: |
+[intermike](https://github.com/intermike) |[DevSide](https://github.com/DevSide) |[b12031106](https://github.com/b12031106) |
+
 ## Plugins
 
 TestCafe developers and community members made these plugins:
