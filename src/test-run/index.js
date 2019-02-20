@@ -309,15 +309,6 @@ export default class TestRun extends AsyncEventEmitter {
         await this.emit('done');
     }
 
-    _evaluate (code) {
-        try {
-            return executeJsExpression(code, this, { skipVisibilityCheck: false });
-        }
-        catch (err) {
-            return { err };
-        }
-    }
-
     // Errors
     _addPendingPageErrorIfAny () {
         if (this.pendingPageError) {
