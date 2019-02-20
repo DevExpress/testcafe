@@ -123,7 +123,7 @@ export default class ClientFunctionBuilder {
 
         return ReExecutablePromise.fromFn(async () => {
             if (!testRun) {
-                const err = new ClientFunctionAPIError(this.callsiteNames.execution, this.callsiteNames.instantiation, RUNTIME_ERRORS.clientFunctionCantResolveTestRun);
+                const err = new ClientFunctionAPIError(this.callsiteNames.execution, this.callsiteNames.instantiation, RUNTIME_ERRORS.clientFunctionCannotResolveTestRun);
 
                 // NOTE: force callsite here, because more likely it will
                 // be impossible to resolve it by method name from a lazy promise.

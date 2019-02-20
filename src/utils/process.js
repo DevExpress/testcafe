@@ -7,11 +7,11 @@ import delay from '../utils/delay';
 const CHECK_PROCESS_IS_KILLED_TIMEOUT = 5000;
 const CHECK_KILLED_DELAY              = 1000;
 const NEW_LINE_SEPERATOR_RE           = /(\r\n)|(\n\r)|\n|\r/g;
-const cantGetListOfProcessError       = 'Can not get list of processes';
+const cannotGetListOfProcessError     = 'Can not get list of processes';
 const killProcessTimeoutError         = 'Kill process timeout';
 
 function getProcessOutputUnix () {
-    const error = new Error(cantGetListOfProcessError);
+    const error = new Error(cannotGetListOfProcessError);
 
     return new Promise((resolve, reject) => {
         const child = spawn('ps', ['-eo', 'pid,command']);

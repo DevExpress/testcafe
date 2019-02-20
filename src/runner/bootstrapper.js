@@ -129,7 +129,7 @@ export default class Bootstrapper {
                     pluginFactory = require('testcafe-reporter-' + name);
                 }
                 catch (err) {
-                    throw new GeneralError(RUNTIME_ERRORS.cantFindReporterForAlias, name);
+                    throw new GeneralError(RUNTIME_ERRORS.cannotFindReporterForAlias, name);
                 }
             }
 

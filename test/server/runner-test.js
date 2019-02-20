@@ -276,7 +276,7 @@ describe('Runner', () => {
                     throw new Error('Promise rejection expected');
                 })
                 .catch(err => {
-                    expect(err.message).eql('Unable to set the screenshot path pattern when screenshots are disabled. Specify the base path where screenshots are stored to enable them.');
+                    expect(err.message).eql('Cannot use the screenshot path pattern without a base screenshot path specified.');
                 });
         });
 

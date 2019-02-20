@@ -30,7 +30,7 @@ import {
     CurrentIframeIsNotLoadedError,
     CurrentIframeNotFoundError,
     CurrentIframeIsInvisibleError,
-    CantObtainInfoForElementSpecifiedBySelectorError
+    CannotObtainInfoForElementSpecifiedBySelectorError
 } from '../../errors/test-run';
 
 import BrowserConsoleMessages from '../../test-run/browser-console-messages';
@@ -423,7 +423,7 @@ export default class Driver {
 
     _onExecuteSelectorCommand (command) {
         const startTime                   = this.contextStorage.getItem(SELECTOR_EXECUTION_START_TIME) || new DateCtor();
-        const elementNotFoundOrNotVisible = fn => new CantObtainInfoForElementSpecifiedBySelectorError(null, fn);
+        const elementNotFoundOrNotVisible = fn => new CannotObtainInfoForElementSpecifiedBySelectorError(null, fn);
         const createError                 = command.needError ? elementNotFoundOrNotVisible : null;
 
         getExecuteSelectorResultDriverStatus(command,

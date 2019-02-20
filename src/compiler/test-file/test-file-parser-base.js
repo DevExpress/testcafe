@@ -247,7 +247,7 @@ export class TestFileParserBase {
         }
 
         catch (err) {
-            throw new GeneralError(RUNTIME_ERRORS.cantFindSpecifiedTestSource, filePath);
+            throw new GeneralError(RUNTIME_ERRORS.cannotFindSpecifiedTestSource, filePath);
         }
 
         return fileContent;

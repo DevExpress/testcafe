@@ -78,9 +78,9 @@ export class InvalidSelectorResultError extends TestRunErrorBase {
     }
 }
 
-export class CantObtainInfoForElementSpecifiedBySelectorError extends SelectorErrorBase {
+export class CannotObtainInfoForElementSpecifiedBySelectorError extends SelectorErrorBase {
     constructor (callsite, apiFnArgs) {
-        super(TEST_RUN_ERRORS.cantObtainInfoForElementSpecifiedBySelectorError, apiFnArgs);
+        super(TEST_RUN_ERRORS.cannotObtainInfoForElementSpecifiedBySelectorError, apiFnArgs);
 
         this.callsite = callsite;
     }
@@ -387,9 +387,9 @@ export class ActionIncorrectKeysError extends TestRunErrorBase {
     }
 }
 
-export class ActionCanNotFindFileToUploadError extends TestRunErrorBase {
+export class ActionCannotFindFileToUploadError extends TestRunErrorBase {
     constructor (filePaths) {
-        super(TEST_RUN_ERRORS.actionCanNotFindFileToUploadError);
+        super(TEST_RUN_ERRORS.actionCannotFindFileToUploadError);
 
         this.filePaths = filePaths;
     }

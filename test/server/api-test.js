@@ -1332,8 +1332,8 @@ describe('API', function () {
     });
 
     describe('TestController import', function () {
-        it('Should raise an error if TestControllerProxy can not resolve test run', function () {
-            const testfile = resolve('test/server/data/test-suites/cant-resolve-test-run-proxy-context/testfile.js');
+        it('Should raise an error if TestControllerProxy cannot resolve test run', function () {
+            const testfile = resolve('test/server/data/test-suites/cannot-resolve-test-run-proxy-context/testfile.js');
 
             return compile(testfile)
                 .then(function () {
