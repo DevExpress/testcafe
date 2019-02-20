@@ -1,5 +1,5 @@
-import { GeneralError } from "../../errors/runtime";
-import MESSAGE from "../../errors/runtime/message";
+import { GeneralError } from '../../errors/runtime';
+import { RUNTIME_ERRORS } from '../../errors/types';
 
 export default function (optionName, value) {
     if (value === void 0)
@@ -9,6 +9,6 @@ export default function (optionName, value) {
         return new RegExp(value);
     }
     catch (err) {
-        throw new GeneralError(MESSAGE.optionValueIsNotValidRegExp, optionName);
+        throw new GeneralError(RUNTIME_ERRORS.optionValueIsNotValidRegExp, optionName);
     }
 }
