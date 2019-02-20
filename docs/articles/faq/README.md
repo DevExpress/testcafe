@@ -32,7 +32,7 @@ This proxy injects the driver script that emulates user actions into the tested 
 You can read about this in our [forum](https://testcafe-discuss.devexpress.com/t/why-not-use-selenium/47).
 Feel free to ask for more details.
 
-### What is the difference between a [paid](https://testcafe.devexpress.com) and an [open-source](https://devexpress.github.io/testcafe) TestCafe version? What is [TestCafe Studio](https://testcafe-studio.devexpress.com/)?
+### What is the difference between a [paid](https://testcafe.devexpress.com) and an [open-source](https://devexpress.github.io/testcafe) TestCafe version? What is [TestCafe Studio](https://www.devexpress.com/products/testcafestudio/)?
 
 All three versions share the same core features:
 
@@ -55,12 +55,12 @@ All three versions share the same core features:
 * Easy integration: it is a node.js solution with CLI and reporters for popular CI systems.
 * You can extend it with [plugins](https://github.com/DevExpress/testcafe#plugins) and other Node.js modules.
 
-[TestCafe Studio](https://testcafe-studio.devexpress.com)  
+[TestCafe Studio](https://www.devexpress.com/products/testcafestudio/)  
 *Preview released in 2018, commercial desktop application*  
 
 * Based on the open-source TestCafe, and supports its major features.
 * You can record tests or edit them as JavaScript or TypeScript code.
-* New [Visual Test Recorder](https://testcafe-studio.devexpress.com/documentation/guides/record-tests/) and [IDE-like GUI](https://testcafe-studio.devexpress.com/documentation/guides/write-test-code.html) to record, edit, run and debug tests.
+* New [Visual Test Recorder](https://docs.devexpress.com/TestCafeStudio/400165/guides/record-tests) and [IDE-like GUI](https://docs.devexpress.com/TestCafeStudio/400181/user-interface/code-editor) to record, edit, run and debug tests.
 * Currently available as a free preview version.
 
 ### Which browsers does TestCafe support? What are the exact supported versions?
