@@ -32,21 +32,15 @@ This proxy injects the driver script that emulates user actions into the tested 
 You can read about this in our [forum](https://testcafe-discuss.devexpress.com/t/why-not-use-selenium/47).
 Feel free to ask for more details.
 
-### What is the difference between a [paid](https://testcafe.devexpress.com) and an [open-source](https://devexpress.github.io/testcafe) TestCafe version? What is [TestCafe Studio](https://www.devexpress.com/products/testcafestudio/)?
+### What is the difference between [TestCafe Studio](https://www.devexpress.com/products/testcafestudio/) and [open-source TestCafe](https://devexpress.github.io/testcafe)? Has [TestCafe v2015.1](https://testcafe.devexpress.com) been deprecated?
 
-All three versions share the same core features:
+Both TestCafe Studio and open-source TestCafe share the same core features:
 
 * No need for WebDriver, browser plugins or other tools.
 * Cross-platform and cross-browser out of the box.
 
-[TestCafe](https://testcafe.devexpress.com)  
-*first released in 2013, commercial web application*  
-
-* Visual Test Recorder and web GUI to create, edit and run tests.
-* You can record tests or edit them as JavaScript code.
-
 [TestCafe](https://devexpress.github.io/testcafe)  
-*first released in 2016,  free and open-source node.js application*
+*first released in 2016, free and open-source node.js application*
 
 * You can write tests in the latest JavaScript or TypeScript.
 * Clearer and more flexible [API](https://devexpress.github.io/testcafe/documentation/test-api/) supports ES6 and [PageModel pattern](https://devexpress.github.io/testcafe/documentation/recipes/using-page-model.html).
@@ -62,6 +56,8 @@ All three versions share the same core features:
 * You can record tests or edit them as JavaScript or TypeScript code.
 * New [Visual Test Recorder](https://docs.devexpress.com/TestCafeStudio/400165/guides/record-tests) and [IDE-like GUI](https://docs.devexpress.com/TestCafeStudio/400181/user-interface/code-editor) to record, edit, run and debug tests.
 * Currently available as a free preview version.
+
+[TestCafe v2015.1](https://testcafe.devexpress.com) is no longer available for purchase or subscription renewal. We recommend that TestCafe v2015.1 users switch to [TestCafe Studio](https://www.devexpress.com/products/testcafestudio/) to get access to the latest features. See this [blog post](https://community.devexpress.com/blogs/testcafe/archive/2018/11/26/testcafe-studio-a-new-web-testing-ide.aspx) for details.
 
 ### Which browsers does TestCafe support? What are the exact supported versions?
 
