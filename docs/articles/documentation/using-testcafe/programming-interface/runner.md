@@ -481,7 +481,7 @@ Parameter         | Type    | Description                                       
 `assertionTimeout` | Number  | Specifies the time (in milliseconds) within which TestCafe makes attempts  to successfully execute an [assertion](../../test-api/assertions/README.md) if [a selector property](../../test-api/selecting-page-elements/selectors/using-selectors.md#define-assertion-actual-value) or a [client function](../../test-api/obtaining-data-from-the-client/README.md) was passed as an actual value. See [Smart Assertion Query Mechanism](../../test-api/assertions/README.md#smart-assertion-query-mechanism). | `3000`
 `pageLoadTimeout` | Number  |  Specifies the time (in milliseconds) TestCafe waits for the `window.load` event to fire after the `DOMContentLoaded` event. After the timeout passes or the `window.load` event is raised (whichever happens first), TestCafe starts the test. You can set this timeout to `0` to skip waiting for `window.load`. | `3000`
 `speed`           | Number  | Specifies the test execution speed. A number between `1` (fastest) and `0.01` (slowest). If an [individual action's](../../test-api/actions/action-options.md#basic-action-options) speed is also specified, the action speed setting overrides the test speed. | `1`
-`stopOnFirstFail`    | Boolean | Defines whether to stop a test run if a test fails. This allows you not to wait for all the tests to finish and to focus on the first error. | `false`
+`stopOnFirstFail`    | Boolean | Defines whether to stop a test run if a test fails. You do not need to wait for all the tests to finish to focus on the first error. | `false`
 
 After all tests are finished, call the [testcafe.close](testcafe.md#close) function to stop the TestCafe server.
 

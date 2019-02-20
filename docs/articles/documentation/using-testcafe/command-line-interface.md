@@ -60,9 +60,9 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [--color](#--color)
   * [--no-color](#--no-color)
 
-When you execute the `testcafe` command, TestCafe first reads settings from the `.testcaferc.json` [configuration file](configuration-file.md) if this file exists. Then it applies settings provided in the command line. Command line settings override values from the configuration file in case they differ. TestCafe prints information about every overridden property in the console.
+When you execute the `testcafe` command, TestCafe first reads settings from the `.testcaferc.json` [configuration file](configuration-file.md) if this file exists, and then applies the settings from the command line. Command line settings override values from the configuration file in case they differ. TestCafe prints information about every overridden property in the console.
 
-If the [browsers](configuration-file.md#browsers) and [src](configuration-file.md#src) properties are specified in the configuration file, you can omit any of them, or both, in the command line.
+If the [browsers](configuration-file.md#browsers) and [src](configuration-file.md#src) properties are specified in the configuration file, you can omit them in the command line.
 
 > Important! Make sure to keep the browser tab that is running tests active. Do not minimize the browser window.
 > Inactive tabs and minimized browser windows switch to a lower resource consumption mode
@@ -529,7 +529,7 @@ Use the [--app-init-delay](#--app-init-delay-ms) option to specify the amount of
 
 Specifies the time (in milliseconds) allowed for an application launched using the [--app](#-a-command---app-command) option to initialize.
 
-TestCafe waits for the specified time before it starts running tests.
+TestCafe waits the specified time before it starts running tests.
 
 **Default value**: `1000`
 

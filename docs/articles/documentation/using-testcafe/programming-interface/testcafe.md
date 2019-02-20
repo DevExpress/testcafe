@@ -136,7 +136,7 @@ createTestCafe('localhost', 1337, 1338)
 
 ### close
 
-Stops the TestCafe server. Forcibly closes all connections and pending test runs immediately.
+Stops the TestCafe server. Forcibly closes all connections and pending test runs.
 
 ```text
 async close()

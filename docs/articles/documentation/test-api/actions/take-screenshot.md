@@ -20,7 +20,7 @@ t.takeScreenshot( [path] )
 
 Parameter           | Type   | Description
 ------------------- | ------ | -----------------------------------------------------------------------------------------------------
-`path`&#160;*(optional)* | String | The screenshot file's relative path and name. The path is relative to the base directory specified by the [runner.screenshots](../../using-testcafe/programming-interface/runner.md#screenshots) API method or the [-s (--screenshots)](../../using-testcafe/command-line-interface.md#-s-path---screenshots-path) command line option. This path overrides the relative path the default or custom [path patterns](../../using-testcafe/common-concepts/screenshots-and-videos.md#where-screenshots-and-videos-are-saved) specify.
+`path`&#160;*(optional)* | String | The screenshot file's relative path and name. The path is relative to the root directory the [runner.screenshots](../../using-testcafe/programming-interface/runner.md#screenshots) API method or the [-s (--screenshots)](../../using-testcafe/command-line-interface.md#-s-path---screenshots-path) command line option specifies. This path overrides the relative path the default or custom [path patterns](../../using-testcafe/common-concepts/screenshots-and-videos.md#where-screenshots-and-videos-are-saved) specify.
 
 The following example shows how to use the `t.takeScreenshot` action:
 

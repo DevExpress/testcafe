@@ -192,7 +192,7 @@ export function getDocumentURI() {
 }
 ```
 
-Note that TestCafe internally processes test files with [Babel](https://babeljs.io). To avoid issues caused by code transpiling, use the [require](https://nodejs.org/api/modules.html#modules_require_id) function instead of the `import` statement to import client function dependencies.
+Note that TestCafe processes test files with [Babel](https://babeljs.io) internally. To avoid issues caused by code transpiling, use the [require](https://nodejs.org/api/modules.html#modules_require_id) function instead of the `import` statement to import client function dependencies.
 
 **test.js**
 

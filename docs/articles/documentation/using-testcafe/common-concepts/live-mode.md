@@ -5,7 +5,7 @@ permalink: /documentation/using-testcafe/common-concepts/live-mode.html
 ---
 # Live Mode
 
-Live mode keeps the TestCafe process and browsers opened the whole time you are working on tests. Changes you make in code immediately restart the tests. That is, live mode allows you to see test results instantly.
+Live mode ensures the TestCafe process and browsers remain active while you work on tests. You can see test results instantly because the tests are restarted when you make changes.
 
 ![Live mode demonstrated in action](../../../images/testcafe-live.gif)
 
@@ -42,7 +42,7 @@ createTestCafe('localhost', 1337, 1338)
 
 ## How Live Mode Works
 
-When you run tests with live mode enabled, TestCafe opens the browsers, runs tests there, shows the reports and waits for your further actions.
+When you run tests with live mode enabled, TestCafe opens the browsers, runs the tests, shows the reports, and waits for further actions.
 
 Then TestCafe starts watching for changes in the test files and all files referenced in them (like page objects or helper modules). Once you make changes in any of those files and save them, TestCafe immediately reruns the tests.
 
