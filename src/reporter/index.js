@@ -62,7 +62,7 @@ export default class Reporter {
 
     static _createTestRunInfo (reportItem) {
         return {
-            errs:           sortBy(reportItem.errs, ['userAgent', 'type']),
+            errs:           sortBy(reportItem.errs, ['userAgent', 'code']),
             warnings:       reportItem.warnings,
             durationMs:     new Date() - reportItem.startTime,
             unstable:       reportItem.unstable,

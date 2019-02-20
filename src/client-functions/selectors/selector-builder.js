@@ -4,7 +4,7 @@ import ClientFunctionBuilder from '../client-function-builder';
 import { SelectorNodeTransform } from '../replicator';
 import { ClientFunctionAPIError } from '../../errors/runtime';
 import functionBuilderSymbol from '../builder-symbol';
-import MESSAGE from '../../errors/runtime/message';
+import { RUNTIME_ERRORS } from '../../errors/types';
 import { assertType, is } from '../../errors/runtime/type-assertions';
 import { ExecuteSelectorCommand } from '../../test-run/commands/observation';
 import defineLazyProperty from '../../utils/define-lazy-property';
@@ -83,7 +83,7 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
     }
 
     _createInvalidFnTypeError () {
-        return new ClientFunctionAPIError(this.callsiteNames.instantiation, this.callsiteNames.instantiation, MESSAGE.selectorInitializedWithWrongType, typeof this.fn);
+        return new ClientFunctionAPIError(this.callsiteNames.instantiation, this.callsiteNames.instantiation, RUNTIME_ERRORS.selectorInitializedWithWrongType, typeof this.fn);
     }
 
     _executeCommand (args, testRun, callsite) {

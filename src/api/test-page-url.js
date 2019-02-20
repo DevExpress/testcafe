@@ -1,7 +1,7 @@
 import path from 'path';
 import OS from 'os-family';
 import { APIError } from '../errors/runtime';
-import MESSAGE from '../errors/runtime/message';
+import { RUNTIME_ERRORS } from '../errors/types';
 
 const PROTOCOL_RE           = /^([\w-]+?)(?=:\/\/)/;
 const SUPPORTED_PROTOCOL_RE = /^(https?|file):/;
@@ -30,7 +30,7 @@ export function assertUrl (url, callsiteName) {
     const isWinAbsolutePath      = OS.win && WIN_ABSOLUTE_PATH_RE.test(url);
 
     if (hasUnsupportedProtocol && !isWinAbsolutePath && url !== 'about:blank')
-        throw new APIError(callsiteName, MESSAGE.unsupportedUrlProtocol, url, protocol[0]);
+        throw new APIError(callsiteName, RUNTIME_ERRORS.unsupportedUrlProtocol, url, protocol[0]);
 }
 
 export function resolvePageUrl (url, testFileName) {

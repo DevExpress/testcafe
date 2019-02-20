@@ -1,6 +1,6 @@
 import TestFileCompilerBase from '../base';
 import { GeneralError } from '../../../errors/runtime';
-import MESSAGE from '../../../errors/runtime/message';
+import { RUNTIME_ERRORS } from '../../../errors/types';
 import TestFile from '../../../api/structure/test-file';
 import Fixture from '../../../api/structure/fixture';
 import Test from '../../../api/structure/test';
@@ -100,7 +100,7 @@ export default class RawTestFileCompiler extends TestFileCompilerBase {
             return testFile.getTests();
         }
         catch (err) {
-            throw new GeneralError(MESSAGE.cannotParseRawFile, filename, err.toString());
+            throw new GeneralError(RUNTIME_ERRORS.cannotParseRawFile, filename, err.toString());
         }
     }
 }

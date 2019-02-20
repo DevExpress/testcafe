@@ -193,7 +193,7 @@ describe('[API] Assertions', function () {
             });
     });
 
-    it('Should raise error when expecting an unawaited Promise that cannot be retried', function () {
+    it('Should raise error when expecting an unawaited Promise that cannot be retried', () => {
         return runTests('./testcafe-fixtures/assertions-test.js', 'Unawaited Promise assertion', {
             shouldFail: true,
             only:       'chrome'
@@ -207,18 +207,18 @@ describe('[API] Assertions', function () {
         return runTests('./testcafe-fixtures/assertions-test.js', 'Unawaited Promise assertion override', { only: 'chrome' });
     });
 
-    it('Should raise error if `await` is missing', function () {
+    it('Should raise error if `await` is missing', () => {
         return runTests('./testcafe-fixtures/assertions-test.js', 'Missing await', {
             shouldFail: true,
             only:       'chrome'
         })
             .catch(function (errs) {
-                expect(errs[0]).contains('A call to an async function is not awaited.');
-                expect(errs[0]).contains('> 124 |    t.expect(42).eql(43); 125 |});');
+                expect(errs[1]).contains('A call to an async function is not awaited.');
+                expect(errs[1]).contains('> 124 |    t.expect(42).eql(43); 125 |});');
             });
     });
 
-    it('Should raise error if "timeout" option is not a number', function () {
+    it('Should raise error if "timeout" option is not a number', () => {
         return runTests('./testcafe-fixtures/assertions-test.js', '"timeout" is not a number', {
             shouldFail: true,
             only:       'chrome'

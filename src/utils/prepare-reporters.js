@@ -1,6 +1,6 @@
 import { writable as isWritableStream } from 'is-stream';
 import { GeneralError } from '../errors/runtime';
-import MESSAGE from '../errors/runtime/message';
+import { RUNTIME_ERRORS } from '../errors/types';
 
 function isStreamMock (obj) {
     return obj &&
@@ -15,7 +15,7 @@ function validateReporterOutput (obj) {
           isStreamMock(obj);
 
     if (!isValidReporterOutput)
-        throw new GeneralError(MESSAGE.invalidReporterOutput);
+        throw new GeneralError(RUNTIME_ERRORS.invalidReporterOutput);
 }
 
 export default function (name, output) {

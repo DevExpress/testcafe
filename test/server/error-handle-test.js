@@ -1,11 +1,10 @@
-const Promise           = require('pinkie');
-const expect            = require('chai').expect;
-const createTestCafe    = require('../../lib/');
-const types             = require('../../lib/errors/test-run/type');
-const handleErrors      = require('../../lib/utils/handle-errors');
-const TestController    = require('../../lib/api/test-controller');
-const AssertionExecutor = require('../../lib/assertions/executor');
-
+const Promise             = require('pinkie');
+const expect              = require('chai').expect;
+const createTestCafe      = require('../../lib/');
+const { TEST_RUN_ERRORS } = require('../../lib/errors/types');
+const handleErrors        = require('../../lib/utils/handle-errors');
+const TestController      = require('../../lib/api/test-controller');
+const AssertionExecutor   = require('../../lib/assertions/executor');
 
 class TestRunMock {
     constructor (id, reason) {
@@ -122,7 +121,7 @@ describe('Global error handlers', () => {
             })
             .then(() => {
                 expect(unhandledRejectionRaised).eql(true);
-                expect(testRunMock.errors[0].type).eql(types.unhandledPromiseRejection);
+                expect(testRunMock.errors[0].code).eql(TEST_RUN_ERRORS.unhandledPromiseRejection);
             });
     });
 });
