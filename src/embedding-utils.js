@@ -66,7 +66,7 @@ export default {
         return createCommandFromObject;
     },
 
-    get processTestFnError() {
+    get processTestFnError () {
         return processTestFnError;
     },
 
