@@ -236,7 +236,7 @@ describe('TestCafe Live', function () {
             })
             .then(() => {
                 expect(errors.length).eql(1);
-                expect(errors[0]).contains('ERROR: Error: Cannot prepare tests due to an error');
+                expect(errors[0].toString()).contains('Error: Cannot prepare tests due to an error');
                 expect(runner.runCount).eql(2);
             })
             .then(() => {
@@ -277,7 +277,7 @@ describe('TestCafe Live', function () {
         return runTests(testFileWithSyntaxErrorPath)
             .then(() => {
                 expect(errors.length).eql(1);
-                expect(errors[0]).contains('ERROR: Error: Cannot prepare tests due to an error');
+                expect(errors[0].toString()).contains('Error: Cannot prepare tests due to an error');
             });
     });
 

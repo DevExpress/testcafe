@@ -1,9 +1,9 @@
 const expect                                            = require('chai').expect;
 const read                                              = require('read-file-relative').readSync;
-const { escapeRegExp, pull: remove }                    = require('lodash');
+const { escapeRegExp, pull: remove, chain, values }     = require('lodash');
 const ReporterPluginHost                                = require('../../lib/reporter/plugin-host');
 const TEST_RUN_PHASE                                    = require('../../lib/test-run/phase');
-const TYPE                                              = require('../../lib/errors/test-run/type');
+const { TEST_RUN_ERRORS, RUNTIME_ERRORS }               = require('../../lib/errors/types');
 const TestRunErrorFormattableAdapter                    = require('../../lib/errors/test-run/formattable-adapter');
 const testCallsite                                      = require('./data/test-callsite');
 const AssertionExecutableArgumentError                  = require('../../lib/errors/test-run').AssertionExecutableArgumentError;
@@ -69,7 +69,7 @@ const { createSimpleTestStream }                        = require('../functional
 
 const TEST_FILE_STACK_ENTRY_RE = new RegExp('\\s*\\n?\\(' + escapeRegExp(require.resolve('./data/test-callsite')), 'g');
 
-const untestedErrorTypes = Object.keys(TYPE).map(key => TYPE[key]);
+const untestedErrorTypes = Object.keys(TEST_RUN_ERRORS).map(key => TEST_RUN_ERRORS[key]);
 
 const userAgentMock = 'Chrome 15.0.874 / Mac OS X 10.8.1';
 
@@ -112,8 +112,8 @@ function assertErrorMessage (file, err) {
 
     // NOTE: check that the list of error types contains an
     // error of this type and remove tested messages from the list
-    expect(untestedErrorTypes.includes(err.type)).to.be.ok;
-    remove(untestedErrorTypes, err.type);
+    expect(untestedErrorTypes.includes(err.code)).to.be.ok;
+    remove(untestedErrorTypes, err.code);
 }
 
 describe('Error formatting', () => {
@@ -365,6 +365,22 @@ describe('Error formatting', () => {
     describe('Test coverage', () => {
         it('Should test messages for all error codes', () => {
             expect(untestedErrorTypes).to.be.empty;
+        });
+
+        it('Errors codes should be unique', () => {
+            function getDuplicates (codes) {
+                return chain(codes).groupBy().pickBy(x => x.length > 1).keys().value();
+            }
+
+            const testRunErrorCodes                    = values(TEST_RUN_ERRORS);
+            const runtimeErrorCodes                    = values(RUNTIME_ERRORS);
+            const testRunErrorCodeDuplicates           = getDuplicates(testRunErrorCodes);
+            const runtimeErrorCodeDuplicates           = getDuplicates(runtimeErrorCodes);
+            const testRunAndRuntimeErrorCodeDuplicates = getDuplicates(testRunErrorCodes.concat(runtimeErrorCodes));
+
+            expect(testRunErrorCodeDuplicates, 'TestRunErrorCode duplicates').to.be.empty;
+            expect(runtimeErrorCodeDuplicates, 'RuntimeErrorCode duplicates').to.be.empty;
+            expect(testRunAndRuntimeErrorCodeDuplicates, 'Intersections between TestRunErrorCodes and RuntimeErrorCodes').to.be.empty;
         });
     });
 });

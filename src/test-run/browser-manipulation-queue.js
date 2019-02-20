@@ -3,7 +3,7 @@ import { isServiceCommand } from './commands/utils';
 import COMMAND_TYPE from './commands/type';
 import WARNING_MESSAGE from '../notifications/warning-message';
 import { WindowDimensionsOverflowError } from '../errors/test-run/';
-import ERROR_TYPE from '../errors/test-run/type';
+import { TEST_RUN_ERRORS } from '../errors/types';
 
 
 export default class BrowserManipulationQueue {
@@ -59,7 +59,7 @@ export default class BrowserManipulationQueue {
             return await capture();
         }
         catch (err) {
-            if (err.type === ERROR_TYPE.invalidElementScreenshotDimensionsError)
+            if (err.code === TEST_RUN_ERRORS.invalidElementScreenshotDimensionsError)
                 throw err;
 
             this.warningLog.addWarning(WARNING_MESSAGE.screenshotError, err.stack);

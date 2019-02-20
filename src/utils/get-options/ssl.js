@@ -4,7 +4,7 @@ import baseGetOptions from './base';
 import { GeneralError } from '../../errors/runtime';
 import { stat, readFile } from '../promisified-functions';
 import renderTemplate from '../../utils/render-template';
-import ERROR_MESSAGES from '../../errors/runtime/message';
+import { RUNTIME_ERRORS } from '../../errors/types';
 import WARNING_MESSAGES from '../../notifications/warning-message';
 
 
@@ -43,7 +43,7 @@ export default function (optionString) {
                 return await readFile(value);
             }
             catch (error) {
-                throw new GeneralError(ERROR_MESSAGES.cannotReadSSLCertFile, value, key, error.stack);
+                throw new GeneralError(RUNTIME_ERRORS.cannotReadSSLCertFile, value, key, error.stack);
             }
         }
     });

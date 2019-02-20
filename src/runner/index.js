@@ -9,7 +9,7 @@ import Bootstrapper from './bootstrapper';
 import Reporter from '../reporter';
 import Task from './task';
 import { GeneralError } from '../errors/runtime';
-import MESSAGE from '../errors/runtime/message';
+import { RUNTIME_ERRORS } from '../errors/types';
 import { assertType, is } from '../errors/runtime/type-assertions';
 import renderForbiddenCharsList from '../errors/render-forbidden-chars-list';
 import detectFFMPEG from '../utils/detect-ffmpeg';
@@ -180,7 +180,7 @@ export default class Runner extends EventEmitter {
             return;
 
         if (typeof speed !== 'number' || isNaN(speed) || speed < 0.01 || speed > 1)
-            throw new GeneralError(MESSAGE.invalidSpeedValue);
+            throw new GeneralError(RUNTIME_ERRORS.invalidSpeedValue);
     }
 
     _validateConcurrencyOption () {
@@ -190,7 +190,7 @@ export default class Runner extends EventEmitter {
             return;
 
         if (typeof concurrency !== 'number' || isNaN(concurrency) || concurrency < 1)
-            throw new GeneralError(MESSAGE.invalidConcurrencyFactor);
+            throw new GeneralError(RUNTIME_ERRORS.invalidConcurrencyFactor);
     }
 
     _validateProxyBypassOption () {
@@ -227,7 +227,7 @@ export default class Runner extends EventEmitter {
             this._validateScreenshotPath(screenshotPathPattern, 'screenshots path pattern');
 
         if (!screenshotPath && screenshotPathPattern)
-            throw new GeneralError(MESSAGE.cantUseScreenshotPathPatternWithoutBaseScreenshotPathSpecified);
+            throw new GeneralError(RUNTIME_ERRORS.cantUseScreenshotPathPatternWithoutBaseScreenshotPathSpecified);
     }
 
     async _validateVideoOptions () {
@@ -238,7 +238,7 @@ export default class Runner extends EventEmitter {
 
         if (!videoPath) {
             if (videoOptions || videoEncodingOptions)
-                throw new GeneralError(MESSAGE.cannotSetVideoOptionsWithoutBaseVideoPathSpecified);
+                throw new GeneralError(RUNTIME_ERRORS.cannotSetVideoOptionsWithoutBaseVideoPathSpecified);
 
             return;
         }
@@ -257,7 +257,7 @@ export default class Runner extends EventEmitter {
             videoOptions.ffmpegPath = await detectFFMPEG();
 
         if (!videoOptions.ffmpegPath)
-            throw new GeneralError(MESSAGE.cannotFindFFMPEG);
+            throw new GeneralError(RUNTIME_ERRORS.cannotFindFFMPEG);
     }
 
     async _validateRunOptions () {
@@ -276,7 +276,7 @@ export default class Runner extends EventEmitter {
         const forbiddenCharsList = checkFilePath(screenshotPath);
 
         if (forbiddenCharsList.length)
-            throw new GeneralError(MESSAGE.forbiddenCharatersInScreenshotPath, screenshotPath, pathType, renderForbiddenCharsList(forbiddenCharsList));
+            throw new GeneralError(RUNTIME_ERRORS.forbiddenCharatersInScreenshotPath, screenshotPath, pathType, renderForbiddenCharsList(forbiddenCharsList));
     }
 
     _setBootstrapperOptions () {
@@ -304,7 +304,7 @@ export default class Runner extends EventEmitter {
 
     src (...sources) {
         if (this.apiMethodWasCalled.src)
-            throw new GeneralError(MESSAGE.multipleAPIMethodCallForbidden, OPTION_NAMES.src);
+            throw new GeneralError(RUNTIME_ERRORS.multipleAPIMethodCallForbidden, OPTION_NAMES.src);
 
         sources = this._prepareArrayParameter(sources);
         this.configuration.mergeOptions({ [OPTION_NAMES.src]: sources });
@@ -316,7 +316,7 @@ export default class Runner extends EventEmitter {
 
     browsers (...browsers) {
         if (this.apiMethodWasCalled.browsers)
-            throw new GeneralError(MESSAGE.multipleAPIMethodCallForbidden, OPTION_NAMES.browsers);
+            throw new GeneralError(RUNTIME_ERRORS.multipleAPIMethodCallForbidden, OPTION_NAMES.browsers);
 
         browsers = this._prepareArrayParameter(browsers);
         this.configuration.mergeOptions({ browsers });
@@ -334,7 +334,7 @@ export default class Runner extends EventEmitter {
 
     reporter (name, output) {
         if (this.apiMethodWasCalled.reporter)
-            throw new GeneralError(MESSAGE.multipleAPIMethodCallForbidden, OPTION_NAMES.reporter);
+            throw new GeneralError(RUNTIME_ERRORS.multipleAPIMethodCallForbidden, OPTION_NAMES.reporter);
 
         let reporters = prepareReporters(name, output);
 

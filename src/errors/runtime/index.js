@@ -1,34 +1,59 @@
 import { renderers } from 'callsite-record';
-import MESSAGE from './message';
+import TEMPLATES from './templates';
 import createStackFilter from '../create-stack-filter';
 import { getCallsiteForMethod } from '../get-callsite';
 import renderTemplate from '../../utils/render-template';
-
+import { RUNTIME_ERRORS } from '../types';
 
 const ERROR_SEPARATOR = '\n\n';
+
+class ProcessTemplateInstruction {
+    constructor (processFn) {
+        this.processFn = processFn;
+    }
+}
 
 // Errors
 export class GeneralError extends Error {
     constructor (...args) {
-        super(renderTemplate(...args));
+        const code     = args.shift();
+        const template = TEMPLATES[code];
+
+        super(renderTemplate(template, ...args));
+
+        Object.assign(this, { code, data: args });
         Error.captureStackTrace(this, GeneralError);
     }
 }
 
 export class TestCompilationError extends Error {
     constructor (originalError) {
-        super(renderTemplate(MESSAGE.cannotPrepareTestsDueToError, originalError.toString()));
+        const template     = TEMPLATES[RUNTIME_ERRORS.cannotPrepareTestsDueToError];
+        const errorMessage = originalError.toString();
+
+        super(renderTemplate(template, errorMessage));
+
+        Object.assign(this, {
+            code: RUNTIME_ERRORS.cannotPrepareTestsDueToError,
+            data: [ errorMessage ]
+        });
 
         // NOTE: stack includes message as well.
-        this.stack = renderTemplate(MESSAGE.cannotPrepareTestsDueToError, originalError.stack);
+        this.stack = renderTemplate(template, originalError.stack);
     }
 }
 
 export class APIError extends Error {
-    constructor (methodName, template, ...args) {
+    constructor (methodName, code, ...args) {
+        let template = TEMPLATES[code];
+
+        template = APIError._prepareTemplateAndArgsIfNecessary(template, args);
+
         const rawMessage = renderTemplate(template, ...args);
 
-        super(renderTemplate(MESSAGE.cannotPrepareTestsDueToError, rawMessage));
+        super(renderTemplate(TEMPLATES[RUNTIME_ERRORS.cannotPrepareTestsDueToError], rawMessage));
+
+        Object.assign(this, { code, data: args });
 
         // NOTE: `rawMessage` is used in error substitution if it occurs in test run.
         this.rawMessage  = rawMessage;
@@ -74,13 +99,24 @@ export class APIError extends Error {
 
         return this.message + ERROR_SEPARATOR + renderedCallsite;
     }
+
+    static _prepareTemplateAndArgsIfNecessary (template, args) {
+        const lastArg = args.pop();
+
+        if (lastArg instanceof ProcessTemplateInstruction)
+            template = lastArg.processFn(template);
+        else
+            args.push(lastArg);
+
+        return template;
+    }
 }
 
 export class ClientFunctionAPIError extends APIError {
-    constructor (methodName, instantiationCallsiteName, template, ...args) {
-        template = template.replace(/\{#instantiationCallsiteName\}/g, instantiationCallsiteName);
+    constructor (methodName, instantiationCallsiteName, code, ...args) {
+        args.push(new ProcessTemplateInstruction(template => template.replace(/\{#instantiationCallsiteName\}/g, instantiationCallsiteName)));
 
-        super(methodName, template, ...args);
+        super(methodName, code, ...args);
     }
 }
 
@@ -89,5 +125,6 @@ export class CompositeError extends Error {
         super(errors.map(({ message }) => message).join(ERROR_SEPARATOR));
 
         this.stack = errors.map(({ stack }) => stack).join(ERROR_SEPARATOR);
+        this.code  = RUNTIME_ERRORS.compositeArgumentsError;
     }
 }
