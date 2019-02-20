@@ -60,20 +60,24 @@ Once the reporter has been scaffolded out, go to the reporter directory and open
 You would need to implement four [reporter methods](reporter-methods.md).
 
 ```js
-async reportTaskStart (/* startTime, userAgents, testCount */) {
-    throw new Error('Not implemented');
-},
+export default function () {
+    return {
+        async reportTaskStart (/* startTime, userAgents, testCount */) {
+            throw new Error('Not implemented');
+        },
 
-async reportFixtureStart (/* name, path, meta */) {
-    throw new Error('Not implemented');
-},
+        async reportFixtureStart (/* name, path, meta */) {
+            throw new Error('Not implemented');
+        },
 
-async reportTestDone (/* name, testRunInfo, meta */) {
-    throw new Error('Not implemented');
-},
+        async reportTestDone (/* name, testRunInfo, meta */) {
+            throw new Error('Not implemented');
+        },
 
-async reportTaskDone (/* endTime, passed, warnings, result */) {
-    throw new Error('Not implemented');
+        async reportTaskDone (/* endTime, passed, warnings, result */) {
+            throw new Error('Not implemented');
+        }
+    };
 }
 ```
 
@@ -94,68 +98,72 @@ the result of individual test execution, summary information about passed/failed
 and the overall duration of the tests.
 
 ```js
-async reportTaskStart (startTime, userAgents, testCount) {
-    this.startTime = startTime;
-    this.testCount = testCount;
+export default function () {
+    return {
+        async reportTaskStart (startTime, userAgents, testCount) {
+            this.startTime = startTime;
+            this.testCount = testCount;
 
-    this.write(`Running tests in: ${userAgents}`)
-        .newline()
-        .newline();
-},
+            this.write(`Running tests in: ${userAgents}`)
+                .newline()
+                .newline();
+        },
 
-async reportFixtureStart (name, path, meta) {
-    this.currentFixtureName = name;
-},
+        async reportFixtureStart (name, path, meta) {
+            this.currentFixtureName = name;
+        },
 
-async reportTestDone (name, testRunInfo, meta) {
-    const errors      = testRunInfo.errs;
-    const warnings    = testRunInfo.warnings;
-    const hasErrors   = !!errors.length;
-    const hasWarnings = !!warnings.length;
-    const result      = hasErrors ? `passed` : `failed`;
+        async reportTestDone (name, testRunInfo, meta) {
+            const errors      = testRunInfo.errs;
+            const warnings    = testRunInfo.warnings;
+            const hasErrors   = !!errors.length;
+            const hasWarnings = !!warnings.length;
+            const result      = hasErrors ? `passed` : `failed`;
 
-    name = `${this.currentFixtureName} - ${name}`;
+            name = `${this.currentFixtureName} - ${name}`;
 
-    const title = `${result} ${name}`;
+            const title = `${result} ${name}`;
 
-    this.write(title);
+            this.write(title);
 
-    if(hasErrors) {
-        this.newline()
-            .write('Errors:');
+            if(hasErrors) {
+                this.newline()
+                    .write('Errors:');
 
-        errors.forEach(error => {
-            this.newline()
-                .write(this.formatError(error));
-        });
-    }
+                errors.forEach(error => {
+                    this.newline()
+                        .write(this.formatError(error));
+                });
+            }
 
-    if(hasWarnings) {
-        this.newline()
-            .write('Warnings:');
+            if(hasWarnings) {
+                this.newline()
+                    .write('Warnings:');
 
-        warnings.forEach(warning => {
-            this.newline()
-                .write(warning);
-        });
-    }
-},
+                warnings.forEach(warning => {
+                    this.newline()
+                        .write(warning);
+                });
+            }
+        },
 
-async reportTaskDone (endTime, passed, warnings, result) {
-    const durationMs  = endTime - this.startTime;
-    const durationStr = this.moment
-                            .duration(durationMs)
-                            .format('h[h] mm[m] ss[s]');
-    let footer = result.failedCount ?
-                 `${result.failedCount}/${this.testCount} failed` :
-                 `${result.passedCount} passed`;
+        async reportTaskDone (endTime, passed, warnings, result) {
+            const durationMs  = endTime - this.startTime;
+            const durationStr = this.moment
+                                    .duration(durationMs)
+                                    .format('h[h] mm[m] ss[s]');
+            let footer = result.failedCount ?
+                        `${result.failedCount}/${this.testCount} failed` :
+                        `${result.passedCount} passed`;
 
-    footer += ` (Duration: ${durationStr})`;
-    footer += ` (Skipped: ${result.skippedCount})`;
-    footer += ` (Warnings: ${warnings.length})`;
+            footer += ` (Duration: ${durationStr})`;
+            footer += ` (Skipped: ${result.skippedCount})`;
+            footer += ` (Warnings: ${warnings.length})`;
 
-    this.write(footer)
-        .newline();
+            this.write(footer)
+                .newline();
+        }
+    };
 }
 ```
 
