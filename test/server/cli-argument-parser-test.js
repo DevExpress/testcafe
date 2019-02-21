@@ -183,6 +183,9 @@ describe('CLI argument parser', function () {
         it('Should filter by test name with "-T, --test-grep" option', function () {
             parse('-T ^test\\d+$')
                 .then(function (parser) {
+                    expect(parser.filter.testGrep.test('test1')).to.be.true;
+                    expect(parser.filter.testGrep.test('test')).to.be.false;
+
                     expect(parser.filter('test1')).to.be.true;
                     expect(parser.filter('test2')).to.be.true;
                     expect(parser.filter('test')).to.be.false;
@@ -205,6 +208,9 @@ describe('CLI argument parser', function () {
         it('Should filter by fixture name with "-F, --fixture-grep" option', function () {
             return parse('-F ^fixture\\d+$')
                 .then(function (parser) {
+                    expect(parser.filter.fixtureGrep.test('fixture1')).to.be.true;
+                    expect(parser.filter.fixtureGrep.test('fixture')).to.be.false;
+
                     expect(parser.filter('test', 'fixture1')).to.be.true;
                     expect(parser.filter('test', 'fixture2')).to.be.true;
                     expect(parser.filter('test', 'fixture')).to.be.false;
@@ -218,7 +224,7 @@ describe('CLI argument parser', function () {
         it('Should filter by test meta with "--test-meta" option', function () {
             return parse('--test-meta meta=test')
                 .then(function (parser) {
-                    expect(parser.opts.testMeta).to.be.deep.equal({ meta: 'test' });
+                    expect(parser.filter.testMeta).to.be.deep.equal({ meta: 'test' });
 
                     expect(parser.filter(null, null, null, { meta: 'test' })).to.be.true;
                     expect(parser.filter(null, null, null, { another: 'meta', meta: 'test' })).to.be.true;
@@ -230,7 +236,7 @@ describe('CLI argument parser', function () {
         it('Should filter by fixture meta with "--fixture-meta" option', function () {
             return parse('--fixture-meta meta=test,more=meta')
                 .then(function (parser) {
-                    expect(parser.opts.fixtureMeta).to.be.deep.equal({ meta: 'test', more: 'meta' });
+                    expect(parser.filter.fixtureMeta).to.be.deep.equal({ meta: 'test', more: 'meta' });
 
                     expect(parser.filter(null, null, null, null, { meta: 'test', more: 'meta' })).to.be.true;
                     expect(parser.filter(null, null, null, null, { another: 'meta', meta: 'test', more: 'meta' })).to.be.true;

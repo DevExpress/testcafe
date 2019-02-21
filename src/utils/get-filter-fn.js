@@ -1,4 +1,4 @@
-import { isMatch } from 'lodash';
+import { isMatch, pick } from 'lodash';
 
 const FILTERING_OPTIONS = {
     testGrep:    'testGrep',
@@ -40,8 +40,10 @@ function createFilterFn (opts) {
 }
 
 export default function (opts) {
-    if (isAllFilteringOptionsAreUndefined(opts))
+    const filteringOpts = pick(opts, Object.keys(FILTERING_OPTIONS));
+
+    if (isAllFilteringOptionsAreUndefined(filteringOpts))
         return void 0;
 
-    return createFilterFn(opts);
+    return Object.assign(createFilterFn(filteringOpts), filteringOpts);
 }
