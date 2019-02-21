@@ -7,7 +7,7 @@ import delay from '../utils/delay';
 const CHECK_PROCESS_IS_KILLED_TIMEOUT = 5000;
 const CHECK_KILLED_DELAY              = 1000;
 const NEW_LINE_SEPERATOR_RE           = /(\r\n)|(\n\r)|\n|\r/g;
-const cannotGetListOfProcessError     = 'Can not get list of processes';
+const cannotGetListOfProcessError     = 'Cannot get list of processes';
 const killProcessTimeoutError         = 'Kill process timeout';
 
 function getProcessOutputUnix () {
