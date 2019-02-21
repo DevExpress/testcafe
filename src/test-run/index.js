@@ -309,15 +309,6 @@ export default class TestRun extends AsyncEventEmitter {
         await this.emit('done');
     }
 
-    _evaluate (code) {
-        try {
-            return executeJsExpression(code, this, { skipVisibilityCheck: false });
-        }
-        catch (err) {
-            return { err };
-        }
-    }
-
     // Errors
     _addPendingPageErrorIfAny () {
         if (this.pendingPageError) {
@@ -329,15 +320,19 @@ export default class TestRun extends AsyncEventEmitter {
         return false;
     }
 
+    _createErrorAdapter (err, screenshotPath) {
+        return new TestRunErrorFormattableAdapter(err, {
+            userAgent:      this.browserConnection.userAgent,
+            screenshotPath: screenshotPath || '',
+            testRunPhase:   this.phase
+        });
+    }
+
     addError (err, screenshotPath) {
         const errList = err instanceof TestCafeErrorList ? err.items : [err];
 
         errList.forEach(item => {
-            const adapter = new TestRunErrorFormattableAdapter(item, {
-                userAgent:      this.browserConnection.userAgent,
-                screenshotPath: screenshotPath || '',
-                testRunPhase:   this.phase
-            });
+            const adapter = this._createErrorAdapter(item, screenshotPath);
 
             this.errs.push(adapter);
         });
@@ -490,7 +485,7 @@ export default class TestRun extends AsyncEventEmitter {
         if (isAsyncExpression)
             expression = `(async () => { return ${expression}; }).apply(this);`;
 
-        const result = this._evaluate(expression);
+        const result = executeJsExpression(expression, this, { skipVisibilityCheck: false });
 
         return isAsyncExpression ? await result : result;
     }
