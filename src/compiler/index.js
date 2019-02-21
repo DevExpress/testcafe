@@ -38,7 +38,7 @@ export default class Compiler {
             code = await readFile(filename);
         }
         catch (err) {
-            throw new GeneralError(RUNTIME_ERRORS.cantFindSpecifiedTestSource, filename);
+            throw new GeneralError(RUNTIME_ERRORS.cannotFindSpecifiedTestSource, filename);
         }
 
         code = stripBom(code).toString();

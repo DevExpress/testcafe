@@ -241,7 +241,7 @@ export default {
         The specified selector does not match a file input element.
     `),
 
-    [TEST_RUN_ERRORS.actionCanNotFindFileToUploadError]: err => markup(err, `
+    [TEST_RUN_ERRORS.actionCannotFindFileToUploadError]: err => markup(err, `
         Cannot find the following file(s) to upload:
         ${err.filePaths.map(path => `  ${escapeHtml(path)}`).join('\n')}
     `),
@@ -304,7 +304,7 @@ export default {
         ${escapeHtml(err.errMsg)}
     `),
 
-    [TEST_RUN_ERRORS.cantObtainInfoForElementSpecifiedBySelectorError]: (err, viewportWidth) => markup(err, `
+    [TEST_RUN_ERRORS.cannotObtainInfoForElementSpecifiedBySelectorError]: (err, viewportWidth) => markup(err, `
         Cannot obtain information about the node because the specified selector does not match any node in the DOM tree.
 
         ${ formatSelectorCallstack(err.apiFnChain, err.apiFnIndex, viewportWidth) }
