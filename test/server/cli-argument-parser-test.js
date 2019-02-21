@@ -218,6 +218,7 @@ describe('CLI argument parser', function () {
         it('Should filter by test meta with "--test-meta" option', function () {
             return parse('--test-meta meta=test')
                 .then(function (parser) {
+                    expect(parser.opts.testMeta).to.be.deep.equal({ meta: 'test' });
                     expect(parser.filter(null, null, null, { meta: 'test' })).to.be.true;
                     expect(parser.filter(null, null, null, { another: 'meta', meta: 'test' })).to.be.true;
                     expect(parser.filter(null, null, null, {})).to.be.false;
@@ -228,6 +229,7 @@ describe('CLI argument parser', function () {
         it('Should filter by fixture meta with "--fixture-meta" option', function () {
             return parse('--fixture-meta meta=test,more=meta')
                 .then(function (parser) {
+                    expect(parser.opts.fixtureMeta).to.be.deep.equal({ meta: 'test', more: 'meta' });
                     expect(parser.filter(null, null, null, null, { meta: 'test', more: 'meta' })).to.be.true;
                     expect(parser.filter(null, null, null, null, { another: 'meta', meta: 'test', more: 'meta' })).to.be.true;
                     expect(parser.filter(null, null, null, null, {})).to.be.false;
@@ -242,6 +244,40 @@ describe('CLI argument parser', function () {
 
         it('Should raise error if "--fixture-meta" value is invalid json', function () {
             return assertRaisesError('--fixture-meta error', 'The "--fixture-meta" option value is not a valid key-value pair.');
+        });
+
+        it('Should throw an error if invalid meta is specified', () => {
+            return parse('--fixture-meta meta')
+                .then(() => {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (error) {
+                    expect(error.message).contains('The "--fixture-meta" option value is not a valid key-value pair.');
+
+                    return parse('--fixture-meta =test');
+                })
+                .then(() => {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (error) {
+                    expect(error.message).contains('The "--fixture-meta" option value is not a valid key-value pair.');
+
+                    return parse('--test-meta meta');
+                })
+                .then(() => {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (error) {
+                    expect(error.message).contains('The "--test-meta" option value is not a valid key-value pair.');
+
+                    return parse('--test-meta =test');
+                })
+                .then(() => {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (error) {
+                    expect(error.message).contains('The "--test-meta" option value is not a valid key-value pair.');
+                });
         });
 
         it('Should combine filters provided by multiple options', function () {
@@ -450,7 +486,6 @@ describe('CLI argument parser', function () {
                 });
         });
     });
-
 
     it('Should parse reporters and their output file paths and ensure they exist', function () {
         const cwd      = process.cwd();

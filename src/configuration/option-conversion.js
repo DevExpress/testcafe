@@ -14,8 +14,11 @@ export function optionValueToRegExp (name, value) {
 }
 
 export function optionValueToKeyValue (name, value) {
-    if (value === void 0)
+    if (value === void 0 || typeof value === 'object')
         return value;
+
+    if (typeof value !== 'string')
+        throw new GeneralError(RUNTIME_ERRORS.optionValueIsNotValidKeyValue, name);
 
     const keyValue = value.split(',').reduce((obj, pair) => {
         const [key, val] = pair.split('=');
