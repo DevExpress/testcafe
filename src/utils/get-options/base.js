@@ -5,7 +5,14 @@ import convertToBestFitType from '../convert-to-best-fit-type';
 const DEFAULT_OPTIONS_SEPARATOR   = ',';
 const DEFAULT_KEY_VALUE_SEPARATOR = '=';
 
-const DEFAULT_ON_OPTION_PARSED = (key, value) => value;
+
+function convertOptionValueType (value) {
+    // NOTE: threat a key without a separator and a value as a boolean flag
+    if (value === void 0)
+        return true;
+
+    return convertToBestFitType(value);
+}
 
 function parseOptionsString (optionsStr, optionsSeparator, keyValueSeparator) {
     return optionsStr
@@ -18,7 +25,8 @@ export default async function (sourceOptions = '', optionsConfig) {
     const {
         optionsSeparator = DEFAULT_OPTIONS_SEPARATOR,
         keyValueSeparator = DEFAULT_KEY_VALUE_SEPARATOR,
-        onOptionParsed = DEFAULT_ON_OPTION_PARSED
+        skipOptionValueTypeConversion = false,
+        onOptionParsed = void 0,
     } = optionsConfig;
 
     const optionsList = typeof sourceOptions === 'string' ?
@@ -28,13 +36,13 @@ export default async function (sourceOptions = '', optionsConfig) {
     const resultOptions = {};
 
     await Promise.all(optionsList.map(async ([key, value]) => {
-        // NOTE: threat a key without a separator and a value as a boolean flag
-        if (value === void 0)
-            value = true;
+        if (!skipOptionValueTypeConversion)
+            value = convertOptionValueType(value);
 
-        value = convertToBestFitType(value);
+        if (onOptionParsed)
+            value = await onOptionParsed(key, value);
 
-        resultOptions[key] = await onOptionParsed(key, value);
+        resultOptions[key] = value;
     }));
 
     return resultOptions;

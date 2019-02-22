@@ -3,7 +3,7 @@ import { stat, readFile } from '../utils/promisified-functions';
 import Option from './option';
 import optionSource from './option-source';
 import { cloneDeep, castArray } from 'lodash';
-import { getSSLOptions } from '../utils/get-options';
+import { getSSLOptions, getGrepOptions } from '../utils/get-options';
 import OPTION_NAMES from './option-names';
 import getFilterFn from '../utils/get-filter-fn';
 import resolvePathRelativelyCwd from '../utils/resolve-path-relatively-cwd';
@@ -132,6 +132,12 @@ export default class Configuration {
 
         if (!filterOption.value)
             return;
+
+        if (filterOption.value.testGrep)
+            filterOption.value.testGrep = getGrepOptions(OPTION_NAMES.filterTestGrep, filterOption.value.testGrep);
+
+        if (filterOption.value.fixtureGrep)
+            filterOption.value.fixtureGrep = getGrepOptions(OPTION_NAMES.filterFixtureGrep, filterOption.value.fixtureGrep);
 
         filterOption.value = getFilterFn(filterOption.value);
     }

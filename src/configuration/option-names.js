@@ -3,6 +3,8 @@ export default {
     browsers:               'browsers',
     concurrency:            'concurrency',
     filter:                 'filter',
+    filterTestGrep:         'filter.testGrep',
+    filterFixtureGrep:      'filter.fixtureGrep',
     reporter:               'reporter',
     ssl:                    'ssl',
     speed:                  'speed',

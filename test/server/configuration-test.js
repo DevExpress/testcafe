@@ -45,7 +45,10 @@ describe('Configuration', () => {
             'filter':      {
                 'fixture':     'testFixture',
                 'test':        'some test',
-                'fixtureGrep': '^Unstable'
+                'testGrep':    'test\\d',
+                'fixtureGrep': 'fixture\\d',
+                'testMeta':    { test: 'meta' },
+                'fixtureMeta': { fixture: 'meta' }
             }
         });
     });
@@ -87,6 +90,10 @@ describe('Configuration', () => {
                         expect(configuration.getOption('browsers')).eql([ 'ie' ]);
                         expect(configuration.getOption('concurrency')).eql(0.5);
                         expect(configuration.getOption('filter')).to.be.a('function');
+                        expect(configuration.getOption('filter').testGrep.test('test1')).to.be.true;
+                        expect(configuration.getOption('filter').fixtureGrep.test('fixture1')).to.be.true;
+                        expect(configuration.getOption('filter').testMeta).to.be.deep.equal({ test: 'meta' });
+                        expect(configuration.getOption('filter').fixtureMeta).to.be.deep.equal({ fixture: 'meta' });
                     });
             });
 

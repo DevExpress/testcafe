@@ -1,24 +1,18 @@
-import { isMatch } from 'lodash';
-import { optionValueToRegExp, optionValueToKeyValue } from '../configuration/option-conversion';
+import { isMatch, pick } from 'lodash';
+
+const FILTERING_OPTIONS = {
+    testGrep:    'testGrep',
+    fixtureGrep: 'fixtureGrep',
+    testMeta:    'testMeta',
+    fixtureMeta: 'fixtureMeta',
+    test:        'test',
+    fixture:     'fixture'
+};
 
 function isAllFilteringOptionsAreUndefined (opts) {
-    return [
-        opts.testGrep,
-        opts.fixtureGrep,
-        opts.testMeta,
-        opts.fixtureMeta,
-        opts.test,
-        opts.fixture
-    ].every(item => item === void 0);
-}
-
-function prepareOptionValues (opts) {
-    opts.testGrep    = optionValueToRegExp('--test-grep', opts.testGrep);
-    opts.fixtureGrep = optionValueToRegExp('--fixture-grep', opts.fixtureGrep);
-    opts.testMeta    = optionValueToKeyValue('--test-meta', opts.testMeta);
-    opts.fixtureMeta = optionValueToKeyValue('--fixture-meta', opts.fixtureMeta);
-
-    return opts;
+    return Object
+        .keys(FILTERING_OPTIONS)
+        .every(option => opts[option] === void 0);
 }
 
 function createFilterFn (opts) {
@@ -46,10 +40,10 @@ function createFilterFn (opts) {
 }
 
 export default function (opts) {
-    if (isAllFilteringOptionsAreUndefined(opts))
+    const filteringOpts = pick(opts, Object.keys(FILTERING_OPTIONS));
+
+    if (isAllFilteringOptionsAreUndefined(filteringOpts))
         return void 0;
 
-    opts = prepareOptionValues(opts);
-
-    return createFilterFn(opts);
+    return Object.assign(createFilterFn(filteringOpts), filteringOpts);
 }
