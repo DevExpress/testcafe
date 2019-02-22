@@ -12,6 +12,7 @@ import renderTemplate from '../utils/render-template';
 import prepareReporters from '../utils/prepare-reporters';
 import WARNING_MESSAGES from '../notifications/warning-message';
 import log from '../cli/log';
+import getConcatenatedValuesString from '../utils/get-concatenated-values-string';
 
 import {
     DEFAULT_TIMEOUT,
@@ -227,7 +228,7 @@ export default class Configuration {
         if (!this._overridenOptions.length)
             return;
 
-        const optionsStr    = this._overridenOptions.map(option => `"${option}"`).join(', ');
+        const optionsStr    = getConcatenatedValuesString(this._overridenOptions);
         const optionsSuffix = this._overridenOptions.length > 1 ? 's' : '';
 
         Configuration._showConsoleWarning(renderTemplate(WARNING_MESSAGES.configOptionsWereOverriden, optionsStr, optionsSuffix));
