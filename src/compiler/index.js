@@ -1,5 +1,5 @@
 import Promise from 'pinkie';
-import { flattenDeep as flatten, find, chunk, uniq } from 'lodash';
+import { flattenDeep, find, chunk, uniq, groupBy } from 'lodash';
 import stripBom from 'strip-bom';
 import { Compiler as LegacyTestFileCompiler } from 'testcafe-legacy-api';
 import hammerhead from 'testcafe-hammerhead';
@@ -14,13 +14,13 @@ import { RUNTIME_ERRORS } from '../errors/types';
 
 const SOURCE_CHUNK_LENGTH = 1000;
 
-const testFileCompilers = [
-    new LegacyTestFileCompiler(hammerhead.processScript),
-    new EsNextTestFileCompiler(),
-    new TypeScriptTestFileCompiler(),
-    new CoffeeScriptTestFileCompiler(),
-    new RawTestFileCompiler()
-];
+const testFileCompilers = {
+    legacy:       new LegacyTestFileCompiler(hammerhead.processScript),
+    esnext:       new EsNextTestFileCompiler(),
+    typescript:   new TypeScriptTestFileCompiler(),
+    coffeescript: new CoffeeScriptTestFileCompiler(),
+    raw:          new RawTestFileCompiler()
+};
 
 export default class Compiler {
     constructor (sources) {
@@ -28,10 +28,10 @@ export default class Compiler {
     }
 
     static getSupportedTestFileExtensions () {
-        return uniq(testFileCompilers.map(c => c.getSupportedExtension()));
+        return uniq(Object.values(testFileCompilers).map(c => c.getSupportedExtension()));
     }
 
-    async _compileTestFile (filename) {
+    async _createTestFileInfo (filename) {
         let code = null;
 
         try {
@@ -43,31 +43,48 @@ export default class Compiler {
 
         code = stripBom(code).toString();
 
-        const compiler = find(testFileCompilers, c => c.canCompile(code, filename));
+        const compilerName = find(Object.keys(testFileCompilers), name => testFileCompilers[name].canCompile(code, filename));
 
-        return compiler ? await compiler.compile(code, filename) : null;
+        if (!compilerName)
+            return null;
+
+        return { compilerName, filename, code };
+    }
+
+    async _runCompilerForFiles (compilerName, testFilesInfo) {
+        const compiler = testFileCompilers[compilerName];
+
+        if (compiler.canCompileInBatch)
+            return await compiler.compileBatch(testFilesInfo);
+
+        return await Promise.all(testFilesInfo.map(({ code, filename }) => compiler.compile(code, filename)));
+    }
+
+    async _compileTestFiles (filenames) {
+        const testFilesInfo = await Promise.all(filenames.map(filename => this._createTestFileInfo(filename)));
+        const compilerTasks = groupBy(testFilesInfo.filter(info => !!info), 'compilerName');
+        const compilerNames = Object.keys(compilerTasks);
+        const compiledTests = await Promise.all(compilerNames.map(compilerName => this._runCompilerForFiles(compilerName, compilerTasks[compilerName])));
+
+        return flattenDeep(compiledTests);
     }
 
     async getTests () {
-        const sourceChunks = chunk(this.sources, SOURCE_CHUNK_LENGTH);
-        let tests        = [];
-        let compileUnits = [];
-
         // NOTE: split sources into chunks because the fs module can't read all files
         // simultaneously if the number of them is too large (several thousands).
-        while (sourceChunks.length) {
-            compileUnits = sourceChunks.shift().map(filename => this._compileTestFile(filename));
-            tests        = tests.concat(await Promise.all(compileUnits));
-        }
+        const sourceChunks = chunk(this.sources, SOURCE_CHUNK_LENGTH);
+
+        let tests = [];
+
+        while (sourceChunks.length)
+            tests = tests.concat(await this._compileTestFiles(sourceChunks.shift()));
 
         Compiler.cleanUp();
 
-        tests = flatten(tests).filter(test => !!test);
-
-        return tests;
+        return flattenDeep(tests).filter(test => !!test);
     }
 
     static cleanUp () {
-        testFileCompilers.forEach(c => c.cleanUp());
+        Object.values(testFileCompilers).forEach(c => c.cleanUp());
     }
 }

@@ -54,6 +54,10 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
         throw new Error('Not implemented');
     }
 
+    _compileCodeBatch (/* code, filename */) {
+        throw new Error('Not implemented');
+    }
+
     _getRequireCompilers () {
         throw new Error('Not implemented');
     }
@@ -95,13 +99,16 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
         });
     }
 
-    _compileCodeForTestFile (code, filename) {
+    _compileCodeForTestFiles (testFilesInfo) {
         let compiledCode = null;
 
         stackCleaningHook.enabled = true;
 
         try {
-            compiledCode = this._compileCode(code, filename);
+            if (this.canCompileInBatch)
+                compiledCode = this._compileCodeBatch(testFilesInfo);
+            else
+                compiledCode = testFilesInfo.map(({ code, filename }) => ({ compiledCode: this._compileCode(code, filename), filename }));
         }
         catch (err) {
             throw new TestCompilationError(stackCleaningHook.cleanError(err));
@@ -130,9 +137,8 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
         delete global.test;
     }
 
-    compile (code, filename) {
-        const compiledCode = this._compileCodeForTestFile(code, filename);
-        const testFile     = new TestFile(filename);
+    _runCompiledCode (compiledCode, filename) {
+        const testFile = new TestFile(filename);
 
         this._addGlobalAPI(testFile);
 
@@ -157,6 +163,21 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
         }
 
         return testFile.getTests();
+    }
+
+    compile (code, filename) {
+        return this.compileBatch([{ code, filename }]);
+    }
+
+    compileBatch (testFilesInfo) {
+        const compiledTestFiles = this._compileCodeForTestFiles(testFilesInfo);
+
+        let tests = [];
+
+        for (const { filename, compiledCode } of compiledTestFiles)
+            tests = tests.concat(this._runCompiledCode(compiledCode, filename));
+
+        return tests;
     }
 
     _hasTests (code) {

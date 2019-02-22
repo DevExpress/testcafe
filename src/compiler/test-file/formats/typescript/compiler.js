@@ -1,4 +1,5 @@
 import path from 'path';
+import { zipObject } from 'lodash';
 import OS from 'os-family';
 import APIBasedTestFileCompilerBase from '../../api-based';
 import ESNextTestFileCompiler from '../es-next/compiler';
@@ -53,17 +54,20 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
         return filename;
     }
 
-    _compileCode (code, filename) {
+    _compileCodeBatch (testFilesInfo) {
         // NOTE: lazy load the compiler
         const ts = require('typescript');
 
-        const normalizedFilename = TypeScriptTestFileCompiler._normalizeFilename(filename);
+        const filenames              = testFilesInfo.map(({ filename }) => filename);
+        const normalizedFilenames    = filenames.map(filename => TypeScriptTestFileCompiler._normalizeFilename(filename));
+        const normalizedFilenamesMap = zipObject(normalizedFilenames, filenames);
 
-        if (this.cache[normalizedFilename])
-            return this.cache[normalizedFilename];
+        const uncachedFiles = normalizedFilenames
+            .filter(filename => !this.cache[filename])
+            .map(filename => normalizedFilenamesMap[filename]);
 
         const opts    = TypeScriptTestFileCompiler._getTypescriptOptions();
-        const program = ts.createProgram([filename], opts);
+        const program = ts.createProgram(uncachedFiles, opts);
 
         program.getSourceFiles().forEach(sourceFile => {
             sourceFile.renamedDependencies = RENAMED_DEPENDENCIES_MAP;
@@ -83,14 +87,22 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
             this.cache[sourcePath] = result;
         });
 
-        return this.cache[normalizedFilename];
+        return normalizedFilenames
+            .map(filename => ({
+                filename:     normalizedFilenamesMap[filename],
+                compiledCode: this.cache[filename]
+            }));
     }
 
     _getRequireCompilers () {
         return {
-            '.ts': (code, filename) => this._compileCode(code, filename),
+            '.ts': (code, filename) => this._compileCodeBatch([{ code, filename }])[0].compiledCode,
             '.js': (code, filename) => ESNextTestFileCompiler.prototype._compileCode.call(this, code, filename)
         };
+    }
+
+    get canCompileInBatch () {
+        return true;
     }
 
     getSupportedExtension () {

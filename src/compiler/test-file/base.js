@@ -19,8 +19,16 @@ export default class TestFileCompilerBase {
         throw new Error('Not implemented');
     }
 
+    async compileBatch (/* filenames */) {
+        throw new Error('Not implemented');
+    }
+
     canCompile (code, filename) {
         return this.supportedExtensionRe.test(filename);
+    }
+
+    get canCompileInBatch () {
+        return false;
     }
 
     cleanUp () {
