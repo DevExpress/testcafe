@@ -1,3 +1,3 @@
-export default function (...args) {
-    return args.map(arg => `"${arg}"`).join(', ');
+export default function (array) {
+    return array.map(item => `"${item}"`).join(', ');
 }

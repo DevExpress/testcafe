@@ -15,6 +15,7 @@ const getCommonPath                    = require('../../lib/utils/get-common-pat
 const resolvePathRelativelyCwd         = require('../../lib/utils/resolve-path-relatively-cwd');
 const getFilterFn                      = require('../../lib/utils/get-filter-fn');
 const prepareReporters                 = require('../../lib/utils/prepare-reporters');
+const getConcatenatedValuesString      = require('../../lib/utils/get-concatenated-values-string');
 
 describe('Utils', () => {
     it('Correct File Path', () => {
@@ -166,6 +167,11 @@ describe('Utils', () => {
     it('Get Filter Fn', () => {
         expect(getFilterFn({})).is.undefined;
         expect(getFilterFn({ fixture: 'test' })).to.be.a('function');
+    });
+
+    it('Get concatenated values string', () => {
+        expect(getConcatenatedValuesString(['param_1'])).eql('"param_1"');
+        expect(getConcatenatedValuesString(['param_1', 'param_2', 'param_3'])).eql('"param_1", "param_2", "param_3"');
     });
 
     describe('Moment Module Loader', () => {

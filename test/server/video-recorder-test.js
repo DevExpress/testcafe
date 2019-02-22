@@ -1,7 +1,7 @@
-const expect        = require('chai').expect;
+const { expect }    = require('chai');
 const VideoRecorder = require('../../lib/video-recorder');
 const AsyncEmitter  = require('../../lib/utils/async-event-emitter');
-
+const WarningLog    = require('../../lib/notifications/warning-log');
 
 const VIDEOS_BASE_PATH = '__videos__';
 
@@ -24,5 +24,26 @@ describe('Video Recorder', () => {
             .then(() => {
                 expect(videoRecorder.testRunInfo).to.be.empty;
             });
+    });
+
+    it('Should correctly format the warning message about no suitable path pattern placeholders', () => {
+        const browserJobMock = new AsyncEmitter();
+        const warningLog     = new WarningLog();
+        const videoRecorder  = new VideoRecorder(browserJobMock, VIDEOS_BASE_PATH, {}, {}, warningLog);
+
+        videoRecorder._addProblematicPlaceholdersWarning(['${TEST_INDEX}']);
+        expect(warningLog.messages).eql([
+            '"${TEST_INDEX}" path pattern placeholder is not suitable for the video recording\'s "pathPattern" option.' +
+            '\n\n' +
+            'Its value will be replaced with an empty string.'
+        ]);
+        warningLog.messages = [];
+
+        videoRecorder._addProblematicPlaceholdersWarning(['${TEST_INDEX}', '${FIXTURE}']);
+        expect(warningLog.messages).eql([
+            '"${TEST_INDEX},${FIXTURE}" path pattern placeholders are not suitable for the video recording\'s "pathPattern" option.' +
+            '\n\n' +
+            'Their values will be replaced with an empty string.'
+        ]);
     });
 });
