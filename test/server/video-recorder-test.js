@@ -41,7 +41,7 @@ describe('Video Recorder', () => {
 
         videoRecorder._addProblematicPlaceholdersWarning(['${TEST_INDEX}', '${FIXTURE}']);
         expect(warningLog.messages).eql([
-            '"${TEST_INDEX},${FIXTURE}" path pattern placeholders are not suitable for the video recording\'s "pathPattern" option.' +
+            '"${TEST_INDEX}", "${FIXTURE}" path pattern placeholders are not suitable for the video recording\'s "pathPattern" option.' +
             '\n\n' +
             'Their values will be replaced with an empty string.'
         ]);
