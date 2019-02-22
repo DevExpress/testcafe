@@ -112,9 +112,9 @@ if (config.useLocalBrowsers) {
                 }
             })
                 .catch(() => {
-                    expect(testReport.warnings).eql(['"${TEST_INDEX}" path pattern placeholder is not suitable for video recording\'s "pathPattern" option.' +
+                    expect(testReport.warnings).eql(['"${TEST_INDEX}" path pattern placeholder is not suitable for the video recording\'s "pathPattern" option.' +
                                                      '\n\n' +
-                                                     'Its value will be replaced with empty string.']);
+                                                     'Its value will be replaced with an empty string.']);
                 });
         });
     });
