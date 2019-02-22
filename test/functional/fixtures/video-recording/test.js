@@ -100,7 +100,7 @@ if (config.useLocalBrowsers) {
                 });
         });
 
-        it('Should display the warning if no suitable placeholder for the "pathPattern" option was specified', () => {
+        it('Should display the warning if there is the not suitable placeholder for the "pathPattern" option was specified', () => {
             return runTests('./testcafe-fixtures/index-test.js', '', {
                 only:         'chrome',
                 shouldFail:   true,
