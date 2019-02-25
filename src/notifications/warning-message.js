@@ -24,8 +24,8 @@ export default {
                                  '\n' +
                                  '{err}',
 
-    problematicPathPatternPlaceholderForVideoRecording: '{placeholderList} path pattern placeholder{suffix} {verb} not suitable for the video recording\'s "pathPattern" option.\n' +
+    problematicPathPatternPlaceholderForVideoRecording: 'The {placeholderList} path pattern placeholder{suffix} cannot be applied to the recorded video.\n' +
                                                         '\n' +
-                                                        '{pronoun} value{suffix} will be replaced with an empty string.'
+                                                        'The placeholder{suffix} {verb} replaced with an empty string.'
 };
 

@@ -33,17 +33,17 @@ describe('Video Recorder', () => {
 
         videoRecorder._addProblematicPlaceholdersWarning(['${TEST_INDEX}']);
         expect(warningLog.messages).eql([
-            '"${TEST_INDEX}" path pattern placeholder is not suitable for the video recording\'s "pathPattern" option.' +
+            'The "${TEST_INDEX}" path pattern placeholder cannot be applied to the recorded video.' +
             '\n\n' +
-            'Its value will be replaced with an empty string.'
+            'The placeholder is replaced with an empty string.'
         ]);
         warningLog.messages = [];
 
         videoRecorder._addProblematicPlaceholdersWarning(['${TEST_INDEX}', '${FIXTURE}']);
         expect(warningLog.messages).eql([
-            '"${TEST_INDEX}", "${FIXTURE}" path pattern placeholders are not suitable for the video recording\'s "pathPattern" option.' +
+            'The "${TEST_INDEX}", "${FIXTURE}" path pattern placeholders cannot be applied to the recorded video.' +
             '\n\n' +
-            'Their values will be replaced with an empty string.'
+            'The placeholders are replaced with an empty string.'
         ]);
     });
 });

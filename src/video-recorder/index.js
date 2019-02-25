@@ -69,9 +69,8 @@ export default class VideoRecorder {
         const problematicPlaceholderListStr = getConcatenatedValuesString(placeholders);
         const suffix                        = placeholders.length > 1 ? 's' : '';
         const verb                          = placeholders.length > 1 ? 'are' : 'is';
-        const pronoun                       = placeholders.length > 1 ? 'Their' : 'Its';
 
-        this.warningLog.addWarning(WARNING_MESSAGES.problematicPathPatternPlaceholderForVideoRecording, problematicPlaceholderListStr, suffix, verb, pronoun, suffix);
+        this.warningLog.addWarning(WARNING_MESSAGES.problematicPathPatternPlaceholderForVideoRecording, problematicPlaceholderListStr, suffix, suffix, verb);
     }
 
     _getTargetVideoPath (testRunInfo) {
