@@ -13,7 +13,7 @@ test('.eql() assertion', async t => {
 
 test('.notEql() assertion', async t => {
     await t
-        .expect({b: 3}).notEql({a: 2})
+        .expect({b: 3}).notEql({b: 4})
         .expect(2).notEql(2);
 });
 
@@ -32,12 +32,12 @@ test('.notOk() assertion', async t => {
 test('.contains() assertion', async t => {
     await t
         .expect('heyyo').contains('hey')
-        .expect([1, 2, 3]).contains(4);
+        .expect([1, 2, 3]).contains([4]);
 });
 
 test('.notContains() assertion', async t => {
     await t
-        .expect([1, 2, 3]).notContains(4)
+        .expect([1, 2, 3]).notContains([4])
         .expect('answer42').notContains('42');
 });
 
@@ -143,9 +143,9 @@ test('.notMatch() assertion', async t => {
 });
 
 test('ClientFunction result assertion', async t => {
-    const getSomeVar = ClientFunction(() => window.location);
+    const getSomeVar = ClientFunction(() => window.location.toString());
 
-    await t.expect(getSomeVar()).eql(2);
+    await t.expect(getSomeVar()).eql('https://example.com');
 });
 
 

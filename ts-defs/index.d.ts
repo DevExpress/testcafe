@@ -1244,7 +1244,7 @@ interface TestController {
      *
      * @param actual - An actual value of the assertion.
      */
-    expect<A>(actual: A): Assertion<A>;
+    expect<A>(actual: A | Promise<A>): Assertion<A>;
     /**
      * Pauses the test and switches to the step-by-step execution mode.
      */
