@@ -10,12 +10,14 @@ const correctFilePath                  = require('../../lib/utils/correct-file-p
 const escapeUserAgent                  = require('../../lib/utils/escape-user-agent');
 const parseFileList                    = require('../../lib/utils/parse-file-list');
 const TempDirectory                    = require('../../lib/utils/temp-directory');
-const { replaceLeadingSpacesWithNbsp } = require('../../lib/utils/string');
+const {
+    replaceLeadingSpacesWithNbsp,
+    getConcatenatedValuesString
+}                                      = require('../../lib/utils/string');
 const getCommonPath                    = require('../../lib/utils/get-common-path');
 const resolvePathRelativelyCwd         = require('../../lib/utils/resolve-path-relatively-cwd');
 const getFilterFn                      = require('../../lib/utils/get-filter-fn');
 const prepareReporters                 = require('../../lib/utils/prepare-reporters');
-const getConcatenatedValuesString      = require('../../lib/utils/get-concatenated-values-string');
 
 describe('Utils', () => {
     it('Correct File Path', () => {

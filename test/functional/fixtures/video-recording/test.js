@@ -114,7 +114,7 @@ if (config.useLocalBrowsers) {
                 .catch(() => {
                     expect(testReport.warnings).eql(['The "${TEST_INDEX}" path pattern placeholder cannot be applied to the recorded video.' +
                                                      '\n\n' +
-                                                     'The placeholder is replaced with an empty string.']);
+                                                     'The placeholder was replaced with an empty string.']);
                 });
         });
     });

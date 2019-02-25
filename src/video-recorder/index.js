@@ -7,7 +7,7 @@ import VideoRecorderProcess from './process';
 import TempDirectory from '../utils/temp-directory';
 import PathPattern from '../utils/path-pattern';
 import WARNING_MESSAGES from '../notifications/warning-message';
-import getConcatenatedValuesString from '../utils/get-concatenated-values-string';
+import { getPluralSuffix, getConcatenatedValuesString, getToBeInPastTense } from '../utils/string';
 
 const DEBUG_LOGGER = debug('testcafe:video-recorder');
 
@@ -67,8 +67,8 @@ export default class VideoRecorder {
 
     _addProblematicPlaceholdersWarning (placeholders) {
         const problematicPlaceholderListStr = getConcatenatedValuesString(placeholders);
-        const suffix                        = placeholders.length > 1 ? 's' : '';
-        const verb                          = placeholders.length > 1 ? 'are' : 'is';
+        const suffix                        = getPluralSuffix(placeholders);
+        const verb                          = getToBeInPastTense(placeholders);
 
         this.warningLog.addWarning(WARNING_MESSAGES.problematicPathPatternPlaceholderForVideoRecording, problematicPlaceholderListStr, suffix, suffix, verb);
     }

@@ -35,7 +35,7 @@ describe('Video Recorder', () => {
         expect(warningLog.messages).eql([
             'The "${TEST_INDEX}" path pattern placeholder cannot be applied to the recorded video.' +
             '\n\n' +
-            'The placeholder is replaced with an empty string.'
+            'The placeholder was replaced with an empty string.'
         ]);
         warningLog.messages = [];
 
@@ -43,7 +43,7 @@ describe('Video Recorder', () => {
         expect(warningLog.messages).eql([
             'The "${TEST_INDEX}", "${FIXTURE}" path pattern placeholders cannot be applied to the recorded video.' +
             '\n\n' +
-            'The placeholders are replaced with an empty string.'
+            'The placeholders were replaced with an empty string.'
         ]);
     });
 });

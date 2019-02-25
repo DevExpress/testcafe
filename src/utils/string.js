@@ -80,3 +80,16 @@ export function replaceLeadingSpacesWithNbsp (str) {
         return repeat('&nbsp;', match.length);
     });
 }
+
+export function getPluralSuffix (array) {
+    return array.length > 1 ? 's' : '';
+}
+
+export function getConcatenatedValuesString (array) {
+    return array.map(item => `"${item}"`).join(', ');
+}
+
+export function getToBeInPastTense (array) {
+    return array.length > 1 ? 'were' : 'was';
+}
+
