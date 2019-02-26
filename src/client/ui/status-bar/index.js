@@ -46,7 +46,7 @@ const WAITING_FOR_ELEMENT_TEXT             = 'Waiting for element to appear...';
 const WAITING_FOR_ASSERTION_EXECUTION_TEXT = 'Waiting for assertion execution...';
 const DEBUGGING_TEXT                       = 'Debugging test...';
 const TEST_FAILED_TEXT                     = 'Test failed';
-const UNLOCK_PAGE_TEXT                     = 'Unlock page';
+const UNLOCK_PAGE_TEXT                     = 'Unlock Page';
 const PAGE_UNLOCKED_TEXT                   = 'Page unlocked';
 const SHOWING_DELAY                        = 300;
 const ANIMATION_DELAY                      = 500;
@@ -83,7 +83,7 @@ export default class StatusBar extends serviceUtils.EventEmitter {
         this.fixtureContainer = null;
         this.resumeButton     = null;
         this.finishButton     = null;
-        this.stepButton       = null;
+        this.nextButton       = null;
         this.statusDiv        = null;
         this.buttons          = null;
 
@@ -202,11 +202,11 @@ export default class StatusBar extends serviceUtils.EventEmitter {
         statusContainer.appendChild(this.buttons);
 
         this.resumeButton = this._createButton('Resume', RESUME_BUTTON_CLASS);
-        this.stepButton   = this._createButton('Next Step', STEP_CLASS);
+        this.nextButton   = this._createButton('Next Action', STEP_CLASS);
         this.finishButton = this._createButton('Finish', RESUME_BUTTON_CLASS);
 
         this.buttons.appendChild(this.resumeButton);
-        this.buttons.appendChild(this.stepButton);
+        this.buttons.appendChild(this.nextButton);
         this.buttons.style.display = 'none';
     }
 
@@ -505,7 +505,7 @@ export default class StatusBar extends serviceUtils.EventEmitter {
             this.state.debugging = true;
 
             if (isTestError) {
-                this.buttons.removeChild(this.stepButton);
+                this.buttons.removeChild(this.nextButton);
                 this.buttons.removeChild(this.resumeButton);
                 this.buttons.appendChild(this.finishButton);
 
@@ -521,11 +521,11 @@ export default class StatusBar extends serviceUtils.EventEmitter {
 
             this._recalculateSizes();
 
-            this._bindClickOnce([this.resumeButton, this.stepButton, this.finishButton], e => {
-                const isStepButton = domUtils.containsElement(this.stepButton, e.target);
+            this._bindClickOnce([this.resumeButton, this.nextButton, this.finishButton], e => {
+                const isNextButton = domUtils.containsElement(this.nextButton, e.target);
 
                 this._resetState();
-                resolve(isStepButton);
+                resolve(isNextButton);
             });
         });
     }
