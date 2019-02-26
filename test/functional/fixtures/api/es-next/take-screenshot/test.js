@@ -116,9 +116,9 @@ describe('[API] t.takeScreenshot()', function () {
                 .catch(function (errs) {
                     expect(errs[0]).to.contains('The "path" argument is expected to be a non-empty string, but it was number.');
                     expect(errs[0]).to.contains(
-                        '35 |test(\'Incorrect action path argument\', async t => {' +
-                        ' > 36 |    await t.takeScreenshot(1); ' +
-                        '37 |});'
+                        '38 |test(\'Incorrect action path argument\', async t => {' +
+                        ' > 39 |    await t.takeScreenshot(1); ' +
+                        '40 |});'
                     );
                 });
         });
@@ -131,9 +131,9 @@ describe('[API] t.takeScreenshot()', function () {
                 .catch(function (errs) {
                     expect(errs[0]).to.contains('There are forbidden characters in the "path:with*forbidden|chars" screenshot path: ":" at index 4 "*" at index 9 "|" at index 19');
                     expect(errs[0]).to.contains(
-                        '39 |test(\'Forbidden characters in the path argument\', async t => {' +
-                        ' > 40 |    await t.takeScreenshot(\'path:with*forbidden|chars\'); ' +
-                        '41 |});'
+                        '42 |test(\'Forbidden characters in the path argument\', async t => {' +
+                        ' > 43 |    await t.takeScreenshot(\'path:with*forbidden|chars\'); ' +
+                        '44 |});'
                     );
                 });
         });
@@ -177,6 +177,11 @@ describe('[API] t.takeScreenshot()', function () {
                 .then(function (result) {
                     expect(result).eql(true);
                 });
+        });
+
+        it('Should crop scrollbars', function () {
+            return runTests('./testcafe-fixtures/take-screenshot.js', 'Should crop scrollbar',
+                { setScreenshotPath: true });
         });
 
         it('Should provide screenshot log to a reporter', function () {

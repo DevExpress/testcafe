@@ -1,45 +1,10 @@
-import fs from 'fs';
-import Promise from 'pinkie';
-import { PNG } from 'pngjs';
-import promisifyEvent from 'promisify-event';
+import { readPng, copyImagePart } from './png';
 import limitNumber from '../utils/limit-number';
-import { deleteFile } from '../utils/promisified-functions';
 import renderTemplate from '../utils/render-template';
 import { InvalidElementScreenshotDimensionsError } from '../errors/test-run/';
 import { MARK_LENGTH, MARK_RIGHT_MARGIN, MARK_BYTES_PER_PIXEL } from './constants';
 import WARNING_MESSAGES from '../notifications/warning-message';
 
-
-function readPng (filePath) {
-    const stream = fs.createReadStream(filePath);
-    const png    = new PNG();
-
-    const parsedPromise = Promise.race([
-        promisifyEvent(png, 'parsed'),
-        promisifyEvent(png, 'error'),
-        promisifyEvent(stream, 'error')
-    ]);
-
-    stream.pipe(png);
-
-    return parsedPromise
-        .then(() => png);
-}
-
-function writePng (filePath, png) {
-    const outStream = fs.createWriteStream(filePath);
-    const pngStream = png.pack();
-
-    const finishPromise = Promise.race([
-        promisifyEvent(outStream, 'finish'),
-        promisifyEvent(outStream, 'error'),
-        promisifyEvent(pngStream, 'error')
-    ]);
-
-    pngStream.pipe(outStream);
-
-    return finishPromise;
-}
 
 function markSeedToId (markSeed) {
     let id = 0;
@@ -50,84 +15,83 @@ function markSeedToId (markSeed) {
     return id;
 }
 
-function detectClippingArea (srcImage, { markSeed, clientAreaDimensions, cropDimensions, screenshotPath } = {}) {
-    let clipLeft   = 0;
-    let clipTop    = 0;
-    let clipRight  = srcImage.width;
-    let clipBottom = srcImage.height;
-    let clipWidth  = srcImage.width;
-    let clipHeight = srcImage.height;
+export function updateClipInfoByMarkSeed (pngImage, path, markSeed, { width, height }) {
+    const mark = Buffer.from(markSeed);
 
-    if (markSeed && clientAreaDimensions) {
-        const mark = Buffer.from(markSeed);
+    const markIndex = pngImage.data.indexOf(mark);
 
-        const markIndex = srcImage.data.indexOf(mark);
+    if (markIndex < 0)
+        throw new Error(renderTemplate(WARNING_MESSAGES.screenshotMarkNotFound, path, markSeedToId(markSeed)));
 
-        if (markIndex < 0)
-            throw new Error(renderTemplate(WARNING_MESSAGES.screenshotMarkNotFound, screenshotPath, markSeedToId(markSeed)));
+    const endPosition = markIndex / MARK_BYTES_PER_PIXEL + MARK_LENGTH + MARK_RIGHT_MARGIN;
 
-        const endPosition = markIndex / MARK_BYTES_PER_PIXEL + MARK_LENGTH + MARK_RIGHT_MARGIN;
-
-        clipRight  = endPosition % srcImage.width || srcImage.width;
-        clipBottom = (endPosition - clipRight) / srcImage.width + 1;
-        clipLeft   = clipRight - clientAreaDimensions.width;
-        clipTop    = clipBottom - clientAreaDimensions.height;
-    }
-
-    const markLineNumber = clipBottom;
-
-    if (cropDimensions) {
-        clipRight  = limitNumber(clipLeft + cropDimensions.right, clipLeft, clipRight);
-        clipBottom = limitNumber(clipTop + cropDimensions.bottom, clipTop, clipBottom);
-        clipLeft   = limitNumber(clipLeft + cropDimensions.left, clipLeft, clipRight);
-        clipTop    = limitNumber(clipTop + cropDimensions.top, clipTop, clipBottom);
-    }
-
-    if (markSeed && clipBottom === markLineNumber)
-        clipBottom -= 1;
-
-    clipWidth  = clipRight - clipLeft;
-    clipHeight = clipBottom - clipTop;
+    const clipRight  = endPosition % pngImage.width || pngImage.width;
+    const clipBottom = (endPosition - clipRight) / pngImage.width + 1;
+    const clipLeft   = clipRight - width;
+    const clipTop    = clipBottom - height;
 
     return {
-        left:   clipLeft,
-        top:    clipTop,
-        right:  clipRight,
-        bottom: clipBottom,
-        width:  clipWidth,
-        height: clipHeight
+        clipLeft,
+        clipTop,
+        clipRight,
+        clipBottom
     };
 }
 
-function copyImagePart (srcImage, { left, top, width, height }) {
-    const dstImage = new PNG({ width, height });
-    const stride   = dstImage.width * MARK_BYTES_PER_PIXEL;
+export function updateClipInfoByCropDimensions ({ clipRight, clipLeft, clipBottom, clipTop }, cropDimensions) {
+    if (cropDimensions) {
+        const { right, top, bottom, left } = cropDimensions;
 
-    for (let i = 0; i < height; i++) {
-        const srcStartIndex = (srcImage.width * (i + top) + left) * MARK_BYTES_PER_PIXEL;
-
-        srcImage.data.copy(dstImage.data, stride * i, srcStartIndex, srcStartIndex + stride);
+        clipRight  = limitNumber(clipLeft + right, clipLeft, clipRight);
+        clipBottom = limitNumber(clipTop + bottom, clipTop, clipBottom);
+        clipLeft   = limitNumber(clipLeft + left, clipLeft, clipRight);
+        clipTop    = limitNumber(clipTop + top, clipTop, clipBottom);
     }
 
-    return dstImage;
+    return {
+        clipLeft,
+        clipTop,
+        clipRight,
+        clipBottom
+    };
 }
 
-export default async function (screenshotPath, markSeed, clientAreaDimensions, cropDimensions) {
-    const srcImage  = await readPng(screenshotPath);
+export function calculateClipInfo (pngImage, path, markSeed, clientAreaDimensions, cropDimensions) {
+    let clipInfo = {
+        clipRight:  pngImage.width,
+        clipBottom: pngImage.height,
+        clipLeft:   0,
+        clipTop:    0
+    };
 
-    const clippingArea = detectClippingArea(srcImage, { markSeed, clientAreaDimensions, cropDimensions, screenshotPath });
+    let markLineNumber = null;
 
-    if (clippingArea.width <= 0 || clippingArea.height <= 0) {
-        await deleteFile(screenshotPath);
-        throw new InvalidElementScreenshotDimensionsError(clippingArea.width, clippingArea.height);
+    if (markSeed && clientAreaDimensions) {
+        clipInfo = updateClipInfoByMarkSeed(pngImage, path, markSeed, clientAreaDimensions);
+
+        markLineNumber = clipInfo.clipBottom;
     }
 
+    clipInfo = updateClipInfoByCropDimensions(clipInfo, cropDimensions);
+
+    if (markSeed && clipInfo.clipBottom === markLineNumber)
+        clipInfo.clipBottom--;
+
+    const clipWidth  = clipInfo.clipRight - clipInfo.clipLeft;
+    const clipHeight = clipInfo.clipBottom - clipInfo.clipTop;
+
+    if (clipWidth <= 0 || clipHeight <= 0)
+        throw new InvalidElementScreenshotDimensionsError(clipWidth, clipHeight);
+
+    return clipInfo;
+}
+
+export async function cropScreenshot (path, markSeed, clientAreaDimensions, cropDimensions, binaryImage) {
     if (!markSeed && !cropDimensions)
-        return true;
+        return null;
 
-    const dstImage = copyImagePart(srcImage, clippingArea);
+    const pngImage = await readPng(binaryImage);
+    const clip     = calculateClipInfo(pngImage, path, markSeed, clientAreaDimensions, cropDimensions);
 
-    await writePng(screenshotPath, dstImage);
-
-    return true;
+    return copyImagePart(pngImage, clip);
 }

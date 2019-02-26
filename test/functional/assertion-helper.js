@@ -182,6 +182,8 @@ function checkScreenshotImages (forError, customPath, predicate) {
         });
 }
 
+exports.readPng = readPng;
+
 exports.errorInEachBrowserContains = function errorInEachBrowserContains (testErrors, message, errorIndex) {
     if (testErrors instanceof Error)
         throw testErrors;
