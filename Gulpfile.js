@@ -6,7 +6,6 @@ const data                 = require('gulp-data');
 const less                 = require('gulp-less');
 const qunitHarness         = require('gulp-qunit-harness');
 const git                  = require('gulp-git');
-const ghpages              = require('gulp-gh-pages');
 const mocha                = require('gulp-mocha-simple');
 const mustache             = require('gulp-mustache');
 const rename               = require('gulp-rename');
@@ -612,6 +611,9 @@ gulp.task('test-website', gulp.series('build-website-testing', 'serve-website', 
 gulp.task('test-website-travis', gulp.series('build-website', 'serve-website', 'test-website-run'));
 
 gulp.step('website-publish-run', () => {
+    // TODO: move this import to the top level when we drop Node.js 6.x
+    const ghpages = require('gulp-gh-pages');
+
     return gulp
         .src('site/deploy/**/*')
         .pipe(rename(filePath => {
