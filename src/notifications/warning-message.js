@@ -22,5 +22,10 @@ export default {
 
     cannotFindConfigurationFile: 'Unable to find the "{path}" configuration file. Error details:\n' +
                                  '\n' +
-                                 '{err}'
+                                 '{err}',
+
+    problematicPathPatternPlaceholderForVideoRecording: 'The {placeholderList} path pattern placeholder{suffix} cannot be applied to the recorded video.\n' +
+                                                        '\n' +
+                                                        'The placeholder{suffix} {verb} replaced with an empty string.'
 };
+

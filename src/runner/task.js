@@ -69,7 +69,7 @@ export default class Task extends AsyncEventEmitter {
     _createVideoRecorders (browserJobs) {
         const videoOptions = { timeStamp: this.timeStamp, ...this.opts.videoOptions };
 
-        return browserJobs.map(browserJob => new VideoRecorder(browserJob, this.opts.videoPath, videoOptions, this.opts.videoEncodingOptions));
+        return browserJobs.map(browserJob => new VideoRecorder(browserJob, this.opts.videoPath, videoOptions, this.opts.videoEncodingOptions, this.warningLog));
     }
 
     // API

@@ -7,7 +7,7 @@ import VideoRecorderProcess from './process';
 import TempDirectory from '../utils/temp-directory';
 import PathPattern from '../utils/path-pattern';
 import WARNING_MESSAGES from '../notifications/warning-message';
-
+import { getPluralSuffix, getConcatenatedValuesString, getToBeInPastTense } from '../utils/string';
 
 const DEBUG_LOGGER = debug('testcafe:video-recorder');
 
@@ -21,7 +21,7 @@ const TEMP_MERGE_CONFIG_FILE_PREFIX    = 'config';
 const TEMP_MERGE_CONFIG_FILE_EXTENSION = 'txt';
 
 export default class VideoRecorder {
-    constructor (browserJob, basePath, opts, encodingOpts) {
+    constructor (browserJob, basePath, opts, encodingOpts, warningLog) {
         this.browserJob        = browserJob;
         this.basePath          = basePath;
         this.failedOnly        = opts.failedOnly;
@@ -30,6 +30,8 @@ export default class VideoRecorder {
         this.customPathPattern = opts.pathPattern;
         this.timeStamp         = opts.timeStamp;
         this.encodingOptions   = encodingOpts;
+
+        this.warningLog = warningLog;
 
         this.tempDirectory       = new TempDirectory(TEMP_DIR_PREFIX);
         this.tempVideoPath       = '';
@@ -63,6 +65,14 @@ export default class VideoRecorder {
         browserJob.on('test-run-before-done', this._createSafeListener(this._onTestRunBeforeDone));
     }
 
+    _addProblematicPlaceholdersWarning (placeholders) {
+        const problematicPlaceholderListStr = getConcatenatedValuesString(placeholders);
+        const suffix                        = getPluralSuffix(placeholders);
+        const verb                          = getToBeInPastTense(placeholders);
+
+        this.warningLog.addWarning(WARNING_MESSAGES.problematicPathPatternPlaceholderForVideoRecording, problematicPlaceholderListStr, suffix, suffix, verb);
+    }
+
     _getTargetVideoPath (testRunInfo) {
         const { test, index, testRun } = testRunInfo;
 
@@ -72,10 +82,12 @@ export default class VideoRecorder {
             testIndex:         this.singleFile ? null : index,
             quarantineAttempt: null,
             now:               this.timeStamp,
-            fixture:           this.singleFile ? '' : test.fixture.name,
-            test:              this.singleFile ? '' : test.name,
+            fixture:           this.singleFile ? null : test.fixture.name,
+            test:              this.singleFile ? null : test.name,
             parsedUserAgent:   connection.browserInfo.parsedUserAgent,
         });
+
+        pathPattern.on('problematic-placeholders-found', ({ placeholders }) => this._addProblematicPlaceholdersWarning(placeholders));
 
         return join(this.basePath, pathPattern.getPath());
     }

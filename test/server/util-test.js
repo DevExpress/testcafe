@@ -10,7 +10,10 @@ const correctFilePath                  = require('../../lib/utils/correct-file-p
 const escapeUserAgent                  = require('../../lib/utils/escape-user-agent');
 const parseFileList                    = require('../../lib/utils/parse-file-list');
 const TempDirectory                    = require('../../lib/utils/temp-directory');
-const { replaceLeadingSpacesWithNbsp } = require('../../lib/utils/string');
+const {
+    replaceLeadingSpacesWithNbsp,
+    getConcatenatedValuesString
+}                                      = require('../../lib/utils/string');
 const getCommonPath                    = require('../../lib/utils/get-common-path');
 const resolvePathRelativelyCwd         = require('../../lib/utils/resolve-path-relatively-cwd');
 const getFilterFn                      = require('../../lib/utils/get-filter-fn');
@@ -209,6 +212,11 @@ describe('Utils', () => {
             expect(filter(void 0, void 0, void 0, void 0, { fixture: 'meta' })).to.be.true;
             expect(filter(void 0, void 0, void 0, void 0, { fixture: 'metaX' })).to.be.false;
         });
+    });
+
+    it('Get concatenated values string', () => {
+        expect(getConcatenatedValuesString(['param_1'])).eql('"param_1"');
+        expect(getConcatenatedValuesString(['param_1', 'param_2', 'param_3'])).eql('"param_1", "param_2", "param_3"');
     });
 
     describe('Moment Module Loader', () => {

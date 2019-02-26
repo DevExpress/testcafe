@@ -99,5 +99,23 @@ if (config.useLocalBrowsers) {
                     expect(videoFiles.length).to.equal(2);
                 });
         });
+
+        it('Should display the warning if there is the not suitable placeholder for the "pathPattern" option was specified', () => {
+            return runTests('./testcafe-fixtures/index-test.js', '', {
+                only:         'chrome',
+                shouldFail:   true,
+                setVideoPath: true,
+
+                videoOptions: {
+                    singleFile:  true,
+                    pathPattern: '${TEST_INDEX}_.mp4'
+                }
+            })
+                .catch(() => {
+                    expect(testReport.warnings).eql(['The "${TEST_INDEX}" path pattern placeholder cannot be applied to the recorded video.' +
+                                                     '\n\n' +
+                                                     'The placeholder was replaced with an empty string.']);
+                });
+        });
     });
 }
