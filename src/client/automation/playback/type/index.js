@@ -7,12 +7,12 @@ import getKeyCode from '../../utils/get-key-code';
 import getKeyIdentifier from '../../utils/get-key-identifier';
 import { getDefaultAutomationOffsets } from '../../utils/offsets';
 import AutomationSettings from '../../settings';
+import getKeyProperties from '../../utils/get-key-properties';
 
 const Promise               = hammerhead.Promise;
 const extend                = hammerhead.utils.extend;
 const eventSimulator        = hammerhead.eventSandbox.eventSimulator;
 const elementEditingWatcher = hammerhead.eventSandbox.elementEditingWatcher;
-const browserUtils          = hammerhead.utils.browser;
 
 const domUtils        = testCafeCore.domUtils;
 const promiseUtils    = testCafeCore.promiseUtils;
@@ -89,10 +89,7 @@ export default class TypeAutomation {
         if (isPressEvent)
             options.charCode = this.currentCharCode;
 
-        if (browserUtils.isSafari)
-            options.keyIdentifier = isPressEvent ? '' : this.currentKeyIdentifier;
-
-        options.key = this.currentKey;
+        extend(options, getKeyProperties(isPressEvent, this.currentKey, this.currentKeyIdentifier));
 
         return { element, options };
     }
