@@ -54,7 +54,7 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
         return filename;
     }
 
-    _compileCodeBatch (testFilesInfo) {
+    _precompileCode (testFilesInfo) {
         // NOTE: lazy load the compiler
         const ts = require('typescript');
 
@@ -87,21 +87,17 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
             this.cache[sourcePath] = result;
         });
 
-        return normalizedFilenames
-            .map(filename => ({
-                filename:     normalizedFilenamesMap[filename],
-                compiledCode: this.cache[filename]
-            }));
+        return normalizedFilenames.map(filename => this.cache[filename]);
     }
 
     _getRequireCompilers () {
         return {
-            '.ts': (code, filename) => this._compileCodeBatch([{ code, filename }])[0].compiledCode,
+            '.ts': (code, filename) => this._compileCode(code, filename),
             '.js': (code, filename) => ESNextTestFileCompiler.prototype._compileCode.call(this, code, filename)
         };
     }
 
-    get canCompileInBatch () {
+    get canPrecompile () {
         return true;
     }
 

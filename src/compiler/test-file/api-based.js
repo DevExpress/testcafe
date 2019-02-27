@@ -50,11 +50,14 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
         mod._compile(code, filename);
     }
 
-    _compileCode (/* code, filename */) {
+    _compileCode (code, filename) {
+        if (this.canPrecompile)
+            return this._precompileCode([{ code, filename }])[0];
+
         throw new Error('Not implemented');
     }
 
-    _compileCodeBatch (/* code, filename */) {
+    _precompileCode (/* testFilesInfo */) {
         throw new Error('Not implemented');
     }
 
@@ -100,15 +103,13 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
     }
 
     _compileCodeForTestFiles (testFilesInfo) {
-        let compiledCode = null;
-
         stackCleaningHook.enabled = true;
 
         try {
-            if (this.canCompileInBatch)
-                compiledCode = this._compileCodeBatch(testFilesInfo);
-            else
-                compiledCode = testFilesInfo.map(({ code, filename }) => ({ compiledCode: this._compileCode(code, filename), filename }));
+            if (this.canPrecompile)
+                return this._precompileCode(testFilesInfo);
+
+            return testFilesInfo.map(({ code, filename }) => this._compileCode(code, filename));
         }
         catch (err) {
             throw new TestCompilationError(stackCleaningHook.cleanError(err));
@@ -116,8 +117,6 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
         finally {
             stackCleaningHook.enabled = false;
         }
-
-        return compiledCode;
     }
 
     _addGlobalAPI (testFile) {
@@ -165,19 +164,19 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
         return testFile.getTests();
     }
 
-    compile (code, filename) {
-        return this.compileBatch([{ code, filename }]);
+
+    precompile (testFilesInfo) {
+        return this._compileCodeForTestFiles(testFilesInfo);
     }
 
-    compileBatch (testFilesInfo) {
-        const compiledTestFiles = this._compileCodeForTestFiles(testFilesInfo);
+    execute (compiledCode, filename) {
+        return this._runCompiledCode(compiledCode, filename);
+    }
 
-        let tests = [];
+    compile (code, filename) {
+        const [compiledCode] = this.precompile([{ code, filename }]);
 
-        for (const { filename, compiledCode } of compiledTestFiles)
-            tests = tests.concat(this._runCompiledCode(compiledCode, filename));
-
-        return tests;
+        return this.execute(compiledCode, filename);
     }
 
     _hasTests (code) {

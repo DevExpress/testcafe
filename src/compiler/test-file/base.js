@@ -15,11 +15,15 @@ export default class TestFileCompilerBase {
         throw new Error('Not implemented');
     }
 
+    async precompile (/* testFilesInfo */) {
+        throw new Error('Not implemented');
+    }
+
     async compile (/* code, filename */) {
         throw new Error('Not implemented');
     }
 
-    async compileBatch (/* filenames */) {
+    async execute (/* compiledCode, filename */) {
         throw new Error('Not implemented');
     }
 
@@ -27,7 +31,7 @@ export default class TestFileCompilerBase {
         return this.supportedExtensionRe.test(filename);
     }
 
-    get canCompileInBatch () {
+    get canPrecompile () {
         return false;
     }
 

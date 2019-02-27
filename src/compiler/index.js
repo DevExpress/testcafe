@@ -1,5 +1,5 @@
 import Promise from 'pinkie';
-import { flattenDeep, find, chunk, uniq, groupBy } from 'lodash';
+import { flattenDeep, find, chunk, uniq, groupBy, zipWith, assign } from 'lodash';
 import stripBom from 'strip-bom';
 import { Compiler as LegacyTestFileCompiler } from 'testcafe-legacy-api';
 import hammerhead from 'testcafe-hammerhead';
@@ -14,7 +14,7 @@ import { RUNTIME_ERRORS } from '../errors/types';
 
 const SOURCE_CHUNK_LENGTH = 1000;
 
-const testFileCompilers = {
+const testFileCompilersRegistry = {
     legacy:       new LegacyTestFileCompiler(hammerhead.processScript),
     esnext:       new EsNextTestFileCompiler(),
     typescript:   new TypeScriptTestFileCompiler(),
@@ -22,13 +22,16 @@ const testFileCompilers = {
     raw:          new RawTestFileCompiler()
 };
 
+const testFileCompilers     = Object.values(testFileCompilersRegistry);
+const testFileCompilersInfo = Object.entries(testFileCompilersRegistry);
+
 export default class Compiler {
     constructor (sources) {
         this.sources = sources;
     }
 
     static getSupportedTestFileExtensions () {
-        return uniq(Object.values(testFileCompilers).map(c => c.getSupportedExtension()));
+        return uniq(testFileCompilers.map(compiler => compiler.getSupportedExtension()));
     }
 
     async _createTestFileInfo (filename) {
@@ -43,30 +46,58 @@ export default class Compiler {
 
         code = stripBom(code).toString();
 
-        const compilerName = find(Object.keys(testFileCompilers), name => testFileCompilers[name].canCompile(code, filename));
+        const compilerInfo = find(testFileCompilersInfo, ([/* name */, compiler]) => compiler.canCompile(code, filename));
 
-        if (!compilerName)
+        if (!compilerInfo)
             return null;
 
-        return { compilerName, filename, code };
+        const [compilerName, compiler] = compilerInfo;
+
+        return {
+            filename,
+            code,
+            compiler,
+            compilerName,
+
+            compiledCode: null
+        };
     }
 
-    async _runCompilerForFiles (compilerName, testFilesInfo) {
-        const compiler = testFileCompilers[compilerName];
+    async _createTestFilesInfo (filenames) {
+        const testFilesInfo = await Promise.all(filenames.map(filename => this._createTestFileInfo(filename)));
 
-        if (compiler.canCompileInBatch)
-            return await compiler.compileBatch(testFilesInfo);
+        return testFilesInfo.filter(info => !!info);
+    }
 
-        return await Promise.all(testFilesInfo.map(({ code, filename }) => compiler.compile(code, filename)));
+    async _precompileFiles (compiler, testFilesInfo) {
+        if (!compiler.canPrecompile)
+            return;
+
+        const precompiledCode = await compiler.precompile(testFilesInfo);
+
+        zipWith(testFilesInfo, precompiledCode.map(compiledCode => ({ compiledCode })), assign);
+    }
+
+    async _getTests ({ compiler, filename, code, compiledCode }) {
+        if (compiledCode)
+            return await compiler.execute(compiledCode, filename);
+
+        return await compiler.compile(code, filename);
     }
 
     async _compileTestFiles (filenames) {
-        const testFilesInfo = await Promise.all(filenames.map(filename => this._createTestFileInfo(filename)));
-        const compilerTasks = groupBy(testFilesInfo.filter(info => !!info), 'compilerName');
+        const testFilesInfo = await this._createTestFilesInfo(filenames);
+        const compilerTasks = groupBy(testFilesInfo, ({ compilerName }) => compilerName);
         const compilerNames = Object.keys(compilerTasks);
-        const compiledTests = await Promise.all(compilerNames.map(compilerName => this._runCompilerForFiles(compilerName, compilerTasks[compilerName])));
 
-        return flattenDeep(compiledTests);
+        await Promise.all(compilerNames.map(compilerName => this._precompileFiles(testFileCompilersRegistry[compilerName], compilerTasks[compilerName])));
+
+        const tests = [];
+
+        for (const info of testFilesInfo)
+            tests.push(await this._getTests(info));
+
+        return tests;
     }
 
     async getTests () {
@@ -85,6 +116,6 @@ export default class Compiler {
     }
 
     static cleanUp () {
-        Object.values(testFileCompilers).forEach(c => c.cleanUp());
+        testFileCompilers.forEach(compiler => compiler.cleanUp());
     }
 }
