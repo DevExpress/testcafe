@@ -366,44 +366,44 @@ $(document).ready(function () {
             });
     });
 
-    if (!browserUtils.isSafari && (!browserUtils.isChrome || browserUtils.version > 53)) {
-        asyncTest('T334620 - Wrong "key" property in keyEvent objects (type)', function () {
-            const textarea = document.createElement('textarea');
 
-            textarea.className = TEST_ELEMENT_CLASS;
+    asyncTest('T334620, GH-3282 - Wrong "key" property in keyEvent objects (type)', function () {
+        const textarea = document.createElement('textarea');
 
-            document.body.appendChild(textarea);
+        textarea.className = TEST_ELEMENT_CLASS;
 
-            let keydownKeyProperty  = '';
-            let keypressKeyProperty = '';
-            let keyupKeyProperty    = '';
+        document.body.appendChild(textarea);
 
-            textarea.addEventListener('keydown', function (e) {
-                keydownKeyProperty += e.key;
-            });
+        let keydownKeyProperty  = '';
+        let keypressKeyProperty = '';
+        let keyupKeyProperty    = '';
 
-            textarea.addEventListener('keypress', function (e) {
-                keypressKeyProperty += e.key;
-            });
-
-            textarea.addEventListener('keyup', function (e) {
-                keyupKeyProperty += e.key;
-            });
-
-            const type = new TypeAutomation(textarea, 'aA \r', new TypeOptions({ offsetX: 1, offsetY: 1 }));
-
-            type
-                .run()
-                .then(function () {
-                    equal(keydownKeyProperty, 'aA Enter');
-                    equal(keypressKeyProperty, 'aA Enter');
-                    equal(keyupKeyProperty, 'aA Enter');
-                    equal(textarea.value, 'aA \n');
-                    start();
-                });
+        textarea.addEventListener('keydown', function (e) {
+            keydownKeyProperty += e.key;
         });
-    }
-    else {
+
+        textarea.addEventListener('keypress', function (e) {
+            keypressKeyProperty += e.key;
+        });
+
+        textarea.addEventListener('keyup', function (e) {
+            keyupKeyProperty += e.key;
+        });
+
+        const type = new TypeAutomation(textarea, 'aA \r', new TypeOptions({ offsetX: 1, offsetY: 1 }));
+
+        type
+            .run()
+            .then(function () {
+                equal(keydownKeyProperty, 'aA Enter');
+                equal(keypressKeyProperty, 'aA Enter');
+                equal(keyupKeyProperty, 'aA Enter');
+                equal(textarea.value, 'aA \n');
+                start();
+            });
+    });
+
+    if (browserUtils.isSafari) {
         asyncTest('T334620 - Wrong "keyIdentifier" property in keyEvent objects (type)', function () {
             const textarea = document.createElement('textarea');
 

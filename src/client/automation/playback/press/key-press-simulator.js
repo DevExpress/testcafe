@@ -5,7 +5,7 @@ import { getChar, getDeepActiveElement, changeLetterCase } from './utils';
 import getKeyCode from '../../utils/get-key-code';
 import getKeyIdentifier from '../../utils/get-key-identifier';
 import isLetterKey from '../../utils/is-letter';
-import keyIdentifierRequiredForEvent from '../../utils/key-identifier-required-for-event';
+import getKeyProperties from '../../utils/get-key-properties';
 
 const browserUtils   = hammerhead.utils.browser;
 const extend         = hammerhead.utils.extend;
@@ -73,10 +73,7 @@ export default class KeyPressSimulator {
     }
 
     _addKeyPropertyToEventOptions (eventOptions) {
-        if (keyIdentifierRequiredForEvent())
-            eventOptions.keyIdentifier = eventOptions.type === 'keypress' ? '' : this.keyIdentifierProperty;
-        else
-            eventOptions.key = this.keyProperty;
+        extend(eventOptions, getKeyProperties(eventOptions.type === 'keypress', this.keyProperty, this.keyIdentifierProperty));
 
         return eventOptions;
     }
@@ -119,7 +116,7 @@ export default class KeyPressSimulator {
 
         const eventOptions = { keyCode: charCode, charCode: charCode, type: 'keypress' };
 
-        this._addKeyPropertyToEventOptions(eventOptions, true);
+        this._addKeyPropertyToEventOptions(eventOptions);
 
         const raiseDefault = eventSimulator.keypress(activeElement, extend(eventOptions, modifiersState));
 
