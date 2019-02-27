@@ -110,7 +110,7 @@ test('ClientFunction call with complex argument types', async() => {
 });
 
 test('ClientFunction call with complex return types', async() => {
-    const fn = ClientFunction(() => {
+    const fn = ClientFunction((): [RegExp, Error, any, number] => {
         return [/\S+/ig, new Error('Hey!'), void 0, NaN];
     });
 

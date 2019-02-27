@@ -12,20 +12,20 @@ interface ClientFunctionOptions {
     boundTestRun?: TestController
 }
 
-interface ClientFunction {
+interface ClientFunction<R = any, A extends any[]= any[]> {
     /**
      * Client function
      *
      * @param args - Function arguments.
      */
-    (...args: any[]): Promise<any>;
+    (...args: A): Promise<R>;
     /**
      * Returns a new client function with a different set of options that includes options from the
      * original function and new `options` that overwrite the original ones.
      *
      * @param options - New options.
      */
-    with(options: ClientFunctionOptions): ClientFunction;
+    with(options: ClientFunctionOptions): ClientFunction<R, A>;
 }
 
 // NodeSnapshot
@@ -667,7 +667,7 @@ interface SelectorAPI {
      * @param methods `node` - The matching DOM node for which custom method is executed.
      * @param methods `methodParams` - Custom method parameters.
      */
-    addCustomMethods(methods: {[method: string]: (node: Element, ...methodParams: any[]) => any}, opts?: {returnDOMNodes?: boolean}): Selector;
+    addCustomMethods(methods: {[method: string]: (node: Element, ...methodParams: any[]) => any }, opts?: {returnDOMNodes?: boolean}): Selector;
     /**
      * Returns a new selector with a different set of options that includes options from the
      * original selector and new `options` that overwrite the original ones.
@@ -1049,7 +1049,7 @@ interface TestController {
      * @param options - A set of options that provide additional parameters for the action.
      */
     doubleClick(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-                options?: ClickActionOptions): TestControllerPromise;
+        options?: ClickActionOptions): TestControllerPromise;
     /**
      * Hovers the mouse pointer over a webpage element.
      *
@@ -1244,7 +1244,7 @@ interface TestController {
      *
      * @param actual - An actual value of the assertion.
      */
-    expect(actual: any): Assertion;
+    expect<A>(actual: A | Promise<A>): Assertion<A>;
     /**
      * Pauses the test and switches to the step-by-step execution mode.
      */
@@ -1299,7 +1299,7 @@ interface AssertionOptions {
     allowUnawaitedPromise?: boolean;
 }
 
-interface Assertion {
+interface Assertion<E = any> {
     /**
      * Asserts that `actual` is deeply equal to `expected`.
      *
@@ -1307,14 +1307,14 @@ interface Assertion {
      * @param message - An assertion message that will be displayed in the report if the test fails.
      * @param options - Assertion options.
      */
-    eql(expected: any, message?: string, options?: AssertionOptions): TestControllerPromise;
+    eql(expected: E, message?: string, options?: AssertionOptions): TestControllerPromise;
     /**
      * Asserts that actual is deeply equal to expected.
      *
      * @param expected - An expected value.
      * @param options - Assertion options.
      */
-    eql(expected: any, options?: AssertionOptions): TestControllerPromise;
+    eql(expected: E, options?: AssertionOptions): TestControllerPromise;
     /**
      * Assert that `actual` is not deeply equal to `unexpected`.
      *
@@ -1322,14 +1322,14 @@ interface Assertion {
      * @param message - An assertion message that will be displayed in the report if the test fails.
      * @param options - Assertion options.
      */
-    notEql(unexpected: any, message?: string, options?: AssertionOptions): TestControllerPromise;
+    notEql(unexpected: E, message?: string, options?: AssertionOptions): TestControllerPromise;
     /**
      * Assert that `actual` is not deeply equal to `unexpected`.
      *
      * @param unexpected - An unexpected value.
      * @param options - Assertion options.
      */
-    notEql(unexpected: any, options?: AssertionOptions): TestControllerPromise;
+    notEql(unexpected: E, options?: AssertionOptions): TestControllerPromise;
     /**
      * Asserts that `actual` is truthy.
      *
@@ -1363,14 +1363,14 @@ interface Assertion {
      * @param message - An assertion message that will be displayed in the report if the test fails.
      * @param options - Assertion options.
      */
-    contains(expected: any, message?: string, options?: AssertionOptions): TestControllerPromise;
+    contains(expected: E, message?: string, options?: AssertionOptions): TestControllerPromise;
     /**
      * Asserts that `actual` contains `expected`.
      *
      * @param expected - An expected value.
      * @param options - Assertion options.
      */
-    contains(expected: any, options?: AssertionOptions): TestControllerPromise;
+    contains(expected: E, options?: AssertionOptions): TestControllerPromise;
     /**
      * Asserts that `actual` not contains `unexpected`.
      *
@@ -1378,14 +1378,14 @@ interface Assertion {
      * @param message - An assertion message that will be displayed in the report if the test fails.
      * @param options - Assertion options.
      */
-    notContains(unexpected: any, message?: string, options?: AssertionOptions): TestControllerPromise;
+    notContains(unexpected: E, message?: string, options?: AssertionOptions): TestControllerPromise;
     /**
      * Asserts that `actual` not contains `unexpected`.
      *
      * @param unexpected - An unexpected value.
      * @param options - Assertion options.
      */
-    notContains(unexpected: any, options?: AssertionOptions): TestControllerPromise;
+    notContains(unexpected: E, options?: AssertionOptions): TestControllerPromise;
     /**
      * Asserts that type of `actual` is `typeName`.
      *
@@ -1393,14 +1393,14 @@ interface Assertion {
      * @param message - An assertion message that will be displayed in the report if the test fails.
      * @param options - Assertion options.
      */
-    typeOf(typeName: String, message?: string, options?: AssertionOptions): TestControllerPromise;
+    typeOf(typeName: 'function' | 'object' | 'number' | 'string' | 'boolean' | 'undefined' | 'regex', message?: string, options?: AssertionOptions): TestControllerPromise;
     /**
      * Asserts that type of `actual` is `typeName`.
      *
      * @param typeName - The expected type of an `actual` value.
      * @param options - Assertion options.
      */
-    typeOf(typeName: String, options?: AssertionOptions): TestControllerPromise;
+    typeOf(typeName: 'function' | 'object' | 'number' | 'string' | 'boolean' | 'undefined' | 'regex', options?: AssertionOptions): TestControllerPromise;
     /**
      * Asserts that type of `actual` is not `typeName`.
      *
@@ -1408,14 +1408,14 @@ interface Assertion {
      * @param message - An assertion message that will be displayed in the report if the test fails.
      * @param options - Assertion options.
      */
-    notTypeOf(typeName: String, message?: string, options?: AssertionOptions): TestControllerPromise;
+    notTypeOf(typeName: 'function' | 'object' | 'number' | 'string' | 'boolean' | 'undefined' | 'regex', message?: string, options?: AssertionOptions): TestControllerPromise;
     /**
      * Asserts that type of `actual` is not `typeName`.
      *
      * @param typeName - An unexpected type of an `actual` value.
      * @param options - Assertion options.
      */
-    notTypeOf(typeName: String, options?: AssertionOptions): TestControllerPromise;
+    notTypeOf(typeName: 'function' | 'object' | 'number' | 'string' | 'boolean' | 'undefined' | 'regex', options?: AssertionOptions): TestControllerPromise;
     /**
      * Asserts that `actual` is strictly greater than `expected`.
      *
@@ -1758,7 +1758,7 @@ declare module 'testcafe' {
      * @param fn - Function code.
      * @param options - Function options.
      */
-    export function ClientFunction(fn: Function, options?: ClientFunctionOptions): ClientFunction;
+    export function ClientFunction<R, A extends any[]>(fn: (...args: A) => R, options?: ClientFunctionOptions): ClientFunction<R, A>;
 
     /**
      * Creates a request mock
