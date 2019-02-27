@@ -43,13 +43,16 @@ Feel free to ask for more details.
 | Clear and flexible [API](https://devexpress.github.io/testcafe/documentation/test-api/) supports ES6 and [PageModel pattern](https://devexpress.github.io/testcafe/documentation/recipes/using-page-model.html) | &#10003; | &#10003; |
 | Stable tests due to the [Smart Assertion Query Mechanism](https://devexpress.github.io/testcafe/documentation/test-api/assertions/#smart-assertion-query-mechanism) | &#10003; | &#10003; |
 | Tests run fast due to intelligent [Automatic Waiting Mechanism](https://devexpress.github.io/testcafe/documentation/test-api/waiting-for-page-elements-to-appear.html) and [Concurrent Test Execution](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/concurrent-test-execution.html) | &#10003; | &#10003; |
-| Easy integration with popular CI systems | &#10003; | &nbsp; |
-| Extendable with [plugins](https://github.com/DevExpress/testcafe#plugins) and other Node.js modules | &#10003; | &nbsp; |
-| Free and open-source | &#10003; | \* |
+| Custom reporter plugins | &#10003; | &#10003; |
+| Use third-party Node.js modules in test scripts | &#10003; | &#10003; |
+| Integration with popular CI systems | &#10003; | &nbsp;&#10003;\* |
+| Free and open-source | &#10003; | \*\* |
 | [Visual Test Recorder](https://docs.devexpress.com/TestCafeStudio/400165/guides/record-tests) | &nbsp; | &#10003; |
 | IDE-like GUI | &nbsp; | &#10003; |
+| [Run Configuration Manager](https://docs.devexpress.com/TestCafeStudio/400189/user-interface/run-configurations-dialog) | &nbsp; | &#10003; |
 
-\* TestCafe Studio is currently available as a free preview version. After the official release, it will require a paid license. TestCafe Studio is proprietary.
+\* You can use open-source TestCafe to run TestCafe Studio tests in CI systems.  
+\*\* TestCafe Studio is currently available as a free preview version. After the official release, it will require a paid license. TestCafe Studio is proprietary.
 
 ### Has [TestCafe v2015.1](https://testcafe.devexpress.com) been deprecated?
 
