@@ -10,8 +10,7 @@ import {
     actionOptions
 } from './validations/argument';
 
-import generateScreenshotMark from '../../screenshots/png';
-
+import { generateScreenshotMark } from '../../screenshots/utils';
 
 function initResizeToFitDeviceOptions (name, val) {
     return new ResizeToFitDeviceOptions(val, true);

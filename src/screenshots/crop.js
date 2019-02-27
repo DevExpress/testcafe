@@ -1,4 +1,4 @@
-import { readPng, copyImagePart } from './png';
+import { readPng, copyImagePart } from './utils';
 import limitNumber from '../utils/limit-number';
 import renderTemplate from '../utils/render-template';
 import { InvalidElementScreenshotDimensionsError } from '../errors/test-run/';
@@ -15,18 +15,26 @@ function markSeedToId (markSeed) {
     return id;
 }
 
-export function updateClipInfoByMarkSeed (pngImage, path, markSeed, { width, height }) {
-    const mark = Buffer.from(markSeed);
-
+export function calculateMarkPosition (pngImage, markSeed) {
+    const mark      = Buffer.from(markSeed);
     const markIndex = pngImage.data.indexOf(mark);
 
     if (markIndex < 0)
-        throw new Error(renderTemplate(WARNING_MESSAGES.screenshotMarkNotFound, path, markSeedToId(markSeed)));
+        return null;
 
     const endPosition = markIndex / MARK_BYTES_PER_PIXEL + MARK_LENGTH + MARK_RIGHT_MARGIN;
 
-    const clipRight  = endPosition % pngImage.width || pngImage.width;
-    const clipBottom = (endPosition - clipRight) / pngImage.width + 1;
+    const x = endPosition % pngImage.width || pngImage.width;
+    const y = (endPosition - x) / pngImage.width + 1;
+
+    return { x, y };
+}
+
+export function getClipInfoByMarkPosition (markPosition, { width, height }) {
+    const { x, y } = markPosition;
+
+    const clipRight  = x;
+    const clipBottom = y;
     const clipLeft   = clipRight - width;
     const clipTop    = clipBottom - height;
 
@@ -38,7 +46,7 @@ export function updateClipInfoByMarkSeed (pngImage, path, markSeed, { width, hei
     };
 }
 
-export function updateClipInfoByCropDimensions ({ clipRight, clipLeft, clipBottom, clipTop }, cropDimensions) {
+export function getClipInfoByCropDimensions ({ clipRight, clipLeft, clipBottom, clipTop }, cropDimensions) {
     if (cropDimensions) {
         const { right, top, bottom, left } = cropDimensions;
 
@@ -64,17 +72,20 @@ export function calculateClipInfo (pngImage, path, markSeed, clientAreaDimension
         clipTop:    0
     };
 
-    let markLineNumber = null;
+    let markPosition = null;
 
     if (markSeed && clientAreaDimensions) {
-        clipInfo = updateClipInfoByMarkSeed(pngImage, path, markSeed, clientAreaDimensions);
+        markPosition = calculateMarkPosition(pngImage, markSeed);
 
-        markLineNumber = clipInfo.clipBottom;
+        if (!markPosition)
+            throw new Error(renderTemplate(WARNING_MESSAGES.screenshotMarkNotFound, path, markSeedToId(markSeed)));
+
+        clipInfo = getClipInfoByMarkPosition(markPosition, clientAreaDimensions);
     }
 
-    clipInfo = updateClipInfoByCropDimensions(clipInfo, cropDimensions);
+    clipInfo = getClipInfoByCropDimensions(clipInfo, cropDimensions);
 
-    if (markSeed && clipInfo.clipBottom === markLineNumber)
+    if (markPosition && markPosition.y === clipInfo.clipBottom)
         clipInfo.clipBottom--;
 
     const clipWidth  = clipInfo.clipRight - clipInfo.clipLeft;

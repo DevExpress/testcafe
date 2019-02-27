@@ -6,7 +6,7 @@ import * as cdp from './cdp';
 import getMaximizedHeadlessWindowSize from '../../utils/get-maximized-headless-window-size';
 import { GET_WINDOW_DIMENSIONS_INFO_SCRIPT } from '../../utils/client-functions';
 import { cropScreenshot } from '../../../../screenshots/crop';
-import { writePng } from '../../../../screenshots/png';
+import { writePng } from '../../../../screenshots/utils';
 
 const MIN_AVAILABLE_DIMENSION = 50;
 

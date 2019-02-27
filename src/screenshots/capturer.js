@@ -7,7 +7,7 @@ import WARNING_MESSAGE from '../notifications/warning-message';
 import escapeUserAgent from '../utils/escape-user-agent';
 import correctFilePath from '../utils/correct-file-path';
 import { readFile, deleteFile, stat } from '../utils/promisified-functions';
-import { writePng } from './png';
+import { writePng } from './utils';
 
 export default class Capturer {
     constructor (baseScreenshotsPath, testEntry, connection, pathPattern, warningLog) {
