@@ -7,7 +7,8 @@ permalink: /faq/
 
 * [General Questions](#general-questions)
   * [I have heard that TestCafe does not use Selenium. How does it operate?](#i-have-heard-that-testcafe-does-not-use-selenium-how-does-it-operate)
-  * [What is the difference between TestCafe Studio and open-source TestCafe? Has TestCafe v2015.1 been deprecated?](#what-is-the-difference-between-testcafe-studio-and-open-source-testcafe-has-testcafe-v20151-been-deprecated)
+  * [What is the difference between TestCafe Studio and open-source TestCafe?](#what-is-the-difference-between-testcafe-studio-and-open-source-testcafe)
+  * [Has TestCafe v2015.1 been deprecated?](#has-testcafe-v20151-been-deprecated)
   * [Which browsers does TestCafe support? What are the exact supported versions?](#which-browsers-does-testcafe-support-what-are-the-exact-supported-versions)
   * [Can I use third-party modules in tests?](#can-i-use-third-party-modules-in-tests)
   * [How do I work with configuration files and environment variables?](#how-do-i-work-with-configuration-files-and-environment-variables)
@@ -32,30 +33,25 @@ This proxy injects the driver script that emulates user actions into the tested 
 You can read about this in our [forum](https://testcafe-discuss.devexpress.com/t/why-not-use-selenium/47).
 Feel free to ask for more details.
 
-### What is the difference between [TestCafe Studio](https://www.devexpress.com/products/testcafestudio/) and [open-source TestCafe](https://devexpress.github.io/testcafe)? Has [TestCafe v2015.1](https://testcafe.devexpress.com) been deprecated?
+### What is the difference between [TestCafe Studio](https://www.devexpress.com/products/testcafestudio/) and [open-source TestCafe](https://devexpress.github.io/testcafe)?
 
-Both TestCafe Studio and open-source TestCafe share the same core features:
+| &nbsp; | [TestCafe](https://devexpress.github.io/testcafe) | [TestCafe Studio](https://www.devexpress.com/products/testcafestudio/)  |
+| ------ |:-------------------------------------------------:|:-----------------------------------------------------------------------:|
+| No need for WebDriver, browser plugins or other tools | &#10003; | &#10003; |
+| Cross-platform and cross-browser out of the box | &#10003; | &#10003; |
+| Write tests in the latest JavaScript or TypeScript | &#10003; | &#10003; |
+| Clear and flexible [API](https://devexpress.github.io/testcafe/documentation/test-api/) supports ES6 and [PageModel pattern](https://devexpress.github.io/testcafe/documentation/recipes/using-page-model.html) | &#10003; | &#10003; |
+| Stable tests due to the [Smart Assertion Query Mechanism](https://devexpress.github.io/testcafe/documentation/test-api/assertions/#smart-assertion-query-mechanism) | &#10003; | &#10003; |
+| Tests run fast due to intelligent [Automatic Waiting Mechanism](https://devexpress.github.io/testcafe/documentation/test-api/waiting-for-page-elements-to-appear.html) and [Concurrent Test Execution](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/concurrent-test-execution.html) | &#10003; | &#10003; |
+| Easy integration with popular CI systems | &#10003; | &nbsp; |
+| Extendable with [plugins](https://github.com/DevExpress/testcafe#plugins) and other Node.js modules | &#10003; | &nbsp; |
+| Free and open-source | &#10003; | \* |
+| [Visual Test Recorder](https://docs.devexpress.com/TestCafeStudio/400165/guides/record-tests) | &nbsp; | &#10003; |
+| IDE-like GUI | &nbsp; | &#10003; |
 
-* No need for WebDriver, browser plugins or other tools.
-* Cross-platform and cross-browser out of the box.
+\* TestCafe Studio is currently available as a free preview version. After the official release, it will require a paid license. TestCafe Studio is proprietary.
 
-[TestCafe](https://devexpress.github.io/testcafe)  
-*first released in 2016, free and open-source node.js application*
-
-* You can write tests in the latest JavaScript or TypeScript.
-* Clear and flexible [API](https://devexpress.github.io/testcafe/documentation/test-api/) supports ES6 and [PageModel pattern](https://devexpress.github.io/testcafe/documentation/recipes/using-page-model.html).
-* Stable tests due to the [Smart Assertion Query Mechanism](https://devexpress.github.io/testcafe/documentation/test-api/assertions/#smart-assertion-query-mechanism).
-* Tests run fast due to intelligent [Automatic Waiting Mechanism](https://devexpress.github.io/testcafe/documentation/test-api/waiting-for-page-elements-to-appear.html) and [Concurrent Test Execution](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/concurrent-test-execution.html).
-* Easy integration: it is a node.js solution with CLI and reporters for popular CI systems.
-* You can extend it with [plugins](https://github.com/DevExpress/testcafe#plugins) and other Node.js modules.
-
-[TestCafe Studio](https://www.devexpress.com/products/testcafestudio/)  
-*Preview released in 2018, commercial desktop application*  
-
-* Based on the open-source TestCafe, and supports its major features.
-* You can record tests or edit them as JavaScript or TypeScript code.
-* New [Visual Test Recorder](https://docs.devexpress.com/TestCafeStudio/400165/guides/record-tests) and [IDE-like GUI](https://docs.devexpress.com/TestCafeStudio/400181/user-interface/code-editor) to record, edit, run and debug tests.
-* Currently available as a free preview version.
+### Has [TestCafe v2015.1](https://testcafe.devexpress.com) been deprecated?
 
 [TestCafe v2015.1](https://testcafe.devexpress.com) is no longer available for purchase or subscription renewal. We recommend that TestCafe v2015.1 users switch to [TestCafe Studio](https://www.devexpress.com/products/testcafestudio/) to get access to the latest features. See this [blog post](https://community.devexpress.com/blogs/testcafe/archive/2018/11/26/testcafe-studio-a-new-web-testing-ide.aspx) for details.
 
