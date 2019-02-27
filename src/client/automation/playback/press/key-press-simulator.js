@@ -5,7 +5,6 @@ import { getChar, getDeepActiveElement, changeLetterCase } from './utils';
 import getKeyCode from '../../utils/get-key-code';
 import getKeyIdentifier from '../../utils/get-key-identifier';
 import isLetterKey from '../../utils/is-letter';
-import keyIdentifierRequiredForEvent from '../../utils/key-identifier-required-for-event';
 
 const browserUtils   = hammerhead.utils.browser;
 const extend         = hammerhead.utils.extend;
@@ -73,10 +72,10 @@ export default class KeyPressSimulator {
     }
 
     _addKeyPropertyToEventOptions (eventOptions) {
-        if (keyIdentifierRequiredForEvent())
+        if (browserUtils.isSafari)
             eventOptions.keyIdentifier = eventOptions.type === 'keypress' ? '' : this.keyIdentifierProperty;
-        else
-            eventOptions.key = this.keyProperty;
+
+        eventOptions.key = this.keyProperty;
 
         return eventOptions;
     }

@@ -160,46 +160,45 @@ $(document).ready(function () {
 
     module('regression tests');
 
-    if (!browserUtils.isSafari && (!browserUtils.isChrome || browserUtils.version > 53)) {
-        asyncTest('T334620 - Wrong "key" property in keyEvent objects (press)', function () {
-            const textarea = document.createElement('textarea');
+    asyncTest('T334620, GH-3282 - Wrong "key" property in keyEvent objects (press)', function () {
+        const textarea = document.createElement('textarea');
 
-            textarea.className = TEST_ELEMENT_CLASS;
+        textarea.className = TEST_ELEMENT_CLASS;
 
-            document.body.appendChild(textarea);
+        document.body.appendChild(textarea);
 
-            let keydownKeyProperty  = '';
-            let keypressKeyProperty = '';
-            let keyupKeyProperty    = '';
+        let keydownKeyProperty  = '';
+        let keypressKeyProperty = '';
+        let keyupKeyProperty    = '';
 
-            textarea.focus();
+        textarea.focus();
 
-            textarea.addEventListener('keydown', function (e) {
-                keydownKeyProperty += e.key;
-            });
-
-            textarea.addEventListener('keypress', function (e) {
-                keypressKeyProperty += e.key;
-            });
-
-            textarea.addEventListener('keyup', function (e) {
-                keyupKeyProperty += e.key;
-            });
-
-            const press = new PressAutomation(parseKeySequence('a A shift+a ! enter shift+1 shift+!').combinations, {});
-
-            press
-                .run()
-                .then(function () {
-                    equal(keydownKeyProperty, 'aAShiftAShift!EnterShift!Shift!');
-                    equal(keypressKeyProperty, 'aAA!Enter!!');
-                    equal(keyupKeyProperty, 'aAAShift!ShiftEnter!Shift!Shift');
-                    equal(textarea.value, 'aAA!\n!!');
-                    start();
-                });
+        textarea.addEventListener('keydown', function (e) {
+            keydownKeyProperty += e.key;
         });
-    }
-    else {
+
+        textarea.addEventListener('keypress', function (e) {
+            keypressKeyProperty += e.key;
+        });
+
+        textarea.addEventListener('keyup', function (e) {
+            keyupKeyProperty += e.key;
+        });
+
+        const press = new PressAutomation(parseKeySequence('a A shift+a ! enter shift+1 shift+!').combinations, {});
+
+        press
+            .run()
+            .then(function () {
+                equal(keydownKeyProperty, 'aAShiftAShift!EnterShift!Shift!');
+                equal(keypressKeyProperty, 'aAA!Enter!!');
+                equal(keyupKeyProperty, 'aAAShift!ShiftEnter!Shift!Shift');
+                equal(textarea.value, 'aAA!\n!!');
+                start();
+            });
+    });
+
+    if (browserUtils.isSafari) {
         asyncTest('T334620 - Wrong "keyIdentifier" property in keyEvent objects (press)', function () {
             const textarea = document.createElement('textarea');
 

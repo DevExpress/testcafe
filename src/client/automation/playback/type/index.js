@@ -5,7 +5,6 @@ import ClickAutomation from '../click';
 import typeText from './type-text';
 import getKeyCode from '../../utils/get-key-code';
 import getKeyIdentifier from '../../utils/get-key-identifier';
-import keyIdentifierRequiredForEvent from '../../utils/key-identifier-required-for-event';
 import { getDefaultAutomationOffsets } from '../../utils/offsets';
 import AutomationSettings from '../../settings';
 
@@ -13,6 +12,7 @@ const Promise               = hammerhead.Promise;
 const extend                = hammerhead.utils.extend;
 const eventSimulator        = hammerhead.eventSandbox.eventSimulator;
 const elementEditingWatcher = hammerhead.eventSandbox.elementEditingWatcher;
+const browserUtils          = hammerhead.utils.browser;
 
 const domUtils        = testCafeCore.domUtils;
 const promiseUtils    = testCafeCore.promiseUtils;
@@ -89,10 +89,10 @@ export default class TypeAutomation {
         if (isPressEvent)
             options.charCode = this.currentCharCode;
 
-        if (keyIdentifierRequiredForEvent())
+        if (browserUtils.isSafari)
             options.keyIdentifier = isPressEvent ? '' : this.currentKeyIdentifier;
-        else
-            options.key = this.currentKey;
+
+        options.key = this.currentKey;
 
         return { element, options };
     }
