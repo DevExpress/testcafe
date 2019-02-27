@@ -15,7 +15,7 @@ Feature                                                                         
 [Testing in Multiple Browser Windows](https://github.com/DevExpress/testcafe/issues/912)          | Under Consideration
 [Cucumber Integration](https://github.com/DevExpress/testcafe/issues/2835)                        | Under Consideration
 [Selector Debug Panel](https://github.com/DevExpress/testcafe/issues/3244)                        | Under Consideration
-[Entire Page Screenshots](https://github.com/DevExpress/testcafe/issues/1520)                     | Under Consideration
+[Screenshots of the Entire Page](https://github.com/DevExpress/testcafe/issues/1520)              | Under Consideration
 [Custom Actions](https://github.com/DevExpress/testcafe/issues/1535)                              | Under Consideration
 [Custom TypeScript Compilation Options](https://github.com/DevExpress/testcafe/issues/1845)       | Under Consideration
 [Conditional Test Skip](https://github.com/DevExpress/testcafe/issues/1626)                       | Under Consideration
