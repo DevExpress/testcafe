@@ -1,12 +1,13 @@
 import { join as joinPath, dirname, basename } from 'path';
 import { generateThumbnail } from 'testcafe-browser-tools';
-import cropScreenshot from './crop';
+import { cropScreenshot } from './crop';
 import makeDir from 'make-dir';
 import { isInQueue, addToQueue } from '../utils/async-queue';
 import WARNING_MESSAGE from '../notifications/warning-message';
 import escapeUserAgent from '../utils/escape-user-agent';
 import correctFilePath from '../utils/correct-file-path';
-import { stat } from '../utils/promisified-functions';
+import { readFile, deleteFile, stat } from '../utils/promisified-functions';
+import { writePng } from './utils';
 
 export default class Capturer {
     constructor (baseScreenshotsPath, testEntry, connection, pathPattern, warningLog) {
@@ -121,7 +122,25 @@ export default class Capturer {
             if (!await Capturer._isScreenshotCaptured(screenshotPath))
                 return;
 
-            await cropScreenshot(screenshotPath, markSeed, Capturer._getClientAreaDimensions(pageDimensions), Capturer._getCropDimensions(cropDimensions, pageDimensions));
+            try {
+                const binaryImage = await readFile(screenshotPath);
+
+                const croppedImage = await cropScreenshot(
+                    screenshotPath,
+                    markSeed,
+                    Capturer._getClientAreaDimensions(pageDimensions),
+                    Capturer._getCropDimensions(cropDimensions, pageDimensions),
+                    binaryImage
+                );
+
+                if (croppedImage)
+                    await writePng(screenshotPath, croppedImage);
+            }
+            catch (err) {
+                await deleteFile(screenshotPath);
+
+                throw err;
+            }
 
             await generateThumbnail(screenshotPath, thumbnailPath);
         });
