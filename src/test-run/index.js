@@ -1,9 +1,9 @@
-import EventEmitter from 'events';
 import { pull as remove } from 'lodash';
 import { readSync as read } from 'read-file-relative';
 import promisifyEvent from 'promisify-event';
 import Promise from 'pinkie';
 import Mustache from 'mustache';
+import AsyncEventEmitter from '../utils/async-event-emitter';
 import debugLogger from '../notifications/debug-logger';
 import TestRunDebugLog from './debug-log';
 import TestRunErrorFormattableAdapter from '../errors/test-run/formattable-adapter';
@@ -19,6 +19,7 @@ import ROLE_PHASE from '../role/phase';
 import ReporterPluginHost from '../reporter/plugin-host';
 import BrowserConsoleMessages from './browser-console-messages';
 import { UNSTABLE_NETWORK_MODE_HEADER } from '../browser/connection/unstable-network-mode';
+import WarningLog from '../notifications/warning-log';
 import WARNING_MESSAGE from '../notifications/warning-message';
 
 import {
@@ -45,15 +46,17 @@ const serviceCommands             = lazyRequire('./commands/service');
 const TEST_RUN_TEMPLATE               = read('../client/test-run/index.js.mustache');
 const IFRAME_TEST_RUN_TEMPLATE        = read('../client/test-run/iframe.js.mustache');
 const TEST_DONE_CONFIRMATION_RESPONSE = 'test-done-confirmation';
-const MAX_RESPONSE_DELAY              = 2 * 60 * 1000;
+const MAX_RESPONSE_DELAY              = 3000;
 
 const ALL_DRIVER_TASKS_ADDED_TO_QUEUE_EVENT = 'all-driver-tasks-added-to-queue';
 
-export default class TestRun extends EventEmitter {
-    constructor (test, browserConnection, screenshotCapturer, warningLog, opts) {
+export default class TestRun extends AsyncEventEmitter {
+    constructor (test, browserConnection, screenshotCapturer, globalWarningLog, opts) {
         super();
 
         this[testRunMarker] = true;
+
+        this.warningLog = new WarningLog(globalWarningLog);
 
         this.opts              = opts;
         this.test              = test;
@@ -100,13 +103,11 @@ export default class TestRun extends EventEmitter {
         this.disableDebugBreakpoints = false;
         this.debugReporterPluginHost = new ReporterPluginHost({ noColors: false });
 
-        this.browserManipulationQueue = new BrowserManipulationQueue(browserConnection, screenshotCapturer, warningLog);
+        this.browserManipulationQueue = new BrowserManipulationQueue(browserConnection, screenshotCapturer, this.warningLog);
 
         this.debugLog = new TestRunDebugLog(this.browserConnection.userAgent);
 
         this.quarantine = null;
-
-        this.warningLog = warningLog;
 
         this.injectable.scripts.push('/testcafe-core.js');
         this.injectable.scripts.push('/testcafe-ui.js');
@@ -274,11 +275,15 @@ export default class TestRun extends EventEmitter {
     async start () {
         testRunTracker.activeTestRuns[this.session.id] = this;
 
-        this.emit('start');
+        await this.emit('start');
 
         const onDisconnected = err => this._disconnect(err);
 
         this.browserConnection.once('disconnected', onDisconnected);
+
+        await this.once('connected');
+
+        await this.emit('ready');
 
         if (await this._runBeforeHook()) {
             await this._executeTestFn(PHASE.inTest, this.test.fn);
@@ -293,22 +298,15 @@ export default class TestRun extends EventEmitter {
         if (this.errs.length && this.debugOnFail)
             await this._enqueueSetBreakpointCommand(null, this.debugReporterPluginHost.formatError(this.errs[0]));
 
+        await this.emit('before-done');
+
         await this.executeCommand(new serviceCommands.TestDoneCommand());
 
         this._addPendingPageErrorIfAny();
 
         delete testRunTracker.activeTestRuns[this.session.id];
 
-        this.emit('done');
-    }
-
-    _evaluate (code) {
-        try {
-            return executeJsExpression(code, this, { skipVisibilityCheck: false });
-        }
-        catch (err) {
-            return { err };
-        }
+        await this.emit('done');
     }
 
     // Errors
@@ -322,15 +320,19 @@ export default class TestRun extends EventEmitter {
         return false;
     }
 
+    _createErrorAdapter (err, screenshotPath) {
+        return new TestRunErrorFormattableAdapter(err, {
+            userAgent:      this.browserConnection.userAgent,
+            screenshotPath: screenshotPath || '',
+            testRunPhase:   this.phase
+        });
+    }
+
     addError (err, screenshotPath) {
         const errList = err instanceof TestCafeErrorList ? err.items : [err];
 
         errList.forEach(item => {
-            const adapter = new TestRunErrorFormattableAdapter(item, {
-                userAgent:      this.browserConnection.userAgent,
-                screenshotPath: screenshotPath || '',
-                testRunPhase:   this.phase
-            });
+            const adapter = this._createErrorAdapter(item, screenshotPath);
 
             this.errs.push(adapter);
         });
@@ -341,12 +343,12 @@ export default class TestRun extends EventEmitter {
         if (this.pendingRequest)
             this._resolvePendingRequest(command);
 
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             this.addingDriverTasksCount--;
             this.driverTaskQueue.push({ command, resolve, reject, callsite });
 
             if (!this.addingDriverTasksCount)
-                this.emit(ALL_DRIVER_TASKS_ADDED_TO_QUEUE_EVENT, this.driverTaskQueue.length);
+                await this.emit(ALL_DRIVER_TASKS_ADDED_TO_QUEUE_EVENT, this.driverTaskQueue.length);
         });
     }
 
@@ -483,7 +485,7 @@ export default class TestRun extends EventEmitter {
         if (isAsyncExpression)
             expression = `(async () => { return ${expression}; }).apply(this);`;
 
-        const result = this._evaluate(expression);
+        const result = executeJsExpression(expression, this, { skipVisibilityCheck: false });
 
         return isAsyncExpression ? await result : result;
     }
@@ -693,8 +695,11 @@ export default class TestRun extends EventEmitter {
 // Service message handlers
 const ServiceMessages = TestRun.prototype;
 
+// NOTE: this function is time-critical and must return ASAP to avoid client disconnection
 ServiceMessages[CLIENT_MESSAGES.ready] = function (msg) {
     this.debugLog.driverMessage(msg);
+
+    this.emit('connected');
 
     this._clearPendingRequest();
 
@@ -709,8 +714,8 @@ ServiceMessages[CLIENT_MESSAGES.ready] = function (msg) {
     if (this.lastDriverStatusResponse)
         return this.lastDriverStatusResponse;
 
-    // NOTE: browsers abort an opened xhr request after a certain timeout (the actual duration depends on the browser).
-    // To avoid this, we send an empty response after 2 minutes if we didn't get any command.
+    // NOTE: we send an empty response after the MAX_RESPONSE_DELAY timeout is exceeded to keep connection
+    // with the client and prevent the response timeout exception on the client side
     const responseTimeout = setTimeout(() => this._resolvePendingRequest(null), MAX_RESPONSE_DELAY);
 
     return new Promise((resolve, reject) => {

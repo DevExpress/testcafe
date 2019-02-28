@@ -5,7 +5,7 @@ import parseProviderName from './parse-provider-name';
 import BrowserProvider from './';
 import BrowserConnection from '../connection';
 import { GeneralError } from '../../errors/runtime';
-import MESSAGE from '../../errors/runtime/message';
+import { RUNTIME_ERRORS } from '../../errors/types';
 
 const BROWSER_PROVIDER_RE = /^([^:\s]+):?(.*)?$/;
 
@@ -24,7 +24,7 @@ export default {
         const providerRegExpMatch = BROWSER_PROVIDER_RE.exec(alias);
 
         if (!providerRegExpMatch)
-            throw new GeneralError(MESSAGE.cantFindBrowser, alias);
+            throw new GeneralError(RUNTIME_ERRORS.cannotFindBrowser, alias);
 
         let providerName = providerRegExpMatch[1];
         let browserName  = providerRegExpMatch[2] || '';
@@ -44,13 +44,16 @@ export default {
     },
 
     async _parseAlias (alias) {
+        if (alias.browserName && alias.providerName && alias.provider)
+            return alias;
+
         if (alias && alias.path)
             return this._handlePathAndCmd(alias);
 
         if (typeof alias === 'string')
             return this._parseAliasString(alias);
 
-        throw new GeneralError(MESSAGE.cantFindBrowser, alias);
+        throw new GeneralError(RUNTIME_ERRORS.cannotFindBrowser, alias);
     },
 
     async _getInfoForAllBrowserNames (provider, providerName) {
@@ -104,9 +107,9 @@ export default {
             return await this._getInfoForAllBrowserNames(provider, providerName);
 
         if (!await provider.isValidBrowserName(browserName))
-            throw new GeneralError(MESSAGE.cantFindBrowser, alias);
+            throw new GeneralError(RUNTIME_ERRORS.cannotFindBrowser, alias);
 
-        return browserInfo;
+        return { alias, ...browserInfo };
     },
 
     addProvider (providerName, providerObject) {

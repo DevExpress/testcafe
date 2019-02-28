@@ -103,7 +103,7 @@ describe('Native dialogs handling in iframe', function () {
                 DEFAULT_FAILED_RUN_IN_IFRAME_OPTIONS)
                 .catch(function (errs) {
                     errorInEachBrowserContains(errs, getNativeDialogNotHandledErrorText('alert', pageLoadingUrl), 0);
-                    errorInEachBrowserContains(errs, '> 28 |    await t.click(\'body\'); ', 0);
+                    errorInEachBrowserContains(errs, '> 30 |        await t.click(\'body\'); ', 0);
                 });
         });
     });

@@ -482,6 +482,29 @@ describe('API', function () {
                     });
                 });
         });
+
+        it('Should raise an error if fixture is missing', function () {
+            const file = resolve('test/server/data/test-suites/fixture-is-missing/testfile.js');
+
+            return compile(file)
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    assertAPIError(err, {
+                        stackTop: file,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 'The fixture of \'Test\' test is expected to be a non-null object, but it was null.',
+
+                        callsite: '   1 |// fixture `Fixture`\n' +
+                                  '   2 |\n' +
+                                  ' > 3 |test(\'Test\', () => {\n' +
+                                  '   4 |    return \'yo\';\n' +
+                                  '   5 |});'
+                    });
+                });
+        });
     });
 
     describe('Selector', function () {
@@ -1309,8 +1332,8 @@ describe('API', function () {
     });
 
     describe('TestController import', function () {
-        it('Should raise an error if TestControllerProxy can not resolve test run', function () {
-            const testfile = resolve('test/server/data/test-suites/cant-resolve-test-run-proxy-context/testfile.js');
+        it('Should raise an error if TestControllerProxy cannot resolve test run', function () {
+            const testfile = resolve('test/server/data/test-suites/cannot-resolve-test-run-proxy-context/testfile.js');
 
             return compile(testfile)
                 .then(function () {

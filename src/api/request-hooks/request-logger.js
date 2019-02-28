@@ -4,7 +4,7 @@ import { parse as parseUserAgent } from 'useragent';
 import testRunTracker from '../test-run-tracker';
 import ReExecutablePromise from '../../utils/re-executable-promise';
 import { APIError } from '../../errors/runtime';
-import MESSAGE from '../../errors/runtime/message';
+import { RUNTIME_ERRORS } from '../../errors/types';
 
 const DEFAULT_OPTIONS = {
     logRequestHeaders:     false,
@@ -31,13 +31,13 @@ class RequestLoggerImplementation extends RequestHook {
 
     static _assertLogOptions (logOptions) {
         if (!logOptions.logRequestBody && logOptions.stringifyRequestBody)
-            throw new APIError('RequestLogger', MESSAGE.requestHookConfigureAPIError, 'RequestLogger', 'Cannot stringify the request body because it is not logged. Specify { logRequestBody: true } in log options.');
+            throw new APIError('RequestLogger', RUNTIME_ERRORS.requestHookConfigureAPIError, 'RequestLogger', 'Cannot stringify the request body because it is not logged. Specify { logRequestBody: true } in log options.');
 
         if (!logOptions.logResponseBody && logOptions.stringifyResponseBody)
-            throw new APIError('RequestLogger', MESSAGE.requestHookConfigureAPIError, 'RequestLogger', 'Cannot stringify the response body because it is not logged. Specify { logResponseBody: true } in log options.');
+            throw new APIError('RequestLogger', RUNTIME_ERRORS.requestHookConfigureAPIError, 'RequestLogger', 'Cannot stringify the response body because it is not logged. Specify { logResponseBody: true } in log options.');
     }
 
-    onRequest (event) {
+    async onRequest (event) {
         const userAgent = parseUserAgent(event._requestInfo.userAgent).toString();
 
         const loggedReq = {
@@ -59,7 +59,7 @@ class RequestLoggerImplementation extends RequestHook {
         this._internalRequests[loggedReq.id] = loggedReq;
     }
 
-    onResponse (event) {
+    async onResponse (event) {
         const loggerReq = this._internalRequests[event.requestId];
 
         // NOTE: If the 'clear' method is called during a long running request,

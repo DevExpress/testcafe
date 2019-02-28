@@ -1,3 +1,4 @@
+/* eslint-disable no-only-tests/no-only-tests*/
 fixture.only `Fixture1`;
 
 test('Fixture1Test1', () => {

@@ -1,15 +1,13 @@
-import { resolve, dirname } from 'path';
 import { Command } from 'commander';
 import dedent from 'dedent';
 import { readSync as read } from 'read-file-relative';
-import makeDir from 'make-dir';
 import { GeneralError } from '../errors/runtime';
-import MESSAGE from '../errors/runtime/message';
+import { RUNTIME_ERRORS } from '../errors/types';
 import { assertType, is } from '../errors/runtime/type-assertions';
 import getViewPortWidth from '../utils/get-viewport-width';
 import { wordWrap, splitQuotedText } from '../utils/string';
-import { isMatch } from 'lodash';
-import parseSslOptions from './parse-ssl-options';
+import { getSSLOptions, getVideoOptions, getMetaOptions, getGrepOptions } from '../utils/get-options';
+import getFilterFn from '../utils/get-filter-fn';
 
 const REMOTE_ALIAS_RE = /^remote(?::(\d*))?$/;
 
@@ -49,38 +47,6 @@ export default class CLIArgumentParser {
         return parseInt(value, 10);
     }
 
-    static _optionValueToRegExp (name, value) {
-        if (value === void 0)
-            return value;
-
-        try {
-            return new RegExp(value);
-        }
-        catch (err) {
-            throw new GeneralError(MESSAGE.optionValueIsNotValidRegExp, name);
-        }
-    }
-
-    static _optionValueToKeyValue (name, value) {
-        if (value === void 0)
-            return value;
-
-        const keyValue = value.split(',').reduce((obj, pair) => {
-            const [key, val] = pair.split('=');
-
-            if (!key || !val)
-                throw new GeneralError(MESSAGE.optionValueIsNotValidKeyValue, name);
-
-            obj[key] = val;
-            return obj;
-        }, {});
-
-        if (Object.keys(keyValue).length === 0)
-            throw new GeneralError(MESSAGE.optionValueIsNotValidKeyValue, name);
-
-        return keyValue;
-    }
-
     static _getDescription () {
         // NOTE: add empty line to workaround commander-forced indentation on the first line.
         return '\n' + wordWrap(DESCRIPTION, 2, getViewPortWidth(process.stdout));
@@ -90,7 +56,6 @@ export default class CLIArgumentParser {
         const version = JSON.parse(read('../../package.json')).version;
 
         this.program
-
             .version(version, '-v, --version')
             .usage('[options] <comma-separated-browser-list> <file-or-glob ...>')
             .description(CLIArgumentParser._getDescription())
@@ -110,6 +75,7 @@ export default class CLIArgumentParser {
             .option('-F, --fixture-grep <pattern>', 'run only fixtures matching the specified pattern')
             .option('-a, --app <command>', 'launch the tested app using the specified command before running tests')
             .option('-c, --concurrency <number>', 'run tests concurrently')
+            .option('-L, --live', 'enable live mode. In this mode, TestCafe watches for changes you make in the test files. These changes immediately restart the tests so that you can see the effect.')
             .option('--test-meta <key=value[,key2=value2,...]>', 'run only tests with matching metadata')
             .option('--fixture-meta <key=value[,key2=value2,...]>', 'run only fixtures with matching metadata')
             .option('--debug-on-fail', 'pause the test if it fails')
@@ -123,12 +89,13 @@ export default class CLIArgumentParser {
             .option('--proxy <host>', 'specify the host of the proxy server')
             .option('--proxy-bypass <rules>', 'specify a comma-separated list of rules that define URLs accessed bypassing the proxy server')
             .option('--ssl <options>', 'specify SSL options to run TestCafe proxy server over the HTTPS protocol')
+            .option('--video <path>', ' record videos of test runs')
+            .option('--video-options <option=value[,...]>', 'specify video recording options')
+            .option('--video-encoding-options <option=value[,...]>', 'specify encoding options')
             .option('--disable-page-reloads', 'disable page reloads between tests')
             .option('--dev', 'enables mechanisms to log and diagnose errors')
             .option('--qr-code', 'outputs QR-code that repeats URLs used to connect the remote browsers')
             .option('--sf, --stop-on-first-fail', 'stop an entire test run if any test fails')
-            .option('--disable-test-syntax-validation', 'disables checks for \'test\' and \'fixture\' directives to run dynamically loaded tests')
-
 
             // NOTE: these options will be handled by chalk internally
             .option('--color', 'force colors in command line')
@@ -146,34 +113,20 @@ export default class CLIArgumentParser {
         return true;
     }
 
-    _parseFilteringOptions () {
-        this.opts.testGrep    = CLIArgumentParser._optionValueToRegExp('--test-grep', this.opts.testGrep);
-        this.opts.fixtureGrep = CLIArgumentParser._optionValueToRegExp('--fixture-grep', this.opts.fixtureGrep);
-        this.opts.testMeta    = CLIArgumentParser._optionValueToKeyValue('--test-meta', this.opts.testMeta);
-        this.opts.fixtureMeta = CLIArgumentParser._optionValueToKeyValue('--fixture-meta', this.opts.fixtureMeta);
+    async _parseFilteringOptions () {
+        if (this.opts.testGrep)
+            this.opts.testGrep = getGrepOptions('--test-grep', this.opts.testGrep);
 
-        this.filter = (testName, fixtureName, fixturePath, testMeta, fixtureMeta) => {
+        if (this.opts.fixtureGrep)
+            this.opts.fixtureGrep = getGrepOptions('--fixture-grep', this.opts.fixtureGrep);
 
-            if (this.opts.test && testName !== this.opts.test)
-                return false;
+        if (this.opts.testMeta)
+            this.opts.testMeta = await getMetaOptions('--test-meta', this.opts.testMeta);
 
-            if (this.opts.testGrep && !this.opts.testGrep.test(testName))
-                return false;
+        if (this.opts.fixtureMeta)
+            this.opts.fixtureMeta = await getMetaOptions('--fixture-meta', this.opts.fixtureMeta);
 
-            if (this.opts.fixture && fixtureName !== this.opts.fixture)
-                return false;
-
-            if (this.opts.fixtureGrep && !this.opts.fixtureGrep.test(fixtureName))
-                return false;
-
-            if (this.opts.testMeta && !isMatch(testMeta, this.opts.testMeta))
-                return false;
-
-            if (this.opts.fixtureMeta && !isMatch(fixtureMeta, this.opts.fixtureMeta))
-                return false;
-
-            return true;
-        };
+        this.filter = getFilterFn(this.opts);
     }
 
     _parseAppInitDelay () {
@@ -215,7 +168,7 @@ export default class CLIArgumentParser {
 
     _parseConcurrency () {
         if (this.opts.concurrency)
-            this.concurrency = parseInt(this.opts.concurrency, 10);
+            this.opts.concurrency = parseInt(this.opts.concurrency, 10);
     }
 
     _parsePorts () {
@@ -225,7 +178,7 @@ export default class CLIArgumentParser {
                 .map(CLIArgumentParser._parsePortNumber);
 
             if (this.opts.ports.length < 2)
-                throw new GeneralError(MESSAGE.portsOptionRequiresTwoNumbers);
+                throw new GeneralError(RUNTIME_ERRORS.portsOptionRequiresTwoNumbers);
         }
     }
 
@@ -236,42 +189,37 @@ export default class CLIArgumentParser {
             .filter(browser => browser && this._filterAndCountRemotes(browser));
     }
 
-    _parseSslOptions () {
+    async _parseSslOptions () {
         if (this.opts.ssl)
-            this.opts.ssl = parseSslOptions(this.opts.ssl);
+            this.opts.ssl = await getSSLOptions(this.opts.ssl);
     }
 
     async _parseReporters () {
-        if (!this.opts.reporter) {
-            this.opts.reporters = [];
-            return;
-        }
+        const reporters = this.opts.reporter ? this.opts.reporter.split(',') : [];
 
-        const reporters = this.opts.reporter.split(',');
-
-        this.opts.reporters = reporters.map(reporter => {
+        this.opts.reporter = reporters.map(reporter => {
             const separatorIndex = reporter.indexOf(':');
 
             if (separatorIndex < 0)
                 return { name: reporter };
 
-            const name    = reporter.substring(0, separatorIndex);
-            const outFile = reporter.substring(separatorIndex + 1);
+            const name   = reporter.substring(0, separatorIndex);
+            const output = reporter.substring(separatorIndex + 1);
 
-            return { name, outFile };
+            return { name, output };
         });
-
-        for (const reporter of this.opts.reporters) {
-            if (reporter.outFile) {
-                reporter.outFile = resolve(this.cwd, reporter.outFile);
-
-                await makeDir(dirname(reporter.outFile));
-            }
-        }
     }
 
     _parseFileList () {
         this.src = this.program.args.slice(1);
+    }
+
+    async _parseVideoOptions () {
+        if (this.opts.videoOptions)
+            this.opts.videoOptions = await getVideoOptions(this.opts.videoOptions);
+
+        if (this.opts.videoEncodingOptions)
+            this.opts.videoEncodingOptions = await getVideoOptions(this.opts.videoEncodingOptions);
     }
 
     _getProviderName () {
@@ -280,6 +228,8 @@ export default class CLIArgumentParser {
 
     async parse (argv) {
         this.program.parse(argv);
+
+        this.args = this.program.args;
 
         this.opts = this.program.opts();
 
@@ -290,7 +240,6 @@ export default class CLIArgumentParser {
             return;
         }
 
-        this._parseFilteringOptions();
         this._parseSelectorTimeout();
         this._parseAssertionTimeout();
         this._parsePageLoadTimeout();
@@ -299,9 +248,11 @@ export default class CLIArgumentParser {
         this._parsePorts();
         this._parseBrowserList();
         this._parseConcurrency();
-        this._parseSslOptions();
         this._parseFileList();
 
+        await this._parseFilteringOptions();
+        await this._parseVideoOptions();
+        await this._parseSslOptions();
         await this._parseReporters();
     }
 }

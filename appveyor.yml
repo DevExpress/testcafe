@@ -9,7 +9,7 @@ branches:
   - new-docs
 
 environment:
-  NODEJS_VERSION: "8"
+  NODEJS_VERSION: "10"
 
   matrix:
     - GULP_TASK: "test-functional-local-ie"
@@ -31,7 +31,6 @@ for:
 
   environment:
     matrix:
-    - GULP_TASK: "test-functional-local-chrome-firefox"
     - GULP_TASK: "test-functional-local-legacy"
 
 install:

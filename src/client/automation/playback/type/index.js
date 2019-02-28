@@ -5,9 +5,9 @@ import ClickAutomation from '../click';
 import typeText from './type-text';
 import getKeyCode from '../../utils/get-key-code';
 import getKeyIdentifier from '../../utils/get-key-identifier';
-import keyIdentifierRequiredForEvent from '../../utils/key-identifier-required-for-event';
 import { getDefaultAutomationOffsets } from '../../utils/offsets';
 import AutomationSettings from '../../settings';
+import getKeyProperties from '../../utils/get-key-properties';
 
 const Promise               = hammerhead.Promise;
 const extend                = hammerhead.utils.extend;
@@ -89,10 +89,7 @@ export default class TypeAutomation {
         if (isPressEvent)
             options.charCode = this.currentCharCode;
 
-        if (keyIdentifierRequiredForEvent())
-            options.keyIdentifier = isPressEvent ? '' : this.currentKeyIdentifier;
-        else
-            options.key = this.currentKey;
+        extend(options, getKeyProperties(isPressEvent, this.currentKey, this.currentKeyIdentifier));
 
         return { element, options };
     }

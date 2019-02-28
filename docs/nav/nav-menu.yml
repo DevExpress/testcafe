@@ -16,8 +16,12 @@
       url: /documentation/using-testcafe/programming-interface/browserconnection.md
     - name: Runner Class
       url: /documentation/using-testcafe/programming-interface/runner.md
+    - name: LiveModeRunner Class
+      url: /documentation/using-testcafe/programming-interface/livemoderunner.md
     - name: createTestCafe Factory
       url: /documentation/using-testcafe/programming-interface/createtestcafe.md
+  - name: Configuration File
+    url: /documentation/using-testcafe/configuration-file.md
   - name: Using TestCafe Docker Image
     url: /documentation/using-testcafe/using-testcafe-docker-image.md
   - name: Common Concepts
@@ -36,6 +40,10 @@
         url: /documentation/using-testcafe/common-concepts/browsers/user-profiles.md
     - name: Concurrent Test Execution
       url: /documentation/using-testcafe/common-concepts/concurrent-test-execution.md
+    - name: Live Mode
+      url: /documentation/using-testcafe/common-concepts/live-mode.md
+    - name: Screenshots and Videos
+      url: /documentation/using-testcafe/common-concepts/screenshots-and-videos.md
     - name: Reporters
       url: /documentation/using-testcafe/common-concepts/reporters.md
     - name: Connect to the TestCafe Server over HTTPS
@@ -140,8 +148,8 @@
     content:
     - name: Logging HTTP Requests
       url: /documentation/test-api/intercepting-http-requests/logging-http-requests.md
-    - name: Mocking HTTP Responses
-      url: /documentation/test-api/intercepting-http-requests/mocking-http-responses.md
+    - name: Mocking HTTP Requests
+      url: /documentation/test-api/intercepting-http-requests/mocking-http-requests.md
     - name: Creating a Custom HTTP Request Hook
       url: /documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.md
     - name: Specifying Which Requests are Handled by the Hook
@@ -190,41 +198,53 @@
     content:
     - name: Browser Provider Methods
       url: /documentation/extending-testcafe/browser-provider-plugin/browser-provider-methods.md
-#  - name: Selector Extensions
-#    url: .
+- name: CONTINUOUS INTEGRATION
+  url: /documentation/continuous-integration/README.md
+  content:
+  - name: AppVeyor
+    url: /documentation/continuous-integration/appveyor.md
+  - name: Azure DevOps
+    url: /documentation/continuous-integration/azure-devops.md
+  - name: Bitbucket Pipelines
+    url: /documentation/continuous-integration/bitbucket-pipelines.md
+  - name: CircleCI
+    url: /documentation/continuous-integration/circleci.md
+  - name: GitLab
+    url: /documentation/continuous-integration/gitlab.md
+  - name: Jenkins
+    url: /documentation/continuous-integration/jenkins.md
+  - name: TeamCity
+    url: /documentation/continuous-integration/teamcity.md
+  - name: Travis
+    url: /documentation/continuous-integration/travis.md
+  - name: Travis + Sauce Labs
+    url: /documentation/continuous-integration/travis-and-sauce-labs.md
 - name: RECIPES
   url: /documentation/recipes/README.md
   content:
-    - name: Debug in Chrome Developer Tools
-      url: /documentation/recipes/debug-in-chrome-dev-tools.md
-    - name: Debug in Visual Studio Code
-      url: /documentation/recipes/debug-in-visual-studio-code.md
-    - name: Integrating TestCafe with CI Systems
-      url: /documentation/recipes/integrating-testcafe-with-ci-systems/README.md
+    - name: Debug Tests
+      url: /documentation/recipes/debug-tests/README.md
       content:
-      - name: AppVeyor
-        url: /documentation/recipes/integrating-testcafe-with-ci-systems/appveyor.md
-      - name: CircleCI
-        url: /documentation/recipes/integrating-testcafe-with-ci-systems/circleci.md
-      - name: Jenkins
-        url: /documentation/recipes/integrating-testcafe-with-ci-systems/jenkins.md
-      - name: TeamCity
-        url: /documentation/recipes/integrating-testcafe-with-ci-systems/teamcity.md
-      - name: Travis
-        url: /documentation/recipes/integrating-testcafe-with-ci-systems/travis.md
-    - name: Finding Code Issues with Flow Type Checker
-      url: /documentation/recipes/finding-code-issues-with-flow-type-checker.md
-    - name: Running Tests Using Travis CI and Sauce Labs
-      url: /documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.md
-    - name: Testing &lt;select&gt; Elements
-      url: /documentation/recipes/testing-select-elements.md
+        - name: Chrome Developer Tools
+          url: /documentation/recipes/debug-tests/chrome-dev-tools.md
+        - name: Visual Studio Code
+          url: /documentation/recipes/debug-tests/visual-studio-code.md
+        - name: WebStorm
+          url: /documentation/recipes/debug-tests/webstorm.md
+    - name: Find Code Issues with Flow Type Checker
+      url: /documentation/recipes/find-code-issues-with-flow-type-checker.md
+    - name: Test &lt;select&gt; Elements
+      url: /documentation/recipes/test-select-elements.md
     - name: Test Static HTML Pages
       url: /documentation/recipes/test-static-html-pages.md
-    - name: Testing on Remote Computers and Mobile Devices
-      url: /documentation/recipes/testing-on-remote-computers-and-mobile-devices.md
-    - name: Using Page Model
-      url: /documentation/recipes/using-page-model.md
-    - name: Using TestCafe with Grunt
-      url: /documentation/recipes/using-testcafe-with-grunt.md
-    - name: Using TestCafe with Gulp
-      url: /documentation/recipes/using-testcafe-with-gulp.md
+    - name: Test on Remote Computers and Mobile Devices
+      url: /documentation/recipes/test-on-remote-computers-and-mobile-devices.md
+    - name: Use Page Model
+      url: /documentation/recipes/use-page-model.md
+    - name: Use Task Runners
+      url: /documentation/recipes/use-task-runners/README.md
+      content:
+        - name: Grunt
+          url: /documentation/recipes/use-task-runners/grunt.md
+        - name: Gulp
+          url: /documentation/recipes/use-task-runners/gulp.md

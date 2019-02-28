@@ -141,14 +141,14 @@ const id = await t.select('.someClass').id;
 const id = await Selector('.someClass').id;
 ```
 
-* `selectorOptions.index` - use [selector.nth()](http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#nth) instead.
-* `selectorOptions.text` - use [selector.withText()](http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#withtext) instead.
+* `selectorOptions.index` - use [selector.nth()](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#nth) instead.
+* `selectorOptions.text` - use [selector.withText()](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#withtext) instead.
 * `selectorOptions.dependencies` - use [filtering](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#filter-dom-nodes) and [hierarchical](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#search-for-elements-in-the-dom-hierarchy) methods to build combined selectors instead.
 
 ### ⚙ Built-in assertions. ([#998](https://github.com/DevExpress/testcafe/issues/998))
 
-TestCafe now ships with [numerous built-in BDD-style assertions](http://devexpress.github.io/testcafe/documentation/test-api/assertions/assertion-api.html).
-If the TestCafe assertion receives a [Selector's DOM node state property](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/using-selectors.html#define-assertion-actual-value) as an actual value, TestCafe uses the [smart assertion query mechanism](http://devexpress.github.io/testcafe/documentation/test-api/assertions/index.html#smart-assertion-query-mechanism):
+TestCafe now ships with [numerous built-in BDD-style assertions](https://devexpress.github.io/testcafe/documentation/test-api/assertions/assertion-api.html).
+If the TestCafe assertion receives a [Selector's DOM node state property](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/using-selectors.html#define-assertion-actual-value) as an actual value, TestCafe uses the [smart assertion query mechanism](https://devexpress.github.io/testcafe/documentation/test-api/assertions/index.html#smart-assertion-query-mechanism):
 if an assertion did not passed, the test does not fail immediately. The assertion retries to pass multiple times and each time it re-requests the actual shorthand value. The test fails if the assertion could not complete successfully within a timeout.
 This approach allows you to create stable tests that lack random errors and decrease the amount of time required to run all your tests due to the lack of extra waitings.
 

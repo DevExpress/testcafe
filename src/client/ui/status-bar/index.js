@@ -42,25 +42,29 @@ const STATUS_DIV_CLASS                     = 'status';
 const WAITING_FAILED_CLASS                 = 'waiting-element-failed';
 const WAITING_SUCCESS_CLASS                = 'waiting-element-success';
 const LOADING_PAGE_TEXT                    = 'Loading Web Page...';
-const WAITING_FOR_ELEMENT_TEXT             = 'Waiting for an element to appear...';
-const WAITING_FOR_ASSERTION_EXECUTION_TEXT = 'Waiting for an assertion execution...';
+const WAITING_FOR_ELEMENT_TEXT             = 'Waiting for element to appear...';
+const WAITING_FOR_ASSERTION_EXECUTION_TEXT = 'Waiting for assertion execution...';
 const DEBUGGING_TEXT                       = 'Debugging test...';
 const TEST_FAILED_TEXT                     = 'Test failed';
-const UNLOCK_PAGE_TEXT                     = 'Unlock page';
+const UNLOCK_PAGE_TEXT                     = 'Unlock Page';
 const PAGE_UNLOCKED_TEXT                   = 'Page unlocked';
 const SHOWING_DELAY                        = 300;
 const ANIMATION_DELAY                      = 500;
 const ANIMATION_UPDATE_INTERVAL            = 10;
 
 const VIEWS = {
-    all:                 { name: 'show-all-elements' },
-    hideFixture:         { name: 'hide-fixture', maxSize: 940, className: 'icon-status-view' },
-    hideStatus:          { name: 'hide-status', maxSize: 380, className: 'icon-unlock-buttons-view' },
-    hideStatusDebugging: { name: 'hide-status-debugging', maxSize: 740, className: 'icon-unlock-buttons-view' },
-    hideUnlockArea:      { name: 'hide-unlock-area', maxSize: 460, className: 'icon-buttons-view' },
-    onlyButtons:         { name: 'show-buttons-only', maxSize: 330, className: 'only-buttons-view' },
-    onlyIcon:            { name: 'show-icon-only', maxSize: 330, className: 'only-icon-view' }
+    all:                { name: 'show-all-elements', maxSize: Infinity },
+    hideFixture:        { name: 'hide-fixture', maxSize: 940, className: 'icon-status-view' },
+    hideStatus:         { name: 'hide-status-debugging', maxSize: 740, className: 'icon-unlock-buttons-view' },
+    hideUnlockArea:     { name: 'hide-unlock-area', maxSize: 460, className: 'icon-buttons-view' },
+    onlyButtons:        { name: 'show-buttons-only', maxSize: 330, className: 'only-buttons-view' },
+    onlyIconAndFixture: { name: 'show-icon-fixture-only', maxSize: Infinity, className: 'only-icon-fixture-view' },
+    onlyIcon:           { name: 'show-icon-only', maxSize: 380, className: 'only-icon-view' }
 };
+
+const REGULAR_VIEW_SEQUENCE   = [VIEWS.onlyIcon, VIEWS.onlyIconAndFixture];
+const WAITING_VIEW_SEQUENCE   = [VIEWS.onlyIcon, VIEWS.hideFixture, VIEWS.all];
+const DEBUGGING_VIEW_SEQUENCE = [VIEWS.onlyButtons, VIEWS.hideUnlockArea, VIEWS.hideStatus, VIEWS.hideFixture, VIEWS.all];
 
 export default class StatusBar extends serviceUtils.EventEmitter {
     constructor (userAgent, fixtureName, testName) {
@@ -79,7 +83,7 @@ export default class StatusBar extends serviceUtils.EventEmitter {
         this.fixtureContainer = null;
         this.resumeButton     = null;
         this.finishButton     = null;
-        this.stepButton       = null;
+        this.nextButton       = null;
         this.statusDiv        = null;
         this.buttons          = null;
 
@@ -87,7 +91,7 @@ export default class StatusBar extends serviceUtils.EventEmitter {
         this.animationInterval = null;
         this.showingTimeout    = null;
 
-        this.windowHeight = styleUtils.getHeight(window);
+        this.windowHeight = document.documentElement ? styleUtils.getHeight(window) : window.innerHeight;
 
         this.state = {
             created:          false,
@@ -198,11 +202,11 @@ export default class StatusBar extends serviceUtils.EventEmitter {
         statusContainer.appendChild(this.buttons);
 
         this.resumeButton = this._createButton('Resume', RESUME_BUTTON_CLASS);
-        this.stepButton   = this._createButton('Next Step', STEP_CLASS);
+        this.nextButton   = this._createButton('Next Action', STEP_CLASS);
         this.finishButton = this._createButton('Finish', RESUME_BUTTON_CLASS);
 
         this.buttons.appendChild(this.resumeButton);
-        this.buttons.appendChild(this.stepButton);
+        this.buttons.appendChild(this.nextButton);
         this.buttons.style.display = 'none';
     }
 
@@ -276,26 +280,20 @@ export default class StatusBar extends serviceUtils.EventEmitter {
         this.currentView = newView;
     }
 
+    _getActualViewSequence () {
+        if (this.state.debugging)
+            return DEBUGGING_VIEW_SEQUENCE;
+
+        if (this.state.waiting)
+            return WAITING_VIEW_SEQUENCE;
+
+        return REGULAR_VIEW_SEQUENCE;
+    }
+
     _calculateActualView (windowWidth) {
-        const hideStatusMaxSize = this.state.debugging ? VIEWS.hideStatusDebugging.maxSize : VIEWS.hideStatus.maxSize;
-
-        if (windowWidth >= VIEWS.hideFixture.maxSize)
-            return VIEWS.all;
-
-        if (windowWidth < VIEWS.hideFixture.maxSize && windowWidth >= hideStatusMaxSize)
-            return VIEWS.hideFixture;
-
-        if (this.state.debugging) {
-            if (windowWidth < hideStatusMaxSize && windowWidth >= VIEWS.hideUnlockArea.maxSize)
-                return VIEWS.hideStatus;
-
-            if (windowWidth < VIEWS.hideUnlockArea.maxSize && windowWidth >= VIEWS.onlyButtons.maxSize)
-                return VIEWS.hideUnlockArea;
-
-            return VIEWS.onlyButtons;
-        }
-
-        return VIEWS.onlyIcon;
+        return this
+            ._getActualViewSequence()
+            .reduce((currentView, nextView) => currentView.maxSize >= windowWidth ? currentView : nextView);
     }
 
     _setFixtureContainerWidth () {
@@ -469,6 +467,7 @@ export default class StatusBar extends serviceUtils.EventEmitter {
 
         nativeMethods.nodeTextContentSetter.call(this.statusDiv, '');
         this.progressBar.hide();
+        this._recalculateSizes();
     }
 
     _showWaitingStatus () {
@@ -476,6 +475,7 @@ export default class StatusBar extends serviceUtils.EventEmitter {
 
         nativeMethods.nodeTextContentSetter.call(this.statusDiv, waitingStatusText);
         this._setStatusDivLeftMargin();
+        this._recalculateSizes();
         this.progressBar.show();
     }
 
@@ -493,6 +493,8 @@ export default class StatusBar extends serviceUtils.EventEmitter {
                 this.progressBar.determinateIndicator.reset();
 
                 this._resetState();
+                this._recalculateSizes();
+
                 resolve();
             }, forceReset ? 0 : ANIMATION_DELAY);
         });
@@ -503,7 +505,7 @@ export default class StatusBar extends serviceUtils.EventEmitter {
             this.state.debugging = true;
 
             if (isTestError) {
-                this.buttons.removeChild(this.stepButton);
+                this.buttons.removeChild(this.nextButton);
                 this.buttons.removeChild(this.resumeButton);
                 this.buttons.appendChild(this.finishButton);
 
@@ -519,11 +521,11 @@ export default class StatusBar extends serviceUtils.EventEmitter {
 
             this._recalculateSizes();
 
-            this._bindClickOnce([this.resumeButton, this.stepButton, this.finishButton], e => {
-                const isStepButton = domUtils.containsElement(this.stepButton, e.target);
+            this._bindClickOnce([this.resumeButton, this.nextButton, this.finishButton], e => {
+                const isNextButton = domUtils.containsElement(this.nextButton, e.target);
 
                 this._resetState();
-                resolve(isStepButton);
+                resolve(isNextButton);
             });
         });
     }

@@ -145,14 +145,14 @@ describe('CLI argument parser', function () {
         it('Should parse "--concurrency" option as a number', function () {
             return parse('--concurrency 2')
                 .then(function (parser) {
-                    expect(parser.concurrency).eql(2);
+                    expect(parser.opts.concurrency).eql(2);
                 });
         });
 
         it('Should parse "-c" option as a number', function () {
             return parse('-c 2')
                 .then(function (parser) {
-                    expect(parser.concurrency).eql(2);
+                    expect(parser.opts.concurrency).eql(2);
                 });
         });
     });
@@ -183,6 +183,9 @@ describe('CLI argument parser', function () {
         it('Should filter by test name with "-T, --test-grep" option', function () {
             parse('-T ^test\\d+$')
                 .then(function (parser) {
+                    expect(parser.filter.testGrep.test('test1')).to.be.true;
+                    expect(parser.filter.testGrep.test('test')).to.be.false;
+
                     expect(parser.filter('test1')).to.be.true;
                     expect(parser.filter('test2')).to.be.true;
                     expect(parser.filter('test')).to.be.false;
@@ -205,6 +208,9 @@ describe('CLI argument parser', function () {
         it('Should filter by fixture name with "-F, --fixture-grep" option', function () {
             return parse('-F ^fixture\\d+$')
                 .then(function (parser) {
+                    expect(parser.filter.fixtureGrep.test('fixture1')).to.be.true;
+                    expect(parser.filter.fixtureGrep.test('fixture')).to.be.false;
+
                     expect(parser.filter('test', 'fixture1')).to.be.true;
                     expect(parser.filter('test', 'fixture2')).to.be.true;
                     expect(parser.filter('test', 'fixture')).to.be.false;
@@ -218,6 +224,8 @@ describe('CLI argument parser', function () {
         it('Should filter by test meta with "--test-meta" option', function () {
             return parse('--test-meta meta=test')
                 .then(function (parser) {
+                    expect(parser.filter.testMeta).to.be.deep.equal({ meta: 'test' });
+
                     expect(parser.filter(null, null, null, { meta: 'test' })).to.be.true;
                     expect(parser.filter(null, null, null, { another: 'meta', meta: 'test' })).to.be.true;
                     expect(parser.filter(null, null, null, {})).to.be.false;
@@ -228,11 +236,47 @@ describe('CLI argument parser', function () {
         it('Should filter by fixture meta with "--fixture-meta" option', function () {
             return parse('--fixture-meta meta=test,more=meta')
                 .then(function (parser) {
+                    expect(parser.filter.fixtureMeta).to.be.deep.equal({ meta: 'test', more: 'meta' });
+
                     expect(parser.filter(null, null, null, null, { meta: 'test', more: 'meta' })).to.be.true;
                     expect(parser.filter(null, null, null, null, { another: 'meta', meta: 'test', more: 'meta' })).to.be.true;
                     expect(parser.filter(null, null, null, null, {})).to.be.false;
                     expect(parser.filter(null, null, null, null, { meta: 'test' })).to.be.false;
                     expect(parser.filter(null, null, null, null, { meta: 'test', more: 'another' })).to.be.false;
+                });
+        });
+
+        it('Should throw an error if invalid meta is specified', () => {
+            return parse('--fixture-meta meta')
+                .then(() => {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (error) {
+                    expect(error.message).contains('The "--fixture-meta" option value is not a valid key-value pair.');
+
+                    return parse('--fixture-meta =test');
+                })
+                .then(() => {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (error) {
+                    expect(error.message).contains('The "--fixture-meta" option value is not a valid key-value pair.');
+
+                    return parse('--test-meta meta');
+                })
+                .then(() => {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (error) {
+                    expect(error.message).contains('The "--test-meta" option value is not a valid key-value pair.');
+
+                    return parse('--test-meta =test');
+                })
+                .then(() => {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (error) {
+                    expect(error.message).contains('The "--test-meta" option value is not a valid key-value pair.');
                 });
         });
 
@@ -348,6 +392,13 @@ describe('CLI argument parser', function () {
                     expect(parser.filter('thetest2', 'thefixture1', null, { test: 'test' }, { fixture: 'test' })).to.be.false;
                 });
         });
+
+        it("'.filter' property should equal undefined if filtering options are not provided", () => {
+            return parse('param1')
+                .then(parser => {
+                    expect(parser.filter).is.undefined;
+                });
+        });
     });
 
     describe('Ssl options', () => {
@@ -399,8 +450,51 @@ describe('CLI argument parser', function () {
                         expect(parser.opts.ssl.key).eql(keyFileContent);
                     });
             });
+
+            it('Should throw an error if a file is not readable', () => {
+                return parse(`--ssl key=${__dirname}`)
+                    .catch(error => {
+                        expect(error.message).to.include(
+                            `Unable to read the "${__dirname}" file, specified by the "key" ssl option. Error details:`
+                        );
+                    })
+                    .then(() => parse(`--ssl cert=${__dirname}`))
+                    .catch(error => {
+                        expect(error.message).to.include(
+                            `Unable to read the "${__dirname}" file, specified by the "cert" ssl option. Error details:`
+                        );
+                    })
+                    .then(() => parse(`--ssl pfx=${__dirname}`))
+                    .catch(error => {
+                        expect(error.message).to.include(
+                            `Unable to read the "${__dirname}" file, specified by the "pfx" ssl option. Error details:`
+                        );
+                    });
+            });
         });
     });
+
+    describe('Video options', () => {
+        it('Should parse video recording options', () => {
+            return parse(`--video /home/user/video --video-options singleFile=true,failedOnly --video-encoding-options c:v=x264`)
+                .then(parser => {
+                    expect(parser.opts.video).eql('/home/user/video');
+                    expect(parser.opts.videoOptions.singleFile).eql(true);
+                    expect(parser.opts.videoOptions.failedOnly).eql(true);
+                    expect(parser.opts.videoEncodingOptions['c:v']).eql('x264');
+                });
+        });
+
+        it('Should provide "undefined" as a default value for video recording options', () => {
+            return parse(``)
+                .then(parser => {
+                    expect(parser.opts.video).eql(void 0);
+                    expect(parser.opts.videoOptions).eql(void 0);
+                    expect(parser.opts.videoEncodingOptions).eql(void 0);
+                });
+        });
+    });
+
 
     it('Should parse reporters and their output file paths and ensure they exist', function () {
         const cwd      = process.cwd();
@@ -408,10 +502,10 @@ describe('CLI argument parser', function () {
 
         return parse('-r list,json:' + filePath)
             .then(function (parser) {
-                expect(parser.opts.reporters[0].name).eql('list');
-                expect(parser.opts.reporters[0].outFile).to.be.undefined;
-                expect(parser.opts.reporters[1].name).eql('json');
-                expect(parser.opts.reporters[1].outFile).eql(path.resolve(cwd, filePath));
+                expect(parser.opts.reporter[0].name).eql('list');
+                expect(parser.opts.reporter[0].output).to.be.undefined;
+                expect(parser.opts.reporter[1].name).eql('json');
+                expect(parser.opts.reporter[1].output).eql(path.resolve(cwd, filePath));
             });
     });
 
@@ -420,7 +514,7 @@ describe('CLI argument parser', function () {
             .then(parser => {
                 expect(parser.browsers).eql(['ie']);
                 expect(parser.src).eql(['test/server/data/file-list/file-1.js']);
-                expect(parser.opts.reporters[0].name).eql('list');
+                expect(parser.opts.reporter[0].name).eql('list');
                 expect(parser.opts.hostname).eql('myhost');
                 expect(parser.opts.app).eql('run-app');
                 expect(parser.opts.screenshots).to.be.undefined;
@@ -456,6 +550,7 @@ describe('CLI argument parser', function () {
             { long: '--fixture-grep', short: '-F' },
             { long: '--app', short: '-a' },
             { long: '--concurrency', short: '-c' },
+            { long: '--live', short: '-L' },
             { long: '--test-meta' },
             { long: '--fixture-meta' },
             { long: '--debug-on-fail' },
@@ -472,11 +567,13 @@ describe('CLI argument parser', function () {
             { long: '--dev' },
             { long: '--ssl' },
             { long: '--qr-code' },
-            { long: '--skip-uncaught-errors' },
+            { long: '--skip-uncaught-errors', short: '-u' },
             { long: '--color' },
             { long: '--no-color' },
             { long: '--stop-on-first-fail', short: '--sf' },
-            { long: '--disable-test-syntax-validation' }
+            { long: '--video' },
+            { long: '--video-options' },
+            { long: '--video-encoding-options' }
         ];
 
         const parser  = new CliArgumentParser('');
@@ -484,8 +581,12 @@ describe('CLI argument parser', function () {
 
         expect(options.length).eql(EXPECTED_OPTIONS.length, WARNING);
 
-        for (let i = 0; i < EXPECTED_OPTIONS.length; i++)
-            expect(find(options, EXPECTED_OPTIONS[i])).not.eql(void 0, WARNING);
+        for (let i = 0; i < EXPECTED_OPTIONS.length; i++) {
+            const option = find(options, EXPECTED_OPTIONS[i]);
+
+            expect(option).not.eql(void 0, WARNING);
+            expect(option.long).eql(EXPECTED_OPTIONS[i].long, WARNING);
+            expect(option.short).eql(EXPECTED_OPTIONS[i].short, WARNING);
+        }
     });
 });
-

@@ -34,7 +34,7 @@ import { ensureElements, createElementDescriptor, createAdditionalElementDescrip
 import {
     ActionElementIsInvisibleError,
     ActionIncorrectKeysError,
-    ActionCanNotFindFileToUploadError,
+    ActionCannotFindFileToUploadError,
     ActionElementNonEditableError,
     ActionElementNonContentEditableError,
     ActionRootContainerNotFoundError,
@@ -210,7 +210,7 @@ class ActionExecutor {
 
             case COMMAND_TYPE.setFilesToUpload :
                 return new UploadAutomation(this.elements[0], this.command.filePath,
-                    filePaths => new ActionCanNotFindFileToUploadError(filePaths)
+                    filePaths => new ActionCannotFindFileToUploadError(filePaths)
                 );
 
             case COMMAND_TYPE.clearUpload :

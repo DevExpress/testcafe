@@ -47,6 +47,7 @@ export const getMapContainer                        = hammerhead.utils.dom.getMa
 export const getTagName                             = hammerhead.utils.dom.getTagName;
 export const closest                                = hammerhead.utils.dom.closest;
 export const getParents                             = hammerhead.utils.dom.getParents;
+export const findParent                             = hammerhead.utils.dom.findParent;
 export const getTopSameDomainWindow                 = hammerhead.utils.dom.getTopSameDomainWindow;
 
 export const isRadioButtonElement = el => isInputElement(el) && el.type === 'radio';
@@ -94,7 +95,7 @@ function insertIframesContentElements (elements, iframes) {
     for (i = 0; i < sortedIframes.length; i++) {
         //NOTE: We can get elements of the same domain iframe only
         try {
-            iframeFocusedElements = getFocusableElements(sortedIframes[i].contentDocument);
+            iframeFocusedElements = getFocusableElements(nativeMethods.contentDocumentGetter.call(sortedIframes[i]));
         }
         catch (e) {
             iframeFocusedElements = [];
@@ -407,7 +408,7 @@ export function isIFrameWindowInDOM (win) {
     if ((browserUtils.isFirefox || browserUtils.isWebKit) && win.top !== win && !frameElement)
         return true;
 
-    return !!(frameElement && frameElement.contentDocument);
+    return !!(frameElement && nativeMethods.contentDocumentGetter.call(frameElement));
 }
 
 export function isTopWindow (win) {
@@ -424,7 +425,7 @@ export function findIframeByWindow (iframeWindow, iframeDestinationWindow) {
     const iframes = (iframeDestinationWindow || window).document.getElementsByTagName('iframe');
 
     for (let i = 0; i < iframes.length; i++) {
-        if (iframes[i].contentWindow === iframeWindow)
+        if (nativeMethods.contentWindowGetter.call(iframes[i]) === iframeWindow)
             return iframes[i];
     }
 
@@ -498,18 +499,4 @@ export function setElementValue (element, value) {
     /*eslint-enable no-restricted-properties*/
 
     return value;
-}
-
-export function findParent (node, includeSelf = false, predicate) {
-    if (!includeSelf)
-        node = node.parentNode;
-
-    while (node) {
-        if (typeof predicate !== 'function' || predicate(node))
-            return node;
-
-        node = node.parentNode;
-    }
-
-    return null;
 }

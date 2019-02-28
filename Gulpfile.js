@@ -6,7 +6,6 @@ const data                 = require('gulp-data');
 const less                 = require('gulp-less');
 const qunitHarness         = require('gulp-qunit-harness');
 const git                  = require('gulp-git');
-const ghpages              = require('gulp-gh-pages');
 const mocha                = require('gulp-mocha-simple');
 const mustache             = require('gulp-mustache');
 const rename               = require('gulp-rename');
@@ -35,6 +34,8 @@ const listBrowsers         = require('testcafe-browser-tools').getInstallations;
 const npmAuditor           = require('npm-auditor');
 const checkLicenses        = require('./test/dependency-licenses-checker');
 const sourcemaps           = require('gulp-sourcemaps');
+const packageInfo          = require('./package');
+const getPublishTags       = require('./docker/get-publish-tags');
 
 gulpStep.install();
 
@@ -51,8 +52,10 @@ ll
         'client-scripts-bundle'
     ]);
 
-const ARGS     = minimist(process.argv.slice(2));
-const DEV_MODE = 'dev' in ARGS;
+const ARGS          = minimist(process.argv.slice(2));
+const DEV_MODE      = 'dev' in ARGS;
+const QR_CODE       = 'qr-code' in ARGS;
+const BROWSER_ALIAS = ARGS['browser-alias'];
 
 const CLIENT_TESTS_PATH        = 'test/client/fixtures';
 const CLIENT_TESTS_LEGACY_PATH = 'test/client/legacy-fixtures';
@@ -141,7 +144,8 @@ const CLIENT_TESTS_SAUCELABS_SETTINGS = {
 
 const CLIENT_TEST_LOCAL_BROWSERS_ALIASES = ['ie', 'edge', 'chrome', 'firefox', 'safari'];
 
-const PUBLISH_TAG = JSON.parse(fs.readFileSync(path.join(__dirname, '.publishrc')).toString()).publishTag;
+const PUBLISH_TAGS = getPublishTags(packageInfo);
+const PUBLISH_REPO = 'testcafe/testcafe';
 
 let websiteServer = null;
 
@@ -168,6 +172,7 @@ gulp.task('lint', () => {
     return gulp
         .src([
             'examples/**/*.js',
+            'docker/*.js',
             'src/**/*.js',
             'test/**/*.js',
             '!test/client/vendor/**/*.*',
@@ -452,6 +457,7 @@ gulp.task('lint-docs', () => {
         'docs/articles/**/*.md',
         '!docs/articles/faq/**/*.md',
         '!docs/articles/documentation/recipes/**/*.md',
+        '!docs/articles/blog/**/*.md',
         'examples/**/*.md'
     ]).then(files => {
         return lintFiles(files, require('./.md-lint/docs.json'));
@@ -463,6 +469,12 @@ gulp.task('lint-docs', () => {
         return lintFiles(files, require('./.md-lint/faq.json'));
     });
 
+    const lintBlog = globby([
+        'docs/articles/blog/**/*.md'
+    ]).then(files => {
+        return lintFiles(files, require('./.md-lint/blog.json'));
+    });
+
     const lintRecipes = globby([
         'docs/articles/documentation/recipes/**/*.md'
     ]).then(files => {
@@ -472,7 +484,7 @@ gulp.task('lint-docs', () => {
     const lintReadme    = lintFiles('README.md', require('./.md-lint/readme.json'));
     const lintChangelog = lintFiles('CHANGELOG.md', require('./.md-lint/changelog.json'));
 
-    return Promise.all([lintDocsAndExamples, lintReadme, lintChangelog, lintRecipes, lintFaq]);
+    return Promise.all([lintDocsAndExamples, lintReadme, lintChangelog, lintRecipes, lintFaq, lintBlog]);
 });
 
 gulp.task('clean-website', () => {
@@ -599,6 +611,9 @@ gulp.task('test-website', gulp.series('build-website-testing', 'serve-website', 
 gulp.task('test-website-travis', gulp.series('build-website', 'serve-website', 'test-website-run'));
 
 gulp.step('website-publish-run', () => {
+    // TODO: move this import to the top level when we drop Node.js 6.x
+    const ghpages = require('gulp-gh-pages');
+
     return gulp
         .src('site/deploy/**/*')
         .pipe(rename(filePath => {
@@ -619,8 +634,12 @@ gulp.task('test-docs-travis', gulp.parallel('test-website-travis', 'lint'));
 
 
 function testFunctional (fixturesDir, testingEnvironmentName, browserProviderName) {
-    process.env.TESTING_ENVIRONMENT   = testingEnvironmentName;
-    process.env.BROWSER_PROVIDER      = browserProviderName;
+    process.env.TESTING_ENVIRONMENT       = testingEnvironmentName;
+    process.env.BROWSER_PROVIDER          = browserProviderName;
+    process.env.BROWSERSTACK_USE_AUTOMATE = 1;
+
+    if (!process.env.BROWSERSTACK_NO_LOCAL)
+        process.env.BROWSERSTACK_NO_LOCAL = 1;
 
     if (DEV_MODE)
         process.env.DEV_MODE = 'true';
@@ -675,6 +694,18 @@ gulp.step('test-functional-local-headless-firefox-run', () => {
 });
 
 gulp.task('test-functional-local-headless-firefox', gulp.series('build', 'test-functional-local-headless-firefox-run'));
+
+gulp.step('test-functional-remote-run', () => {
+    if (QR_CODE)
+        process.env.QR_CODE = 'true';
+
+    if (BROWSER_ALIAS)
+        process.env.BROWSER_ALIAS = BROWSER_ALIAS;
+
+    return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.remote, functionalTestConfig.browserProviderNames.remote);
+});
+
+gulp.task('test-functional-remote', gulp.series('build', 'test-functional-remote-run'));
 
 gulp.step('test-functional-local-legacy-run', () => {
     return testFunctional('test/functional/legacy-fixtures', functionalTestConfig.testingEnvironmentNames.legacy);
@@ -739,6 +770,8 @@ function startDocker () {
 }
 
 gulp.task('docker-build', done => {
+    childProcess.execSync('npm pack', { env: process.env }).toString();
+
     if (!process.env['DOCKER_HOST']) {
         try {
             startDocker();
@@ -749,25 +782,40 @@ gulp.task('docker-build', done => {
         }
     }
 
-    const imageId = childProcess
-        .execSync('docker build -q -t testcafe -f docker/Dockerfile .', { env: process.env })
-        .toString()
-        .replace(/\n/g, '');
+    const packageId  = `${packageInfo.name}-${packageInfo.version}.tgz`;
+    const tagCommand = PUBLISH_TAGS.map(tag => `-t ${PUBLISH_REPO}:${tag}`).join(' ');
+    const command    = `docker build --no-cache --build-arg packageId=${packageId} ${tagCommand} -f docker/Dockerfile .`;
 
-    childProcess.execSync('docker tag ' + imageId + ' testcafe/testcafe:' + PUBLISH_TAG, {
-        stdio: 'inherit',
-        env:   process.env
-    });
+    childProcess.execSync(command, { stdio: 'inherit', env: process.env });
+
+    done();
+});
+
+gulp.task('docker-test', done => {
+    if (!process.env['DOCKER_HOST']) {
+        try {
+            startDocker();
+        }
+        catch (e) {
+            throw new Error('Unable to initialize Docker environment. Use Docker terminal to run this task.\n' +
+                            e.stack);
+        }
+    }
+
+    childProcess.execSync(`docker build --no-cache --build-arg tag=${packageInfo.version} -t docker-server-tests -f test/docker/Dockerfile .`,
+        { stdio: 'inherit', env: process.env });
 
     done();
 });
 
 gulp.step('docker-publish-run', done => {
-    childProcess.execSync('docker push testcafe/testcafe:' + PUBLISH_TAG, { stdio: 'inherit', env: process.env });
+    PUBLISH_TAGS.forEach(tag => {
+        childProcess.execSync(`docker push ${PUBLISH_REPO}:${tag}`, { stdio: 'inherit', env: process.env });
+    });
 
     done();
 });
 
-gulp.task('docker-publish', gulp.series('docker-build', 'docker-publish-run'));
+gulp.task('docker-publish', gulp.series('docker-build', 'docker-test', 'docker-publish-run'));
 
 gulp.task('travis', process.env.GULP_TASK ? gulp.series(process.env.GULP_TASK) : () => {});

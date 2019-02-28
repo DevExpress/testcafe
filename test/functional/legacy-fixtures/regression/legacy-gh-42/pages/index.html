@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Legacy GH-42</title>
+</head>
+<body>
+<iframe id="iframe"></iframe>
+<script>
+    var contentDocument = document.getElementById('iframe').contentDocument;
+
+    contentDocument.open();
+    contentDocument.write('<label id="label">hello</label>');
+    contentDocument.close();
+</script>
+</body>
+</html>

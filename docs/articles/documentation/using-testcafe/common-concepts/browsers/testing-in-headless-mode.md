@@ -5,7 +5,7 @@ permalink: /documentation/using-testcafe/common-concepts/browsers/testing-in-hea
 ---
 # Testing in Headless Mode
 
-TestCafe allows you to run tests in Google Chrome and Mozilla Firefox without any visible UI shell - in the headless mode ([Chrome Headless](https://developers.google.com/web/updates/2017/04/headless-chrome), [Firefox Headless](https://developer.mozilla.org/en-US/Firefox/Headless_mode)). Use the `headless` browser parameter to launch a browser in the headless mode.
+TestCafe allows you to run tests in Google Chrome and Mozilla Firefox without any visible UI shell - in the headless mode ([Chrome Headless](https://developers.google.com/web/updates/2017/04/headless-chrome), [Firefox Headless](https://developer.mozilla.org/en-US/Firefox/Headless_mode)). Use the `:headless` parameter to launch a browser in the headless mode.
 
 ```sh
 testcafe "chrome:headless" tests/sample-fixture.js
@@ -18,7 +18,7 @@ runner
     .run();
 ```
 
-Specify a path to the browser executable if you use a portable version of the browser:
+Specify a path to the browser executable if you use a portable version of the browser. Use the [browser alias](browser-support.md#locally-installed-browsers) instead of the `path:` prefix.
 
 ```sh
 testcafe "firefox:path/to/firefox:headless" tests/sample-fixture.js

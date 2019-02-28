@@ -25,6 +25,7 @@ createTestCafe('localhost', 1337, 1338)
 
 * [createBrowserConnection](#createbrowserconnection)
 * [createRunner](#createrunner)
+* [createLiveModeRunner](#createlivemoderunner)
 * [close](#close)
 
 ### createBrowserConnection
@@ -72,7 +73,7 @@ createTestCafe('localhost', 1337, 1338)
 
 ### createRunner
 
-Creates the [test runner](runner.md) that is used to configure and launch test tasks.
+Creates a [test runner](runner.md) that is used to configure and launch test tasks.
 
 ```text
 createRunner() → Runner
@@ -99,6 +100,39 @@ createTestCafe('localhost', 1337, 1338)
         testcafe.close();
     });
 ```
+
+### createLiveModeRunner
+
+Creates a [test runner](livemoderunner.md) that runs TestCafe in [live mode](../common-concepts/live-mode.md). In this mode, TestCafe watches for changes you make in the test files and all files referenced in them (like page objects or helper modules). These changes immediately restart the tests so that you can see the effect.
+
+```text
+createLiveModeRunner() → LiveModeRunner
+```
+
+[LiveModeRunner](livemoderunner.md) is a [Runner](runner.md) descendant and provides the same API (with certain [limitations](livemoderunner.md#limitations)).
+
+**Example**
+
+```js
+const createTestCafe = require('testcafe');
+let testcafe         = null;
+
+createTestCafe('localhost', 1337, 1338)
+    .then(tc => {
+        testcafe         = tc;
+        const liveRunner = testcafe.createLiveModeRunner();
+
+        return liveRunner
+            .src('tests/test.js')
+            .browsers('chrome')
+            .run();
+    })
+    .then(() => {
+        testcafe.close();
+    });
+```
+
+> Important! You cannot create multiple live mode runners for the same TestCafe server instance. This is because a TestCafe server can handle only one watcher that tracks changes to test files.
 
 ### close
 

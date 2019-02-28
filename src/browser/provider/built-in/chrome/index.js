@@ -5,7 +5,10 @@ import { start as startLocalChrome, stop as stopLocalChrome } from './local-chro
 import * as cdp from './cdp';
 import getMaximizedHeadlessWindowSize from '../../utils/get-maximized-headless-window-size';
 import { GET_WINDOW_DIMENSIONS_INFO_SCRIPT } from '../../utils/client-functions';
+import { cropScreenshot } from '../../../../screenshots/crop';
+import { writePng } from '../../../../screenshots/utils';
 
+const MIN_AVAILABLE_DIMENSION = 50;
 
 export default {
     openedBrowsers: {},
@@ -32,6 +35,8 @@ export default {
         await cdp.createClient(runtimeInfo);
 
         this.openedBrowsers[browserId] = runtimeInfo;
+
+        await this._ensureWindowIsExpanded(browserId, runtimeInfo.viewportSize);
     },
 
     async closeBrowser (browserId) {
@@ -61,8 +66,20 @@ export default {
 
     async takeScreenshot (browserId, path) {
         const runtimeInfo = this.openedBrowsers[browserId];
+        const viewport    = await cdp.getPageViewport(runtimeInfo);
+        const binaryImage = await cdp.getScreenshotData(runtimeInfo);
 
-        await cdp.takeScreenshot(path, runtimeInfo);
+        const { clientWidth, clientHeight } = viewport;
+
+        const croppedImage = await cropScreenshot(path, false, null, {
+            right:  clientWidth,
+            left:   0,
+            top:    0,
+            bottom: clientHeight
+        }, binaryImage);
+
+        if (croppedImage)
+            await writePng(path, croppedImage);
     },
 
     async resizeWindow (browserId, width, height, currentWidth, currentHeight) {
@@ -84,6 +101,10 @@ export default {
         await this.resizeWindow(browserId, maximumSize.width, maximumSize.height, maximumSize.width, maximumSize.height);
     },
 
+    async getVideoFrameData (browserId) {
+        return await cdp.getScreenshotData(this.openedBrowsers[browserId]);
+    },
+
     async hasCustomActionForBrowser (browserId) {
         const { config, client } = this.openedBrowsers[browserId];
 
@@ -93,7 +114,17 @@ export default {
             hasMaximizeWindow:              !!client && config.headless,
             hasTakeScreenshot:              !!client,
             hasChromelessScreenshots:       !!client,
+            hasGetVideoFrameData:           !!client,
             hasCanResizeWindowToDimensions: false
         };
+    },
+
+    async _ensureWindowIsExpanded (browserId, { height, width, availableHeight, availableWidth, outerWidth, outerHeight }) {
+        if (height < MIN_AVAILABLE_DIMENSION || width < MIN_AVAILABLE_DIMENSION) {
+            const newHeight = availableHeight;
+            const newWidth  = Math.floor(availableWidth / 2);
+
+            await this.resizeWindow(browserId, newWidth, newHeight, outerWidth, outerHeight);
+        }
     }
 };

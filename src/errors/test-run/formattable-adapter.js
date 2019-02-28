@@ -49,7 +49,7 @@ export default class TestRunErrorFormattableAdapter {
     }
 
     getErrorMarkup (viewportWidth) {
-        return this.TEMPLATES[this.type](this, viewportWidth);
+        return this.TEMPLATES[this.code](this, viewportWidth);
     }
 
     getCallsiteMarkup () {

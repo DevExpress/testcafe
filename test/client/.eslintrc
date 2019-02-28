@@ -1,4 +1,7 @@
 {
+  "plugins": [
+    "no-only-tests"
+  ],
   "env": {
     "browser": true,
     "qunit": true,
@@ -8,7 +11,8 @@
   "rules": {
     "no-eval": 0,
     "max-nested-callbacks": 0,
-    "no-script-url": 0
+    "no-script-url": 0,
+    "no-only-tests/no-only-tests": 2
   },
   "globals": {
     /* Utils */

@@ -6,7 +6,7 @@ import { ExecuteClientFunctionCommand } from '../test-run/commands/observation';
 import compileClientFunction from '../compiler/compile-client-function';
 import { APIError, ClientFunctionAPIError } from '../errors/runtime';
 import { assertType, is } from '../errors/runtime/type-assertions';
-import MESSAGE from '../errors/runtime/message';
+import { RUNTIME_ERRORS } from '../errors/types';
 import { getCallsiteForMethod } from '../errors/get-callsite';
 import ReExecutablePromise from '../utils/re-executable-promise';
 import testRunMarker from '../test-run/marker-symbol';
@@ -113,7 +113,7 @@ export default class ClientFunctionBuilder {
     }
 
     _createInvalidFnTypeError () {
-        return new ClientFunctionAPIError(this.callsiteNames.instantiation, this.callsiteNames.instantiation, MESSAGE.clientFunctionCodeIsNotAFunction, typeof this.fn);
+        return new ClientFunctionAPIError(this.callsiteNames.instantiation, this.callsiteNames.instantiation, RUNTIME_ERRORS.clientFunctionCodeIsNotAFunction, typeof this.fn);
     }
 
     _executeCommand (args, testRun, callsite) {
@@ -123,7 +123,7 @@ export default class ClientFunctionBuilder {
 
         return ReExecutablePromise.fromFn(async () => {
             if (!testRun) {
-                const err = new ClientFunctionAPIError(this.callsiteNames.execution, this.callsiteNames.instantiation, MESSAGE.clientFunctionCantResolveTestRun);
+                const err = new ClientFunctionAPIError(this.callsiteNames.execution, this.callsiteNames.instantiation, RUNTIME_ERRORS.clientFunctionCannotResolveTestRun);
 
                 // NOTE: force callsite here, because more likely it will
                 // be impossible to resolve it by method name from a lazy promise.
@@ -150,7 +150,7 @@ export default class ClientFunctionBuilder {
             const boundTestRun = options.boundTestRun.testRun || options.boundTestRun;
 
             if (!boundTestRun[testRunMarker])
-                throw new APIError(this.callsiteNames.instantiation, MESSAGE.invalidClientFunctionTestRunBinding);
+                throw new APIError(this.callsiteNames.instantiation, RUNTIME_ERRORS.invalidClientFunctionTestRunBinding);
         }
 
         if (!isNullOrUndefined(options.dependencies))

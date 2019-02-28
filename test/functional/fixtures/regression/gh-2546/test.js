@@ -81,5 +81,22 @@ if (config.useLocalBrowsers) {
                 expect(value.error).is.null;
             });
         });
+
+        it('Should handle errors in the exception handler', () => {
+            const testcafePath = path.resolve('bin/testcafe');
+            const testFilePath = path.resolve('test/functional/fixtures/regression/gh-2546/testcafe-fixtures/uncaughtExceptionInHandler.js');
+            const browsers     = '"chrome:headless --no-sandbox"';
+            const command      = `node ${testcafePath} ${browsers} ${testFilePath}`;
+
+            return new Promise(resolve => {
+                exec(command, (error, stdout) => {
+                    resolve({ error, stdout });
+                });
+            }).then(value => {
+                expect(value.stdout).contains('Exception in the code');
+                expect(value.stdout).contains('Exception in the handler');
+                expect(value.error).is.not.null;
+            });
+        });
     });
 }

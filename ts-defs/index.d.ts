@@ -12,20 +12,20 @@ interface ClientFunctionOptions {
     boundTestRun?: TestController
 }
 
-interface ClientFunction {
+interface ClientFunction<R = any, A extends any[]= any[]> {
     /**
      * Client function
      *
      * @param args - Function arguments.
      */
-    (...args: any[]): Promise<any>;
+    (...args: A): Promise<R>;
     /**
      * Returns a new client function with a different set of options that includes options from the
      * original function and new `options` that overwrite the original ones.
      *
      * @param options - New options.
      */
-    with(options: ClientFunctionOptions): ClientFunction;
+    with(options: ClientFunctionOptions): ClientFunction<R, A>;
 }
 
 // NodeSnapshot
@@ -667,7 +667,7 @@ interface SelectorAPI {
      * @param methods `node` - The matching DOM node for which custom method is executed.
      * @param methods `methodParams` - Custom method parameters.
      */
-    addCustomMethods(methods: {[method: string]: (node: Element, ...methodParams: any[]) => any}, opts?: {returnDOMNodes?: boolean}): Selector;
+    addCustomMethods(methods: {[method: string]: (node: Element, ...methodParams: any[]) => any }, opts?: {returnDOMNodes?: boolean}): Selector;
     /**
      * Returns a new selector with a different set of options that includes options from the
      * original selector and new `options` that overwrite the original ones.
@@ -1049,7 +1049,7 @@ interface TestController {
      * @param options - A set of options that provide additional parameters for the action.
      */
     doubleClick(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-                options?: ClickActionOptions): TestControllerPromise;
+        options?: ClickActionOptions): TestControllerPromise;
     /**
      * Hovers the mouse pointer over a webpage element.
      *
@@ -1244,7 +1244,7 @@ interface TestController {
      *
      * @param actual - An actual value of the assertion.
      */
-    expect(actual: any): Assertion;
+    expect<A>(actual: A | Promise<A>): Assertion<A>;
     /**
      * Pauses the test and switches to the step-by-step execution mode.
      */
@@ -1299,7 +1299,7 @@ interface AssertionOptions {
     allowUnawaitedPromise?: boolean;
 }
 
-interface Assertion {
+interface Assertion<E = any> {
     /**
      * Asserts that `actual` is deeply equal to `expected`.
      *
@@ -1307,14 +1307,14 @@ interface Assertion {
      * @param message - An assertion message that will be displayed in the report if the test fails.
      * @param options - Assertion options.
      */
-    eql(expected: any, message?: string, options?: AssertionOptions): TestControllerPromise;
+    eql(expected: E, message?: string, options?: AssertionOptions): TestControllerPromise;
     /**
      * Asserts that actual is deeply equal to expected.
      *
      * @param expected - An expected value.
      * @param options - Assertion options.
      */
-    eql(expected: any, options?: AssertionOptions): TestControllerPromise;
+    eql(expected: E, options?: AssertionOptions): TestControllerPromise;
     /**
      * Assert that `actual` is not deeply equal to `unexpected`.
      *
@@ -1322,14 +1322,14 @@ interface Assertion {
      * @param message - An assertion message that will be displayed in the report if the test fails.
      * @param options - Assertion options.
      */
-    notEql(unexpected: any, message?: string, options?: AssertionOptions): TestControllerPromise;
+    notEql(unexpected: E, message?: string, options?: AssertionOptions): TestControllerPromise;
     /**
      * Assert that `actual` is not deeply equal to `unexpected`.
      *
      * @param unexpected - An unexpected value.
      * @param options - Assertion options.
      */
-    notEql(unexpected: any, options?: AssertionOptions): TestControllerPromise;
+    notEql(unexpected: E, options?: AssertionOptions): TestControllerPromise;
     /**
      * Asserts that `actual` is truthy.
      *
@@ -1363,14 +1363,14 @@ interface Assertion {
      * @param message - An assertion message that will be displayed in the report if the test fails.
      * @param options - Assertion options.
      */
-    contains(expected: any, message?: string, options?: AssertionOptions): TestControllerPromise;
+    contains(expected: E, message?: string, options?: AssertionOptions): TestControllerPromise;
     /**
      * Asserts that `actual` contains `expected`.
      *
      * @param expected - An expected value.
      * @param options - Assertion options.
      */
-    contains(expected: any, options?: AssertionOptions): TestControllerPromise;
+    contains(expected: E, options?: AssertionOptions): TestControllerPromise;
     /**
      * Asserts that `actual` not contains `unexpected`.
      *
@@ -1378,14 +1378,14 @@ interface Assertion {
      * @param message - An assertion message that will be displayed in the report if the test fails.
      * @param options - Assertion options.
      */
-    notContains(unexpected: any, message?: string, options?: AssertionOptions): TestControllerPromise;
+    notContains(unexpected: E, message?: string, options?: AssertionOptions): TestControllerPromise;
     /**
      * Asserts that `actual` not contains `unexpected`.
      *
      * @param unexpected - An unexpected value.
      * @param options - Assertion options.
      */
-    notContains(unexpected: any, options?: AssertionOptions): TestControllerPromise;
+    notContains(unexpected: E, options?: AssertionOptions): TestControllerPromise;
     /**
      * Asserts that type of `actual` is `typeName`.
      *
@@ -1393,14 +1393,14 @@ interface Assertion {
      * @param message - An assertion message that will be displayed in the report if the test fails.
      * @param options - Assertion options.
      */
-    typeOf(typeName: String, message?: string, options?: AssertionOptions): TestControllerPromise;
+    typeOf(typeName: 'function' | 'object' | 'number' | 'string' | 'boolean' | 'undefined' | 'regex', message?: string, options?: AssertionOptions): TestControllerPromise;
     /**
      * Asserts that type of `actual` is `typeName`.
      *
      * @param typeName - The expected type of an `actual` value.
      * @param options - Assertion options.
      */
-    typeOf(typeName: String, options?: AssertionOptions): TestControllerPromise;
+    typeOf(typeName: 'function' | 'object' | 'number' | 'string' | 'boolean' | 'undefined' | 'regex', options?: AssertionOptions): TestControllerPromise;
     /**
      * Asserts that type of `actual` is not `typeName`.
      *
@@ -1408,14 +1408,14 @@ interface Assertion {
      * @param message - An assertion message that will be displayed in the report if the test fails.
      * @param options - Assertion options.
      */
-    notTypeOf(typeName: String, message?: string, options?: AssertionOptions): TestControllerPromise;
+    notTypeOf(typeName: 'function' | 'object' | 'number' | 'string' | 'boolean' | 'undefined' | 'regex', message?: string, options?: AssertionOptions): TestControllerPromise;
     /**
      * Asserts that type of `actual` is not `typeName`.
      *
      * @param typeName - An unexpected type of an `actual` value.
      * @param options - Assertion options.
      */
-    notTypeOf(typeName: String, options?: AssertionOptions): TestControllerPromise;
+    notTypeOf(typeName: 'function' | 'object' | 'number' | 'string' | 'boolean' | 'undefined' | 'regex', options?: AssertionOptions): TestControllerPromise;
     /**
      * Asserts that `actual` is strictly greater than `expected`.
      *
@@ -1543,16 +1543,214 @@ interface Assertion {
 
 }
 
+interface TestCafe {
+    /**
+     * Creates the test runner that is used to configure and launch test tasks.
+     */
+    createRunner(): Runner;
+
+    /**
+     * Creates a remote browser connection.
+     */
+    createBrowserConnection(): Promise<BrowserConnection>;
+
+    /**
+     * Stops the TestCafe server. Forcibly closes all connections and pending test runs immediately.
+     */
+    close(): void;
+}
+
+interface Runner {
+    /**
+     * Configures the test runner to run tests from the specified files.
+     *
+     * @param source - The relative or absolute path to a test fixture file, or several such paths. You can use glob patterns to include (or exclude) multiple files.
+     */
+    src(source: string | string[]): this;
+
+    /**
+     * Allows you to select which tests should be run.
+     *
+     * @param callback - The callback that determines if a particular test should be run.
+     * @param callback `testName` - The name of the test.
+     * @param callback `fixtureName` - The name of the test fixture.
+     * @param callback `fixturePath` - The path to the test fixture file.
+     * @param callback `testMeta` - The test metadata.
+     * @param callback `fixtureMeta` - The fixture metadata.
+     */
+    filter(
+        callback: (
+        testName: string,
+        fixtureName: string,
+        fixturePath: string,
+        testMeta: Record<string, string>,
+        fixtureMeta: Record<string, string>
+        ) => boolean
+    ): this;
+
+    /**
+     * Configures the test runner to run tests in the specified browsers.
+     *
+     * @param browser - A different browser alias for each browser type.
+     */
+    browsers(browser: string | string[]): this;
+
+    /**
+     * Configures the test runner to run tests in the specified browsers.
+     *
+     * @param browser - The path to the browser's executable (path) and command line parameters (cmd).
+     */
+    browsers(browser: { path: string; cmd?: string }): this;
+
+    /**
+     * Configures the test runner to run tests in the specified browsers.
+     *
+     * @param browser - The remote browser connection.
+     */
+    browsers(browser: BrowserConnection): this;
+
+    /**
+     * Enables TestCafe to take screenshots of the tested webpages.
+     *
+     * @param path - The base path where the screenshots are saved. Note that to construct a complete path to these screenshots, TestCafe uses default path patterns.
+     * @param takeOnFails - Specifies if screenshots should be taken automatically when a test fails.
+     * @param pathPattern - The pattern to compose screenshot files' relative path and name.
+     */
+    screenshots(path: string, takeOnFails?: boolean, pathPattern?: string): this;
+
+    /**
+     * Configures TestCafe's reporting feature.
+     *
+     * @param name - The name of the reporter to use.
+     * @param output - The stream or the name of the file to which the report is written.
+     */
+    reporter(name: string, output?: string | NodeJS.WritableStream): this;
+
+    /**
+     * Configures TestCafe's reporting feature.
+     *
+     * @param reporters An array of reporters
+     */
+    reporter(reporters: Array<string | { name: string, output?: string | NodeJS.WritableStream }>): this;
+
+    /**
+     * Specifies that tests should run concurrently.
+     *
+     * @param n - The number of browser instances that are invoked.
+     */
+    concurrency(n: number): this;
+
+    /**
+     * Specifies a shell command that is executed before running tests. Use it to launch or deploy the application that is tested.
+     *
+     * @param command - The shell command to be executed.
+     * @param initDelay - The amount of time (in milliseconds) allowed for the command to initialize the tested application.
+     */
+    startApp(command: string, initDelay?: number): this;
+
+    /**
+     * Specifies the proxy server used in your local network to access the Internet. Allows you to bypass the proxy when accessing specific resources.
+     *
+     * @param host - The proxy server host.
+     * @param bypassRules - A set of rules that specify which resources are accessed bypassing the proxy.
+     */
+    useProxy(host: string, bypassRules?: string | string[]): this;
+
+    /**
+     * Runs tests according to the current configuration. Returns the number of failed tests.
+     */
+    run(options?: Partial<RunOptions>): Promise<number>;
+
+    /**
+     * Stops all the pending test tasks.
+     */
+    stop(): void;
+}
+
+interface BrowserConnection {
+    /**
+     * A URL that should be visited from a remote browser in order to connect it to the TestCafe server.
+     */
+    url: string;
+
+    /**
+     * Fires when a remote browser connects to the TestCafe server.
+     */
+    once(event: 'ready', callback: Function): void;
+}
+
+interface RunOptions {
+    /**
+     * Defines whether to continue running a test after a JavaScript error occurs on a page (`true`), or consider such a test failed (`false`).
+     */
+    skipJsErrors: boolean;
+    /**
+     * Defines whether to continue running a test after an uncaught error or unhandled promise rejection occurs on the server (`true`), or consider such a test failed (`false`).
+     */
+    skipUncaughtErrors: boolean;
+    /**
+     * Defines whether to enable the quarantine mode.
+     */
+    quarantineMode: boolean;
+    /**
+     * Specifies if tests run in the debug mode. If this option is enabled, test execution is paused before the first action or assertion allowing you to invoke the developer tools and debug. In the debug mode, you can execute the test step-by-step to reproduce its incorrect behavior. You can also use the Unlock Page switch in the footer to unlock the tested page and interact with its elements.
+     */
+    debugMode: boolean;
+    /**
+     * Specifies whether to enter the debug mode when a test fails. If enabled, the test is paused at the moment it fails, so that you can explore the tested page to determine what caused the failure.
+     */
+    debugOnFail: boolean;
+    /**
+     * Specifies the time (in milliseconds) within which selectors make attempts to obtain a node to be returned.
+     */
+    selectorTimeout: number;
+    /**
+     * Specifies the time (in milliseconds) within which TestCafe makes attempts to successfully execute an assertion if a selector property or a client function was passed as an actual value.
+     */
+    assertionTimeout: number;
+    /**
+     * Specifies the time (in milliseconds) TestCafe waits for the  window.load event to fire after the  DOMContentLoaded event. After the timeout passes or the window.load event is raised (whichever happens first), TestCafe starts the test. You can set this timeout to 0 to skip waiting for window.load.
+     */
+    pageLoadTimeout: number;
+    /**
+     * Specifies the test execution speed. A number between 1 (fastest) and 0.01 (slowest). If an individual action's speed is also specified, the action speed setting overrides the test speed.
+     */
+    speed: number;
+    /**
+     * Defines whether to stop a test run if a test fails. This allows you not to wait for all the tests to finish and to focus on the first error.
+     */
+    stopOnFirstFail: boolean;
+    /**
+     * Defines whether to disable checks for test and fixture directives in test files. Use this option to run dynamically loaded tests.
+     */
+    disableTestSyntaxValidation: boolean;
+}
+
 // Exportable lib
 declare module 'testcafe' {
+    import { TlsOptions } from 'tls';
+
+    interface TestCafeFactory {
+        (hostname?: string, port1?: number, port2?: number, sslOptions?: TlsOptions, developmentMode?: boolean): Promise<
+            TestCafe
+        >;
+    }
+
     /**
      * Creates a selector.
      *
      * @param init - Selector initializer.
      * @param options - Selector options.
      */
-    export function Selector(init: string | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection) | Selector | NodeSnapshot | SelectorPromise,
-                             options?: SelectorOptions): Selector;
+    export function Selector(
+        init:
+            | string
+            | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection)
+            | Selector
+            | NodeSnapshot
+            | SelectorPromise,
+        options?: SelectorOptions
+    ): Selector;
 
     /**
      * Creates a client function.
@@ -1560,7 +1758,7 @@ declare module 'testcafe' {
      * @param fn - Function code.
      * @param options - Function options.
      */
-    export function ClientFunction(fn: Function, options?: ClientFunctionOptions): ClientFunction;
+    export function ClientFunction<R, A extends any[]>(fn: (...args: A) => R, options?: ClientFunctionOptions): ClientFunction<R, A>;
 
     /**
      * Creates a request mock
@@ -1570,7 +1768,10 @@ declare module 'testcafe' {
     /**
      * Creates a request logger
      */
-    export function RequestLogger(filter?: string | RegExp | object | ((req: any) => boolean), options?: RequestLoggerOptions): RequestLogger;
+    export function RequestLogger(
+        filter?: string | RegExp | object | ((req: any) => boolean),
+        options?: RequestLoggerOptions
+    ): RequestLogger;
 
     /** The RequestHook class used to create a custom HTTP request hook **/
     export class RequestHook {
@@ -1585,15 +1786,18 @@ declare module 'testcafe' {
         /**
          * The `onRequest` method is called before sending the request.
          */
-        onRequest(requestEvent: object): void;
+        onRequest(requestEvent: object): Promise<void>;
 
         /**
          * The `onResponse` method is called after sending the request
          */
-        onResponse(responseEvent: object): void;
+        onResponse(responseEvent: object): Promise<void>;
     }
 
-    export var Role: {
+    /**
+     * Creates a Role
+     */
+    export const Role: {
         /**
          * Creates a user role.
          *
@@ -1612,7 +1816,11 @@ declare module 'testcafe' {
     /**
      * The test controller used to access test run API.
      */
-    export var t: TestController;
+    export const t: TestController;
+
+    const testCafeFactory: TestCafeFactory;
+
+    export default testCafeFactory;
 }
 
 

@@ -1,8 +1,8 @@
-<h1 align="center">
+<p align="center">
     <a href="https://devexpress.github.io/testcafe">
         <img src="https://raw.githubusercontent.com/DevExpress/testcafe/master/media/testcafe-logo.svg?sanitize=true" alt="testcafe" />
     </a>
-</h1>
+</p>
 
 <p align="center">
 <a href="https://ci.appveyor.com/project/DevExpress/testcafe"><img alt="Functional Windows desktop" src="https://ci.appveyor.com/api/projects/status/ftelkyuiji8lyadf?svg=true"></a>
@@ -15,10 +15,17 @@
 </p>
 
 <p align="center">
-<a href="https://devexpress.github.io/testcafe">https://devexpress.github.io/testcafe</a>
+  <a href="https://devexpress.github.io/testcafe/">Homepage</a> &nbsp&nbsp•&nbsp&nbsp
+  <a href="https://devexpress.github.io/testcafe/documentation/getting-started/">Documentation</a> &nbsp&nbsp•&nbsp&nbsp
+  <a href="https://devexpress.github.io/testcafe/faq/">FAQ</a> &nbsp&nbsp•&nbsp&nbsp
+  <a href="https://devexpress.github.io/testcafe/support/">Support</a>
 </p>
 
-----
+<p align="center">
+  <a href="https://www.devexpress.com/products/testcafestudio/?utm_source=github.com&utm_medium=referral&utm_campaign=tc-gh-banner">
+    <img src="https://raw.github.com/DevExpress/testcafe/master/media/testcafe-studio-banner.png" alt="testcafe-studio" />
+  </a>
+</p>
 
 * **Works on all popular environments**: TestCafe runs on Windows, MacOS, and Linux. It supports desktop, mobile, remote and cloud [browsers](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browsers/browser-support.html) (UI or headless).
 * **1 minute to set up**: You [do not need WebDriver](https://devexpress.github.io/testcafe/faq/#i-have-heard-that-testcafe-does-not-use-selenium-how-does-it-operate) or any other testing software. Install TestCafe with one command, and you are ready to test: `npm install -g testcafe`
@@ -89,7 +96,7 @@ You can run TestCafe from a console, and its reports can be viewed in a CI syste
 
 We've got one more tool for you!
 
-Check out [TestCafe Studio](https://testcafe-studio.devexpress.com): all the perks of TestCafe + GUI + Visual Test Recorder
+Check out [TestCafe Studio](https://www.devexpress.com/products/testcafestudio/?utm_source=github.com&utm_medium=referral&utm_campaign=tc-gh-ide): all the perks of TestCafe + GUI + Visual Test Recorder
 
 ![Get Started with TestCafe Studio](https://raw.githubusercontent.com/DevExpress/testcafe/master/media/testcafe-studio-get-started.gif)
 
@@ -189,13 +196,41 @@ If you want your plugin to be listed below, [send us a note in a Github issue](h
 
 Thank you to all the people who already contributed to TestCafe!
 
+[<img alt="Nuarat" src="https://avatars0.githubusercontent.com/u/11683678?v=4&s=117" width="117">](https://github.com/Nuarat) |[<img alt="Farfurix" src="https://avatars2.githubusercontent.com/u/30019338?v=4&s=117" width="117">](https://github.com/Farfurix) |[<img alt="aleks-pro" src="https://avatars1.githubusercontent.com/u/14822473?v=4&s=117" width="117">](https://github.com/aleks-pro) |[<img alt="ericyd" src="https://avatars2.githubusercontent.com/u/8379268?v=4&s=117" width="117">](https://github.com/ericyd) |[<img alt="NickCis" src="https://avatars0.githubusercontent.com/u/174561?v=4&s=117" width="117">](https://github.com/NickCis) |[<img alt="andrewbranch" src="https://avatars0.githubusercontent.com/u/3277153?v=4&s=117" width="117">](https://github.com/andrewbranch) |
+:---: |:---: |:---: |:---: |:---: |:---: |
+[Nuarat](https://github.com/Nuarat) |[Farfurix](https://github.com/Farfurix) |[aleks-pro](https://github.com/aleks-pro) |[ericyd](https://github.com/ericyd) |[NickCis](https://github.com/NickCis) |[andrewbranch](https://github.com/andrewbranch) |
+
+[<img alt="radarhere" src="https://avatars2.githubusercontent.com/u/3112309?v=4&s=117" width="117">](https://github.com/radarhere) |[<img alt="ai" src="https://avatars1.githubusercontent.com/u/19343?v=4&s=117" width="117">](https://github.com/ai) |[<img alt="AndyWendt" src="https://avatars0.githubusercontent.com/u/6130713?v=4&s=117" width="117">](https://github.com/AndyWendt) |[<img alt="lzxb" src="https://avatars0.githubusercontent.com/u/8424643?v=4&s=117" width="117">](https://github.com/lzxb) |[<img alt="infctr" src="https://avatars1.githubusercontent.com/u/15550153?v=4&s=117" width="117">](https://github.com/infctr) |[<img alt="caseyWebb" src="https://avatars3.githubusercontent.com/u/5419074?v=4&s=117" width="117">](https://github.com/caseyWebb) |
+:---: |:---: |:---: |:---: |:---: |:---: |
+[radarhere](https://github.com/radarhere) |[ai](https://github.com/ai) |[AndyWendt](https://github.com/AndyWendt) |[lzxb](https://github.com/lzxb) |[infctr](https://github.com/infctr) |[caseyWebb](https://github.com/caseyWebb) |
+
+[<img alt="smockle" src="https://avatars1.githubusercontent.com/u/3104489?v=4&s=117" width="117">](https://github.com/smockle) |[<img alt="beyondcompute" src="https://avatars0.githubusercontent.com/u/248055?v=4&s=117" width="117">](https://github.com/beyondcompute) |[<img alt="GeoffreyBooth" src="https://avatars2.githubusercontent.com/u/456802?v=4&s=117" width="117">](https://github.com/GeoffreyBooth) |[<img alt="mcjim" src="https://avatars0.githubusercontent.com/u/485440?v=4&s=117" width="117">](https://github.com/mcjim) |[<img alt="MatthewNielsen27" src="https://avatars2.githubusercontent.com/u/35040439?v=4&s=117" width="117">](https://github.com/MatthewNielsen27) |[<img alt="renancouto" src="https://avatars0.githubusercontent.com/u/230893?v=4&s=117" width="117">](https://github.com/renancouto) |
+:---: |:---: |:---: |:---: |:---: |:---: |
+[smockle](https://github.com/smockle) |[beyondcompute](https://github.com/beyondcompute) |[GeoffreyBooth](https://github.com/GeoffreyBooth) |[mcjim](https://github.com/mcjim) |[MatthewNielsen27](https://github.com/MatthewNielsen27) |[renancouto](https://github.com/renancouto) |
+
+[<img alt="sgrillon14" src="https://avatars0.githubusercontent.com/u/5530550?v=4&s=117" width="117">](https://github.com/sgrillon14) |[<img alt="tobiasbueschel" src="https://avatars3.githubusercontent.com/u/13087421?v=4&s=117" width="117">](https://github.com/tobiasbueschel) |[<img alt="raspo" src="https://avatars2.githubusercontent.com/u/927264?v=4&s=117" width="117">](https://github.com/raspo) |[<img alt="varunkumar" src="https://avatars1.githubusercontent.com/u/509433?v=4&s=117" width="117">](https://github.com/varunkumar) |[<img alt="theghostbel" src="https://avatars2.githubusercontent.com/u/482899?v=4&s=117" width="117">](https://github.com/theghostbel) |[<img alt="aha-oretama" src="https://avatars0.githubusercontent.com/u/7259161?v=4&s=117" width="117">](https://github.com/aha-oretama) |
+:---: |:---: |:---: |:---: |:---: |:---: |
+[sgrillon14](https://github.com/sgrillon14) |[tobiasbueschel](https://github.com/tobiasbueschel) |[raspo](https://github.com/raspo) |[varunkumar](https://github.com/varunkumar) |[theghostbel](https://github.com/theghostbel) |[aha-oretama](https://github.com/aha-oretama) |
+
+[<img alt="VasilyStrelyaev" src="https://avatars1.githubusercontent.com/u/11459924?v=4&s=117" width="117">](https://github.com/VasilyStrelyaev) |[<img alt="AndreyBelym" src="https://avatars1.githubusercontent.com/u/4479386?v=4&s=117" width="117">](https://github.com/AndreyBelym) |[<img alt="AlexanderMoskovkin" src="https://avatars0.githubusercontent.com/u/12047804?v=4&s=117" width="117">](https://github.com/AlexanderMoskovkin) |[<img alt="inikulin" src="https://avatars1.githubusercontent.com/u/453071?v=4&s=117" width="117">](https://github.com/inikulin) |[<img alt="helen-dikareva" src="https://avatars1.githubusercontent.com/u/12034551?v=4&s=117" width="117">](https://github.com/helen-dikareva) |[<img alt="miherlosev" src="https://avatars2.githubusercontent.com/u/4133518?v=4&s=117" width="117">](https://github.com/miherlosev) |
+:---: |:---: |:---: |:---: |:---: |:---: |
+[VasilyStrelyaev](https://github.com/VasilyStrelyaev) |[AndreyBelym](https://github.com/AndreyBelym) |[AlexanderMoskovkin](https://github.com/AlexanderMoskovkin) |[inikulin](https://github.com/inikulin) |[helen-dikareva](https://github.com/helen-dikareva) |[miherlosev](https://github.com/miherlosev) |
+
+[<img alt="AlexKamaev" src="https://avatars3.githubusercontent.com/u/1678902?v=4&s=117" width="117">](https://github.com/AlexKamaev) |[<img alt="MargaritaLoseva" src="https://avatars2.githubusercontent.com/u/12034505?v=4&s=117" width="117">](https://github.com/MargaritaLoseva) |[<img alt="churkin" src="https://avatars3.githubusercontent.com/u/5182202?v=4&s=117" width="117">](https://github.com/churkin) |[<img alt="LavrovArtem" src="https://avatars2.githubusercontent.com/u/5373460?v=4&s=117" width="117">](https://github.com/LavrovArtem) |[<img alt="kirovboris" src="https://avatars0.githubusercontent.com/u/3633477?v=4&s=117" width="117">](https://github.com/kirovboris) |[<img alt="AlexSkorkin" src="https://avatars3.githubusercontent.com/u/995726?v=4&s=117" width="117">](https://github.com/AlexSkorkin) |
+:---: |:---: |:---: |:---: |:---: |:---: |
+[AlexKamaev](https://github.com/AlexKamaev) |[MargaritaLoseva](https://github.com/MargaritaLoseva) |[churkin](https://github.com/churkin) |[LavrovArtem](https://github.com/LavrovArtem) |[kirovboris](https://github.com/kirovboris) |[AlexSkorkin](https://github.com/AlexSkorkin) |
+
+[<img alt="bsmithb2" src="https://avatars2.githubusercontent.com/u/1773789?v=4&s=117" width="117">](https://github.com/bsmithb2) |[<img alt="link89" src="https://avatars2.githubusercontent.com/u/3314130?v=4&s=117" width="117">](https://github.com/link89) |[<img alt="murajun1978" src="https://avatars3.githubusercontent.com/u/911903?v=4&s=117" width="117">](https://github.com/murajun1978) |[<img alt="pietrovich" src="https://avatars2.githubusercontent.com/u/1728613?v=4&s=117" width="117">](https://github.com/pietrovich) |[<img alt="superroma" src="https://avatars0.githubusercontent.com/u/8553464?v=4&s=117" width="117">](https://github.com/superroma) |[<img alt="arubtsov" src="https://avatars0.githubusercontent.com/u/10169557?v=4&s=117" width="117">](https://github.com/arubtsov) |
+:---: |:---: |:---: |:---: |:---: |:---: |
+[bsmithb2](https://github.com/bsmithb2) |[link89](https://github.com/link89) |[murajun1978](https://github.com/murajun1978) |[pietrovich](https://github.com/pietrovich) |[superroma](https://github.com/superroma) |[arubtsov](https://github.com/arubtsov) |
+
+[<img alt="intermike" src="https://avatars0.githubusercontent.com/u/10540148?v=4&s=117" width="117">](https://github.com/intermike) |[<img alt="DevSide" src="https://avatars2.githubusercontent.com/u/6873926?v=4&s=117" width="117">](https://github.com/DevSide) |[<img alt="b12031106" src="https://avatars1.githubusercontent.com/u/2063566?v=4&s=117" width="117">](https://github.com/b12031106) |
+:---: |:---: |:---: |
+[intermike](https://github.com/intermike) |[DevSide](https://github.com/DevSide) |[b12031106](https://github.com/b12031106) |
+
 ## Plugins
 
 TestCafe developers and community members made these plugins:
-
-* **Rapid test development tool**<br/>
-  Changes in test code immediately restart the test, and you see the results instantly.
-  * [TestCafe Live](https://github.com/DevExpress/testcafe-live) (by [@DevExpress](https://github.com/DevExpress))
 
 * **Browser Providers**<br/>
   Allow you to use TestCafe with cloud browser providers and emulators.
@@ -238,7 +273,7 @@ TestCafe developers and community members made these plugins:
 * **ESLint**<br/>
   Use ESLint when writing and editing TestCafe tests.
   * [ESLint plugin](https://github.com/miherlosev/eslint-plugin-testcafe) (by [@miherlosev](https://github.com/miherlosev))
-  
+
 ## Different Versions of TestCafe
 
 There is a line of products called `TestCafe`. Below are the similarities and key differences between them.
@@ -261,11 +296,11 @@ There is a line of products called `TestCafe`. Below are the similarities and ke
   * Easy integration: it is a node.js solution with CLI and reporters for popular CI systems.
   * You can extend it with [plugins](#plugins) and other Node.js modules.
 
-* [**TestCafe Studio**](https://testcafe-studio.devexpress.com/)<br/>
+* [**TestCafe Studio**](https://www.devexpress.com/products/testcafestudio/?utm_source=github.com&utm_medium=referral&utm_campaign=tc-gh-diff)<br/>
   *Preview released in 2018, commercial desktop application*
   * Based on the open-source TestCafe, and supports its major features.
   * You can record tests or edit them as JavaScript or TypeScript code.
-  * New [Visual Test Recorder](https://testcafe-studio.devexpress.com/documentation/guides/record-tests/) and [IDE-like GUI](https://testcafe-studio.devexpress.com/documentation/guides/write-test-code.html) to record, edit, run and debug tests.
+  * New [Visual Test Recorder](https://docs.devexpress.com/TestCafeStudio/400165/guides/record-tests?utm_source=github.com&utm_medium=referral&utm_campaign=tc-gh-diff) and [IDE-like GUI](https://docs.devexpress.com/TestCafeStudio/400176/guides/write-test-scripts?utm_source=github.com&utm_medium=referral&utm_campaign=tc-gh-diff) to record, edit, run and debug tests.
   * Currently available as a free preview version. The release version will replace the 2013 version of TestCafe.
 
 ## Badge

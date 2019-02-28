@@ -48,7 +48,8 @@ describe('[API] t.switchToIframe(), t.switchToMainWindow()', function () {
     });
 
     it('Should work in a cross-domain iframe', function () {
-        return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Click in a cross-domain iframe with redirect', DEFAULT_RUN_OPTIONS);
+        // TODO: fix this test for Safari on BrowserStack
+        return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Click in a cross-domain iframe with redirect', { skip: 'safari', ...DEFAULT_RUN_OPTIONS });
     });
 
     describe('Unavailable iframe errors', function () {

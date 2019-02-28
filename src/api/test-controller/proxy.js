@@ -2,7 +2,7 @@ import TestController from './';
 import { delegateAPI } from '../../utils/delegated-api';
 import testRunTracker from '../test-run-tracker';
 import { APIError } from '../../errors/runtime';
-import MESSAGE from '../../errors/runtime/message';
+import { RUNTIME_ERRORS } from '../../errors/types';
 
 const testControllerProxy = Object.create(null);
 
@@ -20,7 +20,7 @@ delegateAPI(testControllerProxy, TestController.API_LIST, {
             else
                 callsiteName = propName;
 
-            throw new APIError(callsiteName, MESSAGE.testControllerProxyCantResolveTestRun);
+            throw new APIError(callsiteName, RUNTIME_ERRORS.testControllerProxyCannotResolveTestRun);
         }
 
         return testRun.controller;

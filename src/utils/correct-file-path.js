@@ -7,6 +7,7 @@ export default function (filePath, expectedExtention) {
 
     const correctedPath = filePath
         .split(path.posix.sep)
+        .filter((fragment, index) => index === 0 || !!fragment)
         .map(str => sanitizeFilename(str))
         .join(path.sep);
 

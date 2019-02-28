@@ -1,27 +1,39 @@
 import Promise from 'pinkie';
-import { find, sortBy } from 'lodash';
+import { find, sortBy, union } from 'lodash';
 import { writable as isWritableStream } from 'is-stream';
 import ReporterPluginHost from './plugin-host';
 
 export default class Reporter {
     constructor (plugin, task, outStream) {
         this.plugin = new ReporterPluginHost(plugin, outStream);
+        this.task   = task;
 
         this.disposed        = false;
         this.passed          = 0;
-        this.skipped         = task.tests.filter(test => test.skip).length;
-        this.testCount       = task.tests.length - this.skipped;
+        this.failed          = 0;
+        this.skipped         = 0;
+        this.testCount       = task.tests.filter(test => !test.skip).length;
         this.reportQueue     = Reporter._createReportQueue(task);
         this.stopOnFirstFail = task.opts.stopOnFirstFail;
         this.outStream       = outStream;
 
-        this._assignTaskEventHandlers(task);
+        this._assignTaskEventHandlers();
     }
 
-    static _createReportQueue (task) {
-        const runsPerTest = task.browserConnectionGroups.length;
+    static _isSpecialStream (stream) {
+        return stream.isTTY || stream === process.stdout || stream === process.stderr;
+    }
 
-        return task.tests.map(test => Reporter._createReportItem(test, runsPerTest));
+    static _createPendingPromise () {
+        let resolver = null;
+
+        const promise = new Promise(resolve => {
+            resolver = resolve;
+        });
+
+        promise.resolve = resolver;
+
+        return promise;
     }
 
     static _createReportItem (test, runsPerTest) {
@@ -31,17 +43,27 @@ export default class Reporter {
             screenshotPath: null,
             screenshots:    [],
             quarantine:     null,
-            pendingRuns:    runsPerTest,
             errs:           [],
+            warnings:       [],
             unstable:       false,
             startTime:      null,
-            testRunInfo:    null
+            testRunInfo:    null,
+
+            pendingRuns:    runsPerTest,
+            pendingPromise: Reporter._createPendingPromise()
         };
+    }
+
+    static _createReportQueue (task) {
+        const runsPerTest = task.browserConnectionGroups.length;
+
+        return task.tests.map(test => Reporter._createReportItem(test, runsPerTest));
     }
 
     static _createTestRunInfo (reportItem) {
         return {
-            errs:           sortBy(reportItem.errs, ['userAgent', 'type']),
+            errs:           sortBy(reportItem.errs, ['userAgent', 'code']),
+            warnings:       reportItem.warnings,
             durationMs:     new Date() - reportItem.startTime,
             unstable:       reportItem.unstable,
             screenshotPath: reportItem.screenshotPath,
@@ -55,7 +77,7 @@ export default class Reporter {
         return find(this.reportQueue, i => i.test === testRun.test);
     }
 
-    _shiftReportQueue (reportItem) {
+    async _shiftReportQueue (reportItem) {
         let currentFixture = null;
         let nextReportItem = null;
 
@@ -63,7 +85,7 @@ export default class Reporter {
             reportItem     = this.reportQueue.shift();
             currentFixture = reportItem.fixture;
 
-            this.plugin.reportTestDone(reportItem.test.name, reportItem.testRunInfo, reportItem.test.meta);
+            await this.plugin.reportTestDone(reportItem.test.name, reportItem.testRunInfo, reportItem.test.meta);
 
             // NOTE: here we assume that tests are sorted by fixture.
             // Therefore, if the next report item has a different
@@ -71,18 +93,53 @@ export default class Reporter {
             nextReportItem = this.reportQueue[0];
 
             if (nextReportItem && nextReportItem.fixture !== currentFixture)
-                this.plugin.reportFixtureStart(nextReportItem.fixture.name, nextReportItem.fixture.path, nextReportItem.fixture.meta);
+                await this.plugin.reportFixtureStart(nextReportItem.fixture.name, nextReportItem.fixture.path, nextReportItem.fixture.meta);
         }
     }
 
-    _assignTaskEventHandlers (task) {
-        task.once('start', () => {
+    async _resolveReportItem (reportItem, testRun) {
+        if (this.task.screenshots.hasCapturedFor(testRun.test)) {
+            reportItem.screenshotPath = this.task.screenshots.getPathFor(testRun.test);
+            reportItem.screenshots    = this.task.screenshots.getScreenshotsInfo(testRun.test);
+        }
+
+        if (testRun.quarantine) {
+            reportItem.quarantine = testRun.quarantine.attempts.reduce((result, errors, index) => {
+                const passed            = !errors.length;
+                const quarantineAttempt = index + 1;
+
+                result[quarantineAttempt] = { passed };
+
+                return result;
+            }, {});
+        }
+
+        if (!reportItem.testRunInfo) {
+            reportItem.testRunInfo = Reporter._createTestRunInfo(reportItem);
+
+            if (reportItem.test.skip)
+                this.skipped++;
+            else if (reportItem.errs.length)
+                this.failed++;
+            else
+                this.passed++;
+        }
+
+        await this._shiftReportQueue(reportItem);
+
+        reportItem.pendingPromise.resolve();
+    }
+
+    _assignTaskEventHandlers () {
+        const task = this.task;
+
+        task.once('start', async () => {
             const startTime  = new Date();
             const userAgents = task.browserConnectionGroups.map(group => group[0].userAgent);
             const first      = this.reportQueue[0];
 
-            this.plugin.reportTaskStart(startTime, userAgents, this.testCount);
-            this.plugin.reportFixtureStart(first.fixture.name, first.fixture.path, first.fixture.meta);
+            await this.plugin.reportTaskStart(startTime, userAgents, this.testCount);
+            await this.plugin.reportFixtureStart(first.fixture.name, first.fixture.path, first.fixture.meta);
         });
 
         task.on('test-run-start', testRun => {
@@ -92,63 +149,50 @@ export default class Reporter {
                 reportItem.startTime = new Date();
         });
 
-        task.on('test-run-done', testRun => {
+        task.on('test-run-done', async testRun => {
             const reportItem                    = this._getReportItemForTestRun(testRun);
             const isTestRunStoppedTaskExecution = !!testRun.errs.length && this.stopOnFirstFail;
 
             reportItem.pendingRuns = isTestRunStoppedTaskExecution ? 0 : reportItem.pendingRuns - 1;
             reportItem.unstable    = reportItem.unstable || testRun.unstable;
             reportItem.errs        = reportItem.errs.concat(testRun.errs);
+            reportItem.warnings    = testRun.warningLog ? union(reportItem.warnings, testRun.warningLog.messages) : [];
 
-            if (!reportItem.pendingRuns) {
-                if (task.screenshots.hasCapturedFor(testRun.test)) {
-                    reportItem.screenshotPath = task.screenshots.getPathFor(testRun.test);
-                    reportItem.screenshots    = task.screenshots.getScreenshotsInfo(testRun.test);
-                }
+            if (!reportItem.pendingRuns)
+                await this._resolveReportItem(reportItem, testRun);
 
-                if (testRun.quarantine) {
-                    reportItem.quarantine = testRun.quarantine.attempts.reduce((result, errors, index) => {
-                        const passed              = !errors.length;
-                        const quarantineAttempt = index + 1;
-
-                        result[quarantineAttempt] = { passed };
-
-                        return result;
-                    }, {});
-                }
-
-                if (!reportItem.testRunInfo) {
-                    reportItem.testRunInfo = Reporter._createTestRunInfo(reportItem);
-
-                    if (!reportItem.errs.length && !reportItem.test.skip)
-                        this.passed++;
-                }
-
-                this._shiftReportQueue(reportItem);
-            }
+            await reportItem.pendingPromise;
         });
 
-        task.once('done', () => {
+        task.once('done', async () => {
             const endTime = new Date();
 
-            this.plugin.reportTaskDone(endTime, this.passed, task.warningLog.messages);
+            const result = {
+                passedCount:  this.passed,
+                failedCount:  this.failed,
+                skippedCount: this.skipped
+            };
+
+            await this.plugin.reportTaskDone(endTime, this.passed, task.warningLog.messages, result);
         });
     }
 
     async dispose () {
         if (this.disposed)
-            return;
+            return Promise.resolve();
 
         this.disposed = true;
 
-        if (!isWritableStream(this.outStream))
-            return;
+        if (!this.outStream || Reporter._isSpecialStream(this.outStream) || !isWritableStream(this.outStream))
+            return Promise.resolve();
 
-        this.outStream.end();
-
-        await new Promise(resolve => {
+        const streamFinishedPromise = new Promise(resolve => {
             this.outStream.once('finish', resolve);
             this.outStream.once('error', resolve);
         });
+
+        this.outStream.end();
+
+        return streamFinishedPromise;
     }
 }

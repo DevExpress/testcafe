@@ -1,7 +1,6 @@
 const expect                  = require('chai').expect;
 const TYPE                    = require('../../lib/test-run/commands/type');
 const createCommandFromObject = require('../../lib/test-run/commands/from-object');
-const ERROR_TYPE              = require('../../lib/errors/test-run/type');
 const SelectorBuilder         = require('../../lib/client-functions/selectors/selector-builder');
 const assertThrow             = require('./helpers/assert-error').assertThrow;
 
@@ -29,9 +28,9 @@ function makeSelector (str, skipVisibilityCheck) {
     return JSON.parse(JSON.stringify(command));
 }
 
-describe('Test run commands', function () {
-    describe('Construction from object and serialization', function () {
-        it('Should create ClickCommand from object', function () {
+describe('Test run commands', () => {
+    describe('Construction from object and serialization', () => {
+        it('Should create ClickCommand from object', () => {
             let commandObj = {
                 type:     TYPE.click,
                 selector: '#yo',
@@ -102,7 +101,7 @@ describe('Test run commands', function () {
             });
         });
 
-        it('Should create RightClickCommand from object', function () {
+        it('Should create RightClickCommand from object', () => {
             let commandObj = {
                 type:     TYPE.rightClick,
                 selector: '#yo',
@@ -173,7 +172,7 @@ describe('Test run commands', function () {
             });
         });
 
-        it('Should create DoubleClickCommand from object', function () {
+        it('Should create DoubleClickCommand from object', () => {
             let commandObj = {
                 type:     TYPE.doubleClick,
                 selector: '#yo',
@@ -244,7 +243,7 @@ describe('Test run commands', function () {
             });
         });
 
-        it('Should create HoverCommand from object', function () {
+        it('Should create HoverCommand from object', () => {
             let commandObj = {
                 type:     TYPE.hover,
                 selector: '#yo',
@@ -313,7 +312,7 @@ describe('Test run commands', function () {
             });
         });
 
-        it('Should create DragCommand from object', function () {
+        it('Should create DragCommand from object', () => {
             let commandObj = {
                 type:        TYPE.drag,
                 selector:    '#yo',
@@ -390,7 +389,7 @@ describe('Test run commands', function () {
             });
         });
 
-        it('Should create DragToElementCommand from object', function () {
+        it('Should create DragToElementCommand from object', () => {
             let commandObj = {
                 type:                TYPE.dragToElement,
                 selector:            '#yo',
@@ -470,7 +469,7 @@ describe('Test run commands', function () {
             });
         });
 
-        it('Should create TypeTextCommand from object', function () {
+        it('Should create TypeTextCommand from object', () => {
             let commandObj = {
                 type:     TYPE.typeText,
                 selector: '#yo',
@@ -551,7 +550,7 @@ describe('Test run commands', function () {
             });
         });
 
-        it('Should create SelectTextCommand from object', function () {
+        it('Should create SelectTextCommand from object', () => {
             let commandObj = {
                 type:     TYPE.selectText,
                 selector: '#yo',
@@ -598,7 +597,7 @@ describe('Test run commands', function () {
             });
         });
 
-        it('Should create SelectTextAreaContentCommand from object', function () {
+        it('Should create SelectTextAreaContentCommand from object', () => {
             let commandObj = {
                 type:      TYPE.selectTextAreaContent,
                 selector:  '#yo',
@@ -651,7 +650,7 @@ describe('Test run commands', function () {
             });
         });
 
-        it('Should create SelectEditableContentCommand from object', function () {
+        it('Should create SelectEditableContentCommand from object', () => {
             let commandObj = {
                 type:          TYPE.selectEditableContent,
                 selector:      '#yo',
@@ -697,7 +696,7 @@ describe('Test run commands', function () {
             });
         });
 
-        it('Should create PressKeyCommand from object', function () {
+        it('Should create PressKeyCommand from object', () => {
             const commandObj = {
                 type:     TYPE.pressKey,
                 selector: '#yo',
@@ -732,7 +731,7 @@ describe('Test run commands', function () {
             });
         });
 
-        it('Should create WaitCommand from object', function () {
+        it('Should create WaitCommand from object', () => {
             const commandObj = {
                 type:    TYPE.wait,
                 timeout: 1000
@@ -745,7 +744,7 @@ describe('Test run commands', function () {
             });
         });
 
-        it('Should create NavigateToCommand from object', function () {
+        it('Should create NavigateToCommand from object', () => {
             const commandObj = {
                 type:          TYPE.navigateTo,
                 url:           'localhost',
@@ -1172,7 +1171,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSelectorError,
+                    code:            'E23',
                     selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but undefined was passed.',
@@ -1190,7 +1189,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSelectorError,
+                    code:            'E23',
                     selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but number was passed.',
@@ -1209,7 +1208,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionOptionsTypeError,
+                    code:            'E14',
                     actualType:      'number',
                     callsite:        null
                 }
@@ -1227,7 +1226,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionIntegerOptionError,
+                    code:            'E9',
                     optionName:      'offsetX',
                     actualValue:     'string',
                     callsite:        null
@@ -1246,7 +1245,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionIntegerOptionError,
+                    code:            'E9',
                     optionName:      'offsetX',
                     actualValue:     10.5,
                     callsite:        null
@@ -1263,7 +1262,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSelectorError,
+                    code:            'E23',
                     selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but undefined was passed.',
@@ -1281,7 +1280,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSelectorError,
+                    code:            'E23',
                     selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector,' +
                                      ' node snapshot or a Promise returned by a Selector, but boolean was passed.',
@@ -1300,7 +1299,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionOptionsTypeError,
+                    code:            'E14',
                     actualType:      'string',
                     callsite:        null
                 }
@@ -1318,7 +1317,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionIntegerOptionError,
+                    code:            'E9',
                     optionName:      'offsetX',
                     actualValue:     'boolean',
                     callsite:        null
@@ -1339,7 +1338,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionBooleanOptionError,
+                    code:            'E11',
                     optionName:      'modifiers.shift',
                     actualValue:     'string',
                     callsite:        null
@@ -1356,7 +1355,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSelectorError,
+                    code:            'E23',
                     selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but undefined was passed.',
@@ -1374,7 +1373,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSelectorError,
+                    code:            'E23',
                     selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but boolean was passed.',
@@ -1393,7 +1392,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionOptionsTypeError,
+                    code:            'E14',
                     actualType:      'number',
                     callsite:        null
                 }
@@ -1411,7 +1410,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionPositiveIntegerOptionError,
+                    code:            'E10',
                     optionName:      'caretPos',
                     actualValue:     'string',
                     callsite:        null
@@ -1428,7 +1427,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSelectorError,
+                    code:            'E23',
                     selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but undefined was passed.',
@@ -1446,7 +1445,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSelectorError,
+                    code:            'E23',
                     selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but number was passed.',
@@ -1465,7 +1464,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionOptionsTypeError,
+                    code:            'E14',
                     actualType:      'boolean',
                     callsite:        null
                 }
@@ -1483,7 +1482,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionIntegerOptionError,
+                    code:            'E9',
                     optionName:      'offsetX',
                     actualValue:     'string',
                     callsite:        null
@@ -1502,7 +1501,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionIntegerOptionError,
+                    code:            'E9',
                     optionName:      'offsetY',
                     actualValue:     1.01,
                     callsite:        null
@@ -1519,7 +1518,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSelectorError,
+                    code:            'E23',
                     selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but undefined was passed.',
@@ -1537,7 +1536,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSelectorError,
+                    code:            'E23',
                     selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but number was passed.',
@@ -1555,7 +1554,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionIntegerArgumentError,
+                    code:            'E20',
                     argumentName:    'dragOffsetX',
                     actualValue:     'undefined',
                     callsite:        null
@@ -1572,7 +1571,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionIntegerArgumentError,
+                    code:            'E20',
                     argumentName:    'dragOffsetY',
                     actualValue:     'undefined',
                     callsite:        null
@@ -1590,7 +1589,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionIntegerArgumentError,
+                    code:            'E20',
                     argumentName:    'dragOffsetY',
                     actualValue:     10.5,
                     callsite:        null
@@ -1609,7 +1608,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionOptionsTypeError,
+                    code:            'E14',
                     actualType:      'number',
                     callsite:        null
                 }
@@ -1625,7 +1624,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSelectorError,
+                    code:            'E23',
                     selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but undefined was passed.',
@@ -1643,7 +1642,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSelectorError,
+                    code:            'E23',
                     selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but number was passed.',
@@ -1661,7 +1660,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSelectorError,
+                    code:            'E23',
                     selectorName:    'destinationSelector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but undefined was passed.',
@@ -1680,7 +1679,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSelectorError,
+                    code:            'E23',
                     selectorName:    'destinationSelector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but number was passed.',
@@ -1700,7 +1699,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionOptionsTypeError,
+                    code:            'E14',
                     actualType:      'number',
                     callsite:        null
                 }
@@ -1716,7 +1715,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSelectorError,
+                    code:            'E23',
                     selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but undefined was passed.',
@@ -1734,7 +1733,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSelectorError,
+                    code:            'E23',
                     selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but number was passed.',
@@ -1752,7 +1751,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionStringArgumentError,
+                    code:            'E16',
                     argumentName:    'text',
                     actualValue:     'undefined',
                     callsite:        null
@@ -1769,7 +1768,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionStringArgumentError,
+                    code:            'E16',
                     argumentName:    'text',
                     actualValue:     'number',
                     callsite:        null
@@ -1786,7 +1785,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionStringArgumentError,
+                    code:            'E16',
                     argumentName:    'text',
                     actualValue:     '""',
                     callsite:        null
@@ -1804,7 +1803,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionOptionsTypeError,
+                    code:            'E14',
                     actualType:      'boolean',
                     callsite:        null
                 }
@@ -1823,7 +1822,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionIntegerOptionError,
+                    code:            'E9',
                     optionName:      'offsetX',
                     actualValue:     'string',
                     callsite:        null
@@ -1843,7 +1842,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionBooleanOptionError,
+                    code:            'E11',
                     optionName:      'replace',
                     actualValue:     'number',
                     callsite:        null
@@ -1860,7 +1859,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSelectorError,
+                    code:            'E23',
                     selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but undefined was passed.',
@@ -1878,7 +1877,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSelectorError,
+                    code:            'E23',
                     selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but object was passed.',
@@ -1897,7 +1896,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionPositiveIntegerArgumentError,
+                    code:            'E22',
                     argumentName:    'startPos',
                     actualValue:     'string',
                     callsite:        null
@@ -1914,7 +1913,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionPositiveIntegerArgumentError,
+                    code:            'E22',
                     argumentName:    'startPos',
                     actualValue:     5.5,
                     callsite:        null
@@ -1931,7 +1930,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionPositiveIntegerArgumentError,
+                    code:            'E22',
                     argumentName:    'endPos',
                     actualValue:     NaN,
                     callsite:        null
@@ -1948,7 +1947,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionPositiveIntegerArgumentError,
+                    code:            'E22',
                     argumentName:    'endPos',
                     actualValue:     -1,
                     callsite:        null
@@ -1965,7 +1964,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionOptionsTypeError,
+                    code:            'E14',
                     actualType:      'number',
                     callsite:        null
                 }
@@ -1981,7 +1980,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSelectorError,
+                    code:            'E23',
                     selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but undefined was passed.',
@@ -1999,7 +1998,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSelectorError,
+                    code:            'E23',
                     selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but object was passed.',
@@ -2018,7 +2017,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionPositiveIntegerArgumentError,
+                    code:            'E22',
                     argumentName:    'startLine',
                     actualValue:     'string',
                     callsite:        null
@@ -2035,7 +2034,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionPositiveIntegerArgumentError,
+                    code:            'E22',
                     argumentName:    'startLine',
                     actualValue:     5.5,
                     callsite:        null
@@ -2052,7 +2051,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionPositiveIntegerArgumentError,
+                    code:            'E22',
                     argumentName:    'endLine',
                     actualValue:     NaN,
                     callsite:        null
@@ -2069,7 +2068,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionPositiveIntegerArgumentError,
+                    code:            'E22',
                     argumentName:    'endLine',
                     actualValue:     -1,
                     callsite:        null
@@ -2086,7 +2085,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionOptionsTypeError,
+                    code:            'E14',
                     actualType:      'number',
                     callsite:        null
                 }
@@ -2102,7 +2101,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSelectorError,
+                    code:            'E23',
                     selectorName:    'startSelector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but undefined was passed.',
@@ -2120,7 +2119,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSelectorError,
+                    code:            'E23',
                     selectorName:    'startSelector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but number was passed.',
@@ -2139,7 +2138,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSelectorError,
+                    code:            'E23',
                     selectorName:    'endSelector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but boolean was passed.',
@@ -2159,7 +2158,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionOptionsTypeError,
+                    code:            'E14',
                     actualType:      'number',
                     callsite:        null
                 }
@@ -2175,7 +2174,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionStringArgumentError,
+                    code:            'E16',
                     argumentName:    'keys',
                     actualValue:     'undefined',
                     callsite:        null
@@ -2191,7 +2190,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionStringArgumentError,
+                    code:            'E16',
                     argumentName:    'keys',
                     actualValue:     'boolean',
                     callsite:        null
@@ -2207,7 +2206,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionStringArgumentError,
+                    code:            'E16',
                     argumentName:    'keys',
                     actualValue:     '""',
                     callsite:        null
@@ -2224,7 +2223,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionOptionsTypeError,
+                    code:            'E14',
                     actualType:      'number',
                     callsite:        null
                 }
@@ -2240,7 +2239,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionPositiveIntegerArgumentError,
+                    code:            'E22',
                     argumentName:    'timeout',
                     actualValue:     'undefined',
                     callsite:        null
@@ -2256,7 +2255,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionPositiveIntegerArgumentError,
+                    code:            'E22',
                     argumentName:    'timeout',
                     actualValue:     -5,
                     callsite:        null
@@ -2273,7 +2272,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionStringArgumentError,
+                    code:            'E16',
                     argumentName:    'url',
                     actualValue:     'undefined',
                     callsite:        null
@@ -2289,7 +2288,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionStringArgumentError,
+                    code:            'E16',
                     argumentName:    'url',
                     actualValue:     'boolean',
                     callsite:        null
@@ -2305,7 +2304,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionStringArgumentError,
+                    code:            'E16',
                     argumentName:    'url',
                     actualValue:     '""',
                     callsite:        null
@@ -2332,7 +2331,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSelectorError,
+                    code:            'E23',
                     selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but undefined was passed.',
@@ -2350,7 +2349,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSelectorError,
+                    code:            'E23',
                     selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but number was passed.',
@@ -2368,7 +2367,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionStringOrStringArrayArgumentError,
+                    code:            'E18',
                     argumentName:    'filePath',
                     actualValue:     'undefined',
                     callsite:        null
@@ -2385,7 +2384,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionStringOrStringArrayArgumentError,
+                    code:            'E18',
                     argumentName:    'filePath',
                     actualValue:     'number',
                     callsite:        null
@@ -2402,7 +2401,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionStringOrStringArrayArgumentError,
+                    code:            'E18',
                     argumentName:    'filePath',
                     actualValue:     '""',
                     callsite:        null
@@ -2419,7 +2418,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionStringOrStringArrayArgumentError,
+                    code:            'E18',
                     argumentName:    'filePath',
                     actualValue:     'object',
                     callsite:        null
@@ -2436,7 +2435,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionStringOrStringArrayArgumentError,
+                    code:            'E18',
                     argumentName:    'filePath',
                     actualValue:     '[]',
                     callsite:        null
@@ -2453,7 +2452,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionStringArrayElementError,
+                    code:            'E19',
                     argumentName:    'filePath',
                     actualValue:     'number',
                     elementIndex:    1,
@@ -2471,7 +2470,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionStringArrayElementError,
+                    code:            'E19',
                     argumentName:    'filePath',
                     actualValue:     '""',
                     elementIndex:    1,
@@ -2489,7 +2488,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSelectorError,
+                    code:            'E23',
                     selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but undefined was passed.',
@@ -2507,7 +2506,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSelectorError,
+                    code:            'E23',
                     selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but number was passed.',
@@ -2527,7 +2526,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionStringArgumentError,
+                    code:            'E16',
                     actualValue:     'number',
                     argumentName:    'path',
                     callsite:        null
@@ -2543,7 +2542,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionStringArgumentError,
+                    code:            'E16',
                     actualValue:     '""',
                     argumentName:    'path',
                     callsite:        null
@@ -2560,7 +2559,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionPositiveIntegerArgumentError,
+                    code:            'E22',
                     argumentName:    'width',
                     actualValue:     'undefined',
                     callsite:        null
@@ -2577,7 +2576,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionPositiveIntegerArgumentError,
+                    code:            'E22',
                     argumentName:    'height',
                     actualValue:     -5,
                     callsite:        null
@@ -2594,7 +2593,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionStringArgumentError,
+                    code:            'E16',
                     argumentName:    'device',
                     actualValue:     'undefined',
                     callsite:        null
@@ -2610,7 +2609,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionStringArgumentError,
+                    code:            'E16',
                     argumentName:    'device',
                     actualValue:     'number',
                     callsite:        null
@@ -2626,7 +2625,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionStringArgumentError,
+                    code:            'E16',
                     argumentName:    'device',
                     actualValue:     '""',
                     callsite:        null
@@ -2642,7 +2641,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionUnsupportedDeviceTypeError,
+                    code:            'E38',
                     argumentName:    'device',
                     actualValue:     'iPhone 555',
                     callsite:        null
@@ -2659,7 +2658,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionBooleanOptionError,
+                    code:            'E11',
                     optionName:      'portraitOrientation',
                     actualValue:     'object',
                     callsite:        null
@@ -2676,7 +2675,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.setTestSpeedArgumentError,
+                    code:            'E47',
                     argumentName:    'speed',
                     actualValue:     'undefined',
                     callsite:        null
@@ -2692,7 +2691,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.setTestSpeedArgumentError,
+                    code:            'E47',
                     argumentName:    'speed',
                     actualValue:     2,
                     callsite:        null
@@ -2709,7 +2708,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionPositiveIntegerArgumentError,
+                    code:            'E22',
                     argumentName:    'duration',
                     actualValue:     'undefined',
                     callsite:        null
@@ -2725,7 +2724,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionPositiveIntegerArgumentError,
+                    code:            'E22',
                     argumentName:    'duration',
                     actualValue:     -1,
                     callsite:        null
@@ -2742,7 +2741,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionStringArgumentError,
+                    code:            'E16',
                     argumentName:    'assertionType',
                     actualValue:     'undefined',
                     callsite:        null
@@ -2758,7 +2757,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionStringArgumentError,
+                    code:            'E16',
                     argumentName:    'assertionType',
                     actualValue:     'number',
                     callsite:        null
@@ -2775,7 +2774,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionOptionsTypeError,
+                    code:            'E14',
                     actualType:      'number',
                     callsite:        null
                 }
@@ -2793,7 +2792,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionPositiveIntegerOptionError,
+                    code:            'E10',
                     optionName:      'timeout',
                     actualValue:     'string',
                     callsite:        null
@@ -2812,7 +2811,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionPositiveIntegerOptionError,
+                    code:            'E10',
                     optionName:      'timeout',
                     actualValue:     10.5,
                     callsite:        null
@@ -2836,7 +2835,7 @@ describe('Test run commands', function () {
                     argumentName:    'actual',
                     actualValue:     'invalid js code',
                     errMsg:          'Unexpected identifier',
-                    type:            ERROR_TYPE.assertionExecutableArgumentError,
+                    code:            'E59',
                     callsite:        null
                 }
             );
@@ -2851,7 +2850,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionStringArgumentError,
+                    code:            'E16',
                     argumentName:    'expression',
                     actualValue:     'undefined',
                     callsite:        null
@@ -2867,7 +2866,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionStringArgumentError,
+                    code:            'E16',
                     argumentName:    'expression',
                     actualValue:     'number',
                     callsite:        null
@@ -2884,7 +2883,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionBooleanArgumentError,
+                    code:            'E15',
                     actualValue:     'number',
                     argumentName:    'isAsyncExpression',
                     callsite:        null
@@ -2902,7 +2901,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionStringArgumentError,
+                    code:            'E16',
                     argumentName:    'resultVariableName',
                     actualValue:     'number',
                     callsite:        null
@@ -2920,7 +2919,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionStringArgumentError,
+                    code:            'E16',
                     argumentName:    'resultVariableName',
                     actualValue:     '""',
                     callsite:        null
@@ -2941,7 +2940,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSelectorError,
+                    code:            'E23',
                     selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but undefined was passed.',
@@ -2962,7 +2961,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSelectorError,
+                    code:            'E23',
                     selectorName:    'selector',
                     errMsg:          'yo is not defined',
 

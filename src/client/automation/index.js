@@ -51,11 +51,10 @@ exports.getNextFocusableElement      = getNextFocusableElement;
 
 exports.get = require;
 
-hammerhead.nativeMethods.objectDefineProperty.call(window, window, '%testCafeAutomation%', {
-    configurable: true,
-    value:        exports
-});
+const nativeMethods    = hammerhead.nativeMethods;
+const evalIframeScript = hammerhead.EVENTS.evalIframeScript;
 
-/* eslint-disable no-undef */
-hammerhead.on(hammerhead.EVENTS.evalIframeScript, e => initTestCafeAutomation(e.iframe.contentWindow, true));
-/* eslint-enable no-undef */
+nativeMethods.objectDefineProperty(window, '%testCafeAutomation%', { configurable: true, value: exports });
+
+// eslint-disable-next-line no-undef
+hammerhead.on(evalIframeScript, e => initTestCafeAutomation(nativeMethods.contentWindowGetter.call(e.iframe), true));

@@ -1,18 +1,22 @@
-const path                = require('path');
-const expect              = require('chai').expect;
-const request             = require('request');
-const Promise             = require('pinkie');
-const noop                = require('lodash').noop;
-const times               = require('lodash').times;
-const uniqBy              = require('lodash').uniqBy;
-const createTestCafe      = require('../../lib/');
-const COMMAND             = require('../../lib/browser/connection/command');
-const Task                = require('../../lib/runner/task');
-const BrowserConnection   = require('../../lib/browser/connection');
-const BrowserSet          = require('../../lib/runner/browser-set');
-const browserProviderPool = require('../../lib/browser/provider/pool');
-const delay               = require('../../lib/utils/delay');
+/*eslint-disable no-console */
 
+const path                    = require('path');
+const chai                    = require('chai');
+const { expect }              = chai;
+const request                 = require('request');
+const Promise                 = require('pinkie');
+const { noop, times, uniqBy } = require('lodash');
+const createTestCafe          = require('../../lib/');
+const COMMAND                 = require('../../lib/browser/connection/command');
+const Task                    = require('../../lib/runner/task');
+const Reporter                = require('../../lib/reporter');
+const BrowserConnection       = require('../../lib/browser/connection');
+const BrowserSet              = require('../../lib/runner/browser-set');
+const browserProviderPool     = require('../../lib/browser/provider/pool');
+const delay                   = require('../../lib/utils/delay');
+const consoleWrapper          = require('./helpers/console-wrapper');
+
+chai.use(require('chai-string'));
 
 describe('Runner', () => {
     let testCafe                  = null;
@@ -65,35 +69,11 @@ describe('Runner', () => {
         runner = testCafe.createRunner();
     });
 
+    afterEach(() => {
+        consoleWrapper.messages.clear();
+    });
+
     describe('.browsers()', () => {
-        it('Should accept target browsers in different forms', () => {
-            return Promise
-                .all(times(3, () => testCafe.createBrowserConnection()))
-                .then(connections => {
-                    const browserInfo1 = { path: '/Applications/Google Chrome.app' };
-                    const browserInfo2 = { path: '/Applications/Firefox.app' };
-
-                    runner.browsers('ie', 'chrome');
-                    runner.browsers('firefox');
-
-                    runner.browsers('opera', [connections[0]], [browserInfo1, connections[1]]);
-                    runner.browsers([connections[2], browserInfo2]);
-
-                    expect(runner.bootstrapper.browsers).eql([
-                        'ie',
-                        'chrome',
-                        'firefox',
-                        'opera',
-                        connections[0],
-                        browserInfo1,
-                        connections[1],
-                        connections[2],
-                        browserInfo2
-                    ]);
-                });
-
-        });
-
         it('Should raise an error if browser was not found for the alias', () => {
             return runner
                 .browsers('browser42')
@@ -108,7 +88,6 @@ describe('Runner', () => {
                                             'browser alias or path to an executable file.');
                 });
         });
-
 
         it('Should raise an error if an unprefixed path is provided', () => {
             return runner
@@ -137,6 +116,19 @@ describe('Runner', () => {
                     expect(err.message).eql('No browser selected to test against.');
                 });
         });
+
+        it('Should raise an error for the multiple ".browsers" method call', () => {
+            try {
+                runner
+                    .browsers('browser1')
+                    .browsers('browser2');
+
+                throw new Error('Should raise an appropriate error.');
+            }
+            catch (err) {
+                expect(err.message).startsWith('You cannot call the "browsers" method more than once. Pass an array of parameters');
+            }
+        });
     });
 
     describe('.reporter()', () => {
@@ -158,8 +150,7 @@ describe('Runner', () => {
         it('Should raise an error if several reporters are going to write to the stdout', () => {
             return runner
                 .browsers(connection)
-                .reporter('json')
-                .reporter('xunit')
+                .reporter(['json', 'xunit'])
                 .src('test/server/data/test-suites/basic/testfile2.js')
                 .run()
                 .then(() => {
@@ -191,6 +182,39 @@ describe('Runner', () => {
                 .browsers(connection)
                 .src('test/server/data/test-suites/basic/testfile2.js')
                 .run();
+        });
+
+        it('Should raise an error if the reporter output has a wrong type', () => {
+            try {
+                runner.reporter('xunit', 9);
+
+                throw new Error('Should raise a valid error.');
+            }
+            catch (e) {
+                expect(e.message).eql("Specify a file name or a writable stream as the reporter's output target.");
+            }
+        });
+
+        it('Should raise an error for the multiple ".reporter" method call', () => {
+            try {
+                runner
+                    .reporter('json')
+                    .reporter('xunit');
+
+                throw new Error('Should raise an appropriate error.');
+            }
+            catch (err) {
+                expect(err.message).startsWith('You cannot call the "reporter" method more than once. Pass an array of parameters');
+            }
+        });
+
+        it('Should raise an error if null is specified as a reporter output stream (GH-3114)', () => {
+            try {
+                runner.reporter('json', null);
+            }
+            catch (e) {
+                expect(e.message).eql("Specify a file name or a writable stream as the reporter's output target.");
+            }
         });
     });
 
@@ -240,6 +264,65 @@ describe('Runner', () => {
                 .screenshots('..', false, '${BROWSER}/./${TEST}')
                 .src('test/server/data/test-suites/basic/testfile2.js')
                 .run();
+        });
+
+        it('Should throw an error if the screenshot path pattern is specified without a base screenshot path', () => {
+            return runner
+                .browsers(connection)
+                .screenshots(void 0, true, '${DATE}')
+                .src('test/server/data/test-suites/basic/testfile2.js')
+                .run()
+                .then(() => {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(err => {
+                    expect(err.message).eql('Unable to set the screenshot path pattern when screenshots are disabled. Specify the base path where screenshots are stored to enable them.');
+                });
+        });
+
+        it('Should not display a message about "overriden options" after call "screenshots" method with undefined arguments', () => {
+            const savedConsoleLog = console.log;
+
+            console.log = consoleWrapper.log;
+
+            return runner
+                .screenshots(void 0, void 0, void 0)
+                .run({ skipJsErrors: true })
+                .catch(() => {
+                    console.log = savedConsoleLog;
+
+                    expect(consoleWrapper.messages.log).eql(null);
+                });
+        });
+    });
+
+    describe('.video()', () => {
+        it('Should throw an error if video options are specified without a base video path', () => {
+            return runner
+                .browsers(connection)
+                .video(void 0, { failedOnly: true })
+                .src('test/server/data/test-suites/basic/testfile2.js')
+                .run()
+                .then(() => {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(err => {
+                    expect(err.message).eql('Unable to set video or encoding options when video recording is disabled. Specify the base path where video files are stored to enable recording.');
+                });
+        });
+
+        it('Should throw an error if video encoding options are specified without a base video path', () => {
+            return runner
+                .browsers(connection)
+                .video(void 0, null, { 'c:v': 'x264' })
+                .src('test/server/data/test-suites/basic/testfile2.js')
+                .run()
+                .then(() => {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(err => {
+                    expect(err.message).eql('Unable to set video or encoding options when video recording is disabled. Specify the base path where video files are stored to enable recording.');
+                });
         });
     });
 
@@ -303,6 +386,19 @@ describe('Runner', () => {
                 .catch(err => {
                     expect(err.message).eql('No tests to run. Either the test files contain no tests or the filter function is too restrictive.');
                 });
+        });
+
+        it('Should raise an error for the multiple ".src" method call', () => {
+            try {
+                runner
+                    .src('/source1')
+                    .src('/source2');
+
+                throw new Error('Should raise an appropriate error.');
+            }
+            catch (err) {
+                expect(err.message).startsWith('You cannot call the "src" method more than once. Pass an array of parameters');
+            }
         });
     });
 
@@ -616,20 +712,39 @@ describe('Runner', () => {
             let exceptionCount = 0;
 
             const expectProxyBypassError = (proxyBypass, type) => {
-                runner.opts.proxyBypass = proxyBypass;
+                runner.configuration.mergeOptions({ proxyBypass });
 
                 return runner
                     .run()
                     .catch(err => {
                         exceptionCount++;
-                        expect(err.message).contains('"proxyBypass" argument is expected to be a string or an array, but it was ' + type);
+                        expect(err.message).contains('"proxyBypass" argument is expected to be a string or an array, but it was ' +
+                                                     type);
                     });
             };
 
             return expectProxyBypassError(1, 'number')
                 .then(() => expectProxyBypassError({}, 'object'))
                 .then(() => expectProxyBypassError(true, 'bool'))
-                .then(() => expect(exceptionCount).to.be.eql(3));
+                .then(() => {
+                    expect(exceptionCount).to.be.eql(3);
+
+                    delete runner.configuration._options.proxyBypass;
+                });
+        });
+
+        it('Should not display a message about "overriden options" after call "run" method with flags with undefined value', () => {
+            const savedConsoleLog = console.log;
+
+            console.log = consoleWrapper.log;
+
+            return runner
+                .run()
+                .catch(() => {
+                    console.log = savedConsoleLog;
+
+                    expect(consoleWrapper.messages.log).eql(null);
+                });
         });
     });
 
@@ -666,6 +781,8 @@ describe('Runner', () => {
 
         const origCreateBrowserJobs = Task.prototype._createBrowserJobs;
         const origAbort             = Task.prototype.abort;
+
+        const origAssignTaskEventHandlers = Reporter.prototype._assignTaskEventHandlers;
 
         let closeCalled        = 0;
         let abortCalled        = false;
@@ -736,6 +853,8 @@ describe('Runner', () => {
             Task.prototype.abort = () => {
                 abortCalled = true;
             };
+
+            Reporter.prototype._assignTaskEventHandlers = noop;
         });
 
         after(() => {
@@ -743,6 +862,8 @@ describe('Runner', () => {
 
             Task.prototype._createBrowserJobs = origCreateBrowserJobs;
             Task.prototype.abort              = origAbort;
+
+            Reporter.prototype._assignTaskEventHandlers = origAssignTaskEventHandlers;
         });
 
         it('Should not stop the task until local connection browsers are not closed when task done', () => {
@@ -778,7 +899,6 @@ describe('Runner', () => {
                 });
         });
 
-
         it('Should not stop the task while connected browser is not in idle state', () => {
             const IDLE_DELAY = 50;
 
@@ -812,7 +932,6 @@ describe('Runner', () => {
                     remoteConnection.close();
                 });
         });
-
 
         it('Should be able to cancel test', () => {
             const IDLE_DELAY = 100;
@@ -849,5 +968,22 @@ describe('Runner', () => {
                     remoteConnection.close();
                 });
         });
+    });
+
+    it('Should interpret the empty array of the arguments as the "undefined" value (only in CLI mode for "browsers" and "src" methods)', () => {
+        runner.isCli = true;
+
+        runner
+            .src('/path-to-test')
+            .browsers('ie');
+
+        runner.apiMethodWasCalled.reset();
+
+        runner
+            .src([])
+            .browsers([]);
+
+        expect(runner.configuration.getOption('src')).eql(['/path-to-test']);
+        expect(runner.configuration.getOption('browsers')).eql(['ie']);
     });
 });

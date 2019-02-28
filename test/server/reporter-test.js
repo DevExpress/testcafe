@@ -1,8 +1,9 @@
-const expect            = require('chai').expect;
-const EventEmitter      = require('events').EventEmitter;
+const { expect }        = require('chai');
 const Promise           = require('pinkie');
 const { chunk, random } = require('lodash');
 const Reporter          = require('../../lib/reporter');
+const AsyncEventEmitter = require('../../lib/utils/async-event-emitter');
+const delay             = require('../../lib/utils/delay');
 
 describe('Reporter', () => {
     // Runnable configuration mocks
@@ -103,6 +104,22 @@ describe('Reporter', () => {
             meta:    {
                 run: 'run-001'
             }
+        },
+        {
+            name:    'fixture3test2',
+            skip:    true,
+            fixture: fixtureMocks[2],
+            meta:    {
+                run: 'run-001'
+            }
+        },
+        {
+            name:    'fixture3test3',
+            skip:    false,
+            fixture: fixtureMocks[2],
+            meta:    {
+                run: 'run-001'
+            }
         }
     ];
 
@@ -114,6 +131,7 @@ describe('Reporter', () => {
             unstable:          true,
             browserConnection: browserConnectionMocks[0],
             errs:              [],
+            warningLog:        { messages: [] },
             quarantine:        {
                 attempts: [['1', '2'], []]
             }
@@ -124,6 +142,7 @@ describe('Reporter', () => {
             test:              testMocks[1],
             unstable:          false,
             browserConnection: browserConnectionMocks[0],
+            warningLog:        { messages: [] },
 
             errs: [
                 { text: 'err1' },
@@ -136,8 +155,8 @@ describe('Reporter', () => {
             test:              testMocks[2],
             unstable:          false,
             browserConnection: browserConnectionMocks[0],
-            errs:              []
-
+            errs:              [],
+            warningLog:        { messages: [] },
         },
 
         //fixture2test1
@@ -145,7 +164,8 @@ describe('Reporter', () => {
             test:              testMocks[3],
             unstable:          false,
             browserConnection: browserConnectionMocks[0],
-            errs:              []
+            errs:              [],
+            warningLog:        { messages: [] },
         },
 
         //fixture2test2
@@ -153,7 +173,8 @@ describe('Reporter', () => {
             test:              testMocks[4],
             unstable:          false,
             browserConnection: browserConnectionMocks[0],
-            errs:              []
+            errs:              [],
+            warningLog:        { messages: [] },
         },
 
         //fixture3test1
@@ -161,7 +182,26 @@ describe('Reporter', () => {
             test:              testMocks[5],
             unstable:          false,
             browserConnection: browserConnectionMocks[0],
-            errs:              []
+            errs:              [],
+            warningLog:        { messages: [] },
+        },
+
+        //fixture3test2
+        {
+            test:              testMocks[6],
+            unstable:          true,
+            browserConnection: browserConnectionMocks[1],
+            errs:              [],
+            warningLog:        { messages: [] },
+        },
+
+        //fixture3test3
+        {
+            test:              testMocks[7],
+            unstable:          true,
+            browserConnection: browserConnectionMocks[1],
+            errs:              [],
+            warningLog:        { messages: ['warning2'] }
         }
     ];
 
@@ -172,6 +212,7 @@ describe('Reporter', () => {
             unstable:          true,
             browserConnection: browserConnectionMocks[1],
             errs:              [],
+            warningLog:        { messages: [] },
             quarantine:        {
                 attempts: [['1', '2'], []]
             }
@@ -182,8 +223,8 @@ describe('Reporter', () => {
             test:              testMocks[1],
             unstable:          false,
             browserConnection: browserConnectionMocks[1],
-
-            errs: [{ text: 'err1' }]
+            errs:              [{ text: 'err1' }],
+            warningLog:        { messages: [] }
         },
 
         //fixture1test3
@@ -191,7 +232,8 @@ describe('Reporter', () => {
             test:              testMocks[2],
             unstable:          false,
             browserConnection: browserConnectionMocks[1],
-            errs:              []
+            errs:              [],
+            warningLog:        { messages: [] }
         },
 
         //fixture2test1
@@ -199,7 +241,8 @@ describe('Reporter', () => {
             test:              testMocks[3],
             unstable:          false,
             browserConnection: browserConnectionMocks[1],
-            errs:              []
+            errs:              [],
+            warningLog:        { messages: [] }
         },
 
         //fixture2test2
@@ -207,7 +250,8 @@ describe('Reporter', () => {
             test:              testMocks[4],
             unstable:          false,
             browserConnection: browserConnectionMocks[1],
-            errs:              []
+            errs:              [],
+            warningLog:        { messages: [] }
         },
 
         //fixture3test1
@@ -215,7 +259,26 @@ describe('Reporter', () => {
             test:              testMocks[5],
             unstable:          true,
             browserConnection: browserConnectionMocks[1],
-            errs:              [{ text: 'err1' }]
+            errs:              [{ text: 'err1' }],
+            warningLog:        { messages: ['warning1'] }
+        },
+
+        //fixture3test2
+        {
+            test:              testMocks[6],
+            unstable:          true,
+            browserConnection: browserConnectionMocks[1],
+            errs:              [],
+            warningLog:        { messages: [] }
+        },
+
+        //fixture3test3
+        {
+            test:              testMocks[7],
+            unstable:          true,
+            browserConnection: browserConnectionMocks[1],
+            errs:              [],
+            warningLog:        { messages: ['warning2', 'warning3'] }
         }
     ];
 
@@ -241,7 +304,7 @@ describe('Reporter', () => {
         }
     }
 
-    class TaskMock extends EventEmitter {
+    class TaskMock extends AsyncEventEmitter {
         constructor () {
             super();
 
@@ -253,37 +316,81 @@ describe('Reporter', () => {
             this.warningLog = {
                 messages: [
                     'warning1',
-                    'warning2'
+                    'warning2',
+                    'warning3'
                 ]
             };
         }
     }
 
+    let log = [];
+
     // Browser job emulation
-    function delay () {
-        return new Promise(resolve => {
-            setTimeout(resolve, random(0, 10));
-        });
+    function randomDelay () {
+        return delay(random(100, 500));
     }
 
     function emulateBrowserJob (taskMock, testRunMocks) {
         return testRunMocks.reduce((chain, testRun) => {
             return chain
-                .then(() => {
-                    taskMock.emit('test-run-start', testRun);
-                })
-                .then(delay)
-                .then(() => {
-                    taskMock.emit('test-run-done', testRun);
-                })
-                .then(delay);
-        }, delay());
+                .then(() => taskMock.emit('test-run-start', testRun))
+                .then(() => log.push('test-run-start resolved'))
+                .then(randomDelay)
+                .then(() => taskMock.emit('test-run-done', testRun))
+                .then(() => log.push('test-run-done resolved'))
+                .then(randomDelay);
+        }, randomDelay());
     }
 
-    it('Should analyze task progress and call appropriate plugin methods', () => {
+    function createReporter (taskMock) {
+        return new Reporter({
+            reportTaskStart: function (...args) {
+                expect(args[0]).to.be.a('date');
+
+                // NOTE: replace startTime
+                args[0] = new Date('Thu Jan 01 1970 00:00:00 UTC');
+
+                return delay(1000)
+                    .then(() => log.push({ method: 'reportTaskStart', args: args }));
+            },
+
+            reportFixtureStart: function () {
+                return delay(1000)
+                    .then(() => log.push({ method: 'reportFixtureStart', args: Array.prototype.slice.call(arguments) }));
+            },
+
+            reportTestDone: function (...args) {
+                expect(args[1].durationMs).to.be.an('number');
+
+                // NOTE: replace durationMs
+                args[1].durationMs = 74000;
+
+                return delay(1000)
+                    .then(() => log.push({ method: 'reportTestDone', args: args }));
+            },
+
+            reportTaskDone: function (...args) {
+                expect(args[0]).to.be.a('date');
+
+                // NOTE: replace endTime
+                args[0] = new Date('Thu Jan 01 1970 00:15:25 UTC');
+
+                return delay(1000)
+                    .then(() => log.push({ method: 'reportTaskDone', args: args }));
+            }
+        }, taskMock);
+    }
+
+    beforeEach(() => {
+        log = [];
+    });
+
+    it('Should analyze task progress and call appropriate plugin methods', function () {
+        this.timeout(30000);
+
         const taskMock = new TaskMock();
 
-        const expectedCalls = [
+        const expectedLog = [
             {
                 method: 'reportTaskStart',
                 args:   [
@@ -292,7 +399,7 @@ describe('Reporter', () => {
                         'Chrome',
                         'Firefox'
                     ],
-                    6
+                    7
                 ]
             },
             {
@@ -305,12 +412,16 @@ describe('Reporter', () => {
                     }
                 ]
             },
+            'task-start resolved',
+            'test-run-start resolved',
+            'test-run-start resolved',
             {
                 method: 'reportTestDone',
                 args:   [
                     'fixture1test1',
                     {
                         errs:       [],
+                        warnings:   [],
                         durationMs: 74000,
                         unstable:   true,
                         skipped:    false,
@@ -332,6 +443,10 @@ describe('Reporter', () => {
                     }
                 ]
             },
+            'test-run-done resolved',
+            'test-run-done resolved',
+            'test-run-start resolved',
+            'test-run-start resolved',
             {
                 method: 'reportTestDone',
                 args:   [
@@ -352,6 +467,7 @@ describe('Reporter', () => {
                             }
                         ],
 
+                        warnings:       [],
                         durationMs:     74000,
                         unstable:       false,
                         skipped:        false,
@@ -376,12 +492,17 @@ describe('Reporter', () => {
                     }
                 ]
             },
+            'test-run-done resolved',
+            'test-run-done resolved',
+            'test-run-start resolved',
+            'test-run-start resolved',
             {
                 method: 'reportTestDone',
                 args:   [
                     'fixture1test3',
                     {
                         errs:           [],
+                        warnings:       [],
                         durationMs:     74000,
                         unstable:       false,
                         skipped:        false,
@@ -404,12 +525,17 @@ describe('Reporter', () => {
                     }
                 ]
             },
+            'test-run-done resolved',
+            'test-run-done resolved',
+            'test-run-start resolved',
+            'test-run-start resolved',
             {
                 method: 'reportTestDone',
                 args:   [
                     'fixture2test1',
                     {
                         errs:           [],
+                        warnings:       [],
                         durationMs:     74000,
                         unstable:       false,
                         skipped:        false,
@@ -422,12 +548,17 @@ describe('Reporter', () => {
                     }
                 ]
             },
+            'test-run-done resolved',
+            'test-run-done resolved',
+            'test-run-start resolved',
+            'test-run-start resolved',
             {
                 method: 'reportTestDone',
                 args:   [
                     'fixture2test2',
                     {
                         errs:           [],
+                        warnings:       [],
                         durationMs:     74000,
                         unstable:       false,
                         skipped:        false,
@@ -448,6 +579,10 @@ describe('Reporter', () => {
                     null
                 ]
             },
+            'test-run-done resolved',
+            'test-run-done resolved',
+            'test-run-start resolved',
+            'test-run-start resolved',
             {
                 method: 'reportTestDone',
                 args:   [
@@ -460,6 +595,7 @@ describe('Reporter', () => {
                             }
                         ],
 
+                        warnings:       ['warning1'],
                         durationMs:     74000,
                         unstable:       true,
                         skipped:        false,
@@ -472,62 +608,82 @@ describe('Reporter', () => {
                     }
                 ]
             },
+            'test-run-done resolved',
+            'test-run-done resolved',
+            'test-run-start resolved',
+            'test-run-start resolved',
+            {
+                method: 'reportTestDone',
+                args:   [
+                    'fixture3test2',
+                    {
+                        errs:           [],
+                        warnings:       [],
+                        durationMs:     74000,
+                        unstable:       true,
+                        skipped:        true,
+                        quarantine:     null,
+                        screenshotPath: null,
+                        screenshots:    []
+                    },
+                    {
+                        run: 'run-001'
+                    }
+                ]
+            },
+            'test-run-done resolved',
+            'test-run-done resolved',
+            'test-run-start resolved',
+            'test-run-start resolved',
+            {
+                method: 'reportTestDone',
+                args:   [
+                    'fixture3test3',
+                    {
+                        errs:           [],
+                        warnings:       ['warning2', 'warning3'],
+                        durationMs:     74000,
+                        unstable:       true,
+                        skipped:        false,
+                        quarantine:     null,
+                        screenshotPath: null,
+                        screenshots:    []
+                    },
+                    {
+                        run: 'run-001'
+                    }
+                ]
+            },
+            'test-run-done resolved',
+            'test-run-done resolved',
             {
                 method: 'reportTaskDone',
                 args:   [
                     new Date('1970-01-01T00:15:25.000Z'),
-                    4,
-                    ['warning1', 'warning2']
+                    5,
+                    ['warning1', 'warning2', 'warning3'],
+                    { passedCount: 5, failedCount: 2, skippedCount: 1 }
                 ]
-            }
+            },
+            'task-done resolved'
         ];
 
-        const reporter = new Reporter({
-            calls: [],
+        createReporter(taskMock);
 
-            reportTaskStart: function (...args) {
-                expect(args[0]).to.be.a('date');
-
-                // NOTE: replace startTime
-                args[0] = new Date('Thu Jan 01 1970 00:00:00 UTC');
-
-                this.calls.push({ method: 'reportTaskStart', args: args });
-            },
-
-            reportFixtureStart: function () {
-                this.calls.push({ method: 'reportFixtureStart', args: Array.prototype.slice.call(arguments) });
-            },
-
-            reportTestDone: function (...args) {
-                expect(args[1].durationMs).to.be.an('number');
-
-                // NOTE: replace durationMs
-                args[1].durationMs = 74000;
-
-                this.calls.push({ method: 'reportTestDone', args: args });
-            },
-
-            reportTaskDone: function (...args) {
-                expect(args[0]).to.be.a('date');
-
-                // NOTE: replace endTime
-                args[0] = new Date('Thu Jan 01 1970 00:15:25 UTC');
-
-                this.calls.push({ method: 'reportTaskDone', args: args });
-            }
-        }, taskMock);
-
-        taskMock.emit('start');
-
-        return Promise
-            .all([
-                emulateBrowserJob(taskMock, chromeTestRunMocks),
-                emulateBrowserJob(taskMock, firefoxTestRunMocks)
-            ])
+        return taskMock
+            .emit('start')
             .then(() => {
-                taskMock.emit('done');
+                log.push('task-start resolved');
+                return Promise.all([
+                    emulateBrowserJob(taskMock, chromeTestRunMocks),
+                    emulateBrowserJob(taskMock, firefoxTestRunMocks)
+                ]);
+            })
+            .then(() => taskMock.emit('done'))
+            .then(() => {
+                log.push('task-done resolved');
 
-                expect(reporter.plugin.calls).eql(expectedCalls);
+                expect(log).eql(expectedLog);
             });
     });
 

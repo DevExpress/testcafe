@@ -1,5 +1,5 @@
 import TEST_RUN_PHASE from '../test-run/phase';
-import ERR_TYPE from '../errors/test-run/type';
+import { TEST_RUN_ERRORS } from '../errors/types';
 
 import {
     SwitchToMainWindowCommand,
@@ -73,10 +73,10 @@ export default class TestRunBookmark {
                 await this.testRun.executeCommand(switchWorkingFrameCommand);
             }
             catch (err) {
-                if (err.type === ERR_TYPE.actionElementNotFoundError)
+                if (err.code === TEST_RUN_ERRORS.actionElementNotFoundError)
                     throw new CurrentIframeNotFoundError();
 
-                if (err.type === ERR_TYPE.actionIframeIsNotLoadedError)
+                if (err.code === TEST_RUN_ERRORS.actionIframeIsNotLoadedError)
                     throw new CurrentIframeIsNotLoadedError();
 
                 throw err;

@@ -48,9 +48,9 @@ const getReporter = function (scope) {
 };
 
 describe('[API] t.takeScreenshot()', function () {
-    if (config.useLocalBrowsers && config.currentEnvironmentName !== config.testingEnvironmentNames.localBrowsersIE) {
-        afterEach(assertionHelper.removeScreenshotDir);
+    afterEach(assertionHelper.removeScreenshotDir);
 
+    if (config.useLocalBrowsers && config.currentEnvironmentName !== config.testingEnvironmentNames.localBrowsersIE) {
         it('Should take a screenshot', function () {
             return runTests('./testcafe-fixtures/take-screenshot.js', 'Take a screenshot', { setScreenshotPath: true })
                 .then(function () {
@@ -116,9 +116,9 @@ describe('[API] t.takeScreenshot()', function () {
                 .catch(function (errs) {
                     expect(errs[0]).to.contains('The "path" argument is expected to be a non-empty string, but it was number.');
                     expect(errs[0]).to.contains(
-                        '35 |test(\'Incorrect action path argument\', async t => {' +
-                        ' > 36 |    await t.takeScreenshot(1); ' +
-                        '37 |});'
+                        '38 |test(\'Incorrect action path argument\', async t => {' +
+                        ' > 39 |    await t.takeScreenshot(1); ' +
+                        '40 |});'
                     );
                 });
         });
@@ -131,9 +131,9 @@ describe('[API] t.takeScreenshot()', function () {
                 .catch(function (errs) {
                     expect(errs[0]).to.contains('There are forbidden characters in the "path:with*forbidden|chars" screenshot path: ":" at index 4 "*" at index 9 "|" at index 19');
                     expect(errs[0]).to.contains(
-                        '39 |test(\'Forbidden characters in the path argument\', async t => {' +
-                        ' > 40 |    await t.takeScreenshot(\'path:with*forbidden|chars\'); ' +
-                        '41 |});'
+                        '42 |test(\'Forbidden characters in the path argument\', async t => {' +
+                        ' > 43 |    await t.takeScreenshot(\'path:with*forbidden|chars\'); ' +
+                        '44 |});'
                     );
                 });
         });
@@ -179,6 +179,11 @@ describe('[API] t.takeScreenshot()', function () {
                 });
         });
 
+        it('Should crop scrollbars', function () {
+            return runTests('./testcafe-fixtures/take-screenshot.js', 'Should crop scrollbar',
+                { setScreenshotPath: true });
+        });
+
         it('Should provide screenshot log to a reporter', function () {
             const result   = {};
             const reporter = getReporter(result);
@@ -187,7 +192,7 @@ describe('[API] t.takeScreenshot()', function () {
                 setScreenshotPath:  true,
                 quarantineMode:     true,
                 screenshotsOnFails: true,
-                reporters:          [{ reporter }]
+                reporter:           [ reporter ]
             })
                 .then(function () {
                     const getScreenshotsInfo = (screenshotPath, thumbnailPath, attempt, userAgent, takenOnFail) => {
@@ -247,12 +252,25 @@ describe('[API] t.takeScreenshot()', function () {
                 });
         });
     }
+    else if (!config.useLocalBrowsers) {
+        it('Should show a warning on an attempt to capture a screenshot for a remote browser', () => {
+            return runTests('./testcafe-fixtures/take-screenshot.js', 'Take a screenshot',
+                { only: 'chrome', setScreenshotPath: true })
+                .then(() => {
+                    expect(testReport.warnings).eql([
+                        'The screenshot and window resize functionalities are not supported in a remote browser. ' +
+                        'They can function only if the browser is running on the same machine and ' +
+                        'in the same environment as the TestCafe server.'
+                    ]);
+                });
+        });
+    }
 });
 
 describe('[API] t.takeElementScreenshot()', function () {
-    if (config.useLocalBrowsers && config.currentEnvironmentName !== config.testingEnvironmentNames.localBrowsersIE) {
-        afterEach(assertionHelper.removeScreenshotDir);
+    afterEach(assertionHelper.removeScreenshotDir);
 
+    if (config.useLocalBrowsers && config.currentEnvironmentName !== config.testingEnvironmentNames.localBrowsersIE) {
         it('Should take screenshot of an element', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Element',
                 { setScreenshotPath: true })
@@ -546,6 +564,19 @@ describe('[API] t.takeElementScreenshot()', function () {
                 })
                 .then(function (result) {
                     expect(result).eql(true);
+                });
+        });
+    }
+    else if (!config.useLocalBrowsers) {
+        it('Should show a warning on an attempt to capture an element screenshot for a remote browser', () => {
+            return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Element',
+                { only: 'chrome', setScreenshotPath: true })
+                .then(() => {
+                    expect(testReport.warnings).eql([
+                        'The screenshot and window resize functionalities are not supported in a remote browser. ' +
+                        'They can function only if the browser is running on the same machine and ' +
+                        'in the same environment as the TestCafe server.'
+                    ]);
                 });
         });
     }

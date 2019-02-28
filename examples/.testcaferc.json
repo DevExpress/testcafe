@@ -1,0 +1,59 @@
+{
+    "browsers": ["chrome", "firefox:headless", "remote"],
+    "src": ["/home/user/auth-tests/fixture-1.js", "/home/user/mobile-tests/"],
+    "reporter": {
+        "name": "xunit",
+        "output": "reports/report.xml"
+    },
+    "screenshotPath": "/home/user/tests/screenshots/",
+    "screenshotPathPattern": "${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png",
+    "takeScreenshotsOnFails": true,
+    "videoPath": "reports/screen-captures",
+    "videoOptions": {
+        "singleFile": true,
+        "failedOnly": true,
+        "pathPattern": "${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.mp4"
+    },
+    "videoEncodingOptions": {
+        "r": 20,
+        "aspect": "4:3"
+    },
+    "quarantineMode": true,
+    "debugMode": true,
+    "debugOnFail": true,
+    "stopOnFirstFail": true,
+    "skipJsErrors": true,
+    "skipUncaughtErrors": true,
+    "filter": {
+        "test": "Click a label",
+        "testGrep": "Click.*",
+        "fixture": "Sample fixture",
+        "fixtureGrep": "Mobile.*",
+        "testMeta": {
+            "device": "mobile",
+            "env": "production"
+        },
+        "fixtureMeta": {
+            "subsystem": "payments",
+            "type": "regression"
+        }
+    },
+    "appCommand": "node server.js",
+    "appInitDelay": 3000,
+    "concurrency": 3,
+    "selectorTimeout": 3000,
+    "assertionTimeout": 1000,
+    "pageLoadTimeout": 1000,
+    "speed": 0.1,
+    "port1": 12345,
+    "port2": 54321,
+    "hostname": "host.mycorp.com",
+    "proxy": "proxy.corp.mycompany.com",
+    "proxyBypass": ["localhost:8080", "internal-resource.corp.mycompany.com"],
+    "ssl": {
+        "pfx": "path/to/file.pfx",
+        "rejectUnauthorized": true
+    },
+    "developmentMode": true,
+    "qrCode": true
+}

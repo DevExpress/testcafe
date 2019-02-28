@@ -70,4 +70,5 @@ For details, see the reference topics below.
 * [createTestCafe factory function](createtestcafe.md)
 * [TestCafe Class](testcafe.md)
 * [Runner Class](runner.md)
+* [LiveModeRunner Class](livemoderunner.md)
 * [BrowserConnection Class](browserconnection.md)

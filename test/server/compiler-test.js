@@ -1,14 +1,13 @@
-const expect            = require('chai').expect;
-const path              = require('path');
-const fs                = require('fs');
-const Promise           = require('pinkie');
-const renderers         = require('callsite-record').renderers;
-const ERR_TYPE          = require('../../lib/errors/test-run/type');
-const exportableLib     = require('../../lib/api/exportable-lib');
-const createStackFilter = require('../../lib/errors/create-stack-filter.js');
-const assertError       = require('./helpers/assert-error').assertError;
-const compile           = require('./helpers/compile');
-const { exec }          = require('child_process');
+const expect              = require('chai').expect;
+const path                = require('path');
+const fs                  = require('fs');
+const Promise             = require('pinkie');
+const { TEST_RUN_ERRORS } = require('../../lib/errors/types');
+const exportableLib       = require('../../lib/api/exportable-lib');
+const createStackFilter   = require('../../lib/errors/create-stack-filter.js');
+const assertError         = require('./helpers/assert-error').assertError;
+const compile             = require('./helpers/compile');
+const { exec }            = require('child_process');
 
 require('source-map-support').install();
 
@@ -62,21 +61,6 @@ describe('Compiler', function () {
 
                     expect(tests[0].name).eql('test');
                     expect(fixtures[0].name).eql('Library tests');
-                });
-        });
-
-        it('Should not compile test defined in separate module if option is disabled', function () {
-            const sources = [
-                'test/server/data/test-suites/test-as-module/with-tests/testfile.js'
-            ];
-
-            return compile(sources)
-                .then(function (compiled) {
-                    const tests    = compiled.tests;
-                    const fixtures = compiled.fixtures;
-
-                    expect(tests.length).eql(0);
-                    expect(fixtures.length).eql(0);
                 });
         });
 
@@ -191,21 +175,6 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Should not compile test defined in separate module if option is disabled', function () {
-            const sources = [
-                'test/server/data/test-suites/test-as-module/with-tests/testfile.ts'
-            ];
-
-            return compile(sources)
-                .then(function (compiled) {
-                    const tests    = compiled.tests;
-                    const fixtures = compiled.fixtures;
-
-                    expect(tests.length).eql(0);
-                    expect(fixtures.length).eql(0);
-                });
-        });
-
         it('Should compile test files and their dependencies', function () {
             const sources = [
                 'test/server/data/test-suites/typescript-basic/testfile1.ts',
@@ -271,6 +240,8 @@ describe('Compiler', function () {
         });
 
         it('Should complile ts-definitions successfully with the `--strict` option enabled', function () {
+            this.timeout(60000);
+
             const tscPath  = path.resolve('node_modules/typescript/bin/tsc');
             const defsPath = path.resolve('ts-defs/index.d.ts');
             const args     = '--strict';
@@ -287,6 +258,8 @@ describe('Compiler', function () {
         });
 
         it('Should provide API definitions', function () {
+            this.timeout(60000);
+
             const typescriptDefsFolder = 'test/server/data/test-suites/typescript-defs/';
             const src                  = [];
 
@@ -320,6 +293,13 @@ describe('Compiler', function () {
                     expect(result.exportableLib).eql(result.exportableLibInDep);
                 });
         });
+
+        it('Should start and terminate runner w/out errors', () => {
+            return compile('test/server/data/test-suites/typescript-runner/runner.ts')
+                .then(function (compiled) {
+                    expect(compiled.tests.length).gt(0);
+                });
+        });
     });
 
 
@@ -341,22 +321,6 @@ describe('Compiler', function () {
                     expect(fixtures[0].name).eql('Library tests');
                 });
         });
-
-        it('Should not compile test defined in separate module if option is disabled', function () {
-            const sources = [
-                'test/server/data/test-suites/test-as-module/with-tests/testfile.coffee'
-            ];
-
-            return compile(sources)
-                .then(function (compiled) {
-                    const tests    = compiled.tests;
-                    const fixtures = compiled.fixtures;
-
-                    expect(tests.length).eql(0);
-                    expect(fixtures.length).eql(0);
-                });
-        });
-
 
         it('Should compile test files and their dependencies', function () {
             const sources = [
@@ -514,7 +478,7 @@ describe('Compiler', function () {
                         throw new Error('Promise rejection is expected');
                     })
                     .catch(function (errList) {
-                        expect(errList.items[0].type).eql(ERR_TYPE.uncaughtErrorInTestCode);
+                        expect(errList.items[0].code).eql(TEST_RUN_ERRORS.uncaughtErrorInTestCode);
                         expect(errList.items[0].errMsg).contains('test-error');
                         expect(testRun.commands.length).eql(1);
                     });
@@ -776,21 +740,6 @@ describe('Compiler', function () {
 
 
     describe('Regression', function () {
-        it('Incorrect callsite line in error report on node v0.10.41 (GH-599)', function () {
-            return compile('test/server/data/test-suites/regression-gh-599/testfile.js')
-                .then(function (compiled) {
-                    return compiled.tests[0].fn(testRunMock);
-                })
-                .then(function () {
-                    throw 'Promise rejection expected';
-                })
-                .catch(function (errList) {
-                    const callsite = errList.items[0].callsite.renderSync({ renderer: renderers.noColor });
-
-                    expect(callsite).contains(' > 19 |        .method1()\n');
-                });
-        });
-
         it('Should successfully compile tests if re-export is used', function () {
             return compile('test/server/data/test-suites/regression-gh-969/testfile.js')
                 .then(function (compiled) {

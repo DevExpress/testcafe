@@ -1,6 +1,6 @@
 'use strict';
 
-const blc     = require('broken-link-checker');
+const blc     = require('@belym.a.2105/broken-link-checker');
 const http    = require('http');
 const https   = require('https');
 const util    = require('gulp-util');

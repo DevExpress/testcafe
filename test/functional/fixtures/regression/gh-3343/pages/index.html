@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>gh-3343</title>
+</head>
+<body>
+<iframe></iframe>
+<br />
+<button onclick="rewriteIframe()">Rewrite iframe</button>
+<script>
+    var iframe = document.querySelector('iframe');
+    var rewriteCounter = 0;
+
+	function rewriteIframe() {
+        ++rewriteCounter;
+
+        iframe.contentDocument.open();
+        iframe.contentDocument.write('rewriteCounter === ' + rewriteCounter);
+        iframe.contentDocument.close();
+	}
+</script>
+</body>
+</html>

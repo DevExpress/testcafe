@@ -2,21 +2,21 @@
 // WARNING: this file is used by both the client and the server.
 // Do not use any browser or node-specific API!
 // -------------------------------------------------------------
-import TYPE from './type';
+import { TEST_RUN_ERRORS } from '../types';
 
 // Base
 //--------------------------------------------------------------------
 class TestRunErrorBase {
-    constructor (type) {
-        this.type            = type;
+    constructor (code) {
+        this.code            = code;
         this.isTestCafeError = true;
         this.callsite        = null;
     }
 }
 
 class ActionOptionErrorBase extends TestRunErrorBase {
-    constructor (type, optionName, actualValue) {
-        super(type);
+    constructor (code, optionName, actualValue) {
+        super(code);
 
         this.optionName  = optionName;
         this.actualValue = actualValue;
@@ -24,8 +24,8 @@ class ActionOptionErrorBase extends TestRunErrorBase {
 }
 
 class ActionArgumentErrorBase extends TestRunErrorBase {
-    constructor (type, argumentName, actualValue) {
-        super(type);
+    constructor (code, argumentName, actualValue) {
+        super(code);
 
         this.argumentName = argumentName;
         this.actualValue  = actualValue;
@@ -36,7 +36,7 @@ class ActionArgumentErrorBase extends TestRunErrorBase {
 //--------------------------------------------------------------------
 export class MissingAwaitError extends TestRunErrorBase {
     constructor (callsite) {
-        super(TYPE.missingAwaitError);
+        super(TEST_RUN_ERRORS.missingAwaitError);
 
         this.callsite = callsite;
     }
@@ -47,7 +47,7 @@ export class MissingAwaitError extends TestRunErrorBase {
 //--------------------------------------------------------------------
 export class ClientFunctionExecutionInterruptionError extends TestRunErrorBase {
     constructor (instantiationCallsiteName) {
-        super(TYPE.clientFunctionExecutionInterruptionError);
+        super(TEST_RUN_ERRORS.clientFunctionExecutionInterruptionError);
 
         this.instantiationCallsiteName = instantiationCallsiteName;
     }
@@ -55,7 +55,7 @@ export class ClientFunctionExecutionInterruptionError extends TestRunErrorBase {
 
 export class DomNodeClientFunctionResultError extends TestRunErrorBase {
     constructor (instantiationCallsiteName) {
-        super(TYPE.domNodeClientFunctionResultError);
+        super(TEST_RUN_ERRORS.domNodeClientFunctionResultError);
 
         this.instantiationCallsiteName = instantiationCallsiteName;
     }
@@ -64,8 +64,8 @@ export class DomNodeClientFunctionResultError extends TestRunErrorBase {
 // Selector errors
 //--------------------------------------------------------------------
 class SelectorErrorBase extends TestRunErrorBase {
-    constructor (type, { apiFnChain, apiFnIndex }) {
-        super(type);
+    constructor (code, { apiFnChain, apiFnIndex }) {
+        super(code);
 
         this.apiFnChain = apiFnChain;
         this.apiFnIndex = apiFnIndex;
@@ -74,13 +74,13 @@ class SelectorErrorBase extends TestRunErrorBase {
 
 export class InvalidSelectorResultError extends TestRunErrorBase {
     constructor () {
-        super(TYPE.invalidSelectorResultError);
+        super(TEST_RUN_ERRORS.invalidSelectorResultError);
     }
 }
 
-export class CantObtainInfoForElementSpecifiedBySelectorError extends SelectorErrorBase {
+export class CannotObtainInfoForElementSpecifiedBySelectorError extends SelectorErrorBase {
     constructor (callsite, apiFnArgs) {
-        super(TYPE.cantObtainInfoForElementSpecifiedBySelectorError, apiFnArgs);
+        super(TEST_RUN_ERRORS.cannotObtainInfoForElementSpecifiedBySelectorError, apiFnArgs);
 
         this.callsite = callsite;
     }
@@ -90,7 +90,7 @@ export class CantObtainInfoForElementSpecifiedBySelectorError extends SelectorEr
 //--------------------------------------------------------------------
 export class PageLoadError extends TestRunErrorBase {
     constructor (errMsg) {
-        super(TYPE.pageLoadError);
+        super(TEST_RUN_ERRORS.pageLoadError);
 
         this.errMsg = errMsg;
     }
@@ -101,7 +101,7 @@ export class PageLoadError extends TestRunErrorBase {
 //--------------------------------------------------------------------
 export class UncaughtErrorOnPage extends TestRunErrorBase {
     constructor (errStack, pageDestUrl) {
-        super(TYPE.uncaughtErrorOnPage);
+        super(TEST_RUN_ERRORS.uncaughtErrorOnPage);
 
         this.errStack    = errStack;
         this.pageDestUrl = pageDestUrl;
@@ -110,7 +110,7 @@ export class UncaughtErrorOnPage extends TestRunErrorBase {
 
 export class UncaughtErrorInTestCode extends TestRunErrorBase {
     constructor (err, callsite) {
-        super(TYPE.uncaughtErrorInTestCode);
+        super(TEST_RUN_ERRORS.uncaughtErrorInTestCode);
 
         this.errMsg   = String(err);
         this.callsite = callsite;
@@ -119,7 +119,7 @@ export class UncaughtErrorInTestCode extends TestRunErrorBase {
 
 export class UncaughtNonErrorObjectInTestCode extends TestRunErrorBase {
     constructor (obj) {
-        super(TYPE.uncaughtNonErrorObjectInTestCode);
+        super(TEST_RUN_ERRORS.uncaughtNonErrorObjectInTestCode);
 
         this.objType = typeof obj;
         this.objStr  = String(obj);
@@ -128,7 +128,7 @@ export class UncaughtNonErrorObjectInTestCode extends TestRunErrorBase {
 
 export class UncaughtErrorInClientFunctionCode extends TestRunErrorBase {
     constructor (instantiationCallsiteName, err) {
-        super(TYPE.uncaughtErrorInClientFunctionCode);
+        super(TEST_RUN_ERRORS.uncaughtErrorInClientFunctionCode);
 
         this.errMsg                    = String(err);
         this.instantiationCallsiteName = instantiationCallsiteName;
@@ -137,7 +137,7 @@ export class UncaughtErrorInClientFunctionCode extends TestRunErrorBase {
 
 export class UncaughtErrorInCustomDOMPropertyCode extends TestRunErrorBase {
     constructor (instantiationCallsiteName, err, prop) {
-        super(TYPE.uncaughtErrorInCustomDOMPropertyCode, err, prop);
+        super(TEST_RUN_ERRORS.uncaughtErrorInCustomDOMPropertyCode, err, prop);
 
         this.errMsg                    = String(err);
         this.property                  = prop;
@@ -147,7 +147,7 @@ export class UncaughtErrorInCustomDOMPropertyCode extends TestRunErrorBase {
 
 export class UnhandledPromiseRejectionError extends TestRunErrorBase {
     constructor (err) {
-        super(TYPE.unhandledPromiseRejection);
+        super(TEST_RUN_ERRORS.unhandledPromiseRejection);
 
         this.errMsg = String(err);
     }
@@ -155,7 +155,7 @@ export class UnhandledPromiseRejectionError extends TestRunErrorBase {
 
 export class UncaughtExceptionError extends TestRunErrorBase {
     constructor (err) {
-        super(TYPE.uncaughtException);
+        super(TEST_RUN_ERRORS.uncaughtException);
 
         this.errMsg = String(err);
     }
@@ -166,7 +166,7 @@ export class UncaughtExceptionError extends TestRunErrorBase {
 //--------------------------------------------------------------------
 export class ExternalAssertionLibraryError extends TestRunErrorBase {
     constructor (err, callsite) {
-        super(TYPE.externalAssertionLibraryError);
+        super(TEST_RUN_ERRORS.externalAssertionLibraryError);
 
         this.errMsg   = String(err);
         this.callsite = callsite;
@@ -175,7 +175,7 @@ export class ExternalAssertionLibraryError extends TestRunErrorBase {
 
 export class AssertionExecutableArgumentError extends ActionArgumentErrorBase {
     constructor (argumentName, argumentValue, errMsg) {
-        super(TYPE.assertionExecutableArgumentError, argumentName, argumentValue);
+        super(TEST_RUN_ERRORS.assertionExecutableArgumentError, argumentName, argumentValue);
 
         this.errMsg = errMsg;
     }
@@ -183,7 +183,7 @@ export class AssertionExecutableArgumentError extends ActionArgumentErrorBase {
 
 export class AssertionWithoutMethodCallError extends TestRunErrorBase {
     constructor (callsite) {
-        super(TYPE.assertionWithoutMethodCallError);
+        super(TEST_RUN_ERRORS.assertionWithoutMethodCallError);
 
         this.callsite = callsite;
     }
@@ -191,7 +191,7 @@ export class AssertionWithoutMethodCallError extends TestRunErrorBase {
 
 export class AssertionUnawaitedPromiseError extends TestRunErrorBase {
     constructor (callsite) {
-        super(TYPE.assertionUnawaitedPromiseError);
+        super(TEST_RUN_ERRORS.assertionUnawaitedPromiseError);
 
         this.callsite = callsite;
     }
@@ -202,37 +202,37 @@ export class AssertionUnawaitedPromiseError extends TestRunErrorBase {
 // Options errors
 export class ActionIntegerOptionError extends ActionOptionErrorBase {
     constructor (optionName, actualValue) {
-        super(TYPE.actionIntegerOptionError, optionName, actualValue);
+        super(TEST_RUN_ERRORS.actionIntegerOptionError, optionName, actualValue);
     }
 }
 
 export class ActionPositiveIntegerOptionError extends ActionOptionErrorBase {
     constructor (optionName, actualValue) {
-        super(TYPE.actionPositiveIntegerOptionError, optionName, actualValue);
+        super(TEST_RUN_ERRORS.actionPositiveIntegerOptionError, optionName, actualValue);
     }
 }
 
 export class ActionBooleanOptionError extends ActionOptionErrorBase {
     constructor (optionName, actualValue) {
-        super(TYPE.actionBooleanOptionError, optionName, actualValue);
+        super(TEST_RUN_ERRORS.actionBooleanOptionError, optionName, actualValue);
     }
 }
 
 export class ActionBooleanArgumentError extends ActionArgumentErrorBase {
     constructor (argumentName, actualValue) {
-        super(TYPE.actionBooleanArgumentError, argumentName, actualValue);
+        super(TEST_RUN_ERRORS.actionBooleanArgumentError, argumentName, actualValue);
     }
 }
 
 export class ActionSpeedOptionError extends ActionOptionErrorBase {
     constructor (optionName, actualValue) {
-        super(TYPE.actionSpeedOptionError, optionName, actualValue);
+        super(TEST_RUN_ERRORS.actionSpeedOptionError, optionName, actualValue);
     }
 }
 
 export class ActionOptionsTypeError extends TestRunErrorBase {
     constructor (actualType) {
-        super(TYPE.actionOptionsTypeError);
+        super(TEST_RUN_ERRORS.actionOptionsTypeError);
 
         this.actualType = actualType;
     }
@@ -242,43 +242,43 @@ export class ActionOptionsTypeError extends TestRunErrorBase {
 // Arguments errors
 export class ActionStringArgumentError extends ActionArgumentErrorBase {
     constructor (argumentName, actualValue) {
-        super(TYPE.actionStringArgumentError, argumentName, actualValue);
+        super(TEST_RUN_ERRORS.actionStringArgumentError, argumentName, actualValue);
     }
 }
 
 export class ActionNullableStringArgumentError extends ActionArgumentErrorBase {
     constructor (argumentName, actualValue) {
-        super(TYPE.actionNullableStringArgumentError, argumentName, actualValue);
+        super(TEST_RUN_ERRORS.actionNullableStringArgumentError, argumentName, actualValue);
     }
 }
 
 export class ActionIntegerArgumentError extends ActionArgumentErrorBase {
     constructor (argumentName, actualValue) {
-        super(TYPE.actionIntegerArgumentError, argumentName, actualValue);
+        super(TEST_RUN_ERRORS.actionIntegerArgumentError, argumentName, actualValue);
     }
 }
 
 export class ActionRoleArgumentError extends ActionArgumentErrorBase {
     constructor (argumentName, actualValue) {
-        super(TYPE.actionRoleArgumentError, argumentName, actualValue);
+        super(TEST_RUN_ERRORS.actionRoleArgumentError, argumentName, actualValue);
     }
 }
 
 export class ActionPositiveIntegerArgumentError extends ActionArgumentErrorBase {
     constructor (argumentName, actualValue) {
-        super(TYPE.actionPositiveIntegerArgumentError, argumentName, actualValue);
+        super(TEST_RUN_ERRORS.actionPositiveIntegerArgumentError, argumentName, actualValue);
     }
 }
 
 export class ActionStringOrStringArrayArgumentError extends ActionArgumentErrorBase {
     constructor (argumentName, actualValue) {
-        super(TYPE.actionStringOrStringArrayArgumentError, argumentName, actualValue);
+        super(TEST_RUN_ERRORS.actionStringOrStringArrayArgumentError, argumentName, actualValue);
     }
 }
 
 export class ActionStringArrayElementError extends ActionArgumentErrorBase {
     constructor (argumentName, actualValue, elementIndex) {
-        super(TYPE.actionStringArrayElementError, argumentName, actualValue);
+        super(TEST_RUN_ERRORS.actionStringArrayElementError, argumentName, actualValue);
 
         this.elementIndex = elementIndex;
     }
@@ -286,20 +286,20 @@ export class ActionStringArrayElementError extends ActionArgumentErrorBase {
 
 export class SetTestSpeedArgumentError extends ActionArgumentErrorBase {
     constructor (argumentName, actualValue) {
-        super(TYPE.setTestSpeedArgumentError, argumentName, actualValue);
+        super(TEST_RUN_ERRORS.setTestSpeedArgumentError, argumentName, actualValue);
     }
 }
 
 export class ActionUnsupportedDeviceTypeError extends ActionArgumentErrorBase {
     constructor (argumentName, argumentValue) {
-        super(TYPE.actionUnsupportedDeviceTypeError, argumentName, argumentValue);
+        super(TEST_RUN_ERRORS.actionUnsupportedDeviceTypeError, argumentName, argumentValue);
     }
 }
 
 // Selector errors
 export class ActionSelectorError extends TestRunErrorBase {
     constructor (selectorName, errMsg) {
-        super(TYPE.actionSelectorError);
+        super(TEST_RUN_ERRORS.actionSelectorError);
 
         this.selectorName = selectorName;
         this.errMsg       = errMsg;
@@ -310,19 +310,19 @@ export class ActionSelectorError extends TestRunErrorBase {
 //--------------------------------------------------------------------
 export class ActionElementNotFoundError extends SelectorErrorBase {
     constructor (apiFnArgs) {
-        super(TYPE.actionElementNotFoundError, apiFnArgs);
+        super(TEST_RUN_ERRORS.actionElementNotFoundError, apiFnArgs);
     }
 }
 
 export class ActionElementIsInvisibleError extends TestRunErrorBase {
     constructor () {
-        super(TYPE.actionElementIsInvisibleError);
+        super(TEST_RUN_ERRORS.actionElementIsInvisibleError);
     }
 }
 
 export class ActionSelectorMatchesWrongNodeTypeError extends TestRunErrorBase {
     constructor (nodeDescription) {
-        super(TYPE.actionSelectorMatchesWrongNodeTypeError);
+        super(TEST_RUN_ERRORS.actionSelectorMatchesWrongNodeTypeError);
 
         this.nodeDescription = nodeDescription;
     }
@@ -330,7 +330,7 @@ export class ActionSelectorMatchesWrongNodeTypeError extends TestRunErrorBase {
 
 export class ActionAdditionalElementNotFoundError extends SelectorErrorBase {
     constructor (argumentName, apiFnArgs) {
-        super(TYPE.actionAdditionalElementNotFoundError, apiFnArgs);
+        super(TEST_RUN_ERRORS.actionAdditionalElementNotFoundError, apiFnArgs);
 
         this.argumentName = argumentName;
     }
@@ -338,7 +338,7 @@ export class ActionAdditionalElementNotFoundError extends SelectorErrorBase {
 
 export class ActionAdditionalElementIsInvisibleError extends TestRunErrorBase {
     constructor (argumentName) {
-        super(TYPE.actionAdditionalElementIsInvisibleError);
+        super(TEST_RUN_ERRORS.actionAdditionalElementIsInvisibleError);
 
         this.argumentName = argumentName;
     }
@@ -346,7 +346,7 @@ export class ActionAdditionalElementIsInvisibleError extends TestRunErrorBase {
 
 export class ActionAdditionalSelectorMatchesWrongNodeTypeError extends TestRunErrorBase {
     constructor (argumentName, nodeDescription) {
-        super(TYPE.actionAdditionalSelectorMatchesWrongNodeTypeError);
+        super(TEST_RUN_ERRORS.actionAdditionalSelectorMatchesWrongNodeTypeError);
 
         this.argumentName    = argumentName;
         this.nodeDescription = nodeDescription;
@@ -355,19 +355,19 @@ export class ActionAdditionalSelectorMatchesWrongNodeTypeError extends TestRunEr
 
 export class ActionElementNonEditableError extends TestRunErrorBase {
     constructor () {
-        super(TYPE.actionElementNonEditableError);
+        super(TEST_RUN_ERRORS.actionElementNonEditableError);
     }
 }
 
 export class ActionElementNotTextAreaError extends TestRunErrorBase {
     constructor () {
-        super(TYPE.actionElementNotTextAreaError);
+        super(TEST_RUN_ERRORS.actionElementNotTextAreaError);
     }
 }
 
 export class ActionElementNonContentEditableError extends TestRunErrorBase {
     constructor (argumentName) {
-        super(TYPE.actionElementNonContentEditableError);
+        super(TEST_RUN_ERRORS.actionElementNonContentEditableError);
 
         this.argumentName = argumentName;
     }
@@ -375,21 +375,21 @@ export class ActionElementNonContentEditableError extends TestRunErrorBase {
 
 export class ActionRootContainerNotFoundError extends TestRunErrorBase {
     constructor () {
-        super(TYPE.actionRootContainerNotFoundError);
+        super(TEST_RUN_ERRORS.actionRootContainerNotFoundError);
     }
 }
 
 export class ActionIncorrectKeysError extends TestRunErrorBase {
     constructor (argumentName) {
-        super(TYPE.actionIncorrectKeysError);
+        super(TEST_RUN_ERRORS.actionIncorrectKeysError);
 
         this.argumentName = argumentName;
     }
 }
 
-export class ActionCanNotFindFileToUploadError extends TestRunErrorBase {
+export class ActionCannotFindFileToUploadError extends TestRunErrorBase {
     constructor (filePaths) {
-        super(TYPE.actionCanNotFindFileToUploadError);
+        super(TEST_RUN_ERRORS.actionCannotFindFileToUploadError);
 
         this.filePaths = filePaths;
     }
@@ -397,13 +397,13 @@ export class ActionCanNotFindFileToUploadError extends TestRunErrorBase {
 
 export class ActionElementIsNotFileInputError extends TestRunErrorBase {
     constructor () {
-        super(TYPE.actionElementIsNotFileInputError);
+        super(TEST_RUN_ERRORS.actionElementIsNotFileInputError);
     }
 }
 
 export class ActionInvalidScrollTargetError extends TestRunErrorBase {
     constructor (scrollTargetXValid, scrollTargetYValid) {
-        super(TYPE.actionInvalidScrollTargetError);
+        super(TEST_RUN_ERRORS.actionInvalidScrollTargetError);
 
         if (!scrollTargetXValid) {
             if (!scrollTargetYValid)
@@ -418,7 +418,7 @@ export class ActionInvalidScrollTargetError extends TestRunErrorBase {
 
 export class WindowDimensionsOverflowError extends TestRunErrorBase {
     constructor (callsite) {
-        super(TYPE.windowDimensionsOverflowError);
+        super(TEST_RUN_ERRORS.windowDimensionsOverflowError);
 
         this.callsite = callsite;
     }
@@ -426,7 +426,7 @@ export class WindowDimensionsOverflowError extends TestRunErrorBase {
 
 export class InvalidElementScreenshotDimensionsError extends TestRunErrorBase {
     constructor (width, height) {
-        super(TYPE.invalidElementScreenshotDimensionsError);
+        super(TEST_RUN_ERRORS.invalidElementScreenshotDimensionsError);
 
         const widthIsInvalid  = width <= 0;
         const heightIsInvalid = height <= 0;
@@ -450,7 +450,7 @@ export class InvalidElementScreenshotDimensionsError extends TestRunErrorBase {
 
 export class ForbiddenCharactersInScreenshotPathError extends TestRunErrorBase {
     constructor (screenshotPath, forbiddenCharsList) {
-        super(TYPE.forbiddenCharactersInScreenshotPathError);
+        super(TEST_RUN_ERRORS.forbiddenCharactersInScreenshotPathError);
 
         this.screenshotPath     = screenshotPath;
         this.forbiddenCharsList = forbiddenCharsList;
@@ -460,7 +460,7 @@ export class ForbiddenCharactersInScreenshotPathError extends TestRunErrorBase {
 
 export class RoleSwitchInRoleInitializerError extends TestRunErrorBase {
     constructor (callsite) {
-        super(TYPE.roleSwitchInRoleInitializerError);
+        super(TEST_RUN_ERRORS.roleSwitchInRoleInitializerError);
 
         this.callsite = callsite;
     }
@@ -470,38 +470,38 @@ export class RoleSwitchInRoleInitializerError extends TestRunErrorBase {
 // Iframe errors
 export class ActionElementNotIframeError extends TestRunErrorBase {
     constructor () {
-        super(TYPE.actionElementNotIframeError);
+        super(TEST_RUN_ERRORS.actionElementNotIframeError);
     }
 }
 
 export class ActionIframeIsNotLoadedError extends TestRunErrorBase {
     constructor () {
-        super(TYPE.actionIframeIsNotLoadedError);
+        super(TEST_RUN_ERRORS.actionIframeIsNotLoadedError);
     }
 }
 
 export class CurrentIframeIsNotLoadedError extends TestRunErrorBase {
     constructor () {
-        super(TYPE.currentIframeIsNotLoadedError);
+        super(TEST_RUN_ERRORS.currentIframeIsNotLoadedError);
     }
 }
 
 export class CurrentIframeNotFoundError extends TestRunErrorBase {
     constructor () {
-        super(TYPE.currentIframeNotFoundError);
+        super(TEST_RUN_ERRORS.currentIframeNotFoundError);
     }
 }
 
 export class CurrentIframeIsInvisibleError extends TestRunErrorBase {
     constructor () {
-        super(TYPE.currentIframeIsInvisibleError);
+        super(TEST_RUN_ERRORS.currentIframeIsInvisibleError);
     }
 }
 
 // Native dialog errors
 export class NativeDialogNotHandledError extends TestRunErrorBase {
     constructor (dialogType, url) {
-        super(TYPE.nativeDialogNotHandledError);
+        super(TEST_RUN_ERRORS.nativeDialogNotHandledError);
 
         this.dialogType = dialogType;
         this.pageUrl    = url;
@@ -510,7 +510,7 @@ export class NativeDialogNotHandledError extends TestRunErrorBase {
 
 export class UncaughtErrorInNativeDialogHandler extends TestRunErrorBase {
     constructor (dialogType, errMsg, url) {
-        super(TYPE.uncaughtErrorInNativeDialogHandler);
+        super(TEST_RUN_ERRORS.uncaughtErrorInNativeDialogHandler);
 
         this.dialogType = dialogType;
         this.errMsg     = errMsg;
@@ -520,7 +520,7 @@ export class UncaughtErrorInNativeDialogHandler extends TestRunErrorBase {
 
 export class SetNativeDialogHandlerCodeWrongTypeError extends TestRunErrorBase {
     constructor (actualType) {
-        super(TYPE.setNativeDialogHandlerCodeWrongTypeError);
+        super(TEST_RUN_ERRORS.setNativeDialogHandlerCodeWrongTypeError);
 
         this.actualType = actualType;
     }

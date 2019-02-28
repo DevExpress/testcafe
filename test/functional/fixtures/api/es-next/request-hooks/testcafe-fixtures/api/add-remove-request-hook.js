@@ -16,10 +16,16 @@ class TestRequestHook extends RequestHook {
         return ResultPromise.fromFn(async () => this.onResponseCallCountInternal);
     }
 
-    onRequest () {}
+    async onRequest () {}
 
-    onResponse () {
-        this.onResponseCallCountInternal++;
+    async onResponse () {
+        return new Promise(resolve => {
+            setTimeout(() => {
+                this.onResponseCallCountInternal++;
+
+                resolve();
+            }, 100);
+        });
     }
 }
 

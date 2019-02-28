@@ -1,16 +1,20 @@
 FROM alpine:edge
+ARG packageId
 
-RUN apk --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ add \
- nodejs nodejs-npm chromium firefox xwininfo xvfb dbus eudev ttf-freefont fluxbox
+COPY ${packageId} /opt/testcafe/${packageId}
+COPY docker/testcafe-docker.sh /opt/testcafe/docker/testcafe-docker.sh
 
-COPY . /opt/testcafe
+RUN apk --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing/ upgrade && \
+ apk --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing/ add \
+ nodejs nodejs-npm chromium firefox xwininfo xvfb dbus eudev ttf-freefont fluxbox procps
 
-RUN cd /opt/testcafe; \
- npm install --production && \
+RUN npm install -g /opt/testcafe/${packageId} && \
  npm cache clean --force && \
  rm -rf /tmp/* && \
  chmod +x /opt/testcafe/docker/testcafe-docker.sh && \
- adduser -D user
+ adduser -D user && \
+ rm /opt/testcafe/${packageId}
+
 
 USER user
 EXPOSE 1337 1338

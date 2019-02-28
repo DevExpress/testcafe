@@ -1,13 +1,16 @@
-import fs from 'fs';
 import chalk from 'chalk';
 import { GeneralError, APIError } from '../errors/runtime';
-import MESSAGE from '../errors/runtime/message';
+import { RUNTIME_ERRORS } from '../errors/types';
 import CliArgumentParser from './argument-parser';
 import TerminationHandler from './termination-handler';
 import log from './log';
 import remotesWizard from './remotes-wizard';
+import correctBrowsersAndSources from './correct-browsers-and-sources';
 import createTestCafe from '../';
 
+// NOTE: Load the provider pool lazily to reduce startup time
+const lazyRequire         = require('import-lazy')(require);
+const browserProviderPool = lazyRequire('../browser/provider/pool');
 
 let showMessageOnExit = true;
 let exitMessageShown  = false;
@@ -17,9 +20,7 @@ function exitHandler (terminationLevel) {
     if (showMessageOnExit && !exitMessageShown) {
         exitMessageShown = true;
 
-        log.hideSpinner();
         log.write('Stopping TestCafe...');
-        log.showSpinner();
 
         process.on('exit', () => log.hideSpinner(true));
     }
@@ -45,12 +46,10 @@ function error (err) {
 
     let message = null;
 
-    // HACK: workaround for the `instanceof` problem
-    // (see: http://stackoverflow.com/questions/33870684/why-doesnt-instanceof-work-on-instances-of-error-subclasses-under-babel-node)
-    if (err.constructor === GeneralError)
+    if (err instanceof GeneralError)
         message = err.message;
 
-    else if (err.constructor === APIError)
+    else if (err instanceof APIError)
         message = err.coloredStack;
 
     else
@@ -66,32 +65,34 @@ async function runTests (argParser) {
     const opts              = argParser.opts;
     const port1             = opts.ports && opts.ports[0];
     const port2             = opts.ports && opts.ports[1];
-    const externalProxyHost = opts.proxy;
+    const proxy             = opts.proxy;
     const proxyBypass       = opts.proxyBypass;
 
     log.showSpinner();
 
-    const testCafe     = await createTestCafe(opts.hostname, port1, port2, opts.ssl, opts.dev);
-    const concurrency    = argParser.concurrency || 1;
-    const remoteBrowsers = await remotesWizard(testCafe, argParser.remoteCount, opts.qrCode);
-    const browsers       = argParser.browsers.concat(remoteBrowsers);
-    const runner         = testCafe.createRunner();
-    let failed         = 0;
-    const reporters      = argParser.opts.reporters.map(r => {
-        return {
-            name:      r.name,
-            outStream: r.outFile ? fs.createWriteStream(r.outFile) : void 0
-        };
-    });
+    const testCafe = await createTestCafe(opts.hostname, port1, port2, opts.ssl, opts.dev);
 
-    reporters.forEach(r => runner.reporter(r.name, r.outStream));
+    const correctedBrowsersAndSources = await correctBrowsersAndSources(argParser, testCafe.configuration);
+    const automatedBrowsers           = correctedBrowsersAndSources.browsers;
+    const remoteBrowsers              = await remotesWizard(testCafe, argParser.remoteCount, opts.qrCode);
+    const browsers                    = automatedBrowsers.concat(remoteBrowsers);
+    const sources                     = correctedBrowsersAndSources.sources;
+
+    const runner = opts.live ? testCafe.createLiveModeRunner() : testCafe.createRunner();
+
+    let failed = 0;
+
+
+    runner.isCli = true;
 
     runner
-        .useProxy(externalProxyHost, proxyBypass)
-        .src(argParser.src)
+        .useProxy(proxy, proxyBypass)
+        .src(sources)
         .browsers(browsers)
-        .concurrency(concurrency)
+        .reporter(argParser.opts.reporter)
+        .concurrency(argParser.opts.concurrency)
         .filter(argParser.filter)
+        .video(opts.video, opts.videoOptions, opts.videoEncodingOptions)
         .screenshots(opts.screenshots, opts.screenshotsOnFails, opts.screenshotPathPattern)
         .startApp(opts.app, opts.appInitDelay);
 
@@ -110,13 +111,10 @@ async function runTests (argParser) {
 }
 
 async function listBrowsers (providerName = 'locally-installed') {
-    // NOTE: Load the provider pool lazily to reduce startup time
-    const browserProviderPool = require('../browser/provider/pool');
-
     const provider = await browserProviderPool.getProvider(providerName);
 
     if (!provider)
-        throw new GeneralError(MESSAGE.browserProviderNotFound, providerName);
+        throw new GeneralError(RUNTIME_ERRORS.browserProviderNotFound, providerName);
 
     if (provider.isMultiBrowser) {
         const browserNames = await provider.getBrowserList();

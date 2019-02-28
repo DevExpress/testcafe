@@ -1,7 +1,7 @@
-const expect               = require('chai').expect;
-const fs                   = require('fs');
-const { createTestStream } = require('../../../utils/stream');
-const ReporterPluginHost   = require('../../../../../lib/reporter/plugin-host');
+const expect                     = require('chai').expect;
+const fs                         = require('fs');
+const { createSimpleTestStream } = require('../../../utils/stream');
+const ReporterPluginHost         = require('../../../../../lib/reporter/plugin-host');
 
 const TEST_RUN_COUNT_FILENAME = 'testRunCount.txt';
 
@@ -28,14 +28,14 @@ describe('Stop test task on first failed test', () => {
     });
 
     it('Reporting', () => {
-        const stream = createTestStream();
+        const stream = createSimpleTestStream();
 
         return runTests('./testcafe-fixtures/stop-on-first-fail-test.js', void 0, {
             shouldFail:      true,
             stopOnFirstFail: true,
-            reporters:       [{
-                reporter:  'spec',
-                outStream: stream
+            reporter:        [{
+                name:   'spec',
+                output: stream
             }]
         }).catch(() => {
             const pluginHost  = new ReporterPluginHost({ noColors: true });
