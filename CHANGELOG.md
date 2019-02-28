@@ -2,11 +2,13 @@
 
 ## v1.1.0 (2019-2-28)
 
-### :gear: TypeScript 3 Support ([#3401](https://github.com/DevExpress/testcafe/issues/3401))
+### Enhancements
+
+#### :gear: TypeScript 3 Support ([#3401](https://github.com/DevExpress/testcafe/issues/3401))
 
 TypeScript test files can now use new syntax features introduced in [TypeScript 3.0](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-0.html) and [TypeScript 3.3](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-3.html).
 
-### :gear: Enhanced TypeScript Definitions for Client Functions ([#3431](https://github.com/DevExpress/testcafe/pull/3431)) by [@vitalics](https://github.com/vitalics)
+#### :gear: Enhanced TypeScript Definitions for Client Functions ([#3431](https://github.com/DevExpress/testcafe/pull/3431)) by [@vitalics](https://github.com/vitalics)
 
 The updated type definitions allow TypeScript compiler to determine client function's return value type. Static typing now warns you when you call wrong methods for the return value.
 
