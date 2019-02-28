@@ -6,6 +6,7 @@
   },
   "globals": {
      "Map": true,
+     "WeakMap": true,
      "Set": true,
      "Proxy": true,
      "Reflect": true

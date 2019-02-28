@@ -1,5 +1,5 @@
 import Promise from 'pinkie';
-import { flattenDeep, find, chunk, uniq, groupBy, zipWith, assign } from 'lodash';
+import { flattenDeep, find, chunk, uniq } from 'lodash';
 import stripBom from 'strip-bom';
 import { Compiler as LegacyTestFileCompiler } from 'testcafe-legacy-api';
 import hammerhead from 'testcafe-hammerhead';
@@ -14,16 +14,13 @@ import { RUNTIME_ERRORS } from '../errors/types';
 
 const SOURCE_CHUNK_LENGTH = 1000;
 
-const testFileCompilersRegistry = {
-    legacy:       new LegacyTestFileCompiler(hammerhead.processScript),
-    esnext:       new EsNextTestFileCompiler(),
-    typescript:   new TypeScriptTestFileCompiler(),
-    coffeescript: new CoffeeScriptTestFileCompiler(),
-    raw:          new RawTestFileCompiler()
-};
-
-const testFileCompilers     = Object.values(testFileCompilersRegistry);
-const testFileCompilersInfo = Object.entries(testFileCompilersRegistry);
+const testFileCompilers = [
+    new LegacyTestFileCompiler(hammerhead.processScript),
+    new EsNextTestFileCompiler(),
+    new TypeScriptTestFileCompiler(),
+    new CoffeeScriptTestFileCompiler(),
+    new RawTestFileCompiler()
+];
 
 export default class Compiler {
     constructor (sources) {
@@ -46,18 +43,15 @@ export default class Compiler {
 
         code = stripBom(code).toString();
 
-        const compilerInfo = find(testFileCompilersInfo, ([/* name */, compiler]) => compiler.canCompile(code, filename));
+        const compiler = find(testFileCompilers, someCompiler => someCompiler.canCompile(code, filename));
 
-        if (!compilerInfo)
+        if (!compiler)
             return null;
-
-        const [compilerName, compiler] = compilerInfo;
 
         return {
             filename,
             code,
             compiler,
-            compilerName,
 
             compiledCode: null
         };
@@ -75,7 +69,26 @@ export default class Compiler {
 
         const precompiledCode = await compiler.precompile(testFilesInfo);
 
-        zipWith(testFilesInfo, precompiledCode.map(compiledCode => ({ compiledCode })), assign);
+        for (let i = 0; i < testFilesInfo.length; i++)
+            testFilesInfo[i].compiledCode = precompiledCode[i];
+    }
+
+    _getCompilerTasks (testFilesInfo) {
+        const tasks     = new WeakMap();
+        const compilers = [];
+
+        for (const info of testFilesInfo) {
+            const { compiler } = info;
+
+            if (!tasks.has(compiler)) {
+                compilers.push(compiler);
+                tasks.set(compiler, []);
+            }
+
+            tasks.get(info.compiler).push(info);
+        }
+
+        return compilers.map(compiler => ({ compiler, compilerTestFilesInfo: tasks.get(compiler) }));
     }
 
     async _getTests ({ compiler, filename, code, compiledCode }) {
@@ -87,10 +100,9 @@ export default class Compiler {
 
     async _compileTestFiles (filenames) {
         const testFilesInfo = await this._createTestFilesInfo(filenames);
-        const compilerTasks = groupBy(testFilesInfo, ({ compilerName }) => compilerName);
-        const compilerNames = Object.keys(compilerTasks);
+        const compilerTasks = this._getCompilerTasks(testFilesInfo);
 
-        await Promise.all(compilerNames.map(compilerName => this._precompileFiles(testFileCompilersRegistry[compilerName], compilerTasks[compilerName])));
+        await Promise.all(compilerTasks.map(({ compiler, compilerTestFilesInfo }) => this._precompileFiles(compiler, compilerTestFilesInfo)));
 
         const tests = [];
 
