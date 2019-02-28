@@ -1,5 +1,5 @@
 import Promise from 'pinkie';
-import { flattenDeep as flatten, find, chunk, uniq } from 'lodash';
+import { flattenDeep, find, chunk, uniq } from 'lodash';
 import stripBom from 'strip-bom';
 import { Compiler as LegacyTestFileCompiler } from 'testcafe-legacy-api';
 import hammerhead from 'testcafe-hammerhead';
@@ -28,10 +28,10 @@ export default class Compiler {
     }
 
     static getSupportedTestFileExtensions () {
-        return uniq(testFileCompilers.map(c => c.getSupportedExtension()));
+        return uniq(testFileCompilers.map(compiler => compiler.getSupportedExtension()));
     }
 
-    async _compileTestFile (filename) {
+    async _createTestFileInfo (filename) {
         let code = null;
 
         try {
@@ -43,31 +43,91 @@ export default class Compiler {
 
         code = stripBom(code).toString();
 
-        const compiler = find(testFileCompilers, c => c.canCompile(code, filename));
+        const compiler = find(testFileCompilers, someCompiler => someCompiler.canCompile(code, filename));
 
-        return compiler ? await compiler.compile(code, filename) : null;
+        if (!compiler)
+            return null;
+
+        return {
+            filename,
+            code,
+            compiler,
+
+            compiledCode: null
+        };
     }
 
-    async getTests () {
-        const sourceChunks = chunk(this.sources, SOURCE_CHUNK_LENGTH);
-        let tests        = [];
-        let compileUnits = [];
+    async _createTestFilesInfo (filenames) {
+        const testFilesInfo = await Promise.all(filenames.map(filename => this._createTestFileInfo(filename)));
 
-        // NOTE: split sources into chunks because the fs module can't read all files
-        // simultaneously if the number of them is too large (several thousands).
-        while (sourceChunks.length) {
-            compileUnits = sourceChunks.shift().map(filename => this._compileTestFile(filename));
-            tests        = tests.concat(await Promise.all(compileUnits));
+        return testFilesInfo.filter(info => !!info);
+    }
+
+    async _precompileFiles (compiler, testFilesInfo) {
+        if (!compiler.canPrecompile)
+            return;
+
+        const precompiledCode = await compiler.precompile(testFilesInfo);
+
+        for (let i = 0; i < testFilesInfo.length; i++)
+            testFilesInfo[i].compiledCode = precompiledCode[i];
+    }
+
+    _getCompilerTasks (testFilesInfo) {
+        const tasks     = new WeakMap();
+        const compilers = [];
+
+        for (const info of testFilesInfo) {
+            const { compiler } = info;
+
+            if (!tasks.has(compiler)) {
+                compilers.push(compiler);
+                tasks.set(compiler, []);
+            }
+
+            tasks.get(info.compiler).push(info);
         }
 
-        Compiler.cleanUp();
+        return compilers.map(compiler => ({ compiler, compilerTestFilesInfo: tasks.get(compiler) }));
+    }
 
-        tests = flatten(tests).filter(test => !!test);
+    async _getTests ({ compiler, filename, code, compiledCode }) {
+        if (compiledCode)
+            return await compiler.execute(compiledCode, filename);
+
+        return await compiler.compile(code, filename);
+    }
+
+    async _compileTestFiles (filenames) {
+        const testFilesInfo = await this._createTestFilesInfo(filenames);
+        const compilerTasks = this._getCompilerTasks(testFilesInfo);
+
+        await Promise.all(compilerTasks.map(({ compiler, compilerTestFilesInfo }) => this._precompileFiles(compiler, compilerTestFilesInfo)));
+
+        const tests = [];
+
+        for (const info of testFilesInfo)
+            tests.push(await this._getTests(info));
 
         return tests;
     }
 
+    async getTests () {
+        // NOTE: split sources into chunks because the fs module can't read all files
+        // simultaneously if the number of them is too large (several thousands).
+        const sourceChunks = chunk(this.sources, SOURCE_CHUNK_LENGTH);
+
+        let tests = [];
+
+        while (sourceChunks.length)
+            tests = tests.concat(await this._compileTestFiles(sourceChunks.shift()));
+
+        Compiler.cleanUp();
+
+        return flattenDeep(tests).filter(test => !!test);
+    }
+
     static cleanUp () {
-        testFileCompilers.forEach(c => c.cleanUp());
+        testFileCompilers.forEach(compiler => compiler.cleanUp());
     }
 }

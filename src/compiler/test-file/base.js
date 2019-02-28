@@ -15,12 +15,24 @@ export default class TestFileCompilerBase {
         throw new Error('Not implemented');
     }
 
+    async precompile (/* testFilesInfo */) {
+        throw new Error('Not implemented');
+    }
+
     async compile (/* code, filename */) {
+        throw new Error('Not implemented');
+    }
+
+    async execute (/* compiledCode, filename */) {
         throw new Error('Not implemented');
     }
 
     canCompile (code, filename) {
         return this.supportedExtensionRe.test(filename);
+    }
+
+    get canPrecompile () {
+        return false;
     }
 
     cleanUp () {

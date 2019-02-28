@@ -4,12 +4,34 @@ import createStackFilter from './create-stack-filter';
 
 const ORIGINAL_STACK_TRACE_LIMIT = Error.stackTraceLimit;
 const STACK_TRACE_LIMIT          = 200;
-const TOP_ANONYMOUS_FRAME_RE     = /\s+at\s<anonymous>$/;
-const GENERATOR_NEXT_FRAME_RE    = /\s+at\sgenerator.next\s\(<anonymous>\)$/im;
+const STACK_TRACE_LINE_RE        = /^\s+at\s+.*$/;
 
 
 export default {
     isEnabled: false,
+
+    _isStackTraceLine (stackLine) {
+        return stackLine.match(STACK_TRACE_LINE_RE);
+    },
+
+    _eraseOriginalStack (error) {
+        if (!error.stack) {
+            error.stack = '';
+            return;
+        }
+
+        const stackLines = error.stack.split('\n');
+
+        let stackLinesCount = 0;
+
+        while (stackLinesCount < stackLines.length && this._isStackTraceLine(stackLines[stackLines.length - 1 - stackLinesCount]))
+            stackLinesCount++;
+
+        error.stack = stackLines.slice(0, stackLines.length - stackLinesCount).join('\n');
+
+        if (stackLinesCount > 0)
+            error.stack += '\n';
+    },
 
     _getFrames (error) {
         try {
@@ -43,15 +65,12 @@ export default {
     },
 
     cleanError (error) {
-        error.stack = error.stack.replace(TOP_ANONYMOUS_FRAME_RE, '');
-        error.stack = error.stack.replace(GENERATOR_NEXT_FRAME_RE, '');
-
         let frames = this._getFrames(error);
 
         if (!frames.length)
             return error;
 
-        error.stack = error.stack.replace(this._renderFrameInfo(frames), '');
+        this._eraseOriginalStack(error);
 
         frames = frames.filter(createStackFilter(ORIGINAL_STACK_TRACE_LIMIT));
 

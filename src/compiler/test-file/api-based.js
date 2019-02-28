@@ -50,7 +50,14 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
         mod._compile(code, filename);
     }
 
-    _compileCode (/* code, filename */) {
+    _compileCode (code, filename) {
+        if (this.canPrecompile)
+            return this._precompileCode([{ code, filename }])[0];
+
+        throw new Error('Not implemented');
+    }
+
+    _precompileCode (/* testFilesInfo */) {
         throw new Error('Not implemented');
     }
 
@@ -95,13 +102,14 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
         });
     }
 
-    _compileCodeForTestFile (code, filename) {
-        let compiledCode = null;
-
+    _compileCodeForTestFiles (testFilesInfo) {
         stackCleaningHook.enabled = true;
 
         try {
-            compiledCode = this._compileCode(code, filename);
+            if (this.canPrecompile)
+                return this._precompileCode(testFilesInfo);
+
+            return testFilesInfo.map(({ code, filename }) => this._compileCode(code, filename));
         }
         catch (err) {
             throw new TestCompilationError(stackCleaningHook.cleanError(err));
@@ -109,8 +117,6 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
         finally {
             stackCleaningHook.enabled = false;
         }
-
-        return compiledCode;
     }
 
     _addGlobalAPI (testFile) {
@@ -130,9 +136,8 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
         delete global.test;
     }
 
-    compile (code, filename) {
-        const compiledCode = this._compileCodeForTestFile(code, filename);
-        const testFile     = new TestFile(filename);
+    _runCompiledCode (compiledCode, filename) {
+        const testFile = new TestFile(filename);
 
         this._addGlobalAPI(testFile);
 
@@ -157,6 +162,21 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
         }
 
         return testFile.getTests();
+    }
+
+
+    precompile (testFilesInfo) {
+        return this._compileCodeForTestFiles(testFilesInfo);
+    }
+
+    execute (compiledCode, filename) {
+        return this._runCompiledCode(compiledCode, filename);
+    }
+
+    compile (code, filename) {
+        const [compiledCode] = this.precompile([{ code, filename }]);
+
+        return this.execute(compiledCode, filename);
     }
 
     _hasTests (code) {

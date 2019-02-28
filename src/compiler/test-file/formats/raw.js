@@ -89,8 +89,9 @@ export default class RawTestFileCompiler extends TestFileCompilerBase {
     }
 
     compile (code, filename) {
-        let data     = null;
         const testFile = new TestFile(filename);
+
+        let data = null;
 
         try {
             data = JSON.parse(code);
