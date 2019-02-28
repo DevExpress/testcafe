@@ -2,60 +2,54 @@
 
 ## v1.1.0 (2019-2-28)
 
-### :gear: The TypeScript compiler has been updated to support TypeScript 3 features ([#3401](https://github.com/DevExpress/testcafe/issues/3401))
+### :gear: TypeScript 3 Support ([#3401](https://github.com/DevExpress/testcafe/issues/3401))
 
-Now you can use new syntax features that comes with [TypeScript 3.0](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-0.html) and [TypeScript 3.3](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-3.html) in TypeScript-flavored test files.
+TypeScript test files can now use new syntax features introduced in [TypeScript 3.0](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-0.html) and [TypeScript 3.3](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-3.html).
 
-### :gear: Improved TypeScript definitions for ClientFunction ([#3431](https://github.com/DevExpress/testcafe/pull/3431))
+### :gear: Enhanced TypeScript Definitions for Client Functions ([#3431](https://github.com/DevExpress/testcafe/pull/3431)) by [@vitalics](https://github.com/vitalics)
 
-The updated TypeScript definitions allow deduction of `ClientFunction`'s return value types. It means that static typing will warn you that you use wrong methods after awaiting a `ClientFunction` result even before tests are started.
+The updated type definitions allow TypeScript compiler to determine client function's return value type. Static typing now warns you when you call wrong methods for the return value.
 
 ```js
 const getFoo = ClientFunction(() => 42);
 const foo    = await getFoo();
-
 foo.match(/foo/);
 ```
 
-**Before:**
+Prior to v1.1.0, an error occurred during test execution:
 
-```sh
+```text
 $ testcafe chrome tests.ts
-
  Running tests in:
  - Chrome 72.0.3626 / Windows 10.0.0
-
  Fixture 1
  √ Test 1
  √ Test 2
  ...
  × Test N
-
    1) TypeError: foo.match is not a function
 ```
 
-**Now:**
+With v1.1.0, the TypeScript compiler throws an error before test are started:
 
-```sh
+```text
 $ testcafe chrome tests.ts
-
   ERROR Cannot prepare tests due to an error.
-
   Error: TypeScript compilation failed.
-
+ 
   tests.ts (4, 2): Property 'match' does not exist on type 'number'.
 ```
 
 ### Bug Fixes
 
-* Now TestCafe can filter test files by a test and fixture metadata specified in a config file ([#3443](https://github.com/DevExpress/testcafe/issues/3443))
-* TestCafe no longer uses `null` to subsitute some placeholders in video path patterns for `singleFile` mode ([#3455](https://github.com/DevExpress/testcafe/issues/3455))
+* TestCafe no longer ignores test and fixture metadata filters specified in the configuration file ([#3443](https://github.com/DevExpress/testcafe/issues/3443)) by [@NanjoW](https://github.com/NanjoW)
+* TestCafe no longer resolves placeholders to `null` in video path patterns ([#3455](https://github.com/DevExpress/testcafe/issues/3455))
 * Fixed the `KeyboardEvent`'s `key` property emulation for Safari ([#3282](https://github.com/DevExpress/testcafe/issues/3282))
-* TestCafe can now capture element screenshots after a big page scroll ([#3292](https://github.com/DevExpress/testcafe/issues/3292))
+* TestCafe can now capture element screenshots after a long page scrolling ([#3292](https://github.com/DevExpress/testcafe/issues/3292))
 * The compilation time of TypeScript tests no longer degrades for a large number of files ([#3475](https://github.com/DevExpress/testcafe/issues/3475))
-* Now Reach Router can correctly navigate when testted with TestCafe ([testcafe-hammerhead/#1863](https://github.com/DevExpress/testcafe-hammerhead/issues/1863))
-* TestCafe now correctly handle websites that use the WebKitMutationObserver class ([testcafe-hammerhead/#1912](https://github.com/DevExpress/testcafe-hammerhead/issues/1912))
-* ECMAScript modules referenced via `<script>` tags are properly processed with TestCafe ([testcafe-hammerhead/#1725](https://github.com/DevExpress/testcafe-hammerhead/issues/1725))
+* Reach Router can now navigate correctly when tested with TestCafe ([testcafe-hammerhead/#1863](https://github.com/DevExpress/testcafe-hammerhead/issues/1863))
+* TestCafe now correctly handles websites that use the `WebKitMutationObserver` class ([testcafe-hammerhead/#1912](https://github.com/DevExpress/testcafe-hammerhead/issues/1912))
+* TestCafe now processes ECMAScript modules in `<script>` tags ([testcafe-hammerhead/#1725](https://github.com/DevExpress/testcafe-hammerhead/issues/1725))
 
 ## v1.0.1 (2019-2-15)
 
