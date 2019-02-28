@@ -45,7 +45,7 @@ With v1.1.0, the TypeScript compiler throws an error before test are started:
 $ testcafe chrome tests.ts
   ERROR Cannot prepare tests due to an error.
   Error: TypeScript compilation failed.
- 
+
   tests.ts (4, 2): Property 'match' does not exist on type 'number'.
 ```
 
