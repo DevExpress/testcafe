@@ -11,6 +11,7 @@ import getKeyProperties from '../../utils/get-key-properties';
 
 const Promise               = hammerhead.Promise;
 const extend                = hammerhead.utils.extend;
+const browserUtils          = hammerhead.utils.browser;
 const eventSimulator        = hammerhead.eventSandbox.eventSimulator;
 const elementEditingWatcher = hammerhead.eventSandbox.elementEditingWatcher;
 
@@ -197,7 +198,7 @@ export default class TypeAutomation {
 
         this.eventArgs = this._calculateEventArguments(true);
 
-        this.eventState.simulateTypeChar = eventSimulator.keypress(this.eventArgs.element, this.eventArgs.options);
+        this.eventState.simulateTypeChar = browserUtils.isAndroid || eventSimulator.keypress(this.eventArgs.element, this.eventArgs.options);
     }
 
     _keyup () {
