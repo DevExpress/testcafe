@@ -17,9 +17,9 @@ const foo    = await getFoo();
 foo.match(/foo/);
 ```
 
-##### Before:
+**Before:**
 
-```
+```sh
 $ testcafe chrome tests.ts
 
  Running tests in:
@@ -34,14 +34,15 @@ $ testcafe chrome tests.ts
    1) TypeError: foo.match is not a function
 ```
 
-##### Now:
-```
+**Now:**
+
+```sh
 $ testcafe chrome tests.ts
 
   ERROR Cannot prepare tests due to an error.
 
   Error: TypeScript compilation failed.
- 
+
   tests.ts (4, 2): Property 'match' does not exist on type 'number'.
 ```
 
@@ -54,7 +55,7 @@ $ testcafe chrome tests.ts
 * The compilation time of TypeScript tests no longer degrades for a large number of files ([#3475](https://github.com/DevExpress/testcafe/issues/3475))
 * Now Reach Router can correctly navigate when testted with TestCafe ([testcafe-hammerhead/#1863](https://github.com/DevExpress/testcafe-hammerhead/issues/1863))
 * TestCafe now correctly handle websites that use the WebKitMutationObserver class ([testcafe-hammerhead/#1912](https://github.com/DevExpress/testcafe-hammerhead/issues/1912))
-* ECMAScript modules in `<script>` tags are properly processed with TestCafe ([testcafe-hammerhead/#1725](https://github.com/DevExpress/testcafe-hammerhead/issues/1725))
+* ECMAScript modules referenced via `<script>` tags are properly processed with TestCafe ([testcafe-hammerhead/#1725](https://github.com/DevExpress/testcafe-hammerhead/issues/1725))
 
 ## v1.0.1 (2019-2-15)
 
