@@ -16,13 +16,13 @@ Please vote on the features you want us to implement first (follow the link and 
 Feature                                                                                           | Status
 ------------------------------------------------------------------------------------------------- | -------------------
 [Visual Regression Testing](https://github.com/DevExpress/testcafe/issues/1207)                   | Under Consideration
+[Testing in Multiple Browser Windows](https://github.com/DevExpress/testcafe/issues/912)          | Under Consideration
 
 ## API
 
 Feature                                                                                           | Status
 ------------------------------------------------------------------------------------------------- | -------------------
 [Configuration File](https://github.com/DevExpress/testcafe/issues/3131)                          | **Implemented**
-[Testing in Multiple Browser Windows](https://github.com/DevExpress/testcafe/issues/912)          | Under Consideration
 [Screenshots of the Entire Page](https://github.com/DevExpress/testcafe/issues/1520)              | Under Consideration
 [Custom Actions](https://github.com/DevExpress/testcafe/issues/1535)                              | Under Consideration
 [Conditional Test Skip](https://github.com/DevExpress/testcafe/issues/1626)                       | Under Consideration
