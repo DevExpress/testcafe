@@ -49,6 +49,7 @@ Feel free to ask for more details.
 | Free and open-source | &#10003; | \*\* |
 | [Visual Test Recorder](https://docs.devexpress.com/TestCafeStudio/400165/guides/record-tests) | &nbsp; | &#10003; |
 | [Interactive Test Editor](https://docs.devexpress.com/TestCafeStudio/400190/user-interface/test-editor) | &nbsp; | &#10003; |
+| [Automatic Selector Generation](https://docs.devexpress.com/TestCafeStudio/400407/guides/record-tests/element-selectors#auto-generated-element-selectors) | &nbsp; | &#10003; |
 | [Run Configuration Manager](https://docs.devexpress.com/TestCafeStudio/400189/user-interface/run-configurations-dialog) | &nbsp; | &#10003; |
 | [IDE-like GUI](https://docs.devexpress.com/TestCafeStudio/400181/user-interface/code-editor) | &nbsp; | &#10003; |
 
