@@ -61,7 +61,7 @@ html {
                 background-color: #fff;
                 border-radius: 0; }
               html body .page-content-wrapper .site-header .site-header-content .site-nav .site-nav-tab:nth-child(2) {
-                padding: 15px 0 8px; }
+                padding: 10px 0 10px; }
                 html body .page-content-wrapper .site-header .site-header-content .site-nav .site-nav-tab:nth-child(2) .page-link {
                   display: inline; }
             html body .page-content-wrapper .site-header .site-header-content .site-nav .doc-top-nav {
@@ -166,3 +166,43 @@ html {
       flex-direction: column; }
       html body .cookie-notice .cookie-notice-content .cookie-notice-message {
         margin-bottom: 20px; }
+
+#studio-link-tab {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 67px;
+  margin: 10px 20px 20px;
+  border: 1px solid #FFFFFF;
+  border-radius: 2px;
+  background-image: url("/testcafe/images/studio-logo.svg"), url("/testcafe/images/studio-menu-item-mobile-separator.svg"), linear-gradient(262.6deg, #389ACE 0%, #5CACE8 100%);
+  background-position: calc(50% - 65px) center, calc(50% + 32px) center, 0px;
+  background-repeat: no-repeat;
+  box-shadow: none;
+  transform: none;
+  -webkit-transform: none;
+  -moz-transform: none; }
+  #studio-link-tab .page-link {
+    padding: 0;
+    text-decoration: none;
+    color: #fff;
+    transform: none;
+    -webkit-transform: none;
+    -moz-transform: none; }
+    #studio-link-tab .page-link span {
+      display: none; }
+    #studio-link-tab .page-link:after {
+      display: block;
+      position: relative;
+      left: calc(50% + 50px);
+      content: 'Try our IDE\A for free';
+      white-space: pre-wrap;
+      line-height: 23px;
+      font-weight: normal; }
+    @media screen and (max-width: 350px) {
+      #studio-link-tab .page-link:after {
+        font-size: 15px; } }
+
+@media screen and (max-width: 350px) {
+  #studio-link-tab {
+    background-position: calc(50% - 48px) center, calc(50% + 40px) center, 0px; } }

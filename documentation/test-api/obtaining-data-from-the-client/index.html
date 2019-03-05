@@ -346,32 +346,37 @@
         
           
           <div class="site-nav-tab active">
-            <a class="page-link" href="/testcafe/documentation/getting-started/">Documentation</a>
+            <a class="page-link" href="/testcafe/documentation/getting-started/"><span>Docs</span></a>
           </div>
         
           
-          <div class="site-nav-tab ">
-            <a class="page-link" href="https://github.com/DevExpress/testcafe" target="_blank">GitHub</a>
+          <div class="site-nav-tab">
+            <a class="page-link" href="https://github.com/DevExpress/testcafe" target="_blank"><span>GitHub</span></a>
           </div>
         
           
-          <div class="site-nav-tab ">
-            <a class="page-link" href="/testcafe/faq/">FAQ</a>
+          <div class="site-nav-tab">
+            <a class="page-link" href="/testcafe/faq/"><span>FAQ</span></a>
           </div>
         
           
-          <div class="site-nav-tab ">
-            <a class="page-link" href="/testcafe/blog/">Release Notes</a>
+          <div class="site-nav-tab">
+            <a class="page-link" href="/testcafe/roadmap/"><span>Roadmap</span></a>
           </div>
         
           
-          <div class="site-nav-tab ">
-            <a class="page-link" href="/testcafe/support/">Support</a>
+          <div class="site-nav-tab">
+            <a class="page-link" href="/testcafe/blog/"><span>Release Notes</span></a>
           </div>
         
           
-          <div class="site-nav-tab ">
-            <a class="page-link" id="studio-link" href="https://testcafe-studio.devexpress.com" target="_blank">TestCafe Studio</a>
+          <div class="site-nav-tab">
+            <a class="page-link" href="/testcafe/support/"><span>Support</span></a>
+          </div>
+        
+          
+          <div class="site-nav-tab" id="studio-link-tab">
+            <a class="page-link" id="studio-link" href="https://www.devexpress.com/products/testcafestudio/" target="_blank"><span>TestCafe Studio</span></a>
           </div>
         
       <a id="twitter-button" href="https://twitter.com/dxtestcafe" target="_blank"></a>
@@ -1194,7 +1199,7 @@ use the <code>eval</code> method of the <a href="../test-code-structure.html#tes
     <span class="k">return</span> <span class="nb">document</span><span class="p">.</span><span class="nx">documentURI</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>Note that TestCafe internally processes test files with <a href="https://babeljs.io">Babel</a>. To avoid issues caused by code transpiling, use the <a href="https://nodejs.org/api/modules.html#modules_require_id">require</a> function instead of the <code>import</code> statement to import client function dependencies.</p>
+<p>Note that TestCafe processes test files with <a href="https://babeljs.io">Babel</a> internally. To avoid issues caused by code transpiling, use the <a href="https://nodejs.org/api/modules.html#modules_require_id">require</a> function instead of the <code>import</code> statement to import client function dependencies.</p>
 
 <p><strong>test.js</strong></p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>

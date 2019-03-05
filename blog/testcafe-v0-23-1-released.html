@@ -230,33 +230,38 @@
     <nav class="site-nav">
         
           
-          <div class="site-nav-tab ">
-            <a class="page-link" href="/testcafe/documentation/getting-started/">Documentation</a>
+          <div class="site-nav-tab">
+            <a class="page-link" href="/testcafe/documentation/getting-started/"><span>Docs</span></a>
           </div>
         
           
-          <div class="site-nav-tab ">
-            <a class="page-link" href="https://github.com/DevExpress/testcafe" target="_blank">GitHub</a>
+          <div class="site-nav-tab">
+            <a class="page-link" href="https://github.com/DevExpress/testcafe" target="_blank"><span>GitHub</span></a>
           </div>
         
           
-          <div class="site-nav-tab ">
-            <a class="page-link" href="/testcafe/faq/">FAQ</a>
+          <div class="site-nav-tab">
+            <a class="page-link" href="/testcafe/faq/"><span>FAQ</span></a>
+          </div>
+        
+          
+          <div class="site-nav-tab">
+            <a class="page-link" href="/testcafe/roadmap/"><span>Roadmap</span></a>
           </div>
         
           
           <div class="site-nav-tab active">
-            <a class="page-link" href="/testcafe/blog/">Release Notes</a>
+            <a class="page-link" href="/testcafe/blog/"><span>Release Notes</span></a>
           </div>
         
           
-          <div class="site-nav-tab ">
-            <a class="page-link" href="/testcafe/support/">Support</a>
+          <div class="site-nav-tab">
+            <a class="page-link" href="/testcafe/support/"><span>Support</span></a>
           </div>
         
           
-          <div class="site-nav-tab ">
-            <a class="page-link" id="studio-link" href="https://testcafe-studio.devexpress.com" target="_blank">TestCafe Studio</a>
+          <div class="site-nav-tab" id="studio-link-tab">
+            <a class="page-link" id="studio-link" href="https://www.devexpress.com/products/testcafestudio/" target="_blank"><span>TestCafe Studio</span></a>
           </div>
         
       <a id="twitter-button" href="https://twitter.com/dxtestcafe" target="_blank"></a>
@@ -419,7 +424,7 @@
 </code></pre></div><h3><a class="anchor" id="run-dynamically-loaded-tests-2074"></a>⚙ Run Dynamically Loaded Tests (<a href="https://github.com/DevExpress/testcafe/issues/2074">#2074</a>) <a class="permalink" href="#run-dynamically-loaded-tests-2074">#</a></h3>
 <p>You can now run tests imported from external libraries or generated dynamically even if the <code>.js</code> file does not contain any tests.</p>
 
-<p>This was not possible previously because test files should contain the <a href="https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#fixtures">fixture</a> and <a href="https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#tests">test</a> directives. However, you can now provide the <code>--disable-test-syntax-validation</code> command line flag to bypass this check.</p>
+<p>Previously, test files had to contain the <a href="https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#fixtures">fixture</a> and <a href="https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#tests">test</a> directives. You can now add the <code>--disable-test-syntax-validation</code> command line flag to bypass this check.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe safari test.js --disable-test-syntax-validation
 </code></pre></div>
 <p>In the API, use the <code>disableTestSyntaxValidation</code> option.</p>

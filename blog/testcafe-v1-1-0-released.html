@@ -13,15 +13,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <title>Test on Remote Computers and Mobile Devices | TestCafe</title>
+  <title>TestCafe v1.1.0 Released | TestCafe</title>
 
-  <meta name="description" content="">
+  <meta name="description" content="TestCafe v1.1.0 ReleasedThis release introduces TypeScript 3.0 support and enhanced TypeScript definitions for client functions.">
   <meta name="viewport" content="width=device-width">
 
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://devexpress.github.io/testcafe/documentation/recipes/test-on-remote-computers-and-mobile-devices.html" />
-  <meta property="og:title" content="Test on Remote Computers and Mobile Devices | TestCafe" />
+  <meta property="og:url" content="https://devexpress.github.io/testcafe/blog/testcafe-v1-1-0-released.html" />
+  <meta property="og:title" content="TestCafe v1.1.0 Released | TestCafe" />
 
   
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
@@ -29,7 +29,7 @@
   
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
-  <link rel="canonical" href="https://devexpress.github.io/testcafe/documentation/recipes/test-on-remote-computers-and-mobile-devices.html">
+  <link rel="canonical" href="https://devexpress.github.io/testcafe/blog/testcafe-v1-1-0-released.html">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="https://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
@@ -69,15 +69,6 @@
 
   
 
-  
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/css/perfect-scrollbar.min.css">
-  <link rel="stylesheet" href="/testcafe/css/docs.css">
-  <style>
-      .ps-container > .ps-scrollbar-x-rail,
-      .ps-container > .ps-scrollbar-y-rail {
-          opacity: 0.6;
-      }
-  </style>
   
 
   
@@ -140,9 +131,6 @@
                 docMenuItem.appendChild(docMenuItemIcon);
 
                 
-                    docMenuItem.className += ' expanded';
-                    docTopNav.className += ' expanded';
-                
 
                 docMenuItem.addEventListener('click', function (e) {
                     if (docTopNav.className.indexOf('expanded') !== -1) {
@@ -166,114 +154,11 @@
   
 
   
-    <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/js/perfect-scrollbar.min.js"></script>
-    <script defer type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.3.min.js"></script>
-
-    <script>
-        var MIN_BODY_WIDTH = 1230;
-        var FOOTER_HEIGHT  = 113;
-        var HEADER_HEIGHT  = 126;
-
-        var nav            = null;
-        var article        = null;
-
-        function setNavTopPosition () {
-            var top = null;
-
-            if (document.body.clientWidth > MIN_BODY_WIDTH) {
-                if (nav.style.top !== HEADER_HEIGHT + 'px') {
-                    nav.style.top = HEADER_HEIGHT + 'px';
-                    Ps.update(nav);
-                }
-            }
-            else {
-                top = window.pageYOffset <= HEADER_HEIGHT ? HEADER_HEIGHT - window.pageYOffset + 'px' : '0';
-
-                if (nav.style.top !== top) {
-                    nav.style.top = top;
-                    Ps.update(nav);
-                }
-            }
-        }
-
-        function setNavBottomPosition () {
-            var footerVisibleHeight = FOOTER_HEIGHT - document.body.scrollHeight + window.pageYOffset +
-                                      document.body.clientHeight;
-
-            if (footerVisibleHeight > 0) {
-                if (nav.style.bottom !== footerVisibleHeight + 'px') {
-                    nav.style.bottom = footerVisibleHeight + 'px';
-                    Ps.update(nav);
-                }
-            }
-            else if (nav.style.bottom !== '0') {
-                nav.style.bottom = '0';
-                Ps.update(nav);
-            }
-        }
-
-        function updatePosition () {
-            nav.style.marginLeft = '-' + window.pageXOffset + 'px';
-
-            setNavBottomPosition();
-            setNavTopPosition();
-        }
-
-        function changeBodyHeight () {
-            if (document.body.style.height !== window.innerHeight + 'px')
-                document.body.style.height = window.innerHeight + 'px';
-        }
-
-        function initScrollBar() {
-            Ps.initialize(nav);
-
-            window.addEventListener('resize', function () {
-                Ps.update(nav);
-            });
-        }
-
-        function initNav() {
-            initScrollBar();
-            updatePosition();
-            window.addEventListener('scroll', updatePosition);
-            window.addEventListener('resize', updatePosition);
-        }
-
-        document.addEventListener('DOMContentLoaded', function (e) {
-            if (isMobileDevice)
-                return;
-
-            nav     = document.querySelector('.doc-nav');
-            article = document.querySelector('.doc');
-
-            if (nav)
-                initNav(nav);
-        });
-    </script>
     
     <script>
-        if (isMobileDevice) {
-            linkCss('/testcafe/css/docs.mobile.css');           
-            
-            if (false == false) {
-                document.addEventListener('DOMContentLoaded', function (e) {
-                    var docNavPanel = document.querySelector('.doc-nav-panel');
-                    var docNav      = document.querySelector('.doc-nav');
-
-                    docNavPanel.addEventListener('click', function (e) {
-                        if (docNav.className.indexOf('active') !== -1) {
-                            docNav.className = docNav.className.replace(' active', '');
-                            document.documentElement.style.overflowY = 'scroll';
-                            document.body.style.overflowY = 'initial';
-                        }
-                        else {
-                            docNav.className += ' active';
-                            document.documentElement.style.overflowY = 'hidden';
-                            document.body.style.overflowY = 'hidden';
-                        }
-                    });
-                });
-            }
+        if (document.images) {
+            img1 = new Image();
+            img1.src = '/testcafe/images/test-cafe-logo.png';
         }
     </script>
   
@@ -345,7 +230,7 @@
     <nav class="site-nav">
         
           
-          <div class="site-nav-tab active">
+          <div class="site-nav-tab">
             <a class="page-link" href="/testcafe/documentation/getting-started/"><span>Docs</span></a>
           </div>
         
@@ -365,7 +250,7 @@
           </div>
         
           
-          <div class="site-nav-tab">
+          <div class="site-nav-tab active">
             <a class="page-link" href="/testcafe/blog/"><span>Release Notes</span></a>
           </div>
         
@@ -506,7 +391,7 @@
           <a href="/testcafe/documentation/continuous-integration/">Continuous Integration</a>      
         </div>
       
-        <div class="doc-top-nav-tab active" >
+        <div class="doc-top-nav-tab " >
           <a href="/testcafe/documentation/recipes/">Recipes</a>      
         </div>
       
@@ -516,199 +401,78 @@
 
 
       <div class="container">
-    
-	
-	
+    <main>
+    <div class="post">
+        <div class="post-date">
+            FEB 28, 2019
+        </div>
+        <article class="post-content">
+            <h1>TestCafe v1.1.0 Released</h1>
+<p>This release introduces TypeScript 3.0 support and enhanced TypeScript definitions for client functions.</p>
 
-	
-	
+<!--more-->
+<h2><a class="anchor" id="enhancements"></a>Enhancements <a class="permalink" href="#enhancements">#</a></h2><h3><a class="anchor" id="typescript-3-support-3401"></a>⚙ TypeScript 3 Support (<a href="https://github.com/DevExpress/testcafe/issues/3401">#3401</a>) <a class="permalink" href="#typescript-3-support-3401">#</a></h3>
+<p>TypeScript test files can now use the new syntax features introduced in <a href="https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-0.html">TypeScript 3.0</a> and <a href="https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-3.html">TypeScript 3.3</a>.</p>
+<h3><a class="anchor" id="enhanced-typescript-definitions-for-client-functions-3431-by-vitalics"></a>⚙ Enhanced TypeScript Definitions for Client Functions (<a href="https://github.com/DevExpress/testcafe/pull/3431">#3431</a>) by <a href="https://github.com/vitalics">@vitalics</a> <a class="permalink" href="#enhanced-typescript-definitions-for-client-functions-3431-by-vitalics">#</a></h3>
+<p>The updated type definitions allow the TypeScript compiler to determine client function&#39;s return value type. Static typing now warns you when you call wrong methods for the return value.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">getFoo</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="mi">42</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">foo</span>    <span class="o">=</span> <span class="nx">await</span> <span class="nx">getFoo</span><span class="p">();</span>
+<span class="nx">foo</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/foo/</span><span class="p">);</span>
+</code></pre></div>
+<p>Before v1.1.0, an error occurred during test execution:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ testcafe chrome tests.ts
+ Running tests in:
+ - Chrome 72.0.3626 / Windows 10.0.0
+ Fixture 1
+ √ Test 1
+ √ Test 2
+ ...
+ × Test N
+   1) TypeError: foo.match is not a function
+</code></pre></div>
+<p>With v1.1.0, the TypeScript compiler throws an error before tests are started:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ testcafe chrome tests.ts
+  ERROR Cannot prepare tests due to an error.
+  Error: TypeScript compilation failed.
 
-	
-	
-
-	
-	
-
-	
-	
-
-	
-	
-	<div class="doc-nav-panel">
-		<div class="toggle-nav-button"></div>
-		<div class="doc-nav-panel-header">
-			<div class="doc-nav-panel-heading">Documentation</div>
-			<div class="doc-nav-panel-title">
-				
-					
-				
-					
-				
-					
-				
-					
-				
-					
-				
-					
-						Recipes
-					
-				
-			</div>
-		</div>
-	</div>
-	<nav class="doc-nav">	
-		<div class="doc-nav-content">
-			<ul>
-				<li>
-				<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/recipes/debug-tests/"  >Debug Tests</a>
-		
-			<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/recipes/debug-tests/chrome-dev-tools.html"  >Chrome Developer Tools</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/recipes/debug-tests/visual-studio-code.html"  >Visual Studio Code</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/recipes/debug-tests/webstorm.html"  >WebStorm</a>
-		
-    </li>
-
+  tests.ts (4, 2): Property 'match' does not exist on type 'number'.
+</code></pre></div><h2><a class="anchor" id="bug-fixes"></a>Bug Fixes <a class="permalink" href="#bug-fixes">#</a></h2>
+<ul>
+<li>TestCafe no longer ignores test and fixture metadata filters specified in the configuration file (<a href="https://github.com/DevExpress/testcafe/issues/3443">#3443</a>) by <a href="https://github.com/NanjoW">@NanjoW</a></li>
+<li>TestCafe no longer resolves placeholders to <code>null</code> in video path patterns (<a href="https://github.com/DevExpress/testcafe/issues/3455">#3455</a>)</li>
+<li>Fixed the <code>KeyboardEvent</code>&#39;s <code>key</code> property emulation for Safari (<a href="https://github.com/DevExpress/testcafe/issues/3282">#3282</a>)</li>
+<li>TestCafe can now capture element screenshots after a long page scrolling (<a href="https://github.com/DevExpress/testcafe/issues/3292">#3292</a>)</li>
+<li>The compilation time of TypeScript tests no longer degrades for a large number of files (<a href="https://github.com/DevExpress/testcafe/issues/3475">#3475</a>)</li>
+<li>Reach Router can now navigate correctly when tested with TestCafe (<a href="https://github.com/DevExpress/testcafe-hammerhead/issues/1863">testcafe-hammerhead/#1863</a>)</li>
+<li>TestCafe now correctly handles websites that use the <code>WebKitMutationObserver</code> class (<a href="https://github.com/DevExpress/testcafe-hammerhead/issues/1912">testcafe-hammerhead/#1912</a>)</li>
+<li>TestCafe now processes ECMAScript modules in <code>&lt;script&gt;</code> tags (<a href="https://github.com/DevExpress/testcafe-hammerhead/issues/1725">testcafe-hammerhead/#1725</a>)</li>
 </ul>
-		
-    </li>
 
-    <li>
-		    
-		
-<a href="/testcafe/documentation/recipes/find-code-issues-with-flow-type-checker.html"  >Find Code Issues with Flow Type Checker</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/recipes/test-select-elements.html"  >Test &lt;select&gt; Elements</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/recipes/test-static-html-pages.html"  >Test Static HTML Pages</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/recipes/test-on-remote-computers-and-mobile-devices.html" class="active" >Test on Remote Computers and Mobile Devices</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/recipes/use-page-model.html"  >Use Page Model</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/recipes/use-task-runners/"  >Use Task Runners</a>
-		
-			<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/recipes/use-task-runners/grunt.html"  >Grunt</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/recipes/use-task-runners/gulp.html"  >Gulp</a>
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-</ul>
-				</li>
-			</ul>
-		</div>
-	</nav>
-	
-	
-
-
-<main>
-	<article class="doc">
-		<div class="post-content">
-
-			<h1>Test on Remote Computers and Mobile Devices</h1>
-<p>TestCafe allows you to run tests on any device that has network access to the machine where TestCafe is installed.</p>
-
-<p>This guide demonstrates how to test on a remote computer and a mobile device.
-It assumes that TestCafe is already <a href="../using-testcafe/installing-testcafe.html">installed</a>
-in your project and you have <a href="../getting-started/#creating-a-test">created some tests</a>.</p>
-<h2><a class="anchor" id="run-tests-on-a-remote-computer"></a>Run Tests on a Remote Computer <a class="permalink" href="#run-tests-on-a-remote-computer">#</a></h2>
-<ol>
-<li><p>Open the console and type a command to run tests.
-Use <a href="../using-testcafe/command-line-interface.html#remote-browsers">remote</a> as a browser alias
-to specify that tests should run on a remote machine.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe remote tests/test.js
-</code></pre></div></li>
-<li><p>TestCafe prepares a URL for the remote browser to connect to the server.</p>
-
-<p><img src="../../images/recipe-remote-computer.png" alt="URL for a remote device" title=""></p></li>
-<li><p>Go to a remote computer that has network access to the machine with TestCafe.
-Open the browser in which you want to test and navigate to the URL generated by TestCafe.
-Testing will start automatically.</p></li>
-</ol>
-<h2><a class="anchor" id="run-tests-on-a-mobile-device"></a>Run Tests on a Mobile Device <a class="permalink" href="#run-tests-on-a-mobile-device">#</a></h2>
-<ol>
-<li><p>Open the console and type a command to run tests with <a href="../using-testcafe/command-line-interface.html#remote-browsers">remote</a> as a browser alias.
-Add the <code>--qr-code</code> flag to generate a QR-code for the mobile device.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe remote tests/test.js --qr-code
-</code></pre></div></li>
-<li><p>TestCafe will output the QR-code to the console.</p>
-
-<p><img src="../../images/recipe-remote-mobile.png" alt="QR-code for a mobile device" title=""></p></li>
-<li><p>Scan the QR-code with a mobile device that has network access to the TestCafe machine and open the link.
-TestCafe will start tests in the mobile browser.</p></li>
-</ol>
-
-<blockquote class="twitter-video" data-lang="en"><p lang="en" dir="ltr">Something <a href="https://twitter.com/hashtag/webdriver?src=hash">#webdriver</a> can’t do...  <a href="https://twitter.com/hashtag/testcafe?src=hash">#testcafe</a> <a href="https://t.co/bgD8cgUwXX">pic.twitter.com/bgD8cgUwXX</a></p>&mdash; TestCafe (@DXTestCafe) <a href="https://twitter.com/DXTestCafe/status/804368394569052160">December 1, 2016</a></blockquote>
-
-<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-
-
-		</div>
-	</article>
+        </article>
+        <div id="back-to-posts-link">
+            <p><a href="./">Back to Post List</a></p>
+        </div>
+        <!-- <div id="disqus_thread"></div> -->
+    </div>
 </main>
+
+<!-- 
+<script>
+    var disqus_config = function () {
+        this.page.url = 'https://devexpress.github.io/testcafe/blog/testcafe-v1-1-0-released.html';
+        this.page.identifier = '/blog/testcafe-v1-1-0-released';
+    };
+    (function() {
+        var d = document, s = d.createElement('script');
+        
+        s.src = '//testcafe-blog.disqus.com/embed.js';
+        
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+ -->
 </div>
 
       <div class="push"></div>

@@ -346,32 +346,37 @@
         
           
           <div class="site-nav-tab active">
-            <a class="page-link" href="/testcafe/documentation/getting-started/">Documentation</a>
+            <a class="page-link" href="/testcafe/documentation/getting-started/"><span>Docs</span></a>
           </div>
         
           
-          <div class="site-nav-tab ">
-            <a class="page-link" href="https://github.com/DevExpress/testcafe" target="_blank">GitHub</a>
+          <div class="site-nav-tab">
+            <a class="page-link" href="https://github.com/DevExpress/testcafe" target="_blank"><span>GitHub</span></a>
           </div>
         
           
-          <div class="site-nav-tab ">
-            <a class="page-link" href="/testcafe/faq/">FAQ</a>
+          <div class="site-nav-tab">
+            <a class="page-link" href="/testcafe/faq/"><span>FAQ</span></a>
           </div>
         
           
-          <div class="site-nav-tab ">
-            <a class="page-link" href="/testcafe/blog/">Release Notes</a>
+          <div class="site-nav-tab">
+            <a class="page-link" href="/testcafe/roadmap/"><span>Roadmap</span></a>
           </div>
         
           
-          <div class="site-nav-tab ">
-            <a class="page-link" href="/testcafe/support/">Support</a>
+          <div class="site-nav-tab">
+            <a class="page-link" href="/testcafe/blog/"><span>Release Notes</span></a>
           </div>
         
           
-          <div class="site-nav-tab ">
-            <a class="page-link" id="studio-link" href="https://testcafe-studio.devexpress.com" target="_blank">TestCafe Studio</a>
+          <div class="site-nav-tab">
+            <a class="page-link" href="/testcafe/support/"><span>Support</span></a>
+          </div>
+        
+          
+          <div class="site-nav-tab" id="studio-link-tab">
+            <a class="page-link" id="studio-link" href="https://www.devexpress.com/products/testcafestudio/" target="_blank"><span>TestCafe Studio</span></a>
           </div>
         
       <a id="twitter-button" href="https://twitter.com/dxtestcafe" target="_blank"></a>
@@ -1049,7 +1054,7 @@
 </thead><tbody><tr>
 <td><code>path</code>&#160;<em>(optional)</em></td>
 <td>String</td>
-<td>The screenshot file&#39;s relative path and name. The path is relative to the base directory specified by the <a href="../../using-testcafe/programming-interface/runner.html#screenshots">runner.screenshots</a> API method or the <a href="../../using-testcafe/command-line-interface.html#-s-path---screenshots-path">-s (--screenshots)</a> command line option. This path overrides the relative path the default or custom <a href="../../using-testcafe/common-concepts/screenshots-and-videos.html#where-screenshots-and-videos-are-saved">path patterns</a> specify.</td>
+<td>The screenshot file&#39;s relative path and name. The path is relative to the root directory the <a href="../../using-testcafe/programming-interface/runner.html#screenshots">runner.screenshots</a> API method or the <a href="../../using-testcafe/command-line-interface.html#-s-path---screenshots-path">-s (--screenshots)</a> command line option specifies. This path overrides the relative path the default or custom <a href="../../using-testcafe/common-concepts/screenshots-and-videos.html#where-screenshots-and-videos-are-saved">path patterns</a> specify.</td>
 </tr>
 </tbody></table></div>
 <p>The following example shows how to use the <code>t.takeScreenshot</code> action:</p>

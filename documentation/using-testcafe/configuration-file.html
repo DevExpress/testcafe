@@ -346,32 +346,37 @@
         
           
           <div class="site-nav-tab active">
-            <a class="page-link" href="/testcafe/documentation/getting-started/">Documentation</a>
+            <a class="page-link" href="/testcafe/documentation/getting-started/"><span>Docs</span></a>
           </div>
         
           
-          <div class="site-nav-tab ">
-            <a class="page-link" href="https://github.com/DevExpress/testcafe" target="_blank">GitHub</a>
+          <div class="site-nav-tab">
+            <a class="page-link" href="https://github.com/DevExpress/testcafe" target="_blank"><span>GitHub</span></a>
           </div>
         
           
-          <div class="site-nav-tab ">
-            <a class="page-link" href="/testcafe/faq/">FAQ</a>
+          <div class="site-nav-tab">
+            <a class="page-link" href="/testcafe/faq/"><span>FAQ</span></a>
           </div>
         
           
-          <div class="site-nav-tab ">
-            <a class="page-link" href="/testcafe/blog/">Release Notes</a>
+          <div class="site-nav-tab">
+            <a class="page-link" href="/testcafe/roadmap/"><span>Roadmap</span></a>
           </div>
         
           
-          <div class="site-nav-tab ">
-            <a class="page-link" href="/testcafe/support/">Support</a>
+          <div class="site-nav-tab">
+            <a class="page-link" href="/testcafe/blog/"><span>Release Notes</span></a>
           </div>
         
           
-          <div class="site-nav-tab ">
-            <a class="page-link" id="studio-link" href="https://testcafe-studio.devexpress.com" target="_blank">TestCafe Studio</a>
+          <div class="site-nav-tab">
+            <a class="page-link" href="/testcafe/support/"><span>Support</span></a>
+          </div>
+        
+          
+          <div class="site-nav-tab" id="studio-link-tab">
+            <a class="page-link" id="studio-link" href="https://www.devexpress.com/products/testcafestudio/" target="_blank"><span>TestCafe Studio</span></a>
           </div>
         
       <a id="twitter-button" href="https://twitter.com/dxtestcafe" target="_blank"></a>
@@ -734,7 +739,7 @@
 <p>TestCafe uses the <code>.testcaferc.json</code> configuration file to store its settings.</p>
 <blockquote class="important"><div class="blockquote-content"><p>Settings you specify when you run TestCafe from the <a href="command-line-interface.html">command line</a> and <a href="programming-interface/">programming interfaces</a> override settings from <code>.testcaferc.json</code>. TestCafe prints information about every overridden property in the console.</p>
 </div></blockquote>
-<p>Keep <code>.testcaferc.json</code> in a directory from which you run TestCafe. Most often, this is the project&#39;s root directory. TestCafe does not take into account configuration files located in other directories (for instance, project&#39;s subdirectories).</p>
+<p>Keep <code>.testcaferc.json</code> in the directory from which you run TestCafe. This is usually the project&#39;s root directory. TestCafe does not take into account configuration files located in other directories (for instance, project&#39;s subdirectories).</p>
 
 <p>A configuration file can include the following settings:</p>
 
@@ -1239,7 +1244,7 @@ to slow the test down.</p>
 </span></code></pre></div>
 <p><em>CLI</em>: <a href="command-line-interface.html#--qr-code">--qr-code</a>  </p>
 <h2><a class="anchor" id="stoponfirstfail"></a>stopOnFirstFail <a class="permalink" href="#stoponfirstfail">#</a></h2>
-<p>Stops an entire test run if any test fails.</p>
+<p>Stops a test run if any test fails.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
     </span><span class="nt">"stopOnFirstFail"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
 </span><span class="p">}</span><span class="w">

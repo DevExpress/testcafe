@@ -5,9 +5,59 @@
     <description></description>
     <link>https://devexpress.github.io/testcafe/</link>
     <atom:link href="https://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 07 Feb 2019 17:14:08 +0300</pubDate>
-    <lastBuildDate>Thu, 07 Feb 2019 17:14:08 +0300</lastBuildDate>
+    <pubDate>Tue, 05 Mar 2019 14:17:34 +0300</pubDate>
+    <lastBuildDate>Tue, 05 Mar 2019 14:17:34 +0300</lastBuildDate>
     <generator>Jekyll v3.8.4</generator>
+    
+      <item>
+        <title>TestCafe v1.1.0 Released</title>
+        <description>&lt;h1&gt;TestCafe v1.1.0 Released&lt;/h1&gt;
+&lt;p&gt;This release introduces TypeScript 3.0 support and enhanced TypeScript definitions for client functions.&lt;/p&gt;
+
+&lt;!--more--&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;enhancements&quot;&gt;&lt;/a&gt;Enhancements &lt;a class=&quot;permalink&quot; href=&quot;#enhancements&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;typescript-3-support-3401&quot;&gt;&lt;/a&gt;⚙ TypeScript 3 Support (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/3401&quot;&gt;#3401&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#typescript-3-support-3401&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;TypeScript test files can now use the new syntax features introduced in &lt;a href=&quot;https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-0.html&quot;&gt;TypeScript 3.0&lt;/a&gt; and &lt;a href=&quot;https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-3.html&quot;&gt;TypeScript 3.3&lt;/a&gt;.&lt;/p&gt;
+&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;enhanced-typescript-definitions-for-client-functions-3431-by-vitalics&quot;&gt;&lt;/a&gt;⚙ Enhanced TypeScript Definitions for Client Functions (&lt;a href=&quot;https://github.com/DevExpress/testcafe/pull/3431&quot;&gt;#3431&lt;/a&gt;) by &lt;a href=&quot;https://github.com/vitalics&quot;&gt;@vitalics&lt;/a&gt; &lt;a class=&quot;permalink&quot; href=&quot;#enhanced-typescript-definitions-for-client-functions-3431-by-vitalics&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;The updated type definitions allow the TypeScript compiler to determine client function&amp;#39;s return value type. Static typing now warns you when you call wrong methods for the return value.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;getFoo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ClientFunction&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;42&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;foo&lt;/span&gt;    &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;getFoo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;match&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/foo/&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Before v1.1.0, an error occurred during test execution:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ testcafe chrome tests.ts
+ Running tests in:
+ - Chrome 72.0.3626 / Windows 10.0.0
+ Fixture 1
+ √ Test 1
+ √ Test 2
+ ...
+ × Test N
+   1) TypeError: foo.match is not a function
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;With v1.1.0, the TypeScript compiler throws an error before tests are started:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ testcafe chrome tests.ts
+  ERROR Cannot prepare tests due to an error.
+  Error: TypeScript compilation failed.
+
+  tests.ts (4, 2): Property 'match' does not exist on type 'number'.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;bug-fixes&quot;&gt;&lt;/a&gt;Bug Fixes &lt;a class=&quot;permalink&quot; href=&quot;#bug-fixes&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;TestCafe no longer ignores test and fixture metadata filters specified in the configuration file (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/3443&quot;&gt;#3443&lt;/a&gt;) by &lt;a href=&quot;https://github.com/NanjoW&quot;&gt;@NanjoW&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;TestCafe no longer resolves placeholders to &lt;code&gt;null&lt;/code&gt; in video path patterns (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/3455&quot;&gt;#3455&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Fixed the &lt;code&gt;KeyboardEvent&lt;/code&gt;&amp;#39;s &lt;code&gt;key&lt;/code&gt; property emulation for Safari (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/3282&quot;&gt;#3282&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;TestCafe can now capture element screenshots after a long page scrolling (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/3292&quot;&gt;#3292&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;The compilation time of TypeScript tests no longer degrades for a large number of files (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/3475&quot;&gt;#3475&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Reach Router can now navigate correctly when tested with TestCafe (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1863&quot;&gt;testcafe-hammerhead/#1863&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;TestCafe now correctly handles websites that use the &lt;code&gt;WebKitMutationObserver&lt;/code&gt; class (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1912&quot;&gt;testcafe-hammerhead/#1912&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;TestCafe now processes ECMAScript modules in &lt;code&gt;&amp;lt;script&amp;gt;&lt;/code&gt; tags (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1725&quot;&gt;testcafe-hammerhead/#1725&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Thu, 28 Feb 2019 00:00:00 +0300</pubDate>
+        <link>https://devexpress.github.io/testcafe/blog/testcafe-v1-1-0-released.html</link>
+        <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v1-1-0-released.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>TestCafe v1.0.0 Released</title>
@@ -154,11 +204,11 @@
 &lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;test-syntax-validation-disabled-all-input-files-are-executed&quot;&gt;&lt;/a&gt;Test Syntax Validation Disabled: All Input Files Are Executed &lt;a class=&quot;permalink&quot; href=&quot;#test-syntax-validation-disabled-all-input-files-are-executed&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;Previous versions performed &lt;em&gt;test syntax validation&lt;/em&gt; within input script files before executing them. Only files that contained the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#fixtures&quot;&gt;fixture&lt;/a&gt; and &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#tests&quot;&gt;test&lt;/a&gt; directives were executed.&lt;/p&gt;
 
-&lt;p&gt;Starting with v1.0.0, input script files are &lt;strong&gt;never&lt;/strong&gt; validated. This means that TestCafe executes all the scripts you specify as test sources. If you use Glob patterns to specify input test files, please recheck these patterns to avoid unintended file matches.&lt;/p&gt;
+&lt;p&gt;Starting with v1.0.0, input script files are &lt;strong&gt;not&lt;/strong&gt; validated. This means that TestCafe executes all the scripts you specify as test sources. If you use Glob patterns to specify input test files, please recheck these patterns to avoid unintended file matches.&lt;/p&gt;
 
 &lt;p&gt;The &lt;code&gt;--disable-test-syntax-validation&lt;/code&gt; command line flag and the &lt;code&gt;disableTestSyntaxValidation&lt;/code&gt; option for the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#run&quot;&gt;runner.run&lt;/a&gt; API method that disabled test syntax validation were removed in v1.0.0.&lt;/p&gt;
 &lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;what-has-improved&quot;&gt;&lt;/a&gt;What Has Improved &lt;a class=&quot;permalink&quot; href=&quot;#what-has-improved&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;You can now load tests dynamically without additional customization. The following example illustrates how tests can be imported from an external library.&lt;/p&gt;
+&lt;p&gt;You can now load tests dynamically without additional customization. The following example illustrates how tests can be imported from an external library:&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;external-lib.js&lt;/strong&gt;&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kr&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;default&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;runFixture&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
@@ -197,15 +247,13 @@
     &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;browsers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'chrome'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'firefox:headless'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;reporter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'minimal'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'json'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;output&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'report.json'&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}]);&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;what-has-improved&quot;&gt;&lt;/a&gt;What Has Improved &lt;a class=&quot;permalink&quot; href=&quot;#what-has-improved&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;This change was necessary to implement the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html&quot;&gt;configuration file&lt;/a&gt; in a way that is consistent with the API and command line interface.&lt;/p&gt;
+&lt;p&gt;The &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html&quot;&gt;configuration file&lt;/a&gt; we implemented is consistent with the API and command line interface.&lt;/p&gt;
 &lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;custom-request-hooks-asynchronous-api&quot;&gt;&lt;/a&gt;Custom Request Hooks: Asynchronous API &lt;a class=&quot;permalink&quot; href=&quot;#custom-request-hooks-asynchronous-api&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;&lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/&quot;&gt;Request hook&lt;/a&gt; methods became asynchronous in TestCafe v1.0.0.&lt;/p&gt;
 
 &lt;p&gt;If the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html#the-onrequest-method&quot;&gt;onRequest&lt;/a&gt; or &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html#the-onresponse-method&quot;&gt;onResponse&lt;/a&gt; method in your custom hook returns a Promise, TestCafe now waits for this Promise to resolve.&lt;/p&gt;
 
-&lt;p&gt;This does not necessarily leads to unexpected behavior, but still be aware of possible side effects.&lt;/p&gt;
-
-&lt;p&gt;Since the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html#the-onrequest-method&quot;&gt;onRequest&lt;/a&gt; and &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html#the-onresponse-method&quot;&gt;onResponse&lt;/a&gt; methods are now asynchronous, add the &lt;code&gt;async&lt;/code&gt; keyword to their declarations.&lt;/p&gt;
+&lt;p&gt;You should add the &lt;code&gt;async&lt;/code&gt; keyword to the asynchronous &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html#the-onrequest-method&quot;&gt;onRequest&lt;/a&gt; and &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html#the-onresponse-method&quot;&gt;onResponse&lt;/a&gt; method declarations.&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kr&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;RequestHook&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'testcafe'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 
 &lt;span class=&quot;kr&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;MyRequestHook&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;RequestHook&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
@@ -225,11 +273,9 @@
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;what-has-improved&quot;&gt;&lt;/a&gt;What Has Improved &lt;a class=&quot;permalink&quot; href=&quot;#what-has-improved&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;You can call asynchronous &lt;a href=&quot;https://nodejs.org/api/fs.html&quot;&gt;fs&lt;/a&gt; functions, invoke a &lt;a href=&quot;https://nodejs.org/api/child_process.html&quot;&gt;child_process&lt;/a&gt;, or perform asynchronous network requests (to a database or any other server) from inside the hooks.&lt;/p&gt;
 &lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;custom-reporter-plugins-asynchronous-api&quot;&gt;&lt;/a&gt;Custom Reporter Plugins: Asynchronous API &lt;a class=&quot;permalink&quot; href=&quot;#custom-reporter-plugins-asynchronous-api&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;TestCafe v1.0.0 also introduces asynchronous API for &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/&quot;&gt;reporter plugins&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;TestCafe v1.0.0 also introduces an asynchronous API for &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/&quot;&gt;reporter plugins&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;Similarly to &lt;a href=&quot;#custom-request-hooks-asynchronous-api&quot;&gt;request hooks&lt;/a&gt;, if any of the custom reporter&amp;#39;s methods (&lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reporttaskstart&quot;&gt;reportTaskStart&lt;/a&gt;, &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reportfixturestart&quot;&gt;reportFixtureStart&lt;/a&gt;, &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reporttestdone&quot;&gt;reportTestDone&lt;/a&gt; or &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reporttaskdone&quot;&gt;reportTaskDone&lt;/a&gt;) returns a Promise, this Promise is now awaited.&lt;/p&gt;
-
-&lt;p&gt;Side effects may show up in certain cases.&lt;/p&gt;
 
 &lt;p&gt;Since the reporter methods are now asynchronous, add the &lt;code&gt;async&lt;/code&gt; keyword to their declarations.&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;reportTaskStart&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;startTime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;userAgents&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;testCount&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
@@ -276,7 +322,7 @@
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;run-dynamically-loaded-tests-2074&quot;&gt;&lt;/a&gt;⚙ Run Dynamically Loaded Tests (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2074&quot;&gt;#2074&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#run-dynamically-loaded-tests-2074&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;You can now run tests imported from external libraries or generated dynamically even if the &lt;code&gt;.js&lt;/code&gt; file does not contain any tests.&lt;/p&gt;
 
-&lt;p&gt;This was not possible previously because test files should contain the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#fixtures&quot;&gt;fixture&lt;/a&gt; and &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#tests&quot;&gt;test&lt;/a&gt; directives. However, you can now provide the &lt;code&gt;--disable-test-syntax-validation&lt;/code&gt; command line flag to bypass this check.&lt;/p&gt;
+&lt;p&gt;Previously, test files had to contain the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#fixtures&quot;&gt;fixture&lt;/a&gt; and &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#tests&quot;&gt;test&lt;/a&gt; directives. You can now add the &lt;code&gt;--disable-test-syntax-validation&lt;/code&gt; command line flag to bypass this check.&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe safari test.js --disable-test-syntax-validation
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;In the API, use the &lt;code&gt;disableTestSyntaxValidation&lt;/code&gt; option.&lt;/p&gt;
@@ -835,25 +881,6 @@ Now TestCafe exits gracefully closing all browsers opened for testing.&lt;/p&gt;
         <pubDate>Tue, 10 Oct 2017 00:00:00 +0300</pubDate>
         <link>https://devexpress.github.io/testcafe/blog/testcafe-v0-18-0-released.html</link>
         <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v0-18-0-released.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>TestCafe v0.18.0-alpha1 Released - Testing in headless Firefox</title>
-        <description>&lt;h1&gt;TestCafe v0.18.0-alpha1 Released: Testing in headless Firefox&lt;/h1&gt;
-&lt;p&gt;This early release supports headless mode in Firefox v56.0 which was launched on September 28th.&lt;/p&gt;
-
-&lt;!--more--&gt;
-
-&lt;p&gt;To run your tests in headless mode, use the following command:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe firefox:headless test.js
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;A major release of TestCafe v0.18.0 with a bunch of new features is coming soon.&lt;/p&gt;
-</description>
-        <pubDate>Fri, 29 Sep 2017 00:00:00 +0300</pubDate>
-        <link>https://devexpress.github.io/testcafe/blog/testcafe-v0-18-0-alpha1-released.html</link>
-        <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v0-18-0-alpha1-released.html</guid>
         
         
       </item>
