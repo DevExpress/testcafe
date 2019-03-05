@@ -346,32 +346,37 @@
         
           
           <div class="site-nav-tab active">
-            <a class="page-link" href="/testcafe/documentation/getting-started/">Documentation</a>
+            <a class="page-link" href="/testcafe/documentation/getting-started/"><span>Docs</span></a>
           </div>
         
           
-          <div class="site-nav-tab ">
-            <a class="page-link" href="https://github.com/DevExpress/testcafe" target="_blank">GitHub</a>
+          <div class="site-nav-tab">
+            <a class="page-link" href="https://github.com/DevExpress/testcafe" target="_blank"><span>GitHub</span></a>
           </div>
         
           
-          <div class="site-nav-tab ">
-            <a class="page-link" href="/testcafe/faq/">FAQ</a>
+          <div class="site-nav-tab">
+            <a class="page-link" href="/testcafe/faq/"><span>FAQ</span></a>
           </div>
         
           
-          <div class="site-nav-tab ">
-            <a class="page-link" href="/testcafe/blog/">Release Notes</a>
+          <div class="site-nav-tab">
+            <a class="page-link" href="/testcafe/roadmap/"><span>Roadmap</span></a>
           </div>
         
           
-          <div class="site-nav-tab ">
-            <a class="page-link" href="/testcafe/support/">Support</a>
+          <div class="site-nav-tab">
+            <a class="page-link" href="/testcafe/blog/"><span>Release Notes</span></a>
           </div>
         
           
-          <div class="site-nav-tab ">
-            <a class="page-link" id="studio-link" href="https://testcafe-studio.devexpress.com" target="_blank">TestCafe Studio</a>
+          <div class="site-nav-tab">
+            <a class="page-link" href="/testcafe/support/"><span>Support</span></a>
+          </div>
+        
+          
+          <div class="site-nav-tab" id="studio-link-tab">
+            <a class="page-link" id="studio-link" href="https://www.devexpress.com/products/testcafestudio/" target="_blank"><span>TestCafe Studio</span></a>
           </div>
         
       <a id="twitter-button" href="https://twitter.com/dxtestcafe" target="_blank"></a>
@@ -734,6 +739,15 @@
 <p>TestCafe provides a preconfigured Docker image with Chromium and Firefox installed.
 Therefore, you can avoid manual installation of browsers and the testing framework on the server.</p>
 
+<ul>
+<li><a href="#install-docker-and-download-testcafe-image">Install Docker and Download TestCafe Image</a></li>
+<li><a href="#test-in-docker-containers">Test in Docker Containers</a></li>
+<li><a href="#test-on-the-host-machine">Test on the Host Machine</a></li>
+<li><a href="#test-on-remote-devices">Test on Remote Devices</a></li>
+<li><a href="#test-heavy-websites">Test Heavy Websites</a></li>
+<li><a href="#proxy-settings">Proxy Settings</a></li>
+</ul>
+<h2><a class="anchor" id="install-docker-and-download-testcafe-image"></a>Install Docker and Download TestCafe Image <a class="permalink" href="#install-docker-and-download-testcafe-image">#</a></h2>
 <p>To learn how to install Docker on your system, see <a href="https://docs.docker.com/engine/installation/">Install Docker</a>.</p>
 
 <p>After Docker is installed, download the TestCafe Docker image from the repository.</p>
@@ -741,19 +755,17 @@ Therefore, you can avoid manual installation of browsers and the testing framewo
 </code></pre></div>
 <p>The command above installs a stable version of the image. If you need an alpha version, run the following command.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">docker pull testcafe/testcafe:alpha
-</code></pre></div>
-<p>Now you can run TestCafe from the docker image.</p>
+</code></pre></div><h2><a class="anchor" id="test-in-docker-containers"></a>Test in Docker Containers <a class="permalink" href="#test-in-docker-containers">#</a></h2>
+<p>Use the <code>docker run</code> command to run TestCafe in the Docker container:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">docker run -v <span class="k">${</span><span class="nv">TEST_FOLDER</span><span class="k">}</span>:/tests -it testcafe/testcafe <span class="k">${</span><span class="nv">TESTCAFE_ARGS</span><span class="k">}</span>
 </code></pre></div>
 <p>This command takes the following parameters:</p>
 
 <ul>
 <li><p><code>-v ${TEST_FOLDER}:/tests</code> - maps the <code>TEST_FOLDER</code> directory on the host machine to the <code>/tests</code> directory in the container. You can map any host directory to any container directory:</p>
-
-<p><code>-v //c/Users/Username/tests:/tests</code></p>
-
-<p><code>-v //d/tests:/myTests</code></p>
-
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">-v //c/Users/Username/tests:/tests
+</code></pre></div><div class="highlight"><pre><code class="language-sh" data-lang="sh">-v //d/tests:/myTests
+</code></pre></div>
 <p>Files referenced in tests (page models, utilities, Node.js modules) should be located in the mapped host directory or its subdirectories. Otherwise, they could not be accessed from the container.</p>
 
 <p>If you are running a Windows machine with Docker Toolbox, note that Docker containers can only access the <code>C:\Users</code> directory by default. If you need to run tests from other directories, share these directories as described in the <a href="https://docs.docker.com/toolbox/toolbox_install_windows/#optional-add-shared-directories">Docker documentation</a>.</p>
@@ -761,15 +773,13 @@ Therefore, you can avoid manual installation of browsers and the testing framewo
 <p>In modern Docker for Windows, you also need to share a drive to reach it from Docker containers. For more information, see <a href="https://docs.docker.com/docker-for-windows/#shared-drives">Docker for Windows documentation</a>.</p></li>
 <li><p><code>-it testcafe/testcafe</code> - runs TestCafe in the interactive mode with the console enabled;</p></li>
 <li><p><code>${TESTCAFE_ARGS}</code> - arguments passed to the <code>testcafe</code> command. You can use any arguments from the TestCafe <a href="command-line-interface.html">command line interface</a>;</p>
-
-<p><code>-it testcafe/testcafe &#39;chromium --no-sandbox,firefox&#39; /tests/test.js</code></p>
-
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">-it testcafe/testcafe <span class="s1">'chromium --no-sandbox,firefox'</span> /tests/test.js
+</code></pre></div>
 <p>You can run tests in the Chromium and Firefox browsers preinstalled to the Docker image. Add the <code>--no-sandbox</code> flag to Chromium if the container is run in the unprivileged mode.</p>
 
 <p>You can pass a glob instead of the directory path in TestCafe parameters.</p>
-
-<p><code>docker run -v //d/tests:/tests -it testcafe/testcafe firefox /tests/**/*.js</code></p>
-<blockquote><div class="blockquote-content"><p>If tests use other Node.js modules, these modules should be located in the tests directory or its child directories. TestCafe will not be able to find modules in the parent directories.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">docker run -v //d/tests:/tests -it testcafe/testcafe firefox /tests/<span class="k">**</span>/<span class="k">*</span>.js
+</code></pre></div><blockquote><div class="blockquote-content"><p>If tests use other Node.js modules, these modules should be located in the tests directory or its child directories. TestCafe will not be able to find modules in the parent directories.</p>
 </div></blockquote></li>
 </ul>
 <h2><a class="anchor" id="test-on-the-host-machine"></a>Test on the Host Machine <a class="permalink" href="#test-on-the-host-machine">#</a></h2>
@@ -819,14 +829,18 @@ Therefore, you can avoid manual installation of browsers and the testing framewo
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">docker run --add-host<span class="o">=</span><span class="k">${</span><span class="nv">EXTERNAL_HOSTNAME</span><span class="k">}</span>:127.0.0.1 -p <span class="k">${</span><span class="nv">PORT1</span><span class="k">}</span>:<span class="k">${</span><span class="nv">PORT1</span><span class="k">}</span> -p <span class="k">${</span><span class="nv">PORT2</span><span class="k">}</span>:<span class="k">${</span><span class="nv">PORT2</span><span class="k">}</span> -v /d/tests:/tests -it testcafe/testcafe --hostname <span class="k">${</span><span class="nv">EXTERNAL_HOSTNAME</span><span class="k">}</span> --ports <span class="k">${</span><span class="nv">PORT1</span><span class="k">}</span>,<span class="k">${</span><span class="nv">PORT2</span><span class="k">}</span> remote /tests/test.js
 </code></pre></div>
 <p>where <code>${PORT1}</code> and <code>${PORT2}</code> are vacant container&#39;s ports, <code>${EXTERNAL_HOSTNAME}</code> is the host machine name.</p>
-<h2><a class="anchor" id="testing-heavy-websites"></a>Testing Heavy Websites <a class="permalink" href="#testing-heavy-websites">#</a></h2>
+<h2><a class="anchor" id="test-heavy-websites"></a>Test Heavy Websites <a class="permalink" href="#test-heavy-websites">#</a></h2>
 <p>If you are testing a heavy website, you may need to allocate extra resources for the Docker image.</p>
 
 <p>The most common case is when the temporary file storage <code>/dev/shm</code> runs out of free space. The following example shows how to allow additional space (1GB) for this storage using the <code>--shm-size</code> option.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">docker run --shm-size<span class="o">=</span>1g -v /d/tests:/tests -it testcafe/testcafe firefox /tests/test.js
 </code></pre></div>
 <p>You can find a complete list of options that manage runtime constraints on resources in the <a href="https://docs.docker.com/engine/reference/run/#runtime-constraints-on-resources">Docker documentation</a>.</p>
-
+<h2><a class="anchor" id="proxy-settings"></a>Proxy Settings <a class="permalink" href="#proxy-settings">#</a></h2>
+<p>Use the TestCafe <a href="command-line-interface.html#--proxy-host">--proxy</a> and <a href="command-line-interface.html#--proxy-bypass-rules">--proxy-bypass</a> options to configure proxy settings.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">docker run -v /d/tests:/tests -it testcafe/testcafe remote /tests/test.js --proxy proxy.mycorp.com
+</code></pre></div><blockquote><div class="blockquote-content"><p>TestCafe ignores the <a href="https://docs.docker.com/network/proxy/">container&#39;s proxy settings</a> specified in the Docker configuration file (<code>httpProxy</code>, <code>httpsProxy</code> and <code>noProxy</code>) or the environment variables (<code>HTTP_PROXY</code>, <code>HTTPS_PROXY</code> and <code>NO_PROXY</code>).</p>
+</div></blockquote>
 
 		</div>
 	</article>

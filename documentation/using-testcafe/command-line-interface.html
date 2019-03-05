@@ -346,32 +346,37 @@
         
           
           <div class="site-nav-tab active">
-            <a class="page-link" href="/testcafe/documentation/getting-started/">Documentation</a>
+            <a class="page-link" href="/testcafe/documentation/getting-started/"><span>Docs</span></a>
           </div>
         
           
-          <div class="site-nav-tab ">
-            <a class="page-link" href="https://github.com/DevExpress/testcafe" target="_blank">GitHub</a>
+          <div class="site-nav-tab">
+            <a class="page-link" href="https://github.com/DevExpress/testcafe" target="_blank"><span>GitHub</span></a>
           </div>
         
           
-          <div class="site-nav-tab ">
-            <a class="page-link" href="/testcafe/faq/">FAQ</a>
+          <div class="site-nav-tab">
+            <a class="page-link" href="/testcafe/faq/"><span>FAQ</span></a>
           </div>
         
           
-          <div class="site-nav-tab ">
-            <a class="page-link" href="/testcafe/blog/">Release Notes</a>
+          <div class="site-nav-tab">
+            <a class="page-link" href="/testcafe/roadmap/"><span>Roadmap</span></a>
           </div>
         
           
-          <div class="site-nav-tab ">
-            <a class="page-link" href="/testcafe/support/">Support</a>
+          <div class="site-nav-tab">
+            <a class="page-link" href="/testcafe/blog/"><span>Release Notes</span></a>
           </div>
         
           
-          <div class="site-nav-tab ">
-            <a class="page-link" id="studio-link" href="https://testcafe-studio.devexpress.com" target="_blank">TestCafe Studio</a>
+          <div class="site-nav-tab">
+            <a class="page-link" href="/testcafe/support/"><span>Support</span></a>
+          </div>
+        
+          
+          <div class="site-nav-tab" id="studio-link-tab">
+            <a class="page-link" id="studio-link" href="https://www.devexpress.com/products/testcafestudio/" target="_blank"><span>TestCafe Studio</span></a>
           </div>
         
       <a id="twitter-button" href="https://twitter.com/dxtestcafe" target="_blank"></a>
@@ -790,9 +795,9 @@
 </ul></li>
 </ul>
 
-<p>When you execute the <code>testcafe</code> command, TestCafe first reads settings from the <code>.testcaferc.json</code> <a href="configuration-file.html">configuration file</a> if this file exists. Then it applies settings provided in the command line. Command line settings override values from the configuration file in case they differ. TestCafe prints information about every overridden property in the console.</p>
+<p>When you execute the <code>testcafe</code> command, TestCafe first reads settings from the <code>.testcaferc.json</code> <a href="configuration-file.html">configuration file</a> if this file exists, and then applies the settings from the command line. Command line settings override values from the configuration file in case they differ. TestCafe prints information about every overridden property in the console.</p>
 
-<p>If the <a href="configuration-file.html#browsers">browsers</a> and <a href="configuration-file.html#src">src</a> properties are specified in the configuration file, you can omit any of them, or both, in the command line.</p>
+<p>If the <a href="configuration-file.html#browsers">browsers</a> and <a href="configuration-file.html#src">src</a> properties are specified in the configuration file, you can omit them in the command line.</p>
 <blockquote class="important"><div class="blockquote-content"><p>Make sure to keep the browser tab that is running tests active. Do not minimize the browser window.
 Inactive tabs and minimized browser windows switch to a lower resource consumption mode
 where tests do not always execute correctly.</p>
@@ -1059,7 +1064,7 @@ it is paused within this hook before the first action.</p>
 <h3><a class="anchor" id="--app-init-delay-ms"></a>--app-init-delay &lt;ms&gt; <a class="permalink" href="#--app-init-delay-ms">#</a></h3>
 <p>Specifies the time (in milliseconds) allowed for an application launched using the <a href="#-a-command---app-command">--app</a> option to initialize.</p>
 
-<p>TestCafe waits for the specified time before it starts running tests.</p>
+<p>TestCafe waits the specified time before it starts running tests.</p>
 
 <p><strong>Default value</strong>: <code>1000</code></p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests --app <span class="s2">"node server.js"</span> --app-init-delay 4000

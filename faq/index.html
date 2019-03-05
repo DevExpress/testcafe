@@ -230,33 +230,38 @@
     <nav class="site-nav">
         
           
-          <div class="site-nav-tab ">
-            <a class="page-link" href="/testcafe/documentation/getting-started/">Documentation</a>
+          <div class="site-nav-tab">
+            <a class="page-link" href="/testcafe/documentation/getting-started/"><span>Docs</span></a>
           </div>
         
           
-          <div class="site-nav-tab ">
-            <a class="page-link" href="https://github.com/DevExpress/testcafe" target="_blank">GitHub</a>
+          <div class="site-nav-tab">
+            <a class="page-link" href="https://github.com/DevExpress/testcafe" target="_blank"><span>GitHub</span></a>
           </div>
         
           
           <div class="site-nav-tab active">
-            <a class="page-link" href="/testcafe/faq/">FAQ</a>
+            <a class="page-link" href="/testcafe/faq/"><span>FAQ</span></a>
           </div>
         
           
-          <div class="site-nav-tab ">
-            <a class="page-link" href="/testcafe/blog/">Release Notes</a>
+          <div class="site-nav-tab">
+            <a class="page-link" href="/testcafe/roadmap/"><span>Roadmap</span></a>
           </div>
         
           
-          <div class="site-nav-tab ">
-            <a class="page-link" href="/testcafe/support/">Support</a>
+          <div class="site-nav-tab">
+            <a class="page-link" href="/testcafe/blog/"><span>Release Notes</span></a>
           </div>
         
           
-          <div class="site-nav-tab ">
-            <a class="page-link" id="studio-link" href="https://testcafe-studio.devexpress.com" target="_blank">TestCafe Studio</a>
+          <div class="site-nav-tab">
+            <a class="page-link" href="/testcafe/support/"><span>Support</span></a>
+          </div>
+        
+          
+          <div class="site-nav-tab" id="studio-link-tab">
+            <a class="page-link" id="studio-link" href="https://www.devexpress.com/products/testcafestudio/" target="_blank"><span>TestCafe Studio</span></a>
           </div>
         
       <a id="twitter-button" href="https://twitter.com/dxtestcafe" target="_blank"></a>
@@ -406,7 +411,8 @@
 
 <ul>
 <li><a href="#i-have-heard-that-testcafe-does-not-use-selenium-how-does-it-operate">I have heard that TestCafe does not use Selenium. How does it operate?</a></li>
-<li><a href="#what-is-the-difference-between-a-paid-and-an-open-source-testcafe-version-what-is-testcafe-studio">What is the difference between a paid and an open-source TestCafe version? What is TestCafe Studio?</a></li>
+<li><a href="#what-is-the-difference-between-testcafe-studio-and-open-source-testcafe">What is the difference between TestCafe Studio and open-source TestCafe?</a></li>
+<li><a href="#has-testcafe-v20151-been-deprecated">Has TestCafe v2015.1 been deprecated?</a></li>
 <li><a href="#which-browsers-does-testcafe-support-what-are-the-exact-supported-versions">Which browsers does TestCafe support? What are the exact supported versions?</a></li>
 <li><a href="#can-i-use-third-party-modules-in-tests">Can I use third-party modules in tests?</a></li>
 <li><a href="#how-do-i-work-with-configuration-files-and-environment-variables">How do I work with configuration files and environment variables?</a></li>
@@ -431,43 +437,91 @@ This proxy injects the driver script that emulates user actions into the tested 
 
 <p>You can read about this in our <a href="https://testcafe-discuss.devexpress.com/t/why-not-use-selenium/47">forum</a>.
 Feel free to ask for more details.</p>
-<h3><a class="anchor" id="what-is-the-difference-between-a-paid-and-an-open-source-testcafe-version-what-is-testcafe-studio"></a>What is the difference between a <a href="https://testcafe.devexpress.com">paid</a> and an <a href="https://devexpress.github.io/testcafe">open-source</a> TestCafe version? What is <a href="https://testcafe-studio.devexpress.com/">TestCafe Studio</a>? <a class="permalink" href="#what-is-the-difference-between-a-paid-and-an-open-source-testcafe-version-what-is-testcafe-studio">#</a></h3>
-<p>All three versions share the same core features:</p>
-
-<ul>
-<li>No need for WebDriver, browser plugins or other tools.</li>
-<li>Cross-platform and cross-browser out of the box.</li>
-</ul>
-
-<p><a href="https://testcafe.devexpress.com">TestCafe</a><br>
-<em>first released in 2013, commercial web application</em>  </p>
-
-<ul>
-<li>Visual Test Recorder and web GUI to create, edit and run tests.</li>
-<li>You can record tests or edit them as JavaScript code.</li>
-</ul>
-
-<p><a href="https://devexpress.github.io/testcafe">TestCafe</a><br>
-<em>first released in 2016,  free and open-source node.js application</em></p>
-
-<ul>
-<li>You can write tests in the latest JavaScript or TypeScript.</li>
-<li>Clearer and more flexible <a href="https://devexpress.github.io/testcafe/documentation/test-api/">API</a> supports ES6 and <a href="https://devexpress.github.io/testcafe/documentation/recipes/using-page-model.html">PageModel pattern</a>.</li>
-<li>More stable tests due to the <a href="https://devexpress.github.io/testcafe/documentation/test-api/assertions/#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a>.</li>
-<li>Tests run faster due to improved <a href="https://devexpress.github.io/testcafe/documentation/test-api/waiting-for-page-elements-to-appear.html">Automatic Waiting Mechanism</a> and <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/concurrent-test-execution.html">Concurrent Test Execution</a>.</li>
-<li>Easy integration: it is a node.js solution with CLI and reporters for popular CI systems.</li>
-<li>You can extend it with <a href="https://github.com/DevExpress/testcafe#plugins">plugins</a> and other Node.js modules.</li>
-</ul>
-
-<p><a href="https://testcafe-studio.devexpress.com">TestCafe Studio</a><br>
-<em>Preview released in 2018, commercial desktop application</em>  </p>
-
-<ul>
-<li>Based on the open-source TestCafe, and supports its major features.</li>
-<li>You can record tests or edit them as JavaScript or TypeScript code.</li>
-<li>New <a href="https://testcafe-studio.devexpress.com/documentation/guides/record-tests/">Visual Test Recorder</a> and <a href="https://testcafe-studio.devexpress.com/documentation/guides/write-test-code.html">IDE-like GUI</a> to record, edit, run and debug tests.</li>
-<li>Currently available as a free preview version.</li>
-</ul>
+<h3><a class="anchor" id="what-is-the-difference-between-testcafe-studio-and-open-source-testcafe"></a>What is the difference between <a href="https://www.devexpress.com/products/testcafestudio/">TestCafe Studio</a> and <a href="https://devexpress.github.io/testcafe">open-source TestCafe</a>? <a class="permalink" href="#what-is-the-difference-between-testcafe-studio-and-open-source-testcafe">#</a></h3><div class="table-wrapper"><table><thead><tr>
+<th>&nbsp;</th>
+<th style="text-align: center"><a href="https://devexpress.github.io/testcafe">TestCafe</a></th>
+<th style="text-align: center"><a href="https://www.devexpress.com/products/testcafestudio/">TestCafe Studio</a></th>
+</tr>
+</thead><tbody><tr>
+<td>No need for WebDriver, browser plugins or other tools</td>
+<td style="text-align: center">&#10003;</td>
+<td style="text-align: center">&#10003;</td>
+</tr>
+<tr>
+<td>Cross-platform and cross-browser out of the box</td>
+<td style="text-align: center">&#10003;</td>
+<td style="text-align: center">&#10003;</td>
+</tr>
+<tr>
+<td>Write tests in the latest JavaScript or TypeScript</td>
+<td style="text-align: center">&#10003;</td>
+<td style="text-align: center">&#10003;</td>
+</tr>
+<tr>
+<td>Clear and flexible <a href="https://devexpress.github.io/testcafe/documentation/test-api/">API</a> supports ES6 and <a href="https://devexpress.github.io/testcafe/documentation/recipes/using-page-model.html">PageModel pattern</a></td>
+<td style="text-align: center">&#10003;</td>
+<td style="text-align: center">&#10003;</td>
+</tr>
+<tr>
+<td>Stable tests due to the <a href="https://devexpress.github.io/testcafe/documentation/test-api/assertions/#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a></td>
+<td style="text-align: center">&#10003;</td>
+<td style="text-align: center">&#10003;</td>
+</tr>
+<tr>
+<td>Tests run fast due to intelligent <a href="https://devexpress.github.io/testcafe/documentation/test-api/waiting-for-page-elements-to-appear.html">Automatic Waiting Mechanism</a> and <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/concurrent-test-execution.html">Concurrent Test Execution</a></td>
+<td style="text-align: center">&#10003;</td>
+<td style="text-align: center">&#10003;</td>
+</tr>
+<tr>
+<td>Custom reporter plugins</td>
+<td style="text-align: center">&#10003;</td>
+<td style="text-align: center">&#10003;</td>
+</tr>
+<tr>
+<td>Use third-party Node.js modules in test scripts</td>
+<td style="text-align: center">&#10003;</td>
+<td style="text-align: center">&#10003;</td>
+</tr>
+<tr>
+<td>Integration with popular CI systems</td>
+<td style="text-align: center">&#10003;</td>
+<td style="text-align: center">&nbsp;&#10003;*</td>
+</tr>
+<tr>
+<td>Free and open-source</td>
+<td style="text-align: center">&#10003;</td>
+<td style="text-align: center">**</td>
+</tr>
+<tr>
+<td><a href="https://docs.devexpress.com/TestCafeStudio/400165/guides/record-tests">Visual Test Recorder</a></td>
+<td style="text-align: center">&nbsp;</td>
+<td style="text-align: center">&#10003;</td>
+</tr>
+<tr>
+<td><a href="https://docs.devexpress.com/TestCafeStudio/400190/user-interface/test-editor">Interactive Test Editor</a></td>
+<td style="text-align: center">&nbsp;</td>
+<td style="text-align: center">&#10003;</td>
+</tr>
+<tr>
+<td><a href="https://docs.devexpress.com/TestCafeStudio/400407/guides/record-tests/element-selectors#auto-generated-element-selectors">Automatic Selector Generation</a></td>
+<td style="text-align: center">&nbsp;</td>
+<td style="text-align: center">&#10003;</td>
+</tr>
+<tr>
+<td><a href="https://docs.devexpress.com/TestCafeStudio/400189/user-interface/run-configurations-dialog">Run Configuration Manager</a></td>
+<td style="text-align: center">&nbsp;</td>
+<td style="text-align: center">&#10003;</td>
+</tr>
+<tr>
+<td><a href="https://docs.devexpress.com/TestCafeStudio/400181/user-interface/code-editor">IDE-like GUI</a></td>
+<td style="text-align: center">&nbsp;</td>
+<td style="text-align: center">&#10003;</td>
+</tr>
+</tbody></table></div>
+<p>* You can use open-source TestCafe to run TestCafe Studio tests in CI systems.<br>
+** TestCafe Studio is currently available as a free preview version. After the official release, it will require a paid license. TestCafe Studio is proprietary.</p>
+<h3><a class="anchor" id="has-testcafe-v20151-been-deprecated"></a>Has <a href="https://testcafe.devexpress.com">TestCafe v2015.1</a> been deprecated? <a class="permalink" href="#has-testcafe-v20151-been-deprecated">#</a></h3>
+<p><a href="https://testcafe.devexpress.com">TestCafe v2015.1</a> is no longer available for purchase or subscription renewal. We recommend that TestCafe v2015.1 users switch to <a href="https://www.devexpress.com/products/testcafestudio/">TestCafe Studio</a> to access the latest features. See this <a href="https://community.devexpress.com/blogs/testcafe/archive/2018/11/26/testcafe-studio-a-new-web-testing-ide.aspx">blog post</a> for details.</p>
 <h3><a class="anchor" id="which-browsers-does-testcafe-support-what-are-the-exact-supported-versions"></a>Which browsers does TestCafe support? What are the exact supported versions? <a class="permalink" href="#which-browsers-does-testcafe-support-what-are-the-exact-supported-versions">#</a></h3>
 <p>You can find a list of supported browsers in
 <a href="../documentation/using-testcafe/common-concepts/browsers/browser-support.html">our documentation</a>.

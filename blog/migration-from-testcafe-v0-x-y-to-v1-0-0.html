@@ -230,33 +230,38 @@
     <nav class="site-nav">
         
           
-          <div class="site-nav-tab ">
-            <a class="page-link" href="/testcafe/documentation/getting-started/">Documentation</a>
+          <div class="site-nav-tab">
+            <a class="page-link" href="/testcafe/documentation/getting-started/"><span>Docs</span></a>
           </div>
         
           
-          <div class="site-nav-tab ">
-            <a class="page-link" href="https://github.com/DevExpress/testcafe" target="_blank">GitHub</a>
+          <div class="site-nav-tab">
+            <a class="page-link" href="https://github.com/DevExpress/testcafe" target="_blank"><span>GitHub</span></a>
           </div>
         
           
-          <div class="site-nav-tab ">
-            <a class="page-link" href="/testcafe/faq/">FAQ</a>
+          <div class="site-nav-tab">
+            <a class="page-link" href="/testcafe/faq/"><span>FAQ</span></a>
+          </div>
+        
+          
+          <div class="site-nav-tab">
+            <a class="page-link" href="/testcafe/roadmap/"><span>Roadmap</span></a>
           </div>
         
           
           <div class="site-nav-tab active">
-            <a class="page-link" href="/testcafe/blog/">Release Notes</a>
+            <a class="page-link" href="/testcafe/blog/"><span>Release Notes</span></a>
           </div>
         
           
-          <div class="site-nav-tab ">
-            <a class="page-link" href="/testcafe/support/">Support</a>
+          <div class="site-nav-tab">
+            <a class="page-link" href="/testcafe/support/"><span>Support</span></a>
           </div>
         
           
-          <div class="site-nav-tab ">
-            <a class="page-link" id="studio-link" href="https://testcafe-studio.devexpress.com" target="_blank">TestCafe Studio</a>
+          <div class="site-nav-tab" id="studio-link-tab">
+            <a class="page-link" id="studio-link" href="https://www.devexpress.com/products/testcafestudio/" target="_blank"><span>TestCafe Studio</span></a>
           </div>
         
       <a id="twitter-button" href="https://twitter.com/dxtestcafe" target="_blank"></a>
@@ -416,11 +421,11 @@
 <h2><a class="anchor" id="test-syntax-validation-disabled-all-input-files-are-executed"></a>Test Syntax Validation Disabled: All Input Files Are Executed <a class="permalink" href="#test-syntax-validation-disabled-all-input-files-are-executed">#</a></h2>
 <p>Previous versions performed <em>test syntax validation</em> within input script files before executing them. Only files that contained the <a href="https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#fixtures">fixture</a> and <a href="https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#tests">test</a> directives were executed.</p>
 
-<p>Starting with v1.0.0, input script files are <strong>never</strong> validated. This means that TestCafe executes all the scripts you specify as test sources. If you use Glob patterns to specify input test files, please recheck these patterns to avoid unintended file matches.</p>
+<p>Starting with v1.0.0, input script files are <strong>not</strong> validated. This means that TestCafe executes all the scripts you specify as test sources. If you use Glob patterns to specify input test files, please recheck these patterns to avoid unintended file matches.</p>
 
 <p>The <code>--disable-test-syntax-validation</code> command line flag and the <code>disableTestSyntaxValidation</code> option for the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#run">runner.run</a> API method that disabled test syntax validation were removed in v1.0.0.</p>
 <h3><a class="anchor" id="what-has-improved"></a>What Has Improved <a class="permalink" href="#what-has-improved">#</a></h3>
-<p>You can now load tests dynamically without additional customization. The following example illustrates how tests can be imported from an external library.</p>
+<p>You can now load tests dynamically without additional customization. The following example illustrates how tests can be imported from an external library:</p>
 
 <p><strong>external-lib.js</strong></p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">export</span> <span class="k">default</span> <span class="kd">function</span> <span class="nx">runFixture</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">url</span><span class="p">)</span> <span class="p">{</span>
@@ -459,15 +464,13 @@
     <span class="p">.</span><span class="nx">browsers</span><span class="p">([</span><span class="s1">'chrome'</span><span class="p">,</span> <span class="s1">'firefox:headless'</span><span class="p">])</span>
     <span class="p">.</span><span class="nx">reporter</span><span class="p">([</span><span class="s1">'minimal'</span><span class="p">,</span> <span class="p">{</span> <span class="na">name</span><span class="p">:</span> <span class="s1">'json'</span><span class="p">,</span> <span class="na">output</span><span class="p">:</span> <span class="s1">'report.json'</span> <span class="p">}]);</span>
 </code></pre></div><h3><a class="anchor" id="what-has-improved"></a>What Has Improved <a class="permalink" href="#what-has-improved">#</a></h3>
-<p>This change was necessary to implement the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html">configuration file</a> in a way that is consistent with the API and command line interface.</p>
+<p>The <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html">configuration file</a> we implemented is consistent with the API and command line interface.</p>
 <h2><a class="anchor" id="custom-request-hooks-asynchronous-api"></a>Custom Request Hooks: Asynchronous API <a class="permalink" href="#custom-request-hooks-asynchronous-api">#</a></h2>
 <p><a href="https://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/">Request hook</a> methods became asynchronous in TestCafe v1.0.0.</p>
 
 <p>If the <a href="https://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html#the-onrequest-method">onRequest</a> or <a href="https://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html#the-onresponse-method">onResponse</a> method in your custom hook returns a Promise, TestCafe now waits for this Promise to resolve.</p>
 
-<p>This does not necessarily leads to unexpected behavior, but still be aware of possible side effects.</p>
-
-<p>Since the <a href="https://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html#the-onrequest-method">onRequest</a> and <a href="https://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html#the-onresponse-method">onResponse</a> methods are now asynchronous, add the <code>async</code> keyword to their declarations.</p>
+<p>You should add the <code>async</code> keyword to the asynchronous <a href="https://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html#the-onrequest-method">onRequest</a> and <a href="https://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html#the-onresponse-method">onResponse</a> method declarations.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">RequestHook</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
 <span class="kr">class</span> <span class="nx">MyRequestHook</span> <span class="kr">extends</span> <span class="nx">RequestHook</span> <span class="p">{</span>
@@ -487,11 +490,9 @@
 </code></pre></div><h3><a class="anchor" id="what-has-improved"></a>What Has Improved <a class="permalink" href="#what-has-improved">#</a></h3>
 <p>You can call asynchronous <a href="https://nodejs.org/api/fs.html">fs</a> functions, invoke a <a href="https://nodejs.org/api/child_process.html">child_process</a>, or perform asynchronous network requests (to a database or any other server) from inside the hooks.</p>
 <h2><a class="anchor" id="custom-reporter-plugins-asynchronous-api"></a>Custom Reporter Plugins: Asynchronous API <a class="permalink" href="#custom-reporter-plugins-asynchronous-api">#</a></h2>
-<p>TestCafe v1.0.0 also introduces asynchronous API for <a href="https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/">reporter plugins</a>.</p>
+<p>TestCafe v1.0.0 also introduces an asynchronous API for <a href="https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/">reporter plugins</a>.</p>
 
 <p>Similarly to <a href="#custom-request-hooks-asynchronous-api">request hooks</a>, if any of the custom reporter&#39;s methods (<a href="https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reporttaskstart">reportTaskStart</a>, <a href="https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reportfixturestart">reportFixtureStart</a>, <a href="https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reporttestdone">reportTestDone</a> or <a href="https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reporttaskdone">reportTaskDone</a>) returns a Promise, this Promise is now awaited.</p>
-
-<p>Side effects may show up in certain cases.</p>
 
 <p>Since the reporter methods are now asynchronous, add the <code>async</code> keyword to their declarations.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">async</span> <span class="nx">reportTaskStart</span> <span class="p">(</span><span class="nx">startTime</span><span class="p">,</span> <span class="nx">userAgents</span><span class="p">,</span> <span class="nx">testCount</span><span class="p">)</span> <span class="p">{</span>

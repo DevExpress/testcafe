@@ -346,32 +346,37 @@
         
           
           <div class="site-nav-tab active">
-            <a class="page-link" href="/testcafe/documentation/getting-started/">Documentation</a>
+            <a class="page-link" href="/testcafe/documentation/getting-started/"><span>Docs</span></a>
           </div>
         
           
-          <div class="site-nav-tab ">
-            <a class="page-link" href="https://github.com/DevExpress/testcafe" target="_blank">GitHub</a>
+          <div class="site-nav-tab">
+            <a class="page-link" href="https://github.com/DevExpress/testcafe" target="_blank"><span>GitHub</span></a>
           </div>
         
           
-          <div class="site-nav-tab ">
-            <a class="page-link" href="/testcafe/faq/">FAQ</a>
+          <div class="site-nav-tab">
+            <a class="page-link" href="/testcafe/faq/"><span>FAQ</span></a>
           </div>
         
           
-          <div class="site-nav-tab ">
-            <a class="page-link" href="/testcafe/blog/">Release Notes</a>
+          <div class="site-nav-tab">
+            <a class="page-link" href="/testcafe/roadmap/"><span>Roadmap</span></a>
           </div>
         
           
-          <div class="site-nav-tab ">
-            <a class="page-link" href="/testcafe/support/">Support</a>
+          <div class="site-nav-tab">
+            <a class="page-link" href="/testcafe/blog/"><span>Release Notes</span></a>
           </div>
         
           
-          <div class="site-nav-tab ">
-            <a class="page-link" id="studio-link" href="https://testcafe-studio.devexpress.com" target="_blank">TestCafe Studio</a>
+          <div class="site-nav-tab">
+            <a class="page-link" href="/testcafe/support/"><span>Support</span></a>
+          </div>
+        
+          
+          <div class="site-nav-tab" id="studio-link-tab">
+            <a class="page-link" id="studio-link" href="https://www.devexpress.com/products/testcafestudio/" target="_blank"><span>TestCafe Studio</span></a>
           </div>
         
       <a id="twitter-button" href="https://twitter.com/dxtestcafe" target="_blank"></a>
@@ -831,7 +836,7 @@
     <span class="p">});</span>
 </code></pre></div><blockquote class="important"><div class="blockquote-content"><p>You cannot create multiple live mode runners for the same TestCafe server instance. This is because a TestCafe server can handle only one watcher that tracks changes to test files.</p>
 </div></blockquote><h3><a class="anchor" id="close"></a>close <a class="permalink" href="#close">#</a></h3>
-<p>Stops the TestCafe server. Forcibly closes all connections and pending test runs immediately.</p>
+<p>Stops the TestCafe server. Forcibly closes all connections and pending test runs.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">async close()
 </code></pre></div>
 

@@ -290,6 +290,21 @@ table > tbody > tr > td {
       color: #404142;
       padding-top: 0; }
 
+#studio-link-tab {
+  margin: 0 10px;
+  padding: 0px 10px 2px;
+  background: linear-gradient(260.4deg, #389ACE 0%, #5CACE8 100%);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.08);
+  transform: skewX(-20deg);
+  -webkit-transform: skewX(-20deg);
+  -moz-transform: skewX(-20deg); }
+  #studio-link-tab .page-link {
+    display: block;
+    color: #fff;
+    transform: skewX(20deg);
+    -webkit-transform: skewX(20deg);
+    -moz-transform: skewX(20deg); }
+
 html, body {
   height: 100%;
   min-width: 1230px; }
