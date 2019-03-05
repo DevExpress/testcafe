@@ -107,6 +107,6 @@ TestCafe executes this command before tests are launched. After tests finish, Te
 
 ## Step 3 - Trigger a Bitbucket Pipelines CI Build
 
-Bitbucket Pipeplines CI is now configured to trigger the build when you push commits to your repository or create a pull request.
+Bitbucket Pipelines CI is now configured to trigger the build when you push commits to your repository or create a pull request.
 
 To check if the build has passed or failed, open your project's page and go to the Pipelines status page.
