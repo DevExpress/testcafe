@@ -5,11 +5,11 @@ permalink: /roadmap/
 ---
 # Roadmap
 
-This roadmap includes the most important features we have planned for the year 2019.
+This roadmap includes the most important features planned for 2019.
 
-This list is not exhaustive. We will update it with more entries as we receive your feedback.
+This list is not exhaustive and will be updated with more entries as we receive your feedback.
 
-Please vote on the features you want us to implement first (follow the link and leave a reaction on GitHub). This helps us prioritize and deliver what really matters to you.
+Please vote on the features you want us to implement first to help us prioritize our work. (Follow each link to leave a reaction on GitHub.)
 
 ## Highlighted Features
 
