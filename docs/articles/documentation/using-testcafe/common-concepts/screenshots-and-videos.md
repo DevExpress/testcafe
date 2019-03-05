@@ -5,7 +5,7 @@ permalink: /documentation/using-testcafe/common-concepts/screenshots-and-videos.
 ---
 # Screenshots and Videos
 
-TestCafe allows you to take screenshots of the webpage under test and record videos of test runs.
+TestCafe allows you to take screenshots of the tested webpage and record videos of test runs.
 
 * [Screenshots](#screenshots)
   * [Prerequisites for Screenshots](#prerequisites-for-screenshots)
@@ -111,9 +111,9 @@ TestCafe allows you to record videos of test runs.
 
 ### Prerequisites for Video Recording
 
-You need to install [the FFmpeg library](https://ffmpeg.org/) to record videos.
+You should install [the FFmpeg library](https://ffmpeg.org/) to record videos.
 
-If TestCafe is unable to find the FFmpeg library automatically, do one of the following:
+Do one of the following if TestCafe cannot find the FFmpeg library:
 
 * Add the FFmpeg installation directory to the system's `PATH` environment variable;
 * Specify the path to the FFmpeg executable in the `FFMPEG_PATH` environment variable or the `ffmpegPath` parameter in [video options](#basic-video-options);
@@ -145,7 +145,7 @@ Use either of the following to enable video recording:
     }
     ```
 
-You must provide the base path where TestCafe stores videos to this flag, method or property. See [Where Screenshots and Videos Are Saved](#where-screenshots-and-videos-are-saved) for more information.
+You should provide the base path where TestCafe stores videos to this flag, method or property. See [Where Screenshots and Videos Are Saved](#where-screenshots-and-videos-are-saved) for more information.
 
 TestCafe records all the tests and saves the recording of each test in a separate file. To change this behavior, use the `failedOnly` and `singleFile` [video options](#basic-video-options).
 
@@ -248,7 +248,7 @@ ${DATE}_${TIME}/${TEST_ID}/${RUN_ID}/${USERAGENT}/errors/${FILE_INDEX}.png
 
 ### Custom Path Patterns
 
-You can override the default path pattern for both screenshots and videos.
+You can override the default path pattern for screenshots and videos.
 
 To compose a custom pattern, use placeholders described in the [Path Pattern Placeholders](#path-pattern-placeholders) section.
 

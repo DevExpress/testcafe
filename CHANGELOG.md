@@ -6,11 +6,11 @@
 
 #### :gear: TypeScript 3 Support ([#3401](https://github.com/DevExpress/testcafe/issues/3401))
 
-TypeScript test files can now use new syntax features introduced in [TypeScript 3.0](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-0.html) and [TypeScript 3.3](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-3.html).
+TypeScript test files can now use the new syntax features introduced in [TypeScript 3.0](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-0.html) and [TypeScript 3.3](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-3.html).
 
 #### :gear: Enhanced TypeScript Definitions for Client Functions ([#3431](https://github.com/DevExpress/testcafe/pull/3431)) by [@vitalics](https://github.com/vitalics)
 
-The updated type definitions allow TypeScript compiler to determine client function's return value type. Static typing now warns you when you call wrong methods for the return value.
+The updated type definitions allow the TypeScript compiler to determine client function's return value type. Static typing now warns you when you call wrong methods for the return value.
 
 ```js
 const getFoo = ClientFunction(() => 42);
@@ -18,7 +18,7 @@ const foo    = await getFoo();
 foo.match(/foo/);
 ```
 
-Prior to v1.1.0, an error occurred during test execution:
+Before v1.1.0, an error occurred during test execution:
 
 ```text
 $ testcafe chrome tests.ts
@@ -32,7 +32,7 @@ $ testcafe chrome tests.ts
    1) TypeError: foo.match is not a function
 ```
 
-With v1.1.0, the TypeScript compiler throws an error before test are started:
+With v1.1.0, the TypeScript compiler throws an error before tests are started:
 
 ```text
 $ testcafe chrome tests.ts
@@ -59,16 +59,16 @@ $ testcafe chrome tests.ts
 
 ### Bug Fixes
 
-* TestCafe no longer hangs when CLI argument validation failed in live mode ([#3402](https://github.com/DevExpress/testcafe/issues/3402))
+* TestCafe no longer hangs when CLI argument validation fails in live mode ([#3402](https://github.com/DevExpress/testcafe/issues/3402))
 * TestCafe no longer fails with the `ERR_STREAM_WRITE_AFTER_END` error after restarting tests in live mode ([#3322](https://github.com/DevExpress/testcafe/issues/3322))
-* Now TestCafe doesn't ignore video and encoding options specified in a configuration file ([#3415](https://github.com/DevExpress/testcafe/issues/3415))
-* Now you can specify only tests in TestCafe CLI if browsers are specified in a configuration file ([#3421](https://github.com/DevExpress/testcafe/issues/3421))
+* TestCafe does not ignore video and encoding options specified in a configuration file ([#3415](https://github.com/DevExpress/testcafe/issues/3415))
+* You can now specify only tests in TestCafe CLI if browsers are specified in a configuration file ([#3421](https://github.com/DevExpress/testcafe/issues/3421))
 * Live mode: TestCafe no longer stops test execution in multiple browsers if tests do not contain actions ([#3410](https://github.com/DevExpress/testcafe/issues/3410))
-* Now TestCafe correctly handles the `data-parsley-multiple` attribute ([testcafe-hammerhead/#1845](https://github.com/DevExpress/testcafe-hammerhead/issues/1845))
-* Now TestCafe allows passing the `headers` option of the `fetch` function as an Array ([testcafe-hammerhead/#1898](https://github.com/DevExpress/testcafe-hammerhead/issues/1898))
+* TestCafe now correctly handles the `data-parsley-multiple` attribute ([testcafe-hammerhead/#1845](https://github.com/DevExpress/testcafe-hammerhead/issues/1845))
+* TestCafe now allows passing the `headers` option of the `fetch` function as an Array ([testcafe-hammerhead/#1898](https://github.com/DevExpress/testcafe-hammerhead/issues/1898))
 * No error occurs when page scripts pass a number as an argument to the `window.open` function ([testcafe-hammerhead/#1908](https://github.com/DevExpress/testcafe-hammerhead/issues/1908))
-* Now TestCafe correctly processes rewritten stylesheets ([testcafe-hammerhead/#1919](https://github.com/DevExpress/testcafe-hammerhead/pull/1919))
-* TestCafe correctly processes sourcemaps in stylesheets now ([testcafe-hammerhead/#1907](https://github.com/DevExpress/testcafe-hammerhead/issues/1907))
+* TestCafe now correctly processes rewritten stylesheets ([testcafe-hammerhead/#1919](https://github.com/DevExpress/testcafe-hammerhead/pull/1919))
+* TestCafe now correctly processes source maps in stylesheets ([testcafe-hammerhead/#1907](https://github.com/DevExpress/testcafe-hammerhead/issues/1907))
 
 ## v1.0.0 (2019-2-7)
 
@@ -407,7 +407,7 @@ runner.filter((testName, fixtureName, fixturePath, testMeta, fixtureMeta) => {
 
 You can now run tests imported from external libraries or generated dynamically even if the `.js` file does not contain any tests.
 
-This was not possible previously because test files should contain the [fixture](https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#fixtures) and [test](https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#tests) directives. However, you can now provide the `--disable-test-syntax-validation` command line flag to bypass this check.
+Previously, test files had to contain the [fixture](https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#fixtures) and [test](https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#tests) directives. You can now add the `--disable-test-syntax-validation` command line flag to bypass this check.
 
 ```sh
 testcafe safari test.js --disable-test-syntax-validation
@@ -611,9 +611,9 @@ See [Connect to TestCafe Server over HTTPS](https://devexpress.github.io/testcaf
 
 #### :gear: Construct Screenshot Paths with Patterns ([#2152](https://github.com/DevExpress/testcafe/issues/2152))
 
-You can now use patterns to construct paths to screenshots. TestCafe provides a number of placeholders you can include in the path, for example, `${DATE}`, `${TIME}`, `${USERAGENT}`, etc. For a complete list, refer to the command line [--screenshot-path-pattern flag description](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-p-pattern---screenshot-path-pattern-pattern).
+You can include placeholders in the path, for example, `${DATE}`, `${TIME}`, `${USERAGENT}`, etc. For a complete list, refer to the command line [--screenshot-path-pattern flag description](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-p-pattern---screenshot-path-pattern-pattern).
 
-You specify a screenshot path pattern when you run tests. Each time TestCafe takes a screenshot, it substitutes the placeholders with actual values and saves the screenshot to the resulting path.
+You should specify a screenshot path pattern when you run tests. Each time TestCafe takes a screenshot, it substitutes the placeholders with actual values and saves the screenshot to the resulting path.
 
 The following example shows how to specify a screenshot path pattern through the command line:
 
@@ -996,7 +996,7 @@ TestCafe provides full-featured WebSocket support (`wss` and `ws` protocols, req
 
 ### --reporter flag name fixed ([#1881](https://github.com/DevExpress/testcafe/issues/1881))
 
-In v0.18.0, we accidentally changed the [--reporter](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-r-nameoutput---reporter-nameoutput) CLI flag to `--reporters`. In this recovery release, we roll back to the previous flag name.
+In v0.18.0, we changed the [--reporter](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-r-nameoutput---reporter-nameoutput) CLI flag to `--reporters`. In this release, we rolled back to the previous flag name.
 
 ### Compatibility with RequireJS restored ([#1874](https://github.com/DevExpress/testcafe/issues/1874))
 

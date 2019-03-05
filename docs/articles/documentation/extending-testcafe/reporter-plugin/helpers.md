@@ -92,7 +92,7 @@ Parameter | Type    | Description
 
 **Example**
 
-The following example demonstrates how to enable word wrapping in case the `title` string is long.
+The following example demonstrates how to enable word wrapping when the `title` string is long:
 
 ```js
 async reportTestDone (name, testRunInfo, meta) {
@@ -120,7 +120,7 @@ Parameter | Type    | Description
 
 **Example**
 
-The following example demonstrates how to indent summary information by four spaces.
+The following example demonstrates how to indent summary information by four spaces:
 
 ```js
 async reportTaskDone (endTime, passed, warnings, result) {
@@ -152,7 +152,7 @@ Parameter   | Type   | Description
 
 **Example**
 
-This example demonstrates how you can indent each line in the `str` string by four spaces.
+This example demonstrates how to indent each line in the `str` string by four spaces.
 
 ```js
 async reportTaskStart (startTime, userAgents, testCount) {
@@ -246,7 +246,7 @@ Parameter     | Type   | Description
 
 **Example**
 
-The following example demonstrates how to add numbering to the errors.
+The following example demonstrates how to number errors:
 
 ```js
 async reportTestDone (name, testRunInfo, meta) {
@@ -280,7 +280,7 @@ chalk.<style>[.<style>...](string, [string...]) → this
 
 **Example**
 
-The following example demonstrates how to color test results.
+The following example demonstrates how to color test results:
 
 ```js
 async reportTestDone (name, testRunInfo, meta) {

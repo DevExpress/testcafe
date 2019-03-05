@@ -58,7 +58,7 @@ Feel free to ask for more details.
 
 ### Has [TestCafe v2015.1](https://testcafe.devexpress.com) been deprecated?
 
-[TestCafe v2015.1](https://testcafe.devexpress.com) is no longer available for purchase or subscription renewal. We recommend that TestCafe v2015.1 users switch to [TestCafe Studio](https://www.devexpress.com/products/testcafestudio/) to get access to the latest features. See this [blog post](https://community.devexpress.com/blogs/testcafe/archive/2018/11/26/testcafe-studio-a-new-web-testing-ide.aspx) for details.
+[TestCafe v2015.1](https://testcafe.devexpress.com) is no longer available for purchase or subscription renewal. We recommend that TestCafe v2015.1 users switch to [TestCafe Studio](https://www.devexpress.com/products/testcafestudio/) to access the latest features. See this [blog post](https://community.devexpress.com/blogs/testcafe/archive/2018/11/26/testcafe-studio-a-new-web-testing-ide.aspx) for details.
 
 ### Which browsers does TestCafe support? What are the exact supported versions?
 

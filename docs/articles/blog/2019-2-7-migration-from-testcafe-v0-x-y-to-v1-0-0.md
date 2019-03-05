@@ -18,13 +18,13 @@ TestCafe v1.0.0 release introduces minor changes to the behavior and programming
 
 Previous versions performed *test syntax validation* within input script files before executing them. Only files that contained the [fixture](https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#fixtures) and [test](https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#tests) directives were executed.
 
-Starting with v1.0.0, input script files are **never** validated. This means that TestCafe executes all the scripts you specify as test sources. If you use Glob patterns to specify input test files, please recheck these patterns to avoid unintended file matches.
+Starting with v1.0.0, input script files are **not** validated. This means that TestCafe executes all the scripts you specify as test sources. If you use Glob patterns to specify input test files, please recheck these patterns to avoid unintended file matches.
 
 The `--disable-test-syntax-validation` command line flag and the `disableTestSyntaxValidation` option for the [runner.run](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#run) API method that disabled test syntax validation were removed in v1.0.0.
 
 ### What Has Improved
 
-You can now load tests dynamically without additional customization. The following example illustrates how tests can be imported from an external library.
+You can now load tests dynamically without additional customization. The following example illustrates how tests can be imported from an external library:
 
 **external-lib.js**
 
@@ -79,7 +79,7 @@ runner
 
 ### What Has Improved
 
-This change was necessary to implement the [configuration file](https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html) in a way that is consistent with the API and command line interface.
+The [configuration file](https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html) we implemented is consistent with the API and command line interface.
 
 ## Custom Request Hooks: Asynchronous API
 
@@ -87,9 +87,7 @@ This change was necessary to implement the [configuration file](https://devexpre
 
 If the [onRequest](https://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html#the-onrequest-method) or [onResponse](https://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html#the-onresponse-method) method in your custom hook returns a Promise, TestCafe now waits for this Promise to resolve.
 
-This does not necessarily leads to unexpected behavior, but still be aware of possible side effects.
-
-Since the [onRequest](https://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html#the-onrequest-method) and [onResponse](https://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html#the-onresponse-method) methods are now asynchronous, add the `async` keyword to their declarations.
+You should add the `async` keyword to the asynchronous [onRequest](https://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html#the-onrequest-method) and [onResponse](https://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html#the-onresponse-method) method declarations.
 
 ```js
 import { RequestHook } from 'testcafe';
@@ -116,11 +114,9 @@ You can call asynchronous [fs](https://nodejs.org/api/fs.html) functions, invoke
 
 ## Custom Reporter Plugins: Asynchronous API
 
-TestCafe v1.0.0 also introduces asynchronous API for [reporter plugins](https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/).
+TestCafe v1.0.0 also introduces an asynchronous API for [reporter plugins](https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/).
 
 Similarly to [request hooks](#custom-request-hooks-asynchronous-api), if any of the custom reporter's methods ([reportTaskStart](https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reporttaskstart), [reportFixtureStart](https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reportfixturestart), [reportTestDone](https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reporttestdone) or [reportTaskDone](https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reporttaskdone)) returns a Promise, this Promise is now awaited.
-
-Side effects may show up in certain cases.
 
 Since the reporter methods are now asynchronous, add the `async` keyword to their declarations.
 

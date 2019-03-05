@@ -13,11 +13,11 @@ This release introduces TypeScript 3.0 support and enhanced TypeScript definitio
 
 ### ⚙ TypeScript 3 Support ([#3401](https://github.com/DevExpress/testcafe/issues/3401))
 
-TypeScript test files can now use new syntax features introduced in [TypeScript 3.0](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-0.html) and [TypeScript 3.3](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-3.html).
+TypeScript test files can now use the new syntax features introduced in [TypeScript 3.0](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-0.html) and [TypeScript 3.3](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-3.html).
 
 ### ⚙ Enhanced TypeScript Definitions for Client Functions ([#3431](https://github.com/DevExpress/testcafe/pull/3431)) by [@vitalics](https://github.com/vitalics)
 
-The updated type definitions allow TypeScript compiler to determine client function's return value type. Static typing now warns you when you call wrong methods for the return value.
+The updated type definitions allow the TypeScript compiler to determine client function's return value type. Static typing now warns you when you call wrong methods for the return value.
 
 ```js
 const getFoo = ClientFunction(() => 42);
@@ -25,7 +25,7 @@ const foo    = await getFoo();
 foo.match(/foo/);
 ```
 
-Prior to v1.1.0, an error occurred during test execution:
+Before v1.1.0, an error occurred during test execution:
 
 ```text
 $ testcafe chrome tests.ts
@@ -39,7 +39,7 @@ $ testcafe chrome tests.ts
    1) TypeError: foo.match is not a function
 ```
 
-With v1.1.0, the TypeScript compiler throws an error before test are started:
+With v1.1.0, the TypeScript compiler throws an error before tests are started:
 
 ```text
 $ testcafe chrome tests.ts

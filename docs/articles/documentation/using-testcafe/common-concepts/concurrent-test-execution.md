@@ -45,7 +45,7 @@ Note that you can also use concurrency when testing against multiple browsers.
 testcafe -c 4 safari,firefox tests/test.js
 ```
 
-In this case, tests will be distributed across four Safari instances and the same tests will also run in four Firefox instances.
+In this case, tests are distributed across four Safari instances and the same tests are also run in four Firefox instances.
 
 > If an uncaught error or unhandled promise rejection occurs on the server during test execution, all tests running concurrently will fail.
 
