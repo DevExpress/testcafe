@@ -1,7 +1,7 @@
 import path from 'path';
 import makeDir from 'make-dir';
-import TempDirectory from '../../../../utils/temp-directory';
-import { writeFile } from '../../../../utils/promisified-functions';
+import TempDirectory from '../../../../../utils/temp-directory';
+import { writeFile } from '../../../../../utils/promisified-functions';
 
 
 export default async function (proxyHostName) {

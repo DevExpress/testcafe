@@ -1,6 +1,6 @@
 const expect          = require('chai').expect;
 const OS              = require('os-family');
-const getFirefoxConfig = require('../../lib/browser/provider/built-in/firefox/config.js');
+const getFirefoxConfig = require('../../lib/browser/provider/built-in/dedicated/firefox/config.js');
 
 
 describe('Firefox provider config parser', function () {

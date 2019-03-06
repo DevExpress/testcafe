@@ -2,7 +2,7 @@ import emulatedDevices from 'chrome-emulated-devices-list';
 import { pickBy as filterProperties } from 'lodash';
 import {
     hasMatch, findMatch, isMatchTrue, getModes, splitEscaped, getPathFromParsedModes, parseConfig
-} from '../../utils/argument-parsing';
+} from '../../../utils/argument-parsing';
 
 
 const HEADLESS_DEFAULT_WIDTH  = 1280;

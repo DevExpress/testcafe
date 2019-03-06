@@ -1,7 +1,8 @@
 const path                  = require('path');
+const Promise               = require('pinkie');
 const expect                = require('chai').expect;
 const config                = require('../../../config');
-const chromeBrowserProvider = require('../../../../../lib/browser/provider/built-in/chrome');
+const chromeBrowserProvider = require('../../../../../lib/browser/provider/built-in/dedicated/chrome');
 const browserProviderPool   = require('../../../../../lib/browser/provider/pool');
 const BrowserConnection     = require('../../../../../lib/browser/connection');
 
@@ -16,7 +17,7 @@ if (config.useLocalBrowsers) {
             state:     {},
             idNameMap: {},
 
-            openBrowser: function (browserId, pageUrl, name) {
+            openBrowser (browserId, pageUrl, name) {
                 const self = this;
 
                 this.idNameMap[browserId] = name;
@@ -31,11 +32,15 @@ if (config.useLocalBrowsers) {
                 return chromeBrowserProvider.openBrowser.call(this, browserId, pageUrl, 'headless --no-sandbox');
             },
 
-            closeBrowser: function (browserId) {
+            closeBrowser (browserId) {
                 return chromeBrowserProvider.closeBrowser.call(this, browserId);
             },
 
-            reportJobResult: function (browserId, result, data) {
+            isValidBrowserName () {
+                return Promise.resolve(true);
+            },
+
+            reportJobResult (browserId, result, data) {
                 const name = this.idNameMap[browserId];
 
                 this.state[name].result = result;
@@ -44,7 +49,7 @@ if (config.useLocalBrowsers) {
                 return Promise.resolve();
             },
 
-            simulateError: function (browserId) {
+            simulateError (browserId) {
                 const bc = BrowserConnection.getById(browserId);
 
                 bc.emit('error', new Error('Connection error'));
