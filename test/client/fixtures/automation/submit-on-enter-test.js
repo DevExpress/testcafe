@@ -282,9 +282,10 @@ $(document).ready(function () {
             ok(inlineSubmitHandlerExecuted, 'inline submit handler executed');
             ok(buttonClickHandlerExecuted, 'button click handler executed');
             ok(inputKeydownHandlerExecuted, 'input keydown handler executed');
-            ok(inputKeypressHandlerExecuted, 'input keydown handler executed');
-            ok(inputKeyupHandlerExecuted, 'input keydown handler executed');
+            ok(inputKeyupHandlerExecuted, 'input keyup handler executed');
 
+            if (!browserUtils.isAndroid)
+                ok(inputKeypressHandlerExecuted, 'input keypress handler executed');
 
             start();
         };
@@ -345,10 +346,13 @@ $(document).ready(function () {
             ok(submitHandlerExecuted, 'submit handler executed');
             ok(inlineSubmitHandlerExecuted, 'inline submit handler executed');
             ok(inputKeydownHandlerExecuted, 'input keydown handler executed');
-            ok(inputKeypressHandlerExecuted, 'input keydown handler executed');
-            ok(inputKeyupHandlerExecuted, 'input keydown handler executed');
+            ok(inputKeyupHandlerExecuted, 'input keyup handler executed');
+
             if (!needToPreventEvent)
                 ok(submitFunctionCalled, 'submit function called');
+
+            if (!browserUtils.isAndroid)
+                ok(inputKeypressHandlerExecuted, 'input keypress handler executed');
 
             start();
         };
