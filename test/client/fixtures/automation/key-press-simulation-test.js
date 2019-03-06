@@ -124,7 +124,10 @@ $(document).ready(function () {
     });
 
     function testKeysPress (keySequence, expectedEvents) {
-        const events          = expectedEvents.filter(event => !browserUtils.isAndroid || event.type !== 'keypress');
+        const events = expectedEvents.filter(function (event) {
+            return !browserUtils.isAndroid || event.type !== 'keypress';
+        });
+
         const keyCombinations = parseKeySequence(keySequence).combinations;
         const pressAutomation = new PressAutomation(keyCombinations, {});
 
