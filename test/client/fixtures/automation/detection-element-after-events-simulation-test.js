@@ -818,11 +818,11 @@ $(document).ready(function () {
                 const expectedEventMonitorObject = {
                     elementsOneKeydownRaised:  true,
                     elementsOneKeypressRaised: true && !browserUtils.isAndroid,
-                    elementsOneKeyupRaised:    false,
+                    elementsOneKeyupRaised:    browserUtils.isAndroid,
 
                     elementsTwoKeydownRaised:  false,
                     elementsTwoKeypressRaised: false,
-                    elementsTwoKeyupRaised:    true
+                    elementsTwoKeyupRaised:    true && !browserUtils.isAndroid
                 };
 
                 deepEqual(eventMonitorObject, expectedEventMonitorObject);
