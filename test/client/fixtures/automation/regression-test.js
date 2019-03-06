@@ -599,7 +599,9 @@ $(document).ready(function () {
                 startNext();
             });
 
-        expect(3);
+        const expectedAssertionCount = browserUtils.isAndroid ? 2 : 3;
+
+        expect(expectedAssertionCount);
     });
 
     asyncTest('B254340 - type in input with type="email"', function () {
