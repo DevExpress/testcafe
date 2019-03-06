@@ -1,3 +1,8 @@
+// Utility
+type ElementOf<T> = T extends (infer E)[] ? E : never;
+type Extend<T, E> = T extends E ? E : never;
+type EnsureString<T> = T extends string ? string : never;
+
 // ClientFunction
 //----------------------------------------------------------------------------
 interface ClientFunctionOptions {
@@ -1363,14 +1368,14 @@ interface Assertion<E = any> {
      * @param message - An assertion message that will be displayed in the report if the test fails.
      * @param options - Assertion options.
      */
-    contains(expected: E, message?: string, options?: AssertionOptions): TestControllerPromise;
+    contains<R>(expected: EnsureString<E> | ElementOf<E> | Extend<E, R>, message?: string, options?: AssertionOptions): TestControllerPromise;
     /**
      * Asserts that `actual` contains `expected`.
      *
      * @param expected - An expected value.
      * @param options - Assertion options.
      */
-    contains(expected: E, options?: AssertionOptions): TestControllerPromise;
+    contains<R>(expected: EnsureString<E> | ElementOf<E> | Extend<E, R>, options?: AssertionOptions): TestControllerPromise;
     /**
      * Asserts that `actual` not contains `unexpected`.
      *
@@ -1378,14 +1383,14 @@ interface Assertion<E = any> {
      * @param message - An assertion message that will be displayed in the report if the test fails.
      * @param options - Assertion options.
      */
-    notContains(unexpected: E, message?: string, options?: AssertionOptions): TestControllerPromise;
+    notContains<R>(unexpected: EnsureString<E> | ElementOf<E> | Extend<E, R>, message?: string, options?: AssertionOptions): TestControllerPromise;
     /**
      * Asserts that `actual` not contains `unexpected`.
      *
      * @param unexpected - An unexpected value.
      * @param options - Assertion options.
      */
-    notContains(unexpected: E, options?: AssertionOptions): TestControllerPromise;
+    notContains<R>(unexpected: EnsureString<E> | ElementOf<E> | Extend<E, R>, options?: AssertionOptions): TestControllerPromise;
     /**
      * Asserts that type of `actual` is `typeName`.
      *
