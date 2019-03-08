@@ -118,7 +118,7 @@ export default class KeyPressSimulator {
 
         this._addKeyPropertyToEventOptions(eventOptions);
 
-        const raiseDefault = eventSimulator.keypress(activeElement, extend(eventOptions, modifiersState));
+        const raiseDefault = browserUtils.isAndroid || eventSimulator.keypress(activeElement, extend(eventOptions, modifiersState));
 
         if (!raiseDefault)
             return raiseDefault;

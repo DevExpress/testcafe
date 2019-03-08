@@ -124,13 +124,17 @@ $(document).ready(function () {
     });
 
     function testKeysPress (keySequence, expectedEvents) {
+        const events = expectedEvents.filter(function (event) {
+            return !browserUtils.isAndroid || event.type !== 'keypress';
+        });
+
         const keyCombinations = parseKeySequence(keySequence).combinations;
         const pressAutomation = new PressAutomation(keyCombinations, {});
 
         pressAutomation
             .run()
             .then(function () {
-                equal(eventsLog, createCheckingLog(expectedEvents), 'events are correct');
+                equal(eventsLog, createCheckingLog(events), 'events are correct');
                 start();
             });
     }

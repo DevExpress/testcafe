@@ -783,13 +783,17 @@ $(document).ready(function () {
         type
             .run()
             .then(function () {
-                ok(eventMonitorObject.elementsOneKeydownRaised);
-                ok(!eventMonitorObject.elementsOneKeypressRaised);
-                ok(!eventMonitorObject.elementsOneKeyupRaised);
+                const expectedEventMonitorObject = {
+                    elementsOneKeydownRaised:  true,
+                    elementsOneKeypressRaised: false,
+                    elementsOneKeyupRaised:    false,
 
-                ok(!eventMonitorObject.elementsTwoKeydownRaised);
-                ok(eventMonitorObject.elementsTwoKeypressRaised);
-                ok(eventMonitorObject.elementsTwoKeyupRaised);
+                    elementsTwoKeydownRaised:  false,
+                    elementsTwoKeypressRaised: true && !browserUtils.isAndroid,
+                    elementsTwoKeyupRaised:    true
+                };
+
+                deepEqual(eventMonitorObject, expectedEventMonitorObject);
 
                 equal($input1[0].value, '');
                 equal($input2[0].value, 'a');
@@ -811,13 +815,17 @@ $(document).ready(function () {
         type
             .run()
             .then(function () {
-                ok(eventMonitorObject.elementsOneKeydownRaised);
-                ok(eventMonitorObject.elementsOneKeypressRaised);
-                ok(!eventMonitorObject.elementsOneKeyupRaised);
+                const expectedEventMonitorObject = {
+                    elementsOneKeydownRaised:  true,
+                    elementsOneKeypressRaised: true && !browserUtils.isAndroid,
+                    elementsOneKeyupRaised:    browserUtils.isAndroid,
 
-                ok(!eventMonitorObject.elementsTwoKeydownRaised);
-                ok(!eventMonitorObject.elementsTwoKeypressRaised);
-                ok(eventMonitorObject.elementsTwoKeyupRaised);
+                    elementsTwoKeydownRaised:  false,
+                    elementsTwoKeypressRaised: false,
+                    elementsTwoKeyupRaised:    true && !browserUtils.isAndroid
+                };
+
+                deepEqual(eventMonitorObject, expectedEventMonitorObject);
 
                 equal($input1[0].value, 'a');
                 equal($input2[0].value, '');
@@ -839,13 +847,17 @@ $(document).ready(function () {
         type
             .run()
             .then(function () {
-                ok(eventMonitorObject.elementsOneKeydownRaised);
-                ok(eventMonitorObject.elementsOneKeypressRaised);
-                ok(eventMonitorObject.elementsOneKeyupRaised);
+                const expectedEventMonitorObject = {
+                    elementsOneKeydownRaised:  true,
+                    elementsOneKeypressRaised: true && !browserUtils.isAndroid,
+                    elementsOneKeyupRaised:    true,
 
-                ok(!eventMonitorObject.elementsTwoKeydownRaised);
-                ok(!eventMonitorObject.elementsTwoKeypressRaised);
-                ok(!eventMonitorObject.elementsTwoKeyupRaised);
+                    elementsTwoKeydownRaised:  false,
+                    elementsTwoKeypressRaised: false,
+                    elementsTwoKeyupRaised:    false
+                };
+
+                deepEqual(eventMonitorObject, expectedEventMonitorObject);
 
                 equal($input1[0].value, 'a');
                 equal($input2[0].value, '');

@@ -187,13 +187,18 @@ $(document).ready(function () {
 
         const press = new PressAutomation(parseKeySequence('a A shift+a ! enter shift+1 shift+!').combinations, {});
 
+        const expectedKeydownKeyProperty  = 'aAShiftAShift!EnterShift!Shift!';
+        const expectedKeypressKeyProperty =  browserUtils.isAndroid ? '' : 'aAA!Enter!!';
+        const expectedKeyupKeyProperty    = 'aAAShift!ShiftEnter!Shift!Shift';
+        const expectedTextAreaValue       = 'aAA!\n!!';
+
         press
             .run()
             .then(function () {
-                equal(keydownKeyProperty, 'aAShiftAShift!EnterShift!Shift!');
-                equal(keypressKeyProperty, 'aAA!Enter!!');
-                equal(keyupKeyProperty, 'aAAShift!ShiftEnter!Shift!Shift');
-                equal(textarea.value, 'aAA!\n!!');
+                equal(keydownKeyProperty, expectedKeydownKeyProperty);
+                equal(keypressKeyProperty, expectedKeypressKeyProperty);
+                equal(keyupKeyProperty, expectedKeyupKeyProperty);
+                equal(textarea.value, expectedTextAreaValue);
                 start();
             });
     });
