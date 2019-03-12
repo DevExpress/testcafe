@@ -1,16 +1,18 @@
-const lazyRequire                    = require('import-lazy')(require);
+const lazyRequire = require('import-lazy')(require);
+
 const hammerhead                     = lazyRequire('testcafe-hammerhead');
 const ReporterPluginHost             = lazyRequire('./reporter/plugin-host');
-const TestRunErrorFormattableAdapter = lazyRequire('./errors/test-run/formattable-adapter');
-const testRunErrors                  = lazyRequire('./errors/test-run');
-const COMMAND_TYPE                   = lazyRequire('./test-run/commands/type');
 const getTestListModule              = lazyRequire('./compiler/test-file/formats/es-next/get-test-list');
 const getTypeScriptTestListModule    = lazyRequire('./compiler/test-file/formats/typescript/get-test-list');
 const getCoffeeScriptTestListModule  = lazyRequire('./compiler/test-file/formats/coffeescript/get-test-list');
-const initializers                   = lazyRequire('./test-run/commands/validations/initializers');
-const errorTypes                     = lazyRequire('./error/types');
+const COMMAND_TYPE                   = lazyRequire('./test-run/commands/type');
 const createCommandFromObject        = lazyRequire('./test-run/commands/from-object');
+const initializers                   = lazyRequire('./test-run/commands/validations/initializers');
+const errorTypes                     = lazyRequire('./errors/types');
+const TestRunErrorFormattableAdapter = lazyRequire('./errors/test-run/formattable-adapter');
+const testRunErrors                  = lazyRequire('./errors/test-run');
 const processTestFnError             = lazyRequire('./errors/process-test-fn-error');
+const testRunErrorUtils              = lazyRequire('./errors/test-run/utils');
 
 // NOTE: we can't use lazy require for TestRun and Assignable, because it breaks prototype chain for inherited classes
 let TestRun    = null;
@@ -21,6 +23,7 @@ export default {
     testRunErrors,
     COMMAND_TYPE,
     errorTypes,
+    testRunErrorUtils,
 
     get Assignable () {
         if (!Assignable)

@@ -11,7 +11,7 @@ import Task from './task';
 import { GeneralError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
 import { assertType, is } from '../errors/runtime/type-assertions';
-import renderForbiddenCharsList from '../errors/render-forbidden-chars-list';
+import { renderForbiddenCharsList } from '../errors/test-run/utils';
 import detectFFMPEG from '../utils/detect-ffmpeg';
 import checkFilePath from '../utils/check-file-path';
 import { addRunningTest, removeRunningTest, startHandlingTestErrors, stopHandlingTestErrors } from '../utils/handle-errors';
