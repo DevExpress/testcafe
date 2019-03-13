@@ -1,10 +1,10 @@
-const IN_DOCKER_FLAGS = ['--no-sandbox', '--disable-dev-shm-usage'];
+export const IN_DOCKER_FLAGS = ['--no-sandbox', '--disable-dev-shm-usage'];
 
-export default function buildChromeArgs (config, cdpPort, platformArgs, profileDir, inDocker) {
+export function buildChromeArgs ({ config, cdpPort, platformArgs, tempProfileDir, inDocker }) {
     let chromeArgs = []
         .concat(
             cdpPort ? [`--remote-debugging-port=${cdpPort}`] : [],
-            !config.userProfile ? [`--user-data-dir=${profileDir.path}`] : [],
+            !config.userProfile ? [`--user-data-dir=${tempProfileDir.path}`] : [],
             config.headless ? ['--headless'] : [],
             config.userArgs ? [config.userArgs] : [],
             platformArgs ? [platformArgs] : []

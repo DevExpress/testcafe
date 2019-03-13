@@ -1,7 +1,7 @@
 import browserTools from 'testcafe-browser-tools';
 import { killBrowserProcess } from '../../../../utils/process';
 import BrowserStarter from '../../utils/browser-starter';
-import buildChromeArgs from './build-chrome-args';
+import { buildChromeArgs } from './build-chrome-args';
 
 const browserStarter = new BrowserStarter();
 
@@ -9,7 +9,7 @@ export async function start (pageUrl, { browserName, config, cdpPort, tempProfil
     const chromeInfo           = await browserTools.getBrowserInfo(config.path || browserName);
     const chromeOpenParameters = Object.assign({}, chromeInfo);
 
-    chromeOpenParameters.cmd = buildChromeArgs(config, cdpPort, chromeOpenParameters.cmd, tempProfileDir, inDocker);
+    chromeOpenParameters.cmd = buildChromeArgs({ config, cdpPort, platformArgs: chromeOpenParameters.cmd, tempProfileDir, inDocker });
 
     await browserStarter.startBrowser(chromeOpenParameters, pageUrl);
 }
