@@ -18,6 +18,7 @@ const getCommonPath                    = require('../../lib/utils/get-common-pat
 const resolvePathRelativelyCwd         = require('../../lib/utils/resolve-path-relatively-cwd');
 const getFilterFn                      = require('../../lib/utils/get-filter-fn');
 const prepareReporters                 = require('../../lib/utils/prepare-reporters');
+const buildChromeArgs                  = require('../../lib/browser/provider/built-in/chrome/build-chrome-args');
 
 describe('Utils', () => {
     it('Correct File Path', () => {
@@ -354,5 +355,38 @@ describe('Utils', () => {
                 }).to.not.throw();
             });
         });
+    });
+
+    it('Build Chrome arguments', () => {
+        const config = {
+            userProfile: false,
+            headless:    false,
+            userArgs:    ''
+        };
+
+        const cdpPort      = '';
+        let platformArgs   = '--no-first-run';
+
+        const profileDir = {
+            path: '/temp/testcafe/chrome-profile-34904xxzNmO5Vkbtz'
+        };
+
+        let chromeArgs = '';
+
+        const IN_DOCKER_FLAG_RE = new RegExp('--no-sandbox');
+        let inDockerFlagMatch   = null;
+
+        chromeArgs        = buildChromeArgs(config, cdpPort, platformArgs, profileDir, false);
+        inDockerFlagMatch = chromeArgs.match(IN_DOCKER_FLAG_RE);
+        expect(inDockerFlagMatch).eql(null);
+
+        chromeArgs        = buildChromeArgs(config, cdpPort, platformArgs, profileDir, true);
+        inDockerFlagMatch = chromeArgs.match(IN_DOCKER_FLAG_RE);
+        expect(inDockerFlagMatch.length).eql(1);
+
+        config.userArgs = '--no-sandbox';
+        chromeArgs        = buildChromeArgs(config, cdpPort, platformArgs, profileDir, true);
+        inDockerFlagMatch = chromeArgs.match(IN_DOCKER_FLAG_RE);
+        expect(inDockerFlagMatch.length).eql(1);
     });
 });
