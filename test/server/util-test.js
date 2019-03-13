@@ -365,7 +365,7 @@ describe('Utils', () => {
         };
 
         const cdpPort      = '';
-        let platformArgs   = '--no-first-run';
+        const platformArgs = '--no-first-run';
 
         const profileDir = {
             path: '/temp/testcafe/chrome-profile-34904xxzNmO5Vkbtz'
