@@ -3,13 +3,15 @@ import debug from 'debug';
 import fs from 'fs';
 
 
-const LOCKFILE_NAME      = '.testcafe-lockfile';
+const LOCKFILE_EXTENSION = '.lockfile';
 const STALE_LOCKFILE_AGE = 2 * 24 * 60 * 60 * 1000;
 const DEBUG_LOGGER       = debug('testcafe:utils:temp-directory:lockfile');
 
 export default class LockFile {
     constructor (dirPath) {
-        this.path = path.join(dirPath, LOCKFILE_NAME);
+        this.name      = path.basename(dirPath) + LOCKFILE_EXTENSION;
+        this.directory = path.dirname(dirPath);
+        this.path      = path.join(this.directory, this.name);
     }
 
     _open ({ force = false } = {}) {
@@ -40,6 +42,10 @@ export default class LockFile {
 
             return false;
         }
+    }
+
+    static get LOCKFILE_EXTENSION () {
+        return LOCKFILE_EXTENSION;
     }
 
     init () {

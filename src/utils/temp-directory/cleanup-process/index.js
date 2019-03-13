@@ -153,28 +153,32 @@ class CleanupProcess {
         return this.initPromise;
     }
 
-    async addDirectory (path) {
+    async addDirectory (tempDirectory) {
         if (!this.initialized)
             return;
 
         try {
-            await this._waitResponseForMessage({ command: COMMANDS.add, path });
+            await this._waitResponseForMessage({
+                command:      COMMANDS.add,
+                path:         tempDirectory.path,
+                lockFilePath: tempDirectory.lockFile.path
+            });
         }
         catch (e) {
-            DEBUG_LOGGER(`Failed to add the ${path} directory to cleanup process`);
+            DEBUG_LOGGER(`Failed to add the ${tempDirectory.path} directory to cleanup process`);
             DEBUG_LOGGER(e);
         }
     }
 
-    async removeDirectory (path) {
+    async removeDirectory (tempDirectory) {
         if (!this.initialized)
             return;
 
         try {
-            await this._waitResponseForMessage({ command: COMMANDS.remove, path });
+            await this._waitResponseForMessage({ command: COMMANDS.remove, path: tempDirectory.path });
         }
         catch (e) {
-            DEBUG_LOGGER(`Failed to remove the ${path} directory in cleanup process`);
+            DEBUG_LOGGER(`Failed to remove the ${tempDirectory.path} directory in cleanup process`);
             DEBUG_LOGGER(e);
         }
     }

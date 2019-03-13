@@ -1,4 +1,4 @@
-import path from 'path';
+import { basename } from 'path';
 import { inspect } from 'util';
 import del from 'del';
 import Promise from 'pinkie';
@@ -9,27 +9,34 @@ import COMMANDS from './commands';
 
 const DIRECTORIES_TO_CLEANUP = {};
 
-function addDirectory (dirPath) {
-    if (!DIRECTORIES_TO_CLEANUP[dirPath])
-        DIRECTORIES_TO_CLEANUP[dirPath] = {};
+async function performCleanup (tempDirInfo) {
+    await killBrowserProcess(basename(tempDirInfo.path));
+    await del(tempDirInfo.path);
+
+    if (tempDirInfo.lockFilePath)
+        await del(tempDirInfo.lockFilePath);
 }
 
-async function removeDirectory (dirPath) {
-    if (!DIRECTORIES_TO_CLEANUP[dirPath])
+function addDirectory (path, lockFilePath) {
+    if (!DIRECTORIES_TO_CLEANUP[path])
+        DIRECTORIES_TO_CLEANUP[path] = { path, lockFilePath };
+}
+
+async function removeDirectory (path) {
+    if (!DIRECTORIES_TO_CLEANUP[path])
         return;
 
-    let delPromise = DIRECTORIES_TO_CLEANUP[dirPath].delPromise;
+    let delPromise = DIRECTORIES_TO_CLEANUP[path].delPromise;
 
     if (!delPromise) {
-        delPromise = killBrowserProcess(path.basename(dirPath))
-            .then(() => del(dirPath, { force: true }));
+        delPromise = performCleanup(DIRECTORIES_TO_CLEANUP[path]);
 
-        DIRECTORIES_TO_CLEANUP[dirPath].delPromise = delPromise;
+        DIRECTORIES_TO_CLEANUP[path].delPromise = delPromise;
     }
 
-    await DIRECTORIES_TO_CLEANUP[dirPath].delPromise;
+    await DIRECTORIES_TO_CLEANUP[path].delPromise;
 
-    delete DIRECTORIES_TO_CLEANUP[dirPath].delPromise;
+    delete DIRECTORIES_TO_CLEANUP[path].delPromise;
 }
 
 async function dispatchCommand (message) {
@@ -37,7 +44,7 @@ async function dispatchCommand (message) {
         case COMMANDS.init:
             return;
         case COMMANDS.add:
-            addDirectory(message.path);
+            addDirectory(message.path, message.lockFilePath);
             return;
         case COMMANDS.remove:
             addDirectory(message.path);

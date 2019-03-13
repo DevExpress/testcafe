@@ -124,9 +124,9 @@ describe('Utils', () => {
                 .then(() => tempDir1._disposeSync())
                 .then(() => tempDir3.init())
                 .then(() => {
-                    const subDirs = fs.readdirSync(TempDirectory.TEMP_DIRECTORIES_ROOT);
+                    const items = fs.readdirSync(TempDirectory.TEMP_DIRECTORIES_ROOT);
 
-                    expect(subDirs.length).eql(2);
+                    expect(items.length).eql(4);
                     expect(tempDir3.path).eql(tempDir1.path);
                 });
         });
@@ -137,15 +137,15 @@ describe('Utils', () => {
             return tempDir
                 .init()
                 .then(() => {
-                    const subDirs = fs.readdirSync(TempDirectory.TEMP_DIRECTORIES_ROOT);
+                    const items = fs.readdirSync(TempDirectory.TEMP_DIRECTORIES_ROOT);
 
-                    expect(subDirs.length).eql(1);
+                    expect(items.length).eql(2);
                 })
                 .then(() => tempDir.dispose())
                 .then(() => {
-                    const subDirs = fs.readdirSync(TempDirectory.TEMP_DIRECTORIES_ROOT);
+                    const items = fs.readdirSync(TempDirectory.TEMP_DIRECTORIES_ROOT);
 
-                    expect(subDirs.length).eql(0);
+                    expect(items.length).eql(0);
                 });
         });
     });

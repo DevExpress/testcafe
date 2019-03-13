@@ -23,12 +23,18 @@ export default class TempDirectory {
         this.lockFile = null;
     }
 
+    _isTmpDirName (tmpDirPath) {
+        const tmpDirName = path.basename(tmpDirPath);
+
+        return tmpDirName.startsWith(this.namePrefix) && !tmpDirName.endsWith(LockFile.LOCKFILE_EXTENSION);
+    }
+
     async _getTmpDirsList () {
         const tmpDirNames = await readDir(TempDirectory.TEMP_DIRECTORIES_ROOT);
 
         return tmpDirNames
             .filter(tmpDir => !USED_TEMP_DIRS[tmpDir])
-            .filter(tmpDir => path.basename(tmpDir).startsWith(this.namePrefix));
+            .filter(tmpDir => this._isTmpDirName(tmpDir));
     }
 
     async _findFreeTmpDir (tmpDirNames) {
@@ -94,7 +100,7 @@ export default class TempDirectory {
         DEBUG_LOGGER('Temp directory path: ', this.path);
 
         await cleanupProcess.init();
-        await cleanupProcess.addDirectory(this.path);
+        await cleanupProcess.addDirectory(this);
 
         USED_TEMP_DIRS[this.path] = this;
     }
@@ -103,9 +109,9 @@ export default class TempDirectory {
         if (!USED_TEMP_DIRS[this.path])
             return;
 
-        this.lockFile.dispose();
+        await cleanupProcess.removeDirectory(this);
 
-        await cleanupProcess.removeDirectory(this.path);
+        this.lockFile.dispose();
 
         delete USED_TEMP_DIRS[this.path];
     }
