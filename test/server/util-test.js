@@ -376,8 +376,9 @@ describe('Utils', () => {
 
         let chromeArgs = '';
 
-        const IN_DOCKER_FLAGS_RE = new RegExp(IN_DOCKER_FLAGS.join(' '));
-        const NO_SANDBOX_FLAG_RE = new RegExp('--no-sandbox');
+        const IN_DOCKER_FLAGS_RE       = new RegExp(IN_DOCKER_FLAGS.join(' '));
+        const SANDBOX_FLAG_RE          = new RegExp('--no-sandbox');
+        const DISABLE_DEV_SHM_USAGE_RE = new RegExp('--disable-dev-shm-usage');
         let inDockerFlagMatch    = null;
 
         chromeArgs        = buildChromeArgs({ config, cdpPort, platformArgs, tempProfileDir, inDocker: false });
@@ -389,9 +390,11 @@ describe('Utils', () => {
         expect(inDockerFlagMatch.length).eql(1);
 
         // NOTE: Flag should not be duplicated
-        config.userArgs = '--no-sandbox';
+        config.userArgs = '--no-sandbox --disable-dev-shm-usage';
         chromeArgs        = buildChromeArgs({ config, cdpPort, platformArgs, tempProfileDir, inDocker: true });
-        inDockerFlagMatch = chromeArgs.match(NO_SANDBOX_FLAG_RE);
+        inDockerFlagMatch = chromeArgs.match(SANDBOX_FLAG_RE);
+        expect(inDockerFlagMatch.length).eql(1);
+        inDockerFlagMatch = chromeArgs.match(DISABLE_DEV_SHM_USAGE_RE);
         expect(inDockerFlagMatch.length).eql(1);
     });
 });
