@@ -1,10 +1,11 @@
+import log from '../../cli/log';
+
 export default class Logger {
     constructor () {
         this.watching = true;
 
         this.MESSAGES = {
-            intro: `
-Live mode is enabled.
+            intro: `Live mode is enabled.
 TestCafe now watches source files and reruns
 the tests once the changes are saved.
                     
@@ -13,7 +14,6 @@ You can use the following keys in the terminal:
 'Ctrl+R' - restarts the test run;
 'Ctrl+W' - enables/disables watching files;
 'Ctrl+C' - quits live mode and closes the browsers.
-
 `,
 
             sourceChanged:              'The sources have changed. A test run is starting...',
@@ -29,12 +29,8 @@ You can use the following keys in the terminal:
         };
     }
 
-    _write (msg) {
-        process.stdout.write(msg);
-    }
-
-    _status (msg) {
-        this._write('\n' + msg + '\n');
+    _write (msg, prefix = '\n') {
+        log.write(`${prefix}${msg}`);
     }
 
     writeIntroMessage (files) {
@@ -43,33 +39,31 @@ You can use the following keys in the terminal:
         if (!Array.isArray(files))
             return;
 
-        this._status(this.MESSAGES.watchingFiles);
+        this._write(this.MESSAGES.watchingFiles);
 
         files.forEach(file => {
-            this._write('  ' + file + '\n');
+            this._write(file, '  ');
         });
-
-        this._write('\n');
     }
 
     writeRunTestsMessage (sourcesChanged) {
         const statusMessage = sourcesChanged ? this.MESSAGES.sourceChanged : this.MESSAGES.testRunStarting;
 
-        this._status(statusMessage);
+        this._write(statusMessage);
     }
 
     writeTestsFinishedMessage () {
         const statusMessage = this.watching ? this.MESSAGES.testRunFinishedWatching : this.MESSAGES.testRunFinishedNotWatching;
 
-        this._status(statusMessage);
+        this._write(statusMessage);
     }
 
     writeStopRunningMessage () {
-        this._status(this.MESSAGES.testRunStopping);
+        this._write(this.MESSAGES.testRunStopping);
     }
 
     writeNothingToStopMessage () {
-        this._status(this.MESSAGES.nothingToStop);
+        this._write(this.MESSAGES.nothingToStop);
     }
 
     writeToggleWatchingMessage (enable) {
@@ -77,11 +71,11 @@ You can use the following keys in the terminal:
 
         const statusMessage = enable ? this.MESSAGES.fileWatchingEnabled : this.MESSAGES.fileWatchingDisabled;
 
-        this._status(statusMessage);
+        this._write(statusMessage);
     }
 
     writeExitMessage () {
-        this._status(this.MESSAGES.testCafeStopping);
+        this._write(this.MESSAGES.testCafeStopping);
     }
 
     err (err) {
