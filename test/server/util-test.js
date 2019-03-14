@@ -1,27 +1,30 @@
-const path                             = require('path');
-const { PassThrough }                  = require('stream');
-const Module                           = require('module');
-const fs                               = require('fs');
-const del                              = require('del');
-const OS                               = require('os-family');
-const { expect }                       = require('chai');
-const { noop }                         = require('lodash');
-const correctFilePath                  = require('../../lib/utils/correct-file-path');
-const escapeUserAgent                  = require('../../lib/utils/escape-user-agent');
-const parseFileList                    = require('../../lib/utils/parse-file-list');
-const TempDirectory                    = require('../../lib/utils/temp-directory');
+const path            = require('path');
+const { PassThrough } = require('stream');
+const Module          = require('module');
+const fs              = require('fs');
+const del             = require('del');
+const OS              = require('os-family');
+const { expect }      = require('chai');
+const { noop }        = require('lodash');
+const correctFilePath = require('../../lib/utils/correct-file-path');
+const escapeUserAgent = require('../../lib/utils/escape-user-agent');
+const parseFileList   = require('../../lib/utils/parse-file-list');
+const TempDirectory   = require('../../lib/utils/temp-directory');
+
 const {
     replaceLeadingSpacesWithNbsp,
     getConcatenatedValuesString
-}                                      = require('../../lib/utils/string');
-const getCommonPath                    = require('../../lib/utils/get-common-path');
-const resolvePathRelativelyCwd         = require('../../lib/utils/resolve-path-relatively-cwd');
-const getFilterFn                      = require('../../lib/utils/get-filter-fn');
-const prepareReporters                 = require('../../lib/utils/prepare-reporters');
+} = require('../../lib/utils/string');
+
+const getCommonPath            = require('../../lib/utils/get-common-path');
+const resolvePathRelativelyCwd = require('../../lib/utils/resolve-path-relatively-cwd');
+const getFilterFn              = require('../../lib/utils/get-filter-fn');
+const prepareReporters         = require('../../lib/utils/prepare-reporters');
+
 const {
     buildChromeArgs,
     IN_DOCKER_FLAGS
-}                                      = require('../../lib/browser/provider/built-in/chrome/build-chrome-args');
+} = require('../../lib/browser/provider/built-in/chrome/build-chrome-args');
 
 describe('Utils', () => {
     it('Correct File Path', () => {
