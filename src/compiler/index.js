@@ -7,6 +7,7 @@ import EsNextTestFileCompiler from './test-file/formats/es-next/compiler';
 import TypeScriptTestFileCompiler from './test-file/formats/typescript/compiler';
 import CoffeeScriptTestFileCompiler from './test-file/formats/coffeescript/compiler';
 import RawTestFileCompiler from './test-file/formats/raw';
+import RazorTestFileCompiler from './test-file/formats/razor';
 import { readFile } from '../utils/promisified-functions';
 import { GeneralError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
@@ -19,7 +20,8 @@ const testFileCompilers = [
     new EsNextTestFileCompiler(),
     new TypeScriptTestFileCompiler(),
     new CoffeeScriptTestFileCompiler(),
-    new RawTestFileCompiler()
+    new RawTestFileCompiler(),
+    new RazorTestFileCompiler()
 ];
 
 export default class Compiler {

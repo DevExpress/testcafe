@@ -7,7 +7,7 @@ import { flattenDeep as flatten, union } from 'lodash';
 export default class Test extends TestingUnit {
     constructor (testFile) {
         super(testFile, 'test');
-
+        
         this.fixture = testFile.currentFixture;
 
         this.fn           = null;
