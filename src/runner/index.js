@@ -269,7 +269,13 @@ export default class Runner extends EventEmitter {
     }
 
     _createRunnableConfiguration () {
-        return this.bootstrapper.createRunnableConfiguration();
+        return this.bootstrapper
+            .createRunnableConfiguration()
+            .then(runnableConfiguration => {
+                this.emit('done-bootstrapping');
+
+                return runnableConfiguration;
+            });
     }
 
     _validateScreenshotPath (screenshotPath, pathType) {
@@ -425,8 +431,6 @@ export default class Runner extends EventEmitter {
             .then(() => this._validateRunOptions())
             .then(() => this._createRunnableConfiguration())
             .then(({ reporterPlugins, browserSet, tests, testedApp }) => {
-                this.emit('done-bootstrapping');
-
                 return this._runTask(reporterPlugins, browserSet, tests, testedApp);
             });
 
