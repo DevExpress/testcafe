@@ -1,27 +1,15 @@
 import browserTools from 'testcafe-browser-tools';
 import { killBrowserProcess } from '../../../../utils/process';
 import BrowserStarter from '../../utils/browser-starter';
-
+import { buildChromeArgs } from './build-chrome-args';
 
 const browserStarter = new BrowserStarter();
 
-function buildChromeArgs (config, cdpPort, platformArgs, profileDir) {
-    return []
-        .concat(
-            cdpPort ? [`--remote-debugging-port=${cdpPort}`] : [],
-            !config.userProfile ? [`--user-data-dir=${profileDir.path}`] : [],
-            config.headless ? ['--headless'] : [],
-            config.userArgs ? [config.userArgs] : [],
-            platformArgs ? [platformArgs] : []
-        )
-        .join(' ');
-}
-
-export async function start (pageUrl, { browserName, config, cdpPort, tempProfileDir }) {
+export async function start (pageUrl, { browserName, config, cdpPort, tempProfileDir, inDocker }) {
     const chromeInfo           = await browserTools.getBrowserInfo(config.path || browserName);
     const chromeOpenParameters = Object.assign({}, chromeInfo);
 
-    chromeOpenParameters.cmd = buildChromeArgs(config, cdpPort, chromeOpenParameters.cmd, tempProfileDir);
+    chromeOpenParameters.cmd = buildChromeArgs({ config, cdpPort, platformArgs: chromeOpenParameters.cmd, tempProfileDir, inDocker });
 
     await browserStarter.startBrowser(chromeOpenParameters, pageUrl);
 }

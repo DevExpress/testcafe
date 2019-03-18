@@ -1,23 +1,30 @@
-const path                             = require('path');
-const { PassThrough }                  = require('stream');
-const Module                           = require('module');
-const fs                               = require('fs');
-const del                              = require('del');
-const OS                               = require('os-family');
-const { expect }                       = require('chai');
-const { noop }                         = require('lodash');
-const correctFilePath                  = require('../../lib/utils/correct-file-path');
-const escapeUserAgent                  = require('../../lib/utils/escape-user-agent');
-const parseFileList                    = require('../../lib/utils/parse-file-list');
-const TempDirectory                    = require('../../lib/utils/temp-directory');
+const path            = require('path');
+const { PassThrough } = require('stream');
+const Module          = require('module');
+const fs              = require('fs');
+const del             = require('del');
+const OS              = require('os-family');
+const { expect }      = require('chai');
+const { noop }        = require('lodash');
+const correctFilePath = require('../../lib/utils/correct-file-path');
+const escapeUserAgent = require('../../lib/utils/escape-user-agent');
+const parseFileList   = require('../../lib/utils/parse-file-list');
+const TempDirectory   = require('../../lib/utils/temp-directory');
+
 const {
     replaceLeadingSpacesWithNbsp,
     getConcatenatedValuesString
-}                                      = require('../../lib/utils/string');
-const getCommonPath                    = require('../../lib/utils/get-common-path');
-const resolvePathRelativelyCwd         = require('../../lib/utils/resolve-path-relatively-cwd');
-const getFilterFn                      = require('../../lib/utils/get-filter-fn');
-const prepareReporters                 = require('../../lib/utils/prepare-reporters');
+} = require('../../lib/utils/string');
+
+const getCommonPath            = require('../../lib/utils/get-common-path');
+const resolvePathRelativelyCwd = require('../../lib/utils/resolve-path-relatively-cwd');
+const getFilterFn              = require('../../lib/utils/get-filter-fn');
+const prepareReporters         = require('../../lib/utils/prepare-reporters');
+
+const {
+    buildChromeArgs,
+    IN_DOCKER_FLAGS
+} = require('../../lib/browser/provider/built-in/chrome/build-chrome-args');
 
 describe('Utils', () => {
     it('Correct File Path', () => {
@@ -354,5 +361,43 @@ describe('Utils', () => {
                 }).to.not.throw();
             });
         });
+    });
+
+    it('Build Chrome arguments', () => {
+        const config = {
+            userProfile: false,
+            headless:    false,
+            userArgs:    ''
+        };
+
+        const cdpPort      = '';
+        const platformArgs = '--no-first-run';
+
+        const tempProfileDir = {
+            path: '/temp/testcafe/chrome-profile-34904xxzNmO5Vkbtz'
+        };
+
+        let chromeArgs = '';
+
+        const IN_DOCKER_FLAGS_RE       = new RegExp(IN_DOCKER_FLAGS.join(' '));
+        const SANDBOX_FLAG_RE          = new RegExp('--no-sandbox');
+        const DISABLE_DEV_SHM_USAGE_RE = new RegExp('--disable-dev-shm-usage');
+        let inDockerFlagMatch    = null;
+
+        chromeArgs        = buildChromeArgs({ config, cdpPort, platformArgs, tempProfileDir, inDocker: false });
+        inDockerFlagMatch = chromeArgs.match(IN_DOCKER_FLAGS_RE);
+        expect(inDockerFlagMatch).eql(null);
+
+        chromeArgs        = buildChromeArgs({ config, cdpPort, platformArgs, tempProfileDir, inDocker: true });
+        inDockerFlagMatch = chromeArgs.match(IN_DOCKER_FLAGS_RE);
+        expect(inDockerFlagMatch.length).eql(1);
+
+        // NOTE: Flag should not be duplicated
+        config.userArgs = '--no-sandbox --disable-dev-shm-usage';
+        chromeArgs        = buildChromeArgs({ config, cdpPort, platformArgs, tempProfileDir, inDocker: true });
+        inDockerFlagMatch = chromeArgs.match(SANDBOX_FLAG_RE);
+        expect(inDockerFlagMatch.length).eql(1);
+        inDockerFlagMatch = chromeArgs.match(DISABLE_DEV_SHM_USAGE_RE);
+        expect(inDockerFlagMatch.length).eql(1);
     });
 });
