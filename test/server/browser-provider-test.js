@@ -210,15 +210,13 @@ describe('Browser provider', function () {
                     }
                 });
 
-                const testProvider = {
-                    ...dedicatedBrowserProviderBase,
-
+                const testProvider = Object.assign({}, dedicatedBrowserProviderBase, {
                     providerName: 'browser',
 
                     _getConfig () {
                         return {};
                     }
-                };
+                });
 
                 return testProvider
                     .isValidBrowserName('browser')
@@ -236,15 +234,13 @@ describe('Browser provider', function () {
                     }
                 });
 
-                const testProvider = {
-                    ...dedicatedBrowserProviderBase,
-
+                const testProvider = Object.assign({}, dedicatedBrowserProviderBase, {
                     providerName: 'browser',
 
                     _getConfig () {
                         return {};
                     }
-                };
+                });
 
                 return testProvider
                     .isValidBrowserName('browser')
