@@ -1553,6 +1553,11 @@ interface TestCafe {
      * Creates the test runner that is used to configure and launch test tasks.
      */
     createRunner(): Runner;
+    
+    /**
+     * Creates the live mode test runner that is used to configure and launch test tasks.
+     */
+    createLiveModeRunner(): Runner;
 
     /**
      * Creates a remote browser connection.
