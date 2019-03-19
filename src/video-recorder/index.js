@@ -60,6 +60,8 @@ export default class VideoRecorder {
     _assignEventHandlers (browserJob) {
         browserJob.once('start', this._createSafeListener(() => {
             this.tempDirectoryInitializedPromise = this._onBrowserJobStart();
+
+            return this.tempDirectoryInitializedPromise;
         }));
 
         browserJob.once('done', this._createSafeListener(this._onBrowserJobDone));
