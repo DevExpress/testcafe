@@ -9,8 +9,9 @@ import {
 } from './utils';
 
 const EXTERNAL_LINKS = {
-    createNewIssue: 'https://github.com/DevExpress/testcafe/issues/new?template=bug-report.md',
-    viewportSizes:  'http://viewportsizes.com'
+    createNewIssue:      'https://github.com/DevExpress/testcafe/issues/new?template=bug-report.md',
+    troubleshootNetwork: 'https://devexpress.github.io/testcafe/faq/#request-failed',
+    viewportSizes:       'http://viewportsizes.com'
 };
 
 export default {
@@ -31,6 +32,11 @@ export default {
     `),
 
     [TEST_RUN_ERRORS.pageLoadError]: err => markup(err, `
+        A request to ${formatUrl(err.url)} has failed. 
+        Try quarantine mode to perform additional attempts to execute this test. 
+        You can find troubleshooting information for this issue at ${formatUrl(EXTERNAL_LINKS.troubleshootNetwork)}.
+
+        Error details:
         ${err.errMsg}
     `),
 

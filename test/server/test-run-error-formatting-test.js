@@ -147,7 +147,7 @@ describe('Error formatting', () => {
         });
 
         it('Should format "pageLoadError" message', () => {
-            assertErrorMessage('page-load-error', new PageLoadError('Failed to find a DNS-record for the resource'));
+            assertErrorMessage('page-load-error', new PageLoadError('Failed to find a DNS-record for the resource', 'http://some-url.example.com'));
         });
 
         it('Should format "uncaughtErrorOnPage" message (with error stack)', () => {
