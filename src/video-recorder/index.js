@@ -58,7 +58,12 @@ export default class VideoRecorder {
     }
 
     _assignEventHandlers (browserJob) {
-        browserJob.once('start', this._createSafeListener(this._onBrowserJobStart));
+        browserJob.once('start', this._createSafeListener(() => {
+            this.tempDirectoryInitializedPromise = this._onBrowserJobStart();
+
+            return this.tempDirectoryInitializedPromise;
+        }));
+
         browserJob.once('done', this._createSafeListener(this._onBrowserJobDone));
         browserJob.on('test-run-create', this._createSafeListener(this._onTestRunCreate));
         browserJob.on('test-run-ready', this._createSafeListener(this._onTestRunReady));
@@ -92,12 +97,14 @@ export default class VideoRecorder {
         return join(this.basePath, pathPattern.getPath());
     }
 
-    _generateTempNames (id) {
+    async _generateTempNames (id) {
         const tempFileNames = {
             tempVideoPath:       `${TEMP_VIDEO_FILE_PREFIX}-${id}.${VIDEO_EXTENSION}`,
             tempMergeConfigPath: `${TEMP_MERGE_CONFIG_FILE_PREFIX}-${id}.${TEMP_MERGE_CONFIG_FILE_EXTENSION}`,
             tmpMergeName:        `${TEMP_MERGE_FILE_PREFIX}-${id}.${VIDEO_EXTENSION}`
         };
+
+        await this.tempDirectoryInitializedPromise;
 
         for (const [tempFile, tempName] of Object.entries(tempFileNames))
             tempFileNames[tempFile] = join(this.tempDirectory.path, tempName);
@@ -146,8 +153,7 @@ export default class VideoRecorder {
 
         this.testRunInfo[index] = testRunInfo;
 
-        testRunInfo.tempFiles = this._generateTempNames(connection.id);
-
+        testRunInfo.tempFiles = await this._generateTempNames(connection.id);
 
         testRunInfo.videoRecorder = new VideoRecorderProcess(testRunInfo.tempFiles.tempVideoPath, this.ffmpegPath, connection, this.encodingOptions);
 
