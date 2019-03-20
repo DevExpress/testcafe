@@ -2,9 +2,9 @@ import Promise from 'pinkie';
 import { Socket } from 'net';
 import promisifyEvent from 'promisify-event';
 import EventEmitter from 'events';
-import { writeFile } from '../../../../../utils/promisified-functions';
-import delay from '../../../../../utils/delay';
-import { GET_WINDOW_DIMENSIONS_INFO_SCRIPT } from '../../../utils/client-functions';
+import { writeFile } from '../../../../../../utils/promisified-functions';
+import delay from '../../../../../../utils/delay';
+import { GET_WINDOW_DIMENSIONS_INFO_SCRIPT } from '../../../../utils/client-functions';
 import COMMANDS from './commands';
 
 

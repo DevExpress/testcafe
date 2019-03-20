@@ -1,6 +1,6 @@
 import browserTools from 'testcafe-browser-tools';
-import { killBrowserProcess } from '../../../../utils/process';
-import BrowserStarter from '../../utils/browser-starter';
+import { killBrowserProcess } from '../../../../../utils/process';
+import BrowserStarter from '../../../utils/browser-starter';
 import { buildChromeArgs } from './build-chrome-args';
 
 const browserStarter = new BrowserStarter();

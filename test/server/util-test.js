@@ -24,7 +24,7 @@ const prepareReporters         = require('../../lib/utils/prepare-reporters');
 const {
     buildChromeArgs,
     IN_DOCKER_FLAGS
-} = require('../../lib/browser/provider/built-in/chrome/build-chrome-args');
+} = require('../../lib/browser/provider/built-in/dedicated/chrome/build-chrome-args');
 
 describe('Utils', () => {
     it('Correct File Path', () => {

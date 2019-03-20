@@ -1,5 +1,5 @@
 import remoteChrome from 'chrome-remote-interface';
-import { GET_WINDOW_DIMENSIONS_INFO_SCRIPT } from '../../utils/client-functions';
+import { GET_WINDOW_DIMENSIONS_INFO_SCRIPT } from '../../../utils/client-functions';
 
 
 async function getActiveTab (cdpPort, browserId) {
