@@ -200,12 +200,16 @@ testingEnvironments[testingEnvironmentNames.oldBrowsers] = {
 };
 
 testingEnvironments[testingEnvironmentNames.legacy] = {
-    isLocalBrowsers: true,
+    isLocalBrowsers:    true,
+    isHeadlessBrowsers: true,
+
+    retryTestPages: true,
 
     browsers: [
         {
             platform:    'Windows 10',
-            browserName: 'chrome',
+            browserName: 'chrome:headless --no-sandbox',
+            userAgent:   'headlesschrome',
             alias:       'chrome'
         }
     ]
