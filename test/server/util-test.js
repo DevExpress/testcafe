@@ -10,16 +10,12 @@ const correctFilePath = require('../../lib/utils/correct-file-path');
 const escapeUserAgent = require('../../lib/utils/escape-user-agent');
 const parseFileList   = require('../../lib/utils/parse-file-list');
 const TempDirectory   = require('../../lib/utils/temp-directory');
-
-const {
-    replaceLeadingSpacesWithNbsp,
-    getConcatenatedValuesString
-} = require('../../lib/utils/string');
-
+const { getConcatenatedValuesString }  = require('../../lib/utils/string');
 const getCommonPath            = require('../../lib/utils/get-common-path');
 const resolvePathRelativelyCwd = require('../../lib/utils/resolve-path-relatively-cwd');
 const getFilterFn              = require('../../lib/utils/get-filter-fn');
 const prepareReporters         = require('../../lib/utils/prepare-reporters');
+const { replaceLeadingSpacesWithNbsp } = require('../../lib/errors/test-run/utils');
 
 const {
     buildChromeArgs,
@@ -227,8 +223,8 @@ describe('Utils', () => {
     });
 
     describe('Moment Module Loader', () => {
-        const moduleCacheDesciptor    = Object.getOwnPropertyDescriptor(Module, '_cache');
-        const originalLoad            = Module._load;
+        const moduleCacheDesciptor = Object.getOwnPropertyDescriptor(Module, '_cache');
+        const originalLoad         = Module._load;
 
         beforeEach(() => {
             for (const cachedModule of Object.keys(require.cache))
@@ -296,8 +292,10 @@ describe('Utils', () => {
         });
 
         it('Function as reporter name', () => {
-            const fn1 = function () { };
-            const fn2 = function () { };
+            const fn1 = function () {
+            };
+            const fn2 = function () {
+            };
 
             const result = prepareReporters([fn1, fn2]);
 
@@ -336,7 +334,8 @@ describe('Utils', () => {
                 {},
                 null,
                 9,
-                function () {}
+                function () {
+                }
             ];
 
             shouldThrowCases.forEach(output => {
