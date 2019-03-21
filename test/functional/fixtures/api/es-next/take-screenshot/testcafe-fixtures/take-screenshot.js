@@ -3,7 +3,7 @@ import { parse, is } from 'useragent';
 import { saveWindowState, restoreWindowState } from '../../../../../window-helpers';
 import quarantineScope from './quarantineScope';
 import sanitizeFilename from 'sanitize-filename';
-import { readPng } from '../../../../../assertion-helper';
+import { readPngFile } from '../../../../../../../lib/utils/promisified-functions';
 import config from '../../../../../config.js';
 import { join } from 'path';
 
@@ -114,7 +114,7 @@ test
         await t.hover('#target');
         await t.takeScreenshot(screenshotName);
 
-        const png = await readPng(join(config.testScreenshotsDir, screenshotName));
+        const png = await readPngFile(join(config.testScreenshotsDir, screenshotName));
 
         const expectedWidth  = width - scrollbarSize;
         const expectedHeight = height - scrollbarSize;
