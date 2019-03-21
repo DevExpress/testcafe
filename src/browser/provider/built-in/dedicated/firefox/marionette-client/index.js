@@ -2,7 +2,6 @@ import Promise from 'pinkie';
 import { Socket } from 'net';
 import promisifyEvent from 'promisify-event';
 import EventEmitter from 'events';
-import { writeFile } from '../../../../../../utils/promisified-functions';
 import delay from '../../../../../../utils/delay';
 import { GET_WINDOW_DIMENSIONS_INFO_SCRIPT } from '../../../../utils/client-functions';
 import COMMANDS from './commands';
@@ -143,7 +142,7 @@ module.exports = class MarionetteClient {
         return responsePacket.body[3];
     }
 
-    async _getScreenshotData () {
+    async _getScreenshotRawData () {
         return await this._getResponse({ command: COMMANDS.takeScreenshot });
     }
 
@@ -172,14 +171,8 @@ module.exports = class MarionetteClient {
         });
     }
 
-    async takeScreenshot (path) {
-        const screenshotData = await this._getScreenshotData();
-
-        await writeFile(path, screenshotData.value, { encoding: 'base64' });
-    }
-
-    async getVideoFrameData () {
-        const frameData = await this._getScreenshotData();
+    async getScreenshotData () {
+        const frameData = await this._getScreenshotRawData();
 
         return Buffer.from(frameData.value, 'base64');
     }

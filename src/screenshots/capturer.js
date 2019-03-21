@@ -117,7 +117,9 @@ export default class Capturer {
             this.warningLog.addWarning(WARNING_MESSAGE.screenshotRewritingError, screenshotPath);
 
         await addToQueue(screenshotPath, async () => {
-            await this._takeScreenshot(screenshotPath, ... pageDimensions ? [pageDimensions.innerWidth, pageDimensions.innerHeight] : []);
+            const clientAreaDimensions = Capturer._getClientAreaDimensions(pageDimensions);
+
+            await this._takeScreenshot(screenshotPath, ...clientAreaDimensions ? [clientAreaDimensions.width, clientAreaDimensions.height] : []);
 
             if (!await Capturer._isScreenshotCaptured(screenshotPath))
                 return;
@@ -128,7 +130,6 @@ export default class Capturer {
                 const croppedImage = await cropScreenshot(
                     screenshotPath,
                     markSeed,
-                    Capturer._getClientAreaDimensions(pageDimensions),
                     Capturer._getCropDimensions(cropDimensions, pageDimensions),
                     binaryImage
                 );

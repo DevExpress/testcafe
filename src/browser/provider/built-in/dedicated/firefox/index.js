@@ -13,6 +13,10 @@ export default {
         return getConfig(name);
     },
 
+    _getBrowserProtocolClient (runtimeInfo) {
+        return runtimeInfo.marionetteClient;
+    },
+
     async _createMarionetteClient (runtimeInfo) {
         try {
             const marionetteClient = new MarionetteClient(runtimeInfo.marionettePort);
@@ -60,12 +64,6 @@ export default {
         delete this.openedBrowsers[browserId];
     },
 
-    async takeScreenshot (browserId, path) {
-        const { marionetteClient } = this.openedBrowsers[browserId];
-
-        await marionetteClient.takeScreenshot(path);
-    },
-
     async resizeWindow (browserId, width, height) {
         const { marionetteClient } = this.openedBrowsers[browserId];
 
@@ -75,7 +73,7 @@ export default {
     async getVideoFrameData (browserId) {
         const { marionetteClient } = this.openedBrowsers[browserId];
 
-        return await marionetteClient.getVideoFrameData();
+        return await marionetteClient.getScreenshotData();
     },
 
     async hasCustomActionForBrowser (browserId) {

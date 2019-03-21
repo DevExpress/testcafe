@@ -1,5 +1,7 @@
 import { getBrowserInfo } from 'testcafe-browser-tools';
 import getMaximizedHeadlessWindowSize from '../../utils/get-maximized-headless-window-size';
+import { cropScreenshot } from '../../../../screenshots/crop';
+import { writePng } from '../../../../screenshots/utils';
 
 export default {
     openedBrowsers: {},
@@ -7,6 +9,10 @@ export default {
     isMultiBrowser: false,
 
     _getConfig () {
+        throw new Error('Not implemented');
+    },
+
+    _getBrowserProtocolClient (/* runtimeInfo */) {
         throw new Error('Not implemented');
     },
 
@@ -27,6 +33,22 @@ export default {
 
     isHeadlessBrowser (browserId) {
         return this.openedBrowsers[browserId].config.headless;
+    },
+
+    async takeScreenshot (browserId, path, viewportWidth, viewportHeight) {
+        const runtimeInfo   = this.openedBrowsers[browserId];
+        const browserClient = this._getBrowserProtocolClient(runtimeInfo);
+        const binaryImage   = await browserClient.getScreenshotData(runtimeInfo);
+
+        const croppedImage = await cropScreenshot(path, false, null, {
+            right:  viewportWidth,
+            left:   0,
+            top:    0,
+            bottom: viewportHeight
+        }, binaryImage);
+
+        if (croppedImage)
+            await writePng(path, croppedImage);
     },
 
     async maximizeWindow (browserId) {
