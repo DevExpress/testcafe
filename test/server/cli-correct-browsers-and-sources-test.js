@@ -1,5 +1,9 @@
 const expect                    = require('chai').expect;
+const sinon                     = require('sinon');
+const Promise                   = require('pinkie');
 const correctBrowsersAndSources = require('../../lib/cli/correct-browsers-and-sources');
+const browserProviderPool       = require('../../lib/browser/provider/pool');
+
 
 class ConfigurationMock {
     constructor (opts) {
@@ -25,9 +29,22 @@ class ArgsMock {
     }
 }
 describe('CLI Correct browsers and sources', () => {
+    before(() => {
+        sinon.stub(browserProviderPool, 'getBrowserInfo').callsFake(browserName => {
+            if (!browserName.startsWith('browser'))
+                return Promise.reject(new Error(`Not found ${browserName}`));
+
+            return Promise.resolve({});
+        });
+    });
+
+    after(() => {
+        browserProviderPool.getBrowserInfo.restore();
+    });
+
     it('Should allow to skip browser in CLI if they are specified in the config', () => {
         const configuration = new ConfigurationMock({
-            browsers: ['chrome'],
+            browsers: ['browser'],
         });
 
         const args = new ArgsMock([
@@ -44,17 +61,17 @@ describe('CLI Correct browsers and sources', () => {
 
     it('Should override browsers in the config with valid browsers from CLI', () => {
         const configuration = new ConfigurationMock({
-            browsers: ['some-browser']
+            browsers: ['browser1']
         });
 
         const args = new ArgsMock([
-            'firefox,chrome',
+            'browser2,browser3',
             'test1.js'
         ]);
 
         return correctBrowsersAndSources(args, configuration)
             .then(({ browsers, sources }) => {
-                expect(browsers).to.be.deep.equal(['firefox', 'chrome']);
+                expect(browsers).to.be.deep.equal(['browser2', 'browser3']);
                 expect(sources).to.be.deep.equal(['test1.js']);
             });
     });
@@ -78,7 +95,7 @@ describe('CLI Correct browsers and sources', () => {
 
     it('Should not override test files from the config with a valid CLI contains commas', () => {
         const configuration = new ConfigurationMock({
-            browsers: ['chrome']
+            browsers: ['browser']
         });
 
         const args = new ArgsMock([
@@ -95,7 +112,7 @@ describe('CLI Correct browsers and sources', () => {
 
     it('Should handle empty CLI arguments', () => {
         const configuration = new ConfigurationMock({
-            browsers: ['chrome']
+            browsers: ['browser']
         });
 
         const args = new ArgsMock([]);
@@ -109,11 +126,11 @@ describe('CLI Correct browsers and sources', () => {
 
     it('Should throw an error if browsers from the config are overridden with valid & invalid browsers from CLI', () => {
         const configuration = new ConfigurationMock({
-            browsers: ['chrome']
+            browsers: ['browser1']
         });
 
         const args = new ArgsMock([
-            'firefox,foo,bar',
+            'browser2,foo,bar',
             'test1.js'
         ]);
 

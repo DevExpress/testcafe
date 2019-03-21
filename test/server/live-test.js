@@ -69,8 +69,13 @@ class BootstrapperMock extends LiveModeBootstrapper {
         super(runner, browserConnectionGateway);
     }
 
-    _getBrowserConnections () {
-        return Promise.resolve();
+    createRunnableConfiguration () {
+        return Promise.resolve({
+            reporterPlugins: [],
+            tests:           [],
+            browserSet:      {},
+            testedApp:       {}
+        });
     }
 }
 
