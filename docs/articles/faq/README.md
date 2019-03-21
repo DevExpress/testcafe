@@ -17,6 +17,7 @@ permalink: /faq/
   * [When I run a TestCafe test, I get an unexpected error. What can cause that?](#when-i-run-a-testcafe-test-i-get-an-unexpected-error-what-can-cause-that)
   * [I have installed TestCafe plugins but they do not work. What have I done wrong?](#i-have-installed-testcafe-plugins-but-they-do-not-work-what-have-i-done-wrong)
   * [My test fails because TestCafe could not find the required webpage element. Why does this happen?](#my-test-fails-because-testcafe-could-not-find-the-required-webpage-element-why-does-this-happen)
+  * [What are the possible reasons for an HTTP request failure? How can I address them?](#what-are-the-possible-reasons-for-an-http-request-failure-how-can-i-address-them)
 
 ## General Questions
 
@@ -108,9 +109,11 @@ test('test', async t => {
 
 ### How do I work with configuration files and environment variables?
 
-TestCafe works without any configuration.
-It does not have any config files where you can place custom variables.
-However, you can introduce your own configuration file and import it to the test code.
+TestCafe allows you to specify its settings in a [configuration file](../documentation/using-testcafe/configuration-file.md).
+
+If you need to use custom proparties in the configuration, you can create a separate configuration file and import it to the tests.
+
+> Vote for the following GitHub issue if you want us to support custom properties in `.testcaferc.json`: [#3593](https://github.com/DevExpress/testcafe/issues/3593)
 
 For example, you need to pass a website's base URL to test code. In this instance, you can create the following `config.json` file:
 
@@ -120,7 +123,7 @@ For example, you need to pass a website's base URL to test code. In this instanc
 }
 ```
 
-In the test code, import it as you would do with a regular JavaScript module.
+In the test code, import it as you would do with a regular JavaScript module:
 
 ```js
 import config from './config';
@@ -137,7 +140,7 @@ The following command passes the `env` argument to the test code:
 testcafe chrome test.js --env=development
 ```
 
-In the test, use an argument parser library (like `minimist`) to parse custom arguments.
+In the test, use an argument parser library (like `minimist`) to parse custom arguments:
 
 ```js
 import minimist from 'minimist';
@@ -153,7 +156,7 @@ test('check environment', async t => {
 });
 ```
 
-To set an environment variable use the following command on Windows.
+To set an environment variable, use the following command on Windows:
 
 ```sh
 set DEV_MODE=true
@@ -260,3 +263,26 @@ to control the browser window size. If the test passes, it means your webpage hi
 the target element when the window is resized to smaller dimensions.
 
 Finally, try updating TestCafe to the latest version to see if the problem persists.
+
+### What are the possible reasons for an HTTP request failure? How can I address them?
+
+#### The Web server is not responding
+
+Check if the Web and DNS servers are online and configured to accept requests to this URL.
+
+#### Unstable or improperly configured network connection
+
+* Check the proxy server's, router's and network connection's settings.
+* Connect to a different network.
+* Restart or replace the router.
+* Use VPN.
+* Bypass or change the proxy server.
+
+#### Not enough resources in the container or CI system
+
+* Decrease the [concurrency factor](../documentation/using-testcafe/common-concepts/concurrent-test-execution.md) to `1`.
+* Deploy the application's Web server on a separate machine.
+* Change the container's resource limits.
+* Run tests on a local device outside a container.
+* In a CI service, switch to a pricing plan that offers more resources.
+* Try a different CI service.
