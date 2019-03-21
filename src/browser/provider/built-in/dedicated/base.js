@@ -35,6 +35,18 @@ export default {
         return this.openedBrowsers[browserId].config.headless;
     },
 
+    _getCropDimensions (viewportWidth, viewportHeight) {
+        if (!viewportWidth || !viewportHeight)
+            return null;
+
+        return {
+            left:   0,
+            top:    0,
+            right:  viewportWidth,
+            bottom: viewportHeight
+        };
+    },
+
     async takeScreenshot (browserId, path, viewportWidth, viewportHeight) {
         const runtimeInfo   = this.openedBrowsers[browserId];
         const browserClient = this._getBrowserProtocolClient(runtimeInfo);
@@ -44,12 +56,7 @@ export default {
         const croppedImage = await cropScreenshot(pngImage, {
             path,
 
-            cropDimensions: {
-                right:  viewportWidth,
-                left:   0,
-                top:    0,
-                bottom: viewportHeight
-            }
+            cropDimensions: this._getCropDimensions(viewportWidth, viewportHeight)
         });
 
         await writePng(path, croppedImage || pngImage);
