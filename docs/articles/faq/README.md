@@ -17,7 +17,7 @@ permalink: /faq/
   * [When I run a TestCafe test, I get an unexpected error. What can cause that?](#when-i-run-a-testcafe-test-i-get-an-unexpected-error-what-can-cause-that)
   * [I have installed TestCafe plugins but they do not work. What have I done wrong?](#i-have-installed-testcafe-plugins-but-they-do-not-work-what-have-i-done-wrong)
   * [My test fails because TestCafe could not find the required webpage element. Why does this happen?](#my-test-fails-because-testcafe-could-not-find-the-required-webpage-element-why-does-this-happen)
-  * [What are the possible reasons for an HTTP request failure? How can I address them?](#what-are-the-possible-reasons-for-an-http-request-failure-how-can-i-address-them)
+  * [TestCafe reports that a request has failed. What are the possible reasons?](#testcafe-reports-that-a-request-has-failed-what-are-the-possible-reasons)
 
 ## General Questions
 
@@ -264,7 +264,19 @@ the target element when the window is resized to smaller dimensions.
 
 Finally, try updating TestCafe to the latest version to see if the problem persists.
 
-### What are the possible reasons for an HTTP request failure? How can I address them?
+### TestCafe reports that a request has failed. What are the possible reasons?
+
+When TestCafe does not receive a successful response from a server, it outputs an error that reads:
+
+```text
+A request to https://www.example.com has failed. Use quarantine mode to perform additional attempts to execute this test.
+```
+
+As the message says, you can enable [quarantine mode](../documentation/using-testcafe/command-line-interface.md#-q---quarantine-mode) that helps you complete the tests if the problem is flaky.
+
+However, we recommend that you take actions to find out the reason behind this issue and address it.
+
+The following situations lead to this error most frequently:
 
 #### The Web server is not responding
 
@@ -272,17 +284,24 @@ Check if the Web and DNS servers are online and configured to accept requests to
 
 #### Unstable or improperly configured network connection
 
-* Check the proxy server's, router's and network connection's settings.
-* Connect to a different network.
-* Restart or replace the router.
+To fix network issues, try the following:
+
+* Check the network connection's settings.
+* Ensure that your network equipment works properly. If possible, try to establish direct connection to the Internet/Web server.
+* Check the proxy server's settings or try a different proxy server.
 * Use VPN.
-* Bypass or change the proxy server.
+* Connect to a different network.
 
 #### Not enough resources in the container or CI system
 
-* Decrease the [concurrency factor](../documentation/using-testcafe/common-concepts/concurrent-test-execution.md) to `1`.
+If you run TestCafe in a container or CI system, try the following measures to diagnose the resource shortage.
+
+* Increase the container's resource limits.
+* Set the [concurrency factor](../documentation/using-testcafe/common-concepts/concurrent-test-execution.md) to `1`.
 * Deploy the application's Web server on a separate machine.
-* Change the container's resource limits.
 * Run tests on a local device outside a container.
-* In a CI service, switch to a pricing plan that offers more resources.
-* Try a different CI service.
+
+If this fixes the tests, it indicates that they require additional resources. You can address this in the following ways:
+
+* Adjust the container's or environment's settings to allocate more resources.
+* If you use a commercial CI system, ask the service provider for an upgrade or consider a different CI service with better hardware or smaller loads.
