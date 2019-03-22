@@ -50,12 +50,6 @@ export async function getScreenshotData ({ client }) {
     return Buffer.from(screenshotData.data, 'base64');
 }
 
-export async function getPageViewport ({ client }) {
-    const { visualViewport } = await client.Page.getLayoutMetrics();
-
-    return visualViewport;
-}
-
 export async function createClient (runtimeInfo) {
     const { browserId, config, cdpPort } = runtimeInfo;
 

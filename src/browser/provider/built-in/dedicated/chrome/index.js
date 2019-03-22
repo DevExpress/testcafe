@@ -6,8 +6,7 @@ import getConfig from './config';
 import { start as startLocalChrome, stop as stopLocalChrome } from './local-chrome';
 import * as cdp from './cdp';
 import { GET_WINDOW_DIMENSIONS_INFO_SCRIPT } from '../../../utils/client-functions';
-import { cropScreenshot } from '../../../../../screenshots/crop';
-import { writePng } from '../../../../../screenshots/utils';
+
 
 const MIN_AVAILABLE_DIMENSION = 50;
 
@@ -16,6 +15,10 @@ export default {
 
     _getConfig (name) {
         return getConfig(name);
+    },
+
+    _getBrowserProtocolClient () {
+        return cdp;
     },
 
     async openBrowser (browserId, pageUrl, configString) {
@@ -56,24 +59,6 @@ export default {
             await runtimeInfo.tempProfileDir.dispose();
 
         delete this.openedBrowsers[browserId];
-    },
-
-    async takeScreenshot (browserId, path) {
-        const runtimeInfo = this.openedBrowsers[browserId];
-        const viewport    = await cdp.getPageViewport(runtimeInfo);
-        const binaryImage = await cdp.getScreenshotData(runtimeInfo);
-
-        const { clientWidth, clientHeight } = viewport;
-
-        const croppedImage = await cropScreenshot(path, false, null, {
-            right:  clientWidth,
-            left:   0,
-            top:    0,
-            bottom: clientHeight
-        }, binaryImage);
-
-        if (croppedImage)
-            await writePng(path, croppedImage);
     },
 
     async resizeWindow (browserId, width, height, currentWidth, currentHeight) {

@@ -1,4 +1,4 @@
-import { readPng, copyImagePart } from './utils';
+import { copyImagePart } from './utils';
 import limitNumber from '../utils/limit-number';
 import renderTemplate from '../utils/render-template';
 import { InvalidElementScreenshotDimensionsError } from '../errors/test-run/';
@@ -97,12 +97,11 @@ export function calculateClipInfo (pngImage, path, markSeed, clientAreaDimension
     return clipInfo;
 }
 
-export async function cropScreenshot (path, markSeed, clientAreaDimensions, cropDimensions, binaryImage) {
+export async function cropScreenshot (image, { path, markSeed, clientAreaDimensions, cropDimensions }) {
     if (!markSeed && !cropDimensions)
         return null;
 
-    const pngImage = await readPng(binaryImage);
-    const clip     = calculateClipInfo(pngImage, path, markSeed, clientAreaDimensions, cropDimensions);
+    const clip = calculateClipInfo(image, path, markSeed, clientAreaDimensions, cropDimensions);
 
-    return copyImagePart(pngImage, clip);
+    return copyImagePart(image, clip);
 }
