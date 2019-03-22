@@ -1,5 +1,5 @@
 A request to "http://some-url.example.com" has failed.
-Try quarantine mode to perform additional attempts to execute this test.
+Use quarantine mode to perform additional attempts to execute this test.
 You can find troubleshooting information for this issue at
 "https://devexpress.github.io/testcafe/faq/#request-failed".
 

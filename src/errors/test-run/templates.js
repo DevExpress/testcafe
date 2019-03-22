@@ -10,7 +10,7 @@ import {
 
 const EXTERNAL_LINKS = {
     createNewIssue:      'https://github.com/DevExpress/testcafe/issues/new?template=bug-report.md',
-    troubleshootNetwork: 'https://devexpress.github.io/testcafe/faq/#request-failed',
+    troubleshootNetwork: 'https://go.devexpress.com/TestCafe_FAQ_ARequestHasFailed.aspx',
     viewportSizes:       'http://viewportsizes.com'
 };
 
@@ -33,7 +33,7 @@ export default {
 
     [TEST_RUN_ERRORS.pageLoadError]: err => markup(err, `
         A request to ${formatUrl(err.url)} has failed. 
-        Try quarantine mode to perform additional attempts to execute this test. 
+        Use quarantine mode to perform additional attempts to execute this test. 
         You can find troubleshooting information for this issue at ${formatUrl(EXTERNAL_LINKS.troubleshootNetwork)}.
 
         Error details:
@@ -42,9 +42,9 @@ export default {
 
     [TEST_RUN_ERRORS.uncaughtErrorOnPage]: err => markup(err, `
         A JavaScript error occurred on ${formatUrl(err.pageDestUrl)}.
-        At this moment, TestCafe tracks uncaught JavaScript errors on the page. Try to manually perform the test scenario.
-        If this error still occurs then it means you site has uncaught JavaScript errors. To disable JavaScript error tracking you can turn the --skip-js-errors option on.
-        If the error occurs only with TestCafe then it is a bug. Write a new issue about it at:
+        Repeat test actions in the browser and check the console for errors.
+        If you see this error, it means that the tested website caused it. You can fix it or disable tracking JavaScript errors in TestCafe. To do the latter, enable the "--skip-js-errors" option.
+        If this error does not occur, please write a new issue
         ${formatUrl(EXTERNAL_LINKS.createNewIssue)}.
 
         JavaScript error details:
