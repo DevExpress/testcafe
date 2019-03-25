@@ -31,6 +31,8 @@ import {
     isExecutableOnClientCommand
 } from './commands/utils';
 
+import StateSnapshot from 'testcafe-hammerhead';
+
 const lazyRequire                 = require('import-lazy')(require);
 const SessionController           = lazyRequire('./session-controller');
 const ClientFunctionBuilder       = lazyRequire('../client-functions/client-function-builder');
@@ -604,7 +606,7 @@ export default class TestRun extends AsyncEventEmitter {
         this.fixtureCtx      = Object.create(null);
         this.consoleMessages = new BrowserConsoleMessages();
 
-        this.session.useStateSnapshot(null);
+        this.session.useStateSnapshot(StateSnapshot.empty());
 
         if (this.activeDialogHandler) {
             const removeDialogHandlerCommand = new actionCommands.SetNativeDialogHandlerCommand({ dialogHandler: { fn: null } });

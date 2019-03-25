@@ -3,8 +3,12 @@ import { Role, ClientFunction, Selector } from 'testcafe';
 fixture `Test authentication`
     .page `http://localhost:4100/`;
 
-const role = Role(`http://localhost:4100/#login`, async t => await t.click('input'), { preserveUrl: true });
+const role = Role(`http://localhost:4100/#login`, async t => await t.click('input'), {
+    preserveUrl:   true,
+    applyRoleMode: 'onLocationHashChange'
+});
 const reloadPage = new ClientFunction(() => location.reload(true));
+
 const fixedUseRole = async (t, role) => {
 	await t.useRole(role);
 	await reloadPage();
