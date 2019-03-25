@@ -68,6 +68,7 @@ const TEST_SPEED                           = 'testcafe|driver|test-speed';
 const ASSERTION_RETRIES_TIMEOUT            = 'testcafe|driver|assertion-retries-timeout';
 const ASSERTION_RETRIES_START_TIME         = 'testcafe|driver|assertion-retries-start-time';
 const CONSOLE_MESSAGES                     = 'testcafe|driver|console-messages';
+const LOCATION_HASH_CHANGED                = 'testcafe|driver|location-hash-changed';
 const CHECK_IFRAME_DRIVER_LINK_DELAY       = 500;
 const SEND_STATUS_REQUEST_TIME_LIMIT       = 5000;
 const SEND_STATUS_REQUEST_RETRY_DELAY      = 300;
@@ -132,6 +133,7 @@ export default class Driver {
         hammerhead.on(hammerhead.EVENTS.uncaughtJsError, err => this._onJsError(err));
         hammerhead.on(hammerhead.EVENTS.unhandledRejection, err => this._onJsError(err));
         hammerhead.on(hammerhead.EVENTS.consoleMethCalled, e => this._onConsoleMessage(e));
+        hammerhead.on(hammerhead.EVENTS.pageLocationLocationHashChanged, e => this._onLocationHashChanged(e));
 
         this.setCustomCommandHandlers(COMMAND_TYPE.unlockPage, () => this._unlockPageAfterTestIsDone());
     }
@@ -150,6 +152,10 @@ export default class Driver {
 
     set consoleMessages (messages) {
         return this.contextStorage.setItem(CONSOLE_MESSAGES, messages ? messages.getCopy() : null);
+    }
+
+    _onLocationHashChanged (e) {
+        this.contextStorage.setItem(LOCATION_HASH_CHANGED, e);
     }
 
     // Error handling

@@ -31,7 +31,7 @@ import {
     isExecutableOnClientCommand
 } from './commands/utils';
 
-import StateSnapshot from 'testcafe-hammerhead';
+import { StateSnapshot } from 'testcafe-hammerhead';
 
 const lazyRequire                 = require('import-lazy')(require);
 const SessionController           = lazyRequire('./session-controller');
