@@ -104,13 +104,20 @@ export function focusAndSetSelection (element, simulateFocus, caretPos) {
     });
 }
 
-export function focusByRelatedElement (element) {
+export function getElementBoundToLabel (element) {
     const labelWithForAttr = domUtils.closest(element, 'label[for]');
 
     if (!labelWithForAttr)
-        return;
+        return null;
 
-    const elementForFocus = document.getElementById(labelWithForAttr.getAttribute('for'));
+    const boundElementId = labelWithForAttr.getAttribute('for');
+    const boundElement   = document.getElementById(boundElementId);
+
+    return boundElement;
+}
+
+export function focusByRelatedElement (element) {
+    const elementForFocus = getElementBoundToLabel(element);
 
     if (!elementForFocus || domUtils.getActiveElement() === elementForFocus)
         return;

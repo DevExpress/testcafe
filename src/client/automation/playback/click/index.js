@@ -2,7 +2,7 @@ import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
 import testCafeUI from '../../deps/testcafe-ui';
 import VisibleElementAutomation from '../visible-element-automation';
-import { focusAndSetSelection, focusByRelatedElement } from '../../utils/utils';
+import { focusAndSetSelection, focusByRelatedElement, getElementBoundToLabel } from '../../utils/utils';
 import cursor from '../../cursor';
 import nextTick from '../../utils/next-tick';
 
@@ -12,6 +12,7 @@ const extend           = hammerhead.utils.extend;
 const browserUtils     = hammerhead.utils.browser;
 const featureDetection = hammerhead.utils.featureDetection;
 const eventSimulator   = hammerhead.eventSandbox.eventSimulator;
+const listeners        = hammerhead.eventSandbox.listeners;
 
 const domUtils   = testCafeCore.domUtils;
 const styleUtils = testCafeCore.styleUtils;
@@ -195,25 +196,54 @@ export default class ClickAutomation extends VisibleElementAutomation {
     }
 
     _click (eventArgs) {
-        if (domUtils.isOptionElement(eventArgs.element))
+        const elementBoundToLabel = getElementBoundToLabel(eventArgs.element);
+        const isSelectElement     = domUtils.isSelectElement(eventArgs.element);
+        const isOptionElement     = domUtils.isOptionElement(eventArgs.element);
+        const isColorInputElement = domUtils.isColorInputElement(this.eventState.clickElement);
+        const isCheckboxElement   = elementBoundToLabel && domUtils.isCheckboxElement(elementBoundToLabel);
+
+        let changed = false;
+
+        if (isOptionElement)
             return eventArgs.element;
 
         if (this.eventState.clickElement) {
-            const isColorInput = domUtils.isInputElement(this.eventState.clickElement) && this.eventState.clickElement.type === 'color';
-
-            if (browserUtils.isFirefox && isColorInput)
+            if (browserUtils.isFirefox && isColorInputElement)
                 this._bindClickHandler(this.eventState.clickElement);
 
+            const onChange = () => {
+                changed = true;
+            };
+
+            listeners.addInternalEventListener(window, ['change'], onChange);
+
             eventSimulator.click(this.eventState.clickElement, eventArgs.options);
+
+            listeners.removeInternalEventListener(window, ['change'], onChange);
         }
 
         if (!domUtils.isElementFocusable(eventArgs.element))
             focusByRelatedElement(eventArgs.element);
 
+        if (browserUtils.isChrome && isCheckboxElement && !changed)
+            this._ensureCheckboxStateChanged(elementBoundToLabel);
+
+        if (isSelectElement)
+            this._toggleSelectOptionList(eventArgs);
+
+        return eventArgs;
+    }
+
+    _ensureCheckboxStateChanged (checkbox) {
+        checkbox.checked = !checkbox.checked;
+
+        eventSimulator.change(checkbox);
+    }
+
+    _toggleSelectOptionList (eventArgs) {
         // NOTE: Emulating the click event on the 'select' element doesn't expand the
         // dropdown with options (except chrome), therefore we should emulate it.
-        const isSelectElement      = domUtils.isSelectElement(eventArgs.element);
-        const isSelectWithDropDown = isSelectElement && styleUtils.getSelectElementSize(eventArgs.element) === 1;
+        const isSelectWithDropDown = styleUtils.getSelectElementSize(eventArgs.element) === 1;
 
         if (isSelectWithDropDown && this.eventState.simulateDefaultBehavior !== false) {
             if (selectElementUI.isOptionListExpanded(eventArgs.element))
@@ -221,8 +251,6 @@ export default class ClickAutomation extends VisibleElementAutomation {
             else
                 selectElementUI.expandOptionList(eventArgs.element);
         }
-
-        return eventArgs;
     }
 
     run (useStrictElementCheck) {

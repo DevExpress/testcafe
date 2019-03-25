@@ -51,6 +51,8 @@ export const findParent                             = hammerhead.utils.dom.findP
 export const getTopSameDomainWindow                 = hammerhead.utils.dom.getTopSameDomainWindow;
 
 export const isRadioButtonElement = el => isInputElement(el) && el.type === 'radio';
+export const isColorInputElement  = el => isInputElement(el) && el.type === 'color';
+export const isCheckboxElement    = el => isInputElement(el) && el.type === 'checkbox';
 
 function getElementsWithTabIndex (elements) {
     return arrayUtils.filter(elements, el => el.tabIndex > 0);
