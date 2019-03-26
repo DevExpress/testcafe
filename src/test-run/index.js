@@ -32,6 +32,7 @@ import {
 } from './commands/utils';
 
 import { StateSnapshot } from 'testcafe-hammerhead';
+import APPLY_ROLE_MODE from '../role/apply-mode';
 
 const lazyRequire                 = require('import-lazy')(require);
 const SessionController           = lazyRequire('./session-controller');
@@ -659,15 +660,20 @@ export default class TestRun extends AsyncEventEmitter {
         if (this.currentRoleId)
             this.usedRoleStates[this.currentRoleId] = await this.getStateSnapshot();
 
-        const stateSnapshot = this.usedRoleStates[role.id] || await this._getStateSnapshotFromRole(role);
+        const stateSnapshot    = this.usedRoleStates[role.id] || await this._getStateSnapshotFromRole(role);
+        const applyImmidiately = role.opts.applyRoleMode === APPLY_ROLE_MODE.onLocationHashChange && await this._getIsLocationHashChanged();
 
-        this.session.useStateSnapshot(stateSnapshot);
+        this.session.useStateSnapshot(stateSnapshot, applyImmidiately);
 
         this.currentRoleId = role.id;
 
         await bookmark.restore(callsite, stateSnapshot);
 
         this.disableDebugBreakpoints = false;
+    }
+
+    async _getIsLocationHashChanged () {
+        return await this.executeCommand(new serviceCommands.GetIsLocationHashChangedCommand());
     }
 
     // Get current URL
