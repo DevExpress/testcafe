@@ -19,7 +19,7 @@ function assertStack (err, expected) {
         parsedStack.forEach(function (frame, idx) {
             const filename   = frame.fileName;
             const isInternal = frame.fileName.indexOf('internal/') === 0 ||
-                             frame.fileName.indexOf(sep) < 0;
+                               frame.fileName.indexOf(sep) < 0;
 
             // NOTE: assert that stack is clean from internals
             expect(isInternal).to.be.false;
@@ -63,7 +63,14 @@ function assertThrow (fn, expectedErr) {
         actualErr = err;
     }
 
-    expect(actualErr).eql(expectedErr);
+    const keys = Object.keys(actualErr);
+
+    for (const key of keys) {
+        //NOTE: we skip the originError because it's APIError object
+        if (key !== 'originError')
+            expect(actualErr[key]).eql(expectedErr[key]);
+    }
+
 }
 
 module.exports = {
