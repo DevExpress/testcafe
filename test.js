@@ -21,9 +21,9 @@ test('first login', async t => {
         .expect(Selector('h1').innerText).eql('Authorized');
 });
 
-test('second login', async t => {
-    await t
-        .wait(3000)
-        .useRole(role)
-        .expect(Selector('h1').innerText).eql('Authorized');
-});
+// test('second login', async t => {
+//     await t
+//         .wait(3000)
+//         .useRole(role)
+//         .expect(Selector('h1').innerText).eql('Authorized');
+// });

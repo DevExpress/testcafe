@@ -116,6 +116,8 @@ export default class Driver {
 
         this.statusBar = null;
 
+        this.isLocationHashChanged = false;
+
         if (options.retryTestPages)
             browser.enableRetryingTestPages();
 
@@ -155,7 +157,8 @@ export default class Driver {
     }
 
     _onLocationHashChanged (e) {
-        this.contextStorage.setItem(LOCATION_HASH_CHANGED, e);
+        // What about after reload?
+        this.isLocationHashChanged = true;
     }
 
     // Error handling
@@ -545,9 +548,17 @@ export default class Driver {
         }));
     }
 
+    _onIsLocationHashChangedStatusCommand () {
+        this._onReady(new DriverStatus({
+            isCommandResult: true,
+            result:          this.getIsLocationHashChanged
+        }));
+    }
+
 
     // Routing
     _onReady (status) {
+        debugger;
         this._sendStatus(status)
             .then(command => {
                 if (command)
@@ -607,6 +618,9 @@ export default class Driver {
 
         else if (command.type === COMMAND_TYPE.backupStorages)
             this._onBackupStoragesCommand();
+
+        else if (command.type === COMMAND_TYPE.getIsLocationHashChanged)
+            this._onIsLocationHashChangedStatusCommand();
 
         else
             this._onActionCommand(command);

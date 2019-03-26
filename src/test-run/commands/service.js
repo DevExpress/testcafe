@@ -34,6 +34,12 @@ export class BackupStoragesCommand {
     }
 }
 
+export class GetIsLocationHashChangedCommand {
+    constructor () {
+        this.type = TYPE.getIsLocationHashChanged;
+    }
+}
+
 export class UnlockPageCommand {
     constructor () {
         this.type = TYPE.unlockPage;
