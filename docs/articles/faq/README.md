@@ -235,7 +235,7 @@ npm install -g {pluginName}
 This happens because either:
 
 * one of the [selectors](../documentation/test-api/selecting-page-elements/selectors/README.md) you used in test code does not match any DOM element, or
-* you have tried to specify an [action's target element](https://devexpress.github.io/testcafe/documentation/test-api/actions/#selecting-target-elements) using a wrong CSS selector or a client-side function that returns no element.
+* you have tried to specify an [action's target element](../documentation/test-api/actions/README.md#selecting-target-elements) using a wrong CSS selector or a client-side function that returns no element.
 
 To determine the cause of this issue, do the following:
 
@@ -250,10 +250,10 @@ After this, use the browser's development tools to check that:
   `visibility` set to `hidden` or the zero `width` or `height`);
 * the element's part targeted by the action is visible (the center of the element by default;
   it can be changed using the
-  [`offsetX` and `offsetY`](https://devexpress.github.io/testcafe/documentation/test-api/actions/action-options.html#mouse-action-options)
+  [`offsetX` and `offsetY`](../documentation/test-api/actions/action-options.md#mouse-action-options)
   parameters);
 * the element is not in an `<iframe>` (if it is, use the
-  [t.switchToIframe](https://devexpress.github.io/testcafe/documentation/test-api/working-with-iframes.html) method
+  [t.switchToIframe](../documentation/test-api/working-with-iframes.md) method
   to switch to the appropriate `<iframe>`).
 
 Also, try running the test at full screen.
@@ -266,15 +266,15 @@ Finally, try updating TestCafe to the latest version to see if the problem persi
 
 ### TestCafe reports that a request has failed. What are the possible reasons?
 
-When TestCafe does not receive a successful response from a server, it outputs an error that reads:
+When TestCafe does not receive a successful response from a server, it outputs the following error:
 
 ```text
 A request to https://www.example.com has failed. Use quarantine mode to perform additional attempts to execute this test.
 ```
 
-As the message says, you can enable [quarantine mode](../documentation/using-testcafe/command-line-interface.md#-q---quarantine-mode) that helps you complete the tests if the problem is flaky.
+[Quarantine mode](../documentation/using-testcafe/command-line-interface.md#-q---quarantine-mode) helps you complete the tests if the problem is occasional.
 
-However, we recommend that you take actions to find out the reason behind this issue and address it.
+However, we recommend that you determine the cause of this issue and address it.
 
 The following situations lead to this error most frequently:
 
@@ -294,7 +294,7 @@ To fix network issues, try the following:
 
 #### Not enough resources in the container or CI system
 
-If you run TestCafe in a container or CI system, try the following measures to diagnose the resource shortage.
+If you run TestCafe in a container or CI system, try the following steps to diagnose resource shortage:
 
 * Increase the container's resource limits.
 * Set the [concurrency factor](../documentation/using-testcafe/common-concepts/concurrent-test-execution.md) to `1`.
@@ -305,3 +305,11 @@ If this fixes the tests, it indicates that they require additional resources. Yo
 
 * Adjust the container's or environment's settings to allocate more resources.
 * If you use a commercial CI system, ask the service provider for an upgrade or consider a different CI service with better hardware or smaller loads.
+
+TestCafe users have positive experience with the following CI systems:
+
+* [Azure Pipelines](../documentation/continuous-integration/azure-devops.md)
+* [GitLab](../documentation/continuous-integration/gitlab.md)
+* [TravisCI](../documentation/continuous-integration/travis.md)
+* [CircleCI](../documentation/continuous-integration/circleci.md)
+* [AppVeyor](../documentation/continuous-integration/appveyor.md)
