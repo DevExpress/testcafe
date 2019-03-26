@@ -12,7 +12,6 @@ Therefore, you can avoid manual installation of browsers and the testing framewo
 * [Test in Docker Containers](#test-in-docker-containers)
 * [Test on the Host Machine](#test-on-the-host-machine)
 * [Test on Remote Devices](#test-on-remote-devices)
-* [Test Heavy Websites](#test-heavy-websites)
 * [Proxy Settings](#proxy-settings)
 
 ## Install Docker and Download TestCafe Image
@@ -61,10 +60,8 @@ This command takes the following parameters:
 * `${TESTCAFE_ARGS}` - arguments passed to the `testcafe` command. You can use any arguments from the TestCafe [command line interface](command-line-interface.md);
 
     ```sh
-    -it testcafe/testcafe 'chromium --no-sandbox,firefox' /tests/test.js
+    -it testcafe/testcafe chromium,firefox /tests/test.js
     ```
-
-    You can run tests in the Chromium and Firefox browsers preinstalled to the Docker image. Add the `--no-sandbox` flag to Chromium if the container is run in the unprivileged mode.
 
     You can pass a glob instead of the directory path in TestCafe parameters.
 
@@ -119,18 +116,6 @@ docker run --add-host=${EXTERNAL_HOSTNAME}:127.0.0.1 -p ${PORT1}:${PORT1} -p ${P
 ```
 
 where `${PORT1}` and `${PORT2}` are vacant container's ports, `${EXTERNAL_HOSTNAME}` is the host machine name.
-
-## Test Heavy Websites
-
-If you are testing a heavy website, you may need to allocate extra resources for the Docker image.
-
-The most common case is when the temporary file storage `/dev/shm` runs out of free space. The following example shows how to allow additional space (1GB) for this storage using the `--shm-size` option.
-
-```sh
-docker run --shm-size=1g -v /d/tests:/tests -it testcafe/testcafe firefox /tests/test.js
-```
-
-You can find a complete list of options that manage runtime constraints on resources in the [Docker documentation](https://docs.docker.com/engine/reference/run/#runtime-constraints-on-resources).
 
 ## Proxy Settings
 

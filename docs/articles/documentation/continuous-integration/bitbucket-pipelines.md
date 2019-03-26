@@ -86,7 +86,7 @@ The following example shows a command that runs tests in Chromium in headless mo
 
 ```json
 "scripts": {
-    "test":  "testcafe 'chromium:headless --no-sandbox --disable-setuid-sandbox --window-size=1920x1080' tests/index-test.js"
+    "test":  "testcafe 'chromium:headless --disable-setuid-sandbox --window-size=1920x1080' tests/index-test.js"
 }
 ```
 
@@ -101,7 +101,7 @@ TestCafe executes this command before tests are launched. After tests finish, Te
 
 ```json
 "scripts": {
-  "test":  "testcafe 'chromium:headless --no-sandbox --disable-setuid-sandbox --window-size=1920x1080' tests/index-test.js --app \"node server.js\""
+  "test":  "testcafe 'chromium:headless --disable-setuid-sandbox --window-size=1920x1080' tests/index-test.js --app \"node server.js\""
 }
 ```
 
