@@ -9,11 +9,11 @@ skipCreatedBefore: false
 
 # Issues and pull requests with these labels will be ignored. Set to `[]` to disable
 exemptLabels:
-   - STATE: Need response
-   - STATE: Need clarification
+   - `STATE: Need response`
+   - `STATE: Need clarification`
 
 # Label to add before locking, such as `outdated`. Set to `false` to disable
-lockLabel: 'STATE: auto-locked'
+lockLabel: `STATE: Auto-locked`
 
 # Comment to post before locking. Set to `false` to disable
 lockComment: >
