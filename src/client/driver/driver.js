@@ -547,17 +547,24 @@ export default class Driver {
         }));
     }
 
+    _onRestoreStoragesCommand (command) {
+        //perform restore
+        debugger;
+        storages.restore(command.storages);
+
+        this._onReady(new DriverStatus({ isCommandResult: true }));
+    }
+
     _onIsLocationHashChangedStatusCommand () {
         this._onReady(new DriverStatus({
             isCommandResult: true,
-            result:          this.getIsLocationHashChanged
+            result:          this.isLocationHashChanged
         }));
     }
 
 
     // Routing
     _onReady (status) {
-        debugger;
         this._sendStatus(status)
             .then(command => {
                 if (command)
@@ -617,6 +624,9 @@ export default class Driver {
 
         else if (command.type === COMMAND_TYPE.backupStorages)
             this._onBackupStoragesCommand();
+
+        else if (command.type === COMMAND_TYPE.restoreStorages)
+            this._onRestoreStoragesCommand(command);
 
         else if (command.type === COMMAND_TYPE.getIsLocationHashChanged)
             this._onIsLocationHashChangedStatusCommand();

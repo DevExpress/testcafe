@@ -34,6 +34,13 @@ export class BackupStoragesCommand {
     }
 }
 
+export class RestoreStoragesCommand {
+    constructor (storages) {
+        this.type     = TYPE.restoreStorages;
+        this.storages = storages;
+    }
+}
+
 export class GetIsLocationHashChangedCommand {
     constructor () {
         this.type = TYPE.getIsLocationHashChanged;

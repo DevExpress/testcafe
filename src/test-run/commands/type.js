@@ -43,6 +43,7 @@ export default {
     useRole:                    'useRole',
     testDone:                   'test-done',
     backupStorages:             'backup-storages',
+    restoreStorages:            'restore-storages',
     getIsLocationHashChanged:   'get-is-location-hash-changed',
     executeExpression:          'execute-expression',
     unlockPage:                 'unlock-page'
