@@ -284,8 +284,6 @@ Check if the Web and DNS servers are online and configured to accept requests to
 
 #### Unstable or improperly configured network connection
 
-To fix network issues, try the following:
-
 * Check the network connection's settings.
 * Ensure that your network equipment works properly. If possible, establish a direct connection to the Internet/Web server.
 * Check the proxy server's settings or try a different proxy server.
