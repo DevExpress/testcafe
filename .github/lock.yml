@@ -13,7 +13,7 @@ exemptLabels:
    - STATE: Need clarification
 
 # Label to add before locking, such as `outdated`. Set to `false` to disable
-lockLabel: STATE: Auto-locked
+lockLabel: "STATE: Auto-locked"
 
 # Comment to post before locking. Set to `false` to disable
 lockComment: >
