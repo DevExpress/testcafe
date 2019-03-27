@@ -107,13 +107,7 @@ export function focusAndSetSelection (element, simulateFocus, caretPos) {
 export function getElementBoundToLabel (element) {
     const labelWithForAttr = domUtils.closest(element, 'label[for]');
 
-    if (!labelWithForAttr)
-        return null;
-
-    const boundElementId = labelWithForAttr.getAttribute('for');
-    const boundElement   = document.getElementById(boundElementId);
-
-    return boundElement;
+    return labelWithForAttr ? labelWithForAttr.control : null;
 }
 
 export function focusByRelatedElement (element) {

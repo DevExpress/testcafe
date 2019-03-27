@@ -1,10 +1,10 @@
 import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
-import testCafeUI from '../../deps/testcafe-ui';
 import VisibleElementAutomation from '../visible-element-automation';
-import { focusAndSetSelection, focusByRelatedElement, getElementBoundToLabel } from '../../utils/utils';
+import { focusAndSetSelection } from '../../utils/utils';
 import cursor from '../../cursor';
 import nextTick from '../../utils/next-tick';
+import createClickCommand from './click-command';
 
 const Promise = hammerhead.Promise;
 
@@ -12,16 +12,11 @@ const extend           = hammerhead.utils.extend;
 const browserUtils     = hammerhead.utils.browser;
 const featureDetection = hammerhead.utils.featureDetection;
 const eventSimulator   = hammerhead.eventSandbox.eventSimulator;
-const listeners        = hammerhead.eventSandbox.listeners;
 
 const domUtils   = testCafeCore.domUtils;
-const styleUtils = testCafeCore.styleUtils;
 const eventUtils = testCafeCore.eventUtils;
 const arrayUtils = testCafeCore.arrayUtils;
 const delay      = testCafeCore.delay;
-
-const selectElementUI = testCafeUI.selectElement;
-
 
 export default class ClickAutomation extends VisibleElementAutomation {
     constructor (element, clickOptions) {
@@ -59,15 +54,6 @@ export default class ClickAutomation extends VisibleElementAutomation {
         };
 
         eventUtils.bind(element, 'blur', onblur, true);
-    }
-
-    _bindClickHandler (element) {
-        const onclick = e => {
-            eventUtils.preventDefault(e, true);
-            eventUtils.unbind(element, 'click', onclick);
-        };
-
-        eventUtils.bind(element, 'click', onclick);
     }
 
 
@@ -196,61 +182,11 @@ export default class ClickAutomation extends VisibleElementAutomation {
     }
 
     _click (eventArgs) {
-        const elementBoundToLabel = getElementBoundToLabel(eventArgs.element);
-        const isSelectElement     = domUtils.isSelectElement(eventArgs.element);
-        const isOptionElement     = domUtils.isOptionElement(eventArgs.element);
-        const isColorInputElement = domUtils.isColorInputElement(this.eventState.clickElement);
-        const isCheckboxElement   = elementBoundToLabel && domUtils.isCheckboxElement(elementBoundToLabel);
+        const clickCommand = createClickCommand(this.eventState, eventArgs);
 
-        let changed = false;
-
-        if (isOptionElement)
-            return eventArgs.element;
-
-        if (this.eventState.clickElement) {
-            if (browserUtils.isFirefox && isColorInputElement)
-                this._bindClickHandler(this.eventState.clickElement);
-
-            const onChange = () => {
-                changed = true;
-            };
-
-            listeners.addInternalEventListener(window, ['change'], onChange);
-
-            eventSimulator.click(this.eventState.clickElement, eventArgs.options);
-
-            listeners.removeInternalEventListener(window, ['change'], onChange);
-        }
-
-        if (!domUtils.isElementFocusable(eventArgs.element))
-            focusByRelatedElement(eventArgs.element);
-
-        if (browserUtils.isChrome && isCheckboxElement && !changed)
-            this._ensureCheckboxStateChanged(elementBoundToLabel);
-
-        if (isSelectElement)
-            this._toggleSelectOptionList(eventArgs);
+        clickCommand.run();
 
         return eventArgs;
-    }
-
-    _ensureCheckboxStateChanged (checkbox) {
-        checkbox.checked = !checkbox.checked;
-
-        eventSimulator.change(checkbox);
-    }
-
-    _toggleSelectOptionList (eventArgs) {
-        // NOTE: Emulating the click event on the 'select' element doesn't expand the
-        // dropdown with options (except chrome), therefore we should emulate it.
-        const isSelectWithDropDown = styleUtils.getSelectElementSize(eventArgs.element) === 1;
-
-        if (isSelectWithDropDown && this.eventState.simulateDefaultBehavior !== false) {
-            if (selectElementUI.isOptionListExpanded(eventArgs.element))
-                selectElementUI.collapseOptionList();
-            else
-                selectElementUI.expandOptionList(eventArgs.element);
-        }
     }
 
     run (useStrictElementCheck) {
