@@ -63,14 +63,7 @@ function assertThrow (fn, expectedErr) {
         actualErr = err;
     }
 
-    const keys = Object.keys(actualErr);
-
-    for (const key of keys) {
-        //NOTE: we skip the originError because it's APIError object
-        if (key !== 'originError')
-            expect(actualErr[key]).eql(expectedErr[key]);
-    }
-
+    expect(actualErr).eql(expectedErr);
 }
 
 module.exports = {
