@@ -29,8 +29,8 @@ class ElementClickCommand {
 }
 
 class ColorInputElementClickCommand extends ElementClickCommand {
-    constructor (clickElement, eventArgs) {
-        super(clickElement, eventArgs);
+    constructor (eventState, eventArgs) {
+        super(eventState, eventArgs);
     }
 
     run () {
@@ -51,8 +51,8 @@ class ColorInputElementClickCommand extends ElementClickCommand {
 }
 
 class SelectElementClickCommand extends ElementClickCommand {
-    constructor (clickElement, eventArgs) {
-        super(clickElement, eventArgs);
+    constructor (eventState, eventArgs) {
+        super(eventState, eventArgs);
     }
 
     run () {
@@ -77,8 +77,8 @@ class SelectElementClickCommand extends ElementClickCommand {
 }
 
 class OptionElementClickCommand extends ElementClickCommand {
-    constructor (clickElement, eventArgs) {
-        super(clickElement, eventArgs);
+    constructor (eventState, eventArgs) {
+        super(eventState, eventArgs);
     }
 
     run () {
@@ -87,8 +87,8 @@ class OptionElementClickCommand extends ElementClickCommand {
 }
 
 class LabelledCheckboxElementClickCommand extends ElementClickCommand {
-    constructor (clickElement, eventArgs) {
-        super(clickElement, eventArgs);
+    constructor (eventState, eventArgs) {
+        super(eventState, eventArgs);
 
         this.checkbox = getElementBoundToLabel(this.eventArgs.element);
     }
@@ -117,26 +117,26 @@ class LabelledCheckboxElementClickCommand extends ElementClickCommand {
     }
 }
 
-export default function (clickElement, eventArgs) {
+export default function (eventState, eventArgs) {
     const elementBoundToLabel = getElementBoundToLabel(eventArgs.element);
     const isSelectElement     = domUtils.isSelectElement(eventArgs.element);
     const isOptionElement     = domUtils.isOptionElement(eventArgs.element);
-    const isColorInputElement = domUtils.isColorInputElement(clickElement);
+    const isColorInputElement = domUtils.isColorInputElement(eventState.clickElement);
     const isLabelledCheckbox  = elementBoundToLabel && domUtils.isCheckboxElement(elementBoundToLabel);
 
     if (isSelectElement)
-        return new SelectElementClickCommand(clickElement, eventArgs);
+        return new SelectElementClickCommand(eventState, eventArgs);
 
     if (isOptionElement)
-        return new OptionElementClickCommand(clickElement, eventArgs);
+        return new OptionElementClickCommand(eventState, eventArgs);
 
     if (isColorInputElement)
-        return new ColorInputElementClickCommand(clickElement, eventArgs);
+        return new ColorInputElementClickCommand(eventState, eventArgs);
 
     if (isLabelledCheckbox)
-        return new LabelledCheckboxElementClickCommand(clickElement, eventArgs);
+        return new LabelledCheckboxElementClickCommand(eventState, eventArgs);
 
-    return new ElementClickCommand(clickElement, eventArgs);
+    return new ElementClickCommand(eventState, eventArgs);
 }
 
 
