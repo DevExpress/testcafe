@@ -109,13 +109,13 @@ test('test', async t => {
 
 ### How do I work with configuration files and environment variables?
 
-TestCafe allows you to specify its settings in a [configuration file](../documentation/using-testcafe/configuration-file.md).
+TestCafe allows you to specify settings in a [configuration file](../documentation/using-testcafe/configuration-file.md).
 
-If you need to use custom proparties in the configuration, you can create a separate configuration file and import it to the tests.
+If you need to use custom properties in the configuration, create a separate configuration file and import it to the tests.
 
 > Vote for the following GitHub issue if you want us to support custom properties in `.testcaferc.json`: [#3593](https://github.com/DevExpress/testcafe/issues/3593)
 
-For example, you need to pass a website's base URL to test code. In this instance, you can create the following `config.json` file:
+For example, you can create the following `config.json` file to pass a website's base URL to test code:
 
 ```json
 {
@@ -123,7 +123,7 @@ For example, you need to pass a website's base URL to test code. In this instanc
 }
 ```
 
-In the test code, import it as you would do with a regular JavaScript module:
+In the test code, import it like a regular JavaScript module:
 
 ```js
 import config from './config';
@@ -235,7 +235,7 @@ npm install -g {pluginName}
 This happens because either:
 
 * one of the [selectors](../documentation/test-api/selecting-page-elements/selectors/README.md) you used in test code does not match any DOM element, or
-* you have tried to specify an [action's target element](../documentation/test-api/actions/README.md#selecting-target-elements) using a wrong CSS selector or a client-side function that returns no element.
+* you used a incorrect CSS selector or a client-side function that returns no element to specify an [action's target element](../documentation/test-api/actions/README.md#selecting-target-elements).
 
 To determine the cause of this issue, do the following:
 
@@ -256,7 +256,7 @@ After this, use the browser's development tools to check that:
   [t.switchToIframe](../documentation/test-api/working-with-iframes.md) method
   to switch to the appropriate `<iframe>`).
 
-Also, try running the test at full screen.
+Also, try running the test in full screen.
 Use the [t.maximizeWindow](../documentation/test-api/actions/resize-window.md#maximizing-the-window)
 and [t.resizeWindow](../documentation/test-api/actions/resize-window.md#setting-the-window-size) actions
 to control the browser window size. If the test passes, it means your webpage hides
@@ -287,14 +287,14 @@ Check if the Web and DNS servers are online and configured to accept requests to
 To fix network issues, try the following:
 
 * Check the network connection's settings.
-* Ensure that your network equipment works properly. If possible, try to establish direct connection to the Internet/Web server.
+* Ensure that your network equipment works properly. If possible, establish a direct connection to the Internet/Web server.
 * Check the proxy server's settings or try a different proxy server.
 * Use VPN.
 * Connect to a different network.
 
 #### Not enough resources in the container or CI system
 
-If you run TestCafe in a container or CI system, try the following steps to diagnose resource shortage:
+If you run TestCafe in a container or CI system, use the following steps to diagnose resource shortage:
 
 * Increase the container's resource limits.
 * Set the [concurrency factor](../documentation/using-testcafe/common-concepts/concurrent-test-execution.md) to `1`.
