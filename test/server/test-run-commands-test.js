@@ -5,7 +5,16 @@ const SelectorBuilder         = require('../../lib/client-functions/selectors/se
 const assertThrow             = require('./helpers/assert-error').assertThrow;
 
 function createCommand (obj) {
-    return createCommandFromObject(obj, {});
+    try {
+        return createCommandFromObject(obj, {});
+    }
+    catch (e) {
+        // TODO: add an assertion for APIError
+        if (e.originError)
+            e.originError = null;
+
+        throw e;
+    }
 }
 
 function assertErrorMessage (fn, expectedErrMessage) {
@@ -1176,7 +1185,8 @@ describe('Test run commands', () => {
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but undefined was passed.',
 
-                    callsite: null
+                    callsite:    null,
+                    originError: null
                 }
             );
 
@@ -1194,7 +1204,8 @@ describe('Test run commands', () => {
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but number was passed.',
 
-                    callsite: null
+                    callsite:    null,
+                    originError: null
                 }
             );
 
@@ -1267,7 +1278,8 @@ describe('Test run commands', () => {
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but undefined was passed.',
 
-                    callsite: null
+                    callsite:    null,
+                    originError: null
                 }
             );
 
@@ -1285,7 +1297,8 @@ describe('Test run commands', () => {
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector,' +
                                      ' node snapshot or a Promise returned by a Selector, but boolean was passed.',
 
-                    callsite: null
+                    callsite:    null,
+                    originError: null
                 }
             );
 
@@ -1360,7 +1373,8 @@ describe('Test run commands', () => {
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but undefined was passed.',
 
-                    callsite: null
+                    callsite:    null,
+                    originError: null
                 }
             );
 
@@ -1378,7 +1392,8 @@ describe('Test run commands', () => {
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but boolean was passed.',
 
-                    callsite: null
+                    callsite:    null,
+                    originError: null
                 }
             );
 
@@ -1432,7 +1447,8 @@ describe('Test run commands', () => {
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but undefined was passed.',
 
-                    callsite: null
+                    callsite:    null,
+                    originError: null
                 }
             );
 
@@ -1450,7 +1466,8 @@ describe('Test run commands', () => {
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but number was passed.',
 
-                    callsite: null
+                    callsite:    null,
+                    originError: null
                 }
             );
 
@@ -1523,7 +1540,8 @@ describe('Test run commands', () => {
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but undefined was passed.',
 
-                    callsite: null
+                    callsite:    null,
+                    originError: null
                 }
             );
 
@@ -1541,7 +1559,8 @@ describe('Test run commands', () => {
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but number was passed.',
 
-                    callsite: null
+                    callsite:    null,
+                    originError: null
                 }
             );
 
@@ -1629,7 +1648,8 @@ describe('Test run commands', () => {
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but undefined was passed.',
 
-                    callsite: null
+                    callsite:    null,
+                    originError: null
                 }
             );
 
@@ -1647,7 +1667,8 @@ describe('Test run commands', () => {
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but number was passed.',
 
-                    callsite: null
+                    callsite:    null,
+                    originError: null
                 }
             );
 
@@ -1665,7 +1686,8 @@ describe('Test run commands', () => {
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but undefined was passed.',
 
-                    callsite: null
+                    callsite:    null,
+                    originError: null
                 }
             );
 
@@ -1684,7 +1706,8 @@ describe('Test run commands', () => {
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but number was passed.',
 
-                    callsite: null
+                    callsite:    null,
+                    originError: null
                 }
             );
 
@@ -1720,7 +1743,8 @@ describe('Test run commands', () => {
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but undefined was passed.',
 
-                    callsite: null
+                    callsite:    null,
+                    originError: null
                 }
             );
 
@@ -1738,7 +1762,8 @@ describe('Test run commands', () => {
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but number was passed.',
 
-                    callsite: null
+                    callsite:    null,
+                    originError: null
                 }
             );
 
@@ -1864,7 +1889,8 @@ describe('Test run commands', () => {
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but undefined was passed.',
 
-                    callsite: null
+                    callsite:    null,
+                    originError: null
                 }
             );
 
@@ -1882,7 +1908,8 @@ describe('Test run commands', () => {
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but object was passed.',
 
-                    callsite: null
+                    callsite:    null,
+                    originError: null
                 }
             );
 
@@ -1985,7 +2012,8 @@ describe('Test run commands', () => {
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but undefined was passed.',
 
-                    callsite: null
+                    callsite:    null,
+                    originError: null
                 }
             );
 
@@ -2003,7 +2031,8 @@ describe('Test run commands', () => {
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but object was passed.',
 
-                    callsite: null
+                    callsite:    null,
+                    originError: null
                 }
             );
 
@@ -2106,7 +2135,8 @@ describe('Test run commands', () => {
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but undefined was passed.',
 
-                    callsite: null
+                    callsite:    null,
+                    originError: null
                 }
             );
 
@@ -2124,7 +2154,8 @@ describe('Test run commands', () => {
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but number was passed.',
 
-                    callsite: null
+                    callsite:    null,
+                    originError: null
                 }
             );
 
@@ -2143,7 +2174,8 @@ describe('Test run commands', () => {
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but boolean was passed.',
 
-                    callsite: null
+                    callsite:    null,
+                    originError: null
                 }
             );
 
@@ -2336,7 +2368,8 @@ describe('Test run commands', () => {
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but undefined was passed.',
 
-                    callsite: null
+                    callsite:    null,
+                    originError: null
                 }
             );
 
@@ -2354,7 +2387,8 @@ describe('Test run commands', () => {
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but number was passed.',
 
-                    callsite: null
+                    callsite:    null,
+                    originError: null
                 }
             );
 
@@ -2493,7 +2527,8 @@ describe('Test run commands', () => {
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but undefined was passed.',
 
-                    callsite: null
+                    callsite:    null,
+                    originError: null
                 }
             );
 
@@ -2511,7 +2546,8 @@ describe('Test run commands', () => {
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but number was passed.',
 
-                    callsite: null
+                    callsite:    null,
+                    originError: null
                 }
             );
         });
@@ -2836,7 +2872,8 @@ describe('Test run commands', () => {
                     actualValue:     'invalid js code',
                     errMsg:          'Unexpected identifier',
                     code:            'E59',
-                    callsite:        null
+                    callsite:        null,
+                    originError:     null
                 }
             );
         });
@@ -2945,7 +2982,8 @@ describe('Test run commands', () => {
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but undefined was passed.',
 
-                    callsite: null
+                    callsite:    null,
+                    originError: null
                 }
             );
 
@@ -2965,7 +3003,8 @@ describe('Test run commands', () => {
                     selectorName:    'selector',
                     errMsg:          'yo is not defined',
 
-                    callsite: null
+                    callsite:    null,
+                    originError: null
                 }
             );
         });

@@ -28,7 +28,7 @@ export default function processTestFnError (err) {
         return err;
 
     if (err && err instanceof APIError)
-        return new UncaughtErrorInTestCode(err.rawMessage, err.callsite);
+        return new UncaughtErrorInTestCode(err);
 
     if (err instanceof Error) {
         const isAssertionError = err.name === 'AssertionError' || err.constructor.name === 'AssertionError';
