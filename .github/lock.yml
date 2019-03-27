@@ -8,7 +8,9 @@ daysUntilLock: 10
 skipCreatedBefore: false
 
 # Issues and pull requests with these labels will be ignored. Set to `[]` to disable
-exemptLabels: []
+exemptLabels:
+   - STATE: Need response
+   - STATE: Need clarification
 
 # Label to add before locking, such as `outdated`. Set to `false` to disable
 lockLabel: false
@@ -17,7 +19,9 @@ lockLabel: false
 lockComment: >
   This thread has been automatically locked since there has not been
   any recent activity after it was closed. Please open a new issue for
-  related bugs or feature requests.
+  related [bugs](https://github.com/DevExpress/testcafe/issues/new?template=bug-report.md) or [feature requests](https://github.com/DevExpress/testcafe/issues/new?template=feature_request.md).
+  For TestCafe API, usage and configuration inquiries, we recommend asking them on [StackOverflow](https://stackoverflow.com/questions/ask?tags=testcafe).
+    
 
 # Assign `resolved` as the reason for locking. Set to `false` to disable
 setLockReason: true
