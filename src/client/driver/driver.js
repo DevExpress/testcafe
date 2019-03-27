@@ -548,8 +548,6 @@ export default class Driver {
     }
 
     _onRestoreStoragesCommand (command) {
-        //perform restore
-        debugger;
         storages.restore(command.storages);
 
         this._onReady(new DriverStatus({ isCommandResult: true }));

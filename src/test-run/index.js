@@ -660,14 +660,15 @@ export default class TestRun extends AsyncEventEmitter {
         if (this.currentRoleId)
             this.usedRoleStates[this.currentRoleId] = await this.getStateSnapshot();
 
-        const stateSnapshot          = this.usedRoleStates[role.id] || await this._getStateSnapshotFromRole(role);
-        const applyWithoutPageReload = role.opts.applyRoleMode === APPLY_ROLE_MODE.onLocationHashChange && await this._getIsLocationHashChanged();
+        const isFirstRoleInitialization = role.phase !== ROLE_PHASE.initialized;
+        const stateSnapshot             = this.usedRoleStates[role.id] || await this._getStateSnapshotFromRole(role);
 
-        if (applyWithoutPageReload) {
-            this.session.setCookie(stateSnapshot.cookies);
+        if (role.opts.applyRoleMode === APPLY_ROLE_MODE.immidiately) {
+            if (!isFirstRoleInitialization) {
+                this.session.setCookie(stateSnapshot.cookies);
 
-            // if role is uninitialied when we need to a command to restore storages.
-            await this._applyStorages(stateSnapshot.storages);
+                await this._restoreStorages(stateSnapshot.storages);
+            }
         }
         else
             this.session.useStateSnapshot(stateSnapshot);
@@ -679,7 +680,7 @@ export default class TestRun extends AsyncEventEmitter {
         this.disableDebugBreakpoints = false;
     }
 
-    async _applyStorages (storages) {
+    async _restoreStorages (storages) {
         return await this.executeCommand(new serviceCommands.RestoreStoragesCommand(storages));
     }
 

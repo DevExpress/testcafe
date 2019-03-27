@@ -1,4 +1,4 @@
 export default {
-    onFirstPageLoad:      'onFirstPageLoad',
-    onLocationHashChange: 'onLocationHashChange'
+    onFirstPageLoad: 'onFirstPageLoad',
+    immidiately:     'immidiately'
 };

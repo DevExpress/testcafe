@@ -5,7 +5,7 @@ fixture `Test authentication`
 
 const role = Role(`http://localhost:4100/#login`, async t => await t.click('input'), {
     preserveUrl:   true,
-    applyRoleMode: 'onLocationHashChange'
+    applyRoleMode: 'immidiately'
 });
 const reloadPage = new ClientFunction(() => location.reload(true));
 
@@ -21,9 +21,9 @@ test('first login', async t => {
         .expect(Selector('h1').innerText).eql('Authorized');
 });
 
-// test('second login', async t => {
-//     await t
-//         .wait(3000)
-//         .useRole(role)
-//         .expect(Selector('h1').innerText).eql('Authorized');
-// });
+test('second login', async t => {
+    await t
+        .wait(3000)
+        .useRole(role)
+        .expect(Selector('h1').innerText).eql('Authorized');
+});
