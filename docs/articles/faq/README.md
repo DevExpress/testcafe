@@ -248,10 +248,7 @@ After this, use the browser's development tools to check that:
 * the element is present on the page;
 * the element is visible (TestCafe considers it visible if it does not have `display` set to `none`,
   `visibility` set to `hidden` or the zero `width` or `height`);
-* the element's part targeted by the action is visible (the center of the element by default;
-  it can be changed using the
-  [`offsetX` and `offsetY`](../documentation/test-api/actions/action-options.md#mouse-action-options)
-  parameters);
+* the element's part targeted by the action is visible (the center of the element, or a point specified by the [`offsetX` and `offsetY`](../documentation/test-api/actions/action-options.md#mouse-action-options) parameters);
 * the element is not in an `<iframe>` (if it is, use the
   [t.switchToIframe](../documentation/test-api/working-with-iframes.md) method
   to switch to the appropriate `<iframe>`).
@@ -272,7 +269,7 @@ When TestCafe does not receive a successful response from a server, it outputs t
 A request to https://www.example.com has failed. Use quarantine mode to perform additional attempts to execute this test.
 ```
 
-[Quarantine mode](../documentation/using-testcafe/command-line-interface.md#-q---quarantine-mode) helps you complete the tests if the problem is occasional.
+You can use [quarantine mode](../documentation/using-testcafe/command-line-interface.md#-q---quarantine-mode) to complete the tests if this problem occurs infrequently.
 
 However, we recommend that you determine the cause of this issue and address it.
 
