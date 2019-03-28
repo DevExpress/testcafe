@@ -273,7 +273,7 @@ You can use [quarantine mode](../documentation/using-testcafe/command-line-inter
 
 However, we recommend that you determine the cause of this issue and address it.
 
-The following situations lead to this error most frequently:
+This error can occur in the following situations:
 
 #### The Web server is not responding
 
@@ -299,9 +299,9 @@ If you run TestCafe in a container or CI system, use the following steps to diag
 If this fixes the tests, it indicates that they require additional resources. You can address this in the following ways:
 
 * Adjust the container's or environment's settings to allocate more resources.
-* If you use a commercial CI system, ask the service provider for an upgrade or consider a different CI service with better hardware or smaller loads.
+* If you use a cloud-based CI system, ask the service provider for an upgrade or consider a different CI service with better hardware or smaller loads.
 
-TestCafe users have positive experience with the following CI systems:
+According to users' feedback, the following CI systems work best with TestCafe:
 
 * [Azure Pipelines](../documentation/continuous-integration/azure-devops.md)
 * [GitLab](../documentation/continuous-integration/gitlab.md)
