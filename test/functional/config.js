@@ -203,8 +203,6 @@ testingEnvironments[testingEnvironmentNames.legacy] = {
     isLocalBrowsers:    true,
     isHeadlessBrowsers: true,
 
-    retryTestPages: true,
-
     browsers: [
         {
             platform:    'Windows 10',
