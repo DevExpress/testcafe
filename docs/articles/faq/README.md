@@ -17,6 +17,7 @@ permalink: /faq/
   * [When I run a TestCafe test, I get an unexpected error. What can cause that?](#when-i-run-a-testcafe-test-i-get-an-unexpected-error-what-can-cause-that)
   * [I have installed TestCafe plugins but they do not work. What have I done wrong?](#i-have-installed-testcafe-plugins-but-they-do-not-work-what-have-i-done-wrong)
   * [My test fails because TestCafe could not find the required webpage element. Why does this happen?](#my-test-fails-because-testcafe-could-not-find-the-required-webpage-element-why-does-this-happen)
+  * [TestCafe reports that a request has failed. What are the possible reasons?](#testcafe-reports-that-a-request-has-failed-what-are-the-possible-reasons)
 
 ## General Questions
 
@@ -108,11 +109,13 @@ test('test', async t => {
 
 ### How do I work with configuration files and environment variables?
 
-TestCafe works without any configuration.
-It does not have any config files where you can place custom variables.
-However, you can introduce your own configuration file and import it to the test code.
+TestCafe allows you to specify settings in a [configuration file](../documentation/using-testcafe/configuration-file.md).
 
-For example, you need to pass a website's base URL to test code. In this instance, you can create the following `config.json` file:
+If you need to use custom properties in the configuration, create a separate configuration file and import it to the tests.
+
+> Vote for the following GitHub issue if you want us to support custom properties in `.testcaferc.json`: [#3593](https://github.com/DevExpress/testcafe/issues/3593)
+
+For example, you can create the following `config.json` file to pass a website's base URL to test code:
 
 ```json
 {
@@ -120,7 +123,7 @@ For example, you need to pass a website's base URL to test code. In this instanc
 }
 ```
 
-In the test code, import it as you would do with a regular JavaScript module.
+In the test code, import it like a regular JavaScript module:
 
 ```js
 import config from './config';
@@ -137,7 +140,7 @@ The following command passes the `env` argument to the test code:
 testcafe chrome test.js --env=development
 ```
 
-In the test, use an argument parser library (like `minimist`) to parse custom arguments.
+In the test, use an argument parser library (like `minimist`) to parse custom arguments:
 
 ```js
 import minimist from 'minimist';
@@ -153,7 +156,7 @@ test('check environment', async t => {
 });
 ```
 
-To set an environment variable use the following command on Windows.
+To set an environment variable, use the following command on Windows:
 
 ```sh
 set DEV_MODE=true
@@ -232,7 +235,7 @@ npm install -g {pluginName}
 This happens because either:
 
 * one of the [selectors](../documentation/test-api/selecting-page-elements/selectors/README.md) you used in test code does not match any DOM element, or
-* you have tried to specify an [action's target element](https://devexpress.github.io/testcafe/documentation/test-api/actions/#selecting-target-elements) using a wrong CSS selector or a client-side function that returns no element.
+* you used a incorrect CSS selector or a client-side function that returns no element to specify an [action's target element](../documentation/test-api/actions/README.md#selecting-target-elements).
 
 To determine the cause of this issue, do the following:
 
@@ -245,18 +248,63 @@ After this, use the browser's development tools to check that:
 * the element is present on the page;
 * the element is visible (TestCafe considers it visible if it does not have `display` set to `none`,
   `visibility` set to `hidden` or the zero `width` or `height`);
-* the element's part targeted by the action is visible (the center of the element by default;
-  it can be changed using the
-  [`offsetX` and `offsetY`](https://devexpress.github.io/testcafe/documentation/test-api/actions/action-options.html#mouse-action-options)
-  parameters);
+* the element's part targeted by the action is visible (the center of the element, or a point specified by the [`offsetX` and `offsetY`](../documentation/test-api/actions/action-options.md#mouse-action-options) parameters);
 * the element is not in an `<iframe>` (if it is, use the
-  [t.switchToIframe](https://devexpress.github.io/testcafe/documentation/test-api/working-with-iframes.html) method
+  [t.switchToIframe](../documentation/test-api/working-with-iframes.md) method
   to switch to the appropriate `<iframe>`).
 
-Also, try running the test at full screen.
+Also, try running the test in full screen.
 Use the [t.maximizeWindow](../documentation/test-api/actions/resize-window.md#maximizing-the-window)
 and [t.resizeWindow](../documentation/test-api/actions/resize-window.md#setting-the-window-size) actions
 to control the browser window size. If the test passes, it means your webpage hides
 the target element when the window is resized to smaller dimensions.
 
 Finally, try updating TestCafe to the latest version to see if the problem persists.
+
+### TestCafe reports that a request has failed. What are the possible reasons?
+
+When TestCafe does not receive a successful response from a server, it outputs the following error:
+
+```text
+A request to https://www.example.com has failed. Use quarantine mode to perform additional attempts to execute this test.
+```
+
+You can use [quarantine mode](../documentation/using-testcafe/command-line-interface.md#-q---quarantine-mode) to complete the tests if this problem occurs infrequently.
+
+However, we recommend that you determine the cause of this issue and address it.
+
+This error can occur in the following situations:
+
+#### The Web server is not responding
+
+Check if the Web and DNS servers are online and configured to accept requests to this URL.
+
+#### Unstable or improperly configured network connection
+
+* Check the network connection's settings.
+* Ensure that your network equipment works properly. If possible, establish a direct connection to the Internet/Web server.
+* Check the proxy server's settings or try a different proxy server.
+* Use VPN.
+* Connect to a different network.
+
+#### Not enough resources in the container or CI system
+
+If you run TestCafe in a container or CI system, use the following steps to diagnose resource shortage:
+
+* Increase the container's resource limits.
+* Set the [concurrency factor](../documentation/using-testcafe/common-concepts/concurrent-test-execution.md) to `1`.
+* Deploy the application's Web server on a separate machine.
+* Run tests on a local device outside a container.
+
+If this fixes the tests, it indicates that they require additional resources. You can address this in the following ways:
+
+* Adjust the container's or environment's settings to allocate more resources.
+* If you use a cloud-based CI system, ask the service provider for an upgrade or consider a different CI service with better hardware or smaller loads.
+
+According to users' feedback, the following CI systems work best with TestCafe:
+
+* [Azure Pipelines](../documentation/continuous-integration/azure-devops.md)
+* [GitLab](../documentation/continuous-integration/gitlab.md)
+* [TravisCI](../documentation/continuous-integration/travis.md)
+* [CircleCI](../documentation/continuous-integration/circleci.md)
+* [AppVeyor](../documentation/continuous-integration/appveyor.md)
