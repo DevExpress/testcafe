@@ -26,6 +26,9 @@ export const isAnchorElement                        = hammerhead.utils.dom.isAnc
 export const isImgElement                           = hammerhead.utils.dom.isImgElement;
 export const isFormElement                          = hammerhead.utils.dom.isFormElement;
 export const isSelectElement                        = hammerhead.utils.dom.isSelectElement;
+export const isRadioButtonElement                   = hammerhead.utils.dom.isRadioButtonElement;
+export const isColorInputElement                    = hammerhead.utils.dom.isColorInputElement;
+export const isCheckboxElement                      = hammerhead.utils.dom.isCheckboxElement;
 export const isOptionElement                        = hammerhead.utils.dom.isOptionElement;
 export const isSVGElement                           = hammerhead.utils.dom.isSVGElement;
 export const isMapElement                           = hammerhead.utils.dom.isMapElement;
@@ -49,10 +52,6 @@ export const closest                                = hammerhead.utils.dom.close
 export const getParents                             = hammerhead.utils.dom.getParents;
 export const findParent                             = hammerhead.utils.dom.findParent;
 export const getTopSameDomainWindow                 = hammerhead.utils.dom.getTopSameDomainWindow;
-
-export const isRadioButtonElement = el => isInputElement(el) && el.type === 'radio';
-export const isColorInputElement  = el => isInputElement(el) && el.type === 'color';
-export const isCheckboxElement    = el => isInputElement(el) && el.type === 'checkbox';
 
 function getElementsWithTabIndex (elements) {
     return arrayUtils.filter(elements, el => el.tabIndex > 0);
