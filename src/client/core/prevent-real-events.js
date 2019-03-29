@@ -44,11 +44,12 @@ function preventRealEventHandler (e, dispatched, preventDefault, cancelHandlers,
         // invisible don't lead to blurring (in MSEdge, focus/blur are sync).
         if (e.type === 'blur') {
             if (browserUtils.isIE && browserUtils.version < 12) {
-                const isElementInvisible = !isWindow(target) && get(target, 'display') === 'none';
-                let elementParents     = null;
-                let invisibleParents   = false;
+                const isWindowInstance   = isWindow(target);
+                const isElementInvisible = !isWindowInstance && get(target, 'display') === 'none';
+                let elementParents       = null;
+                let invisibleParents     = false;
 
-                if (!isElementInvisible) {
+                if (!isWindowInstance && !isElementInvisible) {
                     elementParents   = getParents(target);
                     invisibleParents = filter(elementParents, parent => get(parent, 'display') === 'none');
                 }
