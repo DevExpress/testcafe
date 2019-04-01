@@ -2,6 +2,7 @@ import path from 'path';
 import OS from 'os-family';
 import { APIError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
+import { SPECIAL_BLANK_PAGE } from 'testcafe-hammerhead';
 
 const PROTOCOL_RE           = /^([\w-]+?)(?=:\/\/)/;
 const SUPPORTED_PROTOCOL_RE = /^(https?|file):/;
@@ -29,12 +30,12 @@ export function assertUrl (url, callsiteName) {
     const hasUnsupportedProtocol = protocol && !SUPPORTED_PROTOCOL_RE.test(url);
     const isWinAbsolutePath      = OS.win && WIN_ABSOLUTE_PATH_RE.test(url);
 
-    if (hasUnsupportedProtocol && !isWinAbsolutePath && url !== 'about:blank')
+    if (hasUnsupportedProtocol && !isWinAbsolutePath && url !== SPECIAL_BLANK_PAGE)
         throw new APIError(callsiteName, RUNTIME_ERRORS.unsupportedUrlProtocol, url, protocol[0]);
 }
 
 export function resolvePageUrl (url, testFileName) {
-    if (SUPPORTED_PROTOCOL_RE.test(url) || url === 'about:blank')
+    if (SUPPORTED_PROTOCOL_RE.test(url) || url === SPECIAL_BLANK_PAGE)
         return url;
 
     if (isAbsolutePath(url) || RELATIVE_PATH_RE.test(url))

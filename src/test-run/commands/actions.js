@@ -251,7 +251,8 @@ export class NavigateToCommand extends CommandBase {
     _getAssignableProperties () {
         return [
             { name: 'url', type: urlArgument, required: true },
-            { name: 'stateSnapshot', type: nullableStringArgument, defaultValue: null }
+            { name: 'stateSnapshot', type: nullableStringArgument, defaultValue: null },
+            { name: 'forceReload', type: booleanArgument, defaultValue: false }
         ];
     }
 }

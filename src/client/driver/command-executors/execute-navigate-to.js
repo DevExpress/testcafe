@@ -17,7 +17,7 @@ export default function executeNavigateTo (command) {
         .then(() => {
             const requestBarrier = new RequestBarrier();
 
-            hammerhead.navigateTo(command.url);
+            hammerhead.navigateTo(command.url, command.forceReload);
 
             return hammerhead.Promise.all([requestBarrier.wait(), pageUnloadBarrier.wait()]);
         })
