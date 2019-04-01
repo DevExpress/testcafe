@@ -1,5 +1,19 @@
 # Changelog
 
+## v1.1.1 (2019-4-1)
+
+### Bug Fixes
+
+* TestCafe now shows a more concise message when it can't find and run Chrome or Firefox ([#3534](https://github.com/DevExpress/testcafe/issues/3534))
+* TestCafe no longer creates temprorary video files when video recording is enabled in the concurrency mode([#3508](https://github.com/DevExpress/testcafe/issues/3508))
+* Now `--no-sandbox` and `--disable-dev-shm-usage` flags are applied automaticaly when TestCafe runs in a Docker container ([#3531](https://github.com/DevExpress/testcafe/issues/3531))
+* Now TestCafe hides spinner if test compilation is failed in the Live mode ([#3451](https://github.com/DevExpress/testcafe/issues/3451))
+* TestCafe now properly hides spinner when displaying messages in the Live mode ([#3452](https://github.com/DevExpress/testcafe/issues/3452))
+* TypeScript definisions for `t.expect().contains` were fixed to allow asserting different types ([#3537](https://github.com/DevExpress/testcafe/issues/3537))
+* The `keyPress` event simulation works properly on Android now ([#2236](https://github.com/DevExpress/testcafe/issues/2236))
+* TestCafe no longer crashes when a test page has headers bigger than 8kB ([testcafe-hammerhead/#1885](https://github.com/DevExpress/testcafe-hammerhead/issues/1885))
+* Salesforce Lightning Experience components are now rendered correctly when tested with TestCafe ([testcafe-hammerhead/#1874](https://github.com/DevExpress/testcafe-hammerhead/issues/1874))
+
 ## v1.1.0 (2019-2-28)
 
 ### Enhancements
