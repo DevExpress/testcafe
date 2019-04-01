@@ -44,7 +44,7 @@ export default {
         A JavaScript error occurred on ${formatUrl(err.pageDestUrl)}.
         Repeat test actions in the browser and check the console for errors.
         If you see this error, it means that the tested website caused it. You can fix it or disable tracking JavaScript errors in TestCafe. To do the latter, enable the "--skip-js-errors" option.
-        If this error does not occur, please write a new issue
+        If this error does not occur, please write a new issue at:
         ${formatUrl(EXTERNAL_LINKS.createNewIssue)}.
 
         JavaScript error details:
