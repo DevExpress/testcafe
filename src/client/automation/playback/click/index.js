@@ -1,10 +1,10 @@
 import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
-import testCafeUI from '../../deps/testcafe-ui';
 import VisibleElementAutomation from '../visible-element-automation';
-import { focusAndSetSelection, focusByRelatedElement } from '../../utils/utils';
+import { focusAndSetSelection } from '../../utils/utils';
 import cursor from '../../cursor';
 import nextTick from '../../utils/next-tick';
+import createClickCommand from './click-command';
 
 const Promise = hammerhead.Promise;
 
@@ -14,13 +14,9 @@ const featureDetection = hammerhead.utils.featureDetection;
 const eventSimulator   = hammerhead.eventSandbox.eventSimulator;
 
 const domUtils   = testCafeCore.domUtils;
-const styleUtils = testCafeCore.styleUtils;
 const eventUtils = testCafeCore.eventUtils;
 const arrayUtils = testCafeCore.arrayUtils;
 const delay      = testCafeCore.delay;
-
-const selectElementUI = testCafeUI.selectElement;
-
 
 export default class ClickAutomation extends VisibleElementAutomation {
     constructor (element, clickOptions) {
@@ -58,15 +54,6 @@ export default class ClickAutomation extends VisibleElementAutomation {
         };
 
         eventUtils.bind(element, 'blur', onblur, true);
-    }
-
-    _bindClickHandler (element) {
-        const onclick = e => {
-            eventUtils.preventDefault(e, true);
-            eventUtils.unbind(element, 'click', onclick);
-        };
-
-        eventUtils.bind(element, 'click', onclick);
     }
 
 
@@ -195,32 +182,9 @@ export default class ClickAutomation extends VisibleElementAutomation {
     }
 
     _click (eventArgs) {
-        if (domUtils.isOptionElement(eventArgs.element))
-            return eventArgs.element;
+        const clickCommand = createClickCommand(this.eventState, eventArgs);
 
-        if (this.eventState.clickElement) {
-            const isColorInput = domUtils.isInputElement(this.eventState.clickElement) && this.eventState.clickElement.type === 'color';
-
-            if (browserUtils.isFirefox && isColorInput)
-                this._bindClickHandler(this.eventState.clickElement);
-
-            eventSimulator.click(this.eventState.clickElement, eventArgs.options);
-        }
-
-        if (!domUtils.isElementFocusable(eventArgs.element))
-            focusByRelatedElement(eventArgs.element);
-
-        // NOTE: Emulating the click event on the 'select' element doesn't expand the
-        // dropdown with options (except chrome), therefore we should emulate it.
-        const isSelectElement      = domUtils.isSelectElement(eventArgs.element);
-        const isSelectWithDropDown = isSelectElement && styleUtils.getSelectElementSize(eventArgs.element) === 1;
-
-        if (isSelectWithDropDown && this.eventState.simulateDefaultBehavior !== false) {
-            if (selectElementUI.isOptionListExpanded(eventArgs.element))
-                selectElementUI.collapseOptionList();
-            else
-                selectElementUI.expandOptionList(eventArgs.element);
-        }
+        clickCommand.run();
 
         return eventArgs;
     }

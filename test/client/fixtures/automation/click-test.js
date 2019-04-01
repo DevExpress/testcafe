@@ -663,6 +663,58 @@ $(document).ready(function () {
             });
     });
 
+    asyncTest('click on label with custom focus/selection handlers bound to checkbox', function () {
+        let changed = false;
+
+        const textarea = document.createElement('textarea');
+        const checkbox = document.createElement('input');
+        const label    = document.createElement('label');
+
+        document.body.appendChild(textarea);
+        document.body.appendChild(checkbox);
+        document.body.appendChild(label);
+
+        checkbox.id     = 'checkbox';
+        label.innerHTML = 'label';
+
+        textarea.className = TEST_ELEMENT_CLASS;
+        checkbox.className = TEST_ELEMENT_CLASS;
+        label.className    = TEST_ELEMENT_CLASS;
+
+        checkbox.setAttribute('type', 'checkbox');
+        label.setAttribute('for', checkbox.id);
+
+        checkbox.addEventListener('change', function () {
+            changed = !changed;
+        });
+
+        textarea.addEventListener('focus', function () {
+            textarea.setSelectionRange(1, 2);
+        });
+
+        textarea.value = '11';
+
+        textarea.focus();
+
+        const clickAutomation = new ClickAutomation(label, { });
+
+        clickAutomation
+            .run()
+            .then(function () {
+                ok(changed, 'change');
+                ok(checkbox.checked, 'checked');
+
+                return clickAutomation
+                    .run()
+                    .then(function () {
+                        notOk(changed, 'not change');
+                        notOk(checkbox.checked, 'not checked');
+
+                        startNext();
+                    });
+            });
+    });
+
     module('regression');
 
     asyncTest('Q558721 - Test running hangs if element is hidden in non-scrollable container', function () {
