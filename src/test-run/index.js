@@ -227,7 +227,7 @@ export default class TestRun extends AsyncEventEmitter {
             return;
         }
 
-        this.pendingPageError = new PageLoadError(err);
+        this.pendingPageError = new PageLoadError(err, ctx.reqOpts.url);
 
         ctx.redirect(ctx.toProxyUrl('about:error'));
     }

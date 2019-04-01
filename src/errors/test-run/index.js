@@ -89,9 +89,10 @@ export class CannotObtainInfoForElementSpecifiedBySelectorError extends Selector
 // Page errors
 //--------------------------------------------------------------------
 export class PageLoadError extends TestRunErrorBase {
-    constructor (errMsg) {
+    constructor (errMsg, url) {
         super(TEST_RUN_ERRORS.pageLoadError);
 
+        this.url    = url;
         this.errMsg = errMsg;
     }
 }
