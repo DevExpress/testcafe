@@ -235,7 +235,7 @@ npm install -g {pluginName}
 This happens because either:
 
 * one of the [selectors](../documentation/test-api/selecting-page-elements/selectors/README.md) you used in test code does not match any DOM element, or
-* you used a incorrect CSS selector or a client-side function that returns no element to specify an [action's target element](../documentation/test-api/actions/README.md#selecting-target-elements).
+* you used an incorrect CSS selector or a client-side function that returns no element to specify an [action's target element](../documentation/test-api/actions/README.md#selecting-target-elements).
 
 To determine the cause of this issue, do the following:
 
