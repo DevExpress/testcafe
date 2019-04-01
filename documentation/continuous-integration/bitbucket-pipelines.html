@@ -709,7 +709,7 @@ However, if you already have a Docker image prepared, you can <a href="#option-2
 
 <p>The following example shows a command that runs tests in Chromium in headless mode:</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="s2">"scripts"</span><span class="err">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="nt">"test"</span><span class="p">:</span><span class="w">  </span><span class="s2">"testcafe 'chromium:headless --no-sandbox --disable-setuid-sandbox --window-size=1920x1080' tests/index-test.js"</span><span class="w">
+    </span><span class="nt">"test"</span><span class="p">:</span><span class="w">  </span><span class="s2">"testcafe 'chromium:headless --disable-setuid-sandbox --window-size=1920x1080' tests/index-test.js"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>For more information on how to configure a test run with the <code>testcafe</code> command, see <a href="../using-testcafe/command-line-interface.html">Command Line Interface</a>.</p>
@@ -719,7 +719,7 @@ However, if you already have a Docker image prepared, you can <a href="#option-2
 <p>If you need to start a custom Web server to host your application, use the <a href="../using-testcafe/command-line-interface.html#-a-command---app-command">--app</a> TestCafe option followed by a command that starts this server.
 TestCafe executes this command before tests are launched. After tests finish, TestCafe stops the server.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="s2">"scripts"</span><span class="err">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-  </span><span class="nt">"test"</span><span class="p">:</span><span class="w">  </span><span class="s2">"testcafe 'chromium:headless --no-sandbox --disable-setuid-sandbox --window-size=1920x1080' tests/index-test.js --app \"node server.js\""</span><span class="w">
+  </span><span class="nt">"test"</span><span class="p">:</span><span class="w">  </span><span class="s2">"testcafe 'chromium:headless --disable-setuid-sandbox --window-size=1920x1080' tests/index-test.js --app \"node server.js\""</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div><h2><a class="anchor" id="step-3---trigger-a-bitbucket-pipelines-ci-build"></a>Step 3 - Trigger a Bitbucket Pipelines CI Build <a class="permalink" href="#step-3---trigger-a-bitbucket-pipelines-ci-build">#</a></h2>
 <p>Bitbucket Pipelines CI is now configured to trigger the build when you push commits to your repository or create a pull request.</p>

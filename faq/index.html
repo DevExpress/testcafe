@@ -424,6 +424,7 @@
 <li><a href="#when-i-run-a-testcafe-test-i-get-an-unexpected-error-what-can-cause-that">When I run a TestCafe test, I get an unexpected error. What can cause that?</a></li>
 <li><a href="#i-have-installed-testcafe-plugins-but-they-do-not-work-what-have-i-done-wrong">I have installed TestCafe plugins but they do not work. What have I done wrong?</a></li>
 <li><a href="#my-test-fails-because-testcafe-could-not-find-the-required-webpage-element-why-does-this-happen">My test fails because TestCafe could not find the required webpage element. Why does this happen?</a></li>
+<li><a href="#testcafe-reports-that-a-request-has-failed-what-are-the-possible-reasons">TestCafe reports that a request has failed. What are the possible reasons?</a></li>
 </ul></li>
 </ul>
 <h2><a class="anchor" id="general-questions"></a>General Questions <a class="permalink" href="#general-questions">#</a></h2><h3><a class="anchor" id="i-have-heard-that-testcafe-does-not-use-selenium-how-does-it-operate"></a>I have heard that TestCafe does not use Selenium. How does it operate? <a class="permalink" href="#i-have-heard-that-testcafe-does-not-use-selenium-how-does-it-operate">#</a></h3>
@@ -559,16 +560,17 @@ Then you can use this module inside client functions and selectors.</p>
     <span class="kd">var</span> <span class="nx">text</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">clientFunction</span><span class="p">();</span>
 <span class="p">});</span>
 </code></pre></div><h3><a class="anchor" id="how-do-i-work-with-configuration-files-and-environment-variables"></a>How do I work with configuration files and environment variables? <a class="permalink" href="#how-do-i-work-with-configuration-files-and-environment-variables">#</a></h3>
-<p>TestCafe works without any configuration.
-It does not have any config files where you can place custom variables.
-However, you can introduce your own configuration file and import it to the test code.</p>
+<p>TestCafe allows you to specify settings in a <a href="../documentation/using-testcafe/configuration-file.html">configuration file</a>.</p>
 
-<p>For example, you need to pass a website&#39;s base URL to test code. In this instance, you can create the following <code>config.json</code> file:</p>
+<p>If you need to use custom properties in the configuration, create a separate configuration file and import it to the tests.</p>
+<blockquote><div class="blockquote-content"><p>Vote for the following GitHub issue if you want us to support custom properties in <code>.testcaferc.json</code>: <a href="https://github.com/DevExpress/testcafe/issues/3593">#3593</a></p>
+</div></blockquote>
+<p>For example, you can create the following <code>config.json</code> file to pass a website&#39;s base URL to test code:</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
     </span><span class="nt">"baseUrl"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://localhost/testcafe"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
-<p>In the test code, import it as you would do with a regular JavaScript module.</p>
+<p>In the test code, import it like a regular JavaScript module:</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="nx">config</span> <span class="nx">from</span> <span class="s1">'./config'</span><span class="p">;</span>
 
 <span class="nx">fixture</span> <span class="err">`</span><span class="nx">Fixture</span><span class="err">`</span>
@@ -579,7 +581,7 @@ However, you can introduce your own configuration file and import it to the test
 <p>The following command passes the <code>env</code> argument to the test code:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js --env<span class="o">=</span>development
 </code></pre></div>
-<p>In the test, use an argument parser library (like <code>minimist</code>) to parse custom arguments.</p>
+<p>In the test, use an argument parser library (like <code>minimist</code>) to parse custom arguments:</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="nx">minimist</span> <span class="nx">from</span> <span class="s1">'minimist'</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">args</span> <span class="o">=</span> <span class="nx">minimist</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">argv</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">2</span><span class="p">));</span>
@@ -592,7 +594,7 @@ However, you can introduce your own configuration file and import it to the test
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Environment:'</span><span class="p">,</span> <span class="nx">environment</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div>
-<p>To set an environment variable use the following command on Windows.</p>
+<p>To set an environment variable, use the following command on Windows:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh"><span class="nb">set </span><span class="nv">DEV_MODE</span><span class="o">=</span><span class="nb">true
 </span>testcafe chrome test.js
 </code></pre></div>
@@ -647,7 +649,7 @@ to use the plugin in other projects as well, install it globally.</p>
 
 <ul>
 <li>one of the <a href="../documentation/test-api/selecting-page-elements/selectors/">selectors</a> you used in test code does not match any DOM element, or</li>
-<li>you have tried to specify an <a href="https://devexpress.github.io/testcafe/documentation/test-api/actions/#selecting-target-elements">action&#39;s target element</a> using a wrong CSS selector or a client-side function that returns no element.</li>
+<li>you used a incorrect CSS selector or a client-side function that returns no element to specify an <a href="../documentation/test-api/actions/#selecting-target-elements">action&#39;s target element</a>.</li>
 </ul>
 
 <p>To determine the cause of this issue, do the following:</p>
@@ -664,22 +666,64 @@ to use the plugin in other projects as well, install it globally.</p>
 <li>the element is present on the page;</li>
 <li>the element is visible (TestCafe considers it visible if it does not have <code>display</code> set to <code>none</code>,
 <code>visibility</code> set to <code>hidden</code> or the zero <code>width</code> or <code>height</code>);</li>
-<li>the element&#39;s part targeted by the action is visible (the center of the element by default;
-it can be changed using the
-<a href="https://devexpress.github.io/testcafe/documentation/test-api/actions/action-options.html#mouse-action-options"><code>offsetX</code> and <code>offsetY</code></a>
-parameters);</li>
+<li>the element&#39;s part targeted by the action is visible (the center of the element, or a point specified by the <a href="../documentation/test-api/actions/action-options.html#mouse-action-options"><code>offsetX</code> and <code>offsetY</code></a> parameters);</li>
 <li>the element is not in an <code>&lt;iframe&gt;</code> (if it is, use the
-<a href="https://devexpress.github.io/testcafe/documentation/test-api/working-with-iframes.html">t.switchToIframe</a> method
+<a href="../documentation/test-api/working-with-iframes.html">t.switchToIframe</a> method
 to switch to the appropriate <code>&lt;iframe&gt;</code>).</li>
 </ul>
 
-<p>Also, try running the test at full screen.
+<p>Also, try running the test in full screen.
 Use the <a href="../documentation/test-api/actions/resize-window.html#maximizing-the-window">t.maximizeWindow</a>
 and <a href="../documentation/test-api/actions/resize-window.html#setting-the-window-size">t.resizeWindow</a> actions
 to control the browser window size. If the test passes, it means your webpage hides
 the target element when the window is resized to smaller dimensions.</p>
 
 <p>Finally, try updating TestCafe to the latest version to see if the problem persists.</p>
+<h3><a class="anchor" id="testcafe-reports-that-a-request-has-failed-what-are-the-possible-reasons"></a>TestCafe reports that a request has failed. What are the possible reasons? <a class="permalink" href="#testcafe-reports-that-a-request-has-failed-what-are-the-possible-reasons">#</a></h3>
+<p>When TestCafe does not receive a successful response from a server, it outputs the following error:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">A request to https://www.example.com has failed. Use quarantine mode to perform additional attempts to execute this test.
+</code></pre></div>
+<p>You can use <a href="../documentation/using-testcafe/command-line-interface.html#-q---quarantine-mode">quarantine mode</a> to complete the tests if this problem occurs infrequently.</p>
+
+<p>However, we recommend that you determine the cause of this issue and address it.</p>
+
+<p>This error can occur in the following situations:</p>
+<h4><a class="anchor" id="the-web-server-is-not-responding"></a>The Web server is not responding <a class="permalink" href="#the-web-server-is-not-responding">#</a></h4>
+<p>Check if the Web and DNS servers are online and configured to accept requests to this URL.</p>
+<h4><a class="anchor" id="unstable-or-improperly-configured-network-connection"></a>Unstable or improperly configured network connection <a class="permalink" href="#unstable-or-improperly-configured-network-connection">#</a></h4>
+<ul>
+<li>Check the network connection&#39;s settings.</li>
+<li>Ensure that your network equipment works properly. If possible, establish a direct connection to the Internet/Web server.</li>
+<li>Check the proxy server&#39;s settings or try a different proxy server.</li>
+<li>Use VPN.</li>
+<li>Connect to a different network.</li>
+</ul>
+<h4><a class="anchor" id="not-enough-resources-in-the-container-or-ci-system"></a>Not enough resources in the container or CI system <a class="permalink" href="#not-enough-resources-in-the-container-or-ci-system">#</a></h4>
+<p>If you run TestCafe in a container or CI system, use the following steps to diagnose resource shortage:</p>
+
+<ul>
+<li>Increase the container&#39;s resource limits.</li>
+<li>Set the <a href="../documentation/using-testcafe/common-concepts/concurrent-test-execution.html">concurrency factor</a> to <code>1</code>.</li>
+<li>Deploy the application&#39;s Web server on a separate machine.</li>
+<li>Run tests on a local device outside a container.</li>
+</ul>
+
+<p>If this fixes the tests, it indicates that they require additional resources. You can address this in the following ways:</p>
+
+<ul>
+<li>Adjust the container&#39;s or environment&#39;s settings to allocate more resources.</li>
+<li>If you use a cloud-based CI system, ask the service provider for an upgrade or consider a different CI service with better hardware or smaller loads.</li>
+</ul>
+
+<p>According to users&#39; feedback, the following CI systems work best with TestCafe:</p>
+
+<ul>
+<li><a href="../documentation/continuous-integration/azure-devops.html">Azure Pipelines</a></li>
+<li><a href="../documentation/continuous-integration/gitlab.html">GitLab</a></li>
+<li><a href="../documentation/continuous-integration/travis.html">TravisCI</a></li>
+<li><a href="../documentation/continuous-integration/circleci.html">CircleCI</a></li>
+<li><a href="../documentation/continuous-integration/appveyor.html">AppVeyor</a></li>
+</ul>
 
 
         </div>
