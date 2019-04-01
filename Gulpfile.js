@@ -460,6 +460,10 @@ gulp.task('lint-docs', () => {
         '!docs/articles/blog/**/*.md',
         'examples/**/*.md'
     ]).then(files => {
+        // eslint-disable-next-line no-console
+
+        console.log(files);
+
         return lintFiles(files, require('./.md-lint/docs.json'));
     });
 
