@@ -1,5 +1,6 @@
 const expect                = require('chai').expect;
 const Promise               = require('pinkie');
+const proxyquire            = require('proxyquire');
 const testcafeBrowserTools  = require('testcafe-browser-tools');
 const browserProviderPool   = require('../../lib/browser/provider/pool');
 const parseProviderName     = require('../../lib/browser/provider/parse-provider-name');
@@ -194,6 +195,58 @@ describe('Browser provider', function () {
         it('Should load unscoped browser provider', function () {
             return browserProviderPool.getProvider('chrome').then(function (provider) {
                 expect(provider).to.be.not.null;
+            });
+        });
+    });
+
+    describe('Dedicated providers base', () => {
+        describe('isValidBrowserName', function () {
+            it('Should return false if a browser is not found', () => {
+                const dedicatedBrowserProviderBase = proxyquire('../../lib/browser/provider/built-in/dedicated/base', {
+                    'testcafe-browser-tools': {
+                        getBrowserInfo () {
+                            return null;
+                        }
+                    }
+                });
+
+                const testProvider = Object.assign({}, dedicatedBrowserProviderBase, {
+                    providerName: 'browser',
+
+                    _getConfig () {
+                        return {};
+                    }
+                });
+
+                return testProvider
+                    .isValidBrowserName('browser')
+                    .then(result => {
+                        expect(result).to.be.false;
+                    });
+            });
+
+            it('Should return true if a browser is found', () => {
+                const dedicatedBrowserProviderBase = proxyquire('../../lib/browser/provider/built-in/dedicated/base', {
+                    'testcafe-browser-tools': {
+                        getBrowserInfo () {
+                            return { alias: 'browser' };
+                        }
+                    }
+                });
+
+                const testProvider = Object.assign({}, dedicatedBrowserProviderBase, {
+                    providerName: 'browser',
+
+                    _getConfig () {
+                        return {};
+                    }
+                });
+
+                return testProvider
+                    .isValidBrowserName('browser')
+                    .then(result => {
+                        expect(result).to.be.true;
+                    });
             });
         });
     });

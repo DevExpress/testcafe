@@ -89,9 +89,10 @@ export class CannotObtainInfoForElementSpecifiedBySelectorError extends Selector
 // Page errors
 //--------------------------------------------------------------------
 export class PageLoadError extends TestRunErrorBase {
-    constructor (errMsg) {
+    constructor (errMsg, url) {
         super(TEST_RUN_ERRORS.pageLoadError);
 
+        this.url    = url;
         this.errMsg = errMsg;
     }
 }
@@ -112,8 +113,9 @@ export class UncaughtErrorInTestCode extends TestRunErrorBase {
     constructor (err, callsite) {
         super(TEST_RUN_ERRORS.uncaughtErrorInTestCode);
 
-        this.errMsg   = String(err);
-        this.callsite = callsite;
+        this.errMsg      = String(err.rawMessage || err);
+        this.callsite    = err.callsite || callsite;
+        this.originError = err;
     }
 }
 
@@ -174,10 +176,11 @@ export class ExternalAssertionLibraryError extends TestRunErrorBase {
 }
 
 export class AssertionExecutableArgumentError extends ActionArgumentErrorBase {
-    constructor (argumentName, argumentValue, errMsg) {
+    constructor (argumentName, argumentValue, err, isAPIError) {
         super(TEST_RUN_ERRORS.assertionExecutableArgumentError, argumentName, argumentValue);
 
-        this.errMsg = errMsg;
+        this.errMsg      = isAPIError ? err.rawMessage : err.message;
+        this.originError = err;
     }
 }
 
@@ -298,11 +301,12 @@ export class ActionUnsupportedDeviceTypeError extends ActionArgumentErrorBase {
 
 // Selector errors
 export class ActionSelectorError extends TestRunErrorBase {
-    constructor (selectorName, errMsg) {
+    constructor (selectorName, err, isAPIError) {
         super(TEST_RUN_ERRORS.actionSelectorError);
 
         this.selectorName = selectorName;
-        this.errMsg       = errMsg;
+        this.errMsg       = isAPIError ? err.rawMessage : err.message;
+        this.originError  = err;
     }
 }
 
@@ -433,16 +437,16 @@ export class InvalidElementScreenshotDimensionsError extends TestRunErrorBase {
 
         if (widthIsInvalid) {
             if (heightIsInvalid) {
-                this.verb      = 'are';
+                this.verb       = 'are';
                 this.dimensions = 'width and height';
             }
             else {
-                this.verb      = 'is';
+                this.verb       = 'is';
                 this.dimensions = 'width';
             }
         }
         else {
-            this.verb      = 'is';
+            this.verb       = 'is';
             this.dimensions = 'height';
         }
     }

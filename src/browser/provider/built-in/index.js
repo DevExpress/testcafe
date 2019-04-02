@@ -1,8 +1,8 @@
 import pathBrowserProvider from './path';
 import locallyInstalledBrowserProvider from './locally-installed';
 import remoteBrowserProvider from './remote';
-import firefoxProvider from './firefox';
-import chromeProvider from './chrome';
+import firefoxProvider from './dedicated/firefox';
+import chromeProvider from './dedicated/chrome';
 
 export default Object.assign(
     {

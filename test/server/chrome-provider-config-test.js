@@ -1,6 +1,6 @@
 const expect          = require('chai').expect;
 const OS              = require('os-family');
-const getChromeConfig = require('../../lib/browser/provider/built-in/chrome/config.js');
+const getChromeConfig = require('../../lib/browser/provider/built-in/dedicated/chrome/config.js');
 
 
 describe('Chrome provider config parser', function () {

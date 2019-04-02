@@ -8,6 +8,14 @@ permalink: /documentation/using-testcafe/using-testcafe-docker-image.html
 TestCafe provides a preconfigured Docker image with Chromium and Firefox installed.
 Therefore, you can avoid manual installation of browsers and the testing framework on the server.
 
+* [Install Docker and Download TestCafe Image](#install-docker-and-download-testcafe-image)
+* [Test in Docker Containers](#test-in-docker-containers)
+* [Test on the Host Machine](#test-on-the-host-machine)
+* [Test on Remote Devices](#test-on-remote-devices)
+* [Proxy Settings](#proxy-settings)
+
+## Install Docker and Download TestCafe Image
+
 To learn how to install Docker on your system, see [Install Docker](https://docs.docker.com/engine/installation/).
 
 After Docker is installed, download the TestCafe Docker image from the repository.
@@ -22,7 +30,9 @@ The command above installs a stable version of the image. If you need an alpha v
 docker pull testcafe/testcafe:alpha
 ```
 
-Now you can run TestCafe from the docker image.
+## Test in Docker Containers
+
+Use the `docker run` command to run TestCafe in the Docker container:
 
 ```sh
 docker run -v ${TEST_FOLDER}:/tests -it testcafe/testcafe ${TESTCAFE_ARGS}
@@ -32,9 +42,13 @@ This command takes the following parameters:
 
 * `-v ${TEST_FOLDER}:/tests` - maps the `TEST_FOLDER` directory on the host machine to the `/tests` directory in the container. You can map any host directory to any container directory:
 
-    `-v //c/Users/Username/tests:/tests`
+    ```sh
+    -v //c/Users/Username/tests:/tests
+    ```
 
-    `-v //d/tests:/myTests`
+    ```sh
+    -v //d/tests:/myTests
+    ```
 
     Files referenced in tests (page models, utilities, Node.js modules) should be located in the mapped host directory or its subdirectories. Otherwise, they could not be accessed from the container.
 
@@ -45,13 +59,15 @@ This command takes the following parameters:
 * `-it testcafe/testcafe` - runs TestCafe in the interactive mode with the console enabled;
 * `${TESTCAFE_ARGS}` - arguments passed to the `testcafe` command. You can use any arguments from the TestCafe [command line interface](command-line-interface.md);
 
-    `-it testcafe/testcafe 'chromium --no-sandbox,firefox' /tests/test.js`
-
-    You can run tests in the Chromium and Firefox browsers preinstalled to the Docker image. Add the `--no-sandbox` flag to Chromium if the container is run in the unprivileged mode.
+    ```sh
+    -it testcafe/testcafe chromium,firefox /tests/test.js
+    ```
 
     You can pass a glob instead of the directory path in TestCafe parameters.
 
-    `docker run -v //d/tests:/tests -it testcafe/testcafe firefox /tests/**/*.js`
+    ```sh
+    docker run -v //d/tests:/tests -it testcafe/testcafe firefox /tests/**/*.js
+    ```
 
     > If tests use other Node.js modules, these modules should be located in the tests directory or its child directories. TestCafe will not be able to find modules in the parent directories.
 
@@ -101,14 +117,12 @@ docker run --add-host=${EXTERNAL_HOSTNAME}:127.0.0.1 -p ${PORT1}:${PORT1} -p ${P
 
 where `${PORT1}` and `${PORT2}` are vacant container's ports, `${EXTERNAL_HOSTNAME}` is the host machine name.
 
-## Testing Heavy Websites
+## Proxy Settings
 
-If you are testing a heavy website, you may need to allocate extra resources for the Docker image.
-
-The most common case is when the temporary file storage `/dev/shm` runs out of free space. The following example shows how to allow additional space (1GB) for this storage using the `--shm-size` option.
+Use the TestCafe [--proxy](command-line-interface.md#--proxy-host) and [--proxy-bypass](command-line-interface.md#--proxy-bypass-rules) options to configure proxy settings.
 
 ```sh
-docker run --shm-size=1g -v /d/tests:/tests -it testcafe/testcafe firefox /tests/test.js
+docker run -v /d/tests:/tests -it testcafe/testcafe remote /tests/test.js --proxy proxy.mycorp.com
 ```
 
-You can find a complete list of options that manage runtime constraints on resources in the [Docker documentation](https://docs.docker.com/engine/reference/run/#runtime-constraints-on-resources).
+> TestCafe ignores the [container's proxy settings](https://docs.docker.com/network/proxy/) specified in the Docker configuration file (`httpProxy`, `httpsProxy` and `noProxy`) or the environment variables (`HTTP_PROXY`, `HTTPS_PROXY` and `NO_PROXY`).

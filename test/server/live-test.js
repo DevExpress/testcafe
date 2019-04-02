@@ -8,10 +8,11 @@ const LiveModeController   = require('../../lib/live/controller');
 const LiveModeRunner       = require('../../lib/live/test-runner');
 const LiveModeBootstrapper = require('../../lib/live/bootstrapper');
 
-const testFileWithSingleTestPath     = path.resolve('test/server/data/test-suites/live/test.js');
-const testFileWithMultipleTestsPath  = path.resolve('test/server/data/test-suites/live/multiple-tests.js');
-const testFileWithSyntaxErrorPath    = path.resolve('test/server/data/test-suites/live/test-with-syntax-error.js');
-const testFileWithExternalModulePath = path.resolve('test/server/data/test-suites/live/test-external-module.js');
+const testFileWithSingleTestPath               = path.resolve('test/server/data/test-suites/live/test.js');
+const testFileWithMultipleTestsPath            = path.resolve('test/server/data/test-suites/live/multiple-tests.js');
+const testFileWithSyntaxErrorPath              = path.resolve('test/server/data/test-suites/live/test-with-syntax-error.js');
+const testFileWithExternalModulePath           = path.resolve('test/server/data/test-suites/live/test-external-module.js');
+const testFileWithExternalUnexistingModulePath = path.resolve('test/server/data/test-suites/live/test-external-unexisting-module.js');
 
 const externalModulePath = path.resolve('test/server/data/test-suites/live/module.js');
 
@@ -68,19 +69,26 @@ class BootstrapperMock extends LiveModeBootstrapper {
         super(runner, browserConnectionGateway);
     }
 
-    _getBrowserConnections () {
-        return Promise.resolve();
+    createRunnableConfiguration () {
+        return Promise.resolve({
+            reporterPlugins: [],
+            tests:           [],
+            browserSet:      {},
+            testedApp:       {}
+        });
     }
 }
 
 class RunnerMock extends LiveModeRunner {
-    constructor ({ proxy, browserConnectionGateway, configuration }, { runTimeout = 0, errorOnValidate = false }) {
+    constructor ({ proxy, browserConnectionGateway, configuration }, { runTimeout = 0, errorOnValidate = false, onBootstrapDone = noop }) {
         super(proxy, browserConnectionGateway, configuration.clone());
 
         this.runCount        = 0;
         this.runTimeout      = runTimeout;
         this.errorOnValidate = errorOnValidate;
         this.disposed        = false;
+
+        this.once('done-bootstrapping', onBootstrapDone);
     }
 
     get watchedFiles () {
@@ -278,6 +286,21 @@ describe('TestCafe Live', function () {
             .then(() => {
                 expect(errors.length).eql(1);
                 expect(errors[0].toString()).contains('Error: Cannot prepare tests due to an error');
+            });
+    });
+
+    it('done-bootstrap event', function () {
+        let handled = false;
+
+        return runTests(testFileWithExternalUnexistingModulePath, {
+            onBootstrapDone: () => {
+                handled = true;
+            }
+        })
+            .then(() => {
+                expect(handled).eql(true);
+                expect(errors.length).eql(1);
+                expect(errors[0].toString()).contains('Error: Cannot find module \'./non-existing-module\'');
             });
     });
 

@@ -36,7 +36,7 @@ runner.filter((testName, fixtureName, fixturePath, testMeta, fixtureMeta) => {
 
 You can now run tests imported from external libraries or generated dynamically even if the `.js` file does not contain any tests.
 
-This was not possible previously because test files should contain the [fixture](https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#fixtures) and [test](https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#tests) directives. However, you can now provide the `--disable-test-syntax-validation` command line flag to bypass this check.
+Previously, test files had to contain the [fixture](https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#fixtures) and [test](https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#tests) directives. You can now add the `--disable-test-syntax-validation` command line flag to bypass this check.
 
 ```sh
 testcafe safari test.js --disable-test-syntax-validation

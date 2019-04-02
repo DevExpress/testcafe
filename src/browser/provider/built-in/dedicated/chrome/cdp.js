@@ -1,5 +1,5 @@
 import remoteChrome from 'chrome-remote-interface';
-import { GET_WINDOW_DIMENSIONS_INFO_SCRIPT } from '../../utils/client-functions';
+import { GET_WINDOW_DIMENSIONS_INFO_SCRIPT } from '../../../utils/client-functions';
 
 
 async function getActiveTab (cdpPort, browserId) {
@@ -48,12 +48,6 @@ export async function getScreenshotData ({ client }) {
     const screenshotData = await client.Page.captureScreenshot();
 
     return Buffer.from(screenshotData.data, 'base64');
-}
-
-export async function getPageViewport ({ client }) {
-    const { visualViewport } = await client.Page.getLayoutMetrics();
-
-    return visualViewport;
 }
 
 export async function createClient (runtimeInfo) {

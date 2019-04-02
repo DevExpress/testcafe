@@ -1,6 +1,6 @@
 import path from 'path';
-import TempDirectory from '../../../../utils/temp-directory';
-import { writeFile } from '../../../../utils/promisified-functions';
+import TempDirectory from '../../../../../utils/temp-directory';
+import { writeFile } from '../../../../../utils/promisified-functions';
 
 
 async function generatePreferences (profileDir, { marionettePort, config }) {

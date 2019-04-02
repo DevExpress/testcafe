@@ -54,10 +54,15 @@ $(document).ready(function () {
         type
             .run()
             .then(function () {
-                equal(keydownCount, 2, 'keydown event raises twice');
-                equal(keyupCount, 2, 'keyup event raises twice');
-                equal(keypressCount, 2, 'keypress event raises twice');
-                equal(mouseclickCount, 1, 'click event raises once');
+                const expectedKeydownCount    = 2;
+                const expectedKeypressCount   = browserUtils.isAndroid ? 0 : 2;
+                const expectedKeyupCount      = 2;
+                const expectedMouseClickCount = 1;
+
+                equal(keydownCount, expectedKeydownCount, 'keydown event raises twice');
+                equal(keyupCount, expectedKeyupCount, 'keyup event raises twice');
+                equal(keypressCount, expectedKeypressCount, 'keypress event raises twice');
+                equal(mouseclickCount, expectedMouseClickCount, 'click event raises once');
 
                 start();
             });
@@ -86,22 +91,24 @@ $(document).ready(function () {
             });
     });
 
-    asyncTest('correct keyCode', function () {
-        const key = 'k';
+    if (!browserUtils.isAndroid) {
+        asyncTest('correct keyCode', function () {
+            const key = 'k';
 
-        $commonInput[0].onkeypress = function (e) {
-            equal((e || window.event).keyCode, key.charCodeAt(0), 'keypress event argument is correct');
-        };
+            $commonInput[0].onkeypress = function (e) {
+                equal((e || window.event).keyCode, key.charCodeAt(0), 'keypress event argument is correct');
+            };
 
-        const type = new TypeAutomation($commonInput[0], key, new TypeOptions({ offsetX: 5, offsetY: 5 }));
+            const type = new TypeAutomation($commonInput[0], key, new TypeOptions({ offsetX: 5, offsetY: 5 }));
 
-        type
-            .run()
-            .then(function () {
-                expect(1);
-                start();
-            });
-    });
+            type
+                .run()
+                .then(function () {
+                    expect(1);
+                    start();
+                });
+        });
+    }
 
     asyncTest('typetext to inner input', function () {
         const $outerDiv = $('<div></div>')
@@ -183,13 +190,17 @@ $(document).ready(function () {
 
         const type = new TypeAutomation($commonInput[0], text, new TypeOptions({ paste: true, offsetX: 5, offsetY: 5 }));
 
+        const expectedKeydownCount  = 1;
+        const expectedKeypressCount = browserUtils.isAndroid ? 0 : 1;
+        const expectedKeyupCount    = 1;
+
         type
             .run()
             .then(function () {
                 equal($commonInput[0].value, text, 'text entered in one keystroke');
-                equal(keydownCount, 1, 'keydown event raises once');
-                equal(keyupCount, 1, 'keyup event raises once');
-                equal(keypressCount, 1, 'keypress event raises once');
+                equal(keydownCount, expectedKeydownCount, 'keydown event raises once');
+                equal(keyupCount, expectedKeyupCount, 'keyup event raises once');
+                equal(keypressCount, expectedKeypressCount, 'keypress event raises once');
                 start();
             });
     });
@@ -238,42 +249,44 @@ $(document).ready(function () {
             });
     });
 
-    asyncTest('change event must not be raised if keypress was prevented (B253816)', function () {
-        const $input  = $('<input type="text" />').addClass(TEST_ELEMENT_CLASS).appendTo('body');
+    if (!browserUtils.isAndroid) {
+        asyncTest('change event must not be raised if keypress was prevented (B253816)', function () {
+            const $input = $('<input type="text" />').addClass(TEST_ELEMENT_CLASS).appendTo('body');
 
-        let changed = false;
+            let changed = false;
 
-        $input.bind('change', function () {
-            changed = true;
-        });
-
-        const firstType = new TypeAutomation($input[0], 'test', new TypeOptions({ offsetX: 5, offsetY: 5 }));
-
-        firstType
-            .run()
-            .then(function () {
-                $input[0].blur();
-
-                ok(changed, 'check change event was raised if keypress was not prevented');
-
-                changed = false;
-
-                $input.bind('keypress', function (e) {
-                    e.target.value += String.fromCharCode(e.keyCode);
-                    return false;
-                });
-
-                const secondType = new TypeAutomation($input[0], 'new', new TypeOptions({ offsetX: 5, offsetY: 5 }));
-
-                return secondType.run();
-            })
-            .then(function () {
-                $input[0].blur();
-
-                ok(!changed, 'check change event was not raised if keypress was prevented');
-                start();
+            $input.bind('change', function () {
+                changed = true;
             });
-    });
+
+            const firstType = new TypeAutomation($input[0], 'test', new TypeOptions({ offsetX: 5, offsetY: 5 }));
+
+            firstType
+                .run()
+                .then(function () {
+                    $input[0].blur();
+
+                    ok(changed, 'check change event was raised if keypress was not prevented');
+
+                    changed = false;
+
+                    $input.bind('keypress', function (e) {
+                        e.target.value += String.fromCharCode(e.keyCode);
+                        return false;
+                    });
+
+                    const secondType = new TypeAutomation($input[0], 'new', new TypeOptions({ offsetX: 5, offsetY: 5 }));
+
+                    return secondType.run();
+                })
+                .then(function () {
+                    $input[0].blur();
+
+                    ok(!changed, 'check change event was not raised if keypress was prevented');
+                    start();
+                });
+        });
+    }
 
     asyncTest('keypress args must contain charCode of the symbol, not keyCode', function () {
         const $input   = $('<input type="text" />').addClass(TEST_ELEMENT_CLASS).appendTo('body');
@@ -395,10 +408,16 @@ $(document).ready(function () {
         type
             .run()
             .then(function () {
-                equal(keydownKeyProperty, 'aA Enter');
-                equal(keypressKeyProperty, 'aA Enter');
-                equal(keyupKeyProperty, 'aA Enter');
-                equal(textarea.value, 'aA \n');
+                const expectedKeydownKeyProperty  = 'aA Enter';
+                const expectedKeypressKeyProperty = browserUtils.isAndroid ? '' : 'aA Enter';
+                const expectedKeyupKeyProperty    = 'aA Enter';
+                const expectedTextareaValue       = 'aA \n';
+
+                equal(keydownKeyProperty, expectedKeydownKeyProperty);
+                equal(keypressKeyProperty, expectedKeypressKeyProperty);
+                equal(keyupKeyProperty, expectedKeyupKeyProperty);
+                equal(textarea.value, expectedTextareaValue);
+
                 start();
             });
     });

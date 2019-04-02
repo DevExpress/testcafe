@@ -19,7 +19,7 @@ function assertStack (err, expected) {
         parsedStack.forEach(function (frame, idx) {
             const filename   = frame.fileName;
             const isInternal = frame.fileName.indexOf('internal/') === 0 ||
-                             frame.fileName.indexOf(sep) < 0;
+                               frame.fileName.indexOf(sep) < 0;
 
             // NOTE: assert that stack is clean from internals
             expect(isInternal).to.be.false;

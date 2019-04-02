@@ -1,3 +1,9 @@
+A request to "http://some-url.example.com" has failed.
+Use quarantine mode to perform additional attempts to execute this test.
+You can find troubleshooting information for this issue at
+"https://go.devexpress.com/TestCafe_FAQ_ARequestHasFailed.aspx".
+
+Error details:
 Failed to find a DNS-record for the resource
 
 Browser: Chrome 15.0.874 / Mac OS X 10.8.1

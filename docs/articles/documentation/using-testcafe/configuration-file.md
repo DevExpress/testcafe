@@ -9,7 +9,7 @@ TestCafe uses the `.testcaferc.json` configuration file to store its settings.
 
 > Important! Settings you specify when you run TestCafe from the [command line](command-line-interface.md) and [programming interfaces](programming-interface/README.md) override settings from `.testcaferc.json`. TestCafe prints information about every overridden property in the console.
 
-Keep `.testcaferc.json` in a directory from which you run TestCafe. Most often, this is the project's root directory. TestCafe does not take into account configuration files located in other directories (for instance, project's subdirectories).
+Keep `.testcaferc.json` in the directory from which you run TestCafe. This is usually the project's root directory. TestCafe does not take into account configuration files located in other directories (for instance, project's subdirectories).
 
 A configuration file can include the following settings:
 
@@ -728,7 +728,7 @@ If you launch TestCafe from the console, outputs a QR-code that represents URLs 
 
 ## stopOnFirstFail
 
-Stops an entire test run if any test fails.
+Stops a test run if any test fails.
 
 ```json
 {

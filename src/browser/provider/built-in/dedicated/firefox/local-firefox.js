@@ -1,7 +1,7 @@
 import OS from 'os-family';
 import browserTools from 'testcafe-browser-tools';
-import { killBrowserProcess } from '../../../../utils/process';
-import BrowserStarter from '../../utils/browser-starter';
+import { killBrowserProcess } from '../../../../../utils/process';
+import BrowserStarter from '../../../utils/browser-starter';
 
 
 const browserStarter = new BrowserStarter();

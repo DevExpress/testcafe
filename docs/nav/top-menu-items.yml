@@ -1,4 +1,4 @@
-- text: Documentation
+- text: Docs
   url: /documentation/getting-started/
   highlightUrl: /documentation
 - text: GitHub
@@ -6,11 +6,13 @@
   external: true
 - text: FAQ
   url: /faq/
+- text: Roadmap
+  url: /roadmap/
 - text: Release Notes
   url: /blog/
 - text: Support
   url: /support/
 - text: TestCafe Studio
-  url: https://testcafe-studio.devexpress.com
+  url: https://www.devexpress.com/products/testcafestudio/
   external: true
   id: studio-link

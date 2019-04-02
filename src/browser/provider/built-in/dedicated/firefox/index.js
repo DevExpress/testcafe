@@ -1,14 +1,21 @@
 import OS from 'os-family';
+import dedicatedProviderBase from '../base';
 import getRuntimeInfo from './runtime-info';
+import getConfig from './config';
 import { start as startLocalFirefox, stop as stopLocalFirefox } from './local-firefox';
 import MarionetteClient from './marionette-client';
-import getMaximizedHeadlessWindowSize from '../../utils/get-maximized-headless-window-size';
 
 
 export default {
-    openedBrowsers: {},
+    ...dedicatedProviderBase,
 
-    isMultiBrowser: false,
+    _getConfig (name) {
+        return getConfig(name);
+    },
+
+    _getBrowserProtocolClient (runtimeInfo) {
+        return runtimeInfo.marionetteClient;
+    },
 
     async _createMarionetteClient (runtimeInfo) {
         try {
@@ -25,10 +32,9 @@ export default {
 
     async openBrowser (browserId, pageUrl, configString) {
         const runtimeInfo = await getRuntimeInfo(configString);
-        const browserName = this.providerName.replace(':', '');
 
+        runtimeInfo.browserName = this._getBrowserName();
         runtimeInfo.browserId   = browserId;
-        runtimeInfo.browserName = browserName;
 
         await startLocalFirefox(pageUrl, runtimeInfo);
 
@@ -58,36 +64,16 @@ export default {
         delete this.openedBrowsers[browserId];
     },
 
-    async isLocalBrowser () {
-        return true;
-    },
-
-    isHeadlessBrowser (browserId) {
-        return this.openedBrowsers[browserId].config.headless;
-    },
-
-    async takeScreenshot (browserId, path) {
-        const { marionetteClient } = this.openedBrowsers[browserId];
-
-        await marionetteClient.takeScreenshot(path);
-    },
-
     async resizeWindow (browserId, width, height) {
         const { marionetteClient } = this.openedBrowsers[browserId];
 
         await marionetteClient.setWindowSize(width, height);
     },
 
-    async maximizeWindow (browserId) {
-        const maximumSize = getMaximizedHeadlessWindowSize();
-
-        await this.resizeWindow(browserId, maximumSize.width, maximumSize.height);
-    },
-
     async getVideoFrameData (browserId) {
         const { marionetteClient } = this.openedBrowsers[browserId];
 
-        return await marionetteClient.getVideoFrameData();
+        return await marionetteClient.getScreenshotData();
     },
 
     async hasCustomActionForBrowser (browserId) {

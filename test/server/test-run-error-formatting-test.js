@@ -147,7 +147,7 @@ describe('Error formatting', () => {
         });
 
         it('Should format "pageLoadError" message', () => {
-            assertErrorMessage('page-load-error', new PageLoadError('Failed to find a DNS-record for the resource'));
+            assertErrorMessage('page-load-error', new PageLoadError('Failed to find a DNS-record for the resource', 'http://some-url.example.com'));
         });
 
         it('Should format "uncaughtErrorOnPage" message (with error stack)', () => {
@@ -214,7 +214,7 @@ describe('Error formatting', () => {
         });
 
         it('Should format "actionSelectorError" message', () => {
-            assertErrorMessage('action-selector-error', new ActionSelectorError('selector', 'Yo!'));
+            assertErrorMessage('action-selector-error', new ActionSelectorError('selector', { rawMessage: 'Yo!' }, true));
         });
 
         it('Should format "actionOptionsTypeError" message', () => {
@@ -350,7 +350,7 @@ describe('Error formatting', () => {
         });
 
         it('Should format "assertionExecutableArgumentError"', () => {
-            assertErrorMessage('assertion-executable-argument-error', new AssertionExecutableArgumentError('actual', '1 + temp', 'Unexpected identifier'));
+            assertErrorMessage('assertion-executable-argument-error', new AssertionExecutableArgumentError('actual', '1 + temp', { rawMessage: 'Unexpected identifier' }, true));
         });
 
         it('Should format "assertionWithoutMethodCallError"', () => {

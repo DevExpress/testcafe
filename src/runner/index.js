@@ -11,7 +11,7 @@ import Task from './task';
 import { GeneralError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
 import { assertType, is } from '../errors/runtime/type-assertions';
-import renderForbiddenCharsList from '../errors/render-forbidden-chars-list';
+import { renderForbiddenCharsList } from '../errors/test-run/utils';
 import detectFFMPEG from '../utils/detect-ffmpeg';
 import checkFilePath from '../utils/check-file-path';
 import { addRunningTest, removeRunningTest, startHandlingTestErrors, stopHandlingTestErrors } from '../utils/handle-errors';
@@ -269,7 +269,13 @@ export default class Runner extends EventEmitter {
     }
 
     _createRunnableConfiguration () {
-        return this.bootstrapper.createRunnableConfiguration();
+        return this.bootstrapper
+            .createRunnableConfiguration()
+            .then(runnableConfiguration => {
+                this.emit('done-bootstrapping');
+
+                return runnableConfiguration;
+            });
     }
 
     _validateScreenshotPath (screenshotPath, pathType) {
@@ -425,8 +431,6 @@ export default class Runner extends EventEmitter {
             .then(() => this._validateRunOptions())
             .then(() => this._createRunnableConfiguration())
             .then(({ reporterPlugins, browserSet, tests, testedApp }) => {
-                this.emit('done-bootstrapping');
-
                 return this._runTask(reporterPlugins, browserSet, tests, testedApp);
             });
 

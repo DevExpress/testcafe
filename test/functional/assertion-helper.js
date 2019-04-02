@@ -1,12 +1,12 @@
-const expect         = require('chai').expect;
-const globby         = require('globby');
-const path           = require('path');
-const fs             = require('fs');
-const Promise        = require('pinkie');
-const { isFunction } = require('lodash');
-const del            = require('del');
-const pngjs          = require('pngjs');
-const config         = require('./config.js');
+const expect          = require('chai').expect;
+const globby          = require('globby');
+const path            = require('path');
+const fs              = require('fs');
+const Promise         = require('pinkie');
+const { isFunction }  = require('lodash');
+const del             = require('del');
+const config          = require('./config.js');
+const { readPngFile } = require('../../lib/utils/promisified-functions');
 
 
 const SCREENSHOTS_PATH               = config.testScreenshotsDir;
@@ -52,20 +52,8 @@ function getScreenshotFilesCount (dir, customPath) {
     return results;
 }
 
-function readPng (filePath) {
-    return new Promise(function (resolve) {
-        const png = new pngjs.PNG();
-
-        png.once('parsed', function () {
-            resolve(png);
-        });
-
-        fs.createReadStream(filePath).pipe(png);
-    });
-}
-
 function checkScreenshotFileCropped (filePath) {
-    return readPng(filePath)
+    return readPngFile(filePath)
         .then(function (png) {
             const width  = png.width;
             const height = png.height;
@@ -79,7 +67,7 @@ function checkScreenshotFileCropped (filePath) {
 }
 
 function checkScreenshotFileIsNotWhite (filePath) {
-    return readPng(filePath)
+    return readPngFile(filePath)
         .then(function (png) {
             return png.data.indexOf(Buffer.from(RED_PIXEL)) > -1 && png.data.indexOf(Buffer.from(GREEN_PIXEL)) > -1;
         });
@@ -181,8 +169,6 @@ function checkScreenshotImages (forError, customPath, predicate) {
             return actualScreenshotsCount === expectedScreenshotsCount;
         });
 }
-
-exports.readPng = readPng;
 
 exports.errorInEachBrowserContains = function errorInEachBrowserContains (testErrors, message, errorIndex) {
     if (testErrors instanceof Error)

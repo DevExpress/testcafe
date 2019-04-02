@@ -1,8 +1,5 @@
-import fs from 'fs';
 import { PNG } from 'pngjs';
-import Promise from 'pinkie';
 import { map, flatten, times, constant } from 'lodash';
-import promisifyEvent from 'promisify-event';
 import generateId from 'nanoid/generate';
 import { MARK_LENGTH, MARK_HEIGHT, MARK_BYTES_PER_PIXEL } from './constants';
 
@@ -27,35 +24,6 @@ export function generateScreenshotMark () {
     const markData = 'data:image/png;base64,' + PNG.sync.write(pngImage).toString('base64');
 
     return { markSeed, markData };
-}
-
-export function readPng (buffer) {
-    const png = new PNG();
-
-    const parsedPromise = Promise.race([
-        promisifyEvent(png, 'parsed'),
-        promisifyEvent(png, 'error')
-    ]);
-
-    png.parse(buffer);
-
-    return parsedPromise
-        .then(() => png);
-}
-
-export function writePng (filePath, png) {
-    const outStream = fs.createWriteStream(filePath);
-    const pngStream = png.pack();
-
-    const finishPromise = Promise.race([
-        promisifyEvent(outStream, 'finish'),
-        promisifyEvent(outStream, 'error'),
-        promisifyEvent(pngStream, 'error')
-    ]);
-
-    pngStream.pipe(outStream);
-
-    return finishPromise;
 }
 
 export function copyImagePart (pngImage, { clipLeft, clipTop, clipRight, clipBottom }) {
