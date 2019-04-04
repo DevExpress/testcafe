@@ -151,14 +151,6 @@ export default class StatusBar extends serviceUtils.EventEmitter {
         shadowUI.addClass(unlockIcon, UNLOCK_ICON_CLASS);
         shadowUI.addClass(iconSeparator, ICON_SEPARATOR_CLASS);
 
-        if (browserUtils.isMacPlatform) {
-            unlockPageContainer.style.paddingTop = '3px';
-            unlockPageContainer.style.height     = '24px';
-
-            if (browserUtils.isFirefox)
-                unlockText.style.lineHeight = '30px';
-        }
-
         container.appendChild(unlockPageArea);
         unlockPageArea.appendChild(unlockPageContainer);
         unlockPageContainer.appendChild(unlockIcon);
@@ -191,7 +183,7 @@ export default class StatusBar extends serviceUtils.EventEmitter {
         shadowUI.addClass(this.statusDiv, STATUS_DIV_CLASS);
 
         if (browserUtils.isMacPlatform)
-            this.statusDiv.style.marginTop = '9px';
+            this.statusDiv.style.marginTop = '11px';
 
         statusContainer.appendChild(this.statusDiv);
 
