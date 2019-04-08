@@ -1,5 +1,5 @@
 import { PNG } from 'pngjs';
-import { map, flatten, times, constant } from 'lodash';
+import { times, constant } from 'lodash';
 import generateId from 'nanoid/generate';
 import { MARK_LENGTH, MARK_HEIGHT, MARK_BYTES_PER_PIXEL } from './constants';
 
@@ -10,7 +10,12 @@ export function generateScreenshotMark () {
     const id = generateId(ALPHABET, MARK_LENGTH);
 
     // NOTE: array of RGB values
-    const markSeed = flatten(map(id, bit => bit === '0' ? [0, 0, 0, 255] : [255, 255, 255, 255]));
+    const markSeed = [];
+
+    for (const bit of id) {
+        if (bit === '0') markSeed.push(0, 0, 0, 255);
+        else markSeed.push(255, 255, 255, 255);
+    }
 
     // NOTE: macOS browsers can't display an element, if it's CSS height is lesser than 1.
     // It happens on Retina displays, because they have more than 1 physical pixel in a CSS pixel.
