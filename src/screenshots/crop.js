@@ -15,9 +15,28 @@ function markSeedToId (markSeed) {
     return id;
 }
 
+const FILTER_THRESHOLD = 10;
+
+/**
+ * @param {import('pngjs').PNG} pngImage
+ * @param {number[]} markSeed
+ */
 export function calculateMarkPosition (pngImage, markSeed) {
-    const mark      = Buffer.from(markSeed);
-    const markIndex = pngImage.data.indexOf(mark);
+    const mark = Buffer.from(markSeed);
+    const filtImg = Buffer.from(pngImage.data);
+
+    // Some browsers render colors differently.
+    // This approach creates a filtered extreme of the screenshot.
+    // The mark can be found in this version.
+    // A color channel with a value smaller than BW_THRESHOLD
+    // becomes 0. Otherwise it becomes 255.
+    // i.e. rgba(5, 7, 3, 2) => rgba(0, 0, 0, 0), rgba(11, 3, 0, 0) => rgba(255, 0, 0, 0)
+    for (let pixel = 0; pixel < filtImg.length; pixel += 4) {
+        for (let channel = 0; channel < 4; channel++)
+            filtImg[pixel + channel] = filtImg[pixel + channel] < FILTER_THRESHOLD ? 0 : 255;
+    }
+
+    const markIndex = filtImg.indexOf(mark);
 
     if (markIndex < 0)
         return null;
