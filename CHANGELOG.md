@@ -4,8 +4,8 @@
 
 ### Bug Fixes
 
-* TestCafe now captures full size screenshots on macOS systems with Retina displays ([#3541](https://github.com/DevExpress/testcafe/issues/3541))
-* The "referrer" property is correctly encoded by TestCafe now ([testcafe-hammerhead/#1953](https://github.com/DevExpress/testcafe-hammerhead/issues/1953))
+* TestCafe now captures full-size screenshots on macOS systems with a Retina display ([#3541](https://github.com/DevExpress/testcafe/issues/3541))
+* The `referrer` property is now encoded correctly ([testcafe-hammerhead/#1953](https://github.com/DevExpress/testcafe-hammerhead/issues/1953))
 
 ## v1.1.1 (2019-4-4)
 
