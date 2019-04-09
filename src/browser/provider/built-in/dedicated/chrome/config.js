@@ -1,5 +1,5 @@
 import emulatedDevices from 'chrome-emulated-devices-list';
-import { pickBy as filterProperties } from 'lodash';
+import { pickBy as filterProperties, camelCase } from 'lodash';
 import {
     hasMatch, findMatch, isMatchTrue, getModes, splitEscaped, getPathFromParsedModes, parseConfig
 } from '../../../utils/argument-parsing';
@@ -12,8 +12,23 @@ const AVAILABLE_MODES = ['userProfile', 'headless', 'emulation'];
 
 const configCache = {};
 
-function hasCustomProfile (userArgs) {
-    return !!userArgs.match(/--user-data-dir=/);
+function parseUserArgs (userArgs) {
+    const parsedArgs = {
+        headless:    false,
+        userDataDir: false,
+        windowSize:  false
+    };
+
+    const splittedArgs = userArgs.split(' ').filter(arg => !!arg);
+
+    splittedArgs.forEach(arg => {
+        const keyValuePair = arg.split('=');
+        const key          = camelCase(keyValuePair[0]);
+
+        parsedArgs[key] = parsedArgs[key] !== void 0;
+    });
+
+    return parsedArgs;
 }
 
 function parseModes (modesStr, userArgs) {
@@ -28,11 +43,15 @@ function parseModes (modesStr, userArgs) {
     while (parsed.length)
         optionsString += ':' + parsed.shift();
 
+    const userProfile = detectedModes.userProfile || userArgs.userDataDir;
+    const headless    = detectedModes.headless || userArgs.headless;
+    const emulation   = detectedModes.emulation || headless;
+
     const modes = {
-        path:        path,
-        userProfile: detectedModes.userProfile || hasCustomProfile(userArgs),
-        headless:    detectedModes.headless,
-        emulation:   detectedModes.emulation || detectedModes.headless
+        path,
+        userProfile,
+        headless,
+        emulation
     };
 
     return { modes, optionsString };
@@ -73,12 +92,12 @@ function getDeviceBasedOptions (deviceName, orientation) {
     };
 }
 
-function parseOptions (str, modes) {
+function parseOptions (str, useDefaultDimensions) {
     const parsed = splitEscaped(str, ';');
 
     const baseOptions = {
-        width:       modes.headless ? HEADLESS_DEFAULT_WIDTH : 0,
-        height:      modes.headless ? HEADLESS_DEFAULT_HEIGHT : 0,
+        width:       useDefaultDimensions ? HEADLESS_DEFAULT_WIDTH : 0,
+        height:      useDefaultDimensions ? HEADLESS_DEFAULT_HEIGHT : 0,
         scaleFactor: 0,
         mobile:      false,
         cdpPort:     findMatch(parsed, /^cdpPort=(.*)/)
@@ -108,8 +127,10 @@ function parseOptions (str, modes) {
 
 function getNewConfig (configString) {
     const { userArgs, modesString } = parseConfig(configString);
-    const { modes, optionsString }  = parseModes(modesString, userArgs);
-    const options                   = parseOptions(optionsString, modes);
+    const parsedUserArgs            = parseUserArgs(userArgs);
+    const { modes, optionsString }  = parseModes(modesString, parsedUserArgs);
+    const useDefaultDimensions      = modes.headless && !parsedUserArgs.windowSize;
+    const options                   = parseOptions(optionsString, useDefaultDimensions);
 
     return Object.assign({ userArgs }, modes, options);
 }
