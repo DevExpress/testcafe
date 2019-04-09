@@ -21,6 +21,7 @@ import BrowserConsoleMessages from './browser-console-messages';
 import { UNSTABLE_NETWORK_MODE_HEADER } from '../browser/connection/unstable-network-mode';
 import WarningLog from '../notifications/warning-log';
 import WARNING_MESSAGE from '../notifications/warning-message';
+import { StateSnapshot } from 'testcafe-hammerhead';
 
 import {
     isCommandRejectableByPageError,
@@ -604,7 +605,7 @@ export default class TestRun extends AsyncEventEmitter {
         this.fixtureCtx      = Object.create(null);
         this.consoleMessages = new BrowserConsoleMessages();
 
-        this.session.useStateSnapshot(null);
+        this.session.useStateSnapshot(StateSnapshot.empty());
 
         if (this.activeDialogHandler) {
             const removeDialogHandlerCommand = new actionCommands.SetNativeDialogHandlerCommand({ dialogHandler: { fn: null } });

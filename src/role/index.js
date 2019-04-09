@@ -7,6 +7,7 @@ import { resolvePageUrl } from '../api/test-page-url';
 import { NavigateToCommand } from '../test-run/commands/actions';
 import roleMarker from './marker-symbol';
 import delay from '../utils/delay';
+import { StateSnapshot } from 'testcafe-hammerhead';
 
 const COOKIE_SYNC_DELAY = 100;
 
@@ -24,7 +25,7 @@ class Role extends EventEmitter {
         this.opts      = options;
 
         this.url           = null;
-        this.stateSnapshot = null;
+        this.stateSnapshot = StateSnapshot.empty();
         this.initErr       = null;
     }
 
