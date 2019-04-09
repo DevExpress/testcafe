@@ -7,12 +7,6 @@ const Promise       = hammerhead.Promise;
 const nativeMethods = hammerhead.nativeMethods;
 const listeners     = hammerhead.eventSandbox.listeners;
 
-export const RECORDING_LISTENED_EVENTS = [
-    'click', 'mousedown', 'mouseup', 'dblclick', 'contextmenu', 'mousemove', 'mouseover', 'mouseout',
-    'touchstart', 'touchmove', 'touchend', 'keydown', 'keypress', 'input', 'keyup', 'change', 'focus', 'blur',
-    'MSPointerDown', 'MSPointerMove', 'MSPointerOver', 'MSPointerOut', 'MSPointerUp', 'pointerdown',
-    'pointermove', 'pointerover', 'pointerout', 'pointerup'];
-
 // Imported form the hammerhead
 export const BUTTON            = hammerhead.utils.event.BUTTON;
 export const BUTTONS_PARAMETER = hammerhead.utils.event.BUTTONS_PARAMETER;
