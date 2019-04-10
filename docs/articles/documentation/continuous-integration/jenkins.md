@@ -11,19 +11,15 @@ TestCafe has an extensive command line interface that allows it to fit well in a
 
 This topic shows how you can integrate TestCafe tests into project build process in [Jenkins](https://jenkins.io/).
 
-## Prerequisites - Install Node.js Plugin
+## Enable Jenkins to Start the Browser UI (macOS and Linux)
 
-1. Follow the [instructions from Jenkins documentation](https://jenkins.io/doc/book/managing/plugins/#installing-a-plugin) to install a [Node.js plugin](https://plugins.jenkins.io/nodejs).
+The default Jenkins configuration on macOS and Linux does not allow it to start the browser UI.
 
-2. Configure this plugin as described in the [Usage section](https://plugins.jenkins.io/nodejs#NodeJSPlugin-Usage) on the plugin page. Ensure that you have added a Node.js installation on the **Global Tool Configuration** page and checked the **Provide Node & npm bin/ folder to PATH** check box in your build configuration.
+You can either use [headless browsers](../using-testcafe/common-concepts/browsers/testing-in-headless-mode.md), the [Xvfb server](#configure-the-display-server-linux) (on Linux) or perform the following steps to give Jenkins permissions to launch the browser UI.
 
-## Preparation - Enable Jenkins to Start Browsers
+> Important! The Jenkins installer overwrites permission settings during upgrade. Download and replace `jenkins.war` to upgrade Jenkins, or repeat the steps below after you run the installer.
 
-The default Jenkins configuration on macOS and Linux does not allow it to start browsers. Perform the following steps to enable this.
-
-> Important! The Jenkins installer overwrites these changes during upgrade. To avoid repeating these steps, do not upgrade Jenkins with an installer. Instead, download `jenkins.war` and replace it manually.
-
-### macOS
+### Obtain Permissions on macOS
 
 1. Stop Jenkins:
 
@@ -44,14 +40,14 @@ The default Jenkins configuration on macOS and Linux does not allow it to start 
     <string>peter.p</string>
     ```
 
-4. Find the `JENKINS_HOME` key. It specifies the Jenkins home directory. Copy the directory content to a local user's home directory and specify the new path under the `JENKINS_HOME` key:
+4. Find the `JENKINS_HOME` key that specifies the Jenkins home directory. Copy the directory content to a local user's home directory and specify the new path under the `JENKINS_HOME` key:
 
     ```xml
     <key>JENKINS_HOME</key>
     <string>/users/peter.p/jenkins/</string>
     ```
 
-    Then close the file and save your changes.
+    Close the file and save your changes.
 
 5. Change the Jenkins temporary directory:
 
@@ -71,7 +67,7 @@ The default Jenkins configuration on macOS and Linux does not allow it to start 
     launchctl load /Library/LaunchDaemons/org.jenkins-ci.plist
     ```
 
-### Linux
+### Obtain Permissions on Linux
 
 1. Stop Jenkins:
 
@@ -108,9 +104,15 @@ The default Jenkins configuration on macOS and Linux does not allow it to start 
     sudo systemctl start jenkins.service
     ```
 
-## Step 1 - Fetching Test Code From a Repository
+## Step 1 - Install Node.js Plugin
 
-In this tutorial, we will use tests published in a separate repository on GitHub - [ci-integration-demo](https://github.com/VasilyStrelyaev/ci-integration-demo). If you use a different version control system, search for a plugin that integrates it with Jenkins.
+1. Follow the [instructions from Jenkins documentation](https://jenkins.io/doc/book/managing/plugins/#installing-a-plugin) to install a [Node.js plugin](https://plugins.jenkins.io/nodejs).
+
+2. Configure this plugin as described in the [Usage section](https://plugins.jenkins.io/nodejs#NodeJSPlugin-Usage) on the plugin page. Ensure that you have added a Node.js installation on the **Global Tool Configuration** page and checked the **Provide Node & npm bin/ folder to PATH** check box in your build configuration.
+
+## Step 2 - Fetch Test Code From a Repository
+
+This tutorial uses tests published in the [ci-integration-demo](https://github.com/VasilyStrelyaev/ci-integration-demo) GitHub repository. If you use a different version control system, search for a plugin that integrates it with Jenkins.
 
 Open your project and choose **Configure** from the right pane.
 
@@ -120,9 +122,9 @@ Scroll down to the **Source Code Management** section and select *Git*, then spe
 
 ![Fetch Test Results](../../images/jenkins/check-out-tests.png)
 
-## Step 2 - Adding a Command to Install TestCafe
+## Step 3 - Add a Command to Install TestCafe
 
-Go to the **Build** section, find a step that builds you application and add a new step right after it. To do this, click **Add build step** and select a step type that runs a shell command.
+Go to the **Build** section, find a step that builds your application and add a new step after it. To do this, click **Add build step** and select **Execute shell** for macOS and Linux, or **Execute Windows batch command** for Windows.
 
 ![Add a Batch Command](../../images/jenkins/add-batch-command.png)
 
@@ -136,11 +138,9 @@ This command installs the main `testcafe` module and a plugin that saves test ru
 
 ![npm install Command](../../images/jenkins/npm-install-command.png)
 
-## Step 3 - Adding a Command to Run TestCafe
+## Step 4 - Add a Command to Run TestCafe
 
-Add another step that executes a shell command after the previous one. This step will run TestCafe.
-
-Type the following command.
+Add another step that executes a shell command and enter:
 
 ```sh
 node_modules/.bin/testcafe chrome tests/**/* -r xunit:res.xml
@@ -150,43 +150,49 @@ This runs TestCafe tests from the `tests` directory in Google Chrome. Test resul
 
 ![Run Tests Command](../../images/jenkins/run-tests-command.png)
 
-### Linux
+### Configure the Display Server (Linux)
+
+If you run Jenkins on a Linux machine and [use the browser UI](#enable-jenkins-to-start-browser-ui-macos-and-linux), set the `DISPLAY` environment variable to `1` before the `testcafe` command:
+
+```sh
+export DISPLAY=:1
+node_modules/.bin/testcafe chrome tests/**/* -r xunit:res.xml
+```
+
+Alternatively, you can use the [Xvfb server](https://www.x.org/archive/X11R7.6/doc/man/man1/Xvfb.1.xhtml):
 
 ```sh
 export DISPLAY=:99.0
 sh -e /etc/init.d/xvfb start
 sleep 3
 fluxbox >/dev/null 2>&1 &
+node_modules/.bin/testcafe chrome tests/**/* -r xunit:res.xml
 ```
 
-```sh
-export DISPLAY=:1
-```
+## Step 5 - Publish Test Run Reports
 
-## Step 4 - Publishing Test Run Reports
-
-Go to the **Post-build Actions** section and click **Add post-build action**. In the drop-down list, select **Publish JUnit test result report**.
+Go to the **Post-build Actions** section and click **Add post-build action**. Select **Publish JUnit test result report** from the drop-down list.
 
 ![Adding a Post-Build Action](../../images/jenkins/add-post-build-action.png)
 
-In the **Test report XMLs** field, specify the test report file: `res.xml`.
+Enter `res.xml` in the **Test report XMLs** field.
 
 ![Publishing Test Report](../../images/jenkins/publish-test-report.png)
 
-## Step 5 - Run the Test
+## Step 6 - Run the Test
 
-Click **Save** and you will be navigated to the Project page.
+Click **Save** to save changes and navigate to the **Project** page.
 
-Hit **Build Now** to build the project immediately.
+Click **Build Now** to build the project.
 
 ![Click the Build Now Button](../../images/jenkins/project-build-now.png)
 
-## Step 6 - View Test Results
+## Step 7 - View Test Results
 
-In the **Build History** section of the **Project** page, click a build and select **Test Results** from the drop-down menu.
+Find a build in the **Build History** section and select **Test Results** from the drop-down menu.
 
 ![Build History](../../images/jenkins/build-history.png)
 
-Jenkins will display a test run report where you can see general information about testing results. You can click individual tests for details.
+Jenkins displays a test run report with overall results. Click the test name for information about a specific test.
 
 ![View Test Results](../../images/jenkins/test-results.png)
