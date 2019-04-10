@@ -105,9 +105,7 @@ function checkTestDir (testDirPath, forError, expectedSubDirCount, expectedScree
     });
 }
 
-function checkScreenshotImages (forError, customPath, predicate) {
-    const expectedScreenshotsCount = config.browsers.length;
-
+function checkScreenshotImages (forError, customPath, predicate, expectedScreenshotsCount = config.browsers.length) {
     if (!isDirExists(SCREENSHOTS_PATH))
         return false;
 
@@ -300,6 +298,15 @@ exports.isScreenshotsEqual = function (customPath, referenceImagePathGetter) {
 
         return screenshotContent.equals(referenceImageContent);
     });
+};
+
+exports.checkScreenshotsDimensions = function (dimensions, screenshotCount) {
+    return checkScreenshotImages(false, '', function (screenshotFilePath) {
+        return readPngFile(screenshotFilePath)
+            .then(png => {
+                return dimensions.width === png.width && dimensions.height === png.height;
+            });
+    }, screenshotCount);
 };
 
 function removeDir (dirPath) {
