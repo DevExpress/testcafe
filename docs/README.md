@@ -23,7 +23,7 @@
     * [Concurrent Test Execution](articles/documentation/using-testcafe/common-concepts/concurrent-test-execution.md)
     * [Live Mode](articles/documentation/using-testcafe/common-concepts/live-mode.md)
     * [Reporters](articles/documentation/using-testcafe/common-concepts/reporters.md)
-    * [Connect to the TestCafe Server over HTTPS](articles/documentation/using-testcafe/common-concepts/connect-to-the-testcafe-server-over-https.md)
+    * [Test HTTPS and HTTP/2 Websites](articles/documentation/using-testcafe/common-concepts/test-https-and-http2-websites.md)
 * [TEST API](articles/documentation/test-api/README.md)
   * [Test Code Structure](articles/documentation/test-api/test-code-structure.md)
     * [Fixtures](articles/documentation/test-api/test-code-structure.md#fixtures)

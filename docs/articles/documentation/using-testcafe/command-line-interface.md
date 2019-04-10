@@ -707,7 +707,7 @@ testcafe --ssl pfx=path/to/file.pfx;rejectUnauthorized=true;...
 
 Provide the `--ssl` flag if the tested webpage uses browser features that require
 secure origin ([Service Workers](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API), [Geolocation API](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API), [ApplePaySession](https://developer.apple.com/documentation/apple_pay_on_the_web/applepaysession), [SubtleCrypto](https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto), etc).
-See [Connect to the TestCafe Server over HTTPS](common-concepts/connect-to-the-testcafe-server-over-https.md) for more information.
+See [Test HTTPS and HTTP/2 Websites](common-concepts/test-https-and-http2-websites.md) for more information.
 
 *Related configuration file property*: [ssl](configuration-file.md#ssl).
 
