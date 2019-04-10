@@ -39,8 +39,7 @@ You can initialize a selector with any of these objects.
     ```
 
 * A regular function. Executed on the client side. Must return a DOM node, array of DOM nodes,
-  NodeList, HTMLCollection, `null` or `undefined`. Cannot use outer-scope variables from test code.
-  This is convenient when you need to use some client-side logic to get an element.
+  NodeList, HTMLCollection, `null` or `undefined`. This is convenient when you need to use client-side logic to get an element.
 
     ```js
     import { Selector } from 'testcafe';
@@ -53,6 +52,8 @@ You can initialize a selector with any of these objects.
         return document.querySelector(storedElementId);
     });
     ```
+
+    Use the [options.dependencies](selector-options.md#optionsdependencies) property to pass objects to the function scope.
 
 * A selector.
 

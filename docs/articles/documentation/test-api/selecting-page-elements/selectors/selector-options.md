@@ -11,6 +11,7 @@ redirect_from:
 You can pass the following options to the [Selector constructor](creating-selectors.md).
 
 * [options.boundTestRun](#optionsboundtestrun)
+* [options.dependencies](#optionsdependencies)
 * [options.timeout](#optionstimeout)
 * [options.visibilityCheck](#optionsvisibilitycheck)
 
@@ -26,6 +27,27 @@ If you need to call a selector from a Node.js callback, assign the current
 [test controller](../../test-code-structure.md#test-controller) to the `boundTestRun` option.
 
 For details, see [Calling Selectors from Node.js Callbacks](edge-cases-and-limitations.md#calling-selectors-from-nodejs-callbacks).
+
+## options.dependencies
+
+**Type**: Object
+
+Contains functions, variables or objects passed to the function that [initializes the selector](creating-selectors.md#initializing-selectors).
+The `dependencies` object's properties are added to the function's scope as variables.
+
+The following sample demonstrates a selector (`element`) that uses a server-side object passed as a dependency (`customId`) to obtain a page element.
+
+```js
+import { Selector } from 'testcafe';
+
+const customId = { key: 'value' };
+
+const element = Selector(() => {
+    return getElementByCustomId(customId);
+}, {
+    dependencies: { customId }
+});
+```
 
 ## options.timeout
 
