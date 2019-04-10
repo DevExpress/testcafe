@@ -94,8 +94,8 @@ export default {
 
     async _ensureWindowIsExpanded (browserId, { height, width, availableHeight, availableWidth, outerWidth, outerHeight }) {
         if (height < MIN_AVAILABLE_DIMENSION || width < MIN_AVAILABLE_DIMENSION) {
-            const newHeight = availableHeight;
-            const newWidth  = Math.floor(availableWidth / 2);
+            const newHeight = Math.max(availableHeight, MIN_AVAILABLE_DIMENSION);
+            const newWidth  = Math.max(Math.floor(availableWidth / 2), MIN_AVAILABLE_DIMENSION);
 
             await this.resizeWindow(browserId, newWidth, newHeight, outerWidth, outerHeight);
         }
