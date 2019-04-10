@@ -205,7 +205,13 @@ Only installed and portable browsers located on the current machine can be launc
 
 ## File Path/Glob Pattern
 
-The `file-or-glob ...` argument specifies the files or directories (separated by a space) from which to run these tests.
+The `file-or-glob ...` argument specifies the files or directories (separated by a space) from which to run the tests.
+
+TestCafe can run:
+
+* JavaScript, TypeScript and CoffeeScript files that use [TestCafe API](../test-api/README.md),
+* [TestCafe Studio](https://www.devexpress.com/products/testcafestudio/) tests (`.testcafe` files),
+* Legacy TestCafe v2015.1 tests.
 
 *Related configuration file property*: [src](configuration-file.md#src).
 
@@ -218,11 +224,11 @@ testcafe ie my-tests
 The following command runs tests from the specified fixture files:
 
 ```sh
-testcafe ie my-tests/fixture1.js my-tests/fixture2.js
+testcafe ie js-tests/fixture.js studio-tests/fixture.testcafe
 ```
 
 You can also use [globbing patterns](https://github.com/isaacs/node-glob#glob-primer) to specify a set of files.
-For example, this command runs tests from files that match `tests/*page*`, namely `tests/example-page.js` and `tests/main-page.js`.
+For example, this command runs tests from files that match `tests/*page*` - for instance, `tests/example-page.js`, `tests/main-page.js` or `tests/auth-page.testcafe`.
 
 ```sh
 testcafe ie tests/*page*
