@@ -6,7 +6,7 @@ checked: false
 ---
 # Creating Selectors
 
-To create a selector, use the `Selector` constructor.
+Use the `Selector` constructor to create a selector.
 
 ```text
 Selector( init [, options] )
@@ -14,7 +14,7 @@ Selector( init [, options] )
 
 Parameter              | Type     | Description
 ---------------------- | -------- | -------------------------------------------------------------------------------
-`init`                 | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies a DOM node to be selected. See [Initializing Selectors](#initializing-selectors).
+`init`                 | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies a DOM node to be selected. See [Initialize Selectors](#initialize-selectors).
 `options`&#160;*(optional)* | Object   | See [Selector Options](selector-options.md).
 
 The following example creates a selector from a CSS string for an element with ID `username`.
@@ -25,7 +25,7 @@ import { Selector } from 'testcafe';
 const usernameInput = Selector('#username');
 ```
 
-## Initializing Selectors
+## Initialize Selectors
 
 You can initialize a selector with any of these objects.
 
@@ -38,8 +38,8 @@ You can initialize a selector with any of these objects.
     const submitButton = Selector('#submit-button');
     ```
 
-* A regular function. Executed on the client side. Must return a DOM node, array of DOM nodes,
-  NodeList, HTMLCollection, `null` or `undefined`. This is convenient when you need to use client-side logic to get an element.
+* A regular function executed on the client side. This function must return a DOM node, an array of DOM nodes,
+  `NodeList`, `HTMLCollection`, `null` or `undefined`.
 
     ```js
     import { Selector } from 'testcafe';

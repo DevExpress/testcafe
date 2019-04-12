@@ -15,9 +15,9 @@ You can pass the following options to the [Selector constructor](creating-select
 * [options.timeout](#optionstimeout)
 * [options.visibilityCheck](#optionsvisibilitycheck)
 
-You can also overwrite the options you have specified before.
+You can also overwrite the options you have specified previously.
 
-* [Overwriting Options](#overwriting-options)
+* [Overwrite Options](#overwrite-options)
 
 ## options.boundTestRun
 
@@ -32,7 +32,7 @@ For details, see [Calling Selectors from Node.js Callbacks](edge-cases-and-limit
 
 **Type**: Object
 
-Contains functions, variables or objects passed to the function that [initializes the selector](creating-selectors.md#initializing-selectors).
+Contains functions, variables or objects passed to the function that [initializes the selector](creating-selectors.md#initialize-selectors).
 The `dependencies` object's properties are added to the function's scope as variables.
 
 The following sample demonstrates a selector (`element`) that uses a server-side object passed as a dependency (`customId`) to obtain a page element.
@@ -57,8 +57,8 @@ The amount of time, in milliseconds, allowed for an element returned by the sele
 
 If the [visibilityCheck](#optionsvisibilitycheck) option is enabled, the element then must become visible within the `timeout`.
 
-**Default value**: timeout specified by using the [runner.run](../../../using-testcafe/programming-interface/runner.md#run) API method
-or the [selector-timeout](../../../using-testcafe/command-line-interface.md#--selector-timeout-ms) command line option.
+**Default value**: the timeout specified in the [runner.run](../../../using-testcafe/programming-interface/runner.md#run) API method
+or the [--selector-timeout](../../../using-testcafe/command-line-interface.md#--selector-timeout-ms) command line option.
 
 ## options.visibilityCheck
 
@@ -80,7 +80,7 @@ This option is in effect when TestCafe waits for the selector to return a page e
     await t.expect(Selector('#element', { visibilityCheck: true }).clientWidth).eql(400);
     ```
 
-* a selector is evaluated using the `await` keyword;
+* a selector is evaluated with the `await` keyword;
 
     ```js
     const snapshot = await Selector('#element', { visibilityCheck: true })();
@@ -121,16 +121,15 @@ use [filterVisible](functional-style-selectors.md#filtervisible) and
 
 **Default value**: `false`
 
-## Overwriting Options
+## Overwrite Options
 
-You can overwrite selector options by using the selector's `with` function.
+You can use the selector's `with` function to overwrite its options.
 
 ```text
 selector.with( options ) → Selector
 ```
 
-`with` returns a new selector with a different set of options that includes options
-from the original selector and new `options` that overwrite the original ones.
+`with` returns a new selector with a different set of options that includes options from the original selector and new `options` that overwrite them.
 
 The sample below shows how to overwrite the selector options so that it waits for the selected element to become visible.
 

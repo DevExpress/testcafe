@@ -47,7 +47,7 @@ This topic lists test API members in alphabetical order.
     * [parent](selecting-page-elements/selectors/functional-style-selectors.md#parent)
     * [prevSibling](selecting-page-elements/selectors/functional-style-selectors.md#prevsibling)
     * [sibling](selecting-page-elements/selectors/functional-style-selectors.md#sibling)
-    * [with](selecting-page-elements/selectors/selector-options.md#overwriting-options)
+    * [with](selecting-page-elements/selectors/selector-options.md#overwrite-options)
     * [withAttribute](selecting-page-elements/selectors/functional-style-selectors.md#withattribute)
     * [withExactText](selecting-page-elements/selectors/functional-style-selectors.md#withexacttext)
     * [withText](selecting-page-elements/selectors/functional-style-selectors.md#withtext)
