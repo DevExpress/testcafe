@@ -8,7 +8,7 @@ const RAW_API_JS_EXPRESSION_TYPE = 'js-expr';
 
 export function isCommandRejectableByPageError (command) {
     return !isObservationCommand(command) && !isBrowserManipulationCommand(command) && !isServiceCommand(command) ||
-           isRejectableBrowserManipulationCommand(command)
+           isResizeWindowCommand(command)
            && !isWindowSwitchingCommand(command);
 }
 
@@ -38,24 +38,18 @@ export function isScreenshotCommand (command) {
            command.type === TYPE.takeScreenshotOnFail;
 }
 
-export function isBrowserManipulationCommand (command) {
-    return command.type === TYPE.takeScreenshot ||
-           command.type === TYPE.takeElementScreenshot ||
-           command.type === TYPE.takeScreenshotOnFail ||
-           command.type === TYPE.resizeWindow ||
+export function isResizeWindowCommand (command) {
+    return command.type === TYPE.resizeWindow ||
            command.type === TYPE.resizeWindowToFitDevice ||
            command.type === TYPE.maximizeWindow;
 }
 
-function isRejectableBrowserManipulationCommand (command) {
-    return command.type === TYPE.resizeWindow ||
-            command.type === TYPE.resizeWindowToFitDevice ||
-            command.type === TYPE.maximizeWindow;
+export function isBrowserManipulationCommand (command) {
+    return isScreenshotCommand(command) || isResizeWindowCommand(command);
 }
 
 export function isServiceCommand (command) {
     return command.type === TYPE.testDone ||
-           command.type === TYPE.takeScreenshotOnFail ||
            command.type === TYPE.showAssertionRetriesStatus ||
            command.type === TYPE.hideAssertionRetriesStatus ||
            command.type === TYPE.setBreakpoint ||

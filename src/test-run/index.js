@@ -29,7 +29,8 @@ import {
     isScreenshotCommand,
     isServiceCommand,
     canSetDebuggerBreakpointBeforeCommand,
-    isExecutableOnClientCommand
+    isExecutableOnClientCommand,
+    isResizeWindowCommand
 } from './commands/utils';
 
 const lazyRequire                 = require('import-lazy')(require);
@@ -107,6 +108,7 @@ export default class TestRun extends AsyncEventEmitter {
         this.browserManipulationQueue = new BrowserManipulationQueue(browserConnection, screenshotCapturer, this.warningLog);
 
         this.debugLog = new TestRunDebugLog(this.browserConnection.userAgent);
+        this.commands = [];
 
         this.quarantine = null;
 
@@ -127,6 +129,10 @@ export default class TestRun extends AsyncEventEmitter {
 
     get injectable () {
         return this.session.injectable;
+    }
+
+    get browserResized () {
+        return this.commands.some(isResizeWindowCommand);
     }
 
     addQuarantineInfo (quarantine) {
@@ -540,7 +546,7 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     async executeCommand (command, callsite) {
-        this.debugLog.command(command);
+        this._logCommand(command);
 
         if (this.pendingPageError && isCommandRejectableByPageError(command))
             return this._rejectCommandWithPageError(callsite);
@@ -580,6 +586,11 @@ export default class TestRun extends AsyncEventEmitter {
             return await this._enqueueBrowserConsoleMessagesCommand(command, callsite);
 
         return this._enqueueCommand(command, callsite);
+    }
+
+    _logCommand (command) {
+        this.commands.push(command);
+        this.debugLog.command(command);
     }
 
     _rejectCommandWithPageError (callsite) {
