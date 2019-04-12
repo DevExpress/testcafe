@@ -56,6 +56,10 @@ test('Switch to a non-existent iframe', async t => {
     await t.switchToIframe('#non-existent');
 });
 
+test('Switch to an invisible iframe', async t => {
+    await t.switchToIframe('#invisible-iframe');
+});
+
 test('Click in a slowly loading iframe', async t => {
     await t
         .switchToIframe('#slowly-loading-iframe')

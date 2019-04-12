@@ -64,6 +64,15 @@ describe('[API] t.switchToIframe(), t.switchToMainWindow()', function () {
                 });
         });
 
+        it('Should ensure the iframe element is visible before switching to it', function () {
+            return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Switch to an invisible iframe',
+                { shouldFail: true, selectorTimeout: 1 })
+                .catch(function (errs) {
+                    expect(errs[0]).contains('The element that matches the specified selector is not visible');
+                    expect(errs[0]).contains('.switchToIframe(\'#invisible-iframe\'');
+                });
+        });
+
         it('Should raise an error is the switchContext argument is not an iframe', function () {
             return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Try to switch to an incorrect element', { shouldFail: true })
                 .catch(function (errs) {
