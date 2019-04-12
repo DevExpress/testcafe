@@ -227,8 +227,9 @@ The following command runs tests from the specified fixture files:
 testcafe ie js-tests/fixture.js studio-tests/fixture.testcafe
 ```
 
-You can also use [globbing patterns](https://github.com/isaacs/node-glob#glob-primer) to specify a set of files.
-For example, this command runs tests from files that match `tests/*page*` - for instance, `tests/example-page.js`, `tests/main-page.js` or `tests/auth-page.testcafe`.
+You can also use [glob patterns](https://github.com/isaacs/node-glob#glob-primer) to specify a set of files.
+
+The following command runs tests from files that match the `tests/*page*` pattern (for instance, `tests/example-page.js`, `tests/main-page.js`, or `tests/auth-page.testcafe`):
 
 ```sh
 testcafe ie tests/*page*
