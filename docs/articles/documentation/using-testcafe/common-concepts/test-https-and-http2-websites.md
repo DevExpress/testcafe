@@ -14,7 +14,7 @@ This topic describes how TestCafe works with HTTPS and HTTP/2 websites.
 
 ## Test HTTPS Websites
 
-TestCafe is a proxy-based testing tool. The TestCafe [reverse proxy](https://en.wikipedia.org/wiki/Reverse_proxy) serves the tested webpage over HTTP and communicates with the original web server over HTTP or HTTPS, depending on the [specified page URL](../../test-api/test-code-structure.md#specifying-the-start-webpage).
+TestCafe is a proxy-based testing tool. The TestCafe [reverse proxy](https://en.wikipedia.org/wiki/Reverse_proxy) serves the tested webpage over HTTP and communicates with the original web server over HTTP or HTTPS (depends on the [specified page URL](../../test-api/test-code-structure.md#specifying-the-start-webpage)).
 
 ![Connection Protocols](../../../images/proxy-connection-protocols.svg)
 
