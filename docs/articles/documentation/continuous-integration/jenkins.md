@@ -13,9 +13,9 @@ This topic shows how you can integrate TestCafe tests into project build process
 
 ## Enable Jenkins to Start the Browser UI (macOS and Linux)
 
-The default Jenkins configuration on macOS and Linux does not allow it to start the browser UI.
+The default Jenkins configuration on macOS and Linux does not allow it to start the local browser's UI. This section describes how to give Jenkins these permissions.
 
-You can either use [headless browsers](../using-testcafe/common-concepts/browsers/testing-in-headless-mode.md), the [Xvfb server](#configure-the-display-server-linux) (on Linux) or perform the following steps to give Jenkins permissions to launch the browser UI.
+You can skip this stese steps if you use [headless browsers](../using-testcafe/common-concepts/browsers/testing-in-headless-mode.md), [cloud testing services](../using-testcafe/common-concepts/browsers/browser-support.md#browsers-in-cloud-testing-services) or the [Xvfb server](#configure-the-display-server-linux) (on Linux).
 
 > Important! The Jenkins installer overwrites permission settings during upgrade. Download and replace `jenkins.war` to upgrade Jenkins, or repeat the steps below after you run the installer.
 
@@ -152,7 +152,9 @@ This runs TestCafe tests from the `tests` directory in Google Chrome. Test resul
 
 ### Configure the Display Server (Linux)
 
-If you run Jenkins on a Linux machine and [use the browser UI](#enable-jenkins-to-start-browser-ui-macos-and-linux), set the `DISPLAY` environment variable to `1` before the `testcafe` command:
+> Skip this step if you use [headless browsers](../using-testcafe/common-concepts/browsers/testing-in-headless-mode.md) or [cloud testing services](../using-testcafe/common-concepts/browsers/browser-support.md#browsers-in-cloud-testing-services).
+
+If you run Jenkins on a Linux machine and [the tests use local browsers in the UI mode](#enable-jenkins-t-sStart-the-browser-ui-macos-and-linux), set the `DISPLAY` environment variable to `1` before the `testcafe` command:
 
 ```sh
 export DISPLAY=:1
@@ -173,11 +175,11 @@ node_modules/.bin/testcafe chrome tests/**/* -r xunit:res.xml
 
 Go to the **Post-build Actions** section and click **Add post-build action**. Select **Publish JUnit test result report** from the drop-down list.
 
-![Adding a Post-Build Action](../../images/jenkins/add-post-build-action.png)
+![Add a Post-Build Action](../../images/jenkins/add-post-build-action.png)
 
 Enter `res.xml` in the **Test report XMLs** field.
 
-![Publishing Test Report](../../images/jenkins/publish-test-report.png)
+![Publish Test Report](../../images/jenkins/publish-test-report.png)
 
 ## Step 6 - Run the Test
 
