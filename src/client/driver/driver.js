@@ -335,7 +335,7 @@ export default class Driver {
         const commandSelectorTimeout = hasSpecificTimeout ? selector.timeout : this.selectorTimeout;
 
         return getExecuteSelectorResult(selector, commandSelectorTimeout, null,
-            fn => new iframeErrorCtors.NotFoundError(fn), () => iframeErrorCtors.IsInvisibleError(), this.statusBar)
+            fn => new iframeErrorCtors.NotFoundError(fn), () => new iframeErrorCtors.IsInvisibleError(), this.statusBar)
             .then(iframe => {
                 if (!domUtils.isIframeElement(iframe))
                     throw new ActionElementNotIframeError();
