@@ -188,7 +188,7 @@ describe('Video Recorder', () => {
                 testRunMock.testRun.executeCommand({ type: COMMAND_TYPE.resizeWindow });
             })
             .then(() => {
-                expect(videoRecorder.log.includes('Resize action is executed when video is recording in the "Test" test')).to.be.true;
+                expect(videoRecorder.log.includes('The browser window was resized during the "Test" test while TestCafe recorded a video. TestCafe cannot adjust the video resolution during recording. As a result, the video content may appear broken. Do not resize the browser window when TestCafe records a video.')).to.be.true;
             });
     });
 });
