@@ -131,6 +131,12 @@ You can add postfixes to browser aliases to run tests in the [headless mode](com
 
 Specifies files or directories from which to run tests.
 
+TestCafe can run:
+
+* JavaScript, TypeScript and CoffeeScript files that use [TestCafe API](../test-api/README.md),
+* [TestCafe Studio](https://www.devexpress.com/products/testcafestudio/) tests (`.testcafe` files),
+* Legacy TestCafe v2015.1 tests.
+
 ```json
 {
     "src": "/home/user/tests/fixture.js"
@@ -139,7 +145,7 @@ Specifies files or directories from which to run tests.
 
 ```json
 {
-    "src": ["/home/user/auth-tests/fixture-1.js", "/home/user/mobile-tests/"]
+    "src": ["/home/user/auth-tests/fixture.testcafe", "/home/user/mobile-tests/"]
 }
 ```
 
