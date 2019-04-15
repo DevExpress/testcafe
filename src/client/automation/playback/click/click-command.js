@@ -28,28 +28,6 @@ class ElementClickCommand {
     }
 }
 
-class ColorInputElementClickCommand extends ElementClickCommand {
-    constructor (eventState, eventArgs) {
-        super(eventState, eventArgs);
-    }
-
-    run () {
-        if (this.eventState.clickElement && browserUtils.isFirefox)
-            this._bindClickHandler(this.eventState.clickElement);
-
-        super.run();
-    }
-
-    _bindClickHandler (element) {
-        const onclick = e => {
-            eventUtils.preventDefault(e, true);
-            eventUtils.unbind(element, 'click', onclick);
-        };
-
-        eventUtils.bind(element, 'click', onclick);
-    }
-}
-
 class SelectElementClickCommand extends ElementClickCommand {
     constructor (eventState, eventArgs) {
         super(eventState, eventArgs);
@@ -121,7 +99,6 @@ export default function (eventState, eventArgs) {
     const elementBoundToLabel = getElementBoundToLabel(eventArgs.element);
     const isSelectElement     = domUtils.isSelectElement(eventArgs.element);
     const isOptionElement     = domUtils.isOptionElement(eventArgs.element);
-    const isColorInputElement = domUtils.isColorInputElement(eventState.clickElement);
     const isLabelledCheckbox  = elementBoundToLabel && domUtils.isCheckboxElement(elementBoundToLabel);
 
     if (isSelectElement)
@@ -129,9 +106,6 @@ export default function (eventState, eventArgs) {
 
     if (isOptionElement)
         return new OptionElementClickCommand(eventState, eventArgs);
-
-    if (isColorInputElement)
-        return new ColorInputElementClickCommand(eventState, eventArgs);
 
     if (isLabelledCheckbox)
         return new LabelledCheckboxElementClickCommand(eventState, eventArgs);
