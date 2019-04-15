@@ -8,7 +8,7 @@ import PathPattern from '../utils/path-pattern';
 import WARNING_MESSAGES from '../notifications/warning-message';
 import { getPluralSuffix, getConcatenatedValuesString, getToBeInPastTense } from '../utils/string';
 
-import TestRunRecorder from './test-run-recorder';
+import TestRunVideoRecorder from './test-run-video-recorder';
 
 const DEBUG_LOGGER = debug('testcafe:video-recorder');
 
@@ -32,7 +32,7 @@ export default class VideoRecorder {
 
         this.firstFile = true;
 
-        this.testRunRecorders = {};
+        this.testRunVideoRecorders = {};
 
         this._assignEventHandlers(browserJob);
     }
@@ -122,20 +122,20 @@ export default class VideoRecorder {
             encodingOptions: this.encodingOptions
         };
 
-        const testRunRecorder = this._createTestRunRecorder(testRunInfo, recordingOptions);
+        const testRunVideoRecorder = this._createTestRunVideoRecorder(testRunInfo, recordingOptions);
 
-        await testRunRecorder.init();
+        await testRunVideoRecorder.init();
 
-        if (testRunRecorder.videoRecorder)
-            this.testRunRecorders[testRunRecorder.index] = testRunRecorder;
+        if (testRunVideoRecorder.videoRecorder)
+            this.testRunVideoRecorders[testRunVideoRecorder.index] = testRunVideoRecorder;
     }
 
-    _createTestRunRecorder (testRunInfo, recordingOptions) {
-        return new TestRunRecorder(testRunInfo, recordingOptions, this.warningLog);
+    _createTestRunVideoRecorder (testRunInfo, recordingOptions) {
+        return new TestRunVideoRecorder(testRunInfo, recordingOptions, this.warningLog);
     }
 
     async _onTestRunReady ({ index }) {
-        const testRunRecorder = this.testRunRecorders[index];
+        const testRunRecorder = this.testRunVideoRecorders[index];
 
         if (!testRunRecorder)
             return;
@@ -144,12 +144,12 @@ export default class VideoRecorder {
     }
 
     async _onTestRunBeforeDone ({ index }) {
-        const testRunRecorder = this.testRunRecorders[index];
+        const testRunRecorder = this.testRunVideoRecorders[index];
 
         if (!testRunRecorder)
             return;
 
-        delete this.testRunRecorders[index];
+        delete this.testRunVideoRecorders[index];
 
         await testRunRecorder.finishCapturing();
 

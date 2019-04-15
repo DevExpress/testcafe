@@ -12,7 +12,7 @@ const TEMP_MERGE_FILE_PREFIX = TEMP_VIDEO_FILE_PREFIX + '-merge';
 const TEMP_MERGE_CONFIG_FILE_PREFIX    = 'config';
 const TEMP_MERGE_CONFIG_FILE_EXTENSION = 'txt';
 
-export default class TestRunRecorder {
+export default class TestRunVideoRecorder {
     constructor ({ testRun, test, index }, { path, ffmpegPath, encodingOptions }, warningLog) {
         this.testRun    = testRun;
         this.test       = test;
@@ -54,9 +54,6 @@ export default class TestRunRecorder {
     }
 
     async finishCapturing () {
-        if (this.testRun.browserResized)
-            this.warningLog.addWarning(WARNING_MESSAGES.videoBrowserResizing, this.testRun.test.name);
-
         await this.videoRecorder.finishCapturing();
     }
 

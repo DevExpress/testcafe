@@ -108,7 +108,6 @@ export default class TestRun extends AsyncEventEmitter {
         this.browserManipulationQueue = new BrowserManipulationQueue(browserConnection, screenshotCapturer, this.warningLog);
 
         this.debugLog = new TestRunDebugLog(this.browserConnection.userAgent);
-        this.commands = [];
 
         this.quarantine = null;
 
@@ -129,10 +128,6 @@ export default class TestRun extends AsyncEventEmitter {
 
     get injectable () {
         return this.session.injectable;
-    }
-
-    get browserResized () {
-        return this.commands.some(isResizeWindowCommand);
     }
 
     addQuarantineInfo (quarantine) {
@@ -546,7 +541,7 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     async executeCommand (command, callsite) {
-        this._logCommand(command);
+        this.debugLog.command(command);
 
         if (this.pendingPageError && isCommandRejectableByPageError(command))
             return this._rejectCommandWithPageError(callsite);
@@ -561,8 +556,12 @@ export default class TestRun extends AsyncEventEmitter {
         if (isScreenshotCommand(command))
             await this._adjustScreenshotCommand(command);
 
-        if (isBrowserManipulationCommand(command))
+        if (isBrowserManipulationCommand(command)) {
             this.browserManipulationQueue.push(command);
+
+            if (isResizeWindowCommand(command) && this.opts.videoPath)
+                this.warningLog.addWarning(WARNING_MESSAGE.videoBrowserResizing, this.test.name);
+        }
 
         if (command.type === COMMAND_TYPE.wait)
             return delay(command.timeout);
@@ -586,11 +585,6 @@ export default class TestRun extends AsyncEventEmitter {
             return await this._enqueueBrowserConsoleMessagesCommand(command, callsite);
 
         return this._enqueueCommand(command, callsite);
-    }
-
-    _logCommand (command) {
-        this.commands.push(command);
-        this.debugLog.command(command);
     }
 
     _rejectCommandWithPageError (callsite) {
