@@ -9,7 +9,6 @@ const listeners      = hammerhead.eventSandbox.listeners;
 
 const domUtils   = testCafeCore.domUtils;
 const styleUtils = testCafeCore.styleUtils;
-const eventUtils = testCafeCore.eventUtils;
 
 const selectElementUI = testCafeUI.selectElement;
 
