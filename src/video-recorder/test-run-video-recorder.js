@@ -1,8 +1,5 @@
 import { join } from 'path';
-
 import VideoRecorderProcess from './process';
-
-import WARNING_MESSAGES from '../notifications/warning-message';
 
 const VIDEO_EXTENSION = 'mp4';
 
@@ -13,7 +10,7 @@ const TEMP_MERGE_CONFIG_FILE_PREFIX    = 'config';
 const TEMP_MERGE_CONFIG_FILE_EXTENSION = 'txt';
 
 export default class TestRunVideoRecorder {
-    constructor ({ testRun, test, index }, { path, ffmpegPath, encodingOptions }, warningLog) {
+    constructor ({ testRun, test, index }, { path, ffmpegPath, encodingOptions }) {
         this.testRun    = testRun;
         this.test       = test;
         this.index      = index;
@@ -24,15 +21,14 @@ export default class TestRunVideoRecorder {
         this.path            = path;
         this.ffmpegPath      = ffmpegPath;
         this.encodingOptions = encodingOptions;
-
-        this.warningLog = warningLog;
     }
 
-    get testInfo () {
+    get testRunInfo () {
         return {
             testIndex:       this.index,
             fixture:         this.test.fixture.name,
             test:            this.test.name,
+            alias:           this._connection.browserInfo.alias,
             parsedUserAgent: this._connection.browserInfo.parsedUserAgent
         };
     }
@@ -45,10 +41,6 @@ export default class TestRunVideoRecorder {
         return this.testRun.browserConnection;
     }
 
-    get _browserAlias () {
-        return this._connection.browserInfo.alias;
-    }
-
     async startCapturing () {
         await this.videoRecorder.startCapturing();
     }
@@ -58,20 +50,13 @@ export default class TestRunVideoRecorder {
     }
 
     async init () {
-        const isVideoSupported = await this._isVideoSupported();
+        this.tempFiles     = this._generateTempNames();
+        this.videoRecorder = this._createVideoRecorderProcess();
 
-        if (isVideoSupported) {
-            this.tempFiles = this._generateTempNames();
-
-            this.videoRecorder = this._createVideoRecorderProcess();
-
-            await this.videoRecorder.init();
-        }
-        else
-            this.warningLog.addWarning(WARNING_MESSAGES.videoNotSupportedByBrowser, this._browserAlias);
+        await this.videoRecorder.init();
     }
 
-    async _isVideoSupported () {
+    async isVideoSupported () {
         const connectionCapabilities = await this._connection.provider.hasCustomActionForBrowser(this._connection.id);
 
         return connectionCapabilities && connectionCapabilities.hasGetVideoFrameData;

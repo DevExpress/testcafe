@@ -72,7 +72,7 @@ export default class VideoRecorder {
     }
 
     _getTargetVideoPath (testRunRecorder) {
-        const data = Object.assign(testRunRecorder.testInfo, { now: this.timeStamp });
+        const data = Object.assign(testRunRecorder.testRunInfo, { now: this.timeStamp });
 
         if (this.singleFile) {
             data.testIndex = null;
@@ -123,11 +123,15 @@ export default class VideoRecorder {
         };
 
         const testRunVideoRecorder = this._createTestRunVideoRecorder(testRunInfo, recordingOptions);
+        const isVideoSupported     = await testRunVideoRecorder.isVideoSupported();
 
-        await testRunVideoRecorder.init();
+        if (isVideoSupported) {
+            await testRunVideoRecorder.init();
 
-        if (testRunVideoRecorder.videoRecorder)
             this.testRunVideoRecorders[testRunVideoRecorder.index] = testRunVideoRecorder;
+        }
+        else
+            this.warningLog.addWarning(WARNING_MESSAGES.videoNotSupportedByBrowser, testRunVideoRecorder.testRunInfo.alias);
     }
 
     _createTestRunVideoRecorder (testRunInfo, recordingOptions) {
