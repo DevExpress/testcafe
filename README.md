@@ -40,7 +40,7 @@
 ## Table of contents
 
 * [Features](#features)
-* [IDE for End-to-End Web Testing](#ide-for-end-to-end-web-testing)
+* [TestCafe Studio: IDE for End-to-End Web Testing](#testcafe-studio-ide-for-end-to-end-web-testing)
 * [Getting Started](#getting-started)
 * [Documentation](#documentation)
 * [Get Help](#get-help)
@@ -92,7 +92,7 @@ const macOSInput = Selector('.column').find('label').withText('MacOS').child('in
 You can run TestCafe from a console, and its reports can be viewed in a CI system's interface
 (TeamCity, Jenkins, Travis & etc.)
 
-## IDE for End-to-End Web Testing
+## TestCafe Studio: IDE for End-to-End Web Testing
 
 TestCafe is great for writing end-to-end tests in JavaScript, but sometimes coding is not the best option. [TestCafe Studio](https://www.devexpress.com/products/testcafestudio/?utm_source=github.com&utm_medium=referral&utm_campaign=tc-gh-ide) allows you to record and maintain tests visually. Try it whether you want to delegate testing to a QA team that has lower JavaScript skills or simplify the way you create tests.
 
