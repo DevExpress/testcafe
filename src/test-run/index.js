@@ -29,7 +29,8 @@ import {
     isScreenshotCommand,
     isServiceCommand,
     canSetDebuggerBreakpointBeforeCommand,
-    isExecutableOnClientCommand
+    isExecutableOnClientCommand,
+    isResizeWindowCommand
 } from './commands/utils';
 
 const lazyRequire                 = require('import-lazy')(require);
@@ -555,8 +556,12 @@ export default class TestRun extends AsyncEventEmitter {
         if (isScreenshotCommand(command))
             await this._adjustScreenshotCommand(command);
 
-        if (isBrowserManipulationCommand(command))
+        if (isBrowserManipulationCommand(command)) {
             this.browserManipulationQueue.push(command);
+
+            if (isResizeWindowCommand(command) && this.opts.videoPath)
+                this.warningLog.addWarning(WARNING_MESSAGE.videoBrowserResizing, this.test.name);
+        }
 
         if (command.type === COMMAND_TYPE.wait)
             return delay(command.timeout);

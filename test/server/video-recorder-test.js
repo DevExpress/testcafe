@@ -1,24 +1,66 @@
-const { expect }    = require('chai');
-const VideoRecorder = require('../../lib/video-recorder');
-const AsyncEmitter  = require('../../lib/utils/async-event-emitter');
-const WarningLog    = require('../../lib/notifications/warning-log');
+const { expect }           = require('chai');
+const { noop }             = require('lodash');
+const TestRun              = require('../../lib/test-run/index');
+const VideoRecorder        = require('../../lib/video-recorder');
+const TestRunVideoRecorder = require('../../lib/video-recorder/test-run-video-recorder');
+const AsyncEmitter         = require('../../lib/utils/async-event-emitter');
+const WarningLog           = require('../../lib/notifications/warning-log');
+const COMMAND_TYPE         = require('../../lib/test-run/commands/type');
+const renderTemplate       = require('../../lib/utils/render-template');
 
 const VIDEOS_BASE_PATH = '__videos__';
+
+class VideoRecorderProcessMock {
+    constructor () {
+    }
+
+    init () {
+    }
+
+    startCapturing () {
+    }
+
+    finishCapturing () {
+    }
+}
+
+class TestRunVideoRecorderMock extends TestRunVideoRecorder {
+    constructor (testRunInfo, recordingOptions, warningLog, testLog) {
+        super(testRunInfo, recordingOptions, warningLog);
+
+        this.log = testLog;
+    }
+
+    _generateTempNames () {
+        const result = super._generateTempNames();
+
+        this.log.push('generate-names');
+
+        return result;
+    }
+
+    _createVideoRecorderProcess () {
+        return new VideoRecorderProcessMock();
+    }
+}
 
 class VideoRecorderMock extends VideoRecorder {
     constructor (basePath, ffmpegPath, connection, customOptions) {
         super(basePath, ffmpegPath, connection, customOptions);
 
         this.log = [];
+
+        this.warningLog = {
+            addWarning: (message, ...args) => {
+                const msg = renderTemplate(message, ...args);
+
+                this.log.push(msg);
+            }
+        };
     }
 
-    _generateTempNames (id) {
-        return super._generateTempNames(id)
-            .then(result => {
-                this.log.push('generate-names');
-
-                return result;
-            });
+    _createTestRunVideoRecorder (testRunInfo, recordingOptions) {
+        return new TestRunVideoRecorderMock(testRunInfo, recordingOptions, this.warningLog, this.log);
     }
 
     _onBrowserJobStart () {
@@ -33,11 +75,41 @@ class VideoRecorderMock extends VideoRecorder {
     _onTestRunCreate (options) {
         this.log.push('test-created');
 
-        return super._onTestRunCreate(options)
-            .then(() => {
-                this.log.push('video-recorder-initialized');
-            });
+        return super._onTestRunCreate(options);
     }
+
+    _saveFiles () {
+    }
+}
+
+function createTestRunMock (warningLog) {
+    const testRun = TestRun.prototype;
+
+    Object.assign(testRun, {
+        test:                     { name: 'Test' },
+        debugLog:                 { command: noop },
+        _enqueueCommand:          noop,
+        browserManipulationQueue: [],
+        warningLog:               warningLog,
+
+        opts: { videoPath: 'path' },
+
+        browserConnection: {
+            id:       'connectionId',
+            provider: {
+                hasCustomActionForBrowser: () => {
+                    return {
+                        hasGetVideoFrameData: true
+                    };
+                }
+            },
+        }
+    });
+
+    return {
+        testRun,
+        index: 0
+    };
 }
 
 describe('Video Recorder', () => {
@@ -57,7 +129,7 @@ describe('Video Recorder', () => {
             .emit('start')
             .then(() => browserJobMock.emit('test-run-created', testRunCreateEventDataMock))
             .then(() => {
-                expect(videoRecorder.testRunInfo).to.be.empty;
+                expect(videoRecorder.testRunVideoRecorders).to.be.empty;
             });
     });
 
@@ -87,24 +159,9 @@ describe('Video Recorder', () => {
         const warningLog     = new WarningLog();
         const videoRecorder  = new VideoRecorderMock(browserJobMock, VIDEOS_BASE_PATH, {}, {}, warningLog);
 
-        const testRunMock = {
-            testRun: {
-                browserConnection: {
-                    id:       'connectionId',
-                    provider: {
-                        hasCustomActionForBrowser: () => {
-                            return {
-                                hasGetVideoFrameData: true
-                            };
-                        }
-                    }
-                }
-            }
-        };
-
         browserJobMock.emit('start');
 
-        const testRunCreatePromise = browserJobMock.emit('test-run-create', testRunMock);
+        const testRunCreatePromise = browserJobMock.emit('test-run-create', createTestRunMock());
 
         browserJobMock.emit('done');
 
@@ -116,5 +173,22 @@ describe('Video Recorder', () => {
                 'generate-names'
             ]);
         });
+    });
+
+    it('Should emit a warning on resize action', () => {
+        const browserJobMock = new AsyncEmitter();
+        const videoRecorder  = new VideoRecorderMock(browserJobMock, VIDEOS_BASE_PATH, {}, {});
+
+        const testRunMock = createTestRunMock(videoRecorder.warningLog);
+
+        return browserJobMock.emit('start')
+            .then(() => browserJobMock.emit('test-run-create', testRunMock))
+            .then(() => browserJobMock.emit('test-run-before-done', testRunMock))
+            .then(() => {
+                testRunMock.testRun.executeCommand({ type: COMMAND_TYPE.resizeWindow });
+            })
+            .then(() => {
+                expect(videoRecorder.log.includes('The browser window was resized during the "Test" test while TestCafe recorded a video. TestCafe cannot adjust the video resolution during recording. As a result, the video content may appear broken. Do not resize the browser window when TestCafe records a video.')).to.be.true;
+            });
     });
 });

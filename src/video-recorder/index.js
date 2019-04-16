@@ -3,22 +3,17 @@ import { join, dirname } from 'path';
 import fs from 'fs';
 import { spawnSync } from 'child_process';
 import makeDir from 'make-dir';
-import VideoRecorderProcess from './process';
 import TempDirectory from '../utils/temp-directory';
 import PathPattern from '../utils/path-pattern';
 import WARNING_MESSAGES from '../notifications/warning-message';
 import { getPluralSuffix, getConcatenatedValuesString, getToBeInPastTense } from '../utils/string';
 
+import TestRunVideoRecorder from './test-run-video-recorder';
+
 const DEBUG_LOGGER = debug('testcafe:video-recorder');
 
 const VIDEO_EXTENSION = 'mp4';
-
-const TEMP_DIR_PREFIX        = 'video';
-const TEMP_VIDEO_FILE_PREFIX = 'tmp-video';
-const TEMP_MERGE_FILE_PREFIX = TEMP_VIDEO_FILE_PREFIX + '-merge';
-
-const TEMP_MERGE_CONFIG_FILE_PREFIX    = 'config';
-const TEMP_MERGE_CONFIG_FILE_EXTENSION = 'txt';
+const TEMP_DIR_PREFIX = 'video';
 
 export default class VideoRecorder {
     constructor (browserJob, basePath, opts, encodingOpts, warningLog) {
@@ -33,13 +28,11 @@ export default class VideoRecorder {
 
         this.warningLog = warningLog;
 
-        this.tempDirectory       = new TempDirectory(TEMP_DIR_PREFIX);
-        this.tempVideoPath       = '';
-        this.tempMergeConfigPath = '';
+        this.tempDirectory = new TempDirectory(TEMP_DIR_PREFIX);
 
         this.firstFile = true;
 
-        this.testRunInfo = {};
+        this.testRunVideoRecorders = {};
 
         this._assignEventHandlers(browserJob);
     }
@@ -78,38 +71,20 @@ export default class VideoRecorder {
         this.warningLog.addWarning(WARNING_MESSAGES.problematicPathPatternPlaceholderForVideoRecording, problematicPlaceholderListStr, suffix, suffix, verb);
     }
 
-    _getTargetVideoPath (testRunInfo) {
-        const { test, index, testRun } = testRunInfo;
+    _getTargetVideoPath (testRunRecorder) {
+        const data = Object.assign(testRunRecorder.testRunInfo, { now: this.timeStamp });
 
-        const connection = testRun.browserConnection;
+        if (this.singleFile) {
+            data.testIndex = null;
+            data.fixture = null;
+            data.test = null;
+        }
 
-        const pathPattern = new PathPattern(this.customPathPattern, VIDEO_EXTENSION, {
-            testIndex:         this.singleFile ? null : index,
-            quarantineAttempt: null,
-            now:               this.timeStamp,
-            fixture:           this.singleFile ? null : test.fixture.name,
-            test:              this.singleFile ? null : test.name,
-            parsedUserAgent:   connection.browserInfo.parsedUserAgent,
-        });
+        const pathPattern = new PathPattern(this.customPathPattern, VIDEO_EXTENSION, data);
 
         pathPattern.on('problematic-placeholders-found', ({ placeholders }) => this._addProblematicPlaceholdersWarning(placeholders));
 
         return join(this.basePath, pathPattern.getPath());
-    }
-
-    async _generateTempNames (id) {
-        const tempFileNames = {
-            tempVideoPath:       `${TEMP_VIDEO_FILE_PREFIX}-${id}.${VIDEO_EXTENSION}`,
-            tempMergeConfigPath: `${TEMP_MERGE_CONFIG_FILE_PREFIX}-${id}.${TEMP_MERGE_CONFIG_FILE_EXTENSION}`,
-            tmpMergeName:        `${TEMP_MERGE_FILE_PREFIX}-${id}.${VIDEO_EXTENSION}`
-        };
-
-        await this.tempDirectoryInitializedPromise;
-
-        for (const [tempFile, tempName] of Object.entries(tempFileNames))
-            tempFileNames[tempFile] = join(this.tempDirectory.path, tempName);
-
-        return tempFileNames;
     }
 
     _concatVideo (targetVideoPath, { tempVideoPath, tempMergeConfigPath, tmpMergeName }) {
@@ -135,60 +110,67 @@ export default class VideoRecorder {
         await this.tempDirectory.dispose();
     }
 
-    async _onTestRunCreate ({ testRun, legacy, quarantine, test, index }) {
-        if (legacy)
+    async _onTestRunCreate (testRunInfo) {
+        if (testRunInfo.legacy)
             return;
 
-        const testRunInfo = { testRun, quarantine, test, index };
+        await this.tempDirectoryInitializedPromise;
 
-        const connection = testRun.browserConnection;
+        const recordingOptions = {
+            path:            this.tempDirectory.path,
+            ffmpegPath:      this.ffmpegPath,
+            encodingOptions: this.encodingOptions
+        };
 
-        const connectionCapabilities = await testRun.browserConnection.provider.hasCustomActionForBrowser(connection.id);
+        const testRunVideoRecorder = this._createTestRunVideoRecorder(testRunInfo, recordingOptions);
+        const isVideoSupported     = await testRunVideoRecorder.isVideoSupported();
 
-        if (!connectionCapabilities || !connectionCapabilities.hasGetVideoFrameData) {
-            this.browserJob.warningLog.addWarning(WARNING_MESSAGES.videoNotSupportedByBrowser, connection.browserInfo.alias);
+        if (isVideoSupported) {
+            await testRunVideoRecorder.init();
 
-            return;
+            this.testRunVideoRecorders[testRunVideoRecorder.index] = testRunVideoRecorder;
         }
-
-        this.testRunInfo[index] = testRunInfo;
-
-        testRunInfo.tempFiles = await this._generateTempNames(connection.id);
-
-        testRunInfo.videoRecorder = new VideoRecorderProcess(testRunInfo.tempFiles.tempVideoPath, this.ffmpegPath, connection, this.encodingOptions);
-
-        await testRunInfo.videoRecorder.init();
+        else
+            this.warningLog.addWarning(WARNING_MESSAGES.videoNotSupportedByBrowser, testRunVideoRecorder.testRunInfo.alias);
     }
 
-    async _onTestRunReady (testRunController) {
-        const testRunInfo = this.testRunInfo[testRunController.index];
-
-        if (!testRunInfo)
-            return;
-
-        await testRunInfo.videoRecorder.startCapturing();
+    _createTestRunVideoRecorder (testRunInfo, recordingOptions) {
+        return new TestRunVideoRecorder(testRunInfo, recordingOptions, this.warningLog);
     }
 
-    async _onTestRunBeforeDone (testRunController) {
-        const testRunInfo = this.testRunInfo[testRunController.index];
+    async _onTestRunReady ({ index }) {
+        const testRunRecorder = this.testRunVideoRecorders[index];
 
-        if (!testRunInfo)
+        if (!testRunRecorder)
             return;
 
-        delete this.testRunInfo[testRunController.index];
+        await testRunRecorder.startCapturing();
+    }
 
-        await testRunInfo.videoRecorder.finishCapturing();
+    async _onTestRunBeforeDone ({ index }) {
+        const testRunRecorder = this.testRunVideoRecorders[index];
 
-        const videoPath = this._getTargetVideoPath(testRunInfo);
-
-        if (this.failedOnly && !testRunController.testRun.errs.length)
+        if (!testRunRecorder)
             return;
+
+        delete this.testRunVideoRecorders[index];
+
+        await testRunRecorder.finishCapturing();
+
+        if (this.failedOnly && !testRunRecorder.hasErrors)
+            return;
+
+        await this._saveFiles(testRunRecorder);
+    }
+
+    async _saveFiles (testRunRecorder) {
+        const videoPath = this._getTargetVideoPath(testRunRecorder);
 
         await makeDir(dirname(videoPath));
 
         if (this.singleFile)
-            this._concatVideo(videoPath, testRunInfo.tempFiles);
+            this._concatVideo(videoPath, testRunRecorder.tempFiles);
 
-        fs.copyFileSync(testRunInfo.tempFiles.tempVideoPath, videoPath);
+        fs.copyFileSync(testRunRecorder.tempFiles.tempVideoPath, videoPath);
     }
 }
