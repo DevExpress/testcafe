@@ -276,32 +276,25 @@ TestCafe developers and community members made these plugins:
 
 ## Different Versions of TestCafe
 
-There is a line of products called `TestCafe`. Below are the similarities and key differences between them.
+| &nbsp; | [TestCafe](https://devexpress.github.io/testcafe) | [TestCafe Studio](https://www.devexpress.com/products/testcafestudio/?utm_source=github.com&utm_medium=referral&utm_campaign=tc-gh-diff)  |
+| ------ |:-------------------------------------------------:|:-----------------------------------------------------------------------:|
+| No need for WebDriver, browser plugins or other tools | &#10003; | &#10003; |
+| Cross-platform and cross-browser out of the box | &#10003; | &#10003; |
+| Write tests in the latest JavaScript or TypeScript | &#10003; | &#10003; |
+| Clear and flexible [API](https://devexpress.github.io/testcafe/documentation/test-api/) supports ES6 and [PageModel pattern](https://devexpress.github.io/testcafe/documentation/recipes/using-page-model.html) | &#10003; | &#10003; |
+| Stable tests due to the [Smart Assertion Query Mechanism](https://devexpress.github.io/testcafe/documentation/test-api/assertions/#smart-assertion-query-mechanism) | &#10003; | &#10003; |
+| Tests run fast due to intelligent [Automatic Waiting Mechanism](https://devexpress.github.io/testcafe/documentation/test-api/waiting-for-page-elements-to-appear.html) and [Concurrent Test Execution](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/concurrent-test-execution.html) | &#10003; | &#10003; |
+| Custom reporter plugins | &#10003; | &#10003; |
+| Use third-party Node.js modules in test scripts | &#10003; | &#10003; |
+| Integration with popular CI systems | &#10003; | &nbsp;&#10003;\* |
+| Free and open-source | &#10003; | &nbsp; |
+| [Visual Test Recorder](https://docs.devexpress.com/TestCafeStudio/400165/guides/record-tests?utm_source=github.com&utm_medium=referral&utm_campaign=tc-gh-diff) | &nbsp; | &#10003; |
+| [Interactive Test Editor](https://docs.devexpress.com/TestCafeStudio/400190/user-interface/test-editor?utm_source=github.com&utm_medium=referral&utm_campaign=tc-gh-diff) | &nbsp; | &#10003; |
+| [Automatic Selector Generation](https://docs.devexpress.com/TestCafeStudio/400407/guides/record-tests/element-selectors#auto-generated-element-selectors?utm_source=github.com&utm_medium=referral&utm_campaign=tc-gh-diff) | &nbsp; | &#10003; |
+| [Run Configuration Manager](https://docs.devexpress.com/TestCafeStudio/400189/user-interface/run-configurations-dialog?utm_source=github.com&utm_medium=referral&utm_campaign=tc-gh-diff) | &nbsp; | &#10003; |
+| [IDE-like GUI](https://docs.devexpress.com/TestCafeStudio/400181/user-interface/code-editor?utm_source=github.com&utm_medium=referral&utm_campaign=tc-gh-diff) | &nbsp; | &#10003; |
 
-* All three versions share the same core features:
-  * No need for WebDriver, browser plugins or other tools.
-  * Cross-platform and cross-browser out of the box.
-
-* [**TestCafe**](https://testcafe.devexpress.com/)<br/>
-  *first released in 2013, commercial web application*
-  * Visual Test Recorder and web GUI to create, edit and run tests.
-  * You can record tests or edit them as JavaScript code.
-
-* [**TestCafe**](https://devexpress.github.io/testcafe) - you are here<br/>
-  *first released in 2016, free and open-source node.js application*
-  * You can write tests in the latest JavaScript or TypeScript.
-  * Clearer and more flexible [API](https://devexpress.github.io/testcafe/documentation/test-api/) supports ES6 and [PageModel pattern](https://devexpress.github.io/testcafe/documentation/recipes/using-page-model.html).
-  * More stable tests due to the [Smart Assertion Query Mechanism](https://devexpress.github.io/testcafe/documentation/test-api/assertions/#smart-assertion-query-mechanism).
-  * Tests run faster due to improved [Automatic Waiting Mechanism](https://devexpress.github.io/testcafe/documentation/test-api/waiting-for-page-elements-to-appear.html) and [Concurrent Test Execution](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/concurrent-test-execution.html).
-  * Easy integration: it is a node.js solution with CLI and reporters for popular CI systems.
-  * You can extend it with [plugins](#plugins) and other Node.js modules.
-
-* [**TestCafe Studio**](https://www.devexpress.com/products/testcafestudio/?utm_source=github.com&utm_medium=referral&utm_campaign=tc-gh-diff)<br/>
-  *Preview released in 2018, commercial desktop application*
-  * Based on the open-source TestCafe, and supports its major features.
-  * You can record tests or edit them as JavaScript or TypeScript code.
-  * New [Visual Test Recorder](https://docs.devexpress.com/TestCafeStudio/400165/guides/record-tests?utm_source=github.com&utm_medium=referral&utm_campaign=tc-gh-diff) and [IDE-like GUI](https://docs.devexpress.com/TestCafeStudio/400176/guides/write-test-scripts?utm_source=github.com&utm_medium=referral&utm_campaign=tc-gh-diff) to record, edit, run and debug tests.
-  * Currently available as a free preview version. The release version will replace the 2013 version of TestCafe.
+\* You can use open-source TestCafe to run TestCafe Studio tests in CI systems.
 
 ## Badge
 
