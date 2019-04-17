@@ -339,55 +339,72 @@ code {
             color: #ffffff;
             background-color: #404142; }
 
-.testcafe-studio-promo-gradient {
-  background: linear-gradient(#2ca8d4, #36b6e4);
-  height: 45px; }
-
-.testcafe-studio-promo {
-  background: #36b6e4;
-  min-height: 255px; }
-  .testcafe-studio-promo .testcafe-studio-promo-content {
-    max-width: 1500px;
-    min-height: 255px;
-    margin: 0 auto;
-    padding: 10px 100px 0;
+.testcafe-studio-release-banner {
+  height: 485px;
+  background-color: #182839;
+  display: flex;
+  position: relative;
+  overflow: hidden; }
+  .testcafe-studio-release-banner .testcafe-studio-image, .testcafe-studio-release-banner .testcafe-studio-text {
+    position: relative;
+    width: 50%; }
+  .testcafe-studio-release-banner .testcafe-studio-image .testcafe-studio-arrow {
+    border-style: solid;
+    border-color: #36B6E5;
+    border-width: 0 175px 175px 0;
+    height: 750px;
+    width: 290px;
+    transform: rotate(45deg);
+    position: absolute;
+    bottom: -130px;
+    right: 270px; }
+  .testcafe-studio-release-banner .testcafe-studio-image .testcafe-studio-screenshot {
+    height: 542px;
+    position: relative; }
+@keyframes konfetti {
+  0% {
+    transform: rotate(0deg) translateX(4px) rotate(0deg); }
+  100% {
+    transform: rotate(360deg) translateX(4px) rotate(-360deg); } }
+    .testcafe-studio-release-banner .testcafe-studio-image .testcafe-studio-screenshot .testcafe-studio-konfetti {
+      animation: konfetti 20s infinite linear; }
+    .testcafe-studio-release-banner .testcafe-studio-image .testcafe-studio-screenshot .testcafe-studio-konfetti.front {
+      animation: konfetti 14s infinite linear; }
+    .testcafe-studio-release-banner .testcafe-studio-image .testcafe-studio-screenshot img {
+      position: absolute;
+      right: 3%;
+      top: 45px; }
+  .testcafe-studio-release-banner .testcafe-studio-text {
     display: flex;
-    justify-content: space-between; }
-    .testcafe-studio-promo .testcafe-studio-promo-content .testcafe-studio-promo-description {
-      margin: 23px 20px 0 0; }
-      .testcafe-studio-promo .testcafe-studio-promo-content .testcafe-studio-promo-description .testcafe-studio-promo-header {
-        font-weight: bold;
-        font-size: 30px;
-        color: #0a3e51; }
-      .testcafe-studio-promo .testcafe-studio-promo-content .testcafe-studio-promo-description .testcafe-studio-promo-subheader {
-        font-size: 14px;
-        color: #fff;
-        margin-top: 5px; }
-      .testcafe-studio-promo .testcafe-studio-promo-content .testcafe-studio-promo-description .check-it-out-button {
-        width: 240px;
-        height: 60px;
-        margin-top: 27px;
-        display: block;
-        background-color: #006a90;
-        border-radius: 5px;
-        color: #fff;
-        font-size: 18px;
-        font-weight: bold;
-        text-align: center;
-        line-height: 60px;
-        margin-bottom: 40px; }
-        .testcafe-studio-promo .testcafe-studio-promo-content .testcafe-studio-promo-description .check-it-out-button:hover {
-          text-decoration: none;
-          background-color: #ffffff;
-          color: #0a3e51; }
-    .testcafe-studio-promo .testcafe-studio-promo-content .testcafe-studio-promo-screenshot {
-      width: 732px;
-      min-width: 732px;
-      margin: 15px -10px 0 0;
-      align-self: flex-end; }
-      .testcafe-studio-promo .testcafe-studio-promo-content .testcafe-studio-promo-screenshot img {
-        vertical-align: top;
-        width: 732px; }
+    flex-direction: column;
+    justify-content: center; }
+    .testcafe-studio-release-banner .testcafe-studio-text .try-testcafe-studio-link {
+      font-size: 22px;
+      color: #ffffff;
+      font-family: "Roboto Slab";
+      font-weight: 100;
+      background-color: #74b781;
+      text-decoration: none;
+      border-radius: 10px;
+      padding: 16px 24px;
+      display: inline-block;
+      white-space: nowrap;
+      margin-bottom: 40px; }
+      .testcafe-studio-release-banner .testcafe-studio-text .try-testcafe-studio-link:hover {
+        background-color: #308D46; }
+    .testcafe-studio-release-banner .testcafe-studio-text h2 {
+      font-size: 31px;
+      color: #ffffff;
+      font-family: "Roboto Slab";
+      font-weight: 600;
+      margin-top: 30px;
+      margin-bottom: 10px; }
+    .testcafe-studio-release-banner .testcafe-studio-text p {
+      font-size: 22px;
+      color: #ffffff;
+      font-family: "Roboto Slab";
+      font-weight: 200;
+      margin-bottom: 35px; }
 
 .tweets-section {
   margin: 55px 0 45px;

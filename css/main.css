@@ -466,7 +466,6 @@ html, body {
           color: #111;
           text-decoration: underline; }
     .cookie-notice .cookie-notice-content .cookie-notice-button {
-      min-width: 96px;
       color: #000;
       padding: 5px 20px;
       font-size: 16px;
@@ -474,7 +473,8 @@ html, body {
       border-radius: 50px;
       border: 2px solid #000;
       background-color: #fff;
-      cursor: pointer; }
+      cursor: pointer;
+      white-space: nowrap; }
 
 .doc-top-nav {
   display: none; }

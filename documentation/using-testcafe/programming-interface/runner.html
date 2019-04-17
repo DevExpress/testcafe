@@ -33,6 +33,7 @@
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="https://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab">
   <link rel="apple-touch-icon" sizes="180x180" href="/testcafe/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/testcafe/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/testcafe/favicon-16x16.png">
@@ -805,12 +806,20 @@
 <td>The relative or absolute path to a test fixture file, or several such paths. You can use <a href="https://github.com/isaacs/node-glob#glob-primer">glob patterns</a> to include (or exclude) multiple files.</td>
 </tr>
 </tbody></table></div>
+<p>TestCafe can run:</p>
+
+<ul>
+<li>JavaScript, TypeScript and CoffeeScript files that use <a href="../../test-api/">TestCafe API</a>,</li>
+<li><a href="https://www.devexpress.com/products/testcafestudio/">TestCafe Studio</a> tests (<code>.testcafe</code> files),</li>
+<li>Legacy TestCafe v2015.1 tests.</li>
+</ul>
+
 <p>You do not need to call this function if you specify the <a href="../configuration-file.html#src">src</a> property in the <a href="../configuration-file.html">configuration file</a>.</p>
 
 <p><em>Related configuration file property</em>: <a href="../configuration-file.html#src">src</a></p>
 
 <p><strong>Examples</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">src</span><span class="p">([</span><span class="s1">'/home/user/tests/fixture1.js'</span><span class="p">,</span> <span class="s1">'fixture5.js'</span><span class="p">]);</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">src</span><span class="p">([</span><span class="s1">'/home/user/js-tests/fixture.js'</span><span class="p">,</span> <span class="s1">'studio-fixture.testcafe'</span><span class="p">]);</span>
 </code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">src</span><span class="p">([</span><span class="s1">'/home/user/tests/**/*.js'</span><span class="p">,</span> <span class="s1">'!/home/user/tests/foo.js'</span><span class="p">]);</span>
 </code></pre></div><h3><a class="anchor" id="filter"></a>filter <a class="permalink" href="#filter">#</a></h3>
 <p>Allows you to select which tests should be run.</p>

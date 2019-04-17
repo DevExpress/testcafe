@@ -33,6 +33,7 @@
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="https://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab">
   <link rel="apple-touch-icon" sizes="180x180" href="/testcafe/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/testcafe/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/testcafe/favicon-16x16.png">
@@ -877,7 +878,15 @@ specify the browser&#39;s alias that consists of the <code>{browser-provider-nam
 </code></pre></div>
 <p>Only installed and portable browsers located on the current machine can be launched with arguments.</p>
 <h2><a class="anchor" id="file-pathglob-pattern"></a>File Path/Glob Pattern <a class="permalink" href="#file-pathglob-pattern">#</a></h2>
-<p>The <code>file-or-glob ...</code> argument specifies the files or directories (separated by a space) from which to run these tests.</p>
+<p>The <code>file-or-glob ...</code> argument specifies the files or directories (separated by a space) from which to run the tests.</p>
+
+<p>TestCafe can run:</p>
+
+<ul>
+<li>JavaScript, TypeScript and CoffeeScript files that use <a href="../test-api/">TestCafe API</a>,</li>
+<li><a href="https://www.devexpress.com/products/testcafestudio/">TestCafe Studio</a> tests (<code>.testcafe</code> files),</li>
+<li>Legacy TestCafe v2015.1 tests.</li>
+</ul>
 
 <p><em>Related configuration file property</em>: <a href="configuration-file.html#src">src</a>.</p>
 
@@ -885,10 +894,11 @@ specify the browser&#39;s alias that consists of the <code>{browser-provider-nam
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe ie my-tests
 </code></pre></div>
 <p>The following command runs tests from the specified fixture files:</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe ie my-tests/fixture1.js my-tests/fixture2.js
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe ie js-tests/fixture.js studio-tests/fixture.testcafe
 </code></pre></div>
-<p>You can also use <a href="https://github.com/isaacs/node-glob#glob-primer">globbing patterns</a> to specify a set of files.
-For example, this command runs tests from files that match <code>tests/*page*</code>, namely <code>tests/example-page.js</code> and <code>tests/main-page.js</code>.</p>
+<p>You can also use <a href="https://github.com/isaacs/node-glob#glob-primer">glob patterns</a> to specify a set of files.</p>
+
+<p>The following command runs tests from files that match the <code>tests/*page*</code> pattern (for instance, <code>tests/example-page.js</code>, <code>tests/main-page.js</code>, or <code>tests/auth-page.testcafe</code>):</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe ie tests/<span class="k">*</span>page<span class="k">*</span>
 </code></pre></div>
 <p>If you do not specify any file or directory, TestCafe runs tests from the <code>test</code> or <code>tests</code> directories.</p>

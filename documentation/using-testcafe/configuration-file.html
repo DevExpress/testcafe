@@ -33,6 +33,7 @@
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="https://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab">
   <link rel="apple-touch-icon" sizes="180x180" href="/testcafe/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/testcafe/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/testcafe/favicon-16x16.png">
@@ -838,11 +839,19 @@ specify the browser&#39;s alias that consists of the <code>{browser-provider-nam
 <em>API</em>: <a href="programming-interface/runner.html#browsers">runner.browsers</a>, <a href="programming-interface/browserconnection.html">BrowserConnection</a></p>
 <h2><a class="anchor" id="src"></a>src <a class="permalink" href="#src">#</a></h2>
 <p>Specifies files or directories from which to run tests.</p>
+
+<p>TestCafe can run:</p>
+
+<ul>
+<li>JavaScript, TypeScript and CoffeeScript files that use <a href="../test-api/">TestCafe API</a>,</li>
+<li><a href="https://www.devexpress.com/products/testcafestudio/">TestCafe Studio</a> tests (<code>.testcafe</code> files),</li>
+<li>Legacy TestCafe v2015.1 tests.</li>
+</ul>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
     </span><span class="nt">"src"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/home/user/tests/fixture.js"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div><div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"src"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"/home/user/auth-tests/fixture-1.js"</span><span class="p">,</span><span class="w"> </span><span class="s2">"/home/user/mobile-tests/"</span><span class="p">]</span><span class="w">
+    </span><span class="nt">"src"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"/home/user/auth-tests/fixture.testcafe"</span><span class="p">,</span><span class="w"> </span><span class="s2">"/home/user/mobile-tests/"</span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>You can use <a href="https://github.com/isaacs/node-glob#glob-primer">globbing patterns</a> to specify a set of files.</p>
