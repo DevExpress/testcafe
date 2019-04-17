@@ -199,38 +199,29 @@ html body .page-content-wrapper main #main-form .features-section {
         border: none;
         margin-left: 0;
         padding-left: 0; }
-html body .page-content-wrapper main #main-form .testcafe-studio-promo-gradient {
-  display: none; }
-html body .page-content-wrapper main #main-form .testcafe-studio-promo .testcafe-studio-promo-content {
+html body .page-content-wrapper main #main-form .testcafe-studio-release-banner {
   display: block;
-  padding: 10px 30px 0; }
-  html body .page-content-wrapper main #main-form .testcafe-studio-promo .testcafe-studio-promo-content .testcafe-studio-promo-description {
-    margin-right: 0; }
-    html body .page-content-wrapper main #main-form .testcafe-studio-promo .testcafe-studio-promo-content .testcafe-studio-promo-description .testcafe-studio-promo-header {
-      font-weight: bold;
-      line-height: normal;
-      font-size: 33px; }
-    html body .page-content-wrapper main #main-form .testcafe-studio-promo .testcafe-studio-promo-content .testcafe-studio-promo-description .testcafe-studio-promo-subheader {
-      font-weight: 600;
-      line-height: 1.6;
-      font-size: 16px;
-      margin-top: 20px; }
-    html body .page-content-wrapper main #main-form .testcafe-studio-promo .testcafe-studio-promo-content .testcafe-studio-promo-description .check-it-out-button {
-      width: 100%;
-      display: block;
-      height: 55px;
-      color: #fff;
-      background-color: #404142;
+  height: auto; }
+  html body .page-content-wrapper main #main-form .testcafe-studio-release-banner .testcafe-studio-image, html body .page-content-wrapper main #main-form .testcafe-studio-release-banner .testcafe-studio-text {
+    width: auto; }
+  html body .page-content-wrapper main #main-form .testcafe-studio-release-banner .testcafe-studio-image .testcafe-studio-arrow {
+    display: none; }
+  html body .page-content-wrapper main #main-form .testcafe-studio-release-banner .testcafe-studio-image .testcafe-studio-screenshot {
+    text-align: center;
+    height: auto; }
+    html body .page-content-wrapper main #main-form .testcafe-studio-release-banner .testcafe-studio-image .testcafe-studio-screenshot .testcafe-studio-konfetti {
+      right: auto; }
+    html body .page-content-wrapper main #main-form .testcafe-studio-release-banner .testcafe-studio-image .testcafe-studio-screenshot .testcafe-studio-window {
+      position: relative; }
+    html body .page-content-wrapper main #main-form .testcafe-studio-release-banner .testcafe-studio-image .testcafe-studio-screenshot img {
+      right: auto; }
+  html body .page-content-wrapper main #main-form .testcafe-studio-release-banner .testcafe-studio-text {
+    padding: 0 40px; }
+    html body .page-content-wrapper main #main-form .testcafe-studio-release-banner .testcafe-studio-text .try-testcafe-studio-link {
       border-radius: 4px;
-      line-height: 55px;
-      margin-top: 29px; }
-  html body .page-content-wrapper main #main-form .testcafe-studio-promo .testcafe-studio-promo-content .testcafe-studio-promo-screenshot {
-    width: calc(100% + 60px);
-    min-width: 0;
-    height: auto;
-    background-size: contain;
-    margin-left: -30px;
-    margin-right: -30px; }
+      display: block;
+      text-align: center;
+      white-space: normal; }
 html body .page-content-wrapper main #main-form .tweets-section {
   display: none; }
 html body .page-content-wrapper main #main-form .follow-section {
