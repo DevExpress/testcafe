@@ -36,7 +36,7 @@ Feel free to ask for more details.
 
 ### What is the difference between [TestCafe Studio](https://www.devexpress.com/products/testcafestudio/) and [open-source TestCafe](https://devexpress.github.io/testcafe)?
 
-TestCafe Studio is a testing IDE built on top of the open-source TestCafe engine. Try it whether you're looking to simplify the way you record your tests or want to delegate testing to a QA team that does not want to write JavaScript.
+TestCafe Studio is a testing IDE built on top of the open-source TestCafe engine. It simplifies the way you record tests and helps you delegate testing to a QA team that does not want to write JavaScript.
 
 Read the following article to learn how TestCafe Studio could fit into your workflow: [What's Better than TestCafe? TestCafe Studio](https://www.devexpress.com/products/testcafestudio/).
 
