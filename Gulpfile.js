@@ -769,8 +769,20 @@ function startDocker () {
     assignIn(process.env, dockerEnv);
 }
 
-gulp.task('docker-build', done => {
-    childProcess.execSync('npm pack', { env: process.env }).toString();
+function isDockerDesktopRunning () {
+    try {
+        const processInfo = childProcess.execSync('wmic process get Name /format:list').toString();
+
+        return processInfo.match(/Docker for Windows.exe/);
+    }
+    catch (e) {
+        return false;
+    }
+}
+
+function ensureDockerEnvironment () {
+    if (isDockerDesktopRunning())
+        return;
 
     if (!process.env['DOCKER_HOST']) {
         try {
@@ -778,9 +790,15 @@ gulp.task('docker-build', done => {
         }
         catch (e) {
             throw new Error('Unable to initialize Docker environment. Use Docker terminal to run this task.\n' +
-                            e.stack);
+                e.stack);
         }
     }
+}
+
+gulp.task('docker-build', done => {
+    childProcess.execSync('npm pack', { env: process.env }).toString();
+
+    ensureDockerEnvironment();
 
     const packageId  = `${packageInfo.name}-${packageInfo.version}.tgz`;
     const tagCommand = PUBLISH_TAGS.map(tag => `-t ${PUBLISH_REPO}:${tag}`).join(' ');
@@ -792,15 +810,7 @@ gulp.task('docker-build', done => {
 });
 
 gulp.task('docker-test', done => {
-    if (!process.env['DOCKER_HOST']) {
-        try {
-            startDocker();
-        }
-        catch (e) {
-            throw new Error('Unable to initialize Docker environment. Use Docker terminal to run this task.\n' +
-                            e.stack);
-        }
-    }
+    ensureDockerEnvironment();
 
     childProcess.execSync(`docker build --no-cache --build-arg tag=${packageInfo.version} -t docker-server-tests -f test/docker/Dockerfile .`,
         { stdio: 'inherit', env: process.env });
