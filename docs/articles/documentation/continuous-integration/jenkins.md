@@ -13,7 +13,7 @@ This topic shows how you can integrate TestCafe tests into project build process
 
 ## Enable Jenkins to Start the Browser UI (macOS and Linux)
 
-The default Jenkins configuration on macOS and Linux does not allow it to start the local browser's UI. This section describes how to give Jenkins these permissions.
+The default Jenkins configuration on macOS and Linux does not allow the CI system to start the local browser's UI. This section describes how to give Jenkins these permissions.
 
 You can skip this stese steps if you use [headless browsers](../using-testcafe/common-concepts/browsers/testing-in-headless-mode.md), [cloud testing services](../using-testcafe/common-concepts/browsers/browser-support.md#browsers-in-cloud-testing-services) or the [Xvfb server](#configure-the-display-server-linux) (on Linux).
 
