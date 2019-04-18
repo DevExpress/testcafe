@@ -1,5 +1,18 @@
 # Changelog
 
+## v1.1.3 (2019-4-18)
+
+* TestCafe now shows a warning when the `t.resizeWindow` action is used during video recording ([#3513](https://github.com/DevExpress/testcafe/issues/3513))
+* Debugging in the Docker image can now be enabled with `--inspect` and `--inspect-brk` flags ([#3646](https://github.com/DevExpress/testcafe/issues/3646))
+* The --window-width flag can set the emulated window width for Chrome Headless ([#3456](https://github.com/DevExpress/testcafe/issues/3456))
+* TestCafe now shows the correct error message when an iframe is invisible  ([#3681](https://github.com/DevExpress/testcafe/issues/3681))
+* The Unlock Page button no longer throws an error when clicked ([#3652](https://github.com/DevExpress/testcafe/issues/3652))
+* The `change` event is not emulated if the file input's value is not changed by `t.setFilesToUpload` ([testcafe-hammerhead/#1844](https://github.com/DevExpress/testcafe-hammerhead/issues/1844))
+* The upload native dialog is no longer shown in Firefox after a simulated click ([testcafe-hammerhead/#1984](https://github.com/DevExpress/testcafe-hammerhead/issues/1984))
+* The 'style' attribute and the 'HTMLElement.style' property now have the same value after a change ([testcafe-hammerhead/#1922](https://github.com/DevExpress/testcafe-hammerhead/issues/1922))
+
+### Bug Fixes
+
 ## v1.1.2 (2019-4-10)
 
 ### Bug Fixes
