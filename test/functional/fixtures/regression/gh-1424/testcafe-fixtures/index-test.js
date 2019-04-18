@@ -4,8 +4,9 @@ fixture `gh-1424`
     .page `http://localhost:3000/fixtures/regression/gh-1424/pages/index.html`;
 
 test('Press enter', async t => {
-    const btn   = Selector('#btn');
-    const input = Selector('#input');
+    const isAndroid = await t.eval(() => /Android/i.test(navigator.userAgent));
+    const btn       = Selector('#btn');
+    const input     = Selector('#input');
 
     /* eslint-disable no-undef */
     const focus = ClientFunction(() => el().focus());
@@ -20,5 +21,8 @@ test('Press enter', async t => {
         return [window.btnKeyPressCount, window.btnClickCount, window.inputKeyPressCount, window.inputClickCount].join(',');
     });
 
-    await t.expect(events).eql('1,1,1,1');
+    if (isAndroid)
+        await t.expect(events).eql('0,1,0,1');
+    else
+        await t.expect(events).eql('1,1,1,1');
 });

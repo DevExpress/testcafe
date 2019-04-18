@@ -28,9 +28,10 @@
     });
 
     document.getElementById('input').addEventListener('keyup', function () {
-        const containsAllText = this.value.indexOf('block of text to be inserted in one keystroke') > 0;
-        const allRaised = keydownRaised && keypressRaised && inputRaised;
-        const exactlyOneKeystroke = keydownCount === 1 && keypressCount === 1;
+        const isAndroid           = /Android/i.test(navigator.userAgent);
+        const containsAllText     = this.value.indexOf('block of text to be inserted in one keystroke') > 0;
+        const allRaised           = keydownRaised && keypressRaised || isAndroid && inputRaised;
+        const exactlyOneKeystroke = keydownCount === 1 && keypressCount === 1 || isAndroid;
 
         if (allRaised && this.value === 'a') {
             throw new Error('Type in input raised');
