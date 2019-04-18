@@ -1,4 +1,4 @@
-/*eslint-disable no-unused-vars*/
+/*eslint-disable @typescript-eslint/no-unused-vars*/
 function isTouchDevice () {
     const userAgent   = window.navigator.userAgent.toLocaleLowerCase();
     const mobile      = /[^-]mobi/i.test(userAgent);
@@ -14,4 +14,4 @@ function isTouchDevice () {
 
     return isDevice && hasTouchEvents;
 }
-/*eslint-disable no-unused-vars*/
+/*eslint-disable @typescript-eslint/no-unused-vars*/

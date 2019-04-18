@@ -1,6 +1,16 @@
 {
-  "parser": "babel-eslint",
-  "extends": "eslint:recommended",
+  "parser": "@typescript-eslint/parser",
+  "env": {
+    "es6": true,
+    "node": true
+  },
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
   "rules": {
     "no-alert": 2,
     "no-array-constructor": 2,
@@ -79,12 +89,12 @@
     "no-extra-parens": 2,
     "new-cap": [2, { "capIsNew": false }],
     "space-before-function-paren": [2, "always"],
-    "no-use-before-define" : [2, "nofunc"],
     "handle-callback-err": 0,
     "linebreak-style": [2, "unix"],
-    "no-duplicate-imports": 2
-  },
-  "env": {
-    "node": true
+    "no-duplicate-imports": 2,
+    "@typescript-eslint/no-use-before-define": [2, "nofunc"],
+    "@typescript-eslint/no-var-requires": [0],
+    "@typescript-eslint/explicit-function-return-type": [2, { "allowExpressions": true }],
+    "@typescript-eslint/no-unused-vars": 2
   }
 }

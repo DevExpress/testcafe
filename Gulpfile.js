@@ -1,7 +1,6 @@
 const babel                = require('babel-core');
 const gulp                 = require('gulp');
 const gulpStep             = require('gulp-step');
-const gulpBabel            = require('gulp-babel');
 const data                 = require('gulp-data');
 const less                 = require('gulp-less');
 const qunitHarness         = require('gulp-qunit-harness');
@@ -17,6 +16,7 @@ const mergeStreams         = require('merge-stream');
 const del                  = require('del');
 const fs                   = require('fs');
 const path                 = require('path');
+const { Transform }        = require('stream');
 const globby               = require('globby');
 const opn                  = require('opn');
 const connect              = require('connect');
@@ -33,9 +33,9 @@ const childProcess         = require('child_process');
 const listBrowsers         = require('testcafe-browser-tools').getInstallations;
 const npmAuditor           = require('npm-auditor');
 const checkLicenses        = require('./test/dependency-licenses-checker');
-const sourcemaps           = require('gulp-sourcemaps');
 const packageInfo          = require('./package');
 const getPublishTags       = require('./docker/get-publish-tags');
+
 
 gulpStep.install();
 
@@ -43,8 +43,7 @@ ll
     .install()
     .tasks([
         'lint',
-        'check-licenses',
-        'server-scripts'
+        'check-licenses'
     ])
     .onlyInDebug([
         'styles',
@@ -147,6 +146,10 @@ const CLIENT_TEST_LOCAL_BROWSERS_ALIASES = ['ie', 'edge', 'chrome', 'firefox', '
 const PUBLISH_TAGS = getPublishTags(packageInfo);
 const PUBLISH_REPO = 'testcafe/testcafe';
 
+const NODE_MODULE_BINS = path.join(__dirname, 'node_modules/.bin');
+
+process.env.PATH = NODE_MODULE_BINS + path.delimiter + process.env.PATH + path.delimiter + NODE_MODULE_BINS;
+
 let websiteServer = null;
 
 gulp.task('audit', () => {
@@ -174,6 +177,7 @@ gulp.task('lint', () => {
             'examples/**/*.js',
             'docker/*.js',
             'src/**/*.js',
+            'src/**/*.ts',
             'test/**/*.js',
             '!test/client/vendor/**/*.*',
             'Gulpfile.js'
@@ -259,22 +263,41 @@ gulp.step('client-scripts-templates-render', () => {
 
 gulp.step('client-scripts', gulp.series('client-scripts-bundle', 'client-scripts-templates-render'));
 
-gulp.step('server-scripts', () => {
+gulp.step('server-scripts-compile', () => {
+    return childProcess
+        .spawn('tsc -p src/tsconfig.json', { shell: true, stdio: 'inherit' });
+});
+
+
+// TODO: get rid of this step when we migrate to proper ES6 default imports
+gulp.step('server-scripts-add-exports', () => {
+    const transform = new Transform({
+        objectMode: true,
+
+        transform (file, enc, cb) {
+            const fileSource = file.contents.toString();
+
+            if (fileSource.indexOf('exports.default =') >= 0) {
+                const sourceMapIndex = fileSource.indexOf('//# sourceMappingURL');
+                const modifiedSource = fileSource.slice(0, sourceMapIndex) + 'module.exports = exports.default;\n' + fileSource.slice(sourceMapIndex);
+
+                file.contents = Buffer.from(modifiedSource);
+            }
+
+            cb(null, file);
+        }
+    });
+
     return gulp
         .src([
-            'src/**/*.js',
-            '!src/client/**/*.js'
+            'lib/**/*.js',
+            '!lib/client/**/*.js'
         ])
-        .pipe(sourcemaps.init())
-        .pipe(gulpBabel())
-        .pipe(sourcemaps.mapSources(sourcePath => {
-            const libPath = path.join('src', sourcePath);
-
-            return path.relative(sourcePath, libPath);
-        }))
-        .pipe(sourcemaps.write())
+        .pipe(transform)
         .pipe(gulp.dest('lib'));
 });
+
+gulp.step('server-scripts', gulp.series('server-scripts-compile', 'server-scripts-add-exports'));
 
 gulp.step('styles', () => {
     return gulp
