@@ -38,10 +38,13 @@ describe('Debug Log', () => {
         delete data1.data2;
         delete data2.data1;
 
-        expect(debugMock.data).deep.equal({
-            'testcafe:test-run:Chrome:command':        '\n    {\n      data2: {\n        data1: [Circular]\n      }\n    }\n',
-            'testcafe:test-run:Chrome:driver-message': '\n    {\n      data2: {\n        data1: [Circular]\n      }\n    }\n'
-        });
+        expect(debugMock.data['testcafe:test-run:Chrome:command'].replace(/\s/g, '')).equal(
+            '{data2:{data1:[Circular]}}'
+        );
+
+        expect(debugMock.data['testcafe:test-run:Chrome:driver-message'].replace(/\s/g, '')).equal(
+            '{data2:{data1:[Circular]}}'
+        );
     });
 
     it('Should not throw if data inspection fails', () => {
