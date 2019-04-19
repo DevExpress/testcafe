@@ -395,8 +395,7 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     _rejectCurrentDriverTask (err) {
-        err.callsite             = err.callsite || this.currentDriverTask.callsite;
-        err.isRejectedDriverTask = true;
+        err.callsite = err.callsite || this.currentDriverTask.callsite;
 
         this.currentDriverTask.reject(err);
         this._removeAllNonServiceTasks();
@@ -690,7 +689,8 @@ export default class TestRun extends AsyncEventEmitter {
     _disconnect (err) {
         this.disconnected = true;
 
-        this._rejectCurrentDriverTask(err);
+        if (this.currentDriverTask)
+            this._rejectCurrentDriverTask(err);
 
         this.emit('disconnected', err);
 
