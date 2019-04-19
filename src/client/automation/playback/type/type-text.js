@@ -143,10 +143,10 @@ function simulateTextInput (element, text) {
 function _typeTextToContentEditable (element, text) {
     let currentSelection    = _getSelectionInElement(element);
     let startNode           = currentSelection.startPos.node;
-    const endNode             = currentSelection.endPos.node;
+    const endNode           = currentSelection.endPos.node;
     let needProcessInput    = true;
     let needRaiseInputEvent = true;
-    const textInputData       = text;
+    const textInputData     = text;
 
     text = text.replace(WHITE_SPACES_RE, String.fromCharCode(160));
 

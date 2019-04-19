@@ -308,23 +308,20 @@ export function isEditableElement (el, checkEditingAllowed) {
 }
 
 export function isElementContainsNode (parentElement, childNode) {
-    let contains = false;
+    if (isTheSameNode(childNode, parentElement))
+        return true;
 
-    function checkChildNodes (el, node) {
-        if (contains || isTheSameNode(node, el))
-            contains = true;
+    const childNodes = parentElement.childNodes;
+    const length     = getChildNodesLength(childNodes);
 
-        for (let i = 0; i < el.childNodes.length; i++) {
-            contains = checkChildNodes(el.childNodes[i], node);
+    for (let i = 0; i < length; i++) {
+        const el = childNodes[i];
 
-            if (contains)
-                return contains;
-        }
-
-        return contains;
+        if (!isShadowUIElement(el) && isElementContainsNode(el, childNode))
+            return true;
     }
 
-    return checkChildNodes(parentElement, childNode);
+    return false;
 }
 
 export function isOptionGroupElement (element) {

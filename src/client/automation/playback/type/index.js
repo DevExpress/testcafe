@@ -235,7 +235,7 @@ export default class TypeAutomation {
             return delay(this.automationSettings.keyActionStepDelay);
         }
 
-        let currentChar       = this.typingText.charAt(this.currentPos);
+        let currentChar         = this.typingText.charAt(this.currentPos);
         const isDigit           = /^\d$/.test(currentChar);
         const prevChar          = this.currentPos === 0 ? null : this.typingText.charAt(this.currentPos - 1);
         const isInputTypeNumber = domUtils.isInputElement(element) && element.type === 'number';

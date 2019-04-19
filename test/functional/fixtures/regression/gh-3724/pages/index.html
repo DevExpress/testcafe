@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GH-3724</title>
+    <script>
+        window.onload = function () {
+            var iframe = document.querySelector('iframe');
+
+            iframe.contentDocument.designMode     = 'on';
+            iframe.contentDocument.body.innerHTML = 'a';
+
+            iframe.contentWindow.focus();
+        };
+    </script>
+</head>
+<body>
+    <iframe></iframe>
+</body>
+</html>
