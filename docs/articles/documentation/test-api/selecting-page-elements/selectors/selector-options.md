@@ -32,20 +32,29 @@ For details, see [Calling Selectors from Node.js Callbacks](edge-cases-and-limit
 
 **Type**: Object
 
-Contains functions, variables or objects passed to the function that [initializes the selector](creating-selectors.md#initialize-selectors).
+Use this option to pass functions, variables or objects to selectors [initialized with a function](creating-selectors.md#initialize-selectors).
 The `dependencies` object's properties are added to the function's scope as variables.
+
+Use `dependencies` instead of the function's arguments if you do not need to pass new values every time you call the selector.
 
 The following sample demonstrates a selector (`element`) that uses a server-side object passed as a dependency (`customId`) to obtain a page element.
 
 ```js
 import { Selector } from 'testcafe';
 
-const customId = { key: 'value' };
+const persistentId = { key: 'value' };
 
 const element = Selector(() => {
-    return getElementByCustomId(customId);
+    return getElementByCustomId(persistentId);
 }, {
-    dependencies: { customId }
+    dependencies: { persistentId }
+});
+
+fixture `My fixture`
+    .page `http://www.example.com/`;
+
+test('My Test', async t => {
+    await t.click(element);
 });
 ```
 

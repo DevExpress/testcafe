@@ -49,11 +49,28 @@ You can initialize a selector with any of these objects.
     const element = Selector(() => {
         const storedElementId = window.localStorage.storedElementId;
 
-        return document.querySelector(storedElementId);
+        return document.getElementById(storedElementId);
     });
     ```
 
-    Use the [options.dependencies](selector-options.md#optionsdependencies) property to pass objects to the function scope.
+    You can provide a function that takes arguments, and then pass serializable objects to the selector when you call it.
+
+    ```js
+    import { Selector } from 'testcafe';
+
+    const elementWithId = Selector(id => {
+        return document.getElementById(id);
+    });
+
+    fixture `My fixture`
+        .page `http://www.example.com/`;
+
+    test('My Test', async t => {
+        await t.click(elementWithId('buy'));
+    });
+    ```
+
+    If the function should always use the same argument value, you can assign it to the [options.dependencies](selector-options.md#optionsdependencies) property when the selector is created.
 
 * A selector.
 
