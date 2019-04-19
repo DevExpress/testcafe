@@ -112,7 +112,9 @@ You can skip this stese steps if you use [headless browsers](../using-testcafe/c
 
 ## Step 2 - Fetch Test Code From a Repository
 
-This tutorial uses tests published in the [ci-integration-demo](https://github.com/VasilyStrelyaev/ci-integration-demo) GitHub repository. If you use a different version control system, search for a plugin that integrates it with Jenkins.
+This tutorial uses tests published in the [ci-integration-demo](https://github.com/VasilyStrelyaev/ci-integration-demo) GitHub repository.
+
+> You can find plugins for other source control systems on the [Jenkins Plugins](https://plugins.jenkins.io/) website in the **Source code management** category.
 
 Open your project and choose **Configure** from the right pane.
 
@@ -154,7 +156,7 @@ This runs TestCafe tests from the `tests` directory in Google Chrome. Test resul
 
 > Skip this step if you use [headless browsers](../using-testcafe/common-concepts/browsers/testing-in-headless-mode.md) or [cloud testing services](../using-testcafe/common-concepts/browsers/browser-support.md#browsers-in-cloud-testing-services).
 
-If you run Jenkins on a Linux machine and [the tests use local browsers in the UI mode](#enable-jenkins-t-sStart-the-browser-ui-macos-and-linux), set the `DISPLAY` environment variable to `1` before the `testcafe` command:
+If you run Jenkins on a Linux machine and [test in local browsers in the UI mode](#enable-jenkins-to-start-the-browser-ui-macos-and-linux), set the `DISPLAY` environment variable to `1` before the `testcafe` command:
 
 ```sh
 export DISPLAY=:1
