@@ -1,3 +1,4 @@
+import { inspect } from 'util';
 import debugLogger from 'debug';
 import indentString from 'indent-string';
 
@@ -8,11 +9,16 @@ export default class TestRunDebugLog {
     }
 
     static _addEntry (logger, data) {
-        const entry = data ?
-            indentString(`\n${JSON.stringify(data, null, 2)}\n`, ' ', 4) :
-            '';
+        try {
+            const entry = data ?
+                indentString(`\n${inspect(data, { compact: false })}\n`, ' ', 4) :
+                '';
 
-        logger(entry);
+            logger(entry);
+        }
+        catch (e) {
+            logger(e.stack ? e.stack : String(e));
+        }
     }
 
     driverMessage (msg) {
