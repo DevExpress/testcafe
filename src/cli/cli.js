@@ -7,6 +7,7 @@ import log from './log';
 import remotesWizard from './remotes-wizard';
 import correctBrowsersAndSources from './correct-browsers-and-sources';
 import createTestCafe from '../';
+import * as marketing from '../marketing';
 
 // NOTE: Load the provider pool lazily to reduce startup time
 const lazyRequire         = require('import-lazy')(require);
@@ -82,7 +83,6 @@ async function runTests (argParser) {
 
     let failed = 0;
 
-
     runner.isCli = true;
 
     runner
@@ -100,6 +100,8 @@ async function runTests (argParser) {
 
     try {
         failed = await runner.run(opts);
+
+        await marketing.showMessageWithLinkToTestCafeStudio();
     }
 
     finally {

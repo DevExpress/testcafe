@@ -27,6 +27,10 @@ export default {
 
     problematicPathPatternPlaceholderForVideoRecording: 'The {placeholderList} path pattern placeholder{suffix} cannot be applied to the recorded video.\n' +
                                                         '\n' +
-                                                        'The placeholder{suffix} {verb} replaced with an empty string.'
+                                                        'The placeholder{suffix} {verb} replaced with an empty string.',
+
+    cannotLoadMarketingData:         'An error has occurred while reading the marketing data. Error details:\n\n{err}',
+    cannotSaveMarketingData:         'An error has occurred while reading the marketing data. Error details:\n\n{err}',
+    cannotCalculateMarketingMessage: 'Cannot calculate valid marketing message. Displayed message index is {index}'
 };
 
