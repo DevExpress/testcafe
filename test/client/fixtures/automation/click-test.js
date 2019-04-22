@@ -1079,5 +1079,31 @@ $(document).ready(function () {
                     startNext();
                 });
         });
+
+        asyncTest('click should not raise touchmove', function () {
+            const raisedEvents = [];
+
+            const touchEventHandler = function (ev) {
+                raisedEvents.push(ev.type);
+            };
+
+            const element = $el[0];
+
+            document.body.addEventListener('touchmove', touchEventHandler);
+            element.addEventListener('touchmove', touchEventHandler);
+
+            element.addEventListener('touchstart', touchEventHandler);
+            element.addEventListener('touchend', touchEventHandler);
+
+            const click = new ClickAutomation(element, new ClickOptions());
+
+            click
+                .run()
+                .then(function () {
+                    deepEqual(raisedEvents, ['touchstart', 'touchend']);
+
+                    startNext();
+                });
+        });
     }
 });

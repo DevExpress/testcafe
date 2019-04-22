@@ -306,7 +306,7 @@ export default class MoveAutomation {
     }
 
     _movingStep () {
-        if (this.touchMode && !this.holdLeftButton) {
+        if (this._isInstantMoving()) {
             this.x = this.endPoint.x;
             this.y = this.endPoint.y;
         }
@@ -334,13 +334,17 @@ export default class MoveAutomation {
             .then(topElement => {
                 const currentElement = this.holdLeftButton && this.touchMode ? this.dragElement : topElement;
 
-                // NOTE: it can be null in IE
-                if (!currentElement)
-                    return null;
+                // NOTE: currentElement can be null in IE
+                if (currentElement && !this._isInstantMoving())
+                    return this._emulateEvents(currentElement);
 
-                return this._emulateEvents(currentElement);
+                return null;
             })
             .then(nextTick);
+    }
+
+    _isInstantMoving () {
+        return this.touchMode && !this.holdLeftButton;
     }
 
     _isMovingFinished () {
