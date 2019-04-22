@@ -4,14 +4,15 @@ import renderTemplate from '../utils/render-template';
 import WARNING_MESSAGES from '../notifications/warning-message';
 import debug from 'debug';
 
-const NUMBER_RUNS_BETWEEN_SHOW_MESSAGE = 20;
+export const NUMBER_RUNS_BETWEEN_SHOW_MESSAGE = 20;
 
 const DEBUG_LOGGER = debug('testcafe:marketing');
 
-const dataFile = new DataFile();
+// For testing purposes
+export const _dataFile = new DataFile();
 
 export async function showMessageWithLinkToTestCafeStudio () {
-    const data = await dataFile.load();
+    const data = await _dataFile.load();
 
     // NOTE: Don't show messages in case of the IO errors
     if (!data)
@@ -36,5 +37,5 @@ export async function showMessageWithLinkToTestCafeStudio () {
         data.displayedMessageIndex = (data.displayedMessageIndex + 1) % MESSAGES.length;
     }
 
-    await dataFile.save(data);
+    await _dataFile.save(data);
 }

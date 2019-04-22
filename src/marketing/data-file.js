@@ -1,7 +1,7 @@
 import path from 'path';
 import os from 'os';
 import makeDir from 'make-dir';
-import { stat, writeFile, readFile } from '../utils/promisified-functions';
+import { stat, writeFile, readFile, deleteFile } from '../utils/promisified-functions';
 import renderTemplate from '../utils/render-template';
 import debug from 'debug';
 import WARNING_MESSAGES from '../notifications/warning-message';
@@ -78,6 +78,15 @@ export default class DataFile {
             const message = renderTemplate(WARNING_MESSAGES.cannotSaveMarketingData, e);
 
             DEBUG_LOGGER(message);
+        }
+    }
+
+    // NOTE: For testing purposes
+    async _remove () {
+        try {
+            await deleteFile(this.dataPath);
+        }
+        catch (e) { // eslint-disable-line no-empty
         }
     }
 }
