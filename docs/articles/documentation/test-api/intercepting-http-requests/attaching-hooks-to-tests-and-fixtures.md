@@ -24,7 +24,7 @@ Parameter | Type | Description
 --------- | ---- | ------------
 `hooks`    | RequestHook subclass | A `RequestLogger`, `RequestMock` or custom user-defined hook.
 
-The `fixture.requestHooks`, `test.requestHooks` `t.addRequestHooks` and `t.removeRequestHooks` methods use the rest operator which allows you to pass multiple hooks as parameters or arrays of hooks.
+The `fixture.requestHooks`, `test.requestHooks`, `t.addRequestHooks` and `t.removeRequestHooks` methods use the rest operator which allows you to pass multiple hooks as parameters or arrays of hooks.
 
 ```js
 import { RequestLogger, RequestMock } from 'testcafe';
