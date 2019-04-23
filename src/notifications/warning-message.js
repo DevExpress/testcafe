@@ -31,6 +31,6 @@ export default {
 
     cannotLoadMarketingData:         'An error has occurred while reading the marketing data. Error details:\n\n{err}',
     cannotSaveMarketingData:         'An error has occurred while saving the marketing data. Error details:\n\n{err}',
-    cannotCalculateMarketingMessage: 'Cannot calculate valid marketing message. Displayed message index is {index}'
+    cannotCalculateMarketingMessage: 'Cannot determine which promotional message to display. Attempted to display a message no. {index}'
 };
 
