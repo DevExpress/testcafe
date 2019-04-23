@@ -7,10 +7,11 @@ it('Display an appropriate promo message', () => {
     const createShowMessagePromise = () => {
         let chain = Promise.resolve();
 
-        for (let i = 0; i < marketingTest.NUMBER_RUNS_BETWEEN_SHOW_MESSAGE; i++)
+        for (let i = 0; i < marketingTest.NUMBER_RUNS_BETWEEN_SHOW_MESSAGE; i++) {
             chain = chain.then(() => {
                 return marketingTest.showMessageWithLinkToTestCafeStudio();
             });
+        }
 
         return chain;
     };
