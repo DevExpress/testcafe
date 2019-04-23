@@ -2,6 +2,7 @@ import DataFile from './data-file';
 import MESSAGES from './messages';
 import renderTemplate from '../utils/render-template';
 import WARNING_MESSAGES from '../notifications/warning-message';
+import log from '../cli/log';
 import debug from 'debug';
 
 export const NUMBER_RUNS_BETWEEN_SHOW_MESSAGE = 20;
@@ -30,9 +31,8 @@ export async function showMessageWithLinkToTestCafeStudio () {
 
             DEBUG_LOGGER(message);
         }
-        /*eslint-disable no-console*/
-        console.log(targetMsg);
-        /*eslint-enable no-console*/
+
+        log.write(targetMsg);
 
         data.displayedMessageIndex = (data.displayedMessageIndex + 1) % MESSAGES.length;
     }
