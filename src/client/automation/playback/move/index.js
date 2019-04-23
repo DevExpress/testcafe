@@ -10,11 +10,8 @@ import getLineRectIntersection from '../../utils/get-line-rect-intersection';
 import getDevicePoint from '../../utils/get-device-point';
 import nextTick from '../../utils/next-tick';
 import AutomationSettings from '../../settings';
-
 import DragAndDropState from '../drag/drag-and-drop-state';
-import moveEventSequence from './event-sequence';
-import dragAndDropMoveEventSequence from './event-sequence/drag-and-drop-move';
-import dragAndDropFirstMoveEventSequence from './event-sequence/drag-and-drop-first-move';
+import createEventSequence from './event-sequence/create-event-sequence';
 
 const Promise          = hammerhead.Promise;
 const nativeMethods    = hammerhead.nativeMethods;
@@ -288,15 +285,16 @@ export default class MoveAutomation {
             dataTransfer: this.dragAndDropState.dataTransfer
         };
 
-        let eventSequence = null;
+        const eventSequenceOptions = { moveEvent: this.moveEvent, holdLeftButton: this.holdLeftButton };
+        const eventSequence        = createEventSequence(this.dragAndDropState.enabled, this.firstMovingStepOccured, eventSequenceOptions);
 
-        if (this.dragAndDropState.enabled)
-            eventSequence = this.firstMovingStepOccured ? dragAndDropMoveEventSequence : dragAndDropFirstMoveEventSequence;
-        else
-            eventSequence = moveEventSequence;
-
-        const { dragAndDropMode, dropAllowed } = eventSequence.run(currentElement, lastHoveredElement, eventOptions,
-            this.moveEvent, this.dragElement, this.dragAndDropState.dataStore);
+        const { dragAndDropMode, dropAllowed } = eventSequence.run(
+            currentElement,
+            lastHoveredElement,
+            eventOptions,
+            this.dragElement,
+            this.dragAndDropState.dataStore
+        );
 
         this.firstMovingStepOccured       = true;
         this.dragAndDropState.enabled     = dragAndDropMode;
@@ -306,7 +304,7 @@ export default class MoveAutomation {
     }
 
     _movingStep () {
-        if (this._isInstantMoving()) {
+        if (this.touchMode && !this.holdLeftButton) {
             this.x = this.endPoint.x;
             this.y = this.endPoint.y;
         }
@@ -334,17 +332,13 @@ export default class MoveAutomation {
             .then(topElement => {
                 const currentElement = this.holdLeftButton && this.touchMode ? this.dragElement : topElement;
 
-                // NOTE: currentElement can be null in IE
-                if (currentElement && !this._isInstantMoving())
-                    return this._emulateEvents(currentElement);
+                // NOTE: it can be null in IE
+                if (!currentElement)
+                    return null;
 
-                return null;
+                return this._emulateEvents(currentElement);
             })
             .then(nextTick);
-    }
-
-    _isInstantMoving () {
-        return this.touchMode && !this.holdLeftButton;
     }
 
     _isMovingFinished () {
