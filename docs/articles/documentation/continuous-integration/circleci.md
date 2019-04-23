@@ -11,7 +11,7 @@ This topic describes how to integrate TestCafe tests into a [CircelCI](https://c
 
 ## Prerequisites
 
-In this tutorial, we will fetch tests from a GitHub repository: [ci-integration-demo](https://github.com/VasilyStrelyaev/ci-integration-demo). Fork this repository before we start.
+In this tutorial, we will fetch tests from a GitHub repository: [testcafe-ci-demo](https://github.com/DevExpress-Examples/testcafe-ci-demo). Fork this repository before we start.
 
 > If you use a different version control system, make sure CircleCI supports it. To learn which systems it supports, refer to the [First Steps](https://circleci.com/docs/2.0/first-steps/) document.
 
@@ -25,7 +25,7 @@ If this is the first time you are using CircleCI, you will start from an empty w
 
 You will see the list of GitHub projects associated with your account.
 
-Find `ci-integration-demo` and click **Setup project**.
+Find `testcafe-ci-demo` and click **Setup project**.
 
 ![Set Up Project](../../images/circle-ci/set-up-project.png)
 
@@ -41,7 +41,7 @@ In the **Language** section, select *Node*.
 
 ## Step 2 - Configuring the Build
 
-Create a `.circleci` directory in the `ci-integration-demo` repository fork and add a `config.yml` file there.
+Create a `.circleci` directory in the `testcafe-ci-demo` repository fork and add a `config.yml` file there.
 
 Use the content CircleCI provides by default with two changes:
 

@@ -112,7 +112,7 @@ You can skip this stese steps if you use [headless browsers](../using-testcafe/c
 
 ## Step 2 - Fetch Test Code From a Repository
 
-This tutorial uses tests published in the [ci-integration-demo](https://github.com/VasilyStrelyaev/ci-integration-demo) GitHub repository.
+This tutorial uses tests published in the [testcafe-ci-demo](https://github.com/DevExpress-Examples/testcafe-ci-demo) GitHub repository. Fork it before you start.
 
 > You can find plugins for other source control systems on the [Jenkins Plugins](https://plugins.jenkins.io/) website in the **Source code management** category.
 
