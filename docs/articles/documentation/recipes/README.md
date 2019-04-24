@@ -9,6 +9,7 @@ redirect_from:
 
 This section provides examples and recipes of how to use TestCafe in different scenarios.
 
+* [Create a Data-Driven Test Case](create-data-driven-tests.md)
 * [Debug Tests](debug-tests/README.md)
 * [Find Code Issues with Flow Type Checker](find-code-issues-with-flow-type-checker.md)
 * [Test \<select\> Elements](test-select-elements.md)
