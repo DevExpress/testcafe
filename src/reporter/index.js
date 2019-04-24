@@ -150,7 +150,10 @@ export default class Reporter {
 
             try {
                 await this.plugin.reportTestStart(reportItem.test.name);
-            } catch (err) {}
+            }
+            catch (err) {
+                return;
+            }
         });
 
         task.on('test-run-done', async testRun => {
