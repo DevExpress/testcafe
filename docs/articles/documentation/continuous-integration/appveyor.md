@@ -11,7 +11,7 @@ This topic describes how to integrate TestCafe tests into an [AppVeyor](https://
 
 ## Prerequisites
 
-In this tutorial, we will fetch tests from a GitHub repository: [ci-integration-demo](https://github.com/VasilyStrelyaev/ci-integration-demo). Fork this repository before we start.
+In this tutorial, we will fetch tests from a GitHub repository: [testcafe-ci-demo](https://github.com/DevExpress-Examples/testcafe-ci-demo). Fork this repository before we start.
 
 > If you use a different version control system, make sure that AppVeyor supports your platform.
 > The list of supported platforms is available after you click the *NEW PROJECT* button.
@@ -26,7 +26,7 @@ To create a project, click **NEW PROJECT**.
 
 AppVeyor will ask you to specify a repository to create a project for. In this tutorial, we will use a GitHub repository, so click **GitHub** and authorize.
 
-You will see a list of repositories associated with your account. Find `ci-integration-demo` and click **ADD**.
+You will see a list of repositories associated with your account. Find `testcafe-ci-demo` and click **ADD**.
 
 ![Adding a GitHub project](../../images/appveyor/add-project.png)
 

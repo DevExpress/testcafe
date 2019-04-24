@@ -21,7 +21,7 @@ This topic describes how to use TestCafe with [TeamCity](http://www.jetbrains.co
 
     The `testcafe-reporter-teamcity` plugin enables TestCafe to output test run results in the TeamCity format. The reports will be presented in the TeamCity UI allowing you to analyze the results with its built-in features.
 
-* We will fetch test code from a GitHub repository: [ci-integration-demo](https://github.com/VasilyStrelyaev/ci-integration-demo). Fork it before starting.
+* We will fetch test code from a GitHub repository: [testcafe-ci-demo](https://github.com/DevExpress-Examples/testcafe-ci-demo). Fork it before starting.
   
     If you use a different version control system, make sure TeamCity supports it. You can find a list of supported VCS in the [TeamCity documentation](http://confluence.jetbrains.com/display/TCD10/TeamCity+Documentation).
 
@@ -97,7 +97,7 @@ Select **Git** as the **Type of VCS**. Enter the **Root name**.
 
 ![Specifying VCS Type and Root Name](../../images/teamcity/attach-vcs-root-p2.png)
 
-In the **Fetch URL** field, click the GitHub logo. A drop-down list of GitHub repos associated with your account will open. Select `ci-integration-demo`.
+In the **Fetch URL** field, click the GitHub logo. A drop-down list of GitHub repos associated with your account will open. Select `testcafe-ci-demo`.
 
 ![Select a GitHub Repo](../../images/teamcity/attach-vcs-root-repo.png)
 
@@ -105,7 +105,7 @@ In the **Authentication Settings** section, select *Password* as the **Authentic
 
 ![Providing Credentials](../../images/teamcity/attach-vcs-root-p3.png)
 
-Now the TeamCity build configuration will fetch tests from the `ci-integration-demo` repo each time it runs.
+Now the TeamCity build configuration will fetch tests from the `testcafe-ci-demo` repo each time it runs.
 
 ## Running the Build
 
