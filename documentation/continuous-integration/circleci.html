@@ -643,7 +643,7 @@
 			<h1>Integrate TestCafe with CircelCI</h1>
 <p>This topic describes how to integrate TestCafe tests into a <a href="https://circleci.com/">CircelCI</a> project&#39;s build process.</p>
 <h2><a class="anchor" id="prerequisites"></a>Prerequisites <a class="permalink" href="#prerequisites">#</a></h2>
-<p>In this tutorial, we will fetch tests from a GitHub repository: <a href="https://github.com/VasilyStrelyaev/ci-integration-demo">ci-integration-demo</a>. Fork this repository before we start.</p>
+<p>In this tutorial, we will fetch tests from a GitHub repository: <a href="https://github.com/DevExpress-Examples/testcafe-ci-demo">testcafe-ci-demo</a>. Fork this repository before we start.</p>
 <blockquote><div class="blockquote-content"><p>If you use a different version control system, make sure CircleCI supports it. To learn which systems it supports, refer to the <a href="https://circleci.com/docs/2.0/first-steps/">First Steps</a> document.</p>
 </div></blockquote><h2><a class="anchor" id="step-1---create-a-new-circleci-project"></a>Step 1 - Create a New CircleCI Project <a class="permalink" href="#step-1---create-a-new-circleci-project">#</a></h2>
 <p>Log in to CircleCI using your GitHub account.</p>
@@ -654,7 +654,7 @@
 
 <p>You will see the list of GitHub projects associated with your account.</p>
 
-<p>Find <code>ci-integration-demo</code> and click <strong>Setup project</strong>.</p>
+<p>Find <code>testcafe-ci-demo</code> and click <strong>Setup project</strong>.</p>
 
 <p><img src="../../images/circle-ci/set-up-project.png" alt="Set Up Project" title=""></p>
 
@@ -668,7 +668,7 @@
 
 <p><img src="../../images/circle-ci/language.png" alt="Select Language" title=""></p>
 <h2><a class="anchor" id="step-2---configuring-the-build"></a>Step 2 - Configuring the Build <a class="permalink" href="#step-2---configuring-the-build">#</a></h2>
-<p>Create a <code>.circleci</code> directory in the <code>ci-integration-demo</code> repository fork and add a <code>config.yml</code> file there.</p>
+<p>Create a <code>.circleci</code> directory in the <code>testcafe-ci-demo</code> repository fork and add a <code>config.yml</code> file there.</p>
 
 <p>Use the content CircleCI provides by default with two changes:</p>
 

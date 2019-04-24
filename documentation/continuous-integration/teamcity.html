@@ -650,7 +650,7 @@
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">npm install -g testcafe testcafe-reporter-teamcity
 </code></pre></div>
 <p>The <code>testcafe-reporter-teamcity</code> plugin enables TestCafe to output test run results in the TeamCity format. The reports will be presented in the TeamCity UI allowing you to analyze the results with its built-in features.</p></li>
-<li><p>We will fetch test code from a GitHub repository: <a href="https://github.com/VasilyStrelyaev/ci-integration-demo">ci-integration-demo</a>. Fork it before starting.</p>
+<li><p>We will fetch test code from a GitHub repository: <a href="https://github.com/DevExpress-Examples/testcafe-ci-demo">testcafe-ci-demo</a>. Fork it before starting.</p>
 
 <p>If you use a different version control system, make sure TeamCity supports it. You can find a list of supported VCS in the <a href="http://confluence.jetbrains.com/display/TCD10/TeamCity+Documentation">TeamCity documentation</a>.</p></li>
 </ul>
@@ -723,7 +723,7 @@
 
 <p><img src="../../images/teamcity/attach-vcs-root-p2.png" alt="Specifying VCS Type and Root Name" title=""></p>
 
-<p>In the <strong>Fetch URL</strong> field, click the GitHub logo. A drop-down list of GitHub repos associated with your account will open. Select <code>ci-integration-demo</code>.</p>
+<p>In the <strong>Fetch URL</strong> field, click the GitHub logo. A drop-down list of GitHub repos associated with your account will open. Select <code>testcafe-ci-demo</code>.</p>
 
 <p><img src="../../images/teamcity/attach-vcs-root-repo.png" alt="Select a GitHub Repo" title=""></p>
 
@@ -731,7 +731,7 @@
 
 <p><img src="../../images/teamcity/attach-vcs-root-p3.png" alt="Providing Credentials" title=""></p>
 
-<p>Now the TeamCity build configuration will fetch tests from the <code>ci-integration-demo</code> repo each time it runs.</p>
+<p>Now the TeamCity build configuration will fetch tests from the <code>testcafe-ci-demo</code> repo each time it runs.</p>
 <h2><a class="anchor" id="running-the-build"></a>Running the Build <a class="permalink" href="#running-the-build">#</a></h2>
 <p>Now you can run the build using the <strong>Run</strong> button.</p>
 
