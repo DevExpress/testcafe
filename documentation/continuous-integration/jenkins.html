@@ -644,9 +644,69 @@
 <p>TestCafe has an extensive command line interface that allows it to fit well in any popular continuous integration system.</p>
 
 <p>This topic shows how you can integrate TestCafe tests into project build process in <a href="https://jenkins.io/">Jenkins</a>.</p>
-<h2><a class="anchor" id="step-1---fetching-test-code-from-a-repository"></a>Step 1 - Fetching Test Code From a Repository <a class="permalink" href="#step-1---fetching-test-code-from-a-repository">#</a></h2>
-<p>In this tutorial, we will use tests published in a separate repository on GitHub - <a href="https://github.com/VasilyStrelyaev/ci-integration-demo">ci-integration-demo</a>. If you use a different version control system, search for a plugin that integrates it with Jenkins.</p>
+<h2><a class="anchor" id="enable-jenkins-to-start-the-browser-ui-macos-and-linux"></a>Enable Jenkins to Start the Browser UI (macOS and Linux) <a class="permalink" href="#enable-jenkins-to-start-the-browser-ui-macos-and-linux">#</a></h2>
+<p>The default Jenkins configuration on macOS and Linux does not allow the CI system to start the local browser&#39;s UI. This section describes how to give Jenkins these permissions.</p>
 
+<p>You can skip these steps if you use <a href="../using-testcafe/common-concepts/browsers/testing-in-headless-mode.html">headless browsers</a>, <a href="../using-testcafe/common-concepts/browsers/browser-support.html#browsers-in-cloud-testing-services">cloud testing services</a> or the <a href="#configure-the-display-server-linux">Xvfb server</a> (on Linux).</p>
+<blockquote class="important"><div class="blockquote-content"><p>The Jenkins installer overwrites permission settings during upgrade. Download and replace <code>jenkins.war</code> to upgrade Jenkins, or repeat the steps below after you run the installer.</p>
+</div></blockquote><h3><a class="anchor" id="obtain-permissions-on-macos"></a>Obtain Permissions on macOS <a class="permalink" href="#obtain-permissions-on-macos">#</a></h3>
+<ol>
+<li><p>Stop Jenkins:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">launchctl unload /Library/LaunchDaemons/org.jenkins-ci.plist
+</code></pre></div></li>
+<li><p>Open the <code>org.jenkins-ci.plist</code> file in a text editor:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">sudo nano /Library/LaunchDaemons/org.jenkins-ci.plist
+</code></pre></div></li>
+<li><p>Find the <code>USER_NAME</code> option and change its value to the user name under whose account macOS is started:</p>
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;key&gt;</span>USER_NAME<span class="nt">&lt;/key&gt;</span>
+<span class="nt">&lt;string&gt;</span>peter.p<span class="nt">&lt;/string&gt;</span>
+</code></pre></div></li>
+<li><p>Find the <code>JENKINS_HOME</code> key that specifies the Jenkins home directory. Copy the directory content to a local user&#39;s home directory and specify the new path under the <code>JENKINS_HOME</code> key:</p>
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;key&gt;</span>JENKINS_HOME<span class="nt">&lt;/key&gt;</span>
+<span class="nt">&lt;string&gt;</span>/users/peter.p/jenkins/<span class="nt">&lt;/string&gt;</span>
+</code></pre></div>
+<p>Close the file and save your changes.</p></li>
+<li><p>Change the Jenkins temporary directory:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">sudo defaults write /Library/Preferences/org.jenkins-ci tmpdir <span class="s2">"/tmp"</span>
+</code></pre></div></li>
+<li><p>Change the <code>/var/log/jenkins</code> file ownership to your account:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">sudo chown peter.p /var/log/jenkins
+</code></pre></div></li>
+<li><p>Start Jenkins:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">launchctl load /Library/LaunchDaemons/org.jenkins-ci.plist
+</code></pre></div></li>
+</ol>
+<h3><a class="anchor" id="obtain-permissions-on-linux"></a>Obtain Permissions on Linux <a class="permalink" href="#obtain-permissions-on-linux">#</a></h3>
+<ol>
+<li><p>Stop Jenkins:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">sudo systemctl stop jenkins.service
+</code></pre></div></li>
+<li><p>Open the <code>/etc/default/jenkins</code> file in a text editor:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">sudo nano /etc/default/jenkins
+</code></pre></div></li>
+<li><p>Specify your user name in the <code>JENKINS_USER</code> variable:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">JENKINS_USER=peter.p
+</code></pre></div>
+<p>Then close the file and save your changes.</p></li>
+<li><p>Change the Jenkins directory ownership to your account:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">sudo chown peter.p /var/log/jenkins
+sudo chown peter.p /var/lib/jenkins
+sudo chown peter.p /var/run/jenkins
+sudo chown peter.p /var/cache/jenkins
+</code></pre></div></li>
+<li><p>Start Jenkins:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">sudo systemctl start jenkins.service
+</code></pre></div></li>
+</ol>
+<h2><a class="anchor" id="step-1---install-nodejs-plugin"></a>Step 1 - Install Node.js Plugin <a class="permalink" href="#step-1---install-nodejs-plugin">#</a></h2>
+<ol>
+<li><p>Follow the <a href="https://jenkins.io/doc/book/managing/plugins/#installing-a-plugin">instructions from Jenkins documentation</a> to install a <a href="https://plugins.jenkins.io/nodejs">Node.js plugin</a>.</p></li>
+<li><p>Configure this plugin as described in the <a href="https://plugins.jenkins.io/nodejs#NodeJSPlugin-Usage">Usage section</a> on the plugin page. Ensure that you have added a Node.js installation on the <strong>Global Tool Configuration</strong> page and checked the <strong>Provide Node &amp; npm bin/ folder to PATH</strong> check box in your build configuration.</p></li>
+</ol>
+<h2><a class="anchor" id="step-2---fetch-test-code-from-a-repository"></a>Step 2 - Fetch Test Code From a Repository <a class="permalink" href="#step-2---fetch-test-code-from-a-repository">#</a></h2>
+<p>This tutorial uses tests published in the <a href="https://github.com/DevExpress-Examples/testcafe-ci-demo">testcafe-ci-demo</a> GitHub repository. Fork it before you start.</p>
+<blockquote><div class="blockquote-content"><p>You can find plugins for other source control systems on the <a href="https://plugins.jenkins.io/">Jenkins Plugins</a> website in the <strong>Source code management</strong> category.</p>
+</div></blockquote>
 <p>Open your project and choose <strong>Configure</strong> from the right pane.</p>
 
 <p><img src="../../images/jenkins/project-configure.png" alt="Click the Configure Button" title=""></p>
@@ -654,8 +714,8 @@
 <p>Scroll down to the <strong>Source Code Management</strong> section and select <em>Git</em>, then specify the <strong>Repository URL</strong>.</p>
 
 <p><img src="../../images/jenkins/check-out-tests.png" alt="Fetch Test Results" title=""></p>
-<h2><a class="anchor" id="step-2---adding-a-command-to-install-testcafe"></a>Step 2 - Adding a Command to Install TestCafe <a class="permalink" href="#step-2---adding-a-command-to-install-testcafe">#</a></h2>
-<p>Go to the <strong>Build</strong> section, find a step that builds you application and add a new step right after it. To do this, click <strong>Add build step</strong> and select a step type that runs a shell command.</p>
+<h2><a class="anchor" id="step-3---add-a-command-to-install-testcafe"></a>Step 3 - Add a Command to Install TestCafe <a class="permalink" href="#step-3---add-a-command-to-install-testcafe">#</a></h2>
+<p>Go to the <strong>Build</strong> section, find a step that builds your application and add a new step after it. To do this, click <strong>Add build step</strong> and select <strong>Execute shell</strong> for macOS and Linux, or <strong>Execute Windows batch command</strong> for Windows.</p>
 
 <p><img src="../../images/jenkins/add-batch-command.png" alt="Add a Batch Command" title=""></p>
 
@@ -665,35 +725,45 @@
 <p>This command installs the main <code>testcafe</code> module and a plugin that saves test run reports in the xUnit format.</p>
 
 <p><img src="../../images/jenkins/npm-install-command.png" alt="npm install Command" title=""></p>
-<h2><a class="anchor" id="step-3---adding-a-command-to-run-testcafe"></a>Step 3 - Adding a Command to Run TestCafe <a class="permalink" href="#step-3---adding-a-command-to-run-testcafe">#</a></h2>
-<p>Add another step that executes a shell command after the previous one. This step will run TestCafe.</p>
-
-<p>Type the following command.</p>
+<h2><a class="anchor" id="step-4---add-a-command-to-run-testcafe"></a>Step 4 - Add a Command to Run TestCafe <a class="permalink" href="#step-4---add-a-command-to-run-testcafe">#</a></h2>
+<p>Add another step that executes a shell command and enter:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">node_modules/.bin/testcafe chrome tests/<span class="k">**</span>/<span class="k">*</span> -r xunit:res.xml
 </code></pre></div>
 <p>This runs TestCafe tests from the <code>tests</code> directory in Google Chrome. Test results are saved to the <code>res.xml</code> file in the xUnit format.</p>
 
 <p><img src="../../images/jenkins/run-tests-command.png" alt="Run Tests Command" title=""></p>
-<h2><a class="anchor" id="step-4---publishing-test-run-reports"></a>Step 4 - Publishing Test Run Reports <a class="permalink" href="#step-4---publishing-test-run-reports">#</a></h2>
-<p>Go to the <strong>Post-build Actions</strong> section and click <strong>Add post-build action</strong>. In the drop-down list, select <strong>Publish JUnit test result report</strong>.</p>
+<h3><a class="anchor" id="configure-the-display-server-linux"></a>Configure the Display Server (Linux) <a class="permalink" href="#configure-the-display-server-linux">#</a></h3><blockquote><div class="blockquote-content"><p>Skip this step if you use <a href="../using-testcafe/common-concepts/browsers/testing-in-headless-mode.html">headless browsers</a> or <a href="../using-testcafe/common-concepts/browsers/browser-support.html#browsers-in-cloud-testing-services">cloud testing services</a>.</p>
+</div></blockquote>
+<p>If you run Jenkins on a Linux machine and <a href="#enable-jenkins-to-start-the-browser-ui-macos-and-linux">test in local browsers in the UI mode</a>, set the <code>DISPLAY</code> environment variable to <code>1</code> before the <code>testcafe</code> command:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh"><span class="nb">export </span><span class="nv">DISPLAY</span><span class="o">=</span>:1
+node_modules/.bin/testcafe chrome tests/<span class="k">**</span>/<span class="k">*</span> -r xunit:res.xml
+</code></pre></div>
+<p>Alternatively, you can use the <a href="https://www.x.org/archive/X11R7.6/doc/man/man1/Xvfb.1.xhtml">Xvfb server</a>:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh"><span class="nb">export </span><span class="nv">DISPLAY</span><span class="o">=</span>:99.0
+sh -e /etc/init.d/xvfb start
+sleep 3
+fluxbox &gt;/dev/null 2&gt;&amp;1 &amp;
+node_modules/.bin/testcafe chrome tests/<span class="k">**</span>/<span class="k">*</span> -r xunit:res.xml
+</code></pre></div><h2><a class="anchor" id="step-5---publish-test-run-reports"></a>Step 5 - Publish Test Run Reports <a class="permalink" href="#step-5---publish-test-run-reports">#</a></h2>
+<p>Go to the <strong>Post-build Actions</strong> section and click <strong>Add post-build action</strong>. Select <strong>Publish JUnit test result report</strong> from the drop-down list.</p>
 
-<p><img src="../../images/jenkins/add-post-build-action.png" alt="Adding a Post-Build Action" title=""></p>
+<p><img src="../../images/jenkins/add-post-build-action.png" alt="Add a Post-Build Action" title=""></p>
 
-<p>In the <strong>Test report XMLs</strong> field, specify the test report file: <code>res.xml</code>.</p>
+<p>Enter <code>res.xml</code> in the <strong>Test report XMLs</strong> field.</p>
 
-<p><img src="../../images/jenkins/publish-test-report.png" alt="Publishing Test Report" title=""></p>
-<h2><a class="anchor" id="step-5---run-the-test"></a>Step 5 - Run the Test <a class="permalink" href="#step-5---run-the-test">#</a></h2>
-<p>Click <strong>Save</strong> and you will be navigated to the Project page.</p>
+<p><img src="../../images/jenkins/publish-test-report.png" alt="Publish Test Report" title=""></p>
+<h2><a class="anchor" id="step-6---run-the-test"></a>Step 6 - Run the Test <a class="permalink" href="#step-6---run-the-test">#</a></h2>
+<p>Click <strong>Save</strong> to save changes and navigate to the <strong>Project</strong> page.</p>
 
-<p>Hit <strong>Build Now</strong> to build the project immediately.</p>
+<p>Click <strong>Build Now</strong> to build the project.</p>
 
 <p><img src="../../images/jenkins/project-build-now.png" alt="Click the Build Now Button" title=""></p>
-<h2><a class="anchor" id="step-6---view-test-results"></a>Step 6 - View Test Results <a class="permalink" href="#step-6---view-test-results">#</a></h2>
-<p>In the <strong>Build History</strong> section of the <strong>Project</strong> page, click a build and select <strong>Test Results</strong> from the drop-down menu.</p>
+<h2><a class="anchor" id="step-7---view-test-results"></a>Step 7 - View Test Results <a class="permalink" href="#step-7---view-test-results">#</a></h2>
+<p>Find a build in the <strong>Build History</strong> section and select <strong>Test Results</strong> from the drop-down menu.</p>
 
 <p><img src="../../images/jenkins/build-history.png" alt="Build History" title=""></p>
 
-<p>Jenkins will display a test run report where you can see general information about testing results. You can click individual tests for details.</p>
+<p>Jenkins displays a test run report with overall results. Click the test name for information about a specific test.</p>
 
 <p><img src="../../images/jenkins/test-results.png" alt="View Test Results" title=""></p>
 
