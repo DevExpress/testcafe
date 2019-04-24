@@ -594,7 +594,8 @@ describe('Compiler', function () {
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
                                  "Error: Cannot find module './yo'"
-                    });
+
+                    }, true);
                 });
         });
 
@@ -632,8 +633,8 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 "Error: Cannot find module './yo'"
-                    });
+                                 "Error: Cannot find module './yo'",
+                    }, true);
                 });
         });
 

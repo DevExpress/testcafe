@@ -37,8 +37,15 @@ function assertStack (err, expected) {
     }
 }
 
-function assertError (err, expected) {
-    expect(err.message).eql(expected.message);
+function assertError (err, expected, messageContainsStack) {
+    // NOTE: https://github.com/nodejs/node/issues/27388
+    // remove this condition after the issue is fixed
+    // here should be only `eql` assertion
+    if (messageContainsStack)
+        expect(err.message.indexOf(expected.message)).eql(0);
+    else
+        expect(err.message).eql(expected.message);
+
     expect(err.stack.indexOf(expected.message)).eql(0);
 
     assertStack(err, expected);
