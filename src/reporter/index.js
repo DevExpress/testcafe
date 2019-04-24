@@ -142,11 +142,15 @@ export default class Reporter {
             await this.plugin.reportFixtureStart(first.fixture.name, first.fixture.path, first.fixture.meta);
         });
 
-        task.on('test-run-start', testRun => {
+        task.on('test-run-start', async testRun => {
             const reportItem = this._getReportItemForTestRun(testRun);
 
             if (!reportItem.startTime)
                 reportItem.startTime = new Date();
+
+            try {
+                await this.plugin.reportTestStart(reportItem.test.name);
+            } catch (err) {}
         });
 
         task.on('test-run-done', async testRun => {
