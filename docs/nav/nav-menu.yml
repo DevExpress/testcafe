@@ -46,7 +46,7 @@
       url: /documentation/using-testcafe/common-concepts/screenshots-and-videos.md
     - name: Reporters
       url: /documentation/using-testcafe/common-concepts/reporters.md
-    - name: Connect to the TestCafe Server over HTTPS
+    - name: Test HTTPS and HTTP/2 Websites
       url: /documentation/using-testcafe/common-concepts/test-https-and-http2-websites.md
 - name: TEST API
   url: /documentation/test-api/README.md
