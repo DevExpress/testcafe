@@ -1,27 +1,26 @@
 import hammerhead from '../../../deps/hammerhead';
 import MoveEventSequenceBase from './base';
-import moveEventSequence from './index';
-import dragAndDropMoveEventSequence from './drag-and-drop-move';
+import { DragAndDropBehavior, MoveBehaviour } from './event-behaviors';
 
 const eventSimulator = hammerhead.eventSandbox.eventSimulator;
 
-class DragAndDropFirstMoveEventSequence extends MoveEventSequenceBase {
+export default class DragAndDropFirstMoveEventSequence extends MoveEventSequenceBase {
     setup () {
         super.setup();
 
         this.dragAndDropMode = true;
     }
 
-    leaveElement () {
-        moveEventSequence.leaveElement.apply(this, arguments);
+    leaveElement (currentElement, prevElement, commonAncestor, options) {
+        MoveBehaviour.leaveElement(currentElement, prevElement, commonAncestor, options);
     }
 
-    move () {
-        moveEventSequence.move.apply(this, arguments);
+    move (element, option) {
+        MoveBehaviour.move(this.moveEvent, element, option);
     }
 
-    enterElement () {
-        moveEventSequence.enterElement.apply(this, arguments);
+    enterElement (currentElement, prevElement, commonAncestor, options) {
+        MoveBehaviour.enterElement(currentElement, prevElement, commonAncestor, options);
     }
 
     dragAndDrop (dragElement, currentElement, prevElement, options, dragDataStore) {
@@ -34,12 +33,10 @@ class DragAndDropFirstMoveEventSequence extends MoveEventSequenceBase {
             return;
         }
 
-        dragAndDropMoveEventSequence.dragAndDrop.apply(this, arguments);
+        this.dropAllowed = DragAndDropBehavior.dragAndDrop(dragElement, currentElement, prevElement, options);
     }
 
-    run (currentElement, prevElement, options, moveEvent, dragElement, dragDataStore) {
-        return super.run(currentElement, null, options, moveEvent, dragElement, dragDataStore);
+    run (currentElement, prevElement, options, dragElement, dragDataStore) {
+        return super.run(currentElement, null, options, dragElement, dragDataStore);
     }
 }
-
-export default new DragAndDropFirstMoveEventSequence();
