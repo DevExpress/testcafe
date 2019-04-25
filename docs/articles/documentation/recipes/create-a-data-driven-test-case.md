@@ -7,19 +7,19 @@ permalink: /documentation/recipes/create-data-driven-tests.html
 
 [Data-driven testing](https://en.wikipedia.org/wiki/Data-driven_testing) is a procedure when you repeat the same test scenario with different input parameters and then verify the result with the given output values.
 
-Assume you have a `data.json` file with data objects (*test cases*) that consist of two input values (`id` and `quantity`) and a value that describes the expected result.
+Assume you have a `data.json` file with data objects (*test cases*) that consist of two input values (`name` and `comment`) and a value that contains the expected result (`headerText`).
 
 ```json
 [
     {
-        "id": "ID-1234",
-        "quantity": 100,
-        "result": true
+        "name": "John Heart",
+        "comment": "I love TestCafe!",
+        "headerText": "Thank you, John Heart!"
     },
     {
-        "id": "ID-5678",
-        "quantity": 500,
-        "result": false
+        "name": "Olivia Peyton",
+        "comment": "TestCafe is awesome!",
+        "headerText": "Thank you, Olivia Peyton!"
     }
 ]
 ```
@@ -27,20 +27,21 @@ Assume you have a `data.json` file with data objects (*test cases*) that consist
 To create data-driven tests, iterate through the test cases, call the [test](../test-api/test-code-structure.md#tests) method at each iteration and write [test actions](../test-api/actions/README.md) and [assertions](../test-api/assertions/README.md) that use the object's values.
 
 ```js
-const dataSet   = require('./data.json');
-const PageModel = require('./page-model.js');
-const page      = new PageModel();
+import { Selector } from 'testcafe';
 
-fixture `Data-Driven Fixture`
-    .page `https://mycorp.com`;
+const dataSet = require('./data.json');
+
+fixture `Data-Driven Tests`
+    .page `https://devexpress.github.io/testcafe/example/`;
 
 dataSet.forEach(data => {
-    test(`Check ID ${data.id}`, async t => {
+    test(`Enter '${data.name}'`, async t => {
         await t
-            .typeText(page.idField, data.id)
-            .typeText(page.quantityField, data.quantity)
-            .click(page.submitButton)
-            .expect(page.someElement.visible).eql(data.result);
+            .typeText('#developer-name', data.name)
+            .click('#tried-test-cafe')
+            .typeText('#comments', data.comment)
+            .click('#submit-button')
+            .expect(Selector('#article-header').textContent).eql(data.headerText);
     });
 });
 ```
