@@ -7,24 +7,24 @@ permalink: /documentation/recipes/create-data-driven-tests.html
 
 [Data-driven testing](https://en.wikipedia.org/wiki/Data-driven_testing) is a procedure when you repeat the same test scenario with different input parameters and then verify the result with the given output values.
 
-Assume you have a `data.json` file with data objects (*test cases*) that consist of two input values (`name` and `comment`) and a value that contains the expected result (`headerText`).
+Assume you have a `data.json` file with data objects (*test cases*) that consist of two input values (`name` and `comment`) and a value that specifies the expected result (`resultText`).
 
 ```json
 [
     {
         "name": "John Heart",
         "comment": "I love TestCafe!",
-        "headerText": "Thank you, John Heart!"
+        "resultText": "Thank you, John Heart!"
     },
     {
         "name": "Olivia Peyton",
         "comment": "TestCafe is awesome!",
-        "headerText": "Thank you, Olivia Peyton!"
+        "resultText": "Thank you, Olivia Peyton!"
     }
 ]
 ```
 
-To create data-driven tests, iterate through the test cases, call the [test](../test-api/test-code-structure.md#tests) method at each iteration and write [test actions](../test-api/actions/README.md) and [assertions](../test-api/assertions/README.md) that use the object's values.
+To create data-driven tests, iterate through the test cases, call the [test](../test-api/test-code-structure.md#tests) method at each iteration and write [test actions](../test-api/actions/README.md) and [assertions](../test-api/assertions/README.md) that use test case parameters.
 
 ```js
 import { Selector } from 'testcafe';
@@ -41,7 +41,7 @@ dataSet.forEach(data => {
             .click('#tried-test-cafe')
             .typeText('#comments', data.comment)
             .click('#submit-button')
-            .expect(Selector('#article-header').textContent).eql(data.headerText);
+            .expect(Selector('#article-header').textContent).eql(data.resultText);
     });
 });
 ```
@@ -62,7 +62,7 @@ dataSet.forEach(data => {
 });
 ```
 
-You can also introduce conditional test actions when required:
+You can also introduce conditional actions that depend on test case parameters:
 
 ```js
 if(data.shouldClick)
