@@ -9,9 +9,12 @@ redirect_from:
 
 This section provides examples and recipes of how to use TestCafe in different scenarios.
 
+* [Access Environment Variables in Tests](access-environment-variables-in-tests.md)
 * [Create Data-Driven Tests](create-data-driven-tests.md)
 * [Debug Tests](debug-tests/README.md)
+* [Extract Test Actions to Helper Files](extract-test-actions-to-helper-files.md)
 * [Find Code Issues with Flow Type Checker](find-code-issues-with-flow-type-checker.md)
+* [Pass Custom Command Line Parameters](pass-custom-command-line-parameters.md)
 * [Test \<select\> Elements](test-select-elements.md)
 * [Test Static HTML Pages](test-static-html-pages.md)
 * [Test on Remote Computers and Mobile Devices](test-on-remote-computers-and-mobile-devices.md)
