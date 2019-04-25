@@ -2,14 +2,23 @@ const expect = require('chai').expect;
 
 const { getClipInfoByCropDimensions, calculateMarkPosition, getClipInfoByMarkPosition, calculateClipInfo } = require('../../lib/screenshots/crop');
 
-function getPngMock () {
+const markSeed = [
+    0, 0, 0, 255,
+    255, 255, 255, 255,
+    0, 0, 0, 255,
+    255, 255, 255, 255,
+    0, 0, 0, 255,
+    255, 255, 255, 255
+];
+
+function getPngMock (mark = markSeed) {
     const markSeedIndex = 6944952;
     const width         = 1820;
     const height        = 954;
 
     let data = '-'.repeat(markSeedIndex);
 
-    data = Buffer.from(data + '*' + data);
+    data = Buffer.concat([Buffer.from(data), Buffer.from(mark), Buffer.from(data)]);
 
     return { width, height, data };
 }
@@ -65,7 +74,7 @@ describe('Crop images', () => {
     });
 
     it('Calculate mark position', () => {
-        expect(calculateMarkPosition(getPngMock(), '*')).eql({
+        expect(calculateMarkPosition(getPngMock(), markSeed)).eql({
             x: 1820,
             y: 954
         });
@@ -73,8 +82,20 @@ describe('Crop images', () => {
         expect(calculateMarkPosition(getPngMock(), '+')).eql(null);
     });
 
+    it('Mark seed correction', () => {
+        const fixableMarkSeed = markSeed.slice();
+        const spoiledMarkSeed = markSeed.slice();
+
+        fixableMarkSeed.splice(0, 1, 1);
+        spoiledMarkSeed.splice(0, 1, 10);
+
+        expect(calculateMarkPosition(getPngMock(fixableMarkSeed), markSeed)).eql({ x: 1820, y: 954 });
+        expect(calculateMarkPosition(getPngMock(spoiledMarkSeed), markSeed)).eql(null);
+        expect(calculateMarkPosition(getPngMock(), '+')).eql(null);
+    });
+
     it('Get clipInfo by mark position', () => {
-        const markPosition = calculateMarkPosition(getPngMock(), '*');
+        const markPosition = calculateMarkPosition(getPngMock(), markSeed);
 
         expect(getClipInfoByMarkPosition(markPosition, { width: 1820, height: 954 })).eql({
             clipLeft:   0,
@@ -104,14 +125,14 @@ describe('Crop images', () => {
             bottom: 850
         };
 
-        expect(calculateClipInfo(getPngMock(), 'path', '*', clientAreaDimensions)).eql({
+        expect(calculateClipInfo(getPngMock(), 'path', markSeed, clientAreaDimensions)).eql({
             clipLeft:   0,
             clipTop:    0,
             clipRight:  1820,
             clipBottom: 953
         });
 
-        expect(calculateClipInfo(getPngMock(), 'path', '*', clientAreaDimensions, cropDimensions)).eql({
+        expect(calculateClipInfo(getPngMock(), 'path', markSeed, clientAreaDimensions, cropDimensions)).eql({
             clipLeft:   20,
             clipTop:    20,
             clipRight:  1800,

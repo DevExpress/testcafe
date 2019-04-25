@@ -5,6 +5,9 @@ import { InvalidElementScreenshotDimensionsError } from '../errors/test-run/';
 import { MARK_LENGTH, MARK_RIGHT_MARGIN, MARK_BYTES_PER_PIXEL } from './constants';
 import WARNING_MESSAGES from '../notifications/warning-message';
 
+const MARK_SEED_ERROR_THRESHOLD = 10;
+const WHITE_COLOR_PART          = 255;
+const BLACK_COLOR_PART          = 0;
 
 function markSeedToId (markSeed) {
     let id = 0;
@@ -15,9 +18,27 @@ function markSeedToId (markSeed) {
     return id;
 }
 
+function getCorrectedColorPart (colorPart) {
+    const isWhite = colorPart > WHITE_COLOR_PART - MARK_SEED_ERROR_THRESHOLD;
+    const isBlack = colorPart < MARK_SEED_ERROR_THRESHOLD;
+
+    if (isBlack)
+        return BLACK_COLOR_PART;
+
+    if (isWhite)
+        return WHITE_COLOR_PART;
+
+    return colorPart;
+}
+
 export function calculateMarkPosition (pngImage, markSeed) {
-    const mark      = Buffer.from(markSeed);
-    const markIndex = pngImage.data.indexOf(mark);
+    const mark    = Buffer.from(markSeed);
+    const filtImg = Buffer.from(pngImage.data);
+
+    for (let i = 0; i < filtImg.length; i++)
+        filtImg[i] = getCorrectedColorPart(filtImg[i]);
+
+    const markIndex = filtImg.indexOf(mark);
 
     if (markIndex < 0)
         return null;
