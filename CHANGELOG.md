@@ -1970,7 +1970,7 @@ test(`Test Speed`, async t => {
 
 #### :gear: Using test controller outside of test code ([#1166](https://github.com/DevExpress/testcafe/issues/1166))
 
-You may sometimes need to call test API from outside of test code. For instance, your [page model](../recipes/using-page-model.md)
+You may sometimes need to call test API from outside of test code. For instance, your [page model](docs/articles/documentation/recipes/extract-reusable-test-code/use-page-model.md)
 can contain methods that perform common operations used in many tests, like authentication.
 
 ```js

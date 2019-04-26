@@ -235,8 +235,13 @@
           url: /documentation/recipes/debug-tests/visual-studio-code.md
         - name: WebStorm
           url: /documentation/recipes/debug-tests/webstorm.md
-    - name: Extract Test Actions to Helper Files
-      url: /documentation/recipes/extract-test-actions-to-helper-files.md
+    - name: Extract Reusable Test Code
+      url: /documentation/recipes/extract-reusable-test-code/README.md
+      content:
+        - name: Use Page Model
+          url: /documentation/recipes/extract-reusable-test-code/use-page-model.md
+        - name: Create Helper Files
+          url: /documentation/recipes/extract-reusable-test-code/create-helper-files.md  
     - name: Find Code Issues with Flow Type Checker
       url: /documentation/recipes/find-code-issues-with-flow-type-checker.md
     - name: Pass Custom Command Line Parameters
@@ -247,8 +252,6 @@
       url: /documentation/recipes/test-static-html-pages.md
     - name: Test on Remote Computers and Mobile Devices
       url: /documentation/recipes/test-on-remote-computers-and-mobile-devices.md
-    - name: Use Page Model
-      url: /documentation/recipes/use-page-model.md
     - name: Use Task Runners
       url: /documentation/recipes/use-task-runners/README.md
       content:

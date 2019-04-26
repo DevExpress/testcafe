@@ -1,9 +1,9 @@
 ---
 layout: docs
-title: Extract Test Actions to Helper Files
-permalink: /documentation/recipes/extract-test-actions-to-helper-files.html
+title: Create Helper Files
+permalink: /documentation/recipes/extract-reusable-test-code/create-helper-files.html
 ---
-# Extract Test Actions to Helper Files
+# Create Helper Files
 
 It is a good practice to extract reusable pieces of test code to separate files. We recommend that you use a [page model](use-page-model.md) for this. It allows you to abstract both page structure and common test patterns.
 
