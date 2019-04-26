@@ -68,4 +68,4 @@ createTestCafe('localhost', 1337, 1338, sslOptions)
 
 ## Test HTTP/2 Websites
 
-TestCafe can test an HTTP/2 website only if the server can fall back to HTTPS or HTTP.
+TestCafe can test an HTTP/2 website only if the server can downgrade the connection to HTTPS or HTTP/1. See [ALPN negotiation](https://nodejs.org/api/http2.html#http2_alpn_negotiation) for details.
