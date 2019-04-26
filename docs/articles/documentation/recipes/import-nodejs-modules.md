@@ -17,7 +17,7 @@ const array    = require('lodash/array');
 const minimist = require('minimist');
 ```
 
-Then use these modules in test code as usual:
+Then you can use these modules in test code:
 
 ```js
 import array from 'lodash/array';

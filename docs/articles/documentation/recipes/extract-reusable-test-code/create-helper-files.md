@@ -5,11 +5,11 @@ permalink: /documentation/recipes/extract-reusable-test-code/create-helper-files
 ---
 # Create Helper Files
 
-It is a good practice to extract reusable pieces of test code to separate files. We recommend that you use a [page model](use-page-model.md) for this. It allows you to abstract both page structure and common test patterns.
+We recommend that you follow the [page model](use-page-model.md) pattern to extract reusable test code. This pattern allows you to abstract out both page structure and test logic.
 
 * [Use Page Model](use-page-model.md)
 
-However, if you need to extract only the helper functions, you can create script files that export them.
+However, if you need to extract only the helper functions, you can export them from a separate script file.
 
 The following example shows a `helper.js` file that exports the `enterUsername` and `postComment` asynchronous functions:
 
@@ -30,9 +30,9 @@ export async function postComment(text) {
 };
 ```
 
-Note that this file imports `t` (the [test controller](../test-api/test-code-structure.md#test-controller)) from the `testcafe` module. You don't need to pass `t` to the helper functions. TestCafe can resolve the current test context and provide the correct test controller instance.
+Note that this file imports `t` (the [test controller](../test-api/test-code-structure.md#test-controller)) from the `testcafe` module. You don't need to pass `t` to helper functions because TestCafe can resolve the current test context and provide the correct test controller instance.
 
-In test code, import functions from `helper.js` and call them with the `await` keyword.
+In test code, import functions from `helper.js` and call them with the `await` keyword:
 
 ```js
 import { Selector } from 'testcafe';

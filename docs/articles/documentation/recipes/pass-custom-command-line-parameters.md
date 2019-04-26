@@ -5,24 +5,24 @@ permalink: /documentation/recipes/pass-custom-command-line-parameters.html
 ---
 # Pass Custom Command Line Parameters
 
-The following command passes the `env` argument to the test code:
+You can pass custom command line parameters to TestCafe and access their values from test code.
+
+The following example passes a custom `mode` parameter:
 
 ```sh
-testcafe chrome test.js --env=development
+testcafe chrome test.js --mode=debug
 ```
 
-In test code, use an argument parser library (like [minimist](https://github.com/substack/minimist)) to parse custom arguments:
+In test code, obtain command line arguments with the Node.js [process.argv](https://nodejs.org/api/process.html#process_process_argv) property and parse the result with a parser library like [minimist](https://github.com/substack/minimist):
 
 ```js
 import minimist from 'minimist';
 
-const args        = minimist(process.argv.slice(2));
-const environment = args.env;
+fixture `My Fixture`;
 
-fixture('example')
-    .page('http://example.com');
+test('Print a Custom Command Line Parameter', async t => {
+    const args = minimist(process.argv.slice(2));
 
-test('check environment', async t => {
-    console.log('Environment:', environment);
+    console.log('Mode: ', args.mode);
 });
 ```
