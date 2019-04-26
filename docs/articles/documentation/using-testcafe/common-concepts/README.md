@@ -10,4 +10,4 @@ permalink: /documentation/using-testcafe/common-concepts/
 * [Live Mode](live-mode.md)
 * [Screenshots and Videos](screenshots-and-videos.md)
 * [Reporters](reporters.md)
-* [Connect to the TestCafe Server over HTTPS](connect-to-the-testcafe-server-over-https.md)
+* [Test HTTPS and HTTP/2 Websites](test-https-and-http2-websites.md)
