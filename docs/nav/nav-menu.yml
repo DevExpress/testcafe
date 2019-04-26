@@ -244,6 +244,8 @@
           url: /documentation/recipes/extract-reusable-test-code/create-helper-files.md  
     - name: Find Code Issues with Flow Type Checker
       url: /documentation/recipes/find-code-issues-with-flow-type-checker.md
+    - name: Import Node.js Modules
+      url: /documentation/recipes/import-nodejs-modules.md
     - name: Pass Custom Command Line Parameters
       url: /documentation/recipes/pass-custom-command-line-parameters.md
     - name: Test &lt;select&gt; Elements

@@ -14,6 +14,7 @@ This section provides examples and recipes of how to use TestCafe in different s
 * [Debug Tests](debug-tests/README.md)
 * [Extract Reusable Test Code](extract-reusable-test-code/README.md)
 * [Find Code Issues with Flow Type Checker](find-code-issues-with-flow-type-checker.md)
+* [Import Node.js Modules](import-nodejs-modules.md)
 * [Pass Custom Command Line Parameters](pass-custom-command-line-parameters.md)
 * [Test \<select\> Elements](test-select-elements.md)
 * [Test Static HTML Pages](test-static-html-pages.md)

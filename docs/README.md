@@ -112,6 +112,7 @@
     * [Use Page Model](articles/documentation/recipes/extract-reusable-test-code/use-page-mode.md)
     * [Create Helper Files](articles/documentation/recipes/extract-reusable-test-code/create-helper-files.md)
   * [Find Code Issues with Flow Type Checker](articles/documentation/recipes/find-code-issues-with-flow-type-checker.md)
+  * [Import Node.js Modules](articles/documentation/recipes/import-nodejs-modules.md)
   * [Pass Custom Command Line Parameters](articles/documentation/recipes/pass-custom-command-line-parameters.md)
   * [Test &lt;select&gt; Elements](articles/documentation/recipes/test-select-elements.md)
   * [Test Static HTML Pages](articles/documentation/recipes/test-static-html-pages.md)
