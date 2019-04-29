@@ -5,7 +5,7 @@ permalink: /documentation/recipes/access-environment-variables-in-tests.html
 ---
 # Access Environment Variables in Tests
 
-Use the Node.js [process.env](https://nodejs.org/api/process.html#process_process_env) propery to access environment variables in test code.
+Use the Node.js [process.env](https://nodejs.org/api/process.html#process_process_env) property to access environment variables in test code.
 
 The following example prints the `PATH` envornment variable:
 
@@ -19,7 +19,7 @@ test('Print an Environment Variable', async t => {
 
 ## Set Environment Variables
 
-Use the `export` command to set a temporary environment variable on macOS and Linux:
+Use the `export` command to create an environment variable on macOS and Linux:
 
 ```sh
 export DEV_MODE=true

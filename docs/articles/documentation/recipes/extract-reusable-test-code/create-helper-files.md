@@ -30,7 +30,7 @@ export async function postComment(text) {
 };
 ```
 
-Note that this file imports `t` (the [test controller](../test-api/test-code-structure.md#test-controller)) from the `testcafe` module. You don't need to pass `t` to helper functions because TestCafe can resolve the current test context and provide the correct test controller instance.
+Note that this file imports `t` (the [test controller](../../test-api/test-code-structure.md#test-controller)) from the `testcafe` module. You don't need to pass `t` to helper functions because TestCafe can resolve the current test context and provide the correct test controller instance.
 
 In test code, import functions from `helper.js` and call them with the `await` keyword:
 
