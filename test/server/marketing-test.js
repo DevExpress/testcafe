@@ -4,10 +4,12 @@ const consoleWrapper = require('./helpers/console-wrapper');
 const Promise        = require('pinkie');
 
 it('Display an appropriate promo message', () => {
-    const createShowMessagePromise = () => {
+    const createShowMessagePromise = (runNumber) => {
+        runNumber = runNumber || marketingTest.NUMBER_RUNS_BETWEEN_SHOW_MESSAGE;
+
         let chain = Promise.resolve();
 
-        for (let i = 0; i < marketingTest.NUMBER_RUNS_BETWEEN_SHOW_MESSAGE; i++) {
+        for (let i = 0; i < runNumber; i++) {
             chain = chain.then(() => {
                 return marketingTest.showMessageWithLinkToTestCafeStudio();
             });
@@ -21,25 +23,25 @@ it('Display an appropriate promo message', () => {
             consoleWrapper.init();
             consoleWrapper.wrap();
 
-            return createShowMessagePromise();
+            return createShowMessagePromise(1);
         })
         .then(() => {
-            expect(consoleWrapper.messages.log).contains('Learn how to improve your testing experience with');
+            expect(consoleWrapper.messages.log).contains('You can stop writing and start recording. Check out');
 
             return createShowMessagePromise();
         })
         .then(() => {
-            expect(consoleWrapper.messages.log).contains('Support open source - check Test Cafe Studio edition with');
+            expect(consoleWrapper.messages.log).contains('Support open source – Help us spread the word');
 
             return createShowMessagePromise();
         })
         .then(() => {
-            expect(consoleWrapper.messages.log).contains('Share with your QA Team how to visually record');
+            expect(consoleWrapper.messages.log).contains('Does your QA team hate writing test scripts?');
 
             return createShowMessagePromise();
         })
         .then(() => {
-            expect(consoleWrapper.messages.log).contains('Learn how to improve your testing experience with');
+            expect(consoleWrapper.messages.log).contains('You can stop writing and start recording. Check out');
 
             consoleWrapper.unwrap();
             consoleWrapper.messages.clear();

@@ -21,7 +21,7 @@ export async function showMessageWithLinkToTestCafeStudio () {
 
     data.runCount++;
 
-    const shouldDisplayMessage = data.runCount % NUMBER_RUNS_BETWEEN_SHOW_MESSAGE === 0;
+    const shouldDisplayMessage = data.runCount === 1 || data.runCount % NUMBER_RUNS_BETWEEN_SHOW_MESSAGE === 0;
 
     if (shouldDisplayMessage) {
         const targetMsg = MESSAGES[data.displayedMessageIndex];
