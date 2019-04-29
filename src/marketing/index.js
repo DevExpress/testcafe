@@ -4,8 +4,9 @@ import renderTemplate from '../utils/render-template';
 import WARNING_MESSAGES from '../notifications/warning-message';
 import log from '../cli/log';
 import debug from 'debug';
+import { EOL } from 'os';
 
-export const NUMBER_RUNS_BETWEEN_SHOW_MESSAGE = 20;
+export const NUMBER_RUNS_BETWEEN_SHOW_MESSAGE = 10;
 
 const DEBUG_LOGGER = debug('testcafe:marketing');
 
@@ -32,7 +33,7 @@ export async function showMessageWithLinkToTestCafeStudio () {
             DEBUG_LOGGER(message);
         }
 
-        log.write(targetMsg);
+        log.write(EOL + targetMsg);
 
         data.displayedMessageIndex = (data.displayedMessageIndex + 1) % MESSAGES.length;
     }
