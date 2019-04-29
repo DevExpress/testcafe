@@ -757,7 +757,8 @@ describe('Test run commands', () => {
             const commandObj = {
                 type:          TYPE.navigateTo,
                 url:           'localhost',
-                stateSnapshot: 'stateSnapshot'
+                stateSnapshot: 'stateSnapshot',
+                forceReload:   true
             };
 
             const command = createCommand(commandObj);
@@ -765,7 +766,8 @@ describe('Test run commands', () => {
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:          TYPE.navigateTo,
                 url:           'localhost',
-                stateSnapshot: 'stateSnapshot'
+                stateSnapshot: 'stateSnapshot',
+                forceReload:   true
             });
         });
 

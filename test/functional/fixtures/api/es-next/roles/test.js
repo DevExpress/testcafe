@@ -39,6 +39,16 @@ if (config.currentEnvironmentName !== config.testingEnvironmentNames.osXDesktopA
             return runTests('./testcafe-fixtures/preserve-url-test.js', 'Preserve url test', TEST_WITH_IFRAME_RUN_OPTIONS);
         });
 
+        describe('Should allways reload role`s login url', () => {
+            it('Hash-based navigation', () => {
+                return runTests('./testcafe-fixtures/hash-based-navigation-test.js', null, { only: 'chrome' });
+            });
+
+            it('Test run url and roles`s login url are same', () => {
+                return runTests('./testcafe-fixtures/same-url-test.js', null, { only: 'chrome' });
+            });
+        });
+
         describe('Errors', function () {
             it('Should fail all tests that use role with the initiliazer error', function () {
                 return runTests('./testcafe-fixtures/init-error-test.js', null, {

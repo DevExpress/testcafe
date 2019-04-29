@@ -21,7 +21,7 @@ import BrowserConsoleMessages from './browser-console-messages';
 import { UNSTABLE_NETWORK_MODE_HEADER } from '../browser/connection/unstable-network-mode';
 import WarningLog from '../notifications/warning-log';
 import WARNING_MESSAGE from '../notifications/warning-message';
-import { StateSnapshot } from 'testcafe-hammerhead';
+import { StateSnapshot, SPECIAL_ERROR_PAGE } from 'testcafe-hammerhead';
 
 import {
     isCommandRejectableByPageError,
@@ -231,7 +231,7 @@ export default class TestRun extends AsyncEventEmitter {
 
         this.pendingPageError = new PageLoadError(err, ctx.reqOpts.url);
 
-        ctx.redirect(ctx.toProxyUrl('about:error'));
+        ctx.redirect(ctx.toProxyUrl(SPECIAL_ERROR_PAGE));
     }
 
     // Test function execution

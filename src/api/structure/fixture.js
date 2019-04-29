@@ -4,6 +4,7 @@ import TestingUnit from './testing-unit';
 import wrapTestFunction from '../wrap-test-function';
 import assertRequestHookType from '../request-hooks/assert-type';
 import { flattenDeep as flatten } from 'lodash';
+import { SPECIAL_BLANK_PAGE } from 'testcafe-hammerhead';
 
 export default class Fixture extends TestingUnit {
     constructor (testFile) {
@@ -11,7 +12,7 @@ export default class Fixture extends TestingUnit {
 
         this.path = testFile.filename;
 
-        this.pageUrl = 'about:blank';
+        this.pageUrl = SPECIAL_BLANK_PAGE;
 
         this.beforeEachFn = null;
         this.afterEachFn  = null;
