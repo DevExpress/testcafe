@@ -33,6 +33,7 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
         this.element            = element;
         this.options            = offsetOptions;
         this.automationSettings = new AutomationSettings(offsetOptions.speed);
+        this.elementWasScrolled = false;
     }
 
     _getElementForEvent (eventArgs) {
@@ -43,7 +44,12 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
     }
 
     _moveToElement () {
-        const moveOptions    = new MoveOptions(extend({ skipScrolling: true }, this.options), false);
+        const moveOptionsInit = extend({
+            skipScrolling: true,
+            raiseEventsForZeroCursorDistance: this.elementWasScrolled
+        }, this.options);
+
+        const moveOptions    = new MoveOptions(moveOptionsInit, false);
         const moveAutomation = new MoveAutomation(this.element, moveOptions);
 
         return moveAutomation
@@ -56,7 +62,10 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
 
         return scrollAutomation
             .run()
-            .then(() => delay(this.automationSettings.mouseActionStepDelay));
+            .then(elementWasScrolled => {
+                this.elementWasScrolled = elementWasScrolled;
+                return delay(this.automationSettings.mouseActionStepDelay);
+            });
     }
 
     _getElementOffset () {

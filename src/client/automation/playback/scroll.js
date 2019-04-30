@@ -36,6 +36,8 @@ export default class ScrollAutomation {
         this.skipParentFrames = scrollOptions.skipParentFrames;
 
         this.maxScrollMargin = { left: DEFAULT_MAX_SCROLL_MARGIN, top: DEFAULT_MAX_SCROLL_MARGIN };
+
+        this.elementWasScrolled = false;
     }
 
     _isScrollValuesChanged (scrollElement, originalScroll) {
@@ -64,6 +66,11 @@ export default class ScrollAutomation {
 
             return Promise.resolve();
         }
+
+        scrollPromise.then = () => {
+            if (!this.elementWasScrolled)
+                this.elementWasScrolled = this._isScrollValuesChanged(scrollElement, originalScroll);
+        };
 
         return scrollPromise;
     }
@@ -247,6 +254,7 @@ export default class ScrollAutomation {
 
         return scrollParentsPromise
             .then(() => {
+                // NOTE: check that for iframes
                 if (window.top !== window && !this.skipParentFrames) {
                     return sendRequestToFrame({
                         cmd:             SCROLL_REQUEST_CMD,
@@ -256,7 +264,7 @@ export default class ScrollAutomation {
                     }, SCROLL_RESPONSE_CMD, window.parent);
                 }
 
-                return Promise.resolve();
+                return Promise.resolve(this.elementWasScrolled);
             });
     }
 

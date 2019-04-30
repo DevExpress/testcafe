@@ -85,10 +85,11 @@ export default class MoveAutomation {
         this.speed       = moveOptions.speed;
         this.cursorSpeed = this.holdLeftButton ? this.automationSettings.draggingSpeed : this.automationSettings.cursorSpeed;
 
-        this.minMovingTime           = moveOptions.minMovingTime || null;
-        this.modifiers               = moveOptions.modifiers || {};
-        this.skipScrolling           = moveOptions.skipScrolling;
-        this.skipDefaultDragBehavior = moveOptions.skipDefaultDragBehavior;
+        this.minMovingTime                    = moveOptions.minMovingTime || null;
+        this.modifiers                        = moveOptions.modifiers || {};
+        this.skipScrolling                    = moveOptions.skipScrolling;
+        this.skipDefaultDragBehavior          = moveOptions.skipDefaultDragBehavior;
+        this.raiseEventsForZeroCursorDistance = moveOptions.raiseEventsForZeroCursorDistance;
 
         this.endPoint = null;
 
@@ -247,6 +248,10 @@ export default class MoveAutomation {
             });
     }
 
+    _isDistanceEqualsZero () {
+        return this.distanceX === 0 && this.distanceY === 0;
+    }
+
     _getTargetClientPoint () {
         const scroll = styleUtils.getElementScroll(this.element);
 
@@ -327,8 +332,16 @@ export default class MoveAutomation {
 
         return cursor
             .move(this.x, this.y)
-            .then(getElementUnderCursor)
-            // NOTE: in touch mode, events are simulated for the element for which mousedown was simulated (GH-372)
+            .then(this._getMovingStepPromise());
+    }
+
+    _isMovingFinished () {
+        return this.x === this.endPoint.x && this.y === this.endPoint.y;
+    }
+
+    _getMovingStepPromise () {
+        return getElementUnderCursor()
+        // NOTE: in touch mode, events are simulated for the element for which mousedown was simulated (GH-372)
             .then(topElement => {
                 const currentElement = this.holdLeftButton && this.touchMode ? this.dragElement : topElement;
 
@@ -339,10 +352,6 @@ export default class MoveAutomation {
                 return this._emulateEvents(currentElement);
             })
             .then(nextTick);
-    }
-
-    _isMovingFinished () {
-        return this.x === this.endPoint.x && this.y === this.endPoint.y;
     }
 
     _move () {
@@ -357,6 +366,9 @@ export default class MoveAutomation {
 
         if (this.minMovingTime)
             this.movingTime = Math.max(this.movingTime, this.minMovingTime);
+
+        if (this._isDistanceEqualsZero() && this.raiseEventsForZeroCursorDistance)
+            return this._getMovingStepPromise();
 
         return promiseUtils.whilst(() => !this._isMovingFinished(), () => this._movingStep());
     }
