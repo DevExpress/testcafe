@@ -148,12 +148,8 @@ export default class Reporter {
             if (!reportItem.startTime)
                 reportItem.startTime = new Date();
 
-            try {
-                await this.plugin.reportTestStart(reportItem.test.name);
-            }
-            catch (err) {
-                return;
-            }
+            if (this.plugin.reportTestStart)
+                await this.plugin.reportTestStart(reportItem.test.name, reportItem.test.meta);
         });
 
         task.on('test-run-done', async testRun => {
