@@ -3,7 +3,6 @@ import hammerhead from '../../deps/hammerhead';
 const browserUtils   = hammerhead.utils.browser;
 const eventSimulator = hammerhead.eventSandbox.eventSimulator;
 const listeners      = hammerhead.eventSandbox.listeners;
-const Promise        = hammerhead.Promise;
 
 class ElementMouseUpCommand {
     constructor (eventArgs) {
@@ -11,23 +10,20 @@ class ElementMouseUpCommand {
     }
 
     run () {
-        const mouseUpStatePromise = browserUtils.isIE ? Promise.resolve({}) : this._getMouseUpState();
+        let timeStamp = {};
+
+        const getTimeStamp = e => {
+            timeStamp = e.timeStamp;
+
+            listeners.removeInternalEventListener(window, ['mouseup'], getTimeStamp);
+        };
+
+        if (!browserUtils.isIE)
+            listeners.addInternalEventListener(window, ['mouseup'], getTimeStamp);
 
         eventSimulator.mouseup(this.eventArgs.element, this.eventArgs.options);
 
-        return mouseUpStatePromise;
-    }
-
-    _getMouseUpState () {
-        return new Promise(resolve => {
-            const getTimeStamp = e => {
-                listeners.removeInternalEventListener(window, ['mouseup'], getTimeStamp);
-
-                resolve({ timeStamp: e.timeStamp });
-            };
-
-            listeners.addInternalEventListener(window, ['mouseup'], getTimeStamp);
-        });
+        return { timeStamp };
     }
 }
 

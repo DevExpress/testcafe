@@ -715,39 +715,42 @@ $(document).ready(function () {
             });
     });
 
-    asyncTest('click and mouseup events have equal `timeStamp` properties', function () {
-        const target = document.createElement('div');
+    if (!browserUtils.isIE) {
+        asyncTest('click and mouseup events have equal `timeStamp` properties', function () {
+            const target = document.createElement('div');
 
-        target.className    = TEST_ELEMENT_CLASS;
-        target.style.width  = '10px';
-        target.style.height = '10px';
+            target.className    = TEST_ELEMENT_CLASS;
+            target.style.width  = '10px';
+            target.style.height = '10px';
 
-        document.body.appendChild(target);
+            document.body.appendChild(target);
 
-        let mouseUpTimeStamp = null;
-        let clickTimeStamp   = null;
+            let mouseUpTimeStamp = null;
+            let clickTimeStamp   = null;
 
-        target.addEventListener('mouseup', ({ timeStamp }) => {
-            mouseUpTimeStamp = timeStamp;
-        });
-
-        target.addEventListener('click', ({ timeStamp }) => {
-            clickTimeStamp = timeStamp;
-        });
-
-        const clickAutomation = new ClickAutomation(target, { });
-
-        return clickAutomation
-            .run()
-            .then(function () {
-                ok(!!mouseUpTimeStamp);
-                ok(!!clickTimeStamp);
-
-                equal(mouseUpTimeStamp, clickTimeStamp);
-
-                startNext();
+            target.addEventListener('mouseup', function (e) {
+                mouseUpTimeStamp = e.timeStamp;
             });
-    });
+
+            target.addEventListener('click', function (e) {
+                clickTimeStamp = e.timeStamp;
+            });
+
+            const clickAutomation = new ClickAutomation(target, { });
+
+            return clickAutomation
+                .run()
+                .then(function () {
+                    ok(!!mouseUpTimeStamp);
+                    ok(!!clickTimeStamp);
+
+                    equal(mouseUpTimeStamp, clickTimeStamp);
+
+                    startNext();
+                });
+        });
+    }
+
 
     module('regression');
 
