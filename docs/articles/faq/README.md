@@ -137,7 +137,7 @@ fixture `Fixture`
     .page `${config.baseUrl}/test1/index.html`;
 ```
 
-Alternatively, you can use [custom command line parameters](../documentation/recipes/pass-custom-command-line-parameters.md) or [environment variables](../documentation/recipes/access-environment-variables-in-tests.md).
+Alternatively, you can use [environment variables](../documentation/recipes/access-environment-variables-in-tests.md).
 
 ## Troubleshooting
 
