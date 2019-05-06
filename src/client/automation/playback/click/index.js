@@ -5,6 +5,7 @@ import { focusAndSetSelection } from '../../utils/utils';
 import cursor from '../../cursor';
 import nextTick from '../../utils/next-tick';
 import createClickCommand from './click-command';
+import createMouseUpCommand from './mouseup-command';
 
 const Promise = hammerhead.Promise;
 
@@ -177,7 +178,9 @@ export default class ClickAutomation extends VisibleElementAutomation {
                 this.eventState.clickElement = ClickAutomation._getElementForClick(this.mouseDownElement, element,
                     this.targetElementParentNodes);
 
-                eventSimulator.mouseup(element, eventArgs.options);
+                const mouseUpCommand = createMouseUpCommand(eventArgs);
+
+                return mouseUpCommand.run();
             });
     }
 
@@ -212,6 +215,10 @@ export default class ClickAutomation extends VisibleElementAutomation {
                 return Promise.all([delay(this.automationSettings.mouseActionStepDelay), this._mousedown(eventArgs)]);
             })
             .then(() => this._mouseup(eventArgs))
-            .then(() => this._click(eventArgs));
+            .then(({ timeStamp }) => {
+                eventArgs.options.timeStamp = timeStamp;
+
+                return this._click(eventArgs);
+            });
     }
 }
