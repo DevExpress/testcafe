@@ -38,19 +38,20 @@ export default class Reporter {
 
     static _createReportItem (test, runsPerTest) {
         return {
-            fixture:        test.fixture,
-            test:           test,
-            screenshotPath: null,
-            screenshots:    [],
-            quarantine:     null,
-            errs:           [],
-            warnings:       [],
-            unstable:       false,
-            startTime:      null,
-            testRunInfo:    null,
-
-            pendingRuns:    runsPerTest,
-            pendingPromise: Reporter._createPendingPromise()
+            fixture:                    test.fixture,
+            test:                       test,
+            screenshotPath:             null,
+            screenshots:                [],
+            quarantine:                 null,
+            errs:                       [],
+            warnings:                   [],
+            unstable:                   false,
+            startTime:                  null,
+            testRunInfo:                null,
+            pendingRuns:                runsPerTest,
+            pendingStarts:              runsPerTest,
+            pendingTestRunDonePromise:  Reporter._createPendingPromise(),
+            pendingTestRunStartPromise: Reporter._createPendingPromise()
         };
     }
 
@@ -127,7 +128,7 @@ export default class Reporter {
 
         await this._shiftReportQueue(reportItem);
 
-        reportItem.pendingPromise.resolve();
+        reportItem.pendingTestRunDonePromise.resolve();
     }
 
     _assignTaskEventHandlers () {
@@ -148,8 +149,16 @@ export default class Reporter {
             if (!reportItem.startTime)
                 reportItem.startTime = new Date();
 
-            if (this.plugin.reportTestStart)
-                await this.plugin.reportTestStart(reportItem.test.name, reportItem.test.meta);
+            reportItem.pendingStarts--;
+
+            if (!reportItem.pendingStarts) {
+                if (this.plugin.reportTestStart)
+                    await this.plugin.reportTestStart(reportItem.test.name, reportItem.test.meta);
+
+                reportItem.pendingTestRunStartPromise.resolve();
+            }
+
+            return reportItem.pendingTestRunStartPromise;
         });
 
         task.on('test-run-done', async testRun => {
@@ -164,7 +173,7 @@ export default class Reporter {
             if (!reportItem.pendingRuns)
                 await this._resolveReportItem(reportItem, testRun);
 
-            await reportItem.pendingPromise;
+            await reportItem.pendingTestRunDonePromise;
         });
 
         task.once('done', async () => {

@@ -37,7 +37,7 @@ export default class BrowserJob extends AsyncEventEmitter {
             this.fixtureHookController, this.opts);
 
         testRunController.on('test-run-create', testRunInfo => this.emit('test-run-create', testRunInfo));
-        testRunController.on('test-run-start', () => this.emit('test-run-start', testRunController.testRun));
+        testRunController.on('test-run-start', () => this._onTestRunStart(testRunController.testRun));
         testRunController.on('test-run-ready', () => this.emit('test-run-ready', testRunController));
         testRunController.on('test-run-restart', () => this._onTestRunRestart(testRunController));
         testRunController.on('test-run-before-done', () => this.emit('test-run-before-done', testRunController));
@@ -68,6 +68,10 @@ export default class BrowserJob extends AsyncEventEmitter {
     _onTestRunRestart (testRunController) {
         this._removeFromCompletionQueue(testRunController);
         this.testRunControllerQueue.unshift(testRunController);
+    }
+
+    async _onTestRunStart (testRun) {
+        await this.emit('test-run-start', testRun);
     }
 
     async _onTestRunDone (testRunController) {
