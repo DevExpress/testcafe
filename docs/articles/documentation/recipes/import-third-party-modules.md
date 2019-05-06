@@ -1,9 +1,9 @@
 ---
 layout: docs
-title: Import Modules
-permalink: /documentation/recipes/import-modules.html
+title: Import Third-Party Modules
+permalink: /documentation/recipes/import-third-party-modules.html
 ---
-# Import Modules
+# Import Third-Party Modules
 
 You can import a module to a test file with the [import](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import) statement or [require](https://nodejs.org/api/modules.html#modules_require_id) function:
 

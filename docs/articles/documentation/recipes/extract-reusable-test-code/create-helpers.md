@@ -1,9 +1,9 @@
 ---
 layout: docs
-title: Create Helper Files
-permalink: /documentation/recipes/extract-reusable-test-code/create-helper-files.html
+title: Create Helpers
+permalink: /documentation/recipes/extract-reusable-test-code/create-helpers.html
 ---
-# Create Helper Files
+# Create Helpers
 
 We recommend that you follow the [page model](use-page-model.md) pattern to extract reusable test code. This pattern allows you to abstract out both page structure and test logic.
 

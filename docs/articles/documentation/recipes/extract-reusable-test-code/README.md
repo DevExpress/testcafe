@@ -11,4 +11,4 @@ It is a good practice to extract reusable test code to separate files. We recomm
 
 However, if you need to extract only the helper functions, you can export them from a separate script file.
 
-* [Create Helper Files](create-helper-files.md)
+* [Create Helpers](create-helpers.md)
