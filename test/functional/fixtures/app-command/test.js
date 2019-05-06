@@ -15,7 +15,7 @@ describe('App command', function () {
 
     it('Should run app and close it once the tests complete', function () {
         return runTests('./testcafe-fixtures/app-command-test.js', 'Click div', {
-            appCommand: 'http-server test/functional/fixtures/app-command/static -p 3026'
+            appCommand: 'node test/functional/fixtures/app-command/normal-app.js'
         })
             .then(function () {
                 return delay(1000);
