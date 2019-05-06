@@ -4,12 +4,12 @@
 
 ### Bug Fixes
 
-* A Role can now be used when the navigation to its page does not trigger reloading ([#2195](https://github.com/DevExpress/testcafe/issues/2195))
-* TestCafe no longer emits `touchmove` events when simulating clicks on Android devices ([#3465](https://github.com/DevExpress/testcafe/issues/3465))
-* `t.takeElementScreenshot` can now work if a display has custom color correction ([#2918](https://github.com/DevExpress/testcafe/issues/2918))
-* Fixed `t.typeText` to work with `<iframe>` in IE 11([#3724](https://github.com/DevExpress/testcafe/issues/3724))
-* TestCafe now shows a correct error message when a browser gets disconnected ([#3711](https://github.com/DevExpress/testcafe/issues/3711))
-* Fixed processing of URLs containing authentication credentials ([testcafe-hammerhead/#1990](https://github.com/DevExpress/testcafe-hammerhead/issues/1990))
+* Roles now work when navigation to the login URL does not trigger page reload ([#2195](https://github.com/DevExpress/testcafe/issues/2195))
+* TestCafe no longer emits the `touchmove` events when it simulates clicks on Android devices ([#3465](https://github.com/DevExpress/testcafe/issues/3465))
+* `t.takeElementScreenshot` now works if the display has custom color correction ([#2918](https://github.com/DevExpress/testcafe/issues/2918))
+* Fixed a regression that prevented `t.typeText` from working within iframes in IE 11 ([#3724](https://github.com/DevExpress/testcafe/issues/3724))
+* TestCafe now displays the correct error message when a browser is disconnected ([#3711](https://github.com/DevExpress/testcafe/issues/3711))
+* URLs that contain authentication credentials are now processed correctly ([testcafe-hammerhead/#1990](https://github.com/DevExpress/testcafe-hammerhead/issues/1990))
 * TestCafe no longer breaks `async` functions inside constructors ([testcafe-hammerhead/#2002](https://github.com/DevExpress/testcafe-hammerhead/issues/2002))
 
 ## v1.1.3 (2019-4-18)
