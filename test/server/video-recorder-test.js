@@ -185,7 +185,7 @@ describe('Video Recorder', () => {
             .then(() => browserJobMock.emit('test-run-create', testRunMock))
             .then(() => browserJobMock.emit('test-run-before-done', testRunMock))
             .then(() => {
-                testRunMock.testRun.executeCommand({ type: COMMAND_TYPE.resizeWindow });
+                return testRunMock.testRun.executeCommand({ type: COMMAND_TYPE.resizeWindow });
             })
             .then(() => {
                 expect(videoRecorder.log.includes('The browser window was resized during the "Test" test while TestCafe recorded a video. TestCafe cannot adjust the video resolution during recording. As a result, the video content may appear broken. Do not resize the browser window when TestCafe records a video.')).to.be.true;

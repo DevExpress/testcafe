@@ -64,9 +64,9 @@ describe('Debug Log', () => {
         debugLog.driverMessage({});
 
         expect(debugMock.data['testcafe:test-run:Chrome:command']).contain('inspect error');
-        expect(debugMock.data['testcafe:test-run:Chrome:command']).contain('at inspect');
+        expect(debugMock.data['testcafe:test-run:Chrome:command']).match(/at .*inspect/);
 
         expect(debugMock.data['testcafe:test-run:Chrome:driver-message']).contain('inspect error');
-        expect(debugMock.data['testcafe:test-run:Chrome:driver-message']).contain('at inspect');
+        expect(debugMock.data['testcafe:test-run:Chrome:driver-message']).match(/at .*inspect/);
     });
 });
