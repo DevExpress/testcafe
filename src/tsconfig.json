@@ -1,0 +1,15 @@
+{
+  "include": [ "../@types", "./"],
+  "exclude": ["./client"],
+  "compilerOptions": {
+    "outDir": "../lib",
+    "target": "es2017",
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true,
+    "allowJs": true,
+    "checkJs": false,
+    "inlineSourceMap": true,
+    "inlineSources": true
+  }
+}

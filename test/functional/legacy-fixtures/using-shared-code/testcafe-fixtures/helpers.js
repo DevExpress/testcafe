@@ -1,5 +1,5 @@
-/*eslint-disable no-unused-vars*/
+/*eslint-disable @typescript-eslint/no-unused-vars*/
 function getInput () {
     return $('#input');
 }
-/*eslint-enable no-unused-vars*/
+/*eslint-enable @typescript-eslint/no-unused-vars*/

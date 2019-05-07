@@ -1,4 +1,4 @@
-import delay from '../../../../../../../src/utils/delay';
+import delay from '../../../../../../../lib/utils/delay';
 import getTimeLimitedPromise from 'time-limit-promise';
 
 const hooksExecuted = {

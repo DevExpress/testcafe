@@ -1,8 +1,12 @@
 {
+  "parserOptions": {
+    "project": null
+  },
   "extends": "plugin:hammerhead/recommended",
   "rules": {
     "hammerhead/use-hh-promise": 2,
-    "hammerhead/use-native-methods": [2, ["setTimeout", "setInterval", "clearTimeout", "clearInterval"]]
+    "hammerhead/use-native-methods": [2, ["setTimeout", "setInterval", "clearTimeout", "clearInterval"]],
+    "@typescript-eslint/no-use-before-define": 0
   },
   "env": {
     "browser": true,
