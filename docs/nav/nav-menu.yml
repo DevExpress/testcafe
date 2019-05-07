@@ -222,6 +222,8 @@
 - name: RECIPES
   url: /documentation/recipes/README.md
   content:
+    - name: Create Data-Driven Tests
+      url: /documentation/recipes/create-data-driven-tests.md
     - name: Debug Tests
       url: /documentation/recipes/debug-tests/README.md
       content:

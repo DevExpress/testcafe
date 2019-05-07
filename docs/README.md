@@ -102,6 +102,7 @@
   * [Travis](articles/documentation/continuous-integration/travis.md)
   * [Travis + Sauce Labs](articles/documentation/continuous-integration/travis-and-sauce-labs.md)
 * [RECIPES](articles/documentation/recipes/README.md)
+  * [Create Data-Driven Tests](articles/documentation/recipes/create-data-driven-tests.md)
   * [Debug Tests](articles/documentation/recipes/debug-tests/README.md)
     * [Chrome Developer Tools](articles/documentation/recipes/debug-tests/chrome-dev-tools.md)
     * [Visual Studio Code](articles/documentation/recipes/debug-tests/visual-studio-code.md)
