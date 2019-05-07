@@ -741,8 +741,8 @@ $(document).ready(function () {
             return clickAutomation
                 .run()
                 .then(function () {
-                    ok(!!mouseUpTimeStamp);
-                    ok(!!clickTimeStamp);
+                    ok(typeof mouseUpTimeStamp === 'number');
+                    ok(typeof clickTimeStamp === 'number');
 
                     equal(mouseUpTimeStamp, clickTimeStamp);
 
