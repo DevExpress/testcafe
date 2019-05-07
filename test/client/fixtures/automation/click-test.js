@@ -716,7 +716,7 @@ $(document).ready(function () {
     });
 
     if (!browserUtils.isIE) {
-        asyncTest('click and mouseup events have equal `timeStamp` properties', function () {
+        asyncTest('click and mouseup events should have equal `timeStamp` properties', function () {
             const target = document.createElement('div');
 
             target.className    = TEST_ELEMENT_CLASS;
