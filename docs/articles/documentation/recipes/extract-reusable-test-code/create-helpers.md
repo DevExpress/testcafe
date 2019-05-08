@@ -11,22 +11,23 @@ We recommend that you follow the [page model](use-page-model.md) pattern to extr
 
 However, if you need to extract only the helper functions, you can export them from a separate script file.
 
-The following example shows a `helper.js` file that exports the `enterUsername` and `postComment` asynchronous functions:
+The following example shows a `helper.js` file that exports the `enterName`, `typeComment` and `submitForm` asynchronous functions:
 
 ```js
 import { t } from 'testcafe';
 
-export async function enterUsername(name) {
-    await t
-        .typeText('#name-input', name)
-        .click('#i-agree-check-box')
-        .click('#submit-button');
+export async function enterName(name) {
+    await t.typeText('#developer-name', name);
 };
 
-export async function postComment(text) {
+export async function typeComment(text) {
     await t
-        .typeText('#comment-input', text)
-        .click('#post-button');
+        .click('#tried-test-cafe')
+        .typeText('#comments', text);
+};
+
+export async function submitForm() {
+    await t.click('#submit-button');
 };
 ```
 
@@ -36,17 +37,17 @@ In test code, import functions from `helper.js` and call them with the `await` k
 
 ```js
 import { Selector } from 'testcafe';
-import { enterUsername, postComment } from './helper.js';
+import { enterName, typeComment, submitForm } from './helper.js';
 
 fixture `My Fixture`
-    .page `https://www.example.com`;
+    .page `https://devexpress.github.io/testcafe/example/`;
 
 test('My Test', async t => {
-    const commentText = 'Here is what I think...';
+    const name = 'John Heart';
 
-    await enterUsername('John Heart');
-    await t.expect(Selector('#user-avatar').exists).ok();
-    await postComment(commentText);
-    await t.expect(Selector('#comment').textContent).eql(commentText);
+    await enterName(name);
+    await typeComment('Here is what I think...');
+    await submitForm();
+    await t.expect(Selector('#article-header').textContent).contains(name);
 });
 ```
