@@ -9,6 +9,7 @@ const focusBlurSandbox = hammerhead.eventSandbox.focusBlur;
 const contentEditable = testCafeCore.contentEditable;
 const textSelection   = testCafeCore.textSelection;
 const domUtils        = testCafeCore.domUtils;
+const styleUtils      = testCafeCore.styleUtils;
 
 
 function setCaretPosition (element, caretPos) {
@@ -106,8 +107,10 @@ export function focusAndSetSelection (element, simulateFocus, caretPos) {
 
 export function getElementBoundToLabel (element) {
     const labelWithForAttr = domUtils.closest(element, 'label[for]');
+    const control          = labelWithForAttr && labelWithForAttr.control;
+    const isControlVisible = control && styleUtils.isElementVisible(control);
 
-    return labelWithForAttr && labelWithForAttr.control;
+    return isControlVisible ? control : null;
 }
 
 export function focusByRelatedElement (element) {
