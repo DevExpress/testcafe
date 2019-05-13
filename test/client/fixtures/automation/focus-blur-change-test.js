@@ -968,3 +968,38 @@ asyncTest('T231934 - Native focus method raises event handlers twice in IE in re
         2000
     );
 });
+
+asyncTest('Hidden input should not be focused after label click', function () {
+    runAsyncTest(function () {
+        const div   = document.createElement('div');
+        const label = document.createElement('label');
+        const input = document.createElement('input');
+
+        div.className       = TEST_ELEMENT_CLASS;
+        label.className     = TEST_ELEMENT_CLASS;
+        input.className     = TEST_ELEMENT_CLASS;
+        input.id            = 'inputId';
+        label.innerHTML     = 'label';
+        div.style.display   = 'inline-block';
+        input.style.display = 'none';
+
+        label.setAttribute('for', 'inputId');
+
+        document.body.appendChild(div);
+        div.appendChild(label);
+        div.appendChild(input);
+
+        let inputFocused = false;
+
+        input.addEventListener('focus', function () {
+            inputFocused = true;
+        });
+
+        runClickAutomation(div, {})
+            .then(function () {
+                notOk(inputFocused);
+
+                startNext();
+            });
+    }, 2000);
+});
