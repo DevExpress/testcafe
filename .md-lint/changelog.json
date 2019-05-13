@@ -4,5 +4,6 @@
     "MD007": false,
     "MD024": false,
     "MD036": false,
-    "MD029": {"style": "ordered"}
+    "MD029": {"style": "ordered"},
+    "MD047": false
 }
