@@ -112,7 +112,7 @@ called from Node.js callbacks.
 
 #### Using Test Controller Outside of Test Code
 
-You may sometimes need to call the test API from outside the test code. For instance, your [page model](../recipes/using-page-model.md)
+You may sometimes need to call the test API from outside the test code. For instance, your [page model](../recipes/extract-reusable-test-code/use-page-model.md)
 can contain methods that perform common operations used in different tests (like authentication).
 
 ```js

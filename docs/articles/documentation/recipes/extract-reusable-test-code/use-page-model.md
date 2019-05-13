@@ -1,9 +1,10 @@
 ---
 layout: docs
 title: Use Page Model
-permalink: /documentation/recipes/use-page-model.html
+permalink: /documentation/recipes/extract-reusable-test-code/use-page-model.html
 redirect_from:
   - /documentation/recipes/using-page-model.html
+  - /documentation/recipes/use-page-model.html
 ---
 # Use Page Model
 
