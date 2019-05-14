@@ -195,7 +195,9 @@ export default class TestRunController extends AsyncEventEmitter {
             return null;
         }
 
-        testRun.once('start', () => this.emit('test-run-start'));
+        testRun.once('start', async () => {
+            await this.emit('test-run-start');
+        });
         testRun.once('ready', () => {
             if (!this.quarantine || this._isFirstQuarantineAttempt())
                 this.emit('test-run-ready');
