@@ -39,7 +39,9 @@ export default class BrowserJob extends AsyncEventEmitter {
         testRunController.on('test-run-create', async testRunInfo => {
             await this.emit('test-run-create', testRunInfo);
         });
-        testRunController.on('test-run-start', async () => this._onTestRunStart(testRunController.testRun));
+        testRunController.on('test-run-start', async () => {
+            await this.emit('test-run-start', testRunController.testRun);
+        });
         testRunController.on('test-run-ready', async () => {
             await this.emit('test-run-ready', testRunController);
         });

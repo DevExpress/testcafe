@@ -39,7 +39,7 @@ test
             };
         });
 
-        await t.expect(result).lt(expectedTimeoutForLongLoadPages);
+        await t.expect(startTestTime - pageOpenedTime).lt(expectedTimeoutForLongLoadPages);
     });
 
 test
