@@ -78,10 +78,6 @@ export default class BrowserJob extends AsyncEventEmitter {
         this.testRunControllerQueue.unshift(testRunController);
     }
 
-    async _onTestRunStart (testRun) {
-        await this.emit('test-run-start', testRun);
-    }
-
     async _onTestRunDone (testRunController) {
         this.total++;
 
