@@ -445,7 +445,7 @@ export function getCommonAncestor (element1, element2) {
         if (arrayUtils.indexOf(el1Parents, commonAncestor) > -1)
             return commonAncestor;
 
-        commonAncestor = commonAncestor.parentNode;
+        commonAncestor = nativeMethods.nodeParentNodeGetter.call(commonAncestor);
     }
 
     return commonAncestor;

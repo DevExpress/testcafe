@@ -6,6 +6,7 @@ const browserUtils   = hammerhead.utils.browser;
 const eventSandbox   = hammerhead.sandbox.event;
 const eventSimulator = hammerhead.eventSandbox.eventSimulator;
 const listeners      = hammerhead.eventSandbox.listeners;
+const nativeMethods  = hammerhead.nativeMethods;
 
 const domUtils        = testCafeCore.domUtils;
 const contentEditable = testCafeCore.contentEditable;
@@ -31,7 +32,8 @@ function _getSelectionInElement (element) {
 
 function _updateSelectionAfterDeletionContent (element, selection) {
     const startNode      = selection.startPos.node;
-    const hasStartParent = startNode.parentNode && startNode.parentElement;
+    const startParent    = nativeMethods.nodeParentNodeGetter.call(startNode);
+    const hasStartParent = startParent && startNode.parentElement;
 
     const browserRequiresSelectionUpdating = browserUtils.isChrome && browserUtils.version < 58 || browserUtils.isSafari;
 
@@ -55,9 +57,10 @@ function _typeTextInElementNode (elementNode, text, offset) {
     const nodeForTyping  = document.createTextNode(text);
     const textLength     = text.length;
     const selectPosition = { node: nodeForTyping, offset: textLength };
+    const parent         = nativeMethods.nodeParentNodeGetter.call(elementNode);
 
     if (domUtils.getTagName(elementNode) === 'br')
-        elementNode.parentNode.insertBefore(nodeForTyping, elementNode);
+        parent.insertBefore(nodeForTyping, elementNode);
     else if (offset > 0)
         elementNode.insertBefore(nodeForTyping, elementNode.childNodes[offset]);
     else

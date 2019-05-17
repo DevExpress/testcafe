@@ -3,6 +3,7 @@ import { domUtils } from '../../../deps/testcafe-core';
 
 const eventSimulator = hammerhead.eventSandbox.eventSimulator;
 const extend         = hammerhead.utils.extend;
+const nativeMethods  = hammerhead.nativeMethods;
 
 export class MoveBehaviour {
     static leaveElement (currentElement, prevElement, commonAncestor, options) {
@@ -13,7 +14,7 @@ export class MoveBehaviour {
         while (currentParent && currentParent !== commonAncestor) {
             eventSimulator.mouseleave(currentParent, extend({ relatedTarget: currentElement }, options));
 
-            currentParent = currentParent.parentNode;
+            currentParent = nativeMethods.nodeParentNodeGetter.call(currentParent);
         }
     }
 
@@ -26,7 +27,7 @@ export class MoveBehaviour {
         while (currentParent && currentParent !== commonAncestor) {
             mouseenterElements.push(currentParent);
 
-            currentParent = currentParent.parentNode;
+            currentParent = nativeMethods.nodeParentNodeGetter.call(currentParent);
         }
 
         mouseenterElements.reverse();

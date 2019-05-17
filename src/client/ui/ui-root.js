@@ -1,4 +1,4 @@
-import { shadowUI } from './deps/hammerhead';
+import { shadowUI, nativeMethods } from './deps/hammerhead';
 
 
 export default {
@@ -30,7 +30,8 @@ export default {
 
     remove () {
         const shadowRoot = shadowUI.getRoot();
+        const parent     = nativeMethods.nodeParentNodeGetter.call(shadowRoot);
 
-        shadowRoot.parentNode.removeChild(shadowRoot);
+        parent.removeChild(shadowRoot);
     }
 };
