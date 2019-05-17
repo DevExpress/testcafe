@@ -55,7 +55,7 @@ function findDraggableElement (element) {
         if (parentNode.draggable)
             return parentNode;
 
-        parentNode = parentNode.parentNode;
+        parentNode = nativeMethods.nodeParentNodeGetter.call(parentNode);
     }
 
     return null;

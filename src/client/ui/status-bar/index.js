@@ -301,7 +301,9 @@ export default class StatusBar extends serviceUtils.EventEmitter {
     }
 
     _setStatusDivLeftMargin () {
-        if (!this.statusDiv.parentNode || styleUtils.get(this.statusDiv.parentNode, 'display') === 'none')
+        const parent = nativeMethods.nodeParentNodeGetter.call(this.statusDiv);
+
+        if (!parent || styleUtils.get(parent, 'display') === 'none')
             return;
 
         const statusDivHidden = styleUtils.get(this.statusDiv, 'display') === 'none';
@@ -320,7 +322,7 @@ export default class StatusBar extends serviceUtils.EventEmitter {
         const marginLeftStr = Math.max(Math.round(marginLeft), 0) + 'px';
 
         styleUtils.set(this.statusDiv, 'marginLeft', statusDivHidden ? 0 : marginLeftStr);
-        styleUtils.set(this.statusDiv.parentNode, 'marginLeft', statusDivHidden ? marginLeftStr : 0);
+        styleUtils.set(parent, 'marginLeft', statusDivHidden ? marginLeftStr : 0);
     }
 
     _recalculateSizes () {

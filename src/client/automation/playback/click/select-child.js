@@ -12,6 +12,7 @@ const browserUtils     = hammerhead.utils.browser;
 const featureDetection = hammerhead.utils.featureDetection;
 const eventSimulator   = hammerhead.eventSandbox.eventSimulator;
 const focusBlurSandbox = hammerhead.eventSandbox.focusBlur;
+const nativeMethods    = hammerhead.nativeMethods;
 
 const domUtils   = testCafeCore.domUtils;
 const styleUtils = testCafeCore.styleUtils;
@@ -46,7 +47,8 @@ export default class SelectChildClickAutomation {
             this.childIndex = isOption ? domUtils.getElementIndexInParent(this.parentSelect, this.element) :
                 domUtils.getElementIndexInParent(this.parentSelect, this.element);
 
-            const parentOptGroup = domUtils.isOptionGroupElement(this.element.parentNode) ? this.element.parentNode : null;
+            const parent         = nativeMethods.nodeParentNodeGetter.call(this.element);
+            const parentOptGroup = domUtils.isOptionGroupElement(parent) ? parent : null;
             const isDisabled     = this.element.disabled || parentOptGroup && parentOptGroup.disabled;
 
             this.clickCausesChange = isOption && !isDisabled && this.childIndex !== selectedIndex;
