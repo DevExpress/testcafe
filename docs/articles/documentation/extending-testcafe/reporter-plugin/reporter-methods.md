@@ -6,12 +6,13 @@ checked: false
 ---
 # Reporter Methods
 
-You should implement the following methods to create a [reporter](README.md#implementing-the-reporter):
+Implement the following methods to [create a reporter](README.md#implementing-the-reporter):
 
 * [reportTaskStart](#reporttaskstart)
 * [reportFixtureStart](#reportfixturestart)
 * [reportTestDone](#reporttestdone)
 * [reportTaskDone](#reporttaskdone)
+* [reportTestStart](#reportteststart) *(optional)*
 
 > You can use the [helper methods and libraries](helpers.md) within the reporter methods to output the required data.
 
@@ -73,6 +74,30 @@ async reportFixtureStart (name, path, meta) {
 }
 
 //=> Starting fixture: First fixture f-0001
+```
+
+## reportTestStart
+
+Fires each time a test starts. This method is *optional*.
+
+```text
+async reportTestStart (name, meta)
+```
+
+Parameter | Type   | Description
+--------- | ------ | --------------------------------
+`name`    | String | The test name.
+`meta`    | Object | The test metadata. See [Specifying Testing Metadata](../../test-api/test-code-structure.md#specifying-testing-metadata) for more information.
+
+**Example**
+
+```js
+async reportTestStart (name, meta) {
+    this.write(`Starting test: ${name} (${meta.severity})`)
+        .newline();
+}
+
+//=> Starting test: Submit data (minor)
 ```
 
 ## reportTestDone
