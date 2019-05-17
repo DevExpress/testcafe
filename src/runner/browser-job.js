@@ -36,12 +36,20 @@ export default class BrowserJob extends AsyncEventEmitter {
         const testRunController = new TestRunController(test, index + 1, this.proxy, this.screenshots, this.warningLog,
             this.fixtureHookController, this.opts);
 
-        testRunController.on('test-run-create', testRunInfo => this.emit('test-run-create', testRunInfo));
-        testRunController.on('test-run-start', () => this.emit('test-run-start', testRunController.testRun));
-        testRunController.on('test-run-ready', () => this.emit('test-run-ready', testRunController));
-        testRunController.on('test-run-restart', () => this._onTestRunRestart(testRunController));
-        testRunController.on('test-run-before-done', () => this.emit('test-run-before-done', testRunController));
-        testRunController.on('test-run-done', () => this._onTestRunDone(testRunController));
+        testRunController.on('test-run-create', async testRunInfo => {
+            await this.emit('test-run-create', testRunInfo);
+        });
+        testRunController.on('test-run-start', async () => {
+            await this.emit('test-run-start', testRunController.testRun);
+        });
+        testRunController.on('test-run-ready', async () => {
+            await this.emit('test-run-ready', testRunController);
+        });
+        testRunController.on('test-run-restart', async () => this._onTestRunRestart(testRunController));
+        testRunController.on('test-run-before-done', async () => {
+            await this.emit('test-run-before-done', testRunController);
+        });
+        testRunController.on('test-run-done', async () => this._onTestRunDone(testRunController));
 
         return testRunController;
     }

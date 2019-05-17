@@ -143,6 +143,11 @@ export default class ReporterPluginHost {
         throw new Error('Not implemented');
     }
 
+    // NOTE: It's an optional method
+    // async reportTestStart (/* name, testMeta */) {
+    //     throw new Error('Not implemented');
+    // }
+
     async reportTestDone (/* name, testRunInfo */) {
         throw new Error('Not implemented');
     }

@@ -2,6 +2,10 @@ import { ClientFunction } from 'testcafe';
 
 fixture `page-load-timeout`;
 
+// NOTE: For slow mobile browsers on CI machines the internal methods chain (parsing the tested web page, emitting appropriate events, calling the reporter methods)
+// can take a long time
+const expectedTimeoutForLongLoadPages = 5000;
+
 test
     .page('http://localhost:3000/fixtures/api/es-next/page-load-timeout/pages/window-load.html')
     ('Wait for window.load (set timeout via an option)', async t => {
@@ -35,7 +39,7 @@ test
             };
         });
 
-        await t.expect(startTestTime - pageOpenedTime).lt(1000);
+        await t.expect(startTestTime - pageOpenedTime).lt(expectedTimeoutForLongLoadPages);
     });
 
 test
@@ -48,5 +52,5 @@ test
             };
         });
 
-        await t.expect(startTestTime - pageOpenedTime).lt(1000);
+        await t.expect(startTestTime - pageOpenedTime).lt(expectedTimeoutForLongLoadPages);
     });
