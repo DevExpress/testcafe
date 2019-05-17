@@ -32,8 +32,8 @@ function _getSelectionInElement (element) {
 
 function _updateSelectionAfterDeletionContent (element, selection) {
     const startNode      = selection.startPos.node;
-    const parent         = nativeMethods.nodeParentNodeGetter.call(startNode);
-    const hasStartParent = parent && startNode.parentElement;
+    const startParent    = nativeMethods.nodeParentNodeGetter.call(startNode);
+    const hasStartParent = startParent && startNode.parentElement;
 
     const browserRequiresSelectionUpdating = browserUtils.isChrome && browserUtils.version < 58 || browserUtils.isSafari;
 
