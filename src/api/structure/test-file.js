@@ -7,6 +7,13 @@ export default class TestFile {
         this.collectedTests = [];
     }
 
+    _filterRecursiveProps () {
+        for (const test of this.collectedTests) {
+            delete test.fixture.testFile;
+            delete test.testFile;
+        }
+    }
+
     getTests () {
         this.collectedTests.forEach(test => {
             BORROWED_TEST_PROPERTIES.forEach(prop => {
@@ -16,6 +23,8 @@ export default class TestFile {
             if (test.disablePageReloads === void 0)
                 test.disablePageReloads = test.fixture.disablePageReloads;
         });
+
+        this._filterRecursiveProps();
 
         return this.collectedTests;
     }

@@ -1,6 +1,6 @@
 import { isUndefined, filter, flatten, chunk, times } from 'lodash';
 import Promise from 'pinkie';
-import Compiler from '../compiler';
+import Compiler from '../compiler/process';
 import BrowserConnection from '../browser/connection';
 import { GeneralError } from '../errors/runtime';
 import browserProviderPool from '../browser/provider/pool';

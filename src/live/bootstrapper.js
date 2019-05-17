@@ -12,22 +12,20 @@ class LiveModeBootstrapper extends Bootstrapper {
         this.runner = runner;
     }
 
-    _getTests () {
+    async _getTests () {
         this._mockRequire();
 
-        return super._getTests()
-            .then(result => {
-                this._restoreRequire();
+        try {
+            return await super._getTests();
+        }
+        catch (err) {
+            await Compiler.cleanUp();
 
-                return result;
-            })
-            .catch(err => {
-                this._restoreRequire();
-
-                Compiler.cleanUp();
-
-                this.runner.setBootstrappingError(err);
-            });
+            this.runner.setBootstrappingError(err);
+        }
+        finally {
+            this._restoreRequire();
+        }
     }
 
     _mockRequire () {
