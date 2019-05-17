@@ -1,9 +1,9 @@
 import hammerhead from '../../../deps/hammerhead';
 import { domUtils } from '../../../deps/testcafe-core';
 
-const nativeMethods  = hammerhead.nativeMethods;
 const eventSimulator = hammerhead.eventSandbox.eventSimulator;
 const extend         = hammerhead.utils.extend;
+const nativeMethods  = hammerhead.nativeMethods;
 
 export class MoveBehaviour {
     static leaveElement (currentElement, prevElement, commonAncestor, options) {
