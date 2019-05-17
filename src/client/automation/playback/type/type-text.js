@@ -57,10 +57,10 @@ function _typeTextInElementNode (elementNode, text, offset) {
     const nodeForTyping  = document.createTextNode(text);
     const textLength     = text.length;
     const selectPosition = { node: nodeForTyping, offset: textLength };
-    const parentNode     = nativeMethods.nodeParentNodeGetter.call(elementNode);
+    const parent         = nativeMethods.nodeParentNodeGetter.call(elementNode);
 
     if (domUtils.getTagName(elementNode) === 'br')
-        parentNode.insertBefore(nodeForTyping, elementNode);
+        parent.insertBefore(nodeForTyping, elementNode);
     else if (offset > 0)
         elementNode.insertBefore(nodeForTyping, elementNode.childNodes[offset]);
     else
