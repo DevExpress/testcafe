@@ -221,7 +221,7 @@ Parameter   | Type   | Description
 
 **Example**
 
-The following example demonstrates how to escape the fixture name *Tests for the "Example" page* for HTML.
+The following example demonstrates how to encode the fixture name *Tests for the "Example" page* for HTML
 
 ```js
 async reportFixtureStart (name, path, meta) {

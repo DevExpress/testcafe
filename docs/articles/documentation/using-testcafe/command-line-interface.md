@@ -673,7 +673,7 @@ testcafe chrome my-tests/**/*.js --proxy username:password@proxy.mycorp.com
 
 ### --proxy-bypass \<rules\>
 
-Specifies the resources accessed bypassing the proxy server.
+Requires that TestCafe bypasses the proxy server to access the specified resources.
 
 When you access the Internet through a proxy server specified using the [--proxy](#--proxy-host) option, you may still need some local or external resources to be accessed directly. In this instance, provide their URLs to the `--proxy-bypass` option.
 
@@ -746,7 +746,7 @@ testcafe remote my-tests --qr-code
 
 ### --sf, --stop-on-first-fail
 
-Stops an entire test run if any test fails. This allows you not to wait for all the tests included in the test task to finish and allows focusing on the first error.
+Stops an entire test run if any test fails. Use this option when you want to fix failed tests individually and do not need a report on all the failures.
 
 ```sh
 testcafe chrome my-tests --sf
