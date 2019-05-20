@@ -12,6 +12,7 @@ const extend           = hammerhead.utils.extend;
 const browserUtils     = hammerhead.utils.browser;
 const featureDetection = hammerhead.utils.featureDetection;
 const eventSimulator   = hammerhead.eventSandbox.eventSimulator;
+const listeners        = hammerhead.eventSandbox.listeners;
 
 const domUtils   = testCafeCore.domUtils;
 const eventUtils = testCafeCore.eventUtils;
@@ -177,7 +178,21 @@ export default class ClickAutomation extends VisibleElementAutomation {
                 this.eventState.clickElement = ClickAutomation._getElementForClick(this.mouseDownElement, element,
                     this.targetElementParentNodes);
 
+
+                let timeStamp = {};
+
+                const getTimeStamp = e => {
+                    timeStamp = e.timeStamp;
+
+                    listeners.removeInternalEventListener(window, ['mouseup'], getTimeStamp);
+                };
+
+                if (!browserUtils.isIE)
+                    listeners.addInternalEventListener(window, ['mouseup'], getTimeStamp);
+
                 eventSimulator.mouseup(element, eventArgs.options);
+
+                return { timeStamp };
             });
     }
 
@@ -212,6 +227,10 @@ export default class ClickAutomation extends VisibleElementAutomation {
                 return Promise.all([delay(this.automationSettings.mouseActionStepDelay), this._mousedown(eventArgs)]);
             })
             .then(() => this._mouseup(eventArgs))
-            .then(() => this._click(eventArgs));
+            .then(({ timeStamp }) => {
+                eventArgs.options.timeStamp = timeStamp;
+
+                return this._click(eventArgs);
+            });
     }
 }
