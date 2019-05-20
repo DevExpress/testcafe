@@ -26,7 +26,7 @@ export default class BrowserConnection extends EventEmitter {
         this.jobQueue                 = [];
         this.initScriptsQueue         = [];
         this.browserConnectionGateway = gateway;
-        this.errorSuppressed          = false;
+        this.disconnectionPromise     = null;
         this.testRunAborted           = false;
 
         this.browserInfo                           = browserInfo;
@@ -120,15 +120,12 @@ export default class BrowserConnection extends EventEmitter {
         this.heartbeatTimeout = setTimeout(() => {
             const err = this._createBrowserDisconnectedError();
 
-            this.opened          = false;
-            this.errorSuppressed = false;
-            this.testRunAborted  = true;
+            this.opened         = false;
+            this.testRunAborted = true;
 
             this.emit('disconnected', err);
 
-            if (!this.errorSuppressed)
-                this.emit('error', err);
-
+            this._restartBrowserOnDisconnect(err);
         }, this.HEARTBEAT_TIMEOUT);
     }
 
@@ -150,7 +147,7 @@ export default class BrowserConnection extends EventEmitter {
         return connections[id] || null;
     }
 
-    async restartBrowser () {
+    async _restartBrowser () {
         this.ready = false;
 
         this._forceIdle();
@@ -183,8 +180,24 @@ export default class BrowserConnection extends EventEmitter {
             });
     }
 
-    suppressError () {
-        this.errorSuppressed = true;
+    _restartBrowserOnDisconnect (err) {
+        let resolveFn = null;
+
+        this.disconnectionPromise = new Promise(resolve => {
+            resolveFn = resolve;
+        })
+            .then(disconnectionThresholdExceedeed => {
+                if (disconnectionThresholdExceedeed)
+                    this.emit('error', err);
+
+                return this._restartBrowser();
+            });
+
+        this.disconnectionPromise.resolve = resolveFn;
+    }
+
+    async processDisconnection (disconnectionThresholdExceedeed) {
+        this.disconnectionPromise.resolve(disconnectionThresholdExceedeed);
     }
 
     addWarning (...args) {
