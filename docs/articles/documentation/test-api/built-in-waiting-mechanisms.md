@@ -10,7 +10,13 @@ redirect_from:
 TestCafe has built-in automatic waiting mechanisms, so that it does not need dedicated API to wait for page elements to appear or redirects to happen.
 
 This topic describes how these mechanisms work with [test actions](actions/README.md),
-[assertions](assertions/README.md), [selectors](selecting-page-elements/selectors/README.md) and navigation.
+[assertions](assertions/README.md), [selectors](selecting-page-elements/selectors/README.md), requests and navigation.
+
+* [Waiting for Action Target Elements](#waiting-for-action-target-elements),
+* [Waiting for Elements When Evaluating Selectors](#waiting-for-elements-when-evaluating-selectors)
+* [Waiting for Assertions to Pass](#waiting-for-assertions-to-pass)
+* [Waiting for XHR and Fetch Requests](#waiting-for-xhr-and-fetch-requests)
+* [Waiting for Redirects](#waiting-for-redirects)
 
 ## Waiting for Action Target Elements
 
@@ -111,6 +117,25 @@ test('My test', async t => {
         // or the timeout passes.
         .expect(nameInput.value).eql('Peter Parker');
 });
+```
+
+## Waiting for XHR and Fetch Requests
+
+Before TestCafe executes a test action, it waits for XHR and fetch requests to complete within **3** seconds. After TestCafe receives the responses, or the timeout exceeds, the test continues.
+
+If you expect a request to take more time, use a [selector](selecting-page-elements/selectors/using-selectors.md#selector-timeout) or [assertion](assertions/README.md#optionstimeout) with a custom timeout to wait until the UI reflects the request completion.
+
+```js
+// Assume that you expect the page to print 'No Data' when the request completes.
+const emptyLabel = Selector('p').withText('No Data').with({ visibilityCheck: true });
+
+await t.click('#fetch-data');
+
+// Wait with an assertion.
+await t.expect(emptyLabel.exists, '', { timeout: 10000 });
+
+// Wait with a selector.
+const labelSnapshot = await emptyLabel.with({ timeout: 10000 });
 ```
 
 ## Waiting for Redirects
