@@ -168,15 +168,16 @@ export default class TestRunController extends AsyncEventEmitter {
             await this.emit('test-run-before-done');
     }
 
-    async _testRunDisconnected (connection) {
+    _testRunDisconnected (connection) {
         this.disconnectionCount++;
 
         const disconnectionThresholdExceedeed = this.disconnectionCount >= DISCONNECT_THRESHOLD;
 
-        await connection.processDisconnection(disconnectionThresholdExceedeed);
-
-        if (!disconnectionThresholdExceedeed)
-            await this._restartTest();
+        return connection
+            .processDisconnection(disconnectionThresholdExceedeed)
+            .then(() => {
+                return this._restartTest();
+            });
     }
 
     get blocked () {

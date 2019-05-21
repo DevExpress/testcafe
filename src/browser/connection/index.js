@@ -182,22 +182,37 @@ export default class BrowserConnection extends EventEmitter {
 
     _restartBrowserOnDisconnect (err) {
         let resolveFn = null;
+        let rejectFn  = null;
 
-        this.disconnectionPromise = new Promise(resolve => {
+        this.disconnectionPromise = new Promise((resolve, reject) => {
             resolveFn = resolve;
-        })
-            .then(disconnectionThresholdExceedeed => {
-                if (disconnectionThresholdExceedeed)
-                    this.emit('error', err);
 
+            rejectFn = () => {
+                reject(err);
+            };
+
+            setTimeout(() => {
+                rejectFn();
+            });
+        })
+            .then(() => {
                 return this._restartBrowser();
+            })
+            .catch(e => {
+                this.emit('error', e);
             });
 
         this.disconnectionPromise.resolve = resolveFn;
+        this.disconnectionPromise.reject  = rejectFn;
     }
 
     async processDisconnection (disconnectionThresholdExceedeed) {
-        this.disconnectionPromise.resolve(disconnectionThresholdExceedeed);
+        const { resolve, reject } = this.disconnectionPromise;
+
+        if (disconnectionThresholdExceedeed)
+            reject();
+        else
+            resolve();
     }
 
     addWarning (...args) {
