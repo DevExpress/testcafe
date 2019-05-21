@@ -123,6 +123,7 @@ export default class BrowserConnection extends EventEmitter {
             this.opened          = false;
             this.errorSuppressed = false;
             this.testRunAborted  = true;
+            this.fake            = true;
 
             this.emit('disconnected', err);
 
