@@ -12,13 +12,13 @@ TestCafe has built-in automatic waiting mechanisms, so that it does not need ded
 This topic describes how these mechanisms work with [test actions](actions/README.md),
 [assertions](assertions/README.md), [selectors](selecting-page-elements/selectors/README.md), requests and navigation.
 
-* [Waiting for Action Target Elements](#waiting-for-action-target-elements),
-* [Waiting for Elements When Evaluating Selectors](#waiting-for-elements-when-evaluating-selectors)
-* [Waiting for Assertions to Pass](#waiting-for-assertions-to-pass)
-* [Waiting for XHR and Fetch Requests](#waiting-for-xhr-and-fetch-requests)
-* [Waiting for Redirects](#waiting-for-redirects)
+* [Wait Mechanism for Actions](#wait-mechanism-for-actions),
+* [Wait Mechanism for Selectors](#wait-mechanism-for-selectors)
+* [Wait Mechanism for Assertions](#wait-mechanism-for-assertions)
+* [Wait Mechanism for XHR and Fetch Requests](#wait-mechanism-for-xhr-and-fetch-requests)
+* [Wait Mechanism for Redirects](#wait-mechanism-for-redirects)
 
-## Waiting for Action Target Elements
+## Wait Mechanism for Actions
 
 TestCafe automatically waits for the target element to become visible when an action is executed.
 
@@ -43,7 +43,7 @@ If the element does not appear, the test will fail.
 
 The exceptions are [t.setFilesToUpload](actions/upload.md#populate-file-upload-input) and [t.clearUpload](actions/upload.md#clear-file-upload-input) actions that do not require that the target element is visible.
 
-## Waiting for Elements When Evaluating Selectors
+## Wait Mechanism for Selectors
 
 When evaluating a selector, TestCafe automatically waits for the element to appear in the DOM.
 
@@ -82,7 +82,7 @@ test('My test', async t => {
 });
 ```
 
-## Waiting for Assertions to Pass
+## Wait Mechanism for Assertions
 
 TestCafe assertions feature the [Smart Assertion Query Mechanism](assertions/README.md#smart-assertion-query-mechanism).
 This mechanism is activated when you pass a [selector property](selecting-page-elements/selectors/using-selectors.md#obtain-element-state)
@@ -119,7 +119,7 @@ test('My test', async t => {
 });
 ```
 
-## Waiting for XHR and Fetch Requests
+## Wait Mechanism for XHR and Fetch Requests
 
 Before TestCafe executes a test action, it waits for XHR and fetch requests to complete within **3** seconds. After TestCafe receives the responses, or the timeout exceeds, the test continues.
 
@@ -138,7 +138,7 @@ await t.expect(emptyLabel.exists, '', { timeout: 10000 });
 const labelSnapshot = await emptyLabel.with({ timeout: 10000 });
 ```
 
-## Waiting for Redirects
+## Wait Mechanism for Redirects
 
 When an action triggers a redirect, TestCafe automatically waits for the server to respond.
 The test is resumed if the server does not respond within **15** seconds.
