@@ -57,7 +57,7 @@ Then Yeoman will automatically scaffold out your reporter, install the required 
 
 Once the reporter has been scaffolded out, go to the reporter directory and open the `src/index.js` file.
 
-You would need to implement four [reporter methods](reporter-methods.md).
+Implement the following reporter methods (four mandatory and one optional):
 
 ```js
 export default function () {
@@ -68,6 +68,10 @@ export default function () {
 
         async reportFixtureStart (/* name, path, meta */) {
             throw new Error('Not implemented');
+        },
+
+        async reportTestStart (/* name, meta */) {
+            // NOTE: This method is optional.
         },
 
         async reportTestDone (/* name, testRunInfo, meta */) {
@@ -81,14 +85,14 @@ export default function () {
 }
 ```
 
-These methods should output the desired information at certain moments during the test run.
-All the required data is provided for these methods through their parameters.
+TestCafe calls these methods during the test run. Use data they receive through their parameters to compose a report.
+See [Reporter Methods](reporter-methods.md) for API description and examples.
 
-To output this information, use [helper methods and libraries](helpers.md).
-TestCafe will mix in the helper methods to the reporter, so that you can access the helper methods by using `this`.
+To output the report, use [helper methods and libraries](helpers.md).
+TestCafe mixes in the helper methods to the reporter, so that you can access them with `this`.
 
-In the `src/index.js` file, you can also enable or disable the coloring of the reporter output by using the `noColors` property.
-To color the output, use the [chalk](helpers.md#chalk) methods.
+In the `src/index.js` file, you can specify the `noColors` property to enable or disable colors in the reporter output.
+To customize the colors, use the [chalk](helpers.md#chalk) methods.
 
 **Example**
 
