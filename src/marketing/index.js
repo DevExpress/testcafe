@@ -1,7 +1,7 @@
 import { EOL } from 'os';
 import DataFile from './data-file';
 import MESSAGES from './messages';
-import indexGenerator from './index-generator';
+import getMessageIndex from './get-message-index';
 import renderTemplate from '../utils/render-template';
 import WARNING_MESSAGES from '../notifications/warning-message';
 import log from '../cli/log';
@@ -26,7 +26,7 @@ export async function showMessageWithLinkToTestCafeStudio () {
     const shouldDisplayMessage = data.runCount === 1 || data.runCount % NUMBER_RUNS_BETWEEN_SHOW_MESSAGE === 0;
 
     if (shouldDisplayMessage) {
-        const messageIndex = indexGenerator(MESSAGES, data);
+        const messageIndex = getMessageIndex(MESSAGES, data);
         const targetMsg    = MESSAGES[messageIndex];
 
         if (!targetMsg) {
