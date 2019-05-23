@@ -1,10 +1,11 @@
+import { EOL } from 'os';
 import DataFile from './data-file';
 import MESSAGES from './messages';
+import getMessageIndex from './get-message-index';
 import renderTemplate from '../utils/render-template';
 import WARNING_MESSAGES from '../notifications/warning-message';
 import log from '../cli/log';
 import debug from 'debug';
-import { EOL } from 'os';
 
 export const NUMBER_RUNS_BETWEEN_SHOW_MESSAGE = 10;
 
@@ -25,17 +26,16 @@ export async function showMessageWithLinkToTestCafeStudio () {
     const shouldDisplayMessage = data.runCount === 1 || data.runCount % NUMBER_RUNS_BETWEEN_SHOW_MESSAGE === 0;
 
     if (shouldDisplayMessage) {
-        const targetMsg = MESSAGES[data.displayedMessageIndex];
+        const messageIndex = getMessageIndex(MESSAGES, data);
+        const targetMsg    = MESSAGES[messageIndex];
 
         if (!targetMsg) {
-            const message = renderTemplate(WARNING_MESSAGES.cannotCalculateMarketingMessage, data.displayedMessageIndex);
+            const message = renderTemplate(WARNING_MESSAGES.cannotCalculateMarketingMessage, messageIndex);
 
             DEBUG_LOGGER(message);
         }
 
         log.write(EOL + targetMsg);
-
-        data.displayedMessageIndex = (data.displayedMessageIndex + 1) % MESSAGES.length;
     }
 
     await _dataFile.save(data);

@@ -31,7 +31,7 @@ export default class DataFile {
     static _createTemplate () {
         return {
             runCount:              0,
-            displayedMessageIndex: 0
+            displayedMessageIndex: void 0
         };
     }
 
