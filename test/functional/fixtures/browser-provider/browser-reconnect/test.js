@@ -50,8 +50,7 @@ function run (pathToTest, filter) {
         });
 }
 
-// NOTE: don't work on TravisCI, fix it ASAP
-describe.skip('Browser reconnect', function () {
+describe('Browser reconnect', function () {
     if (config.useLocalBrowsers) {
         it('Should restart browser when it does not respond', function () {
             return run('./testcafe-fixtures/index-test.js', 'Should restart browser when it does not respond', { only: 'chrome' })
