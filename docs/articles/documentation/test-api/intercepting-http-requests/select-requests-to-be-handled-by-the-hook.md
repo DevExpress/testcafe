@@ -1,26 +1,31 @@
 ---
 layout: docs
-title: Specifying Which Requests are Handled by the Hook
-permalink: /documentation/test-api/intercepting-http-requests/specifying-which-requests-are-handled-by-the-hook.html
-checked: true
+title: Select Requests to be Handled by the Hook
+permalink: /documentation/test-api/intercepting-http-requests/select-requests-to-be-handled-by-the-hook.html
+redirect_from:
+  - /documentation/test-api/intercepting-http-requests/specifying-which-requests-are-handled-by-the-hook.html
 ---
-# Specifying Which Requests are Handled by the Hook
+# Select Requests to be Handled by the Hook
 
-The request logger, mock and custom request hooks require specifying which requests they should handle and skip.
+When you create a request logger, mock or custom request hook, you should specify which requests they should handle and skip.
 
-You can set up this filtering by passing the *request filtering rules* to the hook. Note that you can pass a single rule or an array of rules.
+To do this, specify a *request filter*, or an array of them.
 
-* [Filtering by a URL](#filtering-by-a-url)
-* [Filtering by a Regular Expression](#filtering-by-a-regular-expression)
-* [Filtering by Request Parameters](#filtering-by-request-parameters)
-* [Filtering by a Predicate](#filtering-by-a-predicate)
+* [Filter by URL](#filter-by-url)
+  * [Specify the Exact URL](#specify-the-exact-url)
+  * [Use a Regular Expression to Specify the URL](#use-a-regular-expression-to-specify-the-url)
+* [Filter by URL with a Regular Expression](#filter-by-url-with-a-regular-expression)
+* [Filter by Parameters](#filter-by-parameters)
+* [Filter with a Predicate](#filter-with-a-predicate)
 
-## Filtering by a URL
+## Filter by URL
 
-Pass a string with a URL to intercept all requests sent to this URL.
+### Specify the Exact URL
+
+Pass a string with a URL to intercept all requests sent to this exact URL.
 
 ```js
-const logger = RequestLogger('http://example.com');
+const logger = RequestLogger(['https://example.com', 'http://localhost:8080']);
 ```
 
 ```js
@@ -29,7 +34,7 @@ const mock = RequestMock()
     .respond(/*...*/);
 ```
 
-## Filtering by a Regular Expression
+### Use a Regular Expression to Specify the URL
 
 You can also specify a regular expression that matches the desired URLs.
 
@@ -39,11 +44,11 @@ const logger = RequestLogger(/.co.uk/);
 
 ```js
 const mock = RequestMock()
-    .onRequestTo(/\/api\/users\//)
+    .onRequestTo([/\/api\/users\//, /\/some-endpoint\//])
     .respond(/*...*/);
 ```
 
-## Filtering by Request Parameters
+## Filter by Parameters
 
 You can filter requests by combining the URL and the request method.
 
@@ -65,7 +70,7 @@ const mock = RequestMock()
     .respond(/*...*/);
 ```
 
-## Filtering by a Predicate
+## Filter with a Predicate
 
 You can get more request parameters using a predicate function and use them to determine whether to handle the request.
 

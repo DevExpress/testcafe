@@ -146,15 +146,15 @@
   - name: Intercepting HTTP Requests
     url: /documentation/test-api/intercepting-http-requests/README.md
     content:
-    - name: Logging HTTP Requests
+    - name: Log HTTP Requests
       url: /documentation/test-api/intercepting-http-requests/logging-http-requests.md
-    - name: Mocking HTTP Requests
+    - name: Mock HTTP Requests
       url: /documentation/test-api/intercepting-http-requests/mocking-http-requests.md
-    - name: Creating a Custom HTTP Request Hook
+    - name: Create a Custom HTTP Request Hook
       url: /documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.md
-    - name: Specifying Which Requests are Handled by the Hook
-      url: /documentation/test-api/intercepting-http-requests/specifying-which-requests-are-handled-by-the-hook.md
-    - name: Attaching Hooks to Tests and Fixtures
+    - name: Select Requests to be Handled by the Hook
+      url: /documentation/test-api/intercepting-http-requests/select-requests-to-be-handled-by-the-hook.md
+    - name: Attach Hooks to Tests and Fixtures
       url: /documentation/test-api/intercepting-http-requests/attaching-hooks-to-tests-and-fixtures.md
     - name: requestOptions Object
       url: /documentation/test-api/intercepting-http-requests/requestoptions-object.md
