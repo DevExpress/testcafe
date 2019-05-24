@@ -1,5 +1,6 @@
 import { spawn } from 'child_process';
 import { join } from 'path';
+import testRunTracker from '../../api/test-run-tracker';
 
 
 export default class CompilerProcess {
@@ -9,8 +10,21 @@ export default class CompilerProcess {
     }
 
     _getCP () {
-        if (!this.cpPromise)
-            this.cpPromise = Promise.resolve(spawn(process.argv0, ['--inspect-brk', join(__dirname, 'child.js'), JSON.stringify(this.sources)], { stdio: ['inherit', 'inherit', 'inherit', 'ipc'] }));
+        if (!this.cpPromise) {
+            this.cpPromise = Promise
+                .resolve(spawn(process.argv0, ['--inspect-brk', '-r', join(__dirname, 'child.js'), '-e', 'console.log(123)', '--', JSON.stringify(this.sources)], {stdio: ['inherit', 'inherit', 'inherit', 'ipc']}))
+                .then(cp => {
+                    cp.on('message', data => {
+                        if (data.type !== 'execute-command')
+                            return;
+
+                        Object.values(testRunTracker.activeTestRuns)[0].executeCommand(data.command)
+                            .then(result => cp.send({ result }));
+                    });
+
+                    return cp;
+                });
+        }
 
         return this.cpPromise;
     }
@@ -32,7 +46,12 @@ export default class CompilerProcess {
     async getTests () {
         const tests = await this._sendMessage({ name: 'getTests' });
 
-        tests.forEach((test, idx) => test.fn = () => this.runTest(idx));
+        tests.forEach((test, idx) => test.fn = () => this.runTest(idx).then(({ result, error }) => {
+            if (error)
+                throw error;
+
+            return result;
+        }));
 
         return tests;
     }
