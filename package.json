@@ -21,7 +21,7 @@
   "main": "lib/index",
   "types": "ts-defs/index.d.ts",
   "bin": {
-    "testcafe": "./bin/testcafe-with-v8-flag-filter.js"
+    "testcafe": "./bin/testcafe.js"
   },
   "files": [
     "lib",
@@ -64,7 +64,6 @@
     "babel-preset-flow": "^6.23.0",
     "babel-preset-stage-2": "^6.22.0",
     "babel-runtime": "^6.22.0",
-    "bin-v8-flags-filter": "^1.1.2",
     "callsite": "^1.0.0",
     "callsite-record": "^4.0.0",
     "chai": "^4.1.2",

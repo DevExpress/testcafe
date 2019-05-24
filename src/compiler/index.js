@@ -23,8 +23,9 @@ const testFileCompilers = [
 ];
 
 export default class Compiler {
-    constructor (sources) {
+    constructor (sources, v8Flags) {
         this.sources = sources;
+        this.v8Flags = v8Flags;
     }
 
     static getSupportedTestFileExtensions () {

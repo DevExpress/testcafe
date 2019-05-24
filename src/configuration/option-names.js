@@ -1,6 +1,7 @@
 export default {
     src:                    'src',
     browsers:               'browsers',
+    v8Flags:                'v8Flags',
     concurrency:            'concurrency',
     filter:                 'filter',
     filterTestGrep:         'filter.testGrep',

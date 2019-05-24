@@ -294,6 +294,7 @@ export default class Runner extends EventEmitter {
 
         this.bootstrapper.sources      = this.configuration.getOption(OPTION_NAMES.src) || this.bootstrapper.sources;
         this.bootstrapper.browsers     = this.configuration.getOption(OPTION_NAMES.browsers) || this.bootstrapper.browsers;
+        this.bootstrapper.v8Flags      = this.configuration.getOption(OPTION_NAMES.v8Flags);
         this.bootstrapper.concurrency  = this.configuration.getOption(OPTION_NAMES.concurrency);
         this.bootstrapper.appCommand   = this.configuration.getOption(OPTION_NAMES.appCommand) || this.bootstrapper.appCommand;
         this.bootstrapper.appInitDelay = this.configuration.getOption(OPTION_NAMES.appInitDelay);
@@ -411,7 +412,8 @@ export default class Runner extends EventEmitter {
             speed,
             debugOnFail,
             skipUncaughtErrors,
-            stopOnFirstFail
+            stopOnFirstFail,
+            v8Flags
         } = options;
 
         this.configuration.mergeOptions({
@@ -425,7 +427,8 @@ export default class Runner extends EventEmitter {
             pageLoadTimeout:    pageLoadTimeout,
             speed:              speed,
             skipUncaughtErrors: skipUncaughtErrors,
-            stopOnFirstFail:    stopOnFirstFail
+            stopOnFirstFail:    stopOnFirstFail,
+            v8Flags:            v8Flags
         });
 
         this._setBootstrapperOptions();

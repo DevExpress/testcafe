@@ -131,6 +131,30 @@ describe('Runner', () => {
         });
     });
 
+    describe('.nodeArguments()', () => {
+        it('Should pass node arguments to bootstrapper', () => {
+            const storedRunTaskFn = runner._runTask;
+
+            let v8Flags = [];
+
+            runner._runTask = () => {
+                runner._runTask = storedRunTaskFn;
+
+                v8Flags = runner.bootstrapper.v8Flags;
+
+                return Promise.resolve({});
+            };
+
+            return runner
+                .browsers(connection)
+                .src('test/server/data/test-suites/basic/testfile2.js')
+                .run({ v8Flags: ['--inspect-brk'] })
+                .then(() => {
+                    expect(v8Flags).to.deep.equal(['--inspect-brk']);
+                });
+        });
+    });
+
     describe('.reporter()', () => {
         it('Should raise an error if reporter was not found for the alias', () => {
             return runner

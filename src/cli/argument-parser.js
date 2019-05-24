@@ -8,6 +8,7 @@ import getViewPortWidth from '../utils/get-viewport-width';
 import { wordWrap, splitQuotedText } from '../utils/string';
 import { getSSLOptions, getVideoOptions, getMetaOptions, getGrepOptions } from '../utils/get-options';
 import getFilterFn from '../utils/get-filter-fn';
+import extractNodeProcessArguments from './node-arguments-filter';
 
 const REMOTE_ALIAS_RE = /^remote(?::(\d*))?$/;
 
@@ -227,11 +228,12 @@ export default class CLIArgumentParser {
     }
 
     async parse (argv) {
-        this.program.parse(argv);
+        const { args, v8Flags } = extractNodeProcessArguments(argv);
+
+        this.program.parse(args);
 
         this.args = this.program.args;
-
-        this.opts = this.program.opts();
+        this.opts = Object.assign(this.program.opts(), { v8Flags });
 
         // NOTE: the '-list-browsers' option only lists browsers and immediately exits the app.
         // Therefore, we don't need to process other arguments.

@@ -17,13 +17,14 @@ export default class Bootstrapper {
     constructor (browserConnectionGateway) {
         this.browserConnectionGateway = browserConnectionGateway;
 
-        this.concurrency                 = null;
-        this.sources                     = [];
-        this.browsers                    = [];
-        this.reporters                   = [];
-        this.filter                      = null;
-        this.appCommand                  = null;
-        this.appInitDelay                = null;
+        this.concurrency  = null;
+        this.sources      = [];
+        this.browsers     = [];
+        this.v8Flags      = [];
+        this.reporters    = [];
+        this.filter       = null;
+        this.appCommand   = null;
+        this.appInitDelay = null;
     }
 
     static _splitBrowserInfo (browserInfo) {
@@ -75,7 +76,7 @@ export default class Bootstrapper {
             throw new GeneralError(RUNTIME_ERRORS.testSourcesNotSet);
 
         const parsedFileList = await parseFileList(this.sources, process.cwd());
-        const compiler       = new Compiler(parsedFileList);
+        const compiler       = new Compiler(parsedFileList, this.v8Flags);
         let tests            = await compiler.getTests();
 
         const testsWithOnlyFlag = tests.filter(test => test.only);
