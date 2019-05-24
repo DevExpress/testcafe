@@ -6,6 +6,7 @@ const getTestListModule              = lazyRequire('./compiler/test-file/formats
 const getTypeScriptTestListModule    = lazyRequire('./compiler/test-file/formats/typescript/get-test-list');
 const getCoffeeScriptTestListModule  = lazyRequire('./compiler/test-file/formats/coffeescript/get-test-list');
 const COMMAND_TYPE                   = lazyRequire('./test-run/commands/type');
+const ASSERTION_TYPE                 = lazyRequire('./assertions/type');
 const createCommandFromObject        = lazyRequire('./test-run/commands/from-object');
 const initializers                   = lazyRequire('./test-run/commands/validations/initializers');
 const errorTypes                     = lazyRequire('./errors/types');
@@ -22,6 +23,7 @@ export default {
     TestRunErrorFormattableAdapter,
     testRunErrors,
     COMMAND_TYPE,
+    ASSERTION_TYPE,
     errorTypes,
     testRunErrorUtils,
 
