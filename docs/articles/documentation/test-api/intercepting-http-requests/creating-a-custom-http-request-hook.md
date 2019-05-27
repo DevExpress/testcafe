@@ -167,3 +167,5 @@ test('My test', async t => {
         // test actions
 });
 ```
+
+The hook now handles the requests sent during the test or fixture run.

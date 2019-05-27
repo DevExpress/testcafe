@@ -44,7 +44,7 @@ const logger = RequestLogger(/.co.uk/);
 
 ```js
 const mock = RequestMock()
-    .onRequestTo([/\/api\/users\//, /\/some-endpoint\//])
+    .onRequestTo(/\/api\/users\//)
     .respond(/*...*/);
 ```
 
