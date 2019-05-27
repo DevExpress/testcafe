@@ -876,12 +876,12 @@ interface RequestLogger {
      * Returns whether the logger contains a request that matches the predicate.
      * @param predicate - The predicate
      */
-    contains(predicate: Function): Promise<boolean>;
+    contains(predicate: (request: LoggedRequest) => boolean): Promise<boolean>;
     /**
      * Returns the number of requests that match the predicate.
      * @param predicate - The predicate
      */
-    count(predicate: Function): Promise<number>;
+    count(predicate: (request: LoggedRequest) => boolean): Promise<number>;
     /**
      * Clears all logged requests.
      */
@@ -889,7 +889,7 @@ interface RequestLogger {
     /**
      * Returns an array of logged requests.
      */
-    requests: Array<Request>;
+    requests: Array<LoggedRequest>;
 }
 
 interface RequestLoggerOptions {
@@ -934,7 +934,7 @@ interface RequestMock {
     respond(body?: object | string | ((req: any, res: any) => any), statusCode?: number, headers?: object): RequestMock;
 }
 
-interface Request {
+interface LoggedRequest {
     /**
      * The user agent that sent the request.
      */
@@ -973,7 +973,7 @@ interface ResponseData {
     /**
      * The status code received in the response.
      */
-    statusCode: string;
+    statusCode: number;
     /**
      * Response headers in the property-value form. Logged if the `logResponseHeaders` option is set to true.
      */
