@@ -26,15 +26,15 @@ const FLAG_PREFIXES = [
     '--preserve-symlinks'
 ];
 
-function isNodeFlagPrefix (arg) {
+function isNodeFlagPrefix (arg: string) {
     return FLAG_PREFIXES.some(flagPrefix => {
         return arg.indexOf(flagPrefix) === 0;
     });
 }
 
-export default function (cliArgs) {
-    const args    = [];
-    const v8Flags = [];
+export default function (cliArgs: string[]) {
+    const args: string[]    = [];
+    const v8Flags: string[] = [];
 
     cliArgs.forEach(arg => {
         const flag = arg.split('=')[0];
