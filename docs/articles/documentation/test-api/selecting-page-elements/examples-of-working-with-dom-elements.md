@@ -8,6 +8,7 @@ permalink: /documentation/test-api/selecting-page-elements/examples-of-working-w
 This document shows how to work with DOM elements in frequent real-world situations.
 
 * [Accessing Page Element Properties](#accessing-page-element-properties)
+* [Accessing Child Nodes in the DOM Hierarchy](#accessing-child-nodes-in-the-dom-hierarchy)
 * [Getting a Page Element Using Custom Logic](#getting-a-page-element-using-custom-logic)
 * [Checking if an Element is Available](#checking-if-an-element-is-available)
 * [Enumerating Elements Identified by a Selector](#enumerating-elements-identified-by-a-selector)
@@ -34,7 +35,7 @@ test('My test', async t => {
 });
 ```
 
-If you need to access an element property not included in the selector's API, request it explicitly by using the [addCustomDOMProperties](selectors/extending-selectors.md) method.
+If you need to access element properties not included in the selector's API, use the [selector.addCustomDOMProperties](selectors/extending-selectors.md) method to retrieve them from DOM.
 
 ```js
 import { Selector } from 'testcafe';
@@ -44,16 +45,80 @@ fixture `My fixture`
 
 test('Check Label HTML', async t => {
     const label = Selector('label').addCustomDOMProperties({
-        innerHTML: el => el.innerHTML
+        innerHTML: el => el.innerHTML,
+        tabIndex: el => el.tabIndex,
+        lang: el => el.lang
     });
 
     await t
         .expect(label.innerHTML).contains('type="checkbox"')
-        .expect(label.innerHTML).contains('name="remote"');
+        .expect(label.tabIndex).eql(2)
+        .expect(label.lang).eql('en');
+});
+```
+
+You can also use a [client function](../obtaining-data-from-the-client/README.md) to obtain a single element property from the client. In this case, you should pass the selector to client function's [dependencies](../obtaining-data-from-the-client/README.md#optionsdependencies) option.
+
+```js
+import { Selector, ClientFunction } from 'testcafe';
+
+fixture `My fixture`
+    .page `https://devexpress.github.io/testcafe/example/`;
+
+test('Check Label HTML', async t => {
+    const label = Selector('label');
+
+    const getLabelHtml = ClientFunction(() => {
+        return label.innerHTML;
+    }, { dependencies: label });
+
+    await t
+        .expect(getLabelHtml()).contains('type="checkbox"')
+        .expect(getLabelHtml()).contains('name="remote"');
 });
 ```
 
 Note that the `await` keyword can be omitted when specifying a selector property in an [assertion](../assertions/README.md). This activates the [Smart Assertion Query Mechanism](../assertions/README.md#smart-assertion-query-mechanism).
+
+## Accessing Child Nodes in the DOM Hierarchy
+
+Pass a function to the selector constructor to access child nodes in a DOM hierarchy and obtain their properties.
+
+For instance, you are testing the *example.html* page with the following HTML code ...
+
+```js
+<!DOCTYPE html>
+<html>
+    <body id="testedpage">
+        This is my tested page. <!--This is the first child node of <body>-->
+        <p>My first paragraph.</p>
+        <p>My second paragraph.</p>
+    </body>
+</html>
+```
+
+... and you need to obtain the text content of the first child node - *This is my tested page*. You can do this within a client function using the [childNodes](https://developer.mozilla.org/en-US/docs/Web/API/Node/childNodes) property. The following sample demonstrates this.
+
+```js
+import { Selector } from 'testcafe';
+import { ClientFunction } from 'testcafe';
+
+fixture `My Fixture`
+    .page `examplepage.html`;
+
+    const testedPage = Selector('#testedpage');
+
+    const childNodes = Selector(() => {
+        return getPage().childNodes;
+    },{ dependencies: { getPage: testedPage } });
+
+
+test('My Test', async t => {
+    await t.expect(childNodes.nth(0).textContent).contains('This is my tested page.');
+});
+```
+
+> Note that the `childNodes` selector uses `testedPage` passed to it as a dependency. See [options.dependencies](selectors/selector-options.md#optionsdependencies) for more information.
 
 ## Getting a Page Element Using Custom Logic
 

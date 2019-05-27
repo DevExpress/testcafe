@@ -9,7 +9,6 @@ This topic describes examples of using client functions in tests.
 
 * [Checking a Page URL](#checking-a-page-url)
 * [Obtaining a Browser Alias Within a Test](#obtaining-a-browser-alias-within-a-test)
-* [Accessing Child Nodes in the DOM Hierarchy](#accessing-child-nodes-in-the-dom-hierarchy)
 * [Complex DOM Queries](#complex-dom-queries)
 
 ## Checking a Page URL
@@ -71,46 +70,6 @@ test('My test', async t => {
 });
 ```
 
-## Accessing Child Nodes in the DOM Hierarchy
-
-You can use client functions to access child nodes in a DOM hierarchy and obtain their properties.
-
-For instance, you are testing the *example.html* page with the following HTML code ...
-
-```js
-<!DOCTYPE html>
-<html>
-    <body id="testedpage">
-        This is my tested page. <!--This is the first child node of <body>-->
-        <p>My first paragraph.</p>
-        <p>My second paragraph.</p>
-    </body>
-</html>
-```
-
-... and you need to obtain the text content of the first child node - *This is my tested page*. You can do this within a client function using the [childNodes](https://developer.mozilla.org/en-US/docs/Web/API/Node/childNodes) property. The following sample demonstrates this.
-
-```js
-import { Selector } from 'testcafe';
-import { ClientFunction } from 'testcafe';
-
-fixture `My Fixture`
-    .page `examplepage.html`;
-
-    const testedPage = Selector('#testedpage');
-
-    const getChildNodeText = ClientFunction(index => {
-        return getEl().childNodes[index].textContent;
-    },{ dependencies: { getEl: testedPage } });
-
-
-test('My Test', async t => {
-    await t.expect(getChildNodeText(0)).contains('This is my tested page.');
-});
-```
-
-> Note that the `getChildNodeText` client function uses the `testedPage` selector that is passed to it as a dependency. See [options.dependencies](README.md#optionsdependencies) for more information.
-
 ## Complex DOM Queries
 
 Client functions can be helpful for complex DOM queries. For example, a tested page contains a table with some data, and you need to validate data from two columns only. To do this, obtain data from these columns, push them to an array and then compare the returned array with the expected one.
@@ -118,27 +77,38 @@ Client functions can be helpful for complex DOM queries. For example, a tested p
 Below is a sample test for the [https://js.devexpress.com/](https://js.devexpress.com/) page that contains a grid. The sample demonstrates how to create a client function that returns an array containing data from the grid’s **Customer** and **Sale Amount** columns.
 
 ```js
-import { ClientFunction} from 'testcafe';
+import { ClientFunction } from 'testcafe';
 
 fixture `Get sale amount`
     .page('https://js.devexpress.com/');
 
-    const getSaleAmount = ClientFunction(() => {
-        const elements = document.querySelector('.dx-datagrid-rowsview').querySelectorAll('td:nth-child(3),td:nth-child(7)');
+    const getSalesAmount = ClientFunction(() => {
+        const rows      = document.querySelector('.dx-datagrid-rowsview');
+        const rowCount  = rows.querySelectorAll('.dx-data-row').length;
+        const sales     = rows.querySelectorAll('td:nth-child(3)');
+        const customers = rows.querySelectorAll('td:nth-child(7)');
+
         const array = [];
 
-        for (let i = 0; i <= elements.length - 2; i+=2) {
-            const customerName  = elements[i+1].textContent;
-            const saleAmount = elements[i].textContent;
+        for (let i = 0; i <= rowCount; i++) {
+            const data = {
+                sales: sales[i].textContent,
+                customer: customers[i].textContent
+            };
 
-            if (customerName && saleAmount)
-                array.push(`Customer ${customerName}: ${saleAmount}`);
+            if (data.sales && data.customer)
+                array.push(data);
         }
 
         return array;
     });
 
 test('My test', async t => {
-    console.log(await getSaleAmount());
+    const salesAmount = await getSalesAmount();
+
+    await t
+        .expect(salesAmount[0]).eql({ sales: '$6,370', customer: 'Renewable Supplies' })
+        .expect(salesAmount[1]).eql({ sales: '$4,530', customer: 'Appolo Inc' });
+        // ...
 });
 ```
