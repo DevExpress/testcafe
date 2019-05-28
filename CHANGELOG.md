@@ -4,9 +4,9 @@
 
 ### Enhancements
 
-#### :gear: The new `reportTestStart` method for Reporter API ([#3715](https://github.com/DevExpress/testcafe/issues/3715))
+#### :gear: Custom Reporters Can Now Handle Test Start ([#3715](https://github.com/DevExpress/testcafe/issues/3715))
 
-The new optional `reportTestStart` method allows to detect a moment when an each test starts:
+We have added an optional `reportTestStart` method to reporter API. This method fires each time a test starts. You can override it to output information about the started test:
 
 ```js
 async reportTestStart (name, meta) {
@@ -15,21 +15,19 @@ async reportTestStart (name, meta) {
 }
 ```
 
-See the method description in the documentation: [Reporter Methods - reportTestStart](https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reportteststart).
+See the method description in [Reporter Methods](https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reportteststart).
 
 ### Bug Fixes
 
-* Fixed a regression that prevented restarting of a non-responsive browser ([#3781](https://github.com/DevExpress/testcafe/issues/3781))
-* Fixed an issue when the `click` events was triggered twice by `t.click` ([#3645](https://github.com/DevExpress/testcafe/issues/3645))
-* Fixed a regression that prevented TestCafe from marking some `checkbox` inputs with `t.click` ([#3482](https://github.com/DevExpress/testcafe/issues/3482))
-* TestCafe TypeScript definitions do not cause the `Cannot find namespace 'NodeJS'` error ([#3719](https://github.com/DevExpress/testcafe/issues/3719))
-* TestCafe no longer removes the `Authorization` header when using the Fetch API ([testcafe-hammerhead/#2020](https://github.com/DevExpress/testcafe-hammerhead/issues/2020))
+* Fixed a regression that prevented non-responsive browsers from restarting ([#3781](https://github.com/DevExpress/testcafe/issues/3781))
+* Fixed an issue when `t.click` triggered the `click` event twice ([#3645](https://github.com/DevExpress/testcafe/issues/3645))
+* Fixed a regression that prevented TestCafe from checking `checkbox` inputs with `t.click` ([#3482](https://github.com/DevExpress/testcafe/issues/3482))
+* TestCafe TypeScript definitions no longer cause the `Cannot find namespace 'NodeJS'` error ([#3719](https://github.com/DevExpress/testcafe/issues/3719))
+* TestCafe no longer removes the `Authorization` header when Fetch API is used ([testcafe-hammerhead/#2020](https://github.com/DevExpress/testcafe-hammerhead/issues/2020))
 * TestCafe now provides correct values for the `form.elements.length` property ([testcafe-hammerhead/#2009](https://github.com/DevExpress/testcafe-hammerhead/issues/2009))
 * Fixed the `Invariant Violation` React error caused by TestCafe Hammerhead ([testcafe-hammerhead/#2000](https://github.com/DevExpress/testcafe-hammerhead/issues/2000))
-* Fixed a regression that disabled the `IE=edge` meta functionality ([testcafe-hammerhead/#1963](https://github.com/DevExpress/testcafe-hammerhead/issues/1963))
-* Fixed `t.setFilesToUpload` not raising the `change` event on some file inputs ([testcafe-hammerhead/#2007](https://github.com/DevExpress/testcafe-hammerhead/issues/2007))
-
-### Bug Fixes
+* Fixed a regression that disabled the `IE=edge` meta tag ([testcafe-hammerhead/#1963](https://github.com/DevExpress/testcafe-hammerhead/issues/1963))
+* Fixed an issue that prevented `t.setFilesToUpload` from raising the `change` event on some file inputs ([testcafe-hammerhead/#2007](https://github.com/DevExpress/testcafe-hammerhead/issues/2007))
 
 ## v1.1.4 (2019-5-6)
 
