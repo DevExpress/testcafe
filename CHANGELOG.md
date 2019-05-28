@@ -1,5 +1,36 @@
 # Changelog
 
+## v1.2.0 (2019-5-27)
+
+### Enhancements
+
+#### :gear: Custom Reporters Can Now Handle Test Start ([#3715](https://github.com/DevExpress/testcafe/issues/3715)) by [@Ivan-Katovich](https://github.com/Ivan-Katovich)
+
+We have added an optional `reportTestStart` method to reporter API. This method fires each time a test starts. You can override it to output information about the started test:
+
+```js
+async reportTestStart (name, meta) {
+    this.write(`Starting test: ${name} (${meta.severity})`)
+        .newline();
+}
+```
+
+This method also enables better integration with third-party reporter frameworks. For instance, [allure](https://github.com/allure-framework/allure2) requires that you perform some actions (namely, [specify the test steps](https://docs.qameta.io/allure/#_steps_6)) before a test starts. Now you can do this in the `reportTestStart` method in a custom reporter.
+
+See the `reportTestStart` method description in [Reporter Methods](https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reportteststart).
+
+### Bug Fixes
+
+* Fixed a regression that prevented non-responsive browsers from restarting ([#3781](https://github.com/DevExpress/testcafe/issues/3781))
+* Fixed an issue when `t.click` triggered the `click` event twice ([#3645](https://github.com/DevExpress/testcafe/issues/3645))
+* Fixed a regression that prevented TestCafe from checking `checkbox` inputs with `t.click` ([#3482](https://github.com/DevExpress/testcafe/issues/3482))
+* TestCafe TypeScript definitions no longer cause the `Cannot find namespace 'NodeJS'` error ([#3719](https://github.com/DevExpress/testcafe/issues/3719))
+* TestCafe no longer removes the `Authorization` header when Fetch API is used ([testcafe-hammerhead/#2020](https://github.com/DevExpress/testcafe-hammerhead/issues/2020))
+* TestCafe now provides correct values for the `form.elements.length` property ([testcafe-hammerhead/#2009](https://github.com/DevExpress/testcafe-hammerhead/issues/2009))
+* Fixed the `Invariant Violation` React error caused by TestCafe Hammerhead ([testcafe-hammerhead/#2000](https://github.com/DevExpress/testcafe-hammerhead/issues/2000))
+* Fixed a regression that disabled the `IE=edge` meta tag ([testcafe-hammerhead/#1963](https://github.com/DevExpress/testcafe-hammerhead/issues/1963))
+* Fixed an issue that prevented `t.setFilesToUpload` from raising the `change` event on some file inputs ([testcafe-hammerhead/#2007](https://github.com/DevExpress/testcafe-hammerhead/issues/2007))
+
 ## v1.1.4 (2019-5-6)
 
 ### Bug Fixes
