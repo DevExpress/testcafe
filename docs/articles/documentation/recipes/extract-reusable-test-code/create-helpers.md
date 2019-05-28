@@ -5,9 +5,7 @@ permalink: /documentation/recipes/extract-reusable-test-code/create-helpers.html
 ---
 # Create Helpers
 
-We recommend that you follow the [page model](use-page-model.md) pattern to extract reusable test code. This pattern allows you to abstract out both page structure and test logic.
-
-* [Use Page Model](use-page-model.md)
+We recommend that you follow the [page model pattern](use-page-model.md) to extract reusable test code. This pattern allows you to abstract out both page structure and test logic.
 
 However, if you need to extract only the helper functions, you can export them from a separate script file.
 
