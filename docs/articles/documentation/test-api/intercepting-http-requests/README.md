@@ -8,11 +8,11 @@ checked: true
 
 This section describes how to handle HTTP requests in your tests. TestCafe allows you to log them and mock the responses out of the box. You can also create a custom HTTP request hook, which allows you, for instance, to emulate authentications like **Kerberos** or **Client Certificate Authentication**.
 
-* [Logging HTTP Requests](logging-http-requests.md)
-* [Mocking HTTP Requests](mocking-http-requests.md)
-* [Creating a Custom HTTP Request Hook](creating-a-custom-http-request-hook.md)
-* [Specifying Which Requests are Handled by the Hook](specifying-which-requests-are-handled-by-the-hook.md)
-* [Attaching Hooks to Tests and Fixtures](attaching-hooks-to-tests-and-fixtures.md)
+* [Log HTTP Requests](logging-http-requests.md)
+* [Mock HTTP Requests](mocking-http-requests.md)
+* [Create a Custom HTTP Request Hook](creating-a-custom-http-request-hook.md)
+* [Select Requests to be Handled by the Hook](select-requests-to-be-handled-by-the-hook.md)
+* [Attach Hooks to Tests and Fixtures](attaching-hooks-to-tests-and-fixtures.md)
 
 ## Logging HTTP Requests
 

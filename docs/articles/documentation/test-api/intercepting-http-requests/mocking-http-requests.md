@@ -44,7 +44,7 @@ onRequestTo(filter)
 
 Parameters | Type | Description | Default
 ---------- | ---- | ----------- | -----
-`filter`&#160;*(required)* | String &#124; RegExp &#124; Object &#124; Predicate | Specifies which requests should be mocked with a response that follows in the `respond` method. See [Specifying Which Requests are Handled by the Hook](specifying-which-requests-are-handled-by-the-hook.md). | All requests are mocked.
+`filter`&#160;*(required)* | String &#124; RegExp &#124; Object &#124; Predicate &#124; Array | Specifies which requests should be mocked with a response that follows in the `respond` method. See [Select Requests to be Handled by the Hook](select-requests-to-be-handled-by-the-hook.md). | All requests are mocked.
 
 ```js
 var mock = RequestMock()

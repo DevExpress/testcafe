@@ -8,12 +8,13 @@ checked: true
 
 You can create your own request hook to handle HTTP requests. This topic describes request hooks and how to create a custom hook.
 
-* [Understanding How TestCafe Request Hooks Operate](#understanding-how-testcafe-request-hooks-operate)
-* [Writing a Hook](#writing-a-hook)
+* [Understand How TestCafe Request Hooks Operate](#understand-how-testcafe-request-hooks-operate)
+* [Write a Hook](#write-a-hook)
   * [The onRequest Method](#the-onrequest-method)
   * [The onResponse Method](#the-onresponse-method)
+* [Use the Hook](#use-the-hook)
 
-## Understanding How TestCafe Request Hooks Operate
+## Understand How TestCafe Request Hooks Operate
 
 * All TestCafe request hooks inherit from the `RequestHook` class.
 
@@ -43,7 +44,7 @@ You can create your own request hook to handle HTTP requests. This topic describ
     }
     ```
 
-* The base class constructor receives an array of [filtering rules](specifying-which-requests-are-handled-by-the-hook.md) as the first parameter to determine which requests the hook handles. All requests are handled if no rules are passed.
+* The base class constructor receives an array of [filter rules](select-requests-to-be-handled-by-the-hook.md) as the first parameter to determine which requests the hook handles. All requests are handled if no rules are passed.
 
     ```js
     class RequestHook {
@@ -85,13 +86,13 @@ You can create your own request hook to handle HTTP requests. This topic describ
     }
     ```
 
-## Writing a Hook
+## Write a Hook
 
 Do the following to write a custom hook:
 
 * inherit from the `RequestHook` class,
-* override the `onRequest` method to handle sending the request,
-* override the `onResponse` method to handle receiving the response.
+* override the [onRequest](#the-onrequest-method) method to handle sending the request,
+* override the [onResponse](#the-onresponse-method) method to handle receiving the response.
 
 ```js
 import { RequestHook } from 'testcafe';
@@ -110,7 +111,7 @@ class MyRequestHook extends RequestHook {
 }
 ```
 
-The `onRequest` and `onResponse` methods receive an object that contains the event parameters.
+The [onRequest](#the-onrequest-method) and [onResponse](#the-onresponse-method) methods receive objects that contain the event parameters.
 
 ### The onRequest Method
 
@@ -149,12 +150,14 @@ async onResponse (event) {
 }
 ```
 
-Now you can [attach this hook to a test or fixture](attaching-hooks-to-tests-and-fixtures.md) in your test suite and start using it.
+## Use the Hook
+
+[Attach the hook to a test or fixture](attaching-hooks-to-tests-and-fixtures.md) in your test suite.
 
 ```js
 import { MyRequestHook } from './my-request-hook';
 
-const customHook = new MyRequestHook('http://example.com');
+const customHook = new MyRequestHook(/https?:\/\/example.com/);
 
 fixture `My fixture`
     .page('http://example.com')
@@ -164,3 +167,5 @@ test('My test', async t => {
         // test actions
 });
 ```
+
+The hook now handles the requests sent during the test or fixture run.
