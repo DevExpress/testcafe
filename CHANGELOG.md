@@ -4,7 +4,7 @@
 
 ### Enhancements
 
-#### :gear: Custom Reporters Can Now Handle Test Start ([#3715](https://github.com/DevExpress/testcafe/issues/3715))
+#### :gear: Custom Reporters Can Now Handle Test Start ([#3715](https://github.com/DevExpress/testcafe/issues/3715)) by [@Ivan-Katovich](https://github.com/Ivan-Katovich)
 
 We have added an optional `reportTestStart` method to reporter API. This method fires each time a test starts. You can override it to output information about the started test:
 
