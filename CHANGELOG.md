@@ -15,7 +15,9 @@ async reportTestStart (name, meta) {
 }
 ```
 
-See the method description in [Reporter Methods](https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reportteststart).
+This method also enables better integration with third-party reporter frameworks. For instance, [allure](https://github.com/allure-framework/allure2) requires that you perform some actions (namely, [specify the test steps](https://docs.qameta.io/allure/#_steps_6)) before a test starts. Now you can do this in the `reportTestStart` method in a custom reporter.
+
+See the `reportTestStart` method description in [Reporter Methods](https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reportteststart).
 
 ### Bug Fixes
 
