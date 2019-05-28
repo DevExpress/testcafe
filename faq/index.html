@@ -582,31 +582,7 @@ Then you can use this module inside client functions and selectors.</p>
 <span class="nx">fixture</span> <span class="err">`</span><span class="nx">Fixture</span><span class="err">`</span>
     <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="nx">config</span><span class="p">.</span><span class="nx">baseUrl</span><span class="p">}</span><span class="sr">/test1/i</span><span class="nx">ndex</span><span class="p">.</span><span class="nx">html</span><span class="err">`</span><span class="p">;</span>
 </code></pre></div>
-<p>Alternatively, you can use custom command line parameters or environment variables.</p>
-
-<p>The following command passes the <code>env</code> argument to the test code:</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js --env<span class="o">=</span>development
-</code></pre></div>
-<p>In the test, use an argument parser library (like <code>minimist</code>) to parse custom arguments:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="nx">minimist</span> <span class="nx">from</span> <span class="s1">'minimist'</span><span class="p">;</span>
-
-<span class="kr">const</span> <span class="nx">args</span> <span class="o">=</span> <span class="nx">minimist</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">argv</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">2</span><span class="p">));</span>
-<span class="kr">const</span> <span class="nx">environment</span> <span class="o">=</span> <span class="nx">args</span><span class="p">.</span><span class="nx">env</span><span class="p">;</span>
-
-<span class="nx">fixture</span><span class="p">(</span><span class="s1">'example'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="s1">'http://example.com'</span><span class="p">);</span>
-
-<span class="nx">test</span><span class="p">(</span><span class="s1">'check environment'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Environment:'</span><span class="p">,</span> <span class="nx">environment</span><span class="p">);</span>
-<span class="p">});</span>
-</code></pre></div>
-<p>To set an environment variable, use the following command on Windows:</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh"><span class="nb">set </span><span class="nv">DEV_MODE</span><span class="o">=</span><span class="nb">true
-</span>testcafe chrome test.js
-</code></pre></div>
-<p>On macOS, <a href="https://stackoverflow.com/questions/135688/setting-environment-variables-in-os-x">the workflow is longer</a>.</p>
-
-<p>In test code, you can access this variable as <code>process.env.DEV_MODE</code>.</p>
+<p>Alternatively, you can use <a href="../documentation/recipes/access-environment-variables-in-tests.html">environment variables</a>.</p>
 <h2><a class="anchor" id="troubleshooting"></a>Troubleshooting <a class="permalink" href="#troubleshooting">#</a></h2><h3><a class="anchor" id="i-have-installed-testcafe-but-i-cannot-run-it-what-should-i-do"></a>I have installed TestCafe but I cannot run it. What should I do? <a class="permalink" href="#i-have-installed-testcafe-but-i-cannot-run-it-what-should-i-do">#</a></h3>
 <p><strong>Check your firewall.</strong> First, make sure that your firewall does not block the ports TestCafe uses.
 TestCafe chooses free ports automatically by default. Use the

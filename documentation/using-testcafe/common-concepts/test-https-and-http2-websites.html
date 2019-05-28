@@ -13,15 +13,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <title>createTestCafe | TestCafe</title>
+  <title>Test HTTPS and HTTP/2 Websites | TestCafe</title>
 
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
 
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/createtestcafe.html" />
-  <meta property="og:title" content="createTestCafe | TestCafe" />
+  <meta property="og:url" content="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/test-https-and-http2-websites.html" />
+  <meta property="og:title" content="Test HTTPS and HTTP/2 Websites | TestCafe" />
 
   
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
@@ -29,7 +29,7 @@
   
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
-  <link rel="canonical" href="https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/createtestcafe.html">
+  <link rel="canonical" href="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/test-https-and-http2-websites.html">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="https://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
@@ -604,7 +604,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/using-testcafe/programming-interface/createtestcafe.html" class="active" >createTestCafe Factory</a>
+<a href="/testcafe/documentation/using-testcafe/programming-interface/createtestcafe.html"  >createTestCafe Factory</a>
 		
     </li>
 
@@ -703,7 +703,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/using-testcafe/common-concepts/test-https-and-http2-websites.html"  >Test HTTPS and HTTP/2 Websites</a>
+<a href="/testcafe/documentation/using-testcafe/common-concepts/test-https-and-http2-websites.html" class="active" >Test HTTPS and HTTP/2 Websites</a>
 		
     </li>
 
@@ -736,61 +736,32 @@
 	<article class="doc">
 		<div class="post-content">
 
-			<h1>createTestCafe Factory</h1>
-<p>Creates a <a href="testcafe.html">TestCafe</a> server instance.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">async createTestCafe([hostname], [port1], [port2], [sslOptions], [developmentMode]) → Promise&lt;TestCafe&gt;
-</code></pre></div><div class="table-wrapper"><table><thead><tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead><tbody><tr>
-<td><code>hostname</code>&#160;<em>(optional)</em></td>
-<td>String</td>
-<td>The hostname or IP on which the TestCafe server is running. Must resolve to the current machine. To test on external devices, use the hostname that is visible in the network shared with these devices.</td>
-<td>Hostname of the OS. If the hostname does not resolve to the current machine - its network IP address.</td>
-</tr>
-<tr>
-<td><code>port1</code>, <code>port2</code>&#160;<em>(optional)</em></td>
-<td>Number</td>
-<td>Ports that will be used to serve tested webpages.</td>
-<td>Free ports selected automatically.</td>
-</tr>
-<tr>
-<td><code>sslOptions</code>&#160;<em>(optional)</em></td>
-<td>Object</td>
-<td>Options that allow you to establish an HTTPS connection between the TestCafe server and the client browser. This object should contain options required to initialize <a href="https://nodejs.org/api/https.html#https_https_createserver_options_requestlistener">a Node.js HTTPS server</a>. The most commonly used SSL options are described in the <a href="https://nodejs.org/api/tls.html#tls_tls_createsecurecontext_options">TLS topic</a> in Node.js documentation. See <a href="../common-concepts/test-https-and-http2-websites.html">Test HTTPS and HTTP/2 Websites</a> for more information.</td>
-<td></td>
-</tr>
-<tr>
-<td><code>developmentMode</code>&#160;<em>(optional)</em></td>
-<td>Boolean</td>
-<td>Enables/disables mechanisms to log and diagnose errors. You should enable this option before you contact TestCafe Support to report an issue.</td>
-<td><code>false</code></td>
-</tr>
-</tbody></table></div>
-<p><em>Related configuration file properties</em>:</p>
+			<h1>Test HTTPS and HTTP/2 Websites</h1>
+<p>This topic describes how TestCafe works with HTTPS and HTTP/2 websites.</p>
 
 <ul>
-<li><a href="../configuration-file.html#hostname">hostname</a></li>
-<li><a href="../configuration-file.html#port1-port2">port1, port2</a></li>
-<li><a href="../configuration-file.html#ssl">ssl</a></li>
-<li><a href="../configuration-file.html#developmentmode">developmentMode</a></li>
+<li><a href="#test-https-websites">Test HTTPS Websites</a></li>
+<li><a href="#test-http2-websites">Test HTTP/2 Websites</a></li>
 </ul>
+<h2><a class="anchor" id="test-https-websites"></a>Test HTTPS Websites <a class="permalink" href="#test-https-websites">#</a></h2>
+<p>TestCafe is a proxy-based testing tool. The TestCafe <a href="https://en.wikipedia.org/wiki/Reverse_proxy">reverse proxy</a> serves the tested webpage over HTTP and communicates with the original web server over HTTP or HTTPS (depends on the <a href="../../test-api/test-code-structure.html#specifying-the-start-webpage">specified page URL</a>).</p>
 
-<p><strong>Example</strong></p>
+<p><img src="../../../images/proxy-connection-protocols.svg" alt="Connection Protocols" title=""></p>
 
-<p>Create a <code>TestCafe</code> instance with the <code>createTestCafe</code> function.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">createTestCafe</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'testcafe'</span><span class="p">);</span>
+<p>If the tested page does not use HTTPS-specific features (like
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API">Service Workers</a>,
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API">Geolocation API</a>,
+<a href="https://developer.apple.com/documentation/apple_pay_on_the_web/applepaysession">ApplePaySession</a>, or
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto">SubtleCrypto</a>), TestCafe successfully proxies it over HTTP. Otherwise, the tests fail because the page throws JavaScript errors, does not load or loads partially. This indicates that you should <a href="#proxy-the-website-over-https">configure the proxy server to use HTTPS</a>.</p>
+<h3><a class="anchor" id="proxy-the-website-over-https"></a>Proxy the Website Over HTTPS <a class="permalink" href="#proxy-the-website-over-https">#</a></h3>
+<p>When you run tests from the command line, use the <a href="../command-line-interface.html#--ssl-options">--ssl</a> flag to enable HTTPS on a proxy server. Specify options required to initialize <a href="https://nodejs.org/api/https.html#https_https_createserver_options_requestlistener">a Node.js HTTPS server</a> after this flag in a semicolon-separated string. The most commonly used SSL options are described in the <a href="https://nodejs.org/api/tls.html#tls_tls_createsecurecontext_options">TLS topic</a> in Node.js documentation.</p>
 
-<span class="nx">createTestCafe</span><span class="p">(</span><span class="s1">'localhost'</span><span class="p">,</span> <span class="mi">1337</span><span class="p">,</span> <span class="mi">1338</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">testcafe</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="nx">runner</span> <span class="o">=</span> <span class="nx">testcafe</span><span class="p">.</span><span class="nx">createRunner</span><span class="p">();</span>
-        <span class="cm">/* ... */</span>
-    <span class="p">});</span>
+<p>The example below uses the PFX encoded private key and certificate chain to create an HTTPS server.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe --ssl <span class="nv">pfx</span><span class="o">=</span>path/to/file.pfx;rejectUnauthorized<span class="o">=</span><span class="nb">true</span>;...
 </code></pre></div>
-<p>Establish an HTTPS connection with the TestCafe server. The <a href="https://www.npmjs.com/package/openssl-self-signed-certificate">openssl-self-signed-certificate</a> module is used to generate a self-signed certificate for development use.</p>
+<p>When you use the programming interface, pass the HTTPS server options to the <a href="../programming-interface/createtestcafe.html">createTestCafe</a> method.</p>
+
+<p>The following example uses the <a href="https://www.npmjs.com/package/openssl-self-signed-certificate">openssl-self-signed-certificate</a> module to generate a self-signed certificate:</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="s1">'use strict'</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">createTestCafe</span>        <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'testcafe'</span><span class="p">);</span>
@@ -816,10 +787,8 @@
             <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="s1">'chrome --allow-insecure-localhost'</span><span class="p">)</span>
             <span class="p">.</span><span class="nx">run</span><span class="p">();</span>
     <span class="p">});</span>
-</code></pre></div><h2><a class="anchor" id="see-also"></a>See Also <a class="permalink" href="#see-also">#</a></h2>
-<ul>
-<li><a href="testcafe.html">TestCafe Class</a></li>
-</ul>
+</code></pre></div><h2><a class="anchor" id="test-http2-websites"></a>Test HTTP/2 Websites <a class="permalink" href="#test-http2-websites">#</a></h2>
+<p>TestCafe can test an HTTP/2 website only if the server can downgrade the connection to HTTPS or HTTP/1. See <a href="https://nodejs.org/api/http2.html#http2_alpn_negotiation">ALPN negotiation</a> for details.</p>
 
 
 		</div>
