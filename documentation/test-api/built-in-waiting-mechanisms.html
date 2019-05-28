@@ -888,35 +888,35 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/intercepting-http-requests/logging-http-requests.html"  >Logging HTTP Requests</a>
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/logging-http-requests.html"  >Log HTTP Requests</a>
 		
     </li>
 
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/intercepting-http-requests/mocking-http-requests.html"  >Mocking HTTP Requests</a>
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/mocking-http-requests.html"  >Mock HTTP Requests</a>
 		
     </li>
 
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html"  >Creating a Custom HTTP Request Hook</a>
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html"  >Create a Custom HTTP Request Hook</a>
 		
     </li>
 
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/intercepting-http-requests/specifying-which-requests-are-handled-by-the-hook.html"  >Specifying Which Requests are Handled by the Hook</a>
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/select-requests-to-be-handled-by-the-hook.html"  >Select Requests to be Handled by the Hook</a>
 		
     </li>
 
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/intercepting-http-requests/attaching-hooks-to-tests-and-fixtures.html"  >Attaching Hooks to Tests and Fixtures</a>
+<a href="/testcafe/documentation/test-api/intercepting-http-requests/attaching-hooks-to-tests-and-fixtures.html"  >Attach Hooks to Tests and Fixtures</a>
 		
     </li>
 
@@ -1045,8 +1045,16 @@
 <p>TestCafe has built-in automatic waiting mechanisms, so that it does not need dedicated API to wait for page elements to appear or redirects to happen.</p>
 
 <p>This topic describes how these mechanisms work with <a href="actions/">test actions</a>,
-<a href="assertions/">assertions</a>, <a href="selecting-page-elements/selectors/">selectors</a> and navigation.</p>
-<h2><a class="anchor" id="waiting-for-action-target-elements"></a>Waiting for Action Target Elements <a class="permalink" href="#waiting-for-action-target-elements">#</a></h2>
+<a href="assertions/">assertions</a>, <a href="selecting-page-elements/selectors/">selectors</a>, requests and navigation.</p>
+
+<ul>
+<li><a href="#wait-mechanism-for-actions">Wait Mechanism for Actions</a>,</li>
+<li><a href="#wait-mechanism-for-selectors">Wait Mechanism for Selectors</a></li>
+<li><a href="#wait-mechanism-for-assertions">Wait Mechanism for Assertions</a></li>
+<li><a href="#wait-mechanism-for-xhr-and-fetch-requests">Wait Mechanism for XHR and Fetch Requests</a></li>
+<li><a href="#wait-mechanism-for-redirects">Wait Mechanism for Redirects</a></li>
+</ul>
+<h2><a class="anchor" id="wait-mechanism-for-actions"></a>Wait Mechanism for Actions <a class="permalink" href="#wait-mechanism-for-actions">#</a></h2>
 <p>TestCafe automatically waits for the target element to become visible when an action is executed.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
@@ -1066,7 +1074,7 @@
 If the element does not appear, the test will fail.</p>
 
 <p>The exceptions are <a href="actions/upload.html#populate-file-upload-input">t.setFilesToUpload</a> and <a href="actions/upload.html#clear-file-upload-input">t.clearUpload</a> actions that do not require that the target element is visible.</p>
-<h2><a class="anchor" id="waiting-for-elements-when-evaluating-selectors"></a>Waiting for Elements When Evaluating Selectors <a class="permalink" href="#waiting-for-elements-when-evaluating-selectors">#</a></h2>
+<h2><a class="anchor" id="wait-mechanism-for-selectors"></a>Wait Mechanism for Selectors <a class="permalink" href="#wait-mechanism-for-selectors">#</a></h2>
 <p>When evaluating a selector, TestCafe automatically waits for the element to appear in the DOM.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
@@ -1097,7 +1105,7 @@ Use the <a href="selecting-page-elements/selectors/selector-options.html#options
     <span class="c1">// Waits for '#developer-name' to appear in the DOM and become visible.</span>
     <span class="kr">const</span> <span class="nx">nameInputElement</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">nameInput</span><span class="p">.</span><span class="kd">with</span><span class="p">({</span> <span class="na">visibilityCheck</span><span class="p">:</span> <span class="kc">true</span> <span class="p">})();</span>
 <span class="p">});</span>
-</code></pre></div><h2><a class="anchor" id="waiting-for-assertions-to-pass"></a>Waiting for Assertions to Pass <a class="permalink" href="#waiting-for-assertions-to-pass">#</a></h2>
+</code></pre></div><h2><a class="anchor" id="wait-mechanism-for-assertions"></a>Wait Mechanism for Assertions <a class="permalink" href="#wait-mechanism-for-assertions">#</a></h2>
 <p>TestCafe assertions feature the <a href="assertions/#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a>.
 This mechanism is activated when you pass a <a href="selecting-page-elements/selectors/using-selectors.html#obtain-element-state">selector property</a>
 or a <a href="obtaining-data-from-the-client/">client function</a> as an actual value. In this instance, TestCafe keeps recalculating the actual
@@ -1129,7 +1137,21 @@ or <a href="selecting-page-elements/selectors/using-selectors.html#check-if-an-e
         <span class="c1">// or the timeout passes.</span>
         <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">.</span><span class="nx">value</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="s1">'Peter Parker'</span><span class="p">);</span>
 <span class="p">});</span>
-</code></pre></div><h2><a class="anchor" id="waiting-for-redirects"></a>Waiting for Redirects <a class="permalink" href="#waiting-for-redirects">#</a></h2>
+</code></pre></div><h2><a class="anchor" id="wait-mechanism-for-xhr-and-fetch-requests"></a>Wait Mechanism for XHR and Fetch Requests <a class="permalink" href="#wait-mechanism-for-xhr-and-fetch-requests">#</a></h2>
+<p>Before TestCafe executes a test action, it waits for XHR and fetch requests to complete within <strong>3</strong> seconds. After TestCafe receives the responses, or the timeout exceeds, the test continues.</p>
+
+<p>If you expect a request to take more time, use a <a href="selecting-page-elements/selectors/using-selectors.html#selector-timeout">selector</a> or <a href="assertions/#optionstimeout">assertion</a> with a custom timeout to wait until the UI reflects the request completion.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// Assume that you expect the page to print 'No Data' when the request completes.</span>
+<span class="kr">const</span> <span class="nx">emptyLabel</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'p'</span><span class="p">).</span><span class="nx">withText</span><span class="p">(</span><span class="s1">'No Data'</span><span class="p">).</span><span class="kd">with</span><span class="p">({</span> <span class="na">visibilityCheck</span><span class="p">:</span> <span class="kc">true</span> <span class="p">});</span>
+
+<span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#fetch-data'</span><span class="p">);</span>
+
+<span class="c1">// Wait with an assertion.</span>
+<span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">emptyLabel</span><span class="p">.</span><span class="nx">exists</span><span class="p">,</span> <span class="s1">''</span><span class="p">,</span> <span class="p">{</span> <span class="na">timeout</span><span class="p">:</span> <span class="mi">10000</span> <span class="p">});</span>
+
+<span class="c1">// Wait with a selector.</span>
+<span class="kr">const</span> <span class="nx">labelSnapshot</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">emptyLabel</span><span class="p">.</span><span class="kd">with</span><span class="p">({</span> <span class="na">timeout</span><span class="p">:</span> <span class="mi">10000</span> <span class="p">});</span>
+</code></pre></div><h2><a class="anchor" id="wait-mechanism-for-redirects"></a>Wait Mechanism for Redirects <a class="permalink" href="#wait-mechanism-for-redirects">#</a></h2>
 <p>When an action triggers a redirect, TestCafe automatically waits for the server to respond.
 The test is resumed if the server does not respond within <strong>15</strong> seconds.</p>
 

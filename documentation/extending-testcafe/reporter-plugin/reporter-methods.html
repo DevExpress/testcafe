@@ -621,13 +621,14 @@
 		<div class="post-content">
 
 			<h1>Reporter Methods</h1>
-<p>You should implement the following methods to create a <a href=".#implementing-the-reporter">reporter</a>:</p>
+<p>Implement the following methods to <a href=".#implementing-the-reporter">create a reporter</a>:</p>
 
 <ul>
 <li><a href="#reporttaskstart">reportTaskStart</a></li>
 <li><a href="#reportfixturestart">reportFixtureStart</a></li>
 <li><a href="#reporttestdone">reportTestDone</a></li>
 <li><a href="#reporttaskdone">reportTaskDone</a></li>
+<li><a href="#reportteststart">reportTestStart</a> <em>(optional)</em></li>
 </ul>
 <blockquote><div class="blockquote-content"><p>You can use the <a href="helpers.html">helper methods and libraries</a> within the reporter methods to output the required data.</p>
 </div></blockquote><h2><a class="anchor" id="reporttaskstart"></a>reportTaskStart <a class="permalink" href="#reporttaskstart">#</a></h2>
@@ -702,6 +703,32 @@
 <span class="p">}</span>
 
 <span class="c1">//=&gt; Starting fixture: First fixture f-0001</span>
+</code></pre></div><h2><a class="anchor" id="reportteststart"></a>reportTestStart <a class="permalink" href="#reportteststart">#</a></h2>
+<p>Fires each time a test starts. This method is <em>optional</em>.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">async reportTestStart (name, meta)
+</code></pre></div><div class="table-wrapper"><table><thead><tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody><tr>
+<td><code>name</code></td>
+<td>String</td>
+<td>The test name.</td>
+</tr>
+<tr>
+<td><code>meta</code></td>
+<td>Object</td>
+<td>The test metadata. See <a href="../../test-api/test-code-structure.html#specifying-testing-metadata">Specifying Testing Metadata</a> for more information.</td>
+</tr>
+</tbody></table></div>
+<p><strong>Example</strong></p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">async</span> <span class="nx">reportTestStart</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">meta</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="err">`</span><span class="nx">Starting</span> <span class="nx">test</span><span class="err">:</span> <span class="nx">$</span><span class="p">{</span><span class="nx">name</span><span class="p">}</span> <span class="p">(</span><span class="nx">$</span><span class="p">{</span><span class="nx">meta</span><span class="p">.</span><span class="nx">severity</span><span class="p">})</span><span class="err">`</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">newline</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="c1">//=&gt; Starting test: Submit data (minor)</span>
 </code></pre></div><h2><a class="anchor" id="reporttestdone"></a>reportTestDone <a class="permalink" href="#reporttestdone">#</a></h2>
 <p>Fires each time a test ends.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">async reportTestDone (name, testRunInfo, meta)

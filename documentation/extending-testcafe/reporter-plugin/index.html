@@ -660,7 +660,7 @@ Then Yeoman will automatically scaffold out your reporter, install the required 
 <h2><a class="anchor" id="implementing-the-reporter"></a>Implementing the Reporter <a class="permalink" href="#implementing-the-reporter">#</a></h2>
 <p>Once the reporter has been scaffolded out, go to the reporter directory and open the <code>src/index.js</code> file.</p>
 
-<p>You would need to implement four <a href="reporter-methods.html">reporter methods</a>.</p>
+<p>Implement the following reporter methods (four mandatory and one optional):</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">export</span> <span class="k">default</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
     <span class="k">return</span> <span class="p">{</span>
         <span class="nx">async</span> <span class="nx">reportTaskStart</span> <span class="p">(</span><span class="cm">/* startTime, userAgents, testCount */</span><span class="p">)</span> <span class="p">{</span>
@@ -669,6 +669,10 @@ Then Yeoman will automatically scaffold out your reporter, install the required 
 
         <span class="nx">async</span> <span class="nx">reportFixtureStart</span> <span class="p">(</span><span class="cm">/* name, path, meta */</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">'Not implemented'</span><span class="p">);</span>
+        <span class="p">},</span>
+
+        <span class="nx">async</span> <span class="nx">reportTestStart</span> <span class="p">(</span><span class="cm">/* name, meta */</span><span class="p">)</span> <span class="p">{</span>
+            <span class="c1">// NOTE: This method is optional.</span>
         <span class="p">},</span>
 
         <span class="nx">async</span> <span class="nx">reportTestDone</span> <span class="p">(</span><span class="cm">/* name, testRunInfo, meta */</span><span class="p">)</span> <span class="p">{</span>
@@ -681,14 +685,14 @@ Then Yeoman will automatically scaffold out your reporter, install the required 
     <span class="p">};</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>These methods should output the desired information at certain moments during the test run.
-All the required data is provided for these methods through their parameters.</p>
+<p>TestCafe calls these methods during the test run. Use data they receive through their parameters to compose a report.
+See <a href="reporter-methods.html">Reporter Methods</a> for API description and examples.</p>
 
-<p>To output this information, use <a href="helpers.html">helper methods and libraries</a>.
-TestCafe will mix in the helper methods to the reporter, so that you can access the helper methods by using <code>this</code>.</p>
+<p>To output the report, use <a href="helpers.html">helper methods and libraries</a>.
+TestCafe mixes in the helper methods to the reporter, so that you can access them with <code>this</code>.</p>
 
-<p>In the <code>src/index.js</code> file, you can also enable or disable the coloring of the reporter output by using the <code>noColors</code> property.
-To color the output, use the <a href="helpers.html#chalk">chalk</a> methods.</p>
+<p>In the <code>src/index.js</code> file, you can specify the <code>noColors</code> property to enable or disable colors in the reporter output.
+To customize the colors, use the <a href="helpers.html#chalk">chalk</a> methods.</p>
 
 <p><strong>Example</strong></p>
 
