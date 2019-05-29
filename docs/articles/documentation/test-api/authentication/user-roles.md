@@ -16,9 +16,10 @@ Roles are more than just another way to [extract reusable test logic](../../reci
 
 * **Object-based API.** Authentication data and logic are stored in an object that is easy to pass around and activate when needed.
 * **Single login.** Login actions are not repeated when you switch to a previously used role within the same session. If you activate a role in the [beforeEach](../test-code-structure.md#test-hooks) hook, login actions run once before the first test. The subsequent tests reuse authentication data so that it happens instantly.
-* **Automatic return.** The browser automatically navigates back to the page that was opened when you switched the role.
-* **Automatic logout.** No need to look for the *Log out* button.
+* **Automatic return.** The browser automatically navigates back to the page that was opened when you switched the role (you can disable this behavior if it doesn't suit your scenario).
+* **No logout needed.** Authentication data is automatically cleared when you switch between roles.
 * **Multiple authentication support.** If you log in to different services/websites during a test, authentication data from cookies and browser storages is accumulated in the active role. When you switch back to this role within the same test, you are automatically logged in to all the websites.
+* **Anonymous role.** A built-in role that quilckly logs you out of all the accounts.
 
 > Roles work with authentication data in cookies and browser storages. If your authentication system stores data elsewhere, you may not be able to use roles.
 
