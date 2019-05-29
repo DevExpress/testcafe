@@ -7,11 +7,11 @@ permalink: /documentation/test-api/obtaining-data-from-the-client/examples-of-us
 
 This topic describes examples of using client functions in tests.
 
-* [Checking a Page URL](#checking-a-page-url)
-* [Obtaining a Browser Alias Within a Test](#obtaining-a-browser-alias-within-a-test)
+* [Check a Page URL](#check-a-page-url)
+* [Obtain a Browser Alias Within a Test](#obtain-a-browser-alias-within-a-test)
 * [Complex DOM Queries](#complex-dom-queries)
 
-## Checking a Page URL
+## Check a Page URL
 
 When performing certain actions on a tested web page (clicking buttons or links), it can redirect a browser to another page and you need to check if the desired page is open. For example, you are testing your web application's login form and need to verify if a particular web page opens after a user logs in.
 
@@ -34,7 +34,7 @@ test('Check the page URL', async t => {
 });
 ```
 
-## Obtaining a Browser Alias Within a Test
+## Obtain a Browser Alias Within a Test
 
 Sometimes you may need to determine a browser's alias from within a test. For example, you configured a test tasks using the [testCafe.createRunner](../../using-testcafe/programming-interface/testcafe.md#createrunner) function and specified several browsers where the test should run: `runner.browsers(['safari','chrome'])`. However, the test logic should be different for different browsers. To do this, you need to detect which test instance corresponds to `safari` and which one corresponds to `chrome`.
 
@@ -83,21 +83,18 @@ fixture `Get sale amount`
     .page('https://js.devexpress.com/');
 
     const getSalesAmount = ClientFunction(() => {
-        const rows      = document.querySelector('.dx-datagrid-rowsview');
-        const rowCount  = rows.querySelectorAll('.dx-data-row').length;
-        const sales     = rows.querySelectorAll('td:nth-child(3)');
-        const customers = rows.querySelectorAll('td:nth-child(7)');
+        const grid      = document.querySelector('.dx-datagrid-rowsview');
+        const rowCount  = grid.querySelectorAll('.dx-data-row').length;
+        const sales     = grid.querySelectorAll('td:nth-child(3)');
+        const customers = grid.querySelectorAll('td:nth-child(7)');
 
         const array = [];
 
-        for (let i = 0; i <= rowCount; i++) {
-            const data = {
+        for (let i = 0; i < rowCount; i++) {
+            array.push({
                 sales: sales[i].textContent,
                 customer: customers[i].textContent
-            };
-
-            if (data.sales && data.customer)
-                array.push(data);
+            });
         }
 
         return array;
@@ -107,8 +104,16 @@ test('My test', async t => {
     const salesAmount = await getSalesAmount();
 
     await t
-        .expect(salesAmount[0]).eql({ sales: '$6,370', customer: 'Renewable Supplies' })
-        .expect(salesAmount[1]).eql({ sales: '$4,530', customer: 'Appolo Inc' });
-        // ...
+        .expect(salesAmount).eql([
+            { sales: '$6,370', customer: 'Renewable Supplies' },
+            { sales: '$4,530', customer: 'Apollo Inc' },
+            { sales: '$1,110', customer: 'Johnson & Assoc' },
+            { sales: '$6,600', customer: 'Global Services' },
+            { sales: '$2,830', customer: 'Health Plus Inc' },
+            { sales: '$6,770', customer: 'Gemini Stores' },
+            { sales: '$1,460', customer: 'Discovery Systems' }
+        ]);
 });
 ```
+
+You can use [TestCafe selectors](../selecting-page-elements/selectors/README.md) instead of the native `querySelector` and `querySelectorAll` methods. Pass these selectors to the client function's [dependencies](README.md#optionsdependencies) option and call them as regular functions. This gives you the benefits of TestCafe [automatic wait mechanism](../built-in-waiting-mechanisms.md).
