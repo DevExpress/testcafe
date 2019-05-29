@@ -121,6 +121,8 @@ class JwtBearerAuthorization extends RequestHook {
     }
 
     onResponse (e) {
+        // This method must also be overridden,
+        // but you can leave it blank.
     }
 }
 
