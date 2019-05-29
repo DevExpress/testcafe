@@ -367,8 +367,11 @@ export default class MoveAutomation {
         if (this.minMovingTime)
             this.movingTime = Math.max(this.movingTime, this.minMovingTime);
 
-        if (this._isDistanceEqualsZero() && this.raiseEventsForZeroCursorDistance)
+        if (this._isDistanceEqualsZero() && this.raiseEventsForZeroCursorDistance){
+            debugger;
             return this._getMovingStepPromise();
+        }
+
 
         return promiseUtils.whilst(() => !this._isMovingFinished(), () => this._movingStep());
     }
