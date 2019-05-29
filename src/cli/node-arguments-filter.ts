@@ -1,4 +1,4 @@
-const FLAGS = [
+export const V8_FLAGS = [
     'debug',
     '--debug',
     '--debug-brk',
@@ -18,7 +18,7 @@ const FLAGS = [
     '--experimental-repl-await'
 ];
 
-const FLAG_PREFIXES = [
+export const V8_FLAG_PREFIXES = [
     '--harmony',
     '--trace',
     '--icu-data-dir',
@@ -27,7 +27,7 @@ const FLAG_PREFIXES = [
 ];
 
 function isNodeFlagPrefix (arg: string): boolean {
-    return FLAG_PREFIXES.some(flagPrefix => {
+    return V8_FLAG_PREFIXES.some(flagPrefix => {
         return arg.indexOf(flagPrefix) === 0;
     });
 }
@@ -37,14 +37,14 @@ interface ParsedArgs {
     v8Flags?: string[];
 }
 
-export default function (cliArgs: string[]): ParsedArgs {
+export function extractNodeProcessArguments (cliArgs: string[]): ParsedArgs {
     const args: string[]    = [];
     const v8Flags: string[] = [];
 
     cliArgs.forEach(arg => {
         const flag = arg.split('=')[0];
 
-        if (FLAGS.indexOf(flag) > -1 || isNodeFlagPrefix(arg))
+        if (V8_FLAGS.indexOf(flag) > -1 || isNodeFlagPrefix(arg))
             v8Flags.push(arg);
         else
             args.push(arg);

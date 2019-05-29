@@ -8,7 +8,7 @@ import getViewPortWidth from '../utils/get-viewport-width';
 import { wordWrap, splitQuotedText } from '../utils/string';
 import { getSSLOptions, getVideoOptions, getMetaOptions, getGrepOptions } from '../utils/get-options';
 import getFilterFn from '../utils/get-filter-fn';
-import extractNodeProcessArguments from './node-arguments-filter';
+import { extractNodeProcessArguments } from './node-arguments-filter';
 
 const REMOTE_ALIAS_RE = /^remote(?::(\d*))?$/;
 
