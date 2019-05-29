@@ -604,18 +604,20 @@ export default class TestRun extends AsyncEventEmitter {
         return state;
     }
 
+    async removeActiveDialogHandler () {
+        if (this.activeDialogHandler) {
+            const removeDialogHandlerCommand = new actionCommands.SetNativeDialogHandlerCommand({ dialogHandler: { fn: null } });
+
+            await this.executeCommand(removeDialogHandlerCommand);
+        }
+    }
+
     async switchToCleanRun () {
         this.ctx             = Object.create(null);
         this.fixtureCtx      = Object.create(null);
         this.consoleMessages = new BrowserConsoleMessages();
 
         this.session.useStateSnapshot(StateSnapshot.empty());
-
-        if (this.activeDialogHandler) {
-            const removeDialogHandlerCommand = new actionCommands.SetNativeDialogHandlerCommand({ dialogHandler: { fn: null } });
-
-            await this.executeCommand(removeDialogHandlerCommand);
-        }
 
         if (this.speed !== this.opts.speed) {
             const setSpeedCommand = new actionCommands.SetTestSpeedCommand({ speed: this.opts.speed });

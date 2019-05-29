@@ -60,6 +60,7 @@ class Role extends EventEmitter {
 
         await testRun.switchToCleanRun();
         await this._navigateToLoginPage(testRun);
+        await testRun.removeActiveDialogHandler();
         await this._executeInitFn(testRun);
         await this._storeStateSnapshot(testRun);
 
