@@ -1,3 +1,4 @@
+const EventEmitter        = require('events');
 const Promise             = require('pinkie');
 const expect              = require('chai').expect;
 const createTestCafe      = require('../../lib/');
@@ -5,6 +6,43 @@ const { TEST_RUN_ERRORS } = require('../../lib/errors/types');
 const handleErrors        = require('../../lib/utils/handle-errors');
 const TestController      = require('../../lib/api/test-controller');
 const AssertionExecutor   = require('../../lib/assertions/executor');
+const Runner              = require('../../lib/runner');
+const AsyncEventEmitter   = require('../../lib/utils/async-event-emitter');
+const delay               = require('../../lib/utils/delay');
+
+class TaskMock extends AsyncEventEmitter {
+}
+
+class BrowserSetMock extends EventEmitter {
+    dispose () {
+        return Promise.resolve();
+    }
+}
+
+class RunnerMock extends Runner {
+    constructor () {
+        super();
+
+        this.configuration = {
+            getOption: () => {
+                return null;
+            },
+            getOptions: () => {
+                return {};
+            }
+        };
+    }
+
+    _createTask () {
+        this.task = new TaskMock();
+
+        return this.task;
+    }
+
+    _getFailedTestCount () {
+        return 0;
+    }
+}
 
 class TestRunMock {
     constructor (id, reason) {
@@ -20,10 +58,11 @@ class TestRunMock {
     executeCommand (command, callsite) {
         return new AssertionExecutor(command, 0, callsite).run();
     }
-
 }
 
 describe('Global error handlers', () => {
+    handleErrors.registerErrorHandlers();
+
     it('unhandled promise rejection on chain assertions', () => {
         let unhandledRejection = false;
 
@@ -45,7 +84,6 @@ describe('Global error handlers', () => {
     });
 
     it('format UnhandledPromiseRejection reason', () => {
-        handleErrors.registerErrorHandlers();
         handleErrors.startHandlingTestErrors();
 
         const obj = { a: 1, b: { c: 'd', e: { f: { g: 'too deep' } } } };
@@ -123,5 +161,38 @@ describe('Global error handlers', () => {
                 expect(unhandledRejectionRaised).eql(true);
                 expect(testRunMock.errors[0].code).eql(TEST_RUN_ERRORS.unhandledPromiseRejection);
             });
+    });
+
+    it('Should add error to multiple tests of same task', async () => {
+        const runner = new RunnerMock();
+
+        const { completionPromise } = runner._runTask([], new BrowserSetMock(), null, null);
+
+        const testRunMock1 = new TestRunMock(1);
+        const testRunMock2 = new TestRunMock(2);
+        const testRunMock3 = new TestRunMock(3);
+
+        await runner.task.emit('start');
+
+        await runner.task.emit('test-run-start', testRunMock1);
+        await runner.task.emit('test-run-start', testRunMock2);
+        await runner.task.emit('test-run-start', testRunMock3);
+
+        /* eslint-disable no-new */
+        new Promise((resolve, reject) => {
+            reject(new Error());
+        });
+        /* eslint-enable no-new */
+
+        await delay(1);
+        await runner.task.emit('done');
+        await completionPromise;
+
+        expect(testRunMock1.errors.length).eql(1);
+        expect(testRunMock1.errors[0].code).eql(TEST_RUN_ERRORS.unhandledPromiseRejection);
+        expect(testRunMock2.errors.length).eql(1);
+        expect(testRunMock2.errors[0].code).eql(TEST_RUN_ERRORS.unhandledPromiseRejection);
+        expect(testRunMock3.errors.length).eql(1);
+        expect(testRunMock3.errors[0].code).eql(TEST_RUN_ERRORS.unhandledPromiseRejection);
     });
 });

@@ -150,8 +150,8 @@ export default class Runner extends EventEmitter {
         task.on('start', startHandlingTestErrors);
 
         if (!this.configuration.getOption(OPTION_NAMES.skipUncaughtErrors)) {
-            task.once('test-run-start', addRunningTest);
-            task.once('test-run-done', removeRunningTest);
+            task.on('test-run-start', addRunningTest);
+            task.on('test-run-done', removeRunningTest);
         }
 
         task.on('done', stopHandlingTestErrors);
