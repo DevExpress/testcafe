@@ -22,6 +22,7 @@ import { UNSTABLE_NETWORK_MODE_HEADER } from '../browser/connection/unstable-net
 import WarningLog from '../notifications/warning-log';
 import WARNING_MESSAGE from '../notifications/warning-message';
 import { StateSnapshot, SPECIAL_ERROR_PAGE } from 'testcafe-hammerhead';
+import { NavigateToCommand } from './commands/actions';
 
 import {
     isCommandRejectableByPageError,
@@ -604,16 +605,7 @@ export default class TestRun extends AsyncEventEmitter {
         return state;
     }
 
-    async removeActiveDialogHandler () {
-        if (!this.activeDialogHandler)
-            return;
-
-        const removeDialogHandlerCommand = new actionCommands.SetNativeDialogHandlerCommand({ dialogHandler: { fn: null } });
-
-        await this.executeCommand(removeDialogHandlerCommand);
-    }
-
-    async switchToCleanRun () {
+    async switchToCleanRun (url) {
         this.ctx             = Object.create(null);
         this.fixtureCtx      = Object.create(null);
         this.consoleMessages = new BrowserConsoleMessages();
@@ -631,6 +623,20 @@ export default class TestRun extends AsyncEventEmitter {
 
             await this.executeCommand(setPageLoadTimeoutCommand);
         }
+
+        await this.navigateToUrl(url, true);
+
+        if (this.activeDialogHandler) {
+            const removeDialogHandlerCommand = new actionCommands.SetNativeDialogHandlerCommand({ dialogHandler: { fn: null } });
+
+            await this.executeCommand(removeDialogHandlerCommand);
+        }
+    }
+
+    async navigateToUrl (url, forceReload, stateSnapshot) {
+        const navigateCommand = new NavigateToCommand({ url, forceReload, stateSnapshot });
+
+        await this.executeCommand(navigateCommand);
     }
 
     async _getStateSnapshotFromRole (role) {
