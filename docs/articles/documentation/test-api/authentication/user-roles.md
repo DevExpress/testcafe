@@ -68,7 +68,7 @@ const admin = Role('http://example.com/login', async t => {
 
 After you create the roles, you can switch between users at any moment except for the role initialization code.
 
-If you switch to a role for the first time in test run, the browser will be navigated from the original page to a login page where the role initialization code will be executed. Then the original page will be reloaded with new credentials. If you switch to a role that has already been initialized, TestCafe simply reloads the current page with the appropriate credentials.
+If you switch to a role for the first time in test run, the browser will be navigated from the original page to a login page where the role initialization code will be executed. Then the original page will be reloaded with new credentials (you can use the [preserveUrl](#optionspreserveurl) option to disable redirect to the original page). If you switch to a role that has already been initialized, TestCafe simply reloads the current page with the appropriate credentials.
 
 To switch to a role, use the `t.useRole` function.
 
@@ -133,6 +133,8 @@ test('Anonymous users can see newly created comments', async t => {
 ```
 
 ## Role Options
+
+You can pass the following options to the [Role constructor](#create-and-use-roles).
 
 ### options.preserveUrl
 
