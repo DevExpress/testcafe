@@ -605,11 +605,12 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     async removeActiveDialogHandler () {
-        if (this.activeDialogHandler) {
-            const removeDialogHandlerCommand = new actionCommands.SetNativeDialogHandlerCommand({ dialogHandler: { fn: null } });
+        if (!this.activeDialogHandler)
+            return;
 
-            await this.executeCommand(removeDialogHandlerCommand);
-        }
+        const removeDialogHandlerCommand = new actionCommands.SetNativeDialogHandlerCommand({ dialogHandler: { fn: null } });
+
+        await this.executeCommand(removeDialogHandlerCommand);
     }
 
     async switchToCleanRun () {
