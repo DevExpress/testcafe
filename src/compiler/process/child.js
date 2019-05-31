@@ -1,5 +1,5 @@
 import Compiler from '../index';
-import testRunProxy from './test-run-proxy';
+import TestRunProxy from './test-run-proxy';
 
 
 console.log('\n', process.argv, '\n');
@@ -14,7 +14,7 @@ process.on('message', data => {
            compiler.getTests().then(result => { tests = result; process.send(result) });
            return;
        case 'runTest':
-           Promise.resolve(tests[data.idx].fn(testRunProxy)).then(() => process.send({})).catch(error => process.send({ error }));
+           Promise.resolve(tests[data.idx].fn(new TestRunProxy(data.testRunId))).then(() => process.send({})).catch(error => process.send({ error }));
            return;
    }
 });

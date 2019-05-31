@@ -46,7 +46,7 @@ export default class CompilerProcess {
     async getTests () {
         const tests = await this._sendMessage({ name: 'getTests' });
 
-        tests.forEach((test, idx) => test.fn = () => this.runTest(idx).then(({ result, error }) => {
+        tests.forEach((test, idx) => test.fn = (testRun) => this.runTest(idx, testRun.id).then(({ result, error }) => {
             if (error)
                 throw error;
 
@@ -56,8 +56,8 @@ export default class CompilerProcess {
         return tests;
     }
 
-    async runTest(idx) {
-        return await this._sendMessage({ name: 'runTest', idx });
+    async runTest(idx, testRunId) {
+        return await this._sendMessage({ name: 'runTest', idx, testRunId });
     }
 
     static cleanUp () {
