@@ -6,65 +6,71 @@ const TEST_RUN_PHASE                                     = require('../../lib/te
 const { TEST_RUN_ERRORS, RUNTIME_ERRORS }                = require('../../lib/errors/types');
 const TestRunErrorFormattableAdapter                     = require('../../lib/errors/test-run/formattable-adapter');
 const testCallsite                                       = require('./data/test-callsite');
-const AssertionExecutableArgumentError                   = require('../../lib/errors/test-run').AssertionExecutableArgumentError;
-const AssertionWithoutMethodCallError                    = require('../../lib/errors/test-run').AssertionWithoutMethodCallError;
-const AssertionUnawaitedPromiseError                     = require('../../lib/errors/test-run').AssertionUnawaitedPromiseError;
-const ActionIntegerOptionError                           = require('../../lib/errors/test-run').ActionIntegerOptionError;
-const ActionPositiveIntegerOptionError                   = require('../../lib/errors/test-run').ActionPositiveIntegerOptionError;
-const ActionIntegerArgumentError                         = require('../../lib/errors/test-run').ActionIntegerArgumentError;
-const ActionPositiveIntegerArgumentError                 = require('../../lib/errors/test-run').ActionPositiveIntegerArgumentError;
-const ActionBooleanOptionError                           = require('../../lib/errors/test-run').ActionBooleanOptionError;
-const ActionBooleanArgumentError                         = require('../../lib/errors/test-run').ActionBooleanArgumentError;
-const ActionSpeedOptionError                             = require('../../lib/errors/test-run').ActionSpeedOptionError;
-const ActionSelectorError                                = require('../../lib/errors/test-run').ActionSelectorError;
-const ActionOptionsTypeError                             = require('../../lib/errors/test-run').ActionOptionsTypeError;
-const ActionStringArgumentError                          = require('../../lib/errors/test-run').ActionStringArgumentError;
-const ActionNullableStringArgumentError                  = require('../../lib/errors/test-run').ActionNullableStringArgumentError;
-const ActionStringOrStringArrayArgumentError             = require('../../lib/errors/test-run').ActionStringOrStringArrayArgumentError;
-const ActionStringArrayElementError                      = require('../../lib/errors/test-run').ActionStringArrayElementError;
-const PageLoadError                                      = require('../../lib/errors/test-run').PageLoadError;
-const UncaughtErrorOnPage                                = require('../../lib/errors/test-run').UncaughtErrorOnPage;
-const UncaughtErrorInTestCode                            = require('../../lib/errors/test-run').UncaughtErrorInTestCode;
-const UncaughtErrorInClientFunctionCode                  = require('../../lib/errors/test-run').UncaughtErrorInClientFunctionCode;
-const UncaughtNonErrorObjectInTestCode                   = require('../../lib/errors/test-run').UncaughtNonErrorObjectInTestCode;
-const UncaughtErrorInCustomDOMPropertyCode               = require('../../lib/errors/test-run').UncaughtErrorInCustomDOMPropertyCode;
-const UnhandledPromiseRejectionError                     = require('../../lib/errors/test-run').UnhandledPromiseRejectionError;
-const UncaughtExceptionError                             = require('../../lib/errors/test-run').UncaughtExceptionError;
-const ActionElementNotFoundError                         = require('../../lib/errors/test-run').ActionElementNotFoundError;
-const ActionElementIsInvisibleError                      = require('../../lib/errors/test-run').ActionElementIsInvisibleError;
-const ActionSelectorMatchesWrongNodeTypeError            = require('../../lib/errors/test-run').ActionSelectorMatchesWrongNodeTypeError;
-const ActionAdditionalElementNotFoundError               = require('../../lib/errors/test-run').ActionAdditionalElementNotFoundError;
-const ActionAdditionalElementIsInvisibleError            = require('../../lib/errors/test-run').ActionAdditionalElementIsInvisibleError;
-const ActionAdditionalSelectorMatchesWrongNodeTypeError  = require('../../lib/errors/test-run').ActionAdditionalSelectorMatchesWrongNodeTypeError;
-const ActionElementNonEditableError                      = require('../../lib/errors/test-run').ActionElementNonEditableError;
-const ActionElementNonContentEditableError               = require('../../lib/errors/test-run').ActionElementNonContentEditableError;
-const ActionRootContainerNotFoundError                   = require('../../lib/errors/test-run').ActionRootContainerNotFoundError;
-const ActionElementNotTextAreaError                      = require('../../lib/errors/test-run').ActionElementNotTextAreaError;
-const ActionIncorrectKeysError                           = require('../../lib/errors/test-run').ActionIncorrectKeysError;
-const ActionCannotFindFileToUploadError                  = require('../../lib/errors/test-run').ActionCannotFindFileToUploadError;
-const ActionElementIsNotFileInputError                   = require('../../lib/errors/test-run').ActionElementIsNotFileInputError;
-const ActionUnsupportedDeviceTypeError                   = require('../../lib/errors/test-run').ActionUnsupportedDeviceTypeError;
-const ActionInvalidScrollTargetError                     = require('../../lib/errors/test-run').ActionInvalidScrollTargetError;
-const ClientFunctionExecutionInterruptionError           = require('../../lib/errors/test-run').ClientFunctionExecutionInterruptionError;
-const ActionElementNotIframeError                        = require('../../lib/errors/test-run').ActionElementNotIframeError;
-const ActionIframeIsNotLoadedError                       = require('../../lib/errors/test-run').ActionIframeIsNotLoadedError;
-const CurrentIframeIsNotLoadedError                      = require('../../lib/errors/test-run').CurrentIframeIsNotLoadedError;
-const CurrentIframeNotFoundError                         = require('../../lib/errors/test-run').CurrentIframeNotFoundError;
-const CurrentIframeIsInvisibleError                      = require('../../lib/errors/test-run').CurrentIframeIsInvisibleError;
-const MissingAwaitError                                  = require('../../lib/errors/test-run').MissingAwaitError;
-const ExternalAssertionLibraryError                      = require('../../lib/errors/test-run').ExternalAssertionLibraryError;
-const DomNodeClientFunctionResultError                   = require('../../lib/errors/test-run').DomNodeClientFunctionResultError;
-const InvalidSelectorResultError                         = require('../../lib/errors/test-run').InvalidSelectorResultError;
-const NativeDialogNotHandledError                        = require('../../lib/errors/test-run').NativeDialogNotHandledError;
-const UncaughtErrorInNativeDialogHandler                 = require('../../lib/errors/test-run').UncaughtErrorInNativeDialogHandler;
-const SetNativeDialogHandlerCodeWrongTypeError           = require('../../lib/errors/test-run').SetNativeDialogHandlerCodeWrongTypeError;
-const CannotObtainInfoForElementSpecifiedBySelectorError = require('../../lib/errors/test-run').CannotObtainInfoForElementSpecifiedBySelectorError;
-const WindowDimensionsOverflowError                      = require('../../lib/errors/test-run').WindowDimensionsOverflowError;
-const ForbiddenCharactersInScreenshotPathError           = require('../../lib/errors/test-run').ForbiddenCharactersInScreenshotPathError;
-const InvalidElementScreenshotDimensionsError            = require('../../lib/errors/test-run').InvalidElementScreenshotDimensionsError;
-const SetTestSpeedArgumentError                          = require('../../lib/errors/test-run').SetTestSpeedArgumentError;
-const RoleSwitchInRoleInitializerError                   = require('../../lib/errors/test-run').RoleSwitchInRoleInitializerError;
-const ActionRoleArgumentError                            = require('../../lib/errors/test-run').ActionRoleArgumentError;
+
+const {
+    AssertionExecutableArgumentError,
+    AssertionWithoutMethodCallError,
+    AssertionUnawaitedPromiseError,
+    ActionIntegerOptionError,
+    ActionPositiveIntegerOptionError,
+    ActionIntegerArgumentError,
+    ActionPositiveIntegerArgumentError,
+    ActionBooleanOptionError,
+    ActionBooleanArgumentError,
+    ActionSpeedOptionError,
+    ActionSelectorError,
+    ActionOptionsTypeError,
+    ActionStringArgumentError,
+    ActionNullableStringArgumentError,
+    ActionStringOrStringArrayArgumentError,
+    ActionStringArrayElementError,
+    PageLoadError,
+    UncaughtErrorOnPage,
+    UncaughtErrorInTestCode,
+    UncaughtErrorInClientFunctionCode,
+    UncaughtNonErrorObjectInTestCode,
+    UncaughtErrorInCustomDOMPropertyCode,
+    UnhandledPromiseRejectionError,
+    UncaughtExceptionError,
+    ActionElementNotFoundError,
+    ActionElementIsInvisibleError,
+    ActionSelectorMatchesWrongNodeTypeError,
+    ActionAdditionalElementNotFoundError,
+    ActionAdditionalElementIsInvisibleError,
+    ActionAdditionalSelectorMatchesWrongNodeTypeError,
+    ActionElementNonEditableError,
+    ActionElementNonContentEditableError,
+    ActionRootContainerNotFoundError,
+    ActionElementNotTextAreaError,
+    ActionIncorrectKeysError,
+    ActionCannotFindFileToUploadError,
+    ActionElementIsNotFileInputError,
+    ActionUnsupportedDeviceTypeError,
+    ActionInvalidScrollTargetError,
+    ClientFunctionExecutionInterruptionError,
+    ActionElementNotIframeError,
+    ActionIframeIsNotLoadedError,
+    CurrentIframeIsNotLoadedError,
+    CurrentIframeNotFoundError,
+    CurrentIframeIsInvisibleError,
+    MissingAwaitError,
+    ExternalAssertionLibraryError,
+    DomNodeClientFunctionResultError,
+    InvalidSelectorResultError,
+    NativeDialogNotHandledError,
+    UncaughtErrorInNativeDialogHandler,
+    SetNativeDialogHandlerCodeWrongTypeError,
+    CannotObtainInfoForElementSpecifiedBySelectorError,
+    WindowDimensionsOverflowError,
+    ForbiddenCharactersInScreenshotPathError,
+    InvalidElementScreenshotDimensionsError,
+    SetTestSpeedArgumentError,
+    RoleSwitchInRoleInitializerError,
+    ActionRoleArgumentError,
+    RequestHookNotImplementedMethodError,
+    RequestHookUnhandledError
+} = require('../../lib/errors/test-run');
+
 const { createSimpleTestStream }                         = require('../functional/utils/stream');
 
 const TEST_FILE_STACK_ENTRY_RE = new RegExp('\\s*\\n?\\(' + escapeRegExp(require.resolve('./data/test-callsite')), 'g');
@@ -359,6 +365,14 @@ describe('Error formatting', () => {
 
         it('Should format "assertionUnawaitedPromiseError"', () => {
             assertErrorMessage('assertion-unawaited-promise-error', new AssertionUnawaitedPromiseError(testCallsite));
+        });
+
+        it('Should format "requestHookNotImplementedError"', () => {
+            assertErrorMessage('request-hook-method-not-implemented-error', new RequestHookNotImplementedMethodError('onRequest', 'MyHook'));
+        });
+
+        it('Should format "requestHookUnhandledError"', () => {
+            assertErrorMessage('request-hook-unhandled-error', new RequestHookUnhandledError(new Error('Test error'), 'MyHook', 'onRequest'));
         });
     });
 

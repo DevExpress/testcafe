@@ -1,4 +1,4 @@
-import { pull as remove } from 'lodash';
+import { pull, remove, chain } from 'lodash';
 import { readSync as read } from 'read-file-relative';
 import promisifyEvent from 'promisify-event';
 import Promise from 'pinkie';
@@ -8,7 +8,12 @@ import debugLogger from '../notifications/debug-logger';
 import TestRunDebugLog from './debug-log';
 import TestRunErrorFormattableAdapter from '../errors/test-run/formattable-adapter';
 import TestCafeErrorList from '../errors/error-list';
-import { PageLoadError, RoleSwitchInRoleInitializerError } from '../errors/test-run/';
+import {
+    RequestHookUnhandledError,
+    PageLoadError,
+    RequestHookNotImplementedMethodError,
+    RoleSwitchInRoleInitializerError
+} from '../errors/test-run/';
 import PHASE from './phase';
 import CLIENT_MESSAGES from './client-messages';
 import COMMAND_TYPE from './commands/type';
@@ -33,6 +38,8 @@ import {
     isExecutableOnClientCommand,
     isResizeWindowCommand
 } from './commands/utils';
+
+import { TEST_RUN_ERRORS } from '../errors/types';
 
 const lazyRequire                 = require('import-lazy')(require);
 const SessionController           = lazyRequire('./session-controller');
@@ -147,7 +154,7 @@ export default class TestRun extends AsyncEventEmitter {
         if (this.requestHooks.indexOf(hook) === -1)
             return;
 
-        remove(this.requestHooks, hook);
+        pull(this.requestHooks, hook);
         this._disposeRequestHook(hook);
     }
 
@@ -160,8 +167,21 @@ export default class TestRun extends AsyncEventEmitter {
                 onRequest:           hook.onRequest.bind(hook),
                 onConfigureResponse: hook._onConfigureResponse.bind(hook),
                 onResponse:          hook.onResponse.bind(hook)
-            });
+            }, err => this._onRequestHookMethodError(err, hook));
         });
+    }
+
+    _onRequestHookMethodError (event, hook) {
+        let err                                      = event.error;
+        const isRequestHookNotImplementedMethodError = err instanceof RequestHookNotImplementedMethodError;
+
+        if (!isRequestHookNotImplementedMethodError) {
+            const hookClassName = hook.constructor.name;
+
+            err = new RequestHookUnhandledError(err, hookClassName, event.methodName);
+        }
+
+        this.addError(err);
     }
 
     _disposeRequestHook (hook) {
@@ -306,6 +326,8 @@ export default class TestRun extends AsyncEventEmitter {
         await this.executeCommand(new serviceCommands.TestDoneCommand());
 
         this._addPendingPageErrorIfAny();
+        this.session.clearRequestEventListeners();
+        this.normalizeRequestHookErrors();
 
         delete testRunTracker.activeTestRuns[this.session.id];
 
@@ -339,6 +361,22 @@ export default class TestRun extends AsyncEventEmitter {
 
             this.errs.push(adapter);
         });
+    }
+
+    normalizeRequestHookErrors () {
+        const requestHookErrors = remove(this.errs, e =>
+            e.code === TEST_RUN_ERRORS.requestHookNotImplementedError ||
+            e.code === TEST_RUN_ERRORS.requestHookUnhandledError);
+
+        if (!requestHookErrors.length)
+            return;
+
+        const uniqRequestHookErrors = chain(requestHookErrors)
+            .uniqBy(e => e.hookClassName + e.methodName)
+            .sortBy(['hookClassName', 'methodName'])
+            .value();
+
+        this.errs = this.errs.concat(uniqRequestHookErrors);
     }
 
     // Task queue
