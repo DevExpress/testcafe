@@ -119,6 +119,11 @@ class JwtBearerAuthorization extends RequestHook {
     onRequest (e) {
         e.requestOptions.headers['Authorization'] = 'generate token here';
     }
+
+    onResponse (e) {
+        // This method must also be overridden,
+        // but you can leave it blank.
+    }
 }
 
 const jwtBearerAuthorization = new JwtBearerAuthorization();
