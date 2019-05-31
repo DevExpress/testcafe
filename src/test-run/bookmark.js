@@ -7,8 +7,7 @@ import {
     SwitchToIframeCommand,
     SetNativeDialogHandlerCommand,
     SetTestSpeedCommand,
-    SetPageLoadTimeoutCommand,
-    NavigateToCommand
+    SetPageLoadTimeoutCommand
 } from './commands/actions';
 
 import {
@@ -84,10 +83,8 @@ export default class TestRunBookmark {
         }
     }
 
-    async _restorePage (url, stateSnapshot, forceReload) {
-        const navigateCommand = new NavigateToCommand({ url, stateSnapshot, forceReload });
-
-        await this.testRun.executeCommand(navigateCommand);
+    async _restorePage (url, stateSnapshot) {
+        await this.testRun.navigateToUrl(url, true, JSON.stringify(stateSnapshot));
     }
 
     async restore (callsite, stateSnapshot) {
@@ -107,7 +104,7 @@ export default class TestRunBookmark {
             const preserveUrl = this.role.opts.preserveUrl;
             const url         = preserveUrl ? this.role.url : this.url;
 
-            await this._restorePage(url, JSON.stringify(stateSnapshot), true);
+            await this._restorePage(url, stateSnapshot);
 
             if (!preserveUrl)
                 await this._restoreWorkingFrame();
