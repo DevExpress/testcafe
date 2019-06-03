@@ -112,7 +112,10 @@ export default class Runner extends EventEmitter {
         const browserSetErrorPromise = promisifyEvent(browserSet, 'error');
 
         const taskDonePromise = task.once('done')
-            .then(() => browserSetErrorPromise.cancel());
+            .then(() => browserSetErrorPromise.cancel())
+            .then(() => {
+                return Promise.all(reporters.map(reporter => reporter.pendingTaskDonePromise));
+            });
 
 
         const promises = [
