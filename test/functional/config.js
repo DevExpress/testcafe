@@ -136,7 +136,7 @@ testingEnvironments[testingEnvironmentNames.localHeadlessChrome] = {
     browsers: [
         {
             platform:    'Windows 10',
-            browserName: 'chrome:headless --no-sandbox',
+            browserName: 'chrome --no-sandbox',
             userAgent:   'headlesschrome',
             alias:       'chrome'
         }

@@ -10,6 +10,7 @@ export default class Fixture extends TestingUnit {
     constructor (testFile) {
         super(testFile, 'fixture');
 
+        this.id = require('nanoid')();
         this.path = testFile.filename;
 
         this.pageUrl = SPECIAL_BLANK_PAGE;

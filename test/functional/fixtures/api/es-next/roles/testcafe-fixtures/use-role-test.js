@@ -32,7 +32,7 @@ async function setToken (tokenValue) {
 
 
 fixture `UseRole`
-    .page `http://localhost:3000/fixtures/api/es-next/roles/pages/index.html`
+    .page `../pages/index.html`
     .afterEach(async () => {
         await t
             .expect(role1Executions).eql(1)

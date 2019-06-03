@@ -92,7 +92,7 @@ export default class Reporter {
             // fixture, we can report this fixture start.
             nextReportItem = this.reportQueue[0];
 
-            if (nextReportItem && nextReportItem.fixture !== currentFixture)
+            if (nextReportItem && nextReportItem.fixture.id !== currentFixture.id)
                 await this.plugin.reportFixtureStart(nextReportItem.fixture.name, nextReportItem.fixture.path, nextReportItem.fixture.meta);
         }
     }
