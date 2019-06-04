@@ -5,7 +5,11 @@ permalink: /documentation/using-testcafe/common-concepts/browsers/using-chrome-d
 ---
 # Using Chrome Device Emulation
 
-You can run test in Chrome's built-in [device emulator](https://developers.google.com/web/tools/chrome-devtools/device-mode/). To do this, use the `emulation` browser parameter. Specify the target device with the `device` parameter.
+You can run test in Chrome's built-in [device emulator](https://developers.google.com/web/tools/chrome-devtools/device-mode/). To do this, use the `emulation` browser parameter.
+
+## Emulate a Device
+
+Specify the target device with the `device` parameter.
 
 ```sh
 testcafe "chrome:emulation:device=iphone X" tests/sample-fixture.js
@@ -18,7 +22,9 @@ runner
     .run();
 ```
 
-Alternatively, you can configure the device emulator by providing `width`, `height`, `orientation`, etc.
+## Emulate a Screen Size
+
+You can configure the device emulator by providing `width`, `height`, `orientation`, etc.
 
 ```sh
 testcafe "chrome:emulation:width=100;height=200;mobile=true;orientation=vertical;touch=true" tests/sample-fixture.js
@@ -30,6 +36,8 @@ runner
     .browsers('chrome:emulation:width=100;height=200;mobile=true;orientation=vertical;touch=true')
     .run();
 ```
+
+## Use Emulation in Headless Mode
 
 You can combine both device emulation and headless mode.
 
@@ -44,10 +52,47 @@ runner
     .run();
 ```
 
-To enable device emulation in a portable Chrome, also use the [browser alias](browser-support.md#locally-installed-browsers). The `path:` prefix does not work in this case.
+## Use Emulation in Portable Chrome
+
+To enable device emulation in a portable Chrome, use the [browser alias](browser-support.md#locally-installed-browsers). The `path:` prefix does not work in this case.
 
 ```sh
 testcafe "chrome:d:\chrome_portable\chrome.exe:emulation:device=iphone X" tests/test.js
+```
+
+## Substitute a User Agent
+
+Use the `userAgent` parameter to substitute a user agent string.
+
+> Important! TestCafe relies on the user agent string to emulate the browser behavior. Tests are not guaranteed to run correctly if you provide a user agent that is invalid or not supported by TestCafe.
+
+You need to escape special characters in the user agent string when you specify it in the command line. These characters include:
+
+* `\` (backslash)
+* `'` (single quote)
+* `"` (double quote)
+* `,` (comma)
+* `;` (semicolon)
+* `:` (colon)
+
+The way to escape special characters depends on the shell you use. You also need to escape semicolons from the TestCafe argument parser with an additional backslash.
+
+The following examples show user agent strings escaped for `bash` and `PowerShell`.
+
+**bash**
+
+In `bash`, put a dollar sign before the argument to allow single quotes. Escape special characters with a backslash and use a double backslash for semicolons to escape them from the TestCafe argument parser:
+
+```sh
+testcafe $'chrome:emulation:userAgent=\'Mozilla/5.0 (Windows NT 10.0\\; Win64\\; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36\'' test.js
+```
+
+**PowerShell**
+
+In `PowerShell`, escape special characters with a single quote and use a backslash for semicolons to escape them from the TestCafe argument parser:
+
+```sh
+testcafe 'chrome:emulation:userAgent=''Mozilla/5.0 (Windows NT 10.0\; Win64\; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36''' test.js
 ```
 
 ## Emulator Parameters
