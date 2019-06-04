@@ -4,46 +4,107 @@ import EE from '../../utils/async-event-emitter';
 
 const fs = require('fs');
 
-const r = fs.createReadStream('', { fd: 3 });
-const w = fs.createWriteStream('', { fd: 3 });
+class Transmitter extends EE {
+    constructor () {
+        super();
 
+        this.inBuffer  = Buffer.alloc(64535);
 
+        this.listen();
+    }
 
+    _read () {
+        return new Promise((resolve, reject) => {
+            fs.read(3, this.inBuffer, 0, this.inBuffer.length, null, (err, len) => {
+                if (err)
+                    reject(err);
+                else
+                    resolve(len);
+            })
+        });
+    }
 
-global.proc = new EE();
+    async listen () {
+        while (true) {
+            const len = await this._read();
 
-const reader = data => {
-    console.log('innerdata');
-    //proc.emit('message', JSON.parse(data.toString()))
-};
+            await this.emit('message', JSON.parse(this.inBuffer.slice(0, len).toString()));
+        }
+    }
 
-proc.send = message => {
-    console.log('msg', message);
-    console.log(w.write(JSON.stringify('asdadsdadadaadadsadadadasd')));
-    w.end();
+    async send (message) {
+        return new Promise((resolve, reject) => {
+            fs.write(4, JSON.stringify(message), err => {
+                if (err)
+                    reject(err);
+                else
+                    resolve();
+            });
+        });
+    }
 }
+
+global.proc = new Transmitter();
 
 console.log('\n', process.argv, '\n');
 
 const compiler = new Compiler(JSON.parse(process.argv[2]));
 
 let tests = null;
+let requestHooks = {};
 
-proc.on('message', data => {
-    console.log(data);
+proc.on('message', async data => {
    switch (data.name) {
        case 'getTests':
-           w.write('ololo');
-           return;
-           compiler.getTests().then(result => { console.log('tests ok'); tests = result; proc.send({}) });
+           tests = await compiler.getTests();
+
+           proc.send({ name:'getTests', tests });
+
+           tests.forEach(test => {
+               for (const hook of test.requestHooks)
+                   requestHooks[hook.id] = hook;
+           });
+
            return;
        case 'runTest':
-           Promise.resolve(tests[data.idx].fn(new TestRunProxy(data.testRunId))).then(() => proc.send({})).catch(error => proc.send({ error }));
+           try {
+               await tests[data.idx].fn(new TestRunProxy(data.testRunId, tests[data.idx]));
+
+               proc.send({ name: 'runTest' });
+           }
+           catch (error) {
+               proc.send({ name: 'runTest', error });
+           }
+       case 'on-request':
+           if (requestHooks[data.id])
+                await requestHooks[id].onRequest(data.event);
+
+           process.send({ name: 'on-request' });
+
            return;
+       case 'on-response':
+           if (requestHooks[data.id])
+               await requestHooks[id].onResponse(data.event);
+
+           process.send({ name: 'on-response' });
+
+           return;
+       case 'on-configure-response':
+           if (requestHooks[data.id])
+               await requestHooks[id]._onConfigureResponse(data.event);
+
+           process.send({ name: 'on-configure-response' });
+
+           return;
+       case 'add-request-hook':
+           if (requestHooks[data.id])
+               return;
+
+           requestHooks[data.id] = data;
+
+           process.send({ name: 'add-request-hook', hook: data });
+
+           return;
+
    }
 });
-
-setTimeout(() => {
-    w.write(JSON.stringify('asdaasdadadasdadasd') )
-
-}, 3000);

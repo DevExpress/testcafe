@@ -7,13 +7,24 @@ const AssertionExecutor           = require('../../assertions/executor');
 
 
 class TestRunMock {
-    constructor (id) {
+    constructor (id, test) {
         this.id = id;
+        this.test = test;
+
         testRunTracker.activeTestRuns[id] = this;
 
         this.opts = {
             assertionTimeout: 10000
         };
+
+        this.requestHooks = {};
+        this.test.requestHooks.forEach();
+
+        this._initRequestHooks();
+    }
+
+    _initRequestHooks () {
+
     }
 
     async _executeAssertion (command, callsite) {
@@ -44,7 +55,7 @@ class TestRunMock {
         });
     }
 
-    addRequestHooks () {
+    addRequestHook () {
 
     }
 

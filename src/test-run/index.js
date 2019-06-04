@@ -116,10 +116,6 @@ export default class TestRun extends AsyncEventEmitter {
         this.injectable.scripts.push('/testcafe-automation.js');
         this.injectable.scripts.push('/testcafe-driver.js');
         this.injectable.styles.push('/testcafe-ui-styles.css');
-
-        this.requestHooks = Array.from(this.test.requestHooks);
-
-        this._initRequestHooks();
     }
 
     get id () {

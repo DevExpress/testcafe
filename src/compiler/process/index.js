@@ -15,18 +15,25 @@ export default class CompilerProcess {
 
     _getCP () {
         if (!this.cpPromise) {
-            const cp = spawn(process.argv0, [join(__dirname, 'child.js'), JSON.stringify(this.sources)], {stdio: [0, 1, 2, 'pipe']});
+            const cp = spawn(process.argv0, ['--inspect-brk', join(__dirname, 'child.js'), JSON.stringify(this.sources)], {stdio: [0, 1, 2, 'pipe', 'pipe']});
 
             const proc = new EE();
 
             this.cp = cp;
 
-            cp.stdio[3].on('data', data => {
-                console.log('hehe', JSON.parse(data.toString()));
-                proc.emit('message', JSON.parse(data.toString()))
+            cp.stdio[4].on('data', data => {
+                try {
+                    console.log('serv recv', data.toString());
+                    proc.emit('message', JSON.parse(data.toString()))
+                } catch (e) {
+
+                }
             });
 
-            proc.send = message => console.log('send', message) || cp.stdio[3].write(JSON.stringify(message));
+            proc.send = message => {
+                console.log('serv sent', message);
+                cp.stdio[3].write(JSON.stringify(message));
+            }
 
             this.cpPromise = Promise
                 .resolve()
@@ -40,15 +47,25 @@ export default class CompilerProcess {
                                 return testRunTracker
                                 .activeTestRuns[data.id]
                                 .executeCommand(data.command)
-                                .then(result => proc.send({result}));
-                            case 'switch-to-clean-run': testRunTracker
+                                .then(result => {
+                                    console.log(data.command);
+                                    console.log(result);
+                                    proc.send({result})
+                                });
+                            case 'switch-to-clean-run':
+                                return testRunTracker
                                 .activeTestRuns[data.id]
                                 .switchToCleanRun()
                                 .then(result => proc.send({result}));
-                            case 'get-current-url': testRunTracker
+                            case 'get-current-url':
+                                return testRunTracker
                                 .activeTestRuns[data.id]
                                 .getCurrentUrl()
                                 .then(result => proc.send({result}));
+                            case 'add-request-hook':
+                                return testRunTracker
+                                    .activeTestRuns[data.id]
+                                    .addRequestHook
                             default:
                                 return;
                         }
@@ -64,12 +81,13 @@ export default class CompilerProcess {
     async _sendMessage (msg) {
         const cp = await this._getCP();
 
-        await new Promise(r => setTimeout(() => console.log('timeout') || r(), 10000));
-
-        //cp.send(msg);
+        cp.send(msg);
 
         return await new Promise(r => {
-            cp.on('message', data => { console.log('data'); r(data)});
+            cp.on('message', data => {
+                if (data.name === msg.name)
+                    r(data)
+            });
         });
     }
 
@@ -78,20 +96,31 @@ export default class CompilerProcess {
     }
 
     async getTests () {
-        const tests = await this._sendMessage({ name: 'getTests' });
+        const { tests } = await this._sendMessage({ name: 'getTests' });
 
-        tests.forEach((test, idx) => test.fn = (testRun) => this.runTest(idx, testRun.id).then(({ result, error }) => {
-            if (error)
-                throw error;
+        tests.forEach((test, idx) => {
+            test.fn = (testRun) => this
+                .runTest(idx, testRun.id)
+                .then(({ result, error }) => {
+                    if (error)
+                        throw error;
 
-            return result;
-        }));
+                    return result;
+                });
+
+            if (test.requestHooks.length) {
+                test.requestHooks.forEach(hook => {
+                    hook.onRequest = event => this._sendMessage({ name: 'on-request', id: hook.id, event });
+                    hook.onResponse = event => this._sendMessage({ name: 'on-response', id: hook.id, event });
+                    hook._onConfigureResponse = event => this._sendMessage({ name: 'on-configure-response', id: hook.id, event });
+                });
+            }
+        });
 
         return tests;
     }
 
     async runTest(idx, testRunId) {
-
         return await this._sendMessage({ name: 'runTest', idx, testRunId });
     }
 
