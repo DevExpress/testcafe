@@ -6,6 +6,8 @@ import { assertType, is } from '../../errors/runtime/type-assertions';
 
 export default class TestingUnit {
     constructor (testFile, unitTypeName) {
+        this.id = require('nanoid')();
+
         this.testFile     = testFile;
         this.unitTypeName = unitTypeName;
 

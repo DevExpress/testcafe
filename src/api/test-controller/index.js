@@ -115,13 +115,13 @@ export default class TestController {
     // methods in chained wrappers then we will have callsite for the wrapped method
     // in this file instead of chained method callsite in user code.
     _ctx$getter () {
-        return this.testRun.ctx;
+        return this.testRun.testCtx;
     }
 
     _ctx$setter (val) {
-        this.testRun.ctx = val;
+        this.testRun.testCtx = val;
 
-        return this.testRun.ctx;
+        return this.testRun.testCtx;
     }
 
     _fixtureCtx$getter () {
@@ -294,7 +294,7 @@ export default class TestController {
 
             assertRequestHookType(hooks);
 
-            hooks.forEach(hook => this.testRun.addRequestHook(hook));
+            this.testRun.addRequestHooks(hooks);
         });
     }
 

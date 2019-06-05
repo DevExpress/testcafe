@@ -1,7 +1,9 @@
 import { spawn } from 'child_process';
 import { join } from 'path';
 import testRunTracker from '../../api/test-run-tracker';
+import RequestHookProxy from './request-hook-proxy';
 import EE from '../../utils/async-event-emitter';
+
 
 process.on('uncaughtException', e => console.log(e));
 
@@ -11,6 +13,8 @@ export default class CompilerProcess {
     constructor (sources) {
         this.sources   = sources;
         this.cpPromise = null;
+
+        global.compiler = this;
     }
 
     _getCP () {
@@ -62,10 +66,13 @@ export default class CompilerProcess {
                                 .activeTestRuns[data.id]
                                 .getCurrentUrl()
                                 .then(result => proc.send({result}));
-                            case 'add-request-hook':
-                                return testRunTracker
-                                    .activeTestRuns[data.id]
-                                    .addRequestHook
+                            case 'add-request-hooks':
+                                const testRun = testRunTracker
+                                    .activeTestRuns[data.id];
+
+                                data.hooks.forEach(hook => testRun.addRequestHook(new RequestHookProxy(hook)));
+
+                                return;
                             default:
                                 return;
                         }
@@ -98,9 +105,14 @@ export default class CompilerProcess {
     async getTests () {
         const { tests } = await this._sendMessage({ name: 'getTests' });
 
+        const fixtures = [];
+
         tests.forEach((test, idx) => {
+            if (!fixtures.some(fixture => fixture.id === test.fixture.id))
+                fixtures.push(test.fixture);
+
             test.fn = (testRun) => this
-                .runTest(idx, testRun.id)
+                .runTest(idx, 'test', testRun.id, 'fn')
                 .then(({ result, error }) => {
                     if (error)
                         throw error;
@@ -108,20 +120,82 @@ export default class CompilerProcess {
                     return result;
                 });
 
-            if (test.requestHooks.length) {
-                test.requestHooks.forEach(hook => {
-                    hook.onRequest = event => this._sendMessage({ name: 'on-request', id: hook.id, event });
-                    hook.onResponse = event => this._sendMessage({ name: 'on-response', id: hook.id, event });
-                    hook._onConfigureResponse = event => this._sendMessage({ name: 'on-configure-response', id: hook.id, event });
-                });
+            if (test.beforeFn) {
+                test.beforeFn = (testRun) => this
+                    .runTest(idx, 'test', testRun.id, 'beforeFn')
+                    .then(({ result, error }) => {
+                        if (error)
+                            throw error;
+
+                        return result;
+                    });
+            }
+
+            if (test.afterFn) {
+                test.afterFn = (testRun) => this
+                    .runTest(idx, 'test', testRun.id, 'afterFn')
+                    .then(({ result, error }) => {
+                        if (error)
+                            throw error;
+
+                        return result;
+                    });
+            }
+
+            test.requestHooks = test.requestHooks.map(hook => new RequestHookProxy(hook));
+        });
+
+        fixtures.forEach(fixture => {
+            if (fixture.afterEachFn) {
+                test.beforeEachFn = (testRun) => this
+                    .runTest(fixture.id, 'fixture', testRun.id, 'beforeEachFn')
+                    .then(({ result, error }) => {
+                        if (error)
+                            throw error;
+
+                        return result;
+                    });
+            }
+
+            if (fixture.beforeEachFn) {
+                test.afterEachFn = (testRun) => this
+                    .runTest(fixture.id, 'fixture', testRun.id, 'afterEachFn')
+                    .then(({ result, error }) => {
+                        if (error)
+                            throw error;
+
+                        return result;
+                    });
+            }
+
+            if (fixture.afterFn) {
+                test.beforeFn = () => this
+                    .runTest(fixture.id, 'fixture', null, 'beforeFn')
+                    .then(({ result, error }) => {
+                        if (error)
+                            throw error;
+
+                        return result;
+                    });
+            }
+
+            if (fixture.beforeFn) {
+                test.afterFn = () => this
+                    .runTest(fixture.id, 'fixture', null, 'afterFn')
+                    .then(({ result, error }) => {
+                        if (error)
+                            throw error;
+
+                        return result;
+                    });
             }
         });
 
         return tests;
     }
 
-    async runTest(idx, testRunId) {
-        return await this._sendMessage({ name: 'runTest', idx, testRunId });
+    async runTest(idx, actor, testRunId, func) {
+        return await this._sendMessage({ name: 'runTest', idx, actor, func, testRunId });
     }
 
     static cleanUp () {

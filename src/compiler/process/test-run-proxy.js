@@ -7,24 +7,21 @@ const AssertionExecutor           = require('../../assertions/executor');
 
 
 class TestRunMock {
-    constructor (id, test) {
+    constructor (id, fixtureCtx) {
         this.id = id;
-        this.test = test;
+
+        this.testCtx    = Object.create(null);
+        this.fixtureCtx = fixtureCtx;
 
         testRunTracker.activeTestRuns[id] = this;
 
         this.opts = {
             assertionTimeout: 10000
         };
-
-        this.requestHooks = {};
-        this.test.requestHooks.forEach();
-
-        this._initRequestHooks();
     }
 
-    _initRequestHooks () {
-
+    addRequestHooks (hooks) {
+        proc.emit('message', { type: 'add-request-hooks', id: this.id, hooks });
     }
 
     async _executeAssertion (command, callsite) {
@@ -38,7 +35,6 @@ class TestRunMock {
     }
 
     executeCommandSync (command) {
-        spawnSync(process.argv0, [join(__dirname, 'broker.js'), JSON.stringify(command)], { stdio: [0, 1, 2] });
     }
 
     switchToCleanRun () {
