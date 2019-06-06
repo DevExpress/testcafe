@@ -5,64 +5,12 @@ import Transmitter from './transmitter';
 
 const fs = require('fs');
 
-class Transmitter extends EE {
+class ChildTransport extends EE {
     constructor () {
         super();
 
-        this.requestCounter = 0;
-
-        this.inBuffer = Buffer.alloc(64535);
-
-        this.listen();
+        this.buffer = Buffer.alloc(65535);
     }
-
-    _read () {
-
-    }
-
-    async listen () {
-        while (true) {
-            const len = await this._read();
-
-            const packet = JSON.parse(this.inBuffer.slice(0, len).toString());
-
-            if (packet.type === 'response')
-                await this.emit(`response-${packet.id}`, packet.data);
-            else
-                await this.emit('message', packet.data);
-        }
-    }
-
-    async _send (data) {
-        return new Promise((resolve, reject) => {
-            fs.write(4, JSON.stringify(data), err => {
-                if (err)
-                    reject(err);
-                else
-                    resolve();
-            });
-        });
-    }
-
-    _registerMessage (message) {
-        return {
-            id:   this.requestCounter++,
-            data: message
-        };
-    }
-
-    async send (message) {
-        const packet          = this._registerMessage(message);
-        const responsePromise = this.once(`response-${id}`);
-
-        await this._send(packet);
-
-        return responsePromise;
-    }
-}
-
-global.proc = new Transmitter({
-    buffer: Buffer.alloc(65535),
 
     async _lowRead () {
         return new Promise((resolve, reject) => {
@@ -73,17 +21,23 @@ global.proc = new Transmitter({
                     resolve(len);
             })
         });
-    },
+    }
 
     async read () {
-        const readLength = await this._lowRead();
+        while (true) {
+            const readLength = await this._lowRead();
 
-        return this.buffer.slice(0, readLength);
-    },
+            const data = this.buffer.slice(0, readLength);
+
+            console.log('client', data.toString());
+
+            this.emit('data', data);
+        }
+    }
 
     async write (data) {
         return new Promise((resolve, reject) => {
-            fs.write(4, JSON.stringify(data), err => {
+            fs.write(4, data, err => {
                 if (err)
                     reject(err);
                 else
@@ -91,7 +45,9 @@ global.proc = new Transmitter({
             });
         });
     }
-});
+}
+
+global.proc = new Transmitter(new ChildTransport());
 
 console.log('\n', process.argv, '\n');
 
@@ -128,78 +84,60 @@ function getContext (actor, testRunId) {
     if (!actor.testCtx[testRunId])
         actor.testCtx[testRunId] = new TestRunProxy(testRunId, actor.fixtureCtx);
 
-    return actor.testCtx;
+    return actor.testCtx[testRunId];
 }
 
-proc.on('message', async data => {
-   switch (data.name) {
-       case 'getTests':
-           const tests = await compiler.getTests();
+proc.on('get-tests', async data => {
+    console.log('ok');
+    
+    const tests = await compiler.getTests();
 
-           proc.send({ name:'getTests', tests });
+    tests.forEach(test => {
+        for (const hook of test.requestHooks) {
+            requestHooks[hook.id] = hook;
+            hook.requestFilterRules = hook.requestFilterRules.map(genRule);
+        }
 
-           tests.forEach(test => {
-               test.testCtx = Object.create(null);
-               test.fixture.fixtureCtx = Object.create(null);
+        test = { ...test };
+        test.fixture = { ...test.fixture };
 
-               test.fixtureCtx = test.fixture.fixtureCtx;
-               test.fixture.testCtx = test.testCtx;
+        state.tests[test.id] = test;
+        state.fixtures[test.fixture.id] = test.fixture;
 
-               state.tests[test.id] = test;
-               state.fixtures[test.fixture.id] = test.fixture;
+        test.testCtx = Object.create(null);
+        test.fixture.fixtureCtx = Object.create(null);
 
-               for (const hook of test.requestHooks) {
-                   requestHooks[hook.id] = hook;
-                   hook.requestFilterRules = hook.requestFilterRules.map(genRule);
-               }
-           });
+        test.fixtureCtx = test.fixture.fixtureCtx;
+        test.fixture.testCtx = test.testCtx;
+    });
 
-           return;
-       case 'runTest':
-           try {
-               const actor   = state[data.actor][data.idx];
-               const context = getContext(actor, data.testRunId);
+    console.log(tests);
+    return tests;
+})
+proc.on('run-test', async data => {
+    const actor   = state[data.actor][data.idx];
+    const context = getContext(actor, data.testRunId);
 
-               await actor[data.func](context);
+    await actor[data.func](context);
+})           
+proc.on('on-request', async data => {
+    if (requestHooks[data.id])
+        await requestHooks[id].onRequest(data.event);
+})           
+proc.on('on-response', async data => {
+    if (requestHooks[data.id])
+        await requestHooks[id].onResponse(data.event);
+})           
+proc.on('on-configure-response', async data => {
+    if (requestHooks[data.id])
+        await requestHooks[id]._onConfigureResponse(data.event);
+})           
+proc.on('add-request-hooks', async data => {
+    const hooks = data.hooks.filter(hook => !requestHooks[hook.id]);
 
-               proc.send({ name: 'runTest' });
-           }
-           catch (error) {
-               proc.send({ name: 'runTest', error });
-           }
-       case 'on-request':
-           if (requestHooks[data.id])
-                await requestHooks[id].onRequest(data.event);
+    hooks.forEach(hook => {
+        requestHooks[hook.id] = hook;
 
-           proc.send({ name: 'on-request' });
-
-           return;
-       case 'on-response':
-           if (requestHooks[data.id])
-               await requestHooks[id].onResponse(data.event);
-
-           proc.send({ name: 'on-response' });
-
-           return;
-       case 'on-configure-response':
-           if (requestHooks[data.id])
-               await requestHooks[id]._onConfigureResponse(data.event);
-
-           proc.send({ name: 'on-configure-response' });
-
-           return;
-       case 'add-request-hooks':
-           const hooks = data.hooks.filter(hook => !requestHooks[hook.id]);
-
-           hooks.forEach(hook => {
-               requestHooks[hook.id] = hook;
-
-               hook.requestFilterRules = hook.requestFilterRules.map(genRule);
-           });
-
-           proc.send({ name: 'add-request-hooks', id: data.id, hooks });
-
-           return;
-
-   }
-});
+        hook.requestFilterRules = hook.requestFilterRules.map(genRule);
+    });
+})

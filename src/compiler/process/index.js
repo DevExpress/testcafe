@@ -2,12 +2,38 @@ import { spawn } from 'child_process';
 import { join } from 'path';
 import testRunTracker from '../../api/test-run-tracker';
 import RequestHookProxy from './request-hook-proxy';
+import Transmitter from './transmitter';
 import EE from '../../utils/async-event-emitter';
 
 
 process.on('uncaughtException', e => console.log(e));
 
 process.on('unhandledRejection', e => console.log(e));
+
+class ParentTransport extends EE {
+    constructor (cp) {
+        super();
+
+        this.cp = cp;
+    }
+    read () {
+        this.cp.stdio[4].on('data', data => {
+            console.log('parent', data.toString())
+            this.emit('data', data)
+        });    
+    }
+
+    async write (data) {
+        return new Promise((resolve, reject) => {
+            this.cp.stdio[3].write(data, error => {
+                if (error)
+                    reject(error);
+                else
+                    resolve();
+            });
+        });
+    }
+}
 
 export default class CompilerProcess {
     constructor (sources) {
@@ -21,62 +47,56 @@ export default class CompilerProcess {
         if (!this.cpPromise) {
             const cp = spawn(process.argv0, ['--inspect-brk', join(__dirname, 'child.js'), JSON.stringify(this.sources)], {stdio: [0, 1, 2, 'pipe', 'pipe']});
 
-            const proc = new EE();
+            const proc = new Transmitter(new ParentTransport(cp));
 
             this.cp = cp;
-
-            cp.stdio[4].on('data', data => {
-                try {
-                    console.log('serv recv', data.toString());
-                    proc.emit('message', JSON.parse(data.toString()))
-                } catch (e) {
-
-                }
-            });
-
-            proc.send = message => {
-                console.log('serv sent', message);
-                cp.stdio[3].write(JSON.stringify(message));
-            }
 
             this.cpPromise = Promise
                 .resolve()
                 .then(cp => {
-                    proc.on('message', data => {
+                    proc.on('execute-command', data => {
                         if (!testRunTracker.activeTestRuns[data.id])
                             return;
 
-                        switch (data.type) {
-                            case 'execute-command':
-                                return testRunTracker
-                                .activeTestRuns[data.id]
-                                .executeCommand(data.command)
-                                .then(result => {
-                                    console.log(data.command);
-                                    console.log(result);
-                                    proc.send({result})
-                                });
-                            case 'switch-to-clean-run':
-                                return testRunTracker
-                                .activeTestRuns[data.id]
-                                .switchToCleanRun()
-                                .then(result => proc.send({result}));
-                            case 'get-current-url':
-                                return testRunTracker
-                                .activeTestRuns[data.id]
-                                .getCurrentUrl()
-                                .then(result => proc.send({result}));
-                            case 'add-request-hooks':
-                                const testRun = testRunTracker
-                                    .activeTestRuns[data.id];
+                        return testRunTracker
+                            .activeTestRuns[data.id]
+                            .executeCommand(data.command)
+                    })
+                    proc.on('switch-to-clean-run', data => {
+                        if (!testRunTracker.activeTestRuns[data.id])
+                            return;
 
-                                data.hooks.forEach(hook => testRun.addRequestHook(new RequestHookProxy(hook)));
+                        return testRunTracker
+                            .activeTestRuns[data.id]
+                            .switchToCleanRun()
+                    })
+                    proc.on('get-current-url', data => {
+                        if (!testRunTracker.activeTestRuns[data.id])
+                            return;
 
-                                return;
-                            default:
-                                return;
-                        }
-                    });
+                        return testRunTracker
+                            .activeTestRuns[data.id]
+                            .getCurrentUrl()
+                    })
+                    proc.on('add-request-hooks', data => {
+                        if (!testRunTracker.activeTestRuns[data.id])
+                            return;
+
+                        const testRun = testRunTracker
+                            .activeTestRuns[data.id];
+
+                        data.hooks.forEach(hook => testRun.addRequestHook(new RequestHookProxy(hook)));
+                    })
+                    
+                    proc.on('remove-request-hooks', data => {
+                        if (!testRunTracker.activeTestRuns[data.id])
+                            return;
+
+                        const testRun = testRunTracker
+                            .activeTestRuns[data.id];
+
+                        data.hooks.forEach(hook => testRun.removeRequestHook(new RequestHookProxy(hook)));
+                    })
 
                     return proc;
                 });
@@ -85,17 +105,11 @@ export default class CompilerProcess {
         return this.cpPromise;
     }
 
-    async _sendMessage (msg) {
+    async _sendMessage (name, args) {
         const cp = await this._getCP();
 
-        cp.send(msg);
 
-        return await new Promise(r => {
-            cp.on('message', data => {
-                if (data.name === msg.name)
-                    r(data)
-            });
-        });
+        return await cp.send(name, args);
     }
 
     static getSupportedTestFileExtensions () {
@@ -103,43 +117,25 @@ export default class CompilerProcess {
     }
 
     async getTests () {
-        const { tests } = await this._sendMessage({ name: 'getTests' });
+        const tests = await this._sendMessage('get-tests');
 
         const fixtures = [];
 
-        tests.forEach((test, idx) => {
+        tests.forEach((test) => {
             if (!fixtures.some(fixture => fixture.id === test.fixture.id))
                 fixtures.push(test.fixture);
 
             test.fn = (testRun) => this
-                .runTest(idx, 'test', testRun.id, 'fn')
-                .then(({ result, error }) => {
-                    if (error)
-                        throw error;
-
-                    return result;
-                });
+                .runTest(test.id, 'tests', testRun.id, 'fn')
 
             if (test.beforeFn) {
                 test.beforeFn = (testRun) => this
-                    .runTest(idx, 'test', testRun.id, 'beforeFn')
-                    .then(({ result, error }) => {
-                        if (error)
-                            throw error;
-
-                        return result;
-                    });
+                    .runTest(test.id, 'tests', testRun.id, 'beforeFn')
             }
 
             if (test.afterFn) {
                 test.afterFn = (testRun) => this
-                    .runTest(idx, 'test', testRun.id, 'afterFn')
-                    .then(({ result, error }) => {
-                        if (error)
-                            throw error;
-
-                        return result;
-                    });
+                    .runTest(test.id, 'tests', testRun.id, 'afterFn')
             }
 
             test.requestHooks = test.requestHooks.map(hook => new RequestHookProxy(hook));
@@ -148,46 +144,22 @@ export default class CompilerProcess {
         fixtures.forEach(fixture => {
             if (fixture.afterEachFn) {
                 test.beforeEachFn = (testRun) => this
-                    .runTest(fixture.id, 'fixture', testRun.id, 'beforeEachFn')
-                    .then(({ result, error }) => {
-                        if (error)
-                            throw error;
-
-                        return result;
-                    });
+                    .runTest(fixture.id, 'fixtures', testRun.id, 'beforeEachFn')
             }
 
             if (fixture.beforeEachFn) {
                 test.afterEachFn = (testRun) => this
-                    .runTest(fixture.id, 'fixture', testRun.id, 'afterEachFn')
-                    .then(({ result, error }) => {
-                        if (error)
-                            throw error;
-
-                        return result;
-                    });
+                    .runTest(fixture.id, 'fixtures', testRun.id, 'afterEachFn')
             }
 
             if (fixture.afterFn) {
                 test.beforeFn = () => this
-                    .runTest(fixture.id, 'fixture', null, 'beforeFn')
-                    .then(({ result, error }) => {
-                        if (error)
-                            throw error;
-
-                        return result;
-                    });
+                    .runTest(fixture.id, 'fixtures', null, 'beforeFn')
             }
 
             if (fixture.beforeFn) {
                 test.afterFn = () => this
-                    .runTest(fixture.id, 'fixture', null, 'afterFn')
-                    .then(({ result, error }) => {
-                        if (error)
-                            throw error;
-
-                        return result;
-                    });
+                    .runTest(fixture.id, 'fixtures', null, 'afterFn')
             }
         });
 
@@ -195,7 +167,7 @@ export default class CompilerProcess {
     }
 
     async runTest(idx, actor, testRunId, func) {
-        return await this._sendMessage({ name: 'runTest', idx, actor, func, testRunId });
+        return await this._sendMessage('run-test', { idx, actor, func, testRunId });
     }
 
     static cleanUp () {

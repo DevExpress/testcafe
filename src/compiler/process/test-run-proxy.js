@@ -1,5 +1,3 @@
-import { spawnSync } from 'child_process';
-import { join } from 'path';
 import testRunTracker from '../../api/test-run-tracker';
 import COMMAND_TYPE from "../../test-run/commands/type";
 const serviceCommands             = require('../../test-run/commands/service');
@@ -20,8 +18,12 @@ class TestRunMock {
         };
     }
 
-    addRequestHooks (hooks) {
-        proc.emit('message', { type: 'add-request-hooks', id: this.id, hooks });
+    async addRequestHooks (hooks) {
+        return await proc.send('add-request-hooks', { id: this.id, hooks });
+    }
+
+    async removeRequestHooks (hooks) {
+        return await proc.send('remove-request-hooks', { id: this.id, hooks });
     }
 
     async _executeAssertion (command, callsite) {
@@ -34,36 +36,23 @@ class TestRunMock {
         return executor.run();
     }
 
+
+    async switchToCleanRun () {
+        await proc.send('switch-to-clean-run', { id: this.id });
+    }
+
+    async getCurrentUrl () {
+        return await proc.send('get-current-url', { id: this.id });
+    }
+
     executeCommandSync (command) {
     }
 
-    switchToCleanRun () {
-        return new Promise(resolve => {
-            proc.send({ type: 'switch-to-clean-run', id: this.id });
-            proc.once('message', ({ result }) => resolve(result));
-        });
-    }
-
-    getCurrentUrl () {
-        return new Promise(resolve => {
-            proc.send({ type: 'get-current-url', id: this.id });
-            proc.once('message', ({ result }) => resolve(result));
-        });
-    }
-
-    addRequestHook () {
-
-    }
-
-    executeCommand (command, callsite) {
+    async executeCommand (command, callsite) {
         if (command.type === COMMAND_TYPE.assertion)
             return this._executeAssertion(command, callsite);
 
-        return new Promise(resolve => {
-            proc.send({ type: 'execute-command', command, id: this.id });
-            proc.once('message', ({ result }) => resolve(result));
-        });
-
+        return await proc.send('execute-command', { command, id: this.id });
     }
 }
 

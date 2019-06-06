@@ -1,6 +1,6 @@
 import { RequestFilterRule } from 'testcafe-hammerhead';
 import { castArray } from 'lodash';
-import nanoid from nanoid;
+import nanoid from 'nanoid';
 
 export default class RequestHook {
     constructor (requestFilterRules, responseEventConfigureOpts) {

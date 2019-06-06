@@ -9,40 +9,67 @@ export default class Transmitter extends EE {
 
         this.inBuffer = Buffer.alloc(64535);
 
-        this.listen();
-
+        this.transport.read();
+        this.transport.on('data', rawPacket => this._onRead(rawPacket));
         this.on('request', data => this._onRequest(data));
     }
 
-    async listen () {
-        while (true) {
-            const rawPacket = await this.transport.read();
-            const packet    = JSON.parse(rawPacket.toString());
+    async _onRead (rawPacket) {
+        const packet = JSON.parse(rawPacket.toString());
 
-            if (packet.type === 'response')
-                this.emit(`response-${packet.id}`, packet.data);
-            else
-                this.emit('request', packet.data);
+        if (packet.type === 'response')
+            this.emit(`response-${packet.id}`, packet);
+        else
+            this.emit('request', packet);
+    }
+
+    async _onRequest (requestPacket) {
+        const results = {
+            data: void 0,
+            error: void 0
+        };
+        
+        console.log(requestPacket.name, requestPacket.args);
+
+        try {
+            results.data = (await this.emit(requestPacket.name, requestPacket.args))[0];
         }
+        catch (error) {
+            results.error = error;
+
+            console.log(error)
+        }
+
+        const responsePacket = {
+            id:   requestPacket.id,
+            type: 'response',
+            ...results
+        };
+
+        await this.transport.write(JSON.stringify(responsePacket)); 
     }
 
-    async _onRequest (data) {
-
-    }
-
-    _registerMessage (message) {
+    _createPacket (name, args) {
         return {
             id:   this.requestCounter++,
-            data: message
+            type: 'request',
+            
+            name,
+            args
         };
     }
 
-    async send (message) {
-        const packet          = this._registerMessage(message);
-        const responsePromise = this.once(`response-${id}`);
+    async send (name, args) {
+        const packet          = this._createPacket(name, args);
+        const responsePromise = this.once(`response-${packet.id}`);
 
-        await this.transport.write(packet);
+        await this.transport.write(JSON.stringify(packet));
 
-        return responsePromise;
+        const { error, data } = await responsePromise;
+
+        if (error)
+            throw error;
+
+        return data;
     }
 }

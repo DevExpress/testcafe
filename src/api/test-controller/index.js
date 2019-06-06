@@ -294,7 +294,7 @@ export default class TestController {
 
             assertRequestHookType(hooks);
 
-            this.testRun.addRequestHooks(hooks);
+            return this.testRun.addRequestHooks(hooks);
         });
     }
 
@@ -304,7 +304,7 @@ export default class TestController {
 
             assertRequestHookType(hooks);
 
-            hooks.forEach(hook => this.testRun.removeRequestHook(hook));
+            return this.testRun.removeRequestHooks(hooks);
         });
     }
 }
