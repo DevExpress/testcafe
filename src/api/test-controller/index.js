@@ -285,7 +285,9 @@ export default class TestController {
     }
 
     _useRole$ (role) {
-        return this._enqueueCommand('useRole', UseRoleCommand, { role });
+        return this._enqueueTask('useRole', () => {
+            return () => this.testRun.useRole(role);
+        });
     }
 
     _addRequestHooks$ (...hooks) {
@@ -294,7 +296,7 @@ export default class TestController {
 
             assertRequestHookType(hooks);
 
-            return this.testRun.addRequestHooks(hooks);
+            return () => this.testRun.addRequestHooks(hooks);
         });
     }
 
@@ -304,7 +306,7 @@ export default class TestController {
 
             assertRequestHookType(hooks);
 
-            return this.testRun.removeRequestHooks(hooks);
+            return () => this.testRun.removeRequestHooks(hooks);
         });
     }
 }

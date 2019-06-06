@@ -4,6 +4,8 @@ import testRunTracker from '../../api/test-run-tracker';
 import RequestHookProxy from './request-hook-proxy';
 import Transmitter from './transmitter';
 import EE from '../../utils/async-event-emitter';
+import { UseRoleCommand } from "../../test-run/commands/actions";
+import { createRole } from '../../role';
 
 
 process.on('uncaughtException', e => console.log(e));
@@ -20,12 +22,14 @@ class ParentTransport extends EE {
         this.cp.stdio[4].on('data', data => {
             console.log('parent', data.toString())
             this.emit('data', data)
-        });    
+        });
     }
 
-    async write (data) {
+    async write (data, { syncChannel } = {}) {
+        const channel = syncChannel ? 5 : 3;
+
         return new Promise((resolve, reject) => {
-            this.cp.stdio[3].write(data, error => {
+            this.cp.stdio[channel].write(data, error => {
                 if (error)
                     reject(error);
                 else
@@ -38,79 +42,67 @@ class ParentTransport extends EE {
 export default class CompilerProcess {
     constructor (sources) {
         this.sources   = sources;
-        this.cpPromise = null;
+        this.cp        = spawn(process.argv0, ['--inspect-brk', join(__dirname, 'child.js'), JSON.stringify(this.sources)], {stdio: [0, 1, 2, 'pipe', 'pipe', 'pipe']});
 
-        global.compiler = this;
-    }
+        global.cp = this.cp;
 
-    _getCP () {
-        if (!this.cpPromise) {
-            const cp = spawn(process.argv0, ['--inspect-brk', join(__dirname, 'child.js'), JSON.stringify(this.sources)], {stdio: [0, 1, 2, 'pipe', 'pipe']});
+        this.transmitter = new Transmitter(new ParentTransport(this.cp));
 
-            const transmitter = new Transmitter(new ParentTransport(cp));
+        this.transmitter.on('execute-command', data => {
+            if (!testRunTracker.activeTestRuns[data.id])
+                return;
 
+            return testRunTracker
+                .activeTestRuns[data.id]
+                .executeCommand(data.command)
+        });
 
-            this.cpPromise = Promise
-                .resolve()
-                .then(cp => {
-                    transmitter.on('execute-command', data => {
-                        if (!testRunTracker.activeTestRuns[data.id])
-                            return;
+        this.transmitter.on('use-role', data => {
+            debugger;
 
-                        return testRunTracker
-                            .activeTestRuns[data.id]
-                            .executeCommand(data.command)
-                    })
-                    transmitter.on('switch-to-clean-run', data => {
-                        if (!testRunTracker.activeTestRuns[data.id])
-                            return;
+            if (!testRunTracker.activeTestRuns[data.id])
+                return;
 
-                        return testRunTracker
-                            .activeTestRuns[data.id]
-                            .switchToCleanRun()
-                    })
-                    transmitter.on('get-current-url', data => {
-                        if (!testRunTracker.activeTestRuns[data.id])
-                            return;
+            const testRun = testRunTracker
+                .activeTestRuns[data.id];
 
-                        return testRunTracker
-                            .activeTestRuns[data.id]
-                            .getCurrentUrl()
-                    })
-                    transmitter.on('add-request-hooks', data => {
-                        if (!testRunTracker.activeTestRuns[data.id])
-                            return;
+            const command = new UseRoleCommand({
+                role: createRole(
+                    data.role.id,
+                    data.role.loginPage,
+                    data.role.initFn && (testRun => this.runTest(data.role.id, 'roles', testRun.id, 'initFn') ),
+                    data.role.options
+                )
+            });
 
-                        const testRun = testRunTracker
-                            .activeTestRuns[data.id];
+            debugger;
 
-                        data.hooks.forEach(hook => testRun.addRequestHook(new RequestHookProxy(this.transmitter, hook)));
-                    })
-                    
-                    transmitter.on('remove-request-hooks', data => {
-                        if (!testRunTracker.activeTestRuns[data.id])
-                            return;
+            return testRun
+                .executeCommand(command)
+        });
 
-                        const testRun = testRunTracker
-                            .activeTestRuns[data.id];
+        this.transmitter.on('add-request-hooks', data => {
+            if (!testRunTracker.activeTestRuns[data.id])
+                return;
 
-                        data.hooks.forEach(hook => {
-                            testRun.removeRequestHook(testRun.requestHooks[hook.id]);
-                        });
-                    })
+            const testRun = testRunTracker
+                .activeTestRuns[data.id];
 
-                    return proc;
-                });
-        }
+            data.hooks.forEach(hook => testRun.addRequestHook(new RequestHookProxy(this.transmitter, hook)));
+        })
 
-        return this.cpPromise;
-    }
+        this.transmitter.on('remove-request-hooks', data => {
+            if (!testRunTracker.activeTestRuns[data.id])
+                return;
 
-    async _sendMessage (name, args) {
-        const cp = await this._getCP();
+            const testRun = testRunTracker
+                .activeTestRuns[data.id];
 
+            data.hooks.forEach(hook => {
+                testRun.removeRequestHook(testRun.requestHooks[hook.id]);
+            });
+        })
 
-        return await cp.send(name, args);
     }
 
     static getSupportedTestFileExtensions () {
@@ -118,7 +110,7 @@ export default class CompilerProcess {
     }
 
     async getTests () {
-        const tests = await this._sendMessage('get-tests');
+        const tests = await this.transmitter.send('get-tests');
 
         const fixtures = [];
 
@@ -139,7 +131,7 @@ export default class CompilerProcess {
                     .runTest(test.id, 'tests', testRun.id, 'afterFn')
             }
 
-            test.requestHooks = test.requestHooks.map(hook => new RequestHookProxy(hook));
+            test.requestHooks = test.requestHooks.map(hook => new RequestHookProxy(this.transmitter, hook));
         });
 
         fixtures.forEach(fixture => {
@@ -168,7 +160,7 @@ export default class CompilerProcess {
     }
 
     async runTest(idx, actor, testRunId, func) {
-        return await this._sendMessage('run-test', { idx, actor, func, testRunId });
+        return await this.transmitter.send('run-test', { idx, actor, func, testRunId });
     }
 
     static cleanUp () {

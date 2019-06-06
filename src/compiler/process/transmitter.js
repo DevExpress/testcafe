@@ -7,8 +7,6 @@ export default class Transmitter extends EE {
         this.transport = transport;
         this.requestCounter = 0;
 
-        this.inBuffer = Buffer.alloc(64535);
-
         this.transport.read();
         this.transport.on('data', rawPacket => this._onRead(rawPacket));
         this.on('request', data => this._onRequest(data));
@@ -25,13 +23,16 @@ export default class Transmitter extends EE {
 
     async _onRequest (requestPacket) {
         const results = {
-            data: void 0,
+            data:  void 0,
             error: void 0
         };
-        
+
         console.log(requestPacket.name, requestPacket.args);
 
         try {
+            console.log(this.listenerCount(requestPacket.name));
+            if (requestPacket.name === 'use-role')
+                debugger;
             results.data = (await this.emit(requestPacket.name, requestPacket.args))[0];
         }
         catch (error) {
@@ -46,14 +47,14 @@ export default class Transmitter extends EE {
             ...results
         };
 
-        await this.transport.write(JSON.stringify(responsePacket)); 
+        await this.transport.write(JSON.stringify(responsePacket), { syncChannel: requestPacket.sync });
     }
 
     _createPacket (name, args) {
         return {
             id:   this.requestCounter++,
             type: 'request',
-            
+
             name,
             args
         };
@@ -76,16 +77,19 @@ export default class Transmitter extends EE {
     sendSync (name, args) {
         const requestPacket = this._createPacket(name, args);
 
+        requestPacket.sync = true;
+
         this.transport.writeSync(JSON.stringify(requestPacket));
+
+        console.log('written');
 
         let responsePacket = JSON.parse(this.transport.readSync().toString());
 
-        while (responsePacket.id !== requestPacket.id) {
-            this._onRead(responsePacket);
+        console.log(responsePacket);
 
+        while (responsePacket.id !== requestPacket.id)
             responsePacket = JSON.parse(this.transport.readSync().toString());
-        }
-    
+
         const { error, data } = responsePacket;
 
         if (error)

@@ -38,6 +38,9 @@ class TestRunMock {
         return executor.run();
     }
 
+    async useRole (role) {
+        await this.dispatcher.useRole({ id: this.id, role });
+    }
 
     async switchToCleanRun () {
         await this.dispatcher.transmitter.send('switch-to-clean-run', { id: this.id });
@@ -52,6 +55,8 @@ class TestRunMock {
     }
 
     async executeCommand (command, callsite) {
+        console.log(command, this.id);
+
         if (command.type === COMMAND_TYPE.assertion)
             return this._executeAssertion(command, callsite);
 

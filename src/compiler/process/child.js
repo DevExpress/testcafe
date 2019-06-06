@@ -1,5 +1,6 @@
 import Compiler from '../index';
 import TestRunProxy from './test-run-proxy';
+import testRunTracker from '../../api/test-run-tracker';
 import EE from '../../utils/async-event-emitter';
 import Transmitter from './transmitter';
 
@@ -24,7 +25,7 @@ class ChildTransport extends EE {
     }
 
     _lowReadSync () {
-        return fs.readSync(3, this.buffer, 0, this.buffer.length, null);
+        return fs.readSync(5, this.buffer, 0, this.buffer.length, null);
     }
 
     async read () {
@@ -83,10 +84,11 @@ class CompilerDispatcher {
         this.transmitter = new Transmitter(new ChildTransport());
         this.compiler    = new Compiler(JSON.parse(process.argv[2]));
 
-        this.state = 
+        this.state =
         {
             tests: {},
             fixtures: {},
+            roles: {},
             requestHooks: {},
             filterRules: {}
         };
@@ -97,18 +99,18 @@ class CompilerDispatcher {
     _getContext (actor, testRunId) {
         if (!testRunId)
             return actor.fixtureCtx;
-    
+
         if (!actor.testCtx[testRunId])
             actor.testCtx[testRunId] = new TestRunProxy(this, testRunId, actor.fixtureCtx);
-    
+
         return actor.testCtx[testRunId];
     }
 
     _setupRoutes () {
         this.transmitter.on('get-tests', async () => this.getTests())
-        this.transmitter.on('run-test', async data => this.runTest(data))           
+        this.transmitter.on('run-test', async data => this.runTest(data))
         this.transmitter.on('on-request', async data => this.onRequest(data))
-        this.transmitter.on('on-response', async data => this.onResponse(data))           
+        this.transmitter.on('on-response', async data => this.onResponse(data))
         this.transmitter.on('on-configure-response', async data => this.onConfigureResponse(data))
         this.transmitter.on('filter-rule', async data => this.filterRule(data))
     }
@@ -119,6 +121,12 @@ class CompilerDispatcher {
         tests.forEach(test => {
             for (const hook of test.requestHooks) {
                 this.state.requestHooks[hook.id] = hook;
+
+                if (!hook.requestFilterRules)
+                    return;
+
+                if (!Array.isArray(hook.requestFilterRules))
+                    hook.requestFilterRules = [hook.requestFilterRules];
 
                 hook.requestFilterRules.forEach(rule => {
                     if (typeof rule === 'function')
@@ -147,33 +155,56 @@ class CompilerDispatcher {
     async runTest (data) {
         const actor   = this.state[data.actor][data.idx];
         const context = this._getContext(actor, data.testRunId);
-    
+
         await actor[data.func](context);
     }
 
     async onRequest (data) {
         if (this.state.requestHooks[data.id])
-            await this.state.requestHooks[id].onRequest(data.event);
+            await this.state.requestHooks[data.id].onRequest(data.event);
     }
 
     async onResponse (data) {
         if (this.state.requestHooks[data.id])
-            await this.state.requestHooks[id].onResponse(data.event);
+            await this.state.requestHooks[data.id].onResponse(data.event);
     }
 
     async onConfigureResponse (data) {
-        if (this.state.requestHooks[data.id])
-            await this.state.requestHooks[id]._onConfigureResponse(data.event);
+        if (!this.state.requestHooks[data.id])
+            return;
+
+        await this.state.requestHooks[data.id]._onConfigureResponse(data.event);
+
+        return data.event;
     }
 
     async filterRule (data) {
         if (this.state.filterRules[data.id])
-            return await this.state.filterRules[data.id](data.requst);
+            return await this.state.filterRules[data.id](data.request);
+    }
+
+    async useRole ({ id, role }) {
+        const roleData = { ...role };
+
+        this.state.roles[role.id] = role;
+
+        role.testCtx    = Object.create(null);
+        role.fixtureCtx = Object.create(null);
+
+        roleData.initFn = !!roleData.initFn;
+
+        return await this.transmitter.send('use-role', { id, role: roleData });
     }
 
     async addRequestHooks ({ id, hooks }) {
         hooks.forEach(hook => {
             this.state.requestHooks[hook.id] = hook;
+
+            if (!hook.requestFilterRules)
+                return;
+
+            if (!Array.isArray(hook.requestFilterRules))
+                hook.requestFilterRules = [hook.requestFilterRules];
 
             hook.requestFilterRules = hook.requestFilterRules.map(genRule);
         });

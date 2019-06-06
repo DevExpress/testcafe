@@ -1,5 +1,5 @@
 import { ConfigureResponseEventOptions } from 'testcafe-hammerhead';
-import RequestHook from './hook';
+import RequestHookProxy from './proxy';
 import { parse as parseUserAgent } from 'useragent';
 import testRunTracker from '../test-run-tracker';
 import ReExecutablePromise from '../../utils/re-executable-promise';
@@ -15,7 +15,7 @@ const DEFAULT_OPTIONS = {
     stringifyResponseBody: false
 };
 
-class RequestLoggerImplementation extends RequestHook {
+class RequestLoggerImplementation extends RequestHookProxy {
     constructor (requestFilterRuleInit, options) {
         options = Object.assign({}, DEFAULT_OPTIONS, options);
         RequestLoggerImplementation._assertLogOptions(options);

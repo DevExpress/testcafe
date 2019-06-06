@@ -1,7 +1,7 @@
 import { isFinite as isFiniteNumber, isRegExp, isNil as isNullOrUndefined } from 'lodash';
 import { APIError, GeneralError } from './';
 import { RUNTIME_ERRORS } from '../types';
-import RequestHook from '../../api/request-hooks/hook';
+import RequestHook from '../../api/request-hooks/proxy';
 
 const START_FROM_VOWEL_RE = /^[aeiou]/i;
 

@@ -135,7 +135,7 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     addRequestHook (hook) {
-        if (this.requestHooks.indexOf(hook) !== -1)
+        if (this.requestHooks[hook.id])
             return;
 
         this.requestHooks[hook.id] = hook;
@@ -152,6 +152,8 @@ export default class TestRun extends AsyncEventEmitter {
 
     _initRequestHook (hook) {
         hook.warningLog = this.warningLog;
+
+        debugger;
 
         hook._instantiateRequestFilterRules();
         hook._instantiatedRequestFilterRules.forEach(rule => {
