@@ -116,6 +116,10 @@ export default class TestRun extends AsyncEventEmitter {
         this.injectable.scripts.push('/testcafe-automation.js');
         this.injectable.scripts.push('/testcafe-driver.js');
         this.injectable.styles.push('/testcafe-ui-styles.css');
+
+        this.requestHooks = {};
+
+        this._initRequestHooks();
     }
 
     get id () {
@@ -134,15 +138,15 @@ export default class TestRun extends AsyncEventEmitter {
         if (this.requestHooks.indexOf(hook) !== -1)
             return;
 
-        this.requestHooks.push(hook);
+        this.requestHooks[hook.id] = hook;
         this._initRequestHook(hook);
     }
 
     removeRequestHook (hook) {
-        if (this.requestHooks.indexOf(hook) === -1)
+        if (!this.requestHooks[hook.id])
             return;
 
-        remove(this.requestHooks, hook);
+        delete this.requestHooks[hook.id];
         this._disposeRequestHook(hook);
     }
 
@@ -168,7 +172,10 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     _initRequestHooks () {
-        this.requestHooks.forEach(hook => this._initRequestHook(hook));
+        this.test.requestHooks.forEach(hook => {
+            this.requestHooks[hook.id] = hook;
+            this._initRequestHook(hook);
+        });
     }
 
     // Hammerhead payload

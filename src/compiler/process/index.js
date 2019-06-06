@@ -47,14 +47,13 @@ export default class CompilerProcess {
         if (!this.cpPromise) {
             const cp = spawn(process.argv0, ['--inspect-brk', join(__dirname, 'child.js'), JSON.stringify(this.sources)], {stdio: [0, 1, 2, 'pipe', 'pipe']});
 
-            const proc = new Transmitter(new ParentTransport(cp));
+            const transmitter = new Transmitter(new ParentTransport(cp));
 
-            this.cp = cp;
 
             this.cpPromise = Promise
                 .resolve()
                 .then(cp => {
-                    proc.on('execute-command', data => {
+                    transmitter.on('execute-command', data => {
                         if (!testRunTracker.activeTestRuns[data.id])
                             return;
 
@@ -62,7 +61,7 @@ export default class CompilerProcess {
                             .activeTestRuns[data.id]
                             .executeCommand(data.command)
                     })
-                    proc.on('switch-to-clean-run', data => {
+                    transmitter.on('switch-to-clean-run', data => {
                         if (!testRunTracker.activeTestRuns[data.id])
                             return;
 
@@ -70,7 +69,7 @@ export default class CompilerProcess {
                             .activeTestRuns[data.id]
                             .switchToCleanRun()
                     })
-                    proc.on('get-current-url', data => {
+                    transmitter.on('get-current-url', data => {
                         if (!testRunTracker.activeTestRuns[data.id])
                             return;
 
@@ -78,24 +77,26 @@ export default class CompilerProcess {
                             .activeTestRuns[data.id]
                             .getCurrentUrl()
                     })
-                    proc.on('add-request-hooks', data => {
+                    transmitter.on('add-request-hooks', data => {
                         if (!testRunTracker.activeTestRuns[data.id])
                             return;
 
                         const testRun = testRunTracker
                             .activeTestRuns[data.id];
 
-                        data.hooks.forEach(hook => testRun.addRequestHook(new RequestHookProxy(hook)));
+                        data.hooks.forEach(hook => testRun.addRequestHook(new RequestHookProxy(this.transmitter, hook)));
                     })
                     
-                    proc.on('remove-request-hooks', data => {
+                    transmitter.on('remove-request-hooks', data => {
                         if (!testRunTracker.activeTestRuns[data.id])
                             return;
 
                         const testRun = testRunTracker
                             .activeTestRuns[data.id];
 
-                        data.hooks.forEach(hook => testRun.removeRequestHook(new RequestHookProxy(hook)));
+                        data.hooks.forEach(hook => {
+                            testRun.removeRequestHook(testRun.requestHooks[hook.id]);
+                        });
                     })
 
                     return proc;

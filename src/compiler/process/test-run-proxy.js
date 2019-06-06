@@ -5,7 +5,9 @@ const AssertionExecutor           = require('../../assertions/executor');
 
 
 class TestRunMock {
-    constructor (id, fixtureCtx) {
+    constructor (dispatcher, id, fixtureCtx) {
+        this.dispatcher = dispatcher;
+
         this.id = id;
 
         this.testCtx    = Object.create(null);
@@ -19,11 +21,11 @@ class TestRunMock {
     }
 
     async addRequestHooks (hooks) {
-        return await proc.send('add-request-hooks', { id: this.id, hooks });
+        return await this.dispatcher.addRequestHooks({ id: this.id, hooks });
     }
 
     async removeRequestHooks (hooks) {
-        return await proc.send('remove-request-hooks', { id: this.id, hooks });
+        return await this.dispatcher.removeRequestHooks({ id: this.id, hooks });
     }
 
     async _executeAssertion (command, callsite) {
@@ -38,21 +40,22 @@ class TestRunMock {
 
 
     async switchToCleanRun () {
-        await proc.send('switch-to-clean-run', { id: this.id });
+        await this.dispatcher.transmitter.send('switch-to-clean-run', { id: this.id });
     }
 
     async getCurrentUrl () {
-        return await proc.send('get-current-url', { id: this.id });
+        return await this.dispatcher.transmitter.send('get-current-url', { id: this.id });
     }
 
     executeCommandSync (command) {
+        return this.dispatcher.transmitter.sendSync('execute-command', { command, id: this.id });
     }
 
     async executeCommand (command, callsite) {
         if (command.type === COMMAND_TYPE.assertion)
             return this._executeAssertion(command, callsite);
 
-        return await proc.send('execute-command', { command, id: this.id });
+        return await this.dispatcher.transmitter.send('execute-command', { command, id: this.id });
     }
 }
 

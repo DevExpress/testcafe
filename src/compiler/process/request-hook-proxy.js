@@ -1,16 +1,17 @@
 import RequestHook from '../../api/request-hooks/hook';
 
 export default class RequestHookProxy extends RequestHook {
-    constructor ({ id, requestFilterRules, responseEventConfigureOpts }) {
+    constructor (transmitter, { id, requestFilterRules, responseEventConfigureOpts }) {
         super(RequestHookProxy._proxyFilterRules(requestFilterRules), responseEventConfigureOpts);
 
         this.id = id;
+        this.transmitter = transmitter;
     }
 
     static _proxyFilterRules (rules) {
         return rules.map(rule => {
             if (rule.type === 'function')
-                return request => compiler._sendMessage({ name: 'filter-rule', hookId: this.id, ruleId: rule.id, request });
+                return request => this.transmitter.send('filter-rule', { id: rule.id, request });
 
             if (rule.type === 'regexp' || rule.type === 'string')
                 rule = { url: { rule } };
@@ -25,14 +26,14 @@ export default class RequestHookProxy extends RequestHook {
     }
 
     async onRequest(event) {
-        await compiler._sendMessage({ name: 'on-request', id: this.id, event });
+        await this.transmitter.send('on-request', { id: this.id, event });
     }
 
     async onResponse (event) {
-        await compiler._sendMessage({ name: 'on-response', id: this.id, event })
+        await this.transmitter.send('on-response', { id: this.id, event })
     }
 
     async _onConfigureResponse (event) {
-        await compiler._sendMessage({ name: 'on-configure-response', id: this.id, event });
+        await this.transmitter.send('on-configure-response', { id: this.id, event });
     }
 }

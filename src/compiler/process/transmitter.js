@@ -15,7 +15,7 @@ export default class Transmitter extends EE {
     }
 
     async _onRead (rawPacket) {
-        const packet = JSON.parse(rawPacket.toString());
+        const packet = rawPacket instanceof Buffer ? JSON.parse(rawPacket.toString()) : rawPacket;
 
         if (packet.type === 'response')
             this.emit(`response-${packet.id}`, packet);
@@ -66,6 +66,27 @@ export default class Transmitter extends EE {
         await this.transport.write(JSON.stringify(packet));
 
         const { error, data } = await responsePromise;
+
+        if (error)
+            throw error;
+
+        return data;
+    }
+
+    sendSync (name, args) {
+        const requestPacket = this._createPacket(name, args);
+
+        this.transport.writeSync(JSON.stringify(requestPacket));
+
+        let responsePacket = JSON.parse(this.transport.readSync().toString());
+
+        while (responsePacket.id !== requestPacket.id) {
+            this._onRead(responsePacket);
+
+            responsePacket = JSON.parse(this.transport.readSync().toString());
+        }
+    
+        const { error, data } = responsePacket;
 
         if (error)
             throw error;

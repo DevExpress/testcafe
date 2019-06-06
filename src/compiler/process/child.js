@@ -23,13 +23,15 @@ class ChildTransport extends EE {
         });
     }
 
+    _lowReadSync () {
+        return fs.readSync(3, this.buffer, 0, this.buffer.length, null);
+    }
+
     async read () {
         while (true) {
             const readLength = await this._lowRead();
 
             const data = this.buffer.slice(0, readLength);
-
-            console.log('client', data.toString());
 
             this.emit('data', data);
         }
@@ -45,20 +47,17 @@ class ChildTransport extends EE {
             });
         });
     }
+
+    readSync () {
+        const readLength = this._lowReadSync();
+
+        return this.buffer.slice(0, readLength);
+    }
+
+    writeSync (data) {
+        fs.writeSync(4, data);
+    }
 }
-
-global.proc = new Transmitter(new ChildTransport());
-
-console.log('\n', process.argv, '\n');
-
-const compiler = new Compiler(JSON.parse(process.argv[2]));
-
-const state = {
-    tests: {},
-    fixtures: {}
-};
-
-let requestHooks = {};
 
 function genRule (rule) {
     rule.id = require('nanoid')();
@@ -66,7 +65,7 @@ function genRule (rule) {
     if (typeof rule === 'function')
         return { type: 'function' };
 
-    if (typeof x === 'string' || x instanceof RegExp)
+    if (typeof rule === 'string' || rule instanceof RegExp)
         rule = { url: rule };
 
     if (rule.url instanceof RegExp)
@@ -77,67 +76,115 @@ function genRule (rule) {
     return rule;
 }
 
-function getContext (actor, testRunId) {
-    if (!testRunId)
-        return actor.fixtureCtx;
 
-    if (!actor.testCtx[testRunId])
-        actor.testCtx[testRunId] = new TestRunProxy(testRunId, actor.fixtureCtx);
 
-    return actor.testCtx[testRunId];
+class CompilerDispatcher {
+    constructor () {
+        this.transmitter = new Transmitter(new ChildTransport());
+        this.compiler    = new Compiler(JSON.parse(process.argv[2]));
+
+        this.state = 
+        {
+            tests: {},
+            fixtures: {},
+            requestHooks: {},
+            filterRules: {}
+        };
+
+        this._setupRoutes();
+    }
+
+    _getContext (actor, testRunId) {
+        if (!testRunId)
+            return actor.fixtureCtx;
+    
+        if (!actor.testCtx[testRunId])
+            actor.testCtx[testRunId] = new TestRunProxy(this, testRunId, actor.fixtureCtx);
+    
+        return actor.testCtx[testRunId];
+    }
+
+    _setupRoutes () {
+        this.transmitter.on('get-tests', async () => this.getTests())
+        this.transmitter.on('run-test', async data => this.runTest(data))           
+        this.transmitter.on('on-request', async data => this.onRequest(data))
+        this.transmitter.on('on-response', async data => this.onResponse(data))           
+        this.transmitter.on('on-configure-response', async data => this.onConfigureResponse(data))
+        this.transmitter.on('filter-rule', async data => this.filterRule(data))
+    }
+
+    async getTests () {
+        const tests = await this.compiler.getTests();
+
+        tests.forEach(test => {
+            for (const hook of test.requestHooks) {
+                this.state.requestHooks[hook.id] = hook;
+
+                hook.requestFilterRules.forEach(rule => {
+                    if (typeof rule === 'function')
+                        this.state.filterRules[rule.id] = rule;
+                })
+
+                hook.requestFilterRules = hook.requestFilterRules.map(genRule);
+            }
+
+            test = { ...test };
+            test.fixture = { ...test.fixture };
+
+            this.state.tests[test.id] = test;
+            this.state.fixtures[test.fixture.id] = test.fixture;
+
+            test.testCtx = Object.create(null);
+            test.fixture.fixtureCtx = Object.create(null);
+
+            test.fixtureCtx = test.fixture.fixtureCtx;
+            test.fixture.testCtx = test.testCtx;
+        });
+
+        return tests;
+    }
+
+    async runTest (data) {
+        const actor   = this.state[data.actor][data.idx];
+        const context = this._getContext(actor, data.testRunId);
+    
+        await actor[data.func](context);
+    }
+
+    async onRequest (data) {
+        if (this.state.requestHooks[data.id])
+            await this.state.requestHooks[id].onRequest(data.event);
+    }
+
+    async onResponse (data) {
+        if (this.state.requestHooks[data.id])
+            await this.state.requestHooks[id].onResponse(data.event);
+    }
+
+    async onConfigureResponse (data) {
+        if (this.state.requestHooks[data.id])
+            await this.state.requestHooks[id]._onConfigureResponse(data.event);
+    }
+
+    async filterRule (data) {
+        if (this.state.filterRules[data.id])
+            return await this.state.filterRules[data.id](data.requst);
+    }
+
+    async addRequestHooks ({ id, hooks }) {
+        hooks.forEach(hook => {
+            this.state.requestHooks[hook.id] = hook;
+
+            hook.requestFilterRules = hook.requestFilterRules.map(genRule);
+        });
+
+        await this.transmitter.send('add-request-hooks', { id, hooks })
+    }
+
+    async removeRequestHooks (hooks) {
+        await this.transmitter.send('remove-request-hooks', { id, hooks })
+    }
 }
 
-proc.on('get-tests', async data => {
-    console.log('ok');
-    
-    const tests = await compiler.getTests();
 
-    tests.forEach(test => {
-        for (const hook of test.requestHooks) {
-            requestHooks[hook.id] = hook;
-            hook.requestFilterRules = hook.requestFilterRules.map(genRule);
-        }
-
-        test = { ...test };
-        test.fixture = { ...test.fixture };
-
-        state.tests[test.id] = test;
-        state.fixtures[test.fixture.id] = test.fixture;
-
-        test.testCtx = Object.create(null);
-        test.fixture.fixtureCtx = Object.create(null);
-
-        test.fixtureCtx = test.fixture.fixtureCtx;
-        test.fixture.testCtx = test.testCtx;
-    });
-
-    console.log(tests);
-    return tests;
-})
-proc.on('run-test', async data => {
-    const actor   = state[data.actor][data.idx];
-    const context = getContext(actor, data.testRunId);
-
-    await actor[data.func](context);
-})           
-proc.on('on-request', async data => {
-    if (requestHooks[data.id])
-        await requestHooks[id].onRequest(data.event);
-})           
-proc.on('on-response', async data => {
-    if (requestHooks[data.id])
-        await requestHooks[id].onResponse(data.event);
-})           
-proc.on('on-configure-response', async data => {
-    if (requestHooks[data.id])
-        await requestHooks[id]._onConfigureResponse(data.event);
-})           
-proc.on('add-request-hooks', async data => {
-    const hooks = data.hooks.filter(hook => !requestHooks[hook.id]);
-
-    hooks.forEach(hook => {
-        requestHooks[hook.id] = hook;
-
-        hook.requestFilterRules = hook.requestFilterRules.map(genRule);
-    });
-})
+export default new CompilerDispatcher();
