@@ -34,11 +34,11 @@ Feature                                                                         
 ------------------------------------------------------------------------------------------------- | -------------------
 [Video Recording](https://github.com/DevExpress/testcafe/issues/2151)                             | **Implemented**
 [Live Mode](https://github.com/DevExpress/testcafe/issues/3215)                                   | **Implemented**
-[Selector Debug Panel](https://github.com/DevExpress/testcafe/issues/3244)                        | Under Consideration
+[Selector Debug Panel](https://github.com/DevExpress/testcafe/issues/3244)                        | **In Progress**
 
 ## Ecosystem / Integrations
 
 Feature                                                                                           | Status
 ------------------------------------------------------------------------------------------------- | -------------------
+[Custom TypeScript Compilation Options](https://github.com/DevExpress/testcafe/issues/1845)       | **In Progress**
 [Cucumber Integration](https://github.com/DevExpress/testcafe/issues/2835)                        | Under Consideration
-[Custom TypeScript Compilation Options](https://github.com/DevExpress/testcafe/issues/1845)       | Under Consideration
