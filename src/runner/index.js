@@ -22,13 +22,15 @@ import prepareReporters from '../utils/prepare-reporters';
 const DEBUG_LOGGER = debug('testcafe:runner');
 
 export default class Runner extends EventEmitter {
-    constructor (proxy, browserConnectionGateway, configuration) {
+    constructor (configuration, services) {
         super();
 
-        this.proxy               = proxy;
-        this.bootstrapper        = this._createBootstrapper(browserConnectionGateway);
+        this.configuration = configuration;
+        this.services      = services;
+
+        this.proxy               = this.services.proxy;
+        this.bootstrapper        = this._createBootstrapper(this.services);
         this.pendingTaskPromises = [];
-        this.configuration       = configuration;
         this.isCli               = false;
 
         // NOTE: This code is necessary only for displaying  marketing messages.
@@ -40,8 +42,8 @@ export default class Runner extends EventEmitter {
         });
     }
 
-    _createBootstrapper (browserConnectionGateway) {
-        return new Bootstrapper(browserConnectionGateway);
+    _createBootstrapper (services) {
+        return new Bootstrapper(services);
     }
 
     _disposeBrowserSet (browserSet) {

@@ -1,6 +1,5 @@
 import Compiler from '../index';
 import TestRunProxy from './test-run-proxy';
-import testRunTracker from '../../api/test-run-tracker';
 import EE from '../../utils/async-event-emitter';
 import Transmitter from './transmitter';
 
@@ -82,7 +81,6 @@ function genRule (rule) {
 class CompilerDispatcher {
     constructor () {
         this.transmitter = new Transmitter(new ChildTransport());
-        this.compiler    = new Compiler(JSON.parse(process.argv[2]));
 
         this.state =
         {
@@ -107,16 +105,19 @@ class CompilerDispatcher {
     }
 
     _setupRoutes () {
-        this.transmitter.on('get-tests', async () => this.getTests())
+        this.transmitter.on('get-tests', async data => this.getTests(data))
         this.transmitter.on('run-test', async data => this.runTest(data))
         this.transmitter.on('on-request', async data => this.onRequest(data))
         this.transmitter.on('on-response', async data => this.onResponse(data))
-        this.transmitter.on('on-configure-response', async data => this.onConfigureResponse(data))
-        this.transmitter.on('filter-rule', async data => this.filterRule(data))
+        this.transmitter.on('on-configure-response', async data => this.onConfigureResponse(data));
+        this.transmitter.on('filter-rule', async data => this.filterRule(data));
+        this.transmitter.on('exit', () => {setTimeout(() => process.kill(process.pid),200)})
     }
 
-    async getTests () {
-        const tests = await this.compiler.getTests();
+    async getTests (sources) {
+        console.log(sources);
+        const compiler = new Compiler(sources);
+        const tests    = await compiler.getTests();
 
         tests.forEach(test => {
             for (const hook of test.requestHooks) {
@@ -131,7 +132,7 @@ class CompilerDispatcher {
                 hook.requestFilterRules.forEach(rule => {
                     if (typeof rule === 'function')
                         this.state.filterRules[rule.id] = rule;
-                })
+                });
 
                 hook.requestFilterRules = hook.requestFilterRules.map(genRule);
             }

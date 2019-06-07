@@ -10,6 +10,7 @@ const errorHandlers            = lazyRequire('./utils/handle-errors');
 const BrowserConnectionGateway = lazyRequire('./browser/connection/gateway');
 const BrowserConnection        = lazyRequire('./browser/connection');
 const browserProviderPool      = lazyRequire('./browser/provider/pool');
+const CompilerHost             = lazyRequire('./compiler/process');
 const Runner                   = lazyRequire('./runner');
 const LiveModeRunner           = lazyRequire('./live/test-runner');
 
@@ -27,7 +28,15 @@ export default class TestCafe {
         this.proxy                    = new hammerhead.Proxy(hostname, port1, port2, options);
         this.browserConnectionGateway = new BrowserConnectionGateway(this.proxy, { retryTestPages: configuration.getOption('retryTestPages') });
         this.runners                  = [];
-        this.configuration            = configuration;
+        this.compilerHost             = new CompilerHost();
+
+        this.services = {
+            browserConnectionGateway: this.browserConnectionGateway,
+            compilerHost:             this.compilerHost,
+            proxy:                    this.proxy
+        };
+
+        this.configuration = configuration;
 
         this._registerAssets(options.developmentMode);
     }
@@ -66,7 +75,7 @@ export default class TestCafe {
 
     _createRunner (isLiveMode) {
         const Ctor      = isLiveMode ? LiveModeRunner : Runner;
-        const newRunner = new Ctor(this.proxy, this.browserConnectionGateway, this.configuration.clone());
+        const newRunner = new Ctor(this.configuration.clone(), this.services);
 
         this.runners.push(newRunner);
 
@@ -99,7 +108,10 @@ export default class TestCafe {
 
         await Promise.all(this.runners.map(runner => runner.stop()));
 
-        await browserProviderPool.dispose();
+        await Promise.all([
+            browserProviderPool.dispose(),
+            this.compilerHost.stop()
+        ]);
 
         this.browserConnectionGateway.close();
         this.proxy.close();

@@ -9,8 +9,8 @@ import { GeneralError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
 
 class LiveModeRunner extends Runner {
-    constructor (proxy, browserConnectionGateway, options) {
-        super(proxy, browserConnectionGateway, options);
+    constructor (configuration, services) {
+        super(configuration, services);
 
         /* EVENTS */
         this.TEST_RUN_DONE_EVENT         = 'test-run-done';

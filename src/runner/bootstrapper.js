@@ -1,6 +1,5 @@
 import { isUndefined, filter, flatten, chunk, times } from 'lodash';
 import Promise from 'pinkie';
-import Compiler from '../compiler/process';
 import BrowserConnection from '../browser/connection';
 import { GeneralError } from '../errors/runtime';
 import browserProviderPool from '../browser/provider/pool';
@@ -14,8 +13,9 @@ import makeDir from 'make-dir';
 import resolvePathRelativelyCwd from '../utils/resolve-path-relatively-cwd';
 
 export default class Bootstrapper {
-    constructor (browserConnectionGateway) {
+    constructor ({ browserConnectionGateway, compilerHost }) {
         this.browserConnectionGateway = browserConnectionGateway;
+        this.compilerHost             = compilerHost;
 
         this.concurrency                 = null;
         this.sources                     = [];
@@ -75,8 +75,7 @@ export default class Bootstrapper {
             throw new GeneralError(RUNTIME_ERRORS.testSourcesNotSet);
 
         const parsedFileList = await parseFileList(this.sources, process.cwd());
-        const compiler       = new Compiler(parsedFileList);
-        let tests            = await compiler.getTests();
+        let tests            = await this.compilerHost.getTests(parsedFileList);
 
         const testsWithOnlyFlag = tests.filter(test => test.only);
 
