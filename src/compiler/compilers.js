@@ -27,5 +27,3 @@ export function getTestFileCompilers () {
 export function initTestFileCompilers (options = {}) {
     testFileCompilers = createTestFileCompilers(options);
 }
-
-

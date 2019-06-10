@@ -267,8 +267,8 @@ describe('TypeScriptConfiguration', () => {
                     expect(configuration.getOption('module')).eql(1);
                     expect(configuration.getOption('target')).eql(2);
 
-                    expect(consoleWrapper.messages.log).contains('The option "module" can not be overridden with typescript configuration file.');
-                    expect(consoleWrapper.messages.log).contains('The option "target" can not be overridden with typescript configuration file.');
+                    expect(consoleWrapper.messages.log).contains('You cannot override the "module" compiler option in the TypeScript configuration file.');
+                    expect(consoleWrapper.messages.log).contains('You cannot override the "target" compiler option in the TypeScript configuration file.');
                 });
         });
 
@@ -308,7 +308,7 @@ describe('TypeScriptConfiguration', () => {
                     fs.unlinkSync(customConfigFilePath);
 
                     expect(runner.bootstrapper.tsConfigPath).eql(customConfigFilePath);
-                    expect(consoleWrapper.messages.log).contains('The option "target" can not be overridden with typescript configuration file.');
+                    expect(consoleWrapper.messages.log).contains('You cannot override the "target" compiler option in the TypeScript configuration file.');
                 });
         });
     });

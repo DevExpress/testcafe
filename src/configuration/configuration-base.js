@@ -57,7 +57,6 @@ export default class Configuration {
     }
 
     async init () {
-        throw new Error('init');
     }
 
     mergeOptions (options) {
