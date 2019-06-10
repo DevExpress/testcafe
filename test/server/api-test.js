@@ -298,6 +298,28 @@ describe('API', function () {
                     });
                 });
         });
+
+        it('Should raise an error if "fixture.clientScripts" method takes a wrong argument', () => {
+            const testfile = resolve('test/server/data/test-suites/custom-client-scripts/fixture-client-scripts-has-wrong-type.js');
+
+            return compile(testfile)
+                .then(() => {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(err => {
+                    assertAPIError(err, {
+                        stackTop: testfile,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 'Client script is expected to be a string or a client script initializer, but it was number.',
+
+                        callsite: ' > 1 |fixture.clientScripts(8);\n' +
+                                  '   2 |\n' +
+                                  '   3 |test(\'test\', async t => {});\n' +
+                                  '   4 |'
+                    });
+                });
+        });
     });
 
     describe('test', function () {
@@ -502,6 +524,29 @@ describe('API', function () {
                                   ' > 3 |test(\'Test\', () => {\n' +
                                   '   4 |    return \'yo\';\n' +
                                   '   5 |});'
+                    });
+                });
+        });
+
+        it('Should raise an error if "test.clientScripts" method takes a wrong argument', () => {
+            const testfile = resolve('test/server/data/test-suites/custom-client-scripts/test-client-scripts-has-wrong-type.js');
+
+            return compile(testfile)
+                .then(() => {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(err => {
+                    assertAPIError(err, {
+                        stackTop: testfile,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 'Client script is expected to be a string or a client script initializer, but it was number.',
+
+                        callsite: '   1 |fixture `Fixture`;\n' +
+                                  '   2 |\n' +
+                                  '   3 |test\n' +
+                                  ' > 4 |    .clientScripts(8)\n' +
+                                  '   5 |    (\'test\', async t => {});'
                     });
                 });
         });

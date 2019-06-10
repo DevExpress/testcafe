@@ -6,6 +6,7 @@ import Screenshots from '../screenshots';
 import VideoRecorder from '../video-recorder';
 import WarningLog from '../notifications/warning-log';
 import FixtureHookController from './fixture-hook-controller';
+import * as clientScriptsRouting from '../custom-client-scripts/routing';
 
 export default class Task extends AsyncEventEmitter {
     constructor (tests, browserConnectionGroups, proxy, opts) {
@@ -16,11 +17,13 @@ export default class Task extends AsyncEventEmitter {
         this.browserConnectionGroups = browserConnectionGroups;
         this.tests                   = tests;
         this.opts                    = opts;
+        this.proxy                   = proxy;
         this.screenshots             = new Screenshots(this.opts.screenshotPath, this.opts.screenshotPathPattern);
         this.warningLog              = new WarningLog();
 
         this.fixtureHookController = new FixtureHookController(tests, browserConnectionGroups.length);
         this.pendingBrowserJobs    = this._createBrowserJobs(proxy, this.opts);
+        this.clientScriptRoutes    = clientScriptsRouting.register(proxy, tests);
 
         if (this.opts.videoPath)
             this.videoRecorders = this._createVideoRecorders(this.pendingBrowserJobs);
@@ -72,6 +75,10 @@ export default class Task extends AsyncEventEmitter {
         const videoOptions = { timeStamp: this.timeStamp, ...this.opts.videoOptions };
 
         return browserJobs.map(browserJob => new VideoRecorder(browserJob, this.opts.videoPath, videoOptions, this.opts.videoEncodingOptions, this.warningLog));
+    }
+
+    unRegisterClientScriptRouting () {
+        clientScriptsRouting.unRegister(this.proxy, this.clientScriptRoutes);
     }
 
     // API

@@ -2,6 +2,7 @@ import TestingUnit from './testing-unit';
 import { assertType, is } from '../../errors/runtime/type-assertions';
 import wrapTestFunction from '../wrap-test-function';
 import assertRequestHookType from '../request-hooks/assert-type';
+import assertClientScriptType from '../../custom-client-scripts/assert-type';
 import { flattenDeep as flatten, union } from 'lodash';
 
 export default class Test extends TestingUnit {
@@ -10,10 +11,11 @@ export default class Test extends TestingUnit {
 
         this.fixture = testFile.currentFixture;
 
-        this.fn           = null;
-        this.beforeFn     = null;
-        this.afterFn      = null;
-        this.requestHooks = [];
+        this.fn            = null;
+        this.beforeFn      = null;
+        this.afterFn       = null;
+        this.requestHooks  = [];
+        this.clientScripts = [];
 
         return this.apiOrigin;
     }
@@ -23,9 +25,10 @@ export default class Test extends TestingUnit {
         assertType(is.function, 'apiOrigin', 'The test body', fn);
         assertType(is.nonNullObject, 'apiOrigin', `The fixture of '${name}' test`, this.fixture);
 
-        this.name         = name;
-        this.fn           = wrapTestFunction(fn);
-        this.requestHooks = union(this.requestHooks, Array.from(this.fixture.requestHooks));
+        this.name          = name;
+        this.fn            = wrapTestFunction(fn);
+        this.requestHooks  = union(this.requestHooks, Array.from(this.fixture.requestHooks));
+        this.clientScripts = union(this.clientScripts, Array.from(this.fixture.clientScripts));
 
         if (this.testFile.collectedTests.indexOf(this) < 0)
             this.testFile.collectedTests.push(this);
@@ -54,7 +57,17 @@ export default class Test extends TestingUnit {
 
         assertRequestHookType(hooks);
 
-        this.requestHooks = union(this.requestHooks, hooks);
+        this.requestHooks = hooks;
+
+        return this.apiOrigin;
+    }
+
+    _clientScripts$ (...scripts) {
+        scripts = flatten(scripts);
+
+        assertClientScriptType(scripts);
+
+        this.clientScripts = scripts;
 
         return this.apiOrigin;
     }

@@ -52,7 +52,8 @@ describe('TestCafeConfiguration', () => {
                 'fixtureGrep': 'fixture\\d',
                 'testMeta':    { test: 'meta' },
                 'fixtureMeta': { fixture: 'meta' }
-            }
+            },
+            'clientScripts': 'test-client-script.js'
         });
     });
 
@@ -97,6 +98,7 @@ describe('TestCafeConfiguration', () => {
                         expect(configuration.getOption('filter').fixtureGrep.test('fixture1')).to.be.true;
                         expect(configuration.getOption('filter').testMeta).to.be.deep.equal({ test: 'meta' });
                         expect(configuration.getOption('filter').fixtureMeta).to.be.deep.equal({ fixture: 'meta' });
+                        expect(configuration.getOption('clientScripts')).eql([ 'test-client-script.js' ]);
                     });
             });
 

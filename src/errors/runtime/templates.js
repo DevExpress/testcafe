@@ -73,5 +73,8 @@ export default {
                                             '* specify the path to the FFmpeg executable in the FFMPEG_PATH environment variable or the ffmpegPath video option,\n' +
                                             '* install the @ffmpeg-installer/ffmpeg package from npm.',
 
-    [RUNTIME_ERRORS.cannotFindTypescriptConfigurationFile]: 'Unable to find the TypeScript configuration file in "{filePath}"',
+    [RUNTIME_ERRORS.cannotFindTypescriptConfigurationFile]:         'Unable to find the TypeScript configuration file in "{filePath}"',
+    [RUNTIME_ERRORS.clientScriptInitializerIsNotSpecified]:         'Specify how to load a custom client script',
+    [RUNTIME_ERRORS.clientScriptInitializerMultipleContentSources]: 'You cannot combine the file path, module name and script content when you specify the client script to inject',
+    [RUNTIME_ERRORS.cannotLoadClientScriptFromPath]:                'Cannot load a custom client script from path "{path}"'
 };

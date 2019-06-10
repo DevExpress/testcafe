@@ -58,6 +58,7 @@ export default class Runner extends EventEmitter {
 
     async _disposeTaskAndRelatedAssets (task, browserSet, reporters, testedApp) {
         task.abort();
+        task.unRegisterClientScriptRouting();
         task.clearListeners();
 
         await this._disposeAssets(browserSet, reporters, testedApp);
@@ -93,6 +94,7 @@ export default class Runner extends EventEmitter {
             .then(removeFromPending);
 
         this.pendingTaskPromises.push(promise);
+
         return promise;
     }
 
@@ -159,13 +161,15 @@ export default class Runner extends EventEmitter {
 
         task.on('done', stopHandlingTestErrors);
 
-        const setCompleted = () => {
+        const onTaskCompleted = () => {
+            task.unRegisterClientScriptRouting();
+
             completed = true;
         };
 
         completionPromise
-            .then(setCompleted)
-            .catch(setCompleted);
+            .then(onTaskCompleted)
+            .catch(onTaskCompleted);
 
         const cancelTask = async () => {
             if (!completed)
@@ -295,14 +299,15 @@ export default class Runner extends EventEmitter {
         this.configuration.prepare();
         this.configuration.notifyAboutOverridenOptions();
 
-        this.bootstrapper.sources      = this.configuration.getOption(OPTION_NAMES.src) || this.bootstrapper.sources;
-        this.bootstrapper.browsers     = this.configuration.getOption(OPTION_NAMES.browsers) || this.bootstrapper.browsers;
-        this.bootstrapper.concurrency  = this.configuration.getOption(OPTION_NAMES.concurrency);
-        this.bootstrapper.appCommand   = this.configuration.getOption(OPTION_NAMES.appCommand) || this.bootstrapper.appCommand;
-        this.bootstrapper.appInitDelay = this.configuration.getOption(OPTION_NAMES.appInitDelay);
-        this.bootstrapper.filter       = this.configuration.getOption(OPTION_NAMES.filter) || this.bootstrapper.filter;
-        this.bootstrapper.reporters    = this.configuration.getOption(OPTION_NAMES.reporter) || this.bootstrapper.reporters;
-        this.bootstrapper.tsConfigPath = this.configuration.getOption(OPTION_NAMES.tsConfigPath);
+        this.bootstrapper.sources       = this.configuration.getOption(OPTION_NAMES.src) || this.bootstrapper.sources;
+        this.bootstrapper.browsers      = this.configuration.getOption(OPTION_NAMES.browsers) || this.bootstrapper.browsers;
+        this.bootstrapper.concurrency   = this.configuration.getOption(OPTION_NAMES.concurrency);
+        this.bootstrapper.appCommand    = this.configuration.getOption(OPTION_NAMES.appCommand) || this.bootstrapper.appCommand;
+        this.bootstrapper.appInitDelay  = this.configuration.getOption(OPTION_NAMES.appInitDelay);
+        this.bootstrapper.filter        = this.configuration.getOption(OPTION_NAMES.filter) || this.bootstrapper.filter;
+        this.bootstrapper.reporters     = this.configuration.getOption(OPTION_NAMES.reporter) || this.bootstrapper.reporters;
+        this.bootstrapper.tsConfigPath  = this.configuration.getOption(OPTION_NAMES.tsConfigPath);
+        this.bootstrapper.clientScripts = this.configuration.getOption(OPTION_NAMES.clientScripts) || this.bootstrapper.clientScripts;
     }
 
     // API
@@ -405,6 +410,14 @@ export default class Runner extends EventEmitter {
         this.configuration.mergeOptions({
             [OPTION_NAMES.tsConfigPath]: path
         });
+
+        return this;
+    }
+
+    clientScripts (...scripts) {
+        scripts = this._prepareArrayParameter(scripts);
+
+        this.configuration.mergeOptions({ [OPTION_NAMES.clientScripts]: scripts });
 
         return this;
     }

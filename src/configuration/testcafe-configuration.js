@@ -95,6 +95,7 @@ export default class TestCafeConfiguration extends Configuration {
         this._prepareFilterFn();
         this._ensureArrayOption(OPTION_NAMES.src);
         this._ensureArrayOption(OPTION_NAMES.browsers);
+        this._ensureArrayOption(OPTION_NAMES.clientScripts);
         this._prepareReporters();
     }
 

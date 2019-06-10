@@ -111,5 +111,8 @@ export const RUNTIME_ERRORS = {
     forbiddenCharatersInScreenshotPath:                               'E1040',
     cannotFindFFMPEG:                                                 'E1041',
     compositeArgumentsError:                                          'E1042',
-    cannotFindTypescriptConfigurationFile:                            'E1043'
+    cannotFindTypescriptConfigurationFile:                            'E1043',
+    clientScriptInitializerIsNotSpecified:                            'E1044',
+    clientScriptInitializerMultipleContentSources:                    'E1045',
+    cannotLoadClientScriptFromPath:                                   'E1046'
 };

@@ -27,5 +27,10 @@ export default {
     videoPath:              'videoPath',
     videoOptions:           'videoOptions',
     videoEncodingOptions:   'videoEncodingOptions',
-    tsConfigPath:           'tsConfigPath'
+    tsConfigPath:           'tsConfigPath',
+    clientScripts:          'clientScripts',
+    retryTestPages:         'retryTestPages',
+    hostname:               'hostname',
+    port1:                  'port1',
+    port2:                  'port2'
 };

@@ -3,6 +3,7 @@ import handleTagArgs from '../../utils/handle-tag-args';
 import TestingUnit from './testing-unit';
 import wrapTestFunction from '../wrap-test-function';
 import assertRequestHookType from '../request-hooks/assert-type';
+import assertClientScriptType from '../../custom-client-scripts/assert-type';
 import { flattenDeep as flatten } from 'lodash';
 import { SPECIAL_BLANK_PAGE } from 'testcafe-hammerhead';
 
@@ -20,7 +21,8 @@ export default class Fixture extends TestingUnit {
         this.beforeFn = null;
         this.afterFn  = null;
 
-        this.requestHooks = [];
+        this.requestHooks  = [];
+        this.clientScripts = [];
 
         return this.apiOrigin;
     }
@@ -74,6 +76,16 @@ export default class Fixture extends TestingUnit {
         assertRequestHookType(hooks);
 
         this.requestHooks = hooks;
+
+        return this.apiOrigin;
+    }
+
+    _clientScripts$ (...scripts) {
+        scripts = flatten(scripts);
+
+        assertClientScriptType(scripts);
+
+        this.clientScripts = scripts;
 
         return this.apiOrigin;
     }

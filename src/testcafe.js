@@ -1,6 +1,9 @@
 import Promise from 'pinkie';
 import { GeneralError } from './errors/runtime';
 import { RUNTIME_ERRORS } from './errors/types';
+import CONTENT_TYPES from './assets/content-types';
+import OPTION_NAMES from './configuration/option-names';
+import * as INJECTABLES from './assets/injectables';
 
 const lazyRequire              = require('import-lazy')(require);
 const sourceMapSupport         = lazyRequire('source-map-support');
@@ -25,7 +28,7 @@ export default class TestCafe {
 
         this.closed                   = false;
         this.proxy                    = new hammerhead.Proxy(hostname, port1, port2, options);
-        this.browserConnectionGateway = new BrowserConnectionGateway(this.proxy, { retryTestPages: configuration.getOption('retryTestPages') });
+        this.browserConnectionGateway = new BrowserConnectionGateway(this.proxy, { retryTestPages: configuration.getOption(OPTION_NAMES.retryTestPages) });
         this.runners                  = [];
         this.configuration            = configuration;
 
@@ -36,22 +39,22 @@ export default class TestCafe {
         const { favIcon, coreScript, driverScript, uiScript,
             uiStyle, uiSprite, automationScript, legacyRunnerScript } = loadAssets(developmentMode);
 
-        this.proxy.GET('/testcafe-core.js', { content: coreScript, contentType: 'application/x-javascript' });
-        this.proxy.GET('/testcafe-driver.js', { content: driverScript, contentType: 'application/x-javascript' });
+        this.proxy.GET(INJECTABLES.TESTCAFE_CORE, { content: coreScript, contentType: CONTENT_TYPES.javascript });
+        this.proxy.GET(INJECTABLES.TESTCAFE_DRIVER, { content: driverScript, contentType: CONTENT_TYPES.javascript });
 
-        this.proxy.GET('/testcafe-legacy-runner.js', {
+        this.proxy.GET(INJECTABLES.TESTCAFE_LEGACY_RUNNER, {
             content:     legacyRunnerScript,
-            contentType: 'application/x-javascript'
+            contentType: CONTENT_TYPES.javascript
         });
 
-        this.proxy.GET('/testcafe-automation.js', { content: automationScript, contentType: 'application/x-javascript' });
-        this.proxy.GET('/testcafe-ui.js', { content: uiScript, contentType: 'application/x-javascript' });
-        this.proxy.GET('/testcafe-ui-sprite.png', { content: uiSprite, contentType: 'image/png' });
-        this.proxy.GET('/favicon.ico', { content: favIcon, contentType: 'image/x-icon' });
+        this.proxy.GET(INJECTABLES.TESTCAFE_AUTOMATION, { content: automationScript, contentType: CONTENT_TYPES.javascript });
+        this.proxy.GET(INJECTABLES.TESTCAFE_UI, { content: uiScript, contentType: CONTENT_TYPES.javascript });
+        this.proxy.GET(INJECTABLES.TESTCAFE_UI_SPRITE, { content: uiSprite, contentType: CONTENT_TYPES.png });
+        this.proxy.GET(INJECTABLES.TESTCAFE_ICON, { content: favIcon, contentType: CONTENT_TYPES.icon });
 
-        this.proxy.GET('/testcafe-ui-styles.css', {
+        this.proxy.GET(INJECTABLES.TESTCAFE_UI_STYLES, {
             content:              uiStyle,
-            contentType:          'text/css',
+            contentType:          CONTENT_TYPES.css,
             isShadowUIStylesheet: true
         });
     }
