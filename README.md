@@ -227,7 +227,7 @@ Thank you to all the people who already contributed to TestCafe!
 [<img alt="link89" src="https://avatars2.githubusercontent.com/u/3314130?v=4&s=117" width="117">](https://github.com/link89) |[<img alt="murajun1978" src="https://avatars3.githubusercontent.com/u/911903?v=4&s=117" width="117">](https://github.com/murajun1978) |[<img alt="pietrovich" src="https://avatars2.githubusercontent.com/u/1728613?v=4&s=117" width="117">](https://github.com/pietrovich) |[<img alt="superroma" src="https://avatars0.githubusercontent.com/u/8553464?v=4&s=117" width="117">](https://github.com/superroma) |[<img alt="lzxb" src="https://avatars0.githubusercontent.com/u/8424643?v=4&s=117" width="117">](https://github.com/lzxb) |[<img alt="intermike" src="https://avatars0.githubusercontent.com/u/10540148?v=4&s=117" width="117">](https://github.com/intermike) |
 :---: |:---: |:---: |:---: |:---: |:---: |
 [link89](https://github.com/link89) |[murajun1978](https://github.com/murajun1978) |[pietrovich](https://github.com/pietrovich) |[superroma](https://github.com/superroma) |[lzxb](https://github.com/lzxb) |[intermike](https://github.com/intermike) |
- 
+
 [<img alt="DevSide" src="https://avatars2.githubusercontent.com/u/6873926?v=4&s=117" width="117">](https://github.com/DevSide) |[<img alt="b12031106" src="https://avatars1.githubusercontent.com/u/2063566?v=4&s=117" width="117">](https://github.com/b12031106) |
 :---: |:---: |
 [DevSide](https://github.com/DevSide) |[b12031106](https://github.com/b12031106) |
