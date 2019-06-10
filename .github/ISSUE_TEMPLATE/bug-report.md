@@ -36,6 +36,15 @@ Your website URL (or attach your complete example):
 </details>
 
 <details>
+<summary>Your complete configuration file (if any):</summary>
+
+<!-- Paste your complete test config file here (even if it is huge): -->
+```
+
+```
+</details>
+
+<details>
 <summary>Your complete test report:</summary>
 
 <!-- Paste your complete result test report here (even if it is huge): -->
