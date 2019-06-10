@@ -30,5 +30,5 @@ test('Test click performance with hard work', async t => {
 
     const [mousedownTime, mouseupTime] = await ClientFunction(() => window.clickEvents)();
 
-    expect(mouseupTime - mousedownTime).is.most(HARD_WORK_TIME + 30);
+    expect(mouseupTime - mousedownTime).is.most(HARD_WORK_TIME + 40);
 });
