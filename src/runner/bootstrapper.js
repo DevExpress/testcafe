@@ -17,13 +17,14 @@ export default class Bootstrapper {
     constructor (browserConnectionGateway) {
         this.browserConnectionGateway = browserConnectionGateway;
 
-        this.concurrency                 = null;
-        this.sources                     = [];
-        this.browsers                    = [];
-        this.reporters                   = [];
-        this.filter                      = null;
-        this.appCommand                  = null;
-        this.appInitDelay                = null;
+        this.concurrency  = null;
+        this.sources      = [];
+        this.browsers     = [];
+        this.reporters    = [];
+        this.filter       = null;
+        this.appCommand   = null;
+        this.appInitDelay = null;
+        this.tsConfigPath = null;
     }
 
     static _splitBrowserInfo (browserInfo) {
@@ -74,9 +75,10 @@ export default class Bootstrapper {
         if (!this.sources.length)
             throw new GeneralError(RUNTIME_ERRORS.testSourcesNotSet);
 
-        const parsedFileList = await parseFileList(this.sources, process.cwd());
-        const compiler       = new Compiler(parsedFileList);
-        let tests            = await compiler.getTests();
+        const { parsedFileList, compilerOptions } = await this._getCompilerArguments();
+
+        const compiler = new Compiler(parsedFileList, compilerOptions);
+        let tests      = await compiler.getTests();
 
         const testsWithOnlyFlag = tests.filter(test => test.only);
 
@@ -90,6 +92,18 @@ export default class Bootstrapper {
             throw new GeneralError(RUNTIME_ERRORS.noTestsToRun);
 
         return tests;
+    }
+
+    async _getCompilerArguments () {
+        const parsedFileList = await parseFileList(this.sources, process.cwd());
+
+        const compilerOptions = {
+            typeScriptOptions: {
+                tsConfigPath: this.tsConfigPath
+            }
+        };
+
+        return { parsedFileList, compilerOptions };
     }
 
     async _ensureOutStream (outStream) {

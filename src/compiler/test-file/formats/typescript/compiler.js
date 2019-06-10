@@ -3,30 +3,19 @@ import { zipObject } from 'lodash';
 import OS from 'os-family';
 import APIBasedTestFileCompilerBase from '../../api-based';
 import ESNextTestFileCompiler from '../es-next/compiler';
+import TypescriptConfiguration from '../../../../configuration/typescript-configuration';
 
-
-const RENAMED_DEPENDENCIES_MAP = new Map([['testcafe', APIBasedTestFileCompilerBase.EXPORTABLE_LIB_PATH]]);
+const RENAMED_DEPENDENCIES_MAP       = new Map([['testcafe', APIBasedTestFileCompilerBase.EXPORTABLE_LIB_PATH]]);
+const tsDefsPath                     = path.resolve(__dirname, '../../../../../ts-defs/index.d.ts');
+const DEFAULT_CONFIGURATION_FILENAME = 'tsconfig.json';
 
 export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompilerBase {
-    static _getTypescriptOptions () {
-        // NOTE: lazy load the compiler
-        const ts = require('typescript');
+    constructor ({ typeScriptOptions } = {}) {
+        super();
 
-        return {
-            experimentalDecorators:  true,
-            emitDecoratorMetadata:   true,
-            allowJs:                 true,
-            pretty:                  true,
-            inlineSourceMap:         true,
-            noImplicitAny:           false,
-            module:                  ts.ModuleKind.CommonJS,
-            target:                  2 /* ES6 */,
-            lib:                     ['lib.es6.d.ts'],
-            baseUrl:                 __dirname,
-            paths:                   { testcafe: ['../../../../../ts-defs/index.d.ts'] },
-            suppressOutputPathCheck: true,
-            skipLibCheck:            true
-        };
+        const tsConfigPath = typeScriptOptions ? typeScriptOptions.tsConfigPath : DEFAULT_CONFIGURATION_FILENAME;
+
+        this.tsConfig = new TypescriptConfiguration(tsConfigPath);
     }
 
     static _reportErrors (diagnostics) {
@@ -35,11 +24,16 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
         let errMsg = 'TypeScript compilation failed.\n';
 
         diagnostics.forEach(d => {
-            const file                = d.file;
-            const { line, character } = file.getLineAndCharacterOfPosition(d.start);
-            const message             = ts.flattenDiagnosticMessageText(d.messageText, '\n');
+            const message = ts.flattenDiagnosticMessageText(d.messageText, '\n');
+            const file    = d.file;
 
-            errMsg += `${file.fileName} (${line + 1}, ${character + 1}): ${message}\n`;
+            if (file) {
+                const { line, character } = file.getLineAndCharacterOfPosition(d.start);
+
+                errMsg += `${file.fileName} (${line + 1}, ${character + 1}): `;
+            }
+
+            errMsg += `${message}\n`;
         });
 
         throw new Error(errMsg);
@@ -54,11 +48,18 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
         return filename;
     }
 
+    _compileCodeForTestFiles (testFilesInfo) {
+        return this.tsConfig.init()
+            .then(() => {
+                return super._compileCodeForTestFiles(testFilesInfo);
+            });
+    }
+
     _precompileCode (testFilesInfo) {
         // NOTE: lazy load the compiler
         const ts = require('typescript');
 
-        const filenames              = testFilesInfo.map(({ filename }) => filename);
+        const filenames              = testFilesInfo.map(({ filename }) => filename).concat([tsDefsPath]);
         const normalizedFilenames    = filenames.map(filename => TypeScriptTestFileCompiler._normalizeFilename(filename));
         const normalizedFilenamesMap = zipObject(normalizedFilenames, filenames);
 
@@ -66,7 +67,7 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
             .filter(filename => !this.cache[filename])
             .map(filename => normalizedFilenamesMap[filename]);
 
-        const opts    = TypeScriptTestFileCompiler._getTypescriptOptions();
+        const opts    = this.tsConfig.getOptions();
         const program = ts.createProgram(uncachedFiles, opts);
 
         program.getSourceFiles().forEach(sourceFile => {

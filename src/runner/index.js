@@ -29,6 +29,7 @@ export default class Runner extends EventEmitter {
         this.bootstrapper        = this._createBootstrapper(browserConnectionGateway);
         this.pendingTaskPromises = [];
         this.configuration       = configuration;
+        this.tsConfiguration     = null;
         this.isCli               = false;
 
         // NOTE: This code is necessary only for displaying  marketing messages.
@@ -299,6 +300,7 @@ export default class Runner extends EventEmitter {
         this.bootstrapper.appInitDelay = this.configuration.getOption(OPTION_NAMES.appInitDelay);
         this.bootstrapper.filter       = this.configuration.getOption(OPTION_NAMES.filter) || this.bootstrapper.filter;
         this.bootstrapper.reporters    = this.configuration.getOption(OPTION_NAMES.reporter) || this.bootstrapper.reporters;
+        this.bootstrapper.tsConfigPath = this.configuration.getOption(OPTION_NAMES.tsConfigPath);
     }
 
     // API

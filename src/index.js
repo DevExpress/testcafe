@@ -3,7 +3,7 @@ import { GeneralError } from './errors/runtime';
 import { RUNTIME_ERRORS } from './errors/types';
 import embeddingUtils from './embedding-utils';
 import exportableLib from './api/exportable-lib';
-import Configuration from './configuration';
+import TestCafeConfiguration from './configuration/testcafe-configuration';
 
 const lazyRequire   = require('import-lazy')(require);
 const TestCafe      = lazyRequire('./testcafe');
@@ -39,7 +39,7 @@ async function getValidPort (port) {
 
 // API
 async function createTestCafe (hostname, port1, port2, sslOptions, developmentMode, retryTestPages) {
-    const configuration = new Configuration();
+    const configuration = new TestCafeConfiguration();
 
     await configuration.init({
         hostname,
