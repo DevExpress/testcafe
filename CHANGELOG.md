@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.2.1 (2019-6-10)
+
+### Bug Fixes
+
+* Fixed a Chrome 75 compatibility issue when `t.typeText` typed each character at the beginning of the input ([#3865](https://github.com/DevExpress/testcafe/issues/3865))
+* Fixed a bug when a test with an unhandled promise rejection passed ([#3787](https://github.com/DevExpress/testcafe/issues/3787))
+* The native dialog handler is now applied when a role redirects to the login page ([#2969](https://github.com/DevExpress/testcafe/issues/2969))
+
 ## v1.2.0 (2019-5-28)
 
 ### Enhancements
