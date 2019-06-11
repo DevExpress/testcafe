@@ -184,6 +184,10 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
         addAPI(selectorFn, () => selectorFn, SelectorBuilder, this.options.customDOMProperties, this.options.customMethods);
     }
 
+    _getClientFnWithOverriddenOptions (options) {
+        return super._getClientFnWithOverriddenOptions(Object.assign(options, { apiFn: null }));
+    }
+
     _processResult (result, selectorArgs) {
         const snapshot = super._processResult(result, selectorArgs);
 

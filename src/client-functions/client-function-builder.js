@@ -39,16 +39,20 @@ export default class ClientFunctionBuilder {
         clientFn[functionBuilderSymbol] = this;
 
         clientFn.with = options => {
-            if (typeof options === 'object')
-                options = assign({}, this.options, options);
-
-            const builder = new this.constructor(this.fn, options, {
-                instantiation: 'with',
-                execution:     this.callsiteNames.execution
-            });
-
-            return builder.getFunction();
+            return this._getClientFnWithOverriddenOptions(options);
         };
+    }
+
+    _getClientFnWithOverriddenOptions (options) {
+        if (typeof options === 'object')
+            options = assign({}, this.options, options);
+
+        const builder = new this.constructor(this.fn, options, {
+            instantiation: 'with',
+            execution:     this.callsiteNames.execution
+        });
+
+        return builder.getFunction();
     }
 
     getBoundTestRun () {
