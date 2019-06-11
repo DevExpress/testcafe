@@ -460,9 +460,8 @@ export function calculateNodeAndOffsetByPosition (el, offset) {
                 point.offset--;
         }
 
-        arrayUtils.forEach(childNodes, node => {
-            point = checkChildNodes(node);
-        });
+        for (let i = 0; i < childNodesLength; i++)
+            point = checkChildNodes(childNodes[i]);
 
         return point;
     }
@@ -505,9 +504,8 @@ export function calculatePositionByNodeAndOffset (el, { node, offset }) {
         else if (!find && (isNodeBlockWithBreakLine(el, target) || isNodeAfterNodeBlockWithBreakLine(el, target)))
             currentOffset++;
 
-        arrayUtils.forEach(childNodes, currentNode => {
-            currentOffset = checkChildNodes(currentNode);
-        });
+        for (let i = 0; i < childNodesLength; i++)
+            currentOffset = checkChildNodes(childNodes[i]);
 
         return currentOffset;
     }
@@ -581,9 +579,8 @@ function getContentEditableNodes (target) {
     if (!isSkippableNode(target) && !childNodesLength && domUtils.isTextNode(target))
         result.push(target);
 
-    arrayUtils.forEach(childNodes, node => {
-        result = result.concat(getContentEditableNodes(node));
-    });
+    for (let i = 0; i < childNodesLength; i++)
+        result = result.concat(getContentEditableNodes(childNodes[i]));
 
     return result;
 }
