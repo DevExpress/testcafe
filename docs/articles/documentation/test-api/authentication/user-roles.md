@@ -10,7 +10,20 @@ to isolate authentication test actions and apply them easily whenever you need t
 
 A piece of logic that logs in a particular user is called a *role*. Define a role for each user account participating in your test.
 
-## Creating and Using Roles
+## Why Use Roles
+
+Roles are more than just another way to [extract reusable test logic](../../recipes/extract-reusable-test-code/README.md). They were specially designed for login operations and provide the following dedicated features:
+
+* **Object-based API.** Authentication data and logic are stored in an object that is easy to pass around and activate when needed.
+* **Single login.** Login actions are not repeated when you switch to a previously used role within the same session. If you activate a role in the [beforeEach](../test-code-structure.md#test-hooks) hook, login actions run once before the first test. The subsequent tests reuse authentication data so that it happens instantly.
+* **Automatic return.** The browser automatically navigates back to the page that was opened when you switched the role (you can disable this behavior if it doesn't suit your scenario).
+* **No logout needed.** Authentication data is automatically cleared when you switch between roles.
+* **Multiple authentication support.** If you log in to different services/websites during a test, authentication data from cookies and browser storages is accumulated in the active role. When you switch back to this role within the same test, you are automatically logged in to all the websites.
+* **Anonymous role.** A built-in role that quilckly logs you out of all the accounts.
+
+> Roles work with authentication data in cookies and browser storages. If your authentication system stores data elsewhere, you may not be able to use roles.
+
+## Create and Use Roles
 
 Use the `Role` constructor to create and initialize a role.
 
@@ -55,7 +68,7 @@ const admin = Role('http://example.com/login', async t => {
 
 After you create the roles, you can switch between users at any moment except for the role initialization code.
 
-If you switch to a role for the first time in test run, the browser will be navigated from the original page to a login page where the role initialization code will be executed. Then the original page will be reloaded with new credentials. If you switch to a role that has already been initialized, TestCafe simply reloads the current page with the appropriate credentials.
+If you switch to a role for the first time in test run, the browser will be navigated from the original page to a login page where the role initialization code will be executed. Then the original page will be reloaded with new credentials (you can use the [preserveUrl](#optionspreserveurl) option to disable redirect to the original page). If you switch to a role that has already been initialized, TestCafe simply reloads the current page with the appropriate credentials.
 
 To switch to a role, use the `t.useRole` function.
 
@@ -120,6 +133,8 @@ test('Anonymous users can see newly created comments', async t => {
 ```
 
 ## Role Options
+
+You can pass the following options to the [Role constructor](#create-and-use-roles).
 
 ### options.preserveUrl
 
