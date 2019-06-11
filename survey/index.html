@@ -14,15 +14,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <title>Extending TestCafe | TestCafe</title>
+  <title>Survey | TestCafe</title>
 
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
 
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://devexpress.github.io/testcafe/documentation/extending-testcafe/" />
-  <meta property="og:title" content="Extending TestCafe | TestCafe" />
+  <meta property="og:url" content="https://devexpress.github.io/testcafe/survey/" />
+  <meta property="og:title" content="Survey | TestCafe" />
 
   
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
@@ -30,7 +30,7 @@
   
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
-  <link rel="canonical" href="https://devexpress.github.io/testcafe/documentation/extending-testcafe/">
+  <link rel="canonical" href="https://devexpress.github.io/testcafe/survey/">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="https://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
@@ -78,18 +78,13 @@
   
 
   
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/css/perfect-scrollbar.min.css">
-  <link rel="stylesheet" href="/testcafe/css/docs.css">
-  <style>
-      .ps-container > .ps-scrollbar-x-rail,
-      .ps-container > .ps-scrollbar-y-rail {
-          opacity: 0.6;
-      }
-  </style>
-  
 
   
 
+  
+  <script defer src="https://surveyjs.azureedge.net/1.0.90/survey.jquery.min.js" type="text/javascript"></script>
+  <script defer src="/testcafe/scripts/tc-survey.js" type="text/javascript"></script>
+  <link rel="stylesheet" href="/testcafe/css/tc-survey.css">
     
 
   <script>
@@ -150,9 +145,6 @@
                 docMenuItem.appendChild(docMenuItemIcon);
 
                 
-                    docMenuItem.className += ' expanded';
-                    docTopNav.className += ' expanded';
-                
 
                 docMenuItem.addEventListener('click', function (e) {
                     if (docTopNav.className.indexOf('expanded') !== -1) {
@@ -175,127 +167,20 @@
 
   
 
+  
+  
+    <script>
+        if (isMobileDevice)
+            linkCss('/testcafe/css/tc-survey.mobile.css');
+    </script>
     
 
   
-    <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/js/perfect-scrollbar.min.js"></script>
-    <script defer type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.3.min.js"></script>
-
-    <script>
-        var MIN_BODY_WIDTH = 1230;
-        var FOOTER_HEIGHT  = 113;
-
-        var nav     = null;
-        var article = null;
-
-        function getHeaderHeight () {
-            var DOCS_HEADER_HEIGHT   = 126;
-            var SURVEY_HEADER_HEIGHT = 32;
-
-            var surveyBanner          = document.querySelector('.survey-banner');
-            var isSurveyBannerVisible = surveyBanner.className.indexOf('hidden') === -1;
-
-            return isSurveyBannerVisible ? DOCS_HEADER_HEIGHT + SURVEY_HEADER_HEIGHT : DOCS_HEADER_HEIGHT;
-        }
-
-        function setNavTopPosition () {
-            var headerHeight = getHeaderHeight();
-            var top          = null;
-
-            if (document.body.clientWidth > MIN_BODY_WIDTH) {
-                if (nav.style.top !== headerHeight + 'px') {
-                    nav.style.top = headerHeight + 'px';
-                    Ps.update(nav);
-                }
-            }
-            else {
-                top = window.pageYOffset <= headerHeight ? headerHeight - window.pageYOffset + 'px' : '0';
-
-                if (nav.style.top !== top) {
-                    nav.style.top = top;
-                    Ps.update(nav);
-                }
-            }
-        }
-
-        function setNavBottomPosition () {
-            var footerVisibleHeight = FOOTER_HEIGHT - document.body.scrollHeight + window.pageYOffset +
-                                      document.body.clientHeight;
-
-            if (footerVisibleHeight > 0) {
-                if (nav.style.bottom !== footerVisibleHeight + 'px') {
-                    nav.style.bottom = footerVisibleHeight + 'px';
-                    Ps.update(nav);
-                }
-            }
-            else if (nav.style.bottom !== '0') {
-                nav.style.bottom = '0';
-                Ps.update(nav);
-            }
-        }
-
-        function updateNavMenuPosition () {
-            nav.style.marginLeft = '-' + window.pageXOffset + 'px';
-
-            setNavBottomPosition();
-            setNavTopPosition();
-        }
-
-        function changeBodyHeight () {
-            if (document.body.style.height !== window.innerHeight + 'px')
-                document.body.style.height = window.innerHeight + 'px';
-        }
-
-        function initScrollBar() {
-            Ps.initialize(nav);
-
-            window.addEventListener('resize', function () {
-                Ps.update(nav);
-            });
-        }
-
-        function initNav() {
-            initScrollBar();
-            updateNavMenuPosition();
-            window.addEventListener('scroll', updateNavMenuPosition);
-            window.addEventListener('resize', updateNavMenuPosition);
-        }
-
-        document.addEventListener('DOMContentLoaded', function (e) {
-            if (isMobileDevice)
-                return;
-
-            nav     = document.querySelector('.doc-nav');
-            article = document.querySelector('.doc');
-
-            if (nav)
-                initNav(nav);
-        });
-    </script>
     
     <script>
-        if (isMobileDevice) {
-            linkCss('/testcafe/css/docs.mobile.css');           
-            
-            if (false == false) {
-                document.addEventListener('DOMContentLoaded', function (e) {
-                    var docNavPanel = document.querySelector('.doc-nav-panel');
-                    var docNav      = document.querySelector('.doc-nav');
-
-                    docNavPanel.addEventListener('click', function (e) {
-                        if (docNav.className.indexOf('active') !== -1) {
-                            docNav.className = docNav.className.replace(' active', '');
-                            document.documentElement.style.overflowY = 'scroll';
-                            document.body.style.overflowY = 'initial';
-                        }
-                        else {
-                            docNav.className += ' active';
-                            document.documentElement.style.overflowY = 'hidden';
-                            document.body.style.overflowY = 'hidden';
-                        }
-                    });
-                });
-            }
+        if (document.images) {
+            img1 = new Image();
+            img1.src = '/testcafe/images/test-cafe-logo.png';
         }
     </script>
   
@@ -361,52 +246,7 @@
     <div class="page-content-wrapper">
 
       
-<div class="survey-banner hidden">
-  <div class="survey-banner-message">
-      <span>How do you like TestCafe? </span><span class="desktop-text">Please take 3 minutes to fill out our survey. </span><a href="https://dxpr.es/2WYA3X4" target="_blank"><span class="desktop-text">Take the survey</span><span class="mobile-text">Take a 3-minute survey.</span></a>
-  </div>
-  <div class="survey-banner-close-button"></div>
-</div>
-<script>
-  var SURVEY_BANNER_DISPLAY_SETBACK_DAYS = 7;
-
-  function getDaysBetween(fromTime, toTime) {
-      var dayDurationMs = 24*60*60*1000;
-
-      return Math.round(Math.abs((fromTime - toTime)/(dayDurationMs)));
-  }
-
-  var wasSurveyBannerDismissed = window.localStorage.getItem(SUMMER_2019_SURVEY_BANNER_DISMISSED_FLAG);
-  var wasSurveyCompleted       = window.localStorage.getItem(SUMMER_2019_SURVEY_COMPLETED_FLAG);
-  var surveyOpenDate           = window.localStorage.getItem(SUMMER_2019_SURVEY_PAGE_OPEN_DATE_FLAG);
-  var surveySetbackExpired     = !surveyOpenDate || (getDaysBetween(surveyOpenDate, Date.now()) > SURVEY_BANNER_DISPLAY_SETBACK_DAYS);
-
-  if(!wasSurveyBannerDismissed && !wasSurveyCompleted && surveySetbackExpired) {
-      var surveyBanner      = document.querySelector('.survey-banner');
-      var surveyLink        = document.querySelector('.survey-banner a');
-      var surveyBannerClose = document.querySelector('.survey-banner-close-button');
-
-      function hideSurveyBanner() {
-          surveyBanner.className = surveyBanner.className += ' hidden';
-
-          if (!isMobileDevice)
-              updateNavMenuPosition();
-      }
-
-      surveyBanner.className = surveyBanner.className.replace(/hidden/,'');
-
-      surveyBannerClose.addEventListener('click', function () {
-          hideSurveyBanner();
-          window.localStorage.setItem(SUMMER_2019_SURVEY_BANNER_DISMISSED_FLAG, true);
-      });
-
-      surveyLink.addEventListener('click', function () {
-          hideSurveyBanner();
-      });
-  }
-</script>
-
-<header class="site-header fixed">
+<header class="site-header">
   <div class="site-header-content">
     <a class="site-logo" href="/testcafe/"></a>
     <div class="hamburger-button">
@@ -415,7 +255,7 @@
     <nav class="site-nav">
         
           
-          <div class="site-nav-tab active">
+          <div class="site-nav-tab">
             <a class="page-link" href="/testcafe/documentation/getting-started/"><span>Docs</span></a>
           </div>
         
@@ -568,7 +408,7 @@
           <a href="/testcafe/documentation/test-api/">Test API</a>      
         </div>
       
-        <div class="doc-top-nav-tab active" >
+        <div class="doc-top-nav-tab " >
           <a href="/testcafe/documentation/extending-testcafe/">Extending TestCafe</a>      
         </div>
       
@@ -585,141 +425,23 @@
 </div>
 
 
-      <div class="container">
-    
-	
-	
-
-	
-	
-
-	
-	
-
-	
-	
-	<div class="doc-nav-panel">
-		<div class="toggle-nav-button"></div>
-		<div class="doc-nav-panel-header">
-			<div class="doc-nav-panel-heading">Documentation</div>
-			<div class="doc-nav-panel-title">
-				
-					
-				
-					
-				
-					
-				
-					
-						Extending TestCafe
-					
-				
-					
-				
-					
-				
-			</div>
-		</div>
-	</div>
-	<nav class="doc-nav">	
-		<div class="doc-nav-content">
-			<ul>
-				<li>
-				<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/extending-testcafe/reporter-plugin/"  >Reporter Plugin</a>
-		
-			<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html"  >Reporter Methods</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/extending-testcafe/reporter-plugin/helpers.html"  >Helpers</a>
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/extending-testcafe/browser-provider-plugin/"  >Browser Provider Plugin</a>
-		
-			<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/extending-testcafe/browser-provider-plugin/browser-provider-methods.html"  >Browser Provider Methods</a>
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-</ul>
-				</li>
-			</ul>
-		</div>
-	</nav>
-	
-
-	
-	
-
-	
-	
-	
-
-
-<main>
-	<article class="doc">
-		<div class="post-content">
-
-			<h1>Extending TestCafe</h1>
-<p>The TestCafe functionality can be extended by using plugins and extensions.
-You can install existing plugins or develop custom ones that will suit your needs.</p>
-<h2><a class="anchor" id="creating-plugins"></a>Creating Plugins <a class="permalink" href="#creating-plugins">#</a></h2>
-<p>The following topics provide detailed information on creating the most widely used plugins and extensions.</p>
-
-<ul>
-<li><a href="reporter-plugin/">Reporter Plugin</a></li>
-<li><a href="browser-provider-plugin/">Browser Provider Plugin</a></li>
-</ul>
-<h2><a class="anchor" id="installing-plugins"></a>Installing Plugins <a class="permalink" href="#installing-plugins">#</a></h2>
-<p>You can install plugins from npm in two ways:</p>
-
-<ul>
-<li><p><strong>locally</strong> - if you are going to use plugins within TestCafe installed locally.</p>
-
-<p>Navigate to your project directory and run the following command.</p>
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">npm install --save-dev <span class="o">{</span>pluginName<span class="o">}</span>
-</code></pre></div></li>
-<li><p><strong>globally</strong> - if the TestCafe module is installed globally or you are going to use plugins within other projects as well.</p>
-
-<p>Run the <code>npm install</code> command with a <code>-g</code> flag.</p>
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">npm install -g <span class="o">{</span>pluginName<span class="o">}</span>
-</code></pre></div></li>
-</ul>
-
-
-		</div>
-	</article>
-</main>
+      <div class="survey-header-container hidden">
+    <div class="survey-header">
+        <h1>How do you like TestCafe?</h1>
+        <div class="survey-subheader">Please take 3 minutes to fill out the following survey.<br/>Your feedback will help us improve TestCafe and make web testing even easier.</div>
+    </div>
 </div>
+<div class="survey-container hidden">
+    <div id="survey"></div>
+</div>
+<div class="survey-completed-container full-screen-message-container hidden">
+    <div class="survey-completed">
+        <div class="completed-header">Thank you for your feedback!</div>
+        <div class="completed-text message-text">Want more from TestCafe right now? Try TestCafe Studio, our web testing IDE with built-in test recording capabilities. TestCafe&nbsp;Studio was designed to automate web testing with its code-free test recorder.</div>
+        <a class="completed-button" href="https://dxpr.es/2F19Cpv" target="_blank">Learn more about TestCafe&nbsp;Studio</a>
+    </div>
+</div>
+
 
     </div>
 

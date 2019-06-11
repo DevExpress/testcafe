@@ -1,3 +1,19 @@
+html body .page-content-wrapper .survey-banner {
+  position: fixed;
+  height: auto; }
+  html body .page-content-wrapper .survey-banner .survey-banner-message {
+    line-height: 20px;
+    padding: 10px 30px; }
+    html body .page-content-wrapper .survey-banner .survey-banner-message span {
+      display: block;
+      text-align: left;
+      margin: 4px 0; }
+      html body .page-content-wrapper .survey-banner .survey-banner-message span.desktop-text {
+        display: none; }
+      html body .page-content-wrapper .survey-banner .survey-banner-message span.mobile-text {
+        display: block; }
+  html body .page-content-wrapper .survey-banner .survey-banner-close-button {
+    background-position: top 15px right 15px; }
 html body .page-content-wrapper .container .doc-nav-panel {
   background-color: #2e688a;
   height: 60px;
@@ -33,10 +49,12 @@ html body .page-content-wrapper .container .doc-nav {
   overflow-y: auto;
   margin: 0;
   background-color: #2e688a;
-  color: #fff; }
+  color: #fff;
+  z-index: 1; }
   html body .page-content-wrapper .container .doc-nav .doc-nav-content {
     margin-top: 0px;
-    padding: 0 30px; }
+    padding: 0 30px;
+    border: none; }
     html body .page-content-wrapper .container .doc-nav .doc-nav-content ul li ul li {
       font-size: 18px;
       font-weight: bold;
@@ -66,7 +84,7 @@ html body .page-content-wrapper .container main .post-content .table-wrapper {
   html body .page-content-wrapper .container main .post-content .table-wrapper table {
     width: 100%;
     min-width: 500px;
-    margin: 0 0 3px 0; }
+    margin: 0; }
 html body .page-content-wrapper .container main .post-content pre > code {
   font-size: 14px;
   padding-left: 0;
@@ -87,3 +105,13 @@ html body .page-content-wrapper .container main .post-content .table-wrapper::-w
   border: 1px solid #E0E0E0;
   box-sizing: border-box;
   border-radius: 2px; }
+html body .page-content-wrapper .survey-banner:not(.hidden) ~ .container {
+  padding-top: 0; }
+  html body .page-content-wrapper .survey-banner:not(.hidden) ~ .container .doc-nav-panel {
+    margin-top: 132px; }
+  html body .page-content-wrapper .survey-banner:not(.hidden) ~ .container .doc-nav {
+    top: 192px; }
+html body .page-content-wrapper .survey-banner:not(.hidden) ~ .site-header {
+  top: 72px; }
+  html body .page-content-wrapper .survey-banner:not(.hidden) ~ .site-header .site-header-content .site-nav {
+    top: 132px; }
