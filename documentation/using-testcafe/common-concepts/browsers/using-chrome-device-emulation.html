@@ -833,7 +833,7 @@
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"chrome:d:</span><span class="se">\c</span><span class="s2">hrome_portable</span><span class="se">\c</span><span class="s2">hrome.exe:emulation:device=iphone X"</span> tests/test.js
 </code></pre></div><h2><a class="anchor" id="substitute-a-user-agent"></a>Substitute a User Agent <a class="permalink" href="#substitute-a-user-agent">#</a></h2>
 <p>Use the <code>userAgent</code> parameter to substitute a user agent string.</p>
-<blockquote class="important"><div class="blockquote-content"><p>TestCafe relies on the user agent string to emulate the browser behavior. Tests are not guaranteed to run correctly if you provide a user agent that is invalid or not supported by TestCafe.</p>
+<blockquote class="important"><div class="blockquote-content"><p>TestCafe relies on the user agent string to emulate the browser behavior. Tests are not guaranteed to run correctly if you provide a user agent that is invalid or <a href="browser-support.html">not supported by TestCafe</a>.</p>
 </div></blockquote>
 <p>You need to escape special characters in the user agent string when you specify it in the command line. These characters include:</p>
 
