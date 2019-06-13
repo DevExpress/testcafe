@@ -64,7 +64,7 @@ testcafe "chrome:d:\chrome_portable\chrome.exe:emulation:device=iphone X" tests/
 
 Use the `userAgent` parameter to substitute a user agent string.
 
-> Important! TestCafe relies on the user agent string to emulate the browser behavior. Tests are not guaranteed to run correctly if you provide a user agent that is invalid or not supported by TestCafe.
+> Important! TestCafe relies on the user agent string to emulate the browser behavior. Tests are not guaranteed to run correctly if you provide a user agent that is invalid or [not supported by TestCafe](browser-support.md).
 
 You need to escape special characters in the user agent string when you specify it in the command line. These characters include:
 
