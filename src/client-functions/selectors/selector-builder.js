@@ -10,6 +10,7 @@ import { ExecuteSelectorCommand } from '../../test-run/commands/observation';
 import defineLazyProperty from '../../utils/define-lazy-property';
 import { addAPI, addCustomMethods } from './add-api';
 import createSnapshotMethods from './create-snapshot-methods';
+import clientFunctionModeSwitcher from '../client-function-mode-switcher';
 
 export default class SelectorBuilder extends ClientFunctionBuilder {
     constructor (fn, options, callsiteNames) {
@@ -73,7 +74,11 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
                         if (!nodes.length && !selectorFilter.error)
                             selectorFilter.error = __dependencies$.apiInfo.apiFnID;
 
-                        return selectorFilter.filter(nodes, __dependencies$.filterOptions, __dependencies$.apiInfo);
+                        var result = selectorFilter.filter(nodes, __dependencies$.filterOptions, __dependencies$.apiInfo);
+                        
+                        if (__dependencies$.debugMode) console.log(__dependencies$.apiInfo.apiFnChain[__dependencies$.apiInfo.apiFnID], '\\n', '  ', result);
+                        
+                        return result;
                     };
                  })();`
             );
@@ -135,7 +140,8 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
             },
             boundArgs,
             customDOMProperties,
-            customMethods
+            customMethods,
+            debugMode: !clientFunctionModeSwitcher.asyncMode
         });
     }
 

@@ -40,6 +40,8 @@ import {
 import { WaitCommand, DebugCommand } from '../../test-run/commands/observation';
 import assertRequestHookType from '../request-hooks/assert-type';
 
+import clientFunctionModeSwitcher from '../../client-functions/client-function-mode-switcher';
+
 const originalThen = Promise.resolve().then;
 
 export default class TestController {
@@ -273,6 +275,12 @@ export default class TestController {
 
     _debug$ () {
         return this._enqueueCommand('debug', DebugCommand);
+    }
+
+    _debugSelectors$ () {
+        clientFunctionModeSwitcher.enableSync();
+        debugger;
+        clientFunctionModeSwitcher.disableSync();
     }
 
     _setTestSpeed$ (speed) {

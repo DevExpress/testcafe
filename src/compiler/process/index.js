@@ -38,7 +38,7 @@ export default class CompilerProcess extends EE {
     constructor () {
         super();
 
-        this.cp = spawn(process.argv0, [join(__dirname, 'child.js')], { stdio: [0, 1, 2, 'pipe', 'pipe', 'pipe'] });
+        this.cp = spawn(process.argv0, ['--inspect-brk', join(__dirname, 'child.js')], { stdio: [0, 1, 2, 'pipe', 'pipe', 'pipe'] });
 
         global.cp = this.cp;
 

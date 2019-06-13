@@ -10,6 +10,7 @@ import { RUNTIME_ERRORS } from '../errors/types';
 import { getCallsiteForMethod } from '../errors/get-callsite';
 import ReExecutablePromise from '../utils/re-executable-promise';
 import testRunMarker from '../test-run/marker-symbol';
+import clientFunctionModeSwitcher from './client-function-mode-switcher';
 
 const DEFAULT_EXECUTION_CALLSITE_NAME = '__$$clientFunction$$';
 
@@ -75,7 +76,10 @@ export default class ClientFunctionBuilder {
             for (let i = 0; i < arguments.length; i++)
                 args.push(arguments[i]);
 
-            return builder._executeCommand(args, testRun, callsite);
+            if (clientFunctionModeSwitcher.asyncMode)
+                return builder._executeCommand(args, testRun, callsite);
+            else
+                return builder._executeCommandSync(args, testRun, callsite);
         };
 
         this._decorateFunction(clientFn);
@@ -136,6 +140,26 @@ export default class ClientFunctionBuilder {
 
             return this._processResult(result, args);
         });
+    }
+
+    _executeCommandSync (args, testRun, callsite) {
+        // NOTE: should be kept outside of lazy promise to preserve
+        // correct callsite in case of replicator error.
+        const command = this.getCommand(args);
+
+        if (!testRun) {
+            const err = new ClientFunctionAPIError(this.callsiteNames.execution, this.callsiteNames.instantiation, RUNTIME_ERRORS.clientFunctionCannotResolveTestRun);
+
+            // NOTE: force callsite here, because more likely it will
+            // be impossible to resolve it by method name from a lazy promise.
+            err.callsite = callsite;
+
+            throw err;
+        }
+
+        const result = testRun.executeCommandSync(command, callsite);
+
+        return this._processResult(result, args);
     }
 
     _processResult (result) {
