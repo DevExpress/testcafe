@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://dxpr.es/31lOSlQ">
-    <img src="https://raw.github.com/DevExpress/testcafe/master/media/testcafe-survey-banner.png" alt="Take the TestCafe Survey" />
+    <img src="https://raw.github.com/DevExpress/testcafe/master/media/testcafe-survey-banner.svg?sanitize=true" alt="Take the TestCafe Survey" />
   </a>
 </p>
 
