@@ -9,7 +9,6 @@ const { noop, times, uniqBy } = require('lodash');
 const createTestCafe          = require('../../lib/');
 const COMMAND                 = require('../../lib/browser/connection/command');
 const Task                    = require('../../lib/runner/task');
-const Reporter                = require('../../lib/reporter');
 const BrowserConnection       = require('../../lib/browser/connection');
 const BrowserSet              = require('../../lib/runner/browser-set');
 const browserProviderPool     = require('../../lib/browser/provider/pool');
@@ -782,8 +781,6 @@ describe('Runner', () => {
         const origCreateBrowserJobs = Task.prototype._createBrowserJobs;
         const origAbort             = Task.prototype.abort;
 
-        const origAssignTaskEventHandlers = Reporter.prototype._assignTaskEventHandlers;
-
         let closeCalled        = 0;
         let abortCalled        = false;
         let taskActionCallback = null;
@@ -853,8 +850,6 @@ describe('Runner', () => {
             Task.prototype.abort = () => {
                 abortCalled = true;
             };
-
-            Reporter.prototype._assignTaskEventHandlers = noop;
         });
 
         after(() => {
@@ -862,8 +857,6 @@ describe('Runner', () => {
 
             Task.prototype._createBrowserJobs = origCreateBrowserJobs;
             Task.prototype.abort              = origAbort;
-
-            Reporter.prototype._assignTaskEventHandlers = origAssignTaskEventHandlers;
         });
 
         it('Should not stop the task until local connection browsers are not closed when task done', () => {

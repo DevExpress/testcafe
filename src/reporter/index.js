@@ -17,6 +17,8 @@ export default class Reporter {
         this.stopOnFirstFail = task.opts.stopOnFirstFail;
         this.outStream       = outStream;
 
+        this.pendingTaskDonePromise = Reporter._createPendingPromise();
+
         this._assignTaskEventHandlers();
     }
 
@@ -186,6 +188,8 @@ export default class Reporter {
             };
 
             await this.plugin.reportTaskDone(endTime, this.passed, task.warningLog.messages, result);
+
+            this.pendingTaskDonePromise.resolve();
         });
     }
 
