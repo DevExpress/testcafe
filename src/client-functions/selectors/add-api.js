@@ -8,6 +8,7 @@ import { assertType, is } from '../../errors/runtime/type-assertions';
 import makeRegExp from '../../utils/make-reg-exp';
 import selectorTextFilter from './selector-text-filter';
 import selectorAttributeFilter from './selector-attribute-filter';
+import prepareApiFnArgs from './prepare-api-args';
 
 const filterNodes = (new ClientFunctionBuilder((nodes, filter, querySelectorRoot, originNode, ...filterArgs) => {
     if (typeof filter === 'number') {
@@ -98,19 +99,6 @@ function assertAddCustomMethods (properties, opts) {
     Object.keys(properties).forEach(prop => {
         assertType(is.function, 'addCustomMethods', `Custom method '${prop}'`, properties[prop]);
     });
-}
-
-function prepareApiFnArgs (fnName, ...args) {
-    args = args.map(arg => {
-        if (typeof arg === 'string')
-            return `'${arg}'`;
-        if (typeof arg === 'function')
-            return '[function]';
-        return arg;
-    });
-    args = args.join(', ');
-
-    return `.${fnName}(${args})`;
 }
 
 function getDerivativeSelectorArgs (options, selectorFn, apiFn, filter, additionalDependencies) {

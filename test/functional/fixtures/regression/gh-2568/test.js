@@ -189,13 +189,26 @@ describe('[Regression](GH-2568)', function () {
             });
     });
 
-    it('with', function () {
-        return runTests('testcafe-fixtures/index.js', 'with', { selectorTimeout: 100, shouldFail: true })
+    it('with - failed before', function () {
+        return runTests('testcafe-fixtures/index.js', 'with - failed before', { selectorTimeout: 100, shouldFail: true })
             .catch(function (errs) {
                 assertSelectorCallstack(errs[0], `
                     The specified selector does not match any element in the DOM tree.
                       > | Selector('non-existing-element')
+                        |   .with([object Object])
                         |   .find('ul')
+                `);
+            });
+    });
+
+    it('with - failed after', function () {
+        return runTests('testcafe-fixtures/index.js', 'with - failed after', { selectorTimeout: 100, shouldFail: true })
+            .catch(function (errs) {
+                assertSelectorCallstack(errs[0], `
+                    The specified selector does not match any element in the DOM tree.
+                        | Selector('body')
+                        |   .with([object Object])
+                      > |   .find('non-existing-element')
                 `);
             });
     });
