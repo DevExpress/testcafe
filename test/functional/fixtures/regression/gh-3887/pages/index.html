@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>GH-3887</title>
+    <script>
+        window.onload = function () {
+            var iframe                            = document.querySelector('iframe');
+            iframe.contentDocument.designMode     = 'on';
+            iframe.contentDocument.body.innerHTML = 'a';
+            iframe.contentWindow.focus();
+        };
+    </script>
+</head>
+<body>
+<iframe></iframe>
+</body>
+</html>
