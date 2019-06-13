@@ -187,7 +187,7 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
     }
 
     _getClientFnWithOverriddenOptions (options) {
-        const apiFn              = prepareApiFnArgs('with', {});
+        const apiFn              = prepareApiFnArgs('with', options);
         const previousSelectorID = this.options.apiFnChain.length - 1;
 
         return super._getClientFnWithOverriddenOptions(Object.assign(options, { apiFn, apiFnID: previousSelectorID }));
