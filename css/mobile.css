@@ -132,12 +132,13 @@ html {
           padding: 70px 30px 0; }
     html body .site-footer {
       height: auto;
-      z-index: -1; }
+      z-index: 0; }
       html body .site-footer .site-footer-content {
         padding: 22px 30px;
         text-align: left; }
     html body .cookie-notice {
-      position: static; }
+      top: 10px;
+      bottom: auto; }
       html body .cookie-notice .cookie-notice-content {
         flex-direction: column;
         padding: 17px 30px; }
@@ -192,7 +193,6 @@ html {
     #studio-link-tab .page-link span {
       display: none; }
     #studio-link-tab .page-link:after {
-      display: block;
       position: relative;
       left: calc(50% + 50px);
       content: 'Try our IDE\A for free';

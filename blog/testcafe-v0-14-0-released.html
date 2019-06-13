@@ -6,6 +6,7 @@
   
   
   
+  
 
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -34,6 +35,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans">
   <link rel="apple-touch-icon" sizes="180x180" href="/testcafe/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/testcafe/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/testcafe/favicon-16x16.png">
@@ -48,6 +50,11 @@
   <script>
      var md             = new MobileDetect(window.navigator.userAgent);
      var isMobileDevice = !!md.mobile();
+  </script>
+  <script>
+      var SUMMER_2019_SURVEY_COMPLETED_FLAG        = 'summer-2019-survey-completed';
+      var SUMMER_2019_SURVEY_PAGE_OPEN_DATE_FLAG   = 'summer-2019-survey-page-open-date';
+      var SUMMER_2019_SURVEY_BANNER_DISMISSED_FLAG = 'summer-2019-survey-banner-dismissed';
   </script>
   <script>
       document.addEventListener('DOMContentLoaded', function (e) {
@@ -73,6 +80,8 @@
   
 
   
+
+    
 
   <script>
     function linkCss (href) {
@@ -154,6 +163,8 @@
 
   
 
+    
+
   
     
     <script>
@@ -164,7 +175,7 @@
     </script>
   
     <script>
-        function initHeader(siteHeader, contentWrapper, docTopMenu, article, gs) {
+        function initHeader(siteHeader, contentWrapper, docTopMenu, article, gs, surveyBanner) {
             var MIN_BODY_WIDTH = 1230;
 
             function updateHeader() {
@@ -176,6 +187,9 @@
 
                 if(docTopMenu)
                     docTopMenu.style.position = bodyMinimized ? 'static' : '';
+
+                if(surveyBanner)
+                    surveyBanner.style.position = bodyMinimized ? 'static' : '';
 
                 if(contentWrapper)
                     contentWrapper.style.paddingTop = bodyMinimized ? '0' : '';
@@ -196,9 +210,10 @@
             var docTopMenu     = document.querySelector('.doc-top-nav');
             var article        = document.querySelector('.doc');
             var gs             = document.querySelector('.gs');
+            var surveyBanner   = document.querySelector('.survey-banner');
 
             if(siteHeader)
-                initHeader(siteHeader, contentWrapper, docTopMenu, article, gs);
+                initHeader(siteHeader, contentWrapper, docTopMenu, article, gs, surveyBanner);
         });
     </script>
 </head>
@@ -221,7 +236,6 @@
     <div class="page-content-wrapper">
 
       
-
 <header class="site-header fixed">
   <div class="site-header-content">
     <a class="site-logo" href="/testcafe/"></a>
@@ -589,7 +603,6 @@ and check the web page state, DOM elements location, their CSS styles.</p>
  -->
 </div>
 
-      <div class="push"></div>
     </div>
 
     <footer class="site-footer">
