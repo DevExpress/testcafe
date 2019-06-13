@@ -1,13 +1,12 @@
 import path from 'path';
 import Module from 'module';
 import Bootstrapper from '../runner/bootstrapper';
-import Compiler from '../compiler';
 
 const originalRequire = Module.prototype.require;
 
 class LiveModeBootstrapper extends Bootstrapper {
-    constructor (runner, browserConnectionGateway) {
-        super(browserConnectionGateway);
+    constructor ({ runner, ...services }) {
+        super(services);
 
         this.runner = runner;
     }
@@ -19,7 +18,7 @@ class LiveModeBootstrapper extends Bootstrapper {
             return await super._getTests();
         }
         catch (err) {
-            await Compiler.cleanUp();
+            await this.compilerHost.cleanUp();
 
             this.runner.setBootstrappingError(err);
         }

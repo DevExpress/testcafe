@@ -41,7 +41,7 @@ class ParentTransport extends EE {
 
 export default class CompilerProcess {
     constructor () {
-        this.cp = spawn(process.argv0, ['--inspect-brk', join(__dirname, 'child.js')], {stdio: [0, 1, 2, 'pipe', 'pipe', 'pipe']});
+        this.cp = spawn(process.argv0, [join(__dirname, 'child.js')], {stdio: [0, 1, 2, 'pipe', 'pipe', 'pipe']});
 
         global.cp = this.cp;
 
@@ -104,10 +104,6 @@ export default class CompilerProcess {
 
     }
 
-    static getSupportedTestFileExtensions () {
-        return ['.js'];
-    }
-
     async getTests (sources) {
         const tests = await this.transmitter.send('get-tests', sources);
 
@@ -162,8 +158,8 @@ export default class CompilerProcess {
         return await this.transmitter.send('run-test', { idx, actor, func, testRunId });
     }
 
-    static cleanUp () {
-        //
+    async cleanUp () {
+        await this.transmitter.send('clean-up');
     }
 
     async stop () {

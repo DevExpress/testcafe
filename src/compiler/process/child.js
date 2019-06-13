@@ -111,7 +111,12 @@ class CompilerDispatcher {
         this.transmitter.on('on-response', async data => this.onResponse(data))
         this.transmitter.on('on-configure-response', async data => this.onConfigureResponse(data));
         this.transmitter.on('filter-rule', async data => this.filterRule(data));
+        this.transmitter.on('clean-up', () => this.cleanUp());
         this.transmitter.on('exit', () => {setTimeout(() => process.kill(process.pid),200)})
+    }
+
+    async cleanUp () {
+        await Compiler.cleanUp();
     }
 
     async getTests (sources) {
@@ -161,8 +166,13 @@ class CompilerDispatcher {
     }
 
     async onRequest (data) {
-        if (this.state.requestHooks[data.id])
+        if (this.state.requestHooks[data.id]) {
+            event.setMock = mock => data.event.mock = mock;
+
             await this.state.requestHooks[data.id].onRequest(data.event);
+
+            return data.event;
+        }
     }
 
     async onResponse (data) {

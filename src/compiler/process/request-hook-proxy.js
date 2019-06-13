@@ -32,7 +32,12 @@ export default class RequestHookProxy extends RequestHook {
     async onRequest(event) {
         const safeEvent = { requestOptions: event.requestOptions };
 
-        await this.transmitter.send('on-request', { id: this.id, safeEvent });
+        const modifiedEvent = await this.transmitter.send('on-request', { id: this.id, safeEvent });
+
+        if (modifiedEvent.mock)
+            event.setMock(modifiedEvent.mock);
+
+        merge(event, modifiedEvent);    
     }
 
     async onResponse (event) {

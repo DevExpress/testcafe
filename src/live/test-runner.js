@@ -121,7 +121,6 @@ class LiveModeRunner extends Runner {
         this.testRunController.stop();
         this.tcRunnerTaskPromise.cancel();
 
-
         return this.testRunController.allTestsCompletePromise
             .then(() => {
                 this.stopping = false;
@@ -166,8 +165,8 @@ class LiveModeRunner extends Runner {
         return super._createTask(tests, browserConnectionGroups, proxy, opts);
     }
 
-    _createBootstrapper (browserConnectionGateway) {
-        return new LiveModeBootstrapper(this, browserConnectionGateway);
+    _createBootstrapper (services) {
+        return new LiveModeBootstrapper({ runner: this, ...services });
     }
 
     _createController () {

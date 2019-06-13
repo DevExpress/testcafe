@@ -1,4 +1,4 @@
-import RequestHook from './hook';
+import RequestHook from './proxy';
 import { ResponseMock, RequestFilterRule, SAME_ORIGIN_CHECK_FAILED_STATUS_CODE } from 'testcafe-hammerhead';
 import { APIError } from '../../errors/runtime';
 import { RUNTIME_ERRORS } from '../../errors/types';
