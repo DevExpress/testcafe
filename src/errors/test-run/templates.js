@@ -283,5 +283,15 @@ export default {
 
     [TEST_RUN_ERRORS.assertionUnawaitedPromiseError]: err => markup(err, `
         Attempted to run assertions on a Promise object. Did you forget to await it? If not, pass "{ allowUnawaitedPromise: true }" to the assertion options.
+    `),
+
+    [TEST_RUN_ERRORS.requestHookNotImplementedError]: err => markup(err, `
+        You should implement the "${err.methodName}" method in the "${err.hookClassName}" class.
+    `),
+
+    [TEST_RUN_ERRORS.requestHookUnhandledError]: err => markup(err, `
+        An unhandled error occurred in the "${err.methodName}" method of the "${err.hookClassName}" class:
+        
+        ${escapeHtml(err.errMsg)}
     `)
 };

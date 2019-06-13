@@ -1,5 +1,6 @@
 import { RequestFilterRule } from 'testcafe-hammerhead';
 import { castArray } from 'lodash';
+import { RequestHookNotImplementedMethodError } from '../../errors/test-run';
 
 export default class RequestHook {
     constructor (requestFilterRules, responseEventConfigureOpts) {
@@ -28,7 +29,7 @@ export default class RequestHook {
     }
 
     async onRequest (/*RequestEvent event*/) {
-        throw new Error('Not implemented');
+        throw new RequestHookNotImplementedMethodError('onRequest', this.constructor.name);
     }
 
     _onConfigureResponse (event) {
@@ -40,6 +41,6 @@ export default class RequestHook {
     }
 
     async onResponse (/*ResponseEvent event*/) {
-        throw new Error('Not implemented');
+        throw new RequestHookNotImplementedMethodError('onResponse', this.constructor.name);
     }
 }

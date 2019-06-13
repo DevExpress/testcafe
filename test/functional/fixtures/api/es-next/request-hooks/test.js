@@ -1,4 +1,4 @@
-const expect = require('chai').expect;
+const { expect } = require('chai');
 
 describe('Request Hooks', () => {
     describe('RequestMock', () => {
@@ -37,6 +37,18 @@ describe('Request Hooks', () => {
 
         it('Conditional adding', () => {
             return runTests('./testcafe-fixtures/api/conditional-adding.js', 'Conditional adding');
+        });
+
+        it('Should handle errors inside the overridden methods', () => {
+            return runTests('./testcafe-fixtures/api/handle-errors.js', null, { only: 'chrome', shouldFail: true })
+                .catch(() => {
+                    expect(testReport.errs.length).eql(5);
+                    expect(testReport.errs[0]).contains('You should implement the "onRequest" method in the "Hook1" class.');
+                    expect(testReport.errs[1]).contains('You should implement the "onResponse" method in the "Hook1" class.');
+                    expect(testReport.errs[2]).contains('You should implement the "onResponse" method in the "Hook2" class.');
+                    expect(testReport.errs[3]).contains('You should implement the "onRequest" method in the "Hook3" class.');
+                    expect(testReport.errs[4]).contains('An unhandled error occurred in the "onResponse" method of the "Hook3" class:\n\nError: Unhandled error.');
+                });
         });
     });
 });
