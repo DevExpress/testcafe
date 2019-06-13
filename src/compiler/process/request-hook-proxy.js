@@ -11,7 +11,7 @@ export default class RequestHookProxy extends RequestHook {
 
     static _proxyFilterRules (rules) {
         if (!rules)
-            return;
+            return void 0;
 
         return rules.map(rule => {
             if (rule.type === 'function')
@@ -29,7 +29,7 @@ export default class RequestHookProxy extends RequestHook {
         });
     }
 
-    async onRequest(event) {
+    async onRequest (event) {
         const safeEvent = { requestOptions: event.requestOptions };
 
         const modifiedEvent = await this.transmitter.send('on-request', { id: this.id, safeEvent });
@@ -37,12 +37,11 @@ export default class RequestHookProxy extends RequestHook {
         if (modifiedEvent.mock)
             event.setMock(modifiedEvent.mock);
 
-        merge(event, modifiedEvent);    
+        merge(event, modifiedEvent);
     }
 
     async onResponse (event) {
-        console.log(event);
-        await this.transmitter.send('on-response', { id: this.id, event })
+        await this.transmitter.send('on-response', { id: this.id, event });
     }
 
     async _onConfigureResponse (event) {

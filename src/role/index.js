@@ -1,8 +1,5 @@
 import { EventEmitter } from 'events';
-import nanoid from 'nanoid';
 import PHASE from './phase';
-import { assertType, is } from '../errors/runtime/type-assertions';
-import wrapTestFunction from '../api/wrap-test-function';
 import { resolvePageUrl } from '../api/test-page-url';
 import { NavigateToCommand } from '../test-run/commands/actions';
 import roleMarker from './marker-symbol';
@@ -56,8 +53,6 @@ class Role extends EventEmitter {
     }
 
     async initialize (testRun) {
-        debugger;
-
         this.phase = PHASE.pendingInitialization;
 
         await testRun.switchToCleanRun();
@@ -74,13 +69,6 @@ class Role extends EventEmitter {
 }
 
 export function createRole (id, loginPage, initFn, options = {}) {
-    assertType(is.string, 'Role', '"loginPage" argument', loginPage);
-    assertType(is.function, 'Role', '"initFn" argument', initFn);
-    assertType(is.nonNullObject, 'Role', '"options" argument', options);
-
-    if (options.preserveUrl !== void 0)
-        assertType(is.boolean, 'Role', '"preserveUrl" option', options.preserveUrl);
-
     loginPage = resolvePageUrl(loginPage);
 
     return new Role(id, loginPage, initFn, options);

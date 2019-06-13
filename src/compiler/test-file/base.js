@@ -1,7 +1,10 @@
+import EventEmitter from 'events';
 import { escapeRegExp as escapeRe } from 'lodash';
 
-export default class TestFileCompilerBase {
+export default class TestFileCompilerBase extends EventEmitter {
     constructor () {
+        super();
+
         const escapedExt = escapeRe(this.getSupportedExtension());
 
         this.supportedExtensionRe = new RegExp(`${escapedExt}$`);

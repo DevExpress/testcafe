@@ -1,5 +1,5 @@
 import testRunTracker from '../../api/test-run-tracker';
-import COMMAND_TYPE from "../../test-run/commands/type";
+import COMMAND_TYPE from '../../test-run/commands/type';
 const serviceCommands             = require('../../test-run/commands/service');
 const AssertionExecutor           = require('../../assertions/executor');
 
@@ -55,8 +55,6 @@ class TestRunMock {
     }
 
     async executeCommand (command, callsite) {
-        console.log(command, this.id);
-
         if (command.type === COMMAND_TYPE.assertion)
             return this._executeAssertion(command, callsite);
 

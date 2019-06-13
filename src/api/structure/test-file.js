@@ -8,9 +8,8 @@ export default class TestFile {
     }
 
     _filterRecursiveProps () {
-        for (const test of this.collectedTests) {
+        for (const test of this.collectedTests)
             test.testFile = test.fixture.testFile = { filename: test.testFile.filename };
-        }
     }
 
     getTests () {

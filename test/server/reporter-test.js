@@ -16,6 +16,7 @@ describe('Reporter', () => {
 
     const fixtureMocks = [
         {
+            id:   'F1',
             name: 'fixture1',
             path: './file1.js',
             meta: {
@@ -23,6 +24,7 @@ describe('Reporter', () => {
             }
         },
         {
+            id:   'F2',
             name: 'fixture2',
             path: './file1.js',
             meta: {
@@ -30,6 +32,7 @@ describe('Reporter', () => {
             }
         },
         {
+            id:   'F3',
             name: 'fixture3',
             path: './file2.js',
             meta: null
@@ -38,6 +41,7 @@ describe('Reporter', () => {
 
     const testMocks = [
         {
+            id:          'F1T1',
             name:        'fixture1test1',
             fixture:     fixtureMocks[0],
             skip:        false,
@@ -53,6 +57,7 @@ describe('Reporter', () => {
             }
         },
         {
+            id:          'F1T2',
             name:        'fixture1test2',
             fixture:     fixtureMocks[0],
             skip:        false,
@@ -74,6 +79,7 @@ describe('Reporter', () => {
             }
         },
         {
+            id:      'F1T3',
             name:    'fixture1test3',
             skip:    false,
             fixture: fixtureMocks[0],
@@ -82,6 +88,7 @@ describe('Reporter', () => {
             }
         },
         {
+            id:      'F2T1',
             name:    'fixture2test1',
             skip:    false,
             fixture: fixtureMocks[1],
@@ -90,6 +97,7 @@ describe('Reporter', () => {
             }
         },
         {
+            id:      'F2T2',
             name:    'fixture2test2',
             skip:    false,
             fixture: fixtureMocks[1],
@@ -98,6 +106,7 @@ describe('Reporter', () => {
             }
         },
         {
+            id:      'F3T1',
             name:    'fixture3test1',
             skip:    false,
             fixture: fixtureMocks[2],
@@ -106,6 +115,7 @@ describe('Reporter', () => {
             }
         },
         {
+            id:      'F3T2',
             name:    'fixture3test2',
             skip:    true,
             fixture: fixtureMocks[2],
@@ -114,6 +124,7 @@ describe('Reporter', () => {
             }
         },
         {
+            id:      'F3T3',
             name:    'fixture3test3',
             skip:    false,
             fixture: fixtureMocks[2],

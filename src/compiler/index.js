@@ -1,3 +1,4 @@
+import EventEmitter from 'events';
 import Promise from 'pinkie';
 import { flattenDeep, find, chunk, uniq } from 'lodash';
 import stripBom from 'strip-bom';
@@ -22,9 +23,16 @@ const testFileCompilers = [
     new RawTestFileCompiler()
 ];
 
-export default class Compiler {
+export default class Compiler extends EventEmitter {
     constructor (sources) {
+        super();
+
         this.sources = sources;
+
+        testFileCompilers.forEach(compiler => {
+            if (compiler.isApiBased)
+                compiler.on('test-file-added', filename => this.emit('test-file-added', filename));
+        });
     }
 
     static getSupportedTestFileExtensions () {

@@ -140,15 +140,15 @@ class LiveModeController extends EventEmitter {
                 this.logger.err(e.err);
         });
 
-        this.runner.on(this.runner.REQUIRED_MODULE_FOUND_EVENT, e => {
-            this.emit(REQUIRED_MODULE_FOUND_EVENT, e);
+        this.runner.services.compilerHost.on('test-file-added', filename => {
+            this.emit(REQUIRED_MODULE_FOUND_EVENT, filename);
         });
     }
 
     _initFileWatching (src) {
         this.fileWatcher = this._createFileWatcher(src);
 
-        this.on(REQUIRED_MODULE_FOUND_EVENT, e => this.fileWatcher.addFile(e.filename));
+        this.on(REQUIRED_MODULE_FOUND_EVENT, filename => this.fileWatcher.addFile(filename));
 
         this.fileWatcher.on(this.fileWatcher.FILE_CHANGED_EVENT, () => this._runTests(true));
     }

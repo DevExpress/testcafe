@@ -4,13 +4,9 @@ import testRunTracker from '../../api/test-run-tracker';
 import RequestHookProxy from './request-hook-proxy';
 import Transmitter from './transmitter';
 import EE from '../../utils/async-event-emitter';
-import { UseRoleCommand } from "../../test-run/commands/actions";
+import { UseRoleCommand } from '../../test-run/commands/actions';
 import { createRole } from '../../role';
 
-
-process.on('uncaughtException', e => console.log(e));
-
-process.on('unhandledRejection', e => console.log(e));
 
 class ParentTransport extends EE {
     constructor (cp) {
@@ -20,8 +16,7 @@ class ParentTransport extends EE {
     }
     read () {
         this.cp.stdio[4].on('data', data => {
-            console.log('parent', data.toString())
-            this.emit('data', data)
+            this.emit('data', data);
         });
     }
 
@@ -39,28 +34,30 @@ class ParentTransport extends EE {
     }
 }
 
-export default class CompilerProcess {
+export default class CompilerProcess extends EE {
     constructor () {
-        this.cp = spawn(process.argv0, [join(__dirname, 'child.js')], {stdio: [0, 1, 2, 'pipe', 'pipe', 'pipe']});
+        super();
+
+        this.cp = spawn(process.argv0, [join(__dirname, 'child.js')], { stdio: [0, 1, 2, 'pipe', 'pipe', 'pipe'] });
 
         global.cp = this.cp;
 
         this.transmitter = new Transmitter(new ParentTransport(this.cp));
 
+        this.transmitter.on('test-file-added', ({ filename }) => this.emit('test-file-added', filename));
+
         this.transmitter.on('execute-command', data => {
             if (!testRunTracker.activeTestRuns[data.id])
-                return;
+                return void 0;
 
             return testRunTracker
                 .activeTestRuns[data.id]
-                .executeCommand(data.command)
+                .executeCommand(data.command);
         });
 
         this.transmitter.on('use-role', data => {
-            debugger;
-
             if (!testRunTracker.activeTestRuns[data.id])
-                return;
+                return void 0;
 
             const testRun = testRunTracker
                 .activeTestRuns[data.id];
@@ -69,15 +66,13 @@ export default class CompilerProcess {
                 role: createRole(
                     data.role.id,
                     data.role.loginPage,
-                    data.role.initFn && (testRun => this.runTest(data.role.id, 'roles', testRun.id, 'initFn') ),
+                    data.role.initFn && (run => this.runTest(data.role.id, 'roles', run.id, 'initFn') ),
                     data.role.options
                 )
             });
 
-            debugger;
-
             return testRun
-                .executeCommand(command)
+                .executeCommand(command);
         });
 
         this.transmitter.on('add-request-hooks', data => {
@@ -88,7 +83,7 @@ export default class CompilerProcess {
                 .activeTestRuns[data.id];
 
             data.hooks.forEach(hook => testRun.addRequestHook(new RequestHookProxy(this.transmitter, hook)));
-        })
+        });
 
         this.transmitter.on('remove-request-hooks', data => {
             if (!testRunTracker.activeTestRuns[data.id])
@@ -100,7 +95,7 @@ export default class CompilerProcess {
             data.hooks.forEach(hook => {
                 testRun.removeRequestHook(testRun.requestHooks[hook.id]);
             });
-        })
+        });
 
     }
 
@@ -109,52 +104,52 @@ export default class CompilerProcess {
 
         const fixtures = [];
 
-        tests.forEach((test) => {
+        tests.forEach(test => {
             if (!fixtures.some(fixture => fixture.id === test.fixture.id))
                 fixtures.push(test.fixture);
 
-            test.fn = (testRun) => this
-                .runTest(test.id, 'tests', testRun.id, 'fn')
+            test.fn = testRun => this
+                .runTest(test.id, 'tests', testRun.id, 'fn');
 
             if (test.beforeFn) {
-                test.beforeFn = (testRun) => this
-                    .runTest(test.id, 'tests', testRun.id, 'beforeFn')
+                test.beforeFn = testRun => this
+                    .runTest(test.id, 'tests', testRun.id, 'beforeFn');
             }
 
             if (test.afterFn) {
-                test.afterFn = (testRun) => this
-                    .runTest(test.id, 'tests', testRun.id, 'afterFn')
+                test.afterFn = testRun => this
+                    .runTest(test.id, 'tests', testRun.id, 'afterFn');
             }
 
             test.requestHooks = test.requestHooks.map(hook => new RequestHookProxy(this.transmitter, hook));
         });
 
         fixtures.forEach(fixture => {
-            if (fixture.afterEachFn) {
-                test.beforeEachFn = (testRun) => this
-                    .runTest(fixture.id, 'fixtures', testRun.id, 'beforeEachFn')
-            }
-
             if (fixture.beforeEachFn) {
-                test.afterEachFn = (testRun) => this
-                    .runTest(fixture.id, 'fixtures', testRun.id, 'afterEachFn')
+                fixture.beforeEachFn = testRun => this
+                    .runTest(fixture.id, 'fixtures', testRun.id, 'beforeEachFn');
             }
 
-            if (fixture.afterFn) {
-                test.beforeFn = () => this
-                    .runTest(fixture.id, 'fixtures', null, 'beforeFn')
+            if (fixture.afterEachFn) {
+                fixture.afterEachFn = testRun => this
+                    .runTest(fixture.id, 'fixtures', testRun.id, 'afterEachFn');
             }
 
             if (fixture.beforeFn) {
-                test.afterFn = () => this
-                    .runTest(fixture.id, 'fixtures', null, 'afterFn')
+                fixture.beforeFn = () => this
+                    .runTest(fixture.id, 'fixtures', null, 'beforeFn');
+            }
+
+            if (fixture.afterFn) {
+                fixture.afterFn = () => this
+                    .runTest(fixture.id, 'fixtures', null, 'afterFn');
             }
         });
 
         return tests;
     }
 
-    async runTest(idx, actor, testRunId, func) {
+    async runTest (idx, actor, testRunId, func) {
         return await this.transmitter.send('run-test', { idx, actor, func, testRunId });
     }
 

@@ -3,6 +3,8 @@ import { UncaughtErrorInTestCode } from './test-run';
 
 export default class TestCafeErrorList {
     constructor () {
+        this.isTestCafeErrorList = true;
+
         this.items = [];
     }
 
@@ -15,7 +17,7 @@ export default class TestCafeErrorList {
     }
 
     addError (err) {
-        if (err instanceof TestCafeErrorList)
+        if (err.isTestCafeErrorList)
             this.items = this.items.concat(err.items);
         else
             this.items.push(processTestFnError(err));

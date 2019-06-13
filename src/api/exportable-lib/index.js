@@ -3,7 +3,7 @@ const ClientFunctionBuilder = lazyRequire('../../client-functions/client-functio
 const SelectorBuilder       = lazyRequire('../../client-functions/selectors/selector-builder');
 const createRequestLogger   = lazyRequire('../request-hooks/request-logger');
 const createRequestMock     = lazyRequire('../request-hooks/request-mock');
-const wrapTestFunction      = lazyRequire('../wrap-test-function');
+const { createRole, createAnonymousRole } = lazyRequire('../role');
 
 // NOTE: We can't use lazy require for RequestHook, because it will break base class detection for inherited classes
 let RequestHook = null;
@@ -12,7 +12,7 @@ let RequestHook = null;
 let testControllerProxy = null;
 
 function Role (loginPage, initFn, options) {
-    return { id: require('nanoid')(), loginPage, initFn: wrapTestFunction(initFn), options };
+    return createRole(loginPage, initFn, options);
 }
 
 function RequestMock () {
@@ -36,7 +36,7 @@ function Selector (fn, options) {
 }
 
 Object.defineProperty(Role, 'anonymous', {
-    get: () => ({ id: require('nanoid')(), loginPage: null, initFn: null })
+    get: () => createAnonymousRole()
 });
 
 export default {

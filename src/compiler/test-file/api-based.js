@@ -21,6 +21,7 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
     constructor () {
         super();
 
+        this.isApiBased            = true;
         this.cache                 = Object.create(null);
         this.origRequireExtensions = Object.create(null);
     }
@@ -83,6 +84,8 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
                     origExt(mod, filename);
 
                 else {
+                    this.emit('test-file-added', filename);
+
                     const code         = readFileSync(filename).toString();
                     const compiledCode = requireCompilers[ext](stripBom(code), filename);
 

@@ -13,8 +13,7 @@ class LiveModeRunner extends Runner {
         super(configuration, services);
 
         /* EVENTS */
-        this.TEST_RUN_DONE_EVENT         = 'test-run-done';
-        this.REQUIRED_MODULE_FOUND_EVENT = 'require-module-found';
+        this.TEST_RUN_DONE_EVENT = 'test-run-done';
 
         this.stopping              = false;
         this.tcRunnerTaskPromise   = null;

@@ -12,6 +12,18 @@ export default class Transmitter extends EE {
         this.on('request', data => this._onRequest(data));
     }
 
+    _saveError (error) {
+        if (error.isTestCafeErrorList) {
+            const errorData = { ...error };
+
+            errorData.items = errorData.items.map(err => this._saveError(err));
+
+            return errorData;
+        }
+
+        return { message: error.message, stack: error.stack, ...error };
+    }
+
     async _onRead (rawPacket) {
         const packet = rawPacket instanceof Buffer ? JSON.parse(rawPacket.toString()) : rawPacket;
 
@@ -27,18 +39,11 @@ export default class Transmitter extends EE {
             error: void 0
         };
 
-        console.log(requestPacket.name, requestPacket.args);
-
         try {
-            console.log(this.listenerCount(requestPacket.name));
-            if (requestPacket.name === 'use-role')
-                debugger;
             results.data = (await this.emit(requestPacket.name, requestPacket.args))[0];
         }
         catch (error) {
-            results.error = error;
-
-            console.log(error)
+            results.error = this._saveError(error);
         }
 
         const responsePacket = {
@@ -60,6 +65,20 @@ export default class Transmitter extends EE {
         };
     }
 
+    _createError (errorData) {
+        if (errorData.isTestCafeErrorList) {
+            errorData.items = errorData.items.map(err => this._createError(err));
+
+            return errorData;
+        }
+
+        const error = new Error(errorData.message);
+
+        Object.assign(error, errorData);
+
+        return error;
+    }
+
     async send (name, args) {
         const packet          = this._createPacket(name, args);
         const responsePromise = this.once(`response-${packet.id}`);
@@ -69,7 +88,7 @@ export default class Transmitter extends EE {
         const { error, data } = await responsePromise;
 
         if (error)
-            throw error;
+            throw this._createError(error);
 
         return data;
     }
@@ -81,11 +100,7 @@ export default class Transmitter extends EE {
 
         this.transport.writeSync(JSON.stringify(requestPacket));
 
-        console.log('written');
-
         let responsePacket = JSON.parse(this.transport.readSync().toString());
-
-        console.log(responsePacket);
 
         while (responsePacket.id !== requestPacket.id)
             responsePacket = JSON.parse(this.transport.readSync().toString());
@@ -93,7 +108,7 @@ export default class Transmitter extends EE {
         const { error, data } = responsePacket;
 
         if (error)
-            throw error;
+            throw this._createError(error);
 
         return data;
     }

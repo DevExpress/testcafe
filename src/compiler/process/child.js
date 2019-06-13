@@ -19,7 +19,7 @@ class ChildTransport extends EE {
                     reject(err);
                 else
                     resolve(len);
-            })
+            });
         });
     }
 
@@ -28,7 +28,7 @@ class ChildTransport extends EE {
     }
 
     async read () {
-        while (true) {
+        for (;;) {
             const readLength = await this._lowRead();
 
             const data = this.buffer.slice(0, readLength);
@@ -76,19 +76,17 @@ function genRule (rule) {
     return rule;
 }
 
-
-
 class CompilerDispatcher {
     constructor () {
         this.transmitter = new Transmitter(new ChildTransport());
 
         this.state =
         {
-            tests: {},
-            fixtures: {},
-            roles: {},
+            tests:        {},
+            fixtures:     {},
+            roles:        {},
             requestHooks: {},
-            filterRules: {}
+            filterRules:  {}
         };
 
         this._setupRoutes();
@@ -105,14 +103,17 @@ class CompilerDispatcher {
     }
 
     _setupRoutes () {
-        this.transmitter.on('get-tests', async data => this.getTests(data))
-        this.transmitter.on('run-test', async data => this.runTest(data))
-        this.transmitter.on('on-request', async data => this.onRequest(data))
-        this.transmitter.on('on-response', async data => this.onResponse(data))
+        this.transmitter.on('get-tests', async data => this.getTests(data));
+        this.transmitter.on('run-test', async data => this.runTest(data));
+        this.transmitter.on('on-request', async data => this.onRequest(data));
+        this.transmitter.on('on-response', async data => this.onResponse(data));
         this.transmitter.on('on-configure-response', async data => this.onConfigureResponse(data));
         this.transmitter.on('filter-rule', async data => this.filterRule(data));
         this.transmitter.on('clean-up', () => this.cleanUp());
-        this.transmitter.on('exit', () => {setTimeout(() => process.kill(process.pid),200)})
+
+        this.transmitter.on('exit', () => {
+            setTimeout(() => process.kill(process.pid), 200);
+        });
     }
 
     async cleanUp () {
@@ -120,8 +121,10 @@ class CompilerDispatcher {
     }
 
     async getTests (sources) {
-        console.log(sources);
         const compiler = new Compiler(sources);
+
+        compiler.on('test-file-added', filename => this.transmitter.sendSync('test-file-added', { filename }));
+
         const tests    = await compiler.getTests();
 
         tests.forEach(test => {
@@ -167,12 +170,14 @@ class CompilerDispatcher {
 
     async onRequest (data) {
         if (this.state.requestHooks[data.id]) {
-            event.setMock = mock => data.event.mock = mock;
+            data.event.setMock = mock => {
+                data.event.mock = mock;
+            };
 
             await this.state.requestHooks[data.id].onRequest(data.event);
-
-            return data.event;
         }
+
+        return data.event;
     }
 
     async onResponse (data) {
@@ -182,7 +187,7 @@ class CompilerDispatcher {
 
     async onConfigureResponse (data) {
         if (!this.state.requestHooks[data.id])
-            return;
+            return data.event;
 
         await this.state.requestHooks[data.id]._onConfigureResponse(data.event);
 
@@ -192,6 +197,8 @@ class CompilerDispatcher {
     async filterRule (data) {
         if (this.state.filterRules[data.id])
             return await this.state.filterRules[data.id](data.request);
+
+        return void 0;
     }
 
     async useRole ({ id, role }) {
@@ -220,11 +227,11 @@ class CompilerDispatcher {
             hook.requestFilterRules = hook.requestFilterRules.map(genRule);
         });
 
-        await this.transmitter.send('add-request-hooks', { id, hooks })
+        await this.transmitter.send('add-request-hooks', { id, hooks });
     }
 
-    async removeRequestHooks (hooks) {
-        await this.transmitter.send('remove-request-hooks', { id, hooks })
+    async removeRequestHooks ({ id, hooks }) {
+        await this.transmitter.send('remove-request-hooks', { id, hooks });
     }
 }
 

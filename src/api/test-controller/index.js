@@ -26,8 +26,7 @@ import {
     GetNativeDialogHistoryCommand,
     GetBrowserConsoleMessagesCommand,
     SetTestSpeedCommand,
-    SetPageLoadTimeoutCommand,
-    UseRoleCommand
+    SetPageLoadTimeoutCommand
 } from '../../test-run/commands/actions';
 
 import {

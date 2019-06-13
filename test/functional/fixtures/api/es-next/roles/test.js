@@ -14,8 +14,8 @@ const TEST_WITH_IFRAME_FAILED_RUN_OPTIONS = {
 
 // TODO: IMPORTANT: Azure test tasks hang when a role is used in a test, fix it immediately
 if (config.currentEnvironmentName !== config.testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers && config.currentEnvironmentName !== config.testingEnvironmentNames.mobileBrowsers) {
-    describe.only('[API] t.useRole()', function () {
-        it.only('Should initialize and switch roles', function () {
+    describe('[API] t.useRole()', function () {
+        it('Should initialize and switch roles', function () {
             return runTests('./testcafe-fixtures/use-role-test.js', null, { only: 'chrome,ie,firefox' });
         });
 

@@ -30,9 +30,9 @@ export default function createStackFilter (limit) {
         const pass = filename &&
                    filename.indexOf(sep) > -1 &&
                    filename.indexOf(INTERNAL) !== 0 &&
-                   //filename.indexOf(TESTCAFE_LIB) !== 0 &&
-                   //filename.indexOf(TESTCAFE_BIN) !== 0 &&
-                   //filename.indexOf(TESTCAFE_HAMMERHEAD) < 0 &&
+                   filename.indexOf(TESTCAFE_LIB) !== 0 &&
+                   filename.indexOf(TESTCAFE_BIN) !== 0 &&
+                   filename.indexOf(TESTCAFE_HAMMERHEAD) < 0 &&
                    filename.indexOf(BABEL_RELATED) !== 0 &&
                    filename.indexOf(BABYLON) !== 0 &&
                    filename.indexOf(CORE_JS) !== 0 &&

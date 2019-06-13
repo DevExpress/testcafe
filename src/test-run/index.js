@@ -1,4 +1,3 @@
-import { pull as remove } from 'lodash';
 import { readSync as read } from 'read-file-relative';
 import promisifyEvent from 'promisify-event';
 import Promise from 'pinkie';
@@ -7,7 +6,6 @@ import AsyncEventEmitter from '../utils/async-event-emitter';
 import debugLogger from '../notifications/debug-logger';
 import TestRunDebugLog from './debug-log';
 import TestRunErrorFormattableAdapter from '../errors/test-run/formattable-adapter';
-import TestCafeErrorList from '../errors/error-list';
 import { PageLoadError, RoleSwitchInRoleInitializerError } from '../errors/test-run/';
 import PHASE from './phase';
 import CLIENT_MESSAGES from './client-messages';
@@ -152,8 +150,6 @@ export default class TestRun extends AsyncEventEmitter {
 
     _initRequestHook (hook) {
         hook.warningLog = this.warningLog;
-
-        debugger;
 
         hook._instantiateRequestFilterRules();
         hook._instantiatedRequestFilterRules.forEach(rule => {
@@ -336,7 +332,7 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     addError (err, screenshotPath) {
-        const errList = err instanceof TestCafeErrorList ? err.items : [err];
+        const errList = err.isTestCafeErrorList ? err.items : [err];
 
         errList.forEach(item => {
             const adapter = this._createErrorAdapter(item, screenshotPath);

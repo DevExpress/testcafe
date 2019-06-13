@@ -38,6 +38,8 @@ export default class Test extends TestingUnit {
 
         this.beforeFn = wrapTestFunction(fn);
 
+        this.beforeFn.toJSON = () => true;
+
         return this.apiOrigin;
     }
 
@@ -45,6 +47,8 @@ export default class Test extends TestingUnit {
         assertType(is.function, 'after', 'test.after hook', fn);
 
         this.afterFn = wrapTestFunction(fn);
+
+        this.afterFn.toJSON = () => true;
 
         return this.apiOrigin;
     }
