@@ -39,6 +39,8 @@ export default {
 
         await cdp.createClient(runtimeInfo);
 
+        this.emit(browserId, 'debug-protocol-connected', runtimeInfo.client);
+
         this.openedBrowsers[browserId] = runtimeInfo;
 
         await this._ensureWindowIsExpanded(browserId, runtimeInfo.viewportSize);

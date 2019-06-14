@@ -65,6 +65,12 @@ export default class BrowserProviderPluginHost {
         await connection.provider._resizeLocalBrowserWindow(browserId, width, height, currentWidth, currentHeight);
     }
 
+    emit (browserId, eventName, eventData) {
+        const connection = BrowserConnection.getById(browserId);
+
+        connection.emit(eventName, eventData);
+    }
+
     // API
     // Browser control
     async openBrowser (/* browserId, pageUrl, browserName */) {

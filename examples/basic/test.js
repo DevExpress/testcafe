@@ -14,6 +14,8 @@ test.only('Text typing basics', async t => {
 
     debugger;
 
+    await t.debug();
+
     await t
         .typeText(page.nameInput, 'r', { caretPos: 2 }) // Correct last name
         .expect(page.nameInput.value).eql('Parker'); // Check result

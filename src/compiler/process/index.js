@@ -40,6 +40,8 @@ export default class CompilerProcess extends EE {
 
         v8Flags = v8Flags || [];
 
+        this.debugInfo = this._getDebugInfo(v8Flags);
+
         this.cp = spawn(process.argv0, [ ...v8Flags, join(__dirname, 'child.js')], { stdio: [0, 1, 2, 'pipe', 'pipe', 'pipe'] });
 
         global.cp = this.cp;
@@ -99,6 +101,25 @@ export default class CompilerProcess extends EE {
             });
         });
 
+    }
+
+    _getDebugInfo (v8Flags) {
+        const debugInfo = { host: '127.0.0.1', port: '9229' };
+
+        const inspectFlags = v8Flags.filter(flag => flag.startsWith('--inspect'));
+        const inspectFlag  = inspectFlags[0];
+
+        if (!inspectFlag)
+            return null;
+
+        const inspectFlagParsed = inspectFlag.match(/=([^:\d]*)?:?(\d+)?$/);
+
+        if (inspectFlagParsed) {
+            debugInfo.host = inspectFlagParsed[1] || debugInfo.host;
+            debugInfo.port = inspectFlagParsed[2] || debugInfo.port;
+        }
+
+        return debugInfo;
     }
 
     async getTests (sources) {

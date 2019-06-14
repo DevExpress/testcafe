@@ -7,6 +7,7 @@ import { RUNTIME_ERRORS } from '../errors/types';
 import BrowserSet from './browser-set';
 import TestedApp from './tested-app';
 import parseFileList from '../utils/parse-file-list';
+import DevToolsWatcher from './devtools-watcher';
 import path from 'path';
 import fs from 'fs';
 import makeDir from 'make-dir';
@@ -54,7 +55,14 @@ export default class Bootstrapper {
             return [];
 
         return browserInfo
-            .map(browser => times(this.concurrency, () => new BrowserConnection(this.browserConnectionGateway, browser)));
+            .map(browser => times(this.concurrency, () => {
+                const bc = new BrowserConnection(this.browserConnectionGateway, browser);
+
+                if (browser.providerName.startsWith('chrom'))
+                    new DevToolsWatcher(bc, this.compilerHost.debugInfo);
+
+                return bc;
+            }));
     }
 
     async _getBrowserConnections (browserInfo) {
