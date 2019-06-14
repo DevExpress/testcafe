@@ -28,7 +28,7 @@ export default class TestCafe {
         this.proxy                    = new hammerhead.Proxy(hostname, port1, port2, options);
         this.browserConnectionGateway = new BrowserConnectionGateway(this.proxy, { retryTestPages: configuration.getOption('retryTestPages') });
         this.runners                  = [];
-        this.compilerHost             = new CompilerHost();
+        this.compilerHost             = new CompilerHost(options.v8Flags);
 
         this.services = {
             browserConnectionGateway: this.browserConnectionGateway,

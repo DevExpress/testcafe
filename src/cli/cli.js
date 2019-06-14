@@ -79,7 +79,7 @@ async function runTests (argParser) {
 
     log.showSpinner();
 
-    const testCafe = await createTestCafe(opts.hostname, port1, port2, opts.ssl, opts.dev);
+    const testCafe = await createTestCafe(opts.hostname, port1, port2, opts.ssl, opts.dev, false, opts.v8Flags);
 
     const correctedBrowsersAndSources = await correctBrowsersAndSources(argParser, testCafe.configuration);
     const automatedBrowsers           = correctedBrowsersAndSources.browsers;

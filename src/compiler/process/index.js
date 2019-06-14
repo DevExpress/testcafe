@@ -35,10 +35,12 @@ class ParentTransport extends EE {
 }
 
 export default class CompilerProcess extends EE {
-    constructor () {
+    constructor (v8Flags) {
         super();
 
-        this.cp = spawn(process.argv0, ['--inspect-brk', join(__dirname, 'child.js')], { stdio: [0, 1, 2, 'pipe', 'pipe', 'pipe'] });
+        v8Flags = v8Flags || [];
+
+        this.cp = spawn(process.argv0, [ ...v8Flags, join(__dirname, 'child.js')], { stdio: [0, 1, 2, 'pipe', 'pipe', 'pipe'] });
 
         global.cp = this.cp;
 

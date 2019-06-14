@@ -276,7 +276,8 @@ export default class Configuration {
             options:  {
                 ssl:             this.getOption('ssl'),
                 developmentMode: this.getOption('developmentMode'),
-                retryTestPages:  !!this.getOption('retryTestPages')
+                retryTestPages:  !!this.getOption('retryTestPages'),
+                v8Flags:         this.getOption('v8Flags')
             }
         };
 

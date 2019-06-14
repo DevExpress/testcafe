@@ -38,7 +38,7 @@ async function getValidPort (port) {
 }
 
 // API
-async function createTestCafe (hostname, port1, port2, sslOptions, developmentMode, retryTestPages) {
+async function createTestCafe (hostname, port1, port2, sslOptions, developmentMode, retryTestPages, v8Flags) {
     const configuration = new Configuration();
 
     await configuration.init({
@@ -47,7 +47,8 @@ async function createTestCafe (hostname, port1, port2, sslOptions, developmentMo
         port2,
         ssl: sslOptions,
         developmentMode,
-        retryTestPages
+        retryTestPages,
+        v8Flags
     });
 
     [hostname, port1, port2] = await Promise.all([
