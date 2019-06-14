@@ -277,12 +277,6 @@ export default class TestController {
         return this._enqueueCommand('debug', DebugCommand);
     }
 
-    _debugSelectors$ () {
-        clientFunctionModeSwitcher.enableSync();
-        debugger;
-        clientFunctionModeSwitcher.disableSync();
-    }
-
     _setTestSpeed$ (speed) {
         return this._enqueueCommand('setTestSpeed', SetTestSpeedCommand, { speed });
     }
