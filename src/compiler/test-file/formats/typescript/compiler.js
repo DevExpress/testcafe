@@ -5,15 +5,14 @@ import APIBasedTestFileCompilerBase from '../../api-based';
 import ESNextTestFileCompiler from '../es-next/compiler';
 import TypescriptConfiguration from '../../../../configuration/typescript-configuration';
 
-const RENAMED_DEPENDENCIES_MAP       = new Map([['testcafe', APIBasedTestFileCompilerBase.EXPORTABLE_LIB_PATH]]);
-const tsDefsPath                     = path.resolve(__dirname, '../../../../../ts-defs/index.d.ts');
-const DEFAULT_CONFIGURATION_FILENAME = 'tsconfig.json';
+const RENAMED_DEPENDENCIES_MAP = new Map([['testcafe', APIBasedTestFileCompilerBase.EXPORTABLE_LIB_PATH]]);
+const tsDefsPath               = path.resolve(__dirname, '../../../../../ts-defs/index.d.ts');
 
 export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompilerBase {
     constructor ({ typeScriptOptions } = {}) {
         super();
 
-        const tsConfigPath = typeScriptOptions ? typeScriptOptions.tsConfigPath : DEFAULT_CONFIGURATION_FILENAME;
+        const tsConfigPath = typeScriptOptions ? typeScriptOptions.tsConfigPath : null;
 
         this.tsConfig = new TypescriptConfiguration(tsConfigPath);
     }
