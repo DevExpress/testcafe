@@ -16,6 +16,7 @@ export default {
     cannotReadConfigFile:                    'An error has occurred while reading the configuration file.',
     cannotParseConfigFile:                   "Failed to parse the '.testcaferc.json' file.\n\nThis file is not a well-formed JSON file.",
     configOptionsWereOverriden:              'The {optionsString} option{suffix} from the configuration file will be ignored.',
+    cannotOverrideTypeScriptConfigOptions:   'You cannot override the "{optionName}" compiler option in the TypeScript configuration file.',
 
     cannotFindSSLCertFile: 'Unable to find the "{path}" file, specified by the "{option}" ssl option. Error details:\n' +
                            '\n' +

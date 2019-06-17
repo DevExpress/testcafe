@@ -1,7 +1,7 @@
 import ts from 'typescript';
 import { repeat, merge } from 'lodash';
-import TypeScriptTestFileCompiler from './compiler';
 import { TestFileParserBase } from '../../test-file-parser-base';
+import TypescriptConfiguration from '../../../../configuration/typescript-configuration';
 
 function replaceComments (code) {
     return code.replace(/\/\*[\s\S]*?\*\/|([^\\:]|^)\/\/.*$/gm, match => {
@@ -232,7 +232,8 @@ class TypeScriptTestFileParser extends TestFileParserBase {
         this.codeArr             = code.split('\n');
         this.codeWithoutComments = replaceComments(code);
 
-        const sourceFile = ts.createSourceFile('', code, TypeScriptTestFileCompiler._getTypescriptOptions(), true);
+        const tsConfig   = new TypescriptConfiguration();
+        const sourceFile = ts.createSourceFile('', code, tsConfig.getOptions(), true);
 
         return this.analyze(sourceFile.statements);
     }

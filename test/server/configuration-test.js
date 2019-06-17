@@ -1,29 +1,32 @@
 /*eslint-disable no-console */
 
-const Configuration  = require('../../lib/configuration');
-const { cloneDeep }  = require('lodash');
-const { expect }     = require('chai');
-const fs             = require('fs');
-const tmp            = require('tmp');
-const nanoid         = require('nanoid');
-const consoleWrapper = require('./helpers/console-wrapper');
+const { cloneDeep } = require('lodash');
+const { expect }    = require('chai');
+const fs            = require('fs');
+const tmp           = require('tmp');
+const nanoid        = require('nanoid');
 
-describe('Configuration', () => {
-    let configuration     = null;
-    let configPath        = null;
-    let keyFileContent    = null;
+const TestCafeConfiguration                   = require('../../lib/configuration/testcafe-configuration');
+const TypescriptConfiguration                 = require('../../lib/configuration/typescript-configuration');
+const { DEFAULT_TYPESCRIPT_COMPILER_OPTIONS } = require('../../lib/configuration/default-values');
+const consoleWrapper                          = require('./helpers/console-wrapper');
 
+let configuration     = null;
+let configPath        = null;
+let keyFileContent    = null;
+
+const createConfigFile = options => {
+    options = options || {};
+    fs.writeFileSync(configPath, JSON.stringify(options));
+};
+
+describe('TestCafeConfiguration', () => {
     consoleWrapper.init();
 
     tmp.setGracefulCleanup();
 
-    const createConfigFile = options => {
-        options = options || {};
-        fs.writeFileSync(configPath, JSON.stringify(options));
-    };
-
     beforeEach(() => {
-        configuration = new Configuration();
+        configuration = new TestCafeConfiguration();
         configPath    = configuration.filePath;
 
         const keyFile = tmp.fileSync();
@@ -200,6 +203,112 @@ describe('Configuration', () => {
                     configuration.mergeOptions({ 'hostname': void 0 });
 
                     expect(configuration.getOption('hostname')).eql('123.456.789');
+                });
+        });
+    });
+});
+
+describe('TypeScriptConfiguration', () => {
+    it('Default', () => {
+        configuration = new TypescriptConfiguration();
+
+        return configuration.init()
+            .then(() => {
+                expect(configuration.getOptions()).to.deep.equal(DEFAULT_TYPESCRIPT_COMPILER_OPTIONS);
+            });
+    });
+
+    describe('With configuration file', () => {
+        tmp.setGracefulCleanup();
+
+        beforeEach(() => {
+            consoleWrapper.init();
+            consoleWrapper.wrap();
+        });
+
+        afterEach(() => {
+            fs.unlinkSync(configuration.filePath);
+
+            consoleWrapper.unwrap();
+            consoleWrapper.messages.clear();
+        });
+
+        it('override options', () => {
+            configuration = new TypescriptConfiguration();
+            configPath    = configuration.filePath;
+
+            createConfigFile({
+                compilerOptions: {
+                    experimentalDecorators:  false,
+                    emitDecoratorMetadata:   false,
+                    allowJs:                 false,
+                    pretty:                  false,
+                    inlineSourceMap:         false,
+                    noImplicitAny:           true,
+                    module:                  2,
+                    target:                  3,
+                    suppressOutputPathCheck: false
+                }
+            });
+
+            return configuration.init()
+                .then(() => {
+                    consoleWrapper.unwrap();
+
+                    expect(configuration.getOption('experimentalDecorators')).eql(false);
+                    expect(configuration.getOption('emitDecoratorMetadata')).eql(false);
+                    expect(configuration.getOption('allowJs')).eql(false);
+                    expect(configuration.getOption('pretty')).eql(false);
+                    expect(configuration.getOption('inlineSourceMap')).eql(false);
+                    expect(configuration.getOption('noImplicitAny')).eql(true);
+                    expect(configuration.getOption('suppressOutputPathCheck')).eql(false);
+
+                    // NOTE: `module` and `target` default options can not be overridden by custom config
+                    expect(configuration.getOption('module')).eql(1);
+                    expect(configuration.getOption('target')).eql(2);
+
+                    expect(consoleWrapper.messages.log).contains('You cannot override the "module" compiler option in the TypeScript configuration file.');
+                    expect(consoleWrapper.messages.log).contains('You cannot override the "target" compiler option in the TypeScript configuration file.');
+                });
+        });
+
+        it('TestCafe config + TypeScript config', () => {
+            let runner = null;
+
+            configuration = new TestCafeConfiguration();
+
+            configPath = configuration.filePath;
+
+            const customConfigFilePath = 'custom-config.json';
+
+            createConfigFile({
+                tsConfigPath: customConfigFilePath
+            });
+
+            configPath = customConfigFilePath;
+
+            createConfigFile({
+                compilerOptions: {
+                    target: 'override-target'
+                }
+            });
+
+            return configuration.init()
+                .then(() => {
+                    const RunnerCtor = require('../../lib/runner');
+
+                    runner = new RunnerCtor(null, null, configuration);
+
+                    runner.src('test/server/data/test-suites/typescript-basic/testfile1.ts');
+                    runner._setBootstrapperOptions();
+
+                    return runner.bootstrapper._getTests();
+                })
+                .then(() => {
+                    fs.unlinkSync(customConfigFilePath);
+
+                    expect(runner.bootstrapper.tsConfigPath).eql(customConfigFilePath);
+                    expect(consoleWrapper.messages.log).contains('You cannot override the "target" compiler option in the TypeScript configuration file.');
                 });
         });
     });

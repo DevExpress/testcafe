@@ -26,5 +26,6 @@ export default {
     pageLoadTimeout:        'pageLoadTimeout',
     videoPath:              'videoPath',
     videoOptions:           'videoOptions',
-    videoEncodingOptions:   'videoEncodingOptions'
+    videoEncodingOptions:   'videoEncodingOptions',
+    tsConfigPath:           'tsConfigPath'
 };
