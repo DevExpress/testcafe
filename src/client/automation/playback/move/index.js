@@ -12,6 +12,7 @@ import nextTick from '../../utils/next-tick';
 import AutomationSettings from '../../settings';
 import DragAndDropState from '../drag/drag-and-drop-state';
 import createEventSequence from './event-sequence/create-event-sequence';
+import lastHoveredElementHolder from '../last-hovered-element-holder';
 
 const Promise          = hammerhead.Promise;
 const nativeMethods    = hammerhead.nativeMethods;
@@ -60,10 +61,6 @@ function findDraggableElement (element) {
 
     return null;
 }
-
-// Static
-let lastHoveredElement = null;
-
 
 export default class MoveAutomation {
     constructor (element, moveOptions) {
@@ -188,9 +185,11 @@ export default class MoveAutomation {
             const clientY = startY - iframeRectangle.top;
 
             // NOTE: We should not emulate mouseout and mouseleave if iframe was reloaded.
-            if (lastHoveredElement) {
-                eventSimulator.mouseout(lastHoveredElement, { clientX, clientY, relatedTarget: null });
-                eventSimulator.mouseleave(lastHoveredElement, { clientX, clientY, relatedTarget: null });
+            const element = lastHoveredElementHolder.get();
+
+            if (element) {
+                eventSimulator.mouseout(element, { clientX, clientY, relatedTarget: null });
+                eventSimulator.mouseleave(element, { clientX, clientY, relatedTarget: null });
             }
 
             messageSandbox.sendServiceMsg({ cmd: MOVE_RESPONSE_CMD }, parentWin);
@@ -290,7 +289,7 @@ export default class MoveAutomation {
 
         const { dragAndDropMode, dropAllowed } = eventSequence.run(
             currentElement,
-            lastHoveredElement,
+            lastHoveredElementHolder.get(),
             eventOptions,
             this.dragElement,
             this.dragAndDropState.dataStore
@@ -300,7 +299,7 @@ export default class MoveAutomation {
         this.dragAndDropState.enabled     = dragAndDropMode;
         this.dragAndDropState.dropAllowed = dropAllowed;
 
-        lastHoveredElement = currentElement;
+        lastHoveredElementHolder.set(currentElement);
     }
 
     _movingStep () {
