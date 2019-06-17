@@ -183,8 +183,32 @@ describe('[Regression](GH-2568)', function () {
                 assertSelectorCallstack(errs[0], `
                     The specified selector does not match any element in the DOM tree.
                         | Selector('div')
-                      > |   .customFilter('1', 2, [object Object], /regexp/, [function])
+                      > |   .customFilter('1', 2, { key: 'value' }, /regexp/, [function])
                         |   .withText('loren')
+                `);
+            });
+    });
+
+    it('with - failed before', function () {
+        return runTests('testcafe-fixtures/index.js', 'with - failed before', { selectorTimeout: 100, shouldFail: true })
+            .catch(function (errs) {
+                assertSelectorCallstack(errs[0], `
+                    The specified selector does not match any element in the DOM tree.
+                      > | Selector('non-existing-element')
+                        |   .with({ timeout: 100 })
+                        |   .find('ul')
+                `);
+            });
+    });
+
+    it('with - failed after', function () {
+        return runTests('testcafe-fixtures/index.js', 'with - failed after', { selectorTimeout: 100, shouldFail: true })
+            .catch(function (errs) {
+                assertSelectorCallstack(errs[0], `
+                    The specified selector does not match any element in the DOM tree.
+                        | Selector('body')
+                        |   .with({ timeout: 100 })
+                      > |   .find('non-existing-element')
                 `);
             });
     });

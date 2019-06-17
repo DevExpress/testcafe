@@ -10,10 +10,12 @@ import { ExecuteSelectorCommand } from '../../test-run/commands/observation';
 import defineLazyProperty from '../../utils/define-lazy-property';
 import { addAPI, addCustomMethods } from './add-api';
 import createSnapshotMethods from './create-snapshot-methods';
+import prepareApiFnArgs from './prepare-api-args';
 
 export default class SelectorBuilder extends ClientFunctionBuilder {
     constructor (fn, options, callsiteNames) {
         const apiFn                        = options && options.apiFn;
+        const apiFnID                      = options && options.apiFnID;
         const builderFromSelector          = fn && fn[functionBuilderSymbol];
         const builderFromPromiseOrSnapshot = fn && fn.selector && fn.selector[functionBuilderSymbol];
         let builder                        = builderFromSelector || builderFromPromiseOrSnapshot;
@@ -41,7 +43,7 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
         if (apiFn)
             this.options.apiFnChain.push(apiFn);
 
-        this.options.apiFnID = this.options.apiFnChain.length - 1;
+        this.options.apiFnID = typeof apiFnID === 'number' ? apiFnID : this.options.apiFnChain.length - 1;
     }
 
     _getCompiledFnCode () {
@@ -182,6 +184,13 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
         super._decorateFunction(selectorFn);
 
         addAPI(selectorFn, () => selectorFn, SelectorBuilder, this.options.customDOMProperties, this.options.customMethods);
+    }
+
+    _getClientFnWithOverriddenOptions (options) {
+        const apiFn              = prepareApiFnArgs('with', options);
+        const previousSelectorID = this.options.apiFnChain.length - 1;
+
+        return super._getClientFnWithOverriddenOptions(Object.assign(options, { apiFn, apiFnID: previousSelectorID }));
     }
 
     _processResult (result, selectorArgs) {

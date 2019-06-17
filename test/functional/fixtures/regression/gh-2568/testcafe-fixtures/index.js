@@ -138,3 +138,11 @@ test('custom methods', async t => {
 
     await t.click(selector);
 });
+
+test('with - failed before', async t => {
+    await t.click(Selector('non-existing-element').with({ timeout: 100 }).find('ul'));
+});
+
+test('with - failed after', async t => {
+    await t.click(Selector('body').with({ timeout: 100 }).find('non-existing-element'));
+});
