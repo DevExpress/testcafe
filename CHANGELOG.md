@@ -1,5 +1,43 @@
 # Changelog
 
+## v1.3.0 (2019-7-2)
+
+### Enhancements
+
+#### :gear: Customize TypeScript Compiler Options ([#1845](https://github.com/DevExpress/testcafe/issues/1845))
+
+TestCafe now allows you to specify [options for the TypeScript compiler](https://www.typescriptlang.org/docs/handbook/compiler-options.html) in a JSON configuration file.
+
+You can use this feature to enable JSX compilation, import code or typings with `paths` aliases, set aliases to React typings, or customize other compiler settings.
+
+```json
+{
+    "jsx": "react",
+    "jsxFactory": "myFactory",
+    "paths": {
+        "jquery": [ "node_modules/jquery/dist/jquery" ]
+    },
+    "alwaysStrict": true
+}
+```
+
+Save this file as `tsconfig.json` in the directory from which you run tests (or use the [tsConfigPath](https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.md#tsconfigpath) setting in the main configuration file to specify a different path).
+
+See [Customize Compiler Options](https://devexpress.github.io/testcafe/documentation/test-api/typescript-support.html#customize-compiler-options) for more information.
+
+### Bug Fixes
+
+* TestCafe now waits for asynchronous tasks in `reportTaskDone` to complete before it exits ([#3835](https://github.com/DevExpress/testcafe/issues/3835))
+* `childNodes.length` now returns the correct result after you type in an `iframe` ([#3887](https://github.com/DevExpress/testcafe/issues/3887))
+* TestCafe no longer hangs when a custom request hook throws an error ([#3786](https://github.com/DevExpress/testcafe/issues/3786))
+* Error messages now show correct selector chains for selectors that use the `with` method ([#3874](https://github.com/DevExpress/testcafe/issues/3874))
+* TestCafe can now work with test files located on a Windows network drive ([#3918](https://github.com/DevExpress/testcafe/issues/3918))
+* Page elements overlapped by the TestCafe status panel are now scrolled into view correctly ([#3924](https://github.com/DevExpress/testcafe/issues/3924))
+* Labels with the `tabIndex` and `for` attributes are now focused correctly ([#3501](https://github.com/DevExpress/testcafe/issues/3501))
+* Fixed a bug that prevented elements behind the footer from being scrolled up on some pages ([#2601](https://github.com/DevExpress/testcafe/issues/2601))
+* Enhanced the previous fix for a Chrome 75 compatibility issue when `t.typeText` typed each character at the beginning of the input ([#3865](https://github.com/DevExpress/testcafe/issues/3865))
+* jQuery scroll functions no longer cause errors ([testcafe-hammerhead/#2045](https://github.com/DevExpress/testcafe-hammerhead/issues/2045))
+
 ## v1.2.1 (2019-6-10)
 
 ### Bug Fixes
