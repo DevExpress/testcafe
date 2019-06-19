@@ -752,7 +752,7 @@ Specifies the [TypeScript configuration file](../test-api/typescript-support.md#
 
 ```json
 {
-    "tsConfigPath": "~/Users/s.johnson/testcafe/tsconfig.json"
+    "tsConfigPath": "/Users/s.johnson/testcafe/tsconfig.json"
 }
 ```
 
