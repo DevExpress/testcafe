@@ -43,7 +43,7 @@ When you run a test Testcafe will output if there are any compilation errors.
 
 ## Customize Compiler Options
 
-TestCafe allows you to specify options for the TypeScript compiler in the `tsconfig.json` file. See the available options in the [TypeScript Compiler Options](https://www.typescriptlang.org/docs/handbook/compiler-options.html) topic.
+TestCafe allows you to specify [TypeScript compiler options](https://www.typescriptlang.org/docs/handbook/compiler-options.html) in the `tsconfig.json` file. You can use these options to enable JSX compilation, import code or typings with `paths` aliases, set aliases to React typings, or customize other compiler settings.
 
 ```json
 {
@@ -55,6 +55,8 @@ TestCafe allows you to specify options for the TypeScript compiler in the `tscon
     "alwaysStrict": true
 }
 ```
+
+See the available options in the [TypeScript Compiler Options](https://www.typescriptlang.org/docs/handbook/compiler-options.html) topic.
 
 > Important! You cannot override the `module` and `target` options.
 
