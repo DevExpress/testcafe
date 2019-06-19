@@ -43,9 +43,9 @@ export function focusAndSetSelection (element, simulateFocus, caretPos) {
         const isTextEditable              = domUtils.isTextEditableElement(element);
         const labelWithForAttr            = domUtils.closest(element, 'label[for]');
         const isElementFocusable          = domUtils.isElementFocusable(element);
-        const shouldFocusByRelatedElement = !domUtils.isElementFocusable(element) && labelWithForAttr;
+        const shouldFocusByRelatedElement = labelWithForAttr;
         const isContentEditable           = domUtils.isContentEditableElement(element);
-        let elementForFocus             = isContentEditable ? contentEditable.findContentEditableParent(element) : element;
+        let elementForFocus               = isContentEditable ? contentEditable.findContentEditableParent(element) : element;
 
         // NOTE: in WebKit, if selection was never set in an input element, the focus method selects all the
         // text in this element. So, we should call select before focus to set the caret to the first symbol.
@@ -55,7 +55,7 @@ export function focusAndSetSelection (element, simulateFocus, caretPos) {
         // NOTE: we should call focus for the element related with a 'label' that has the 'for' attribute
         if (shouldFocusByRelatedElement) {
             if (simulateFocus)
-                focusByRelatedElement(labelWithForAttr);
+                focusByLabel(labelWithForAttr);
 
             resolve();
             return;
@@ -63,7 +63,7 @@ export function focusAndSetSelection (element, simulateFocus, caretPos) {
 
         const focusWithSilentMode = !simulateFocus;
         const focusForMouseEvent  = true;
-        let preventScrolling    = false;
+        let preventScrolling      = false;
 
         if (!isElementFocusable && !isContentEditable) {
             const curDocument         = domUtils.findDocument(elementForFocus);
@@ -107,10 +107,17 @@ export function focusAndSetSelection (element, simulateFocus, caretPos) {
 
 export function getElementBoundToLabel (element) {
     const labelWithForAttr = domUtils.closest(element, 'label[for]');
-    const control          = labelWithForAttr && labelWithForAttr.control;
+    const control          = labelWithForAttr && (labelWithForAttr.control || document.getElementById(labelWithForAttr.htmlFor));
     const isControlVisible = control && styleUtils.isElementVisible(control);
 
     return isControlVisible ? control : null;
+}
+
+export function focusByLabel (label) {
+    if (domUtils.isElementFocusable(label))
+        focusBlurSandbox.focus(label, testCafeCore.noop, false, true);
+    else
+        focusByRelatedElement(label);
 }
 
 export function focusByRelatedElement (element) {
