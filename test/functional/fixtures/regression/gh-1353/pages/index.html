@@ -30,16 +30,17 @@
 // NOTE: scrolling has issues in iOS Simulator https://github.com/DevExpress/testcafe/issues/1237
 <script>
     const userAgent = window.navigator.userAgent.toLocaleLowerCase();
-    const isIOS = /(iphone|ipod|ipad)/.test(userAgent);
+    const isIOS     = /(iphone|ipod|ipad)/.test(userAgent);
 
     // NOTE: Try to avoid odd scrolls in iOS on sauceLabs
     if (isIOS) {
-        const originWindowScrollTo = window.scrollTo;
+        const nativeMethods        = window['%hammerhead%'].nativeMethods;
+        const originWindowScrollTo = nativeMethods.scrollTo;
 
         let lastScrollTop  = window.scrollY;
         let lastScrollLeft = window.scrollX;
 
-        window.scrollTo = function () {
+        nativeMethods.scrollTo = function () {
             lastScrollLeft = arguments[0];
             lastScrollTop  = arguments[1];
 

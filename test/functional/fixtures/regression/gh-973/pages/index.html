@@ -29,12 +29,13 @@
 
     // NOTE: Try to avoid odd scrolls in iOS on sauceLabs
     if (isIOS) {
-        const originWindowScrollTo = window.scrollTo;
+        const nativeMethods        = window['%hammerhead%'].nativeMethods;
+        const originWindowScrollTo = nativeMethods.scrollTo;
 
         let lastScrollTop        = window.scrollY;
         let lastScrollLeft       = window.scrollX;
 
-        window.scrollTo = function () {
+        nativeMethods.scrollTo = function () {
             lastScrollLeft = arguments[0];
             lastScrollTop  = arguments[1];
 
