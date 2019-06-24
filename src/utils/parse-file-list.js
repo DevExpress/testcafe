@@ -4,7 +4,7 @@ import globby from 'globby';
 import isGlob from 'is-glob';
 import Compiler from '../compiler';
 import OS from 'os-family';
-import { isEmpty } from 'lodash';
+import { isEmpty, flatten } from 'lodash';
 import { stat } from '../utils/promisified-functions';
 
 const DEFAULT_TEST_LOOKUP_DIRS = ['test/', 'tests/'];
@@ -24,9 +24,12 @@ function modifyFileRoot (baseDir, file) {
 
 async function getDefaultDirs (baseDir) {
     return await globby(DEFAULT_TEST_LOOKUP_DIRS, {
-        cwd:    baseDir,
-        nocase: true,
-        silent: true
+        cwd:                baseDir,
+        absolute:           true,
+        caseSensitiveMatch: false,
+        expandDirectories:  false,
+        onlyDirectories:    true,
+        suppressErrors:     true
     });
 }
 
@@ -56,12 +59,25 @@ async function convertDirsToGlobs (fileList, baseDir) {
     return fileList.filter(file => !!file);
 }
 
+async function getFiles (globTask) {
+    const files = await globby(globTask.pattern, globTask.options);
+
+    return files.sort((fileA, fileB) => fileA.localeCompare(fileB));
+}
+
+async function execFileGlobs (globs, baseDir) {
+    const tasks = globby.generateGlobTasks(globs, { cwd: baseDir, expandDirectories: false, onlyFiles: true });
+    const files = await Promise.all(tasks.map(task => getFiles(task)));
+
+    return flatten(files);
+}
+
 export default async function parseFileList (fileList, baseDir) {
     if (isEmpty(fileList))
         fileList = await getDefaultDirs(baseDir);
 
     fileList = await convertDirsToGlobs(fileList, baseDir);
-    fileList = await globby(fileList, { cwd: baseDir });
+    fileList = await execFileGlobs(fileList, baseDir);
 
     return fileList.map(file => path.resolve(baseDir, file));
 }
