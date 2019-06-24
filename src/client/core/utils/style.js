@@ -89,17 +89,17 @@ function hasBodyScroll (el) {
 
     const documentElement = domUtils.findDocument(el).documentElement;
 
-    let negativeMarginCompensateValue = 0;
+    let bodyScrollHeight = el.scrollHeight;
 
     if (browserUtils.isChrome || browserUtils.isFirefox) {
         const { top: bodyTop }     = el.getBoundingClientRect();
         const { top: documentTop } = documentElement.getBoundingClientRect();
 
-        negativeMarginCompensateValue = documentTop - bodyTop;
+        bodyScrollHeight = bodyScrollHeight - documentTop + bodyTop;
     }
 
     return (scrollableHorizontally || scrollableVertically) &&
-           el.scrollHeight - negativeMarginCompensateValue > documentElement.scrollHeight;
+           bodyScrollHeight > documentElement.scrollHeight;
 }
 
 function hasHTMLElementScroll (el) {
