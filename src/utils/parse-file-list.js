@@ -66,8 +66,10 @@ async function getFiles (globTask) {
 }
 
 async function execFileGlobs (globs, baseDir) {
+    // NOTE: We have to create glob tasks, execute them and sort their results separately to preserve the same item order
+    // as in the older globby versions (<7.1.1)
     const tasks = globby.generateGlobTasks(globs, { cwd: baseDir, expandDirectories: false, onlyFiles: true });
-    const files = await Promise.all(tasks.map(task => getFiles(task)));
+    const files = await Promise.all(tasks.map(getFiles);
 
     return flatten(files);
 }
