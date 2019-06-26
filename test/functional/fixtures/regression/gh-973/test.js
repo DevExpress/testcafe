@@ -1,4 +1,4 @@
-describe('[Regression](GH-973) ', function () {
+describe.only('[Regression](GH-973) ', function () {
     describe('Should leave an extra distance between the target and browser window while performing an action', function () {
         // TODO: Android disabled because of https://github.com/DevExpress/testcafe/issues/1492
         it('Scroll to the upper left corner element in the document body', function () {
