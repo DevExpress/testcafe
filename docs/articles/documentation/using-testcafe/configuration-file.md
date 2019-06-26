@@ -41,6 +41,7 @@ A configuration file can include the following settings:
 * [assertionTimeout](#assertiontimeout)
 * [pageLoadTimeout](#pageloadtimeout)
 * [speed](#speed)
+* [clientScripts](#clientscripts)
 * [port1, port2](#port1-port2)
 * [hostname](#hostname)
 * [proxy](#proxy)
@@ -610,6 +611,27 @@ If the speed is also specified for an [individual action](../test-api/actions/ac
 
 *CLI*: [--speed](command-line-interface.md#--speed-factor)  
 *API*: [runner.run({ speed })](programming-interface/runner.md#run)
+
+## clientScripts
+
+Injects scripts from the specified files into each page visited during the tests. Use it to introduce client-side mock functions or helper scripts.
+
+```json
+{
+    "clientScripts": "assets/jquery.js"
+}
+```
+
+```json
+{
+    "clientScripts": ["mockDate.js", "scripts/react-helpers.js"]
+}
+```
+
+Use the [fixture.clientScripts](../test-api/test-code-structure.md#inject-scripts-into-tested-pages) and [test.clientScripts](../test-api/test-code-structure.md#inject-scripts-into-tested-pages) methods in test code to inject scripts within a specific fixture or test. These methods also allow you to add scripts to individual pages.
+
+*CLI*: [--client-scripts](command-line-interface.md#--client-scripts-pathpath2)  
+*API*: [runner.clientScripts({ paths })](programming-interface/runner.md#clientscripts)
 
 ## port1, port2
 

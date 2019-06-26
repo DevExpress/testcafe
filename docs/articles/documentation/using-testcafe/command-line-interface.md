@@ -48,6 +48,7 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [--assertion-timeout \<ms\>](#--assertion-timeout-ms)
   * [--page-load-timeout \<ms\>](#--page-load-timeout-ms)
   * [--speed \<factor\>](#--speed-factor)
+  * [--client-scripts \<path\[,path2,...\]\>](#--client-scripts-pathpath2)
   * [--ports \<port1,port2\>](#--ports-port1port2)
   * [--hostname \<name\>](#--hostname-name)
   * [--proxy \<host\>](#--proxy-host)
@@ -627,6 +628,18 @@ If the speed is also specified for an [individual action](../test-api/actions/ac
 **Default value**: `1`
 
 *Related configuration file property*: [speed](configuration-file.md#speed).
+
+### --client-scripts \<path\[,path2,...\]\>
+
+Injects scripts from the specified files into each page visited during the tests. Use it to introduce client-side mock functions or helper scripts.
+
+```sh
+testcafe chrome my-tests --client-scripts=mockDate.js,assets/react-helpers.js
+```
+
+Use the [fixture.clientScripts](../test-api/test-code-structure.md#inject-scripts-into-tested-pages) and [test.clientScripts](../test-api/test-code-structure.md#inject-scripts-into-tested-pages) methods in test code to inject scripts within a specific fixture or test. These methods also allow you to add scripts to individual pages.
+
+*Related configuration file property*: [clientScripts](configuration-file.md#clientscripts).
 
 ### --ports \<port1,port2\>
 

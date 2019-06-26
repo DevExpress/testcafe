@@ -50,6 +50,7 @@ createTestCafe('localhost', 1337, 1338)
     * [Implementing a Custom Stream](#implementing-a-custom-stream)
 * [concurrency](#concurrency)
 * [startApp](#startapp)
+* [clientScripts](#clientscripts)
 * [useProxy](#useproxy)
 * [tsConfigPath](#tsconfigpath)
 * [run](#run)
@@ -410,6 +411,30 @@ Parameter         | Type    | Description   Default
 ```js
 runner.startApp('node server.js', 4000);
 ```
+
+### clientScripts
+
+Injects scripts from the specified files into each page visited during the tests. Use it to introduce client-side mock functions or helper scripts.
+
+```text
+async clientScripts(scripts) → this
+```
+
+Parameter | Type                | Description
+--------- | ------------------- | ------------
+`scripts` | String &#124; Array | Paths to JavaScript files with scripts that should be injected into the tested pages.
+
+```js
+runner.clientScripts('assets/jquery.js');
+```
+
+```js
+runner.clientScripts(['mockDate.js', 'scripts/react-helpers.js']);
+```
+
+Use the [fixture.clientScripts](../../test-api/test-code-structure.md#inject-scripts-into-tested-pages) and [test.clientScripts](../../test-api/test-code-structure.md#inject-scripts-into-tested-pages) methods in test code to inject scripts within a specific fixture or test. These methods also allow you to add scripts to individual pages.
+
+*Related configuration file property*: [clientScripts](../configuration-file.md#clientscripts)
 
 ### useProxy
 

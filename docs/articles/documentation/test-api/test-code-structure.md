@@ -22,6 +22,7 @@ This topic contains the following sections:
   * [Fixture Hooks](#fixture-hooks)
     * [Sharing Variables Between Fixture Hooks and Test Code](#sharing-variables-between-fixture-hooks-and-test-code)
 * [Skipping Tests](#skipping-tests)
+* [Inject Scripts into Tested Pages](#inject-scripts-into-tested-pages)
 
 > If you use [eslint](http://eslint.org/) in your project, use  the [TestCafe plugin](https://www.npmjs.com/package/eslint-plugin-testcafe)
 to avoid the `'fixture' is not defined` and `'test' is not defined` errors.
@@ -571,4 +572,139 @@ test.only('Fixture2Test2', () => {});
 test('Fixture2Test3', () => {});
 
 // Only tests in Fixture1 and the Fixture2Test2 test are run
+```
+
+## Inject Scripts into Tested Pages
+
+TestCafe allows you to inject custom scripts into pages visited during the tests. You can add scripts that mock standard API or provide helper functions.
+
+Use the `fixture.clientScripts` and `test.clientScripts` methods to add scripts to each page visited during a particular test or fixture.
+
+```text
+fixture.clientScripts( script[, script2[, ...[, scriptN]]] )
+```
+
+```text
+test.clientScripts( script[, script2[, ...[, scriptN]]] )
+```
+
+Parameter | Type     | Description
+--------- | -------- | ---------------------------------------------------------------------------
+`scripts` | String &#124; Object &#124; Array | Scripts to inject into the tested pages. Pass a [file path](#specify-the-path-to-a-javascript-file) or [code](#specify-script-code). You can also [specify pages](#provide-scripts-for-particular-pages) into which scripts should be injected.
+
+The `clientScripts` methods can take [multiple arguments and arrays](#pass-multiple-arguments).
+
+### Specify the Path to a JavaScript File
+
+Specify the JavaScript file path to inject the entire content of this file into the tested pages. You can pass a string or an object with the `path` property.
+
+```text
+fixture.clientScripts( path | { path } )
+```
+
+```text
+test.clientScripts( path | { path } )
+```
+
+Argument  | Type   | Description
+--------- | ------ | ---------------------------------------------------------------------------
+`path`    | String | The path to the JavaScript file whose content should be injected. Relative paths resolve from the directory that contains the current test file.
+
+**Example**
+
+```js
+fixture.clientScripts('assets/jquery.js');
+fixture.clientScripts({ path: 'assets/jquery.js' });
+```
+
+> You cannot pass an object with both the `path` and [content](#specify-script-code) properties.
+
+### Specify Script Code
+
+You can provide the injected script as a string with JavaScript code. Pass an object with the `content` property to do this.
+
+```text
+fixture.clientScripts( { content } )
+```
+
+```text
+test.clientScripts( { content } )
+```
+
+Argument  | Type   | Description
+--------- | ------ | ----------------------------------------
+`content` | String | JavaScript code that should be injected.
+
+**Example**
+
+```js
+const mockDate = `
+    Date.prototype.getTime = function () {
+        return 42;
+    };
+`;
+
+test.clientScripts({ content: mockDate });
+```
+
+> You cannot pass an object with both the `content` and [path](#specify-the-path-to-a-javascript-file) properties.
+
+### Provide Scripts for Particular Pages
+
+You can also specify pages into which a script should be injected. This is helpful when you need to use custom mocks on particular pages and preserve the default behavior everywhere else.
+
+To specify target pages for a script, add the `page` property to the object you pass to `clientScripts`.
+
+```text
+fixture.clientScripts({ page, path | content })
+```
+
+```text
+test.clientScripts({ page, path | content })
+```
+
+Property  | Type                | Description
+--------- | ------------------- | ---------------------------------------------------------------------------
+`page`    | String &#124; RegExp | Specify a page URL to add scripts to a single page, or a regular expression to add scripts to pages whose URLs match this expression. An empty string adds scripts to all pages visited during the test/fixture.
+
+**Examples**
+
+```js
+fixture.clientScripts({
+    page: 'https://myapp.com/page/',
+    path: 'dist/jquery.js'
+});
+```
+
+```js
+test.clientScripts({
+    page: /\/user\/profile\//,
+    content: 'Geolocation.prototype.getCurrentPosition = () => new Positon(0, 0);'
+});
+```
+
+### Pass Multiple Arguments
+
+You can pass multiple arguments or an array to the `clientScripts` methods.
+
+```js
+test.clientScripts('scripts/react-helpers.js', { content: 'Date.prototype.getTime = () => 42;' });
+```
+
+```js
+fixture.clientScripts(['vue-helpers.js', {
+    page: 'https://mycorp.com/login/',
+    path: 'assets/jquery.js'
+}]);
+```
+
+Note that the `page` and `content` properties cannot take arrays. To inject multiple scripts into the same page, pass one argument for each script.
+
+```js
+const scripts = ['test1.js', 'test2.js', 'test3.js'];
+
+text.clientScripts(scripts.map(script => {
+    path: script,
+    page: 'http://example.com'
+}));
 ```
