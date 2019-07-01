@@ -27,6 +27,36 @@ class ElementClickCommand {
     }
 }
 
+class LabelElementClickCommand extends ElementClickCommand {
+    constructor (eventState, eventArgs) {
+        super(eventState, eventArgs);
+
+        this.label = this.eventArgs.element;
+        this.input = getElementBoundToLabel(this.eventArgs.element);
+    }
+
+    run () {
+        let focusRaised = false;
+
+        const ensureFocusRaised = e => {
+            focusRaised = e.target === this.input;
+        };
+
+        listeners.addInternalEventListener(window, ['focus'], ensureFocusRaised);
+
+        super.run();
+
+        listeners.removeInternalEventListener(window, ['focus'], ensureFocusRaised);
+
+        if (domUtils.isElementFocusable(this.label) && !focusRaised)
+            this._ensureBoundElementFocusRaised();
+    }
+
+    _ensureBoundElementFocusRaised () {
+        eventSimulator.focus(this.input);
+    }
+}
+
 class SelectElementClickCommand extends ElementClickCommand {
     constructor (eventState, eventArgs) {
         super(eventState, eventArgs);
@@ -63,11 +93,11 @@ class OptionElementClickCommand extends ElementClickCommand {
     }
 }
 
-class LabelledCheckboxElementClickCommand extends ElementClickCommand {
+class LabelledCheckboxElementClickCommand extends LabelElementClickCommand {
     constructor (eventState, eventArgs) {
         super(eventState, eventArgs);
 
-        this.checkbox = getElementBoundToLabel(this.eventArgs.element);
+        this.checkbox = this.input;
     }
 
     run () {
@@ -98,6 +128,7 @@ export default function (eventState, eventArgs) {
     const elementBoundToLabel = getElementBoundToLabel(eventArgs.element);
     const isSelectElement     = domUtils.isSelectElement(eventArgs.element);
     const isOptionElement     = domUtils.isOptionElement(eventArgs.element);
+    const isLabelElement      = domUtils.isLabelElement(eventArgs.element) && elementBoundToLabel;
     const isLabelledCheckbox  = elementBoundToLabel && domUtils.isCheckboxElement(elementBoundToLabel);
 
     if (isSelectElement)
@@ -108,6 +139,9 @@ export default function (eventState, eventArgs) {
 
     if (isLabelledCheckbox)
         return new LabelledCheckboxElementClickCommand(eventState, eventArgs);
+
+    if (isLabelElement)
+        return new LabelElementClickCommand(eventState, eventArgs);
 
     return new ElementClickCommand(eventState, eventArgs);
 }

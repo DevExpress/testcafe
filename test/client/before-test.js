@@ -102,12 +102,12 @@
     // With this hack, we only allow setting the scroll by a script and prevent native browser scrolling.
     if (hammerhead.utils.browser.isIOS) {
         document.addEventListener('DOMContentLoaded', function () {
-            const originWindowScrollTo = window.scrollTo;
+            const originWindowScrollTo = hammerhead.nativeMethods.scrollTo;
 
             let lastScrollTop        = window.scrollY;
             let lastScrollLeft       = window.scrollX;
 
-            window.scrollTo = function () {
+            hammerhead.nativeMethods.scrollTo = function () {
                 lastScrollLeft = arguments[0];
                 lastScrollTop  = arguments[1];
 

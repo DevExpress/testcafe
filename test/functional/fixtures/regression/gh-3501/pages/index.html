@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body id="body">
+<div>
+    <label id="label1" for="radio" tabindex="1">label1</label>
+    <input type="radio" id="radio">
+
+    <label id="label2" for="checkbox" tabindex="2">label2</label>
+    <input type="checkbox" id="checkbox">
+</div>
+<span id='logger'></span>
+<script>
+    var eventLog = [];
+
+    function consoleLog (text) {
+        var logger = document.querySelector('#logger');
+
+        logger.innerHTML += text + '<br/>';
+    }
+
+    var label1   = document.querySelector('#label1');
+    var label2   = document.querySelector('#label2');
+    var radio    = document.querySelector('#radio');
+    var checkbox = document.querySelector('#checkbox');
+
+    function handleEvent (event) {
+        const text = event.type +  '. Target: ' + event.target.id;
+
+        eventLog.push(text);
+
+        consoleLog(text);
+    }
+
+    label1.addEventListener('focus', handleEvent);
+    label2.addEventListener('focus', handleEvent);
+
+    label1.addEventListener('click', handleEvent);
+    label2.addEventListener('click', handleEvent);
+
+    radio.addEventListener('focus', handleEvent);
+    checkbox.addEventListener('focus', handleEvent);
+</script>
+</body>
+</html>

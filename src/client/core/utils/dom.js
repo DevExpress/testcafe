@@ -25,6 +25,7 @@ export const isTextAreaElement                      = hammerhead.utils.dom.isTex
 export const isAnchorElement                        = hammerhead.utils.dom.isAnchorElement;
 export const isImgElement                           = hammerhead.utils.dom.isImgElement;
 export const isFormElement                          = hammerhead.utils.dom.isFormElement;
+export const isLabelElement                         = hammerhead.utils.dom.isLabelElement;
 export const isSelectElement                        = hammerhead.utils.dom.isSelectElement;
 export const isRadioButtonElement                   = hammerhead.utils.dom.isRadioButtonElement;
 export const isColorInputElement                    = hammerhead.utils.dom.isColorInputElement;
