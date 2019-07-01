@@ -10,6 +10,7 @@ import COMMAND from './command';
 import STATUS from './status';
 import { GeneralError } from '../../errors/runtime';
 import { RUNTIME_ERRORS } from '../../errors/types';
+import { HEARTBEAT_TIMEOUT, BROWSER_RESTART_TIMEOUT } from '../../utils/browser-connection-timeouts';
 
 const IDLE_PAGE_TEMPLATE = read('../../client/browser/idle-page/index.html.mustache');
 const connections        = {};
@@ -19,8 +20,8 @@ export default class BrowserConnection extends EventEmitter {
     constructor (gateway, browserInfo, permanent) {
         super();
 
-        this.HEARTBEAT_TIMEOUT       = 2 * 60 * 1000;
-        this.BROWSER_RESTART_TIMEOUT = 60 * 1000;
+        this.HEARTBEAT_TIMEOUT       = HEARTBEAT_TIMEOUT;
+        this.BROWSER_RESTART_TIMEOUT = BROWSER_RESTART_TIMEOUT;
 
         this.id                       = BrowserConnection._generateId();
         this.jobQueue                 = [];

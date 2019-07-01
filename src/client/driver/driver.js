@@ -11,6 +11,15 @@ import {
     getTimeLimitedPromise,
     browser
 } from './deps/testcafe-core';
+
+import {
+    CHECK_IFRAME_DRIVER_LINK_DELAY,
+    SEND_STATUS_REQUEST_TIME_LIMIT,
+    SEND_STATUS_REQUEST_RETRY_DELAY,
+    SEND_STATUS_REQUEST_RETRY_COUNT,
+    CHECK_STATUS_RETRY_DELAY
+} from '../../utils/browser-connection-timeouts';
+
 import { StatusBar } from './deps/testcafe-ui';
 
 import TEST_RUN_MESSAGES from '../../test-run/client-messages';
@@ -68,11 +77,6 @@ const TEST_SPEED                           = 'testcafe|driver|test-speed';
 const ASSERTION_RETRIES_TIMEOUT            = 'testcafe|driver|assertion-retries-timeout';
 const ASSERTION_RETRIES_START_TIME         = 'testcafe|driver|assertion-retries-start-time';
 const CONSOLE_MESSAGES                     = 'testcafe|driver|console-messages';
-const CHECK_IFRAME_DRIVER_LINK_DELAY       = 500;
-const SEND_STATUS_REQUEST_TIME_LIMIT       = 5000;
-const SEND_STATUS_REQUEST_RETRY_DELAY      = 300;
-const SEND_STATUS_REQUEST_RETRY_COUNT      = 5;
-const CHECK_STATUS_RETRY_DELAY             = 1000;
 
 const ACTION_IFRAME_ERROR_CTORS = {
     NotLoadedError:   ActionIframeIsNotLoadedError,
