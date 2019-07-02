@@ -428,16 +428,18 @@
 
 <!--more-->
 <h2><a class="anchor" id="enhancements"></a>Enhancements <a class="permalink" href="#enhancements">#</a></h2><h3><a class="anchor" id="customize-typescript-compiler-options-1845"></a>⚙ Customize TypeScript Compiler Options (<a href="https://github.com/DevExpress/testcafe/issues/1845">#1845</a>) <a class="permalink" href="#customize-typescript-compiler-options-1845">#</a></h3>
-<p>TestCafe now allows you to specify the <a href="https://www.typescriptlang.org/docs/handbook/compiler-options.html">TypeScript compiler options</a> in the <code>tsconfig.json</code> configuration file.</p>
+<p>TestCafe now allows you to specify the <a href="https://www.typescriptlang.org/docs/handbook/compiler-options.html">TypeScript compiler options</a> in the <code>tsconfig.json</code> configuration file. You can use these options to enable JSX compilation, import code or typings with <code>paths</code> aliases, set aliases to React typings, or customize other compiler settings.</p>
 
-<p>You can use these options to enable JSX compilation, import code or typings with <code>paths</code> aliases, set aliases to React typings, or customize other compiler settings.</p>
+<p>Define the <code>compilerOptions</code> property in <code>tsconfig.json</code> and specify the compiler options in this property:</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"jsx"</span><span class="p">:</span><span class="w"> </span><span class="s2">"react"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"jsxFactory"</span><span class="p">:</span><span class="w"> </span><span class="s2">"myFactory"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"paths"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="nt">"jquery"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">"node_modules/jquery/dist/jquery"</span><span class="w"> </span><span class="p">]</span><span class="w">
-    </span><span class="p">},</span><span class="w">
-    </span><span class="nt">"alwaysStrict"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+    </span><span class="nt">"compilerOptions"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"jsx"</span><span class="p">:</span><span class="w"> </span><span class="s2">"react"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"jsxFactory"</span><span class="p">:</span><span class="w"> </span><span class="s2">"myFactory"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"paths"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nt">"jquery"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">"node_modules/jquery/dist/jquery"</span><span class="w"> </span><span class="p">]</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="nt">"alwaysStrict"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+    </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>Save this file to the directory from which you run tests (or use the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#tsconfigpath">tsConfigPath</a> setting in the main configuration file to specify a different location).</p>

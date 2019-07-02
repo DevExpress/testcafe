@@ -1140,21 +1140,24 @@ and <a href="./selecting-page-elements/selectors/extending-selectors.html#custom
 sections to learn how to extend selectors in TypeScript.</p>
 </div></blockquote><h2><a class="anchor" id="customize-compiler-options"></a>Customize Compiler Options <a class="permalink" href="#customize-compiler-options">#</a></h2>
 <p>TestCafe allows you to specify <a href="https://www.typescriptlang.org/docs/handbook/compiler-options.html">TypeScript compiler options</a> in the <code>tsconfig.json</code> file. You can use these options to enable JSX compilation, import code or typings with <code>paths</code> aliases, set aliases to React typings, or customize other compiler settings.</p>
+
+<p>Define the <code>compilerOptions</code> property in <code>tsconfig.json</code> and specify the compiler options in this property:</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"jsx"</span><span class="p">:</span><span class="w"> </span><span class="s2">"react"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"jsxFactory"</span><span class="p">:</span><span class="w"> </span><span class="s2">"myFactory"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"paths"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="nt">"jquery"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">"node_modules/jquery/dist/jquery"</span><span class="w"> </span><span class="p">]</span><span class="w">
-    </span><span class="p">},</span><span class="w">
-    </span><span class="nt">"alwaysStrict"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+    </span><span class="nt">"compilerOptions"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"jsx"</span><span class="p">:</span><span class="w"> </span><span class="s2">"react"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"jsxFactory"</span><span class="p">:</span><span class="w"> </span><span class="s2">"myFactory"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"paths"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nt">"jquery"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">"node_modules/jquery/dist/jquery"</span><span class="w"> </span><span class="p">]</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="nt">"alwaysStrict"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+    </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>See the available options in the <a href="https://www.typescriptlang.org/docs/handbook/compiler-options.html">TypeScript Compiler Options</a> topic.</p>
 <blockquote class="important"><div class="blockquote-content"><p>You cannot override the <code>module</code> and <code>target</code> options.</p>
 </div></blockquote>
 <p>Save <code>tsconfig.json</code> to the directory from which you run TestCafe (usually the project&#39;s root directory), or specify the <a href="../using-testcafe/configuration-file.html#tsconfigpath">tsConfigPath</a> option in the <a href="../using-testcafe/configuration-file.html">configuration file</a> to use a different location.</p>
-<blockquote><div class="blockquote-content"><p><code>tsconfig.json</code> supports <a href="https://json5.org/">JSON5 syntax</a>. This allows you to use JavaScript identifiers as object keys, single-quoted strings, comments and other JSON5 features.</p>
-</div></blockquote>
+
 <p>TestCafe passes the following options to the TypeScript compiler unless you override them in <code>tsconfig.json</code>:</p>
 <div class="table-wrapper"><table><thead><tr>
 <th>Option</th>
