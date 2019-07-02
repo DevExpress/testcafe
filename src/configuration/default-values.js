@@ -24,7 +24,8 @@ export const DEFAULT_TYPESCRIPT_COMPILER_OPTIONS = {
     noImplicitAny:           false,
     module:                  1 /* ts.ModuleKind.CommonJS */,
     target:                  2 /* ES6 */,
-    suppressOutputPathCheck: true
+    suppressOutputPathCheck: true,
+    skipLibCheck:            true
 };
 
 export const TYPESCRIPT_COMPILER_NON_OVERRIDABLE_OPTIONS = ['module', 'target'];
