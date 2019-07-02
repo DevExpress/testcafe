@@ -22,7 +22,7 @@ of *officially supported* browsers against which TestCafe is actively tested.
 * Microsoft Edge
 * Mozilla Firefox
 * Safari
-* Android browser
+* Google Chrome mobile
 * Safari mobile
 
 > TestCafe supports the latest version of each browser unless specified explicitly.
