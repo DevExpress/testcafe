@@ -6,9 +6,9 @@
 
 #### :gear: Customize TypeScript Compiler Options ([#1845](https://github.com/DevExpress/testcafe/issues/1845))
 
-TestCafe now allows you to specify [options for the TypeScript compiler](https://www.typescriptlang.org/docs/handbook/compiler-options.html) in a JSON configuration file.
+TestCafe now allows you to specify the [TypeScript compiler options](https://www.typescriptlang.org/docs/handbook/compiler-options.html) in the `tsconfig.json` configuration file.
 
-You can use this feature to enable JSX compilation, import code or typings with `paths` aliases, set aliases to React typings, or customize other compiler settings.
+You can use these options to enable JSX compilation, import code or typings with `paths` aliases, set aliases to React typings, or customize other compiler settings.
 
 ```json
 {
@@ -21,7 +21,7 @@ You can use this feature to enable JSX compilation, import code or typings with 
 }
 ```
 
-Save this file as `tsconfig.json` in the directory from which you run tests (or use the [tsConfigPath](https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.md#tsconfigpath) setting in the main configuration file to specify a different path).
+Save this file to the directory from which you run tests (or use the [tsConfigPath](https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.md#tsconfigpath) setting in the main configuration file to specify a different location).
 
 See [Customize Compiler Options](https://devexpress.github.io/testcafe/documentation/test-api/typescript-support.html#customize-compiler-options) for more information.
 
