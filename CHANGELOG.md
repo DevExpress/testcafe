@@ -6,18 +6,20 @@
 
 #### :gear: Customize TypeScript Compiler Options ([#1845](https://github.com/DevExpress/testcafe/issues/1845))
 
-TestCafe now allows you to specify the [TypeScript compiler options](https://www.typescriptlang.org/docs/handbook/compiler-options.html) in the `tsconfig.json` configuration file.
+TestCafe now allows you to specify the [TypeScript compiler options](https://www.typescriptlang.org/docs/handbook/compiler-options.html) in the `tsconfig.json` configuration file. You can use these options to enable JSX compilation, import code or typings with `paths` aliases, set aliases to React typings, or customize other compiler settings.
 
-You can use these options to enable JSX compilation, import code or typings with `paths` aliases, set aliases to React typings, or customize other compiler settings.
+Define the `compilerOptions` property in `tsconfig.json` and specify the compiler options in this property:
 
 ```json
 {
-    "jsx": "react",
-    "jsxFactory": "myFactory",
-    "paths": {
-        "jquery": [ "node_modules/jquery/dist/jquery" ]
-    },
-    "alwaysStrict": true
+    "compilerOptions": {
+        "jsx": "react",
+        "jsxFactory": "myFactory",
+        "paths": {
+            "jquery": [ "node_modules/jquery/dist/jquery" ]
+        },
+        "alwaysStrict": true
+    }
 }
 ```
 
