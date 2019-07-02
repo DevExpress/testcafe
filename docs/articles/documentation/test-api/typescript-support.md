@@ -66,8 +66,6 @@ See the available options in the [TypeScript Compiler Options](https://www.types
 
 Save `tsconfig.json` to the directory from which you run TestCafe (usually the project's root directory), or specify the [tsConfigPath](../using-testcafe/configuration-file.md#tsconfigpath) option in the [configuration file](../using-testcafe/configuration-file.md) to use a different location.
 
-> `tsconfig.json` supports [JSON5 syntax](https://json5.org/). This allows you to use JavaScript identifiers as object keys, single-quoted strings, comments and other JSON5 features.
-
 TestCafe passes the following options to the TypeScript compiler unless you override them in `tsconfig.json`:
 
 Option                    | Value
