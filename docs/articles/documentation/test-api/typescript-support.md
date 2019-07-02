@@ -45,14 +45,18 @@ When you run a test Testcafe will output if there are any compilation errors.
 
 TestCafe allows you to specify [TypeScript compiler options](https://www.typescriptlang.org/docs/handbook/compiler-options.html) in the `tsconfig.json` file. You can use these options to enable JSX compilation, import code or typings with `paths` aliases, set aliases to React typings, or customize other compiler settings.
 
+Define the `compilerOptions` property in `tsconfig.json` and specify the compiler options in this property:
+
 ```json
 {
-    "jsx": "react",
-    "jsxFactory": "myFactory",
-    "paths": {
-        "jquery": [ "node_modules/jquery/dist/jquery" ]
-    },
-    "alwaysStrict": true
+    "compilerOptions": {
+        "jsx": "react",
+        "jsxFactory": "myFactory",
+        "paths": {
+            "jquery": [ "node_modules/jquery/dist/jquery" ]
+        },
+        "alwaysStrict": true
+    }
 }
 ```
 
