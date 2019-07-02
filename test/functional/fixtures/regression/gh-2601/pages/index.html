@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title></title>
+    <style>
+        html, body {
+            height: 100%;
+        }
+        body {
+            overflow-x: hidden;
+        }
+        div {
+            margin-top: -200px;
+        }
+        button {
+            margin-top: 2000px;
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <button>click me</button>
+</div>
+<script>
+    var button = document.querySelector('button');
+
+    button.addEventListener('click', function () {
+        window.clicked = true;
+    });
+</script>
+</body>
+</html>
