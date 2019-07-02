@@ -75,3 +75,6 @@ Option                    | Value
 `noImplicitAny`           | `false`
 `pretty`                  | `true`
 `suppressOutputPathCheck` | `true`
+`skipLibCheck`            | `true`
+
+> TestCafe enables the `skipLibCheck` option for performance reasons. If you need to check types in your declaration files, set `skipLibCheck` to `false` in `tsconfig.json`.
