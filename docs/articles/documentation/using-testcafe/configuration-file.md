@@ -49,6 +49,7 @@ A configuration file can include the following settings:
 * [developmentMode](#developmentmode)
 * [qrCode](#qrcode)
 * [stopOnFirstFail](#stoponfirstfail)
+* [tsConfigPath](#tsconfigpath)
 * [color](#color)
 * [noColor](#nocolor)
 
@@ -744,6 +745,20 @@ Stops a test run if any test fails.
 
 *CLI*: [--sf, --stop-on-first-fail](command-line-interface.md#--sf---stop-on-first-fail)  
 *API*: [runner.run({ stopOnFirstFail })](programming-interface/runner.md#run)
+
+## tsConfigPath
+
+Specifies the [TypeScript configuration file](../test-api/typescript-support.md#customize-compiler-options) location.
+
+```json
+{
+    "tsConfigPath": "/Users/s.johnson/testcafe/tsconfig.json"
+}
+```
+
+You can specify an absolute or relative path. Relative paths resolve from the current directory (the directory from which you run TestCafe).
+
+If the `tsConfigPath` option is not specified, TestCafe looks for the `tsconfig.json` file in the current directory.
 
 ## color
 

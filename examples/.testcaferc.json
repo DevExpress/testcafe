@@ -54,6 +54,7 @@
         "pfx": "path/to/file.pfx",
         "rejectUnauthorized": true
     },
+    "tsConfigPath": "/Users/s.johnson/testcafe/tsconfig.json",
     "developmentMode": true,
     "qrCode": true
 }
