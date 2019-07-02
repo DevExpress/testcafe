@@ -5,7 +5,7 @@ permalink: /blog/:title.html
 ---
 # TestCafe v1.3.0 Released
 
-This release includes support for custom TypeScript configuration files and numerous bugfixes.
+This release introduces support for the custom TypeScript configuration file and includes numerous bugfixes.
 
 <!--more-->
 
