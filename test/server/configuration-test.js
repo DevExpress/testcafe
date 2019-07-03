@@ -245,8 +245,9 @@ describe('TypeScriptConfiguration', () => {
                     pretty:                  false,
                     inlineSourceMap:         false,
                     noImplicitAny:           true,
-                    module:                  2,
-                    target:                  3,
+                    module:                  'esnext',
+                    moduleResolution:        'classic',
+                    target:                  'esnext',
                     suppressOutputPathCheck: false
                 }
             });
@@ -265,10 +266,32 @@ describe('TypeScriptConfiguration', () => {
 
                     // NOTE: `module` and `target` default options can not be overridden by custom config
                     expect(configuration.getOption('module')).eql(1);
-                    expect(configuration.getOption('target')).eql(2);
+                    expect(configuration.getOption('moduleResolution')).eql(2);
+                    expect(configuration.getOption('target')).eql(3);
 
                     expect(consoleWrapper.messages.log).contains('You cannot override the "module" compiler option in the TypeScript configuration file.');
+                    expect(consoleWrapper.messages.log).contains('You cannot override the "moduleResolution" compiler option in the TypeScript configuration file.');
                     expect(consoleWrapper.messages.log).contains('You cannot override the "target" compiler option in the TypeScript configuration file.');
+                });
+        });
+
+        it('Should not display override messages if config values are the same as default values', () => {
+            configuration = new TypescriptConfiguration();
+            configPath    = configuration.filePath;
+
+            createConfigFile({
+                compilerOptions: {
+                    module:           'commonjs',
+                    moduleResolution: 'node',
+                    target:           'es2016'
+                }
+            });
+
+            return configuration.init()
+                .then(() => {
+                    consoleWrapper.unwrap();
+
+                    expect(consoleWrapper.messages.log).not.ok;
                 });
         });
 
