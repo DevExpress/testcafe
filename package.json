@@ -176,7 +176,7 @@
     "multer": "^1.1.0",
     "npm-auditor": "^1.1.1",
     "openssl-self-signed-certificate": "^1.1.6",
-    "opn": "^4.0.2",
+    "open": "^6.4.0",
     "proxyquire": "^2.1.0",
     "publish-please": "^5.4.3",
     "recursive-copy": "^2.0.5",

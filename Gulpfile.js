@@ -18,7 +18,7 @@ const fs                   = require('fs');
 const path                 = require('path');
 const { Transform }        = require('stream');
 const globby               = require('globby');
-const opn                  = require('opn');
+const open                  = require('open');
 const connect              = require('connect');
 const spawn                = require('cross-spawn');
 const serveStatic          = require('serve-static');
@@ -606,7 +606,7 @@ gulp.task('serve-website', cb => {
 });
 
 gulp.step('preview-website-open', () => {
-    return opn('http://localhost:8080/testcafe');
+    return open('http://localhost:8080/testcafe');
 });
 
 gulp.task('preview-website', gulp.series('build-website-development', 'serve-website', 'preview-website-open'));
