@@ -416,7 +416,8 @@ export default class Runner extends EventEmitter {
             speed,
             debugOnFail,
             skipUncaughtErrors,
-            stopOnFirstFail
+            stopOnFirstFail,
+            tsConfigPath
         } = options;
 
         this.configuration.mergeOptions({
@@ -430,7 +431,8 @@ export default class Runner extends EventEmitter {
             pageLoadTimeout:    pageLoadTimeout,
             speed:              speed,
             skipUncaughtErrors: skipUncaughtErrors,
-            stopOnFirstFail:    stopOnFirstFail
+            stopOnFirstFail:    stopOnFirstFail,
+            tsConfigPath:       tsConfigPath
         });
 
         this._setBootstrapperOptions();
