@@ -2,7 +2,7 @@
 
 ## v1.3.1 (2019-7-4)
 
-###  Bug Fixes
+### Bug Fixes
 
 * TestCafe can compile test projects that customize the `moduleResolution` option in `tsconfig.json` ([#3970](https://github.com/DevExpress/testcafe/issues/3970))
 * TestCafe can compile test projects that customize the `libs` option in `tsconfig.json` ([#3976](https://github.com/DevExpress/testcafe/issues/3976))
