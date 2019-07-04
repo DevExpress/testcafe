@@ -1,10 +1,11 @@
+import { isAbsolute } from 'path';
 import debug from 'debug';
+import JSON5 from 'json5';
+import { cloneDeep, castArray } from 'lodash';
 import { stat, readFile } from '../utils/promisified-functions';
 import Option from './option';
 import optionSource from './option-source';
-import { cloneDeep, castArray } from 'lodash';
 import resolvePathRelativelyCwd from '../utils/resolve-path-relatively-cwd';
-import JSON5 from 'json5';
 import renderTemplate from '../utils/render-template';
 import WARNING_MESSAGES from '../notifications/warning-message';
 import log from '../cli/log';
@@ -14,7 +15,7 @@ const DEBUG_LOGGER = debug('testcafe:configuration');
 export default class Configuration {
     constructor (configurationFileName) {
         this._options  = {};
-        this._filePath = resolvePathRelativelyCwd(configurationFileName);
+        this._filePath = isAbsolute(configurationFileName) ? configurationFileName : resolvePathRelativelyCwd(configurationFileName);
         this._overridenOptions = [];
     }
 
