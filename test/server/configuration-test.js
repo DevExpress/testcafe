@@ -237,18 +237,29 @@ describe('TypeScriptConfiguration', () => {
             configuration = new TypescriptConfiguration();
             configPath    = configuration.filePath;
 
+            // NOTE: suppressOutputPathCheck can't be overridden by a config file
             createConfigFile({
                 compilerOptions: {
-                    experimentalDecorators:  false,
-                    emitDecoratorMetadata:   false,
-                    allowJs:                 false,
-                    pretty:                  false,
-                    inlineSourceMap:         false,
-                    noImplicitAny:           true,
-                    module:                  'esnext',
-                    moduleResolution:        'classic',
-                    target:                  'esnext',
-                    suppressOutputPathCheck: false
+                    experimentalDecorators: false,
+                    emitDecoratorMetadata:  false,
+                    allowJs:                false,
+                    pretty:                 false,
+                    inlineSourceMap:        false,
+                    noImplicitAny:          true,
+
+                    module:           'esnext',
+                    moduleResolution: 'classic',
+                    target:           'esnext',
+                    lib:              ['es2018', 'dom'],
+
+                    incremental:         true,
+                    tsBuildInfoFile:     'tsBuildInfo.txt',
+                    emitDeclarationOnly: true,
+                    declarationMap:      true,
+                    declarationDir:      'C:/',
+                    composite:           true,
+                    outFile:             'oufile.js',
+                    out:                 ''
                 }
             });
 
@@ -256,18 +267,31 @@ describe('TypeScriptConfiguration', () => {
                 .then(() => {
                     consoleWrapper.unwrap();
 
-                    expect(configuration.getOption('experimentalDecorators')).eql(false);
-                    expect(configuration.getOption('emitDecoratorMetadata')).eql(false);
-                    expect(configuration.getOption('allowJs')).eql(false);
-                    expect(configuration.getOption('pretty')).eql(false);
-                    expect(configuration.getOption('inlineSourceMap')).eql(false);
-                    expect(configuration.getOption('noImplicitAny')).eql(true);
-                    expect(configuration.getOption('suppressOutputPathCheck')).eql(false);
+                    const options = configuration.getOptions();
+
+                    expect(options['experimentalDecorators']).eql(false);
+                    expect(options['emitDecoratorMetadata']).eql(false);
+                    expect(options['allowJs']).eql(false);
+                    expect(options['pretty']).eql(false);
+                    expect(options['inlineSourceMap']).eql(false);
+                    expect(options['noImplicitAny']).eql(true);
+                    expect(options['suppressOutputPathCheck']).eql(true);
 
                     // NOTE: `module` and `target` default options can not be overridden by custom config
-                    expect(configuration.getOption('module')).eql(1);
-                    expect(configuration.getOption('moduleResolution')).eql(2);
-                    expect(configuration.getOption('target')).eql(3);
+                    expect(options['module']).eql(1);
+                    expect(options['moduleResolution']).eql(2);
+                    expect(options['target']).eql(3);
+
+                    expect(options['lib']).deep.eql(['lib.es2018.d.ts', 'lib.dom.d.ts']);
+
+                    expect(options).not.have.property('incremental');
+                    expect(options).not.have.property('tsBuildInfoFile');
+                    expect(options).not.have.property('emitDeclarationOnly');
+                    expect(options).not.have.property('declarationMap');
+                    expect(options).not.have.property('declarationDir');
+                    expect(options).not.have.property('composite');
+                    expect(options).not.have.property('outFile');
+                    expect(options).not.have.property('out');
 
                     expect(consoleWrapper.messages.log).contains('You cannot override the "module" compiler option in the TypeScript configuration file.');
                     expect(consoleWrapper.messages.log).contains('You cannot override the "moduleResolution" compiler option in the TypeScript configuration file.');
@@ -312,7 +336,7 @@ describe('TypeScriptConfiguration', () => {
 
             createConfigFile({
                 compilerOptions: {
-                    target: 'override-target'
+                    target: 'es5'
                 }
             });
 

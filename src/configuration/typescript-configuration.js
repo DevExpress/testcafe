@@ -1,7 +1,7 @@
 import Configuration from './configuration-base';
 import optionSource from './option-source';
-import { DEFAULT_TYPESCRIPT_COMPILER_OPTIONS, TYPESCRIPT_COMPILER_NON_OVERRIDABLE_OPTIONS } from './default-values';
-import { intersection } from 'lodash';
+import { DEFAULT_TYPESCRIPT_COMPILER_OPTIONS, TYPESCRIPT_COMPILER_NON_OVERRIDABLE_OPTIONS, TYPESCRIPT_BLACKLISTED_OPTIONS } from './default-values';
+import { intersection, omit } from 'lodash';
 import WARNING_MESSAGES from '../notifications/warning-message';
 import renderTemplate from '../utils/render-template';
 
@@ -12,61 +12,32 @@ const DEFAULT_CONFIGURATION_FILENAME = 'tsconfig.json';
 
 export default class TypescriptConfiguration extends Configuration {
     constructor (tsConfigPath) {
-        super(tsConfigPath || DEFAULT_CONFIGURATION_FILENAME);
+        const basePath = process.cwd();
+
+        super(tsConfigPath || typescript.findConfigFile(basePath, typescript.sys.fileExists) || DEFAULT_CONFIGURATION_FILENAME);
+
+        this.basePath = basePath;
 
         for (const option in DEFAULT_TYPESCRIPT_COMPILER_OPTIONS)
             this._ensureOptionWithValue(option, DEFAULT_TYPESCRIPT_COMPILER_OPTIONS[option], optionSource.configuration);
-    }
-
-    // NOTE: define this as a static prop to avoid requiring TypeScript at start
-    get POSSIBLE_VALUES_MAP () {
-        return {
-            'module': typescript.ModuleKind,
-
-            'moduleResolution': {
-                'classic': typescript.ModuleResolutionKind.Classic,
-                'node':    typescript.ModuleResolutionKind.NodeJs
-            },
-
-            'target': {
-                'es6': typescript.ScriptTarget.ES2015,
-
-                ...typescript.ScriptTarget
-            }
-        };
     }
 
     async init () {
         const opts = await this._load();
 
         if (opts && opts.compilerOptions) {
-            this._normalizeOpts(opts.compilerOptions);
+            const parsedOpts = this._parseOptions(opts);
 
-            this.mergeOptions(opts.compilerOptions);
+            this.mergeOptions(parsedOpts);
         }
 
         this._notifyThatOptionsCannotBeOverriden();
     }
 
-    _normalizeTSOption (optionValue, optionEnum) {
-        if (typeof optionValue === 'number')
-            return optionValue;
+    _parseOptions (opts) {
+        const parsed = typescript.parseJsonConfigFileContent(opts, typescript.sys, this.basePath, void 0, this._filePath);
 
-        const optionKey = Object.keys(optionEnum).filter(key => key.toLowerCase() === optionValue.toLowerCase())[0];
-
-        if (!optionKey)
-            return optionValue;
-
-        return optionEnum[optionKey];
-    }
-
-    _normalizeOpts (opts) {
-        for (const option of TYPESCRIPT_COMPILER_NON_OVERRIDABLE_OPTIONS) {
-            if (!opts[option])
-                continue;
-
-            opts[option] = this._normalizeTSOption(opts[option], this.POSSIBLE_VALUES_MAP[option]);
-        }
+        return omit(parsed.options, TYPESCRIPT_BLACKLISTED_OPTIONS);
     }
 
     _notifyThatOptionsCannotBeOverriden () {

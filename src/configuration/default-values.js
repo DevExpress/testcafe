@@ -30,3 +30,14 @@ export const DEFAULT_TYPESCRIPT_COMPILER_OPTIONS = {
 };
 
 export const TYPESCRIPT_COMPILER_NON_OVERRIDABLE_OPTIONS = ['module', 'moduleResolution', 'target'];
+
+export const TYPESCRIPT_BLACKLISTED_OPTIONS = [
+    'incremental',
+    'tsBuildInfoFile',
+    'emitDeclarationOnly',
+    'declarationMap',
+    'declarationDir',
+    'composite',
+    'outFile',
+    'out'
+];
