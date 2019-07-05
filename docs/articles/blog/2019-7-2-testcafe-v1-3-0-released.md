@@ -13,6 +13,8 @@ This release introduces support for the custom TypeScript configuration file and
 
 ### ⚙ Customize TypeScript Compiler Options ([#1845](https://github.com/DevExpress/testcafe/issues/1845))
 
+> **Update:** v1.3.1 disables automatic detection of the `tsconfig.json` file. See [v1.3.1 release notes](https://devexpress.github.io/testcafe/blog/testcafe-v1-3-1-released.html) for more information.
+
 TestCafe now allows you to specify the [TypeScript compiler options](https://www.typescriptlang.org/docs/handbook/compiler-options.html) in the `tsconfig.json` configuration file. You can use these options to enable JSX compilation, import code or typings with `paths` aliases, set aliases to React typings, or customize other compiler settings.
 
 Define the `compilerOptions` property in `tsconfig.json` and specify the compiler options in this property:
@@ -33,8 +35,6 @@ Define the `compilerOptions` property in `tsconfig.json` and specify the compile
 Save this file to the directory from which you run tests (or use the [tsConfigPath](https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#tsconfigpath) setting in the main configuration file to specify a different location).
 
 See [Customize Compiler Options](https://devexpress.github.io/testcafe/documentation/test-api/typescript-support.html#customize-compiler-options) for more information.
-
-**UPD:** v1.3.1 disables automatic detection of the `tsconfig.json` file. See [v1.3.1 release notes](https://devexpress.github.io/testcafe/blog/testcafe-v1-3-1-released.html) for more information.
 
 ## Bug Fixes
 
