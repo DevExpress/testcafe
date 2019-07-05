@@ -96,7 +96,7 @@ export default class CLIArgumentParser {
             .option('--dev', 'enables mechanisms to log and diagnose errors')
             .option('--qr-code', 'outputs QR-code that repeats URLs used to connect the remote browsers')
             .option('--sf, --stop-on-first-fail', 'stop an entire test run if any test fails')
-            .option('--ts-config-path <path>', 'specifies the TypeScript configuration file location. If the tsConfigPath option is not specified, TestCafe looks for the tsconfig.json file in the current directory.')
+            .option('--ts-config-path <path>', 'use a custom TypeScript configuration file and specify its location')
 
             // NOTE: these options will be handled by chalk internally
             .option('--color', 'force colors in command line')
