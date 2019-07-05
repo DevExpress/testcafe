@@ -15,7 +15,8 @@ const DEBUG_LOGGER = debug('testcafe:configuration');
 export default class Configuration {
     constructor (configurationFileName) {
         this._options  = {};
-        this._filePath = isAbsolute(configurationFileName) ? configurationFileName : resolvePathRelativelyCwd(configurationFileName);
+        this._filePath = Configuration._resolveFilePath(configurationFileName);
+
         this._overridenOptions = [];
     }
 
@@ -55,6 +56,13 @@ export default class Configuration {
 
         DEBUG_LOGGER(message);
         DEBUG_LOGGER(error);
+    }
+
+    static _resolveFilePath (path) {
+        if (!path)
+            return null;
+
+        return isAbsolute(path) ? path : resolvePathRelativelyCwd(path);
     }
 
     async init () {
@@ -106,13 +114,15 @@ export default class Configuration {
     }
 
     async _load () {
-        const configurationFileExists = await Configuration._isConfigurationFileExists(this.filePath);
+        if (this.filePath) {
+            const configurationFileExists = await Configuration._isConfigurationFileExists(this.filePath);
 
-        if (configurationFileExists) {
-            const configurationFileContent = await this._readConfigurationFileContent();
+            if (configurationFileExists) {
+                const configurationFileContent = await this._readConfigurationFileContent();
 
-            if (configurationFileContent)
-                return this._parseConfigurationFileContent(configurationFileContent);
+                if (configurationFileContent)
+                    return this._parseConfigurationFileContent(configurationFileContent);
+            }
         }
 
         return null;
