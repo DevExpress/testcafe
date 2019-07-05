@@ -209,6 +209,8 @@ describe('TestCafeConfiguration', () => {
 });
 
 describe('TypeScriptConfiguration', () => {
+    const tsConfigPath = 'tsconfig.json';
+
     it('Default', () => {
         configuration = new TypescriptConfiguration();
 
@@ -227,14 +229,35 @@ describe('TypeScriptConfiguration', () => {
         });
 
         afterEach(() => {
-            fs.unlinkSync(configuration.filePath);
+            if (configuration.filePath)
+                fs.unlinkSync(configuration.filePath);
 
             consoleWrapper.unwrap();
             consoleWrapper.messages.clear();
         });
 
-        it('override options', () => {
+        it('tsconfig.json does not apply automatically', () => {
             configuration = new TypescriptConfiguration();
+            configPath    = tsConfigPath;
+
+            createConfigFile({
+                compilerOptions: {
+                    experimentalDecorators: false,
+                }
+            });
+
+            return configuration.init()
+                .then(() => {
+                    consoleWrapper.unwrap();
+
+                    const options = configuration.getOptions();
+
+                    expect(options['experimentalDecorators']).eql(true);
+                });
+        });
+
+        it('override options', () => {
+            configuration = new TypescriptConfiguration(tsConfigPath);
             configPath    = configuration.filePath;
 
             // NOTE: suppressOutputPathCheck can't be overridden by a config file
@@ -300,7 +323,7 @@ describe('TypeScriptConfiguration', () => {
         });
 
         it('Should not display override messages if config values are the same as default values', () => {
-            configuration = new TypescriptConfiguration();
+            configuration = new TypescriptConfiguration(tsConfigPath);
             configPath    = configuration.filePath;
 
             createConfigFile({

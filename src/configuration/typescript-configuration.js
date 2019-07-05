@@ -8,13 +8,11 @@ import renderTemplate from '../utils/render-template';
 const lazyRequire = require('import-lazy')(require);
 const typescript  = lazyRequire('typescript');
 
-const DEFAULT_CONFIGURATION_FILENAME = 'tsconfig.json';
-
 export default class TypescriptConfiguration extends Configuration {
     constructor (tsConfigPath) {
         const basePath = process.cwd();
 
-        super(tsConfigPath || typescript.findConfigFile(basePath, typescript.sys.fileExists) || DEFAULT_CONFIGURATION_FILENAME);
+        super(tsConfigPath);
 
         this.basePath = basePath;
 
