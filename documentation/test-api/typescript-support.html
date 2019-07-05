@@ -1141,7 +1141,23 @@ sections to learn how to extend selectors in TypeScript.</p>
 </div></blockquote><h2><a class="anchor" id="customize-compiler-options"></a>Customize Compiler Options <a class="permalink" href="#customize-compiler-options">#</a></h2>
 <p>TestCafe allows you to specify <a href="https://www.typescriptlang.org/docs/handbook/compiler-options.html">TypeScript compiler options</a> in the <code>tsconfig.json</code> file. You can use these options to enable JSX compilation, import code or typings with <code>paths</code> aliases, set aliases to React typings, or customize other compiler settings.</p>
 
-<p>Define the <code>compilerOptions</code> property in <code>tsconfig.json</code> and specify the compiler options in this property:</p>
+<p>To apply a custom TypeScript configuration file, specify its location in one of the following ways:</p>
+
+<ul>
+<li><p>the <a href="../using-testcafe/command-line-interface.html#--ts-config-path-path">--ts-config-path</a> command line parameter,</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests --ts-config-path /Users/s.johnson/testcafe/tsconfig.json
+</code></pre></div></li>
+<li><p>the <a href="../using-testcafe/programming-interface/runner.html#tsconfigpath">runner.tsConfigPath</a> API method,</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">tsConfigPath</span><span class="p">(</span><span class="s1">'/Users/s.johnson/testcafe/tsconfig.json'</span><span class="p">);</span>
+</code></pre></div></li>
+<li><p>the <a href="../using-testcafe/configuration-file.html#tsconfigpath">tsConfigPath</a> configuration file property.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"tsConfigPath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/Users/s.johnson/testcafe/tsconfig.json"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></li>
+</ul>
+
+<p>In <code>tsconfig.json</code>, define the <code>compilerOptions</code> property and specify the compiler options in this property:</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
     </span><span class="nt">"compilerOptions"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
         </span><span class="nt">"jsx"</span><span class="p">:</span><span class="w"> </span><span class="s2">"react"</span><span class="p">,</span><span class="w">

@@ -14,15 +14,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <title>TestCafe v1.3.0 Released | TestCafe</title>
+  <title>TestCafe v1.3.1 Released | TestCafe</title>
 
-  <meta name="description" content="TestCafe v1.3.0 ReleasedThis release introduces support for the custom TypeScript configuration file and includes numerous bugfixes.">
+  <meta name="description" content="TestCafe v1.3.1 ReleasedThis release fixes an issue caused by tsconfig.json auto-detection.Version 1.3.0 introduced support for custom TypeScript configurati...">
   <meta name="viewport" content="width=device-width">
 
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://devexpress.github.io/testcafe/blog/testcafe-v1-3-0-released.html" />
-  <meta property="og:title" content="TestCafe v1.3.0 Released | TestCafe" />
+  <meta property="og:url" content="https://devexpress.github.io/testcafe/blog/testcafe-v1-3-1-released.html" />
+  <meta property="og:title" content="TestCafe v1.3.1 Released | TestCafe" />
 
   
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
@@ -30,7 +30,7 @@
   
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
-  <link rel="canonical" href="https://devexpress.github.io/testcafe/blog/testcafe-v1-3-0-released.html">
+  <link rel="canonical" href="https://devexpress.github.io/testcafe/blog/testcafe-v1-3-1-released.html">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="https://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
@@ -420,45 +420,33 @@
     <main>
     <div class="post">
         <div class="post-date">
-            JUL  2, 2019
+            JUL  5, 2019
         </div>
         <article class="post-content">
-            <h1>TestCafe v1.3.0 Released</h1>
-<p>This release introduces support for the custom TypeScript configuration file and includes numerous bugfixes.</p>
+            <h1>TestCafe v1.3.1 Released</h1>
+<p>This release fixes an issue caused by <code>tsconfig.json</code> auto-detection.</p>
 
-<!--more-->
-<h2><a class="anchor" id="enhancements"></a>Enhancements <a class="permalink" href="#enhancements">#</a></h2><h3><a class="anchor" id="customize-typescript-compiler-options-1845"></a>⚙ Customize TypeScript Compiler Options (<a href="https://github.com/DevExpress/testcafe/issues/1845">#1845</a>) <a class="permalink" href="#customize-typescript-compiler-options-1845">#</a></h3><blockquote><div class="blockquote-content"><p><strong>Update:</strong> v1.3.1 disables automatic detection of the <code>tsconfig.json</code> file. See <a href="https://devexpress.github.io/testcafe/blog/testcafe-v1-3-1-released.html">v1.3.1 release notes</a> for more information.</p>
-</div></blockquote>
-<p>TestCafe now allows you to specify the <a href="https://www.typescriptlang.org/docs/handbook/compiler-options.html">TypeScript compiler options</a> in the <code>tsconfig.json</code> configuration file. You can use these options to enable JSX compilation, import code or typings with <code>paths</code> aliases, set aliases to React typings, or customize other compiler settings.</p>
+<p>Version 1.3.0 introduced support for <a href="https://devexpress.github.io/testcafe/documentation/test-api/typescript-support.html#customize-compiler-options">custom TypeScript configuration files</a> where you can provide the compiler options. This feature included automatic detection of these configuration files. If the directory from which you run tests contained a <code>tsconfig.json</code> file, TestCafe would apply it by default.</p>
 
-<p>Define the <code>compilerOptions</code> property in <code>tsconfig.json</code> and specify the compiler options in this property:</p>
-<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"compilerOptions"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="nt">"jsx"</span><span class="p">:</span><span class="w"> </span><span class="s2">"react"</span><span class="p">,</span><span class="w">
-        </span><span class="nt">"jsxFactory"</span><span class="p">:</span><span class="w"> </span><span class="s2">"myFactory"</span><span class="p">,</span><span class="w">
-        </span><span class="nt">"paths"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-            </span><span class="nt">"jquery"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">"node_modules/jquery/dist/jquery"</span><span class="w"> </span><span class="p">]</span><span class="w">
-        </span><span class="p">},</span><span class="w">
-        </span><span class="nt">"alwaysStrict"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
-    </span><span class="p">}</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre></div>
-<p>Save this file to the directory from which you run tests (or use the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#tsconfigpath">tsConfigPath</a> setting in the main configuration file to specify a different location).</p>
+<p>However, this behavior caused troubles for users who have already had <code>tsconfig.json</code> files with conflicting settings in their projects. TestCafe attempted to apply these configurations, which resulted in issues with test compilation.</p>
 
-<p>See <a href="https://devexpress.github.io/testcafe/documentation/test-api/typescript-support.html#customize-compiler-options">Customize Compiler Options</a> for more information.</p>
-<h2><a class="anchor" id="bug-fixes"></a>Bug Fixes <a class="permalink" href="#bug-fixes">#</a></h2>
+<p>In v1.3.1, we have disabled <code>tsconfig.json</code> auto-detection. Now you must explicitly specify the <code>tsconfig.json</code> file location to apply the compiler settings. You can do it in one of the following ways:</p>
+
 <ul>
-<li>TestCafe now waits for asynchronous tasks in <code>reportTaskDone</code> to complete before it exits (<a href="https://github.com/DevExpress/testcafe/issues/3835">#3835</a>)</li>
-<li><code>childNodes.length</code> now returns the correct result after you type in an <code>iframe</code> (<a href="https://github.com/DevExpress/testcafe/issues/3887">#3887</a>)</li>
-<li>TestCafe no longer hangs when a custom request hook throws an error (<a href="https://github.com/DevExpress/testcafe/issues/3786">#3786</a>)</li>
-<li>Error messages now show the correct selector chains for selectors that use the <code>with</code> method (<a href="https://github.com/DevExpress/testcafe/issues/3874">#3874</a>)</li>
-<li>TestCafe can now work with test files located on a Windows network drive (<a href="https://github.com/DevExpress/testcafe/issues/3918">#3918</a>)</li>
-<li>Page elements overlapped by the TestCafe status panel are now scrolled into view correctly (<a href="https://github.com/DevExpress/testcafe/issues/3924">#3924</a>)</li>
-<li>Labels with the <code>tabIndex</code> and <code>for</code> attributes are now focused correctly (<a href="https://github.com/DevExpress/testcafe/issues/3501">#3501</a>)</li>
-<li>Fixed a bug that prevented elements behind the footer from being scrolled up on some pages (<a href="https://github.com/DevExpress/testcafe/issues/2601">#2601</a>)</li>
-<li>Enhanced the previous fix for a Chrome 75 compatibility issue when <code>t.typeText</code> typed each character at the beginning of the input (<a href="https://github.com/DevExpress/testcafe/issues/3865">#3865</a>)</li>
-<li>jQuery scroll functions no longer cause errors (<a href="https://github.com/DevExpress/testcafe-hammerhead/issues/2045">testcafe-hammerhead/#2045</a>)</li>
+<li><p>the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--ts-config-path-path">--ts-config-path</a> command line parameter,</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests --ts-config-path /Users/s.johnson/testcafe/tsconfig.json
+</code></pre></div></li>
+<li><p>the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#tsconfigpath">runner.tsConfigPath</a> API method,</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">tsConfigPath</span><span class="p">(</span><span class="s1">'/Users/s.johnson/testcafe/tsconfig.json'</span><span class="p">);</span>
+</code></pre></div></li>
+<li><p>the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#tsconfigpath">tsConfigPath</a> configuration file property.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"tsConfigPath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/Users/s.johnson/testcafe/tsconfig.json"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></li>
 </ul>
+
+<p>We strongly recommend that you upgrade to v1.3.1. We apologize for any inconvenience.</p>
 
         </article>
         <div id="back-to-posts-link">
@@ -471,8 +459,8 @@
 <!-- 
 <script>
     var disqus_config = function () {
-        this.page.url = 'https://devexpress.github.io/testcafe/blog/testcafe-v1-3-0-released.html';
-        this.page.identifier = '/blog/testcafe-v1-3-0-released';
+        this.page.url = 'https://devexpress.github.io/testcafe/blog/testcafe-v1-3-1-released.html';
+        this.page.identifier = '/blog/testcafe-v1-3-1-released';
     };
     (function() {
         var d = document, s = d.createElement('script');
