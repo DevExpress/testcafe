@@ -1,5 +1,47 @@
 # Changelog
 
+## v1.3.1 (2019-7-5)
+
+### Breaking Changes
+
+#### :boom: TypeScript Configuration File Location is Required to Apply the Custom Compiler Settings ([#3983](https://github.com/DevExpress/testcafe/issues/3983))
+
+You must specify the `tsconfig.json` file location to apply the [compiler settings](https://devexpress.github.io/testcafe/documentation/test-api/typescript-support.html#customize-compiler-options). You can do it in one of the following ways:
+
+* the [--ts-config-path](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--ts-config-path-path) command line flag,
+
+    ```sh
+    testcafe chrome my-tests --ts-config-path /Users/s.johnson/testcafe/tsconfig.json
+    ```
+
+* the [runner.tsConfigPath](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#tsconfigpath) API method,
+
+    ```js
+    runner.tsConfigPath('/Users/s.johnson/testcafe/tsconfig.json');
+    ```
+
+* the [tsConfigPath](https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#tsconfigpath) configuration file property.
+
+    ```json
+    {
+        "tsConfigPath": "/Users/s.johnson/testcafe/tsconfig.json"
+    }
+    ```
+
+### Enhancements
+
+#### :gear: Specify the TypeScript Configuration File Location in CLI and JavaScript API ([PR #3982](https://github.com/DevExpress/testcafe/pull/3982)) by [@timnederhoff](https://github.com/timnederhoff)
+
+We have added the [--ts-config-path](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--ts-config-path-path) command line option and the [runner.tsConfigPath](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#tsconfigpath) API method. Use them to apply a custom TypeScript configuration file and specify its location.
+
+```sh
+testcafe chrome my-tests --ts-config-path /Users/s.johnson/testcafe/tsconfig.json
+```
+
+```js
+runner.tsConfigPath('/Users/s.johnson/testcafe/tsconfig.json');
+```
+
 ## v1.3.0 (2019-7-2)
 
 ### Enhancements

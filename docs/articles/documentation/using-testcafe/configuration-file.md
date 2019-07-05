@@ -748,7 +748,7 @@ Stops a test run if any test fails.
 
 ## tsConfigPath
 
-Specifies the [TypeScript configuration file](../test-api/typescript-support.md#customize-compiler-options) location.
+Enables TestCafe to use a custom [TypeScript configuration file](../test-api/typescript-support.md#customize-compiler-options) and specifies its location.
 
 ```json
 {
@@ -757,8 +757,6 @@ Specifies the [TypeScript configuration file](../test-api/typescript-support.md#
 ```
 
 You can specify an absolute or relative path. Relative paths resolve from the current directory (the directory from which you run TestCafe).
-
-If the `tsConfigPath` option is not specified, TestCafe looks for the `tsconfig.json` file in the current directory.
 
 ## color
 

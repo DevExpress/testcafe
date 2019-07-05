@@ -45,7 +45,29 @@ When you run a test Testcafe will output if there are any compilation errors.
 
 TestCafe allows you to specify [TypeScript compiler options](https://www.typescriptlang.org/docs/handbook/compiler-options.html) in the `tsconfig.json` file. You can use these options to enable JSX compilation, import code or typings with `paths` aliases, set aliases to React typings, or customize other compiler settings.
 
-Define the `compilerOptions` property in `tsconfig.json` and specify the compiler options in this property:
+To apply a custom TypeScript configuration file, specify its location in one of the following ways:
+
+* the [--ts-config-path](../using-testcafe/command-line-interface.md#--ts-config-path-path) command line flag,
+
+    ```sh
+    testcafe chrome my-tests --ts-config-path /Users/s.johnson/testcafe/tsconfig.json
+    ```
+
+* the [runner.tsConfigPath](../using-testcafe/programming-interface/runner.md#tsconfigpath) API method,
+
+    ```js
+    runner.tsConfigPath('/Users/s.johnson/testcafe/tsconfig.json');
+    ```
+
+* the [tsConfigPath](../using-testcafe/configuration-file.md#tsconfigpath) configuration file property.
+
+    ```json
+    {
+        "tsConfigPath": "/Users/s.johnson/testcafe/tsconfig.json"
+    }
+    ```
+
+In `tsconfig.json`, define the `compilerOptions` property and specify the compiler options in this property:
 
 ```json
 {
