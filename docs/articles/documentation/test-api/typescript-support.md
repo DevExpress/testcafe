@@ -47,7 +47,7 @@ TestCafe allows you to specify [TypeScript compiler options](https://www.typescr
 
 To apply a custom TypeScript configuration file, specify its location in one of the following ways:
 
-* the [--ts-config-path](../using-testcafe/command-line-interface.md#--ts-config-path-path) command line flag,
+* the [--ts-config-path](../using-testcafe/command-line-interface.md#--ts-config-path-path) command line parameter,
 
     ```sh
     testcafe chrome my-tests --ts-config-path /Users/s.johnson/testcafe/tsconfig.json

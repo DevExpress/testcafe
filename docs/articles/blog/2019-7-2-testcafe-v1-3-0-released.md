@@ -34,27 +34,7 @@ Save this file to the directory from which you run tests (or use the [tsConfigPa
 
 See [Customize Compiler Options](https://devexpress.github.io/testcafe/documentation/test-api/typescript-support.html#customize-compiler-options) for more information.
 
-**UPD:** in v1.3.1 and later, you must specify the `tsconfig.json` file location to apply the compiler settings. You can do it in one of the following ways:
-
-* the [--ts-config-path](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--ts-config-path-path) command line flag,
-
-    ```sh
-    testcafe chrome my-tests --ts-config-path /Users/s.johnson/testcafe/tsconfig.json
-    ```
-
-* the [runner.tsConfigPath](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#tsconfigpath) API method,
-
-    ```js
-    runner.tsConfigPath('/Users/s.johnson/testcafe/tsconfig.json');
-    ```
-
-* the [tsConfigPath](https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#tsconfigpath) configuration file property.
-
-    ```json
-    {
-        "tsConfigPath": "/Users/s.johnson/testcafe/tsconfig.json"
-    }
-    ```
+**UPD:** v1.3.1 disables automatic detection of the `tsconfig.json` file. See [v1.3.1 release notes](https://devexpress.github.io/testcafe/blog/testcafe-v1-3-1-released.html) for more information.
 
 ## Bug Fixes
 
