@@ -51,6 +51,7 @@ createTestCafe('localhost', 1337, 1338)
 * [concurrency](#concurrency)
 * [startApp](#startapp)
 * [useProxy](#useproxy)
+* [tsConfigPath](#tsconfigpath)
 * [run](#run)
     * [Cancelling Test Tasks](#cancelling-test-tasks)
     * [Quarantine Mode](#quarantine-mode)
@@ -459,6 +460,24 @@ You can also use the proxy host to specify authentication credentials.
 ```js
 runner.useProxy('username:password@proxy.mycorp.com');
 ```
+
+### tsConfigPath
+
+Enables TestCafe to use a custom [TypeScript configuration file](../../test-api/typescript-support.md#customize-compiler-options) and specifies its location.
+
+```text
+async tsConfigPath(path) → this
+```
+
+Parameter | Type   | Description
+--------- | ------ | ---------------------
+`path`    | String | The absolute or relative path to the TypeScript configuration file. Relative paths resolve from the current directory (the directory from which you run TestCafe).
+
+```js
+runner.tsConfigPath('/Users/s.johnson/testcafe/tsconfig.json');
+```
+
+*Related configuration file property*: [tsConfigPath](../configuration-file.md#tsconfigpath)
 
 ### run
 

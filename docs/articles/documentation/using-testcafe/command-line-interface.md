@@ -57,6 +57,7 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [--dev](#--dev)
   * [--qr-code](#--qr-code)
   * [--sf, --stop-on-first-fail](#--sf---stop-on-first-fail)
+  * [--ts-config-path \<path\>](#--ts-config-path-path)
   * [--color](#--color)
   * [--no-color](#--no-color)
 
@@ -753,6 +754,18 @@ testcafe chrome my-tests --sf
 ```
 
 *Related configuration file property*: [stopOnFirstFail](configuration-file.md#stoponfirstfail).
+
+### --ts-config-path \<path\>
+
+Enables TestCafe to use a custom [TypeScript configuration file](../test-api/typescript-support.md#customize-compiler-options) and specifies its location.
+
+```sh
+testcafe chrome my-tests --ts-config-path /Users/s.johnson/testcafe/tsconfig.json
+```
+
+You can specify an absolute or relative path. Relative paths resolve from the current directory (the directory from which you run TestCafe).
+
+*Related configuration file property*: [tsConfigPath](configuration-file.md#tsconfigpath).
 
 ### --color
 
