@@ -5,14 +5,16 @@
     <description></description>
     <link>https://devexpress.github.io/testcafe/</link>
     <atom:link href="https://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 05 Jul 2019 19:21:38 +0300</pubDate>
-    <lastBuildDate>Fri, 05 Jul 2019 19:21:38 +0300</lastBuildDate>
+    <pubDate>Fri, 05 Jul 2019 19:25:48 +0300</pubDate>
+    <lastBuildDate>Fri, 05 Jul 2019 19:25:48 +0300</lastBuildDate>
     <generator>Jekyll v3.8.4</generator>
     
       <item>
         <title>TestCafe v1.3.1 Released</title>
         <description>&lt;h1&gt;TestCafe v1.3.1 Released&lt;/h1&gt;
 &lt;p&gt;This release fixes an issue caused by &lt;code&gt;tsconfig.json&lt;/code&gt; auto-detection.&lt;/p&gt;
+
+&lt;!--more--&gt;
 
 &lt;p&gt;Version 1.3.0 introduced support for &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/typescript-support.html#customize-compiler-options&quot;&gt;custom TypeScript configuration files&lt;/a&gt; where you can provide the compiler options. This feature included automatic detection of these configuration files. If the directory from which you run tests contained a &lt;code&gt;tsconfig.json&lt;/code&gt; file, TestCafe would apply it by default.&lt;/p&gt;
 

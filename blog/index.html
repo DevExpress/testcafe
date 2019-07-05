@@ -432,28 +432,6 @@
                 
                 <p>
 <p>This release fixes an issue caused by <code>tsconfig.json</code> auto-detection.</p>
-
-<p>Version 1.3.0 introduced support for <a href="https://devexpress.github.io/testcafe/documentation/test-api/typescript-support.html#customize-compiler-options">custom TypeScript configuration files</a> where you can provide the compiler options. This feature included automatic detection of these configuration files. If the directory from which you run tests contained a <code>tsconfig.json</code> file, TestCafe would apply it by default.</p>
-
-<p>However, this behavior caused troubles for users who have already had <code>tsconfig.json</code> files with conflicting settings in their projects. TestCafe attempted to apply these configurations, which resulted in issues with test compilation.</p>
-
-<p>In v1.3.1, we have disabled <code>tsconfig.json</code> auto-detection. Now you must explicitly specify the <code>tsconfig.json</code> file location to apply the compiler settings. You can do it in one of the following ways:</p>
-
-<ul>
-<li><p>the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--ts-config-path-path">--ts-config-path</a> command line parameter,</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests --ts-config-path /Users/s.johnson/testcafe/tsconfig.json
-</code></pre></div></li>
-<li><p>the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#tsconfigpath">runner.tsConfigPath</a> API method,</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">tsConfigPath</span><span class="p">(</span><span class="s1">'/Users/s.johnson/testcafe/tsconfig.json'</span><span class="p">);</span>
-</code></pre></div></li>
-<li><p>the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#tsconfigpath">tsConfigPath</a> configuration file property.</p>
-<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"tsConfigPath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/Users/s.johnson/testcafe/tsconfig.json"</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre></div></li>
-</ul>
-
-<p>We strongly recommend that you upgrade to v1.3.1. We apologize for any inconvenience.</p>
 </p>
                 <p class="read-more">
                     <a href="/testcafe/blog/testcafe-v1-3-1-released.html">Read More</a>
