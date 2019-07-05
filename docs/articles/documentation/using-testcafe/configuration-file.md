@@ -758,6 +758,9 @@ Enables TestCafe to use a custom [TypeScript configuration file](../test-api/typ
 
 You can specify an absolute or relative path. Relative paths resolve from the current directory (the directory from which you run TestCafe).
 
+*CLI*: [--ts-config-path](command-line-interface.md#--ts-config-path-path)  
+*API*: [runner.tsConfigPath](programming-interface/runner.md#tsconfigpath)
+
 ## color
 
 Enables colors in the command line.
