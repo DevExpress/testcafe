@@ -5,9 +5,45 @@
     <description></description>
     <link>https://devexpress.github.io/testcafe/</link>
     <atom:link href="https://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 02 Jul 2019 18:28:14 +0300</pubDate>
-    <lastBuildDate>Tue, 02 Jul 2019 18:28:14 +0300</lastBuildDate>
+    <pubDate>Fri, 05 Jul 2019 19:36:08 +0300</pubDate>
+    <lastBuildDate>Fri, 05 Jul 2019 19:36:08 +0300</lastBuildDate>
     <generator>Jekyll v3.8.4</generator>
+    
+      <item>
+        <title>TestCafe v1.3.1 Released</title>
+        <description>&lt;h1&gt;TestCafe v1.3.1 Released&lt;/h1&gt;
+&lt;p&gt;This release fixes an issue caused by &lt;code&gt;tsconfig.json&lt;/code&gt; auto-detection.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;Version 1.3.0 introduced support for &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/typescript-support.html#customize-compiler-options&quot;&gt;custom TypeScript configuration files&lt;/a&gt; where you can provide the compiler options. This feature included automatic detection of these configuration files. If the directory from which you run tests contained a &lt;code&gt;tsconfig.json&lt;/code&gt; file, TestCafe would apply it by default.&lt;/p&gt;
+
+&lt;p&gt;However, this behavior caused troubles for users who have already had &lt;code&gt;tsconfig.json&lt;/code&gt; files with conflicting settings in their projects. TestCafe attempted to apply these configurations, which resulted in issues with test compilation.&lt;/p&gt;
+
+&lt;p&gt;In v1.3.1, we have disabled &lt;code&gt;tsconfig.json&lt;/code&gt; auto-detection. Now you must explicitly specify the &lt;code&gt;tsconfig.json&lt;/code&gt; file location to apply the compiler settings. You can do it in one of the following ways:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--ts-config-path-path&quot;&gt;--ts-config-path&lt;/a&gt; command line parameter,&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe chrome my-tests --ts-config-path /Users/s.johnson/testcafe/tsconfig.json
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#tsconfigpath&quot;&gt;runner.tsConfigPath&lt;/a&gt; API method,&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;tsConfigPath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'/Users/s.johnson/testcafe/tsconfig.json'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#tsconfigpath&quot;&gt;tsConfigPath&lt;/a&gt; configuration file property.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;tsConfigPath&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/Users/s.johnson/testcafe/tsconfig.json&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;We strongly recommend that you upgrade to v1.3.1. We apologize for any inconvenience.&lt;/p&gt;
+</description>
+        <pubDate>Fri, 05 Jul 2019 00:00:00 +0300</pubDate>
+        <link>https://devexpress.github.io/testcafe/blog/testcafe-v1-3-1-released.html</link>
+        <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v1-3-1-released.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>TestCafe v1.3.0 Released</title>
@@ -15,7 +51,8 @@
 &lt;p&gt;This release introduces support for the custom TypeScript configuration file and includes numerous bugfixes.&lt;/p&gt;
 
 &lt;!--more--&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;enhancements&quot;&gt;&lt;/a&gt;Enhancements &lt;a class=&quot;permalink&quot; href=&quot;#enhancements&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;customize-typescript-compiler-options-1845&quot;&gt;&lt;/a&gt;⚙ Customize TypeScript Compiler Options (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1845&quot;&gt;#1845&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#customize-typescript-compiler-options-1845&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;enhancements&quot;&gt;&lt;/a&gt;Enhancements &lt;a class=&quot;permalink&quot; href=&quot;#enhancements&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;customize-typescript-compiler-options-1845&quot;&gt;&lt;/a&gt;⚙ Customize TypeScript Compiler Options (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1845&quot;&gt;#1845&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#customize-typescript-compiler-options-1845&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;&lt;blockquote&gt;&lt;div class=&quot;blockquote-content&quot;&gt;&lt;p&gt;&lt;strong&gt;Update:&lt;/strong&gt; v1.3.1 disables automatic detection of the &lt;code&gt;tsconfig.json&lt;/code&gt; file. See &lt;a href=&quot;https://devexpress.github.io/testcafe/blog/testcafe-v1-3-1-released.html&quot;&gt;v1.3.1 release notes&lt;/a&gt; for more information.&lt;/p&gt;
+&lt;/div&gt;&lt;/blockquote&gt;
 &lt;p&gt;TestCafe now allows you to specify the &lt;a href=&quot;https://www.typescriptlang.org/docs/handbook/compiler-options.html&quot;&gt;TypeScript compiler options&lt;/a&gt; in the &lt;code&gt;tsconfig.json&lt;/code&gt; configuration file. You can use these options to enable JSX compilation, import code or typings with &lt;code&gt;paths&lt;/code&gt; aliases, set aliases to React typings, or customize other compiler settings.&lt;/p&gt;
 
 &lt;p&gt;Define the &lt;code&gt;compilerOptions&lt;/code&gt; property in &lt;code&gt;tsconfig.json&lt;/code&gt; and specify the compiler options in this property:&lt;/p&gt;
@@ -640,105 +677,6 @@ If the same problem occurs with this test two more times, the test run finishes 
         <pubDate>Tue, 15 May 2018 00:00:00 +0300</pubDate>
         <link>https://devexpress.github.io/testcafe/blog/testcafe-v0-20-0-released.html</link>
         <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v0-20-0-released.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>TestCafe v0.19.0 Released - Rapid Test Development Tool, Screenshots of Page Elements, etc</title>
-        <description>&lt;h1&gt;TestCafe v0.19.0 Released - Rapid Test Development Tool, Screenshots of Page Elements, etc&lt;/h1&gt;
-&lt;p&gt;Welcome TestCafe Live, a tool for rapid test development. We have also added a couple of new features like taking screenshots of individual page elements and filtering visible and hidden elements in the selector chain.&lt;/p&gt;
-
-&lt;!--more--&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;testcafe-live-see-instant-feedback-when-working-on-tests-1624&quot;&gt;&lt;/a&gt;TestCafe Live: See instant feedback when working on tests (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1624&quot;&gt;#1624&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#testcafe-live-see-instant-feedback-when-working-on-tests-1624&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;TestCafe Live provides a service that keeps the TestCafe process and browsers opened the whole time you are working on tests. Changes you make in code immediately restart the tests. That is, TestCafe Live allows you to see test results instantly.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=RWQtB6Xv01Q&quot;&gt;&lt;img src=&quot;https://raw.githubusercontent.com/DevExpress/testcafe/master/media/changelog/testcafe-live-video.png&quot; alt=&quot;TestCafe Live Video&quot; title=&quot;&quot;&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;For more information, see &lt;a href=&quot;https://github.com/DevExpress/testcafe-live&quot;&gt;the TestCafe Live repository&lt;/a&gt;.&lt;/p&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;enhancements&quot;&gt;&lt;/a&gt;Enhancements &lt;a class=&quot;permalink&quot; href=&quot;#enhancements&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;taking-screenshots-of-individual-page-elements-1496&quot;&gt;&lt;/a&gt;⚙ Taking Screenshots of Individual Page Elements (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1496&quot;&gt;#1496&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#taking-screenshots-of-individual-page-elements-1496&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;We have added the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/actions/take-screenshot.html#take-a-screenshot-of-a-page-element&quot;&gt;t.takeElementScreenshot&lt;/a&gt; action that allows you to take a screenshot of an individual page element.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kr&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'testcafe'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;My&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;page&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//devexpress.github.io/testcafe/example/`;&lt;/span&gt;
-
-&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Take a screenshot of a fieldset'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;nx&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;click&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'#reusing-js-code'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;click&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'#continuous-integration-embedding'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;takeElementScreenshot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'fieldset'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nth&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'my-fixture/important-features.png'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;This action provides additional customization that allows you to position the center of the screenshot or crop it. For more information, see the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/actions/take-screenshot.html#take-a-screenshot-of-a-page-element&quot;&gt;documentation&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Note that if the screenshot directory is not specified with the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#screenshots&quot;&gt;runner.screenshots&lt;/a&gt; API method or the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-s-path---screenshots-path&quot;&gt;screenshots&lt;/a&gt; command line option, the &lt;code&gt;t.takeElementScreenshot&lt;/code&gt; action will be ignored.&lt;/p&gt;
-&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;filtering-elements-by-their-visibility-1018&quot;&gt;&lt;/a&gt;⚙ Filtering Elements by Their Visibility (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1018&quot;&gt;#1018&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#filtering-elements-by-their-visibility-1018&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;You can now filter the selector&amp;#39;s matching set to leave only visible or hidden elements. To do this, use the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#filtervisible&quot;&gt;filterVisible&lt;/a&gt; and &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#filterhidden&quot;&gt;filterHidden&lt;/a&gt; methods.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kr&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'testcafe'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;My&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;page&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//devexpress.github.io/testcafe/example/`;&lt;/span&gt;
-
-&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Filter visible and hidden elements'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;inputs&lt;/span&gt;        &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'input'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;hiddenInput&lt;/span&gt;   &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;inputs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;filterHidden&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-    &lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;visibleInputs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;inputs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;filterVisible&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-
-    &lt;span class=&quot;nx&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;hiddenInput&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;eql&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;visibleInputs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;eql&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;11&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;finding-elements-by-the-exact-matching-text-1292&quot;&gt;&lt;/a&gt;⚙ Finding Elements by the Exact Matching Text (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1292&quot;&gt;#1292&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#finding-elements-by-the-exact-matching-text-1292&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;The current selector&amp;#39;s &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#withtext&quot;&gt;withText&lt;/a&gt; method looks for elements whose text content &lt;em&gt;contains&lt;/em&gt; the specified string. With this release, we have added the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#withexacttext&quot;&gt;withExactText&lt;/a&gt; method that performs search by &lt;em&gt;strict match&lt;/em&gt;.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kr&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'testcafe'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;My&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;page&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//devexpress.github.io/testcafe/example/`;&lt;/span&gt;
-
-&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Search by exact text'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;labels&lt;/span&gt;       &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'label'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;winLabel&lt;/span&gt;     &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;labels&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;withExactText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Windows'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;reusingLabel&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;labels&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;withText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'JavaScript'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-
-    &lt;span class=&quot;nx&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;winLabel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;exists&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;ok&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;reusingLabel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;exists&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;ok&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;using-decorators-in-typescript-code-2117-by-pietrovich&quot;&gt;&lt;/a&gt;⚙ Using Decorators in TypeScript Code (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2117&quot;&gt;#2117&lt;/a&gt;) by &lt;a href=&quot;https://github.com/pietrovich&quot;&gt;@pietrovich&lt;/a&gt; &lt;a class=&quot;permalink&quot; href=&quot;#using-decorators-in-typescript-code-2117-by-pietrovich&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;TestCafe now allows you to use &lt;a href=&quot;https://www.typescriptlang.org/docs/handbook/decorators.html&quot;&gt;decorators&lt;/a&gt; when &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/typescript-support.html&quot;&gt;writing tests in TypeScript&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Note that decorators are still an experimental feature in TypeScript.&lt;/p&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;bug-fixes&quot;&gt;&lt;/a&gt;Bug Fixes &lt;a class=&quot;permalink&quot; href=&quot;#bug-fixes&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;TestCafe can now scroll a webpage when &lt;code&gt;body&lt;/code&gt; has a scroll bar (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1940&quot;&gt;#1940&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Firefox no longer hangs with a dialog asking to set it as the default browser (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1926&quot;&gt;#1926&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Legacy API no longer freezes because of an unexpected error (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1790&quot;&gt;#1790&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Click on an element that was hidden and then recreated on timeout now works correctly (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1994&quot;&gt;#1994&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;TestCafe now correctly finds browsers in headless mode on macOS when tests are executing concurrently (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2035&quot;&gt;#2035&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;When roles are switched using the &lt;code&gt;preserverUrl&lt;/code&gt; flag, the local storage now restores correctly (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2015&quot;&gt;#2015&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;TestCafe progress bar is no longer visible on screenshots (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2076&quot;&gt;#2076&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Window manipulations now wait for page loading (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2000&quot;&gt;#2000&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;All toolbars are now hidden when taking screenshots (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1445&quot;&gt;#1445&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;TestCafe now works normally with the latest version of CucumberJS (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2107&quot;&gt;#2107&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Fixed an error connected to file permissions on Ubuntu (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2144&quot;&gt;#2144&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Browser manipulations can now be executed step-by-step (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2150&quot;&gt;#2150&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Fixed a bug where a page wouldn&amp;#39;t load because of an error in &lt;code&gt;generateCallExpression&lt;/code&gt; (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1389&quot;&gt;testcafe-hammerhead/#1389&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Now the overridden Blob constructor doesn&amp;#39;t process data unnecessarily (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1359&quot;&gt;testcafe-hammerhead/#1359&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Now the &lt;code&gt;target&lt;/code&gt; attribute is not set for a button after a click on it (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1437&quot;&gt;testcafe-hammerhead/#1437&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;The &lt;code&gt;sandbox&lt;/code&gt;, &lt;code&gt;target&lt;/code&gt; and &lt;code&gt;style&lt;/code&gt; attributes are now cleaned up (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1448&quot;&gt;testcafe-hammerhead/#1448&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;A &lt;code&gt;RangeError&lt;/code&gt; with the message &lt;code&gt;Maximum call stack size exceeded&lt;/code&gt; is no longer raised (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1452&quot;&gt;testcafe-hammerhead/#1452&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;A script error is no longer raised on pages that contain a &lt;code&gt;beforeunload&lt;/code&gt; handler (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1419&quot;&gt;testcafe-hammerhead/#1419&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Fixed wrong overridding of an event object (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1445&quot;&gt;testcafe-hammerhead/#1445&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Illegal invocation error is no longer raised when calling the &lt;code&gt;FileListWrapper.item&lt;/code&gt; method (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1446&quot;&gt;testcafe-hammerhead/#1446&lt;/a&gt;) by &lt;a href=&quot;https://github.com/javiercbk&quot;&gt;@javiercbk&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;A script error is no longer raised when &lt;code&gt;Node.nextSibling&lt;/code&gt; is &lt;code&gt;null&lt;/code&gt; (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1469&quot;&gt;testcafe-hammerhead/#1469&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;The &lt;code&gt;isShadowUIElement&lt;/code&gt; check is now performed for &lt;code&gt;Node.nextSibling&lt;/code&gt; when a node is not an element (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1465&quot;&gt;testcafe-hammerhead/#1465&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;The &lt;code&gt;toString&lt;/code&gt; function is now overridden for anchor elements (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1483&quot;&gt;testcafe-hammerhead/#1483&lt;/a&gt;)&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Thu, 01 Mar 2018 00:00:00 +0300</pubDate>
-        <link>https://devexpress.github.io/testcafe/blog/testcafe-v0-19-0-released.html</link>
-        <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v0-19-0-released.html</guid>
         
         
       </item>

@@ -854,6 +854,7 @@
 <li><a href="#concurrency">concurrency</a></li>
 <li><a href="#startapp">startApp</a></li>
 <li><a href="#useproxy">useProxy</a></li>
+<li><a href="#tsconfigpath">tsConfigPath</a></li>
 <li><a href="#run">run</a>
 
 <ul>
@@ -1267,7 +1268,23 @@ Tests are run concurrently against this pool, that is, each test is run in the f
 </code></pre></div>
 <p>You can also use the proxy host to specify authentication credentials.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">useProxy</span><span class="p">(</span><span class="s1">'username:password@proxy.mycorp.com'</span><span class="p">);</span>
-</code></pre></div><h3><a class="anchor" id="run"></a>run <a class="permalink" href="#run">#</a></h3>
+</code></pre></div><h3><a class="anchor" id="tsconfigpath"></a>tsConfigPath <a class="permalink" href="#tsconfigpath">#</a></h3>
+<p>Enables TestCafe to use a custom <a href="../../test-api/typescript-support.html#customize-compiler-options">TypeScript configuration file</a> and specifies its location.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">async tsConfigPath(path) → this
+</code></pre></div><div class="table-wrapper"><table><thead><tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody><tr>
+<td><code>path</code></td>
+<td>String</td>
+<td>The absolute or relative path to the TypeScript configuration file. Relative paths resolve from the current directory (the directory from which you run TestCafe).</td>
+</tr>
+</tbody></table></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">tsConfigPath</span><span class="p">(</span><span class="s1">'/Users/s.johnson/testcafe/tsconfig.json'</span><span class="p">);</span>
+</code></pre></div>
+<p><em>Related configuration file property</em>: <a href="../configuration-file.html#tsconfigpath">tsConfigPath</a></p>
+<h3><a class="anchor" id="run"></a>run <a class="permalink" href="#run">#</a></h3>
 <p>Runs tests according to the current configuration. Returns the number of failed tests.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">async run(options) → Promise&lt;Number&gt;
 </code></pre></div>

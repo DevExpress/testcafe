@@ -1332,14 +1332,15 @@ to slow the test down.</p>
 <p><em>CLI</em>: <a href="command-line-interface.html#--sf---stop-on-first-fail">--sf, --stop-on-first-fail</a><br>
 <em>API</em>: <a href="programming-interface/runner.html#run">runner.run({ stopOnFirstFail })</a></p>
 <h2><a class="anchor" id="tsconfigpath"></a>tsConfigPath <a class="permalink" href="#tsconfigpath">#</a></h2>
-<p>Specifies the <a href="../test-api/typescript-support.html#customize-compiler-options">TypeScript configuration file</a> location.</p>
+<p>Enables TestCafe to use a custom <a href="../test-api/typescript-support.html#customize-compiler-options">TypeScript configuration file</a> and specifies its location.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
     </span><span class="nt">"tsConfigPath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/Users/s.johnson/testcafe/tsconfig.json"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>You can specify an absolute or relative path. Relative paths resolve from the current directory (the directory from which you run TestCafe).</p>
 
-<p>If the <code>tsConfigPath</code> option is not specified, TestCafe looks for the <code>tsconfig.json</code> file in the current directory.</p>
+<p><em>CLI</em>: <a href="command-line-interface.html#--ts-config-path-path">--ts-config-path</a><br>
+<em>API</em>: <a href="programming-interface/runner.html#tsconfigpath">runner.tsConfigPath</a></p>
 <h2><a class="anchor" id="color"></a>color <a class="permalink" href="#color">#</a></h2>
 <p>Enables colors in the command line.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">

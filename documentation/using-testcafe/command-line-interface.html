@@ -861,6 +861,7 @@
 <li><a href="#--dev">--dev</a></li>
 <li><a href="#--qr-code">--qr-code</a></li>
 <li><a href="#--sf---stop-on-first-fail">--sf, --stop-on-first-fail</a></li>
+<li><a href="#--ts-config-path-path">--ts-config-path &lt;path&gt;</a></li>
 <li><a href="#--color">--color</a></li>
 <li><a href="#--no-color">--no-color</a></li>
 </ul></li>
@@ -1278,6 +1279,13 @@ See <a href="common-concepts/test-https-and-http2-websites.html">Test HTTPS and 
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests --sf
 </code></pre></div>
 <p><em>Related configuration file property</em>: <a href="configuration-file.html#stoponfirstfail">stopOnFirstFail</a>.</p>
+<h3><a class="anchor" id="--ts-config-path-path"></a>--ts-config-path &lt;path&gt; <a class="permalink" href="#--ts-config-path-path">#</a></h3>
+<p>Enables TestCafe to use a custom <a href="../test-api/typescript-support.html#customize-compiler-options">TypeScript configuration file</a> and specifies its location.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests --ts-config-path /Users/s.johnson/testcafe/tsconfig.json
+</code></pre></div>
+<p>You can specify an absolute or relative path. Relative paths resolve from the current directory (the directory from which you run TestCafe).</p>
+
+<p><em>Related configuration file property</em>: <a href="configuration-file.html#tsconfigpath">tsConfigPath</a>.</p>
 <h3><a class="anchor" id="--color"></a>--color <a class="permalink" href="#--color">#</a></h3>
 <p>Enables colors in the command line.</p>
 
