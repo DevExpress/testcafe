@@ -311,5 +311,35 @@ describe('TypeScriptConfiguration', () => {
                     expect(consoleWrapper.messages.log).contains('You cannot override the "target" compiler option in the TypeScript configuration file.');
                 });
         });
+
+        it('Runner + TypeScript config', () => {
+            let runner = null;
+
+            const customConfigFilePath = 'custom-config.json';
+
+            configPath    = customConfigFilePath;
+            configuration = { filePath: customConfigFilePath };
+
+            createConfigFile({
+                compilerOptions: {
+                    target: 'override-target'
+                }
+            });
+
+
+            const RunnerCtor = require('../../lib/runner');
+
+            runner = new RunnerCtor(null, null, new TestCafeConfiguration());
+
+            runner.src('test/server/data/test-suites/typescript-basic/testfile1.ts');
+            runner.tsConfigPath(customConfigFilePath);
+            runner._setBootstrapperOptions();
+
+            return runner.bootstrapper._getTests()
+                .then(() => {
+                    expect(runner.bootstrapper.tsConfigPath).eql(customConfigFilePath);
+                    expect(consoleWrapper.messages.log).contains('You cannot override the "target" compiler option in the TypeScript configuration file.');
+                });
+        });
     });
 });

@@ -29,7 +29,6 @@ export default class Runner extends EventEmitter {
         this.bootstrapper        = this._createBootstrapper(browserConnectionGateway);
         this.pendingTaskPromises = [];
         this.configuration       = configuration;
-        this.tsConfiguration     = null;
         this.isCli               = false;
 
         // NOTE: This code is necessary only for displaying  marketing messages.
@@ -402,6 +401,14 @@ export default class Runner extends EventEmitter {
         return this;
     }
 
+    tsConfigPath (path) {
+        this.configuration.mergeOptions({
+            [OPTION_NAMES.tsConfigPath]: path
+        });
+
+        return this;
+    }
+
     run (options = {}) {
         this.apiMethodWasCalled.reset();
 
@@ -416,8 +423,7 @@ export default class Runner extends EventEmitter {
             speed,
             debugOnFail,
             skipUncaughtErrors,
-            stopOnFirstFail,
-            tsConfigPath
+            stopOnFirstFail
         } = options;
 
         this.configuration.mergeOptions({
@@ -431,8 +437,7 @@ export default class Runner extends EventEmitter {
             pageLoadTimeout:    pageLoadTimeout,
             speed:              speed,
             skipUncaughtErrors: skipUncaughtErrors,
-            stopOnFirstFail:    stopOnFirstFail,
-            tsConfigPath:       tsConfigPath
+            stopOnFirstFail:    stopOnFirstFail
         });
 
         this._setBootstrapperOptions();
