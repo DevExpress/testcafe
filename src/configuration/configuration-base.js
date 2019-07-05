@@ -114,18 +114,18 @@ export default class Configuration {
     }
 
     async _load () {
-        if (this.filePath) {
-            const configurationFileExists = await Configuration._isConfigurationFileExists(this.filePath);
+        if (!this.filePath) 
+            return null;
 
-            if (configurationFileExists) {
-                const configurationFileContent = await this._readConfigurationFileContent();
+        if(!await Configuration._isConfigurationFileExists(this.filePath))
+            return null;
 
-                if (configurationFileContent)
-                    return this._parseConfigurationFileContent(configurationFileContent);
-            }
-        }
+        const configurationFileContent = await this._readConfigurationFileContent();
 
-        return null;
+        if (!configurationFileContent)
+            return null;
+
+        return this._parseConfigurationFileContent(configurationFileContent);
     }
 
     async _readConfigurationFileContent () {
