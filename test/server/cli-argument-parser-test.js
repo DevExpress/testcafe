@@ -532,7 +532,7 @@ describe('CLI argument parser', function () {
             });
     });
 
-    it('Should has static CLI', () => {
+    it('Should have static CLI', () => {
         const WARNING          = 'IMPORTANT: Please be sure what you want to change CLI if this test is failing!';
         const EXPECTED_OPTIONS = [
             { long: '--version', short: '-v' },
@@ -573,7 +573,8 @@ describe('CLI argument parser', function () {
             { long: '--stop-on-first-fail', short: '--sf' },
             { long: '--video' },
             { long: '--video-options' },
-            { long: '--video-encoding-options' }
+            { long: '--video-encoding-options' },
+            { long: '--ts-config-path' }
         ];
 
         const parser  = new CliArgumentParser('');

@@ -96,6 +96,7 @@ async function runTests (argParser) {
     runner
         .useProxy(proxy, proxyBypass)
         .src(sources)
+        .tsConfigPath(argParser.opts.tsConfigPath)
         .browsers(browsers)
         .reporter(argParser.opts.reporter)
         .concurrency(argParser.opts.concurrency)

@@ -29,7 +29,6 @@ export default class Runner extends EventEmitter {
         this.bootstrapper        = this._createBootstrapper(browserConnectionGateway);
         this.pendingTaskPromises = [];
         this.configuration       = configuration;
-        this.tsConfiguration     = null;
         this.isCli               = false;
 
         // NOTE: This code is necessary only for displaying  marketing messages.
@@ -397,6 +396,14 @@ export default class Runner extends EventEmitter {
         this.configuration.mergeOptions({
             [OPTION_NAMES.appCommand]:   command,
             [OPTION_NAMES.appInitDelay]: initDelay
+        });
+
+        return this;
+    }
+
+    tsConfigPath (path) {
+        this.configuration.mergeOptions({
+            [OPTION_NAMES.tsConfigPath]: path
         });
 
         return this;
