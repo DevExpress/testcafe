@@ -392,7 +392,7 @@ describe('TypeScriptConfiguration', () => {
 
             createConfigFile({
                 compilerOptions: {
-                    target: 'override-target'
+                    target: 'es5'
                 }
             });
 
