@@ -590,7 +590,7 @@ test.clientScripts( script[, script2[, ...[, scriptN]]] )
 
 Parameter | Type     | Description
 --------- | -------- | ---------------------------------------------------------------------------
-`scripts` | String &#124; Object &#124; Array | Scripts to inject into the tested pages. Pass a [file path](#specify-the-path-to-a-javascript-file) or [code](#specify-script-code). You can also [specify pages](#provide-scripts-for-particular-pages) into which scripts should be injected.
+`scripts` | String &#124; Object &#124; Array | Scripts to inject into the tested pages. Pass a [file path](#specify-the-path-to-a-javascript-file) or [code](#specify-the-script-code). You can also [specify pages](#provide-scripts-for-particular-pages) into which scripts should be injected.
 
 The `clientScripts` methods can take [multiple arguments and arrays](#pass-multiple-arguments).
 
@@ -617,9 +617,34 @@ fixture.clientScripts('assets/jquery.js');
 fixture.clientScripts({ path: 'assets/jquery.js' });
 ```
 
-> You cannot pass an object with both the `path` and [content](#specify-script-code) properties.
+> You cannot combine the `path`, [module](#specify-the-module-name) and [content](#specify-the-script-code) properties.
 
-### Specify Script Code
+### Specify the Module Name
+
+Specify the module name to inject the module's content into the tested pages. Use a string or an object with the `module` property.
+
+```text
+fixture.clientScripts( module | { module } )
+```
+
+```text
+test.clientScripts( module | { module } )
+```
+
+Argument  | Type   | Description
+--------- | ------ | ---------------------------------------------------------------------------
+`module`  | String | The name of the module whose content should be injected. TestCafe uses [require.resolve](https://nodejs.org/api/modules.html#modules_require_resolve_request_options) to resolve the module location with Node.js machinery.
+
+**Example**
+
+```js
+fixture.clientScripts('lodash');
+fixture.clientScripts({ module: 'async' });
+```
+
+> You cannot combine the `module`, [path](#specify-the-path-to-a-javascript-file) and [content](#specify-the-script-code) properties.
+
+### Specify the Script Code
 
 You can provide the injected script as a string with JavaScript code. Pass an object with the `content` property to do this.
 
@@ -647,7 +672,7 @@ const mockDate = `
 test.clientScripts({ content: mockDate });
 ```
 
-> You cannot pass an object with both the `content` and [path](#specify-the-path-to-a-javascript-file) properties.
+> You cannot combine the `content`, [path](#specify-the-path-to-a-javascript-file) and [module](#specify-the-module-name) properties.
 
 ### Provide Scripts for Particular Pages
 
@@ -656,11 +681,11 @@ You can also specify pages into which a script should be injected. This is helpf
 To specify target pages for a script, add the `page` property to the object you pass to `clientScripts`.
 
 ```text
-fixture.clientScripts({ page, path | content })
+fixture.clientScripts({ page, path | module | content })
 ```
 
 ```text
-test.clientScripts({ page, path | content })
+test.clientScripts({ page, path | module | content })
 ```
 
 Property  | Type                | Description
@@ -694,7 +719,7 @@ test.clientScripts('scripts/react-helpers.js', { content: 'Date.prototype.getTim
 ```js
 fixture.clientScripts(['vue-helpers.js', {
     page: 'https://mycorp.com/login/',
-    path: 'assets/jquery.js'
+    module: 'lodash'
 }]);
 ```
 
