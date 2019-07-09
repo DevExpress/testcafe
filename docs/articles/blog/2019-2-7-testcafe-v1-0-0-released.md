@@ -5,13 +5,13 @@ permalink: /blog/:title.html
 ---
 # TestCafe v1.0.0 Released
 
-Meet TestCafe v1.0.0, our first major update that includes some big features: video recording, configuration file, "live mode" for rapid test development and much more.
+TestCafe v1.0.0 is our first major update that includes features like video recording, configuration file, "live mode" for rapid test development and much more.
 
 <!--more-->
 
 ## Breaking Changes
 
-TestCafe v1.0.0 introduces minor changes to the behavior and programming interface. You can find the details in the [migration guide](https://devexpress.github.io/testcafe/blog/migration-from-testcafe-v0-x-y-to-v1-0-0.html).
+TestCafe v1.0.0 introduces minor changes to the framework's behavior and programming interface. You can find the details in the [migration guide](https://devexpress.github.io/testcafe/blog/migration-from-testcafe-v0-x-y-to-v1-0-0.html).
 
 ## Enhancements
 
@@ -102,7 +102,7 @@ createTestCafe('localhost', 1337, 1338)
 
 ### ⚙ Custom Reporter API Enhancements (Part of [#2753](https://github.com/DevExpress/testcafe/issues/2753); [Pull Request](https://github.com/DevExpress/testcafe/pull/3177))
 
-* You can now access warnings that appeared during the test run from the [reportTestDone](https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reporttestdone) method. Use the `warnings` property of the [testRunInfo](https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#testruninfo-object) object.
+* You can now access warnings that appeared during the test run from the [reportTestDone](https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reporttestdone) method. To do this, use the [testRunInfo](https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#testruninfo-object) object's `warnings` property.
 
     ```js
     async reportTestDone (name, testRunInfo, meta) {

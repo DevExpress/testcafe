@@ -671,7 +671,7 @@ You can also specify authentication credentials with the proxy host.
 
 ## proxyBypass
 
-Specifies the resources accessed bypassing the proxy server.
+Requires that TestCafe bypasses the proxy server to access the specified resources.
 
 ```json
 {
@@ -723,7 +723,7 @@ Enables mechanisms to log and diagnose errors. You should enable this option if 
 
 ## qrCode
 
-If you launch TestCafe from the console, outputs a QR-code that represents URLs used to connect the remote browsers.
+If you launch TestCafe from the console, this option outputs a QR-code that represents URLs used to connect the remote browsers.
 
 ```json
 {

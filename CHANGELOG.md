@@ -211,7 +211,7 @@ $ testcafe chrome tests.ts
 * Fixed the `KeyboardEvent`'s `key` property emulation for Safari ([#3282](https://github.com/DevExpress/testcafe/issues/3282))
 * TestCafe can now capture element screenshots after a long page scrolling ([#3292](https://github.com/DevExpress/testcafe/issues/3292))
 * The compilation time of TypeScript tests no longer degrades for a large number of files ([#3475](https://github.com/DevExpress/testcafe/issues/3475))
-* Reach Router can now navigate correctly when tested with TestCafe ([testcafe-hammerhead/#1863](https://github.com/DevExpress/testcafe-hammerhead/issues/1863))
+* Reach Router can now navigate correctly during the tests ([testcafe-hammerhead/#1863](https://github.com/DevExpress/testcafe-hammerhead/issues/1863))
 * TestCafe now correctly handles websites that use the `WebKitMutationObserver` class ([testcafe-hammerhead/#1912](https://github.com/DevExpress/testcafe-hammerhead/issues/1912))
 * TestCafe now processes ECMAScript modules in `<script>` tags ([testcafe-hammerhead/#1725](https://github.com/DevExpress/testcafe-hammerhead/issues/1725))
 

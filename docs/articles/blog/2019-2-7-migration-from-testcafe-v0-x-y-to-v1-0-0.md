@@ -5,7 +5,7 @@ permalink: /blog/:title.html
 ---
 # Migration from TestCafe v0.x.y to v1.0.0
 
-TestCafe v1.0.0 release introduces minor changes to the behavior and programming interface. This document lists these changes and describes how to address them.
+TestCafe v1.0.0 introduces minor changes to the framework's behavior and programming interface. This document lists these changes and describes how to migrate to the new version.
 
 <!--more-->
 

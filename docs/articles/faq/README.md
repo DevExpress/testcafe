@@ -32,7 +32,6 @@ which allows it to work without the WebDriver.
 This proxy injects the driver script that emulates user actions into the tested page.
 
 You can read about this in our [forum](https://testcafe-discuss.devexpress.com/t/why-not-use-selenium/47).
-Feel free to ask for more details.
 
 ### What is the difference between [TestCafe Studio](https://www.devexpress.com/products/testcafestudio/) and [open-source TestCafe](https://devexpress.github.io/testcafe)?
 

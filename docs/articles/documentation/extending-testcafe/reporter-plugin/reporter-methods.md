@@ -154,7 +154,7 @@ The `testRunInfo` object provides detailed information about the test run. The o
 
 Property            | Type             | Description
 ------------------- | ---------------- | --------------------------------------------------------
-`errs`              | Array of Objects | An array of errors that occurred during the test run. Use the [formatError](helpers.md#formaterror) helper to stringify objects in this array.
+`errs`              | Array of Objects | An array of errors that occurred during the test run. Use the [formatError](helpers.md#formaterror) helper to convert objects in this array to strings.
 `warnings`          | Array of Strings | An array of warnings that appeared during the test run.
 `durationMs`        | Number           | The duration of the test (in milliseconds).
 `unstable`          | Boolean          | Specifies if the test is marked as unstable.

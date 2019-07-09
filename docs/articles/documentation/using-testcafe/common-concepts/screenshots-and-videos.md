@@ -26,7 +26,7 @@ TestCafe allows you to take screenshots of the tested webpage and record videos 
 
 ## Screenshots
 
-TestCafe allows you to take screenshots of the webpage under test at any moment during test run, or automatically whenever a test fails.
+TestCafe allows you to take screenshots of the tested webpage at any moment during test run, or automatically whenever a test fails.
 
 > Important! Screenshots are not supported when you run tests in [remote browsers](browsers/browser-support.md#browsers-on-remote-devices).
 
@@ -192,9 +192,9 @@ You can specify video options in either of the following ways:
 
 ### Video Encoding Options
 
-You can specify all the options supported by the FFmpeg library. Refer to [the FFmpeg documentation](https://ffmpeg.org/ffmpeg.html#Options) for information about the available options.
+These encoding options are passed to FFmpeg. Refer to the [FFmpeg documentation](https://ffmpeg.org/ffmpeg.html#Options) for information about all the available options.
 
-To provide video encoding options, use either of the following:
+To provide video encoding options, use either of the following options:
 
 * the [--video-encoding-options](../command-line-interface.md#--video-encoding-options-optionvalueoption2value2) command line flag,
 
@@ -224,7 +224,7 @@ To provide video encoding options, use either of the following:
 
 ## Where Screenshots and Videos Are Saved
 
-You specify the base path to the directory that stores screenshots or videos when you turn these features on. See [Enable Screenshots](#enable-screenshots) and [Enable Video Recording](#enable-video-recording).
+You should specify the base path to the directory that stores screenshots or videos to enable these features. See [Enable Screenshots](#enable-screenshots) and [Enable Video Recording](#enable-video-recording).
 
 Inside the base directory, screenshots and videos are organized into subdirectories and named according to the [default](#default-path-patterns) or [custom](#custom-path-patterns) *path patterns*.
 
