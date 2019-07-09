@@ -202,7 +202,8 @@ before(function () {
                     useProxy: proxy,
                     only: onlyOption,
                     skip: skipOption,
-                    stopOnFirstFail
+                    stopOnFirstFail,
+                    disablePageCaching
                 } = opts;
 
                 const actualBrowsers = browsersInfo.filter(browserInfo => {
@@ -259,7 +260,8 @@ before(function () {
                         pageLoadTimeout,
                         speed,
                         stopOnFirstFail,
-                        skipUncaughtErrors
+                        skipUncaughtErrors,
+                        disablePageCaching
                     })
                     .then(failedCount => {
                         if (customReporters)

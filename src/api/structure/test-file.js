@@ -15,6 +15,9 @@ export default class TestFile {
 
             if (test.disablePageReloads === void 0)
                 test.disablePageReloads = test.fixture.disablePageReloads;
+
+            if (!test.disablePageCaching)
+                test.disablePageCaching = test.fixture.disablePageCaching;
         });
 
         return this.collectedTests;
