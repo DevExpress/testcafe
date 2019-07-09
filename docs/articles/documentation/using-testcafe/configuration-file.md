@@ -630,7 +630,7 @@ Injects scripts from the specified files into each page visited during the tests
 
 Use the [fixture.clientScripts](../test-api/test-code-structure.md#inject-scripts-into-tested-pages) and [test.clientScripts](../test-api/test-code-structure.md#inject-scripts-into-tested-pages) methods in test code to inject scripts within a specific fixture or test. These methods also allow you to add scripts to individual pages.
 
-*CLI*: [--client-scripts](command-line-interface.md#--client-scripts-pathpath2)  
+*CLI*: [--cs, --client-scripts](command-line-interface.md#--cs-pathpath2--client-scripts-pathpath2)  
 *API*: [runner.clientScripts({ paths })](programming-interface/runner.md#clientscripts)
 
 ## port1, port2
