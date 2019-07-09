@@ -293,5 +293,11 @@ export default {
         An unhandled error occurred in the "${err.methodName}" method of the "${err.hookClassName}" class:
         
         ${escapeHtml(err.errMsg)}
+    `),
+
+    [TEST_RUN_ERRORS.executeNodeExpressionError]: err => markup(err, `
+        An unhandled error "${escapeHtml(err.errMsg)}" occurred in the code step:
+        ${escapeHtml(err.expression)}
+        at (${err.line}:${err.column})
     `)
 };

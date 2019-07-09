@@ -20,7 +20,8 @@ import {
     SetNativeDialogHandlerCommand,
     SetTestSpeedCommand,
     SetPageLoadTimeoutCommand,
-    ExecuteExpressionCommand
+    ExecuteExpressionCommand,
+    ExecuteNodeExpressionCommand
 } from './actions';
 
 import AssertionCommand from './assertion';
@@ -120,6 +121,9 @@ function getCmdCtor (type) {
 
         case TYPE.executeExpression:
             return ExecuteExpressionCommand;
+
+        case TYPE.executeNodeExpression:
+            return ExecuteNodeExpressionCommand;
 
         default:
             return null;

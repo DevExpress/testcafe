@@ -44,5 +44,6 @@ export default {
     testDone:                   'test-done',
     backupStorages:             'backup-storages',
     executeExpression:          'execute-expression',
+    executeNodeExpression:      'execute-node-expression',
     unlockPage:                 'unlock-page'
 };

@@ -115,6 +115,18 @@ export class ExecuteExpressionCommand extends CommandBase {
     }
 }
 
+export class ExecuteNodeExpressionCommand extends CommandBase {
+    constructor (obj, testRun) {
+        super(obj, testRun, TYPE.executeNodeExpression);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'expression', type: nonEmptyStringArgument, required: true }
+        ];
+    }
+}
+
 export class DoubleClickCommand extends CommandBase {
     constructor (obj, testRun) {
         super(obj, testRun, TYPE.doubleClick);

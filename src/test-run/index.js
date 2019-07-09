@@ -45,6 +45,7 @@ const lazyRequire                 = require('import-lazy')(require);
 const SessionController           = lazyRequire('./session-controller');
 const ClientFunctionBuilder       = lazyRequire('../client-functions/client-function-builder');
 const executeJsExpression         = lazyRequire('./execute-js-expression');
+const executeNodeExpression       = lazyRequire('./execute-node-js-expression');
 const BrowserManipulationQueue    = lazyRequire('./browser-manipulation-queue');
 const TestRunBookmark             = lazyRequire('./bookmark');
 const AssertionExecutor           = lazyRequire('../assertions/executor');
@@ -530,6 +531,12 @@ export default class TestRun extends AsyncEventEmitter {
         return isAsyncExpression ? await result : result;
     }
 
+    async _executeNodeExpression (command, callsite) {
+        const expression = command.expression;
+
+        return await executeNodeExpression(expression, this, callsite);
+    }
+
     async _executeAssertion (command, callsite) {
         const assertionTimeout = command.options.timeout === void 0 ? this.opts.assertionTimeout : command.options.timeout;
         const executor         = new AssertionExecutor(command, assertionTimeout, callsite);
@@ -618,6 +625,9 @@ export default class TestRun extends AsyncEventEmitter {
 
         if (command.type === COMMAND_TYPE.executeExpression)
             return await this._executeExpression(command, callsite);
+
+        if (command.type === COMMAND_TYPE.executeNodeExpression)
+            return await this._executeNodeExpression(command, callsite);
 
         if (command.type === COMMAND_TYPE.getBrowserConsoleMessages)
             return await this._enqueueBrowserConsoleMessagesCommand(command, callsite);
