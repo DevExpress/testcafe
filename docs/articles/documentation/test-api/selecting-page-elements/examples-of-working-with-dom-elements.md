@@ -104,16 +104,16 @@ test('My test', async t => {
 
 ## Access Child Nodes in the DOM Hierarchy
 
-The selector API includes methods that allow you to [search for elements in the DOM tree](selectors/functional-style-selectors.md#search-for-elements-in-the-dom-hierarchy). For instance, you can use the [child](selectors/functional-style-selectors.md#child), [parent](selectors/functional-style-selectors.md#parent), and [sibling](selectors/functional-style-selectors.md#sibling) methods to traverse up, down or aside through the hierarchy.
+The selector API allows you to [search for elements in the DOM tree](selectors/functional-style-selectors.md#search-for-elements-in-the-dom-hierarchy). You can traverse in different directions through the hierarchy to iterate parents, children and siblings.
 
-However, these methods have a limitation. They iterate DOM elements only and ignore other node types. To get a child text node for a selector, use a function as shown in this example.
+However, the [child](selectors/functional-style-selectors.md#child), [sibling](selectors/functional-style-selectors.md#sibling), [prevSibling](selectors/functional-style-selectors.md#prevsibling) and [nextSibling](selectors/functional-style-selectors.md#nextsibling) methods work with DOM elements only and ignore other node types.
 
-Consider the following *example.html* page:
+This example shows how to get a child text node for a given parent element with client-side code. Consider the following *example.html* page:
 
 ```js
 <!DOCTYPE html>
 <html>
-    <body id="testedpage">
+    <body id="tested-page">
         This is my tested page. <!--This is the first child node of <body>-->
         <p>My first paragraph.</p>
         <p>My second paragraph.</p>
@@ -121,22 +121,21 @@ Consider the following *example.html* page:
 </html>
 ```
 
-Assume you need to verify text content of the first node in the `<body>` (*'This is my tested page'*).
+Assume you have a selector that identifies the `#tested-page` element, and now you need to verify text content of its first child node (*'This is my tested page'*).
 
-First, create a selector that identifies the `testedpage` element. Then pass this selector as a [dependency](selectors/selector-options.md#optionsdependencies) to another selector that returns the [childNodes](https://developer.mozilla.org/en-US/docs/Web/API/Node/childNodes) collection.
+To do this, pass this selector as a [dependency](selectors/selector-options.md#optionsdependencies) to a new selector. Initialize the second selector with a function that returns the [childNodes](https://developer.mozilla.org/en-US/docs/Web/API/Node/childNodes) collection. You can then use the new selector in an assertion to check the `textContent` property.
 
 ```js
-import { Selector } from 'testcafe';
-import { ClientFunction } from 'testcafe';
+import { Selector, ClientFunction } from 'testcafe';
 
 fixture `My Fixture`
     .page `example.html`;
 
-    const testedPage = Selector('#testedpage');
+const testedPage = Selector('#tested-page');
 
-    const childNodes = Selector(() => {
-        return getPage().childNodes;
-    },{ dependencies: { getPage: testedPage } });
+const childNodes = Selector(() => {
+    return getPage().childNodes;
+},{ dependencies: { getPage: testedPage } });
 
 
 test('My Test', async t => {

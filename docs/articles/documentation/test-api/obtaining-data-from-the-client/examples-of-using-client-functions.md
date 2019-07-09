@@ -116,4 +116,4 @@ test('My test', async t => {
 });
 ```
 
-You can use [TestCafe selectors](../selecting-page-elements/selectors/README.md) instead of the native `querySelector` and `querySelectorAll` methods. Pass these selectors to the client function's [dependencies](README.md#optionsdependencies) option and call them as regular functions. This gives you the benefits of TestCafe [automatic wait mechanism](../built-in-waiting-mechanisms.md).
+You can use [TestCafe selectors](../selecting-page-elements/selectors/README.md) instead of the native `querySelector` and `querySelectorAll` methods. Pass these selectors to the client function's [dependencies](README.md#optionsdependencies) option and call them as regular functions. You can use chains of [selector methods](../selecting-page-elements/selectors/functional-style-selectors.md) instead of complex CSS strings for more transparent syntax.
