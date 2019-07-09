@@ -1,5 +1,5 @@
 import { runInThisContext } from 'vm';
-import { createRequireFromPath } from 'module';
+import Module from 'module';
 import { dirname } from 'path';
 import { ExecuteNodeExpressionError } from '../errors/test-run';
 
@@ -34,10 +34,21 @@ function formatExpression (expression) {
     }).join('\n');
 }
 
+function createRequire (filename) {
+    if (Module.createRequireFromPath)
+        return Module.createRequireFromPath(filename);
+
+    const dummyModule = new Module(filename, module);
+
+    dummyModule.filename = filename;
+    dummyModule.paths    = [filename].concat(module.paths);
+
+    return id => dummyModule.require(id);
+}
+
 export default async function (expression, testRun, callsite) {
     const filename = testRun.test.testFile.filename;
     const dirName  = dirname(filename);
-    const require  = createRequireFromPath(filename);
 
     const fn = runInThisContext(wrapModule(expression), {
         filename:     formatExpression(expression),
@@ -46,7 +57,7 @@ export default async function (expression, testRun, callsite) {
     });
 
     try {
-        return await fn(require, testRun.controller, filename, dirName)();
+        return await fn(createRequire(filename), testRun.controller, filename, dirName)();
     }
     catch (err) {
         const { line, column } = getErrorLineColumn(err);
