@@ -431,35 +431,7 @@ export default class Runner extends EventEmitter {
 
     run (options = {}) {
         this.apiMethodWasCalled.reset();
-
-        const {
-            skipJsErrors,
-            disablePageReloads,
-            quarantineMode,
-            debugMode,
-            selectorTimeout,
-            assertionTimeout,
-            pageLoadTimeout,
-            speed,
-            debugOnFail,
-            skipUncaughtErrors,
-            stopOnFirstFail
-        } = options;
-
-        this.configuration.mergeOptions({
-            skipJsErrors:       skipJsErrors,
-            disablePageReloads: disablePageReloads,
-            quarantineMode:     quarantineMode,
-            debugMode:          debugMode,
-            debugOnFail:        debugOnFail,
-            selectorTimeout:    selectorTimeout,
-            assertionTimeout:   assertionTimeout,
-            pageLoadTimeout:    pageLoadTimeout,
-            speed:              speed,
-            skipUncaughtErrors: skipUncaughtErrors,
-            stopOnFirstFail:    stopOnFirstFail
-        });
-
+        this.configuration.mergeOptions(options);
         this._setBootstrapperOptions();
 
         const runTaskPromise = Promise.resolve()

@@ -20,6 +20,7 @@ export default class TestingUnit {
         this.clientScripts   = [];
 
         this.disablePageReloads = void 0;
+        this.disablePageCaching = false;
 
         this.apiMethodWasCalled = new FlagList([OPTION_NAMES.clientScripts, OPTION_NAMES.requestHooks]);
 
@@ -95,6 +96,12 @@ export default class TestingUnit {
         Object.keys(data).forEach(key => {
             this.meta[key] = data[key];
         });
+
+        return this.apiOrigin;
+    }
+
+    _disablePageCaching$getter () {
+        this.disablePageCaching = true;
 
         return this.apiOrigin;
     }
