@@ -3,8 +3,7 @@ import Promise from 'pinkie';
 import COMMAND from '../../browser/connection/command';
 import STATUS from '../../browser/connection/status';
 import { UNSTABLE_NETWORK_MODE_HEADER } from '../../browser/connection/unstable-network-mode';
-
-const HEARTBEAT_INTERVAL = 2 * 1000;
+import { HEARTBEAT_INTERVAL } from '../../utils/browser-connection-timeouts';
 
 let allowInitScriptExecution = false;
 let retryTestPages           = false;

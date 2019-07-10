@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>gh-3929</title>
+</head>
+<body>
+<button>Click me</button>
+<script>
+    var clickCount = 0;
+    var button     = document.querySelector('button');
+
+    button.addEventListener('click', function () {
+        clickCount++;
+    });
+</script>
+</body>
+</html>
