@@ -7,9 +7,9 @@ permalink: /documentation/recipes/extract-reusable-test-code/create-helpers.html
 
 We recommend that you follow the [page model pattern](use-page-model.md) to extract reusable test code. This pattern allows you to abstract out both page structure and test logic.
 
-However, if you need to extract only the helper functions, you can export them from a separate script file.
+If you need to extract only the helper functions, however, you can export them from a separate script file.
 
-The following example shows a `helper.js` file that exports the `enterName`, `typeComment` and `submitForm` asynchronous functions:
+The following example shows a `helper.js` file that exports the `enterName`, `typeComment`, and `submitForm` asynchronous functions:
 
 ```js
 import { t } from 'testcafe';

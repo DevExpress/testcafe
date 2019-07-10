@@ -85,14 +85,14 @@ export default function () {
 }
 ```
 
-TestCafe calls these methods during the test run. Use data they receive through their parameters to compose a report.
+TestCafe calls these methods during the test run. Use data they receive through their parameters to create a report.
 See [Reporter Methods](reporter-methods.md) for API description and examples.
 
-To output the report, use [helper methods and libraries](helpers.md).
-TestCafe mixes in the helper methods to the reporter, so that you can access them with `this`.
+Use [helper methods and libraries](helpers.md) to write and format the report.
+TestCafe mixes the helper methods into the reporter. You can access them with `this`.
 
 In the `src/index.js` file, you can specify the `noColors` property to enable or disable colors in the reporter output.
-To customize the colors, use the [chalk](helpers.md#chalk) methods.
+To customize colors, use the [chalk](helpers.md#chalk) methods.
 
 **Example**
 

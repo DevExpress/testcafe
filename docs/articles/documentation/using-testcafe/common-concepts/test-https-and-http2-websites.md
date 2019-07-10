@@ -14,7 +14,7 @@ This topic describes how TestCafe works with HTTPS and HTTP/2 websites.
 
 ## Test HTTPS Websites
 
-TestCafe is a proxy-based testing tool. The TestCafe [reverse proxy](https://en.wikipedia.org/wiki/Reverse_proxy) serves the tested webpage over HTTP and communicates with the original web server over HTTP or HTTPS (depends on the [specified page URL](../../test-api/test-code-structure.md#specifying-the-start-webpage)).
+TestCafe is a proxy-based testing tool. The TestCafe [reverse proxy](https://en.wikipedia.org/wiki/Reverse_proxy) serves the tested webpage over HTTP and communicates with the original web server over HTTP or HTTPS (depending on the [specified page URL](../../test-api/test-code-structure.md#specifying-the-start-webpage)).
 
 ![Connection Protocols](../../../images/proxy-connection-protocols.svg)
 
@@ -26,7 +26,7 @@ If the tested page does not use HTTPS-specific features (like
 
 ### Proxy the Website Over HTTPS
 
-When you run tests from the command line, use the [--ssl](../command-line-interface.md#--ssl-options) flag to enable HTTPS on a proxy server. Specify options required to initialize [a Node.js HTTPS server](https://nodejs.org/api/https.html#https_https_createserver_options_requestlistener) after this flag in a semicolon-separated string. The most commonly used SSL options are described in the [TLS topic](https://nodejs.org/api/tls.html#tls_tls_createsecurecontext_options) in Node.js documentation.
+When you run tests from the command line, use the [--ssl](../command-line-interface.md#--ssl-options) flag to enable HTTPS on a proxy server. Specify options required to initialize [a Node.js HTTPS server](https://nodejs.org/api/https.html#https_https_createserver_options_requestlistener) after this flag in a semicolon-separated string. The most commonly used SSL options are described in the [TLS topic](https://nodejs.org/api/tls.html#tls_tls_createsecurecontext_options) in the Node.js documentation.
 
 The example below uses the PFX encoded private key and certificate chain to create an HTTPS server.
 
