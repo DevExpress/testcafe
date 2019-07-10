@@ -14,7 +14,6 @@ To do this, specify a *request filter*, or an array of them.
 * [Filter by URL](#filter-by-url)
   * [Specify the Exact URL](#specify-the-exact-url)
   * [Use a Regular Expression to Specify the URL](#use-a-regular-expression-to-specify-the-url)
-* [Filter by URL with a Regular Expression](#filter-by-url-with-a-regular-expression)
 * [Filter by Parameters](#filter-by-parameters)
 * [Filter with a Predicate](#filter-with-a-predicate)
 
