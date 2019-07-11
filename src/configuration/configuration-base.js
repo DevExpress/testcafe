@@ -32,19 +32,6 @@ export default class Configuration {
         return result;
     }
 
-    static async _isConfigurationFileExists (path) {
-        try {
-            await stat(path);
-
-            return true;
-        }
-        catch (error) {
-            DEBUG_LOGGER(renderTemplate(WARNING_MESSAGES.cannotFindConfigurationFile, path, error.stack));
-
-            return false;
-        }
-    }
-
     static _showConsoleWarning (message) {
         log.write(message);
     }
@@ -129,7 +116,16 @@ export default class Configuration {
     }
 
     async _isConfigurationFileExists () {
-        return await Configuration._isConfigurationFileExists(this.filePath);
+        try {
+            await stat(this.filePath);
+
+            return true;
+        }
+        catch (error) {
+            DEBUG_LOGGER(renderTemplate(WARNING_MESSAGES.cannotFindConfigurationFile, this.filePath, error.stack));
+
+            return false;
+        }
     }
 
     async _readConfigurationFileContent () {
