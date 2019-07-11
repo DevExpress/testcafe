@@ -110,5 +110,6 @@ export const RUNTIME_ERRORS = {
     requestHookConfigureAPIError:                                     'E1039',
     forbiddenCharatersInScreenshotPath:                               'E1040',
     cannotFindFFMPEG:                                                 'E1041',
-    compositeArgumentsError:                                          'E1042'
+    compositeArgumentsError:                                          'E1042',
+    cannotFindTypescriptConfigurationFile:                            'E1043'
 };

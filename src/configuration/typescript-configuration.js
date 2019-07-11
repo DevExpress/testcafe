@@ -4,6 +4,8 @@ import { DEFAULT_TYPESCRIPT_COMPILER_OPTIONS, TYPESCRIPT_COMPILER_NON_OVERRIDABL
 import { intersection, omit } from 'lodash';
 import WARNING_MESSAGES from '../notifications/warning-message';
 import renderTemplate from '../utils/render-template';
+import { GeneralError } from '../errors/runtime';
+import { RUNTIME_ERRORS } from '../errors/types';
 
 const lazyRequire = require('import-lazy')(require);
 const typescript  = lazyRequire('typescript');
@@ -30,6 +32,15 @@ export default class TypescriptConfiguration extends Configuration {
         }
 
         this._notifyThatOptionsCannotBeOverriden();
+    }
+
+    async _isConfigurationFileExists () {
+        const fileExists = await super._isConfigurationFileExists();
+
+        if (!fileExists)
+            throw new GeneralError(RUNTIME_ERRORS.cannotFindTypescriptConfigurationFile, this.filePath);
+
+        return true;
     }
 
     _parseOptions (opts) {

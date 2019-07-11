@@ -117,7 +117,7 @@ export default class Configuration {
         if (!this.filePath)
             return null;
 
-        if (!await Configuration._isConfigurationFileExists(this.filePath))
+        if (!await this._isConfigurationFileExists())
             return null;
 
         const configurationFileContent = await this._readConfigurationFileContent();
@@ -126,6 +126,10 @@ export default class Configuration {
             return null;
 
         return this._parseConfigurationFileContent(configurationFileContent);
+    }
+
+    async _isConfigurationFileExists () {
+        return await Configuration._isConfigurationFileExists(this.filePath);
     }
 
     async _readConfigurationFileContent () {

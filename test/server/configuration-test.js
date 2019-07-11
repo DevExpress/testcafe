@@ -220,6 +220,21 @@ describe('TypeScriptConfiguration', () => {
             });
     });
 
+    it('Configuration file does not exist', async () => {
+        let message = null;
+
+        configuration = new TypescriptConfiguration('non-existing-path');
+
+        try {
+            await configuration.init();
+        }
+        catch (err) {
+            message = err.message;
+        }
+
+        expect(message).eql(`Unable to find the typescript configuration file at the "${configuration.filePath}" path`);
+    });
+
     describe('With configuration file', () => {
         tmp.setGracefulCleanup();
 
