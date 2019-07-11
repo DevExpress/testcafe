@@ -32,7 +32,7 @@ interface RequireCompilers {
 const RENAMED_DEPENDENCIES_MAP = new Map([['testcafe', APIBasedTestFileCompilerBase.EXPORTABLE_LIB_PATH]]);
 
 export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompilerBase {
-    private static tsDefsPath = TypeScriptTestFileCompiler._normalizeFilename(path.resolve(__dirname, '../../../../../ts-defs/index.d.ts'));
+    private static tsDefsPath = TypeScriptTestFileCompiler._getTSDefsPath();
 
     private tsConfig: TypescriptConfiguration;
 
@@ -44,6 +44,19 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
         this.tsConfig = new TypescriptConfiguration(tsConfigPath);
     }
 
+    private static _normalizeFilename (filename: string): string {
+        filename = path.resolve(filename);
+
+        if (OS.win)
+            filename = filename.toLowerCase();
+
+        return filename;
+    }
+
+    private static _getTSDefsPath (): string {
+        return TypeScriptTestFileCompiler._normalizeFilename(path.resolve(__dirname, '../../../../../ts-defs/index.d.ts'));
+    }
+
     private static _reportErrors (diagnostics: Readonly<TypeScript.Diagnostic[]>): void {
         // NOTE: lazy load the compiler
         const ts: TypeScriptInstance = require('typescript');
@@ -53,7 +66,7 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
             const message = ts.flattenDiagnosticMessageText(d.messageText, '\n');
             const file    = d.file;
 
-            if (file && d.start) {
+            if (file && d.start !== void 0) {
                 const { line, character } = file.getLineAndCharacterOfPosition(d.start);
 
                 errMsg += `${file.fileName} (${line + 1}, ${character + 1}): `;
@@ -65,15 +78,6 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
         throw new Error(errMsg);
     }
 
-    private static _normalizeFilename (filename: string): string {
-        filename = path.resolve(filename);
-
-        if (OS.win)
-            filename = filename.toLowerCase();
-
-        return filename;
-    }
-
     public _compileCodeForTestFiles (testFilesInfo: TestFileInfo[]): Promise<string[]> {
         return this.tsConfig.init()
             .then(() => {
@@ -81,21 +85,9 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
             });
     }
 
-
-    public _precompileCode (testFilesInfo: TestFileInfo[]): string[] {
-        // NOTE: lazy load the compiler
-        const ts: TypeScriptInstance = require('typescript');
-
-        const filenames              = testFilesInfo.map(({ filename }) => filename).concat([TypeScriptTestFileCompiler.tsDefsPath]);
-        const normalizedFilenames    = filenames.map(filename => TypeScriptTestFileCompiler._normalizeFilename(filename));
-        const normalizedFilenamesMap = zipObject(normalizedFilenames, filenames);
-
-        const uncachedFiles = normalizedFilenames
-            .filter(filename => filename !== TypeScriptTestFileCompiler.tsDefsPath && !this.cache[filename])
-            .map(filename => normalizedFilenamesMap[filename]);
-
+    private _compileFilesToCache (ts: TypeScriptInstance, filenames: string[]): void {
         const opts    = this.tsConfig.getOptions();
-        const program = ts.createProgram(uncachedFiles, opts);
+        const program = ts.createProgram([TypeScriptTestFileCompiler.tsDefsPath, ...filenames], opts);
 
         program.getSourceFiles().forEach(sourceFile => {
             // @ts-ignore A hack to allow import globally installed TestCafe in tests
@@ -118,6 +110,22 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
 
             this.cache[sourcePath] = result;
         });
+    }
+
+    public _precompileCode (testFilesInfo: TestFileInfo[]): string[] {
+        // NOTE: lazy load the compiler
+        const ts: TypeScriptInstance = require('typescript');
+
+        const filenames              = testFilesInfo.map(({ filename }) => filename);
+        const normalizedFilenames    = filenames.map(filename => TypeScriptTestFileCompiler._normalizeFilename(filename));
+        const normalizedFilenamesMap = zipObject(normalizedFilenames, filenames);
+
+        const uncachedFiles = normalizedFilenames
+            .filter(filename => filename !== TypeScriptTestFileCompiler.tsDefsPath && !this.cache[filename])
+            .map(filename => normalizedFilenamesMap[filename]);
+
+        if (uncachedFiles.length)
+            this._compileFilesToCache(ts, uncachedFiles);
 
         return normalizedFilenames.map(filename => this.cache[filename]);
     }
