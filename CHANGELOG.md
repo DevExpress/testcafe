@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.3.2 (2019-7-11)
+
+### :gear: Package dependencies have been upgraded to avoid CVEs found in the 'lodash' package
+
+### Bug Fixes
+
+* TestCafe no longer hangs when a disconnected browser reconnects to the network ([#3929](https://github.com/DevExpress/testcafe/issues/3929))
+
 ## v1.3.1 (2019-7-5)
 
 This release fixes an issue caused by `tsconfig.json` auto-detection.
