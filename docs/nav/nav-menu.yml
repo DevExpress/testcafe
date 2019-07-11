@@ -46,6 +46,8 @@
       url: /documentation/using-testcafe/common-concepts/screenshots-and-videos.md
     - name: Reporters
       url: /documentation/using-testcafe/common-concepts/reporters.md
+    - name: Framework Integrations
+      url: /documentation/using-testcafe/common-concepts/framework-integrations.md
     - name: Test HTTPS and HTTP/2 Websites
       url: /documentation/using-testcafe/common-concepts/test-https-and-http2-websites.md
 - name: TEST API
@@ -241,7 +243,7 @@
         - name: Use Page Model
           url: /documentation/recipes/extract-reusable-test-code/use-page-model.md
         - name: Create Helpers
-          url: /documentation/recipes/extract-reusable-test-code/create-helpers.md  
+          url: /documentation/recipes/extract-reusable-test-code/create-helpers.md
     - name: Find Code Issues with Flow Type Checker
       url: /documentation/recipes/find-code-issues-with-flow-type-checker.md
     - name: Import Third-Party Modules
