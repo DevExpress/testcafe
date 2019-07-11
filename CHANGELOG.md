@@ -6,7 +6,7 @@
 
 ### Bug Fixes
 
-* TestCafe no longer hangs when disconnected browser reconnects to a network ([#3929](https://github.com/DevExpress/testcafe/issues/3929))
+* TestCafe no longer hangs when a disconnected browser reconnects to the network ([#3929](https://github.com/DevExpress/testcafe/issues/3929))
 
 ## v1.3.1 (2019-7-5)
 
