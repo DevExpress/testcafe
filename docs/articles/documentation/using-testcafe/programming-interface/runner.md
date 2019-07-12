@@ -422,17 +422,24 @@ async clientScripts(scripts) → this
 
 Parameter | Type                | Description
 --------- | ------------------- | ------------
-`scripts` | String &#124; Array | Paths to JavaScript files with scripts that should be injected into the tested pages.
+`scripts` | String &#124; Array | Paths to JavaScript files with scripts that should be injected into the tested pages. See [Provide Scripts to Inject](common-concepts/inject-scripts-into-tested-pages.md#provide-scripts-to-inject) to learn how to specify the scripts.
 
 ```js
 runner.clientScripts('assets/jquery.js');
 ```
 
 ```js
-runner.clientScripts(['mockDate.js', 'scripts/react-helpers.js']);
+runner.clientScripts([{
+    module: 'lodash'
+}, {
+    path: 'scripts/react-helpers.js',
+    page: 'https://myapp.com/page/'
+}]);
 ```
 
 Use the [fixture.clientScripts](../../test-api/test-code-structure.md#inject-scripts-into-tested-pages) and [test.clientScripts](../../test-api/test-code-structure.md#inject-scripts-into-tested-pages) methods in test code to inject scripts within a specific fixture or test. These methods also allow you to add scripts to individual pages.
+
+See [Inject Scripts into Tested Pages](common-concepts/inject-scripts-into-tested-pages.md) for more information.
 
 *Related configuration file property*: [clientScripts](../configuration-file.md#clientscripts)
 

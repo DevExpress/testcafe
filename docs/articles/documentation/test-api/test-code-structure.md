@@ -576,9 +576,9 @@ test('Fixture2Test3', () => {});
 
 ## Inject Scripts into Tested Pages
 
-TestCafe allows you to inject custom scripts into pages visited during the tests. You can add scripts that mock standard API or provide helper functions.
+TestCafe allows you to [inject custom scripts](../using-testcafe/common-concepts/inject-scripts-into-tested-pages.md) into pages visited during the tests. You can add scripts that mock browser API or provide helper functions.
 
-Use the `fixture.clientScripts` and `test.clientScripts` methods to add scripts to each page visited during a particular test or fixture.
+Use the `fixture.clientScripts` and `test.clientScripts` methods to add scripts to pages visited during a particular test or fixture.
 
 ```text
 fixture.clientScripts( script[, script2[, ...[, scriptN]]] )
@@ -590,146 +590,31 @@ test.clientScripts( script[, script2[, ...[, scriptN]]] )
 
 Parameter | Type     | Description
 --------- | -------- | ---------------------------------------------------------------------------
-`scripts` | String &#124; Object &#124; Array | Scripts to inject into the tested pages. Pass a [file path](#specify-the-path-to-a-javascript-file) or [code](#specify-the-script-code). You can also [specify pages](#provide-scripts-for-particular-pages) into which scripts should be injected.
-
-The `clientScripts` methods can take [multiple arguments and arrays](#pass-multiple-arguments).
-
-### Specify the Path to a JavaScript File
-
-Specify the JavaScript file path to inject the entire content of this file into the tested pages. You can pass a string or an object with the `path` property.
-
-```text
-fixture.clientScripts( path | { path } )
-```
-
-```text
-test.clientScripts( path | { path } )
-```
-
-Argument  | Type   | Description
---------- | ------ | ---------------------------------------------------------------------------
-`path`    | String | The path to the JavaScript file whose content should be injected. Relative paths resolve from the directory that contains the current test file.
-
-**Example**
-
-```js
-fixture.clientScripts('assets/jquery.js');
-fixture.clientScripts({ path: 'assets/jquery.js' });
-```
-
-> You cannot combine the `path`, [module](#specify-the-module-name) and [content](#specify-the-script-code) properties.
-
-### Specify the Module Name
-
-Specify the module name to inject the module's content into the tested pages. Use a string or an object with the `module` property.
-
-```text
-fixture.clientScripts( module | { module } )
-```
-
-```text
-test.clientScripts( module | { module } )
-```
-
-Argument  | Type   | Description
---------- | ------ | ---------------------------------------------------------------------------
-`module`  | String | The name of the module whose content should be injected. TestCafe uses [require.resolve](https://nodejs.org/api/modules.html#modules_require_resolve_request_options) to resolve the module location with Node.js machinery.
-
-**Example**
-
-```js
-fixture.clientScripts('lodash');
-fixture.clientScripts({ module: 'async' });
-```
-
-> You cannot combine the `module`, [path](#specify-the-path-to-a-javascript-file) and [content](#specify-the-script-code) properties.
-
-### Specify the Script Code
-
-You can provide the injected script as a string with JavaScript code. Pass an object with the `content` property to do this.
-
-```text
-fixture.clientScripts( { content } )
-```
-
-```text
-test.clientScripts( { content } )
-```
-
-Argument  | Type   | Description
---------- | ------ | ----------------------------------------
-`content` | String | JavaScript code that should be injected.
-
-**Example**
-
-```js
-const mockDate = `
-    Date.prototype.getTime = function () {
-        return 42;
-    };
-`;
-
-test.clientScripts({ content: mockDate });
-```
-
-> You cannot combine the `content`, [path](#specify-the-path-to-a-javascript-file) and [module](#specify-the-module-name) properties.
-
-### Provide Scripts for Particular Pages
-
-You can also specify pages into which a script should be injected. This is helpful when you need to use custom mocks on particular pages and preserve the default behavior everywhere else.
-
-To specify target pages for a script, add the `page` property to the object you pass to `clientScripts`.
-
-```text
-fixture.clientScripts({ page, path | module | content })
-```
-
-```text
-test.clientScripts({ page, path | module | content })
-```
-
-Property  | Type                | Description
---------- | ------------------- | ---------------------------------------------------------------------------
-`page`    | String &#124; RegExp | Specify a page URL to add scripts to a single page, or a regular expression to add scripts to pages whose URLs match this expression. An empty string adds scripts to all pages visited during the test/fixture.
+`scripts` | String &#124; Object &#124; Array | Scripts to inject into the tested pages. See [Provide Scripts to Inject](../using-testcafe/common-concepts/inject-scripts-into-tested-pages.md#provide-scripts-to-inject) to learn how to specify them.
 
 **Examples**
 
 ```js
-fixture.clientScripts({
-    page: 'https://myapp.com/page/',
-    path: 'dist/jquery.js'
-});
+fixture `My fixture`
+    .page `http://example.com`
+    .clientScripts('assets/jquery.js');
 ```
 
 ```js
-test.clientScripts({
-    page: /\/user\/profile\//,
-    content: 'Geolocation.prototype.getCurrentPosition = () => new Positon(0, 0);'
-});
-```
-
-### Pass Multiple Arguments
-
-You can pass multiple arguments or an array to the `clientScripts` methods.
-
-```js
-test.clientScripts('scripts/react-helpers.js', { content: 'Date.prototype.getTime = () => 42;' });
+test
+    ('My test', async t => { /* ... */ })
+    .clientScripts({ module: 'async' });
 ```
 
 ```js
-fixture.clientScripts(['vue-helpers.js', {
-    page: 'https://mycorp.com/login/',
-    module: 'lodash'
-}]);
+test
+    ('My test', async t => { /* ... */ })
+    .clientScripts({
+        page: /\/user\/profile\//,
+        content: 'Geolocation.prototype.getCurrentPosition = () => new Positon(0, 0);'
+    });
 ```
 
-Note that the `page` and `content` properties cannot take arrays. To inject multiple scripts into the same page, pass one argument for each script.
+You can use the [--cs (--client-scripts)](../using-testcafe/command-line-interface.md#--cs-pathpath2--client-scripts-pathpath2) command line option, the [runner.clientScripts](../using-testcafe/programming-interface/runner.md#clientscripts) method or the [clientScripts](../using-testcafe/configuration-file.md#clientscripts)configuration property to inject scripts during the entire test run.
 
-```js
-const scripts = ['test1.js', 'test2.js', 'test3.js'];
-
-text.clientScripts(scripts.map(script => {
-    path: script,
-    page: 'http://example.com'
-}));
-```
+See [Inject Scripts into Tested Pages](../using-testcafe/common-concepts/inject-scripts-into-tested-pages.md) for more information.

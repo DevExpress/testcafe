@@ -624,11 +624,20 @@ Injects scripts from the specified files into each page visited during the tests
 
 ```json
 {
-    "clientScripts": ["mockDate.js", "scripts/react-helpers.js"]
+    "clientScripts": [{
+        "module": "lodash"
+    }, {
+        "path": "scripts/react-helpers.js",
+        "page": "https://myapp.com/page/"
+    }]
 }
 ```
 
+See [Provide Scripts to Inject](common-concepts/inject-scripts-into-tested-pages.md#provide-scripts-to-inject) to learn how to specify the scripts.
+
 Use the [fixture.clientScripts](../test-api/test-code-structure.md#inject-scripts-into-tested-pages) and [test.clientScripts](../test-api/test-code-structure.md#inject-scripts-into-tested-pages) methods in test code to inject scripts within a specific fixture or test. These methods also allow you to add scripts to individual pages.
+
+See [Inject Scripts into Tested Pages](common-concepts/inject-scripts-into-tested-pages.md) for more information.
 
 *CLI*: [--cs, --client-scripts](command-line-interface.md#--cs-pathpath2--client-scripts-pathpath2)  
 *API*: [runner.clientScripts({ paths })](programming-interface/runner.md#clientscripts)

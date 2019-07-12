@@ -634,10 +634,18 @@ If the speed is also specified for an [individual action](../test-api/actions/ac
 Injects scripts from the specified files into each page visited during the tests. Use it to introduce client-side mock functions or helper scripts.
 
 ```sh
-testcafe chrome my-tests --client-scripts=mockDate.js,assets/react-helpers.js
+testcafe chrome my-tests --client-scripts assets/react-helpers.js
 ```
 
+```sh
+testcafe chrome my-tests --client-scripts mockDate.js,lodash
+```
+
+You can pass the [path to a JavaScript file](common-concepts/inject-scripts-into-tested-pages.md#specify-the-path-to-a-javascript-file) or the [module name](common-concepts/inject-scripts-into-tested-pages.md#specify-the-module-name).
+
 Use the [fixture.clientScripts](../test-api/test-code-structure.md#inject-scripts-into-tested-pages) and [test.clientScripts](../test-api/test-code-structure.md#inject-scripts-into-tested-pages) methods in test code to inject scripts within a specific fixture or test. These methods also allow you to add scripts to individual pages.
+
+See [Inject Scripts into Tested Pages](common-concepts/inject-scripts-into-tested-pages.md) for more information.
 
 *Related configuration file property*: [clientScripts](configuration-file.md#clientscripts).
 
