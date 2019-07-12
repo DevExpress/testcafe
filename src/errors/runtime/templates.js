@@ -72,4 +72,6 @@ export default {
                                             '* add the FFmpeg installation directory to the PATH environment variable,\n' +
                                             '* specify the path to the FFmpeg executable in the FFMPEG_PATH environment variable or the ffmpegPath video option,\n' +
                                             '* install the @ffmpeg-installer/ffmpeg package from npm.',
+
+    [RUNTIME_ERRORS.cannotFindTypescriptConfigurationFile]: 'Unable to find the TypeScript configuration file in "{filePath}"',
 };
