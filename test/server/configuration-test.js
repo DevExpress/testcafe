@@ -232,7 +232,7 @@ describe('TypeScriptConfiguration', () => {
             message = err.message;
         }
 
-        expect(message).eql(`Unable to find the typescript configuration file at the "${configuration.filePath}" path`);
+        expect(message).eql(`Unable to find the TypeScript configuration file in "${configuration.filePath}"`);
     });
 
     describe('With configuration file', () => {
