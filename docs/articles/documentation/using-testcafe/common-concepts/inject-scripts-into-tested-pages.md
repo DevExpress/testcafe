@@ -98,7 +98,7 @@ runner.clientScripts('assets/jquery.js');
 runner.clientScripts({ path: 'assets/jquery.js' });
 ```
 
-```json
+```js
 {
     "clientScripts": "assets/jquery.js",
     // or
@@ -161,7 +161,7 @@ fixture `My fixture`
     .clientScripts({ module: 'lodash' });
 ```
 
-```json
+```js
 {
     "clientScripts": "lodash",
     // or
