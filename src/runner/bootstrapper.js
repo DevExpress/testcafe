@@ -238,7 +238,7 @@ export default class Bootstrapper {
             if (test.isLegacy)
                 return;
 
-            let loadedTestClientScripts = await loadClientScripts(test.clientScripts);
+            let loadedTestClientScripts = await loadClientScripts(test.clientScripts, test.testFile.filename);
 
             loadedTestClientScripts = loadedTestClientScripts.concat(clientScripts);
 

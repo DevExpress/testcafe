@@ -1,7 +1,7 @@
 import { readFile } from '../utils/promisified-functions';
 import { GeneralError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
-import resolvePathRelativelyCwd from '../utils/resolve-path-relatively-cwd';
+import { isAbsolute, resolve as resolvePath } from 'path';
 import { RequestFilterRule, generateUniqueId } from 'testcafe-hammerhead';
 
 const BEAUTIFY_REGEXP = /[/.:\s\\]/g;
@@ -14,18 +14,19 @@ const CONTENT_ELLIPSIS_STR   = '...';
 const URL_UNIQUE_PART_LENGTH = 7;
 
 export default class ClientScript {
-    constructor (init) {
-        this.init    = init || null;
-        this.url     = generateUniqueId(URL_UNIQUE_PART_LENGTH);
-        this.content = '';
-        this.path    = null;
-        this.module  = null;
-        this.page    = RequestFilterRule.ANY;
+    constructor (init, basePath) {
+        this.init     = init || null;
+        this.url      = generateUniqueId(URL_UNIQUE_PART_LENGTH);
+        this.content  = '';
+        this.path     = null;
+        this.module   = null;
+        this.page     = RequestFilterRule.ANY;
+        this.basePath = basePath;
     }
 
     async _loadFromPath (path) {
         try {
-            const resolvedPath = resolvePathRelativelyCwd(path);
+            const resolvedPath = isAbsolute(path) ? path : resolvePath(this.basePath, path);
 
             this.path    = resolvedPath;
             this.content = await readFile(this.path);
@@ -50,6 +51,8 @@ export default class ClientScript {
     async load () {
         if (this.init === null)
             throw new GeneralError(RUNTIME_ERRORS.clientScriptInitializerIsNotSpecified);
+        else if (!this.basePath)
+            throw new GeneralError(RUNTIME_ERRORS.clientScriptBasePathIsNotSpecified);
         else if (typeof this.init === 'string')
             await this._loadFromPath(this.init);
         else {

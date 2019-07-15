@@ -113,6 +113,7 @@ export const RUNTIME_ERRORS = {
     compositeArgumentsError:                                          'E1042',
     cannotFindTypescriptConfigurationFile:                            'E1043',
     clientScriptInitializerIsNotSpecified:                            'E1044',
-    clientScriptInitializerMultipleContentSources:                    'E1045',
-    cannotLoadClientScriptFromPath:                                   'E1046'
+    clientScriptBasePathIsNotSpecified:                               'E1045',
+    clientScriptInitializerMultipleContentSources:                    'E1046',
+    cannotLoadClientScriptFromPath:                                   'E1047'
 };
