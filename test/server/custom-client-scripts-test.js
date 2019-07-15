@@ -32,8 +32,8 @@ describe('Client scripts', () => {
             });
     });
 
-    it('Should throw the error if scripts`s base path is not specified', () => {
-        return new ClientScript({ content: testScriptContent })
+    it('Should throw the error if scripts`s base path is not specified and path is relative', () => {
+        return new ClientScript({ path: './relative-path' })
             .load()
             .then(() => {
                 expect.fail('Should throw the error');
@@ -45,7 +45,7 @@ describe('Client scripts', () => {
 
     describe('Content', () => {
         it('Empty content', () => {
-            const script = new ClientScript({ content: '' }, testBasePath);
+            const script = new ClientScript({ content: '' });
 
             return script
                 .load()
@@ -56,7 +56,7 @@ describe('Client scripts', () => {
         });
 
         it('Short content', () => {
-            const script = new ClientScript({ content: testScriptContent }, testBasePath);
+            const script = new ClientScript({ content: testScriptContent });
 
             return script
                 .load()
@@ -69,7 +69,7 @@ describe('Client scripts', () => {
         });
 
         it('Long content', () => {
-            const script = new ClientScript({ content: testScriptContent.repeat(10) }, testBasePath);
+            const script = new ClientScript({ content: testScriptContent.repeat(10) });
 
             return script
                 .load()
@@ -82,7 +82,7 @@ describe('Client scripts', () => {
     describe('Load', () => {
         it('From full path', () => {
             const file   = createScriptFile();
-            const script = new ClientScript({ path: file.name }, testBasePath);
+            const script = new ClientScript({ path: file.name });
 
             return script
                 .load()
@@ -96,13 +96,19 @@ describe('Client scripts', () => {
                 });
         });
 
-        it('Node module', () => {
-            const script = new ClientScript({ module: testModuleName }, testBasePath);
+        describe('Node module', () => {
+            it('Valid module', () => {
+                const script = new ClientScript({ module: testModuleName });
 
-            return script.load()
-                .then(() => {
-                    expect(script.content).contains('return hasDockerEnv() || hasDockerCGroup()');
-                });
+                return script.load()
+                    .then(() => {
+                        expect(script.content).contains('return hasDockerEnv() || hasDockerCGroup()');
+                    });
+            });
+
+            it('Invalid module', () => {
+
+            });
         });
 
         it('From relative path', () => {
@@ -117,7 +123,7 @@ describe('Client scripts', () => {
 
     describe('"Page" property', () => {
         it('Default value', () => {
-            const script = new ClientScript({ content: testScriptContent }, testBasePath);
+            const script = new ClientScript({ content: testScriptContent });
 
             return script.load()
                 .then(() => {
@@ -129,7 +135,7 @@ describe('Client scripts', () => {
             const script = new ClientScript( {
                 page:    'http://example.com',
                 content: testScriptContent
-            }, testBasePath);
+            });
 
             return script.load()
                 .then(() => {
@@ -141,7 +147,7 @@ describe('Client scripts', () => {
     describe('Should throw the error if "content", "path" and "module" properties were combined', () => {
         it('"path" and "content"', () => {
             const file   = createScriptFile();
-            const script = new ClientScript({ path: file.name, content: testScriptContent }, testBasePath);
+            const script = new ClientScript({ path: file.name, content: testScriptContent });
 
             return script.load()
                 .then(() => {
@@ -153,7 +159,7 @@ describe('Client scripts', () => {
 
         it('"path" and "module"', () => {
             const file   = createScriptFile();
-            const script = new ClientScript({ path: file.name, module: testModuleName }, testBasePath);
+            const script = new ClientScript({ path: file.name, module: testModuleName });
 
             return script.load()
                 .then(() => {
@@ -164,7 +170,7 @@ describe('Client scripts', () => {
         });
 
         it('"content" and "module"', () => {
-            const script = new ClientScript({ module: testModuleName, content: testScriptContent }, testBasePath);
+            const script = new ClientScript({ module: testModuleName, content: testScriptContent });
 
             return script.load()
                 .then(() => {
@@ -211,7 +217,7 @@ describe('Client scripts', () => {
                     { content: '3' },
                 ];
 
-                return loadClientScripts(scripts, testBasePath)
+                return loadClientScripts(scripts)
                     .then(findProblematicScripts)
                     .then(({ duplicatedContent }) => {
                         expect(duplicatedContent.length).eql(2);
@@ -227,7 +233,7 @@ describe('Client scripts', () => {
                     { content: '' }
                 ];
 
-                return loadClientScripts(scripts, testBasePath)
+                return loadClientScripts(scripts)
                     .then(findProblematicScripts)
                     .then(({ empty }) => {
                         expect(empty[0].content).is.empty;
@@ -238,7 +244,7 @@ describe('Client scripts', () => {
     });
 
     it('Get URL', () => {
-        const script = new ClientScript({ content: testScriptContent }, testBasePath);
+        const script = new ClientScript({ content: testScriptContent });
 
         return script
             .load()
