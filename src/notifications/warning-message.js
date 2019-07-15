@@ -34,6 +34,6 @@ export default {
     cannotSaveMarketingData:            'An error has occurred while saving the marketing data. Error details:\n\n{err}',
     cannotCalculateMarketingMessage:    'Cannot determine which promotional message to display. Attempted to display a message no. {index}',
     clientScriptsWithEmptyContent:      'The client script you tried to inject is empty.',
-    clientScriptsWithDuplicatedContent: 'You injected the following client script{suffix} several times:\\n {duplicatedScripts}'
+    clientScriptsWithDuplicatedContent: 'You injected the following client script{suffix} several times:\n {duplicatedScripts}'
 };
 
