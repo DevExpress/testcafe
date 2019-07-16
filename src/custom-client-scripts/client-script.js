@@ -3,7 +3,6 @@ import { GeneralError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
 import { isAbsolute, resolve as resolvePath } from 'path';
 import { RequestFilterRule, generateUniqueId } from 'testcafe-hammerhead';
-import vm from 'vm';
 
 const BEAUTIFY_REGEXP = /[/.:\s\\]/g;
 const BEAUTIFY_CHAR   = '_';
