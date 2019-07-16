@@ -57,7 +57,8 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
         throw new Error('Not implemented');
     }
 
-    _precompileCode (/* testFilesInfo */) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _precompileCode (testFilesInfo) {
         throw new Error('Not implemented');
     }
 

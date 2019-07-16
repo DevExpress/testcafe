@@ -2,6 +2,8 @@ const expect              = require('chai').expect;
 const path                = require('path');
 const fs                  = require('fs');
 const Promise             = require('pinkie');
+const proxyquire          = require('proxyquire');
+const sinon               = require('sinon');
 const { TEST_RUN_ERRORS } = require('../../lib/errors/types');
 const exportableLib       = require('../../lib/api/exportable-lib');
 const createStackFilter   = require('../../lib/errors/create-stack-filter.js');
@@ -14,7 +16,7 @@ require('source-map-support').install();
 describe('Compiler', function () {
     const testRunMock = { id: 'yo' };
 
-    const tsCompilerPath     = path.resolve('src/compiler/test-file/formats/typescript/compiler.js');
+    const tsCompilerPath     = path.resolve('src/compiler/test-file/formats/typescript/compiler.ts');
     const apiBasedPath       = path.resolve('src/compiler/test-file/api-based.js');
     const esNextCompilerPath = path.resolve('src/compiler/test-file/formats/es-next/compiler.js');
 
@@ -299,6 +301,23 @@ describe('Compiler', function () {
                 .then(function (compiled) {
                     expect(compiled.tests.length).gt(0);
                 });
+        });
+
+        it('Should not recompile cached files', async () => {
+            const ts            = require('typescript');
+            const createProgram = sinon.stub().callsFake(ts.createProgram);
+
+            const TSCompiler = proxyquire('../../lib/compiler/test-file/formats/typescript/compiler', {
+                'typescript': { createProgram }
+            });
+
+            const testData   = [{ filename: 'test/server/data/test-suites/typescript-basic/testfile1.ts', code: 'console.log(42)' }];
+            const tsCompiler = new TSCompiler();
+
+            await tsCompiler.precompile(testData);
+            await tsCompiler.precompile(testData);
+
+            expect(createProgram.callCount).eql(1);
         });
     });
 
