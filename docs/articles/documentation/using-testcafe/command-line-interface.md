@@ -631,7 +631,7 @@ If the speed is also specified for an [individual action](../test-api/actions/ac
 
 ### --cs \<path\[,path2,...\]\>, --client-scripts \<path\[,path2,...\]\>
 
-Injects scripts from the specified files into each page visited during the tests. Use it to introduce client-side mock functions or helper scripts.
+Injects scripts from the specified files into each page visited during the tests. Use this option to introduce client-side mock functions or helper scripts.
 
 ```sh
 testcafe chrome my-tests --client-scripts assets/react-helpers.js

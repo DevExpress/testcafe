@@ -253,13 +253,13 @@ test.clientScripts({ page, path | module | content })
 
 Property  | Type                | Description
 --------- | ------------------- | ---------------------------------------------------------------------------
-`page`    | String &#124; RegExp | Specify a page URL to add scripts to a single page, or a regular expression to add scripts to pages whose URLs match this expression.
+`page`    | String &#124; RegExp | Specify a page URL to add scripts to a single page, or a regular expression to add scripts to pages whose URLs match this expression. Regular expressions are not supported in the [clientScripts](../configuration-file.md#clientscripts) configuration file property.
 
 **Examples**
 
 ```js
 runner.clientScripts({
-    page: 'https://myapp.com/page/',
+    page: /\/user\/profile\//,
     path: 'dist/jquery.js'
 });
 ```
@@ -267,7 +267,7 @@ runner.clientScripts({
 ```json
 {
     "clientScripts": {
-        "page": "\/user\/profile\/",
+        "page": "https://myapp.com/page/",
         "content": "Geolocation.prototype.getCurrentPosition = () => new Positon(0, 0);"
     }
 }
