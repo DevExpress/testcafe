@@ -641,9 +641,15 @@ testcafe chrome my-tests --client-scripts assets/react-helpers.js
 testcafe chrome my-tests --client-scripts mockDate.js,lodash
 ```
 
-You can pass the [path to a JavaScript file](common-concepts/inject-scripts-into-tested-pages.md#specify-the-path-to-a-javascript-file) or the [module name](common-concepts/inject-scripts-into-tested-pages.md#specify-the-module-name).
+You can pass the [path to a JavaScript file](common-concepts/inject-scripts-into-tested-pages.md#inject-a-javascript-file) or the [module name](common-concepts/inject-scripts-into-tested-pages.md#inject-a-module).
 
-Use the [fixture.clientScripts](../test-api/test-code-structure.md#inject-scripts-into-tested-pages) and [test.clientScripts](../test-api/test-code-structure.md#inject-scripts-into-tested-pages) methods in test code to inject scripts within a specific fixture or test. These methods also allow you to add scripts to individual pages.
+Use the [fixture.clientScripts](../test-api/test-code-structure.md#inject-scripts-into-tested-pages) and [test.clientScripts](../test-api/test-code-structure.md#inject-scripts-into-tested-pages) methods in test code to inject scripts for an individual fixture or test.
+
+You can also add scripts to individual pages. Use the following methods and options to do this:
+
+* the [runner.clientScripts](programming-interface/runner.md#clientscripts) programming interface method
+* the [clientScripts](configuration-file.md#clientscripts) configuration file property
+* the [fixture.clientScripts](../test-api/test-code-structure.md#inject-scripts-into-tested-pages) and [test.clientScripts](../test-api/test-code-structure.md#inject-scripts-into-tested-pages) test API methods (add scripts to pages visited during a particular fixture or test)
 
 See [Inject Scripts into Tested Pages](common-concepts/inject-scripts-into-tested-pages.md) for more information.
 

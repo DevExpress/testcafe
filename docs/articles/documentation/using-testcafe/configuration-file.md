@@ -614,7 +614,7 @@ If the speed is also specified for an [individual action](../test-api/actions/ac
 
 ## clientScripts
 
-Injects scripts from the specified files into each page visited during the tests. Use this property to introduce client-side mock functions or helper scripts.
+Injects scripts into each page visited during the tests. Use this property to introduce client-side mock functions or helper scripts.
 
 ```json
 {
@@ -635,9 +635,9 @@ Injects scripts from the specified files into each page visited during the tests
 
 See [Provide Scripts to Inject](common-concepts/inject-scripts-into-tested-pages.md#provide-scripts-to-inject) to learn how to specify the scripts.
 
-> Note that regular expressions are not supported in the configuration file. Use the [runner.clientScripts](programming-interface/runner.md#clientscripts) method or [test API methods](../test-api/test-code-structure.md#inject-scripts-into-tested-pages) to [define target pages](common-concepts/inject-scripts-into-tested-pages.md#provide-scripts-for-particular-pages) with a regular expression.
+> Note that regular expressions are not supported in the configuration file. Use the [runner.clientScripts](programming-interface/runner.md#clientscripts) method or [test API methods](../test-api/test-code-structure.md#inject-scripts-into-tested-pages) to [define target pages](common-concepts/inject-scripts-into-tested-pages.md#provide-scripts-for-specific-pages) with a regular expression.
 
-Use the [fixture.clientScripts](../test-api/test-code-structure.md#inject-scripts-into-tested-pages) and [test.clientScripts](../test-api/test-code-structure.md#inject-scripts-into-tested-pages) methods in test code to inject scripts within a specific fixture or test. These methods also allow you to add scripts to individual pages.
+Use the [fixture.clientScripts](../test-api/test-code-structure.md#inject-scripts-into-tested-pages) and [test.clientScripts](../test-api/test-code-structure.md#inject-scripts-into-tested-pages) methods in test code to inject scripts for an individual fixture or test.
 
 For more information, see [Inject Scripts into Tested Pages](common-concepts/inject-scripts-into-tested-pages.md).
 

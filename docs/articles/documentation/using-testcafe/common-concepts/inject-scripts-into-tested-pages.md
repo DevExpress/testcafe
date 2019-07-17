@@ -7,25 +7,25 @@ permalink: /documentation/using-testcafe/common-concepts/inject-scripts-into-tes
 
 TestCafe allows you to inject custom scripts into pages visited during the tests. You can add scripts that mock browser API or provide helper functions.
 
-Use [test run options](#set-injection-in-test-run-options) to enable injection in all tests, or [test API](#set-injection-in-test-api) to inject scripts for specific fixtures or tests.
+Use [test run options](#inject-scripts-in-all-tests) to enable injection in all tests, or [test API](#inject-scripts0in-specific-tests) to inject scripts for specific fixtures or tests.
 
-## Set Injection in Test Run Options
+## Inject Scripts in All Tests
 
 Use either of the following to inject scripts in all tests:
 
-* the [--cs (--client-scripts)](../command-line-interface.md#--cs-pathpath2---client-scripts-pathpath2) command line flag,
+* the [--cs (--client-scripts)](../command-line-interface.md#--cs-pathpath2---client-scripts-pathpath2) command line option
 
     ```sh
     testcafe chrome test.js --client-scripts=mockDate.js,assets/react-helpers.js
     ```
 
-* the [runner.clientScripts](../programming-interface/runner.md#clientscripts) API method,
+* the [runner.clientScripts](../programming-interface/runner.md#clientscripts) API method
 
     ```js
     runner.clientScripts('mockDate.js', 'scripts/react-helpers.js');
     ```
 
-* the [clientScripts](../configuration-file.md#clientscripts) configuration file property.
+* the [clientScripts](../configuration-file.md#clientscripts) configuration file property
 
     ```json
     {
@@ -33,7 +33,7 @@ Use either of the following to inject scripts in all tests:
     }
     ```
 
-## Set Injection in Test API
+## Inject Scripts in Specific Tests
 
 Use the [fixture.clientScripts](../../test-api/test-code-structure.md#inject-scripts-into-tested-pages) and [test.clientScripts](../../test-api/test-code-structure.md#inject-scripts-into-tested-pages) methods to inject scripts into pages visited during a particular test or fixture.
 
@@ -51,7 +51,17 @@ test
 
 ## Provide Scripts to Inject
 
-### Specify the Path to a JavaScript File
+You can pass the following arguments to specify the scripts to inject:
+
+* [path to a JavaScript file](#inject-a-javascript-file)
+* [module name](#inject-a-module)
+* [script code](#inject-script-code)
+
+You can also [inject scripts into specific pages](#provide-scripts-for-specific-pages).
+
+> Note that the API methods and configuration option support [multiple arguments](#specify-multiple-scripts).
+
+### Inject a JavaScript File
 
 Specify the JavaScript file path to inject the entire content of this file into the tested pages. You can pass a string or an object with the `path` property.
 
@@ -106,9 +116,9 @@ runner.clientScripts({ path: 'assets/jquery.js' });
 }
 ```
 
-> You cannot combine the `path`, [module](#specify-the-module-name) and [content](#specify-the-script-code) properties.
+> You cannot combine the `path`, [module](#inject-a-module) and [content](#inject-script-code) properties.
 
-### Specify the Module Name
+### Inject a Module
 
 Specify the module name to inject the module's content into the tested pages. Use a string or an object with the `module` property.
 
@@ -140,8 +150,10 @@ test.clientScripts( module | { module } )
 ```
 
 Argument  | Type   | Description
---------- | ------ | ---------------------------------------------------------------------------
-`module`  | String | The module name. TestCafe searches for the module's entry point with Node.js machinery and injects its content into the tested page.
+--------- | ------ | ----------------
+`module`  | String | The module name.
+
+TestCafe searches for the module's entry point with Node.js mechanisms and injects its content into the tested page.
 
 **Examples**
 
@@ -169,9 +181,9 @@ fixture `My fixture`
 }
 ```
 
-> You cannot combine the `module`, [path](#specify-the-path-to-a-javascript-file) and [content](#specify-the-script-code) properties.
+> You cannot combine the `module`, [path](#inject-a-javascript-file) and [content](#inject-script-code) properties.
 
-### Specify the Script Code
+### Inject Script Code
 
 You can provide the injected script as a string with JavaScript code. Pass an object with the `content` property to do this.
 
@@ -222,9 +234,9 @@ test
 }
 ```
 
-> You cannot combine the `content`, [path](#specify-the-path-to-a-javascript-file) and [module](#specify-the-module-name) properties.
+> You cannot combine the `content`, [path](#inject-a-javascript-file) and [module](#inject-a-module) properties.
 
-### Provide Scripts for Particular Pages
+### Provide Scripts for Specific Pages
 
 You can also specify pages into which a script should be injected. This is helpful when you need to use custom mocks on particular pages and preserve the default behavior everywhere else.
 
@@ -273,15 +285,21 @@ runner.clientScripts({
 }
 ```
 
-### Pass Multiple Scripts
+### Specify Multiple Scripts
 
-You can pass multiple arguments or an array to the `clientScripts` methods.
+You can pass multiple arguments or an array to the `clientScripts` methods:
 
 ```js
 fixture `My fixture`
     .page `https://example.com`
     .clientScripts('scripts/react-helpers.js', { content: 'Date.prototype.getTime = () => 42;' });
 ```
+
+```js
+runner.clientScripts(['scripts/react-helpers.js', 'dist/jquery.js']);
+```
+
+The [clientScripts](../configuration-file.md#clientscripts) configuration file property can also take arrays:
 
 ```json
 {
@@ -290,6 +308,12 @@ fixture `My fixture`
         "module": "lodash"
     }]
 }
+```
+
+The [--cs (--client-scripts)](../command-line-interface.md#--cs-pathpath2---client-scripts-pathpath2) command line option supports multiple arguments as well:
+
+```sh
+testcafe chrome test.js --client-scripts=mockDate.js,assets/react-helpers.js
 ```
 
 Note that the `page`, `content` and `module` properties cannot take arrays. To inject multiple scripts into the same page, pass one argument for each script.

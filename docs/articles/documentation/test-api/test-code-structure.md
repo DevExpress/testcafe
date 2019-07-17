@@ -615,6 +615,10 @@ test
     });
 ```
 
-You can use the [--cs (--client-scripts)](../using-testcafe/command-line-interface.md#--cs-pathpath2--client-scripts-pathpath2) command line option, the [runner.clientScripts](../using-testcafe/programming-interface/runner.md#clientscripts) method or the [clientScripts](../using-testcafe/configuration-file.md#clientscripts)configuration property to inject scripts during the entire test run.
+To inject scripts into all pages visited during the test run, use either of the following:
+
+* the [--cs (--client-scripts)](../using-testcafe/command-line-interface.md#--cs-pathpath2--client-scripts-pathpath2) command line option
+* the [runner.clientScripts](../using-testcafe/programming-interface/runner.md#clientscripts) method
+* the [clientScripts](../using-testcafe/configuration-file.md#clientscripts) configuration file property
 
 See [Inject Scripts into Tested Pages](../using-testcafe/common-concepts/inject-scripts-into-tested-pages.md) for more information.
