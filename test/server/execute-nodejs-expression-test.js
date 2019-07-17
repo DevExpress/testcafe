@@ -1,17 +1,22 @@
 const { noop } = require('lodash');
+const nanoid   = require('nanoid');
 const expect   = require('chai').expect;
 
 const TestRun        = require('../../lib/test-run/index');
 const TestController = require('../../lib/api/test-controller');
 const COMMAND_TYPE   = require('../../lib/test-run/commands/type');
+const markerSymbol   = require('../../lib/test-run/marker-symbol');
 
 let callsite = 0;
 
 function createTestRunMock () {
     function TestRunMock () {
+        this.session    = { id: nanoid(7) };
         this.test       = { name: 'Test', testFile: { filename: __filename } };
         this.debugLog   = { command: noop };
         this.controller = new TestController(this);
+
+        this[markerSymbol] = true;
     }
 
     TestRunMock.prototype = TestRun.prototype;
@@ -28,19 +33,26 @@ async function executeExpression (expression, testRun = createTestRunMock()) {
     }, callsite.toString());
 }
 
-async function assertError (expression, expectedMessage, expectedLine, expectedColumn, expectedCallsite) {
+async function assertError (expression, expectedMessage, expectedLine, expectedColumn) {
     const WHITE_SPACES_REGEXP = /\s/g;
+
+    let catched = false;
 
     try {
         await executeExpression(expression);
     }
     catch (err) {
+        catched = true;
+
         expect(err.errMsg).eql(expectedMessage);
         expect(err.line).eql(expectedLine);
         expect(err.column).eql(expectedColumn);
-        expect(err.callsite).eql(expectedCallsite);
+        expect(err.callsite).eql(callsite.toString());
         expect(err.errStack.replace(WHITE_SPACES_REGEXP, '')).contains(expression.replace(WHITE_SPACES_REGEXP, ''));
+        expect(err.errStack).contains('[JS code]');
     }
+
+    expect(catched).eql(true);
 }
 
 describe('Code steps', () => {
@@ -55,12 +67,12 @@ describe('Code steps', () => {
     });
 
     it('error', async () => {
-        await assertError('u;', 'u is not defined', 1, 1, '1');
+        await assertError('u.t=5;', 'Cannot set property \'t\' of undefined', 1, 4, '1');
 
         await assertError(
             'let q = 3;\n' +
-            '        u;'
-            , 'u is not defined', 2, 9, '2');
+            '        u.t = 5;'
+            , 'Cannot set property \'t\' of undefined', 2, 13, '2');
 
         await assertError(
             'let q = 3;\n' +
@@ -157,11 +169,11 @@ describe('Code steps', () => {
     it('globals', async () => {
         const result = await executeExpression(`
             Buffer.from('test');
-            
-            const timeout    = setTimeout(function () {});
-            const immediate  = setImmediate(function () {});
-            const interval   = setInterval(function () {});
-            
+
+            const timeout   = setTimeout(function () {});
+            const immediate = setImmediate(function () {});
+            const interval  = setInterval(function () {});
+
             clearTimeout(timeout);
             clearImmediate(immediate);
             clearInterval(interval);
@@ -173,10 +185,17 @@ describe('Code steps', () => {
         expect(result.__filename).eql(__filename);
     });
 
+    it('Selector/ClientFunction', async () => {
+        await executeExpression(`
+            const selector       = Selector('button');
+            const clientFunction = ClientFunction(() => {});
+        `);
+    });
+
     describe('test controller', () => {
         it('basic', async () => {
             await executeExpression(`
-                await t.wait(1);
+                await t.wait(10);
             `);
         });
 

@@ -1,8 +1,8 @@
 const { expect } = require('chai');
 
 describe('[Raw API] Code steps', function () {
-    it('Basic', function () {
-        return runTests('./testcafe-fixtures/code-steps.testcafe', 'Basic');
+    it('Selectors', function () {
+        return runTests('./testcafe-fixtures/code-steps.testcafe', 'Selectors');
     });
 
     it('Shared context', function () {
@@ -17,10 +17,10 @@ describe('[Raw API] Code steps', function () {
         return runTests('./testcafe-fixtures/code-steps.testcafe', 'Error', { shouldFail: true })
             .catch(err => {
                 expect(err[0]).contains(
-                    'An unhandled error "err is not defined" occurred in the code step: ' +
+                    'An unhandled error "Assignment to constant variable." occurred in the custom JS code: ' +
                     'const q = 1; ' +
-                    'const u = err; ' +
-                    'at (2:11)'
+                    'q = 2; ' +
+                    'at (2:3)'
                 );
             });
     });

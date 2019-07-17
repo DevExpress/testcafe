@@ -3,7 +3,7 @@
         "name": "Code steps",
         "pageUrl": "../pages/index.html",
         "tests": [{
-                "name": "Basic",
+                "name": "Selectors",
                 "commands": [{
                         "type": "execute-expression",
                         "studio": {
@@ -14,7 +14,7 @@
                     },
                     {
                         "type": "execute-node-expression",
-                        "expression": "await t.click('button');"
+                        "expression": "await t.click(Selector('button'));"
                     },
                     {
                         "type": "assertion",
@@ -67,7 +67,7 @@
                 "name": "Error",
                 "commands": [{
                         "type": "execute-node-expression",
-                        "expression": "const q = 1;\nconst u = err;",
+                        "expression": "const q = 1;\nq = 2;",
                         "callsite": "1"
                     }
                 ]

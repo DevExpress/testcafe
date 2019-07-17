@@ -44,8 +44,6 @@ import { TEST_RUN_ERRORS } from '../errors/types';
 const lazyRequire                 = require('import-lazy')(require);
 const SessionController           = lazyRequire('./session-controller');
 const ClientFunctionBuilder       = lazyRequire('../client-functions/client-function-builder');
-const executeJsExpression         = lazyRequire('./execute-js-expression');
-const executeNodeExpression       = lazyRequire('./execute-node-js-expression');
 const BrowserManipulationQueue    = lazyRequire('./browser-manipulation-queue');
 const TestRunBookmark             = lazyRequire('./bookmark');
 const AssertionExecutor           = lazyRequire('../assertions/executor');
@@ -53,6 +51,7 @@ const actionCommands              = lazyRequire('./commands/actions');
 const browserManipulationCommands = lazyRequire('./commands/browser-manipulation');
 const serviceCommands             = lazyRequire('./commands/service');
 
+const { executeJsExpression, executeAsyncJsExpression } = lazyRequire('./execute-js-expression');
 
 const TEST_RUN_TEMPLATE               = read('../client/test-run/index.js.mustache');
 const IFRAME_TEST_RUN_TEMPLATE        = read('../client/test-run/iframe.js.mustache');
@@ -512,29 +511,23 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     // Execute command
-    async _executeExpression (command) {
-        const { resultVariableName, isAsyncExpression } = command;
+    async _executeJsExpression (command) {
+        const { resultVariableName } = command;
 
         let expression = command.expression;
-
-        if (isAsyncExpression)
-            expression = `await ${expression}`;
 
         if (resultVariableName)
             expression = `${resultVariableName} = ${expression}, ${resultVariableName}`;
 
-        if (isAsyncExpression)
-            expression = `(async () => { return ${expression}; }).apply(this);`;
-
         const result = executeJsExpression(expression, this, { skipVisibilityCheck: false });
 
-        return isAsyncExpression ? await result : result;
+        return result;
     }
 
-    async _executeNodeExpression (command, callsite) {
+    async _executeAsyncJsExpression (command, callsite) {
         const expression = command.expression;
 
-        return await executeNodeExpression(expression, this, callsite);
+        return await executeAsyncJsExpression(expression, this, callsite);
     }
 
     async _executeAssertion (command, callsite) {
@@ -624,10 +617,10 @@ export default class TestRun extends AsyncEventEmitter {
             return this._executeAssertion(command, callsite);
 
         if (command.type === COMMAND_TYPE.executeExpression)
-            return await this._executeExpression(command, callsite);
+            return await this._executeJsExpression(command, callsite);
 
         if (command.type === COMMAND_TYPE.executeNodeExpression)
-            return await this._executeNodeExpression(command, callsite);
+            return await this._executeAsyncJsExpression(command, callsite);
 
         if (command.type === COMMAND_TYPE.getBrowserConsoleMessages)
             return await this._enqueueBrowserConsoleMessagesCommand(command, callsite);

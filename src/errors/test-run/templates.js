@@ -295,8 +295,8 @@ export default {
         ${escapeHtml(err.errMsg)}
     `),
 
-    [TEST_RUN_ERRORS.executeNodeExpressionError]: err => markup(err, `
-        An unhandled error "${escapeHtml(err.errMsg)}" occurred in the code step:
+    [TEST_RUN_ERRORS.executeJsExpressionError]: err => markup(err, `
+        An unhandled error "${escapeHtml(err.errMsg)}" occurred in the custom JS code:
         ${escapeHtml(err.expression)}
         at (${err.line}:${err.column})
     `)

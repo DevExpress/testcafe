@@ -420,9 +420,9 @@ export class ActionInvalidScrollTargetError extends TestRunErrorBase {
     }
 }
 
-export class ExecuteNodeExpressionError extends TestRunErrorBase {
+export class ExecuteJsExpressionError extends TestRunErrorBase {
     constructor (err, expression, line, column, callsite) {
-        super(TEST_RUN_ERRORS.executeNodeExpressionError);
+        super(TEST_RUN_ERRORS.executeJsExpressionError);
 
         this.errMsg     = err.message;
         this.callsite   = callsite;

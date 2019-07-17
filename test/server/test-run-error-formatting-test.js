@@ -69,7 +69,7 @@ const {
     ActionRoleArgumentError,
     RequestHookNotImplementedMethodError,
     RequestHookUnhandledError,
-    ExecuteNodeExpressionError
+    ExecuteJsExpressionError
 } = require('../../lib/errors/test-run');
 
 const { createSimpleTestStream }                         = require('../functional/utils/stream');
@@ -376,8 +376,8 @@ describe('Error formatting', () => {
             assertErrorMessage('request-hook-unhandled-error', new RequestHookUnhandledError(new Error('Test error'), 'MyHook', 'onRequest'));
         });
 
-        it('Should format "executeNodeExpressionError"', () => {
-            assertErrorMessage('execute-node-expression-error', new ExecuteNodeExpressionError(new Error('Test error'), '1+1', 1, 1, 1));
+        it('Should format "executeJsExpressionError"', () => {
+            assertErrorMessage('execute-js-expression-error', new ExecuteJsExpressionError(new Error('Test error'), '1+1', 1, 1, 1));
         });
     });
 

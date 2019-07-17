@@ -65,7 +65,7 @@ export const TEST_RUN_ERRORS = {
     assertionUnawaitedPromiseError:                     'E61',
     requestHookNotImplementedError:                     'E62',
     requestHookUnhandledError:                          'E63',
-    executeNodeExpressionError:                         'E64'
+    executeJsExpressionError:                           'E64'
 };
 
 export const RUNTIME_ERRORS = {
