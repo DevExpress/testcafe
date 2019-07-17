@@ -8,7 +8,7 @@
 * TypeScript compilation time has been reduced for a large number of files ([#4010](https://github.com/DevExpress/testcafe/issues/4010))
 * Expressions with the `+=` operator are now expanded only when required ([testcafe-hammerhead/#2029](https://github.com/DevExpress/testcafe-hammerhead/issues/2029))
 * Parentheses around the `await` expression are now preserved in the processed scripts ([testcafe-hammerhead/#2072](https://github.com/DevExpress/testcafe-hammerhead/issues/2072))
-* Fixed a compatibility issue with Firefox 69 that prevented text selection ([testcafe-hammerhead/#2071](https://github.com/DevExpress/testcafe-hammerhead/issues/2071))
+* Fixed a compatibility issue with Firefox 68 that prevented text selection ([testcafe-hammerhead/#2071](https://github.com/DevExpress/testcafe-hammerhead/issues/2071))
 
 ## v1.3.2 (2019-7-11)
 
