@@ -44,4 +44,20 @@ describe('Custom client scripts', () => {
                 ]);
             });
     });
+
+    describe('Should handle errors of the injected scripts', () => {
+        it('Script loaded from file', () => {
+            return runTests('./testcafe-fixtures/error-in-script-from-file.js', null, { shouldFail: true })
+                .catch(errs => {
+                    expect(errs[0]).eql("An error has occurred during client script execution:  TypeError: Cannot read property 'some-property' of undefined  [[user-agent]]");
+                });
+        });
+
+        it('Script loaded from module', () => {
+            return runTests('./testcafe-fixtures/error-in-script-from-module.js', null, { shouldFail: true })
+                .catch(errs => {
+                    expect(errs[0]).eql('An error has occurred during client script execution:  ReferenceError: require is not defined  [[user-agent]]');
+                });
+        });
+    });
 });

@@ -180,6 +180,7 @@ gulp.task('lint', () => {
             'src/**/*.ts',
             'test/**/*.js',
             '!test/client/vendor/**/*.*',
+            '!test/functional/fixtures/api/es-next/custom-client-scripts/data/*.js',
             'Gulpfile.js'
         ])
         .pipe(eslint())

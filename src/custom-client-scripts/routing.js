@@ -1,5 +1,5 @@
 import getCustomClientScriptUrl from './get-url';
-import { processScript } from 'testcafe-hammerhead';
+import getCustomClientScriptCode from './get-code';
 import CONTENT_TYPES from '../assets/content-types';
 
 export function register (proxy, tests) {
@@ -13,7 +13,7 @@ export function register (proxy, tests) {
             const route = getCustomClientScriptUrl(script);
 
             proxy.GET(route, {
-                content:     processScript(script.content),
+                content:     getCustomClientScriptCode(script),
                 contentType: CONTENT_TYPES.javascript
             });
 

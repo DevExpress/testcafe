@@ -96,19 +96,13 @@ describe('Client scripts', () => {
                 });
         });
 
-        describe('Node module', () => {
-            it('Valid module', () => {
-                const script = new ClientScript({ module: testModuleName });
+        it('Node module', () => {
+            const script = new ClientScript({ module: testModuleName });
 
-                return script.load()
-                    .then(() => {
-                        expect(script.content).contains('return hasDockerEnv() || hasDockerCGroup()');
-                    });
-            });
-
-            it('Invalid module', () => {
-
-            });
+            return script.load()
+                .then(() => {
+                    expect(script.content).contains('return hasDockerEnv() || hasDockerCGroup()');
+                });
         });
 
         it('From relative path', () => {

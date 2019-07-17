@@ -39,7 +39,9 @@ import {
     CurrentIframeIsNotLoadedError,
     CurrentIframeNotFoundError,
     CurrentIframeIsInvisibleError,
-    CannotObtainInfoForElementSpecifiedBySelectorError
+    CannotObtainInfoForElementSpecifiedBySelectorError,
+    UncaughtErrorInCustomClientScriptCode,
+    UncaughtErrorInCustomClientScriptLoadedFromModule
 } from '../../errors/test-run';
 
 import BrowserConsoleMessages from '../../test-run/browser-console-messages';
@@ -192,6 +194,15 @@ export default class Driver {
         }
 
         return false;
+    }
+
+    onCustomClientScriptError (err, moduleName) {
+        const error = moduleName
+            ? new UncaughtErrorInCustomClientScriptLoadedFromModule(err, moduleName)
+            : new UncaughtErrorInCustomClientScriptCode(err);
+
+        if (!this.contextStorage.getItem(PENDING_PAGE_ERROR))
+            this.contextStorage.setItem(PENDING_PAGE_ERROR, error);
     }
 
     // Console messages

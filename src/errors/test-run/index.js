@@ -163,6 +163,23 @@ export class UncaughtExceptionError extends TestRunErrorBase {
     }
 }
 
+export class UncaughtErrorInCustomClientScriptCode extends TestRunErrorBase {
+    constructor (err) {
+        super(TEST_RUN_ERRORS.uncaughtErrorInCustomClientScriptCode);
+
+        this.errMsg = String(err);
+    }
+}
+
+export class UncaughtErrorInCustomClientScriptLoadedFromModule extends TestRunErrorBase {
+    constructor (err, moduleName) {
+        super(TEST_RUN_ERRORS.uncaughtErrorInCustomClientScriptCodeLoadedFromModule);
+
+        this.errMsg     = String(err);
+        this.moduleName = moduleName;
+    }
+}
+
 
 // Assertion errors
 //--------------------------------------------------------------------
