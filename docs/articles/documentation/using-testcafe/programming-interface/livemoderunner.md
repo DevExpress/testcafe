@@ -5,7 +5,7 @@ permalink: /documentation/using-testcafe/programming-interface/livemoderunner.ht
 ---
 # LiveModeRunner Class
 
-An object that configures and launches test tasks in [live mode](../common-concepts/live-mode.md). In this mode, TestCafe watches for changes you make in the test files. These changes immediately restart the tests so that you can see the effect.
+An object that configures and launches test tasks in [live mode](../common-concepts/live-mode.md). In this mode, TestCafe watches the test files, and restarts the tests when you make changes.
 
 Use the [testCafe.createLiveModeRunner](testcafe.md#createlivemoderunner) function to create a `LiveModeRunner`.
 

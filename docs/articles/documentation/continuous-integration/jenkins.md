@@ -33,14 +33,14 @@ You can skip these steps if you use [headless browsers](../using-testcafe/common
     sudo nano /Library/LaunchDaemons/org.jenkins-ci.plist
     ```
 
-3. Find the `USER_NAME` option and change its value to the user name under whose account macOS is started:
+3. Find the `USER_NAME` option and change its value to the username under whose account macOS is started:
 
     ```xml
     <key>USER_NAME</key>
     <string>peter.p</string>
     ```
 
-4. Find the `JENKINS_HOME` key that specifies the Jenkins home directory. Copy the directory content to a local user's home directory and specify the new path under the `JENKINS_HOME` key:
+4. Find the `JENKINS_HOME` key that specifies the Jenkins home directory. Copy the directory content to a local user's directory and specify the new path under the `JENKINS_HOME` key:
 
     ```xml
     <key>JENKINS_HOME</key>
@@ -81,7 +81,7 @@ You can skip these steps if you use [headless browsers](../using-testcafe/common
     sudo nano /etc/default/jenkins
     ```
 
-3. Specify your user name in the `JENKINS_USER` variable:
+3. Specify your username in the `JENKINS_USER` variable:
 
     ```text
     JENKINS_USER=peter.p
@@ -108,7 +108,7 @@ You can skip these steps if you use [headless browsers](../using-testcafe/common
 
 1. Follow the [instructions from Jenkins documentation](https://jenkins.io/doc/book/managing/plugins/#installing-a-plugin) to install a [Node.js plugin](https://plugins.jenkins.io/nodejs).
 
-2. Configure this plugin as described in the [Usage section](https://plugins.jenkins.io/nodejs#NodeJSPlugin-Usage) on the plugin page. Ensure that you have added a Node.js installation on the **Global Tool Configuration** page and checked the **Provide Node & npm bin/ folder to PATH** check box in your build configuration.
+2. Configure this plugin as described in the [Usage section](https://plugins.jenkins.io/nodejs#NodeJSPlugin-Usage) on the plugin page. Ensure that you have added a Node.js installation on the **Global Tool Configuration** page and checked the **Provide Node & npm bin/ folder to PATH** checkbox in your build configuration.
 
 ## Step 2 - Fetch Test Code From a Repository
 
