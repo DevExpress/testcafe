@@ -727,11 +727,11 @@
 <li><p>Open the <code>org.jenkins-ci.plist</code> file in a text editor:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">sudo nano /Library/LaunchDaemons/org.jenkins-ci.plist
 </code></pre></div></li>
-<li><p>Find the <code>USER_NAME</code> option and change its value to the user name under whose account macOS is started:</p>
+<li><p>Find the <code>USER_NAME</code> option and change its value to the username under whose account macOS is started:</p>
 <div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;key&gt;</span>USER_NAME<span class="nt">&lt;/key&gt;</span>
 <span class="nt">&lt;string&gt;</span>peter.p<span class="nt">&lt;/string&gt;</span>
 </code></pre></div></li>
-<li><p>Find the <code>JENKINS_HOME</code> key that specifies the Jenkins home directory. Copy the directory content to a local user&#39;s home directory and specify the new path under the <code>JENKINS_HOME</code> key:</p>
+<li><p>Find the <code>JENKINS_HOME</code> key that specifies the Jenkins home directory. Copy the directory content to a local user&#39;s directory and specify the new path under the <code>JENKINS_HOME</code> key:</p>
 <div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;key&gt;</span>JENKINS_HOME<span class="nt">&lt;/key&gt;</span>
 <span class="nt">&lt;string&gt;</span>/users/peter.p/jenkins/<span class="nt">&lt;/string&gt;</span>
 </code></pre></div>
@@ -754,7 +754,7 @@
 <li><p>Open the <code>/etc/default/jenkins</code> file in a text editor:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">sudo nano /etc/default/jenkins
 </code></pre></div></li>
-<li><p>Specify your user name in the <code>JENKINS_USER</code> variable:</p>
+<li><p>Specify your username in the <code>JENKINS_USER</code> variable:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">JENKINS_USER=peter.p
 </code></pre></div>
 <p>Then close the file and save your changes.</p></li>
@@ -771,7 +771,7 @@ sudo chown peter.p /var/cache/jenkins
 <h2><a class="anchor" id="step-1---install-nodejs-plugin"></a>Step 1 - Install Node.js Plugin <a class="permalink" href="#step-1---install-nodejs-plugin">#</a></h2>
 <ol>
 <li><p>Follow the <a href="https://jenkins.io/doc/book/managing/plugins/#installing-a-plugin">instructions from Jenkins documentation</a> to install a <a href="https://plugins.jenkins.io/nodejs">Node.js plugin</a>.</p></li>
-<li><p>Configure this plugin as described in the <a href="https://plugins.jenkins.io/nodejs#NodeJSPlugin-Usage">Usage section</a> on the plugin page. Ensure that you have added a Node.js installation on the <strong>Global Tool Configuration</strong> page and checked the <strong>Provide Node &amp; npm bin/ folder to PATH</strong> check box in your build configuration.</p></li>
+<li><p>Configure this plugin as described in the <a href="https://plugins.jenkins.io/nodejs#NodeJSPlugin-Usage">Usage section</a> on the plugin page. Ensure that you have added a Node.js installation on the <strong>Global Tool Configuration</strong> page and checked the <strong>Provide Node &amp; npm bin/ folder to PATH</strong> checkbox in your build configuration.</p></li>
 </ol>
 <h2><a class="anchor" id="step-2---fetch-test-code-from-a-repository"></a>Step 2 - Fetch Test Code From a Repository <a class="permalink" href="#step-2---fetch-test-code-from-a-repository">#</a></h2>
 <p>This tutorial uses tests published in the <a href="https://github.com/DevExpress-Examples/testcafe-ci-demo">testcafe-ci-demo</a> GitHub repository. Fork it before you start.</p>

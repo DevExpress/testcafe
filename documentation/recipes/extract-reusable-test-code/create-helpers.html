@@ -781,9 +781,9 @@
 			<h1>Create Helpers</h1>
 <p>We recommend that you follow the <a href="use-page-model.html">page model pattern</a> to extract reusable test code. This pattern allows you to abstract out both page structure and test logic.</p>
 
-<p>However, if you need to extract only the helper functions, you can export them from a separate script file.</p>
+<p>If you need to extract only the helper functions, however, you can export them from a separate script file.</p>
 
-<p>The following example shows a <code>helper.js</code> file that exports the <code>enterName</code>, <code>typeComment</code> and <code>submitForm</code> asynchronous functions:</p>
+<p>The following example shows a <code>helper.js</code> file that exports the <code>enterName</code>, <code>typeComment</code>, and <code>submitForm</code> asynchronous functions:</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">t</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
 <span class="kr">export</span> <span class="nx">async</span> <span class="kd">function</span> <span class="nx">enterName</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>

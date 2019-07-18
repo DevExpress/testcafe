@@ -691,7 +691,7 @@
 		<div class="post-content">
 
 			<h1>Helpers</h1>
-<p>Helpers are methods and libraries used to format report output when <a href=".#implementing-the-reporter">implementing a reporter</a>. TestCafe mixes in these methods to the reporter.</p>
+<p>Helpers are methods and libraries used to format report output when <a href=".#implementing-the-reporter">implementing a reporter</a>. TestCafe mixes these methods into the reporter.</p>
 
 <p>To access helpers, use <code>this</code>.</p>
 
@@ -896,7 +896,7 @@ This allows you to write compact code like this.</p>
 </tbody></table></div>
 <p><strong>Example</strong></p>
 
-<p>The following example demonstrates how to escape the fixture name <em>Tests for the &quot;Example&quot; page</em> for HTML.</p>
+<p>The following example demonstrates how to encode the fixture name <em>Tests for the &quot;Example&quot; page</em> for HTML</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">async</span> <span class="nx">reportFixtureStart</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">path</span><span class="p">,</span> <span class="nx">meta</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">currentFixtureName</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">escapeHtml</span><span class="p">(</span><span class="nx">name</span><span class="p">);</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">currentFixtureName</span><span class="p">);</span>

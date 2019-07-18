@@ -814,7 +814,7 @@
 <li><a href="#test-http2-websites">Test HTTP/2 Websites</a></li>
 </ul>
 <h2><a class="anchor" id="test-https-websites"></a>Test HTTPS Websites <a class="permalink" href="#test-https-websites">#</a></h2>
-<p>TestCafe is a proxy-based testing tool. The TestCafe <a href="https://en.wikipedia.org/wiki/Reverse_proxy">reverse proxy</a> serves the tested webpage over HTTP and communicates with the original web server over HTTP or HTTPS (depends on the <a href="../../test-api/test-code-structure.html#specifying-the-start-webpage">specified page URL</a>).</p>
+<p>TestCafe is a proxy-based testing tool. The TestCafe <a href="https://en.wikipedia.org/wiki/Reverse_proxy">reverse proxy</a> serves the tested webpage over HTTP and communicates with the original web server over HTTP or HTTPS (depending on the <a href="../../test-api/test-code-structure.html#specifying-the-start-webpage">specified page URL</a>).</p>
 
 <p><img src="../../../images/proxy-connection-protocols.svg" alt="Connection Protocols" title=""></p>
 
@@ -824,7 +824,7 @@
 <a href="https://developer.apple.com/documentation/apple_pay_on_the_web/applepaysession">ApplePaySession</a>, or
 <a href="https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto">SubtleCrypto</a>), TestCafe successfully proxies it over HTTP. Otherwise, the tests fail because the page throws JavaScript errors, does not load or loads partially. This indicates that you should <a href="#proxy-the-website-over-https">configure the proxy server to use HTTPS</a>.</p>
 <h3><a class="anchor" id="proxy-the-website-over-https"></a>Proxy the Website Over HTTPS <a class="permalink" href="#proxy-the-website-over-https">#</a></h3>
-<p>When you run tests from the command line, use the <a href="../command-line-interface.html#--ssl-options">--ssl</a> flag to enable HTTPS on a proxy server. Specify options required to initialize <a href="https://nodejs.org/api/https.html#https_https_createserver_options_requestlistener">a Node.js HTTPS server</a> after this flag in a semicolon-separated string. The most commonly used SSL options are described in the <a href="https://nodejs.org/api/tls.html#tls_tls_createsecurecontext_options">TLS topic</a> in Node.js documentation.</p>
+<p>When you run tests from the command line, use the <a href="../command-line-interface.html#--ssl-options">--ssl</a> flag to enable HTTPS on a proxy server. Specify options required to initialize <a href="https://nodejs.org/api/https.html#https_https_createserver_options_requestlistener">a Node.js HTTPS server</a> after this flag in a semicolon-separated string. The most commonly used SSL options are described in the <a href="https://nodejs.org/api/tls.html#tls_tls_createsecurecontext_options">TLS topic</a> in the Node.js documentation.</p>
 
 <p>The example below uses the PFX encoded private key and certificate chain to create an HTTPS server.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe --ssl <span class="nv">pfx</span><span class="o">=</span>path/to/file.pfx;rejectUnauthorized<span class="o">=</span><span class="nb">true</span>;...

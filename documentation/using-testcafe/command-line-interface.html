@@ -1230,7 +1230,7 @@ to slow the test down.</p>
 </code></pre></div>
 <p><em>Related configuration file property</em>: <a href="configuration-file.html#proxy">proxy</a>.</p>
 <h3><a class="anchor" id="--proxy-bypass-rules"></a>--proxy-bypass &lt;rules&gt; <a class="permalink" href="#--proxy-bypass-rules">#</a></h3>
-<p>Specifies the resources accessed bypassing the proxy server.</p>
+<p>Requires that TestCafe bypasses the proxy server to access the specified resources.</p>
 
 <p>When you access the Internet through a proxy server specified using the <a href="#--proxy-host">--proxy</a> option, you may still need some local or external resources to be accessed directly. In this instance, provide their URLs to the <code>--proxy-bypass</code> option.</p>
 
@@ -1275,7 +1275,7 @@ See <a href="common-concepts/test-https-and-http2-websites.html">Test HTTPS and 
 </code></pre></div>
 <p><em>Related configuration file property</em>: <a href="configuration-file.html#qrcode">qrCode</a>.</p>
 <h3><a class="anchor" id="--sf---stop-on-first-fail"></a>--sf, --stop-on-first-fail <a class="permalink" href="#--sf---stop-on-first-fail">#</a></h3>
-<p>Stops an entire test run if any test fails. This allows you not to wait for all the tests included in the test task to finish and allows focusing on the first error.</p>
+<p>Stops an entire test run if any test fails. Use this option when you want to fix failed tests individually and do not need a report on all the failures.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests --sf
 </code></pre></div>
 <p><em>Related configuration file property</em>: <a href="configuration-file.html#stoponfirstfail">stopOnFirstFail</a>.</p>
