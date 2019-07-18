@@ -46,15 +46,17 @@ describe('Custom client scripts', () => {
     });
 
     describe('Should handle errors of the injected scripts', () => {
+        // NOTE: Error message format is a little different in various browsers.
+        // This is why, we run these tests only in Chrome
         it('Script loaded from file', () => {
-            return runTests('./testcafe-fixtures/error-in-script-from-file.js', null, { shouldFail: true })
+            return runTests('./testcafe-fixtures/error-in-script-from-file.js', null, { shouldFail: true, only: 'chrome' })
                 .catch(errs => {
                     expect(errs[0]).eql("An error has occurred during client script execution:  TypeError: Cannot read property 'some-property' of undefined  [[user-agent]]");
                 });
         });
 
         it('Script loaded from module', () => {
-            return runTests('./testcafe-fixtures/error-in-script-from-module.js', null, { shouldFail: true })
+            return runTests('./testcafe-fixtures/error-in-script-from-module.js', null, { shouldFail: true, only: 'chrome' })
                 .catch(errs => {
                     expect(errs[0]).eql('An error has occurred during client script execution:  ReferenceError: require is not defined  [[user-agent]]');
                 });
