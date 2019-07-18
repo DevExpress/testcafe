@@ -19,4 +19,5 @@ export {
     role,
     url,
     expectedRoleLastPageLocation
-}
+};
+
