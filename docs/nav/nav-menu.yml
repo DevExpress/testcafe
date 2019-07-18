@@ -46,8 +46,6 @@
       url: /documentation/using-testcafe/common-concepts/screenshots-and-videos.md
     - name: Reporters
       url: /documentation/using-testcafe/common-concepts/reporters.md
-    - name: Framework Integrations
-      url: /documentation/using-testcafe/common-concepts/framework-integrations.md
     - name: Test HTTPS and HTTP/2 Websites
       url: /documentation/using-testcafe/common-concepts/test-https-and-http2-websites.md
 - name: TEST API
@@ -254,6 +252,8 @@
       url: /documentation/recipes/test-static-html-pages.md
     - name: Test on Remote Computers and Mobile Devices
       url: /documentation/recipes/test-on-remote-computers-and-mobile-devices.md
+    - name: Use Angular CLI Builder
+      url: /documentation/recipes/use-angular-cli-builder.md
     - name: Use Task Runners
       url: /documentation/recipes/use-task-runners/README.md
       content:
