@@ -1,11 +1,10 @@
-An error has occurred while executing the 'test-module' module injected to
-the tested page.  Make sure that this module can be executed in the browser
-environment.
+An error occurred in the 'test-module' module injected into the tested page.
+Make sure that this module can be executed in the browser environment.
 
 Error details:
 TypeError: Cannot read property "prop" of undefined
 
- Browser: Chrome 15.0.874 / Mac OS X 10.8.1
+Browser: Chrome 15.0.874 / Mac OS X 10.8.1
 Screenshot: /unix/path/with/<tag>
 
    18 |function func1 () {
