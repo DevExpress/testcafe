@@ -45,6 +45,10 @@ describe('Custom client scripts', () => {
             });
     });
 
+    it('Test file and an injected script are located in the same folder', () => {
+        return runTests('./testcafe-fixtures/folder/index.js');
+    });
+
     describe('Should handle errors of the injected scripts', () => {
         // NOTE: Error message format is a little different in various browsers.
         // This is why, we run these tests only in Chrome

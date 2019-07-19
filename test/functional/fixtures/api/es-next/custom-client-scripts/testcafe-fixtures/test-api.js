@@ -1,7 +1,7 @@
 import { getFlag1, getFlag2 } from '../helpers';
 
 fixture `Fixture`
-    .clientScripts('../../data/set-flag1.js');
+    .clientScripts('../data/set-flag1.js');
 
 test
     .clientScripts({ content: 'window.flag2 = true; ' })

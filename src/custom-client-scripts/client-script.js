@@ -1,7 +1,7 @@
 import { readFile } from '../utils/promisified-functions';
 import { GeneralError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
-import { isAbsolute, resolve as resolvePath } from 'path';
+import { isAbsolute, join } from 'path';
 import { RequestFilterRule, generateUniqueId } from 'testcafe-hammerhead';
 
 const BEAUTIFY_REGEXP = /[/.:\s\\]/g;
@@ -33,7 +33,7 @@ export default class ClientScript {
             if (!this.basePath)
                 throw new GeneralError(RUNTIME_ERRORS.clientScriptBasePathIsNotSpecified);
 
-            resolvedPath = resolvePath(this.basePath, path);
+            resolvedPath = join(this.basePath, path);
         }
 
         return resolvedPath;
