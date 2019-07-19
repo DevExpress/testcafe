@@ -6,6 +6,7 @@ const { RequestFilterRule }                     = require('testcafe-hammerhead')
 const tmp                                       = require('tmp');
 const fs                                        = require('fs');
 const { setUniqueUrls, findProblematicScripts } = require('../../lib/custom-client-scripts/utils');
+const { is }                                    = require('../../lib/errors/runtime/type-assertions');
 
 describe('Client scripts', () => {
     tmp.setGracefulCleanup();
@@ -235,6 +236,14 @@ describe('Client scripts', () => {
                     });
             });
         });
+    });
+
+    it('Type assertion', () => {
+        expect(is.clientScriptInitializer.predicate({})).to.be.false;
+        expect(is.clientScriptInitializer.predicate(null)).to.be.false;
+        expect(is.clientScriptInitializer.predicate({ path: '/path' })).to.be.true;
+        expect(is.clientScriptInitializer.predicate({ content: 'var i = 0' })).to.be.true;
+        expect(is.clientScriptInitializer.predicate({ module: 'module-name' })).to.be.true;
     });
 
     it('Get URL', () => {

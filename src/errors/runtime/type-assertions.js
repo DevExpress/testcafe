@@ -88,7 +88,7 @@ export const is = {
 
     clientScriptInitializer: {
         name:      'client script initializer',
-        predicate: value => typeof value === 'object' && ('path' in value || 'content' in value)
+        predicate: value => typeof value === 'object' && ['path', 'content', 'module'].some(prop => value && prop in value)
     }
 };
 
