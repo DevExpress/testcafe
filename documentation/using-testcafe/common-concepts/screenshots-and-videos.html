@@ -837,7 +837,7 @@
 </ul></li>
 </ul>
 <h2><a class="anchor" id="screenshots"></a>Screenshots <a class="permalink" href="#screenshots">#</a></h2>
-<p>TestCafe allows you to take screenshots of the webpage under test at any moment during test run, or automatically whenever a test fails.</p>
+<p>TestCafe allows you to take screenshots of the tested webpage at any moment during test run, or automatically whenever a test fails.</p>
 <blockquote class="important"><div class="blockquote-content"><p>Screenshots are not supported when you run tests in <a href="browsers/browser-support.html#browsers-on-remote-devices">remote browsers</a>.</p>
 </div></blockquote><h3><a class="anchor" id="prerequisites-for-screenshots"></a>Prerequisites for Screenshots <a class="permalink" href="#prerequisites-for-screenshots">#</a></h3>
 <p>Screenshots require .NET 4.0 or newer installed on Windows machines and an <a href="https://en.wikipedia.org/wiki/Comparison_of_X_window_managers">ICCCM/EWMH-compliant window manager</a> on Linux.</p>
@@ -981,9 +981,9 @@
 </span></code></pre></div></li>
 </ul>
 <h3><a class="anchor" id="video-encoding-options"></a>Video Encoding Options <a class="permalink" href="#video-encoding-options">#</a></h3>
-<p>You can specify all the options supported by the FFmpeg library. Refer to <a href="https://ffmpeg.org/ffmpeg.html#Options">the FFmpeg documentation</a> for information about the available options.</p>
+<p>These encoding options are passed to FFmpeg. Refer to the <a href="https://ffmpeg.org/ffmpeg.html#Options">FFmpeg documentation</a> for information about all the available options.</p>
 
-<p>To provide video encoding options, use either of the following:</p>
+<p>To provide video encoding options, use either of the following options:</p>
 
 <ul>
 <li><p>the <a href="../command-line-interface.html#--video-encoding-options-optionvalueoption2value2">--video-encoding-options</a> command line flag,</p>
@@ -1005,7 +1005,7 @@
 </span></code></pre></div></li>
 </ul>
 <h2><a class="anchor" id="where-screenshots-and-videos-are-saved"></a>Where Screenshots and Videos Are Saved <a class="permalink" href="#where-screenshots-and-videos-are-saved">#</a></h2>
-<p>You specify the base path to the directory that stores screenshots or videos when you turn these features on. See <a href="#enable-screenshots">Enable Screenshots</a> and <a href="#enable-video-recording">Enable Video Recording</a>.</p>
+<p>You should specify the base path to the directory that stores screenshots or videos to enable these features. See <a href="#enable-screenshots">Enable Screenshots</a> and <a href="#enable-video-recording">Enable Video Recording</a>.</p>
 
 <p>Inside the base directory, screenshots and videos are organized into subdirectories and named according to the <a href="#default-path-patterns">default</a> or <a href="#custom-path-patterns">custom</a> <em>path patterns</em>.</p>
 <blockquote><div class="blockquote-content"><p>When you pass a specific path to the <a href="../../test-api/actions/take-screenshot.html#take-a-screenshot-of-the-entire-page">t.takeScreenshot</a> or <a href="../../test-api/actions/take-screenshot.html#take-a-screenshot-of-a-page-element">t.takeElementScreenshot</a> action, this path overrides the relative path defined by the <a href="#default-path-patterns">default</a> or <a href="#custom-path-patterns">custom path pattern</a>.</p>

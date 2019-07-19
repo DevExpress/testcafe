@@ -755,14 +755,14 @@ Then Yeoman will automatically scaffold out your reporter, install the required 
     <span class="p">};</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>TestCafe calls these methods during the test run. Use data they receive through their parameters to compose a report.
+<p>TestCafe calls these methods during the test run. Use data they receive through their parameters to create a report.
 See <a href="reporter-methods.html">Reporter Methods</a> for API description and examples.</p>
 
-<p>To output the report, use <a href="helpers.html">helper methods and libraries</a>.
-TestCafe mixes in the helper methods to the reporter, so that you can access them with <code>this</code>.</p>
+<p>Use <a href="helpers.html">helper methods and libraries</a> to write and format the report.
+TestCafe mixes the helper methods into the reporter. You can access them with <code>this</code>.</p>
 
 <p>In the <code>src/index.js</code> file, you can specify the <code>noColors</code> property to enable or disable colors in the reporter output.
-To customize the colors, use the <a href="helpers.html#chalk">chalk</a> methods.</p>
+To customize colors, use the <a href="helpers.html#chalk">chalk</a> methods.</p>
 
 <p><strong>Example</strong></p>
 

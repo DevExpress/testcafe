@@ -5,8 +5,8 @@
     <description></description>
     <link>https://devexpress.github.io/testcafe/</link>
     <atom:link href="https://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 05 Jul 2019 19:36:08 +0300</pubDate>
-    <lastBuildDate>Fri, 05 Jul 2019 19:36:08 +0300</lastBuildDate>
+    <pubDate>Thu, 18 Jul 2019 20:05:19 +0300</pubDate>
+    <lastBuildDate>Thu, 18 Jul 2019 20:05:19 +0300</lastBuildDate>
     <generator>Jekyll v3.8.4</generator>
     
       <item>
@@ -144,11 +144,11 @@
       <item>
         <title>TestCafe v1.0.0 Released</title>
         <description>&lt;h1&gt;TestCafe v1.0.0 Released&lt;/h1&gt;
-&lt;p&gt;Meet TestCafe v1.0.0, our first major update that includes some big features: video recording, configuration file, &amp;quot;live mode&amp;quot; for rapid test development and much more.&lt;/p&gt;
+&lt;p&gt;TestCafe v1.0.0 is our first major update that includes features like video recording, configuration file, &amp;quot;live mode&amp;quot; for rapid test development and much more.&lt;/p&gt;
 
 &lt;!--more--&gt;
 &lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;breaking-changes&quot;&gt;&lt;/a&gt;Breaking Changes &lt;a class=&quot;permalink&quot; href=&quot;#breaking-changes&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;TestCafe v1.0.0 introduces minor changes to the behavior and programming interface. You can find the details in the &lt;a href=&quot;https://devexpress.github.io/testcafe/blog/migration-from-testcafe-v0-x-y-to-v1-0-0.html&quot;&gt;migration guide&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;TestCafe v1.0.0 introduces minor changes to the framework&amp;#39;s behavior and programming interface. You can find the details in the &lt;a href=&quot;https://devexpress.github.io/testcafe/blog/migration-from-testcafe-v0-x-y-to-v1-0-0.html&quot;&gt;migration guide&lt;/a&gt;.&lt;/p&gt;
 &lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;enhancements&quot;&gt;&lt;/a&gt;Enhancements &lt;a class=&quot;permalink&quot; href=&quot;#enhancements&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;video-recording-2151&quot;&gt;&lt;/a&gt;⚙ Video Recording (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2151&quot;&gt;#2151&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#video-recording-2151&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;You can now &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/screenshots-and-videos.html#record-videos&quot;&gt;record videos of test runs&lt;/a&gt; in Google Chrome and Mozilla Firefox. To enable video recording, &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/screenshots-and-videos.html#prerequisites&quot;&gt;install the FFmpeg library&lt;/a&gt; and then do one of the following:&lt;/p&gt;
 
@@ -215,7 +215,7 @@
     &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;custom-reporter-api-enhancements-part-of-2753-pull-request&quot;&gt;&lt;/a&gt;⚙ Custom Reporter API Enhancements (Part of &lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2753&quot;&gt;#2753&lt;/a&gt;; &lt;a href=&quot;https://github.com/DevExpress/testcafe/pull/3177&quot;&gt;Pull Request&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#custom-reporter-api-enhancements-part-of-2753-pull-request&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;You can now access warnings that appeared during the test run from the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reporttestdone&quot;&gt;reportTestDone&lt;/a&gt; method. Use the &lt;code&gt;warnings&lt;/code&gt; property of the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#testruninfo-object&quot;&gt;testRunInfo&lt;/a&gt; object.&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;You can now access warnings that appeared during the test run from the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reporttestdone&quot;&gt;reportTestDone&lt;/a&gt; method. To do this, use the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#testruninfo-object&quot;&gt;testRunInfo&lt;/a&gt; object&amp;#39;s &lt;code&gt;warnings&lt;/code&gt; property.&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;reportTestDone&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;testRunInfo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;meta&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;warnings&lt;/span&gt;    &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;testRunInfo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;warnings&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
     &lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;hasWarnings&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!!&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;warnings&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
@@ -273,7 +273,7 @@
       <item>
         <title>Migration from TestCafe v0.x.y to v1.0.0</title>
         <description>&lt;h1&gt;Migration from TestCafe v0.x.y to v1.0.0&lt;/h1&gt;
-&lt;p&gt;TestCafe v1.0.0 release introduces minor changes to the behavior and programming interface. This document lists these changes and describes how to address them.&lt;/p&gt;
+&lt;p&gt;TestCafe v1.0.0 introduces minor changes to the framework&amp;#39;s behavior and programming interface. This document lists these changes and describes how to migrate to the new version.&lt;/p&gt;
 
 &lt;!--more--&gt;
 

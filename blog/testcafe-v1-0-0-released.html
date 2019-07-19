@@ -16,7 +16,7 @@
   
   <title>TestCafe v1.0.0 Released | TestCafe</title>
 
-  <meta name="description" content="TestCafe v1.0.0 ReleasedMeet TestCafe v1.0.0, our first major update that includes some big features: video recording, configuration file, &quot;live mode&qu...">
+  <meta name="description" content="TestCafe v1.0.0 ReleasedTestCafe v1.0.0 is our first major update that includes features like video recording, configuration file, &quot;live mode&quot; for ...">
   <meta name="viewport" content="width=device-width">
 
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
@@ -424,11 +424,11 @@
         </div>
         <article class="post-content">
             <h1>TestCafe v1.0.0 Released</h1>
-<p>Meet TestCafe v1.0.0, our first major update that includes some big features: video recording, configuration file, &quot;live mode&quot; for rapid test development and much more.</p>
+<p>TestCafe v1.0.0 is our first major update that includes features like video recording, configuration file, &quot;live mode&quot; for rapid test development and much more.</p>
 
 <!--more-->
 <h2><a class="anchor" id="breaking-changes"></a>Breaking Changes <a class="permalink" href="#breaking-changes">#</a></h2>
-<p>TestCafe v1.0.0 introduces minor changes to the behavior and programming interface. You can find the details in the <a href="https://devexpress.github.io/testcafe/blog/migration-from-testcafe-v0-x-y-to-v1-0-0.html">migration guide</a>.</p>
+<p>TestCafe v1.0.0 introduces minor changes to the framework&#39;s behavior and programming interface. You can find the details in the <a href="https://devexpress.github.io/testcafe/blog/migration-from-testcafe-v0-x-y-to-v1-0-0.html">migration guide</a>.</p>
 <h2><a class="anchor" id="enhancements"></a>Enhancements <a class="permalink" href="#enhancements">#</a></h2><h3><a class="anchor" id="video-recording-2151"></a>⚙ Video Recording (<a href="https://github.com/DevExpress/testcafe/issues/2151">#2151</a>) <a class="permalink" href="#video-recording-2151">#</a></h3>
 <p>You can now <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/screenshots-and-videos.html#record-videos">record videos of test runs</a> in Google Chrome and Mozilla Firefox. To enable video recording, <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/screenshots-and-videos.html#prerequisites">install the FFmpeg library</a> and then do one of the following:</p>
 
@@ -495,7 +495,7 @@
     <span class="p">});</span>
 </code></pre></div><h3><a class="anchor" id="custom-reporter-api-enhancements-part-of-2753-pull-request"></a>⚙ Custom Reporter API Enhancements (Part of <a href="https://github.com/DevExpress/testcafe/issues/2753">#2753</a>; <a href="https://github.com/DevExpress/testcafe/pull/3177">Pull Request</a>) <a class="permalink" href="#custom-reporter-api-enhancements-part-of-2753-pull-request">#</a></h3>
 <ul>
-<li><p>You can now access warnings that appeared during the test run from the <a href="https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reporttestdone">reportTestDone</a> method. Use the <code>warnings</code> property of the <a href="https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#testruninfo-object">testRunInfo</a> object.</p>
+<li><p>You can now access warnings that appeared during the test run from the <a href="https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reporttestdone">reportTestDone</a> method. To do this, use the <a href="https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#testruninfo-object">testRunInfo</a> object&#39;s <code>warnings</code> property.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">async</span> <span class="nx">reportTestDone</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">testRunInfo</span><span class="p">,</span> <span class="nx">meta</span><span class="p">)</span> <span class="p">{</span>
     <span class="kr">const</span> <span class="nx">warnings</span>    <span class="o">=</span> <span class="nx">testRunInfo</span><span class="p">.</span><span class="nx">warnings</span><span class="p">;</span>
     <span class="kr">const</span> <span class="nx">hasWarnings</span> <span class="o">=</span> <span class="o">!!</span><span class="nx">warnings</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
