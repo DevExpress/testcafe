@@ -414,7 +414,7 @@ runner.startApp('node server.js', 4000);
 
 ### clientScripts
 
-Injects scripts into each page visited during the tests. Use this method to introduce client-side mock functions or helper scripts.
+Injects scripts into pages visited during the tests. Use this method to introduce client-side mock functions or helper scripts.
 
 ```text
 async clientScripts( script[, script2[, ...[, scriptN]]] ) → this
@@ -423,6 +423,10 @@ async clientScripts( script[, script2[, ...[, scriptN]]] ) → this
 Parameter | Type                | Description
 --------- | ------------------- | ------------
 `scripts` | String &#124; Array | Scripts to inject into the tested pages. See [Provide Scripts to Inject](common-concepts/inject-scripts-into-tested-pages.md#provide-scripts-to-inject) to learn how to specify them.
+
+> Relative paths resolve from the current working directory.
+
+You can use the [page](common-concepts/inject-scripts-into-tested-pages.md#provide-scripts-for-specific-pages) option to specify pages into which scripts should be injected. Otherwise, TestCafe injects scripts into all pages visited during the test run.
 
 ```js
 runner.clientScripts('assets/jquery.js');
@@ -437,7 +441,7 @@ runner.clientScripts([{
 }]);
 ```
 
-Use the [fixture.clientScripts](../../test-api/test-code-structure.md#inject-scripts-into-tested-pages) and [test.clientScripts](../../test-api/test-code-structure.md#inject-scripts-into-tested-pages) methods in test code to inject scripts for an individual fixture or test.
+The [fixture.clientScripts](../../test-api/test-code-structure.md#inject-scripts-into-tested-pages) and [test.clientScripts](../../test-api/test-code-structure.md#inject-scripts-into-tested-pages) methods allow you to inject scripts for an individual fixture or test.
 
 See [Inject Scripts into Tested Pages](common-concepts/inject-scripts-into-tested-pages.md) for more information.
 

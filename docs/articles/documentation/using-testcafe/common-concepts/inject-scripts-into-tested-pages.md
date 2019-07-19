@@ -96,6 +96,16 @@ Argument  | Type   | Description
 --------- | ------ | ---------------------------------------------------------------------------
 `path`    | String | The path to the JavaScript file whose content should be injected.
 
+#### Relative Paths
+
+Relative paths resolve from the *current working directory* when you inject scripts in:
+
+* [command line interface](../command-line-interface.md#--cs-pathpath2---client-scripts-pathpath2)
+* [programming interface](../programming-interface/runner.md#clientscripts)
+* [configuration file](../configuration-file.md#clientscripts)
+
+When you use [test API methods](../../test-api/test-code-structure.md#inject-scripts-into-tested-pages), relative paths resolve from the *test file location*.
+
 **Examples**
 
 ```sh
@@ -120,7 +130,7 @@ runner.clientScripts({ path: 'assets/jquery.js' });
 
 ### Inject a Module
 
-Specify the module name to inject the module's content into the tested pages. Use a string or an object with the `module` property.
+Specify the Node.js module's name to inject its content into the tested pages. Use a string or an object with the `module` property.
 
 *CLI*
 
@@ -154,6 +164,8 @@ Argument  | Type   | Description
 `module`  | String | The module name.
 
 TestCafe searches for the module's entry point with Node.js mechanisms and injects its content into the tested page.
+
+> The module must be executable in the browser. For instance, you can use [UMD](https://github.com/umdjs/umd) or [ES Harmony](http://wiki.ecmascript.org/doku.php?id=harmony:modules) modules.
 
 **Examples**
 
@@ -325,4 +337,21 @@ runner.clientScripts(scripts.map(script => {
     path: script,
     page: 'http://example.com'
 }));
+```
+
+## Access DOM in the Injected Scripts
+
+TestCafe injects scripts into the `head` tag, which means they are executed before DOM is loaded.
+
+To access DOM in these scripts, wait until the `DOMContentLoaded` event fires:
+
+```js
+const scriptContent = `
+window.addEventListener('DOMContentLoaded', function () {
+    document.body.style.backgroundColor = 'green';
+});
+`;
+
+fixture `My fixture`
+    .clientScripts({ content: scriptContent });
 ```

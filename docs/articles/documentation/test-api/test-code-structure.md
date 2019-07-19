@@ -592,6 +592,10 @@ Parameter | Type     | Description
 --------- | -------- | ---------------------------------------------------------------------------
 `scripts` | String &#124; Object &#124; Array | Scripts to inject into the tested pages. See [Provide Scripts to Inject](../using-testcafe/common-concepts/inject-scripts-into-tested-pages.md#provide-scripts-to-inject) to learn how to specify them.
 
+> Relative paths resolve from the test file location.
+
+You can use the [page](../using-testcafe/common-concepts/inject-scripts-into-tested-pages.md#provide-scripts-for-specific-pages) option to specify pages into which scripts should be injected. Otherwise, TestCafe injects scripts into all pages visited during the test or fixture.
+
 **Examples**
 
 ```js
@@ -615,7 +619,7 @@ test
     });
 ```
 
-To inject scripts into all pages visited during the test run, use either of the following:
+To inject scripts into pages visited during all tests, use either of the following:
 
 * the [--cs (--client-scripts)](../using-testcafe/command-line-interface.md#--cs-pathpath2--client-scripts-pathpath2) command line option
 * the [runner.clientScripts](../using-testcafe/programming-interface/runner.md#clientscripts) method
