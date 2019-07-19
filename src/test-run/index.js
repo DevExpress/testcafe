@@ -511,23 +511,14 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     // Execute command
-    async _executeJsExpression (command) {
-        const { resultVariableName, isAsyncExpression } = command;
-
-        let expression = command.expression;
-
-        if (isAsyncExpression)
-            expression = `await ${expression}`;
+    _executeJsExpression (command) {
+        const resultVariableName = command.resultVariableName;
+        let expression           = command.expression;
 
         if (resultVariableName)
             expression = `${resultVariableName} = ${expression}, ${resultVariableName}`;
 
-        if (isAsyncExpression)
-            expression = `(async () => { return ${expression}; }).apply(this);`;
-
-        const result = executeJsExpression(expression, this, { skipVisibilityCheck: false });
-
-        return isAsyncExpression ? await result : result;
+        return executeJsExpression(expression, this, { skipVisibilityCheck: false });
     }
 
     async _executeAsyncJsExpression (command, callsite) {

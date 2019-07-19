@@ -1082,7 +1082,6 @@ describe('Test run commands', () => {
                 type: TYPE.executeExpression,
 
                 expression:         'js-expression',
-                isAsyncExpression:  true,
                 resultVariableName: 'variable'
             };
 
@@ -1092,7 +1091,6 @@ describe('Test run commands', () => {
                 type: TYPE.executeExpression,
 
                 expression:         'js-expression',
-                isAsyncExpression:  true,
                 resultVariableName: 'variable'
             });
 
@@ -1107,7 +1105,6 @@ describe('Test run commands', () => {
                 type: TYPE.executeExpression,
 
                 expression:         'js-expression',
-                isAsyncExpression:  false,
                 resultVariableName: null
             });
         });
@@ -2915,26 +2912,8 @@ describe('Test run commands', () => {
             assertThrow(
                 function () {
                     return createCommand({
-                        type:              TYPE.executeExpression,
-                        expression:        'js-expression',
-                        isAsyncExpression: 123
-                    });
-                },
-                {
-                    isTestCafeError: true,
-                    code:            'E15',
-                    actualValue:     'number',
-                    argumentName:    'isAsyncExpression',
-                    callsite:        null
-                }
-            );
-
-            assertThrow(
-                function () {
-                    return createCommand({
                         type:               TYPE.executeExpression,
                         expression:         'js-expression',
-                        isAsyncExpression:  true,
                         resultVariableName: 123
                     });
                 },
@@ -2952,7 +2931,6 @@ describe('Test run commands', () => {
                     return createCommand({
                         type:               TYPE.executeExpression,
                         expression:         'js-expression',
-                        isAsyncExpression:  true,
                         resultVariableName: ''
                     });
                 },

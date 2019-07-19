@@ -1,4 +1,4 @@
-import { runInNewContext, runInThisContext } from 'vm';
+import { runInContext, createContext } from 'vm';
 import Module from 'module';
 import { dirname } from 'path';
 import { ExecuteJsExpressionError } from '../errors/test-run';
@@ -8,6 +8,8 @@ import ClientFunctionBuilder from '../client-functions/client-function-builder';
 const ERROR_LINE_COLUMN_REGEXP = /:(\d+):(\d+)/;
 const ERROR_LINE_OFFSET        = -1;
 const ERROR_COLUMN_OFFSET      = -4;
+
+const contexts = {};
 
 // NOTE: do not beautify this code since offsets for for error lines and columns are coded here
 function wrapInAsync (expression) {
@@ -45,9 +47,9 @@ function createRequire (filename) {
     return id => dummyModule.require(id);
 }
 
-function createSelectorDefinition (testRun, opts = {}) {
+function createSelectorDefinition (testRun) {
     return (fn, options = {}) => {
-        const { skipVisibilityCheck, collectionMode } = opts;
+        const { skipVisibilityCheck, collectionMode } = contexts[testRun.id].options;
 
         if (skipVisibilityCheck)
             options.visibilityCheck = false;
@@ -75,7 +77,16 @@ function createClientFunctionDefinition (testRun) {
     };
 }
 
-function createExecutingContext (testRun, isAsync, options) {
+function getExecutingContext (testRun, options = {}) {
+    if (!contexts[testRun.id])
+        contexts[testRun.id] = createExecutingContext(testRun);
+
+    contexts[testRun.id].options = options;
+
+    return contexts[testRun.id];
+}
+
+function createExecutingContext (testRun) {
     let filename = __filename;
     let controller = null;
 
@@ -88,25 +99,26 @@ function createExecutingContext (testRun, isAsync, options) {
 
     const dirName  = dirname(filename);
 
-    const context = {
+    const replacers = {
         require:        createRequire(filename),
         __filename:     filename,
         __dirname:      dirName,
         t:              controller,
-        Selector:       createSelectorDefinition(testRun, options),
+        Selector:       createSelectorDefinition(testRun),
         ClientFunction: createClientFunctionDefinition(testRun)
     };
 
-    return new Proxy(global, {
+    return createContext(new Proxy(replacers, {
         get: (target, property) => {
-            const value = context[property] || target[property];
+            if (replacers.hasOwnProperty(property))
+                return replacers[property];
 
-            if (value === void 0 && !isAsync)
-                return runInThisContext(property);
+            if (global.hasOwnProperty(property))
+                return global[property];
 
-            return value;
+            throw new Error(`${property} is not defined`);
         }
-    });
+    }));
 }
 
 function createErrorFormattingOptions (expression) {
@@ -118,18 +130,18 @@ function createErrorFormattingOptions (expression) {
 }
 
 export function executeJsExpression (expression, testRun, options) {
-    const context      = createExecutingContext(testRun, false, options);
+    const context      = getExecutingContext(testRun, options);
     const errorOptions = createErrorFormattingOptions(expression);
 
-    return runInNewContext(expression, context, errorOptions);
+    return runInContext(expression, context, errorOptions);
 }
 
 export async function executeAsyncJsExpression (expression, testRun, callsite) {
-    const proxy        = createExecutingContext(testRun, true);
+    const context      = getExecutingContext(testRun);
     const errorOptions = createErrorFormattingOptions(expression);
 
     try {
-        return await runInNewContext(wrapInAsync(expression), proxy, errorOptions)();
+        return await runInContext(wrapInAsync(expression), context, errorOptions)();
     }
     catch (err) {
         const { line, column } = getErrorLineColumn(err);

@@ -29,8 +29,16 @@ async function executeExpression (expression, testRun = createTestRunMock()) {
 
     return await testRun.executeCommand({
         type: COMMAND_TYPE.executeNodeExpression,
-        expression,
+        expression
     }, callsite.toString());
+}
+
+async function executeSyncExpression (expression, customVarName, testRun = createTestRunMock()) {
+    return testRun.executeCommand({
+        type:               COMMAND_TYPE.executeExpression,
+        resultVariableName: customVarName,
+        expression
+    });
 }
 
 async function assertError (expression, expectedMessage, expectedLine, expectedColumn) {
@@ -67,11 +75,11 @@ describe('Code steps', () => {
     });
 
     it('error', async () => {
-        await assertError('u.t=5;', 'Cannot set property \'t\' of undefined', 1, 4, '1');
+        await assertError('u=void 0;u.t=5;', 'Cannot set property \'t\' of undefined', 1, 13, '1');
 
         await assertError(
-            'let q = 3;\n' +
-            '        u.t = 5;'
+            'let q = void 0;\n' +
+            '        q.t = 5;'
             , 'Cannot set property \'t\' of undefined', 2, 13, '2');
 
         await assertError(
@@ -81,6 +89,19 @@ describe('Code steps', () => {
             , 'custom error', 3, 7, '3');
     });
 
+    it('sync expression does not spoil global context', async () => {
+        const testRun = createTestRunMock();
+
+        await executeSyncExpression('1+1', 'myCustomVar1', testRun);
+        await executeSyncExpression('1+myCustomVar1', 'myCustomVar2', testRun);
+
+        expect(typeof myCustomVar1).eql('undefined');
+        expect(typeof myCustomVar2).eql('undefined');
+
+        expect(await executeSyncExpression('myCustomVar1', void 0, testRun)).eql(2);
+        expect(await executeSyncExpression('myCustomVar2', void 0, testRun)).eql(3);
+    });
+
     it('shared context with global variables', async () => {
         const testRun = createTestRunMock();
 
@@ -88,10 +109,8 @@ describe('Code steps', () => {
 
         const res = await executeExpression('return result + 3', testRun);
 
-        /* eslint-disable no-undef */
-        expect(result).eql(10);
-        /* eslint-enable no-undef */
         expect(res).eql(13);
+        expect(typeof result).eql('undefined');
     });
 
     it('shared context with local variables', async () => {
@@ -103,7 +122,8 @@ describe('Code steps', () => {
             await executeExpression('return result + 3', testRun);
         }
         catch (err) {
-            expect(err.message).eql('result is not defined');
+            expect(err.code).eql('E64');
+            expect(err.errMsg).eql('result is not defined');
         }
     });
 
@@ -114,7 +134,8 @@ describe('Code steps', () => {
             await executeExpression('result + 3');
         }
         catch (err) {
-            expect(err.message).eql('result is not defined');
+            expect(err.code).eql('E64');
+            expect(err.errMsg).eql('result is not defined');
         }
     });
 

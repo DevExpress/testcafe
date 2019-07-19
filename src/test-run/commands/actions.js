@@ -109,8 +109,7 @@ export class ExecuteExpressionCommand extends CommandBase {
     _getAssignableProperties () {
         return [
             { name: 'expression', type: nonEmptyStringArgument, required: true },
-            { name: 'resultVariableName', type: nonEmptyStringArgument, defaultValue: null },
-            { name: 'isAsyncExpression', type: booleanArgument, defaultValue: false }
+            { name: 'resultVariableName', type: nonEmptyStringArgument, defaultValue: null }
         ];
     }
 }
