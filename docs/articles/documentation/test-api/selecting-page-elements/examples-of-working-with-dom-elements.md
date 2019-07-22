@@ -66,7 +66,7 @@ fixture `My fixture`
 test('Check Label HTML', async t => {
     const label = Selector('label');
 
-    const getLabelHtml = ClientFunction(() => label.innerHTML, { dependencies: { label } });
+    const getLabelHtml = ClientFunction(() => label().innerHTML, { dependencies: { label } });
 
     await t
         .expect(getLabelHtml()).contains('type="checkbox"')
