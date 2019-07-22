@@ -2,9 +2,9 @@ import { stat as statCb } from 'fs';
 import { join } from 'path';
 import { homedir } from 'os';
 import { promisify } from 'util';
-import { from } from 'rxjs';
-import { delay, timeout } from 'rxjs/operators';
+import timeLimit from 'time-limit-promise';
 import del from 'del';
+import delay from '../../../../../../lib/utils/delay';
 
 
 const DOWNLOADED_FILE_PATH  = join(homedir(), 'Downloads', 'package.json');
@@ -29,9 +29,7 @@ async function waitForFile (path) {
 }
 
 async function waitForFileWithTimeout (path, ms) {
-    await from(waitForFile(path))
-        .pipe(timeout(ms))
-        .toPromise();
+    await timeLimit(waitForFile(path), ms, { rejectWith: new Error('Timed out when waiting for a file') });
 }
 
 fixture `gh3127`
