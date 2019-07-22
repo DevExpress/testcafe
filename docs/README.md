@@ -1,6 +1,6 @@
 # Documentation
 
-> This is the documentation's development version. The functionality described here may not be included in the current release version. Unreleased functionality can change or may not be included the next release. The current release version's documentation is available on the [TestCafe website](https://devexpress.github.io/testcafe/documentation/getting-started/).
+> This is the documentation's development version. The functionality described here may not be included in the current release version. Unreleased functionality may change or be dropped before the next release. The release version's documentation is available at the [TestCafe website](https://devexpress.github.io/testcafe/documentation/getting-started/).
 
 * [GETTING STARTED](articles/documentation/getting-started/README.md)
 * [USING TESTCAFE](articles/documentation/using-testcafe/README.md)
@@ -22,6 +22,7 @@
       * [User Profiles](articles/documentation/using-testcafe/common-concepts/browsers/user-profiles.md)
     * [Concurrent Test Execution](articles/documentation/using-testcafe/common-concepts/concurrent-test-execution.md)
     * [Live Mode](articles/documentation/using-testcafe/common-concepts/live-mode.md)
+    * [Screenshots and Videos](articles/documentation/using-testcafe/common-concepts/screenshots-and-videos.md)
     * [Reporters](articles/documentation/using-testcafe/common-concepts/reporters.md)
     * [Test HTTPS and HTTP/2 Websites](articles/documentation/using-testcafe/common-concepts/test-https-and-http2-websites.md)
 * [TEST API](articles/documentation/test-api/README.md)
@@ -109,14 +110,14 @@
     * [Visual Studio Code](articles/documentation/recipes/debug-tests/visual-studio-code.md)
     * [WebStorm](articles/documentation/recipes/debug-tests/webstorm.md)
   * [Extract Reusable Test Code](articles/documentation/recipes/extract-reusable-test-code/README.md)
-    * [Use Page Model](articles/documentation/recipes/extract-reusable-test-code/use-page-mode.md)
+    * [Use Page Model](articles/documentation/recipes/extract-reusable-test-code/use-page-model.md)
     * [Create Helpers](articles/documentation/recipes/extract-reusable-test-code/create-helpers.md)
   * [Find Code Issues with Flow Type Checker](articles/documentation/recipes/find-code-issues-with-flow-type-checker.md)
   * [Import Third-Party Modules](articles/documentation/recipes/import-third-party-modules.md)
   * [Test &lt;select&gt; Elements](articles/documentation/recipes/test-select-elements.md)
   * [Test Static HTML Pages](articles/documentation/recipes/test-static-html-pages.md)
   * [Test on Remote Computers and Mobile Devices](articles/documentation/recipes/test-on-remote-computers-and-mobile-devices.md)
-  * [Use Page Model](articles/documentation/recipes/use-page-model.md)
+  * [Use Angular CLI Builder](articles/documentation/recipes/use-angular-cli-builder.md)
   * [Use Task Runners](articles/documentation/recipes/use-task-runners/README.md)
     * [Grunt](articles/documentation/recipes/use-task-runners/grunt.md)
     * [Gulp](articles/documentation/recipes/use-task-runners/gulp.md)

@@ -18,4 +18,5 @@ This section provides examples and recipes of how to use TestCafe in different s
 * [Test \<select\> Elements](test-select-elements.md)
 * [Test Static HTML Pages](test-static-html-pages.md)
 * [Test on Remote Computers and Mobile Devices](test-on-remote-computers-and-mobile-devices.md)
+* [Use Angular CLI Builder](use-angular-cli-builder.md)
 * [Use Task Runners](use-task-runners/README.md)

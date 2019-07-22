@@ -241,7 +241,7 @@
         - name: Use Page Model
           url: /documentation/recipes/extract-reusable-test-code/use-page-model.md
         - name: Create Helpers
-          url: /documentation/recipes/extract-reusable-test-code/create-helpers.md  
+          url: /documentation/recipes/extract-reusable-test-code/create-helpers.md
     - name: Find Code Issues with Flow Type Checker
       url: /documentation/recipes/find-code-issues-with-flow-type-checker.md
     - name: Import Third-Party Modules
@@ -252,6 +252,8 @@
       url: /documentation/recipes/test-static-html-pages.md
     - name: Test on Remote Computers and Mobile Devices
       url: /documentation/recipes/test-on-remote-computers-and-mobile-devices.md
+    - name: Use Angular CLI Builder
+      url: /documentation/recipes/use-angular-cli-builder.md
     - name: Use Task Runners
       url: /documentation/recipes/use-task-runners/README.md
       content:
