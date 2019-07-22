@@ -641,7 +641,7 @@ You can use the [page](common-concepts/inject-scripts-into-tested-pages.md#provi
 
 > Note that regular expressions are not supported in the configuration file. Use the [runner.clientScripts](programming-interface/runner.md#clientscripts) method or [test API methods](../test-api/test-code-structure.md#inject-scripts-into-tested-pages) to [define target pages](common-concepts/inject-scripts-into-tested-pages.md#provide-scripts-for-specific-pages) with a regular expression.
 
-The [fixture.clientScripts](../test-api/test-code-structure.md#inject-scripts-into-tested-pages) and [test.clientScripts](../test-api/test-code-structure.md#inject-scripts-into-tested-pages) methods allow you to inject scripts for an individual fixture or test.
+The [fixture.clientScripts](../test-api/test-code-structure.md#inject-scripts-into-tested-pages) and [test.clientScripts](../test-api/test-code-structure.md#inject-scripts-into-tested-pages) methods allow you to inject scripts into pages visited during an individual fixture or test.
 
 For more information, see [Inject Scripts into Tested Pages](common-concepts/inject-scripts-into-tested-pages.md).
 

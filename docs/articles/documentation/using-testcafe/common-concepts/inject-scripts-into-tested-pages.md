@@ -5,13 +5,13 @@ permalink: /documentation/using-testcafe/common-concepts/inject-scripts-into-tes
 ---
 # Inject Scripts into Tested Pages
 
-TestCafe allows you to inject custom scripts into pages visited during the tests. You can add scripts that mock browser API or provide helper functions.
+TestCafe allows you to inject custom client scripts into pages visited during the tests. You can add scripts that mock browser API or provide helper functions.
 
-Use [test run options](#inject-scripts-in-all-tests) to enable injection in all tests, or [test API](#inject-scripts0in-specific-tests) to inject scripts for specific fixtures or tests.
+Use [test run options](#add-client-scripts-to-all-tests) to add client scripts to all tests, or [test API](#add-client-scripts-to-specific-tests) to add them to specific fixtures or tests.
 
-## Inject Scripts in All Tests
+## Add Client Scripts to All Tests
 
-Use either of the following to inject scripts in all tests:
+Use either of the following to inject scripts into pages visited during all the tests:
 
 * the [--cs (--client-scripts)](../command-line-interface.md#--cs-pathpath2---client-scripts-pathpath2) command line option
 
@@ -33,7 +33,7 @@ Use either of the following to inject scripts in all tests:
     }
     ```
 
-## Inject Scripts in Specific Tests
+## Add Client Scripts to Specific Tests
 
 Use the [fixture.clientScripts](../../test-api/test-code-structure.md#inject-scripts-into-tested-pages) and [test.clientScripts](../../test-api/test-code-structure.md#inject-scripts-into-tested-pages) methods to inject scripts into pages visited during a particular test or fixture.
 
