@@ -34,10 +34,12 @@ export default class Runner extends EventEmitter {
         // NOTE: This code is necessary only for displaying  marketing messages.
         this.reporterPlugings = [];
 
-        this.apiMethodWasCalled = new FlagList({
-            initialFlagValue: false,
-            flags:            [OPTION_NAMES.src, OPTION_NAMES.browsers, OPTION_NAMES.reporter]
-        });
+        this.apiMethodWasCalled = new FlagList([
+            OPTION_NAMES.src,
+            OPTION_NAMES.browsers,
+            OPTION_NAMES.reporter,
+            OPTION_NAMES.clientScripts
+        ]);
     }
 
     _createBootstrapper (browserConnectionGateway) {
@@ -415,9 +417,14 @@ export default class Runner extends EventEmitter {
     }
 
     clientScripts (...scripts) {
+        if (this.apiMethodWasCalled.clientScripts)
+            throw new GeneralError(RUNTIME_ERRORS.multipleAPIMethodCallForbidden, OPTION_NAMES.clientScripts);
+
         scripts = this._prepareArrayParameter(scripts);
 
         this.configuration.mergeOptions({ [OPTION_NAMES.clientScripts]: scripts });
+
+        this.apiMethodWasCalled.clientScripts = true;
 
         return this;
     }

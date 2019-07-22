@@ -747,6 +747,21 @@ describe('Runner', () => {
         });
     });
 
+    describe('.clientScripts', () => {
+        it('Should raise an error for the multiple ".clientScripts" method call', () => {
+            try {
+                runner
+                    .clientScripts({ source: 'var i = 0;' })
+                    .clientScripts({ source: 'var i = 1;' });
+
+                throw new Error('Should raise an appropriate error.');
+            }
+            catch (err) {
+                expect(err.message).startsWith('You cannot call the "clientScripts" method more than once. Pass an array of parameters to this method instead.');
+            }
+        });
+    });
+
     describe('Regression', () => {
         it('Should not have unhandled rejections in runner (GH-825)', () => {
             let rejectionReason = null;

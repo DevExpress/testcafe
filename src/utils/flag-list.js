@@ -1,9 +1,9 @@
 export default class FlagList {
-    constructor ({ initialFlagValue, flags }) {
-        Object.defineProperty(this, '_initialFlagValue', { writable: true, value: initialFlagValue });
+    constructor (flags) {
+        Object.defineProperty(this, '_initialFlagValue', { writable: true, value: false });
 
         flags.forEach(flag => {
-            this[flag] = initialFlagValue;
+            this[flag] = false;
         });
     }
 
