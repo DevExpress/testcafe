@@ -50,5 +50,9 @@ describe('Request Hooks', () => {
                     expect(testReport.errs[4]).contains('An unhandled error occurred in the "onResponse" method of the "Hook3" class:\n\nError: Unhandled error.');
                 });
         });
+
+        it('Execution order', () => {
+            return runTests('./testcafe-fixtures/api/execution-order.js', null, { only: 'chrome' });
+        });
     });
 });

@@ -24,9 +24,6 @@ export default class Fixture extends TestingUnit {
         this.beforeFn = null;
         this.afterFn  = null;
 
-        this.requestHooks  = [];
-        this.clientScripts = [];
-
         return this.apiOrigin;
     }
 

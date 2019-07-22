@@ -49,6 +49,10 @@ describe('Custom client scripts', () => {
         return runTests('./testcafe-fixtures/folder/index.js');
     });
 
+    it('Execution order', () => {
+        return runTests('./testcafe-fixtures/execution-order.js');
+    });
+
     describe('Should handle errors of the injected scripts', () => {
         // NOTE: Error message format is a little different in various browsers.
         // This is why, we run these tests only in Chrome

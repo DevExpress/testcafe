@@ -2,8 +2,8 @@ import { RequestHook } from 'testcafe';
 import path from 'path';
 import config from '../../../../../../config';
 
-const ResultPromise = require(path.resolve('./lib/utils/re-executable-promise'));
-const pageUrl       = 'http://localhost:3000/fixtures/api/es-next/request-hooks/pages/index.html';
+const ReExecutablePromise = require(path.resolve('./lib/utils/re-executable-promise'));
+const pageUrl             = 'http://localhost:3000/fixtures/api/es-next/request-hooks/pages/index.html';
 
 class TestRequestHook extends RequestHook {
     constructor () {
@@ -13,7 +13,7 @@ class TestRequestHook extends RequestHook {
     }
 
     get onResponseCallCount () {
-        return ResultPromise.fromFn(async () => this.onResponseCallCountInternal);
+        return ReExecutablePromise.fromFn(async () => this.onResponseCallCountInternal);
     }
 
     async onRequest () {}

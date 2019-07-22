@@ -17,8 +17,6 @@ export default class Test extends TestingUnit {
         this.fn            = null;
         this.beforeFn      = null;
         this.afterFn       = null;
-        this.requestHooks  = [];
-        this.clientScripts = [];
 
         return this.apiOrigin;
     }
@@ -30,10 +28,10 @@ export default class Test extends TestingUnit {
 
         this.name          = name;
         this.fn            = wrapTestFunction(fn);
-        this.requestHooks  = union(this.requestHooks, Array.from(this.fixture.requestHooks));
-        this.clientScripts = union(this.clientScripts, Array.from(this.fixture.clientScripts));
+        this.requestHooks  = union(Array.from(this.fixture.requestHooks), this.requestHooks);
+        this.clientScripts = union(Array.from(this.fixture.clientScripts), this.clientScripts);
 
-        if (this.testFile.collectedTests.indexOf(this) < 0)
+        if (!this.testFile.collectedTests.includes(this))
             this.testFile.collectedTests.push(this);
 
         return this.apiOrigin;

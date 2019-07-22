@@ -16,8 +16,12 @@ export default class TestingUnit {
         this.meta            = {};
         this.only            = false;
         this.skip            = false;
+        this.requestHooks    = [];
+        this.clientScripts   = [];
 
         this.disablePageReloads = void 0;
+
+        this.apiMethodWasCalled = new FlagList([OPTION_NAMES.clientScripts, OPTION_NAMES.requestHooks]);
 
         const unit = this;
 
@@ -26,8 +30,6 @@ export default class TestingUnit {
         };
 
         delegateAPI(this.apiOrigin, this.constructor.API_LIST, { handler: this });
-
-        this.apiMethodWasCalled = new FlagList([OPTION_NAMES.clientScripts, OPTION_NAMES.requestHooks]);
     }
 
     _add () {
