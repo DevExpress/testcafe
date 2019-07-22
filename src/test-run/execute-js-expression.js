@@ -1,6 +1,7 @@
 import { runInContext, createContext } from 'vm';
 import Module from 'module';
 import { dirname } from 'path';
+import nanoid from 'nanoid';
 import { ExecuteJsExpressionError } from '../errors/test-run';
 import SelectorBuilder from '../client-functions/selectors/selector-builder';
 import ClientFunctionBuilder from '../client-functions/client-function-builder';
@@ -49,7 +50,7 @@ function createRequire (filename) {
 
 function createSelectorDefinition (testRun) {
     return (fn, options = {}) => {
-        const { skipVisibilityCheck, collectionMode } = contexts[testRun.id].options;
+        const { skipVisibilityCheck, collectionMode } = contexts[testRun.contextId].options;
 
         if (skipVisibilityCheck)
             options.visibilityCheck = false;
@@ -78,12 +79,15 @@ function createClientFunctionDefinition (testRun) {
 }
 
 function getExecutingContext (testRun, options = {}) {
-    if (!contexts[testRun.id])
-        contexts[testRun.id] = createExecutingContext(testRun);
+    const contextId = testRun.contextId || nanoid(7);
 
-    contexts[testRun.id].options = options;
+    if (!contexts[contextId])
+        contexts[contextId] = createExecutingContext(testRun);
 
-    return contexts[testRun.id];
+    contexts[contextId].options = options;
+    testRun.contextId           = contextId;
+
+    return contexts[contextId];
 }
 
 function createExecutingContext (testRun) {
