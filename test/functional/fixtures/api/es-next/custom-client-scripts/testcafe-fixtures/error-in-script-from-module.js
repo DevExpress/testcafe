@@ -1,4 +1,4 @@
 fixture `Fixture`
-    .clientScripts('../data/not-umd-module.js');
+    .clientScripts({ module: 'is-docker' });
 
 test('test', async () => {});

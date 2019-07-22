@@ -103,6 +103,7 @@ describe('Client scripts', () => {
             return script.load()
                 .then(() => {
                     expect(script.content).contains('return hasDockerEnv() || hasDockerCGroup()');
+                    expect(script.module).eql(testModuleName);
                 });
         });
 

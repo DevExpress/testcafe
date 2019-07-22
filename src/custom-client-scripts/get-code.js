@@ -6,7 +6,6 @@ export default function getCustomClientScriptCode (script) {
         ${processScript(script.content)}
     }
     catch (e) {
-       debugger;
-       window['${INTERNAL_PROPERTIES.testCafeDriverInstance}'].onCustomClientScriptError(e, ${script.module});
+       window['${INTERNAL_PROPERTIES.testCafeDriverInstance}'].onCustomClientScriptError(e, '${script.module || ''}');
     }`;
 }

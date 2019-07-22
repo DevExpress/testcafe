@@ -57,6 +57,8 @@ export default class ClientScript {
         const resolvedPath = require.resolve(name);
 
         await this._loadFromPath(resolvedPath);
+
+        this.module = name;
     }
 
     _prepareUrl () {

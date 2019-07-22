@@ -62,7 +62,7 @@ describe('Custom client scripts', () => {
         it('Script loaded from module', () => {
             return runTests('./testcafe-fixtures/error-in-script-from-module.js', null, { shouldFail: true, only: 'chrome' })
                 .catch(errs => {
-                    expect(errs[0]).eql('An error occurred in a script injected into the tested page:  ReferenceError: require is not defined  [[user-agent]]');
+                    expect(errs[0]).eql("An error occurred in the 'is-docker' module injected into the tested page. Make sure that this module can be executed in the browser environment.  Error details: ReferenceError: require is not defined  [[user-agent]]");
                 });
         });
     });
