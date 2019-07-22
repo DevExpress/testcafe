@@ -46,7 +46,7 @@ const DOWNLOADS_DIR = path.join(os.homedir(), 'Downloads');
 async function getActiveTab (cdpPort: number, browserId: string): Promise<remoteChrome.TargetInfo> {
     const tabs = await remoteChrome.listTabs({ port: cdpPort });
 
-    return tabs.filter(t => t.type === 'page' && t.url.indexOf(browserId) > -1)[0];
+    return tabs.filter(t => t.type === 'page' && t.url.includes(browserId))[0];
 }
 
 async function setEmulationBounds ({ client, config, viewportSize, emulatedDevicePixelRatio }: RuntimeInfo): Promise<void> {
