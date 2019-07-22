@@ -59,6 +59,7 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [--qr-code](#--qr-code)
   * [--sf, --stop-on-first-fail](#--sf---stop-on-first-fail)
   * [--ts-config-path \<path\>](#--ts-config-path-path)
+  * [--disable-page-caching](#--disable-page-caching)
   * [--color](#--color)
   * [--no-color](#--no-color)
 
@@ -791,6 +792,10 @@ testcafe chrome my-tests --ts-config-path /Users/s.johnson/testcafe/tsconfig.jso
 You can specify an absolute or relative path. Relative paths resolve from the current directory (the directory from which you run TestCafe).
 
 *Related configuration file property*: [tsConfigPath](configuration-file.md#tsconfigpath).
+
+### --disable-page-caching
+
+*Related configuration file property*: [disablePageCaching](configuration-file.md#disablepagecaching).
 
 ### --color
 

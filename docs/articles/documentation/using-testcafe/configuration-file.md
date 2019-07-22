@@ -51,6 +51,7 @@ A configuration file can include the following settings:
 * [qrCode](#qrcode)
 * [stopOnFirstFail](#stoponfirstfail)
 * [tsConfigPath](#tsconfigpath)
+* [disablePageCaching](#disablepagecaching)
 * [color](#color)
 * [noColor](#nocolor)
 
@@ -800,6 +801,11 @@ You can specify an absolute or relative path. Relative paths resolve from the cu
 
 *CLI*: [--ts-config-path](command-line-interface.md#--ts-config-path-path)  
 *API*: [runner.tsConfigPath](programming-interface/runner.md#tsconfigpath)
+
+## disablePageCaching
+
+*CLI*: [--disable-page-caching](command-line-interface.md#--disable-page-caching)  
+*API*: [runner.run({ disablePageCaching })](programming-interface/runner.md#run)
 
 ## color
 
