@@ -596,6 +596,8 @@ Parameter | Type     | Description
 
 You can use the [page](../using-testcafe/common-concepts/inject-scripts-into-tested-pages.md#provide-scripts-for-specific-pages) option to specify pages into which scripts should be injected. Otherwise, TestCafe injects scripts into all pages visited during the test or fixture.
 
+> If you add client scripts to both the fixture and test, scripts added to the fixture run first.
+
 **Examples**
 
 ```js

@@ -165,7 +165,12 @@ Argument  | Type   | Description
 
 TestCafe searches for the module's entry point with Node.js mechanisms and injects its content into the tested page.
 
-> The module must be executable in the browser. For instance, you can use [UMD](https://github.com/umdjs/umd) or [ES Harmony](http://wiki.ecmascript.org/doku.php?id=harmony:modules) modules.
+Note that the browser must be able to execute the injected module. For example, modules that implement the [UMD](https://github.com/umdjs/umd) API can run in most modern browsers.
+
+> If the injected module has dependencies, you should ensure that:
+>
+> * The dependencies can be loaded as global variables.
+> * These variables are initialized in the page code.
 
 **Examples**
 
