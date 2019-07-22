@@ -112,7 +112,7 @@ Selector API contains two types methods:
 * methods that enumerate DOM elements only
 
 <!-- markdownlint-disable MD033 -->
-Method                                                 | Enumerate
+Methods                                                | Enumerated Nodes
 ------------------------------------------------------ | -------
 [filter(function)](selectors/functional-style-selectors.md#filter)<br/>[find](selectors/functional-style-selectors.md#find)<br/>[parent](selectors/functional-style-selectors.md#parent) | All nodes
 [nth](selectors/functional-style-selectors.md#nth)<br/>[withText](selectors/functional-style-selectors.md#withtext)<br/>[withExactText](selectors/functional-style-selectors.md#withexacttext)<br/>[withAttribute](selectors/functional-style-selectors.md#withattribute)<br/>[filter(string)](selectors/functional-style-selectors.md#filter)<br/>[filterVisible](selectors/functional-style-selectors.md#filtervisible)<br/>[filterHidden](selectors/functional-style-selectors.md#filterhidden)<br/>[child](selectors/functional-style-selectors.md#child)<br/>[sibling](selectors/functional-style-selectors.md#sibling)<br/>[nextSibling](selectors/functional-style-selectors.md#nextsibling)<br/>[prevSibling](selectors/functional-style-selectors.md#prevsibling) | Elements only
