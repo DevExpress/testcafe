@@ -31,8 +31,6 @@ test('My test', async t => {
 });
 ```
 
-> Note that all property getters are asynchronous, so add the `await` keyword.
-
 If you need to access element properties not included in the selector's API, use the [selector.addCustomDOMProperties](selectors/extending-selectors.md) method to retrieve them from DOM.
 
 ```js
@@ -74,7 +72,9 @@ test('Check Label HTML', async t => {
 });
 ```
 
-Note that the `await` keyword can be omitted when specifying a selector property in an [assertion](../assertions/README.md). This activates the [Smart Assertion Query Mechanism](../assertions/README.md#smart-assertion-query-mechanism).
+> Note that selector's property getters and client functions are asynchronous. If you need their resulting value in your code, use the `await` keyword.
+>
+> However, you can omit `await` when you pass a selector property or a client function value into an [assertion](../assertions/README.md). In this instance, TestCafe uses its [Smart Assertion Query Mechanism](../assertions/README.md#smart-assertion-query-mechanism) to wait until the value is available. This makes your tests more stable.
 
 ## Get a Page Element Using Custom Logic
 
@@ -135,7 +135,7 @@ Consider the following *example.html* page:
 
 Let's write a test that verifies text content of the body's first child node (*'This is my tested page'*).
 
-To select this node, use the [filter(function)](selectors/functional-style-selectors.md#filter) method that enumerates all nodes. Compare it with the [nth](selectors/functional-style-selectors.md#nth) method that skips the text node and returns the `<p>` element.
+To select this node, use the [find](selectors/functional-style-selectors.md#find) method that enumerates all nodes. Compare it with the [child](selectors/functional-style-selectors.md#child) method that skips the text node and returns the `<p>` element.
 
 ```js
 import { Selector } from 'testcafe';
@@ -144,7 +144,7 @@ fixture `My Fixture`
     .page `example.html`;
 
 const body              = Selector('body');
-const firstChildElement = body.nth(0);                   // <p>
+const firstChildElement = body.child(0);                 // <p>
 const firstChildNode    = body.find((node, index) => {   // text node
     return index === 0;
 });
@@ -152,7 +152,7 @@ const firstChildNode    = body.find((node, index) => {   // text node
 test('My Test', async t => {
     await t
         .expect(firstChildElement.textContent).eql('My first paragraph.')
-        .expect(firstChildNode.textContent).eql('\nThis is my tested page. ');
+        .expect(firstChildNode.textContent).eql('\n        This is my tested page. ');
 });
 ```
 
