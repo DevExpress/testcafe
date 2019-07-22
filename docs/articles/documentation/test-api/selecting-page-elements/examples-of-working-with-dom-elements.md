@@ -104,16 +104,28 @@ test('My test', async t => {
 
 ## Access Child Nodes in the DOM Hierarchy
 
-The selector API allows you to [search for elements in the DOM tree](selectors/functional-style-selectors.md#search-for-elements-in-the-dom-hierarchy). You can traverse in different directions through the hierarchy to iterate parents, children and siblings.
+The [selector API](selectors/functional-style-selectors.md) allows you to filter matching elements and search through adjacent elements in the DOM tree.
 
-However, the [child](selectors/functional-style-selectors.md#child), [sibling](selectors/functional-style-selectors.md#sibling), [prevSibling](selectors/functional-style-selectors.md#prevsibling) and [nextSibling](selectors/functional-style-selectors.md#nextsibling) methods work with DOM elements only and ignore other node types.
+Selector API contains two types methods:
 
-This example shows how to get a child text node for a given parent element with client-side code. Consider the following *example.html* page:
+* methods that enumerate all node types
+* methods that enumerate DOM elements only
+
+<!-- markdownlint-disable MD033 -->
+Method                                                 | Enumerate
+------------------------------------------------------ | -------
+[filter(function)](selectors/functional-style-selectors.md#filter)<br/>[find](selectors/functional-style-selectors.md#find)<br/>[parent](selectors/functional-style-selectors.md#parent) | All nodes
+[nth](selectors/functional-style-selectors.md#nth)<br/>[withText](selectors/functional-style-selectors.md#withtext)<br/>[withExactText](selectors/functional-style-selectors.md#withexacttext)<br/>[withAttribute](selectors/functional-style-selectors.md#withattribute)<br/>[filter(string)](selectors/functional-style-selectors.md#filter)<br/>[filterVisible](selectors/functional-style-selectors.md#filtervisible)<br/>[filterHidden](selectors/functional-style-selectors.md#filterhidden)<br/>[child](selectors/functional-style-selectors.md#child)<br/>[sibling](selectors/functional-style-selectors.md#sibling)<br/>[nextSibling](selectors/functional-style-selectors.md#nextsibling)<br/>[prevSibling](selectors/functional-style-selectors.md#prevsibling) | Elements only
+<!-- markdownlint-enable MD033 -->
+
+The following example illustrates the difference between these methods and shows how to get a child text node for a given parent element.
+
+Consider the following *example.html* page:
 
 ```js
 <!DOCTYPE html>
 <html>
-    <body id="tested-page">
+    <body>
         This is my tested page. <!--This is the first child node of <body>-->
         <p>My first paragraph.</p>
         <p>My second paragraph.</p>
@@ -121,27 +133,59 @@ This example shows how to get a child text node for a given parent element with 
 </html>
 ```
 
-Assume you have a selector that identifies the `#tested-page` element, and now you need to verify text content of its first child node (*'This is my tested page'*).
+Let's write a test that verifies text content of the body's first child node (*'This is my tested page'*).
 
-To do this, pass this selector as a [dependency](selectors/selector-options.md#optionsdependencies) to a new selector. Initialize the second selector with a function that returns the [childNodes](https://developer.mozilla.org/en-US/docs/Web/API/Node/childNodes) collection. You can then use the new selector in an assertion to check the `textContent` property.
+To select this node, use the [filter(function)](selectors/functional-style-selectors.md#filter) method that enumerates all nodes. Compare it with the [nth](selectors/functional-style-selectors.md#nth) method that skips the text node and returns the `<p>` element.
 
 ```js
-import { Selector, ClientFunction } from 'testcafe';
+import { Selector } from 'testcafe';
 
 fixture `My Fixture`
     .page `example.html`;
 
-const testedPage = Selector('#tested-page');
-
-const childNodes = Selector(() => {
-    return getPage().childNodes;
-},{ dependencies: { getPage: testedPage } });
-
+const body              = Selector('body');
+const firstChildElement = body.nth(0);                   // <p>
+const firstChildNode    = body.find((node, index) => {   // text node
+    return index === 0;
+});
 
 test('My Test', async t => {
-    await t.expect(childNodes.nth(0).textContent).contains('This is my tested page.');
+    await t
+        .expect(firstChildElement.textContent).eql('My first paragraph.')
+        .expect(firstChildNode.textContent).eql('\nThis is my tested page. ');
 });
 ```
+
+## Access Shadow UI
+
+CSS selectors passed to the [Selector](selectors/creating-selectors.md) constructor cannot identify elements in the shadow DOM.
+
+To select a shadow element, initialize a selector with client-side code and use the [shadowRoot](https://developer.mozilla.org/en-US/docs/Web/API/Element/shadowRoot) property to get and return the required element from shadow DOM.
+
+The following example shows the `paragraph` selector that returns `<p>` from the shadow DOM.
+
+```js
+import { Selector } from 'testcafe';
+
+fixture `My fixture`
+    .page `https://chrisbateman.github.io/guide-to-web-components/demos/shadow-dom.htm`;
+
+const demoPage = Selector('#demo1');
+
+const paragraph = Selector(() => {
+    return demoPageSelector().shadowRoot.querySelectorAll('p');
+}, { dependencies: { demoPageSelector: demoPage } });
+
+test('Get text within shadow root', async t => {
+    await t.click(paragraph.nth(0));
+
+    var text = await paragraph.nth(0).textContent;
+
+    await t.expect(paragraph.nth(0).textContent).eql('These paragraphs are in a shadow root.');
+});
+```
+
+The `paragraph` selector obtains [shadowRoot](https://developer.mozilla.org/en-US/docs/Web/API/Element/shadowRoot) from the `#demo1` element. The `demoPage` selector that identifies `#demo1` is passed as a [dependency](selectors/selector-options.md#optionsdependencies).
 
 ## Check if an Element is Available
 
