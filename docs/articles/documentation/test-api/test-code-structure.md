@@ -635,6 +635,10 @@ See [Inject Scripts into Tested Pages](../using-testcafe/common-concepts/inject-
 
 ## Disable Page Caching
 
+The browser's local storage is not preserved between [role](authentication/user-roles.md) actions and the rest of the test code due to page caching. You need to disable page caching to share the local storage content.
+
+Use the `fixture.disablePageCaching` and `test.disablePageCaching` methods to disable caching during a particular fixture or test.
+
 ```text
 fixture.disablePageCaching
 ```
@@ -642,3 +646,23 @@ fixture.disablePageCaching
 ```text
 test.disablePageCaching
 ```
+
+**Examples**
+
+```js
+fixture
+    .disablePageCaching `My fixture`
+    .page `https://example.com`;
+```
+
+```js
+test
+    .disablePageCaching
+    ('My test', async t => { /* ... */ });
+```
+
+To disable page caching during the entire test run, use either of the following options:
+
+* the [--disable-page-caching](../using-testcafe/command-line-interface.md#--disable-page-caching) command line flag
+* the `disablePageCaching` option in the [runner.run](../using-testcafe/programming-interface/runner.md#run) method
+* the [disablePageCaching](../using-testcafe/configuration-file.md#disablepagecaching) configuration file option

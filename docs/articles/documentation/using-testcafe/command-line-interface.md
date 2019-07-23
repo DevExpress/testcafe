@@ -795,6 +795,16 @@ You can specify an absolute or relative path. Relative paths resolve from the cu
 
 ### --disable-page-caching
 
+Prevents the browser from caching the page content.
+
+```sh
+testcafe chrome my-tests --disable-page-caching
+```
+
+The browser's local storage is not preserved between [role](../test-api/authentication/user-roles.md) actions and the rest of the test code due to page caching. Use the `--disable-page-caching` flag to share the local storage content.
+
+You can also disable page caching [for an individual fixture or test](../test-api/test-code-structure.md#disable-page-caching).
+
 *Related configuration file property*: [disablePageCaching](configuration-file.md#disablepagecaching).
 
 ### --color

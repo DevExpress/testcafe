@@ -804,6 +804,18 @@ You can specify an absolute or relative path. Relative paths resolve from the cu
 
 ## disablePageCaching
 
+Prevents the browser from caching the page content.
+
+```json
+{
+    "disablePageCaching": true
+}
+```
+
+The browser's local storage is not preserved between [role](../test-api/authentication/user-roles.md) actions and the rest of the test code due to page caching. Set `disablePageCaching` to `true` to share the local storage content.
+
+You can also disable page caching [for an individual fixture or test](../test-api/test-code-structure.md#disable-page-caching).
+
 *CLI*: [--disable-page-caching](command-line-interface.md#--disable-page-caching)  
 *API*: [runner.run({ disablePageCaching })](programming-interface/runner.md#run)
 
