@@ -54,7 +54,14 @@ export default class ClientScript {
     }
 
     async _loadFromModule (name) {
-        const resolvedPath = require.resolve(name);
+        let resolvedPath = null;
+
+        try {
+            resolvedPath = require.resolve(name);
+        }
+        catch (e) {
+            throw new GeneralError(RUNTIME_ERRORS.clientScriptModuleEntryPointPathCalculationError, e.message);
+        }
 
         await this._loadFromPath(resolvedPath);
 

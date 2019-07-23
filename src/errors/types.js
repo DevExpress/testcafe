@@ -117,5 +117,6 @@ export const RUNTIME_ERRORS = {
     clientScriptInitializerIsNotSpecified:                            'E1044',
     clientScriptBasePathIsNotSpecified:                               'E1045',
     clientScriptInitializerMultipleContentSources:                    'E1046',
-    cannotLoadClientScriptFromPath:                                   'E1047'
+    cannotLoadClientScriptFromPath:                                   'E1047',
+    clientScriptModuleEntryPointPathCalculationError:                 'E1048'
 };

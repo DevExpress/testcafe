@@ -73,9 +73,10 @@ export default {
                                             '* specify the path to the FFmpeg executable in the FFMPEG_PATH environment variable or the ffmpegPath video option,\n' +
                                             '* install the @ffmpeg-installer/ffmpeg package from npm.',
 
-    [RUNTIME_ERRORS.cannotFindTypescriptConfigurationFile]:         'Unable to find the TypeScript configuration file in "{filePath}"',
-    [RUNTIME_ERRORS.clientScriptInitializerIsNotSpecified]:         'Specify the JavaScript file path, module name or script content to inject a client script.',
-    [RUNTIME_ERRORS.clientScriptBasePathIsNotSpecified]:            'Specify the base path for the client script file.',
-    [RUNTIME_ERRORS.clientScriptInitializerMultipleContentSources]: 'You cannot combine the file path, module name and script content when you specify a client script to inject.',
-    [RUNTIME_ERRORS.cannotLoadClientScriptFromPath]:                'Cannot load a client script from {path}'
+    [RUNTIME_ERRORS.cannotFindTypescriptConfigurationFile]:            'Unable to find the TypeScript configuration file in "{filePath}"',
+    [RUNTIME_ERRORS.clientScriptInitializerIsNotSpecified]:            'Specify the JavaScript file path, module name or script content to inject a client script.',
+    [RUNTIME_ERRORS.clientScriptBasePathIsNotSpecified]:               'Specify the base path for the client script file.',
+    [RUNTIME_ERRORS.clientScriptInitializerMultipleContentSources]:    'You cannot combine the file path, module name and script content when you specify a client script to inject.',
+    [RUNTIME_ERRORS.cannotLoadClientScriptFromPath]:                   'Cannot load a client script from {path}',
+    [RUNTIME_ERRORS.clientScriptModuleEntryPointPathCalculationError]: 'An error occurred when trying to locate the injected client script module:\n\n{errorMessage}.'
 };

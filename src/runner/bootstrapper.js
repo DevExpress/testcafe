@@ -240,7 +240,7 @@ export default class Bootstrapper {
 
             let loadedTestClientScripts = await loadClientScripts(test.clientScripts, path.dirname(test.testFile.filename));
 
-            loadedTestClientScripts = loadedTestClientScripts.concat(clientScripts);
+            loadedTestClientScripts = clientScripts.concat(loadedTestClientScripts);
 
             test.clientScripts = setUniqueUrls(loadedTestClientScripts);
         }));
