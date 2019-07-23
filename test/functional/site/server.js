@@ -29,7 +29,7 @@ const NON_CACHEABLE_PAGES = [
 const UPLOAD_SUCCESS_PAGE_TEMPLATE = readSync('./views/upload-success.html.mustache');
 
 const shouldCachePage = function (reqUrl) {
-    return  NON_CACHEABLE_PAGES.every(pagePrefix => !reqUrl.startsWith(pagePrefix));
+    return NON_CACHEABLE_PAGES.every(pagePrefix => !reqUrl.startsWith(pagePrefix));
 };
 
 const Server = module.exports = function (port, basePath) {
