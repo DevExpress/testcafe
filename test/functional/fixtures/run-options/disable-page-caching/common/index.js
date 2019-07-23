@@ -2,7 +2,7 @@ import { ClientFunction, Role, Selector, t } from 'testcafe';
 
 const getPageLocation = ClientFunction(() => window.location.toString());
 
-const url = 'http://localhost:3000/fixtures/run-options/disable-page-caching/pages/index.html?maxAge=86400';
+const url = 'http://localhost:3000/fixtures/run-options/disable-page-caching/pages/index.html';
 
 const expectedRoleLastPageLocation = 'http://localhost:3000/fixtures/run-options/disable-page-caching/pages/third.html';
 
