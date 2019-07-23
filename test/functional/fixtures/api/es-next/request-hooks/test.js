@@ -51,6 +51,7 @@ describe('Request Hooks', () => {
                 });
         });
 
+        // NOTE: https://github.com/DevExpress/testcafe/issues/4058
         it.skip('Execution order', () => {
             return runTests('./testcafe-fixtures/api/execution-order.js', null, { only: 'chrome' });
         });
