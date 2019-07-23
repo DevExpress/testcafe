@@ -51,7 +51,7 @@ describe('Request Hooks', () => {
                 });
         });
 
-        it('Execution order', () => {
+        it.skip('Execution order', () => {
             return runTests('./testcafe-fixtures/api/execution-order.js', null, { only: 'chrome' });
         });
     });
