@@ -1,0 +1,9 @@
+An unhandled error occurred in a step with custom JS code:
+
+Test error
+
+1+1
+at 1:1
+
+Browser: Chrome 15.0.874 / Mac OS X 10.8.1
+Screenshot: /unix/path/with/<tag>

@@ -1,6 +1,6 @@
 import { PressKeyCommand } from '../../../../../lib/test-run/commands/actions';
 import { WaitCommand } from '../../../../../lib/test-run/commands/observation';
-import { ExecuteExpressionCommand } from '../../../../../src/test-run/commands/actions';
+import { ExecuteAsyncExpressionCommand, ExecuteExpressionCommand } from '../../../../../src/test-run/commands/actions';
 
 
 fixture `Test run commands queue`
@@ -47,6 +47,16 @@ test('Check driver task queue length (execute-expression command)', async t => {
         t.testRun.executeCommand(new ExecuteExpressionCommand({
             resultVariableName: 'el2',
             expression:         'Selector(\'div\')'
+        })),
+        t.testRun.executeCommand(new ExecuteAsyncExpressionCommand({
+            expression: 'return Selector(\'div\')'
+        })),
+        t.testRun.executeCommand(new ExecuteAsyncExpressionCommand({
+            expression: `
+                await t.click('#input1');
+                await t.click('#input2');
+                await t.click('#input3');
+            `
         }))
     ];
 

@@ -2,7 +2,7 @@ import SelectorBuilder from '../../../client-functions/selectors/selector-builde
 import { ActionSelectorError } from '../../../errors/test-run';
 import { APIError } from '../../../errors/runtime';
 import { ExecuteSelectorCommand } from '../observation';
-import executeJsExpression from '../../execute-js-expression';
+import { executeJsExpression } from '../../execute-js-expression';
 import { isJSExpression } from '../utils';
 
 export function initUploadSelector (name, val, initOptions) {

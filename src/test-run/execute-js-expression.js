@@ -1,63 +1,149 @@
-import { createContext, runInContext } from 'vm';
-import SelectorBuilder from '../client-functions/selectors/selector-builder';
-import ClientFunctionBuilder from '../client-functions/client-function-builder';
+import { runInContext, createContext } from 'vm';
+import Module from 'module';
+import { dirname } from 'path';
+import nanoid from 'nanoid';
+import { ExecuteAsyncExpressionError } from '../errors/test-run';
+import exportableLib from '../api/exportable-lib';
 
-const contextsInfo = [];
+const ERROR_LINE_COLUMN_REGEXP = /:(\d+):(\d+)/;
+const ERROR_LINE_OFFSET        = -1;
+const ERROR_COLUMN_OFFSET      = -4;
 
-function getContextInfo (testRun) {
-    let contextInfo = contextsInfo.find(info => info.testRun === testRun);
+const contexts = {};
 
-    if (!contextInfo) {
-        contextInfo = { testRun, context: createExecutionContext(testRun), options: {} };
-
-        contextsInfo.push(contextInfo);
-    }
-
-    return contextInfo;
+// NOTE: do not beautify this code since offsets for for error lines and columns are coded here
+function wrapInAsync (expression) {
+    return '(async function() {\n' +
+           expression + ';\n' +
+           '});';
 }
 
-function getContext (testRun, options = {}) {
-    const contextInfo = getContextInfo(testRun);
+function getErrorLineColumn (err) {
+    const result = err.stack.match(ERROR_LINE_COLUMN_REGEXP);
 
-    contextInfo.options = options;
+    const line   = parseInt(result[1], 10);
+    const column = parseInt(result[2], 10);
 
-    return contextInfo.context;
+    return { line, column };
 }
 
-function createExecutionContext (testRun) {
-    const sandbox = {
-        Selector: (fn, options = {}) => {
-            const { skipVisibilityCheck, collectionMode } = getContextInfo(testRun).options;
+function formatExpression (expression) {
+    const expresionMessage = expression.split('\n');
 
-            if (skipVisibilityCheck)
-                options.visibilityCheck = false;
+    return '[JS code]\n' + expresionMessage.map(str => {
+        return ' '.repeat(10) + str;
+    }).join('\n');
+}
 
-            if (testRun && testRun.id)
-                options.boundTestRun = testRun;
+function createRequire (filename) {
+    if (Module.createRequireFromPath)
+        return Module.createRequireFromPath(filename);
 
-            if (collectionMode)
-                options.collectionMode = collectionMode;
+    const dummyModule = new Module(filename, module);
 
-            const builder = new SelectorBuilder(fn, options, { instantiation: 'Selector' });
+    dummyModule.filename = filename;
+    dummyModule.paths    = [filename].concat(module.paths);
 
-            return builder.getFunction();
-        },
+    return id => dummyModule.require(id);
+}
 
-        ClientFunction: (fn, options = {}) => {
-            if (testRun && testRun.id)
-                options.boundTestRun = testRun;
+function createSelectorDefinition (testRun) {
+    return (fn, options = {}) => {
+        const { skipVisibilityCheck, collectionMode } = contexts[testRun.contextId].options;
 
-            const builder = new ClientFunctionBuilder(fn, options, { instantiation: 'ClientFunction' });
+        if (skipVisibilityCheck)
+            options.visibilityCheck = false;
 
-            return builder.getFunction();
-        }
+        if (testRun && testRun.id)
+            options.boundTestRun = testRun;
+
+        if (collectionMode)
+            options.collectionMode = collectionMode;
+
+        return exportableLib.Selector(fn, options);
+    };
+}
+
+function createClientFunctionDefinition (testRun) {
+    return (fn, options = {}) => {
+        if (testRun && testRun.id)
+            options.boundTestRun = testRun;
+
+        return exportableLib.ClientFunction(fn, options);
+    };
+}
+
+function getExecutingContext (testRun, options = {}) {
+    const contextId = testRun.contextId || nanoid(7);
+
+    if (!contexts[contextId])
+        contexts[contextId] = createExecutingContext(testRun);
+
+    contexts[contextId].options = options;
+    testRun.contextId           = contextId;
+
+    return contexts[contextId];
+}
+
+function createExecutingContext (testRun) {
+    const filename = testRun.test.testFile.filename;
+
+    const replacers = {
+        require:        createRequire(filename),
+        __filename:     filename,
+        __dirname:      dirname(filename),
+        t:              testRun.controller,
+        Selector:       createSelectorDefinition(testRun),
+        ClientFunction: createClientFunctionDefinition(testRun),
+        Role:           exportableLib.Role,
+        RequestLogger:  exportableLib.RequestLogger,
+        RequestMock:    exportableLib.RequestMock,
+        RequestHook:    exportableLib.RequestHook
     };
 
-    return createContext(sandbox);
+    return createContext(new Proxy(replacers, {
+        get: (target, property) => {
+            if (replacers.hasOwnProperty(property))
+                return replacers[property];
+
+            if (global.hasOwnProperty(property))
+                return global[property];
+
+            throw new Error(`${property} is not defined`);
+        }
+    }));
 }
 
-export default function (expression, testRun, options) {
-    const context = getContext(testRun, options);
-
-    return runInContext(expression, context, { displayErrors: false });
+function createErrorFormattingOptions (expression) {
+    return {
+        filename:     formatExpression(expression),
+        lineOffset:   ERROR_LINE_OFFSET,
+        columnOffset: ERROR_COLUMN_OFFSET
+    };
 }
+
+export function executeJsExpression (expression, testRun, options) {
+    const context      = getExecutingContext(testRun, options);
+    const errorOptions = createErrorFormattingOptions(expression);
+
+    return runInContext(expression, context, errorOptions);
+}
+
+export async function executeAsyncJsExpression (expression, testRun, callsite) {
+    const context      = getExecutingContext(testRun);
+    const errorOptions = createErrorFormattingOptions(expression);
+
+    try {
+        return await runInContext(wrapInAsync(expression), context, errorOptions)();
+    }
+    catch (err) {
+        if (err.isTestCafeError)
+            throw err;
+
+        const { line, column } = getErrorLineColumn(err);
+
+        throw new ExecuteAsyncExpressionError(err, expression, line, column, callsite);
+    }
+}
+
+

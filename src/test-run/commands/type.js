@@ -44,5 +44,6 @@ export default {
     testDone:                   'test-done',
     backupStorages:             'backup-storages',
     executeExpression:          'execute-expression',
+    executeAsyncExpression:     'execute-async-expression',
     unlockPage:                 'unlock-page'
 };

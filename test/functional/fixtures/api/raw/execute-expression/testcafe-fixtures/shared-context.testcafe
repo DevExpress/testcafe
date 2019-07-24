@@ -9,8 +9,7 @@
                     "commands": [
                         {
                             "type": "execute-expression",
-                            "expression": "ClientFunction(() => window.testData = 'test')()",
-                            "isAsyncExpression": true
+                            "expression": "ClientFunction(() => window.testData = 'test')()"
                         },
                         {
                             "type": "assertion",
@@ -45,8 +44,7 @@
                         },
                         {
                             "type": "execute-expression",
-                            "expression": "ClientFunction(new Function('window.testData =\"' + shared + '\"'))()",
-                            "isAsyncExpression": true
+                            "expression": "ClientFunction(new Function('window.testData =\"' + shared + '\"'))()"
                         },
                         {
                             "type": "assertion",
@@ -59,28 +57,6 @@
                             "assertionType": "eql",
                             "actual": { "type" : "js-expr", "value" : "shared" },
                             "expected": "initial value"
-                        }
-                    ]
-                },
-                {
-                    "name": "Store an execution result to a variable",
-                    "commands": [
-                        {
-                            "type": "execute-expression",
-                            "expression": "Selector('body').count",
-                            "isAsyncExpression": true,
-                            "resultVariableName": "bodyCount"
-                        },
-                        {
-                            "type": "execute-expression",
-                            "expression": "1+1",
-                            "resultVariableName": "simpleValue"
-                        },
-                        {
-                            "type": "assertion",
-                            "assertionType": "eql",
-                            "actual": { "type" : "js-expr", "value" : "simpleValue + bodyCount" },
-                            "expected": 3
                         }
                     ]
                 }
