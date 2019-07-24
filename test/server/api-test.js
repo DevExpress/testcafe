@@ -263,6 +263,33 @@ describe('API', function () {
                 });
         });
 
+        it('Should raise an error if "fixture.requestHooks" method calls several times', () => {
+            const testfile = resolve('test/server/data/test-suites/request-hooks/fixture-request-hooks-call-several-times.js');
+
+            return compile(testfile)
+                .then(() => {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(err => {
+                    assertAPIError(err, {
+                        stackTop: testfile,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 'You cannot call the "requestHooks" method more than once. Pass an array of parameters to this method instead.',
+
+                        callsite: '    3 |const logger1 = new RequestLogger();\n' +
+                                  '    4 |const logger2 = new RequestLogger();\n' +
+                                  '    5 |\n' +
+                                  '    6 |fixture `Fixture`\n' +
+                                  '    7 |    .requestHooks(logger1)\n' +
+                                  ' >  8 |    .requestHooks(logger2);\n' +
+                                  '    9 |\n' +
+                                  '   10 |test(\'test\', async t => {});\n' +
+                                  '   11 |'
+                    });
+                });
+        });
+
         it('Should collect meta data', function () {
             return compile('test/server/data/test-suites/meta/testfile.js')
                 .then(function (compiled) {
@@ -295,6 +322,52 @@ describe('API', function () {
                                   '   6 |    (\'Fixture1Test1\', async () => {\n' +
                                   '   7 |        // do nothing\n' +
                                   '   8 |    });'
+                    });
+                });
+        });
+
+        it('Should raise an error if "fixture.clientScripts" method takes a wrong argument', () => {
+            const testfile = resolve('test/server/data/test-suites/custom-client-scripts/fixture-client-scripts-has-wrong-type.js');
+
+            return compile(testfile)
+                .then(() => {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(err => {
+                    assertAPIError(err, {
+                        stackTop: testfile,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 'Client script is expected to be a string or a client script initializer, but it was number.',
+
+                        callsite: ' > 1 |fixture.clientScripts(8);\n' +
+                                  '   2 |\n' +
+                                  '   3 |test(\'test\', async t => {});\n' +
+                                  '   4 |'
+                    });
+                });
+        });
+
+        it('Should raise an error if "fixture.clientScripts" method calls several times', () => {
+            const testfile = resolve('test/server/data/test-suites/custom-client-scripts/fixture-client-scripts-call-several-times.js');
+
+            return compile(testfile)
+                .then(() => {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(err => {
+                    assertAPIError(err, {
+                        stackTop: testfile,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 'You cannot call the "clientScripts" method more than once. Pass an array of parameters to this method instead.',
+
+                        callsite: '   1 |fixture `Fixture`\n' +
+                                  '   2 |    .clientScripts(\'script1.js\')\n' +
+                                  ' > 3 |    .clientScripts(\'script2.js\');\n' +
+                                  '   4 |\n' +
+                                  '   5 |test(\'test\', async t => {});\n' +
+                                  '   6 |'
                     });
                 });
         });
@@ -447,6 +520,32 @@ describe('API', function () {
                 });
         });
 
+        it('Should raise an error if "test.requestHooks" method calls several times', () => {
+            const testfile = resolve('test/server/data/test-suites/request-hooks/test-request-hooks-call-several-times.js');
+
+            return compile(testfile)
+                .then(() => {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(err => {
+                    assertAPIError(err, {
+                        stackTop: testfile,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 'You cannot call the "requestHooks" method more than once. Pass an array of parameters to this method instead.',
+
+                        callsite: '    5 |\n' +
+                                  '    6 |fixture `Fixture`;\n' +
+                                  '    7 |\n' +
+                                  '    8 |test\n' +
+                                  '    9 |    .requestHooks(logger1)\n' +
+                                  ' > 10 |    .requestHooks(logger2)\n' +
+                                  '   11 |    (\'test\', async t => {});\n' +
+                                  '   12 |'
+                    });
+                });
+        });
+
         it('Should collect meta data', function () {
             return compile('test/server/data/test-suites/meta/testfile.js')
                 .then(function (compiled) {
@@ -502,6 +601,54 @@ describe('API', function () {
                                   ' > 3 |test(\'Test\', () => {\n' +
                                   '   4 |    return \'yo\';\n' +
                                   '   5 |});'
+                    });
+                });
+        });
+
+        it('Should raise an error if "test.clientScripts" method takes a wrong argument', () => {
+            const testfile = resolve('test/server/data/test-suites/custom-client-scripts/test-client-scripts-has-wrong-type.js');
+
+            return compile(testfile)
+                .then(() => {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(err => {
+                    assertAPIError(err, {
+                        stackTop: testfile,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 'Client script is expected to be a string or a client script initializer, but it was number.',
+
+                        callsite: '   1 |fixture `Fixture`;\n' +
+                                  '   2 |\n' +
+                                  '   3 |test\n' +
+                                  ' > 4 |    .clientScripts(8)\n' +
+                                  '   5 |    (\'test\', async t => {});'
+                    });
+                });
+        });
+
+        it('Should raise an error if "test.clientScripts" method calls several times', () => {
+            const testfile = resolve('test/server/data/test-suites/custom-client-scripts/test-client-scripts-call-several-times.js');
+
+            return compile(testfile)
+                .then(() => {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(err => {
+                    assertAPIError(err, {
+                        stackTop: testfile,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 'You cannot call the "clientScripts" method more than once. Pass an array of parameters to this method instead.',
+
+                        callsite: '   1 |fixture `Fixture`;\n' +
+                                  '   2 |\n' +
+                                  '   3 |test\n' +
+                                  '   4 |    .clientScripts(\'script1.js\')\n' +
+                                  ' > 5 |    .clientScripts(\'script2.js\')\n' +
+                                  '   6 |    (\'test\', async t => {});\n' +
+                                  '   7 |'
                     });
                 });
         });

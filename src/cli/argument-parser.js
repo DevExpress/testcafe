@@ -97,10 +97,15 @@ export default class CLIArgumentParser {
             .option('--qr-code', 'outputs QR-code that repeats URLs used to connect the remote browsers')
             .option('--sf, --stop-on-first-fail', 'stop an entire test run if any test fails')
             .option('--ts-config-path <path>', 'use a custom TypeScript configuration file and specify its location')
+            .option('--cs, --client-scripts <paths>', 'inject scripts into tested pages', this._parseList, [])
 
             // NOTE: these options will be handled by chalk internally
             .option('--color', 'force colors in command line')
             .option('--no-color', 'disable colors in command line');
+    }
+
+    _parseList (val) {
+        return val.split(',');
     }
 
     _filterAndCountRemotes (browser) {

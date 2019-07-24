@@ -1549,12 +1549,19 @@ interface Assertion<E = any> {
 
 }
 
+// Custom Client Scripts
+interface ClientScript {
+    content?: string;
+    path?: string;
+    page?: any;
+}
+
 interface TestCafe {
     /**
      * Creates the test runner that is used to configure and launch test tasks.
      */
     createRunner(): Runner;
-    
+
     /**
      * Creates the live mode test runner that is used to configure and launch test tasks.
      */
@@ -1666,6 +1673,13 @@ interface Runner {
      * @param bypassRules - A set of rules that specify which resources are accessed bypassing the proxy.
      */
     useProxy(host: string, bypassRules?: string | string[]): this;
+
+    /**
+     * Injects scripts into pages visited during the test execution.
+     *
+     * @param scripts - Scripts that should be added to the tested pages.
+    */
+    clientScripts (scripts: ClientScript | ClientScript[]): this;
 
     /**
      * Runs tests according to the current configuration. Returns the number of failed tests.

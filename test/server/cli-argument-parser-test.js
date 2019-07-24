@@ -495,6 +495,15 @@ describe('CLI argument parser', function () {
         });
     });
 
+    it('Client scripts', () => {
+        return parse('--client-scripts asserts/jquery.js,mockDate.js')
+            .then(parser => {
+                expect(parser.opts.clientScripts).eql([
+                    'asserts/jquery.js',
+                    'mockDate.js'
+                ]);
+            });
+    });
 
     it('Should parse reporters and their output file paths and ensure they exist', function () {
         const cwd      = process.cwd();
@@ -574,7 +583,8 @@ describe('CLI argument parser', function () {
             { long: '--video' },
             { long: '--video-options' },
             { long: '--video-encoding-options' },
-            { long: '--ts-config-path' }
+            { long: '--ts-config-path' },
+            { long: '--client-scripts', short: '--cs' }
         ];
 
         const parser  = new CliArgumentParser('');

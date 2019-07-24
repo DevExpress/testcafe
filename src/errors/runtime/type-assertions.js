@@ -84,6 +84,11 @@ export const is = {
     requestHookSubclass: {
         name:      'RequestHook subclass',
         predicate: value => value instanceof RequestHook && value.constructor && value.constructor !== RequestHook
+    },
+
+    clientScriptInitializer: {
+        name:      'client script initializer',
+        predicate: value => typeof value === 'object' && ['path', 'content', 'module'].some(prop => value && prop in value)
     }
 };
 

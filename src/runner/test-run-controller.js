@@ -154,6 +154,10 @@ export default class TestRunController extends AsyncEventEmitter {
         await this.emit('test-run-done');
     }
 
+    async _emitTestRunStart () {
+        await this.emit('test-run-start');
+    }
+
     async _testRunBeforeDone () {
         let raiseEvent = !this.quarantine;
 
@@ -195,9 +199,7 @@ export default class TestRunController extends AsyncEventEmitter {
             return null;
         }
 
-        testRun.once('start', async () => {
-            await this.emit('test-run-start');
-        });
+        testRun.once('start', async () => this._emitTestRunStart());
         testRun.once('ready', async () => {
             if (!this.quarantine || this._isFirstQuarantineAttempt())
                 await this.emit('test-run-ready');

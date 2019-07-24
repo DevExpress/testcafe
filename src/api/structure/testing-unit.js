@@ -2,7 +2,8 @@ import { assertUrl, resolvePageUrl } from '../test-page-url';
 import handleTagArgs from '../../utils/handle-tag-args';
 import { delegateAPI, getDelegatedAPIList } from '../../utils/delegated-api';
 import { assertType, is } from '../../errors/runtime/type-assertions';
-
+import FlagList from '../../utils/flag-list';
+import OPTION_NAMES from '../../configuration/option-names';
 
 export default class TestingUnit {
     constructor (testFile, unitTypeName) {
@@ -15,8 +16,12 @@ export default class TestingUnit {
         this.meta            = {};
         this.only            = false;
         this.skip            = false;
+        this.requestHooks    = [];
+        this.clientScripts   = [];
 
         this.disablePageReloads = void 0;
+
+        this.apiMethodWasCalled = new FlagList([OPTION_NAMES.clientScripts, OPTION_NAMES.requestHooks]);
 
         const unit = this;
 

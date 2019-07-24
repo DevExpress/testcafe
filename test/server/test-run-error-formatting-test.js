@@ -68,7 +68,9 @@ const {
     RoleSwitchInRoleInitializerError,
     ActionRoleArgumentError,
     RequestHookNotImplementedMethodError,
-    RequestHookUnhandledError
+    RequestHookUnhandledError,
+    UncaughtErrorInCustomClientScriptCode,
+    UncaughtErrorInCustomClientScriptLoadedFromModule
 } = require('../../lib/errors/test-run');
 
 const { createSimpleTestStream }                         = require('../functional/utils/stream');
@@ -373,6 +375,14 @@ describe('Error formatting', () => {
 
         it('Should format "requestHookUnhandledError"', () => {
             assertErrorMessage('request-hook-unhandled-error', new RequestHookUnhandledError(new Error('Test error'), 'MyHook', 'onRequest'));
+        });
+
+        it('Should format "uncaughtErrorInCustomClientScriptCode"', () => {
+            assertErrorMessage('uncaughtErrorInCustomClientScriptCode', new UncaughtErrorInCustomClientScriptCode(new TypeError('Cannot read property "prop" of undefined')));
+        });
+
+        it('Should format "uncaughtErrorInCustomClientScriptCodeLoadedFromModule"', () => {
+            assertErrorMessage('uncaughtErrorInCustomClientScriptCodeLoadedFromModule', new UncaughtErrorInCustomClientScriptLoadedFromModule(new TypeError('Cannot read property "prop" of undefined'), 'test-module'));
         });
     });
 

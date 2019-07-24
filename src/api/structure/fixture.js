@@ -3,8 +3,12 @@ import handleTagArgs from '../../utils/handle-tag-args';
 import TestingUnit from './testing-unit';
 import wrapTestFunction from '../wrap-test-function';
 import assertRequestHookType from '../request-hooks/assert-type';
+import assertClientScriptType from '../../custom-client-scripts/assert-type';
 import { flattenDeep as flatten } from 'lodash';
 import { SPECIAL_BLANK_PAGE } from 'testcafe-hammerhead';
+import { APIError } from '../../errors/runtime';
+import OPTION_NAMES from '../../configuration/option-names';
+import { RUNTIME_ERRORS } from '../../errors/types';
 
 export default class Fixture extends TestingUnit {
     constructor (testFile) {
@@ -19,8 +23,6 @@ export default class Fixture extends TestingUnit {
 
         this.beforeFn = null;
         this.afterFn  = null;
-
-        this.requestHooks = [];
 
         return this.apiOrigin;
     }
@@ -69,11 +71,31 @@ export default class Fixture extends TestingUnit {
     }
 
     _requestHooks$ (...hooks) {
+        if (this.apiMethodWasCalled.requestHooks)
+            throw new APIError(OPTION_NAMES.requestHooks, RUNTIME_ERRORS.multipleAPIMethodCallForbidden, OPTION_NAMES.requestHooks);
+
         hooks = flatten(hooks);
 
         assertRequestHookType(hooks);
 
         this.requestHooks = hooks;
+
+        this.apiMethodWasCalled.requestHooks = true;
+
+        return this.apiOrigin;
+    }
+
+    _clientScripts$ (...scripts) {
+        if (this.apiMethodWasCalled.clientScripts)
+            throw new APIError(OPTION_NAMES.clientScripts, RUNTIME_ERRORS.multipleAPIMethodCallForbidden, OPTION_NAMES.clientScripts);
+
+        scripts = flatten(scripts);
+
+        assertClientScriptType(scripts);
+
+        this.clientScripts = scripts;
+
+        this.apiMethodWasCalled.clientScripts = true;
 
         return this.apiOrigin;
     }

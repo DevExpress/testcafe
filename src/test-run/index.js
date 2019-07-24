@@ -28,6 +28,10 @@ import WarningLog from '../notifications/warning-log';
 import WARNING_MESSAGE from '../notifications/warning-message';
 import { StateSnapshot, SPECIAL_ERROR_PAGE } from 'testcafe-hammerhead';
 import { NavigateToCommand } from './commands/actions';
+import * as INJECTABLES from '../assets/injectables';
+import { findProblematicScripts } from '../custom-client-scripts/utils';
+import getCustomClientScriptUrl from '../custom-client-scripts/get-url';
+import { getPluralSuffix, getConcatenatedValuesString } from '../utils/string';
 
 import {
     isCommandRejectableByPageError,
@@ -119,15 +123,34 @@ export default class TestRun extends AsyncEventEmitter {
 
         this.quarantine = null;
 
-        this.injectable.scripts.push('/testcafe-core.js');
-        this.injectable.scripts.push('/testcafe-ui.js');
-        this.injectable.scripts.push('/testcafe-automation.js');
-        this.injectable.scripts.push('/testcafe-driver.js');
-        this.injectable.styles.push('/testcafe-ui-styles.css');
-
-        this.requestHooks = Array.from(this.test.requestHooks);
-
+        this._addInjectables();
         this._initRequestHooks();
+    }
+
+    _addClientScriptContentWarningsIfNecessary () {
+        const { empty, duplicatedContent } = findProblematicScripts(this.test.clientScripts);
+
+        if (empty.length)
+            this.warningLog.addWarning(WARNING_MESSAGE.clientScriptsWithEmptyContent);
+
+        if (duplicatedContent.length) {
+            const suffix                            = getPluralSuffix(duplicatedContent);
+            const duplicatedContentClientScriptsStr = getConcatenatedValuesString(duplicatedContent, ',\n ');
+
+            this.warningLog.addWarning(WARNING_MESSAGE.clientScriptsWithDuplicatedContent, suffix, duplicatedContentClientScriptsStr);
+        }
+    }
+
+    _addInjectables () {
+        this._addClientScriptContentWarningsIfNecessary();
+        this.injectable.scripts.push(...INJECTABLES.SCRIPTS);
+        this.injectable.userScripts.push(...this.test.clientScripts.map(script => {
+            return {
+                url:  getCustomClientScriptUrl(script),
+                page: script.page
+            };
+        }));
+        this.injectable.styles.push(INJECTABLES.TESTCAFE_UI_STYLES);
     }
 
     get id () {
@@ -193,6 +216,8 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     _initRequestHooks () {
+        this.requestHooks = Array.from(this.test.requestHooks);
+
         this.requestHooks.forEach(hook => this._initRequestHook(hook));
     }
 

@@ -11,6 +11,7 @@ const AsyncEventEmitter   = require('../../lib/utils/async-event-emitter');
 const delay               = require('../../lib/utils/delay');
 
 class TaskMock extends AsyncEventEmitter {
+    unRegisterClientScriptRouting () {}
 }
 
 class BrowserSetMock extends EventEmitter {

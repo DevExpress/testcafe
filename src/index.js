@@ -4,6 +4,7 @@ import { RUNTIME_ERRORS } from './errors/types';
 import embeddingUtils from './embedding-utils';
 import exportableLib from './api/exportable-lib';
 import TestCafeConfiguration from './configuration/testcafe-configuration';
+import OPTION_NAMES from './configuration/option-names';
 
 const lazyRequire   = require('import-lazy')(require);
 const TestCafe      = lazyRequire('./testcafe');
@@ -51,9 +52,9 @@ async function createTestCafe (hostname, port1, port2, sslOptions, developmentMo
     });
 
     [hostname, port1, port2] = await Promise.all([
-        getValidHostname(configuration.getOption('hostname')),
-        getValidPort(configuration.getOption('port1')),
-        getValidPort(configuration.getOption('port2'))
+        getValidHostname(configuration.getOption(OPTION_NAMES.hostname)),
+        getValidPort(configuration.getOption(OPTION_NAMES.port1)),
+        getValidPort(configuration.getOption(OPTION_NAMES.port2))
     ]);
 
     configuration.mergeOptions({ hostname, port1, port2 });

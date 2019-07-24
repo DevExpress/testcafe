@@ -293,5 +293,18 @@ export default {
         An unhandled error occurred in the "${err.methodName}" method of the "${err.hookClassName}" class:
         
         ${escapeHtml(err.errMsg)}
+    `),
+
+    [TEST_RUN_ERRORS.uncaughtErrorInCustomClientScriptCode]: err => markup(err, `
+        An error occurred in a script injected into the tested page:
+
+        ${escapeHtml(err.errMsg)}   
+    `),
+
+    [TEST_RUN_ERRORS.uncaughtErrorInCustomClientScriptCodeLoadedFromModule]: err => markup(err, `
+        An error occurred in the '${err.moduleName}' module injected into the tested page. Make sure that this module can be executed in the browser environment.
+
+        Error details:
+        ${escapeHtml(err.errMsg)}
     `)
 };
