@@ -51,7 +51,7 @@ export default class SessionController extends Session {
             this.pendingStateSnapshot = pendingStateSnapshot;
     }
     // API
-    static getSession (testRun, disablePageCaching) {
+    static getSession (testRun) {
         let sessionInfo = ACTIVE_SESSIONS_MAP[testRun.browserConnection.id];
 
         if (!sessionInfo || !testRun.disablePageReloads) {
@@ -68,7 +68,7 @@ export default class SessionController extends Session {
                 session.currentTestRun = testRun;
             }
 
-            session.disablePageCaching = !!disablePageCaching;
+            session.disablePageCaching = testRun.disablePageCaching;
 
             sessionInfo = {
                 session: session,
