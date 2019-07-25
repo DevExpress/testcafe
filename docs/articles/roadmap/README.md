@@ -40,5 +40,5 @@ Feature                                                                         
 
 Feature                                                                                           | Status
 ------------------------------------------------------------------------------------------------- | -------------------
-[Custom TypeScript Compilation Options](https://github.com/DevExpress/testcafe/issues/1845)       | **In Progress**
+[Custom TypeScript Compilation Options](https://github.com/DevExpress/testcafe/issues/1845)       | **Implemented**
 [Cucumber Integration](https://github.com/DevExpress/testcafe/issues/2835)                        | Under Consideration
