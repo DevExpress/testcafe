@@ -35,8 +35,18 @@ describe('[Raw API] Code steps', function () {
     it('Errors on page', function () {
         return runTests('./testcafe-fixtures/code-steps.testcafe', 'Errors on page', { shouldFail: true })
             .catch(err => {
-                Object.values(err).forEach(e => {
-                    expect(e[0]).contains('A JavaScript error occurred');
+                const errs = [];
+
+                if (Array.isArray(err))
+                    errs.push(err[0]);
+                else {
+                    Object.values(err).forEach(e => {
+                        errs.push(e[0]);
+                    });
+                }
+
+                errs.forEach(e => {
+                    expect(e).contains('A JavaScript error occurred');
                 });
             });
     });
