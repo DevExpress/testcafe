@@ -87,8 +87,9 @@ export default class TestRun extends AsyncEventEmitter {
         this.pageLoadTimeout      = this.opts.pageLoadTimeout;
 
         this.disablePageReloads = test.disablePageReloads || opts.disablePageReloads && test.disablePageReloads !== false;
+        this.disablePageCaching = test.disablePageCaching || opts.disablePageCaching;
 
-        this.session = SessionController.getSession(this, test.disablePageCaching || opts.disablePageCaching);
+        this.session = SessionController.getSession(this);
 
         this.consoleMessages = new BrowserConsoleMessages();
 
