@@ -79,6 +79,14 @@
                     "expression": "await t.click('non-existing-selector');",
                     "callsite": "1"
                 }]
+            },
+            {
+                "name": "Errors on page",
+                "commands": [{
+                    "type": "execute-async-expression",
+                    "expression": "await t.click('div');",
+                    "callsite": "1"
+                }]
             }
         ]
     }]

@@ -30,4 +30,14 @@ describe('[Raw API] Code steps', function () {
                 expect(err[0]).contains('> | Selector(\'non-existing-selector\')');
             });
     });
+
+
+    it('Errors on page', function () {
+        return runTests('./testcafe-fixtures/code-steps.testcafe', 'Errors on page', { shouldFail: true })
+            .catch(err => {
+                Object.values(err).forEach(e => {
+                    expect(e[0]).contains('A JavaScript error occurred');
+                });
+            });
+    });
 });
