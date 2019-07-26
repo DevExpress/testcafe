@@ -169,3 +169,19 @@ test('My test', async t => {
 ```
 
 **Default value**: `false`
+
+## Troubleshooting
+
+### Local Storage Values Set in the Role Code Are Lost
+
+When TestCafe runs actions in a role, it saves browser's local storages on the server and resets their previous state at every new page. As a result, the local storage values you set in role code do not persist on the next pages in this role.
+
+If you need to keep these local storage values between pages, you can disable page caching. Note that this slows down the test execution.
+
+Use the [fixture.disablePageCaching](../test-code-structure.md#disable-page-caching) and [test.disablePageCaching](../test-code-structure.md#disable-page-caching) methods to disable caching during a particular fixture or test.
+
+To disable page caching during the entire test run, use either of the following:
+
+* the [--disable-page-caching](../../using-testcafe/command-line-interface.md#--disable-page-caching) command line flag
+* the `disablePageCaching` option in the [runner.run](../../using-testcafe/programming-interface/runner.md#run) method
+* the [disablePageCaching](../../using-testcafe/configuration-file.md#disablepagecaching) configuration file option

@@ -635,9 +635,9 @@ See [Inject Scripts into Tested Pages](../using-testcafe/common-concepts/inject-
 
 ## Disable Page Caching
 
-The browser's local storage is not preserved between [role](authentication/user-roles.md) actions and the rest of the test code due to page caching. You need to disable page caching to share the local storage content.
+Local storage values are reset between page loads in [role code](authentication/user-roles.md) due to page caching. See [Troubleshooting: Local Storage Values Set in the Role Code Are Lost](authentication/user-roles.md#local-storage-values-set-in-the-role-code-are-lost) for more information.
 
-Use the `fixture.disablePageCaching` and `test.disablePageCaching` methods to disable caching during a particular fixture or test.
+You can disable page caching to prevent this. Use the `fixture.disablePageCaching` and `test.disablePageCaching` methods to disable caching during a particular fixture or test.
 
 ```text
 fixture.disablePageCaching
