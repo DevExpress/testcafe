@@ -11,7 +11,7 @@ const ERROR_COLUMN_OFFSET      = -4;
 
 const contexts = {};
 
-// NOTE: do not beautify this code since offsets for for error lines and columns are coded here
+// NOTE: do not beautify this code since offsets for error lines and columns are coded here
 function wrapInAsync (expression) {
     return '(async function() {\n' +
            expression + ';\n' +
