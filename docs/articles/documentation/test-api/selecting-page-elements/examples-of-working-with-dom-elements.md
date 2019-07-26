@@ -10,6 +10,7 @@ This document shows how to work with DOM elements in frequent real-world situati
 * [Access Page Element Properties](#access-page-element-properties)
 * [Get a Page Element Using Custom Logic](#get-a-page-element-using-custom-logic)
 * [Access Child Nodes in the DOM Hierarchy](#access-child-nodes-in-the-dom-hierarchy)
+* [Access Shadow DOM](#access-shadow-dom)
 * [Check if an Element is Available](#check-if-an-element-is-available)
 * [Enumerate Elements Identified by a Selector](#enumerate-elements-identified-by-a-selector)
 
@@ -156,7 +157,7 @@ test('My Test', async t => {
 });
 ```
 
-## Access Shadow UI
+## Access Shadow DOM
 
 CSS selectors passed to the [Selector](selectors/creating-selectors.md) constructor cannot identify elements in the shadow DOM.
 

@@ -101,10 +101,8 @@ fixture `Get sale amount`
     });
 
 test('My test', async t => {
-    const salesAmount = await getSalesAmount();
-
     await t
-        .expect(salesAmount).eql([
+        .expect(getSalesAmount()).eql([
             { sales: '$6,370', customer: 'Renewable Supplies' },
             { sales: '$4,530', customer: 'Apollo Inc' },
             { sales: '$1,110', customer: 'Johnson & Assoc' },
