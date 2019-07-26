@@ -302,6 +302,8 @@ runner.clientScripts({
 }
 ```
 
+> If the target page redirects to a different URL, ensure that the `page` property matches the destination URL. Otherwise, scripts are not injected.
+
 ### Specify Multiple Scripts
 
 You can pass multiple arguments or an array to the `clientScripts` methods:
