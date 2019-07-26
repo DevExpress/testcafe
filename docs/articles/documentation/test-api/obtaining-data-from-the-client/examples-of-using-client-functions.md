@@ -9,7 +9,6 @@ This topic describes examples of using client functions in tests.
 
 * [Checking a Page URL](#checking-a-page-url)
 * [Obtaining a Browser Alias Within a Test](#obtaining-a-browser-alias-within-a-test)
-* [Injecting External Libraries into a Page from a Test](#injecting-external-libraries-into-a-page-from-a-test)
 * [Accessing Child Nodes in the DOM Hierarchy](#accessing-child-nodes-in-the-dom-hierarchy)
 * [Complex DOM Queries](#complex-dom-queries)
 
@@ -69,32 +68,6 @@ test('My test', async t => {
         //Test logic for Safari
         console.log('The browser is Safari');
     }
-});
-```
-
-## Injecting External Libraries into a Page from a Test
-
-Another example is using client functions to inject external libraries like [jQuery](https://jquery.com/) into a tested page.
-
-To work with jQuery from a test, you first need to place the jQuery library file in the test directory. After that, add the library's code to the tested page using the `eval` method and use jQuery in the test within a client function. The following sample demonstrates this.
-
-```js
-import { ClientFunction } from 'testcafe';
-import fs from 'fs';
-
-fixture `My fixture`
-    .page `http://devexpress.github.io/testcafe/example/`;
-
-test('My test', async t => {
-    // Adds jQuery code to the page
-    await t.eval(new Function(fs.readFileSync('./jquery.js').toString()));
-
-    const getElementText = ClientFunction(() => {
-        // Uses the jQuery selector
-        return $('div.column.col-2').find('legend').eq(0).text();
-    });
-
-    await t.expect(getElementText()).contains('What is your primary Operating System');
 });
 ```
 
