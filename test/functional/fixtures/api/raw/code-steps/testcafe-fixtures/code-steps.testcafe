@@ -1,0 +1,93 @@
+{
+    "fixtures": [{
+        "name": "Code steps",
+        "pageUrl": "http://localhost:3000/fixtures/api/raw/code-steps/pages/index.html",
+        "tests": [{
+                "name": "Selectors",
+                "commands": [{
+                        "type": "execute-expression",
+                        "studio": {
+                            "expressionCommandType": "define-function"
+                        },
+                        "resultVariableName": "IsButtonClicked",
+                        "expression": "ClientFunction(() => { return window.clicked; })"
+                    },
+                    {
+                        "type": "execute-async-expression",
+                        "expression": "await t.click(Selector('button'));"
+                    },
+                    {
+                        "type": "assertion",
+                        "studio": {
+                            "assertionMode": "checkFunction",
+                            "selectorType": "Function",
+                            "selectors": [],
+                            "selectorPostfix": ""
+                        },
+                        "assertionType": "eql",
+                        "actual": {
+                            "type": "js-expr",
+                            "value": "IsButtonClicked()"
+                        },
+                        "options": {},
+                        "expected": {
+                            "type": "js-expr",
+                            "value": "true"
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "Shared context",
+                "commands": [{
+                        "type": "execute-async-expression",
+                        "expression": "t.ctx.customProp = 1;"
+                    },
+                    {
+                        "type": "execute-async-expression",
+                        "expression": "await t.expect(t.ctx.customProp).eql(1);"
+                    }
+                ]
+            },
+            {
+                "name": "Require",
+                "commands": [{
+                        "type": "execute-async-expression",
+                        "expression": "value = require('./module').CUSTOM_VALUE;",
+                        "callsite": "1"
+                    },
+                    {
+                        "type": "execute-async-expression",
+                        "expression": "await t.expect(value).eql(123);",
+                        "callsite": "2"
+                    }
+                ]
+            },
+            {
+                "name": "Error",
+                "commands": [{
+                        "type": "execute-async-expression",
+                        "expression": "const q = 1;\nq = 2;",
+                        "callsite": "1"
+                    }
+                ]
+            },
+            {
+                "name": "Selector not found error",
+                "commands": [{
+                    "type": "execute-async-expression",
+                    "expression": "await t.click('non-existing-selector');",
+                    "callsite": "1"
+                }]
+            },
+            {
+                "name": "Errors on page",
+                "commands": [{
+                    "type": "execute-async-expression",
+                    "expression": "await t.click('div');",
+                    "callsite": "1"
+                }]
+            }
+        ]
+    }]
+}

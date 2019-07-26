@@ -4,9 +4,17 @@ const createCommandFromObject = require('../../lib/test-run/commands/from-object
 const SelectorBuilder         = require('../../lib/client-functions/selectors/selector-builder');
 const assertThrow             = require('./helpers/assert-error').assertThrow;
 
+const testRunMock = {
+    test: {
+        testFile: {
+            filename: ''
+        }
+    }
+};
+
 function createCommand (obj) {
     try {
-        return createCommandFromObject(obj, {});
+        return createCommandFromObject(obj, testRunMock);
     }
     catch (e) {
         // TODO: add an assertion for APIError
@@ -1082,7 +1090,6 @@ describe('Test run commands', () => {
                 type: TYPE.executeExpression,
 
                 expression:         'js-expression',
-                isAsyncExpression:  true,
                 resultVariableName: 'variable'
             };
 
@@ -1092,7 +1099,6 @@ describe('Test run commands', () => {
                 type: TYPE.executeExpression,
 
                 expression:         'js-expression',
-                isAsyncExpression:  true,
                 resultVariableName: 'variable'
             });
 
@@ -1107,7 +1113,6 @@ describe('Test run commands', () => {
                 type: TYPE.executeExpression,
 
                 expression:         'js-expression',
-                isAsyncExpression:  false,
                 resultVariableName: null
             });
         });
@@ -2915,26 +2920,8 @@ describe('Test run commands', () => {
             assertThrow(
                 function () {
                     return createCommand({
-                        type:              TYPE.executeExpression,
-                        expression:        'js-expression',
-                        isAsyncExpression: 123
-                    });
-                },
-                {
-                    isTestCafeError: true,
-                    code:            'E15',
-                    actualValue:     'number',
-                    argumentName:    'isAsyncExpression',
-                    callsite:        null
-                }
-            );
-
-            assertThrow(
-                function () {
-                    return createCommand({
                         type:               TYPE.executeExpression,
                         expression:         'js-expression',
-                        isAsyncExpression:  true,
                         resultVariableName: 123
                     });
                 },
@@ -2952,7 +2939,6 @@ describe('Test run commands', () => {
                     return createCommand({
                         type:               TYPE.executeExpression,
                         expression:         'js-expression',
-                        isAsyncExpression:  true,
                         resultVariableName: ''
                     });
                 },
@@ -2961,6 +2947,55 @@ describe('Test run commands', () => {
                     code:            'E16',
                     argumentName:    'resultVariableName',
                     actualValue:     '""',
+                    callsite:        null
+                }
+            );
+        });
+
+        it('Should validate ExecuteAsyncExpressionСommand', function () {
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type: TYPE.executeAsyncExpression
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    code:            'E16',
+                    argumentName:    'expression',
+                    actualValue:     'undefined',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:       TYPE.executeAsyncExpression,
+                        expression: ''
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    code:            'E16',
+                    argumentName:    'expression',
+                    actualValue:     '""',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:       TYPE.executeAsyncExpression,
+                        expression: 123
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    code:            'E16',
+                    argumentName:    'expression',
+                    actualValue:     'number',
                     callsite:        null
                 }
             );

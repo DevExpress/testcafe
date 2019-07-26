@@ -70,10 +70,11 @@ const {
     RequestHookNotImplementedMethodError,
     RequestHookUnhandledError,
     UncaughtErrorInCustomClientScriptCode,
-    UncaughtErrorInCustomClientScriptLoadedFromModule
+    UncaughtErrorInCustomClientScriptLoadedFromModule,
+    ExecuteAsyncExpressionError
 } = require('../../lib/errors/test-run');
 
-const { createSimpleTestStream }                         = require('../functional/utils/stream');
+const { createSimpleTestStream } = require('../functional/utils/stream');
 
 const TEST_FILE_STACK_ENTRY_RE = new RegExp('\\s*\\n?\\(' + escapeRegExp(require.resolve('./data/test-callsite')), 'g');
 
@@ -383,6 +384,10 @@ describe('Error formatting', () => {
 
         it('Should format "uncaughtErrorInCustomClientScriptCodeLoadedFromModule"', () => {
             assertErrorMessage('uncaughtErrorInCustomClientScriptCodeLoadedFromModule', new UncaughtErrorInCustomClientScriptLoadedFromModule(new TypeError('Cannot read property "prop" of undefined'), 'test-module'));
+        });
+
+        it('Should format "executeAsyncExpressionError"', () => {
+            assertErrorMessage('execute-js-expression-error', new ExecuteAsyncExpressionError(new Error('Test error'), '1+1', 1, 1, 1));
         });
     });
 

@@ -5,7 +5,7 @@ import functionBuilderSymbol from '../../client-functions/builder-symbol';
 import CommandBase from './base';
 import { ActionOptions, ClickOptions, MouseOptions, TypeOptions, DragToElementOptions } from './options';
 import { initSelector, initUploadSelector } from './validations/initializers';
-import executeJsExpression from '../execute-js-expression';
+import { executeJsExpression } from '../execute-js-expression';
 import { isJSExpression } from './utils';
 
 import {
@@ -109,8 +109,19 @@ export class ExecuteExpressionCommand extends CommandBase {
     _getAssignableProperties () {
         return [
             { name: 'expression', type: nonEmptyStringArgument, required: true },
-            { name: 'resultVariableName', type: nonEmptyStringArgument, defaultValue: null },
-            { name: 'isAsyncExpression', type: booleanArgument, defaultValue: false }
+            { name: 'resultVariableName', type: nonEmptyStringArgument, defaultValue: null }
+        ];
+    }
+}
+
+export class ExecuteAsyncExpressionCommand extends CommandBase {
+    constructor (obj, testRun) {
+        super(obj, testRun, TYPE.executeAsyncExpression);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'expression', type: nonEmptyStringArgument, required: true }
         ];
     }
 }

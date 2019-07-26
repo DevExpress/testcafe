@@ -437,6 +437,19 @@ export class ActionInvalidScrollTargetError extends TestRunErrorBase {
     }
 }
 
+export class ExecuteAsyncExpressionError extends TestRunErrorBase {
+    constructor (err, expression, line, column, callsite) {
+        super(TEST_RUN_ERRORS.executeAsyncExpressionError);
+
+        this.errMsg     = err.message;
+        this.callsite   = callsite;
+        this.errStack   = err.stack;
+        this.expression = expression;
+        this.line       = line;
+        this.column     = column;
+    }
+}
+
 export class WindowDimensionsOverflowError extends TestRunErrorBase {
     constructor (callsite) {
         super(TEST_RUN_ERRORS.windowDimensionsOverflowError);
@@ -564,6 +577,5 @@ export class RequestHookNotImplementedMethodError extends TestRunErrorBase {
         this.methodName    = methodName;
         this.hookClassName = hookClassName;
     }
-
 }
 

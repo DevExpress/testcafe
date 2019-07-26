@@ -79,5 +79,6 @@ export function isExecutableOnClientCommand (command) {
            command.type !== TYPE.debug &&
            command.type !== TYPE.useRole &&
            command.type !== TYPE.assertion &&
-           command.type !== TYPE.executeExpression;
+           command.type !== TYPE.executeExpression &&
+           command.type !== TYPE.executeAsyncExpression;
 }

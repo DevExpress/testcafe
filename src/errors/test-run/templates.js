@@ -306,5 +306,14 @@ export default {
 
         Error details:
         ${escapeHtml(err.errMsg)}
+    `),
+
+    [TEST_RUN_ERRORS.executeAsyncExpressionError]: err => markup(err, `
+        An unhandled error occurred in a step with custom JS code:
+        
+        ${escapeHtml(err.errMsg)}
+        
+        ${escapeHtml(err.expression)}
+        at ${err.line}:${err.column}
     `)
 };

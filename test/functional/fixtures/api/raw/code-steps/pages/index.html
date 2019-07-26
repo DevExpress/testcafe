@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Code steps</title>
+</head>
+<body>
+    <button>Click me</button>
+    <div>Click me</div>
+
+    <script>
+        var button = document.querySelector('button');
+        var div    = document.querySelector('div');
+
+        button.addEventListener('click', function () {
+            window.clicked = true;
+        });
+
+        div.addEventListener('click', function () {
+           throw new Error('error ocurred');
+        });
+
+    </script>
+</body>
+</html>
