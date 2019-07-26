@@ -34,5 +34,6 @@ export default {
     hostname:               'hostname',
     port1:                  'port1',
     port2:                  'port2',
-    developmentMode:        'developmentMode'
+    developmentMode:        'developmentMode',
+    disablePageCaching:     'disablePageCaching'
 };
