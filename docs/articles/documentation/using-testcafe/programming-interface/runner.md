@@ -422,7 +422,7 @@ async clientScripts( script[, script2[, ...[, scriptN]]] ) → this
 
 Parameter | Type                | Description
 --------- | ------------------- | ------------
-`scripts` | String &#124; Array | Scripts to inject into the tested pages. See [Provide Scripts to Inject](common-concepts/inject-scripts-into-tested-pages.md#provide-scripts-to-inject) to learn how to specify them.
+`script`, `script2`, `scriptN`  | String &#124; Object &#124; Array | Scripts to inject into the tested pages. See [Provide Scripts to Inject](common-concepts/inject-scripts-into-tested-pages.md#provide-scripts-to-inject) to learn how to specify them.
 
 > Relative paths resolve from the current working directory.
 
@@ -433,12 +433,15 @@ runner.clientScripts('assets/jquery.js');
 ```
 
 ```js
-runner.clientScripts([{
-    module: 'lodash'
-}, {
-    path: 'scripts/react-helpers.js',
-    page: 'https://myapp.com/page/'
-}]);
+runner.clientScripts([
+    {
+        module: 'lodash'
+    },
+    {
+        path: 'scripts/react-helpers.js',
+        page: 'https://myapp.com/page/'
+    }
+]);
 ```
 
 The [fixture.clientScripts](../../test-api/test-code-structure.md#inject-scripts-into-tested-pages) and [test.clientScripts](../../test-api/test-code-structure.md#inject-scripts-into-tested-pages) methods allow you to inject scripts into pages visited during an individual fixture or test.

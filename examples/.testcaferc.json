@@ -45,7 +45,7 @@
     "assertionTimeout": 1000,
     "pageLoadTimeout": 1000,
     "speed": 0.1,
-    "clientScripts": ["mockDate.js", "scripts/react-helpers.js"],    
+    "clientScripts": ["lodash", "scripts/react-helpers.js"],    
     "port1": 12345,
     "port2": 54321,
     "hostname": "host.mycorp.com",

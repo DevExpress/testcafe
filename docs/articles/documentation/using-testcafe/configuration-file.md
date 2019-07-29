@@ -624,12 +624,15 @@ Injects scripts into pages visited during the tests. Use this property to introd
 
 ```json
 {
-    "clientScripts": [{
-        "module": "lodash"
-    }, {
-        "path": "scripts/react-helpers.js",
-        "page": "https://myapp.com/page/"
-    }]
+    "clientScripts": [
+        {
+            "module": "lodash"
+        },
+        {
+            "path": "scripts/react-helpers.js",
+            "page": "https://myapp.com/page/"
+        }
+    ]
 }
 ```
 
@@ -645,8 +648,8 @@ The [fixture.clientScripts](../test-api/test-code-structure.md#inject-scripts-in
 
 For more information, see [Inject Scripts into Tested Pages](common-concepts/inject-scripts-into-tested-pages.md).
 
-*CLI*: [--cs, --client-scripts](command-line-interface.md#--cs-pathpath2--client-scripts-pathpath2)  
-*API*: [runner.clientScripts({ paths })](programming-interface/runner.md#clientscripts)
+*CLI*: [--cs, --client-scripts](command-line-interface.md#--cs-pathpath2---client-scripts-pathpath2)  
+*API*: [runner.clientScripts](programming-interface/runner.md#clientscripts)
 
 ## port1, port2
 

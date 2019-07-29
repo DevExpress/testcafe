@@ -590,7 +590,7 @@ test.clientScripts( script[, script2[, ...[, scriptN]]] )
 
 Parameter | Type     | Description
 --------- | -------- | ---------------------------------------------------------------------------
-`scripts` | String &#124; Object &#124; Array | Scripts to inject into the tested pages. See [Provide Scripts to Inject](../using-testcafe/common-concepts/inject-scripts-into-tested-pages.md#provide-scripts-to-inject) to learn how to specify them.
+`script`, `script2`, `scriptN` | String &#124; Object &#124; Array | Scripts to inject into the tested pages. See [Provide Scripts to Inject](../using-testcafe/common-concepts/inject-scripts-into-tested-pages.md#provide-scripts-to-inject) to learn how to specify them.
 
 > Relative paths resolve from the test file location.
 
@@ -623,7 +623,7 @@ test
 
 To inject scripts into pages visited during all tests, use either of the following:
 
-* the [--cs (--client-scripts)](../using-testcafe/command-line-interface.md#--cs-pathpath2--client-scripts-pathpath2) command line option
+* the [--cs (--client-scripts)](../using-testcafe/command-line-interface.md#--cs-pathpath2---client-scripts-pathpath2) command line option
 * the [runner.clientScripts](../using-testcafe/programming-interface/runner.md#clientscripts) method
 * the [clientScripts](../using-testcafe/configuration-file.md#clientscripts) configuration file property
 

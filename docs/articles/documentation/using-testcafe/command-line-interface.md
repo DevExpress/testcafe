@@ -48,7 +48,7 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [--assertion-timeout \<ms\>](#--assertion-timeout-ms)
   * [--page-load-timeout \<ms\>](#--page-load-timeout-ms)
   * [--speed \<factor\>](#--speed-factor)
-  * [--cs \<path\[,path2,...\]\>, --client-scripts \<path\[,path2,...\]\>](#--cs-pathpath2--client-scripts-pathpath2)
+  * [--cs \<path\[,path2,...\]\>, --client-scripts \<path\[,path2,...\]\>](#--cs-pathpath2---client-scripts-pathpath2)
   * [--ports \<port1,port2\>](#--ports-port1port2)
   * [--hostname \<name\>](#--hostname-name)
   * [--proxy \<host\>](#--proxy-host)
