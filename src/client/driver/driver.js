@@ -207,8 +207,8 @@ export default class Driver {
     }
 
     // HACK: For https://github.com/DevExpress/testcafe/issues/3560
-    // cancels every form submit after the test is done
-    // to prevent request to the closed session
+    // We have to cancel every form submit after a test is done
+    // to prevent requests to a closed session
     _onFormSubmit (e) {
         if (this.contextStorage.getItem(TEST_DONE_SENT_FLAG))
             e.preventSubmit = true;
