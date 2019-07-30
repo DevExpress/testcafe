@@ -812,7 +812,7 @@ Prevents the browser from caching the page content.
 }
 ```
 
-Local storage values are reset between page loads in [role code](../test-api/authentication/user-roles.md) due to page caching. Set `disablePageCaching` to `true` to prevent this. For more information, see [Troubleshooting: Local Storage Values Set in the Role Code Are Lost](../test-api/authentication/user-roles.md#local-storage-values-set-in-the-role-code-are-lost).
+When navigation to a cached page occurs in [role code](../test-api/authentication/user-roles.md), local and session storage content is not preserved. Set `disablePageCaching` to `true` to retain the storage items after navigation. For more information, see [Troubleshooting: Local Storage Values Set in the Role Code Are Lost](../test-api/authentication/user-roles.md#local-storage-values-set-in-the-role-code-are-lost).
 
 You can also disable page caching [for an individual fixture or test](../test-api/test-code-structure.md#disable-page-caching).
 
