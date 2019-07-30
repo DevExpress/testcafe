@@ -275,7 +275,9 @@ test
 
 ### Provide Scripts for Specific Pages
 
-You can also specify pages into which a script should be injected. This is helpful when you need to use custom mocks on particular pages and preserve the default behavior everywhere else.
+You can also specify pages into which a script should be injected.
+
+> This is helpful when you need to mock browser API on particular pages and use the default behavior everywhere else.
 
 To specify target pages for a script, add the `page` property to the object you pass to `clientScripts`.
 
