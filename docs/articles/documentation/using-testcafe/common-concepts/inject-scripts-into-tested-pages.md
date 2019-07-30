@@ -130,33 +130,27 @@ runner.clientScripts({ path: 'assets/jquery.js' });
 
 ### Inject a Module
 
-Specify the Node.js module's name to inject its content into the tested pages. Use a string or an object with the `module` property.
-
-*CLI*
-
-```text
-testcafe <browser> <tests> --cs <module>
-```
+Specify the Node.js module's name to inject its content into the tested pages. Use an object with the `module` property.
 
 *Programming interface*
 
 ```text
-runner.clientScripts( module | { module } )
+runner.clientScripts( { module } )
 ```
 
 *Configuration file*
 
 ```text
 {
-    "clientScripts": "module" | { module }
+    "clientScripts": { module }
 }
 ```
 
 *Test API*
 
 ```text
-fixture.clientScripts( module | { module } )
-test.clientScripts( module | { module } )
+fixture.clientScripts( { module } )
+test.clientScripts( { module } )
 ```
 
 Argument  | Type   | Description
@@ -174,17 +168,7 @@ Note that the browser must be able to execute the injected module. For example, 
 
 **Examples**
 
-```sh
-testcafe chrome my-tests --cs lodash
-```
-
 ```js
-fixture `My fixture`
-    .page `https://example.com`
-    .clientScripts('lodash');
-
-// or
-
 fixture `My fixture`
     .page `https://example.com`
     .clientScripts({ module: 'lodash' });
@@ -192,9 +176,9 @@ fixture `My fixture`
 
 ```js
 {
-    "clientScripts": "lodash",
-    // or
-    "clientScripts": { "module": "lodash" }
+    "clientScripts": {
+        "module": "lodash"
+    }
 }
 ```
 

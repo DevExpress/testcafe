@@ -634,20 +634,16 @@ If the speed is also specified for an [individual action](../test-api/actions/ac
 Injects scripts from the specified files into each page visited during the tests. Use this option to introduce client-side mock functions or helper scripts.
 
 ```sh
-testcafe chrome my-tests --client-scripts assets/react-helpers.js
+testcafe chrome my-tests --client-scripts mockDate.js,assets/react-helpers.js
 ```
 
-```sh
-testcafe chrome my-tests --client-scripts mockDate.js,lodash
-```
+Pass the [path to a JavaScript file](common-concepts/inject-scripts-into-tested-pages.md#inject-a-javascript-file) to inject its content. Relative paths resolve from the current working directory.
 
-You can pass the [path to a JavaScript file](common-concepts/inject-scripts-into-tested-pages.md#inject-a-javascript-file) or the [module name](common-concepts/inject-scripts-into-tested-pages.md#inject-a-module).
-
-> Relative paths resolve from the current working directory.
+> To inject [modules](common-concepts/inject-scripts-into-tested-pages.md#inject-a-module) or specify [code strings](common-concepts/inject-scripts-into-tested-pages.md#inject-script-content), use the 
 
 Use the [fixture.clientScripts](../test-api/test-code-structure.md#inject-scripts-into-tested-pages) and [test.clientScripts](../test-api/test-code-structure.md#inject-scripts-into-tested-pages) methods in test code to inject scripts for an individual fixture or test.
 
-You can also add scripts to individual pages. Use the following methods and options to do this:
+You can also [inject modules](common-concepts/inject-scripts-into-tested-pages.md#inject-a-module), [code strings](common-concepts/inject-scripts-into-tested-pages.md#inject-script-code), or [add scripts to individual pages](common-concepts/inject-scripts-into-tested-pages.md#provide-scripts-for-specific-pages) in the API and configuration file. Use the following methods and options to do this:
 
 * the [runner.clientScripts](programming-interface/runner.md#clientscripts) programming interface method
 * the [clientScripts](configuration-file.md#clientscripts) configuration file property
