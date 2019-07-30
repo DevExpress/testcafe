@@ -15,8 +15,8 @@ test(test2Name, async() => {
     return 'F1T2';
 });
 
-fixture(`Fixture${1 + 1}`)
-    .page('http://example.org')
+fixture`Fixture${1 + 1}`
+    .page`http://${'example'}.org`
     .beforeEach(async () => 'yo')
     .afterEach(async () => 'yo');
 
