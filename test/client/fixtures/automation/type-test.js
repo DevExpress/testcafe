@@ -379,6 +379,37 @@ $(document).ready(function () {
             });
     });
 
+    asyncTest('GH-4068 - Type to element wrapped in label', function () {
+        const input1 = document.createElement('input');
+        const input2 = document.createElement('input');
+        const label  =  document.createElement('label');
+
+        input1.className = TEST_ELEMENT_CLASS;
+        input2.className = TEST_ELEMENT_CLASS;
+        label.className  = TEST_ELEMENT_CLASS;
+
+        input1.id = 'input-1';
+        input2.id = 'input-2';
+
+        label.setAttribute('for', input2.id);
+
+        label.appendChild(input1);
+        label.appendChild(input2);
+
+        document.body.appendChild(label);
+
+        const type = new TypeAutomation(input1, '12345', {});
+
+        type
+            .run()
+            .then(function () {
+                equal(input1.value, '12345');
+
+                start();
+            });
+
+    });
+
 
     asyncTest('T334620, GH-3282 - Wrong "key" property in keyEvent objects (type)', function () {
         const textarea = document.createElement('textarea');
