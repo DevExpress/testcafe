@@ -206,7 +206,7 @@ export default class Driver {
             this.contextStorage.setItem(PENDING_PAGE_ERROR, error);
     }
 
-    // NOTE: https://github.com/DevExpress/testcafe/issues/3560
+    // HACK: For https://github.com/DevExpress/testcafe/issues/3560
     // cancels every form submit after the test is done
     // to prevent request to the closed session
     _onFormSubmit (e) {
