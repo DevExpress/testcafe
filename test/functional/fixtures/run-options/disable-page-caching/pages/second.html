@@ -7,8 +7,8 @@
 <body>
     <a id="third">3. Link to the third page</a>
     <script>
-        const data = JSON.parse(localStorage.getItem('testItem'))
-        const link = document.getElementById('third');
+        var data = JSON.parse(localStorage.getItem('testItem'));
+        var link = document.getElementById('third');
 
         if (data)
             link.href = data.link;

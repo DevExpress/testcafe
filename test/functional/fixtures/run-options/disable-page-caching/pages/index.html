@@ -11,15 +11,14 @@
         var firstBtn  = document.getElementById("first");
         var secondBtn = document.getElementById("second");
 
-        firstBtn.addEventListener('click', () => {
+        firstBtn.addEventListener('click', function () {
             window.localStorage.setItem(
                 'testItem',
-                JSON.stringify({
-                    link: './third.html'
-                })
+                JSON.stringify({ link: './third.html' })
             );
         });
-        secondBtn.addEventListener('click', () => {
+
+        secondBtn.addEventListener('click', function () {
             window.open('./second.html', '_blank');
         });
     </script>
