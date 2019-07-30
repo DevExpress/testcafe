@@ -637,9 +637,9 @@ Injects scripts from the specified files into each page visited during the tests
 testcafe chrome my-tests --client-scripts mockDate.js,assets/react-helpers.js
 ```
 
-Pass the [path to a JavaScript file](common-concepts/inject-scripts-into-tested-pages.md#inject-a-javascript-file) to inject its content. Relative paths resolve from the current working directory.
+Pass the [path to a JavaScript file](common-concepts/inject-scripts-into-tested-pages.md#inject-a-javascript-file) to inject its content.
 
-> To inject [modules](common-concepts/inject-scripts-into-tested-pages.md#inject-a-module) or specify [code strings](common-concepts/inject-scripts-into-tested-pages.md#inject-script-content), use the 
+> Relative paths resolve from the current working directory.
 
 Use the [fixture.clientScripts](../test-api/test-code-structure.md#inject-scripts-into-tested-pages) and [test.clientScripts](../test-api/test-code-structure.md#inject-scripts-into-tested-pages) methods in test code to inject scripts for an individual fixture or test.
 
