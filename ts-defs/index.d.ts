@@ -1554,7 +1554,7 @@ interface TestCafe {
      * Creates the test runner that is used to configure and launch test tasks.
      */
     createRunner(): Runner;
-    
+
     /**
      * Creates the live mode test runner that is used to configure and launch test tasks.
      */
@@ -1861,15 +1861,17 @@ interface FixtureFn {
      * Declares a test fixture.
      *
      * @param name - The name of the fixture.
+     * @param tagArgs - tag literal arguments required to support the "fixture`${x}`" syntax
      */
-    (name: string | TemplateStringsArray): this;
+    (name: string | TemplateStringsArray, ...tagArgs: any[]): this;
     /**
      * Specifies a webpage at which all tests in a fixture start.
      *
      * @param url - The URL of the webpage where tests start.
+     * @param tagArgs - tag literal arguments required to support the "fixture.page`${x}`" syntax
      * To test webpages in local directories, you can use the `file://` scheme or relative paths.
      */
-    page(url: string | TemplateStringsArray): this;
+    page(url: string | TemplateStringsArray, ...tagArgs: any[]): this;
     /**
      * Specifies HTTP Basic or Windows (NTLM) authentication credentials for all tests in the fixture.
      *
