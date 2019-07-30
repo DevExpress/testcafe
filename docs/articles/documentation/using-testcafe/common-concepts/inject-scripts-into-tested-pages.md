@@ -68,33 +68,33 @@ Specify the JavaScript file path to inject the entire content of this file into 
 *CLI*
 
 ```text
-testcafe <browser> <tests> --cs <path>
+testcafe <browser> <tests> --cs <filePath>
 ```
 
 *Programming interface*
 
 ```text
-runner.clientScripts( path | { path } )
+runner.clientScripts( filePath | { path: filePath } )
 ```
 
 *Configuration file*
 
 ```text
 {
-    "clientScripts": "path" | { path }
+    "clientScripts": "<filePath>" | { "path": "<filePath>" }
 }
 ```
 
 *Test API*
 
 ```text
-fixture.clientScripts( path | { path } )
-test.clientScripts( path | { path } )
+fixture.clientScripts( filePath | { path: filePath } )
+test.clientScripts( filePath | { path: filePath } )
 ```
 
-Argument  | Type   | Description
---------- | ------ | ---------------------------------------------------------------------------
-`path`    | String | The path to the JavaScript file whose content should be injected.
+Argument   | Type   | Description
+---------- | ------ | ---------------------------------------------------------------------------
+`filePath` | String | The path to the JavaScript file whose content should be injected.
 
 #### Relative Paths
 
@@ -135,27 +135,27 @@ Specify the Node.js module's name to inject its content into the tested pages. U
 *Programming interface*
 
 ```text
-runner.clientScripts( { module } )
+runner.clientScripts( { module: moduleName } )
 ```
 
 *Configuration file*
 
 ```text
 {
-    "clientScripts": { module }
+    "clientScripts": { "module": "<moduleName>" }
 }
 ```
 
 *Test API*
 
 ```text
-fixture.clientScripts( { module } )
-test.clientScripts( { module } )
+fixture.clientScripts( { module: moduleName } )
+test.clientScripts( { module: moduleName } )
 ```
 
 Argument  | Type   | Description
 --------- | ------ | ----------------
-`module`  | String | The module name.
+`moduleName`  | String | The module name.
 
 TestCafe searches for the module's entry point with Node.js mechanisms and injects its content into the tested page.
 
@@ -191,27 +191,27 @@ You can provide the injected script as a string with JavaScript code. Pass an ob
 *Programming interface*
 
 ```text
-runner.clientScripts({ content })
+runner.clientScripts({ content: code })
 ```
 
 *Configuration file*
 
 ```text
 {
-    "clientScripts": { content }
+    "clientScripts": { "content": "<code>" }
 }
 ```
 
 *Test API*
 
 ```text
-fixture.clientScripts({ content })
-test.clientScripts({ content })
+fixture.clientScripts({ content: code })
+test.clientScripts({ content: code })
 ```
 
 Argument  | Type   | Description
 --------- | ------ | ----------------------------------------
-`content` | String | JavaScript code that should be injected.
+`code` | String | JavaScript code that should be injected.
 
 **Examples**
 
@@ -246,27 +246,39 @@ To specify target pages for a script, add the `page` property to the object you 
 *Programming interface*
 
 ```text
-runner.clientScripts({ page, path | module | content })
+runner.clientScripts({
+    page: url,
+    path: filePath | module: moduleName | content: code
+})
 ```
 
 *Configuration file*
 
 ```text
 {
-    "clientScripts": { page, path | module | content }
+    "clientScripts": {
+        "page": "<url>",
+        "path": "<filePath>" | "module": "<moduleName>" | "content": "<code>"
+    }
 }
 ```
 
 *Test API*
 
 ```text
-fixture.clientScripts({ page, path | module | content })
-test.clientScripts({ page, path | module | content })
+fixture.clientScripts({
+    page: url,
+    path: filePath | module: moduleName | content: code
+})
+test.clientScripts({
+    page: url,
+    path: filePath | module: moduleName | content: code
+})
 ```
 
 Property  | Type                | Description
 --------- | ------------------- | ---------------------------------------------------------------------------
-`page`    | String &#124; RegExp | Specify a page URL to add scripts to a single page, or a regular expression to add scripts to pages whose URLs match this expression. Regular expressions are not supported in the [clientScripts](../configuration-file.md#clientscripts) configuration file property.
+`url`    | String &#124; RegExp | Specify a page URL to add scripts to a single page, or a regular expression to add scripts to pages whose URLs match this expression. Regular expressions are not supported in the [clientScripts](../configuration-file.md#clientscripts) configuration file property.
 
 **Examples**
 
