@@ -68,13 +68,15 @@ Specify the JavaScript file path to inject the entire content of this file into 
 *CLI*
 
 ```text
-testcafe <browser> <tests> --cs <filePath>
+testcafe <browser> <tests> --cs <filePath>[,<filePath2>,...<filePathN>]
 ```
 
 *Programming interface*
 
 ```text
-runner.clientScripts( filePath | { path: filePath } )
+runner.clientScripts(filePath | { path: filePath })
+runner.clientScripts(filePath | { path: filePath }, ...)
+runner.clientScripts([ filePath | { path: filePath } ])
 ```
 
 *Configuration file*
@@ -83,18 +85,28 @@ runner.clientScripts( filePath | { path: filePath } )
 {
     "clientScripts": "<filePath>" | { "path": "<filePath>" }
 }
+{
+    "clientScripts": [ "<filePath>" | { "path": "<filePath>" } ]
+}
 ```
 
 *Test API*
 
 ```text
-fixture.clientScripts( filePath | { path: filePath } )
-test.clientScripts( filePath | { path: filePath } )
+fixture.clientScripts(filePath | { path: filePath })
+fixture.clientScripts(filePath | { path: filePath }, ...)
+fixture.clientScripts([ filePath | { path: filePath } ])
+```
+
+```text
+test.clientScripts(filePath | { path: filePath })
+test.clientScripts(filePath | { path: filePath }, ...)
+test.clientScripts([ filePath | { path: filePath } ])
 ```
 
 Argument   | Type   | Description
 ---------- | ------ | ---------------------------------------------------------------------------
-`filePath` | String | The path to the JavaScript file whose content should be injected.
+`filePath`, `filePath2`, `filePathN` | String | The path to the JavaScript file whose content should be injected.
 
 #### Relative Paths
 
@@ -136,6 +148,8 @@ Specify the Node.js module's name to inject its content into the tested pages. U
 
 ```text
 runner.clientScripts( { module: moduleName } )
+runner.clientScripts( { module: moduleName }, ... )
+runner.clientScripts([ { module: moduleName } ])
 ```
 
 *Configuration file*
@@ -144,13 +158,23 @@ runner.clientScripts( { module: moduleName } )
 {
     "clientScripts": { "module": "<moduleName>" }
 }
+{
+    "clientScripts": [ { "module": "<moduleName>" } ]
+}
 ```
 
 *Test API*
 
 ```text
 fixture.clientScripts( { module: moduleName } )
+fixture.clientScripts( { module: moduleName }, ... )
+fixture.clientScripts([ { module: moduleName } ])
+```
+
+```text
 test.clientScripts( { module: moduleName } )
+test.clientScripts( { module: moduleName }, ... )
+test.clientScripts([ { module: moduleName } ])
 ```
 
 Argument  | Type   | Description
@@ -192,6 +216,8 @@ You can provide the injected script as a string with JavaScript code. Pass an ob
 
 ```text
 runner.clientScripts({ content: code })
+runner.clientScripts({ content: code }, ...)
+runner.clientScripts([ { content: code } ])
 ```
 
 *Configuration file*
@@ -200,13 +226,23 @@ runner.clientScripts({ content: code })
 {
     "clientScripts": { "content": "<code>" }
 }
+{
+    "clientScripts": [ { "content": "<code>" } ]
+}
 ```
 
 *Test API*
 
 ```text
 fixture.clientScripts({ content: code })
+fixture.clientScripts({ content: code }, ...)
+fixture.clientScripts([ { content: code } ])
+```
+
+```text
 test.clientScripts({ content: code })
+test.clientScripts({ content: code }, ...)
+test.clientScripts([ { content: code } ])
 ```
 
 Argument  | Type   | Description
@@ -250,6 +286,18 @@ runner.clientScripts({
     page: url,
     path: filePath | module: moduleName | content: code
 })
+
+runner.clientScripts({
+    page: url,
+    path: filePath | module: moduleName | content: code
+}, ...)
+
+runner.clientScripts([
+    {
+        page: url,
+        path: filePath | module: moduleName | content: code
+    }
+])
 ```
 
 *Configuration file*
@@ -261,6 +309,14 @@ runner.clientScripts({
         "path": "<filePath>" | "module": "<moduleName>" | "content": "<code>"
     }
 }
+{
+    "clientScripts": [
+        {
+            "page": "<url>",
+            "path": "<filePath>" | "module": "<moduleName>" | "content": "<code>"
+        }
+    ]
+}
 ```
 
 *Test API*
@@ -270,10 +326,37 @@ fixture.clientScripts({
     page: url,
     path: filePath | module: moduleName | content: code
 })
+
+fixture.clientScripts({
+    page: url,
+    path: filePath | module: moduleName | content: code
+}, ...)
+
+fixture.clientScripts([
+    {
+        page: url,
+        path: filePath | module: moduleName | content: code
+    }
+])
+```
+
+```text
 test.clientScripts({
     page: url,
     path: filePath | module: moduleName | content: code
 })
+
+test.clientScripts({
+    page: url,
+    path: filePath | module: moduleName | content: code
+}, ...)
+
+test.clientScripts([
+    {
+        page: url,
+        path: filePath | module: moduleName | content: code
+    }
+])
 ```
 
 Property  | Type                | Description
