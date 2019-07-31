@@ -1,7 +1,7 @@
 require('./non-existing-module');
 
-fixture('Fixture5')
+fixture('non existing module')
     .page('http://example.com');
 
-test('test6', async t => {
+test('non existing module', async t => {
 });

@@ -12,9 +12,11 @@ const testFileWithSingleTestPath               = path.resolve('test/server/data/
 const testFileWithMultipleTestsPath            = path.resolve('test/server/data/test-suites/live/multiple-tests.js');
 const testFileWithSyntaxErrorPath              = path.resolve('test/server/data/test-suites/live/test-with-syntax-error.js');
 const testFileWithExternalModulePath           = path.resolve('test/server/data/test-suites/live/test-external-module.js');
+const testFileWithExternalModuleRerunPath      = path.resolve('test/server/data/test-suites/live/test-external-module-rerun.js');
 const testFileWithExternalUnexistingModulePath = path.resolve('test/server/data/test-suites/live/test-external-unexisting-module.js');
 
-const externalModulePath = path.resolve('test/server/data/test-suites/live/module.js');
+const externalModulePath         = path.resolve('test/server/data/test-suites/live/module.js');
+const externalCommonJsModulePath = path.resolve('test/server/data/test-suites/live/commonjs-module.js');
 
 class FileWatcherMock extends FileWatcher {
     constructor (files) {
@@ -199,7 +201,7 @@ describe('TestCafe Live', function () {
                 const { tests } = runner.liveConfigurationCache;
 
                 expect(tests.length).eql(1);
-                expect(tests[0].name).eql('test1');
+                expect(tests[0].name).eql('basic');
                 expect(runner.disposed).eql(true);
                 expect(runner.watchedFiles).eql([testFileWithSingleTestPath]);
             });
@@ -212,6 +214,24 @@ describe('TestCafe Live', function () {
                     .then(() => {
                         expect(runner.runCount).eql(2);
                     });
+            });
+    });
+
+    it('rerun with require', function () {
+        return runTests(testFileWithExternalModuleRerunPath)
+            .then(() => {
+                let err = null;
+
+                runner.controller.fileWatcher._onChanged(externalCommonJsModulePath);
+
+                try {
+                    require(externalCommonJsModulePath);
+                }
+                catch (e) {
+                    err = e;
+                }
+
+                expect(err).is.null;
             });
     });
 
@@ -229,8 +249,8 @@ describe('TestCafe Live', function () {
                 const tests = runner.liveConfigurationCache.tests;
 
                 expect(tests.length).eql(2);
-                expect(tests[0].name).eql('test2');
-                expect(tests[1].name).eql('test3');
+                expect(tests[0].name).eql('multiple 1');
+                expect(tests[1].name).eql('multiple 2');
                 expect(runner.testRunController.expectedTestCount).eql(2);
             });
     });
@@ -260,7 +280,7 @@ describe('TestCafe Live', function () {
                 const tests = runner.liveConfigurationCache.tests;
 
                 expect(tests.length).eql(1);
-                expect(tests[0].name).eql('test1');
+                expect(tests[0].name).eql('basic');
 
                 runner.clearSources();
                 runner.src(testFileWithSyntaxErrorPath);

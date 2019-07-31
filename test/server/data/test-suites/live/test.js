@@ -1,7 +1,7 @@
-fixture('Fixture1')
+fixture('basic')
     .page('http://example.com');
 
-test('test1', async t => {
+test('basic', async t => {
 
 });
 

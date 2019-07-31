@@ -1,6 +1,6 @@
-fixture('Fixture3')
+fixture('syntax error')
     .page('http://example.com');
 
-test('test4', async t => {
+test('syntax error', async t => {
     // Syntax error
 }

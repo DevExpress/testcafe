@@ -57,7 +57,7 @@ export default class ModulesGraph {
         if (!cache[node])
             return;
 
-        cache[node] = null;
+        cache[node] = void 0;
 
         const parentEdges = this.graph.inEdges(node);
 

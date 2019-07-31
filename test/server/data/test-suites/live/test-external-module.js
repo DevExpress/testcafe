@@ -1,9 +1,9 @@
 import { url } from './module';
 
-fixture('Fixture4')
+fixture('external module')
     .page('http://example.com');
 
-test('test1', async t => {
+test('external module', async t => {
 
 });
 
