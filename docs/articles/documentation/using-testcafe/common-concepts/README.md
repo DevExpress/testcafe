@@ -9,5 +9,6 @@ permalink: /documentation/using-testcafe/common-concepts/
 * [Concurrent Test Execution](concurrent-test-execution.md)
 * [Live Mode](live-mode.md)
 * [Screenshots and Videos](screenshots-and-videos.md)
+* [Inject Scripts into Tested Pages](inject-scripts-into-tested-pages.md)
 * [Reporters](reporters.md)
 * [Test HTTPS and HTTP/2 Websites](test-https-and-http2-websites.md)

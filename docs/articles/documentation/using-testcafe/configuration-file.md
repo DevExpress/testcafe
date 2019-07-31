@@ -41,6 +41,7 @@ A configuration file can include the following settings:
 * [assertionTimeout](#assertiontimeout)
 * [pageLoadTimeout](#pageloadtimeout)
 * [speed](#speed)
+* [clientScripts](#clientscripts)
 * [port1, port2](#port1-port2)
 * [hostname](#hostname)
 * [proxy](#proxy)
@@ -610,6 +611,45 @@ If the speed is also specified for an [individual action](../test-api/actions/ac
 
 *CLI*: [--speed](command-line-interface.md#--speed-factor)  
 *API*: [runner.run({ speed })](programming-interface/runner.md#run)
+
+## clientScripts
+
+Injects scripts into pages visited during the tests. Use this property to introduce client-side mock functions or helper scripts.
+
+```json
+{
+    "clientScripts": "assets/jquery.js"
+}
+```
+
+```json
+{
+    "clientScripts": [
+        {
+            "module": "lodash"
+        },
+        {
+            "path": "scripts/react-helpers.js",
+            "page": "https://myapp.com/page/"
+        }
+    ]
+}
+```
+
+> Relative paths resolve from the current working directory.
+
+See [Provide Scripts to Inject](common-concepts/inject-scripts-into-tested-pages.md#provide-scripts-to-inject) to learn how to specify the scripts.
+
+You can use the [page](common-concepts/inject-scripts-into-tested-pages.md#provide-scripts-for-specific-pages) option to specify pages into which scripts should be injected. Otherwise, TestCafe injects scripts into all pages visited during the test run.
+
+> Note that regular expressions are not supported in the configuration file. Use the [runner.clientScripts](programming-interface/runner.md#clientscripts) method or [test API methods](../test-api/test-code-structure.md#inject-scripts-into-tested-pages) to [define target pages](common-concepts/inject-scripts-into-tested-pages.md#provide-scripts-for-specific-pages) with a regular expression.
+
+The [fixture.clientScripts](../test-api/test-code-structure.md#inject-scripts-into-tested-pages) and [test.clientScripts](../test-api/test-code-structure.md#inject-scripts-into-tested-pages) methods allow you to inject scripts into pages visited during an individual fixture or test.
+
+For more information, see [Inject Scripts into Tested Pages](common-concepts/inject-scripts-into-tested-pages.md).
+
+*CLI*: [--cs, --client-scripts](command-line-interface.md#--cs-pathpath2---client-scripts-pathpath2)  
+*API*: [runner.clientScripts](programming-interface/runner.md#clientscripts)
 
 ## port1, port2
 

@@ -45,6 +45,14 @@
     "assertionTimeout": 1000,
     "pageLoadTimeout": 1000,
     "speed": 0.1,
+    "clientScripts": [
+        {
+            "module": "lodash"
+        },
+        {
+            "path": "scripts/react-helpers.js"
+        }
+    ],
     "port1": 12345,
     "port2": 54321,
     "hostname": "host.mycorp.com",

@@ -48,6 +48,7 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [--assertion-timeout \<ms\>](#--assertion-timeout-ms)
   * [--page-load-timeout \<ms\>](#--page-load-timeout-ms)
   * [--speed \<factor\>](#--speed-factor)
+  * [--cs \<path\[,path2,...\]\>, --client-scripts \<path\[,path2,...\]\>](#--cs-pathpath2---client-scripts-pathpath2)
   * [--ports \<port1,port2\>](#--ports-port1port2)
   * [--hostname \<name\>](#--hostname-name)
   * [--proxy \<host\>](#--proxy-host)
@@ -627,6 +628,30 @@ If the speed is also specified for an [individual action](../test-api/actions/ac
 **Default value**: `1`
 
 *Related configuration file property*: [speed](configuration-file.md#speed).
+
+### --cs \<path\[,path2,...\]\>, --client-scripts \<path\[,path2,...\]\>
+
+Injects scripts from the specified files into each page visited during the tests. Use this option to introduce client-side mock functions or helper scripts.
+
+```sh
+testcafe chrome my-tests --client-scripts mockDate.js,assets/react-helpers.js
+```
+
+Pass the [path to a JavaScript file](common-concepts/inject-scripts-into-tested-pages.md#inject-a-javascript-file) to inject its content.
+
+> Relative paths resolve from the current working directory.
+
+Use the [fixture.clientScripts](../test-api/test-code-structure.md#inject-scripts-into-tested-pages) and [test.clientScripts](../test-api/test-code-structure.md#inject-scripts-into-tested-pages) methods in test code to inject scripts for an individual fixture or test.
+
+You can also [inject modules](common-concepts/inject-scripts-into-tested-pages.md#inject-a-module), [code strings](common-concepts/inject-scripts-into-tested-pages.md#inject-script-code), or [add scripts to individual pages](common-concepts/inject-scripts-into-tested-pages.md#provide-scripts-for-specific-pages) in the API and configuration file. Use the following methods and options to do this:
+
+* the [runner.clientScripts](programming-interface/runner.md#clientscripts) programming interface method
+* the [clientScripts](configuration-file.md#clientscripts) configuration file property
+* the [fixture.clientScripts](../test-api/test-code-structure.md#inject-scripts-into-tested-pages) and [test.clientScripts](../test-api/test-code-structure.md#inject-scripts-into-tested-pages) test API methods (add scripts to pages visited during a particular fixture or test)
+
+See [Inject Scripts into Tested Pages](common-concepts/inject-scripts-into-tested-pages.md) for more information.
+
+*Related configuration file property*: [clientScripts](configuration-file.md#clientscripts).
 
 ### --ports \<port1,port2\>
 

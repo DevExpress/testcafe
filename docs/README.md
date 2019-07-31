@@ -23,6 +23,7 @@
     * [Concurrent Test Execution](articles/documentation/using-testcafe/common-concepts/concurrent-test-execution.md)
     * [Live Mode](articles/documentation/using-testcafe/common-concepts/live-mode.md)
     * [Screenshots and Videos](articles/documentation/using-testcafe/common-concepts/screenshots-and-videos.md)
+    * [Inject Scripts into Tested Pages](articles/documentation/using-testcafe/common-concepts/inject-scripts-into-tested-pages.md)
     * [Reporters](articles/documentation/using-testcafe/common-concepts/reporters.md)
     * [Test HTTPS and HTTP/2 Websites](articles/documentation/using-testcafe/common-concepts/test-https-and-http2-websites.md)
 * [TEST API](articles/documentation/test-api/README.md)

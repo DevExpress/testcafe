@@ -22,6 +22,7 @@ This topic contains the following sections:
   * [Fixture Hooks](#fixture-hooks)
     * [Sharing Variables Between Fixture Hooks and Test Code](#sharing-variables-between-fixture-hooks-and-test-code)
 * [Skipping Tests](#skipping-tests)
+* [Inject Scripts into Tested Pages](#inject-scripts-into-tested-pages)
 
 > If you use [eslint](http://eslint.org/) in your project, use  the [TestCafe plugin](https://www.npmjs.com/package/eslint-plugin-testcafe)
 to avoid the `'fixture' is not defined` and `'test' is not defined` errors.
@@ -572,3 +573,58 @@ test('Fixture2Test3', () => {});
 
 // Only tests in Fixture1 and the Fixture2Test2 test are run
 ```
+
+## Inject Scripts into Tested Pages
+
+TestCafe allows you to [inject custom scripts](../using-testcafe/common-concepts/inject-scripts-into-tested-pages.md) into pages visited during the tests. You can add scripts that mock browser API or provide helper functions.
+
+Use the `fixture.clientScripts` and `test.clientScripts` methods to add scripts to pages visited during a particular test or fixture.
+
+```text
+fixture.clientScripts( script[, script2[, ...[, scriptN]]] )
+```
+
+```text
+test.clientScripts( script[, script2[, ...[, scriptN]]] )
+```
+
+Parameter | Type     | Description
+--------- | -------- | ---------------------------------------------------------------------------
+`script`, `script2`, `scriptN` | String &#124; Object &#124; Array | Scripts to inject into the tested pages. See [Provide Scripts to Inject](../using-testcafe/common-concepts/inject-scripts-into-tested-pages.md#provide-scripts-to-inject) to learn how to specify them.
+
+> Relative paths resolve from the test file location.
+
+You can use the [page](../using-testcafe/common-concepts/inject-scripts-into-tested-pages.md#provide-scripts-for-specific-pages) option to specify pages into which scripts should be injected. Otherwise, TestCafe injects scripts into all pages visited during the test or fixture.
+
+> If you add client scripts to both the fixture and test, scripts added to the fixture run first.
+
+**Examples**
+
+```js
+fixture `My fixture`
+    .page `http://example.com`
+    .clientScripts('assets/jquery.js');
+```
+
+```js
+test
+    ('My test', async t => { /* ... */ })
+    .clientScripts({ module: 'async' });
+```
+
+```js
+test
+    ('My test', async t => { /* ... */ })
+    .clientScripts({
+        page: /\/user\/profile\//,
+        content: 'Geolocation.prototype.getCurrentPosition = () => new Positon(0, 0);'
+    });
+```
+
+To inject scripts into pages visited during all tests, use either of the following:
+
+* the [--cs (--client-scripts)](../using-testcafe/command-line-interface.md#--cs-pathpath2---client-scripts-pathpath2) command line option
+* the [runner.clientScripts](../using-testcafe/programming-interface/runner.md#clientscripts) method
+* the [clientScripts](../using-testcafe/configuration-file.md#clientscripts) configuration file property
+
+See [Inject Scripts into Tested Pages](../using-testcafe/common-concepts/inject-scripts-into-tested-pages.md) for more information.

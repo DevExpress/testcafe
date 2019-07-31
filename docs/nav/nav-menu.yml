@@ -44,6 +44,8 @@
       url: /documentation/using-testcafe/common-concepts/live-mode.md
     - name: Screenshots and Videos
       url: /documentation/using-testcafe/common-concepts/screenshots-and-videos.md
+    - name: Inject Scripts into Tested Pages
+      url: /documentation/using-testcafe/common-concepts/inject-scripts-into-tested-pages.md
     - name: Reporters
       url: /documentation/using-testcafe/common-concepts/reporters.md
     - name: Test HTTPS and HTTP/2 Websites
