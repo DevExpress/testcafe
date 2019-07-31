@@ -1,9 +1,9 @@
 ---
 layout: post
-title: TestCafe v1.3.1 Released
+title: TestCafe v1.4.0 Released
 permalink: /blog/:title.html
 ---
-# TestCafe v1.3.1 Released
+# TestCafe v1.4.0 Released
 
 This release introduces the capability to inject custom scripts into tested pages.
 
