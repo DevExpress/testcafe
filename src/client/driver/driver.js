@@ -138,6 +138,7 @@ export default class Driver {
         hammerhead.on(hammerhead.EVENTS.uncaughtJsError, err => this._onJsError(err));
         hammerhead.on(hammerhead.EVENTS.unhandledRejection, err => this._onJsError(err));
         hammerhead.on(hammerhead.EVENTS.consoleMethCalled, e => this._onConsoleMessage(e));
+        hammerhead.on(hammerhead.EVENTS.beforeFormSubmit, e => this._onFormSubmit(e));
 
         this.setCustomCommandHandlers(COMMAND_TYPE.unlockPage, () => this._unlockPageAfterTestIsDone());
     }
@@ -203,6 +204,14 @@ export default class Driver {
 
         if (!this.contextStorage.getItem(PENDING_PAGE_ERROR))
             this.contextStorage.setItem(PENDING_PAGE_ERROR, error);
+    }
+
+    // HACK: For https://github.com/DevExpress/testcafe/issues/3560
+    // We have to cancel every form submit after a test is done
+    // to prevent requests to a closed session
+    _onFormSubmit (e) {
+        if (this.contextStorage.getItem(TEST_DONE_SENT_FLAG))
+            e.preventSubmit = true;
     }
 
     // Console messages

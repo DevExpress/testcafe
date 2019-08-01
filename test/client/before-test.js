@@ -39,13 +39,13 @@
             .replace('{{{cookie}}}', cookie || '');
     };
 
-    window.initIFrameTestHandler = function (e) {
+    window.initIFrameTestHandler = function (iframe) {
         const referer          = location;
         const serviceMsg       = '/service-msg/100';
         const iframeTaskScript = window.getIframeTaskScript(referer, serviceMsg, location).replace(/"/g, '\\"');
 
-        if (e.iframe.id.indexOf('test') !== -1) {
-            e.iframe.contentWindow.eval.call(e.iframe.contentWindow, [
+        if (iframe.id.indexOf('test') !== -1) {
+            iframe.contentWindow.eval.call(iframe.contentWindow, [
                 'window["%hammerhead%"].get("./utils/destination-location").forceLocation("' + location + '");',
                 'window["%hammerhead%"].start({',
                 '    referer : "' + referer + '",',
