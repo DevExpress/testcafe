@@ -22,11 +22,8 @@ This topic contains the following sections:
   * [Fixture Hooks](#fixture-hooks)
     * [Sharing Variables Between Fixture Hooks and Test Code](#sharing-variables-between-fixture-hooks-and-test-code)
 * [Skipping Tests](#skipping-tests)
-<<<<<<< HEAD
 * [Inject Scripts into Tested Pages](#inject-scripts-into-tested-pages)
-=======
 * [Disable Page Caching](#disable-page-caching)
->>>>>>> Describe disabling page caching
 
 > If you use [eslint](http://eslint.org/) in your project, use  the [TestCafe plugin](https://www.npmjs.com/package/eslint-plugin-testcafe)
 to avoid the `'fixture' is not defined` and `'test' is not defined` errors.
