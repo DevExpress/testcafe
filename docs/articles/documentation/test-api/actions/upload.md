@@ -11,6 +11,8 @@ Use the following actions to work with file upload input elements.
 * [Populate File Upload Input](#populate-file-upload-input)
 * [Clear File Upload Input](#clear-file-upload-input)
 
+> The [t.setFilesToUpload](#populate-file-upload-input) and [t.clearUpload](#clear-file-upload-input) actions only allow you to manage the list of files for upload. These files are uploaded to the server after you initiate upload, for example, when you [click](click.md) the **Upload** or **Submit** button on a webpage.
+
 ## Populate File Upload Input
 
 Populates the specified file upload input with file paths.

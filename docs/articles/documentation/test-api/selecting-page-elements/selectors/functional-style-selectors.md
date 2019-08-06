@@ -272,7 +272,7 @@ Method | Description
 `child(cssSelector)` | Finds all child elements (not nodes) of all nodes in the matching set and filters them by `cssSelector`.
 `child(filterFn, dependencies)` | Finds all child elements (not nodes) of all nodes in the matching set and filters them by the `filterFn` predicate. Use an optional `dependencies` parameter to pass functions, variables or objects to the `filterFn` function. See [Filtering DOM Elements by Predicates](#filtering-dom-elements-by-predicates).
 
-> Important! To learn how to access child nodes, see [Accessing Child Nodes in the DOM Hierarchy](../../obtaining-data-from-the-client/examples-of-using-client-functions.md#accessing-child-nodes-in-the-dom-hierarchy).
+> Important! To learn how to access child nodes, see [Access Child Nodes in the DOM Hierarchy](../examples-of-working-with-dom-elements.md#access-child-nodes-in-the-dom-hierarchy).
 
 ```js
 // Selects all children of all ul elements.
