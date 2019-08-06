@@ -5,9 +5,86 @@
     <description></description>
     <link>https://devexpress.github.io/testcafe/</link>
     <atom:link href="https://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 18 Jul 2019 20:05:19 +0300</pubDate>
-    <lastBuildDate>Thu, 18 Jul 2019 20:05:19 +0300</lastBuildDate>
+    <pubDate>Tue, 06 Aug 2019 15:00:02 +0300</pubDate>
+    <lastBuildDate>Tue, 06 Aug 2019 15:00:02 +0300</lastBuildDate>
     <generator>Jekyll v3.8.4</generator>
+    
+      <item>
+        <title>TestCafe v1.4.0 Released</title>
+        <description>&lt;h1&gt;TestCafe v1.4.0 Released&lt;/h1&gt;
+&lt;p&gt;This release introduces the capability to inject custom scripts into tested pages.&lt;/p&gt;
+
+&lt;!--more--&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;enhancements&quot;&gt;&lt;/a&gt;Enhancements &lt;a class=&quot;permalink&quot; href=&quot;#enhancements&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;inject-scripts-into-tested-pages-1739&quot;&gt;&lt;/a&gt;⚙ Inject Scripts Into Tested Pages (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1739&quot;&gt;#1739&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#inject-scripts-into-tested-pages-1739&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;TestCafe now allows you to &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/inject-scripts-into-tested-pages.html&quot;&gt;inject scripts&lt;/a&gt; into pages visited during the tests. Use this feature to add helper functions, mock browser API or import modules.&lt;/p&gt;
+
+&lt;p&gt;To add client scripts to all tests, specify them in the command line, API or configuration file. Use the following options:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--cs-pathpath2---client-scripts-pathpath2&quot;&gt;--cs (--client-scripts)&lt;/a&gt; command line argument&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe chrome test.js --client-scripts&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;mockDate.js,assets/react-helpers.js
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#clientscripts&quot;&gt;runner.clientScripts&lt;/a&gt; API method&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;clientScripts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'mockDate.js'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'scripts/react-helpers.js'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#clientscripts&quot;&gt;clientScripts&lt;/a&gt; configuration file property&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;clientScripts&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;mockDate.js&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;scripts/react-helpers.js&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;If you need to add scripts to individual fixtures or tests, use the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#inject-scripts-into-tested-pages&quot;&gt;fixture.clientScripts&lt;/a&gt; and &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#inject-scripts-into-tested-pages&quot;&gt;test.clientScripts&lt;/a&gt; methods in test code.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;My&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;page&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//example.com`&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;clientScripts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'mockDate.js'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'scripts/react-helpers.js'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'My test'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/* ... */&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;clientScripts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'mockDate.js'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'scripts/react-helpers.js'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;TestCafe also allows you to &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/inject-scripts-into-tested-pages.html#provide-scripts-for-specific-pages&quot;&gt;inject scripts into specific pages&lt;/a&gt;.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;My&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;clientScripts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'https://myapp.com/page/'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'scripts/vue-helpers.js'&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This is helpful when you need to override the browser API on particular pages and use the default behavior everywhere else.&lt;/p&gt;
+
+&lt;p&gt;You can specify the scripts to inject as follows:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;pass the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/inject-scripts-into-tested-pages.html#inject-a-javascript-file&quot;&gt;path to a JavaScript file&lt;/a&gt; to inject its content:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;My&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;clientScripts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'assets/jquery.js'&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;use the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/inject-scripts-into-tested-pages.html#inject-a-module&quot;&gt;module name&lt;/a&gt; to inject a module:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;My&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;clientScripts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;module&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'async'&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;TestCafe searches for the module&amp;#39;s entry point with Node.js mechanisms and injects its content. Note that the browser must be able to execute this module.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;pass the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/inject-scripts-into-tested-pages.html#inject-script-code&quot;&gt;code&lt;/a&gt; you need to inject:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;My&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;clientScripts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'Geolocation.prototype.getCurrentPosition = () =&amp;gt; new Positon(0, 0);'&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;For more information, see &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/inject-scripts-into-tested-pages.html&quot;&gt;Inject Scripts into Tested Pages&lt;/a&gt;.&lt;/p&gt;
+&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;bug-fixes&quot;&gt;&lt;/a&gt;Bug Fixes &lt;a class=&quot;permalink&quot; href=&quot;#bug-fixes&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;The browser no longer displays 404 errors after the test submits a form (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/3560&quot;&gt;#3560&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;TestCafe can now download files when testing in headless mode (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/3127&quot;&gt;#3127&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;TypeScript no longer throws an error when &lt;code&gt;fixture&lt;/code&gt; or &lt;code&gt;fixture.page&lt;/code&gt; uses a tag function (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/4042&quot;&gt;#4042&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;The &lt;code&gt;load&lt;/code&gt; event now correctly fires for cached images (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1959&quot;&gt;testcafe-hammerhead/#1959&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;TestCafe can now read resources from &lt;code&gt;asar&lt;/code&gt; archives (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/2033&quot;&gt;testcafe-hammerhead/#2033&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Fri, 02 Aug 2019 00:00:00 +0300</pubDate>
+        <link>https://devexpress.github.io/testcafe/blog/testcafe-v1-4-0-released.html</link>
+        <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v1-4-0-released.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>TestCafe v1.3.1 Released</title>
@@ -616,67 +693,6 @@ If the same problem occurs with this test two more times, the test run finishes 
         <pubDate>Thu, 02 Aug 2018 00:00:00 +0300</pubDate>
         <link>https://devexpress.github.io/testcafe/blog/testcafe-v0-21-0-released.html</link>
         <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v0-21-0-released.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>TestCafe v0.20.0 Released</title>
-        <description>&lt;h1&gt;TestCafe v0.20.0 Released&lt;/h1&gt;
-&lt;p&gt;Intercepting HTTP requests, specifying resources accessed by bypassing a proxy server, specifying testing metadata, deprecated passing a regular promise to assertions.&lt;/p&gt;
-
-&lt;!--more--&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;request-hooks-intercepting-http-requests-1341&quot;&gt;&lt;/a&gt;Request Hooks: Intercepting HTTP requests (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1341&quot;&gt;#1341&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#request-hooks-intercepting-http-requests-1341&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;TestCafe now allows you to record HTTP request data or mock responses. You can also create a custom HTTP request hook to emulate authentications like  &lt;strong&gt;Kerberos&lt;/strong&gt; or &lt;strong&gt;Client Certificate Authentication&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;p&gt;See &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests&quot;&gt;Intercepting HTTP Requests&lt;/a&gt; for more information.&lt;/p&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;enhancements&quot;&gt;&lt;/a&gt;Enhancements &lt;a class=&quot;permalink&quot; href=&quot;#enhancements&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;specifying-resources-accessed-by-bypassing-a-proxy-server-1791&quot;&gt;&lt;/a&gt;⚙ Specifying resources accessed by bypassing a proxy server (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1791&quot;&gt;#1791&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#specifying-resources-accessed-by-bypassing-a-proxy-server-1791&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;TestCafe now allows you to bypass the proxy server when accessing specific resources.&lt;/p&gt;
-
-&lt;p&gt;To specify resources that require direct access, use the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--proxy-bypass-rules&quot;&gt;--proxy-bypass&lt;/a&gt; flag in the command line or the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#useproxy&quot;&gt;useProxy&lt;/a&gt; API method&amp;#39;s parameters.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe chrome my-tests/&lt;span class=&quot;k&quot;&gt;**&lt;/span&gt;/&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.js --proxy proxy.corp.mycompany.com --proxy-bypass localhost:8080,internal-resource.corp.mycompany.com
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;useProxy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'172.0.10.10:8080'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'localhost:8080'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'internal-resource.corp.mycompany.com'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;specifying-testing-metadata-2242&quot;&gt;&lt;/a&gt;⚙ Specifying testing metadata (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2242&quot;&gt;#2242&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#specifying-testing-metadata-2242&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;TestCafe allows you to specify additional information for tests in the form of key-value metadata and use it in reports.&lt;/p&gt;
-
-&lt;p&gt;You can define metadata for a fixture or a test using the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#specifying-testing-metadata&quot;&gt;meta&lt;/a&gt; method:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;My&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Fixture&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;meta&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'fixtureID'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'f-0001'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;meta&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;author&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'John'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;creationDate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'05/03/2018'&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;meta&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'testID'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'t-0005'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;meta&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;severity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'critical'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;testedAPIVersion&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'1.0'&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'MyTest'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/* ... */&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;To include testing metadata to reports, use the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html&quot;&gt;custom reporter methods&lt;/a&gt;.&lt;/p&gt;
-&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;passing-a-regular-promise-to-texpect-is-deprecated-now-2207&quot;&gt;&lt;/a&gt;⚙ Passing a regular promise to &lt;code&gt;t.expect&lt;/code&gt; is deprecated now (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2207&quot;&gt;#2207&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#passing-a-regular-promise-to-texpect-is-deprecated-now-2207&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;TestCafe now throws an error if you pass a regular promise to the assertion&amp;#39;s &lt;code&gt;expect&lt;/code&gt; method.&lt;/p&gt;
-
-&lt;p&gt;If you need to assert a regular promise, set the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/assertions/#optionsallowunawaitedpromise&quot;&gt;allowUnawaitedPromise&lt;/a&gt; option to &lt;code&gt;true&lt;/code&gt;.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;doSomethingAsync&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;ok&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'check that a promise is returned'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;allowUnawaitedPromise&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;bug-fixes&quot;&gt;&lt;/a&gt;Bug Fixes &lt;a class=&quot;permalink&quot; href=&quot;#bug-fixes&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;The session recovery bubble in Firefox is disabled (&lt;a href=&quot;https://github.com/DevExpress/testcafe/pull/2341&quot;&gt;#2341&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;TestCafe works properly if a &lt;code&gt;body&lt;/code&gt; element has the &lt;code&gt;pointer-events: none;&lt;/code&gt; css style rule (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2251&quot;&gt;#2251&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Resizing Chrome in the emulation mode works correctly (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2154&quot;&gt;#2154&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;The location port is used for service messages (&lt;a href=&quot;https://github.com/DevExpress/testcafe/pull/2308&quot;&gt;#2308&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;A browser instance shuts down correctly on Unix systems (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2226&quot;&gt;#2226&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;An &lt;code&gt;Integrity&lt;/code&gt; attribute is removed from &lt;code&gt;script&lt;/code&gt; and &lt;code&gt;link&lt;/code&gt; tags (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/235&quot;&gt;testcafe-hammerhead/#235&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;The &lt;code&gt;event.preventDefault()&lt;/code&gt; method call changes the &lt;code&gt;event.defaultPrevented&lt;/code&gt; property value (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1588&quot;&gt;testcafe-hammerhead/#1588&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;It is possible to set the &lt;code&gt;meta&lt;/code&gt; element&amp;#39;s &lt;code&gt;content&lt;/code&gt; attribute (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1586&quot;&gt;testcafe-hammerhead/#1586&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;TestCafe no longer overrides attributes used in a non-standard way with &lt;code&gt;null&lt;/code&gt; (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/pull/1583&quot;&gt;testcafe-hammerhead/#1583&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;The &lt;code&gt;Change&lt;/code&gt; event fires correctly if the &lt;code&gt;target.value&lt;/code&gt; changes (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2319&quot;&gt;#2319&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;MouseEvent.screenX&lt;/code&gt; and &lt;code&gt;MouseEvent.screenY&lt;/code&gt; are added to the emulated events (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2325&quot;&gt;#2325&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Cookies on &lt;code&gt;localhost&lt;/code&gt; are processed correctly (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1491&quot;&gt;testcafe-hammerhead/#1491&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Setting the &lt;code&gt;//&lt;/code&gt; url for an image works correctly (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2312&quot;&gt;#2312&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;shadowUI&lt;/code&gt; internal elements are no longer processed (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2281&quot;&gt;#2281&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;typeInput&lt;/code&gt; event is raised correctly (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1956&quot;&gt;#1956&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Selecting text in contenteditable elements works properly (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2301&quot;&gt;#2301&lt;/a&gt;)&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Tue, 15 May 2018 00:00:00 +0300</pubDate>
-        <link>https://devexpress.github.io/testcafe/blog/testcafe-v0-20-0-released.html</link>
-        <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v0-20-0-released.html</guid>
         
         
       </item>

@@ -1138,6 +1138,7 @@
 <li><a href="#sharing-variables-between-fixture-hooks-and-test-code">Sharing Variables Between Fixture Hooks and Test Code</a></li>
 </ul></li>
 <li><a href="#skipping-tests">Skipping Tests</a></li>
+<li><a href="#inject-scripts-into-tested-pages">Inject Scripts into Tested Pages</a></li>
 </ul>
 <blockquote><div class="blockquote-content"><p>If you use <a href="http://eslint.org/">eslint</a> in your project, use  the <a href="https://www.npmjs.com/package/eslint-plugin-testcafe">TestCafe plugin</a>
 to avoid the <code>&#39;fixture&#39; is not defined</code> and <code>&#39;test&#39; is not defined</code> errors.</p>
@@ -1608,7 +1609,51 @@ Use the <code>fixture.skip</code> and <code>test.skip</code> methods for this.</
 <span class="nx">test</span><span class="p">(</span><span class="s1">'Fixture2Test3'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{});</span>
 
 <span class="c1">// Only tests in Fixture1 and the Fixture2Test2 test are run</span>
+</code></pre></div><h2><a class="anchor" id="inject-scripts-into-tested-pages"></a>Inject Scripts into Tested Pages <a class="permalink" href="#inject-scripts-into-tested-pages">#</a></h2>
+<p>TestCafe allows you to <a href="../using-testcafe/common-concepts/inject-scripts-into-tested-pages.html">inject custom scripts</a> into pages visited during the tests. You can add scripts that mock browser API or provide helper functions.</p>
+
+<p>Use the <code>fixture.clientScripts</code> and <code>test.clientScripts</code> methods to add scripts to pages visited during a particular test or fixture.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">fixture.clientScripts( script[, script2[, ...[, scriptN]]] )
+</code></pre></div><div class="highlight"><pre><code class="language-text" data-lang="text">test.clientScripts( script[, script2[, ...[, scriptN]]] )
+</code></pre></div><div class="table-wrapper"><table><thead><tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody><tr>
+<td><code>script</code>, <code>script2</code>, <code>scriptN</code></td>
+<td>String &#124; Object &#124; Array</td>
+<td>Scripts to inject into the tested pages. See <a href="../using-testcafe/common-concepts/inject-scripts-into-tested-pages.html#provide-scripts-to-inject">Provide Scripts to Inject</a> to learn how to specify them.</td>
+</tr>
+</tbody></table></div><blockquote><div class="blockquote-content"><p>Relative paths resolve from the test file location.</p>
+</div></blockquote>
+<p>You can use the <a href="../using-testcafe/common-concepts/inject-scripts-into-tested-pages.html#provide-scripts-for-specific-pages">page</a> option to specify pages into which scripts should be injected. Otherwise, TestCafe injects scripts into all pages visited during the test or fixture.</p>
+<blockquote><div class="blockquote-content"><p>If you add client scripts to both the fixture and test, scripts added to the fixture run first.</p>
+</div></blockquote>
+<p><strong>Examples</strong></p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//example.com`</span>
+    <span class="p">.</span><span class="nx">clientScripts</span><span class="p">(</span><span class="s1">'assets/jquery.js'</span><span class="p">);</span>
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">test</span>
+    <span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">})</span>
+    <span class="p">.</span><span class="nx">clientScripts</span><span class="p">({</span> <span class="na">module</span><span class="p">:</span> <span class="s1">'async'</span> <span class="p">});</span>
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">test</span>
+    <span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">})</span>
+    <span class="p">.</span><span class="nx">clientScripts</span><span class="p">({</span>
+        <span class="na">page</span><span class="p">:</span> <span class="sr">/</span><span class="se">\/</span><span class="sr">user</span><span class="se">\/</span><span class="sr">profile</span><span class="se">\/</span><span class="sr">/</span><span class="p">,</span>
+        <span class="na">content</span><span class="p">:</span> <span class="s1">'Geolocation.prototype.getCurrentPosition = () =&gt; new Positon(0, 0);'</span>
+    <span class="p">});</span>
 </code></pre></div>
+<p>To inject scripts into pages visited during all tests, use either of the following:</p>
+
+<ul>
+<li>the <a href="../using-testcafe/command-line-interface.html#--cs-pathpath2---client-scripts-pathpath2">--cs (--client-scripts)</a> command line option</li>
+<li>the <a href="../using-testcafe/programming-interface/runner.html#clientscripts">runner.clientScripts</a> method</li>
+<li>the <a href="../using-testcafe/configuration-file.html#clientscripts">clientScripts</a> configuration file property</li>
+</ul>
+
+<p>See <a href="../using-testcafe/common-concepts/inject-scripts-into-tested-pages.html">Inject Scripts into Tested Pages</a> for more information.</p>
+
 
 		</div>
 	</article>

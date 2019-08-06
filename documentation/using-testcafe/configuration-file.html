@@ -766,6 +766,13 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/using-testcafe/common-concepts/inject-scripts-into-tested-pages.html"  >Inject Scripts into Tested Pages</a>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/using-testcafe/common-concepts/reporters.html"  >Reporters</a>
 		
     </li>
@@ -846,6 +853,7 @@
 <li><a href="#assertiontimeout">assertionTimeout</a></li>
 <li><a href="#pageloadtimeout">pageLoadTimeout</a></li>
 <li><a href="#speed">speed</a></li>
+<li><a href="#clientscripts">clientScripts</a></li>
 <li><a href="#port1-port2">port1, port2</a></li>
 <li><a href="#hostname">hostname</a></li>
 <li><a href="#proxy">proxy</a></li>
@@ -1245,6 +1253,35 @@ to slow the test down.</p>
 
 <p><em>CLI</em>: <a href="command-line-interface.html#--speed-factor">--speed</a><br>
 <em>API</em>: <a href="programming-interface/runner.html#run">runner.run({ speed })</a></p>
+<h2><a class="anchor" id="clientscripts"></a>clientScripts <a class="permalink" href="#clientscripts">#</a></h2>
+<p>Injects scripts into pages visited during the tests. Use this property to introduce client-side mock functions or helper scripts.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"clientScripts"</span><span class="p">:</span><span class="w"> </span><span class="s2">"assets/jquery.js"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"clientScripts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="nt">"module"</span><span class="p">:</span><span class="w"> </span><span class="s2">"lodash"</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="nt">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"scripts/react-helpers.js"</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"page"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://myapp.com/page/"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><blockquote><div class="blockquote-content"><p>Relative paths resolve from the current working directory.</p>
+</div></blockquote>
+<p>See <a href="common-concepts/inject-scripts-into-tested-pages.html#provide-scripts-to-inject">Provide Scripts to Inject</a> to learn how to specify the scripts.</p>
+
+<p>You can use the <a href="common-concepts/inject-scripts-into-tested-pages.html#provide-scripts-for-specific-pages">page</a> option to specify pages into which scripts should be injected. Otherwise, TestCafe injects scripts into all pages visited during the test run.</p>
+<blockquote><div class="blockquote-content"><p>Note that regular expressions are not supported in the configuration file. Use the <a href="programming-interface/runner.html#clientscripts">runner.clientScripts</a> method or <a href="../test-api/test-code-structure.html#inject-scripts-into-tested-pages">test API methods</a> to <a href="common-concepts/inject-scripts-into-tested-pages.html#provide-scripts-for-specific-pages">define target pages</a> with a regular expression.</p>
+</div></blockquote>
+<p>The <a href="../test-api/test-code-structure.html#inject-scripts-into-tested-pages">fixture.clientScripts</a> and <a href="../test-api/test-code-structure.html#inject-scripts-into-tested-pages">test.clientScripts</a> methods allow you to inject scripts into pages visited during an individual fixture or test.</p>
+
+<p>For more information, see <a href="common-concepts/inject-scripts-into-tested-pages.html">Inject Scripts into Tested Pages</a>.</p>
+
+<p><em>CLI</em>: <a href="command-line-interface.html#--cs-pathpath2---client-scripts-pathpath2">--cs, --client-scripts</a><br>
+<em>API</em>: <a href="programming-interface/runner.html#clientscripts">runner.clientScripts</a></p>
 <h2><a class="anchor" id="port1-port2"></a>port1, port2 <a class="permalink" href="#port1-port2">#</a></h2>
 <p>Specifies custom port numbers TestCafe uses to perform testing. The number range is [0-65535].</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
