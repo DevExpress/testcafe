@@ -10,8 +10,8 @@ to isolate authentication test actions and apply them easily whenever you need t
 
 A piece of logic that logs in a particular user is called a *role*. Define a role for each user account participating in your test.
 
-* [Why Use Roles](#why-use-roles)
-* [Create and Use Roles](#create-and-use-roles)
+* [Why Use Roles](#why-roles)
+* [Create and Apply Roles](#create-and-apply-roles)
 * [Anonymous Role](#anonymous-role)
 * [Role Options](#role-options)
   * [options.preserveUrl](#optionspreserveurl)
@@ -31,7 +31,7 @@ Roles are more than just another way to [extract reusable test logic](../../reci
 
 > Roles work with authentication data in cookies and browser storages. If your authentication system stores data elsewhere, you may not be able to use roles.
 
-## Create and Use Roles
+## Create and Apply Roles
 
 Use the `Role` constructor to create and initialize a role.
 
@@ -142,7 +142,7 @@ test('Anonymous users can see newly created comments', async t => {
 
 ## Role Options
 
-You can pass the following options to the [Role constructor](#create-and-use-roles).
+You can pass the following options to the [Role constructor](#create-and-apply-roles).
 
 ### options.preserveUrl
 
