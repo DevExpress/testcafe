@@ -2,7 +2,9 @@
 
 ## v1.4.0 (2019-8-6)
 
-### :gear: Inject Scripts Into Tested Pages ([#1739](https://github.com/DevExpress/testcafe/issues/1739))
+### Enhancements
+
+#### :gear: Inject Scripts Into Tested Pages ([#1739](https://github.com/DevExpress/testcafe/issues/1739))
 
 TestCafe now allows you to [inject scripts](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/inject-scripts-into-tested-pages.html) into pages visited during the tests. Use this feature to add helper functions, mock browser API or import modules.
 
