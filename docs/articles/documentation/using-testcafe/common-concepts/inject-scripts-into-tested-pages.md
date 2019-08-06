@@ -7,11 +7,22 @@ permalink: /documentation/using-testcafe/common-concepts/inject-scripts-into-tes
 
 TestCafe allows you to inject custom client scripts into pages visited during the tests. You can add scripts that mock browser API or provide helper functions.
 
+* [Add Client Scripts to All Tests](#add-client-scripts-to-all-tests)
+* [Add Client Scripts to Specific Tests](#add-client-scripts-to-specific-tests)
+* [Provide Scripts to Inject](#provide-scripts-to-inject)
+  * [Inject a JavaScript File](#inject-a-javascript-file)
+  * [Inject a Module](#inject-a-module)
+  * [Inject Script Code](#inject-script-code)
+  * [Provide Scripts for Specific Pages](#provide-scripts-for-specific-pages)
+  * [Inject Scripts Into Iframes](#inject-scripts-into-iframes)
+  * [Specify Multiple Scripts](#specify-multiple-scripts)
+* [Access DOM in the Injected Scripts](#access-dom-in-the-injected-scripts)
+
 Use [test run options](#add-client-scripts-to-all-tests) to add client scripts to all tests, or [test API](#add-client-scripts-to-specific-tests) to add them to specific fixtures or tests.
 
 ## Add Client Scripts to All Tests
 
-Use either of the following to inject scripts into pages visited during all the tests:
+Use either of the following options to inject scripts into pages visited during all the tests:
 
 * the [--cs (--client-scripts)](../command-line-interface.md#--cs-pathpath2---client-scripts-pathpath2) command line option
 
@@ -385,6 +396,17 @@ runner.clientScripts({
 
 > If the target page redirects to a different URL, ensure that the `page` property matches the destination URL. Otherwise, scripts are not injected.
 
+### Inject Scripts Into Iframes
+
+To inject a script into an iframe, specify the iframe URL in the [page](#provide-scripts-for-specific-pages) property.
+
+```js
+runner.clientScripts({
+    path: 'scripts/helpers.js',
+    page: 'https://example.com/iframe/'
+}));
+```
+
 ### Specify Multiple Scripts
 
 You can pass multiple arguments or an array to the `clientScripts` methods:
@@ -442,15 +464,4 @@ window.addEventListener('DOMContentLoaded', function () {
 
 fixture `My fixture`
     .clientScripts({ content: scriptContent });
-```
-
-## Inject Scripts Into Iframes
-
-To inject a script into an iframe, specify the iframe URL in the [page](#provide-scripts-for-specific-pages) property.
-
-```js
-runner.clientScripts({
-    path: 'scripts/helpers.js',
-    page: 'https://example.com/iframe/'
-}));
 ```
