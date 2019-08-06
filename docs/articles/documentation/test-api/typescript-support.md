@@ -86,8 +86,6 @@ See the available options in the [TypeScript Compiler Options](https://www.types
 
 > Important! You cannot override the `module` and `target` options.
 
-Save `tsconfig.json` to the directory from which you run TestCafe (usually the project's root directory), or specify the [tsConfigPath](../using-testcafe/configuration-file.md#tsconfigpath) option in the [configuration file](../using-testcafe/configuration-file.md) to use a different location.
-
 TestCafe passes the following options to the TypeScript compiler unless you override them in `tsconfig.json`:
 
 Option                    | Value
