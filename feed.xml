@@ -5,8 +5,8 @@
     <description></description>
     <link>https://devexpress.github.io/testcafe/</link>
     <atom:link href="https://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 06 Aug 2019 16:28:59 +0300</pubDate>
-    <lastBuildDate>Tue, 06 Aug 2019 16:28:59 +0300</lastBuildDate>
+    <pubDate>Tue, 06 Aug 2019 16:32:23 +0300</pubDate>
+    <lastBuildDate>Tue, 06 Aug 2019 16:32:23 +0300</lastBuildDate>
     <generator>Jekyll v3.8.4</generator>
     
       <item>
@@ -77,7 +77,7 @@
 &lt;li&gt;TypeScript no longer throws an error when &lt;code&gt;fixture&lt;/code&gt; or &lt;code&gt;fixture.page&lt;/code&gt; uses a tag function (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/4042&quot;&gt;#4042&lt;/a&gt;)&lt;/li&gt;
 &lt;li&gt;The &lt;code&gt;load&lt;/code&gt; event now correctly fires for cached images (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1959&quot;&gt;testcafe-hammerhead/#1959&lt;/a&gt;)&lt;/li&gt;
 &lt;li&gt;TestCafe can now read resources from &lt;code&gt;asar&lt;/code&gt; archives (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/2033&quot;&gt;testcafe-hammerhead/#2033&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Fixed a bug when &lt;code&gt;testcafe-hammerhead&lt;/code&gt; event listeners were called twice (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/2062&quot;&gt;testcafe-hammerhead/#2062&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Fixed a bug when &lt;code&gt;testcafe-hammerhead&lt;/code&gt; event listeners were called twice (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/2062&quot;&gt;testcafe-hammerhead/#2062&lt;/a&gt;)&lt;/li&gt;
 &lt;/ul&gt;
 </description>
         <pubDate>Tue, 06 Aug 2019 00:00:00 +0300</pubDate>
