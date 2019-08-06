@@ -1,6 +1,6 @@
 # Changelog
 
-## v1.4.0 (2019-8-2)
+## v1.4.0 (2019-8-6)
 
 ### :gear: Inject Scripts Into Tested Pages ([#1739](https://github.com/DevExpress/testcafe/issues/1739))
 
