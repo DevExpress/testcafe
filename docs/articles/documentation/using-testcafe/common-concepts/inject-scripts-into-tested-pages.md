@@ -57,7 +57,7 @@ You can pass the following arguments to specify the scripts to inject:
 * [module name](#inject-a-module)
 * [script code](#inject-script-code)
 
-You can also [inject scripts into specific pages](#provide-scripts-for-specific-pages).
+You can also [inject scripts into specific pages](#provide-scripts-for-specific-pages) and [iframes](#inject-scripts-into-iframes).
 
 > Note that the API methods and configuration option support [multiple arguments](#specify-multiple-scripts).
 
@@ -138,7 +138,7 @@ runner.clientScripts({ path: 'assets/jquery.js' });
 }
 ```
 
-> You cannot combine the `path`, [module](#inject-a-module) and [content](#inject-script-code) properties.
+> You cannot combine the `path`, [module](#inject-a-module) and [content](#inject-script-code) properties in a single object. To inject multiple items, pass several arguments or an array.
 
 ### Inject a Module
 
@@ -206,7 +206,7 @@ fixture `My fixture`
 }
 ```
 
-> You cannot combine the `module`, [path](#inject-a-javascript-file) and [content](#inject-script-code) properties.
+> You cannot combine the `module`, [path](#inject-a-javascript-file) and [content](#inject-script-code) properties in a single object. To inject multiple items, pass several arguments or an array.
 
 ### Inject Script Code
 
@@ -271,7 +271,7 @@ test
 }
 ```
 
-> You cannot combine the `content`, [path](#inject-a-javascript-file) and [module](#inject-a-module) properties.
+> You cannot combine the `content`, [path](#inject-a-javascript-file) and [module](#inject-a-module) properties in a single object. To inject multiple items, pass several arguments or an array.
 
 ### Provide Scripts for Specific Pages
 
@@ -442,4 +442,15 @@ window.addEventListener('DOMContentLoaded', function () {
 
 fixture `My fixture`
     .clientScripts({ content: scriptContent });
+```
+
+## Inject Scripts Into Iframes
+
+To inject a script into an iframe, specify the iframe URL in the [page](#provide-scripts-for-specific-pages) property.
+
+```js
+runner.clientScripts({
+    path: 'scripts/helpers.js',
+    page: 'https://example.com/iframe/'
+}));
 ```
