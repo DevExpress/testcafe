@@ -63,7 +63,7 @@ export default class ScrollAutomation {
         left = Math.max(left, 0);
         top  = Math.max(top, 0);
 
-        const scrollPromise = scrollController.waitForScroll();
+        let scrollPromise = scrollController.waitForScroll();
 
         styleUtils.setScrollLeft(scrollElement, left);
         styleUtils.setScrollTop(scrollElement, top);
@@ -74,9 +74,9 @@ export default class ScrollAutomation {
             return Promise.resolve();
         }
 
-        scrollPromise.then = () => {
+        scrollPromise = scrollPromise.then(() => {
             this.scrollWasPerformed = this.scrollWasPerformed || this._isScrollValuesChanged(scrollElement, originalScroll);
-        };
+        });
 
         return scrollPromise;
     }
