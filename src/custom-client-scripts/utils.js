@@ -24,7 +24,7 @@ export function setUniqueUrls (collection) {
 
 export function findProblematicScripts (collection) {
     const nonEmptyScripts              = collection.filter(s => !!s.content);
-    const scriptsWithDuplicatedContent = getDuplicatedScripts(nonEmptyScripts, s => s.content);
+    const scriptsWithDuplicatedContent = getDuplicatedScripts(nonEmptyScripts, s => s.content + s.page.toString());
     const emptyScripts                 = collection.filter(s => !s.content);
 
     return {

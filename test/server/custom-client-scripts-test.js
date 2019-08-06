@@ -204,7 +204,7 @@ describe('Client scripts', () => {
         });
 
         describe('Should provide information about problematic scripts', () => {
-            it('Duplicated content', () => {
+            it('Duplicated content for the single page', () => {
                 const scripts = [
                     { content: '1' },
                     { content: '1' },
@@ -219,6 +219,27 @@ describe('Client scripts', () => {
                         expect(duplicatedContent.length).eql(2);
                         expect(duplicatedContent[0].content).eql(scripts[0].content);
                         expect(duplicatedContent[1].content).eql(scripts[2].content);
+                    });
+            });
+
+            it('Duplicated content for the several pages', () => {
+                const scripts = [
+                    { content: '1' },
+                    { content: '1', page: 'https://example.com' },
+                    { content: '2' },
+                    { content: '2' },
+                    { content: '3', page: 'https://example.com' },
+                    { content: '3', page: 'https://example.com' },
+                    { content: '4', page: 'https://example.com' },
+                    { content: '4', page: 'https://another-site.com' },
+                ];
+
+                return loadClientScripts(scripts)
+                    .then(findProblematicScripts)
+                    .then(({ duplicatedContent }) => {
+                        expect(duplicatedContent.length).eql(2);
+                        expect(duplicatedContent[0].content).eql(scripts[2].content);
+                        expect(duplicatedContent[1].content).eql(scripts[4].content);
                     });
             });
 
