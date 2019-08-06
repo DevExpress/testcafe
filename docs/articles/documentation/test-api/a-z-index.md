@@ -55,7 +55,7 @@ This topic lists test API members in alphabetical order.
 * [test](test-code-structure.md#tests)
     * [after](test-code-structure.md#initialization-and-clean-up)
     * [before](test-code-structure.md#initialization-and-clean-up)
-    * [clientScripts](test-code-structure.md#inject-scripts-into-tested-pages)    
+    * [clientScripts](test-code-structure.md#inject-scripts-into-tested-pages)
     * [httpAuth](authentication/http-authentication.md)
     * [only](test-code-structure.md#skipping-tests)
     * [page](test-code-structure.md#specifying-the-start-webpage)
