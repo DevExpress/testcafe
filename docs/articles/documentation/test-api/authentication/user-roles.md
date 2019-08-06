@@ -10,6 +10,14 @@ to isolate authentication test actions and apply them easily whenever you need t
 
 A piece of logic that logs in a particular user is called a *role*. Define a role for each user account participating in your test.
 
+* [Why Use Roles](#why-use-roles)
+* [Create and Use Roles](#create-and-use-roles)
+* [Anonymous Role](#anonymous-role)
+* [Role Options](#role-options)
+  * [options.preserveUrl](#optionspreserveurl)
+* [Troubleshooting](#troubleshooting)
+  * [Local Storage Values Set in the Role Code Are Lost](#local-storage-values-set-in-the-role-code-are-lost)
+
 ## Why Use Roles
 
 Roles are more than just another way to [extract reusable test logic](../../recipes/extract-reusable-test-code/README.md). They were specially designed for login operations and provide the following dedicated features:

@@ -63,6 +63,7 @@
         "rejectUnauthorized": true
     },
     "tsConfigPath": "/Users/s.johnson/testcafe/tsconfig.json",
+    "disablePageCaching": true,
     "developmentMode": true,
     "qrCode": true
 }
