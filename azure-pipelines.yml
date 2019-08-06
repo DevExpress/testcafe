@@ -34,4 +34,4 @@ steps:
     npm test
   displayName: 'Run tests'
   condition: and(succeeded(), not(variables['isDocCommit']))
-  timeoutInMinutes: 40
+  timeoutInMinutes: 50
