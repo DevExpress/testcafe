@@ -1,6 +1,6 @@
 # Changelog
 
-## v1.4.0 (2019-8-6)
+## v1.4.0 (2019-8-7)
 
 ### Enhancements
 
