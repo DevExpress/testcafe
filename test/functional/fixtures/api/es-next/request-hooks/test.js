@@ -55,4 +55,8 @@ describe('Request Hooks', () => {
             return runTests('./testcafe-fixtures/api/execution-order.js', null, { only: 'chrome' });
         });
     });
+
+    it("Test's request hooks should not override the fixture's request hooks (GH-4122)", () => {
+        return runTests('./testcafe-fixtures/i4122.js', null, { only: 'chrome' });
+    });
 });

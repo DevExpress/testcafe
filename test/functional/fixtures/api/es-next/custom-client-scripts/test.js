@@ -79,4 +79,8 @@ describe('Custom client scripts', () => {
                 });
         });
     });
+
+    it("Test's client scripts should not override the fixture's client scripts (GH-4122)", () => {
+        return runTests('./testcafe-fixtures/i4122.js');
+    });
 });

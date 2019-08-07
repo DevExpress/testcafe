@@ -61,7 +61,7 @@ export default class Test extends TestingUnit {
 
         assertRequestHookType(hooks);
 
-        this.requestHooks = hooks;
+        this.requestHooks = union(this.requestHooks, hooks);
 
         this.apiMethodWasCalled.requestHooks = true;
 
@@ -76,7 +76,7 @@ export default class Test extends TestingUnit {
 
         assertClientScriptType(scripts);
 
-        this.clientScripts = scripts;
+        this.clientScripts = union(this.clientScripts, scripts);
 
         this.apiMethodWasCalled.clientScripts = true;
 
