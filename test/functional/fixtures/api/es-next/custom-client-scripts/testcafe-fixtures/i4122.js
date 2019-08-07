@@ -3,7 +3,7 @@ import { ClientFunction } from 'testcafe';
 fixture `Fixture`
     .clientScripts({ content: 'window["property1"] = true;' });
 
-const getPropertyValue = ClientFunction((propName) => window[propName]);
+const getPropertyValue = ClientFunction(propName => window[propName]);
 
 test('test', async t => {
     await t
