@@ -1,10 +1,12 @@
 import { ClientFunction } from 'testcafe';
 
 fixture `Fixture`
-    .clientScripts({ content: 'window["test"] = 0;' });
+    .clientScripts({ content: 'window["property1"] = true;' });
 
-const getTestValue = ClientFunction(() => window['test']);
+const getPropertyValue = ClientFunction((propName) => window[propName]);
 
 test('test', async t => {
-    await t.expect(getTestValue()).eql(1);
-}).clientScripts({ content: 'window["test"] = 1;' });
+    await t
+        .expect(getPropertyValue('property1')).ok()
+        .expect(getPropertyValue('property2')).ok();;
+}).clientScripts({ content: 'window["property2"] = true;' });
