@@ -766,6 +766,13 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/using-testcafe/common-concepts/inject-scripts-into-tested-pages.html"  >Inject Scripts into Tested Pages</a>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/using-testcafe/common-concepts/reporters.html"  >Reporters</a>
 		
     </li>
@@ -853,6 +860,7 @@
 </ul></li>
 <li><a href="#concurrency">concurrency</a></li>
 <li><a href="#startapp">startApp</a></li>
+<li><a href="#clientscripts">clientScripts</a></li>
 <li><a href="#useproxy">useProxy</a></li>
 <li><a href="#tsconfigpath">tsConfigPath</a></li>
 <li><a href="#run">run</a>
@@ -1223,7 +1231,39 @@ Tests are run concurrently against this pool, that is, each test is run in the f
 
 <p><strong>Example</strong></p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">startApp</span><span class="p">(</span><span class="s1">'node server.js'</span><span class="p">,</span> <span class="mi">4000</span><span class="p">);</span>
-</code></pre></div><h3><a class="anchor" id="useproxy"></a>useProxy <a class="permalink" href="#useproxy">#</a></h3>
+</code></pre></div><h3><a class="anchor" id="clientscripts"></a>clientScripts <a class="permalink" href="#clientscripts">#</a></h3>
+<p>Injects scripts into pages visited during the tests. Use this method to introduce client-side mock functions or helper scripts.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">async clientScripts( script[, script2[, ...[, scriptN]]] ) → this
+</code></pre></div><div class="table-wrapper"><table><thead><tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody><tr>
+<td><code>script</code>, <code>script2</code>, <code>scriptN</code></td>
+<td>String &#124; Object &#124; Array</td>
+<td>Scripts to inject into the tested pages. See <a href="common-concepts/inject-scripts-into-tested-pages.html#provide-scripts-to-inject">Provide Scripts to Inject</a> to learn how to specify them.</td>
+</tr>
+</tbody></table></div><blockquote><div class="blockquote-content"><p>Relative paths resolve from the current working directory.</p>
+</div></blockquote>
+<p>You can use the <a href="common-concepts/inject-scripts-into-tested-pages.html#provide-scripts-for-specific-pages">page</a> option to specify pages into which scripts should be injected. Otherwise, TestCafe injects scripts into all pages visited during the test run.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">clientScripts</span><span class="p">(</span><span class="s1">'assets/jquery.js'</span><span class="p">);</span>
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">clientScripts</span><span class="p">([</span>
+    <span class="p">{</span>
+        <span class="na">module</span><span class="p">:</span> <span class="s1">'lodash'</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="na">path</span><span class="p">:</span> <span class="s1">'scripts/react-helpers.js'</span><span class="p">,</span>
+        <span class="na">page</span><span class="p">:</span> <span class="s1">'https://myapp.com/page/'</span>
+    <span class="p">}</span>
+<span class="p">]);</span>
+</code></pre></div>
+<p>The <a href="../../test-api/test-code-structure.html#inject-scripts-into-tested-pages">fixture.clientScripts</a> and <a href="../../test-api/test-code-structure.html#inject-scripts-into-tested-pages">test.clientScripts</a> methods allow you to inject scripts into pages visited during an individual fixture or test.</p>
+
+<p>See <a href="common-concepts/inject-scripts-into-tested-pages.html">Inject Scripts into Tested Pages</a> for more information.</p>
+
+<p><em>Related configuration file property</em>: <a href="../configuration-file.html#clientscripts">clientScripts</a></p>
+<h3><a class="anchor" id="useproxy"></a>useProxy <a class="permalink" href="#useproxy">#</a></h3>
 <p>Specifies the proxy server used in your local network to access the Internet. Allows you to bypass the proxy when accessing specific resources.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">async useProxy(host [, bypassRules]) → this
 </code></pre></div><div class="table-wrapper"><table><thead><tr>

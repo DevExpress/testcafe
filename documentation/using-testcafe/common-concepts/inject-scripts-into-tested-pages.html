@@ -14,15 +14,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <title>Screenshots and Videos | TestCafe</title>
+  <title>Inject Scripts into Tested Pages | TestCafe</title>
 
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
 
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/screenshots-and-videos.html" />
-  <meta property="og:title" content="Screenshots and Videos | TestCafe" />
+  <meta property="og:url" content="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/inject-scripts-into-tested-pages.html" />
+  <meta property="og:title" content="Inject Scripts into Tested Pages | TestCafe" />
 
   
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
@@ -30,7 +30,7 @@
   
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
-  <link rel="canonical" href="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/screenshots-and-videos.html">
+  <link rel="canonical" href="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/inject-scripts-into-tested-pages.html">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="https://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
@@ -759,14 +759,14 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/using-testcafe/common-concepts/screenshots-and-videos.html" class="active" >Screenshots and Videos</a>
+<a href="/testcafe/documentation/using-testcafe/common-concepts/screenshots-and-videos.html"  >Screenshots and Videos</a>
 		
     </li>
 
     <li>
 		    
 		
-<a href="/testcafe/documentation/using-testcafe/common-concepts/inject-scripts-into-tested-pages.html"  >Inject Scripts into Tested Pages</a>
+<a href="/testcafe/documentation/using-testcafe/common-concepts/inject-scripts-into-tested-pages.html" class="active" >Inject Scripts into Tested Pages</a>
 		
     </li>
 
@@ -813,305 +813,363 @@
 	<article class="doc">
 		<div class="post-content">
 
-			<h1>Screenshots and Videos</h1>
-<p>TestCafe allows you to take screenshots of the tested webpage and record videos of test runs.</p>
+			<h1>Inject Scripts into Tested Pages</h1>
+<p>TestCafe allows you to inject custom client scripts into pages visited during the tests. You can add scripts that mock browser API or provide helper functions.</p>
 
 <ul>
-<li><a href="#screenshots">Screenshots</a>
+<li><a href="#add-client-scripts-to-all-tests">Add Client Scripts to All Tests</a></li>
+<li><a href="#add-client-scripts-to-specific-tests">Add Client Scripts to Specific Tests</a></li>
+<li><a href="#provide-scripts-to-inject">Provide Scripts to Inject</a>
 
 <ul>
-<li><a href="#prerequisites-for-screenshots">Prerequisites for Screenshots</a></li>
-<li><a href="#enable-screenshots">Enable Screenshots</a></li>
-<li><a href="#take-screenshots-at-arbitrary-moments-during-test-run">Take Screenshots at Arbitrary Moments During Test Run</a></li>
-<li><a href="#take-screenshots-when-a-test-fails">Take Screenshots When a Test Fails</a></li>
+<li><a href="#inject-a-javascript-file">Inject a JavaScript File</a></li>
+<li><a href="#inject-a-module">Inject a Module</a></li>
+<li><a href="#inject-script-code">Inject Script Code</a></li>
+<li><a href="#provide-scripts-for-specific-pages">Provide Scripts for Specific Pages</a></li>
+<li><a href="#inject-scripts-into-iframes">Inject Scripts Into Iframes</a></li>
+<li><a href="#specify-multiple-scripts">Specify Multiple Scripts</a></li>
 </ul></li>
-<li><a href="#record-videos">Record Videos</a>
-
-<ul>
-<li><a href="#prerequisites-for-video-recording">Prerequisites for Video Recording</a></li>
-<li><a href="#enable-video-recording">Enable Video Recording</a></li>
-<li><a href="#basic-video-options">Basic Video Options</a></li>
-<li><a href="#video-encoding-options">Video Encoding Options</a></li>
-</ul></li>
-<li><a href="#where-screenshots-and-videos-are-saved">Where Screenshots and Videos Are Saved</a>
-
-<ul>
-<li><a href="#default-path-patterns">Default Path Patterns</a></li>
-<li><a href="#custom-path-patterns">Custom Path Patterns</a></li>
-<li><a href="#screenshot-custom-path-pattern">Screenshot Custom Path Pattern</a></li>
-<li><a href="#video-custom-path-pattern">Video Custom Path Pattern</a></li>
-<li><a href="#path-pattern-placeholders">Path Pattern Placeholders</a></li>
-</ul></li>
+<li><a href="#access-dom-in-the-injected-scripts">Access DOM in the Injected Scripts</a></li>
 </ul>
-<h2><a class="anchor" id="screenshots"></a>Screenshots <a class="permalink" href="#screenshots">#</a></h2>
-<p>TestCafe allows you to take screenshots of the tested webpage at any moment during test run, or automatically whenever a test fails.</p>
-<blockquote class="important"><div class="blockquote-content"><p>Screenshots are not supported when you run tests in <a href="browsers/browser-support.html#browsers-on-remote-devices">remote browsers</a>.</p>
-</div></blockquote><h3><a class="anchor" id="prerequisites-for-screenshots"></a>Prerequisites for Screenshots <a class="permalink" href="#prerequisites-for-screenshots">#</a></h3>
-<p>Screenshots require .NET 4.0 or newer installed on Windows machines and an <a href="https://en.wikipedia.org/wiki/Comparison_of_X_window_managers">ICCCM/EWMH-compliant window manager</a> on Linux.</p>
-<h3><a class="anchor" id="enable-screenshots"></a>Enable Screenshots <a class="permalink" href="#enable-screenshots">#</a></h3>
-<p>To enable TestCafe to take screenshots, use either of the following:</p>
+
+<p>Use <a href="#add-client-scripts-to-all-tests">test run options</a> to add client scripts to all tests, or <a href="#add-client-scripts-to-specific-tests">test API</a> to add them to specific fixtures or tests.</p>
+<h2><a class="anchor" id="add-client-scripts-to-all-tests"></a>Add Client Scripts to All Tests <a class="permalink" href="#add-client-scripts-to-all-tests">#</a></h2>
+<p>Use either of the following options to inject scripts into pages visited during all the tests:</p>
 
 <ul>
-<li><p>the <a href="../command-line-interface.html#-s-path---screenshots-path">-s (--screenshots)</a> command line flag,</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js -s artifacts/screenshots
+<li><p>the <a href="../command-line-interface.html#--cs-pathpath2---client-scripts-pathpath2">--cs (--client-scripts)</a> command line option</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js --client-scripts<span class="o">=</span>mockDate.js,assets/react-helpers.js
 </code></pre></div></li>
-<li><p>the <a href="../programming-interface/runner.html#screenshots">runner.screenshots</a> API method,</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">screenshots</span><span class="p">(</span><span class="s1">'artifacts/screenshots'</span><span class="p">);</span>
+<li><p>the <a href="../programming-interface/runner.html#clientscripts">runner.clientScripts</a> API method</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">clientScripts</span><span class="p">(</span><span class="s1">'mockDate.js'</span><span class="p">,</span> <span class="s1">'scripts/react-helpers.js'</span><span class="p">);</span>
 </code></pre></div></li>
-<li><p>the <a href="../configuration-file.html#screenshotpath">screenshotPath</a> configuration file property.</p>
+<li><p>the <a href="../configuration-file.html#clientscripts">clientScripts</a> configuration file property</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"screenshotPath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"artifacts/screenshots"</span><span class="w">
+    </span><span class="nt">"clientScripts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"mockDate.js"</span><span class="p">,</span><span class="w"> </span><span class="s2">"scripts/react-helpers.js"</span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div></li>
 </ul>
-
-<p>You must provide the base path where TestCafe stores screenshots to this flag, method or property. See <a href="#where-screenshots-and-videos-are-saved">Where Screenshots and Videos Are Saved</a> for more information.</p>
-<h3><a class="anchor" id="take-screenshots-at-arbitrary-moments-during-test-run"></a>Take Screenshots at Arbitrary Moments During Test Run <a class="permalink" href="#take-screenshots-at-arbitrary-moments-during-test-run">#</a></h3>
-<p>You can take screenshots at any moment during test run. Use the <a href="../../test-api/actions/take-screenshot.html#take-a-screenshot-of-the-entire-page">t.takeScreenshot</a> action to take a screenshot of the entire page, or the <a href="../../test-api/actions/take-screenshot.html#take-a-screenshot-of-a-page-element">t.takeElementScreenshot</a> action to capture a particular element.</p>
+<h2><a class="anchor" id="add-client-scripts-to-specific-tests"></a>Add Client Scripts to Specific Tests <a class="permalink" href="#add-client-scripts-to-specific-tests">#</a></h2>
+<p>Use the <a href="../../test-api/test-code-structure.html#inject-scripts-into-tested-pages">fixture.clientScripts</a> and <a href="../../test-api/test-code-structure.html#inject-scripts-into-tested-pages">test.clientScripts</a> methods to inject scripts into pages visited during a particular test or fixture.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`;</span>
-
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Take a screenshot of a fieldset'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
-        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">,</span> <span class="s1">'Peter Parker'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#tried-test-cafe'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="s1">'#comments'</span><span class="p">,</span> <span class="s1">'I think TestCafe is awesome!'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">takeElementScreenshot</span><span class="p">(</span><span class="s1">'#comments'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">takeScreenshot</span><span class="p">();</span>
-<span class="p">});</span>
-</code></pre></div><h3><a class="anchor" id="take-screenshots-when-a-test-fails"></a>Take Screenshots When a Test Fails <a class="permalink" href="#take-screenshots-when-a-test-fails">#</a></h3>
-<p>You can configure TestCafe to automatically take a screenshot whenever a test fails. Use either of the following:</p>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//example.com`</span>
+    <span class="p">.</span><span class="nx">clientScripts</span><span class="p">(</span><span class="s1">'assets/jquery.js'</span><span class="p">);</span>
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">test</span>
+    <span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">})</span>
+    <span class="p">.</span><span class="nx">clientScripts</span><span class="p">({</span> <span class="na">module</span><span class="p">:</span> <span class="s1">'async'</span> <span class="p">});</span>
+</code></pre></div><h2><a class="anchor" id="provide-scripts-to-inject"></a>Provide Scripts to Inject <a class="permalink" href="#provide-scripts-to-inject">#</a></h2>
+<p>You can pass the following arguments to specify the scripts to inject:</p>
 
 <ul>
-<li><p>the <a href="../command-line-interface.html#-s---screenshots-on-fails">-S (--screenshots-on-fails)</a> command line flag,</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome tests/sample-fixture.js -S -s artifacts/screenshots
-</code></pre></div></li>
-<li><p>the <code>takeOnFails</code> parameter of the <a href="../programming-interface/runner.html#screenshots">runner.screenshots</a> API method,</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">screenshots</span><span class="p">(</span><span class="s1">'artifacts/screenshots'</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-</code></pre></div></li>
-<li><p>the <a href="../configuration-file.html#takescreenshotsonfails">takeScreenshotsOnFails</a> configuration file property.</p>
-<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"takeScreenshotsOnFails"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre></div></li>
-</ul>
-<h2><a class="anchor" id="record-videos"></a>Record Videos <a class="permalink" href="#record-videos">#</a></h2>
-<p>TestCafe allows you to record videos of test runs.</p>
-<blockquote class="important"><div class="blockquote-content"><p>Video recording is supported in Google Chrome and Mozilla Firefox only. TestCafe cannot record videos when you run tests in <a href="browsers/browser-support.html#browsers-on-remote-devices">remote browsers</a>.</p>
-</div></blockquote><h3><a class="anchor" id="prerequisites-for-video-recording"></a>Prerequisites for Video Recording <a class="permalink" href="#prerequisites-for-video-recording">#</a></h3>
-<p>You should install <a href="https://ffmpeg.org/">the FFmpeg library</a> to record videos.</p>
-
-<p>Do one of the following if TestCafe cannot find the FFmpeg library:</p>
-
-<ul>
-<li>Add the FFmpeg installation directory to the system&#39;s <code>PATH</code> environment variable;</li>
-<li>Specify the path to the FFmpeg executable in the <code>FFMPEG_PATH</code> environment variable or the <code>ffmpegPath</code> parameter in <a href="#basic-video-options">video options</a>;</li>
-<li>Install the <code>@ffmpeg-installer/ffmpeg</code> package from npm.</li>
+<li><a href="#inject-a-javascript-file">path to a JavaScript file</a></li>
+<li><a href="#inject-a-module">module name</a></li>
+<li><a href="#inject-script-code">script code</a></li>
 </ul>
 
-<p>Videos are saved in the <code>.mp4</code> format.</p>
-<h3><a class="anchor" id="enable-video-recording"></a>Enable Video Recording <a class="permalink" href="#enable-video-recording">#</a></h3>
-<p>Use either of the following to enable video recording:</p>
+<p>You can also <a href="#provide-scripts-for-specific-pages">inject scripts into specific pages</a> and <a href="#inject-scripts-into-iframes">iframes</a>.</p>
+<blockquote><div class="blockquote-content"><p>Note that the API methods and configuration option support <a href="#specify-multiple-scripts">multiple arguments</a>.</p>
+</div></blockquote><h3><a class="anchor" id="inject-a-javascript-file"></a>Inject a JavaScript File <a class="permalink" href="#inject-a-javascript-file">#</a></h3>
+<p>Specify the JavaScript file path to inject the entire content of this file into the tested pages. You can pass a string or an object with the <code>path</code> property.</p>
 
-<ul>
-<li><p>the <a href="../command-line-interface.html#--video-basepath">--video</a> command line flag,</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js --video artifacts/videos
-</code></pre></div></li>
-<li><p>the <a href="../programming-interface/runner.html#video">runner.video</a> API method,</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">video</span><span class="p">(</span><span class="s1">'artifacts/videos'</span><span class="p">);</span>
-</code></pre></div></li>
-<li><p>the <a href="../configuration-file.html#videopath">videoPath</a> configuration file property.</p>
-<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"videoPath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"artifacts/videos"</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre></div></li>
-</ul>
-
-<p>You should provide the base path where TestCafe stores videos to this flag, method or property. See <a href="#where-screenshots-and-videos-are-saved">Where Screenshots and Videos Are Saved</a> for more information.</p>
-
-<p>TestCafe records all the tests and saves the recording of each test in a separate file. To change this behavior, use the <code>failedOnly</code> and <code>singleFile</code> <a href="#basic-video-options">video options</a>.</p>
-<h3><a class="anchor" id="basic-video-options"></a>Basic Video Options <a class="permalink" href="#basic-video-options">#</a></h3>
-<p>TestCafe supports the following video options:</p>
-<div class="table-wrapper"><table><thead><tr>
-<th>Option</th>
+<p><em>CLI</em></p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">testcafe &lt;browser&gt; &lt;tests&gt; --cs &lt;filePath&gt;[,&lt;filePath2&gt;,...&lt;filePathN&gt;]
+</code></pre></div>
+<p><em>Programming interface</em></p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">runner.clientScripts(filePath | { path: filePath })
+runner.clientScripts(filePath | { path: filePath }, ...)
+runner.clientScripts([ filePath | { path: filePath } ])
+</code></pre></div>
+<p><em>Configuration file</em></p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">{
+    "clientScripts": "&lt;filePath&gt;" | { "path": "&lt;filePath&gt;" }
+}
+{
+    "clientScripts": [ "&lt;filePath&gt;" | { "path": "&lt;filePath&gt;" } ]
+}
+</code></pre></div>
+<p><em>Test API</em></p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">fixture.clientScripts(filePath | { path: filePath })
+fixture.clientScripts(filePath | { path: filePath }, ...)
+fixture.clientScripts([ filePath | { path: filePath } ])
+</code></pre></div><div class="highlight"><pre><code class="language-text" data-lang="text">test.clientScripts(filePath | { path: filePath })
+test.clientScripts(filePath | { path: filePath }, ...)
+test.clientScripts([ filePath | { path: filePath } ])
+</code></pre></div><div class="table-wrapper"><table><thead><tr>
+<th>Argument</th>
 <th>Type</th>
 <th>Description</th>
-<th>Default Value</th>
 </tr>
 </thead><tbody><tr>
-<td><code>failedOnly</code></td>
-<td>Boolean</td>
-<td><code>true</code> to record only failed tests; <code>false</code> to record all tests.</td>
-<td><code>false</code></td>
-</tr>
-<tr>
-<td><code>singleFile</code></td>
-<td>Boolean</td>
-<td><code>true</code> to save the entire recording as a single file; <code>false</code> to create a separate file for each test.</td>
-<td><code>false</code></td>
-</tr>
-<tr>
-<td><code>ffmpegPath</code></td>
+<td><code>filePath</code>, <code>filePath2</code>, <code>filePathN</code></td>
 <td>String</td>
-<td>The path to the FFmpeg codec executable.</td>
-<td>Auto-detected</td>
+<td>The path to the JavaScript file whose content should be injected.</td>
 </tr>
-<tr>
-<td><code>pathPattern</code></td>
-<td>String</td>
-<td>A pattern that defines how TestCafe composes the relative path to a video file and the file name. See <a href="#where-screenshots-and-videos-are-saved">Where Screenshots and Videos Are Saved</a>.</td>
-<td>See <a href="#default-path-patterns">Default Path Patterns</a>.</td>
-</tr>
-</tbody></table></div>
-<p>You can specify video options in either of the following ways:</p>
+</tbody></table></div><h4><a class="anchor" id="relative-paths"></a>Relative Paths <a class="permalink" href="#relative-paths">#</a></h4>
+<p>Relative paths resolve from the <em>current working directory</em> when you inject scripts in:</p>
 
 <ul>
-<li><p>the <a href="../command-line-interface.html#--video-options-optionvalueoption2value2">--video-options</a> command line flag,</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js --video artifacts/videos --video-options <span class="nv">singleFile</span><span class="o">=</span><span class="nb">true</span>,failedOnly<span class="o">=</span><span class="nb">true</span>,pathPattern<span class="o">=</span><span class="k">${</span><span class="nv">TEST_INDEX</span><span class="k">}</span>/<span class="k">${</span><span class="nv">USERAGENT</span><span class="k">}</span>/<span class="k">${</span><span class="nv">FILE_INDEX</span><span class="k">}</span>.mp4
-</code></pre></div></li>
-<li><p>the <code>options</code> parameter of the <a href="../programming-interface/runner.html#video">runner.video</a> API method,</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">video</span><span class="p">(</span><span class="s1">'artifacts/videos'</span><span class="p">,</span> <span class="p">{</span>
-    <span class="na">singleFile</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
-    <span class="na">failedOnly</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
-    <span class="na">pathPattern</span><span class="p">:</span> <span class="s1">'${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.mp4'</span>
-<span class="p">});</span>
-</code></pre></div></li>
-<li><p>the <a href="../configuration-file.html#videooptions">videoOptions</a> configuration file property.</p>
-<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"videoOptions"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="nt">"singleFile"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-        </span><span class="nt">"failedOnly"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-        </span><span class="nt">"pathPattern"</span><span class="p">:</span><span class="w"> </span><span class="s2">"${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.mp4"</span><span class="w">
-    </span><span class="p">}</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre></div></li>
+<li><a href="../command-line-interface.html#--cs-pathpath2---client-scripts-pathpath2">command line interface</a></li>
+<li><a href="../programming-interface/runner.html#clientscripts">programming interface</a></li>
+<li><a href="../configuration-file.html#clientscripts">configuration file</a></li>
 </ul>
-<h3><a class="anchor" id="video-encoding-options"></a>Video Encoding Options <a class="permalink" href="#video-encoding-options">#</a></h3>
-<p>These encoding options are passed to FFmpeg. Refer to the <a href="https://ffmpeg.org/ffmpeg.html#Options">FFmpeg documentation</a> for information about all the available options.</p>
 
-<p>To provide video encoding options, use either of the following options:</p>
+<p>When you use <a href="../../test-api/test-code-structure.html#inject-scripts-into-tested-pages">test API methods</a>, relative paths resolve from the <em>test file location</em>.</p>
 
-<ul>
-<li><p>the <a href="../command-line-interface.html#--video-encoding-options-optionvalueoption2value2">--video-encoding-options</a> command line flag,</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js --video artifacts/videos --video-encoding-options <span class="nv">r</span><span class="o">=</span>20,aspect<span class="o">=</span>4:3
-</code></pre></div></li>
-<li><p>the <code>encodingOptions</code> parameter of the <a href="../programming-interface/runner.html#video">runner.video</a> API method,</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">video</span><span class="p">(</span><span class="s1">'artifacts/videos'</span><span class="p">,</span> <span class="p">{</span> <span class="p">},</span> <span class="p">{</span>
-    <span class="na">r</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
-    <span class="na">aspect</span><span class="p">:</span> <span class="s1">'4:3'</span>
-<span class="p">});</span>
-</code></pre></div></li>
-<li><p>the <a href="../configuration-file.html#videoencodingoptions">videoEncodingOptions</a> configuration file property.</p>
-<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"videoEncodingOptions"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="nt">"r"</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w">
-        </span><span class="nt">"aspect"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4:3"</span><span class="w">
-    </span><span class="p">}</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre></div></li>
-</ul>
-<h2><a class="anchor" id="where-screenshots-and-videos-are-saved"></a>Where Screenshots and Videos Are Saved <a class="permalink" href="#where-screenshots-and-videos-are-saved">#</a></h2>
-<p>You should specify the base path to the directory that stores screenshots or videos to enable these features. See <a href="#enable-screenshots">Enable Screenshots</a> and <a href="#enable-video-recording">Enable Video Recording</a>.</p>
+<p><strong>Examples</strong></p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests --cs assets/jquery.js
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">clientScripts</span><span class="p">(</span><span class="s1">'assets/jquery.js'</span><span class="p">);</span>
+<span class="c1">// or</span>
+<span class="nx">runner</span><span class="p">.</span><span class="nx">clientScripts</span><span class="p">({</span> <span class="na">path</span><span class="p">:</span> <span class="s1">'assets/jquery.js'</span> <span class="p">});</span>
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="p">{</span>
+    <span class="s2">"clientScripts"</span><span class="err">:</span> <span class="s2">"assets/jquery.js"</span><span class="p">,</span>
+    <span class="c1">// or</span>
+    <span class="s2">"clientScripts"</span><span class="err">:</span> <span class="p">{</span> <span class="s2">"path"</span><span class="err">:</span> <span class="s2">"assets/jquery.js"</span> <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div><blockquote><div class="blockquote-content"><p>You cannot combine the <code>path</code>, <a href="#inject-a-module">module</a> and <a href="#inject-script-code">content</a> properties in a single object. To inject multiple items, pass several arguments or an array.</p>
+</div></blockquote><h3><a class="anchor" id="inject-a-module"></a>Inject a Module <a class="permalink" href="#inject-a-module">#</a></h3>
+<p>Specify the Node.js module&#39;s name to inject its content into the tested pages. Use an object with the <code>module</code> property.</p>
 
-<p>Inside the base directory, screenshots and videos are organized into subdirectories and named according to the <a href="#default-path-patterns">default</a> or <a href="#custom-path-patterns">custom</a> <em>path patterns</em>.</p>
-<blockquote><div class="blockquote-content"><p>When you pass a specific path to the <a href="../../test-api/actions/take-screenshot.html#take-a-screenshot-of-the-entire-page">t.takeScreenshot</a> or <a href="../../test-api/actions/take-screenshot.html#take-a-screenshot-of-a-page-element">t.takeElementScreenshot</a> action, this path overrides the relative path defined by the <a href="#default-path-patterns">default</a> or <a href="#custom-path-patterns">custom path pattern</a>.</p>
-</div></blockquote><h3><a class="anchor" id="default-path-patterns"></a>Default Path Patterns <a class="permalink" href="#default-path-patterns">#</a></h3>
-<p>TestCafe composes paths to screenshots and videos according to the following pattern:</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh"><span class="k">${</span><span class="nv">DATE</span><span class="k">}</span>_<span class="k">${</span><span class="nv">TIME</span><span class="k">}</span>/<span class="k">${</span><span class="nv">TEST_ID</span><span class="k">}</span>/<span class="k">${</span><span class="nv">RUN_ID</span><span class="k">}</span>/<span class="k">${</span><span class="nv">USERAGENT</span><span class="k">}</span>/<span class="k">${</span><span class="nv">FILE_INDEX</span><span class="k">}</span>.&lt;ext&gt;
+<p><em>Programming interface</em></p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">runner.clientScripts( { module: moduleName } )
+runner.clientScripts( { module: moduleName }, ... )
+runner.clientScripts([ { module: moduleName } ])
 </code></pre></div>
-<p>where <code>&lt;ext&gt;</code> is <code>.png</code> for screenshots and <code>.mp4</code> for videos. See the meaning of other placeholders in the <a href="#path-pattern-placeholders">Path Pattern Placeholders</a> section.</p>
-
-<p>When TestCafe takes a screenshot because a test fails (see <a href="#take-screenshots-when-a-test-fails">Take Screenshots When a Test Fails</a>), it adds the <code>errors</code> subfolder to the pattern.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh"><span class="k">${</span><span class="nv">DATE</span><span class="k">}</span>_<span class="k">${</span><span class="nv">TIME</span><span class="k">}</span>/<span class="k">${</span><span class="nv">TEST_ID</span><span class="k">}</span>/<span class="k">${</span><span class="nv">RUN_ID</span><span class="k">}</span>/<span class="k">${</span><span class="nv">USERAGENT</span><span class="k">}</span>/errors/<span class="k">${</span><span class="nv">FILE_INDEX</span><span class="k">}</span>.png
-</code></pre></div><h3><a class="anchor" id="custom-path-patterns"></a>Custom Path Patterns <a class="permalink" href="#custom-path-patterns">#</a></h3>
-<p>You can override the default path pattern for screenshots and videos.</p>
-
-<p>To compose a custom pattern, use placeholders described in the <a href="#path-pattern-placeholders">Path Pattern Placeholders</a> section.</p>
-<h4><a class="anchor" id="screenshot-custom-path-pattern"></a>Screenshot Custom Path Pattern <a class="permalink" href="#screenshot-custom-path-pattern">#</a></h4>
-<p>To specify a path pattern for screenshots, use one of the following:</p>
-
-<ul>
-<li><p>the <a href="../command-line-interface.html#-p-pattern---screenshot-path-pattern-pattern">-p (--screenshot-path-pattern)</a> command line flag,</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js -s artifacts/screenshots -p <span class="s1">'${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png'</span>
+<p><em>Configuration file</em></p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">{
+    "clientScripts": { "module": "&lt;moduleName&gt;" }
+}
+{
+    "clientScripts": [ { "module": "&lt;moduleName&gt;" } ]
+}
 </code></pre></div>
-<p>In Windows <code>cmd.exe</code> shell, enclose the pattern in double quotes if it contains spaces:</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js -s artifacts/screenshots -p <span class="s2">"</span><span class="k">${</span><span class="nv">DATE</span><span class="k">}</span><span class="s2"> </span><span class="k">${</span><span class="nv">TIME</span><span class="k">}</span><span class="s2">/test </span><span class="k">${</span><span class="nv">TEST_INDEX</span><span class="k">}</span><span class="s2">/</span><span class="k">${</span><span class="nv">USERAGENT</span><span class="k">}</span><span class="s2">/</span><span class="k">${</span><span class="nv">FILE_INDEX</span><span class="k">}</span><span class="s2">.png"</span>
-</code></pre></div></li>
-<li><p>the <code>pathPattern</code> parameter of the <a href="../programming-interface/runner.html#screenshots">runner.screenshots</a> API method,</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">screenshots</span><span class="p">(</span><span class="s1">'artifacts/screenshots'</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="s1">'${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png'</span><span class="p">);</span>
-</code></pre></div></li>
-<li><p>the <a href="../configuration-file.html#screenshotpathpattern">screenshotPathPattern</a> configuration file property.</p>
-<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"screenshotPathPattern"</span><span class="p">:</span><span class="w"> </span><span class="s2">"${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png"</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre></div></li>
-</ul>
-<h4><a class="anchor" id="video-custom-path-pattern"></a>Video Custom Path Pattern <a class="permalink" href="#video-custom-path-pattern">#</a></h4>
-<p>To specify a custom path pattern for videos, pass the <code>pathPattern</code> parameter to <a href="#basic-video-options">video options</a>.</p>
-<h3><a class="anchor" id="path-pattern-placeholders"></a>Path Pattern Placeholders <a class="permalink" href="#path-pattern-placeholders">#</a></h3>
-<p>The following placeholders are used in screenshot and video path patterns:</p>
-<div class="table-wrapper"><table><thead><tr>
-<th>Placeholder</th>
+<p><em>Test API</em></p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">fixture.clientScripts( { module: moduleName } )
+fixture.clientScripts( { module: moduleName }, ... )
+fixture.clientScripts([ { module: moduleName } ])
+</code></pre></div><div class="highlight"><pre><code class="language-text" data-lang="text">test.clientScripts( { module: moduleName } )
+test.clientScripts( { module: moduleName }, ... )
+test.clientScripts([ { module: moduleName } ])
+</code></pre></div><div class="table-wrapper"><table><thead><tr>
+<th>Argument</th>
+<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody><tr>
-<td><code>${DATE}</code></td>
-<td>The test run&#39;s start date (YYYY-MM-DD).</td>
-</tr>
-<tr>
-<td><code>${TIME}</code></td>
-<td>The test run&#39;s start time (HH-mm-ss).</td>
-</tr>
-<tr>
-<td><code>${TEST_INDEX}</code></td>
-<td>The test&#39;s index.</td>
-</tr>
-<tr>
-<td><code>${FILE_INDEX}</code></td>
-<td>The screenshot file&#39;s index.</td>
-</tr>
-<tr>
-<td><code>${QUARANTINE_ATTEMPT}</code></td>
-<td>The <a href="../programming-interface/runner.html#quarantine-mode">quarantine</a> attempt&#39;s number. If the quarantine mode is disabled, the <code>${QUARANTINE_ATTEMPT}</code> placeholder&#39;s value is 1.</td>
-</tr>
-<tr>
-<td><code>${FIXTURE}</code></td>
-<td>The fixture&#39;s name.</td>
-</tr>
-<tr>
-<td><code>${TEST}</code></td>
-<td>The test&#39;s name.</td>
-</tr>
-<tr>
-<td><code>${USERAGENT}</code></td>
-<td>The combination of <code>${BROWSER}</code>, <code>${BROWSER_VERSION}</code>, <code>${OS}</code>, and <code>${OS_VERSION}</code> (separated by underscores).</td>
-</tr>
-<tr>
-<td><code>${BROWSER}</code></td>
-<td>The browser&#39;s name.</td>
-</tr>
-<tr>
-<td><code>${BROWSER_VERSION}</code></td>
-<td>The browser&#39;s version.</td>
-</tr>
-<tr>
-<td><code>${OS}</code></td>
-<td>The operation system&#39;s name.</td>
-</tr>
-<tr>
-<td><code>${OS_VERSION}</code></td>
-<td>The operation system&#39;s version.</td>
-</tr>
-<tr>
-<td><code>${TEST_ID}</code></td>
-<td>Resolves to <code>test-${TEST_INDEX}</code> if TestCafe can associate this screenshot or video with a specific test; resolves to an empty string otherwise (for instance, when a single video is recorded for the entire test run).</td>
-</tr>
-<tr>
-<td><code>${RUN_ID}</code></td>
-<td>Resolves to <code>run-${QUARANTINE_ATTEMPT}</code> for screenshots taken when <a href="../programming-interface/runner.html#quarantine-mode">quarantine mode</a> is enabled; resolves to an empty string for videos and for screenshots taken when <a href="../programming-interface/runner.html#quarantine-mode">quarantine mode</a> is disabled.</td>
+<td><code>moduleName</code></td>
+<td>String</td>
+<td>The module name.</td>
 </tr>
 </tbody></table></div>
+<p>TestCafe searches for the module&#39;s entry point with Node.js mechanisms and injects its content into the tested page.</p>
+
+<p>Note that the browser must be able to execute the injected module. For example, modules that implement the <a href="https://github.com/umdjs/umd">UMD</a> API can run in most modern browsers.</p>
+<blockquote><div class="blockquote-content"><p>If the injected module has dependencies, you should ensure that:</p>
+
+<ul>
+<li>The dependencies can be loaded as global variables.</li>
+<li>These variables are initialized in the page code.</li>
+</ul>
+</div></blockquote>
+<p><strong>Examples</strong></p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">https</span><span class="err">:</span><span class="c1">//example.com`</span>
+    <span class="p">.</span><span class="nx">clientScripts</span><span class="p">({</span> <span class="na">module</span><span class="p">:</span> <span class="s1">'lodash'</span> <span class="p">});</span>
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="p">{</span>
+    <span class="s2">"clientScripts"</span><span class="err">:</span> <span class="p">{</span>
+        <span class="s2">"module"</span><span class="err">:</span> <span class="s2">"lodash"</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div><blockquote><div class="blockquote-content"><p>You cannot combine the <code>module</code>, <a href="#inject-a-javascript-file">path</a> and <a href="#inject-script-code">content</a> properties in a single object. To inject multiple items, pass several arguments or an array.</p>
+</div></blockquote><h3><a class="anchor" id="inject-script-code"></a>Inject Script Code <a class="permalink" href="#inject-script-code">#</a></h3>
+<p>You can provide the injected script as a string with JavaScript code. Pass an object with the <code>content</code> property to do this.</p>
+
+<p><em>Programming interface</em></p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">runner.clientScripts({ content: code })
+runner.clientScripts({ content: code }, ...)
+runner.clientScripts([ { content: code } ])
+</code></pre></div>
+<p><em>Configuration file</em></p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">{
+    "clientScripts": { "content": "&lt;code&gt;" }
+}
+{
+    "clientScripts": [ { "content": "&lt;code&gt;" } ]
+}
+</code></pre></div>
+<p><em>Test API</em></p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">fixture.clientScripts({ content: code })
+fixture.clientScripts({ content: code }, ...)
+fixture.clientScripts([ { content: code } ])
+</code></pre></div><div class="highlight"><pre><code class="language-text" data-lang="text">test.clientScripts({ content: code })
+test.clientScripts({ content: code }, ...)
+test.clientScripts([ { content: code } ])
+</code></pre></div><div class="table-wrapper"><table><thead><tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody><tr>
+<td><code>code</code></td>
+<td>String</td>
+<td>JavaScript code that should be injected.</td>
+</tr>
+</tbody></table></div>
+<p><strong>Examples</strong></p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">mockDate</span> <span class="o">=</span> <span class="err">`</span>
+    <span class="nb">Date</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">getTime</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="mi">42</span><span class="p">;</span>
+    <span class="p">};</span>
+<span class="err">`</span><span class="p">;</span>
+
+<span class="nx">test</span>
+    <span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">})</span>
+    <span class="p">.</span><span class="nx">clientScripts</span><span class="p">({</span> <span class="na">content</span><span class="p">:</span> <span class="nx">mockDate</span> <span class="p">});</span>
+</code></pre></div><div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"clientScripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"content"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Date.prototype.getTime = () =&gt; 42;"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><blockquote><div class="blockquote-content"><p>You cannot combine the <code>content</code>, <a href="#inject-a-javascript-file">path</a> and <a href="#inject-a-module">module</a> properties in a single object. To inject multiple items, pass several arguments or an array.</p>
+</div></blockquote><h3><a class="anchor" id="provide-scripts-for-specific-pages"></a>Provide Scripts for Specific Pages <a class="permalink" href="#provide-scripts-for-specific-pages">#</a></h3>
+<p>You can also specify pages into which a script should be injected.</p>
+<blockquote><div class="blockquote-content"><p>This is helpful when you need to mock browser API on particular pages and use the default behavior everywhere else.</p>
+</div></blockquote>
+<p>To specify target pages for a script, add the <code>page</code> property to the object you pass to <code>clientScripts</code>.</p>
+
+<p><em>Programming interface</em></p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">runner.clientScripts({
+    page: url,
+    path: filePath | module: moduleName | content: code
+})
+
+runner.clientScripts({
+    page: url,
+    path: filePath | module: moduleName | content: code
+}, ...)
+
+runner.clientScripts([
+    {
+        page: url,
+        path: filePath | module: moduleName | content: code
+    }
+])
+</code></pre></div>
+<p><em>Configuration file</em></p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">{
+    "clientScripts": {
+        "page": "&lt;url&gt;",
+        "path": "&lt;filePath&gt;" | "module": "&lt;moduleName&gt;" | "content": "&lt;code&gt;"
+    }
+}
+{
+    "clientScripts": [
+        {
+            "page": "&lt;url&gt;",
+            "path": "&lt;filePath&gt;" | "module": "&lt;moduleName&gt;" | "content": "&lt;code&gt;"
+        }
+    ]
+}
+</code></pre></div>
+<p><em>Test API</em></p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">fixture.clientScripts({
+    page: url,
+    path: filePath | module: moduleName | content: code
+})
+
+fixture.clientScripts({
+    page: url,
+    path: filePath | module: moduleName | content: code
+}, ...)
+
+fixture.clientScripts([
+    {
+        page: url,
+        path: filePath | module: moduleName | content: code
+    }
+])
+</code></pre></div><div class="highlight"><pre><code class="language-text" data-lang="text">test.clientScripts({
+    page: url,
+    path: filePath | module: moduleName | content: code
+})
+
+test.clientScripts({
+    page: url,
+    path: filePath | module: moduleName | content: code
+}, ...)
+
+test.clientScripts([
+    {
+        page: url,
+        path: filePath | module: moduleName | content: code
+    }
+])
+</code></pre></div><div class="table-wrapper"><table><thead><tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody><tr>
+<td><code>url</code></td>
+<td>String &#124; RegExp</td>
+<td>Specify a page URL to add scripts to a single page, or a regular expression to add scripts to pages whose URLs match this expression. Regular expressions are not supported in the <a href="../configuration-file.html#clientscripts">clientScripts</a> configuration file property.</td>
+</tr>
+</tbody></table></div>
+<p><strong>Examples</strong></p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">clientScripts</span><span class="p">({</span>
+    <span class="na">page</span><span class="p">:</span> <span class="sr">/</span><span class="se">\/</span><span class="sr">user</span><span class="se">\/</span><span class="sr">profile</span><span class="se">\/</span><span class="sr">/</span><span class="p">,</span>
+    <span class="na">path</span><span class="p">:</span> <span class="s1">'dist/jquery.js'</span>
+<span class="p">});</span>
+</code></pre></div><div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"clientScripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"page"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://myapp.com/page/"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"content"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Geolocation.prototype.getCurrentPosition = () =&gt; new Positon(0, 0);"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><blockquote><div class="blockquote-content"><p>If the target page redirects to a different URL, ensure that the <code>page</code> property matches the destination URL. Otherwise, scripts are not injected.</p>
+</div></blockquote><h3><a class="anchor" id="inject-scripts-into-iframes"></a>Inject Scripts Into Iframes <a class="permalink" href="#inject-scripts-into-iframes">#</a></h3>
+<p>To inject a script into an iframe, specify the iframe URL in the <a href="#provide-scripts-for-specific-pages">page</a> property.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">clientScripts</span><span class="p">({</span>
+    <span class="na">path</span><span class="p">:</span> <span class="s1">'scripts/helpers.js'</span><span class="p">,</span>
+    <span class="na">page</span><span class="p">:</span> <span class="s1">'https://example.com/iframe/'</span>
+<span class="p">}));</span>
+</code></pre></div><h3><a class="anchor" id="specify-multiple-scripts"></a>Specify Multiple Scripts <a class="permalink" href="#specify-multiple-scripts">#</a></h3>
+<p>You can pass multiple arguments or an array to the <code>clientScripts</code> methods:</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">https</span><span class="err">:</span><span class="c1">//example.com`</span>
+    <span class="p">.</span><span class="nx">clientScripts</span><span class="p">(</span><span class="s1">'scripts/react-helpers.js'</span><span class="p">,</span> <span class="p">{</span> <span class="na">content</span><span class="p">:</span> <span class="s1">'Date.prototype.getTime = () =&gt; 42;'</span> <span class="p">});</span>
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">clientScripts</span><span class="p">([</span><span class="s1">'scripts/react-helpers.js'</span><span class="p">,</span> <span class="s1">'dist/jquery.js'</span><span class="p">]);</span>
+</code></pre></div>
+<p>The <a href="../configuration-file.html#clientscripts">clientScripts</a> configuration file property can also take arrays:</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"clientScripts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"vue-helpers.js"</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"page"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://mycorp.com/login/"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"module"</span><span class="p">:</span><span class="w"> </span><span class="s2">"lodash"</span><span class="w">
+    </span><span class="p">}]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>The <a href="../command-line-interface.html#--cs-pathpath2---client-scripts-pathpath2">--cs (--client-scripts)</a> command line option supports multiple arguments as well:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js --client-scripts<span class="o">=</span>mockDate.js,assets/react-helpers.js
+</code></pre></div>
+<p>Note that the <code>page</code>, <code>content</code> and <code>module</code> properties cannot take arrays. To inject multiple scripts into the same page, pass one argument for each script.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">scripts</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'test1.js'</span><span class="p">,</span> <span class="s1">'test2.js'</span><span class="p">,</span> <span class="s1">'test3.js'</span><span class="p">];</span>
+
+<span class="nx">runner</span><span class="p">.</span><span class="nx">clientScripts</span><span class="p">(</span><span class="nx">scripts</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">script</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="na">path</span><span class="p">:</span> <span class="nx">script</span><span class="p">,</span>
+    <span class="na">page</span><span class="p">:</span> <span class="s1">'http://example.com'</span>
+<span class="p">}));</span>
+</code></pre></div><h2><a class="anchor" id="access-dom-in-the-injected-scripts"></a>Access DOM in the Injected Scripts <a class="permalink" href="#access-dom-in-the-injected-scripts">#</a></h2>
+<p>TestCafe injects scripts into the <code>head</code> tag, which means they are executed before DOM is loaded.</p>
+
+<p>To access DOM in these scripts, wait until the <code>DOMContentLoaded</code> event fires:</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">scriptContent</span> <span class="o">=</span> <span class="err">`</span>
+<span class="nb">window</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">'DOMContentLoaded'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'green'</span><span class="p">;</span>
+<span class="p">});</span>
+<span class="err">`</span><span class="p">;</span>
+
+<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">clientScripts</span><span class="p">({</span> <span class="na">content</span><span class="p">:</span> <span class="nx">scriptContent</span> <span class="p">});</span>
+</code></pre></div>
 
 		</div>
 	</article>

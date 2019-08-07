@@ -14,15 +14,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <title>Testing in Headless Mode | TestCafe</title>
+  <title>TestCafe v1.4.0 Released | TestCafe</title>
 
-  <meta name="description" content="">
+  <meta name="description" content="TestCafe v1.4.0 ReleasedThis release introduces the capability to inject custom scripts into tested pages.">
   <meta name="viewport" content="width=device-width">
 
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browsers/testing-in-headless-mode.html" />
-  <meta property="og:title" content="Testing in Headless Mode | TestCafe" />
+  <meta property="og:url" content="https://devexpress.github.io/testcafe/blog/testcafe-v1-4-0-released.html" />
+  <meta property="og:title" content="TestCafe v1.4.0 Released | TestCafe" />
 
   
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
@@ -30,7 +30,7 @@
   
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
-  <link rel="canonical" href="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browsers/testing-in-headless-mode.html">
+  <link rel="canonical" href="https://devexpress.github.io/testcafe/blog/testcafe-v1-4-0-released.html">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="https://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
@@ -78,15 +78,6 @@
 
   
 
-  
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/css/perfect-scrollbar.min.css">
-  <link rel="stylesheet" href="/testcafe/css/docs.css">
-  <style>
-      .ps-container > .ps-scrollbar-x-rail,
-      .ps-container > .ps-scrollbar-y-rail {
-          opacity: 0.6;
-      }
-  </style>
   
 
   
@@ -151,9 +142,6 @@
                 docMenuItem.appendChild(docMenuItemIcon);
 
                 
-                    docMenuItem.className += ' expanded';
-                    docTopNav.className += ' expanded';
-                
 
                 docMenuItem.addEventListener('click', function (e) {
                     if (docTopNav.className.indexOf('expanded') !== -1) {
@@ -179,124 +167,11 @@
     
 
   
-    <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/js/perfect-scrollbar.min.js"></script>
-    <script defer type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.3.min.js"></script>
-
-    <script>
-        var MIN_BODY_WIDTH = 1230;
-        var FOOTER_HEIGHT  = 113;
-
-        var nav     = null;
-        var article = null;
-
-        function getHeaderHeight () {
-            var DOCS_HEADER_HEIGHT   = 126;
-            var SURVEY_HEADER_HEIGHT = 32;
-
-            var surveyBanner          = document.querySelector('.survey-banner');
-            var isSurveyBannerVisible = surveyBanner.className.indexOf('hidden') === -1;
-
-            return isSurveyBannerVisible ? DOCS_HEADER_HEIGHT + SURVEY_HEADER_HEIGHT : DOCS_HEADER_HEIGHT;
-        }
-
-        function setNavTopPosition () {
-            var headerHeight = getHeaderHeight();
-            var top          = null;
-
-            if (document.body.clientWidth > MIN_BODY_WIDTH) {
-                if (nav.style.top !== headerHeight + 'px') {
-                    nav.style.top = headerHeight + 'px';
-                    Ps.update(nav);
-                }
-            }
-            else {
-                top = window.pageYOffset <= headerHeight ? headerHeight - window.pageYOffset + 'px' : '0';
-
-                if (nav.style.top !== top) {
-                    nav.style.top = top;
-                    Ps.update(nav);
-                }
-            }
-        }
-
-        function setNavBottomPosition () {
-            var footerVisibleHeight = FOOTER_HEIGHT - document.body.scrollHeight + window.pageYOffset +
-                                      document.body.clientHeight;
-
-            if (footerVisibleHeight > 0) {
-                if (nav.style.bottom !== footerVisibleHeight + 'px') {
-                    nav.style.bottom = footerVisibleHeight + 'px';
-                    Ps.update(nav);
-                }
-            }
-            else if (nav.style.bottom !== '0') {
-                nav.style.bottom = '0';
-                Ps.update(nav);
-            }
-        }
-
-        function updateNavMenuPosition () {
-            nav.style.marginLeft = '-' + window.pageXOffset + 'px';
-
-            setNavBottomPosition();
-            setNavTopPosition();
-        }
-
-        function changeBodyHeight () {
-            if (document.body.style.height !== window.innerHeight + 'px')
-                document.body.style.height = window.innerHeight + 'px';
-        }
-
-        function initScrollBar() {
-            Ps.initialize(nav);
-
-            window.addEventListener('resize', function () {
-                Ps.update(nav);
-            });
-        }
-
-        function initNav() {
-            initScrollBar();
-            updateNavMenuPosition();
-            window.addEventListener('scroll', updateNavMenuPosition);
-            window.addEventListener('resize', updateNavMenuPosition);
-        }
-
-        document.addEventListener('DOMContentLoaded', function (e) {
-            if (isMobileDevice)
-                return;
-
-            nav     = document.querySelector('.doc-nav');
-            article = document.querySelector('.doc');
-
-            if (nav)
-                initNav(nav);
-        });
-    </script>
     
     <script>
-        if (isMobileDevice) {
-            linkCss('/testcafe/css/docs.mobile.css');           
-            
-            if (false == false) {
-                document.addEventListener('DOMContentLoaded', function (e) {
-                    var docNavPanel = document.querySelector('.doc-nav-panel');
-                    var docNav      = document.querySelector('.doc-nav');
-
-                    docNavPanel.addEventListener('click', function (e) {
-                        if (docNav.className.indexOf('active') !== -1) {
-                            docNav.className = docNav.className.replace(' active', '');
-                            document.documentElement.style.overflowY = 'scroll';
-                            document.body.style.overflowY = 'initial';
-                        }
-                        else {
-                            docNav.className += ' active';
-                            document.documentElement.style.overflowY = 'hidden';
-                            document.body.style.overflowY = 'hidden';
-                        }
-                    });
-                });
-            }
+        if (document.images) {
+            img1 = new Image();
+            img1.src = '/testcafe/images/test-cafe-logo.png';
         }
     </script>
   
@@ -362,51 +237,6 @@
     <div class="page-content-wrapper">
 
       
-<div class="survey-banner hidden">
-  <div class="survey-banner-message">
-      <span>How do you like TestCafe? </span><span class="desktop-text">Please take 3 minutes to fill out our survey. </span><a href="https://dxpr.es/2WYA3X4" target="_blank"><span class="desktop-text">Take the survey</span><span class="mobile-text">Take a 3-minute survey.</span></a>
-  </div>
-  <div class="survey-banner-close-button"></div>
-</div>
-<script>
-  var SURVEY_BANNER_DISPLAY_SETBACK_DAYS = 7;
-
-  function getDaysBetween(fromTime, toTime) {
-      var dayDurationMs = 24*60*60*1000;
-
-      return Math.round(Math.abs((fromTime - toTime)/(dayDurationMs)));
-  }
-
-  var wasSurveyBannerDismissed = window.localStorage.getItem(SUMMER_2019_SURVEY_BANNER_DISMISSED_FLAG);
-  var wasSurveyCompleted       = window.localStorage.getItem(SUMMER_2019_SURVEY_COMPLETED_FLAG);
-  var surveyOpenDate           = window.localStorage.getItem(SUMMER_2019_SURVEY_PAGE_OPEN_DATE_FLAG);
-  var surveySetbackExpired     = !surveyOpenDate || (getDaysBetween(surveyOpenDate, Date.now()) > SURVEY_BANNER_DISPLAY_SETBACK_DAYS);
-
-  if(!wasSurveyBannerDismissed && !wasSurveyCompleted && surveySetbackExpired) {
-      var surveyBanner      = document.querySelector('.survey-banner');
-      var surveyLink        = document.querySelector('.survey-banner a');
-      var surveyBannerClose = document.querySelector('.survey-banner-close-button');
-
-      function hideSurveyBanner() {
-          surveyBanner.className = surveyBanner.className += ' hidden';
-
-          if (!isMobileDevice)
-              updateNavMenuPosition();
-      }
-
-      surveyBanner.className = surveyBanner.className.replace(/hidden/,'');
-
-      surveyBannerClose.addEventListener('click', function () {
-          hideSurveyBanner();
-          window.localStorage.setItem(SUMMER_2019_SURVEY_BANNER_DISMISSED_FLAG, true);
-      });
-
-      surveyLink.addEventListener('click', function () {
-          hideSurveyBanner();
-      });
-  }
-</script>
-
 <header class="site-header fixed">
   <div class="site-header-content">
     <a class="site-logo" href="/testcafe/"></a>
@@ -416,7 +246,7 @@
     <nav class="site-nav">
         
           
-          <div class="site-nav-tab active">
+          <div class="site-nav-tab">
             <a class="page-link" href="/testcafe/documentation/getting-started/"><span>Docs</span></a>
           </div>
         
@@ -436,7 +266,7 @@
           </div>
         
           
-          <div class="site-nav-tab">
+          <div class="site-nav-tab active">
             <a class="page-link" href="/testcafe/blog/"><span>Release Notes</span></a>
           </div>
         
@@ -561,7 +391,7 @@
           <a href="/testcafe/documentation/getting-started/">Getting Started</a>      
         </div>
       
-        <div class="doc-top-nav-tab active" >
+        <div class="doc-top-nav-tab " >
           <a href="/testcafe/documentation/using-testcafe/">Using TestCafe</a>      
         </div>
       
@@ -587,265 +417,106 @@
 
 
       <div class="container">
-    
-	
-	
+    <main>
+    <div class="post">
+        <div class="post-date">
+            AUG  7, 2019
+        </div>
+        <article class="post-content">
+            <h1>TestCafe v1.4.0 Released</h1>
+<p>This release introduces the capability to inject custom scripts into tested pages.</p>
 
-	
-	
-	<div class="doc-nav-panel">
-		<div class="toggle-nav-button"></div>
-		<div class="doc-nav-panel-header">
-			<div class="doc-nav-panel-heading">Documentation</div>
-			<div class="doc-nav-panel-title">
-				
-					
-				
-					
-						Using TestCafe
-					
-				
-					
-				
-					
-				
-					
-				
-					
-				
-			</div>
-		</div>
-	</div>
-	<nav class="doc-nav">	
-		<div class="doc-nav-content">
-			<ul>
-				<li>
-				<ul>
+<!--more-->
+<h2><a class="anchor" id="enhancements"></a>Enhancements <a class="permalink" href="#enhancements">#</a></h2><h3><a class="anchor" id="inject-scripts-into-tested-pages-1739"></a>⚙ Inject Scripts Into Tested Pages (<a href="https://github.com/DevExpress/testcafe/issues/1739">#1739</a>) <a class="permalink" href="#inject-scripts-into-tested-pages-1739">#</a></h3>
+<p>TestCafe now allows you to <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/inject-scripts-into-tested-pages.html">inject scripts</a> into pages visited during the tests. Use this feature to add helper functions, mock browser API or import modules.</p>
 
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/installing-testcafe.html"  >Installing TestCafe</a>
-		
-    </li>
+<p>To add client scripts to all tests, specify them in the command line, API or configuration file. Use the following options:</p>
 
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/command-line-interface.html"  >Command Line Interface</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/programming-interface/"  >Programming Interface</a>
-		
-			<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/programming-interface/testcafe.html"  >TestCafe Class</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/programming-interface/browserconnection.html"  >BrowserConnection Class</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/programming-interface/runner.html"  >Runner Class</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/programming-interface/livemoderunner.html"  >LiveModeRunner Class</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/programming-interface/createtestcafe.html"  >createTestCafe Factory</a>
-		
-    </li>
-
+<ul>
+<li><p>the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--cs-pathpath2---client-scripts-pathpath2">--cs (--client-scripts)</a> command line argument</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js --client-scripts<span class="o">=</span>mockDate.js,assets/react-helpers.js
+</code></pre></div></li>
+<li><p>the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#clientscripts">runner.clientScripts</a> API method</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">clientScripts</span><span class="p">(</span><span class="s1">'mockDate.js'</span><span class="p">,</span> <span class="s1">'scripts/react-helpers.js'</span><span class="p">);</span>
+</code></pre></div></li>
+<li><p>the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#clientscripts">clientScripts</a> configuration file property</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"clientScripts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"mockDate.js"</span><span class="p">,</span><span class="w"> </span><span class="s2">"scripts/react-helpers.js"</span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></li>
 </ul>
-		
-    </li>
 
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/configuration-file.html"  >Configuration File</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/using-testcafe-docker-image.html"  >Using TestCafe Docker Image</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/common-concepts/"  >Common Concepts</a>
-		
-			<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/common-concepts/browsers/"  >Browsers</a>
-		
-			<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/common-concepts/browsers/browser-support.html"  >Browser Support</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/common-concepts/browsers/testing-in-headless-mode.html" class="active" >Testing in Headless Mode</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/common-concepts/browsers/using-chrome-device-emulation.html"  >Using Chrome Device Emulation</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/common-concepts/browsers/user-profiles.html"  >User Profiles</a>
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/common-concepts/concurrent-test-execution.html"  >Concurrent Test Execution</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/common-concepts/live-mode.html"  >Live Mode</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/common-concepts/screenshots-and-videos.html"  >Screenshots and Videos</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/common-concepts/inject-scripts-into-tested-pages.html"  >Inject Scripts into Tested Pages</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/common-concepts/reporters.html"  >Reporters</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/common-concepts/test-https-and-http2-websites.html"  >Test HTTPS and HTTP/2 Websites</a>
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-</ul>
-				</li>
-			</ul>
-		</div>
-	</nav>
-	
-
-	
-	
-
-	
-	
-
-	
-	
-
-	
-	
-	
-
-
-<main>
-	<article class="doc">
-		<div class="post-content">
-
-			<h1>Testing in Headless Mode</h1>
-<p>TestCafe allows you to run tests in Google Chrome and Mozilla Firefox without any visible UI shell - in the headless mode (<a href="https://developers.google.com/web/updates/2017/04/headless-chrome">Chrome Headless</a>, <a href="https://developer.mozilla.org/en-US/Firefox/Headless_mode">Firefox Headless</a>). Use the <code>:headless</code> parameter to launch a browser in the headless mode.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"chrome:headless"</span> tests/sample-fixture.js
-</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span>
-    <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">'tests/sample-fixture.js'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="s1">'chrome:headless'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">run</span><span class="p">();</span>
+<p>If you need to add scripts to individual fixtures or tests, use the <a href="https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#inject-scripts-into-tested-pages">fixture.clientScripts</a> and <a href="https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#inject-scripts-into-tested-pages">test.clientScripts</a> methods in test code.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//example.com`</span>
+    <span class="p">.</span><span class="nx">clientScripts</span><span class="p">(</span><span class="s1">'mockDate.js'</span><span class="p">,</span> <span class="s1">'scripts/react-helpers.js'</span><span class="p">);</span>
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">test</span>
+    <span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">})</span>
+    <span class="p">.</span><span class="nx">clientScripts</span><span class="p">(</span><span class="s1">'mockDate.js'</span><span class="p">,</span> <span class="s1">'scripts/react-helpers.js'</span><span class="p">);</span>
 </code></pre></div>
-<p>Specify a path to the browser executable if you use a portable version of the browser. Use the <a href="browser-support.html#locally-installed-browsers">browser alias</a> instead of the <code>path:</code> prefix.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"firefox:path/to/firefox:headless"</span> tests/sample-fixture.js
-</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span>
-    <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">'tests/sample-fixture.js'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="s1">'firefox:path/to/firefox:headless'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">run</span><span class="p">();</span>
+<p>TestCafe also allows you to <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/inject-scripts-into-tested-pages.html#provide-scripts-for-specific-pages">inject scripts into specific pages</a>.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">clientScripts</span><span class="p">({</span>
+        <span class="na">page</span><span class="p">:</span> <span class="s1">'https://myapp.com/page/'</span><span class="p">,</span>
+        <span class="na">path</span><span class="p">:</span> <span class="s1">'scripts/vue-helpers.js'</span>
+    <span class="p">});</span>
 </code></pre></div>
-<p>Note that the <a href="../../../test-api/actions/take-screenshot.html">Take screenshot</a> and <a href="../../../test-api/actions/resize-window.html">Resize window</a> features are fully supported in the headless mode.</p>
-<h2><a class="anchor" id="automation-port"></a>Automation Port <a class="permalink" href="#automation-port">#</a></h2>
-<p>Chrome and Firefox require a remote control port for TestCafe to attach to the browser instance. TestCafe automatically assigns a free port but you can specify a custom port via the <code>cdpPort</code> argument for Chrome and the <code>marionettePort</code> argument for Firefox.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"chrome:headless:cdpPort=9223"</span> tests/sample-fixture.js
-</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span>
-    <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">'tests/sample-fixture.js'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="s1">'chrome:headless:cdpPort=9223'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">run</span><span class="p">();</span>
-</code></pre></div><div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"firefox:headless:marionettePort=9223"</span> tests/sample-fixture.js
-</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span>
-    <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">'tests/sample-fixture.js'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="s1">'firefox:headless:marionettePort=9223'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">run</span><span class="p">();</span>
-</code></pre></div>
+<p>This is helpful when you need to override the browser API on particular pages and use the default behavior everywhere else.</p>
 
-		</div>
-	</article>
+<p>You can specify the scripts to inject as follows:</p>
+
+<ul>
+<li><p>pass the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/inject-scripts-into-tested-pages.html#inject-a-javascript-file">path to a JavaScript file</a> to inject its content:</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">clientScripts</span><span class="p">({</span> <span class="na">path</span><span class="p">:</span> <span class="s1">'assets/jquery.js'</span> <span class="p">});</span>
+</code></pre></div></li>
+<li><p>use the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/inject-scripts-into-tested-pages.html#inject-a-module">module name</a> to inject a module:</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">clientScripts</span><span class="p">({</span> <span class="na">module</span><span class="p">:</span> <span class="s1">'async'</span> <span class="p">});</span>
+</code></pre></div>
+<p>TestCafe searches for the module&#39;s entry point with Node.js mechanisms and injects its content. Note that the browser must be able to execute this module.</p></li>
+<li><p>pass the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/inject-scripts-into-tested-pages.html#inject-script-code">code</a> you need to inject:</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">clientScripts</span><span class="p">({</span> <span class="na">content</span><span class="p">:</span> <span class="s1">'Geolocation.prototype.getCurrentPosition = () =&gt; new Positon(0, 0);'</span> <span class="p">});</span>
+</code></pre></div></li>
+</ul>
+
+<p>For more information, see <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/inject-scripts-into-tested-pages.html">Inject Scripts into Tested Pages</a>.</p>
+<h2><a class="anchor" id="bug-fixes"></a>Bug Fixes <a class="permalink" href="#bug-fixes">#</a></h2>
+<ul>
+<li>The browser no longer displays 404 errors after the test submits a form (<a href="https://github.com/DevExpress/testcafe/issues/3560">#3560</a></li>
+<li>TestCafe can now download files when testing in headless mode (<a href="https://github.com/DevExpress/testcafe/issues/3127">#3127</a>)</li>
+<li>TypeScript no longer throws an error when <code>fixture</code> or <code>fixture.page</code> uses a tag function (<a href="https://github.com/DevExpress/testcafe/issues/4042">#4042</a>)</li>
+<li>The <code>load</code> event now correctly fires for cached images (<a href="https://github.com/DevExpress/testcafe-hammerhead/issues/1959">testcafe-hammerhead/#1959</a>)</li>
+<li>TestCafe can now read resources from <code>asar</code> archives (<a href="https://github.com/DevExpress/testcafe-hammerhead/issues/2033">testcafe-hammerhead/#2033</a>)</li>
+<li>Fixed a bug when <code>testcafe-hammerhead</code> event listeners were called twice (<a href="https://github.com/DevExpress/testcafe-hammerhead/issues/2062">testcafe-hammerhead/#2062</a>)</li>
+</ul>
+
+        </article>
+        <div id="back-to-posts-link">
+            <p><a href="./">Back to Post List</a></p>
+        </div>
+        <!-- <div id="disqus_thread"></div> -->
+    </div>
 </main>
+
+<!-- 
+<script>
+    var disqus_config = function () {
+        this.page.url = 'https://devexpress.github.io/testcafe/blog/testcafe-v1-4-0-released.html';
+        this.page.identifier = '/blog/testcafe-v1-4-0-released';
+    };
+    (function() {
+        var d = document, s = d.createElement('script');
+        
+        s.src = '//testcafe-blog.disqus.com/embed.js';
+        
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+ -->
 </div>
 
     </div>

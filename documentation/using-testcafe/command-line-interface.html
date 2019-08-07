@@ -766,6 +766,13 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/using-testcafe/common-concepts/inject-scripts-into-tested-pages.html"  >Inject Scripts into Tested Pages</a>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/using-testcafe/common-concepts/reporters.html"  >Reporters</a>
 		
     </li>
@@ -852,6 +859,7 @@
 <li><a href="#--assertion-timeout-ms">--assertion-timeout &lt;ms&gt;</a></li>
 <li><a href="#--page-load-timeout-ms">--page-load-timeout &lt;ms&gt;</a></li>
 <li><a href="#--speed-factor">--speed &lt;factor&gt;</a></li>
+<li><a href="#--cs-pathpath2---client-scripts-pathpath2">--cs &lt;path[,path2,...]&gt;, --client-scripts &lt;path[,path2,...]&gt;</a></li>
 <li><a href="#--ports-port1port2">--ports &lt;port1,port2&gt;</a></li>
 <li><a href="#--hostname-name">--hostname &lt;name&gt;</a></li>
 <li><a href="#--proxy-host">--proxy &lt;host&gt;</a></li>
@@ -1206,6 +1214,26 @@ to slow the test down.</p>
 <p><strong>Default value</strong>: <code>1</code></p>
 
 <p><em>Related configuration file property</em>: <a href="configuration-file.html#speed">speed</a>.</p>
+<h3><a class="anchor" id="--cs-pathpath2---client-scripts-pathpath2"></a>--cs &lt;path[,path2,...]&gt;, --client-scripts &lt;path[,path2,...]&gt; <a class="permalink" href="#--cs-pathpath2---client-scripts-pathpath2">#</a></h3>
+<p>Injects scripts from the specified files into each page visited during the tests. Use this option to introduce client-side mock functions or helper scripts.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests --client-scripts mockDate.js,assets/react-helpers.js
+</code></pre></div>
+<p>Pass the <a href="common-concepts/inject-scripts-into-tested-pages.html#inject-a-javascript-file">path to a JavaScript file</a> to inject its content.</p>
+<blockquote><div class="blockquote-content"><p>Relative paths resolve from the current working directory.</p>
+</div></blockquote>
+<p>Use the <a href="../test-api/test-code-structure.html#inject-scripts-into-tested-pages">fixture.clientScripts</a> and <a href="../test-api/test-code-structure.html#inject-scripts-into-tested-pages">test.clientScripts</a> methods in test code to inject scripts for an individual fixture or test.</p>
+
+<p>You can also <a href="common-concepts/inject-scripts-into-tested-pages.html#inject-a-module">inject modules</a>, <a href="common-concepts/inject-scripts-into-tested-pages.html#inject-script-code">code strings</a>, or <a href="common-concepts/inject-scripts-into-tested-pages.html#provide-scripts-for-specific-pages">add scripts to individual pages</a> in the API and configuration file. Use the following methods and options to do this:</p>
+
+<ul>
+<li>the <a href="programming-interface/runner.html#clientscripts">runner.clientScripts</a> programming interface method</li>
+<li>the <a href="configuration-file.html#clientscripts">clientScripts</a> configuration file property</li>
+<li>the <a href="../test-api/test-code-structure.html#inject-scripts-into-tested-pages">fixture.clientScripts</a> and <a href="../test-api/test-code-structure.html#inject-scripts-into-tested-pages">test.clientScripts</a> test API methods (add scripts to pages visited during a particular fixture or test)</li>
+</ul>
+
+<p>See <a href="common-concepts/inject-scripts-into-tested-pages.html">Inject Scripts into Tested Pages</a> for more information.</p>
+
+<p><em>Related configuration file property</em>: <a href="configuration-file.html#clientscripts">clientScripts</a>.</p>
 <h3><a class="anchor" id="--ports-port1port2"></a>--ports &lt;port1,port2&gt; <a class="permalink" href="#--ports-port1port2">#</a></h3>
 <p>Specifies custom port numbers TestCafe uses to perform testing. The number range is [0-65535].</p>
 
