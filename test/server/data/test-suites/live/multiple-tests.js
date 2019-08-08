@@ -1,11 +1,11 @@
-fixture('Fixture2')
+fixture('multiple')
     .page('http://example.com');
 
-test('test2', async t => {
+test('multiple 1', async t => {
 
 });
 
-test('test3', async t => {
+test('multiple 2', async t => {
 
 });
 
