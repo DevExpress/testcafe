@@ -3,6 +3,7 @@ import { GeneralError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
 import { isAbsolute, join } from 'path';
 import { RequestFilterRule, generateUniqueId } from 'testcafe-hammerhead';
+import { createHash } from 'crypto';
 
 const BEAUTIFY_REGEXP = /[/.:\s\\]/g;
 const BEAUTIFY_CHAR   = '_';
@@ -20,6 +21,7 @@ export default class ClientScript {
         this.content  = '';
         this.path     = null;
         this.module   = null;
+        this.hash     = null;
         this.page     = RequestFilterRule.ANY;
         this.basePath = basePath;
     }
@@ -94,7 +96,12 @@ export default class ClientScript {
                 this.page = new RequestFilterRule(initPage);
         }
 
+        this._calculateHash();
         this._prepareUrl();
+    }
+
+    _calculateHash () {
+        this.hash = createHash('md5').update(this.content).digest();
     }
 
     _contentToString () {
