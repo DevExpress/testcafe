@@ -43,7 +43,7 @@ export function focusAndSetSelection (element, simulateFocus, caretPos) {
         const isTextEditable              = domUtils.isTextEditableElement(element);
         const labelWithForAttr            = domUtils.closest(element, 'label[for]');
         const isElementFocusable          = domUtils.isElementFocusable(element);
-        const shouldFocusByRelatedElement = labelWithForAttr;
+        const shouldFocusByRelatedElement = !isElementFocusable && labelWithForAttr;
         const isContentEditable           = domUtils.isContentEditableElement(element);
         let elementForFocus               = isContentEditable ? contentEditable.findContentEditableParent(element) : element;
 
