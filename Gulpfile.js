@@ -797,7 +797,7 @@ function isDockerDesktopRunning () {
     try {
         const processInfo = childProcess.execSync('wmic process get Name /format:list').toString();
 
-        return processInfo.match(/Docker for Windows.exe/);
+        return processInfo.match(/Docker (for Windows|Desktop).exe/);
     }
     catch (e) {
         return false;
