@@ -3,14 +3,19 @@ const TYPE                    = require('../../lib/test-run/commands/type');
 const createCommandFromObject = require('../../lib/test-run/commands/from-object');
 const SelectorBuilder         = require('../../lib/client-functions/selectors/selector-builder');
 const assertThrow             = require('./helpers/assert-error').assertThrow;
+const createExecutionContext  = require('../../lib/api/test-controller/create-execution-context');
 
 const testRunMock = {
     test: {
         testFile: {
             filename: ''
         }
-    }
+    },
+
+    controller: { }
 };
+
+testRunMock.controller.executionContext = createExecutionContext(testRunMock);
 
 function createCommand (obj) {
     try {
