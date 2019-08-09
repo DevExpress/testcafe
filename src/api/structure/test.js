@@ -18,6 +18,11 @@ export default class Test extends TestingUnit {
         this.beforeFn      = null;
         this.afterFn       = null;
 
+        if (this.fixture) {
+            this.requestHooks  = this.fixture.requestHooks.slice();
+            this.clientScripts = this.fixture.clientScripts.slice();
+        }
+
         return this.apiOrigin;
     }
 
@@ -28,8 +33,6 @@ export default class Test extends TestingUnit {
 
         this.name          = name;
         this.fn            = wrapTestFunction(fn);
-        this.requestHooks  = union(Array.from(this.fixture.requestHooks), this.requestHooks);
-        this.clientScripts = union(Array.from(this.fixture.clientScripts), this.clientScripts);
 
         if (!this.testFile.collectedTests.includes(this))
             this.testFile.collectedTests.push(this);
@@ -61,7 +64,7 @@ export default class Test extends TestingUnit {
 
         assertRequestHookType(hooks);
 
-        this.requestHooks = hooks;
+        this.requestHooks = union(this.requestHooks, hooks);
 
         this.apiMethodWasCalled.requestHooks = true;
 
@@ -76,7 +79,7 @@ export default class Test extends TestingUnit {
 
         assertClientScriptType(scripts);
 
-        this.clientScripts = scripts;
+        this.clientScripts = union(this.clientScripts, scripts);
 
         this.apiMethodWasCalled.clientScripts = true;
 
