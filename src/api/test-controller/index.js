@@ -40,11 +40,14 @@ import {
 
 import { WaitCommand, DebugCommand } from '../../test-run/commands/observation';
 import assertRequestHookType from '../request-hooks/assert-type';
+import createExecutionContext from './create-execution-context';
 
 const originalThen = Promise.resolve().then;
 
 export default class TestController {
     constructor (testRun) {
+        this._executionContext = null;
+
         this.testRun               = testRun;
         this.executionChain        = Promise.resolve();
         this.callsitesWithoutAwait = new Set();
@@ -108,6 +111,13 @@ export default class TestController {
 
             return () => this.testRun.executeCommand(command, callsite);
         });
+    }
+
+    get executionContext () {
+        if (!this._executionContext)
+            this._executionContext = createExecutionContext(this.testRun);
+
+        return this._executionContext;
     }
 
     // API implementation

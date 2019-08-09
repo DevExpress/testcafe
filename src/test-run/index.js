@@ -1,5 +1,4 @@
 import { pull, remove, chain } from 'lodash';
-import nanoid from 'nanoid';
 import { readSync as read } from 'read-file-relative';
 import promisifyEvent from 'promisify-event';
 import Promise from 'pinkie';
@@ -284,7 +283,6 @@ export default class TestRun extends AsyncEventEmitter {
     // Test function execution
     async _executeTestFn (phase, fn) {
         this.phase     = phase;
-        this.contextId = nanoid(7);
 
         try {
             await fn(this);
