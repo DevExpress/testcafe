@@ -2,12 +2,12 @@ import { chain } from 'lodash';
 import { generateUniqueId, RequestFilterRule } from 'testcafe-hammerhead';
 import ClientScript from './client-script';
 
-function getScriptGroupValues(collection, groupByPredicate, pickUpPredicate) {
+function getScriptGroupValues (collection, groupByPredicate, pickUpPredicate) {
     return chain(collection)
-       .groupBy(groupByPredicate)
-       .pickBy(pickUpPredicate)
-       .values()
-       .value();
+        .groupBy(groupByPredicate)
+        .pickBy(pickUpPredicate)
+        .values()
+        .value();
 }
 
 function getDuplicatedScripts (collection) {
