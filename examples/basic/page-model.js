@@ -9,7 +9,7 @@ class Feature {
     }
 }
 
-export default class Page {
+class Page {
     constructor () {
         this.nameInput             = Selector('#developer-name');
         this.triedTestCafeCheckbox = Selector('#tried-test-cafe');
@@ -34,3 +34,5 @@ export default class Page {
         this.interfaceSelectOption = this.interfaceSelect.find('option');
     }
 }
+
+export default new Page();
