@@ -2,7 +2,7 @@
     "fixtures": [
         {
             "name": "i2627",
-            "pageUrl": "file:///C:/testcafe/test/functional/fixtures/api/raw/hooks/pages/index.html",
+            "pageUrl": "http://localhost:3000/fixtures/api/raw/hooks/pages/index.html",
             "tests": [
                 {
                     "name": "test1",
