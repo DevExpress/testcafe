@@ -23,22 +23,63 @@ Key Type                   | Example
 -------------------------- | ------
 Alphanumeric keys          | `'a'`, `'A'`, `'1'`
 Modifier keys              | `'shift'`, `'alt'` (⌥ key on macOS), `'ctrl'`, `'meta'` (*meta* key on Linux and ⌘ key on macOS)
-Navigation and action keys | `'backspace'`, `'tab'`, `'enter'`, `'capslock'`, `'esc'`, `'space'`, `'pageup'`, `'pagedown'`, `'end'`, `'home'`, `'left'`, `'right'`, `'down'`, `'ins'`, `'delete'`
+Navigation and action keys | `'backspace'`, `'tab'`, `'enter'`
 Key combinations           | `'shift+a'`, `'ctrl+d'`
 Sequential key presses     | Any of the above in a space-separated string, e.g. `'a ctrl+b'`
 
-In addition to key presses handled by webpage elements, the `t.pressKey` action also allows you to execute certain key presses processed by the browser.
+The following navigation and action keys are supported:
 
-* `'ctrl+a'`, `'backspace'`, `'delete'`, `'left'`, `'right'`, `'up'`, `'down'`, `'home'`, `'end'`, `'enter'`, `'tab'`, `'shift+tab'`, `'shift+left'`, `'shift+right'`, `'shift+up'`, `'shift+down'`, `'shift+home'`, `'shift+end'`
+* `'backspace'`
+* `'tab'`
+* `'enter'`
+* `'capslock'`
+* `'esc'`
+* `'space'`
+* `'pageup'`
+* `'pagedown'`
+* `'end'`
+* `'home'`
+* `'left'`
+* `'right'`
+* `'up'`
+* `'down'`
+* `'ins'`
+* `'delete'`
 
-With the exception of the keys and combinations listed above, the `t.pressKey` action will not invoke integrated browser keystrokes.
+The `t.pressKey` action triggers key press handling performed in page code.
 
-For elements with the `contentEditable` attribute, the following key presses are supported.
+However, the following keys and key combinations also invoke browser processing:
 
-* `'ctrl+a'`,
-* `'backspace'`, `'delete'`, `'left'` and `'right'` (only if text within the element is selected).
+* `'ctrl+a'`
+* `'backspace'`
+* `'delete'`
+* `'left'`
+* `'right'`
+* `'up'`
+* `'down'`
+* `'home'`
+* `'end'`
+* `'enter'`
+* `'tab'`
+* `'shift+tab'`
+* `'shift+left'`
+* `'shift+right'`
+* `'shift+up'`
+* `'shift+down'`
+* `'shift+home'`
+* `'shift+end'`
 
-The following example shows how to use the `t.pressKey` action.
+For elements with the `contentEditable` attribute, the following key presses are supported:
+
+* `'ctrl+a'`
+* `'backspace'`
+* `'delete'`
+* `'left'`
+* `'right'`
+
+> The `'backspace'`, `'delete'`, `'left'` and `'right'` key presses in `contentEditable` elements are processed only when text is selected.
+
+The following example shows how to use the `t.pressKey` action:
 
 ```js
 import { Selector } from 'testcafe';
