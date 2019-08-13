@@ -1,7 +1,6 @@
 import path from 'path';
 import { inspect } from 'util';
 import del from 'del';
-import Promise from 'pinkie';
 import { noop } from 'lodash';
 import { killBrowserProcess } from '../../process';
 import COMMANDS from './commands';

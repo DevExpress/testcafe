@@ -1,4 +1,3 @@
-import Promise from 'pinkie';
 import qrcode from 'qrcode-terminal';
 import chalk from 'chalk';
 import log from './log';

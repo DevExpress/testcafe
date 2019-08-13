@@ -1,6 +1,5 @@
 import { resolve as resolvePath } from 'path';
 import debug from 'debug';
-import Promise from 'pinkie';
 import promisifyEvent from 'promisify-event';
 import mapReverse from 'map-reverse';
 import { EventEmitter } from 'events';

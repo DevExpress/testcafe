@@ -1,4 +1,3 @@
-import Promise from 'pinkie';
 import { find, sortBy, union } from 'lodash';
 import { writable as isWritableStream } from 'is-stream';
 import ReporterPluginHost from './plugin-host';

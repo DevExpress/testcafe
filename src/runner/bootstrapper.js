@@ -1,5 +1,4 @@
 import { isUndefined, filter, flatten, chunk, times } from 'lodash';
-import Promise from 'pinkie';
 import Compiler from '../compiler';
 import BrowserConnection from '../browser/connection';
 import { GeneralError } from '../errors/runtime';

@@ -1,4 +1,3 @@
-import Promise from 'pinkie';
 import { remove } from 'lodash';
 import AsyncEventEmitter from '../utils/async-event-emitter';
 import TestRunController from './test-run-controller';

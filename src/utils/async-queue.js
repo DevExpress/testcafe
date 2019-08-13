@@ -1,5 +1,3 @@
-import Promise from 'pinkie';
-
 const actions = { };
 
 export function isInQueue (key) {

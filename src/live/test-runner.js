@@ -1,4 +1,3 @@
-import Promise from 'pinkie';
 import { noop } from 'lodash';
 import LiveModeTestRunController from './test-run-controller';
 import LiveModeController from './controller';

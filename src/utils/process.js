@@ -1,5 +1,4 @@
 import { spawn } from 'child_process';
-import Promise from 'pinkie';
 import OS from 'os-family';
 import promisifyEvent from 'promisify-event';
 import delay from '../utils/delay';

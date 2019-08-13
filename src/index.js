@@ -1,4 +1,3 @@
-import Promise from 'pinkie';
 import { GeneralError } from './errors/runtime';
 import { RUNTIME_ERRORS } from './errors/types';
 import embeddingUtils from './embedding-utils';

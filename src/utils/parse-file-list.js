@@ -1,5 +1,4 @@
 import path from 'path';
-import Promise from 'pinkie';
 import globby from 'globby';
 import isGlob from 'is-glob';
 import Compiler from '../compiler';

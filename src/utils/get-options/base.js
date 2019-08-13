@@ -1,6 +1,4 @@
-import Promise from 'pinkie';
 import convertToBestFitType from '../convert-to-best-fit-type';
-
 
 const DEFAULT_OPTIONS_SEPARATOR   = ',';
 const DEFAULT_KEY_VALUE_SEPARATOR = '=';

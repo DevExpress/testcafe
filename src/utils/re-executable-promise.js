@@ -1,4 +1,3 @@
-import Promise from 'pinkie';
 import { noop } from 'lodash';
 import testRunTracker from '../api/test-run-tracker';
 

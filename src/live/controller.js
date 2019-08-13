@@ -3,7 +3,6 @@ import FileWatcher from './file-watcher';
 import Logger from './logger';
 import process from 'process';
 import readline from 'readline';
-import Promise from 'pinkie';
 
 const REQUIRED_MODULE_FOUND_EVENT = 'require-module-found';
 const LOCK_KEY_PRESS_TIMEOUT      = 1000;

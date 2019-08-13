@@ -1,6 +1,5 @@
 import { exec } from 'child_process';
 import { delimiter as pathDelimiter } from 'path';
-import Promise from 'pinkie';
 import kill from 'tree-kill';
 import OS from 'os-family';
 import delay from '../utils/delay';

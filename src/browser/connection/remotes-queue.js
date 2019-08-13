@@ -1,4 +1,3 @@
-import Promise from 'pinkie';
 import { EventEmitter } from 'events';
 import promisifyEvent from 'promisify-event';
 import getTimeLimitedPromise from 'time-limit-promise';

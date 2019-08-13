@@ -1,5 +1,4 @@
 import { EventEmitter } from 'events';
-import Promise from 'pinkie';
 import getTimeLimitedPromise from 'time-limit-promise';
 import promisifyEvent from 'promisify-event';
 import { noop, pull as remove, flatten } from 'lodash';
