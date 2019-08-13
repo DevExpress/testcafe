@@ -1,6 +1,4 @@
-import Emittery from 'emittery/legacy';
-import Promise from 'pinkie';
-
+import Emittery from 'emittery';
 
 export default class AsyncEventEmitter extends Emittery {
     once (event, listener) {
