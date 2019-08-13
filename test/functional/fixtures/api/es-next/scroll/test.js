@@ -4,6 +4,6 @@ describe('Scroll', () => {
     });
 
     it('Events initiated by scroll should have valid properties', () => {
-        return runTests('./testcafe-fixtures/event-properties.js', null);
+        return runTests('./testcafe-fixtures/event-properties.js', null, { skip: 'iphone,ipad'});
     });
 });
