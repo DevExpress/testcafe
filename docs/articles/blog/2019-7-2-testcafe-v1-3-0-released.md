@@ -24,9 +24,6 @@ Define the `compilerOptions` property in `tsconfig.json` and specify the compile
     "compilerOptions": {
         "jsx": "react",
         "jsxFactory": "myFactory",
-        "paths": {
-            "jquery": [ "node_modules/jquery/dist/jquery" ]
-        },
         "alwaysStrict": true
     }
 }
