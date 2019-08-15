@@ -1,5 +1,4 @@
 const EventEmitter        = require('events');
-const Promise             = require('pinkie');
 const expect              = require('chai').expect;
 const createTestCafe      = require('../../lib/');
 const { TEST_RUN_ERRORS } = require('../../lib/errors/types');

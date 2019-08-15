@@ -1,6 +1,5 @@
 const expect                    = require('chai').expect;
 const sinon                     = require('sinon');
-const Promise                   = require('pinkie');
 const correctBrowsersAndSources = require('../../lib/cli/correct-browsers-and-sources');
 const browserProviderPool       = require('../../lib/browser/provider/pool');
 

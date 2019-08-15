@@ -1,5 +1,4 @@
 const expect                = require('chai').expect;
-const Promise               = require('pinkie');
 const proxyquire            = require('proxyquire');
 const testcafeBrowserTools  = require('testcafe-browser-tools');
 const browserProviderPool   = require('../../lib/browser/provider/pool');

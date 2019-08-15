@@ -1,4 +1,3 @@
-const Promise = require('pinkie');
 const TestRun = require('../../lib/test-run/index');
 const delay   = require('../../lib/utils/delay');
 

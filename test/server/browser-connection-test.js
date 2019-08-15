@@ -1,5 +1,4 @@
 const expect              = require('chai').expect;
-const Promise             = require('pinkie');
 const { promisify }       = require('util');
 const request             = require('request');
 const createTestCafe      = require('../../lib/');

@@ -1,7 +1,6 @@
 const expect              = require('chai').expect;
 const path                = require('path');
 const fs                  = require('fs');
-const Promise             = require('pinkie');
 const proxyquire          = require('proxyquire');
 const sinon               = require('sinon');
 const { TEST_RUN_ERRORS } = require('../../lib/errors/types');

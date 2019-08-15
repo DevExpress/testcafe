@@ -1,5 +1,4 @@
 const path                       = require('path');
-const Promise                    = require('pinkie');
 const SlConnector                = require('saucelabs-connector');
 const BsConnector                = require('browserstack-connector');
 const caller                     = require('caller');

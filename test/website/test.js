@@ -6,7 +6,6 @@ const https   = require('https');
 const util    = require('gulp-util');
 const url     = require('url');
 const parse5  = require('parse5');
-const Promise = require('pinkie');
 const walk    = require('dom-walk');
 
 

@@ -1,4 +1,3 @@
-const Promise = require('pinkie');
 const qrCode  = require('qrcode-terminal');
 
 

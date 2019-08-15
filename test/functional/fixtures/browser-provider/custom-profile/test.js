@@ -1,6 +1,5 @@
 const path                 = require('path');
 const { expect }           = require('chai');
-const Promise              = require('pinkie');
 const config               = require('../../../config');
 const { createNullStream } = require('../../../utils/stream');
 const createChromeProfile  = require('../../../../../lib/browser/provider/built-in/dedicated/chrome/create-temp-profile');

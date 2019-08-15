@@ -4,7 +4,6 @@ const path                    = require('path');
 const chai                    = require('chai');
 const { expect }              = chai;
 const request                 = require('request');
-const Promise                 = require('pinkie');
 const { noop, times, uniqBy } = require('lodash');
 const createTestCafe          = require('../../lib/');
 const COMMAND                 = require('../../lib/browser/connection/command');

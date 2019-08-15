@@ -1,4 +1,3 @@
-import Promise from 'pinkie';
 import BUILT_IN_PROVIDERS from './built-in';
 import BrowserProviderPluginHost from './plugin-host';
 import parseProviderName from './parse-provider-name';

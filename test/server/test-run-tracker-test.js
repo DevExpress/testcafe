@@ -1,6 +1,5 @@
 const expect   = require('chai').expect;
 const fill     = require('lodash/fill');
-const Promise  = require('pinkie');
 const Compiler = require('../../lib/compiler');
 
 describe('Test run tracker', function () {
