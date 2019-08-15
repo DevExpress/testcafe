@@ -74,9 +74,6 @@ In `tsconfig.json`, define the `compilerOptions` property and specify the compil
     "compilerOptions": {
         "jsx": "react",
         "jsxFactory": "myFactory",
-        "paths": {
-            "jquery": [ "node_modules/jquery/dist/jquery" ]
-        },
         "alwaysStrict": true
     }
 }
@@ -84,7 +81,7 @@ In `tsconfig.json`, define the `compilerOptions` property and specify the compil
 
 See the available options in the [TypeScript Compiler Options](https://www.typescriptlang.org/docs/handbook/compiler-options.html) topic.
 
-> Important! You cannot override the `module` and `target` options.
+> Important! You cannot override the `module`, `moduleResolution`, and `target` options.
 
 TestCafe passes the following options to the TypeScript compiler unless you override them in `tsconfig.json`:
 
