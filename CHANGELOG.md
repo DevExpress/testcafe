@@ -5,7 +5,7 @@
 ### Bug Fixes
 
 * Drag now works correctly in Chrome Mobile on Android and Chrome device emulator with touch screens ([#3948](https://github.com/DevExpress/testcafe/issues/3948))
-* Live Mode no longer fails when it restarts tests that use `import` on Node.js v12 ([#4052](https://github.com/DevExpress/testcafe/issues/4052))
+* Live Mode no longer fails when it restarts tests that import other modules on Node.js v12 ([#4052](https://github.com/DevExpress/testcafe/issues/4052))
 * TestCafe now types into inputs wrapped in `label` elements correctly ([#4068](https://github.com/DevExpress/testcafe/issues/4068))
 * `test.clientScripts` no longer override `fixture.clientScripts` ([#4122](https://github.com/DevExpress/testcafe/issues/4122))
 
