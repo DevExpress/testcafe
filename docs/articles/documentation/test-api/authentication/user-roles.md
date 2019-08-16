@@ -186,7 +186,7 @@ This issue may be caused by page caching.
 
 Role's initialization starts with clear local and session storages. The subsequent actions can add or modify items in these storages.
 
-However, navigation that occurs in the role code resets both storages. To preserve changes made by previous actions, TestCafe saves the storage content to the server before the navigation, and then restores it on the destination page. However, if the browser retrieves the destination page from cache, TestCafe is unable to restore the storages.
+However, navigation that may occur in the role code resets both storages. To preserve changes made by previous actions, TestCafe saves the storage content to the server before the navigation, and then restores it on the destination page. However, if the browser retrieves the destination page from cache, TestCafe is unable to restore the storages.
 
 To ensure that local and session storages are not reset after navigation, disable page caching. Note that this slows down the test execution.
 
