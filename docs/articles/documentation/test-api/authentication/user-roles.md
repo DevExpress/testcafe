@@ -16,7 +16,7 @@ A piece of logic that logs in a particular user is called a *role*. Define a rol
 * [Role Options](#role-options)
   * [options.preserveUrl](#optionspreserveurl)
 * [Troubleshooting](#troubleshooting)
-  * [Actions That Work in Test Code Fail Within a Role](#actions-that-work-in-test-code-fail-within-a-role)
+  * [Test Actions Fail After Authentication](#test-actions-fail-after-authentication)
 
 ## Why Use Roles
 
@@ -180,15 +180,9 @@ test('My test', async t => {
 
 ## Troubleshooting
 
-### Actions That Work in Test Code Fail Within a Role
+### Test Actions Fail After Authentication
 
-This issue may be caused by page caching.
-
-Role's initialization starts with clear local and session storages. The subsequent actions can add or modify items in these storages.
-
-However, navigation that may occur in the role code resets both storages. To preserve changes made by previous actions, TestCafe saves the storage content to the server before the navigation, and then restores it on the destination page. However, if the browser retrieves the destination page from cache, TestCafe is unable to restore the storages.
-
-To ensure that local and session storages are not reset after navigation, disable page caching. Note that this slows down the test execution.
+This issue can be caused by the browser's page caching. Try disabling it and check if the issue persists.
 
 Use the [fixture.disablePageCaching](../test-code-structure.md#disable-page-caching) and [test.disablePageCaching](../test-code-structure.md#disable-page-caching) methods to disable caching during a particular fixture or test.
 
@@ -197,3 +191,13 @@ To disable page caching during the entire test run, use either of the following 
 * the [--disable-page-caching](../../using-testcafe/command-line-interface.md#--disable-page-caching) command line flag
 * the `disablePageCaching` option in the [runner.run](../../using-testcafe/programming-interface/runner.md#run) method
 * the [disablePageCaching](../../using-testcafe/configuration-file.md#disablepagecaching) configuration file property
+
+#### Why This Issue Occurs
+
+In order to keep tests isolated, TestCafe prevents the tested page from accessing actual browser's local and session storages or cookies. Instead, it redirects all the respective API calls to an internal object (a *sandbox*) injected into the page code. This sandbox tracks any modifications to the cookies and storages, and keeps their up-to-date versions.
+
+When the browser is about to navigate to a different page or reload the current page, TestCafe uploads cookies, local and session storages from the sandbox to the server before the navigation happens. Then, TestCafe injects a new sandbox with up-to-date content into the destination page and serves it for the browser.
+
+This works as expected provided that the browser displays the new page as it is served by TestCafe. However, if the browser uses a cached copy of the page, the test proceeds with outdated storages and cookies. If the subsequent actions rely on their new values, these actions would fail.
+
+In real-world scenarios, such issues mostly occur after roles are applied. In this instance, we recommend that you try disabling page caching as [described above](#test-actions-fail-after-authentication).

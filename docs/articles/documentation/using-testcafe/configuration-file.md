@@ -812,7 +812,7 @@ Prevents the browser from caching the page content.
 }
 ```
 
-When navigation to a cached page occurs in [role code](../test-api/authentication/user-roles.md), local and session storage content is not preserved. Set `disablePageCaching` to `true` to retain the storage items after navigation. For more information, see [Troubleshooting: Local Storage Values Set in the Role Code Are Lost](../test-api/authentication/user-roles.md#actions-that-work-in-test-code-fail-within-a-role).
+When navigation to a cached page occurs in [role code](../test-api/authentication/user-roles.md), local and session storage content is not preserved. Set `disablePageCaching` to `true` to retain the storage items after navigation. For more information, see [Troubleshooting: Test Actions Fail After Authentication](../test-api/authentication/user-roles.md#test-actions-fail-after-authentication).
 
 You can also disable page caching [for an individual fixture or test](../test-api/test-code-structure.md#disable-page-caching).
 

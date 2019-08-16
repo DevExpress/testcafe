@@ -632,7 +632,7 @@ See [Inject Scripts into Tested Pages](../using-testcafe/common-concepts/inject-
 
 ## Disable Page Caching
 
-When navigation to a cached page occurs in [role code](authentication/user-roles.md), local and session storage content is not preserved. See [Troubleshooting: Local Storage Values Set in the Role Code Are Lost](authentication/user-roles.md#actions-that-work-in-test-code-fail-within-a-role) for more information.
+When navigation to a cached page occurs in [role code](authentication/user-roles.md), local and session storage content is not preserved. See [Troubleshooting: Test Actions Fail After Authentication](authentication/user-roles.md#test-actions-fail-after-authentication) for more information.
 
 You can disable page caching to keep items in these storages after navigation. Use the `fixture.disablePageCaching` and `test.disablePageCaching` methods to disable caching during a particular fixture or test.
 
