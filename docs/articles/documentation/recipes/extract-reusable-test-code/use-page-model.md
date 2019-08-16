@@ -70,7 +70,7 @@ while tests remain focused on the behavior.
 
 ### Step 1 - Declare a Page Model Class
 
-Begin with a new `.js` file, declare the `Page` class there and export its instance.
+Begin with a new `.js` file, declare the `Page` class there, and export its instance.
 
 ```js
 class Page {
