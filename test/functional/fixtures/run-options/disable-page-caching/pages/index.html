@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <button id="first">1. Set value in local storage</button>
+    <button id="second">2. Open link in a new window.</button>
+    <script>
+        var firstBtn  = document.getElementById("first");
+        var secondBtn = document.getElementById("second");
+
+        firstBtn.addEventListener('click', function () {
+            window.localStorage.setItem(
+                'testItem',
+                JSON.stringify({ link: './third.html' })
+            );
+        });
+
+        secondBtn.addEventListener('click', function () {
+            window.open('./second.html', '_blank');
+        });
+    </script>
+</body>
+</html>

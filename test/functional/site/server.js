@@ -28,6 +28,9 @@ const NON_CACHEABLE_PAGES = [
 
 const UPLOAD_SUCCESS_PAGE_TEMPLATE = readSync('./views/upload-success.html.mustache');
 
+const shouldCachePage = function (reqUrl) {
+    return NON_CACHEABLE_PAGES.every(pagePrefix => !reqUrl.startsWith(pagePrefix));
+};
 
 const Server = module.exports = function (port, basePath) {
     const server = this;
@@ -73,7 +76,7 @@ Server.prototype._setupRoutes = function () {
             .then(function (content) {
                 res.setHeader('content-type', CONTENT_TYPES[path.extname(resourcePath)]);
 
-                if (NON_CACHEABLE_PAGES.every(pagePrefix => !reqPath.startsWith(pagePrefix)))
+                if (shouldCachePage(reqPath))
                     res.setHeader('cache-control', 'max-age=3600');
 
                 setTimeout(function () {

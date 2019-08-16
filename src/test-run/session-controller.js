@@ -68,6 +68,8 @@ export default class SessionController extends Session {
                 session.currentTestRun = testRun;
             }
 
+            session.disablePageCaching = testRun.disablePageCaching;
+
             sessionInfo = {
                 session: session,
                 proxy:   null,

@@ -1,8 +1,8 @@
-const expect            = require('chai').expect;
+const { expect }        = require('chai');
 const path              = require('path');
 const fs                = require('fs');
 const tmp               = require('tmp');
-const find              = require('lodash').find;
+const { find }          = require('lodash');
 const CliArgumentParser = require('../../lib/cli/argument-parser');
 const nanoid            = require('nanoid');
 
@@ -519,7 +519,7 @@ describe('CLI argument parser', function () {
     });
 
     it('Should parse command line arguments', function () {
-        return parse('-r list -S -q -e --hostname myhost --proxy localhost:1234 --proxy-bypass localhost:5678 --qr-code --app run-app --speed 0.5 --debug-on-fail --disable-page-reloads --dev --sf ie test/server/data/file-list/file-1.js')
+        return parse('-r list -S -q -e --hostname myhost --proxy localhost:1234 --proxy-bypass localhost:5678 --qr-code --app run-app --speed 0.5 --debug-on-fail --disable-page-reloads --dev --sf --disable-page-caching ie test/server/data/file-list/file-1.js')
             .then(parser => {
                 expect(parser.browsers).eql(['ie']);
                 expect(parser.src).eql(['test/server/data/file-list/file-1.js']);
@@ -538,6 +538,7 @@ describe('CLI argument parser', function () {
                 expect(parser.opts.proxyBypass).to.be.ok;
                 expect(parser.opts.debugOnFail).to.be.ok;
                 expect(parser.opts.stopOnFirstFail).to.be.ok;
+                expect(parser.opts.disablePageCaching).to.be.ok;
             });
     });
 
@@ -584,7 +585,8 @@ describe('CLI argument parser', function () {
             { long: '--video-options' },
             { long: '--video-encoding-options' },
             { long: '--ts-config-path' },
-            { long: '--client-scripts', short: '--cs' }
+            { long: '--client-scripts', short: '--cs' },
+            { long: '--disable-page-caching' }
         ];
 
         const parser  = new CliArgumentParser('');

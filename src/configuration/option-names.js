@@ -33,5 +33,7 @@ export default {
     retryTestPages:         'retryTestPages',
     hostname:               'hostname',
     port1:                  'port1',
-    port2:                  'port2'
+    port2:                  'port2',
+    developmentMode:        'developmentMode',
+    disablePageCaching:     'disablePageCaching'
 };

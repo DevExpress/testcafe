@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <a id="third">3. Link to the third page</a>
+    <script>
+        var data = JSON.parse(localStorage.getItem('testItem'));
+        var link = document.getElementById('third');
+
+        if (data)
+            link.href = data.link;
+    </script>
+</body>
+</html>
