@@ -8,6 +8,7 @@ import remotesWizard from './remotes-wizard';
 import correctBrowsersAndSources from './correct-browsers-and-sources';
 import createTestCafe from '../';
 import * as marketing from '../marketing';
+import isCI from 'is-ci';
 
 // NOTE: Load the provider pool lazily to reduce startup time
 const lazyRequire         = require('import-lazy')(require);
@@ -65,6 +66,9 @@ function error (err) {
 }
 
 function shouldShowMarketingMessage (reporterPlugings) {
+    if (isCI)
+        return false;
+
     const stdoutReporterPlugin = reporterPlugings.find(plugin => plugin.outStream === process.stdout || !plugin.outStream);
 
     return stdoutReporterPlugin && NOT_PARSABLE_REPORTERS.includes(stdoutReporterPlugin.plugin.name);
