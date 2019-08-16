@@ -46,9 +46,9 @@ The following navigation and action keys are supported:
 * `'ins'`
 * `'delete'`
 
-The `t.pressKey` action triggers key press handling performed in page code.
+When an end-user normally presses a key or key combination, the browser dispatches an event that triggers handlers in page code. Most browsers also respond to common keystrokes with their integrated actions (for instance, they select text when you press `Cmd/Ctrl+A` or copy objects to the clipboard when you press `Cmd/Ctrl+C`).
 
-However, the following keys and key combinations also invoke browser processing:
+The `t.pressKey` action triggers only page handlers for most keystrokes. However, the following keys and key combinations additionally invoke browser processing:
 
 * `'ctrl+a'`
 * `'backspace'`
