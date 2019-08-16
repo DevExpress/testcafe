@@ -801,7 +801,7 @@ Prevents the browser from caching the page content.
 testcafe chrome my-tests --disable-page-caching
 ```
 
-When navigation to a cached page occurs in [role code](../test-api/authentication/user-roles.md), local and session storage content is not preserved. Use the `--disable-page-caching` flag to retain the storage items after navigation. For more information, see [Troubleshooting: Local Storage Values Set in the Role Code Are Lost](../test-api/authentication/user-roles.md#local-storage-values-set-in-the-role-code-are-lost).
+When navigation to a cached page occurs in [role code](../test-api/authentication/user-roles.md), local and session storage content is not preserved. Use the `--disable-page-caching` flag to retain the storage items after navigation. For more information, see [Troubleshooting: Local Storage Values Set in the Role Code Are Lost](../test-api/authentication/user-roles.md#actions-that-work-in-test-code-fail-within-a-role).
 
 You can also disable page caching [for an individual fixture or test](../test-api/test-code-structure.md#disable-page-caching).
 

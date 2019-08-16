@@ -16,7 +16,7 @@ A piece of logic that logs in a particular user is called a *role*. Define a rol
 * [Role Options](#role-options)
   * [options.preserveUrl](#optionspreserveurl)
 * [Troubleshooting](#troubleshooting)
-  * [Local Storage Values Set in the Role Code Are Lost](#local-storage-values-set-in-the-role-code-are-lost)
+  * [Actions That Work in Test Code Fail Within a Role](#actions-that-work-in-test-code-fail-within-a-role)
 
 ## Why Use Roles
 
@@ -180,18 +180,20 @@ test('My test', async t => {
 
 ## Troubleshooting
 
-### Local Storage Values Set in the Role Code Are Lost
+### Actions That Work in Test Code Fail Within a Role
 
-Role's initialization actions start with clear local and session storages. Role actions may add or modify items in these storages.
+This issue may be caused by page caching.
 
-When navigation occurs in the role code, the destination page is opened with empty storages. To preserve the storage content, TestCafe saves it to the server before the navigation, and then restores on the destination page. However, if the browser retrieves the destination page from cache, TestCafe is unable to restore the storages.
+Role's initialization starts with clear local and session storages. The subsequent actions can add or modify items in these storages.
 
-To ensure that local and session storages are preserved after navigation, disable page caching. Note that this slows down the test execution.
+However, navigation that occurs in the role code resets both storages. To preserve changes made by previous actions, TestCafe saves the storage content to the server before the navigation, and then restores it on the destination page. However, if the browser retrieves the destination page from cache, TestCafe is unable to restore the storages.
+
+To ensure that local and session storages are not reset after navigation, disable page caching. Note that this slows down the test execution.
 
 Use the [fixture.disablePageCaching](../test-code-structure.md#disable-page-caching) and [test.disablePageCaching](../test-code-structure.md#disable-page-caching) methods to disable caching during a particular fixture or test.
 
-To disable page caching during the entire test run, use either of the following:
+To disable page caching during the entire test run, use either of the following options:
 
 * the [--disable-page-caching](../../using-testcafe/command-line-interface.md#--disable-page-caching) command line flag
 * the `disablePageCaching` option in the [runner.run](../../using-testcafe/programming-interface/runner.md#run) method
-* the [disablePageCaching](../../using-testcafe/configuration-file.md#disablepagecaching) configuration file option
+* the [disablePageCaching](../../using-testcafe/configuration-file.md#disablepagecaching) configuration file property
