@@ -151,7 +151,7 @@ describe('Global error handlers', () => {
 
         await delay();
 
-        process.off('unhandledRejection', unhandledRejectionHandler);
+        process.removeListener('unhandledRejection', unhandledRejectionHandler);
 
         expect(unhandledRejectionRaised).eql(true);
         expect(testRunMock.errors[0].code).eql(TEST_RUN_ERRORS.unhandledPromiseRejection);
