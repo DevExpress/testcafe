@@ -1162,15 +1162,12 @@ sections to learn how to extend selectors in TypeScript.</p>
     </span><span class="nt">"compilerOptions"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
         </span><span class="nt">"jsx"</span><span class="p">:</span><span class="w"> </span><span class="s2">"react"</span><span class="p">,</span><span class="w">
         </span><span class="nt">"jsxFactory"</span><span class="p">:</span><span class="w"> </span><span class="s2">"myFactory"</span><span class="p">,</span><span class="w">
-        </span><span class="nt">"paths"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-            </span><span class="nt">"jquery"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">"node_modules/jquery/dist/jquery"</span><span class="w"> </span><span class="p">]</span><span class="w">
-        </span><span class="p">},</span><span class="w">
         </span><span class="nt">"alwaysStrict"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
     </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>See the available options in the <a href="https://www.typescriptlang.org/docs/handbook/compiler-options.html">TypeScript Compiler Options</a> topic.</p>
-<blockquote class="important"><div class="blockquote-content"><p>You cannot override the <code>module</code> and <code>target</code> options.</p>
+<blockquote class="important"><div class="blockquote-content"><p>You cannot override the <code>module</code>, <code>moduleResolution</code>, and <code>target</code> options.</p>
 </div></blockquote>
 <p>TestCafe passes the following options to the TypeScript compiler unless you override them in <code>tsconfig.json</code>:</p>
 <div class="table-wrapper"><table><thead><tr>
