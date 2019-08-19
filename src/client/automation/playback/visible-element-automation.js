@@ -1,15 +1,26 @@
 import hammerhead from '../deps/hammerhead';
-import { delay, positionUtils, domUtils, arrayUtils, serviceUtils } from '../deps/testcafe-core';
+
+import {
+    delay,
+    positionUtils,
+    domUtils,
+    arrayUtils,
+    serviceUtils,
+    eventUtils
+} from '../deps/testcafe-core';
+
 import getAutomationPoint from '../utils/get-automation-point';
 import screenPointToClient from '../utils/screen-point-to-client';
 import getDevicePoint from '../utils/get-device-point';
 import { getOffsetOptions } from '../utils/offsets';
-import { fromPoint as getElementFromPoint } from '../get-element';
+import { fromPoint as getElementFromPoint, underCursor as getElementUnderCursor } from '../get-element';
 import AUTOMATION_ERROR_TYPES from '../errors';
 import AutomationSettings from '../settings';
 import ScrollAutomation from './scroll';
 import MoveAutomation from './move';
 import { MoveOptions, ScrollOptions } from '../../../test-run/commands/options';
+import lastHoveredElementHolder from './last-hovered-element-holder';
+import { MoveBehaviour } from './move/event-sequence/event-behaviors';
 
 const extend = hammerhead.utils.extend;
 
@@ -52,11 +63,47 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
     }
 
     _scrollToElement () {
-        const scrollAutomation = new ScrollAutomation(this.element, new ScrollOptions(this.options));
+        const scrollOptions    = new ScrollOptions(this.options);
+        const scrollAutomation = new ScrollAutomation(this.element, scrollOptions);
+        let wasScrolled        = false;
 
         return scrollAutomation
             .run()
-            .then(() => delay(this.automationSettings.mouseActionStepDelay));
+            .then(scrollWasPerformed => {
+                wasScrolled = scrollWasPerformed;
+
+                return delay(this.automationSettings.mouseActionStepDelay);
+            })
+            .then(getElementUnderCursor)
+            .then(currentElement => {
+                const elementUnderCursorContainsTarget = !!currentElement && this.element.contains(currentElement);
+
+                if (!elementUnderCursorContainsTarget || !wasScrolled)
+                    return null;
+
+                const prevElement    = lastHoveredElementHolder.get();
+                const commonAncestor = domUtils.getCommonAncestor(currentElement, prevElement);
+                const clientPosition = positionUtils.getClientPosition(currentElement);
+                const devicePoint    = getDevicePoint({ x: clientPosition.x, y: clientPosition.y });
+                const options        = {
+                    clientX: clientPosition.x,
+                    clientY: clientPosition.y,
+                    screenX: devicePoint.x,
+                    screenY: devicePoint.y,
+                    ctrl:    false,
+                    alt:     false,
+                    shift:   false,
+                    meta:    false,
+                    buttons: eventUtils.BUTTONS_PARAMETER.leftButton
+                };
+
+                MoveBehaviour.leaveElement(currentElement, prevElement, commonAncestor, options);
+                MoveBehaviour.enterElement(currentElement, prevElement, commonAncestor, options);
+
+                lastHoveredElementHolder.set(currentElement);
+
+                return wasScrolled;
+            });
     }
 
     _getElementOffset () {

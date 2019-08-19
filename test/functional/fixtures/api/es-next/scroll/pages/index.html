@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Scroll</title>
+    <style>
+        .header {
+            width: 100%;
+            height: 20px;
+            position: fixed;
+            background-color: lightgreen;
+        }
+        .item {
+            width: 50px;
+            height: 50px;
+            background-color: red;
+        }
+        .spacer {
+            height: 2000px;
+        }
+    </style>
+</head>
+<body>
+<div class="header" id="header"></div>
+<div class="spacer"> </div>
+<div id="d1" class="item">d1</div>
+<div class="spacer"></div>
+<div id="d2" class="item">d2</div>
+<div class="spacer"></div>
+<div id="d3" class="item">d3</div>
+<div class="spacer"></div>
+<script>
+    var elements = Array.prototype.slice.call(document.querySelectorAll('.item'));
+
+    elements.forEach(function (element, index) {
+        element.addEventListener('mouseenter', function() {
+            console.log(element.id, 'mouseenter');
+        });
+
+        element.addEventListener('mouseover', function () {
+            console.log(element.id, 'mouseover');
+        });
+
+        element.addEventListener('mouseleave', function () {
+            console.log(element.id, 'mouseleave');
+        });
+
+        element.addEventListener('mouseout', function () {
+            console.log(element.id, 'mouseout');
+        });
+
+        element.addEventListener('click', function () {
+            console.log(element.id, 'click');
+        });
+    });
+</script>
+</body>
+</html>

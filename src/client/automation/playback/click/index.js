@@ -57,7 +57,6 @@ export default class ClickAutomation extends VisibleElementAutomation {
         eventUtils.bind(element, 'blur', onblur, true);
     }
 
-
     _raiseTouchEvents (eventArgs) {
         if (featureDetection.isTouchDevice) {
             eventSimulator.touchstart(eventArgs.element, eventArgs.options);

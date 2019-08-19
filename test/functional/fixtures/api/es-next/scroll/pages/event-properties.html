@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" class="html">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .space {
+            height: 2000px;
+        }
+        .item {
+            width: 50px;
+            height: 50px;
+            background: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="space"></div>
+    <div class="item"></div>
+    <div class="space"></div>
+    <script>
+        var item = document.querySelector('.item');
+
+        function logEventProperties (e) {
+            var eventProperties = {
+                name: e.type,
+                clientX: e.clientX,
+                clientY: e.clientY,
+                screenX: e.screenX,
+                screenY: e.screenY,
+                ctrl: e.ctrlKey,
+                alt: e.altKey,
+                shift: e.shiftKey,
+                meta: e.metaKey,
+                buttons: e.buttons,
+                relatedTarget: e.relatedTarget.className,
+                target: e.target.className
+            };
+
+            console.log(JSON.stringify(eventProperties));
+        }
+
+        item.addEventListener('mouseenter', function (e) {
+            logEventProperties(e);
+        });
+
+        item.addEventListener('mouseleave', function (e) {
+            logEventProperties(e);
+        });
+    </script>
+</body>
+</html>
