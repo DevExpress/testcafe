@@ -188,23 +188,23 @@ describe('Client scripts', () => {
             });
     });
 
-    describe('Prepare', () => {
-        it('Should correct non-unique urls', () => {
-            const scripts = [
-                { module: testModuleName },
-                { module: testModuleName }
-            ];
+    it('Should correct non-unique urls', () => {
+        const scripts = [
+            { module: testModuleName },
+            { module: testModuleName }
+        ];
 
-            return loadClientScripts(scripts, testBasePath)
-                .then(setUniqueUrls)
-                .then(result => {
-                    expect(result.length).eql(2);
-                    expect(result[0].url).to.not.eql(result[1].url);
-                });
-        });
+        return loadClientScripts(scripts, testBasePath)
+            .then(setUniqueUrls)
+            .then(result => {
+                expect(result.length).eql(2);
+                expect(result[0].url).to.not.eql(result[1].url);
+            });
+    });
 
-        describe('Should provide information about problematic scripts', () => {
-            it('Duplicated content', () => {
+    describe('Should provide information about problematic scripts', () => {
+        describe('Duplicated content', () => {
+            it('All script applied for all pages', () => {
                 const scripts = [
                     { content: '1' },
                     { content: '1' },
@@ -222,20 +222,60 @@ describe('Client scripts', () => {
                     });
             });
 
-            it('Empty content', () => {
+            it('At least script applied for all pages', () => {
                 const scripts = [
-                    { content: '' },
-                    { content: '123' },
-                    { content: '' }
+                    { content: '1' },
+                    { content: '1', page: 'https://example.com' },
+                    { content: '2' },
+                    { content: '2' },
+                    { content: '3', page: 'https://example.com' },
+                    { content: '3', page: 'https://example.com' },
+                    { content: '4', page: 'https://example.com' },
+                    { content: '4', page: 'https://another-site.com' },
+                    { content: '5', page: 'https://example.com' },
                 ];
 
                 return loadClientScripts(scripts)
                     .then(findProblematicScripts)
-                    .then(({ empty }) => {
-                        expect(empty[0].content).is.empty;
-                        expect(empty[1].content).is.empty;
+                    .then(({ duplicatedContent }) => {
+                        expect(duplicatedContent.length).eql(3);
+                        expect(duplicatedContent[0].content).eql(scripts[0].content);
+                        expect(duplicatedContent[1].content).eql(scripts[2].content);
+                        expect(duplicatedContent[2].content).eql(scripts[4].content);
                     });
             });
+
+            it('All scripts applied for the specified pages', () => {
+                const scripts = [
+                    { content: '1', page: 'https://example.com' },
+                    { content: '1', page: 'https://example.com' },
+                    { content: '2', page: 'https://example.com' },
+                    { content: '2', page: 'https://another-site.com' },
+                    { content: '3', page: 'https://example.com' },
+                ];
+
+                return loadClientScripts(scripts)
+                    .then(findProblematicScripts)
+                    .then(({ duplicatedContent }) => {
+                        expect(duplicatedContent.length).eql(1);
+                        expect(duplicatedContent[0].content).eql(scripts[0].content);
+                    });
+            });
+        });
+
+        it('Empty content', () => {
+            const scripts = [
+                { content: '' },
+                { content: '123' },
+                { content: '' }
+            ];
+
+            return loadClientScripts(scripts)
+                .then(findProblematicScripts)
+                .then(({ empty }) => {
+                    expect(empty[0].content).is.empty;
+                    expect(empty[1].content).is.empty;
+                });
         });
     });
 
