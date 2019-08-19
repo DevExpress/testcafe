@@ -1,3 +1,4 @@
+// TODO: Fix https://github.com/DevExpress/testcafe/issues/4139 to get rid of Pinkie
 import Promise from 'pinkie';
 import { identity, assign, isNil as isNullOrUndefined, flattenDeep as flatten } from 'lodash';
 import { getCallsiteForMethod } from '../../errors/get-callsite';
