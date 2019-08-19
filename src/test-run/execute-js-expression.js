@@ -37,24 +37,15 @@ function createErrorFormattingOptions (expression) {
     };
 }
 
-function getExecutionContext (testController, options = {}) {
-    const context = testController.executionContext;
-
-    // TODO: Find a way to avoid this assignment
-    context.options = options;
-
-    return context;
-}
-
 export function executeJsExpression (expression, testRun, options) {
-    const context      = getExecutionContext(testRun.controller, options);
+    const context      = testRun.controller.getExecutionContext(options);
     const errorOptions = createErrorFormattingOptions(expression);
 
     return runInContext(expression, context, errorOptions);
 }
 
 export async function executeAsyncJsExpression (expression, testRun, callsite) {
-    const context      = getExecutionContext(testRun.controller);
+    const context      = testRun.controller.getExecutionContext();
     const errorOptions = createErrorFormattingOptions(expression);
 
     try {

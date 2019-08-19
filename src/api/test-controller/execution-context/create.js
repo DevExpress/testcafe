@@ -1,7 +1,8 @@
 import { createContext } from 'vm';
 import Module from 'module';
 import { dirname } from 'path';
-import exportableLib from '../exportable-lib';
+import exportableLib from '../../exportable-lib';
+import { get as getExecutionContextOptions } from './options';
 
 function createRequire (filename) {
     if (Module.createRequireFromPath)
@@ -17,7 +18,7 @@ function createRequire (filename) {
 
 function createSelectorDefinition (testRun) {
     return (fn, options = {}) => {
-        const { skipVisibilityCheck, collectionMode } = testRun.controller.executionContext.options;
+        const { skipVisibilityCheck, collectionMode } = getExecutionContextOptions(testRun.controller.executionContext);
 
         if (skipVisibilityCheck)
             options.visibilityCheck = false;
