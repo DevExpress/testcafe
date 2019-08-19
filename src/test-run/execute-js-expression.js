@@ -40,6 +40,7 @@ function createErrorFormattingOptions (expression) {
 function getExecutionContext (testController, options = {}) {
     const context = testController.executionContext;
 
+    // TODO: Find a way to avoid this assignment
     context.options = options;
 
     return context;
