@@ -11,7 +11,7 @@ export default {
     isAnimated: tty.isatty(1) && !isCI,
 
     showSpinner () {
-        // NOTE: we can use the spinner only if stderr is a TTY and we are not in CI environment (e.g. TravisCI),
+        // NOTE: we can use the spinner only if stdout is a TTY and we are not in CI environment (e.g. TravisCI),
         // otherwise we can't repaint animation frames. Thanks https://github.com/sindresorhus/ora for insight.
         if (this.isAnimated) {
             const spinnerFrame = elegantSpinner();
@@ -19,7 +19,7 @@ export default {
             this.animation = setInterval(() => {
                 const frame = chalk.cyan(spinnerFrame());
 
-                logUpdate.stderr(frame);
+                logUpdate(frame);
             }, 50);
         }
     },
@@ -27,24 +27,22 @@ export default {
     hideSpinner (isExit) {
         if (this.animation) {
             clearInterval(this.animation);
-            logUpdate.stderr.clear();
+            logUpdate.clear();
 
             if (isExit)
-                logUpdate.stderr.done();
+                logUpdate.done();
 
             this.animation = null;
         }
     },
 
     write (text) {
-        const isAnimating = !!this.animation;
-
-        if (isAnimating)
+        if (this.animation)
             this.hideSpinner();
 
-        console.error(text);
+        console.log(text);
 
-        if (isAnimating)
+        if (this.animation)
             this.showSpinner();
     }
 };
