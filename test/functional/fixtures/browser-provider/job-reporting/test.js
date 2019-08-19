@@ -1,5 +1,4 @@
 const path                  = require('path');
-const Promise               = require('pinkie');
 const expect                = require('chai').expect;
 const config                = require('../../../config');
 const chromeBrowserProvider = require('../../../../../lib/browser/provider/built-in/dedicated/chrome');

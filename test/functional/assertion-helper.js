@@ -2,7 +2,6 @@ const expect          = require('chai').expect;
 const globby          = require('globby');
 const path            = require('path');
 const fs              = require('fs');
-const Promise         = require('pinkie');
 const { isFunction }  = require('lodash');
 const del             = require('del');
 const config          = require('./config.js');

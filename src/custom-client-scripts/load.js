@@ -1,4 +1,3 @@
-import Promise from 'pinkie';
 import ClientScript from './client-script';
 
 export default async function (scriptInits, basePath) {

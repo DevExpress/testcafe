@@ -1,4 +1,5 @@
 // TODO: once we'll have client commons load it from there instead of node modules (currently it's leads to two copies of this packages on client)
+// TODO: Get rid of Pinkie after dropping IE11
 import Promise from 'pinkie';
 import COMMAND from '../../browser/connection/command';
 import STATUS from '../../browser/connection/status';

@@ -1,4 +1,3 @@
-import Promise from 'pinkie';
 import { flattenDeep, find, chunk, uniq } from 'lodash';
 import stripBom from 'strip-bom';
 import { readFile } from '../utils/promisified-functions';

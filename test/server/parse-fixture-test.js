@@ -8,7 +8,6 @@ const getTestListFromCode             = require('../../lib/embedding-utils').get
 const getTypeScriptTestListFromCode   = require('../../lib/embedding-utils').getTypeScriptTestListFromCode;
 const getCoffeeScriptTestList         = require('../../lib/embedding-utils').getCoffeeScriptTestList;
 const getCoffeeScriptTestListFromCode = require('../../lib/embedding-utils').getCoffeeScriptTestListFromCode;
-const Promise                         = require('pinkie');
 const parserBase                      = require('../../lib/compiler/test-file/test-file-parser-base');
 
 const Test    = parserBase.Test;

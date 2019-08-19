@@ -1,7 +1,6 @@
 import { pull, remove, chain } from 'lodash';
 import { readSync as read } from 'read-file-relative';
 import promisifyEvent from 'promisify-event';
-import Promise from 'pinkie';
 import Mustache from 'mustache';
 import AsyncEventEmitter from '../utils/async-event-emitter';
 import debugLogger from '../notifications/debug-logger';

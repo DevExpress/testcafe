@@ -1,4 +1,3 @@
-import Promise from 'pinkie';
 import { partition } from 'lodash';
 import OPTION_NAMES from '../configuration/option-names';
 import { CompositeError } from '../errors/runtime';

@@ -1,4 +1,3 @@
-import Promise from 'pinkie';
 import { Socket } from 'net';
 import promisifyEvent from 'promisify-event';
 import EventEmitter from 'events';

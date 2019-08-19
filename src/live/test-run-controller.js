@@ -1,5 +1,4 @@
 import EventEmitter from 'events';
-import Promise from 'pinkie';
 import noop from 'lodash';
 import { TestRunCtorFactory } from './test-run';
 import TEST_RUN_STATE from './test-run-state';

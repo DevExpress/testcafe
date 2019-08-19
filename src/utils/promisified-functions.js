@@ -1,9 +1,8 @@
 import childProcess from 'child_process';
 import fs from 'graceful-fs';
-import Promise from 'pinkie';
 import { PNG } from 'pngjs';
 import promisifyEvent from 'promisify-event';
-import promisify from './promisify';
+import { promisify } from 'util';
 
 export const readDir    = promisify(fs.readdir);
 export const stat       = promisify(fs.stat);

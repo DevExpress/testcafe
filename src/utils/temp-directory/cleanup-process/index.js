@@ -1,7 +1,6 @@
 import { spawn } from 'child_process';
 import debug from 'debug';
 import promisifyEvent from 'promisify-event';
-import Promise from 'pinkie';
 import { sendMessageToChildProcess } from '../../promisified-functions';
 import COMMANDS from './commands';
 

@@ -1,7 +1,6 @@
 import debug from 'debug';
 import { spawn } from 'child_process';
 import { flatten } from 'lodash';
-import Promise from 'pinkie';
 import AsyncEmitter from '../utils/async-event-emitter';
 import delay from '../utils/delay';
 

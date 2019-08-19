@@ -1,4 +1,3 @@
-const Promise        = require('pinkie');
 const path           = require('path');
 const licenseChecker = require('license-checker').init;
 

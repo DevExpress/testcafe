@@ -1,6 +1,5 @@
 const expect               = require('chai').expect;
 const noop                 = require('lodash').noop;
-const Promise              = require('pinkie');
 const path                 = require('path');
 const createTestCafe       = require('../../lib/index');
 const FileWatcher          = require('../../lib/live/file-watcher');

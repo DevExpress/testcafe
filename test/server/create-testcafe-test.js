@@ -3,7 +3,6 @@ const url                   = require('url');
 const net                   = require('net');
 const createTestCafe        = require('../../lib/');
 const exportableLib         = require('../../lib/api/exportable-lib');
-const Promise               = require('pinkie');
 const selfSignedCertificate = require('openssl-self-signed-certificate');
 
 describe('TestCafe factory function', function () {

@@ -1,4 +1,3 @@
-import Promise from 'pinkie';
 import OS from 'os-family';
 import browserTools from 'testcafe-browser-tools';
 import delay from '../../../utils/delay';

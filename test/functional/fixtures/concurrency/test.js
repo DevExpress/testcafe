@@ -1,5 +1,4 @@
 const path    = require('path');
-const Promise = require('pinkie');
 const expect  = require('chai').expect;
 const isCI    = require('is-ci');
 const config  = require('../../config');

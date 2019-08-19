@@ -1,4 +1,3 @@
-import Promise from 'pinkie';
 import browserTools from 'testcafe-browser-tools';
 import OS from 'os-family';
 import BrowserConnection from '../connection';

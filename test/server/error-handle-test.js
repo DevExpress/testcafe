@@ -1,7 +1,5 @@
 const EventEmitter        = require('events');
-const Promise             = require('pinkie');
 const expect              = require('chai').expect;
-const createTestCafe      = require('../../lib/');
 const { TEST_RUN_ERRORS } = require('../../lib/errors/types');
 const handleErrors        = require('../../lib/utils/handle-errors');
 const TestController      = require('../../lib/api/test-controller');
@@ -132,36 +130,31 @@ describe('Global error handlers', () => {
         expect(actualErrors).eql(expectedErrors);
     });
 
-    it('Should add error to testRun on UnhandledPromiseRejection', () => {
-        const testRunMock = new TestRunMock(1);
-
-        let testCafe                 = null;
+    it('Should add error to testRun on UnhandledPromiseRejection', async () => {
+        const testRunMock            = new TestRunMock(1);
         let unhandledRejectionRaised = false;
 
-        return createTestCafe('127.0.0.1', 1335, 1336)
-            .then(tc => {
-                testCafe = tc;
-            })
-            .then(() => {
-                process.on('unhandledRejection', function () {
-                    unhandledRejectionRaised = true;
-                });
+        const unhandledRejectionHandler = function () {
+            unhandledRejectionRaised = true;
+        };
 
-                handleErrors.addRunningTest(testRunMock);
-                handleErrors.startHandlingTestErrors();
+        process.on('unhandledRejection', unhandledRejectionHandler);
 
-                /* eslint-disable no-new */
-                new Promise((resolve, reject) => {
-                    reject(new Error());
-                });
-                /* eslint-enable no-new */
+        handleErrors.addRunningTest(testRunMock);
+        handleErrors.startHandlingTestErrors();
 
-                return testCafe.close();
-            })
-            .then(() => {
-                expect(unhandledRejectionRaised).eql(true);
-                expect(testRunMock.errors[0].code).eql(TEST_RUN_ERRORS.unhandledPromiseRejection);
-            });
+        /* eslint-disable no-new */
+        new Promise((resolve, reject) => {
+            reject(new Error());
+        });
+        /* eslint-enable no-new */
+
+        await delay();
+
+        process.removeListener('unhandledRejection', unhandledRejectionHandler);
+
+        expect(unhandledRejectionRaised).eql(true);
+        expect(testRunMock.errors[0].code).eql(TEST_RUN_ERRORS.unhandledPromiseRejection);
     });
 
     it('Should add error to multiple tests of same task', async () => {

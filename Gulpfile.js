@@ -22,7 +22,6 @@ const open                  = require('open');
 const connect              = require('connect');
 const spawn                = require('cross-spawn');
 const serveStatic          = require('serve-static');
-const Promise              = require('pinkie');
 const markdownlint         = require('markdownlint');
 const minimist             = require('minimist');
 const prompt               = require('gulp-prompt');

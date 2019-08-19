@@ -1,5 +1,4 @@
 import { EventEmitter } from 'events';
-import Promise from 'pinkie';
 import Mustache from 'mustache';
 import { pull as remove } from 'lodash';
 import { parse as parseUserAgent } from 'useragent';

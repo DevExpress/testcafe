@@ -2,7 +2,6 @@ const { RequestFilterRule }                       = require('testcafe-hammerhead
 const testRunTracker                              = require('../../lib/api/test-run-tracker');
 const exportableLib                               = require('../../lib/api/exportable-lib');
 const { RequestMock, RequestLogger, RequestHook } = exportableLib;
-const Promise                                     = require('pinkie');
 const nanoid                                      = require('nanoid');
 const { expect }                                  = require('chai');
 

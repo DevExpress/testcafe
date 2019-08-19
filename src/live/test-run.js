@@ -1,4 +1,3 @@
-import Promise from 'pinkie';
 import TestRun from '../test-run';
 import TEST_RUN_STATE from './test-run-state';
 import COMMAND_TYPE from '../test-run/commands/type';

@@ -1,10 +1,7 @@
-import fs from 'fs';
-import promisify from '../../utils/promisify';
+import { readFile } from '../../utils/promisified-functions';
 import { format } from 'util';
 import { GeneralError } from '../../errors/runtime';
 import { RUNTIME_ERRORS } from '../../errors/types';
-
-const readFile = promisify(fs.readFile);
 
 const METHODS_SPECIFYING_NAME = ['only', 'skip'];
 const COMPUTED_NAME_TEXT_TMP  = '<computed name>(line: %s)';
