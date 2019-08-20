@@ -40,14 +40,13 @@ import {
 
 import { WaitCommand, DebugCommand } from '../../test-run/commands/observation';
 import assertRequestHookType from '../request-hooks/assert-type';
-import createExecutionContext from './execution-context/create';
-import { set as setExecutionContextOptions } from './execution-context/options';
+import { createExecutionContext as createContext } from './execution-context';
 
 const originalThen = Promise.resolve().then;
 
 export default class TestController {
     constructor (testRun) {
-        this.executionContext = null;
+        this._executionContext = null;
 
         this.testRun               = testRun;
         this.executionChain        = Promise.resolve();
@@ -114,14 +113,11 @@ export default class TestController {
         });
     }
 
-    getExecutionContext (options = {}) {
-        if (!this.executionContext)
-            this.executionContext = createExecutionContext(this.testRun);
+    getExecutionContext () {
+        if (!this._executionContext)
+            this._executionContext = createContext(this.testRun);
 
-        // TODO: Find a way to avoid this assignment
-        setExecutionContextOptions(this.executionContext, options);
-
-        return this.executionContext;
+        return this._executionContext;
     }
 
     // API implementation

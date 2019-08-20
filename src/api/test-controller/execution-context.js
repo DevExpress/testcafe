@@ -1,8 +1,9 @@
 import { createContext } from 'vm';
 import Module from 'module';
 import { dirname } from 'path';
-import exportableLib from '../../exportable-lib';
-import { get as getExecutionContextOptions } from './options';
+import exportableLib from '../exportable-lib';
+
+const OPTIONS_KEY = Symbol('options');
 
 function createRequire (filename) {
     if (Module.createRequireFromPath)
@@ -18,7 +19,7 @@ function createRequire (filename) {
 
 function createSelectorDefinition (testRun) {
     return (fn, options = {}) => {
-        const { skipVisibilityCheck, collectionMode } = getExecutionContextOptions(testRun.controller.executionContext);
+        const { skipVisibilityCheck, collectionMode } = testRun.controller.getExecutionContext()[OPTIONS_KEY];
 
         if (skipVisibilityCheck)
             options.visibilityCheck = false;
@@ -42,7 +43,11 @@ function createClientFunctionDefinition (testRun) {
     };
 }
 
-export default function (testRun) {
+export function setContextOptions (context, options) {
+    context[OPTIONS_KEY] = options;
+}
+
+export function createExecutionContext (testRun) {
     const filename = testRun.test.testFile.filename;
 
     const replacers = {

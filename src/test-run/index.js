@@ -282,7 +282,7 @@ export default class TestRun extends AsyncEventEmitter {
 
     // Test function execution
     async _executeTestFn (phase, fn) {
-        this.phase     = phase;
+        this.phase = phase;
 
         try {
             await fn(this);

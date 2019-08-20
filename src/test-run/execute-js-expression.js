@@ -1,5 +1,6 @@
 import { runInContext } from 'vm';
 import { ExecuteAsyncExpressionError } from '../errors/test-run';
+import { setContextOptions } from '../api/test-controller/execution-context';
 
 const ERROR_LINE_COLUMN_REGEXP = /:(\d+):(\d+)/;
 const ERROR_LINE_OFFSET        = -1;
@@ -37,15 +38,24 @@ function createErrorFormattingOptions (expression) {
     };
 }
 
+function getExecutionContext (testController, options = {}) {
+    const context = testController.getExecutionContext();
+
+    // TODO: Find a way to avoid this assignment
+    setContextOptions(context, options);
+
+    return context;
+}
+
 export function executeJsExpression (expression, testRun, options) {
-    const context      = testRun.controller.getExecutionContext(options);
+    const context      = getExecutionContext(testRun.controller, options);
     const errorOptions = createErrorFormattingOptions(expression);
 
     return runInContext(expression, context, errorOptions);
 }
 
 export async function executeAsyncJsExpression (expression, testRun, callsite) {
-    const context      = testRun.controller.getExecutionContext();
+    const context      = getExecutionContext(testRun.controller);
     const errorOptions = createErrorFormattingOptions(expression);
 
     try {
