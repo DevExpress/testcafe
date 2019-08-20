@@ -44,6 +44,35 @@ describe('[Raw API] fixture.beforeEach/fixture.afterEach hooks', () => {
                 expect(errs[1]).to.contains('Error: [beforeEach][afterEach]');
             });
     });
+
+    it('Variables defined in beforeEach hook or in test should not be available in afterEach hook', () => {
+        return runTests('./testcafe-fixtures/context-test.testcafe', 'test1', { shouldFail: true, only: 'chrome' })
+            .catch(errs => {
+                expect(errs.length).to.equal(1);
+                expect(errs[0]).to.contains('Error in fixture.afterEach hook');
+                expect(errs[0]).to.contains('Cannot evaluate the "Selector(el).exists" expression in the "actual" parameter because of the following error:  el is not defined');
+            });
+    });
+
+    it('Variables defined in beforeEach hook should not be available in afterEach hook', () => {
+        return runTests('./testcafe-fixtures/context-test.testcafe', 'test2', { shouldFail: true, only: 'chrome' })
+            .catch(errs => {
+                expect(errs.length).to.equal(1);
+                expect(errs[0]).to.contains('Error in fixture.afterEach hook');
+                expect(errs[0]).to.contains('Cannot evaluate the "Selector(el).exists" expression in the "actual" parameter because of the following error:  el is not defined');
+            });
+    });
+
+    it('Variables defined in beforeEach hook should not be available in test', () => {
+        return runTests('./testcafe-fixtures/context-test.testcafe', 'test3', { shouldFail: true, only: 'chrome' })
+            .catch(errs => {
+                expect(errs.length).to.equal(2);
+                expect(errs[0]).to.not.contains('Error in ');
+                expect(errs[0]).to.contains('Cannot evaluate the "Selector(el).exists" expression in the "actual" parameter because of the following error:  el is not defined');
+                expect(errs[1]).to.contains('Error in fixture.afterEach hook');
+                expect(errs[1]).to.contains('Cannot evaluate the "Selector(el).exists" expression in the "actual" parameter because of the following error:  el is not defined');
+            });
+    });
 });
 
 describe('[Raw API] test.before/test.after hooks', () => {

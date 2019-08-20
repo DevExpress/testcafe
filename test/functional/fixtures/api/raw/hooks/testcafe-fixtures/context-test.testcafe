@@ -1,0 +1,82 @@
+{
+    "fixtures": [
+        {
+            "name": "i2627",
+            "pageUrl": "http://localhost:3000/fixtures/api/raw/hooks/pages/index.html",
+            "tests": [
+                {
+                    "name": "test1",
+                    "commands": [
+                        {
+                            "type": "execute-expression",
+                            "studio": {
+                                "expressionCommandType": "define-element-selector",
+                                "selectorType": "CSS Selector",
+                                "selectors": []
+                            },
+                            "callsite": "0",
+                            "resultVariableName": "el",
+                            "expression": "Selector('#afterEach')"
+                        }
+                    ]
+                },
+                {
+                    "name": "test2",
+                    "commands": []
+                },
+                {
+                    "name": "test3",
+                    "commands": [
+                        {
+                            "type": "assertion",
+                            "studio": {
+                                "assertionMode": "checkElement",
+                                "selectorType": "Element Selector",
+                                "selectors": [],
+                                "selectorPostfix": ".exists"
+                            },
+                            "callsite": "0",
+                            "assertionType": "ok",
+                            "actual": {
+                                "type": "js-expr",
+                                "value": "Selector(el).exists"
+                            },
+                            "options": {}
+                        }
+                    ]
+                }
+            ],
+            "afterEachCommands": [
+                {
+                    "type": "assertion",
+                    "studio": {
+                        "assertionMode": "checkElement",
+                        "selectorType": "Element Selector",
+                        "selectors": [],
+                        "selectorPostfix": ".exists"
+                    },
+                    "callsite": "afterEachHook_0",
+                    "assertionType": "ok",
+                    "actual": {
+                        "type": "js-expr",
+                        "value": "Selector(el).exists"
+                    },
+                    "options": {}
+                }
+            ],
+            "beforeEachCommands": [
+                {
+                    "callsite": "beforeEachHook_0",
+                    "expression": "Selector('#afterEach')",
+                    "resultVariableName": "el",
+                    "studio": {
+                        "expressionCommandType": "define-element-selector",
+                        "selectorType": "CSS Selector",
+                        "selectors": []
+                    },
+                    "type": "execute-expression"
+                }
+            ]
+        }
+    ]
+}

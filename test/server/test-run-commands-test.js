@@ -3,6 +3,7 @@ const TYPE                    = require('../../lib/test-run/commands/type');
 const createCommandFromObject = require('../../lib/test-run/commands/from-object');
 const SelectorBuilder         = require('../../lib/client-functions/selectors/selector-builder');
 const assertThrow             = require('./helpers/assert-error').assertThrow;
+const TestController          = require('../../lib/api/test-controller');
 
 const testRunMock = {
     test: {
@@ -11,6 +12,8 @@ const testRunMock = {
         }
     }
 };
+
+testRunMock.controller = new TestController(testRunMock);
 
 function createCommand (obj) {
     try {
