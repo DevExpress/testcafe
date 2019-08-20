@@ -182,7 +182,16 @@ test('My test', async t => {
 
 ### Test Actions Fail After Authentication
 
-This issue can be caused by the browser's page caching. Try disabling it and check if the issue persists.
+This issue can be caused by the browser's page caching.
+
+In order to guarantee seamless test execution, browsers that run TestCafe tests should always fetch the tested page from the TestCafe proxy server. This ensures that automation scripts on the page are in sync with the server side.
+
+However, if the browser uses a cached copy of the page, automation mechanisms may be interrupted. Among other issues, this could reset authentication data in the cookies, local and session storages during navigation.
+
+If tests fail unexpectedly after authentication, try the following steps:
+
+* Enable the [preserveUrl](#optionspreserveurl) option to avoid automatic navigation.
+* If `preserveUrl` does not fix the issue, disable page caching. Note that this slows down test execution.
 
 Use the [fixture.disablePageCaching](../test-code-structure.md#disable-page-caching) and [test.disablePageCaching](../test-code-structure.md#disable-page-caching) methods to disable caching during a particular fixture or test.
 
@@ -191,13 +200,3 @@ To disable page caching during the entire test run, use either of the following 
 * the [--disable-page-caching](../../using-testcafe/command-line-interface.md#--disable-page-caching) command line flag
 * the `disablePageCaching` option in the [runner.run](../../using-testcafe/programming-interface/runner.md#run) method
 * the [disablePageCaching](../../using-testcafe/configuration-file.md#disablepagecaching) configuration file property
-
-#### Why This Issue Occurs
-
-In order to keep tests isolated, TestCafe prevents the tested page from accessing actual browser's local and session storages or cookies. Instead, it redirects all the respective API calls to an internal object (a *sandbox*) injected into the page code. This sandbox tracks any modifications to the cookies and storages, and keeps their up-to-date versions.
-
-When the browser is about to navigate to a different page or reload the current page, TestCafe uploads cookies, local and session storages from the sandbox to the server before the navigation happens. Then, TestCafe injects a new sandbox with up-to-date content into the destination page and serves it for the browser.
-
-This works as expected provided that the browser displays the new page as it is served by TestCafe. However, if the browser uses a cached copy of the page, the test proceeds with outdated storages and cookies. If the subsequent actions rely on their new values, these actions would fail.
-
-In real-world scenarios, such issues mostly occur after roles are applied. In this instance, we recommend that you try disabling page caching as [described above](#test-actions-fail-after-authentication).
