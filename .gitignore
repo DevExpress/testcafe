@@ -8,4 +8,5 @@
 /___test-screenshots___
 yarn.lock
 package-lock.json
+Gemfile.lock
 .npmrc
