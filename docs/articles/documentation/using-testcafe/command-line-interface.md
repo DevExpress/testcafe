@@ -59,6 +59,7 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [--qr-code](#--qr-code)
   * [--sf, --stop-on-first-fail](#--sf---stop-on-first-fail)
   * [--ts-config-path \<path\>](#--ts-config-path-path)
+  * [--disable-page-caching](#--disable-page-caching)
   * [--color](#--color)
   * [--no-color](#--no-color)
 
@@ -791,6 +792,20 @@ testcafe chrome my-tests --ts-config-path /Users/s.johnson/testcafe/tsconfig.jso
 You can specify an absolute or relative path. Relative paths resolve from the current directory (the directory from which you run TestCafe).
 
 *Related configuration file property*: [tsConfigPath](configuration-file.md#tsconfigpath).
+
+### --disable-page-caching
+
+Prevents the browser from caching the page content.
+
+```sh
+testcafe chrome my-tests --disable-page-caching
+```
+
+When navigation to a cached page occurs in [role code](../test-api/authentication/user-roles.md), local and session storage content is not preserved. Use the `--disable-page-caching` flag to retain the storage items after navigation. For more information, see [Troubleshooting: Test Actions Fail After Authentication](../test-api/authentication/user-roles.md#test-actions-fail-after-authentication).
+
+You can also disable page caching [for an individual fixture or test](../test-api/test-code-structure.md#disable-page-caching).
+
+*Related configuration file property*: [disablePageCaching](configuration-file.md#disablepagecaching).
 
 ### --color
 

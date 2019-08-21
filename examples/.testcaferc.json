@@ -18,7 +18,7 @@
         "r": 20,
         "aspect": "4:3"
     },
-    "quarantineMode": true,
+    "quarantineMode": false,
     "debugMode": true,
     "debugOnFail": true,
     "stopOnFirstFail": true,
@@ -63,6 +63,7 @@
         "rejectUnauthorized": true
     },
     "tsConfigPath": "/Users/s.johnson/testcafe/tsconfig.json",
-    "developmentMode": true,
+    "disablePageCaching": false,
+    "developmentMode": false,
     "qrCode": true
 }

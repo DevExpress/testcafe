@@ -10,6 +10,14 @@ to isolate authentication test actions and apply them easily whenever you need t
 
 A piece of logic that logs in a particular user is called a *role*. Define a role for each user account participating in your test.
 
+* [Why Use Roles](#why-roles)
+* [Create and Apply Roles](#create-and-apply-roles)
+* [Anonymous Role](#anonymous-role)
+* [Role Options](#role-options)
+  * [options.preserveUrl](#optionspreserveurl)
+* [Troubleshooting](#troubleshooting)
+  * [Test Actions Fail After Authentication](#test-actions-fail-after-authentication)
+
 ## Why Use Roles
 
 Roles are more than just another way to [extract reusable test logic](../../recipes/extract-reusable-test-code/README.md). They were specially designed for login operations and provide the following dedicated features:
@@ -23,7 +31,7 @@ Roles are more than just another way to [extract reusable test logic](../../reci
 
 > Roles work with authentication data in cookies and browser storages. If your authentication system stores data elsewhere, you may not be able to use roles.
 
-## Create and Use Roles
+## Create and Apply Roles
 
 Use the `Role` constructor to create and initialize a role.
 
@@ -134,7 +142,7 @@ test('Anonymous users can see newly created comments', async t => {
 
 ## Role Options
 
-You can pass the following options to the [Role constructor](#create-and-use-roles).
+You can pass the following options to the [Role constructor](#create-and-apply-roles).
 
 ### options.preserveUrl
 
@@ -169,3 +177,26 @@ test('My test', async t => {
 ```
 
 **Default value**: `false`
+
+## Troubleshooting
+
+### Test Actions Fail After Authentication
+
+This issue can be caused by the browser's page caching.
+
+In order to guarantee seamless test execution, browsers that run TestCafe tests should always fetch the tested page from the TestCafe proxy server. This ensures that automation scripts on the page are in sync with the server side.
+
+However, if the browser uses a cached copy of the page, automation mechanisms may be interrupted. Among other issues, this could reset authentication data in the cookies, local and session storages during navigation.
+
+If tests fail unexpectedly after authentication, try the following steps:
+
+* Enable the [preserveUrl](#optionspreserveurl) option to avoid automatic navigation.
+* If `preserveUrl` does not fix the issue, disable page caching. Note that this slows down test execution.
+
+Use the [fixture.disablePageCaching](../test-code-structure.md#disable-page-caching) and [test.disablePageCaching](../test-code-structure.md#disable-page-caching) methods to disable caching during a particular fixture or test.
+
+To disable page caching during the entire test run, use either of the following options:
+
+* the [--disable-page-caching](../../using-testcafe/command-line-interface.md#--disable-page-caching) command line flag
+* the `disablePageCaching` option in the [runner.run](../../using-testcafe/programming-interface/runner.md#run) method
+* the [disablePageCaching](../../using-testcafe/configuration-file.md#disablepagecaching) configuration file property
