@@ -13,7 +13,7 @@ before_install:
 
 cache: yarn
 
-install: gem install jekyll htmlentities sanitize redcarpet jekyll-sitemap jekyll-redirect-from
+install: bundle install
 
 branches:
   except:
