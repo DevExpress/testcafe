@@ -46,6 +46,8 @@ The following navigation and action keys are supported:
 * `'ins'`
 * `'delete'`
 
+## Browser Processing Emulation
+
 When an end-user normally presses a key or key combination, the browser dispatches an event that triggers handlers in page code. Most browsers also respond to common keystrokes with their integrated actions (for instance, they select text when you press `Cmd/Ctrl+A` or copy objects to the clipboard when you press `Cmd/Ctrl+C`).
 
 The `t.pressKey` action triggers only page handlers for most keystrokes.
@@ -76,7 +78,7 @@ Shortcut        | Elements
 
 > The `'backspace'`, `'delete'`, `'left'` and `'right'` key presses in `contentEditable` elements are processed only when text is selected.
 
-## Text Field-Based Inputs
+### Text Field-Based Inputs
 
 TestCafe supports keystroke selection and navigation in the following input types:
 
