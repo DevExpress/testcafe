@@ -1,10 +1,7 @@
-import Page from './page-model';
+import page from './page-model';
 
 fixture `A set of examples that illustrate how to use TestCafe API`
     .page `https://devexpress.github.io/testcafe/example/`;
-
-// Page model
-const page = new Page();
 
 // Tests
 test('Text typing basics', async t => {

@@ -115,7 +115,7 @@ can contain methods that perform common operations used in many tests, like auth
 ```js
 import { Selector } from 'testcafe';
 
-export default class Page {
+class Page {
     constructor () {
         this.loginInput    = Selector('#login');
         this.passwordInput = Selector('#password');
@@ -128,6 +128,8 @@ export default class Page {
             .click(this.signInButton);
     }
 }
+
+export default new Page();
 ```
 
 In this instance, you need to access the test controller from the page model's `login` method.
@@ -138,7 +140,7 @@ Instead, you can simply import `t` to the page model file.
 ```js
 import { Selector, t } from 'testcafe';
 
-export default class Page {
+class Page {
     constructor () {
         this.loginInput    = Selector('#login');
         this.passwordInput = Selector('#password');
@@ -151,6 +153,8 @@ export default class Page {
             .click(this.signInButton);
     }
 }
+
+export default new Page();
 ```
 
 TestCafe will implicitly resolve test context and provide the right test controller.

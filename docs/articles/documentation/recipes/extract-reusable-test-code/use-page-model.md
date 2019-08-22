@@ -70,13 +70,15 @@ while tests remain focused on the behavior.
 
 ### Step 1 - Declare a Page Model Class
 
-Begin with a new `.js` file and declare the `Page` class there.
+Begin with a new `.js` file, declare the `Page` class there, and export its instance.
 
 ```js
-export default class Page {
+class Page {
     constructor () {
     }
 }
+
+export default new Page();
 ```
 
 This class will contain the Page Model, so name the file `page-model.js`.
@@ -89,22 +91,22 @@ introduce the `nameInput` property and assign a [selector](../test-api/selecting
 ```js
 import { Selector } from 'testcafe';
 
-export default class Page {
+class Page {
     constructor () {
         this.nameInput = Selector('#developer-name');
     }
 }
+
+export default new Page();
 ```
 
 ### Step 3 - Write a Test That Uses the Page Model
 
-In the test file, import `page-model.js` and create an instance of the `Page` class.
+In the test file, import the page model instance from `page-model.js`.
 After that, you can use the `page.nameInput` property to identify the `Developer Name` input element.
 
 ```js
-import Page from './page-model';
-
-const page = new Page();
+import page from './page-model';
 
 fixture `My fixture`
     .page `https://devexpress.github.io/testcafe/example/`;
@@ -137,11 +139,13 @@ class Feature {
     }
 }
 
-export default class Page {
+class Page {
     constructor () {
         this.nameInput = Selector('#developer-name');
     }
 }
+
+export default new Page();
 ```
 
 ### Step 5 - Add a List of Check Boxes to the Page Model
@@ -160,7 +164,7 @@ class Feature {
     }
 }
 
-export default class Page {
+class Page {
     constructor () {
         this.nameInput = Selector('#developer-name');
         this.featureList = [
@@ -170,6 +174,8 @@ export default class Page {
         ];
     }
 }
+
+export default new Page();
 ```
 
 Organizing check boxes in an array makes the page model semantically correct and simplifies iterating through the check boxes.
@@ -179,12 +185,10 @@ Organizing check boxes in an array makes the page model semantically correct and
 The second test now boils down to a single loop.
 
 ```js
-import Page from './page-model';
+import page from './page-model';
 
 fixture `My fixture`
     .page `https://devexpress.github.io/testcafe/example/`;
-
-const page = new Page();
 
 test('Text typing basics', async t => {
     await t
@@ -243,7 +247,7 @@ class Feature {
     }
 }
 
-export default class Page {
+class Page {
     constructor () {
         this.nameInput = Selector('#developer-name');
 
@@ -262,6 +266,8 @@ export default class Page {
             .click(this.submitButton);
     }
 }
+
+export default new Page();
 ```
 
 ### Step 8 - Write a Test That Calls Actions From the Page Model
@@ -307,7 +313,7 @@ class OperatingSystem {
     }
 }
 
-export default class Page {
+class Page {
     constructor () {
         this.nameInput             = Selector('#developer-name');
         this.triedTestCafeCheckbox = Selector('#tried-test-cafe');
@@ -346,4 +352,6 @@ export default class Page {
             .click(this.submitButton);
     }
 }
+
+export default new Page();
 ```
