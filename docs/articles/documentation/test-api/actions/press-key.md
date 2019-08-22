@@ -48,36 +48,47 @@ The following navigation and action keys are supported:
 
 When an end-user normally presses a key or key combination, the browser dispatches an event that triggers handlers in page code. Most browsers also respond to common keystrokes with their integrated actions (for instance, they select text when you press `Cmd/Ctrl+A` or copy objects to the clipboard when you press `Cmd/Ctrl+C`).
 
-The `t.pressKey` action triggers only page handlers for most keystrokes. However, the following keys and key combinations additionally invoke browser processing:
+The `t.pressKey` action triggers only page handlers for most keystrokes.
 
-* `'ctrl+a'`
-* `'backspace'`
-* `'delete'`
-* `'left'`
-* `'right'`
-* `'up'`
-* `'down'`
-* `'home'`
-* `'end'`
-* `'enter'`
-* `'tab'`
-* `'shift+tab'`
-* `'shift+left'`
-* `'shift+right'`
-* `'shift+up'`
-* `'shift+down'`
-* `'shift+home'`
-* `'shift+end'`
+For the following keys and key combinations, TestCafe additionally emulates browser processing:
 
-For elements with the `contentEditable` attribute, the following key presses are supported:
-
-* `'ctrl+a'`
-* `'backspace'`
-* `'delete'`
-* `'left'`
-* `'right'`
+Shortcut        | Elements
+--------------- | -----------
+`'ctrl+a'`      | [text field-based inputs](#text-field-based-inputs), `<textarea>`, `contentEditable`
+`'backspace'`   | [text field-based inputs](#text-field-based-inputs), `<textarea>`, `contentEditable`
+`'delete'`      | [text field-based inputs](#text-field-based-inputs), `<textarea>`, `contentEditable`
+`'left'`        | [text field-based inputs](#text-field-based-inputs), radio button inputs, `<textarea>`, `<select>`, `contentEditable`
+`'right'`       | [text field-based inputs](#text-field-based-inputs), radio button inputs, `<textarea>`, `<select>`, `contentEditable`
+`'up'`          | [text field-based inputs](#text-field-based-inputs), radio button inputs, `<textarea>`, `<select>`
+`'down'`        | [text field-based inputs](#text-field-based-inputs), radio button inputs, `<textarea>`, `<select>`
+`'shift+left'`  | [text field-based inputs](#text-field-based-inputs), `<textarea>`
+`'shift+right'` | [text field-based inputs](#text-field-based-inputs), `<textarea>`
+`'shift+up'`    | [text field-based inputs](#text-field-based-inputs), `<textarea>`
+`'shift+down'`  | [text field-based inputs](#text-field-based-inputs), `<textarea>`
+`'home'`        | [text field-based inputs](#text-field-based-inputs), `<textarea>`
+`'end'`         | [text field-based inputs](#text-field-based-inputs), `<textarea>`
+`'shift+home'`  | [text field-based inputs](#text-field-based-inputs), `<textarea>`
+`'shift+end'`   | [text field-based inputs](#text-field-based-inputs), `<textarea>`
+`'enter'`       | [text field-based inputs](#text-field-based-inputs), `<textarea>`, `<select>`, `<a>`
+`'tab'`         | focusable elements
+`'shift+tab'`   | focusable elements
+`'esc'`         | `<select>`
 
 > The `'backspace'`, `'delete'`, `'left'` and `'right'` key presses in `contentEditable` elements are processed only when text is selected.
+
+## Text Field-Based Inputs
+
+TestCafe supports keystroke selection and navigation in the following input types:
+
+* `email`
+* `number`
+* `password`
+* `search`
+* `tel`
+* `text`
+* `url`
+
+## Example
 
 The following example shows how to use the `t.pressKey` action:
 
