@@ -80,7 +80,7 @@ Shortcut        | Elements
 
 ### Text Field-Based Inputs
 
-TestCafe supports keystroke selection and navigation in the following input types:
+TestCafe supports selection and navigation with keystrokes in the following input types:
 
 * `email`
 * `number`
