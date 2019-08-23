@@ -130,7 +130,7 @@ export default class Configuration {
 
     async _readConfigurationFileContent () {
         try {
-            return await readFile(this.filePath);
+            return readFile(this.filePath);
         }
         catch (error) {
             Configuration._showWarningForError(error, WARNING_MESSAGES.cannotReadConfigFile);

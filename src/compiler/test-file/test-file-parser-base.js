@@ -240,7 +240,7 @@ export class TestFileParserBase {
         let fileContent = '';
 
         try {
-            fileContent = await readFile(filePath, 'utf8');
+            fileContent = readFile(filePath, 'utf8');
         }
 
         catch (err) {
