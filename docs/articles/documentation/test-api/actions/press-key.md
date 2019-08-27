@@ -23,22 +23,76 @@ Key Type                   | Example
 -------------------------- | ------
 Alphanumeric keys          | `'a'`, `'A'`, `'1'`
 Modifier keys              | `'shift'`, `'alt'` (⌥ key on macOS), `'ctrl'`, `'meta'` (*meta* key on Linux and ⌘ key on macOS)
-Navigation and action keys | `'backspace'`, `'tab'`, `'enter'`, `'capslock'`, `'esc'`, `'space'`, `'pageup'`, `'pagedown'`, `'end'`, `'home'`, `'left'`, `'right'`, `'down'`, `'ins'`, `'delete'`
+Navigation and action keys | `'backspace'`, `'tab'`, `'enter'`
 Key combinations           | `'shift+a'`, `'ctrl+d'`
 Sequential key presses     | Any of the above in a space-separated string, e.g. `'a ctrl+b'`
 
-In addition to key presses handled by webpage elements, the `t.pressKey` action also allows you to execute certain key presses processed by the browser.
+The following navigation and action keys are supported:
 
-* `'ctrl+a'`, `'backspace'`, `'delete'`, `'left'`, `'right'`, `'up'`, `'down'`, `'home'`, `'end'`, `'enter'`, `'tab'`, `'shift+tab'`, `'shift+left'`, `'shift+right'`, `'shift+up'`, `'shift+down'`, `'shift+home'`, `'shift+end'`
+* `'backspace'`
+* `'tab'`
+* `'enter'`
+* `'capslock'`
+* `'esc'`
+* `'space'`
+* `'pageup'`
+* `'pagedown'`
+* `'end'`
+* `'home'`
+* `'left'`
+* `'right'`
+* `'up'`
+* `'down'`
+* `'ins'`
+* `'delete'`
 
-With the exception of the keys and combinations listed above, the `t.pressKey` action will not invoke integrated browser keystrokes.
+## Browser Processing Emulation
 
-For elements with the `contentEditable` attribute, the following key presses are supported.
+When an end-user normally presses a key or key combination, the browser dispatches an event that triggers handlers in page code. Most browsers also respond to common keystrokes with their integrated actions (for instance, they select text when you press `Cmd/Ctrl+A` or copy objects to the clipboard when you press `Cmd/Ctrl+C`).
 
-* `'ctrl+a'`,
-* `'backspace'`, `'delete'`, `'left'` and `'right'` (only if text within the element is selected).
+The `t.pressKey` action triggers only page handlers for most keystrokes.
 
-The following example shows how to use the `t.pressKey` action.
+For the following keys and key combinations, TestCafe additionally emulates browser processing:
+
+Shortcut        | Elements
+--------------- | -----------
+`'ctrl+a'`      | [text field-based inputs](#text-field-based-inputs), `<textarea>`, `contentEditable`
+`'backspace'`   | [text field-based inputs](#text-field-based-inputs), `<textarea>`, `contentEditable`
+`'delete'`      | [text field-based inputs](#text-field-based-inputs), `<textarea>`, `contentEditable`
+`'left'`        | [text field-based inputs](#text-field-based-inputs), radio button inputs, `<textarea>`, `<select>`, `contentEditable`
+`'right'`       | [text field-based inputs](#text-field-based-inputs), radio button inputs, `<textarea>`, `<select>`, `contentEditable`
+`'up'`          | [text field-based inputs](#text-field-based-inputs), radio button inputs, `<textarea>`, `<select>`
+`'down'`        | [text field-based inputs](#text-field-based-inputs), radio button inputs, `<textarea>`, `<select>`
+`'shift+left'`  | [text field-based inputs](#text-field-based-inputs), `<textarea>`
+`'shift+right'` | [text field-based inputs](#text-field-based-inputs), `<textarea>`
+`'shift+up'`    | [text field-based inputs](#text-field-based-inputs), `<textarea>`
+`'shift+down'`  | [text field-based inputs](#text-field-based-inputs), `<textarea>`
+`'home'`        | [text field-based inputs](#text-field-based-inputs), `<textarea>`
+`'end'`         | [text field-based inputs](#text-field-based-inputs), `<textarea>`
+`'shift+home'`  | [text field-based inputs](#text-field-based-inputs), `<textarea>`
+`'shift+end'`   | [text field-based inputs](#text-field-based-inputs), `<textarea>`
+`'enter'`       | [text field-based inputs](#text-field-based-inputs), `<textarea>`, `<select>`, `<a>`
+`'tab'`         | focusable elements
+`'shift+tab'`   | focusable elements
+`'esc'`         | `<select>`
+
+> The `'backspace'`, `'delete'`, `'left'` and `'right'` key presses in `contentEditable` elements are processed only when text is selected.
+
+### Text Field-Based Inputs
+
+TestCafe supports selection and navigation with keystrokes in the following input types:
+
+* `email`
+* `number`
+* `password`
+* `search`
+* `tel`
+* `text`
+* `url`
+
+## Example
+
+The following example shows how to use the `t.pressKey` action:
 
 ```js
 import { Selector } from 'testcafe';
