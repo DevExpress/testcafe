@@ -86,7 +86,7 @@ This class will contain the Page Model, so name the file `page-model.js`.
 ### Step 2 - Add a Page Element to the Page Model
 
 Add the `Developer Name` input element to the model. To do this,
-introduce the `nameInput` property and assign a [selector](../test-api/selecting-page-elements/selectors/README.md) to it.
+introduce the `nameInput` property and assign a [selector](../../test-api/selecting-page-elements/selectors/README.md) to it.
 
 ```js
 import { Selector } from 'testcafe';
@@ -211,7 +211,7 @@ test('Click check boxes and then verify their state', async t => {
 
 Add an action that enters the developer name and clicks the Submit button.
 
-1. Import `t`, a [test controller](../test-api/test-code-structure.md#test-controller), from the `testcafe` module.
+1. Import `t`, a [test controller](../../test-api/test-code-structure.md#test-controller), from the `testcafe` module.
 
     ```js
     import { Selector, t } from 'testcafe';

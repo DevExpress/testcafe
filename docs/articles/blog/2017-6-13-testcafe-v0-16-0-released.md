@@ -49,7 +49,7 @@ For details, see [Using Chrome-specific Features](https://devexpress.github.io/t
 
 ### ⚙ Support HTML5 Drag and Drop ([#897](https://github.com/DevExpress/testcafe/issues/897))
 
-Starting with this release, TestCafe supports HTML5 drag and drop, so you can test elements with the `draggable` [attribute](http://w3c.github.io/html/editing.html#the-draggable-attribute).
+Starting with this release, TestCafe supports HTML5 drag and drop, so you can test elements with the `draggable` [attribute](https://html.spec.whatwg.org/multipage/dnd.html#the-draggable-attribute).
 
 ### ⚙ Fixed URL for opening remote browsers ([#1476](https://github.com/DevExpress/testcafe/issues/1476))
 
