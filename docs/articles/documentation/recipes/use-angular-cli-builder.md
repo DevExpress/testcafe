@@ -19,7 +19,7 @@ npm install --save-dev @politie/angular-testcafe-builder
 
 ## Configure a Target in the Angular Workspace
 
-Open `angular.json` and configure the `e2e` [Architect target](https://angular.io/guide/workspace-config#project-configuration-options) to run TestCafe tests.
+Open `angular.json` and configure the `e2e` *Architect target* to run TestCafe tests.
 
 To do this, specify the `@politie/angular-testcafe-builder:testcafe` command in the `builder` property and provide TestCafe arguments in the `options` property:
 
