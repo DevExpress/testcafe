@@ -57,7 +57,7 @@ See [Connect to TestCafe Server over HTTPS](https://devexpress.github.io/testcaf
 
 ### ⚙ Construct Screenshot Paths with Patterns ([#2152](https://github.com/DevExpress/testcafe/issues/2152))
 
-You can now use patterns to construct paths to screenshots. TestCafe provides a number of placeholders you can include in the path, for example, `${DATE}`, `${TIME}`, `${USERAGENT}`, etc. For a complete list, refer to the command line [--screenshot-path-pattern flag description](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-p---screenshot-path-pattern).
+You can now use patterns to construct paths to screenshots. TestCafe provides a number of placeholders you can include in the path, for example, `${DATE}`, `${TIME}`, `${USERAGENT}`, etc. For a complete list, refer to the command line [--screenshot-path-pattern flag description](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-p-pattern---screenshot-path-pattern-pattern).
 
 You specify a screenshot path pattern when you run tests. Each time TestCafe takes a screenshot, it substitutes the placeholders with actual values and saves the screenshot to the resulting path.
 

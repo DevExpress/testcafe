@@ -422,11 +422,11 @@ async clientScripts( script[, script2[, ...[, scriptN]]] ) → this
 
 Parameter | Type                | Description
 --------- | ------------------- | ------------
-`script`, `script2`, `scriptN`  | String &#124; Object &#124; Array | Scripts to inject into the tested pages. See [Provide Scripts to Inject](common-concepts/inject-scripts-into-tested-pages.md#provide-scripts-to-inject) to learn how to specify them.
+`script`, `script2`, `scriptN`  | String &#124; Object &#124; Array | Scripts to inject into the tested pages. See [Provide Scripts to Inject](../common-concepts/inject-scripts-into-tested-pages.md#provide-scripts-to-inject) to learn how to specify them.
 
 > Relative paths resolve from the current working directory.
 
-You can use the [page](common-concepts/inject-scripts-into-tested-pages.md#provide-scripts-for-specific-pages) option to specify pages into which scripts should be injected. Otherwise, TestCafe injects scripts into all pages visited during the test run.
+You can use the [page](../common-concepts/inject-scripts-into-tested-pages.md#provide-scripts-for-specific-pages) option to specify pages into which scripts should be injected. Otherwise, TestCafe injects scripts into all pages visited during the test run.
 
 ```js
 runner.clientScripts('assets/jquery.js');
@@ -446,7 +446,7 @@ runner.clientScripts([
 
 The [fixture.clientScripts](../../test-api/test-code-structure.md#inject-scripts-into-tested-pages) and [test.clientScripts](../../test-api/test-code-structure.md#inject-scripts-into-tested-pages) methods allow you to inject scripts into pages visited during an individual fixture or test.
 
-See [Inject Scripts into Tested Pages](common-concepts/inject-scripts-into-tested-pages.md) for more information.
+See [Inject Scripts into Tested Pages](../common-concepts/inject-scripts-into-tested-pages.md) for more information.
 
 *Related configuration file property*: [clientScripts](../configuration-file.md#clientscripts)
 
