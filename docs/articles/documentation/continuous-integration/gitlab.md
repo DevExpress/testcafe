@@ -17,7 +17,7 @@ However, if you already have a Docker image prepared to deploy your web applicat
 
 Open the `.gitlab-ci.yml` file that stores the GitLab CI configuration. If this file does not exist, create it in the repository's root directory.
 
-Create a new [job](https://docs.gitlab.com/ee/ci/pipelines.html#jobs). To do this, add the following settings to `.gitlab-ci.yml` at the top level:
+Create a new [job](https://docs.gitlab.com/ee/ci/pipelines.html). To do this, add the following settings to `.gitlab-ci.yml` at the top level:
 
 ```yaml
 e2e_tests:
@@ -36,7 +36,7 @@ e2e_tests:
 
 See [Configuration of your jobs with .gitlab-ci.yml](https://docs.gitlab.com/ee/ci/yaml/README.html) for more information about the `.gitlab-ci.yml` syntax.
 
-Commit `.gitlab-ci.yml` and push the changes to the repository. This creates a new [job](https://docs.gitlab.com/ee/ci/pipelines.html#jobs) that any [GitLab Runner](https://docs.gitlab.com/ee/ci/runners/README.html) can execute.
+Commit `.gitlab-ci.yml` and push the changes to the repository. This creates a new job that any [GitLab Runner](https://docs.gitlab.com/ee/ci/runners/README.html) can execute.
 
 ## Option 2 - Install TestCafe on a Docker Image
 
@@ -74,7 +74,7 @@ The test run command that uses TestCafe should be also added to `package.json` t
 
 This allows you to use `npm test` to run tests.
 
-Finally, open `.gitlab-ci.yml` (or create it in the repository root) and add a [job](https://docs.gitlab.com/ee/ci/pipelines.html#jobs) that installs TestCafe and runs tests.
+Finally, open `.gitlab-ci.yml` (or create it in the repository root) and add a job that installs TestCafe and runs tests.
 
 ```yaml
 e2e_tests:
