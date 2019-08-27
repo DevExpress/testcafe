@@ -49,9 +49,7 @@ To run a local TestCafe version from the [command line](command-line-interface.m
     yarn run testcafe chrome tests/
     ```
 
-* [npm scripts](https://docs.npmjs.com/misc/scripts)
-
-    Add the `testcafe` command to the `scripts` section in `package.json`:
+* [npm scripts](https://docs.npmjs.com/misc/scripts) - add the `testcafe` command to the `scripts` section in `package.json`:
 
     ```json
     "scripts": {
