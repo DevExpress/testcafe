@@ -77,9 +77,9 @@ which means it should work with any browser with HTML5 support released in the l
 
 ### Can I use third-party modules in tests?
 
-You can import third-party modules to the test code and tested webpages.
+You can import third-party modules to the test code and inject scripts into tested webpages.
 
-To [import modules in the test files](../documentation/recipes/import-third-party-modules.md), use the `import` statement.
+To [import a module to a test file](../documentation/recipes/import-third-party-modules.md), use the `import` statement.
 
 ```js
 import fs from 'fs';
