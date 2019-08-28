@@ -77,9 +77,9 @@ which means it should work with any browser with HTML5 support released in the l
 
 ### Can I use third-party modules in tests?
 
-You can import third-party modules to test files in the same way as a regular node.js module.
+You can import third-party modules to the test code and tested webpages.
 
-On the server side, use the `import` statement.
+To [import modules in the test files](../documentation/recipes/import-third-party-modules.md), use the `import` statement.
 
 ```js
 import fs from 'fs';
@@ -88,28 +88,32 @@ fixture `fixture`
    .page('http://localhost/testcafe/');
 
 test('test', async t => {
-   var filePath = 'filepath.js';
+   const filePath = 'filepath.js';
 
    await t.expect(fs.existsSync(filePath)).ok();
 });
 ```
 
-On the client side, use `t.eval` to include the desired module in the test.
-Then you can use this module inside client functions and selectors.
+If a Node.js module or a JavaScript file can be executed in the browser, you can [inject it into the tested page](../documentation/using-testcafe/common-concepts/inject-scripts-into-tested-pages.md).
 
 ```js
-test('test', async t => {
-    // eval jquery code to add jQuery to the page
-    await t.eval(new Function(fs.readFileSync('./jquery.js').toString()));
+fixture `My fixture`
+    .page `https://example.com`
+    // The fixture.clientScripts method injects jquery.js
+    // into all pages visited in this fixture.
+    .clientScripts('scripts/jquery.js');
 
-    var clientFunction = ClientFunction(() => {
+test('test', async t => {
+    const clientFunction = ClientFunction(() => {
         // You can use $ here
         return $('div').text();
     });
 
-    var text = await clientFunction();
+    const text = await clientFunction();
 });
 ```
+
+For more information about how to inject scripts, see [Inject Scripts Into Tested Pages](../documentation/using-testcafe/common-concepts/inject-scripts-into-tested-pages.md).
 
 ### How do I work with configuration files and environment variables?
 
