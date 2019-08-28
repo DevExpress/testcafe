@@ -16,6 +16,8 @@ You can install TestCafe from `npm` globally or locally in your project.
 * Local installation makes your project setup easier: `npm install` executed in the project directory installs all dependencies including TestCafe.
 * Different projects can use different local TestCafe versions.
 
+You can also run TestCafe [without prior installation](#ad-hoc-installation). However, this is not recommended for regular use.
+
 ## Global Installation
 
 ```bash
@@ -69,3 +71,13 @@ To run a local TestCafe version from the [command line](command-line-interface.m
     ```bash
     testcafe chrome tests/
     ```
+
+## Ad Hoc Installation
+
+The [npx](https://www.npmjs.com/package/npx) utility installs all modules required to run the specified command if these modules are not installed globally or in the local project.
+
+Use `npx testcafe` if you need to quickly run TestCafe from a directory outside of the project. However, this approach is not recommended for regular use.
+
+```sh
+npx testcafe chrome tests/
+```
