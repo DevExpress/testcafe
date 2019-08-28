@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.4.2 (2019-8-28)
+
+### Bug Fixes
+
+* Added support for pages that reference ES6 modules ([testcafe-hammerhead/#1725](https://github.com/DevExpress/testcafe-hammerhead/issues/1725))
+* Events are now emulated correctly if the mouse pointer does not move during scrolling ([#3564](https://github.com/DevExpress/testcafe/issues/3564))
+* Fixed a Capacitor.js compatibility issue ([testcafe-hammerhead/#2094](https://github.com/DevExpress/testcafe-hammerhead/issues/2094))
+* Fixed Node.js TLS warning suppression ([testcafe-hammerhead/PR#2109](https://github.com/DevExpress/testcafe-hammerhead/pull/2109))
+* Fixed a warning about injecting duplicated scripts ([#4116](https://github.com/DevExpress/testcafe/issues/4116))
+* Fixed a bug when information messages were printed in `stderr` ([#3873](https://github.com/DevExpress/testcafe/issues/3873))
+
 ## v1.4.1 (2019-8-15)
 
 ### Bug Fixes
