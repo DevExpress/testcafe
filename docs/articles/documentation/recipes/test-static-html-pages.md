@@ -14,7 +14,7 @@ we will focus on two simple methods that use a few other packages and can be eas
 
 ## Install TestCafe and create tests
 
-Install TestCafe [locally](../using-testcafe/installing-testcafe.md#locally) in your project and [create tests](../getting-started/README.md#creating-a-test).
+Install TestCafe [locally](../using-testcafe/installing-testcafe.md#local-installation) in your project and [create tests](../getting-started/README.md#creating-a-test).
 
 ## Option 1 - Test webpages in the local file system
 

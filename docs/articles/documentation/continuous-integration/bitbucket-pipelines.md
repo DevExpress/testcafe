@@ -19,7 +19,7 @@ You can set up your Bitbucket project to automatically run tests in the cloud wh
 
 ## Step 1 - Install TestCafe and Create Tests
 
-Install TestCafe [locally](../using-testcafe/installing-testcafe.md#locally) in your project and [create tests](../getting-started/README.md#creating-a-test).
+Install TestCafe [locally](../using-testcafe/installing-testcafe.md#local-installation) in your project and [create tests](../getting-started/README.md#creating-a-test).
 
 ## Step 2 - Enable Bitbucket Pipelines for Your Project
 
