@@ -17,7 +17,7 @@ Parameter | Type   | Description
 `keys`    | String | The sequence of keys and key combinations to be pressed.
 `options`&#160;*(optional)*  | Object | A set of options that provide additional parameters for the action. See [Basic Action Options](action-options.md#basic-action-options).
 
-The following table shows how to specify keys of different types, key sequences and combinations.
+The following table shows how to specify keys of different types, key sequences, and combinations:
 
 Key Type                   | Example
 -------------------------- | ------
@@ -25,7 +25,7 @@ Alphanumeric keys          | `'a'`, `'A'`, `'1'`
 Modifier keys              | `'shift'`, `'alt'` (⌥ key on macOS), `'ctrl'`, `'meta'` (*meta* key on Linux and ⌘ key on macOS)
 Navigation and action keys | `'backspace'`, `'tab'`, `'enter'`
 Key combinations           | `'shift+a'`, `'ctrl+d'`
-Sequential key presses     | Any of the above in a space-separated string, e.g. `'a ctrl+b'`
+Sequential key presses     | Any of the above in a string separated by spaces, for example, `'a ctrl+b'`
 
 The following navigation and action keys are supported:
 
@@ -48,11 +48,11 @@ The following navigation and action keys are supported:
 
 ## Browser Processing Emulation
 
-When an end-user normally presses a key or key combination, the browser dispatches an event that triggers handlers in page code. Most browsers also respond to common keystrokes with their integrated actions (for instance, they select text when you press `Cmd/Ctrl+A` or copy objects to the clipboard when you press `Cmd/Ctrl+C`).
+When a user presses a key or key combination, the browser dispatches an event that triggers handlers in page code. Most browsers also respond to common keystrokes with their integrated actions (for instance, they select text when you press `Cmd/Ctrl+A` or copy objects to the clipboard when you press `Cmd/Ctrl+C`).
 
 The `t.pressKey` action triggers only page handlers for most keystrokes.
 
-For the following keys and key combinations, TestCafe additionally emulates browser processing:
+TestCafe Studio emulates browser processing for the following keys and key combinations:
 
 Shortcut        | Elements
 --------------- | -----------
