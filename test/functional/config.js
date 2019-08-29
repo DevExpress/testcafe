@@ -32,7 +32,7 @@ testingEnvironments[testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers] = {
         accessKey: process.env.BROWSER_STACK_ACCESS_KEY
     },
 
-    retryTestPages: true,
+    retryTestPages: false,
 
     browsers: [
         {
@@ -58,7 +58,7 @@ testingEnvironments[testingEnvironmentNames.mobileBrowsers] = {
         accessKey: process.env.BROWSER_STACK_ACCESS_KEY
     },
 
-    retryTestPages: true,
+    retryTestPages: false,
 
     browsers: [
         {
@@ -131,7 +131,7 @@ testingEnvironments[testingEnvironmentNames.localHeadlessChrome] = {
     isLocalBrowsers:    true,
     isHeadlessBrowsers: true,
 
-    retryTestPages: true,
+    retryTestPages: false,
 
     browsers: [
         {
@@ -147,7 +147,7 @@ testingEnvironments[testingEnvironmentNames.localHeadlessFirefox] = {
     isLocalBrowsers:    true,
     isHeadlessBrowsers: true,
 
-    retryTestPages: true,
+    retryTestPages: false,
 
     browsers: [
         {
