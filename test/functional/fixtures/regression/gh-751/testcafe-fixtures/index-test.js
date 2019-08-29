@@ -1,5 +1,8 @@
 import { ClientFunction } from 'testcafe';
 import { expect } from 'chai';
+import isCI from 'is-ci';
+
+const HARD_WORK_EXTRA_TIME = isCI ? 60 : 40;
 
 
 fixture `GH-751`
@@ -30,5 +33,5 @@ test('Test click performance with hard work', async t => {
 
     const [mousedownTime, mouseupTime] = await ClientFunction(() => window.clickEvents)();
 
-    expect(mouseupTime - mousedownTime).is.most(HARD_WORK_TIME + 40);
+    expect(mouseupTime - mousedownTime).is.most(HARD_WORK_TIME + HARD_WORK_EXTRA_TIME);
 });
