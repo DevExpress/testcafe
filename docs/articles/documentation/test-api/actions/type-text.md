@@ -18,7 +18,7 @@ Parameter              | Type                                              | Des
 `text`                 | String                                            | The text to be typed into the specified webpage element.
 `options`&#160;*(optional)* | Object                                            | A set of options that provide additional parameters for the action. See [Typing Action Options](action-options.md#typing-action-options). If this parameter is omitted, TestCafe sets the cursor to the end of the text before typing, thus preserving the text that is already in the input box.
 
-The `t.typeText` action [clicks](click.md) the specified element before typing if this element is not focused. If the element does not receive focus after the click, `t.typeText` does not type the text.
+The `t.typeText` action [clicks](click.md) the specified element before text is typed if this element is not focused. If the target element is not focused after the click, `t.typeText` does not type text.
 
 > Use the [t.selectText](select-text.md) and [t.pressKey](press-key.md) actions to implement operations such as selecting or deleting text.
 
