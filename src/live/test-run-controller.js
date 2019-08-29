@@ -1,5 +1,5 @@
 import EventEmitter from 'events';
-import noop from 'lodash';
+import { noop, uniq } from 'lodash';
 import { TestRunCtorFactory } from './test-run';
 import TEST_RUN_STATE from './test-run-state';
 
@@ -66,7 +66,6 @@ class LiveModeTestRunController extends EventEmitter {
     }
 
     _onTestRunCreated (testRun) {
-
         this.allTestsCompletePromise = new Promise(resolve => {
             this.completeAllRunningTests = resolve;
         });
@@ -81,25 +80,28 @@ class LiveModeTestRunController extends EventEmitter {
     _onTestRunDone (testRun) {
         testRun.state = TEST_RUN_STATE.done;
 
-        const hasRunningTests = this._getTestRuns().some(t => t.state !== TEST_RUN_STATE.done);
+        const testWillBeRestarted            = !this.isTestFinished(testRun);
+        const hasRunningTestsInOtherBrowsers = this._getTestRuns().some(t => t.state !== TEST_RUN_STATE.done);
 
-        if (!hasRunningTests)
+        if (!hasRunningTestsInOtherBrowsers && !testWillBeRestarted)
             this.emit('all-tests-complete');
 
         const browserTestRuns = this.testRuns[testRun.browserConnection.id];
+        const tests           = uniq(browserTestRuns.map(t => t.test));
 
         testRun.readyToNextPromise = new Promise(resolve => {
             testRun.setReadyToNext = resolve;
         });
 
+        const isLastTestRun = tests.length >= this.expectedTestCount;
 
-        if (browserTestRuns.length < this.expectedTestCount || browserTestRuns.some(t => t.state !== TEST_RUN_STATE.done))
+        if (testWillBeRestarted || !isLastTestRun)
             return Promise.resolve();
 
         return new Promise(resolve => {
             testRun.finish = () => {
                 testRun.finish = null;
-                testRun.state  = TEST_RUN_STATE.done;
+
                 resolve();
             };
         });
@@ -107,6 +109,15 @@ class LiveModeTestRunController extends EventEmitter {
 
     _onTestRunReadyToNext (testRun) {
         testRun.setReadyToNext();
+    }
+
+    isTestFinished (testRun) {
+        const { quarantine, errs } = testRun;
+
+        if (!quarantine)
+            return true;
+
+        return quarantine.isFirstAttemptSuccessfull(errs) || quarantine.isThresholdReached(errs);
     }
 }
 
