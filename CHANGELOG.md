@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.4.3 (2019-9-2)
+
+* Ads are no longer displayed
+
 ## v1.4.2 (2019-8-28)
 
 ### Bug Fixes
