@@ -30,9 +30,6 @@ export default class Runner extends EventEmitter {
         this.configuration       = configuration;
         this.isCli               = false;
 
-        // NOTE: This code is necessary only for displaying  marketing messages.
-        this.reporterPlugings = [];
-
         this.apiMethodWasCalled = new FlagList([
             OPTION_NAMES.src,
             OPTION_NAMES.browsers,
@@ -437,8 +434,6 @@ export default class Runner extends EventEmitter {
             .then(() => this._validateRunOptions())
             .then(() => this._createRunnableConfiguration())
             .then(({ reporterPlugins, browserSet, tests, testedApp }) => {
-                this.reporterPlugings = reporterPlugins;
-
                 return this._runTask(reporterPlugins, browserSet, tests, testedApp);
             });
 
