@@ -136,26 +136,20 @@ export default class Bootstrapper {
 
         return Promise.all(this.reporters.map(async ({ name, output }) => {
             let pluginFactory = name;
-            let pluginName    = null;
 
             const outStream = await this._ensureOutStream(output);
 
             if (typeof pluginFactory !== 'function') {
                 try {
                     pluginFactory = require('testcafe-reporter-' + name);
-                    pluginName    = name;
                 }
                 catch (err) {
                     throw new GeneralError(RUNTIME_ERRORS.cannotFindReporterForAlias, name);
                 }
             }
 
-            const plugin = pluginFactory();
-
-            plugin.name = pluginName;
-
             return {
-                plugin,
+                plugin: pluginFactory(),
                 outStream
             };
         }));
