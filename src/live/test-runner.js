@@ -16,7 +16,7 @@ class LiveModeRunner extends Runner {
         this.REQUIRED_MODULE_FOUND_EVENT = 'require-module-found';
 
         this.stopping              = false;
-        this.tcRunnerTaskPromise   = null;
+        this.runnerTaskPromise     = null;
         this.stopInfiniteWaiting   = noop;
         this.rejectInfiniteWaiting = noop;
         this.preventRunCall        = false;
@@ -29,7 +29,8 @@ class LiveModeRunner extends Runner {
             assets:      []
         });
 
-        this.controller = this._createController();
+        this.controller         = this._createController();
+        this.configurationCache = null;
     }
 
     runTests (isFirstRun = false) {
@@ -40,12 +41,12 @@ class LiveModeRunner extends Runner {
                 return this._validateRunnableConfiguration(isFirstRun);
             })
             .then(() => {
-                this.testRunController.setExpectedTestCount(this.liveConfigurationCache.tests.filter(t => !t.skip).length);
+                this.testRunController.setExpectedTestCount(this.configurationCache.tests.filter(t => !t.skip).length);
             })
             .then(() => {
-                this.tcRunnerTaskPromise = super.run(this.opts);
+                this.runnerTaskPromise = super.run(this.opts);
 
-                return this.tcRunnerTaskPromise;
+                return this.runnerTaskPromise;
             })
             .catch(err => {
                 this.setBootstrappingError(null);
@@ -53,7 +54,7 @@ class LiveModeRunner extends Runner {
                 runError = err;
             })
             .then(() => {
-                this.tcRunnerTaskPromise = null;
+                this.runnerTaskPromise = null;
 
                 this.emit(this.TEST_RUN_DONE_EVENT, { err: runError });
             });
@@ -67,12 +68,12 @@ class LiveModeRunner extends Runner {
     }
 
     _createRunnableConfiguration () {
-        if (this.liveConfigurationCache)
-            return Promise.resolve(this.liveConfigurationCache);
+        if (this.configurationCache)
+            return Promise.resolve(this.configurationCache);
 
         return super._createRunnableConfiguration()
             .then(configuration => {
-                this.liveConfigurationCache = configuration;
+                this.configurationCache = configuration;
 
                 return configuration;
             })
@@ -113,13 +114,12 @@ class LiveModeRunner extends Runner {
     }
 
     suspend () {
-        if (!this.tcRunnerTaskPromise)
+        if (!this.runnerTaskPromise)
             return Promise.resolve();
 
         this.stopping = true;
         this.testRunController.stop();
-        this.tcRunnerTaskPromise.cancel();
-
+        this.runnerTaskPromise.cancel();
 
         return this.testRunController.allTestsCompletePromise
             .then(() => {
@@ -130,15 +130,15 @@ class LiveModeRunner extends Runner {
     }
 
     exit () {
-        if (this.tcRunnerTaskPromise)
-            this.tcRunnerTaskPromise.cancel();
+        if (this.runnerTaskPromise)
+            this.runnerTaskPromise.cancel();
 
         return Promise.resolve()
             .then(() => this.stopInfiniteWaiting());
     }
 
     async _finishPreviousTestRuns () {
-        if (!this.liveConfigurationCache.tests) return;
+        if (!this.configurationCache.tests) return;
 
         this.testRunController.run();
     }
@@ -153,7 +153,7 @@ class LiveModeRunner extends Runner {
 
         return this.bootstrapper._getTests()
             .then(tests => {
-                this.liveConfigurationCache.tests = tests;
+                this.configurationCache.tests = tests;
 
                 return this.bootstrappingError ? Promise.reject(this.bootstrappingError) : Promise.resolve();
             });

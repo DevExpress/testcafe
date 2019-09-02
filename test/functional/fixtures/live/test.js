@@ -5,10 +5,10 @@ const path           = require('path');
 const { expect }     = require('chai');
 const helper         = require('./test-helper');
 
-const browsers = ['chrome', 'firefox'];
-let cafe       = null;
+const DEFAULT_BROWSERS = ['chrome', 'firefox'];
+let cafe               = null;
 
-function createRunner (tc, src) {
+function createLiveModeRunner (tc, src, browsers = DEFAULT_BROWSERS) {
     const runner = tc.createLiveModeRunner();
 
     runner.controller._listenKeyPress   = () => { };
@@ -31,8 +31,8 @@ function createRunner (tc, src) {
 }
 
 if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {
-    describe('Live Mode tests', () => {
-        it('Live smoke', () => {
+    describe('Live Mode', () => {
+        it('Smoke', () => {
             const runCount = 2;
 
             return createTestCafe('127.0.0.1', 1335, 1336)
@@ -40,7 +40,7 @@ if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {
                     cafe = tc;
                 })
                 .then(() => {
-                    const runner = createRunner(cafe, '/testcafe-fixtures/smoke.js');
+                    const runner = createLiveModeRunner(cafe, '/testcafe-fixtures/smoke.js');
 
                     helper.watcher.once('test-complete', () => {
                         setTimeout(() => {
@@ -54,19 +54,19 @@ if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {
                     return runner.run();
                 })
                 .then(() => {
-                    expect(helper.counter).eql(browsers.length * helper.testCount * runCount);
+                    expect(helper.counter).eql(DEFAULT_BROWSERS.length * helper.testCount * runCount);
 
                     return cafe.close();
                 });
         });
 
-        it('Live quarantine', () => {
+        it('Quarantine', () => {
             return createTestCafe('127.0.0.1', 1335, 1336)
                 .then(tc => {
                     cafe = tc;
                 })
                 .then(() => {
-                    const runner = createRunner(cafe, '/testcafe-fixtures/quarantine.js');
+                    const runner = createLiveModeRunner(cafe, '/testcafe-fixtures/quarantine.js');
 
                     helper.watcher.once('test-complete', () => {
                         setTimeout(() => {
@@ -79,8 +79,37 @@ if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {
                     });
                 })
                 .then(() => {
-                    expect(helper.attempts).eql(browsers.length * helper.quarantineThreshold);
+                    expect(helper.attempts).eql(DEFAULT_BROWSERS.length * helper.quarantineThreshold);
 
+                    return cafe.close();
+                });
+        });
+
+        it('Client scripts', () => {
+            return createTestCafe('127.0.0.1', 1335, 1336)
+                .then(tc => {
+                    cafe = tc;
+                })
+                .then(() => {
+                    const runner = createLiveModeRunner(cafe, '/testcafe-fixtures/client-scripts.js', ['chrome']);
+
+                    helper.watcher.once('test-complete', () => {
+                        setTimeout(() => {
+                            runner.controller._restart().then(() => {
+                                expect(Object.keys(helper.data).length).eql(2);
+                                expect(helper.data[0]).eql(true);
+                                expect(helper.data[1]).eql(true);
+
+                                helper.data = {};
+
+                                runner.exit();
+                            });
+                        }, 1000);
+                    });
+
+                    return runner.run();
+                })
+                .then(() => {
                     return cafe.close();
                 });
         });
