@@ -2,7 +2,7 @@
 
 ## v1.4.3 (2019-9-2)
 
-* Ads are no longer displayed
+* Information about TestCafe Studio is no longer displayed in the console.
 
 ## v1.4.2 (2019-8-28)
 
