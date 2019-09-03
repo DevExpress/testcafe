@@ -117,7 +117,7 @@ class LiveModeTestRunController extends EventEmitter {
         if (!quarantine)
             return true;
 
-        return quarantine.isFirstAttemptSuccessfull(errs) || quarantine.isThresholdReached(errs);
+        return quarantine.isFirstAttemptSuccessful(errs) || quarantine.isThresholdReached(errs);
     }
 }
 
