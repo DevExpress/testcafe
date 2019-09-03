@@ -111,7 +111,7 @@ class LiveModeTestRunController extends EventEmitter {
         testRun.setReadyToNext();
     }
 
-    isTestFinished (testRun) {
+    _isTestFinished (testRun) {
         const { quarantine, errs } = testRun;
 
         if (!quarantine)
