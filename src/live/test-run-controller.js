@@ -80,7 +80,7 @@ class LiveModeTestRunController extends EventEmitter {
     _onTestRunDone (testRun) {
         testRun.state = TEST_RUN_STATE.done;
 
-        const testWillBeRestarted            = !this.isTestFinished(testRun);
+        const testWillBeRestarted            = !this._isTestFinished(testRun);
         const hasRunningTestsInOtherBrowsers = this._getTestRuns().some(t => t.state !== TEST_RUN_STATE.done);
 
         if (!hasRunningTestsInOtherBrowsers && !testWillBeRestarted)
