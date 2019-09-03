@@ -6,7 +6,7 @@ fixture `Live`
         helper.counter++;
     })
     .after(() => {
-        helper.watcher.emit('test-complete');
+        helper.emitter.emit('tests-completed');
     });
 
 for (let i = 0; i < helper.testCount; i++) {

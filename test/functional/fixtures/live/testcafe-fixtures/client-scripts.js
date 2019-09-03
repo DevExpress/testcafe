@@ -5,11 +5,9 @@ const getTestVariableValue = ClientFunction(() => window.test);
 
 fixture `Fixture`
     .clientScripts({ content: 'window.test = true;' })
-    .afterEach(() => {
-        helper.counter++;
-    })
     .after(() => {
-        helper.watcher.emit('test-complete');
+        helper.counter++;
+        helper.emitter.emit('tests-completed');
     });
 
 test('test', async () => {

@@ -32,6 +32,10 @@ function createLiveModeRunner (tc, src, browsers = DEFAULT_BROWSERS) {
 
 if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {
     describe('Live Mode', () => {
+        afterEach (() => {
+            helper.clean();
+        });
+
         it('Smoke', () => {
             const runCount = 2;
 
@@ -42,7 +46,7 @@ if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {
                 .then(() => {
                     const runner = createLiveModeRunner(cafe, '/testcafe-fixtures/smoke.js');
 
-                    helper.watcher.once('test-complete', () => {
+                    helper.emitter.once('tests-completed', () => {
                         setTimeout(() => {
                             runner.controller._restart()
                                 .then(() => {
@@ -68,7 +72,7 @@ if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {
                 .then(() => {
                     const runner = createLiveModeRunner(cafe, '/testcafe-fixtures/quarantine.js');
 
-                    helper.watcher.once('test-complete', () => {
+                    helper.emitter.once('tests-completed', () => {
                         setTimeout(() => {
                             runner.exit();
                         }, 1000);
@@ -93,14 +97,12 @@ if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {
                 .then(() => {
                     const runner = createLiveModeRunner(cafe, '/testcafe-fixtures/client-scripts.js', ['chrome']);
 
-                    helper.watcher.once('test-complete', () => {
+                    helper.emitter.once('tests-completed', () => {
                         setTimeout(() => {
                             runner.controller._restart().then(() => {
                                 expect(Object.keys(helper.data).length).eql(2);
                                 expect(helper.data[0]).eql(true);
                                 expect(helper.data[1]).eql(true);
-
-                                helper.data = {};
 
                                 runner.exit();
                             });

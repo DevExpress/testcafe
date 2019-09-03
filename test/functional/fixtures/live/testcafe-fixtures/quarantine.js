@@ -6,7 +6,7 @@ fixture `Live`
         helper.attempts++;
     })
     .after(() => {
-        helper.watcher.emit('test-complete');
+        helper.emitter.emit('tests-completed');
     });
 
 test('quarantine', async () => {

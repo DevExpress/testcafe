@@ -1,12 +1,25 @@
-const EventEmitter = require('events').EventEmitter;
+const { EventEmitter } = require('events');
 
-class TestCompleteWatcher extends EventEmitter {}
+class TestHelper {
+    constructor () {
+        this._init();
+    }
 
-module.exports = {
-    watcher:             new TestCompleteWatcher(),
-    counter:             0,
-    attempts:            0,
-    testCount:           10,
-    quarantineThreshold: 3,
-    data:                {}
-};
+    _init () {
+        this.emitter             =  new EventEmitter();
+        this.counter             = 0;
+        this.attempts            = 0;
+        this.testCount           = 10;
+        this.quarantineThreshold = 3;
+        this.data                = {};
+    }
+
+    clean () {
+        this._init();
+    }
+
+}
+
+const helper = new TestHelper();
+
+module.exports = helper;
