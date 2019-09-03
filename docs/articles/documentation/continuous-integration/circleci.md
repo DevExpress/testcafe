@@ -1,13 +1,13 @@
 ---
 layout: docs
-title: Integrate TestCafe with CircelCI
+title: Integrate TestCafe with CircleCI
 permalink: /documentation/continuous-integration/circleci.html
 redirect_from:
   - /documentation/recipes/integrating-testcafe-with-ci-systems/circleci.html
 ---
-# Integrate TestCafe with CircelCI
+# Integrate TestCafe with CircleCI
 
-This topic describes how to integrate TestCafe tests into a [CircelCI](https://circleci.com/) project's build process.
+This topic describes how to integrate TestCafe tests into a [CircleCI](https://circleci.com/) project's build process.
 
 ## Prerequisites
 
