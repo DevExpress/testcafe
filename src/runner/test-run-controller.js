@@ -32,6 +32,12 @@ class Quarantine {
         return failedThresholdReached || passedThresholdReached;
     }
 
+    isFirstAttemptSuccessful (extraErrors) {
+        const { failedTimes, passedTimes } = this._getAttemptsResult(extraErrors);
+
+        return failedTimes === 0 && passedTimes > 0;
+    }
+
     _getAttemptsResult (extraErrors) {
         let failedTimes = this.getFailedAttempts().length;
         let passedTimes = this.getPassedAttempts().length;
