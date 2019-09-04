@@ -108,13 +108,13 @@ Return `true` from the callback to include the current test or `false` to exclud
 
 The callback function accepts the following arguments:
 
-Parameter     | Type                     | Description
-------------- | ------------------------ | ----------------------------------
-`testName`    | String                   | The name of the test.
-`fixtureName` | String                   | The name of the test fixture.
-`fixturePath` | String                   | The path to the test fixture file.
-`testMeta`    | Object\<String, String\> | The test metadata.
-`fixtureMeta` | Object\<String, String\> | The fixture metadata.
+Parameter     | Type   | Description
+------------- | ------ | ----------------------------------
+`testName`    | String | The name of the test.
+`fixtureName` | String | The name of the test fixture.
+`fixturePath` | String | The path to the test fixture file.
+`testMeta`    | Object | The test metadata.
+`fixtureMeta` | Object | The fixture metadata.
 
 *Related configuration file property*: [filter](../configuration-file.md#filter)
 
