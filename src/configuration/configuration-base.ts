@@ -1,26 +1,33 @@
 import { isAbsolute } from 'path';
+// @ts-ignore Could not find a declaration file for module 'debug'
 import debug from 'debug';
+// @ts-ignore Could not find a declaration file for module 'debug'
 import JSON5 from 'json5';
 import { cloneDeep, castArray } from 'lodash';
 import { stat, readFile } from '../utils/promisified-functions';
 import Option from './option';
-import optionSource from './option-source';
+import OptionSource from './option-source';
 import resolvePathRelativelyCwd from '../utils/resolve-path-relatively-cwd';
 import renderTemplate from '../utils/render-template';
 import WARNING_MESSAGES from '../notifications/warning-message';
 import log from '../cli/log';
+import { Dictionary } from './interfaces';
 
 const DEBUG_LOGGER = debug('testcafe:configuration');
 
 export default class Configuration {
-    constructor (configurationFileName) {
+    protected _options: Dictionary<Option>;
+    protected readonly _filePath: string | null;
+    protected _overriddenOptions: string[];
+
+    public constructor (configurationFileName: string | null) {
         this._options  = {};
         this._filePath = Configuration._resolveFilePath(configurationFileName);
 
-        this._overridenOptions = [];
+        this._overriddenOptions = [];
     }
 
-    static _fromObj (obj) {
+    protected static _fromObj (obj: object): Dictionary<Option> {
         const result = Object.create(null);
 
         Object.entries(obj).forEach(([key, value]) => {
@@ -32,11 +39,11 @@ export default class Configuration {
         return result;
     }
 
-    static _showConsoleWarning (message) {
+    protected static _showConsoleWarning (message: string): void {
         log.write(message);
     }
 
-    static _showWarningForError (error, warningTemplate, ...args) {
+    private static _showWarningForError (error: Error, warningTemplate: string, ...args: TemplateArguments): void {
         const message = renderTemplate(warningTemplate, ...args);
 
         Configuration._showConsoleWarning(message);
@@ -45,32 +52,32 @@ export default class Configuration {
         DEBUG_LOGGER(error);
     }
 
-    static _resolveFilePath (path) {
+    private static _resolveFilePath (path: string | null): string | null {
         if (!path)
             return null;
 
         return isAbsolute(path) ? path : resolvePathRelativelyCwd(path);
     }
 
-    async init () {
+    public async init (): Promise<void> {
     }
 
-    mergeOptions (options) {
+    public mergeOptions (options: object): void {
         Object.entries(options).map(([key, value]) => {
-            const option = this._ensureOption(key, value, optionSource.input);
+            const option = this._ensureOption(key, value, OptionSource.Input);
 
             if (value === void 0)
                 return;
 
             if (option.value !== value &&
-                option.source === optionSource.configuration)
-                this._overridenOptions.push(key);
+                option.source === OptionSource.Configuration)
+                this._overriddenOptions.push(key);
 
             this._setOptionValue(option, value);
         });
     }
 
-    getOption (key) {
+    public getOption (key: string): OptionValue {
         if (!key)
             return void 0;
 
@@ -82,7 +89,7 @@ export default class Configuration {
         return option.value;
     }
 
-    getOptions () {
+    public getOptions (): Dictionary<OptionValue> {
         const result = Object.create(null);
 
         Object.entries(this._options).forEach(([name, option]) => {
@@ -92,15 +99,15 @@ export default class Configuration {
         return result;
     }
 
-    clone () {
+    public clone (): Configuration {
         return cloneDeep(this);
     }
 
-    get filePath () {
+    public get filePath (): string | null {
         return this._filePath;
     }
 
-    async _load () {
+    public async _load (): Promise<null | object> {
         if (!this.filePath)
             return null;
 
@@ -115,7 +122,7 @@ export default class Configuration {
         return this._parseConfigurationFileContent(configurationFileContent);
     }
 
-    async _isConfigurationFileExists () {
+    protected async _isConfigurationFileExists (): Promise<boolean> {
         try {
             await stat(this.filePath);
 
@@ -128,7 +135,7 @@ export default class Configuration {
         }
     }
 
-    async _readConfigurationFileContent () {
+    public async _readConfigurationFileContent (): Promise<Buffer | null> {
         try {
             return await readFile(this.filePath);
         }
@@ -139,27 +146,29 @@ export default class Configuration {
         return null;
     }
 
-    _parseConfigurationFileContent (configurationFileContent) {
+    private _parseConfigurationFileContent (configurationFileContent: Buffer): object | null {
         try {
             return JSON5.parse(configurationFileContent);
         }
         catch (error) {
-            Configuration._showWarningForError(error, WARNING_MESSAGES.cannotParseConfigFile);
+            Configuration._showWarningForError(error, WARNING_MESSAGES.cannotParseConfigFile, this._filePath);
         }
 
         return null;
     }
 
-    _ensureArrayOption (name) {
+    protected _ensureArrayOption (name: string): void {
         const options = this._options[name];
 
         if (!options)
             return;
 
+        // NOTE: a hack to fix lodash type definitions
+        // @ts-ignore
         options.value = castArray(options.value);
     }
 
-    _ensureOption (name, value, source) {
+    protected _ensureOption (name: string, value: OptionValue, source: OptionSource): Option {
         let option = null;
 
         if (name in this._options)
@@ -173,7 +182,7 @@ export default class Configuration {
         return option;
     }
 
-    _ensureOptionWithValue (name, defaultValue, source) {
+    protected _ensureOptionWithValue (name: string, defaultValue: OptionValue, source: OptionSource): void {
         const option = this._ensureOption(name, defaultValue, source);
 
         if (option.value !== void 0)
@@ -183,8 +192,8 @@ export default class Configuration {
         option.source = source;
     }
 
-    _setOptionValue (option, value) {
+    protected _setOptionValue (option: Option, value: OptionValue): void {
         option.value  = value;
-        option.source = optionSource.input;
+        option.source = OptionSource.Input;
     }
 }

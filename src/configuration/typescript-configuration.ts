@@ -1,29 +1,34 @@
 import Configuration from './configuration-base';
-import optionSource from './option-source';
 import { DEFAULT_TYPESCRIPT_COMPILER_OPTIONS, TYPESCRIPT_COMPILER_NON_OVERRIDABLE_OPTIONS, TYPESCRIPT_BLACKLISTED_OPTIONS } from './default-values';
 import { intersection, omit } from 'lodash';
 import WARNING_MESSAGES from '../notifications/warning-message';
 import renderTemplate from '../utils/render-template';
 import { GeneralError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
+import Option from './option';
+import OptionSource from './option-source';
 
 const lazyRequire = require('import-lazy')(require);
 const typescript  = lazyRequire('typescript');
 
-export default class TypescriptConfiguration extends Configuration {
-    constructor (tsConfigPath) {
-        const basePath = process.cwd();
+interface TypescriptConfigurationOptions {
+    compilerOptions?: object;
+}
 
+export default class TypescriptConfiguration extends Configuration {
+    private readonly basePath: string;
+
+    public constructor (tsConfigPath: string | null) {
         super(tsConfigPath);
 
-        this.basePath = basePath;
+        this.basePath = process.cwd();
 
         for (const option in DEFAULT_TYPESCRIPT_COMPILER_OPTIONS)
-            this._ensureOptionWithValue(option, DEFAULT_TYPESCRIPT_COMPILER_OPTIONS[option], optionSource.configuration);
+            this._ensureOptionWithValue(option, DEFAULT_TYPESCRIPT_COMPILER_OPTIONS[option], OptionSource.Configuration);
     }
 
-    async init () {
-        const opts = await this._load();
+    public async init (): Promise<void> {
+        const opts = await this._load() as TypescriptConfigurationOptions;
 
         if (opts && opts.compilerOptions) {
             const parsedOpts = this._parseOptions(opts);
@@ -31,10 +36,10 @@ export default class TypescriptConfiguration extends Configuration {
             this.mergeOptions(parsedOpts);
         }
 
-        this._notifyThatOptionsCannotBeOverriden();
+        this._notifyThatOptionsCannotBeOverridden();
     }
 
-    async _isConfigurationFileExists () {
+    protected async _isConfigurationFileExists (): Promise<boolean> {
         const fileExists = await super._isConfigurationFileExists();
 
         if (!fileExists)
@@ -43,14 +48,14 @@ export default class TypescriptConfiguration extends Configuration {
         return true;
     }
 
-    _parseOptions (opts) {
+    public _parseOptions (opts: object): object {
         const parsed = typescript.parseJsonConfigFileContent(opts, typescript.sys, this.basePath, void 0, this._filePath);
 
         return omit(parsed.options, TYPESCRIPT_BLACKLISTED_OPTIONS);
     }
 
-    _notifyThatOptionsCannotBeOverriden () {
-        const warnedOptions = intersection(this._overridenOptions, TYPESCRIPT_COMPILER_NON_OVERRIDABLE_OPTIONS);
+    private _notifyThatOptionsCannotBeOverridden (): void {
+        const warnedOptions = intersection(this._overriddenOptions, TYPESCRIPT_COMPILER_NON_OVERRIDABLE_OPTIONS);
 
         if (!warnedOptions.length)
             return;
@@ -62,7 +67,7 @@ export default class TypescriptConfiguration extends Configuration {
         Configuration._showConsoleWarning(warningMessage);
     }
 
-    _setOptionValue (option, value) {
+    protected _setOptionValue (option: Option, value: OptionValue): void {
         if (TYPESCRIPT_COMPILER_NON_OVERRIDABLE_OPTIONS.indexOf(option.name) === -1)
             super._setOptionValue(option, value);
     }
