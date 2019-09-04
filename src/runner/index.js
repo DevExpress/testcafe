@@ -1,4 +1,4 @@
-import { resolve as resolvePath } from 'path';
+import { resolve as resolvePath, dirname } from 'path';
 import debug from 'debug';
 import promisifyEvent from 'promisify-event';
 import mapReverse from 'map-reverse';
@@ -17,6 +17,8 @@ import { addRunningTest, removeRunningTest, startHandlingTestErrors, stopHandlin
 import OPTION_NAMES from '../configuration/option-names';
 import FlagList from '../utils/flag-list';
 import prepareReporters from '../utils/prepare-reporters';
+import loadClientScripts from '../custom-client-scripts/load';
+import { setUniqueUrls } from '../custom-client-scripts/utils';
 
 const DEBUG_LOGGER = debug('testcafe:runner');
 
@@ -425,6 +427,19 @@ export default class Runner extends EventEmitter {
         return this;
     }
 
+    async _prepareClientScripts (tests, clientScripts) {
+        return Promise.all(tests.map(async test => {
+            if (test.isLegacy)
+                return;
+
+            let loadedTestClientScripts = await loadClientScripts(test.clientScripts, dirname(test.testFile.filename));
+
+            loadedTestClientScripts = clientScripts.concat(loadedTestClientScripts);
+
+            test.clientScripts = setUniqueUrls(loadedTestClientScripts);
+        }));
+    }
+
     run (options = {}) {
         this.apiMethodWasCalled.reset();
         this.configuration.mergeOptions(options);
@@ -433,7 +448,9 @@ export default class Runner extends EventEmitter {
         const runTaskPromise = Promise.resolve()
             .then(() => this._validateRunOptions())
             .then(() => this._createRunnableConfiguration())
-            .then(({ reporterPlugins, browserSet, tests, testedApp }) => {
+            .then(async ({ reporterPlugins, browserSet, tests, testedApp, commonClientScripts }) => {
+                await this._prepareClientScripts(tests, commonClientScripts);
+
                 return this._runTask(reporterPlugins, browserSet, tests, testedApp);
             });
 

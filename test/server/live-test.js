@@ -72,10 +72,11 @@ class BootstrapperMock extends LiveModeBootstrapper {
 
     createRunnableConfiguration () {
         return Promise.resolve({
-            reporterPlugins: [],
-            tests:           [],
-            browserSet:      {},
-            testedApp:       {}
+            reporterPlugins:     [],
+            tests:               [],
+            browserSet:          {},
+            testedApp:           {},
+            commonClientScripts: []
         });
     }
 }
@@ -197,7 +198,7 @@ describe('TestCafe Live', function () {
             .then(() => {
                 expect(runner.runCount).eql(1);
 
-                const { tests } = runner.liveConfigurationCache;
+                const { tests } = runner.configurationCache;
 
                 expect(tests.length).eql(1);
                 expect(tests[0].name).eql('basic');
@@ -245,7 +246,7 @@ describe('TestCafe Live', function () {
             .then(() => {
                 expect(runner.runCount).eql(2);
 
-                const tests = runner.liveConfigurationCache.tests;
+                const tests = runner.configurationCache.tests;
 
                 expect(tests.length).eql(2);
                 expect(tests[0].name).eql('multiple 1');
@@ -276,7 +277,7 @@ describe('TestCafe Live', function () {
                 expect(runner.runCount).eql(3);
                 expect(errors.length).eql(1);
 
-                const tests = runner.liveConfigurationCache.tests;
+                const tests = runner.configurationCache.tests;
 
                 expect(tests.length).eql(1);
                 expect(tests[0].name).eql('basic');

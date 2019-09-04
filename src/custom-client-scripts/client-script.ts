@@ -2,8 +2,10 @@ import { readFile } from '../utils/promisified-functions';
 import { GeneralError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
 import { isAbsolute, join } from 'path';
+// @ts-ignore Could not find a declaration file for module 'testcafe-hammerhead'
 import { RequestFilterRule, generateUniqueId } from 'testcafe-hammerhead';
 import { createHash } from 'crypto';
+import ClientScriptInit from './client-script-init';
 
 const BEAUTIFY_REGEXP = /[/.:\s\\]/g;
 const BEAUTIFY_CHAR   = '_';
@@ -15,7 +17,16 @@ const CONTENT_ELLIPSIS_STR   = '...';
 const URL_UNIQUE_PART_LENGTH = 7;
 
 export default class ClientScript {
-    constructor (init, basePath) {
+    private readonly init: null | string | ClientScriptInit;
+    public url: string;
+    public content: string;
+    public path: string | null;
+    public module: string | null;
+    public hash: Buffer | null;
+    public page: RequestFilterRule;
+    private readonly basePath: string;
+
+    public constructor (init: string | ClientScriptInit, basePath: string) {
         this.init     = init || null;
         this.url      = generateUniqueId(URL_UNIQUE_PART_LENGTH);
         this.content  = '';
@@ -26,7 +37,7 @@ export default class ClientScript {
         this.basePath = basePath;
     }
 
-    _resolvePath (path) {
+    private _resolvePath (path: string): string {
         let resolvedPath = null;
 
         if (isAbsolute(path))
@@ -41,7 +52,7 @@ export default class ClientScript {
         return resolvedPath;
     }
 
-    async _loadFromPath (path) {
+    private async _loadFromPath (path: string): Promise<void> {
         const resolvedPath = this._resolvePath(path);
 
         try {
@@ -55,7 +66,7 @@ export default class ClientScript {
         }
     }
 
-    async _loadFromModule (name) {
+    private async _loadFromModule (name: string): Promise<void> {
         let resolvedPath = null;
 
         try {
@@ -70,17 +81,17 @@ export default class ClientScript {
         this.module = name;
     }
 
-    _prepareUrl () {
+    private _prepareUrl (): void {
         this.url = this.url.replace(BEAUTIFY_REGEXP, BEAUTIFY_CHAR).toLowerCase();
     }
 
-    async load () {
+    public async load (): Promise<void> {
         if (this.init === null)
             throw new GeneralError(RUNTIME_ERRORS.clientScriptInitializerIsNotSpecified);
         else if (typeof this.init === 'string')
             await this._loadFromPath(this.init);
         else {
-            const { path: initPath, content: initContent, module: initModule, page: initPage } = this.init;
+            const { path: initPath, content: initContent, module: initModule, page: initPage } = this.init as ClientScript;
 
             if (initPath && initContent || initPath && initModule || initContent && initModule)
                 throw new GeneralError(RUNTIME_ERRORS.clientScriptInitializerMultipleContentSources);
@@ -100,11 +111,11 @@ export default class ClientScript {
         this._prepareUrl();
     }
 
-    _calculateHash () {
+    private _calculateHash (): void {
         this.hash = createHash('md5').update(this.content).digest();
     }
 
-    _contentToString () {
+    private _contentToString (): string {
         let displayContent = '';
 
         if (this.content.length <= CONTENT_STR_MAX_LENGTH - CONTENT_ELLIPSIS_STR.length)
@@ -115,7 +126,7 @@ export default class ClientScript {
         return `{ content: '${displayContent}' }`;
     }
 
-    toString () {
+    public toString (): string {
         if (!this.content)
             return EMPTY_CONTENT_STR;
 
@@ -125,7 +136,7 @@ export default class ClientScript {
         return `{ path: '${this.path}' }`;
     }
 
-    static get URL_UNIQUE_PART_LENGTH () {
+    public static get URL_UNIQUE_PART_LENGTH (): number {
         return URL_UNIQUE_PART_LENGTH;
     }
 }
