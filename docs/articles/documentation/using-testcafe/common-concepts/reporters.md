@@ -23,6 +23,7 @@ Here are some custom reporters developed by the community.
 * [NUnit](https://github.com/AndreyBelym/testcafe-reporter-nunit)
 * [Slack](https://github.com/Shafied/testcafe-reporter-slack)
 * [TeamCity](https://github.com/Soluto/testcafe-reporter-teamcity)
+* [Tesults](https://www.npmjs.com/package/testcafe-reporter-tesults)
 
 For more information about the reporters, see the following sections.
 
