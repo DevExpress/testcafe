@@ -71,6 +71,8 @@
     - name: Specifying Testing Metadata
       url: /documentation/test-api/test-code-structure.md#specifying-testing-metadata
       content:
+      - name: Run Tests by Metadata
+        url: /documentation/test-api/test-code-structure.md#run-tests-by-metadata
       - name: Using Metadata in Reports
         url: /documentation/test-api/test-code-structure.md#using-metadata-in-reports
     - name: Initialization and Clean-Up
