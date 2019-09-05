@@ -819,22 +819,22 @@
 <p>Specify the target device with the <code>device</code> parameter.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"chrome:emulation:device=iphone X"</span> tests/sample-fixture.js
 </code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span>
-    <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">'tests/sample-fixture.js'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="s1">'chrome:emulation:device=iphone X'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="dl">'</span><span class="s1">tests/sample-fixture.js</span><span class="dl">'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="dl">'</span><span class="s1">chrome:emulation:device=iphone X</span><span class="dl">'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">run</span><span class="p">();</span>
 </code></pre></div><h2><a class="anchor" id="emulate-a-screen-size"></a>Emulate a Screen Size <a class="permalink" href="#emulate-a-screen-size">#</a></h2>
 <p>You can configure the device emulator by providing <code>width</code>, <code>height</code>, <code>orientation</code>, etc.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"chrome:emulation:width=100;height=200;mobile=true;orientation=vertical;touch=true"</span> tests/sample-fixture.js
 </code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span>
-    <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">'tests/sample-fixture.js'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="s1">'chrome:emulation:width=100;height=200;mobile=true;orientation=vertical;touch=true'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="dl">'</span><span class="s1">tests/sample-fixture.js</span><span class="dl">'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="dl">'</span><span class="s1">chrome:emulation:width=100;height=200;mobile=true;orientation=vertical;touch=true</span><span class="dl">'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">run</span><span class="p">();</span>
 </code></pre></div><h2><a class="anchor" id="use-emulation-in-headless-mode"></a>Use Emulation in Headless Mode <a class="permalink" href="#use-emulation-in-headless-mode">#</a></h2>
 <p>You can combine both device emulation and headless mode.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"chrome:headless:emulation:device=iphone X;cdpPort=9223"</span> tests/sample-fixture.js
 </code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span>
-    <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">'tests/sample-fixture.js'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="s1">'chrome:headless:emulation:device=iphone X;cdpPort=9223'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="dl">'</span><span class="s1">tests/sample-fixture.js</span><span class="dl">'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="dl">'</span><span class="s1">chrome:headless:emulation:device=iphone X;cdpPort=9223</span><span class="dl">'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">run</span><span class="p">();</span>
 </code></pre></div><h2><a class="anchor" id="use-emulation-in-portable-chrome"></a>Use Emulation in Portable Chrome <a class="permalink" href="#use-emulation-in-portable-chrome">#</a></h2>
 <p>To enable device emulation in a portable Chrome, use the <a href="browser-support.html#locally-installed-browsers">browser alias</a>. The <code>path:</code> prefix does not work in this case.</p>
@@ -861,8 +861,8 @@
 <p><strong>bash</strong></p>
 
 <p>In <code>bash</code>, put a dollar sign before the argument to allow single quotes. Escape special characters with a backslash and use a double backslash for semicolons to escape them from the TestCafe argument parser:</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="nv">$'</span>chrome:emulation:userAgent<span class="o">=</span><span class="se">\'</span>Mozilla/5.0 <span class="o">(</span>Windows NT 10.0<span class="se">\\</span>; Win64<span class="se">\\</span>; x64<span class="o">)</span> AppleWebKit/537.36 <span class="o">(</span>KHTML, like Gecko<span class="o">)</span> Chrome/70.0.3538.77 Safari/537.36<span class="se">\'</span><span class="s1">' test.js
-</span></code></pre></div>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s1">$'chrome:emulation:userAgent=</span><span class="se">\'</span><span class="s1">Mozilla/5.0 (Windows NT 10.0</span><span class="se">\\</span><span class="s1">; Win64</span><span class="se">\\</span><span class="s1">; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36</span><span class="se">\'</span><span class="s1">'</span> test.js
+</code></pre></div>
 <p><strong>PowerShell</strong></p>
 
 <p>In <code>PowerShell</code>, escape special characters with a single quote and use a backslash for semicolons to escape them from the TestCafe argument parser:</p>

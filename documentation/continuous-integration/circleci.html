@@ -14,7 +14,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <title>Integrate TestCafe with CircelCI | TestCafe</title>
+  <title>Integrate TestCafe with CircleCI | TestCafe</title>
 
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
@@ -22,7 +22,7 @@
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://devexpress.github.io/testcafe/documentation/continuous-integration/circleci.html" />
-  <meta property="og:title" content="Integrate TestCafe with CircelCI | TestCafe" />
+  <meta property="og:title" content="Integrate TestCafe with CircleCI | TestCafe" />
 
   
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
@@ -710,8 +710,8 @@
 	<article class="doc">
 		<div class="post-content">
 
-			<h1>Integrate TestCafe with CircelCI</h1>
-<p>This topic describes how to integrate TestCafe tests into a <a href="https://circleci.com/">CircelCI</a> project&#39;s build process.</p>
+			<h1>Integrate TestCafe with CircleCI</h1>
+<p>This topic describes how to integrate TestCafe tests into a <a href="https://circleci.com/">CircleCI</a> project&#39;s build process.</p>
 <h2><a class="anchor" id="prerequisites"></a>Prerequisites <a class="permalink" href="#prerequisites">#</a></h2>
 <p>In this tutorial, we will fetch tests from a GitHub repository: <a href="https://github.com/DevExpress-Examples/testcafe-ci-demo">testcafe-ci-demo</a>. Fork this repository before we start.</p>
 <blockquote><div class="blockquote-content"><p>If you use a different version control system, make sure CircleCI supports it. To learn which systems it supports, refer to the <a href="https://circleci.com/docs/2.0/first-steps/">First Steps</a> document.</p>
@@ -746,64 +746,64 @@
 <li><p>Since you are going to perform browser testing, you need a virtual machine image that has all popular browsers pre-installed. So use the following image</p>
 <div class="highlight"><pre><code class="language-yml" data-lang="yml"><span class="c1"># Replace '10.14' with the latest Node.js LTS version</span>
 <span class="c1"># available on Docker Hub</span>
-<span class="pi">-</span> <span class="s">image</span><span class="pi">:</span> <span class="s">circleci/node:10.14-browsers</span>
+<span class="pi">-</span> <span class="na">image</span><span class="pi">:</span> <span class="s">circleci/node:10.14-browsers</span>
 </code></pre></div>
 <p>Replace <code>10.14</code> with the latest available Node.js LTS version. See the <a href="https://hub.docker.com/r/circleci/node/tags/">image&#39;s page</a> on Docker Hub for the list of available versions.</p></li>
 <li><p>Add a step that imports test results to the end of the YAML. The results will be displayed in the <strong>Test Summary</strong> section.</p>
-<div class="highlight"><pre><code class="language-yml" data-lang="yml"><span class="pi">-</span> <span class="s">store_test_results</span><span class="pi">:</span>
-    <span class="s">path</span><span class="pi">:</span> <span class="s">/tmp/test-results</span>
+<div class="highlight"><pre><code class="language-yml" data-lang="yml"><span class="pi">-</span> <span class="na">store_test_results</span><span class="pi">:</span>
+    <span class="na">path</span><span class="pi">:</span> <span class="s">/tmp/test-results</span>
 </code></pre></div></li>
 </ul>
 
 <p>The resulting YAML will look as follows.</p>
 <div class="highlight"><pre><code class="language-yml" data-lang="yml">
-<span class="s">version</span><span class="pi">:</span> <span class="s">2</span>
-<span class="s">jobs</span><span class="pi">:</span>
-  <span class="s">build</span><span class="pi">:</span>
-    <span class="s">docker</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="s">image</span><span class="pi">:</span> <span class="s">circleci/node:10.14-browsers</span>
+<span class="na">version</span><span class="pi">:</span> <span class="m">2</span>
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">build</span><span class="pi">:</span>
+    <span class="na">docker</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">image</span><span class="pi">:</span> <span class="s">circleci/node:10.14-browsers</span>
 
-    <span class="s">working_directory</span><span class="pi">:</span> <span class="s">~/repo</span>
+    <span class="na">working_directory</span><span class="pi">:</span> <span class="s">~/repo</span>
 
-    <span class="s">steps</span><span class="pi">:</span>
+    <span class="na">steps</span><span class="pi">:</span>
       <span class="pi">-</span> <span class="s">checkout</span>
-      <span class="pi">-</span> <span class="s">restore_cache</span><span class="pi">:</span>
-          <span class="s">keys</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">restore_cache</span><span class="pi">:</span>
+          <span class="na">keys</span><span class="pi">:</span>
           <span class="pi">-</span> <span class="s">v1-dependencies-{{ checksum "package.json" }}</span>
           <span class="pi">-</span> <span class="s">v1-dependencies-</span>
 
-      <span class="pi">-</span> <span class="s">run</span><span class="pi">:</span> <span class="s">yarn install</span>
+      <span class="pi">-</span> <span class="na">run</span><span class="pi">:</span> <span class="s">yarn install</span>
 
-      <span class="pi">-</span> <span class="s">save_cache</span><span class="pi">:</span>
-          <span class="s">paths</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">save_cache</span><span class="pi">:</span>
+          <span class="na">paths</span><span class="pi">:</span>
             <span class="pi">-</span> <span class="s">node_modules</span>
-          <span class="s">key</span><span class="pi">:</span> <span class="s">v1-dependencies-{{ checksum "package.json" }}</span>
+          <span class="na">key</span><span class="pi">:</span> <span class="s">v1-dependencies-{{ checksum "package.json" }}</span>
 
-      <span class="pi">-</span> <span class="s">run</span><span class="pi">:</span> <span class="s">yarn test</span>
+      <span class="pi">-</span> <span class="na">run</span><span class="pi">:</span> <span class="s">yarn test</span>
 
-      <span class="pi">-</span> <span class="s">store_test_results</span><span class="pi">:</span>
-          <span class="s">path</span><span class="pi">:</span> <span class="s">/tmp/test-results</span>
+      <span class="pi">-</span> <span class="na">store_test_results</span><span class="pi">:</span>
+          <span class="na">path</span><span class="pi">:</span> <span class="s">/tmp/test-results</span>
 
 </code></pre></div>
 <p>Next, add <code>testcafe</code> and <code>testcafe-reporter-xunit</code> to project&#39;s development dependencies. Open the repository root and execute the following command:</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm install --save-dev testcafe testcafe-reporter-xunit
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm <span class="nb">install</span> <span class="nt">--save-dev</span> testcafe testcafe-reporter-xunit
 </code></pre></div>
 <p>This command installs the <code>testcafe</code> and <code>testcafe-reporter-xunit</code> modules locally and adds them to <code>package.json</code>.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-  </span><span class="nt">"devDependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-      </span><span class="nt">"testcafe"</span><span class="p">:</span><span class="w"> </span><span class="s2">"*"</span><span class="p">,</span><span class="w">
-      </span><span class="nt">"testcafe-reporter-xunit"</span><span class="p">:</span><span class="w"> </span><span class="s2">"*"</span><span class="w">
+  </span><span class="nl">"devDependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"testcafe"</span><span class="p">:</span><span class="w"> </span><span class="s2">"*"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"testcafe-reporter-xunit"</span><span class="p">:</span><span class="w"> </span><span class="s2">"*"</span><span class="w">
   </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>Provide a command to run tests in the <code>scripts</code> section.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-  </span><span class="nt">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="nt">"test"</span><span class="p">:</span><span class="w"> </span><span class="s2">"testcafe chrome:headless tests/**/* -r xunit:/tmp/test-results/res.xml"</span><span class="w">
+  </span><span class="nl">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"test"</span><span class="p">:</span><span class="w"> </span><span class="s2">"testcafe chrome:headless tests/**/* -r xunit:/tmp/test-results/res.xml"</span><span class="w">
   </span><span class="p">},</span><span class="w">
-  </span><span class="nt">"devDependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-      </span><span class="nt">"testcafe"</span><span class="p">:</span><span class="w"> </span><span class="s2">"*"</span><span class="p">,</span><span class="w">
-      </span><span class="nt">"testcafe-reporter-xunit"</span><span class="p">:</span><span class="w"> </span><span class="s2">"*"</span><span class="w">
+  </span><span class="nl">"devDependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"testcafe"</span><span class="p">:</span><span class="w"> </span><span class="s2">"*"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"testcafe-reporter-xunit"</span><span class="p">:</span><span class="w"> </span><span class="s2">"*"</span><span class="w">
   </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>

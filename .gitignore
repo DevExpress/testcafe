@@ -4,3 +4,5 @@ site
 .publish
 .idea
 lib
+package-lock.json
+Gemfile.lock

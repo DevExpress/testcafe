@@ -1115,7 +1115,7 @@
 <p>TestCafe allows you to write tests with <a href="https://coffeescript.org/">CoffeeScript</a>.</p>
 
 <p><strong>Example</strong></p>
-<div class="highlight"><pre><code class="language-coffee" data-lang="coffee"><span class="nx">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s">'testcafe'</span>
+<div class="highlight"><pre><code class="language-coffee" data-lang="coffee"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s">'testcafe'</span>
 
 <span class="nx">fixture</span> <span class="s">'CoffeeScript Example'</span>
     <span class="p">.</span><span class="na">page</span> <span class="s">'https://devexpress.github.io/testcafe/example/'</span>
@@ -1123,7 +1123,7 @@
 <span class="nx">nameInput</span> <span class="o">=</span> <span class="nx">Selector</span> <span class="s">'#developer-name'</span>
 
 <span class="nx">test</span> <span class="s">'Test'</span><span class="p">,</span> <span class="p">(</span><span class="nx">t</span><span class="p">)</span> <span class="o">=&gt;</span>
-    <span class="nx">await</span> <span class="nx">t</span>
+    <span class="k">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="na">typeText</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">,</span> <span class="s">'Peter'</span><span class="p">)</span>
         <span class="p">.</span><span class="na">typeText</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">,</span> <span class="s">'Paker'</span><span class="p">,</span> <span class="p">{</span> <span class="na">replace</span><span class="o">:</span> <span class="no">true</span> <span class="p">})</span>
         <span class="p">.</span><span class="na">typeText</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">,</span> <span class="s">'r'</span><span class="p">,</span> <span class="p">{</span> <span class="na">caretPos</span><span class="o">:</span> <span class="mi">2</span> <span class="p">})</span>

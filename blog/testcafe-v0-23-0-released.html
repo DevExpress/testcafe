@@ -431,7 +431,7 @@
 <p>You can now configure TestCafe to stop the entire test run after the first test fail. This saves your time when you fix problems with your tests one by one.</p>
 
 <p>Specify the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--sf---stop-on-first-fail">--sf</a> flag to enable this feature when you run tests from the command line.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests --sf
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests <span class="nt">--sf</span>
 </code></pre></div>
 <p>In the API, use the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#run">stopOnFirstFail</a> option.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">run</span><span class="p">({</span> <span class="na">stopOnFirstFail</span><span class="p">:</span> <span class="kc">true</span> <span class="p">})</span>

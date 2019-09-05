@@ -1142,21 +1142,21 @@ The <code>dependencies</code> object&#39;s properties are added to the function&
 <p>Use <code>dependencies</code> instead of the function&#39;s arguments if you do not need to pass new values every time you call the selector.</p>
 
 <p>The following sample demonstrates a selector (<code>element</code>) that uses a server-side object passed as a dependency (<code>customId</code>) to obtain a page element.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">persistentId</span> <span class="o">=</span> <span class="p">{</span> <span class="na">key</span><span class="p">:</span> <span class="s1">'value'</span> <span class="p">};</span>
+<span class="kd">const</span> <span class="nx">persistentId</span> <span class="o">=</span> <span class="p">{</span> <span class="na">key</span><span class="p">:</span> <span class="dl">'</span><span class="s1">value</span><span class="dl">'</span> <span class="p">};</span>
 
-<span class="kr">const</span> <span class="nx">element</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="kd">const</span> <span class="nx">element</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">getElementByCustomId</span><span class="p">(</span><span class="nx">persistentId</span><span class="p">);</span>
 <span class="p">},</span> <span class="p">{</span>
     <span class="na">dependencies</span><span class="p">:</span> <span class="p">{</span> <span class="nx">persistentId</span> <span class="p">}</span>
 <span class="p">});</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="na">http</span><span class="p">:</span><span class="c1">//www.example.com/`;</span>
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://www.example.com/`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My Test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">element</span><span class="p">);</span>
+<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">My Test</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">element</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div><h2><a class="anchor" id="optionstimeout"></a>options.timeout <a class="permalink" href="#optionstimeout">#</a></h2>
 <p><strong>Type</strong>: Number</p>
@@ -1176,13 +1176,13 @@ or the <a href="../../../using-testcafe/command-line-interface.html#--selector-t
 
 <ul>
 <li><p>a property is obtained from the selector;</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">width</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#element'</span><span class="p">,</span> <span class="p">{</span> <span class="na">visibilityCheck</span><span class="p">:</span> <span class="kc">true</span> <span class="p">}).</span><span class="nx">clientWidth</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">width</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#element</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span> <span class="na">visibilityCheck</span><span class="p">:</span> <span class="kc">true</span> <span class="p">}).</span><span class="nx">clientWidth</span><span class="p">;</span>
 </code></pre></div></li>
 <li><p>a selector property is passed to an <a href="../../assertions/">assertion</a> as its actual value;</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="s1">'#element'</span><span class="p">,</span> <span class="p">{</span> <span class="na">visibilityCheck</span><span class="p">:</span> <span class="kc">true</span> <span class="p">}).</span><span class="nx">clientWidth</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="mi">400</span><span class="p">);</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#element</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span> <span class="na">visibilityCheck</span><span class="p">:</span> <span class="kc">true</span> <span class="p">}).</span><span class="nx">clientWidth</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="mi">400</span><span class="p">);</span>
 </code></pre></div></li>
 <li><p>a selector is evaluated with the <code>await</code> keyword;</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">snapshot</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#element'</span><span class="p">,</span> <span class="p">{</span> <span class="na">visibilityCheck</span><span class="p">:</span> <span class="kc">true</span> <span class="p">})();</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">snapshot</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#element</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span> <span class="na">visibilityCheck</span><span class="p">:</span> <span class="kc">true</span> <span class="p">})();</span>
 </code></pre></div></li>
 </ul>
 
@@ -1204,7 +1204,7 @@ TestCafe <a href="../../built-in-waiting-mechanisms.html#wait-mechanism-for-acti
 </code></pre></div>
 <p>When a selector with <code>visibilitycheck</code> enabled is tested for an element existance
 or the number of matching elements, invisible elements also count.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">count</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'div'</span><span class="p">,</span> <span class="p">{</span> <span class="na">visibilityCheck</span><span class="p">:</span> <span class="kc">true</span> <span class="p">}).</span><span class="nx">count</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">count</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">div</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span> <span class="na">visibilityCheck</span><span class="p">:</span> <span class="kc">true</span> <span class="p">}).</span><span class="nx">count</span><span class="p">;</span>
 
 <span class="c1">// returns 3 since the visibilityCheck option</span>
 <span class="c1">// does not affect the selector's matching set</span>
@@ -1221,19 +1221,19 @@ use <a href="functional-style-selectors.html#filtervisible">filterVisible</a> an
 <p><code>with</code> returns a new selector with a different set of options that includes options from the original selector and new <code>options</code> that overwrite them.</p>
 
 <p>The sample below shows how to overwrite the selector options so that it waits for the selected element to become visible.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">elementWithId</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">id</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">id</span><span class="p">));</span>
+<span class="kd">const</span> <span class="nx">elementWithId</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">id</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">id</span><span class="p">));</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//www.example.com/`;</span>
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://www.example.com/`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My Test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">visibleElementWithId</span> <span class="o">=</span> <span class="nx">elementWithId</span><span class="p">.</span><span class="kd">with</span><span class="p">({</span>
+<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">My Test</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">visibleElementWithId</span> <span class="o">=</span> <span class="nx">elementWithId</span><span class="p">.</span><span class="kd">with</span><span class="p">({</span>
         <span class="na">visibilityCheck</span><span class="p">:</span> <span class="kc">true</span>
     <span class="p">});</span>
 
-    <span class="kr">const</span> <span class="nx">visibleButton</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">visibleElementWithId</span><span class="p">(</span><span class="s1">'submit-button'</span><span class="p">);</span>
+    <span class="kd">const</span> <span class="nx">visibleButton</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">visibleElementWithId</span><span class="p">(</span><span class="dl">'</span><span class="s1">submit-button</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div>
 

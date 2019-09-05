@@ -436,14 +436,14 @@
 
 <ul>
 <li><p>the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--ts-config-path-path">--ts-config-path</a> command line parameter,</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests --ts-config-path /Users/s.johnson/testcafe/tsconfig.json
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests <span class="nt">--ts-config-path</span> /Users/s.johnson/testcafe/tsconfig.json
 </code></pre></div></li>
 <li><p>the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#tsconfigpath">runner.tsConfigPath</a> API method,</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">tsConfigPath</span><span class="p">(</span><span class="s1">'/Users/s.johnson/testcafe/tsconfig.json'</span><span class="p">);</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">tsConfigPath</span><span class="p">(</span><span class="dl">'</span><span class="s1">/Users/s.johnson/testcafe/tsconfig.json</span><span class="dl">'</span><span class="p">);</span>
 </code></pre></div></li>
 <li><p>the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#tsconfigpath">tsConfigPath</a> configuration file property.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"tsConfigPath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/Users/s.johnson/testcafe/tsconfig.json"</span><span class="w">
+    </span><span class="nl">"tsConfigPath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/Users/s.johnson/testcafe/tsconfig.json"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div></li>
 </ul>

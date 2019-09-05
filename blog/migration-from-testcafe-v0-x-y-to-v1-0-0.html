@@ -444,41 +444,41 @@
 <p>You can now load tests dynamically without additional customization. The following example illustrates how tests can be imported from an external library:</p>
 
 <p><strong>external-lib.js</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">export</span> <span class="k">default</span> <span class="kd">function</span> <span class="nx">runFixture</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">url</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">export</span> <span class="k">default</span> <span class="kd">function</span> <span class="nx">runFixture</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">url</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">fixture</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="nx">url</span><span class="p">);</span>
 
-    <span class="nx">test</span><span class="p">(</span><span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="nx">url</span><span class="p">}</span> <span class="nx">test</span><span class="err">`</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">test</span><span class="p">(</span><span class="s2">`</span><span class="p">${</span><span class="nx">url</span><span class="p">}</span><span class="s2"> test`</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
         <span class="c1">// ...</span>
     <span class="p">});</span>
 <span class="p">}</span>
 </code></pre></div>
 <p><strong>test.js</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="nx">runFixture</span> <span class="nx">from</span> <span class="s1">'./external-lib'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="nx">runFixture</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./external-lib</span><span class="dl">'</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">fixtureName</span> <span class="o">=</span> <span class="s1">'My fixture'</span><span class="p">;</span>
-<span class="kr">const</span> <span class="nx">url</span> <span class="o">=</span> <span class="s1">'https://testPage'</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">fixtureName</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">My fixture</span><span class="dl">'</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">url</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">https://testPage</span><span class="dl">'</span><span class="p">;</span>
 
 <span class="nx">runFixture</span><span class="p">(</span><span class="nx">fixtureName</span><span class="p">,</span> <span class="nx">url</span><span class="p">);</span>
 </code></pre></div><h2><a class="anchor" id="programming-interface-multiple-method-calls-prohibited"></a>Programming Interface: Multiple Method Calls Prohibited <a class="permalink" href="#programming-interface-multiple-method-calls-prohibited">#</a></h2>
 <p>Previous versions allowed you to call the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#src">runner.src</a>, <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#browsers">runner.browsers</a> and <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#reporter">runner.reporter</a> methods several times to specify multiple test files, browsers or reporters.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">stream</span> <span class="o">=</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">createWriteStream</span><span class="p">(</span><span class="s1">'report.json'</span><span class="p">);</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">stream</span> <span class="o">=</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">createWriteStream</span><span class="p">(</span><span class="dl">'</span><span class="s1">report.json</span><span class="dl">'</span><span class="p">);</span>
 
 <span class="nx">runner</span>
-    <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">'/home/user/tests/fixture1.js'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">'fixture5.js'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="s1">'chrome'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="s1">'firefox:headless'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">reporter</span><span class="p">(</span><span class="s1">'minimal'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">reporter</span><span class="p">(</span><span class="s1">'json'</span><span class="p">,</span> <span class="nx">stream</span><span class="p">);</span>
+    <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="dl">'</span><span class="s1">/home/user/tests/fixture1.js</span><span class="dl">'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="dl">'</span><span class="s1">fixture5.js</span><span class="dl">'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="dl">'</span><span class="s1">chrome</span><span class="dl">'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="dl">'</span><span class="s1">firefox:headless</span><span class="dl">'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">reporter</span><span class="p">(</span><span class="dl">'</span><span class="s1">minimal</span><span class="dl">'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">reporter</span><span class="p">(</span><span class="dl">'</span><span class="s1">json</span><span class="dl">'</span><span class="p">,</span> <span class="nx">stream</span><span class="p">);</span>
 </code></pre></div>
 <p>Starting with v1.0.0, pass arrays to these methods to specify multiple values.</p>
 
 <p>To use a reporter that writes to a file, add a <code>{ name, output }</code> object to an array (see the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#reporter">runner.reporter</a> description for details).</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span>
-    <span class="p">.</span><span class="nx">src</span><span class="p">([</span><span class="s1">'/home/user/tests/fixture1.js'</span><span class="p">,</span> <span class="s1">'fixture5.js'</span><span class="p">])</span>
-    <span class="p">.</span><span class="nx">browsers</span><span class="p">([</span><span class="s1">'chrome'</span><span class="p">,</span> <span class="s1">'firefox:headless'</span><span class="p">])</span>
-    <span class="p">.</span><span class="nx">reporter</span><span class="p">([</span><span class="s1">'minimal'</span><span class="p">,</span> <span class="p">{</span> <span class="na">name</span><span class="p">:</span> <span class="s1">'json'</span><span class="p">,</span> <span class="na">output</span><span class="p">:</span> <span class="s1">'report.json'</span> <span class="p">}]);</span>
+    <span class="p">.</span><span class="nx">src</span><span class="p">([</span><span class="dl">'</span><span class="s1">/home/user/tests/fixture1.js</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">fixture5.js</span><span class="dl">'</span><span class="p">])</span>
+    <span class="p">.</span><span class="nx">browsers</span><span class="p">([</span><span class="dl">'</span><span class="s1">chrome</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">firefox:headless</span><span class="dl">'</span><span class="p">])</span>
+    <span class="p">.</span><span class="nx">reporter</span><span class="p">([</span><span class="dl">'</span><span class="s1">minimal</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span> <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">json</span><span class="dl">'</span><span class="p">,</span> <span class="na">output</span><span class="p">:</span> <span class="dl">'</span><span class="s1">report.json</span><span class="dl">'</span> <span class="p">}]);</span>
 </code></pre></div><h3><a class="anchor" id="what-has-improved"></a>What Has Improved <a class="permalink" href="#what-has-improved">#</a></h3>
 <p>The <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html">configuration file</a> we implemented is consistent with the API and command line interface.</p>
 <h2><a class="anchor" id="custom-request-hooks-asynchronous-api"></a>Custom Request Hooks: Asynchronous API <a class="permalink" href="#custom-request-hooks-asynchronous-api">#</a></h2>
@@ -487,19 +487,19 @@
 <p>If the <a href="https://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html#the-onrequest-method">onRequest</a> or <a href="https://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html#the-onresponse-method">onResponse</a> method in your custom hook returns a Promise, TestCafe now waits for this Promise to resolve.</p>
 
 <p>You should add the <code>async</code> keyword to the asynchronous <a href="https://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html#the-onrequest-method">onRequest</a> and <a href="https://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html#the-onresponse-method">onResponse</a> method declarations.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">RequestHook</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">RequestHook</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 
-<span class="kr">class</span> <span class="nx">MyRequestHook</span> <span class="kr">extends</span> <span class="nx">RequestHook</span> <span class="p">{</span>
-    <span class="nx">constructor</span> <span class="p">(</span><span class="nx">requestFilterRules</span><span class="p">,</span> <span class="nx">responseEventConfigureOpts</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kr">super</span><span class="p">(</span><span class="nx">requestFilterRules</span><span class="p">,</span> <span class="nx">responseEventConfigureOpts</span><span class="p">);</span>
+<span class="kd">class</span> <span class="nx">MyRequestHook</span> <span class="kd">extends</span> <span class="nx">RequestHook</span> <span class="p">{</span>
+    <span class="kd">constructor</span> <span class="p">(</span><span class="nx">requestFilterRules</span><span class="p">,</span> <span class="nx">responseEventConfigureOpts</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">super</span><span class="p">(</span><span class="nx">requestFilterRules</span><span class="p">,</span> <span class="nx">responseEventConfigureOpts</span><span class="p">);</span>
         <span class="c1">// ...</span>
     <span class="p">}</span>
 
-    <span class="nx">async</span> <span class="nx">onRequest</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">async</span> <span class="nx">onRequest</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
         <span class="c1">// ...</span>
     <span class="p">}</span>
 
-    <span class="nx">async</span> <span class="nx">onResponse</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">async</span> <span class="nx">onResponse</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
         <span class="c1">// ...</span>
     <span class="p">}</span>
 <span class="p">}</span>
@@ -511,19 +511,19 @@
 <p>Similarly to <a href="#custom-request-hooks-asynchronous-api">request hooks</a>, if any of the custom reporter&#39;s methods (<a href="https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reporttaskstart">reportTaskStart</a>, <a href="https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reportfixturestart">reportFixtureStart</a>, <a href="https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reporttestdone">reportTestDone</a> or <a href="https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reporttaskdone">reportTaskDone</a>) returns a Promise, this Promise is now awaited.</p>
 
 <p>Since the reporter methods are now asynchronous, add the <code>async</code> keyword to their declarations.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">async</span> <span class="nx">reportTaskStart</span> <span class="p">(</span><span class="nx">startTime</span><span class="p">,</span> <span class="nx">userAgents</span><span class="p">,</span> <span class="nx">testCount</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">async</span> <span class="nx">reportTaskStart</span> <span class="p">(</span><span class="nx">startTime</span><span class="p">,</span> <span class="nx">userAgents</span><span class="p">,</span> <span class="nx">testCount</span><span class="p">)</span> <span class="p">{</span>
     <span class="c1">// ...</span>
 <span class="p">},</span>
 
-<span class="nx">async</span> <span class="nx">reportFixtureStart</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">path</span><span class="p">,</span> <span class="nx">meta</span><span class="p">)</span> <span class="p">{</span>
+<span class="k">async</span> <span class="nx">reportFixtureStart</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">path</span><span class="p">,</span> <span class="nx">meta</span><span class="p">)</span> <span class="p">{</span>
     <span class="c1">// ...</span>
 <span class="p">},</span>
 
-<span class="nx">async</span> <span class="nx">reportTestDone</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">testRunInfo</span><span class="p">,</span> <span class="nx">meta</span><span class="p">)</span> <span class="p">{</span>
+<span class="k">async</span> <span class="nx">reportTestDone</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">testRunInfo</span><span class="p">,</span> <span class="nx">meta</span><span class="p">)</span> <span class="p">{</span>
     <span class="c1">// ...</span>
 <span class="p">},</span>
 
-<span class="nx">async</span> <span class="nx">reportTaskDone</span> <span class="p">(</span><span class="nx">endTime</span><span class="p">,</span> <span class="nx">passed</span><span class="p">,</span> <span class="nx">warnings</span><span class="p">,</span> <span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+<span class="k">async</span> <span class="nx">reportTaskDone</span> <span class="p">(</span><span class="nx">endTime</span><span class="p">,</span> <span class="nx">passed</span><span class="p">,</span> <span class="nx">warnings</span><span class="p">,</span> <span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
     <span class="c1">// ...</span>
 <span class="p">}</span>
 </code></pre></div><h3><a class="anchor" id="what-has-improved"></a>What Has Improved <a class="permalink" href="#what-has-improved">#</a></h3>

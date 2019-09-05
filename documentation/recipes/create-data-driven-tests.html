@@ -791,51 +791,51 @@
 <p>Assume you have a <code>data.json</code> file with data objects (<em>test cases</em>) that consist of two input values (<code>name</code> and <code>comment</code>) and a value that specifies the expected result (<code>resultText</code>).</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">[</span><span class="w">
     </span><span class="p">{</span><span class="w">
-        </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"John Heart"</span><span class="p">,</span><span class="w">
-        </span><span class="nt">"comment"</span><span class="p">:</span><span class="w"> </span><span class="s2">"I love TestCafe!"</span><span class="p">,</span><span class="w">
-        </span><span class="nt">"resultText"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Thank you, John Heart!"</span><span class="w">
+        </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"John Heart"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"comment"</span><span class="p">:</span><span class="w"> </span><span class="s2">"I love TestCafe!"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"resultText"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Thank you, John Heart!"</span><span class="w">
     </span><span class="p">},</span><span class="w">
     </span><span class="p">{</span><span class="w">
-        </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Olivia Peyton"</span><span class="p">,</span><span class="w">
-        </span><span class="nt">"comment"</span><span class="p">:</span><span class="w"> </span><span class="s2">"TestCafe is awesome!"</span><span class="p">,</span><span class="w">
-        </span><span class="nt">"resultText"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Thank you, Olivia Peyton!"</span><span class="w">
+        </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Olivia Peyton"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"comment"</span><span class="p">:</span><span class="w"> </span><span class="s2">"TestCafe is awesome!"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"resultText"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Thank you, Olivia Peyton!"</span><span class="w">
     </span><span class="p">}</span><span class="w">
 </span><span class="p">]</span><span class="w">
 </span></code></pre></div>
 <p>To create data-driven tests, iterate through the test cases, call the <a href="../test-api/test-code-structure.html#tests">test</a> method at each iteration and write <a href="../test-api/actions/">test actions</a> and <a href="../test-api/assertions/">assertions</a> that use test case parameters.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">dataSet</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'./data.json'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">dataSet</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">./data.json</span><span class="dl">'</span><span class="p">);</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">Data</span><span class="o">-</span><span class="nx">Driven</span> <span class="nx">Tests</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">https</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`;</span>
+<span class="nx">fixture</span> <span class="s2">`Data-Driven Tests`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`https://devexpress.github.io/testcafe/example/`</span><span class="p">;</span>
 
 <span class="nx">dataSet</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">data</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">test</span><span class="p">(</span><span class="err">`</span><span class="nx">Enter</span> <span class="s1">'${data.name}'</span><span class="err">`</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="nx">await</span> <span class="nx">t</span>
-            <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">,</span> <span class="nx">data</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span>
-            <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#tried-test-cafe'</span><span class="p">)</span>
-            <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="s1">'#comments'</span><span class="p">,</span> <span class="nx">data</span><span class="p">.</span><span class="nx">comment</span><span class="p">)</span>
-            <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">)</span>
-            <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="s1">'#article-header'</span><span class="p">).</span><span class="nx">textContent</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">resultText</span><span class="p">);</span>
+    <span class="nx">test</span><span class="p">(</span><span class="s2">`Enter '</span><span class="p">${</span><span class="nx">data</span><span class="p">.</span><span class="nx">name</span><span class="p">}</span><span class="s2">'`</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="k">await</span> <span class="nx">t</span>
+            <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="dl">'</span><span class="s1">#developer-name</span><span class="dl">'</span><span class="p">,</span> <span class="nx">data</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span>
+            <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="dl">'</span><span class="s1">#tried-test-cafe</span><span class="dl">'</span><span class="p">)</span>
+            <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="dl">'</span><span class="s1">#comments</span><span class="dl">'</span><span class="p">,</span> <span class="nx">data</span><span class="p">.</span><span class="nx">comment</span><span class="p">)</span>
+            <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="dl">'</span><span class="s1">#submit-button</span><span class="dl">'</span><span class="p">)</span>
+            <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#article-header</span><span class="dl">'</span><span class="p">).</span><span class="nx">textContent</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">resultText</span><span class="p">);</span>
     <span class="p">});</span>
 <span class="p">});</span>
 </code></pre></div><blockquote><div class="blockquote-content"><p><strong>Tip:</strong> you can store test cases in objects, arrays, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map">Maps</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set">Sets</a>, etc., and iterate through them as you need. You can place them in a test file or import from <code>.json</code>, <code>.js</code>, <code>.ts</code>, etc.</p>
 </div></blockquote>
 <p>A test case can include multiple tests:</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">dataSet</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">data</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">test</span><span class="p">(</span><span class="err">`</span><span class="nx">Check</span> <span class="nx">one</span> <span class="nx">thing</span><span class="err">`</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">test</span><span class="p">(</span><span class="s2">`Check one thing`</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
         <span class="c1">// ...</span>
     <span class="p">});</span>
 
-    <span class="nx">test</span><span class="p">(</span><span class="err">`</span><span class="nx">Check</span> <span class="nx">something</span> <span class="k">else</span><span class="err">`</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">test</span><span class="p">(</span><span class="s2">`Check something else`</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
         <span class="c1">// ...</span>
     <span class="p">});</span>
 <span class="p">});</span>
 </code></pre></div>
 <p>You can also introduce conditional actions that depend on test case parameters:</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">if</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">shouldClick</span><span class="p">)</span>
-    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">page</span><span class="p">.</span><span class="nx">button</span><span class="p">);</span>
+    <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">page</span><span class="p">.</span><span class="nx">button</span><span class="p">);</span>
 </code></pre></div>
 
 		</div>

@@ -721,12 +721,12 @@
 <h2><a class="anchor" id="option-1---use-testcafe-docker-image"></a>Option 1 - Use TestCafe Docker Image <a class="permalink" href="#option-1---use-testcafe-docker-image">#</a></h2>
 <p>Open the <code>.gitlab-ci.yml</code> file that stores the GitLab CI configuration. If this file does not exist, create it in the repository&#39;s root directory.</p>
 
-<p>Create a new <a href="https://docs.gitlab.com/ee/ci/pipelines.html#jobs">job</a>. To do this, add the following settings to <code>.gitlab-ci.yml</code> at the top level:</p>
-<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="s">e2e_tests</span><span class="pi">:</span>
-  <span class="s">image</span><span class="pi">:</span>
-    <span class="s">name</span><span class="pi">:</span> <span class="s">testcafe/testcafe</span>
-    <span class="s">entrypoint</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">/bin/sh"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">-c"</span><span class="pi">]</span>
-  <span class="s">script</span><span class="pi">:</span>
+<p>Create a new <a href="https://docs.gitlab.com/ee/ci/pipelines.html">job</a>. To do this, add the following settings to <code>.gitlab-ci.yml</code> at the top level:</p>
+<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="na">e2e_tests</span><span class="pi">:</span>
+  <span class="na">image</span><span class="pi">:</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">testcafe/testcafe</span>
+    <span class="na">entrypoint</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">/bin/sh"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">-c"</span><span class="pi">]</span>
+  <span class="na">script</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="s">/opt/testcafe/docker/testcafe-docker.sh firefox:headless,chromium tests/**/*</span>
 </code></pre></div>
 <ul>
@@ -739,41 +739,41 @@
 
 <p>See <a href="https://docs.gitlab.com/ee/ci/yaml/README.html">Configuration of your jobs with .gitlab-ci.yml</a> for more information about the <code>.gitlab-ci.yml</code> syntax.</p>
 
-<p>Commit <code>.gitlab-ci.yml</code> and push the changes to the repository. This creates a new <a href="https://docs.gitlab.com/ee/ci/pipelines.html#jobs">job</a> that any <a href="https://docs.gitlab.com/ee/ci/runners/README.html">GitLab Runner</a> can execute.</p>
+<p>Commit <code>.gitlab-ci.yml</code> and push the changes to the repository. This creates a new job that any <a href="https://docs.gitlab.com/ee/ci/runners/README.html">GitLab Runner</a> can execute.</p>
 <h2><a class="anchor" id="option-2---install-testcafe-on-a-docker-image"></a>Option 2 - Install TestCafe on a Docker Image <a class="permalink" href="#option-2---install-testcafe-on-a-docker-image">#</a></h2>
 <p>You can install TestCafe from <code>npm</code> before tests are run if you use a Docker image that does not have TestCafe pre-installed.</p>
 
 <p>First, add TestCafe to your project development dependencies. Open the repository root and execute the following command:</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm install --save-dev testcafe
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm <span class="nb">install</span> <span class="nt">--save-dev</span> testcafe
 </code></pre></div>
 <p>This installs the latest TestCafe version locally and adds it to the <code>devDependencies</code> section in the <code>package.json</code> file.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"devDependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="nt">"testcafe"</span><span class="p">:</span><span class="w"> </span><span class="s2">"*"</span><span class="w">
+    </span><span class="nl">"devDependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"testcafe"</span><span class="p">:</span><span class="w"> </span><span class="s2">"*"</span><span class="w">
     </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>The test run command that uses TestCafe should be also added to <code>package.json</code> to the <code>scripts</code> section because TestCafe is installed locally.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="nt">"test"</span><span class="p">:</span><span class="w"> </span><span class="s2">"testcafe chrome:headless tests/**/*"</span><span class="w">
+    </span><span class="nl">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"test"</span><span class="p">:</span><span class="w"> </span><span class="s2">"testcafe chrome:headless tests/**/*"</span><span class="w">
     </span><span class="p">},</span><span class="w">
 
-    </span><span class="nt">"devDependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="nt">"testcafe"</span><span class="p">:</span><span class="w"> </span><span class="s2">"*"</span><span class="w">
+    </span><span class="nl">"devDependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"testcafe"</span><span class="p">:</span><span class="w"> </span><span class="s2">"*"</span><span class="w">
     </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>This allows you to use <code>npm test</code> to run tests.</p>
 
-<p>Finally, open <code>.gitlab-ci.yml</code> (or create it in the repository root) and add a <a href="https://docs.gitlab.com/ee/ci/pipelines.html#jobs">job</a> that installs TestCafe and runs tests.</p>
-<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="s">e2e_tests</span><span class="pi">:</span>
+<p>Finally, open <code>.gitlab-ci.yml</code> (or create it in the repository root) and add a job that installs TestCafe and runs tests.</p>
+<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="na">e2e_tests</span><span class="pi">:</span>
   <span class="c1"># Replace '10.14' with the latest Node.js LTS version</span>
   <span class="c1"># available on Docker Hub</span>
-  <span class="s">image</span><span class="pi">:</span> <span class="s">circleci/node:10.14-browsers</span>
-  <span class="s">before_script</span><span class="pi">:</span>
+  <span class="na">image</span><span class="pi">:</span> <span class="s">circleci/node:10.14-browsers</span>
+  <span class="na">before_script</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="s">npm install</span>
-  <span class="s">script</span><span class="pi">:</span>
+  <span class="na">script</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="s">npm test</span>
 </code></pre></div>
 <ul>

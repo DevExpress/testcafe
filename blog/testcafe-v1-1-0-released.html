@@ -431,8 +431,8 @@
 <p>TypeScript test files can now use the new syntax features introduced in <a href="https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-0.html">TypeScript 3.0</a> and <a href="https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-3.html">TypeScript 3.3</a>.</p>
 <h3><a class="anchor" id="enhanced-typescript-definitions-for-client-functions-3431-by-vitalics"></a>⚙ Enhanced TypeScript Definitions for Client Functions (<a href="https://github.com/DevExpress/testcafe/pull/3431">#3431</a>) by <a href="https://github.com/vitalics">@vitalics</a> <a class="permalink" href="#enhanced-typescript-definitions-for-client-functions-3431-by-vitalics">#</a></h3>
 <p>The updated type definitions allow the TypeScript compiler to determine client function&#39;s return value type. Static typing now warns you when you call wrong methods for the return value.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">getFoo</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="mi">42</span><span class="p">);</span>
-<span class="kr">const</span> <span class="nx">foo</span>    <span class="o">=</span> <span class="nx">await</span> <span class="nx">getFoo</span><span class="p">();</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">getFoo</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="mi">42</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">foo</span>    <span class="o">=</span> <span class="k">await</span> <span class="nx">getFoo</span><span class="p">();</span>
 <span class="nx">foo</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/foo/</span><span class="p">);</span>
 </code></pre></div>
 <p>Before v1.1.0, an error occurred during test execution:</p>

@@ -429,7 +429,7 @@
 <!--more-->
 <h2><a class="anchor" id="enhancements"></a>Enhancements <a class="permalink" href="#enhancements">#</a></h2><h3><a class="anchor" id="coffeescript-support-1556-by-geoffreybooth"></a>⚙ CoffeeScript Support (<a href="https://github.com/DevExpress/testcafe/issues/1556">#1556</a>) by <a href="https://github.com/GeoffreyBooth">@GeoffreyBooth</a> <a class="permalink" href="#coffeescript-support-1556-by-geoffreybooth">#</a></h3>
 <p>TestCafe now allows you to write tests in CoffeeScript. You do not need to compile CoffeeScript manually or make any customizations - everything works out of the box.</p>
-<div class="highlight"><pre><code class="language-coffee" data-lang="coffee"><span class="nx">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s">'testcafe'</span>
+<div class="highlight"><pre><code class="language-coffee" data-lang="coffee"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s">'testcafe'</span>
 
 <span class="nx">fixture</span> <span class="s">'CoffeeScript Example'</span>
     <span class="p">.</span><span class="na">page</span> <span class="s">'https://devexpress.github.io/testcafe/example/'</span>
@@ -437,7 +437,7 @@
 <span class="nx">nameInput</span> <span class="o">=</span> <span class="nx">Selector</span> <span class="s">'#developer-name'</span>
 
 <span class="nx">test</span> <span class="s">'Test'</span><span class="p">,</span> <span class="p">(</span><span class="nx">t</span><span class="p">)</span> <span class="o">=&gt;</span>
-    <span class="nx">await</span> <span class="nx">t</span>
+    <span class="k">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="na">typeText</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">,</span> <span class="s">'Peter'</span><span class="p">)</span>
         <span class="p">.</span><span class="na">typeText</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">,</span> <span class="s">'Paker'</span><span class="p">,</span> <span class="p">{</span> <span class="na">replace</span><span class="o">:</span> <span class="no">true</span> <span class="p">})</span>
         <span class="p">.</span><span class="na">typeText</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">,</span> <span class="s">'r'</span><span class="p">,</span> <span class="p">{</span> <span class="na">caretPos</span><span class="o">:</span> <span class="mi">2</span> <span class="p">})</span>
@@ -450,11 +450,11 @@
 <p>Previously, TestCafe ignored uncaught errors and unhandled promise rejections that occurred on the server. Whenever an error or a promise rejection happened, test execution continued.</p>
 
 <p>Starting from v0.22.0, tests fail if a server error or promise rejection is unhandled. To return to the previous behavior, we have introduced the <code>skipUncaughtErrors</code> option. Use the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-u---skip-uncaught-errors">--skip-uncaught-errors</a> flag in the command line or the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#run">skipUncaughtErrors</a> option in the API.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome tests/fixture.js --skipUncaughtErrors
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome tests/fixture.js <span class="nt">--skipUncaughtErrors</span>
 </code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">run</span><span class="p">({</span><span class="na">skipUncaughtErrors</span><span class="p">:</span><span class="kc">true</span><span class="p">})</span>
 </code></pre></div><h3><a class="anchor" id="use-glob-patterns-in-runnersrc-980"></a>⚙ Use Glob Patterns in <code>runner.src</code> (<a href="https://github.com/DevExpress/testcafe/issues/980">#980</a>) <a class="permalink" href="#use-glob-patterns-in-runnersrc-980">#</a></h3>
 <p>You can now use <a href="https://github.com/isaacs/node-glob#glob-primer">glob patterns</a> in the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#src">runner.src</a> method to specify a set of test files.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">src</span><span class="p">([</span><span class="s1">'/home/user/tests/**/*.js'</span><span class="p">,</span> <span class="s1">'!/home/user/tests/foo.js'</span><span class="p">]);</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">src</span><span class="p">([</span><span class="dl">'</span><span class="s1">/home/user/tests/**/*.js</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">!/home/user/tests/foo.js</span><span class="dl">'</span><span class="p">]);</span>
 </code></pre></div><h2><a class="anchor" id="bug-fixes"></a>Bug Fixes <a class="permalink" href="#bug-fixes">#</a></h2>
 <ul>
 <li><code>RequestLogger</code> no longer fails when it tries to stringify a null request body (<a href="https://github.com/DevExpress/testcafe/issues/2718">#2718</a>)</li>

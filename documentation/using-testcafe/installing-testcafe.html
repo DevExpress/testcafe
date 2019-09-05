@@ -814,41 +814,54 @@
 		<div class="post-content">
 
 			<h1>Installing TestCafe</h1>
-<p>You can install TestCafe through <code>npm</code> globally or locally in your project.</p>
+<p>You can install TestCafe from <code>npm</code> globally or locally in your project.</p>
+
+<p><a href="#global-installation">Global installation</a> is required to run TestCafe in the <a href="command-line-interface.html">command line</a> from any location. For instance, you need to install TestCafe globally to execute the <code>testcafe</code> command from your custom application.</p>
+<blockquote><div class="blockquote-content"><p>You can use <code>npx</code>, <code>yarn run</code> or the <code>npm</code> scripts to run the <code>testcafe</code> command from the project directory without global installation.</p>
+</div></blockquote>
+<p><a href="#local-installation">Local installation</a> should be preferred for continuous integration systems, <a href="programming-interface/">Node.js applications</a> and other scenarios where global installation is not required.</p>
 
 <ul>
-<li><a href="#globally">Globally</a></li>
-<li><a href="#locally">Locally</a></li>
+<li>Local installation makes your project setup easier: <code>npm install</code> executed in the project directory installs all dependencies including TestCafe.</li>
+<li>Different projects can use different local TestCafe versions.</li>
 </ul>
-<h2><a class="anchor" id="globally"></a>Globally <a class="permalink" href="#globally">#</a></h2><div class="highlight"><pre><code class="language-bash" data-lang="bash">npm install -g testcafe
+
+<p>You can also run TestCafe <a href="#ad-hoc-installation">without prior installation</a>. However, this is not recommended for regular use.</p>
+<h2><a class="anchor" id="global-installation"></a>Global Installation <a class="permalink" href="#global-installation">#</a></h2><div class="highlight"><pre><code class="language-bash" data-lang="bash">npm <span class="nb">install</span> <span class="nt">-g</span> testcafe
 </code></pre></div>
-<p>After that, you can run TestCafe from a <a href="command-line-interface.html">command line</a> by using the <code>testcafe</code> command.</p>
+<p>After that, use the <a href="command-line-interface.html">testcafe</a> command to run TestCafe from the command line.</p>
 <div class="highlight"><pre><code class="language-bash" data-lang="bash">testcafe chrome tests/
-</code></pre></div><h2><a class="anchor" id="locally"></a>Locally <a class="permalink" href="#locally">#</a></h2>
-<p>The following command will install TestCafe into your project directory and save it on the dependencies list.</p>
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">npm install --save-dev testcafe
+</code></pre></div><h2><a class="anchor" id="local-installation"></a>Local Installation <a class="permalink" href="#local-installation">#</a></h2>
+<p>The following command installs TestCafe into your project directory and saves it on the dependencies list.</p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">npm <span class="nb">install</span> <span class="nt">--save-dev</span> testcafe
 </code></pre></div>
-<p>The local installation is preferred for continuous integration scenarios or if you are going to use TestCafe from a Node.js application (see <a href="programming-interface/">Programming Interface</a>). This kind of installation has two advantages.</p>
+<p>To run a local TestCafe version from the <a href="command-line-interface.html">command line</a>, use one of the following methods:</p>
 
 <ul>
-<li>It makes your project setup easier: running <code>npm install</code> in the project directory will automatically install TestCafe as well.</li>
-<li>Different projects can depend on different versions of TestCafe.</li>
-</ul>
-
-<p>You can use the local version of TestCafe from a <a href="command-line-interface.html">command line</a> as well. To run it, use one of the following ways.</p>
-
-<ul>
-<li><p>By using <a href="https://docs.npmjs.com/misc/scripts">npm scripts</a>.</p>
-
-<p>For example, you can add the <code>testcafe</code> command to the <code>scripts</code> section of the package.json file in the following way.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="s2">"scripts"</span><span class="err">:</span> <span class="p">{</span> <span class="s2">"test"</span><span class="err">:</span> <span class="s2">"testcafe chrome tests/"</span> <span class="p">}</span>
-</code></pre></div>
-<p>After that, you can run TestCafe by using the <code>npm test</code> command.</p></li>
-<li><p>If TestCafe is installed locally as well as globally, you can simply use the <code>testcafe</code> command. The local version will run automatically.</p>
+<li><p>the <a href="https://www.npmjs.com/package/npx">npx</a> command:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">npx testcafe chrome tests/
+</code></pre></div></li>
+<li><p>the <a href="https://yarnpkg.com/lang/en/docs/cli/run/">yarn run</a> command:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">yarn run testcafe chrome tests/
+</code></pre></div></li>
+<li><p><a href="https://docs.npmjs.com/misc/scripts">npm scripts</a> - add the <code>testcafe</code> command to the <code>scripts</code> section in <code>package.json</code>:</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="nl">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"test"</span><span class="p">:</span><span class="w"> </span><span class="s2">"testcafe chrome tests/"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>Then use <code>npm test</code> to run the specified TestCafe command:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm <span class="nb">test</span>
+</code></pre></div></li>
+<li><p>If TestCafe is installed both locally and globally, the <code>testcafe</code> command runs the local version:</p>
 <div class="highlight"><pre><code class="language-bash" data-lang="bash">testcafe chrome tests/
 </code></pre></div></li>
 </ul>
+<h2><a class="anchor" id="ad-hoc-installation"></a>Ad Hoc Installation <a class="permalink" href="#ad-hoc-installation">#</a></h2>
+<p>The <a href="https://www.npmjs.com/package/npx">npx</a> utility installs all modules required to run the specified command if these modules are not installed globally or in the local project.</p>
 
+<p>Use <code>npx testcafe</code> if you need to quickly run TestCafe from a directory outside of the project. However, this approach is not recommended for regular use.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">npx testcafe chrome tests/
+</code></pre></div>
 
 		</div>
 	</article>
